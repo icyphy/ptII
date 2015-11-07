@@ -52,6 +52,7 @@ import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TimeRegulator;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.continuous.ContinuousStatefulDirector;
+import ptolemy.actor.lib.CurrentMicrostep;
 import ptolemy.actor.util.Time;
 import ptolemy.data.AbsentToken;
 import ptolemy.data.BooleanToken;
@@ -67,6 +68,8 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
+import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.sr.kernel.SRDirector;
 
 /**
  * Import a Hybrid Co-Simulation FMU.
@@ -94,7 +97,6 @@ public class FMUImportHybrid extends FMUImport implements
     public FMUImportHybrid(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {        
         super(container, name);
-        _stepSize = 0;
     }
 
     /**
@@ -112,13 +114,13 @@ public class FMUImportHybrid extends FMUImport implements
     public void fire() throws IllegalActionException {
         Director director = getDirector();
         Time currentTime = director.getModelTime();
-        int currentMicrostep = 1;
+        int currentMicrostep = 0;
         if (director instanceof SuperdenseTimeDirector) {
             currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
         }
 
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid.fire() at time "
+            _debug("FMUImportHybrid.fire() at time "
                     + currentTime 
                     + " and microstep "
                     + currentMicrostep);
@@ -133,13 +135,26 @@ public class FMUImportHybrid extends FMUImport implements
         // If all inputs are known, the FMU can request a time advancement
         // The argument to proposeTime() is used as default step size for
         // FMUs that does not implement getMaxStepSize().
-//        boolean allInputsKnown = _allInputsKnown();
-//        if (allInputsKnown) {
-//            System.out.println("- calling fireAt()");
-//            Time proposedTime = proposeTime(currentTime.add(1.0));
-//            director.fireAt(this, proposedTime);
-//        }
-        
+        boolean allInputsKnown = _allInputsKnown();
+        if (allInputsKnown) {
+            Time proposedTime = proposeTime(currentTime.add(1.0));
+            if (proposedTime != null) {
+                int compare = proposedTime.compareTo(currentTime);
+                _nextMicrostep = 0;
+                if (compare == 0) {
+                    _nextMicrostep = _nextMicrostep + 1;
+                }            
+                Time actualTime = director.fireAt(this, proposedTime, _nextMicrostep);
+                if (_debugging) {
+                    _debug("* Invoked fireAt(/*proposed time*/ "
+                            + proposedTime
+                            + ", /*proposed microstep*/ "
+                            + _nextMicrostep
+                            + " ) and the director returned: "
+                            + actualTime);
+                }
+            }    
+        }        
         _firstFireInIteration = false;
     }
     
@@ -195,7 +210,7 @@ public class FMUImportHybrid extends FMUImport implements
     @Override
     public void initialize() throws IllegalActionException {
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid.initialize() method called.");
+            _debug("FMUImportHybrid.initialize() method called.");
         }
         
         // I don't invoke super.initialize(), therefore I call initialize()
@@ -212,6 +227,7 @@ public class FMUImportHybrid extends FMUImport implements
         _firstFire = true;
         _firstFireInIteration = true;
         _newStates = null;
+        _nextMicrostep = 0;
 
         // Set the parameters of the FMU.
         // Loop through the scalar variables and find a scalar
@@ -295,15 +311,10 @@ public class FMUImportHybrid extends FMUImport implements
         _suggestZeroStepSize = false;
         
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid.initialize() call completed.");
+            _debug("FMUImportHybrid.initialize() call completed.");
         }
         
-//        boolean allInputsKnown = _allInputsKnown();
-//        if (allInputsKnown) {
-//            Time currentTime = director.getModelTime();
-//            Time proposedTime = proposeTime(currentTime);
-//            director.fireAt(this, proposedTime);
-//        }
+        director.fireAt(this, new Time(director, 0.0));
         
         return;
     }
@@ -329,44 +340,61 @@ public class FMUImportHybrid extends FMUImport implements
         if (_debugging) {
             _debug("FMUImportHybrid.postfire()");
         }
-        if (_stepSizeRejected) {
-            // The director is unaware that this FMU
-            // has discarded a step. The discarded step
-            // has not been handled. The director must not
-            // be capable of supporting components that reject
-            // step sizes.
-            throw new IllegalActionException(
-                    this,
-                    getDirector(),
-                    "FMU discarded a step, rejecting the director's step size."
-                            + " But the director has not handled it."
-                            + " Hence, this director is incompatible with this FMU.");
-        }
-        
-        
+
         Director director = getDirector();
         Time currentTime = director.getModelTime();
-        int currentMicrostep = 1;
-        
-        Time proposedTime = proposeTime(currentTime.add(1.0));
-        director.fireAt(this, proposedTime);
-        Time futureTime = new Time(director, ((ContinuousDirector) director).suggestedStepSize());
-        
+        int currentMicrostep = 0;
         if (director instanceof SuperdenseTimeDirector) {
             currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
         }
-        System.out.println("postfire(): " + futureTime);
-        Time refinedStepSize = _fmiDoStepHybrid(futureTime, currentMicrostep);
-        if (refinedStepSize.getLongValue() < futureTime.getLongValue()) {
+        
+        _lastFireMicrostep = currentMicrostep;
+        Time expectedNewTime = null;
+        
+        if (director instanceof ContinuousDirector) {
+            expectedNewTime = new Time(director, ((ContinuousDirector) director).suggestedStepSize());
+        } else if (director instanceof DEDirector) {
+            expectedNewTime = ((DEDirector) director).getModelNextIterationTime();
+        } else if (director instanceof SRDirector) {
+            expectedNewTime = ((SRDirector) director).getModelNextIterationTime();
+        } else {
+            throw new IllegalActionException(
+                    this,
+                    getDirector(),
+                    "This actor works only with CT and DE Directors.");
+        }
+        if (expectedNewTime.compareTo(currentTime) == 0) {
+            currentMicrostep++;
+        }
+
+        if (_debugging) {
+            _debug("* Invoking _fmiDoStepHybrid at time: "
+                    + currentTime
+                    + ", the expected future time is: "
+                    + expectedNewTime);
+        }
+
+        Time computedTime = _fmiDoStepHybrid(expectedNewTime, currentMicrostep);
+        
+        if (_debugging) {
+            _debug("* _fmiDoStepHybrid computed a time advancement at time: "
+                    + computedTime);
+        }
+        
+        if ((computedTime.compareTo(expectedNewTime) < 0) 
+                && !(getDirector() instanceof DEDirector)
+                && !(getDirector() instanceof SRDirector)) {
             throw new IllegalActionException(
                     this,
                     getDirector(),
                     "FMU discarded a step, rejecting the director's step size." 
                     + " In postfire() the stepsize is supposed to be accepted.");
         }
-        _lastCommitTime = currentTime;
+
+        _lastCommitTime = computedTime;
         _refinedStepSize = -1.0;
         _firstFireInIteration = true;
+        _nextMicrostep = 0;
 
         return !_stopRequested;
     }
@@ -380,7 +408,7 @@ public class FMUImportHybrid extends FMUImport implements
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid.preinitialize()");
+            _debug("FMUImportHybrid.preinitialize()");
         }
         try {
             _fmiGetMaxStepSize = _fmiModelDescription
@@ -391,7 +419,6 @@ public class FMUImportHybrid extends FMUImport implements
                     throwable,
                     "The Co-Simulation fmiGetMaxStepSize() function was not found? ");
         }
-        _stepSize = 0;
     }
    
     /**
@@ -404,30 +431,49 @@ public class FMUImportHybrid extends FMUImport implements
      */    
     @Override
     public Time proposeTime(Time proposedTime) throws IllegalActionException {
-        int currentMicrostep = 1;
+        int currentMicrostep = 0;
         Director director = getDirector();
         if (director instanceof SuperdenseTimeDirector) {
             currentMicrostep = ((SuperdenseTimeDirector) director).getIndex();
         }
-        LongBuffer stepSize = LongBuffer.allocate(1);
+        
+        if (_debugging) {
+            _debug("FMUImportHybrid.proposeTime("
+                    + proposedTime
+                    + ", "
+                    + currentMicrostep
+                    + ")");
+        }
+        
+        LongBuffer stepSizeBuffer = LongBuffer.allocate(1);
+        Time newTime = null;
+        
         if (_fmiGetMaxStepSize != null) {
             int fmiFlag = ((Integer) _fmiGetMaxStepSize.invokeInt(new Object[] {
-                    _fmiComponent, stepSize})).intValue();
+                    _fmiComponent, stepSizeBuffer})).intValue();
             if (fmiFlag >= FMILibrary.FMIStatus.fmiDiscard) {
                 if (_debugging) {
-                    _debugToStdOut("Error while getMaxStepSize()"
+                    _debug("* Error while getMaxStepSize()"
                             + " at time " + director.getModelTime());
                 }
             }
-            _stepSize = stepSize.get(0) + director.getModelTime().getLongValue();
-            System.out.println("- getMaxStepSize(): " + _stepSize);
-            return new Time(getDirector(), _stepSize);
+            long stepSize = stepSizeBuffer.get(0);   
+            if (stepSize >= 0) {
+                newTime = new Time(director, stepSizeBuffer.get(0)
+                        + _lastCommitTime.getLongValue());
+            }
+            if (_debugging) {
+                _debug("* getMaxStepSize returned step size = "
+                            + stepSize +" and newTime = " + newTime);
+            }
+            
         } else {
-            Time refinedStepSize = _fmiDoStepHybrid(proposedTime, currentMicrostep);
-            _stepSize = refinedStepSize.getLongValue();
-            System.out.println("- _fmiDoStepHybrid(): " + refinedStepSize);
-            return refinedStepSize;
-        }        
+            newTime = _fmiDoStepHybrid(proposedTime, currentMicrostep);
+            if (_debugging) {
+                _debug("* _fmiDoStepHybrid returned a refined step size = " + newTime);
+            }
+        }     
+        return newTime;
     }
     
     ///////////////////////////////////////////////////////////////////
@@ -459,7 +505,7 @@ public class FMUImportHybrid extends FMUImport implements
      */
     protected void _fmiInitialize() throws IllegalActionException {
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize()");
+            _debug("FMUImportHybrid._fmiInitialize()");
         }
         
         String modelIdentifier = _fmiModelDescription.modelIdentifier;
@@ -470,7 +516,7 @@ public class FMUImportHybrid extends FMUImport implements
         int fmiFlag;
 
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to "
+            _debug("FMUImportHybrid._fmiInitialize(): about to "
                     + "invoke the fmi setup experiment function");
         }
         fmiFlag = ((Integer) _fmiSetupExperimentFunction.invoke(
@@ -485,7 +531,7 @@ public class FMUImportHybrid extends FMUImport implements
                             + _fmiStatusDescription(fmiFlag));
         }
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to invoke "
+            _debug("FMUImportHybrid._fmiInitialize(): about to invoke "
                     + "the fmi enter initialization function");
         }
         fmiFlag = ((Integer) _fmiEnterInitializationModeFunction
@@ -498,7 +544,7 @@ public class FMUImportHybrid extends FMUImport implements
                             + _fmiStatusDescription(fmiFlag));
         }
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to invoke "
+            _debug("FMUImportHybrid._fmiInitialize(): about to invoke "
                     + "the fmi exit initialization function");
         }
         fmiFlag = ((Integer) _fmiExitInitializationModeFunction.invoke(
@@ -511,7 +557,7 @@ public class FMUImportHybrid extends FMUImport implements
                             + _fmiStatusDescription(fmiFlag));
         }
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to request "
+            _debug("FMUImportHybrid._fmiInitialize(): about to request "
                     + "refiring if necessary.");
         }
 
@@ -523,7 +569,7 @@ public class FMUImportHybrid extends FMUImport implements
         _requestRefiringIfNecessary();
 
         if (_debugging) {
-            _debugToStdOut("FMUImportHybrid._fmiInitialize(): about to record "
+            _debug("FMUImportHybrid._fmiInitialize(): about to record "
                     + "FMU state.");
         }
         // In case we have to backtrack, if the FMU supports
@@ -541,7 +587,7 @@ public class FMUImportHybrid extends FMUImport implements
         }
 
         if (_debugging) {
-            _debugToStdOut("Initialized FMU.");
+            _debug("Initialized FMU.");
         }
         _modelInitialized = true;
     }
@@ -571,9 +617,14 @@ public class FMUImportHybrid extends FMUImport implements
 
         int timeAdvance = newTime.compareTo(_lastFireTime);
 
-//        System.out.println("timeAdvance: " + timeAdvance);
-//        System.out.println("newTime: " + newTime + ", _lastFireTime: "
-//                + _lastFireTime + ", _lastCommitTime: " + _lastCommitTime);
+        if (_debugging) {
+            _debug("FMUImportHybrid._fmiDoStepHybrid at time "
+                    + getDirector().getModelTime());
+            _debug("** newTime: " + newTime
+                    + ", newMicrostep: " + newMicrostep
+                    + ", _lastFireTime: " + _lastFireTime
+                    + ", _lastFireMicrostep: " + _lastFireMicrostep);
+        }
         // FIXME: Should perhaps check to see whether we are at phase 0 of a
         // non-zero-step-size
         // invocation by the ContinuousDirector. This invocation yields a
@@ -607,8 +658,12 @@ public class FMUImportHybrid extends FMUImport implements
             if (timeAdvance < 0) {
                 // Correct the above values to indicate that we are redoing a
                 // step.
+                if (_debugging) {
+                    _debug("** Rolling back the FMU! "
+                            + "The new current time is previous than the "
+                            + "last committed time.");
+                }
                 rollBackToCommittedState();
-                time = _lastCommitTime.getLongValue();
                 stepSize = newTime.subtract(_lastCommitTime).getLongValue();
                 lastArg = 0;
             }
@@ -622,7 +677,7 @@ public class FMUImportHybrid extends FMUImport implements
             if (_debugging) {
                 String lastArgDescription = ", /* newStep */";
                     lastArgDescription = ", /* noSetFMUStatePriorToCurrentPoint */";
-                _debugToStdOut("FMIImport.fire(): about to call "
+                _debug("** About to call "
                         + modelIdentifier + "_fmiDoStepHybrid(Component, /* time */ "
                         + time + ", /* stepSize */" + stepSize
                         + lastArgDescription + lastArg + ")");
@@ -634,18 +689,15 @@ public class FMUImportHybrid extends FMUImport implements
             // If the FMU discarded the step, handle this.
             if (fmiFlag == FMILibrary.FMIStatus.fmiDiscard) {
                 if (_debugging) {
-                    _debugToStdOut("Rejected step size of " + stepSize
+                    _debug("** FMU rejected step size of " + stepSize
                             + " at time " + time);
                 }
-                // By default, if the FMU does not provide better information,
-                // we suggest a refined step size of half the current step size.
-                result = stepSize * 0.5;
 
-                if (_fmiGetRealStatusFunction != null) {
+                if (_fmiGetIntegerStatusFunction != null) {
                     // The FMU has provided a function to query for
                     // a suggested step size.
                     // This function returns fmiDiscard if not supported.
-                    IntBuffer valueBuffer = IntBuffer.allocate(1);
+                    LongBuffer valueBuffer = LongBuffer.allocate(1);
                     fmiFlag = ((Integer) _fmiGetIntegerStatusFunction
                             .invokeInt(new Object[] {
                                     _fmiComponent,
@@ -654,7 +706,7 @@ public class FMUImportHybrid extends FMUImport implements
                     if (fmiFlag == FMILibrary.FMIStatus.fmiOK) {
                         long lastSuccessfulTime = valueBuffer.get(0);
                         if (_debugging) {
-                            _debug("FMU reports last successful time of "
+                            _debug("** FMU reports last successful time of "
                                     + lastSuccessfulTime);
                         }
                         // Sanity check the time to make sure it makes sense.
@@ -671,15 +723,15 @@ public class FMUImportHybrid extends FMUImport implements
                                             + _lastCommitTime);
                         }
                         // Adjust the return result with a suggested time.
-                        result = lastSuccessfulTime - _lastCommitTime.getLongValue();
+                        result = lastSuccessfulTime;
                     } else {
                         if (_debugging) {
-                            _debug("FMU does not report a last successful time.");
+                            _debug("** FMU does not report a last successful time.");
                         }
                     }
                 } else {
                     if (_debugging) {
-                        _debug("FMU does not provide a procedure fmiGetRealStatus.");
+                        _debug("** FMU does not provide a procedure fmiGetIntegerStatus.");
                     }
                 }
             } else if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
@@ -693,9 +745,13 @@ public class FMUImportHybrid extends FMUImport implements
                 _lastFireTime = newTime;
                 _lastFireMicrostep = newMicrostep;
                 result = newTime.getLongValue();
+                if (_debugging) {
+                    _debug("** FMU accepted the step size. "
+                            + "New FMU time is: " + result);
+                }
             }
             if (_debugging) {
-                _debugToStdOut("FMUImport done calling " + modelIdentifier
+                _debug("** FMUImportHybrid done calling " + modelIdentifier
                         + "_fmiDoStepHybrid()");
             }
         }
@@ -800,7 +856,7 @@ public class FMUImportHybrid extends FMUImport implements
         for (Output output : _getOutputs()) {
             TypedIOPort port = output.port;
             if (_debugging) {
-                _debugToStdOut("FMUImportHybrid._getFmuOutputs(): port "
+                _debug("FMUImportHybrid._getFmuOutputs(): port "
                         + port.getName());
             }
 
@@ -827,7 +883,7 @@ public class FMUImportHybrid extends FMUImport implements
                 // Check only those ports.
                 for (TypedIOPort inputPort : output.dependencies) {
                     if (_debugging) {
-                        _debugToStdOut("FMUImportHybrid._getFmuOutputs(): port "
+                        _debug("FMUImportHybrid._getFmuOutputs(): port "
                                 + port.getName()
                                 + " depends on " 
                                 + inputPort.getName());
@@ -838,7 +894,7 @@ public class FMUImportHybrid extends FMUImport implements
                         // Skip this output port. It depends on
                         // unknown inputs.
                         if (_debugging) {
-                            _debugToStdOut("FMUImportHybrid._getFmuOutputs(): "
+                            _debug("FMUImportHybrid._getFmuOutputs(): "
                                     + "FMU declares that output port "
                                     + port.getName()
                                     + " depends directly on input port "
@@ -856,7 +912,7 @@ public class FMUImportHybrid extends FMUImport implements
                 List<TypedIOPort> inputPorts = inputPortList();
                 for (TypedIOPort inputPort : inputPorts) {
                     if (_debugging) {
-                        _debugToStdOut("FMUImportHybrid._getFmuOutputs(): port "
+                        _debug("FMUImportHybrid._getFmuOutputs(): port "
                                 + port.getName()
                                 + " looking for unknown input"
                                 + inputPort.getName());
@@ -865,7 +921,7 @@ public class FMUImportHybrid extends FMUImport implements
                         // Input port value is not known.
                         foundUnknownInputOnWhichOutputDepends = true;
                         if (_debugging) {
-                            _debugToStdOut("FMUImportHybrid._getFmuOutputs(): "
+                            _debug("FMUImportHybrid._getFmuOutputs(): "
                                     + "FMU does not declare input dependencies, "
                                     + "which means that output port "
                                     + port.getName() + " depends directly on all "
@@ -878,7 +934,7 @@ public class FMUImportHybrid extends FMUImport implements
                 }
             }
             if (_debugging) {
-                _debugToStdOut("FMUImportHybrid._getFmuOutputs(): port "
+                _debug("FMUImportHybrid._getFmuOutputs(): port "
                         + port.getName()
                         + " foundUnknownInputOnWhichOutputDepends: "
                         + foundUnknownInputOnWhichOutputDepends);
@@ -910,7 +966,7 @@ public class FMUImportHybrid extends FMUImport implements
                     port.sendClear(0);
                 }
                 if (_debugging) {
-                    _debugToStdOut("FMUImportHybrid._getFmuOutputs(): Output "
+                    _debug("FMUImportHybrid._getFmuOutputs(): Output "
                             + scalarVariable.name + " sends value " + token
                             + " at time " + currentTime + " and microstep "
                             + currentMicrostep);
@@ -935,12 +991,21 @@ public class FMUImportHybrid extends FMUImport implements
                     Token token = input.port.get(0);
                     _setFMUScalarVariable(input.scalarVariable, token);                    
                     if (_debugging) {
-                        _debugToStdOut("FMUImportHybrid._setFmuInputs(): set input variable " 
+                        _debug("FMUImportHybrid._setFmuInputs(): set input variable " 
                                         + input.scalarVariable.name 
                                         + " to "
                                         + token);
                     }
                 }
+//                else {
+//                    AbsentToken token = new AbsentToken();
+//                    _setFMUScalarVariable(input.scalarVariable, token);   
+//                    if (_debugging) {
+//                        _debug("FMUImportHybrid._setFmuInputs(): set input variable " 
+//                                        + input.scalarVariable.name 
+//                                        + " to absent");
+//                    }
+//                }
             }
         }
     }
@@ -953,10 +1018,6 @@ public class FMUImportHybrid extends FMUImport implements
      * that an FMU can compute. 
      */
     private Function _fmiGetMaxStepSize;
-    
-    /**
-     * The step size that an FMU can compute.
-     * TODO: do we really need it?
-     */
-    private long _stepSize;
+
+    int _nextMicrostep;
 }
