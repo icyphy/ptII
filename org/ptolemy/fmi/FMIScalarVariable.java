@@ -558,7 +558,7 @@ public class FMIScalarVariable {
      */
     public void setIntHybrid(Pointer fmiComponent, Integer value,
             boolean isAbsent) {
-        IntBuffer valueBuffer = IntBuffer.allocate(1).put(0, value);
+        LongBuffer valueBuffer = LongBuffer.allocate(1).put(0, value);
         // FIXME: What about enums?
         LongBuffer absentBuffer = LongBuffer.allocate(1).put(0,
                 isAbsent ? (byte) 1 : (byte) 0);
