@@ -4,11 +4,14 @@
  * To make a connection, create an instance of SocketServer, set up listeners,
  * and start the server. On another machine (or the same machine), create
  * an instance of SocketClient and set up listeners and/or invoke send() to send
- * a message. When a client connects to the SocketServer, the SocketServer will create
+ * data. When a client connects to the SocketServer, the SocketServer will create
  * an instance of the Socket object.
  *
- * This module also provides two utility functions that return arrays
- * of MIME types supported for sending or receiving messages.
+ * The send() function can accept data in many different forms.
+ * You can send a string, a number, or an array of numbers.
+ * Two utility functions supportedReceiveTypes() and supportedSendTypes()
+ * tell you exactly which data types supported by the host.
+ * Arrays of those types are also supported.
  *
  * @module socket
  * @authors: Edward A. Lee
@@ -48,12 +51,14 @@ var defaultClientOptions = {
     'idleTimeout': 0, // In seconds. 0 means don't timeout.
     'discardMessagesBeforeOpen': false,
     'keepAlive': true,
+    'noDelay': true,
     'receiveBufferSize': 65536,
     'receiveType': 'string',
     'reconnectAttempts': 10,
     'reconnectInterval': 100,
     'sendBufferSize': 65536,
     'sendType': 'string',
+    'serializeReceivedArrays': true,
     'sslTls': false,
     'trustAll': true,
 }
@@ -108,6 +113,9 @@ var defaultClientOptions = {
  *    defaults to false.
  *  * keepAlive: Whether to keep a connection alive and reuse it. This
  *    defaults to true.
+ *  * noDelay: If true, data as sent as soon as it is available (the default).
+ *    If false, data may be accumulated until a reasonable packet size is formed
+ *    in order to make more efficient use of the network (using Nagle's algorithm).
  *  * receiveBufferSize: The size of the receive buffer. Defaults to
  *    65536.
  *  * receiveType: See below.
@@ -119,18 +127,29 @@ var defaultClientOptions = {
  *  * sendBufferSize: The size of the receive buffer. Defaults to
  *    65536.
  *  * sendType: See below.
+ *  * serializeReceivedArrays: If true (the default), each emit from
+ *    the socket object consists of a single data item, even if several
+ *    data items were received at once. If false, then a batch of incoming
+ *    data with any type other than string that is received at once
+ *    will be emitted as an array rather than doing a separate emit
+ *    for each received object.
  *  * sslTls: Whether SSL/TLS is enabled. This defaults to false.
  *  * trustAll: Whether to trust servers. This defaults to true.
  *
- *  The send and receive types can be one of 'string', 'number',
- *  or 'byte', defaulting to 'string'. For connecting to sockets
- *  that are not JavaScript applications, they can alternatively be
- *  'double', 'float', 'int', 'long', 'short', 'unsignedByte',
- *  'unsignedInt', or 'unsignedShort'. In these cases, received
+ *  The send and receive types can be any of those returned by
+ *  supportedReceiveTypes() and supportedSendTypes(), respectively.
+ *  If both ends of the socket are known to be JavaScript clients,
+ *  then you should use the 'number' data type for numeric data.
+ *  If one end or the other is not JavaScript, then
+ *  you can use more specified types such as 'float' or 'int', if they
+ *  are supported by the host. In all cases, received numeric
  *  data will be converted to JavaScript 'number' when emitted.
  *  For sent data, this will try to convert a JavaScript number
  *  to the specified type. The type 'number' is equivalent
  *  to 'double'.
+ *
+ *  For numeric types, you can also send an array with a single call
+ *  to send().
  *  
  *  The meaning of the options is (partially) defined here:
  *     http://vertx.io/docs/vertx-core/java/
@@ -170,12 +189,13 @@ exports.SocketClient.prototype._opened = function(netSocket, client) {
     // the instance of the enclosing socketHelper class.
     this.wrapper = new SocketHelper.SocketWrapper(
             this.helper, this, netSocket,
-            this.options['sendType'], this.options['receiveType']);
+            this.options['sendType'], this.options['receiveType'],
+            this.options['serializeReceivedArrays']);
     this.emit('open');
     
     // Send any pending data.
     for (var i = 0; i < this.pendingSends.length; i++) {
-        this.wrapper.send(this.pendingSends[i]);
+        this.send(this.pendingSends[i]);
     }
     this.pendingSends = [];
 }
@@ -188,6 +208,9 @@ exports.SocketClient.prototype._opened = function(netSocket, client) {
  */
 exports.SocketClient.prototype.send = function(data) {
     if (this.wrapper) {
+        if (Array.isArray(data)) {
+            data = Java.to(data);
+        }
         this.wrapper.send(data);
     } else {
         if (!this.options['discardMessagesBeforeOpen']) {
@@ -221,11 +244,13 @@ var defaultServerOptions = {
     'hostInterface': '0.0.0.0', // Means listen on all available interfaces.
     'idleTimeout': 0, // In second. 0 means don't timeout.
     'keepAlive': true,
+    'noDelay': true,
     'port': 4000,
     'receiveBufferSize': 65536,
     'receiveType': 'string',
     'sendBufferSize': 65536,
     'sendType': 'string',
+    'serializeReceivedArrays': true,
     'sslTls': false,
 }
 
@@ -297,6 +322,9 @@ var defaultServerOptions = {
  *    timeout.
  *  * keepAlive: Whether to keep a connection alive and reuse it. This
  *    defaults to true.
+ *  * noDelay: If true, data as sent as soon as it is available (the default).
+ *    If false, data may be accumulated until a reasonable packet size is formed
+ *    in order to make more efficient use of the network (using Nagle's algorithm).
  *  * port: The default port to listen on. This defaults to 4000.
  *    a value of 0 means to choose a random ephemeral free port.
  *  * receiveBufferSize: The size of the receive buffer. Defaults to
@@ -305,22 +333,31 @@ var defaultServerOptions = {
  *  * sendBufferSize: The size of the receive buffer. Defaults to
  *    65536.
  *  * sendType: See below.
+ *  * serializeReceivedArrays: If true (the default), each emit from
+ *    the socket object consists of a single data item, even if several
+ *    data items were received at once. If false, then a batch of incoming
+ *    data with any type other than string that is received at once
+ *    will be emitted as an array rather than doing a separate emit
+ *    for each received object.
  *  * sslTls: Whether SSL/TLS is enabled. This defaults to false.
  *
- *  The send and receive types can be one of 'string', 'number',
- *  or 'byte', defaulting to 'string'. All sockets handled by this
- *  server must use the same send and receive types.
- *  For connecting to sockets
- *  that are not JavaScript applications, they can alternatively be
- *  'double', 'float', 'int', 'long', 'short', 'unsignedByte',
- *  'unsignedInt', or 'unsignedShort'. In these cases, received
+ *  The meaning of the options is (partially)defined here:
+ *     http://vertx.io/docs/vertx-core/java/
+ *
+ *  The send and receive types can be any of those returned by
+ *  supportedReceiveTypes() and supportedSendTypes(), respectively.
+ *  If both ends of the socket are known to be JavaScript clients,
+ *  then you should use the 'number' data type for numeric data.
+ *  If one end or the other is not JavaScript, then
+ *  you can use more specified types such as 'float' or 'int', if they
+ *  are supported by the host. In all cases, received numeric
  *  data will be converted to JavaScript 'number' when emitted.
  *  For sent data, this will try to convert a JavaScript number
  *  to the specified type. The type 'number' is equivalent
  *  to 'double'.
  *
- *  The meaning of the options is (partially)defined here:
- *     http://vertx.io/docs/vertx-core/java/
+ *  For numeric types, you can also send an array with a single call
+ *  to send().
  *
  *  @param options The options.
  */
@@ -363,7 +400,8 @@ exports.SocketServer.prototype._serverCreated = function(netServer) {
 exports.SocketServer.prototype._socketCreated = function(netSocket) {
     var socket = new exports.Socket(
             this.helper, netSocket,
-            this.options['sendType'], this.options['receiveType']);
+            this.options['sendType'], this.options['receiveType'],
+            this.options['serializeReceivedArrays']);
     this.emit('connection', socket);
 }
 
@@ -385,14 +423,18 @@ exports.SocketServer.prototype._socketCreated = function(netSocket) {
  *
  *  @param helper The instance of SocketHelper that is helping.
  *  @param netSocket The Vert.x NetSocket object.
+ *  @param sendType The type to send over the socket.
+ *  @param receiveType The type expected to be received over the socket.
+ *  @param serializeReceivedArrays Whether to emit batches of received objects as
+ *   a single array (false) or as separate data items (true).
  */
-exports.Socket = function(helper, netSocket, sendType, receiveType) {
+exports.Socket = function(helper, netSocket, sendType, receiveType, serializeReceivedArrays) {
     // For a server side socket, this instance of Socket will be the event emitter.
 
     // Because we are creating an inner class, the first argument needs to be
     // the instance of the enclosing socketHelper class.
     this.wrapper = new SocketHelper.SocketWrapper(
-            helper, this, netSocket, sendType, receiveType);
+            helper, this, netSocket, sendType, receiveType, serializeReceivedArrays);
 }
 util.inherits(exports.Socket, EventEmitter);
 
@@ -408,5 +450,8 @@ exports.Socket.prototype.close = function() {
  *  @param data The data to send.
  */
 exports.Socket.prototype.send = function(data) {
+    if (Array.isArray(data)) {
+        data = Java.to(data);
+    }
     this.wrapper.send(data);
 }
