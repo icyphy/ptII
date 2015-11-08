@@ -29,7 +29,6 @@ package ptolemy.actor.lib.jjs;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
-import io.vertx.core.VertxOptions;
 import io.vertx.core.eventbus.EventBus;
 
 import java.io.File;
@@ -321,7 +320,7 @@ public class VertxHelperBase extends HelperBase {
      */
     protected void _issueResponse(Runnable response) {
         try {
-            _actor.setTimeout(response, 0);
+            _actor.invokeCallback(response);
         } catch (IllegalActionException e) {
             _actor.error(_actor.getName()
                     + ": Failed to schedule response handler: "
