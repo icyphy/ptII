@@ -552,6 +552,17 @@ function convertFromToken(value, isJSON) {
     return value;
 }
 
+/** Convert the specified object to a native JavaScript array.
+ *  This is useful when you have constructed an Object[] in Java
+ *  and you wish to pass it to the JavaScript world and have it
+ *  treated as an array. Without this function, it will be treated
+ *  as an ordinary object that happens to have fields '0', '1', etc.
+ *  @param array The array to convert.
+ */
+function convertToJSArray(array) {
+    return Java.from(array);
+}
+ 
 /** Convert the specified argument to a Ptolemy II Token.
  *  This is a utility function, not intended for script writers to use.
  *  @param value The JavaScript value to convert.

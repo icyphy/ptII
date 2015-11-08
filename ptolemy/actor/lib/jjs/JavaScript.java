@@ -1660,6 +1660,21 @@ public class JavaScript extends TypedAtomicActor {
         _setTimeout(function, milliseconds, id);
         return id;
     }
+    
+    /** Convert the specified array into a native JavaScript array.
+     *  @param array The array to convert.
+     *  @throws IllegalActionException If the conversion fails.
+     */
+    public Object toJSArray(Object[] array) throws IllegalActionException {
+        try {
+            // Sadly, nashorn can't pass arrays... It treats them as separate arguments.
+            // Adding a second dummy argument (1 below) seems to solve this problem.
+            return ((Invocable) _engine).invokeFunction("convertToJSArray", array, 1);
+        } catch (Throwable e) {
+            throw new IllegalActionException(this, e,
+                    "Conversion to JavaScript array failed.");
+        }
+    }
 
     /** Specify version information to appear in the documentation for this actor.
      *  @param version Version information to appear in documentation.

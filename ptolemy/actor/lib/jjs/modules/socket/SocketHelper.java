@@ -112,13 +112,11 @@ public class SocketHelper extends VertxHelperBase {
                 .setReconnectInterval((Integer)options.get("reconnectInterval"))
                 .setSendBufferSize((Integer)options.get("sendBufferSize"))
                 .setSsl((Boolean)options.get("sslTls"))
-                .setTcpKeepAlive((Boolean)options.get("keepAlive"));
-
-        /* FIXME: Not used options:
-        'receiveType': 'application/json',
-        'sendType': 'application/json',
-        'discardMessagesBeforeOpen': false,
-         */
+                .setTcpKeepAlive((Boolean)options.get("keepAlive"))
+                .setTcpNoDelay((Boolean)options.get("noDelay"));
+        
+        // NOTE: Find out the (undocumented) default in Vert.x.
+        // System.err.println("TcpNoDelay: " + clientOptions.isTcpNoDelay());
 
         // Create the socket in the associated verticle.
         submit(() -> {
@@ -193,19 +191,18 @@ public class SocketHelper extends VertxHelperBase {
         // NOTE: The following assumes all the options are defined.
         // This is handled in the associated JavaScript socket.js module.
         final NetServerOptions serverOptions = new NetServerOptions()
-        .setClientAuth(auth)
-        .setHost((String)options.get("hostInterface"))
-        .setIdleTimeout((Integer)options.get("idleTimeout"))
-        .setTcpKeepAlive((Boolean)options.get("keepAlive"))
-        .setPort((Integer)options.get("port"))
-        .setReceiveBufferSize((Integer)options.get("receiveBufferSize"))
-        .setSendBufferSize((Integer)options.get("sendBufferSize"))
-        .setSsl((Boolean)options.get("sslTls"));
+                .setClientAuth(auth)
+                .setHost((String)options.get("hostInterface"))
+                .setIdleTimeout((Integer)options.get("idleTimeout"))
+                .setTcpKeepAlive((Boolean)options.get("keepAlive"))
+                .setPort((Integer)options.get("port"))
+                .setReceiveBufferSize((Integer)options.get("receiveBufferSize"))
+                .setSendBufferSize((Integer)options.get("sendBufferSize"))
+                .setSsl((Boolean)options.get("sslTls"))
+                .setTcpNoDelay((Boolean)options.get("noDelay"));
 
-        /* FIXME: Not used:
-        'receiveType': 'string',
-        'sendType': 'string',
-         */
+        // NOTE: Find out the (undocumented) default in Vert.x.
+        // System.err.println("TcpNoDelay: " + serverOptions.isTcpNoDelay());
 
         // Create the server in the associated verticle.
         submit(() -> {
@@ -295,7 +292,8 @@ public class SocketHelper extends VertxHelperBase {
                 ScriptObjectMirror eventEmitter,
                 Object socket,
                 String sendType,
-                String receiveType) {
+                String receiveType,
+                final boolean serializeReceivedArray) {
             _eventEmitter = eventEmitter;
             _socket = (NetSocket)socket;
             
@@ -332,30 +330,42 @@ public class SocketHelper extends VertxHelperBase {
             });
             _socket.handler(buffer -> {
                 _issueResponse(() -> {
-                    switch(_receiveType) {
-                    case NUMBER:
-                        for (int i = 0; i < buffer.length(); i++) {
-                            try {
-                                _eventEmitter.callMember("emit", "data", buffer.getDouble(i));
-                            } catch (Throwable ex) {
-                                _error(_eventEmitter, "Received data that is not of type number: "
-                                        + buffer.toString()
-                                        + "\nException converting to number: "
-                                        + ex);
+                    if(_receiveType == DATA_TYPE.STRING) {
+                        _eventEmitter.callMember("emit", "data", buffer.getString(0, buffer.length()));
+                    } else {
+                        int size = _sizeOfReceiveType();
+                        int numberOfElements = buffer.length() / size;
+                        if (numberOfElements <= 1) {
+                            _eventEmitter.callMember("emit", "data", _extractFromBuffer(buffer, 0));
+                        } else {
+                            if (serializeReceivedArray) {
+                                int position = 0;
+                                for (int i = 0; i < numberOfElements; i++) {
+                                    _eventEmitter.callMember("emit", "data", _extractFromBuffer(buffer, position));
+                                    position += size;
+                                }
+                            } else {
+                                // Not serializing the output, so we output a single array.
+                                Object[] result = new Object[numberOfElements];
+                                int position = 0;
+                                for (int i = 0; i < result.length; i++) {
+                                    result[i] = _extractFromBuffer(buffer, position);
+                                    position += size;
+                                }
+                                // NOTE: If we return result, then the emitter will not
+                                // emit a native JavaScript array. We have to do a song and
+                                // dance here which is probably very inefficient (almost
+                                // certainly... the array gets copied).
+                                try {
+                                    _eventEmitter.callMember("emit", "data", _actor.toJSArray(result));
+                                } catch (Exception e) {
+                                    _error(_eventEmitter, "Failed to convert to a JavaScript array: "
+                                            + e);                    
+                                    _eventEmitter.callMember("emit", "data", result);
+                                }
                             }
                         }
-                        break;
-                    case STRING:
-                        _eventEmitter.callMember("emit", "data", buffer.getString(0, buffer.length()));
-                        break;
-                    default:
-                        _error(_eventEmitter, "Unsupported type for socket: "
-                                + _sendType.toString());                    
                     }
-
-                    // FIXME: handle the buffer data more intelligently here.
-                    // If the received type is 'double', 'byte', etc., then do multiple emits.
-                    // See defaultOptions in the JS module.
                 });
             });
         }
@@ -373,27 +383,96 @@ public class SocketHelper extends VertxHelperBase {
             // FIXME: Should block if the send buffer is full.
 
             submit(() -> {
-                switch(_sendType) {
-                case NUMBER:
-                    if (data instanceof Number) {
-                        _socket.write(Buffer.buffer().appendDouble(((Number)data).doubleValue()));
-                    } else {
-                        _error(_eventEmitter, "data to send is not a number. It is: "
-                                + data.getClass().getName());
+                Buffer buffer = Buffer.buffer();
+                // Handle the case where data is an array.
+                if (data instanceof Object[]) {
+                    for (Object element : (Object[]) data) {
+                        // JavaScript arrays can have holes, and moreover,
+                        // it seems that Nashorn's Java.to() function creates
+                        // a bigger array than needed with trailing null elements.
+                        if (element != null) {
+                            _appendToBuffer(buffer, element);
+                        }
                     }
-                    break;
-                case STRING:
-                    // NOTE: Use of toString() method makes this very tolerant, but
-                    // it won't properly stringify JSON. Is this OK?
-                    // NOTE: A second argument could take an encoding.
-                    // Defaults to UTF-8. Is this OK?
-                    _socket.write(data.toString());
-                    break;
+                } else {
+                    _appendToBuffer(buffer, data);
+                }
+                _socket.write(buffer);
+            });
+        }
+        private void _appendToBuffer(Buffer buffer, Object data) {
+            switch(_sendType) {
+            case BYTE:
+                if (data instanceof Number) {
+                    buffer.appendByte(((Number)data).byteValue());
+                } else {
+                    _sendTypeError(_sendType, data);
+                }
+                break;
+            case NUMBER:
+                if (data instanceof Number) {
+                    buffer.appendDouble(((Number)data).doubleValue());
+                } else {
+                    _sendTypeError(_sendType, data);
+                }
+                break;
+            case STRING:
+                // NOTE: Use of toString() method makes this very tolerant, but
+                // it won't properly stringify JSON. Is this OK?
+                // NOTE: A second argument could take an encoding.
+                // Defaults to UTF-8. Is this OK?
+                buffer.appendString(data.toString());
+                break;
+            default:
+                _error(_eventEmitter, "Unsupported type for socket: "
+                        + _sendType.toString());                    
+            }
+        }
+        /** Extract an instance of the _receiveType from a buffer. */
+        private Object _extractFromBuffer(Buffer buffer, int position) {
+            try {
+                switch(_receiveType) {
+                case BYTE:
+                    return buffer.getByte(position);
+                case NUMBER:
+                    return buffer.getDouble(position);
                 default:
                     _error(_eventEmitter, "Unsupported type for socket: "
-                            + _sendType.toString());                    
+                            + _receiveType.toString());
+                    return null;
                 }
-            });
+            } catch (Throwable ex) {
+                _receiveTypeError(ex, _receiveType, buffer);
+                return null;
+            }
+        }
+        private void _receiveTypeError(Throwable ex, DATA_TYPE type, Buffer buffer) {
+            String expectedType = type.toString().toLowerCase();
+            _error(_eventEmitter, "Received data that is not of type "
+                    + expectedType
+                    + ": "
+                    + buffer.toString()
+                    + "\nException occurred: "
+                    + ex);
+        }
+        private void _sendTypeError(DATA_TYPE type, Object data) {
+            String expectedType = type.toString().toLowerCase();
+            _error(_eventEmitter, "Data to send is not a "
+                    + expectedType
+                    + ". It is: "
+                    + data.getClass().getName());
+        }
+        private int _sizeOfReceiveType() {
+            switch(_receiveType) {
+            case BYTE:
+                return Byte.BYTES;
+            case NUMBER:
+                return Double.BYTES;
+            default:
+                _error(_eventEmitter, "Unsupported type for socket: "
+                        + _receiveType.toString());
+                return 0;
+            }
         }
         private NetSocket _socket;
         private ScriptObjectMirror _eventEmitter;
