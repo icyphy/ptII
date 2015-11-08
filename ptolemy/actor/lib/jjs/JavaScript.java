@@ -43,6 +43,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Queue;
 import java.util.Set;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -553,6 +554,7 @@ public class JavaScript extends TypedAtomicActor {
         }
         newObject._exports = null;
         newObject._inputTokens = new HashMap<IOPort, HashMap<Integer, Token>>();
+        newObject._pendingCallbacks = new ConcurrentLinkedQueue<Runnable>();
         newObject._pendingTimeoutFunctions = new HashMap<Integer, Runnable>();
         newObject._pendingTimeoutIDs = new HashMap<Time, Queue<Integer>>();
         newObject._proxies = null;
@@ -800,6 +802,13 @@ public class JavaScript extends TypedAtomicActor {
                 proxy._hasNewInput(false);
             }
         }
+        // Invoke any pending callback functions.
+        Runnable callback = _pendingCallbacks.poll();
+        while(callback != null) {
+            callback.run();
+            callback = _pendingCallbacks.poll();
+        }
+        
         // Invoke any timeout callbacks whose timeout matches current time,
         // followed by specific input handlers, followed by generic input handlers,
         // followed by the fire function.
@@ -824,17 +833,20 @@ public class JavaScript extends TypedAtomicActor {
                                 Runnable function = _pendingTimeoutFunctions.get(id);
                                 if (function != null) {
                                     // Previously, we removed the id _before_ firing the function
-                                	// because it may reschedule itself using the same id.
+                                    // because it may reschedule itself using the same id.
                                     // But that's not right, because the function may or may not
                                     // cancel a setInterval, and if we remove the id here, we
                                     // have no way to tell in _runThenReschedule
-                                	// whether it cancelled it. So don't do this now:
+                                    // whether it cancelled it. So don't do this now:
                                     // _pendingTimeoutFunctions.remove(id);
-                                	// Instead, to prevent a memory leak, _runThenReschedule
-                                	// will set the following flag to true to prevent removal
-                                	// of the function.
-                                	_removePendingTimeoutFunction = true;
+                                    // Instead, to prevent a memory leak, _runThenReschedule
+                                    // will set the following flag to true to prevent removal
+                                    // of the function.
+                                    _removePendingTimeoutFunction = true;
+                                    
+                                    // NOTE: Is it OK to run this holding the synchronization lock?
                                     function.run();
+                                    
                                     if (_debugging) {
                                         _debug("Invoked timeout function.");
                                     }
@@ -1213,6 +1225,15 @@ public class JavaScript extends TypedAtomicActor {
         }
         port.setInput(true);
     }
+    
+    /** Invoke the specified function in the fire() method as soon as possible.
+     *  @param function The function to invoke.
+     *  @throws IllegalActionException If the director cannot respect the request.
+     */
+    public void invokeCallback(final Runnable function) throws IllegalActionException {
+        _pendingCallbacks.offer(function);
+        getDirector().fireAtCurrentTime(this);
+    }
 
     /** Return true if the model is executing (between initialize() and
      *  wrapup(), including initialize() but not wrapup()).
@@ -1533,6 +1554,7 @@ public class JavaScript extends TypedAtomicActor {
         super.preinitialize();
 
         synchronized (this) {
+            _pendingCallbacks.clear();
             _pendingTimeoutFunctions.clear();
             _pendingTimeoutIDs.clear();
             _timeoutCount = 0;
@@ -2356,12 +2378,11 @@ public class JavaScript extends TypedAtomicActor {
      */
     private HashMap<IOPort, HashMap<Integer, Token>> _inputTokens = new HashMap<IOPort, HashMap<Integer, Token>>();
 
-    /** Buffer for output tokens that are produced in a call to send
-     *  while the actor is not firing. This makes sure that actors can
-     *  spontaneously produce outputs.
+    /** Queue containing callback functions that are to be invoked in the fire
+     *  method as soon as possible.
      */
-    //private HashMap<IOPort, HashMap<Integer, List<Token>>> _outputTokens;
-
+    private ConcurrentLinkedQueue<Runnable> _pendingCallbacks = new ConcurrentLinkedQueue<Runnable>();
+    
     /** Map from timeout ID to pending timeout functions. */
     private Map<Integer, Runnable> _pendingTimeoutFunctions = new HashMap<Integer, Runnable>();
 
