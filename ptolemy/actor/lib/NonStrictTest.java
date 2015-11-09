@@ -143,6 +143,10 @@ public class NonStrictTest extends Sink {
                 "requireAllCorrectValues", getClass(), "true");
         requireAllCorrectValues.setTypeEquals(BaseType.BOOLEAN);
 
+        requireOrderedValues = new Parameter(this, "requireOrderedValues");
+        requireOrderedValues.setExpression("true");
+        requireOrderedValues.setTypeEquals(BaseType.BOOLEAN);
+            
         trainingMode = new SharedParameter(this, "trainingMode", getClass(),
                 "false");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
@@ -177,6 +181,13 @@ public class NonStrictTest extends Sink {
      */
     public Parameter requireAllCorrectValues;
 
+    /** If true, then require that inputs appear in the order
+     *  recorded in the correctValues parameter.  If false, then
+     *  the inputs can appear in any order.  The default value
+     *  is true.
+     */
+    public Parameter requireOrderedValues;
+    
     /** If true, then do not check inputs, but rather collect them into
      *  the <i>correctValues</i> array.  This parameter is a boolean,
      *  and it defaults to false. It is a shared parameter, meaning
@@ -238,11 +249,13 @@ public class NonStrictTest extends Sink {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        _numberOfInputTokensSeen = 0;
         _iteration = 0;
-        _trainingTokens = null;
-        _firedOnce = false;
         _initialized = true;
+        _firedOnce = false;
+        _numberOfInputTokensSeen = 0;
+        _matchedValues = new boolean[((ArrayToken) correctValues.getToken()).length()];
+        _trainingTokens = null;
+
 
         if (((BooleanToken) trainingMode.getToken()).booleanValue()) {
             if (MessageHandler.isNonInteractive()) {
@@ -302,27 +315,47 @@ public class NonStrictTest extends Sink {
             return true;
         }
 
-        Token referenceToken = ((ArrayToken) correctValues.getToken())
-                .getElement(_numberOfInputTokensSeen);
-
         if (input.hasToken(0)) {
             Token token = input.get(0);
             _numberOfInputTokensSeen++;
 
-            // FIXME: If we get a nil token on the input, what should we do?
-            // Here, we require that the referenceToken also be nil.
-            // If the token is an ArrayToken and two corresponding elements
-            // are nil, then we consider them "close".
-            if (token.isCloseTo(referenceToken, _tolerance).booleanValue() == false
-                    && !referenceToken.isNil()
-                    && !_isCloseToIfNilArrayElement(token, referenceToken,
-                            _tolerance)
-                            && !_isCloseToIfNilRecordElement(token, referenceToken,
-                                    _tolerance)) {
-                throw new IllegalActionException(this,
-                        "Test fails in iteration " + _iteration + ".\n"
-                                + "Value was: " + token
-                                + ". Should have been: " + referenceToken);
+            Token referenceToken = null;
+
+            if (((BooleanToken) requireOrderedValues.getToken()).booleanValue()) {
+                referenceToken = ((ArrayToken) correctValues.getToken())
+                    .getElement(_numberOfInputTokensSeen);
+
+                if (!_isClose(token, referenceToken, _tolerance)) {
+                    throw new IllegalActionException(this,
+                            "Test fails in iteration " + _iteration + ".\n"
+                            + "Value was: " + token
+                            + ". Should have been: " + referenceToken);
+                }
+            } else {
+                // requireCorrectOrder is false.
+                boolean sawMatch = false;
+                for (int i = 0;
+                     i < ((ArrayToken) correctValues.getToken()).length();
+                     i++) {
+                    if (!_matchedValues[i]) {
+                        referenceToken = ((ArrayToken) correctValues.getToken())
+                            .getElement(i);
+
+                        if (_isClose(
+                                token, referenceToken, _tolerance)) {
+                            _matchedValues[i] = true;
+                            sawMatch = true;
+                            break;
+                        }
+                    }
+                }
+                if (!sawMatch) {
+                    throw new IllegalActionException(this,
+                            "Test fails in iteration " + _iteration + ".\n"
+                            + "Value was: " + token
+                            + ". No matches were found in any of "
+                            + "the as yet unmatched correct values.");
+                }
             }
         }
 
@@ -526,6 +559,57 @@ public class NonStrictTest extends Sink {
         return result;
     }
 
+    /** Test whether the value of the first token is close to the 
+     *  the value of the second token.   
+     *  Arrays and Records are handled specially, see
+     *  {@link #_isCloseToIfNilArrayElement(Token, Token, double)} and
+     *  {@link #_isCloseToIfNilRecordElement(Token, Token, double)}.
+     *
+     *  @param token1 The first array token to compare.
+     *  @param token2 The second array token to compare.
+     *  @param epsilon The value that we use to determine whether two
+     *   tokens are close.
+     *  @exception IllegalActionException If the elements do not support
+     *   this comparison.
+     *  @return True if the first argument is close
+     *  to this token.  False
+     */
+    protected static boolean _isClose(
+            Token token1, Token token2, double epsilon)
+        throws IllegalActionException {
+
+
+        // FIXME: If we get a nil token on the input, what should we do?
+        // Here, we require that the referenceToken also be nil.
+        // If the token is an ArrayToken and two corresponding elements
+        // are nil, then we consider them "close".
+        // return !(token1.isCloseTo(token2, epsilon).booleanValue() == false
+        //     && !token2.isNil()
+        //     && !_isCloseToIfNilArrayElement(token1, token2,
+        //             epsilon)
+        //     && !_isCloseToIfNilRecordElement(token1, token2,
+        //             epsilon));
+
+        boolean isClose;        
+        isClose = token1.isCloseTo(token2, epsilon)
+            .booleanValue()
+            || token1.isNil()
+            && token2.isNil();
+        // Additional guards makes things slightly easier for
+        // Copernicus.
+        if (token1 instanceof ArrayToken
+                && token2 instanceof ArrayToken) {
+            isClose |= _isCloseToIfNilArrayElement(token1, token2,
+                    epsilon);
+        }
+        if (token1 instanceof RecordToken
+                && token2 instanceof RecordToken) {
+            isClose |= _isCloseToIfNilRecordElement(token1,
+                    token2, epsilon);
+        }
+        return isClose;
+    }
+
     /** Test whether the value of this token is close to the first argument,
      *  where "close" means that the distance between them is less than
      *  or equal to the second argument.  This method only makes sense
@@ -658,22 +742,6 @@ public class NonStrictTest extends Sink {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** Number of input tokens seen by this actor in the fire method.*/
-    protected int _numberOfInputTokensSeen = 0;
-
-    /** A double that is read from the <i>tolerance</i> parameter
-     *        specifying how close the input has to be to the value
-     *  given by <i>correctValues</i>.  This is a double, with default
-     *  value 10<sup>-9</sup>.
-     */
-    protected double _tolerance;
-
-    /** Count of iterations. */
-    protected int _iteration;
-
-    /** List to store tokens for training mode. */
-    protected List _trainingTokens;
-
     /** Set to true if fire() is called once.  If fire() is not called at
      *  least once, then throw an exception in wrapup().
      */
@@ -682,4 +750,27 @@ public class NonStrictTest extends Sink {
     /** Set to true when initialized() is called.
      */
     protected boolean _initialized = false;
+
+    /** Count of iterations. */
+    protected int _iteration;
+
+    /** Number of input tokens seen by this actor in the fire method.*/
+    protected int _numberOfInputTokensSeen = 0;
+
+    /** An array of booleans where if an element is true, then the
+     *  corresponding element in <i>correctValues</i> has been seen.
+     *  This field is only used if the <i>requireCorrectOrder</i>
+     *  parameter is false.
+     */
+    protected boolean[] _matchedValues;
+
+    /** A double that is read from the <i>tolerance</i> parameter
+     *        specifying how close the input has to be to the value
+     *  given by <i>correctValues</i>.  This is a double, with default
+     *  value 10<sup>-9</sup>.
+     */
+    protected double _tolerance;
+
+    /** List to store tokens for training mode. */
+    protected List _trainingTokens;
 }
