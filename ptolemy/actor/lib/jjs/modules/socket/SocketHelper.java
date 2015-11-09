@@ -42,6 +42,7 @@ import java.util.Map;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
+import ptolemy.data.LongToken;
 
 ///////////////////////////////////////////////////////////////////
 //// SocketHelper
@@ -334,10 +335,11 @@ public class SocketHelper extends VertxHelperBase {
                         _eventEmitter.callMember("emit", "data", buffer.getString(0, buffer.length()));
                     } else {
                         int size = _sizeOfReceiveType();
-                        int numberOfElements = buffer.length() / size;
-                        if (numberOfElements <= 1) {
+                        int length = buffer.length();
+                        int numberOfElements = length / size;
+                        if (numberOfElements == 1) {
                             _eventEmitter.callMember("emit", "data", _extractFromBuffer(buffer, 0));
-                        } else {
+                        } else if (numberOfElements > 1) {
                             if (serializeReceivedArray) {
                                 int position = 0;
                                 for (int i = 0; i < numberOfElements; i++) {
@@ -364,6 +366,11 @@ public class SocketHelper extends VertxHelperBase {
                                     _eventEmitter.callMember("emit", "data", result);
                                 }
                             }
+                        } else if (numberOfElements <= 0) {
+                            _error(_eventEmitter, "Expect to receive type "
+                                    + _receiveType
+                                    + ", but received an insufficient number of bytes: "
+                                    + buffer.length());
                         }
                     }
                 });
@@ -391,7 +398,15 @@ public class SocketHelper extends VertxHelperBase {
                         // it seems that Nashorn's Java.to() function creates
                         // a bigger array than needed with trailing null elements.
                         if (element != null) {
-                            _appendToBuffer(buffer, element);
+                            if (_sendType.equals(DATA_TYPE.STRING)) {
+                                // NOTE: Use of toString() method makes this very tolerant, but
+                                // it won't properly stringify JSON. Is this OK?
+                                // NOTE: A second argument could take an encoding.
+                                // Defaults to UTF-8. Is this OK?
+                                buffer.appendString(data.toString());
+                            } else {
+                                _appendToBuffer(buffer, element);
+                            }
                         }
                     }
                 } else {
@@ -400,42 +415,80 @@ public class SocketHelper extends VertxHelperBase {
                 _socket.write(buffer);
             });
         }
+        /** Append a numeric instance of _sendType to a buffer. */
         private void _appendToBuffer(Buffer buffer, Object data) {
-            switch(_sendType) {
-            case BYTE:
-                if (data instanceof Number) {
+            if (data instanceof Number) {
+                switch(_sendType) {
+                case BYTE:
                     buffer.appendByte(((Number)data).byteValue());
-                } else {
-                    _sendTypeError(_sendType, data);
-                }
-                break;
-            case NUMBER:
-                if (data instanceof Number) {
+                    break;
+                case DOUBLE:
+                case NUMBER:
                     buffer.appendDouble(((Number)data).doubleValue());
-                } else {
-                    _sendTypeError(_sendType, data);
+                    break;
+                case FLOAT:
+                    buffer.appendFloat(((Number)data).floatValue());
+                    break;
+                case INT:
+                    buffer.appendInt(((Number)data).intValue());
+                    break;
+                case LONG:
+                    buffer.appendLong(((Number)data).longValue());
+                    break;
+                case SHORT:
+                    buffer.appendShort(((Number)data).shortValue());
+                    break;
+                case UNSIGNEDBYTE:
+                    // Number class can't extract an unsigned byte, so we use short.
+                    buffer.appendUnsignedByte(((Number)data).shortValue());
+                    break;
+                case UNSIGNEDINT:
+                    // Number class can't extract an unsigned int, so we use long.
+                    buffer.appendUnsignedInt(((Number)data).longValue());
+                    break;
+                case UNSIGNEDSHORT:
+                    // Number class can't extract an unsigned short, so we use int.
+                    buffer.appendUnsignedShort(((Number)data).intValue());
+                    break;
+                default:
+                    _error(_eventEmitter, "Unsupported type for socket: "
+                            + _sendType.toString()); 
                 }
-                break;
-            case STRING:
-                // NOTE: Use of toString() method makes this very tolerant, but
-                // it won't properly stringify JSON. Is this OK?
-                // NOTE: A second argument could take an encoding.
-                // Defaults to UTF-8. Is this OK?
-                buffer.appendString(data.toString());
-                break;
-            default:
-                _error(_eventEmitter, "Unsupported type for socket: "
-                        + _sendType.toString());                    
+            } else if (data instanceof LongToken) {
+                // JavaScript has no long data type, and long is not convertible to
+                // "number" (which is double), so the Ptolemy host will pass in a
+                // LongToken.  Handle this specially.
+                buffer.appendLong(((LongToken)data).longValue());
+            } else {
+                _sendTypeError(_sendType, data);
             }
         }
-        /** Extract an instance of the _receiveType from a buffer. */
+        /** Extract a numeric instance of the _receiveType from a buffer. */
         private Object _extractFromBuffer(Buffer buffer, int position) {
             try {
                 switch(_receiveType) {
                 case BYTE:
                     return buffer.getByte(position);
+                case DOUBLE:
                 case NUMBER:
                     return buffer.getDouble(position);
+                case FLOAT:
+                    return buffer.getFloat(position);
+                case INT:
+                    return buffer.getInt(position);
+                case LONG:
+                    // Note that long is not representable in JavaScript.
+                    // Hence, we return a LongToken.
+                    long result = buffer.getLong(position);
+                    return new LongToken(result);
+                case SHORT:
+                    return buffer.getShort(position);
+                case UNSIGNEDBYTE:
+                    return buffer.getUnsignedByte(position);
+                case UNSIGNEDINT:
+                    return buffer.getUnsignedInt(position);
+                case UNSIGNEDSHORT:
+                    return buffer.getUnsignedShort(position);
                 default:
                     _error(_eventEmitter, "Unsupported type for socket: "
                             + _receiveType.toString());
@@ -448,6 +501,8 @@ public class SocketHelper extends VertxHelperBase {
         }
         private void _receiveTypeError(Throwable ex, DATA_TYPE type, Buffer buffer) {
             String expectedType = type.toString().toLowerCase();
+            // FIXME: Remove this?
+            ex.printStackTrace();
             _error(_eventEmitter, "Received data that is not of type "
                     + expectedType
                     + ": "
@@ -466,8 +521,23 @@ public class SocketHelper extends VertxHelperBase {
             switch(_receiveType) {
             case BYTE:
                 return Byte.BYTES;
+            case DOUBLE:
             case NUMBER:
                 return Double.BYTES;
+            case FLOAT:
+                return Float.BYTES;
+            case INT:
+                return Integer.BYTES;
+            case LONG:
+                return Long.BYTES;
+            case SHORT:
+                return Short.BYTES;
+            case UNSIGNEDBYTE:
+                return Byte.BYTES;
+            case UNSIGNEDINT:
+                return Integer.BYTES;
+            case UNSIGNEDSHORT:
+                return Short.BYTES;
             default:
                 _error(_eventEmitter, "Unsupported type for socket: "
                         + _receiveType.toString());
