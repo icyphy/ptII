@@ -30,6 +30,9 @@
 package ptolemy.actor.lib;
 
 import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
 
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
@@ -92,7 +95,6 @@ import ptolemy.kernel.util.NameDuplicationException;
  of the Stop actor to stop the test upon successfully matching the
  test data. In training mode, the output is always false.
  </p>
-
  @see NonStrictTest
  @author Edward A. Lee, Christopher Hylands, Jim Armstrong
  @version $Id$
@@ -139,10 +141,13 @@ public class Test extends NonStrictTest {
      *  expected (to indicate that the test is not
      *  complete yet), and output true if this is the last expected
      *  input.
-     *  If the iteration count is larger than the length of
+     *  <p>If the iteration count is larger than the length of
      *  <i>correctValues</i>, then output <i>true</i> and return,
      *  indicating that the test is complete, i.e. that all
-     *  values in <i>correctValues</i> have been matched.
+     *  values in <i>correctValues</i> have been matched.</p>
+     *  <p>If the <i>requireOrderedValues</i> parameter is false,
+     *  then the input can match any as yet unmatched value
+     *  in <i>correctValues</i>.
      *
      *  @exception IllegalActionException If an input is missing,
      *   or if its value does not match the required value.
@@ -216,9 +221,163 @@ public class Test extends NonStrictTest {
             return;
         }
 
+        Token[] reference = null;
+        // _matchedValues[x] is true if the x'th element of
+        // correctValues has been used.  _matchedValues is shared across
+        // multiple firings.
+
+        // possibleMatches is a list of indexes to possible
+        // correctValues for this firing.  Each element of the list is
+        // an index into the correctValues parameter that refers to a
+        // possibly correct value that has matched all the inputs thus
+        // far.
+        List<Integer> possibleMatches = null;
+
+        if (((BooleanToken) requireOrderedValues.getToken()).booleanValue()) {
+            reference = _getReference(_numberOfInputTokensSeen, width);
+        } else {
+            // While handling multiport inputs, we use the possibleMatches
+            // list to keep track of which of the elements in
+            // correctValues are possible correct values for this
+            // firing.
+
+            possibleMatches = new LinkedList();
+            for (int j = 0; j < _matchedValues.length; j++) {
+                if (!_matchedValues[j]) {
+                    possibleMatches.add(j);
+                }
+            }
+        }
+
+        for (int i = 0; i < width; i++) {
+            if (!input.hasToken(i)) {
+                throw new IllegalActionException(this,
+                        "Test fails in iteration " + _numberOfInputTokensSeen
+                        + ".\n" + "Empty input on channel " + i);
+            }
+
+            Token token = input.get(i);
+
+            boolean isClose;
+
+            if (((BooleanToken) requireOrderedValues.getToken()).booleanValue()) {
+                if (_debugging) {
+                    _debug("-- Read input: " + token
+                            + ", which is expected to match: " + reference[i]);
+                }
+
+                try {
+                    isClose = _isClose(token, reference[i], _tolerance);
+                } catch (IllegalActionException ex) {
+                    // Chain the exceptions together so we know which test
+                    // actor failed if there was more than one...
+                    throw new IllegalActionException(this, ex,
+                            "Test fails in iteration " + _numberOfInputTokensSeen
+                            + ".\n" + "Value was: " + token
+                            + ". Should have been: " + reference[i]);
+                }
+
+                if (!isClose) {
+                    throw new IllegalActionException(this,
+                            "Test fails in iteration " + _numberOfInputTokensSeen
+                            + ".\n" + "Value was: " + token
+                            + ". Should have been: " + reference[i]);
+                }
+            } else {
+                // requireCorrectOrder is false.
+
+                // Loop through all the as yet unmatched correct values.
+                //
+                // If a channel does not match, then remove it from the
+                // list of possible matches
+                //
+                // If the value on the channel does not match any of
+                // the possible correct values, then throw an
+                // exception.  If all the channels match an as yet
+                // unmatched correct value, then mark that correct
+                // value as matched.
+                boolean sawMatch = false;
+                Iterator<Integer> possibles = possibleMatches.iterator();
+                while (possibles.hasNext()) {
+                    int possibleIndex = possibles.next().intValue();
+                    try {
+                        reference = _getReference(possibleIndex, width);
+                        if (_debugging) {
+                            _debug("Test: token #: " + _numberOfInputTokensSeen
+                                    + " channel: " + i
+                                    + " possible: " + possibleIndex
+                                    + " token: " + token
+                                    + "ref[" + i + "]: " + reference[i]);
+                        }                            
+
+                        isClose = _isClose(token, reference[i], _tolerance);
+                        if (isClose) {
+                            if (!sawMatch) {
+                                sawMatch = true;
+                                _matchedValues[possibleIndex] = true;
+                            }
+                        } else {
+                            if (_debugging) {
+                                _debug("Test: removing " + possibleIndex);
+                            }
+                            possibles.remove();
+                        }
+                    } catch (IllegalActionException ex) {
+                        // Chain the exceptions together so we know which test
+                        // actor failed if there was more than one...
+                        throw new IllegalActionException(this, ex,
+                            "Test fails in iteration "
+                                + _numberOfInputTokensSeen
+                                + ".\n" + "Value was: " + token);
+
+                    }
+                }
+                if (!sawMatch) {
+                    throw new IllegalActionException(this,
+                            "Test fails in iteration " + _iteration + ".\n"
+                            + "Value was: " + token
+                            + ". No matches were found in any of "
+                            + "the as yet unmatched correct values.");
+                }
+            }
+        }
+
+        _numberOfInputTokensSeen++;
+
+        if (output.numberOfSinks() > 0) {
+            if (_numberOfInputTokensSeen >= ((ArrayToken) correctValues
+                    .getToken()).length()) {
+                // Seen all expected inputs.
+                output.send(0, BooleanToken.TRUE);
+            } else {
+                // More inputs expected.
+                output.send(0, BooleanToken.FALSE);
+            }
+        }
+    }
+
+    /** Override the base class to do nothing and return true.
+     *  @return True.
+     */
+    @Override
+    public boolean postfire() {
+        return true;
+    }
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Get the reference from the correctValues parameter.
+     *  @param index The index of the element in correctValues to get.
+     *  @param width The width of the input port
+     *  @return an array of tokens.
+     */
+    private Token[] _getReference(int index, int width)
+            throws IllegalActionException {
+        Token[] reference;        
         Token referenceToken = ((ArrayToken) correctValues.getToken())
-                .getElement(_numberOfInputTokensSeen);
-        Token[] reference;
+            .getElement(index);
 
         if (width == 1 && !(referenceToken instanceof ArrayToken)) {
             reference = new Token[1];
@@ -244,77 +403,6 @@ public class Test extends NonStrictTest {
                         + " correctValues, " + reference.length);
             }
         }
-
-        for (int i = 0; i < width; i++) {
-            if (!input.hasToken(i)) {
-                throw new IllegalActionException(this,
-                        "Test fails in iteration " + _numberOfInputTokensSeen
-                        + ".\n" + "Empty input on channel " + i);
-            }
-
-            Token token = input.get(i);
-
-            if (_debugging) {
-                _debug("-- Read input: " + token
-                        + ", which is expected to match: " + reference[i]);
-            }
-
-            boolean isClose;
-
-            try {
-                isClose = token.isCloseTo(reference[i], _tolerance)
-                        .booleanValue()
-                        || token.isNil()
-                        && reference[i].isNil();
-                // Additional guards makes things slightly easier for
-                // Copernicus.
-                if (token instanceof ArrayToken
-                        && reference[i] instanceof ArrayToken) {
-                    isClose |= _isCloseToIfNilArrayElement(token, reference[i],
-                            _tolerance);
-                }
-                if (token instanceof RecordToken
-                        && reference[i] instanceof RecordToken) {
-                    isClose |= _isCloseToIfNilRecordElement(token,
-                            reference[i], _tolerance);
-                }
-
-            } catch (IllegalActionException ex) {
-                // Chain the exceptions together so we know which test
-                // actor failed if there was more than one...
-                throw new IllegalActionException(this, ex,
-                        "Test fails in iteration " + _numberOfInputTokensSeen
-                        + ".\n" + "Value was: " + token
-                        + ". Should have been: " + reference[i]);
-            }
-
-            if (!isClose) {
-                throw new IllegalActionException(this,
-                        "Test fails in iteration " + _numberOfInputTokensSeen
-                        + ".\n" + "Value was: " + token
-                        + ". Should have been: " + reference[i]);
-            }
-        }
-
-        _numberOfInputTokensSeen++;
-
-        if (output.numberOfSinks() > 0) {
-            if (_numberOfInputTokensSeen >= ((ArrayToken) correctValues
-                    .getToken()).length()) {
-                // Seen all expected inputs.
-                output.send(0, BooleanToken.TRUE);
-            } else {
-                // More inputs expected.
-                output.send(0, BooleanToken.FALSE);
-            }
-        }
-    }
-
-    /** Override the base class to do nothing and return true.
-     *  @return True.
-     */
-    @Override
-    public boolean postfire() {
-        return true;
+        return reference;
     }
 }
