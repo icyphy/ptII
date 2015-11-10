@@ -317,8 +317,6 @@ public class NonStrictTest extends Sink {
 
         if (input.hasToken(0)) {
             Token token = input.get(0);
-            _numberOfInputTokensSeen++;
-
             Token referenceToken = null;
 
             if (((BooleanToken) requireOrderedValues.getToken()).booleanValue()) {
@@ -357,6 +355,7 @@ public class NonStrictTest extends Sink {
                             + "the as yet unmatched correct values.");
                 }
             }
+            _numberOfInputTokensSeen++;
         }
 
         _iteration++;
