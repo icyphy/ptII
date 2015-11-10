@@ -38,7 +38,7 @@
  *
  * @module httpClient
  * @author Marten Lohstroh and Edward A. Lee
- * @version $Id$
+ * @version $$Id$$
  */
  
 // Stop extra messages from jslint.  Note that there should be no

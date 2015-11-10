@@ -42,7 +42,7 @@
  *
  * @module localFunctions
  * @author Edward A. Lee, Contributor: Christopher Brooks, Chris Shaver
- * @version $Id$
+ * @version $$Id$$
  * @since Ptolemy II 11.0
  */
 
