@@ -32,6 +32,12 @@
  * @copyright http://terraswarm.org/accessors/copyright.txt
  */
 
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals Java, exports, module */
+/*jshint globalstrict: true*/
+"use strict";
+
 /** Display the specified HTML text.
  *  @param html The HTML to display.
  */
@@ -47,4 +53,4 @@ module.exports.display = function(html) {
 
     var browserLauncher = Java.type('ptolemy.actor.gui.BrowserLauncher');
     browserLauncher.openURL('http://localhost:' + port);
-}
+};

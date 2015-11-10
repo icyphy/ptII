@@ -42,6 +42,12 @@
  * @copyright http://terraswarm.org/accessors/copyright.txt
  */
  
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals Java, actor, error, exports, IncomingMessage, require, util */
+/*jshint globalstrict: true*/
+"use strict";
+
 // Java types used.
 var HttpClientHelper = Java.type('ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper');
 var URL = Java.type('java.net.URL'); // FIXME: eventually, have a url module for this
@@ -208,7 +214,7 @@ function ClientRequest(options, responseCallback) {
     urlSpec = options;
     options = {};  // If only URL is passed in, create new options object 
   } else if (util.isString(options.url)) {
-    urlSpec = options['url'];
+      urlSpec = options.url;
   }
   if (urlSpec) {
     var url = new URL(urlSpec);
@@ -244,7 +250,7 @@ function ClientRequest(options, responseCallback) {
   }
   
   // Set the Content-Length header
-  if (options.body != null) {
+  if (options.body !== null) {
 	  var headers;
 	  if (typeof options.headers == "undefined") {
 		  headers = {};
@@ -285,7 +291,7 @@ ClientRequest.prototype.stop = function() {
 // We may need something different for multi-part requests? 
 ClientRequest.prototype.write = function(data, encoding) {
    throw("Write is implemented as part of ClientRequest()");
-}
+};
 
 /** Internal function used to handle an error.
  *  @param message The error message.
@@ -297,7 +303,7 @@ ClientRequest.prototype._handleError = function(message) {
     } catch(err) {
         error(message);
     }
-}
+};
 
 /** Internal method used to handle a response. The argument is an
  *  an instance of the Java class org.vertx.java.core.http.HttpClientResponse,
@@ -321,7 +327,7 @@ ClientRequest.prototype._response = function(response, body) {
         // An error occurred. Emit both an error event and a response event.
         this._handleError('Received response code ' + code + ". " + response.statusMessage());
     }
-}
+};
 
 // NOTE: The following events are produce by IncomingMessage in Node.js
 // From stream.Readable
@@ -349,7 +355,7 @@ IncomingMessage = function(response, body) {
     this.cookies = response.cookies();
     this.statusCode = response.statusCode();
     this.statusMessage = response.statusMessage();
-}
+};
 
 // Each time this file is reloaded, reset the helper for this actor.
 // This will start the sequence numbers at zero and discard any corrupted state

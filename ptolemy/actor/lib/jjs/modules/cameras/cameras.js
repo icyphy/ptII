@@ -36,6 +36,12 @@
  * @copyright http://terraswarm.org/accessors/copyright.txt
  */
  
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals Java, exports, require, util */
+/*jshint globalstrict: true*/
+"use strict";
+
 var CameraHelper = Java.type('ptolemy.actor.lib.jjs.modules.cameras.CameraHelper');
 var EventEmitter = require('events').EventEmitter;
 
@@ -50,7 +56,7 @@ var EventEmitter = require('events').EventEmitter;
 exports.cameras = function() {
     // The Java.from() Nashorn extension converts a Java array into a JavaScript array.
     return Java.from(CameraHelper.cameras());
-}
+};
 
 /** Return the name of the default camera on the current host, or null
  *  if there is none.
@@ -58,7 +64,7 @@ exports.cameras = function() {
  */
 exports.defaultCamera = function() {
     return CameraHelper.defaultCamera();
-}
+};
 
 ////////////////////////////////////////////////////////////
 //// Classes provided in this module.
@@ -103,14 +109,14 @@ exports.defaultCamera = function() {
  */
 exports.Camera = function(name) {
     this.helper = new CameraHelper(this, name);
-}
+};
 util.inherits(exports.Camera, EventEmitter);
 
 /** Close the camera, stopping any image acquisition.
  */
 exports.Camera.prototype.close = function() {
     this.helper.close();
-}
+};
 
 /** Return the current view size for this camera, a JSON string
  *  as in {"width":176, "height":144}.
@@ -119,14 +125,14 @@ exports.Camera.prototype.close = function() {
 exports.Camera.prototype.getViewSize = function() {
     var spec = this.helper.getViewSize();
     return spec;
-}
+};
 
 /** Open the camera, initiating emission of the 'image' event each
  *  time the camera obtains a new image.
  */
 exports.Camera.prototype.open = function() {
     this.helper.open();
-}
+};
 
 /** Set the current view size for this camera.
  *  The argument can either be a JSON string or an object with a width and
@@ -138,11 +144,11 @@ exports.Camera.prototype.setViewSize = function(size) {
         size = JSON.parse(size);
     }
     this.helper.setViewSize(size);
-}
+};
 
 exports.Camera.prototype.snapshot = function() {
     return this.helper.snapshot();
-}
+};
 
 /** Return an array of view sizes supported by this camera,
  *  each given as a JSON string of the form '{"width":176, "height":144}', for example.
@@ -151,4 +157,4 @@ exports.Camera.prototype.snapshot = function() {
 exports.Camera.prototype.viewSizes = function() {
     // The Java.from() Nashorn extension converts a Java array into a JavaScript array.
     return Java.from(this.helper.viewSizes());
-}
+};

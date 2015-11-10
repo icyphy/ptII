@@ -54,12 +54,14 @@
  *
  * @module eventbus
  * @author Patricia Derler and Edward A. Lee
- * @copyright http://terraswarm.org/accessors/copyright.txt
+ * @version $$Id$$ 
  */
 
-////////////////////
-/**
-*/
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals Java, actor, exports, require, util */
+/*jshint globalstrict: true*/
+"use strict";
 
 var EventBusHelper = Java.type('ptolemy.actor.lib.jjs.modules.eventbus.EventBusHelper');
 var events = require('events');
@@ -133,11 +135,11 @@ function VertxBus(options) {
     this.port = 0; // 0 specifies to find an open port.
     this.host = 'localhost';
     if (options) {
-        this.port = options['port'] || 0;
-        this.host = options['host'] || 'localhost';
+        this.port = options.port || 0;
+        this.host = options.host || 'localhost';
     }
     this.helper = new EventBusHelper(actor, this, this.port, this.host);
-};
+}
 util.inherits(VertxBus, events.EventEmitter);
 
 /** Notify this object of a received message from the event bus.
@@ -208,7 +210,7 @@ VertxBus.prototype.send = function(address, data, handler) {
     if (typeof(data) != 'string') {
         data = JSON.stringify(data);
     }
-    if (handler == null) {
+    if (handler === null) {
         this.helper.send(address, data);
     } else {
         this.helper.send(address, data, handler);

@@ -40,8 +40,14 @@
  *  @copyright http://terraswarm.org/accessors/copyright.txt
  */
 
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals Java, console, exports */
+/*jshint globalstrict: true*/
+"use strict";
+
 var ContextAwareHelper = Java
-		.type('ptolemy.actor.lib.jjs.modules.contextAware.ContextAwareHelper');
+    .type('ptolemy.actor.lib.jjs.modules.contextAware.ContextAwareHelper');
 var helper = new ContextAwareHelper();
 
 
@@ -49,39 +55,39 @@ var helper = new ContextAwareHelper();
 ////Functions provided in this module.
 
 /** 
- * use a helper class to return the list of data to be extracted from the GSN service
+ * Use a helper class to return the list of data to be extracted from the GSN service.
  */
 exports.gsnServices=function() {
-	return Java.from(helper.getGsnOutput());
-}
+    return Java.from(helper.getGsnOutput());
+};
 
 /** 
-* use a helper class to return the list of data to be extracted from  the Firebase service
-*/
-
+ * Use a helper class to return the list of data to be extracted from  the Firebase service.
+ */
 exports.firebaseServices = function() {
-	return Java.from(helper.getFirebaseOutput());
-}
+    return Java.from(helper.getFirebaseOutput());
+};
+
 /** 
-* use a helper class to return the list of data to be extracted from  the Paraimpu service
-*/
+ * Use a helper class to return the list of data to be extracted from  the Paraimpu service
+ */
 exports.paraimpuServices = function() {
-	return Java.from(helper.getParaimpuOutput());
-}
+    return Java.from(helper.getParaimpuOutput());
+};
 
 /**
  * Use a helper class to return a list of known REST services
  */
 exports.services = function() {
-	return Java.from(helper.availableServices());
-}
+    return Java.from(helper.availableServices());
+};
 
 /**
- * Use a helper class to convert  xml data format to json data format
+ * Use a helper class to convert xml data format to json data format.
  */
 exports.xmlToJson= function(response) {
-	return Java.from(helper.convertXMLtoJSON(response));
-}
+    return Java.from(helper.convertXMLtoJSON(response));
+};
 
 exports.DiscoveryOfRESTService = DiscoveryOfRESTService;
 
@@ -90,14 +96,14 @@ exports.DiscoveryOfRESTService = DiscoveryOfRESTService;
  *  This function is not used currently.
  */
 function DiscoveryOfRESTService() {
-	var self = this;
-	var serviceParam;
-	/** Discover IoT services */
-	this.discoverServices = function() {
-		var currentService;
-		currentService = helper.getSelectedService();
-		serviceParam = helper.getSelectedServiceParameter(currentService);
-		console.log("Service Param :" + serviceParam);
-		return serviceParam;
-	};
+    var self = this;
+    var serviceParam;
+    /** Discover IoT services */
+    this.discoverServices = function() {
+	var currentService;
+	currentService = helper.getSelectedService();
+	serviceParam = helper.getSelectedServiceParameter(currentService);
+	console.log("Service Param :" + serviceParam);
+	return serviceParam;
+    };
 }
