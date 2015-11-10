@@ -108,6 +108,36 @@ EGREPMATCH="(^    ///////////////|// //)"
 LOGMESSAGE="section comment headers"
 
 search $@
+
+
+doit() {
+    awk '{ if ($0 !~ /@copyright/) {
+             print $0
+           }
+         }' $file > /tmp/fix-files.tmp
+	diff -c $file /tmp/fix-files.tmp
+}
+EGREPMATCH='@copyright'
+LOGMESSAGE='Remove @copyright lines'
+
+search $@
+
+doit() {
+    base=`basename -s .js $file`
+    if [ $file = $base ]; then
+        cp $file /tmp/fix-files.tmp
+        return
+    fi
+
+    sed 's/@version \$\([^$]*\)*\$ *$/@version $$\1$$/' \
+        $file > /tmp/fix-files.tmp
+    diff -c $file /tmp/fix-files.tmp
+}
+EGREPMATCH='@version'
+LOGMESSAGE='Use $$Id$$'
+
+search $@
+
 if [ "$printonly" = "no" ]; then
     echo "Thes files should be checked in:"
     cat $filesupdated
