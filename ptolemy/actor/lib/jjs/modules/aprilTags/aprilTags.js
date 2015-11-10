@@ -44,7 +44,6 @@ https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
 @module aprilTags
 @authors Edward A. Lee
-@copyright http://terraswarm.org/accessors/copyright.txt
  */
  
 // Stop extra messages from jslint.  Note that there should be no

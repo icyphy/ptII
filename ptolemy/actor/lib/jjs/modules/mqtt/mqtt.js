@@ -28,7 +28,6 @@
  * Module supporting the MQTT protocol.
  * @module mqtt
  * @author Hokeun Kim
- * @copyright http://terraswarm.org/accessors/copyright.txt
  */
 
 module.exports.createClient = function(port, host, opts)
@@ -87,7 +86,7 @@ Object.defineProperties(Client.prototype, {
 ////////////////////
 // Subscribe a topic using the given maximum QoS level. Start getting messages on the topic.
 Client.prototype.subscribe = function(topic, opts) {
-    if(!opts) {
+    if (!opts) {
         opts = {qos: 0};
     }
 
@@ -117,7 +116,7 @@ Client.prototype.unsubscribe = function(topic) {
 ////////////////////
 // Publish an MQTT message to subscribers listening to the topic.
 Client.prototype.publish = function(topic, message, opts, callback) {
-    if(!opts) {
+    if (!opts) {
         opts = {qos: 0, retain: false};
     }
 

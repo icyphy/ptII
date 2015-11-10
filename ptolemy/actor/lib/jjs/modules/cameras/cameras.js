@@ -33,7 +33,6 @@
  *
  * @module camera
  * @authors Edward A. Lee
- * @copyright http://terraswarm.org/accessors/copyright.txt
  */
  
 // Stop extra messages from jslint.  Note that there should be no

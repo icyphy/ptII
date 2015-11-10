@@ -15,7 +15,6 @@
  *
  * @module socket
  * @authors: Edward A. Lee
- * @copyright: http://terraswarm.org/accessors/copyright.txt
  */
 
 var SocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.socket.SocketHelper');

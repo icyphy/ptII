@@ -29,7 +29,6 @@
  * NOTE: This is very incomplete! Just a placeholder for now.
  * @module audio
  * @authors Edward A. Lee
- * @copyright http://terraswarm.org/accessors/copyright.txt
  */
  
 // Stop extra messages from jslint.  Note that there should be no
