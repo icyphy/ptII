@@ -44,8 +44,12 @@
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
 /*globals Java, actor, error, exports, IncomingMessage, require, util */
-/*jshint globalstrict: true*/
-"use strict";
+
+// FIXME: Setting "use strict" causes a warning about the IncomingMessage function declaration being Read Only
+// and then opening the camera library fails.  The error is:
+//   Error: Error executing module net/REST line #237 : Error executing module httpClient line #356 : "IncomingMessage" is not defined
+//   In file: /Users/cxh/ptII/ptolemy/actor/lib/jjs/modules/httpClient/httpClient.js
+// "use strict";
 
 // Java types used.
 var HttpClientHelper = Java.type('ptolemy.actor.lib.jjs.modules.httpClient.HttpClientHelper');
@@ -213,7 +217,7 @@ function ClientRequest(options, responseCallback) {
     urlSpec = options;
     options = {};  // If only URL is passed in, create new options object 
   } else if (util.isString(options.url)) {
-      urlSpec = options.url;
+    urlSpec = options.url;
   }
   if (urlSpec) {
     var url = new URL(urlSpec);
