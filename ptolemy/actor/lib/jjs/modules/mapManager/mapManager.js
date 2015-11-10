@@ -63,17 +63,17 @@ var entities = {};
 
 
 //Assumes the key for the hash is an ordinary string
-function _simpleHashToString(hash){
+function _simpleHashToString(hash) {
 
 	//This closure exists to protect the scope of "text" and i and hashNames when there is a recursive call
 	//from the toString method below.
-	return function(){
+	return function() {
 
 		var hashNames = Object.keys(hash);
 		var text = "{ ";
-		for(var i = 0; i < hashNames.length; i++  ){
+		for (var i = 0; i < hashNames.length; i++  ) {
 			text += hashNames[i] +=": " + hash[hashNames[i]].toString();
-			if(i != (hashNames.length -1)){
+			if (i != (hashNames.length -1)) {
 				text += ", ";
 			}
 		}
@@ -84,18 +84,18 @@ function _simpleHashToString(hash){
 }
 
 //Assumes the key for the hash is a specially formatted string
-function _keyedHashToString(hash){
+function _keyedHashToString(hash) {
 
 
 	//This closure exists to protect the scope of "text" and i and hashNames when there is a recursive call
 	//from the toString method below.
-	return function(){
+	return function() {
 		var text = "{ ";
 		hashNames = Object.keys(hash);
 
-		for(var i = 0; i < hashNames.length; i++  ){
+		for (var i = 0; i < hashNames.length; i++  ) {
 			text += _keyToStrings(hashNames[i]) + ": " + hash[hashNames[i]].toString();
-			if(i != hashNames.length -1){
+			if (i != hashNames.length -1) {
 				text += ", ";
 			}
 		}
@@ -108,17 +108,17 @@ function _keyedHashToString(hash){
 
 //argument must be an array of at least two strings
 //returns a string formatted with "x_" for arguments and "  " as a delimiter
-function _stringsToKey( stringArray){
+function _stringsToKey( stringArray) {
 	var x;
-	if( !  (typeof stringArray === "array")  ){
+	if (!  (typeof stringArray === "array")  ) {
 		throw "Incorrect arguments to _stringsToKey.";
 	}
-	for ( x in stringArray){
-		if( ! (typeof x === "string")){
+	for ( x in stringArray) {
+		if (! (typeof x === "string")) {
 			throw "Incorrect arguments to _stringsToKey."
 		}
 	}
-	if ( stringArray.length < 2){
+	if ( stringArray.length < 2) {
 		throw "Incorrect arguments to _stringsToKey."
 	}
 
@@ -126,8 +126,8 @@ function _stringsToKey( stringArray){
 	var arg;
 	var c;
 
-	for(arg in stringArray){
-		for( c in arg ){
+	for (arg in stringArray) {
+		for ( c in arg ) {
 			key += (c + '_' );
 		}
 		key += "  ";
@@ -137,12 +137,12 @@ function _stringsToKey( stringArray){
 
 //argument is a string formatted with "x_" for arguments and "  " as a delimiter
 //returns an array of strings
-function _keyToStrings( key){
-	if( ! ( typeof key === "string" ) ){
+function _keyToStrings( key) {
+	if (! ( typeof key === "string" ) ) {
 		throw "Incorrect arguments to _keyToStrings.";
 	}
 
-	if( ! key.includes("  ")){
+	if (! key.includes("  ")) {
 		throw "key in _keyToStrings does not have a delimiter.";
 	}
 
@@ -154,11 +154,11 @@ function _keyToStrings( key){
 	var realChar = false;
 
 
-	for( c in key){
-		if(c_last + c === "  "){
+	for ( c in key) {
+		if (c_last + c === "  ") {
 			args.push(arg);
 		}
-		if (realChar === false){
+		if (realChar === false) {
 			realChar = true;
 		} else {
 			arg += c;
@@ -172,8 +172,8 @@ function _keyToStrings( key){
 
 //REMOVED due to change of entity aliases as being stored with the entity
 
-// function _entityAliasKey(sourceEntity, destinationEntity ){
-//  	if( ! ((sourceEntity instanceof Entity) && (destinationEntity instanceof Entity))  ){
+// function _entityAliasKey(sourceEntity, destinationEntity ) {
+//  	if (! ((sourceEntity instanceof Entity) && (destinationEntity instanceof Entity))  ) {
 //  		throw "Incorrect arguments to _EntityAliasKey.";
 //  	}
 
@@ -182,8 +182,8 @@ function _keyToStrings( key){
 //  	return _stringsToKey([sourceString, destinationString ]);
 // }
 
-function __coordinateTransformationKey( domainName, codomainName ){
-	if( ! ( typeof domainName === "string" && typeof codomainName === "string" )){
+function __coordinateTransformationKey( domainName, codomainName ) {
+	if (! ( typeof domainName === "string" && typeof codomainName === "string" )) {
 		throw "Incorrect arguments to _coordinateTransformationKey"
 	}
 
@@ -218,7 +218,7 @@ exports.SpaceTypeEnum = {
 * @function
 * @returns {string}
 */
-exports.localRepoToJSONString = function(){
+exports.localRepoToJSONString = function() {
 	var data = {
 		"maps": maps,
 		"coordinateTransformations": coordinateTransformations,
@@ -236,7 +236,7 @@ exports.localRepoToJSONString = function(){
 * @function
 * @returns {string}
 */
-exports.mapsToJSONString = function(){
+exports.mapsToJSONString = function() {
 	return JSON.stringify(maps);
 }
 
@@ -245,7 +245,7 @@ exports.mapsToJSONString = function(){
 * @function
 * @returns {string}
 */
-exports.coordinateTransformationsToJSONString = function(){
+exports.coordinateTransformationsToJSONString = function() {
 	return JSON.stringify(coordinateTransformations);
 }
 
@@ -255,7 +255,7 @@ exports.coordinateTransformationsToJSONString = function(){
 * @function
 * @returns {string}
 */
-exports.entitiesToJSONString = function(){
+exports.entitiesToJSONString = function() {
 	return JSON.stringify(entities);
 }
 
@@ -268,7 +268,7 @@ exports.entitiesToJSONString = function(){
 * @function
 * @returns {string}
 */
-exports.mapsToString = function(){
+exports.mapsToString = function() {
 	return _simpleHashToString(maps);
 }
 
@@ -277,7 +277,7 @@ exports.mapsToString = function(){
 * @function
 * @returns {string}
 */
-exports.coordinateTransformationsToString = function(){
+exports.coordinateTransformationsToString = function() {
 	return _keyedHashToString(coordinateTransformations);
 }
 
@@ -287,7 +287,7 @@ exports.coordinateTransformationsToString = function(){
 * @function
 * @returns {string}
 */
-exports.entitiesToString = function(){
+exports.entitiesToString = function() {
 	return _simpleHashToString(entities);
 }
 
@@ -301,7 +301,7 @@ exports.entitiesToString = function(){
 * @function
 * @returns {void} - Clearing the repo always works.
 */
-exports.clearRepo = function(){
+exports.clearRepo = function() {
 	maps = {};
 	coordinateTransformations= {};
 	entities = {};
@@ -320,16 +320,16 @@ exports.clearRepo = function(){
 * localRepoToJSONString()
 * @returns {boolean} if the input was an acceptably formatted repo.
 */
-exports.replaceRepo = function(repo){
-	if(! (typeof name === "string") ) {
+exports.replaceRepo = function(repo) {
+	if (! (typeof name === "string") ) {
 		throw "Incorrect arguments to replaceRepo.";
 	}
 
 	var receivedRepo;
-	try{
+	try {
 		receivedRepo = JSON.parse(repo);
-	} catch (e){
-		if (e instanceof SyntaxError){
+	} catch (e) {
+		if (e instanceof SyntaxError) {
 			return false;			
 		} else {
 			throw "JSON.parse threw a non-SyntaxError exception";
@@ -337,7 +337,7 @@ exports.replaceRepo = function(repo){
 
 	}
 
-	if(! (receivedRepo.hasOwnProperty("maps") && receivedRepo.hasOwnProperty("coordinateTransformations") && receivedRepo.hasOwnProperty("entities") ) ){
+	if (! (receivedRepo.hasOwnProperty("maps") && receivedRepo.hasOwnProperty("coordinateTransformations") && receivedRepo.hasOwnProperty("entities") ) ) {
 		return false;
 	} else {
 		maps = receivedRepo.maps;
@@ -359,8 +359,8 @@ exports.replaceRepo = function(repo){
 * @param {string} name - The name of the entity
 */
 
-function Entity(name){
-	if(! (typeof name === "string") ) {
+function Entity(name) {
+	if (! (typeof name === "string") ) {
 		throw "Incorrect arguments to Entity constructor.";
 	}
 
@@ -368,7 +368,7 @@ function Entity(name){
 	this.containingMap = null;
 	this.aliases = {};
 
-	this._key = function(){
+	this._key = function() {
 		return this.name;
 	}
 
@@ -376,7 +376,7 @@ function Entity(name){
 	* @function
 	* @returns {string} string representation of this object.
 	*/
-	this.toString = function(){
+	this.toString = function() {
 		return "{ " + "name: " + this.name + " }";
 	}
 
@@ -397,23 +397,23 @@ function Entity(name){
 	* @param {Entity} alias - The Entity on the different map
 	* @returns {boolean} if the entity alias was successfully added returns true, false otherwise.
 	*/
-	this.addAlias = function( alias ){
-	 	if( ! ( alias instanceof Entity )){
+	this.addAlias = function( alias ) {
+	 	if (! ( alias instanceof Entity )) {
 	 		throw "Incorrect arguments to addAlias.";
 	 	}
 
 	 	//Check to see if this entity has been registered.
-	 	if( ! entities.hasOwnProperty(alias._key()) ){
+	 	if (! entities.hasOwnProperty(alias._key()) ) {
 	 		throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity an alias.";
 	 	} 
 
 	 	//Check to see if alias for this entity has been registered. If not, throw exception.
-	 	if( ! entities.hasOwnProperty(alias._key()) ){
+	 	if (! entities.hasOwnProperty(alias._key()) ) {
 	 		throw "Attempt to add an unregistered entity as an alias to " + this.toString();
 	 	} 
 
 		//Todo, check to make sure this logic is correct, I realize aliases can exist in code too
-	 	if( (alias === this) || this.aliases.hasOwnProperty(alias._key())){
+	 	if ((alias === this) || this.aliases.hasOwnProperty(alias._key())) {
 	 		return false;
 	 	} else {
 	 		this.aliases[alias._key()] = true;
@@ -431,12 +431,12 @@ exports.Entity = Entity;
 	* @param {Entity} entity - The entity object to be registered by the map manager.
 	* @returns {boolean} if the entity was successfully registered returns true, false otherwise.
 	*/
-exports.registerEntity = function(entity){
-	if( ! ( entity instanceof Entity) ){
+exports.registerEntity = function(entity) {
+	if (! ( entity instanceof Entity) ) {
 		throw "Incorrect arguments to registerEntity.";
 	}
 
-	if(entities.hasOwnProperty(entity._key()) ){
+	if (entities.hasOwnProperty(entity._key()) ) {
 		return false;
 	} else {
 		entities[entity._key()] = entity;
@@ -448,12 +448,12 @@ exports.registerEntity = function(entity){
 //Todo: is it the responsibility of the caller to remove the entity from all of its maps , and all of the entities that have it as an alias first?
 //Todo: implement this better. The above makes me think this needs to be revised.
 
-// exports.unregisterEntity = function(entity){
-// 	if( ! ( entity instanceof Entity) ){
+// exports.unregisterEntity = function(entity) {
+// 	if (! ( entity instanceof Entity) ) {
 // 		throw "Incorrect arguments to unregisterEntity.";
 // 	}
 
-// 	if(entities.hasOwnProperty(entity.key()) ){
+// 	if (entities.hasOwnProperty(entity.key()) ) {
 // 		delete entities[entity.key()];
 // 		return true;
 // 	} else {
@@ -465,14 +465,14 @@ exports.registerEntity = function(entity){
 
 //Removed because EntityAliases no longer exists
 
-// exports.removeEntityAlias = function(sourceEntity, destinationEntity ){
-//  	if( ! ((sourceEntity instanceof Entity) && (destinationEntity instanceof Entity))  ){
+// exports.removeEntityAlias = function(sourceEntity, destinationEntity ) {
+//  	if (! ((sourceEntity instanceof Entity) && (destinationEntity instanceof Entity))  ) {
 //  		throw "Incorrect arguments to EntityAlias constructor.";
 //  	}
 
 // 	var key = _entityAliasKey(sourceEntity, destinationEntity)
 
-// 	if(entityAliases.hasOwnProperty(key)){
+// 	if (entityAliases.hasOwnProperty(key)) {
 // 		delete entityAliases[key];
 // 		return true;
 // 	} else {
@@ -482,14 +482,14 @@ exports.registerEntity = function(entity){
 
 //Removed because EntityAliases no longer exists
 
-// exports.entityAliasExists = function(sourceEntity, destinationEntity ){
-//  	if( ! ((sourceEntity instanceof Entity) && (destinationEntity instanceof Entity))  ){
+// exports.entityAliasExists = function(sourceEntity, destinationEntity ) {
+//  	if (! ((sourceEntity instanceof Entity) && (destinationEntity instanceof Entity))  ) {
 //  		throw "Incorrect arguments to entityAliasExists.";
 //  	}
 
 //  	var key = _entityAliasKey(sourceEntity, destinationEntity)
 
-//  	if(entityAliases.hasOwnProperty(key)){
+//  	if (entityAliases.hasOwnProperty(key)) {
 //  		return true;
 //  	} else {
 //  		return false;
@@ -507,8 +507,8 @@ exports.registerEntity = function(entity){
 * @constructor
 * @param {name} name - The name of the coordinate system.
 */
-function CoordinateSystem(name ){
-	if( typeof name !== "string"){
+function CoordinateSystem(name ) {
+	if (typeof name !== "string") {
 		throw "Incorrect arguments to CoordinateSystem constructor.";
 	}
 
@@ -538,14 +538,14 @@ exports.CoordinateSystem =  CoordinateSystem;
 * @returns {boolean} if the coordinate transformation was successfully registered returns true, false otherwise.
 */
 
-exports.registerCoordinateTransformation = function registerCoordinateTransformation( domainName, codomainName, transformation ){
-	if( ! ( typeof domainName === "string" && typeof codomainName === "string" && typeof transformation === "function" )  ){
+exports.registerCoordinateTransformation = function registerCoordinateTransformation( domainName, codomainName, transformation ) {
+	if (! ( typeof domainName === "string" && typeof codomainName === "string" && typeof transformation === "function" )  ) {
 		throw "Incorrect arguments to addCoordinateTransformation constructor."
 	}
 	
 	var key = __coordinateTransformationKey( domainName, codomainName );
 
-	if (coordinateTransformations.hasOwnProperty(key)){
+	if (coordinateTransformations.hasOwnProperty(key)) {
 		return false;
 	} else {
 		coordinateTransformations[key] = transformation;
@@ -561,8 +561,8 @@ exports.registerCoordinateTransformation = function registerCoordinateTransforma
 * @returns {boolean} A function that takes one argument,
 * a point in the domain, and returns a point in the codomain
 */
-exports.getCoordinateTransformation = function getCoordinateTransformation( domainName, codomainName){
-	if( ! ( typeof domainName === "string" && typeof codomainName === "string" )){
+exports.getCoordinateTransformation = function getCoordinateTransformation( domainName, codomainName) {
+	if (! ( typeof domainName === "string" && typeof codomainName === "string" )) {
 		throw "Incorrect arguments to getCoordinateTransformation constructor."
 	}
 	
@@ -589,10 +589,10 @@ exports.getCoordinateTransformation = function getCoordinateTransformation( doma
 * @param {SpaceTypeEnum} spaceTypeEnum - The variety of mathematical space this map considers.
 * @param {CoordinateSystem} coordinateSystem - The coordinate system with respect to which this map gives position.
 */
-function Map(mapName, spaceType, coordinateSystem){
+function Map(mapName, spaceType, coordinateSystem) {
 
 	//Todo find a way to type check spaceType against SpaceTypeEnum
-	if( ! ((coordinateSystem instanceof CoordinateSystem) &&( typeof mapName === "string" )) ){
+	if (! ((coordinateSystem instanceof CoordinateSystem) &&( typeof mapName === "string" )) ) {
 	 	throw "Incorrect arguments to map constructor";
 	 }
 	this.spaceType = spaceType;
@@ -600,11 +600,11 @@ function Map(mapName, spaceType, coordinateSystem){
 	this.mapName = mapName;
 	this.mapEntities = {}; //set of keys for entities this map contains
 
-	this._key = function(){
+	this._key = function() {
 		return mapName;
 	}
 
-	this.mapEntitiesToString = function(){
+	this.mapEntitiesToString = function() {
 		return _simpleHashToString(this.mapEntities);
 	}
 
@@ -625,19 +625,19 @@ function Map(mapName, spaceType, coordinateSystem){
 	*/
 
 	this.addEntity = function(entity) {
-		if ( ! (entity instanceof Entity )  ){
+		if ( ! (entity instanceof Entity )  ) {
 			throw "Incorrect arguments to Map.addEntity."
 		}
 
-		if (! entities.hasOwnProperty(entity._key()) ){
+		if (! entities.hasOwnProperty(entity._key()) ) {
 			throw "Cannot add unregistered entity to map" + entity.toString();
 		}
 
-		if (! maps.hasOwnProperty(this._key()) ){
+		if (! maps.hasOwnProperty(this._key()) ) {
 			throw "Cannot add an entity to an unregistred map" + this.toString();
 		}
 
-		if( this.mapEntities.hasOwnProperty(entity._key()) || entity.containingMap !== null ){
+		if (this.mapEntities.hasOwnProperty(entity._key()) || entity.containingMap !== null ) {
 			//The entity is already on this map or has already been assigned to a different map.
 			return false;
 
@@ -659,20 +659,20 @@ function Map(mapName, spaceType, coordinateSystem){
 	* @returns {boolean} if successful returns true, false otherwise.
 	*/
 	this.removeEntity = function(entity) {
-		if ( ! (entity instanceof Entity )  ){
+		if ( ! (entity instanceof Entity )  ) {
 			throw "Incorrect arguments to Map.addEntity."
 		}
 
 
-		if (! entities.hasOwnProperty(entity._key()) ){
+		if (! entities.hasOwnProperty(entity._key()) ) {
 			throw "Cannot remove an unregistered entity from the map" + entity.toString();
 		}
 
-		if (! maps.hasOwnProperty(this._key()) ){
+		if (! maps.hasOwnProperty(this._key()) ) {
 			throw "Cannot remove an entity from an unregistred map" + this.toString();
 		}
 
-		if( (! this.mapEntities.hasOwnProperty(entity._key())) || (entity.containingMap !== this._key()) ) {
+		if ((! this.mapEntities.hasOwnProperty(entity._key())) || (entity.containingMap !== this._key()) ) {
 			//Entity had not been previously assigned to this map.
 			return false;
 
@@ -693,16 +693,16 @@ exports.Map = Map;
 * @param {Map} map - The map object to be registered by the map manager.
 * @returns {boolean} if the map was successfully registered returns true, false otherwise.
 */
-exports.registerMap = function(map){
-	if( ! (map instanceof Map) ){
+exports.registerMap = function(map) {
+	if (! (map instanceof Map) ) {
 		throw "Incorrect arguments to registerMap.";
 	}
 
-	if(map == undefined){
+	if (map == undefined) {
 		throw "undefined argument to registerMap."
 	}
 
-	if(maps.hasOwnProperty( map._key()) ){
+	if (maps.hasOwnProperty( map._key()) ) {
 		return false;
 	} else {
 		maps[map._key()] = map;
@@ -714,8 +714,8 @@ exports.registerMap = function(map){
 //Removed this function. The problem is mapKeys are implemented as private functions.
 //There is no situation (for now) when the user has a mapKey but no map.
 
-// exports.getMapFromKey = function(mapKey){
-// 	if( ! (typeof mapKey === "string")  ){
+// exports.getMapFromKey = function(mapKey) {
+// 	if (! (typeof mapKey === "string")  ) {
 // 		throw "Incorrect arguments to getMap";
 // 	}
 
@@ -726,12 +726,12 @@ exports.registerMap = function(map){
 //Todo think through the implications of unregistering a map.
 //Should this even be allowed?
 
-// exports.unregisterMap = function(map){
-//  	if( !( map instanceof Map ) ){
+// exports.unregisterMap = function(map) {
+//  	if (!( map instanceof Map ) ) {
 //  		throw "Incorrect arguments to unregisterMap";
 //  	}
 
-// 	if(maps.hasOwnProperty(map._key())){
+// 	if (maps.hasOwnProperty(map._key())) {
 // 		delete maps[map._key()];
 // 		return true;
 // 	} else {

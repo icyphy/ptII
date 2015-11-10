@@ -12,7 +12,6 @@
  *
  * @module webSocket
  * @authors: Hokeun Kim and Edward A. Lee
- * @copyright: http://terraswarm.org/accessors/copyright.txt
  */
 
 var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');

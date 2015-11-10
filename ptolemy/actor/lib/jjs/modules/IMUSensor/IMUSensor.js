@@ -28,7 +28,6 @@
  * Module to access bluetooth IMU sensor (MotionNet sensor from  UTDallas)
  * @module IMUSensor
  * @author Hunter Massey
- * @copyright http://terraswarm.org/accessors/copyright.txt
  */
 
  // Reference to the Java class that controls the bluetooth serial stream
@@ -52,7 +51,7 @@ var SensorStream = null;
  *	setInterval(getSample, getParameter(samplingRate));
  *  getSample: 
  *  	var sample = stream.getSample();
- *  	if(prevSample != sample){
+ *  	if (prevSample != sample) {
  *  		prevSample = sample;
  *  		send('stream', sample);
  *  	}

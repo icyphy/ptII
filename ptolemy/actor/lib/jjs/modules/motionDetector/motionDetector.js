@@ -38,7 +38,6 @@
  *
  *  @module motionDetector
  *  @authors Edward A. Lee
- *  @copyright http://terraswarm.org/accessors/copyright.txt
  */
  
 ////////////////////////////////////////////////////////////

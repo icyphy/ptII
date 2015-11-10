@@ -52,7 +52,7 @@ util.inherits(exports.Shell, EventEmitter);
  *  @param data The input data to be sent to stdin.
  */
 exports.Shell.prototype.write = function(data) {
-	if(helper)  {
+	if (helper)  {
 		helper.write(data);
 	}
 };

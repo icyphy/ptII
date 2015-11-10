@@ -39,7 +39,6 @@
  * @module httpClient
  * @author Marten Lohstroh and Edward A. Lee
  * @version $Id$
- * @copyright http://terraswarm.org/accessors/copyright.txt
  */
  
 // Stop extra messages from jslint.  Note that there should be no
