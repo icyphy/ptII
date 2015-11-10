@@ -403,14 +403,22 @@ public class SocketHelper extends VertxHelperBase {
                                 // it won't properly stringify JSON. Is this OK?
                                 // NOTE: A second argument could take an encoding.
                                 // Defaults to UTF-8. Is this OK?
-                                buffer.appendString(data.toString());
+                                buffer.appendString(element.toString());
                             } else {
                                 _appendToBuffer(buffer, element);
                             }
                         }
                     }
                 } else {
-                    _appendToBuffer(buffer, data);
+                    if (_sendType.equals(DATA_TYPE.STRING)) {
+                        // NOTE: Use of toString() method makes this very tolerant, but
+                        // it won't properly stringify JSON. Is this OK?
+                        // NOTE: A second argument could take an encoding.
+                        // Defaults to UTF-8. Is this OK?
+                        buffer.appendString(data.toString());
+                    } else {
+                        _appendToBuffer(buffer, data);
+                    }
                 }
                 _socket.write(buffer);
             });

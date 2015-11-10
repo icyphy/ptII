@@ -33,9 +33,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: There is&#10;nondeterminism&#10;here. Order could&#10;be reversed.&#10;Need a test actor&#10;that will accept&#10;data in any order.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: There is&#10;nondeterminism&#10;here. Order could&#10;be reversed.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{294.55349159513594, 231.46418991416317}">
         </property>
     </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -152,9 +152,11 @@
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1, 0, 1, 128, -2147483648, 3}">
         </property>
+        <property name="requireOrderedValues" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 210.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 210.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
