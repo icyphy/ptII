@@ -28,16 +28,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, -45.0}">
         </property>
     </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
-        </property>
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: There is&#10;nondeterminism&#10;here. Order could&#10;be reversed.&#10;Need a test actor&#10;that will accept&#10;data in any order.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 220.0]">
-        </property>
-    </property>
     <property name="type" class="ptolemy.data.expr.StringParameter" value="float">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
@@ -55,6 +45,16 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 10.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: There is&#10;nondeterminism&#10;here. Order could&#10;be reversed.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{296.46418991416317, 225.73209495708159}">
         </property>
     </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -170,6 +170,8 @@
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{-1.0, 0.0, 1.0, 128.0, -2.147483648E9, 3.1415901184082}">
+        </property>
+        <property name="requireOrderedValues" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

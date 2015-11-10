@@ -158,6 +158,9 @@ var defaultClientOptions = {
  *  serializeReceivedArrays set to true (the default), then these
  *  elements will be emitted one by one. Otherwise, they will be emitted
  *  as a single array.
+ *
+ *  For strings, you can also send an array of strings in a single call,
+ *  but these will be simply be concatenated and received as a single string.
  *  
  *  The meaning of the options is (partially) defined here:
  *     http://vertx.io/docs/vertx-core/java/
@@ -375,6 +378,9 @@ var defaultServerOptions = {
  *  serializeReceivedArrays set to true (the default), then these
  *  elements will be emitted one by one. Otherwise, they will be emitted
  *  as a single array.
+ *
+ *  For strings, you can also send an array of strings in a single call,
+ *  but these will be simply be concatenated and received as a single string.
  *
  *  @param options The options.
  */

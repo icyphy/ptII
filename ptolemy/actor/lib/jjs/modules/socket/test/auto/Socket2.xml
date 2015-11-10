@@ -30,6 +30,16 @@
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: There is&#10;nondeterminism&#10;here. Order could&#10;be reversed.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 475.0]">
+        </property>
+    </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	input('toSend');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(4002);&#10;	addInputHandler('toSend', function() {&#10;		var data = get('toSend');&#10;		client.send(data);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
@@ -163,6 +173,8 @@
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;message from client 1&quot;, &quot;message from client 2&quot;}">
+        </property>
+        <property name="requireOrderedValues" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
