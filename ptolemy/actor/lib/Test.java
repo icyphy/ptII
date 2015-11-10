@@ -37,7 +37,6 @@ import java.util.List;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
-import ptolemy.data.RecordToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
@@ -258,26 +257,13 @@ public class Test extends NonStrictTest {
 
             Token token = input.get(i);
 
-            boolean isClose;
-
             if (((BooleanToken) requireOrderedValues.getToken()).booleanValue()) {
                 if (_debugging) {
                     _debug("-- Read input: " + token
                             + ", which is expected to match: " + reference[i]);
                 }
 
-                try {
-                    isClose = _isClose(token, reference[i], _tolerance);
-                } catch (IllegalActionException ex) {
-                    // Chain the exceptions together so we know which test
-                    // actor failed if there was more than one...
-                    throw new IllegalActionException(this, ex,
-                            "Test fails in iteration " + _numberOfInputTokensSeen
-                            + ".\n" + "Value was: " + token
-                            + ". Should have been: " + reference[i]);
-                }
-
-                if (!isClose) {
+                if (!_isClose(token, reference[i], _tolerance)) {
                     throw new IllegalActionException(this,
                             "Test fails in iteration " + _numberOfInputTokensSeen
                             + ".\n" + "Value was: " + token
@@ -310,8 +296,7 @@ public class Test extends NonStrictTest {
                                     + "ref[" + i + "]: " + reference[i]);
                         }                            
 
-                        isClose = _isClose(token, reference[i], _tolerance);
-                        if (isClose) {
+                        if (_isClose(token, reference[i], _tolerance)) {
                             if (!sawMatch) {
                                 sawMatch = true;
                                 _matchedValues[possibleIndex] = true;
