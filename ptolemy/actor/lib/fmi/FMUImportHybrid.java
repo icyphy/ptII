@@ -132,29 +132,41 @@ public class FMUImportHybrid extends FMUImport implements
         // Get Outputs value from the FMU and produce them.
         _getFmuOutputs();
         
-        // If all inputs are known, the FMU can request a time advancement
+        // If all inputs are known, the FMU can request a time advancement.
         // The argument to proposeTime() is used as default step size for
         // FMUs that does not implement getMaxStepSize().
-        boolean allInputsKnown = _allInputsKnown();
+        // If the FMU returns a step size < 0, proposeTime() returns null.
+        // This return value must be interpreted as an unbounded step size:
+        // the FMU does not constrain the advancement of time. Therefore, in
+        // this case we do not propose a time advancement to the Director
+        // with fireAt().
+        boolean allInputsKnown = _allInputsAreKnown();
         if (allInputsKnown) {
             Time proposedTime = proposeTime(currentTime.add(1.0));
             if (proposedTime != null) {
-                int compare = proposedTime.compareTo(currentTime);
-                _nextMicrostep = 0;
-                if (compare == 0) {
-                    _nextMicrostep = _nextMicrostep + 1;
+                int firstCompare = proposedTime.compareTo(_lastCommitTime);
+                int secondCompare = proposedTime.compareTo(currentTime);
+                if (firstCompare == 0) {
+                    currentMicrostep = currentMicrostep + 1;
                 }            
-                Time actualTime = director.fireAt(this, proposedTime, _nextMicrostep);
+                Time actualTime = director.fireAt(this, proposedTime, _proposedMicrostep);
+                _proposedTime = proposedTime;                
                 if (_debugging) {
                     _debug("* Invoked fireAt(/*proposed time*/ "
                             + proposedTime
                             + ", /*proposed microstep*/ "
-                            + _nextMicrostep
+                            + _proposedMicrostep
                             + " ) and the director returned: "
                             + actualTime);
                 }
-            }    
-        }        
+            }   
+        } else {
+            // If fire() has been invoked and I am here, means that the actor
+            // received an event but not all the inputs are known
+            if (_debugging) {
+                _debug("* Invoked fire() but not all the inputs are known");
+            }
+        }
         _firstFireInIteration = false;
     }
     
@@ -227,7 +239,7 @@ public class FMUImportHybrid extends FMUImport implements
         _firstFire = true;
         _firstFireInIteration = true;
         _newStates = null;
-        _nextMicrostep = 0;
+        _proposedMicrostep = 0;
 
         // Set the parameters of the FMU.
         // Loop through the scalar variables and find a scalar
@@ -314,7 +326,8 @@ public class FMUImportHybrid extends FMUImport implements
             _debug("FMUImportHybrid.initialize() call completed.");
         }
         
-        director.fireAt(this, new Time(director, 0.0));
+        director.fireAt(this, new Time(director, 0.0), _proposedMicrostep);
+        _proposedTime = startTime;
         
         return;
     }
@@ -339,6 +352,7 @@ public class FMUImportHybrid extends FMUImport implements
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
             _debug("FMUImportHybrid.postfire()");
+            _debugToStdOut("Postfiring: " + getFullName() + " at time: " + getDirector().getModelTime() + " _lastCommitTime" + _lastCommitTime);
         }
 
         Director director = getDirector();
@@ -374,6 +388,7 @@ public class FMUImportHybrid extends FMUImport implements
                     + expectedNewTime);
         }
 
+        // Advance the state of the FMU
         Time computedTime = _fmiDoStepHybrid(expectedNewTime, currentMicrostep);
         
         if (_debugging) {
@@ -381,6 +396,9 @@ public class FMUImportHybrid extends FMUImport implements
                     + computedTime);
         }
         
+        // This is a sanity check.
+        // It cannot happen that an FMU rejects a time step smaller or equal to the
+        // time stamp it proposed. 
         if ((computedTime.compareTo(expectedNewTime) < 0) 
                 && !(getDirector() instanceof DEDirector)
                 && !(getDirector() instanceof SRDirector)) {
@@ -391,10 +409,33 @@ public class FMUImportHybrid extends FMUImport implements
                     + " In postfire() the stepsize is supposed to be accepted.");
         }
 
+        // In case the performed step size is smaller than the step size proposed
+        // from the FMU with fireAt(), we have to cancel fireAt().
+        if (((_proposedTime.compareTo(computedTime) > 0) ||
+                (_proposedTime.compareTo(computedTime) == 0 &&
+                 _proposedMicrostep > currentMicrostep)) &&
+                (_allInputsAreKnown() && (inputPortList().size() > 0))) {
+            // This can happen only with the DE Director
+            if (director instanceof DEDirector) {
+                if (_debugging) { 
+                    _debug("* Cancelling fireAt(/*proposed time*/ "
+                            + _proposedTime
+                            + ", /*proposed microstep*/ "
+                            + _proposedMicrostep
+                            + " )");
+                }
+                // Cancel the step size
+                ((DEDirector) director).cancelFireAt(this, _proposedTime, _proposedMicrostep);
+                // Schedule a new event
+                // TODO: check if the fireAt should be actually at
+                // currentTime and currentMicrostep
+                director.fireAt(this, currentTime, currentMicrostep);
+            }
+        }
         _lastCommitTime = computedTime;
         _refinedStepSize = -1.0;
         _firstFireInIteration = true;
-        _nextMicrostep = 0;
+        _proposedMicrostep = 0;
 
         return !_stopRequested;
     }
@@ -486,7 +527,7 @@ public class FMUImportHybrid extends FMUImport implements
      * @return
      * @throws IllegalActionException
      */
-    protected boolean _allInputsKnown() throws IllegalActionException {
+    protected boolean _allInputsAreKnown() throws IllegalActionException {
         boolean allInputsKnown = true;
         List<TypedIOPort> inputPorts = inputPortList();
         for (TypedIOPort inputPort : inputPorts) {
@@ -945,6 +986,10 @@ public class FMUImportHybrid extends FMUImport implements
                 Token token = null;
                 Token result = null;
                 FMIScalarVariable scalarVariable = output.scalarVariable;
+                if (_debugging) {
+                    _debugToStdOut("Component: " + getFullName());
+                    _debugToStdOut("- _getFmuOutputs at time: " + getDirector().getModelTime() + " - _lastCommitTime: " + _lastCommitTime);
+                }
 
                 if (scalarVariable.type instanceof FMIBooleanType) {
                     result = scalarVariable.getBooleanHybrid(_fmiComponent);
@@ -1019,5 +1064,7 @@ public class FMUImportHybrid extends FMUImport implements
      */
     private Function _fmiGetMaxStepSize;
 
-    int _nextMicrostep;
+    int _proposedMicrostep;
+    
+    Time _proposedTime;
 }
