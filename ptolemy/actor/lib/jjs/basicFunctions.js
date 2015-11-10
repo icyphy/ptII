@@ -36,7 +36,7 @@
  *
  * @module basicFunctions
  * @author Edward A. Lee, Contributor: Christopher Brooks
- * @version $Id$
+ * @version $$Id$$
  * @since Ptolemy II 11.0
  */
 

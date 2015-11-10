@@ -29,7 +29,7 @@
  * 
  *  @module console
  *  @author Edward A. Lee
- *  @version $Id$
+ *  @version $$Id$$
  */
  
 // Stop extra messages from jslint.  Note that there should be no
