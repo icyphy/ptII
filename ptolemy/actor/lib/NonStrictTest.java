@@ -564,20 +564,17 @@ public class NonStrictTest extends Sink {
      *  Arrays and Records are handled specially, see
      *  {@link #_isCloseToIfNilArrayElement(Token, Token, double)} and
      *  {@link #_isCloseToIfNilRecordElement(Token, Token, double)}.
+     *  If the tokens do not support this comparison, then return false.
      *
      *  @param token1 The first array token to compare.
      *  @param token2 The second array token to compare.
      *  @param epsilon The value that we use to determine whether two
      *   tokens are close.
-     *  @exception IllegalActionException If the elements do not support
-     *   this comparison.
      *  @return True if the first argument is close
      *  to this token.  False
      */
     protected static boolean _isClose(
-            Token token1, Token token2, double epsilon)
-        throws IllegalActionException {
-
+            Token token1, Token token2, double epsilon) {
 
         // FIXME: If we get a nil token on the input, what should we do?
         // Here, we require that the referenceToken also be nil.
@@ -590,24 +587,28 @@ public class NonStrictTest extends Sink {
         //     && !_isCloseToIfNilRecordElement(token1, token2,
         //             epsilon));
 
-        boolean isClose;        
-        isClose = token1.isCloseTo(token2, epsilon)
-            .booleanValue()
-            || token1.isNil()
-            && token2.isNil();
-        // Additional guards makes things slightly easier for
-        // Copernicus.
-        if (token1 instanceof ArrayToken
-                && token2 instanceof ArrayToken) {
-            isClose |= _isCloseToIfNilArrayElement(token1, token2,
-                    epsilon);
+        try {
+            boolean isClose;        
+            isClose = token1.isCloseTo(token2, epsilon)
+                    .booleanValue()
+                    || token1.isNil()
+                    && token2.isNil();
+            // Additional guards makes things slightly easier for
+            // Copernicus.
+            if (token1 instanceof ArrayToken
+                    && token2 instanceof ArrayToken) {
+                isClose |= _isCloseToIfNilArrayElement(token1, token2,
+                        epsilon);
+            }
+            if (token1 instanceof RecordToken
+                    && token2 instanceof RecordToken) {
+                isClose |= _isCloseToIfNilRecordElement(token1,
+                        token2, epsilon);
+            }
+            return isClose;
+        } catch (IllegalActionException ex) {
+            return false;
         }
-        if (token1 instanceof RecordToken
-                && token2 instanceof RecordToken) {
-            isClose |= _isCloseToIfNilRecordElement(token1,
-                    token2, epsilon);
-        }
-        return isClose;
     }
 
     /** Test whether the value of this token is close to the first argument,
