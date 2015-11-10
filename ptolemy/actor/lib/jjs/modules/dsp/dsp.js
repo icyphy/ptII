@@ -31,9 +31,14 @@
  * This module is under development. Only the FFT method has been implemented.
  * @module dsp
  * @author Ilge Akkaya
- * @copyright http://terraswarm.org/accessors/copyright.txt
  */
  
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals Java, exports */
+/*jshint globalstrict: true*/
+"use strict";
+
 /** Construct an instance of a Signal object type. This should be instantiated in your
  *  JavaScript code as
  *  <pre> 
@@ -53,7 +58,7 @@ var SignalProcessing = Java.type('ptolemy.math.SignalProcessing');
  
 exports.Signal = function(options) {
     // Provide default values for options using the following common JavaScript idiom.
-}
+};
  
 /** Return an FFT.
  *  @param data An array of numbers. 
@@ -69,4 +74,4 @@ exports.Signal.prototype.fft = function(data) {
     output.imag = outputImag;
  
     return output; 
-}
+};

@@ -24,30 +24,66 @@
 //
 // Ptolemy II includes the work of others, to see those copyrights, follow
 // the copyright link on the splash page or see copyright.htm.
+
+/**  A service discovery function for the Javascript Nashorn engine.
+ *  
+ *  The long term goal is to provide a discovery process based on a defined ontology
+ *  for a particular category of services. Right now, the list of services are known a-priori 
+ *  and specified as interfaces (e.g. GSNInterface.js) that context aware accessor can  include using the 
+ *  'implement' function. 
+ *  
+ *  The known services are obtained via the services() function which is implemented
+ *  by the method availableServices() in the helper class.
+ * 
+ *  @module contextAware
+ *  @author Anne H. Ngu
+ */
+
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals Java, console, exports */
+/*jshint globalstrict: true*/
+"use strict";
+
 var ContextAwareHelper = Java.type('ptolemy.actor.lib.jjs.modules.contextAwareTest.ContextAwareHelperTest');
 var helper = new ContextAwareHelper();
 
-/** A temporary function that returns existing list of service names
+/**
+ * Use a helper class to return a list of known REST services
  */
 exports.services = function() {
     return Java.from(helper.availableServices());
-}
+};
 
+/** 
+ * Use a helper class to return the list of data to be extracted from the GSN service.
+ */
 exports.gsnServices=function() {
 	return Java.from(helper.getGsnOutput());
-}
+};
+
+/** 
+ * Use a helper class to return the list of data to be extracted from  the Paraimpu service
+ */
 exports.paraimpuServices = function() {
 	return Java.from(helper.getParaimpuOutput());
-}
+};
 
+/** 
+ * Use a helper class to return the list of data to be extracted from  the Firebase service.
+ */
 exports.firebaseServices = function() {
 	return Java.from(helper.getFirebaseOutput());
-}
+};
 
+/**
+ * Use a helper class to convert xml data format to json data format.
+ */
 exports.xmlToJson= function(response) {
 	return Java.from(helper.convertXMLtoJSON(response));
-}
+};
 exports.DiscoveryOfRESTService = DiscoveryOfRESTService;
+
 /** A discovery "class" that gathers details of a particular REST service. Not used now.
  */
 function DiscoveryOfRESTService() {

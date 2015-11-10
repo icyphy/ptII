@@ -39,8 +39,28 @@
  *
  *  @module discovery
  *  @author Elizabeth Latronico
+ */
+
+/**  A service discovery function for the Javascript Nashorn engine.
+ *  
+ *  The long term goal is to provide a discovery process based on a defined ontology
+ *  for a particular category of services. Right now, the list of services are known a-priori 
+ *  and specified as interfaces (e.g. GSNInterface.js) that context aware accessor can  include using the 
+ *  'implement' function. 
+ *  
+ *  The known services are obtained via the services() function which is implemented
+ *  by the method availableServices() in the helper class.
+ * 
+ *  @module contextAware
+ *  @author Anne H. Ngu
  *  @copyright http://terraswarm.org/accessors/copyright.txt
  */
+
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals Java, exports, require */
+/*jshint globalstrict: true*/
+"use strict";
 
 var EventEmitter = require("events").EventEmitter;
 
@@ -81,11 +101,11 @@ function DiscoveryService() {
 	
 	this.getHostAddress = function() {
 		return helper.getHostAddress();
-	}
+	};
 }
 //DiscoveryService emits events.  See:
 //http://smalljs.org/object/events/event-emitter/
 //http://www.sitepoint.com/nodejs-events-and-eventemitter/
-DiscoveryService.prototype = new EventEmitter;
+DiscoveryService.prototype = new EventEmitter();
 
 

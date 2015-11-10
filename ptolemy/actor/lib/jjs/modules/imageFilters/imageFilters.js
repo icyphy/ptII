@@ -139,8 +139,14 @@
  * 
  * @module imageFilters
  * @authors Edward A. Lee
- * @copyright http://terraswarm.org/accessors/copyright.txt
+ * @version $$Id$$
  */
+
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals Java, error, exports */
+/*jshint globalstrict: true*/
+"use strict";
 
 ////////////////////////////////////////////////////////////
 //// Private variables.
@@ -161,7 +167,7 @@ exports.filters = function() {
             'ColorHalftone', 'Contour', 'Contrast', 'Crop',
             'Crystallize',
             'Gray', 'Invert', 'LensBlur', 'MotionDetector', 'Solarize', 'Threshold'];
-}
+};
 
 /** Invoke the named filter on the specified image with the specified
  *  options and return the result.  Any unrecognized options are ignored.
@@ -184,7 +190,7 @@ exports.filter = function(image, filterName, options) {
             // Try alternative location.
             try {
                 Filter = Java.type(root + 'svg.' + filterName + 'Filter');
-            } catch(ex) {
+            } catch(ex2) {
                 error('Cannot find filter: ' + filterName);
                 return image;
             }
@@ -204,4 +210,4 @@ exports.filter = function(image, filterName, options) {
     }
     // The second (null) argument declines to give a destination image.
     return filter.filter(image, null);
-}
+};

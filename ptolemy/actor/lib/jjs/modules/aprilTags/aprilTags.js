@@ -47,6 +47,12 @@ https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 @copyright http://terraswarm.org/accessors/copyright.txt
  */
  
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals exports, Java */
+/*jshint globalstrict: true*/
+"use strict";
+
 ////////////////////////////////////////////////////////////
 //// Private variables.
 
@@ -78,7 +84,7 @@ exports.filter = function(image, options) {
     }
     // The second (null) argument declines to give a destination image.
     return filter.filter(image, null);
-}
+};
 
 /** Return an array of tags detected by the most recent call to filter().
  *  The returned value is null if there has been no call to filter().
@@ -93,4 +99,4 @@ exports.filter = function(image, options) {
  */
 exports.tags = function() {
     return filter.tags();
-}
+};

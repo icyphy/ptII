@@ -30,7 +30,7 @@
  * except for values(callback) and fine-grained control functions (e.g. persist()).
  * @module localStorage
  * @authors Hokeun Kim
- * @copyright http://terraswarm.org/accessors/copyright.txt
+ * @version $$Id$$
  */
 var LocalStorageHelper = Java.type('ptolemy.actor.lib.jjs.modules.localStorage.LocalStorageHelper');
 

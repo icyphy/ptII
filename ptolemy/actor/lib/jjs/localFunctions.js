@@ -49,8 +49,8 @@
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
 /*globals Java, actor, channel, error, java, requireAccessor */
+/*jshint globalstrict: true*/
 "use strict";
-
 
 ////////////////////
 // Set a prototype for the exports object with default functions.
