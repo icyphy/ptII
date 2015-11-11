@@ -33,6 +33,8 @@
 
 
 
+//Todo: Perhaps add a collection of MapSources to iterate through for consistancy checking?
+
 
 //Hash mapping "map._key()" strings to "map objects"
 //This is a simple hash
@@ -208,6 +210,8 @@ exports.SpaceTypeEnum = {
 }
 
 
+
+
 //******************************************************************************************
 //Public toJSONString functions for MapManager hashes
 //******************************************************************************************
@@ -367,6 +371,8 @@ function Entity(name) {
 	this.name = name;
 	this.containingMap = null;
 	this.aliases = {};
+	this.placements = {};
+	this.occupancies = {};
 
 	this._key = function() {
 		return this.name;
@@ -420,6 +426,63 @@ function Entity(name) {
 	 		return true;
 	 	}
 	}
+
+	/**
+	* Specify the location of an entity that is on a map
+	* @function
+	* @param {Placement} placement - The location of the entity with respect to its map
+	* @returns {boolean} true if the location was successfully set, false otherwise.
+	*/
+	this.setPlacement = function(placement){
+		if (! (placement instanceof Placement)){
+			throw "Incorrect arguments to setPosition.";
+		}
+
+	 	//Check to see if this entity has been registered.
+	 	if( ! entities.hasOwnProperty(alias._key()) ){
+	 		throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity a position.";
+	 	} 
+
+		if(this.containingMap === null){
+			throw "This entity has not been placed on a map." + this.toString();
+		}
+
+		if(this.placements.hasOwnProperty(placement._key())){
+			return false;
+		} else{
+			this.placements[placement._key()] = placement;
+			return true;
+		}
+	}
+
+	/**
+	* Specify the location of an entity that is on a map
+	* @function
+	* @param {Occupancy} occupancy - The location of the entity with respect to its map
+	* @returns {boolean} true if the location was successfully set, false otherwise.
+	*/
+	this.setOccupancy = function(occupancy){
+		if (! (occupancy instanceof occupancy)){
+			throw "Incorrect arguments to setPosition.";
+		}
+
+	 	//Check to see if this entity has been registered.
+	 	if( ! entities.hasOwnProperty(alias._key()) ){
+	 		throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity a position.";
+	 	} 
+
+		if(this.containingMap === null){
+			throw "This entity has not been placed on a map." + this.toString();
+		}
+
+		if(this.occupancies.hasOwnProperty(occupancy._key())){
+			return false;
+		} else{
+			this.occupancies[occupancy._key()] = occupancy;
+			return true;
+		}
+	}
+
 }
 
 exports.Entity = Entity;
@@ -443,23 +506,6 @@ exports.registerEntity = function(entity) {
 		return true;
 	}
 }
-
-
-//Todo: is it the responsibility of the caller to remove the entity from all of its maps , and all of the entities that have it as an alias first?
-//Todo: implement this better. The above makes me think this needs to be revised.
-
-// exports.unregisterEntity = function(entity) {
-// 	if (! ( entity instanceof Entity) ) {
-// 		throw "Incorrect arguments to unregisterEntity.";
-// 	}
-
-// 	if (entities.hasOwnProperty(entity.key()) ) {
-// 		delete entities[entity.key()];
-// 		return true;
-// 	} else {
-// 		return false;
-// 	}
-// }
 
 
 
@@ -496,6 +542,7 @@ exports.registerEntity = function(entity) {
 //  	}
 // }
 
+>>>>>>> .r73825
 //******************************************************************************************
 //CoordinateTransformation Specific functions
 //******************************************************************************************
@@ -538,8 +585,10 @@ exports.CoordinateSystem =  CoordinateSystem;
 * @returns {boolean} if the coordinate transformation was successfully registered returns true, false otherwise.
 */
 
-exports.registerCoordinateTransformation = function registerCoordinateTransformation( domainName, codomainName, transformation ) {
-	if (! ( typeof domainName === "string" && typeof codomainName === "string" && typeof transformation === "function" )  ) {
+
+exports.registerCoordinateTransformation = function registerCoordinateTransformation( domainName, codomainName, transformation ){
+	if( ! ( typeof domainName === "string" && typeof codomainName === "string"
+		&& typeof transformation === "function" )  ){
 		throw "Incorrect arguments to addCoordinateTransformation constructor."
 	}
 	
@@ -711,30 +760,157 @@ exports.registerMap = function(map) {
 }
 
 
-//Removed this function. The problem is mapKeys are implemented as private functions.
-//There is no situation (for now) when the user has a mapKey but no map.
+//******************************************************************************************
+//Metadata classes
+//******************************************************************************************
 
-// exports.getMapFromKey = function(mapKey) {
-// 	if (! (typeof mapKey === "string")  ) {
-// 		throw "Incorrect arguments to getMap";
-// 	}
+//Todo, perhaps add a cyrptopgrahic signiture to this. And maybe more information.
+/**
+* @typedef {MapSource}
+* @constructor
+* @param {string} name - The name of this location information provider.
+*/
+function MapSource(source){
+	
+	if( ! ( typeof source === "string" ) ){
+	 	throw "Incorrect arguments to MapSource constructor";
+	 }
 
-// 	return maps[mapKey];
+	this.name = source;
 
-// }
 
-//Todo think through the implications of unregistering a map.
-//Should this even be allowed?
+	this._key = function(){
+		return this.name;
+	}
+}
 
-// exports.unregisterMap = function(map) {
-//  	if (!( map instanceof Map ) ) {
-//  		throw "Incorrect arguments to unregisterMap";
-//  	}
+exports.MapSource = MapSource;
 
-// 	if (maps.hasOwnProperty(map._key())) {
-// 		delete maps[map._key()];
-// 		return true;
-// 	} else {
-// 		return false;
-// 	}
-// }
+//******************************************************************************************
+//Position Specific Functions
+//******************************************************************************************
+
+/**
+* class describing positions and relations 
+* @typedef {ObservationMetadata}
+* @constructor
+* @param {provenance} MapSource - The name of the source for this observation.
+* @param {timestamp} Date - The UTC timestamp for this observation (the time it happened, not when it was recorded).
+*/
+function ObservationMetadata(provenance, timestamp ){
+	
+	if( ! ( ( provenance instanceof MapSource ) && (timestamp instanceof Date )) ){
+	 	throw "Incorrect arguments to ObservationMetadata constructor";
+	 }
+
+	this.provenance = provenance;
+	this.timestamp = timestamp;
+
+	this._key = function(){
+		return _stringsToKey( provenance._key(), this.timestamp.toString());
+	}
+}
+
+exports.ObservationMetadata = ObservationMetadata;
+
+
+
+var _globalPlacementID = 0;
+//Todo: so far this placement only makes sense for 2D eculidean spaces because of shape,
+// and only for euclidean spaces because of pose. Generalize it!
+//Todo: DCEL shape input
+//Todo: Probability. Particles?
+
+/**
+* @typedef {Placement}
+* @constructor
+* @param {ObservationMetadata} metadata - Observation data for this map.
+* @param {array} center - The coordinate position describing the center of this entity.
+* @param {Quaternion} pose - The pose of the entity.
+* @param {array} shape - A counterclockwise array of coordinates around the entity's boundary.
+* Coordinates are given as they would be when the center is at the origin and pose is in the direction
+* of the positive y-axis and flat on the x-y plane.
+* This is done so uncertainty in the location of the center doesn't contaminate the shape of the entity.
+*/
+function Placement(metadata, center, pose, shape ){
+
+	if( ! ( ( metadata instanceof ObservationMetadata ) && (typeof center === "CoordinatePosition") 
+		&& (pose instanceof Quaternion ) && (typeof placement === "array")) ){
+		throw "Incorrect arguments to Placment constructor";
+	 }
+
+	this.metadata = metadata;
+	this.center = center;
+	this.pose = pose;
+	this.shape = shape;
+	this._placementID = _globalPlacementID++;
+
+	this._key = function(){
+		return _stringsToKey( this.placementID.toString(), this.metadata._key());
+	}
+}
+
+exports.Placement = Placement;
+
+
+/**
+* @typedef {Quaternion}
+* @constructor
+* @param {number} w
+* @param {number} x
+* @param {number} y
+* @param {number} z
+*/
+function Quaternion(w, x, y, z){
+
+	if( ! ( ( typeof w === "number") && ( typeof x === "number") &&( typeof y === "number") &&
+		( typeof z === "number") )){
+		throw "Incorrect arguments to Quaternion constructor";
+	 }
+
+	this.w = w;
+	this.x = x;
+	this.y = y;
+	this.z = z;
+
+}
+
+exports.Quaternion = Quaternion;
+
+var _globalOccupancyID = 0;
+
+/**
+* @typedef {Occupancy}
+* @constructor
+* @param {metadata} ObservationMetadata - Observation data for this map.
+* @param {grid} array - An occupancy grid of 1 to 3 dimensions. Values must be integers between 0 to 100.
+*/
+function Occupancy(metadata, grid ){
+	
+	if( ! ( ( metadata instanceof ObservationMetadata ) && (typeof grid === "array") ) ){
+		throw "Incorrect arguments to Occupancy constructor";
+	 }
+
+	this.metadata = metadata;
+	this.grid = grid;
+	this.dimensions = [];
+	this._occupancyID = _globalOccupancyID++;
+
+	var dataTemp = grid;
+	while(typeof dataTemp === "array"){
+		this.dimensions.push( dataTemp.length );
+		dataTemp = dataTemp[0];
+	}
+
+	this._key = function(){
+		return _stringsToKey(  this._occupancyID.toString(), this.metadata._key());
+	}
+
+}
+
+exports.Occupancy = Occupancy;
+
+//******************************************************************************************
+//Relation Specific Functions
+//******************************************************************************************
+
