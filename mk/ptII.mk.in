@@ -125,14 +125,13 @@ PTUDPSOCKET_DIR = @PTUDPSOCKET_DIR@
 # Set to socket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTVERTX_SOCKET_DIR=	@PTVERTX_SOCKET_DIR@
 
-# Vertx jars used by actor.lib.vertx
+# Vertx jars used by Vert.x modules in ptolemy/actor/lib/jjs
 PTVERTX_JARS = 	@PTVERTX_JARS@
 
 # Set to vertx if the Vertx jars are found
 PTVERTX_DIR = 	@PTVERTX_DIR@
 
-# Set to ptolemy.actor.lib.vertx and other packages that use vertex,
-# then used in $PTII/doc/makefile if the Vertx jars are found
+# Set to packages that use Vert.x and used in $PTII/doc/makefile if the Vert.x jars are found
 PTVERTX_PACKAGES = @PTVERTX_PACKAGES@
 
 # Waba is another JDK for PalmOS, see

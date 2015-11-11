@@ -6124,7 +6124,7 @@ fi
 #       enterprise applications.
 #--------------------------------------------------------------------
 
-# Vertx jars used by actor.lib.vertx
+# Vertx jars used by Vert.x modules in ptolemy/actor/lib/jjs
 PTVERTX_JARS=
 
 # Set to vertx if the Vertx jars are found
@@ -6148,7 +6148,7 @@ PTUDPSOCKET_DIR=
 # Set to webSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTWEBSOCKET_DIR=
 
-# Set to ptolemy.actor.lib.vertx and used in $PTII/doc/makefile if the Vertx jars are found
+# Set to packages that use Vert.x and used in $PTII/doc/makefile if the Vert.x jars are found
 PTVERTX_PACKAGES=
 
 # We only need to look for the Vertx jar files if PTWEBSOCKET_USER_DIR are present.
@@ -6161,7 +6161,7 @@ else
     # PRE_JDK18 is set above.
     if test "$PRE_JDK18" = "yes"; then
         AC_MSG_WARN([Vertx requires Java 1.8 or later, you are running $JVERSION.
-    Vertx is the application platform interface used in actor.lib.vertx and ptolemy.actor.lib.jjs.modules.webSocket
+    Vertx is the application platform interface used in Accessor modules in ptolemy/actor/lib/jjs/modules.
     To use Vertx, choose a Java 1.8 or later JVM and rerun configure.])
 
     else
@@ -6221,7 +6221,7 @@ changequote([, ])dnl
 	    PT_MSG_RESULT([$PTVERTX_JARS])
             # org.terraswarm.accessor depends on jjs/JavaScript.java so we
             # list org.terraswarm.accessor with jjs/JavaScript
-	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.vertx ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.socket ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.socket ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
@@ -7490,13 +7490,13 @@ AC_SUBST(PTUDPSOCKET_DIR)
 # Set to socket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 AC_SUBST(PTVERTX_SOCKET_DIR)
 
-# Vertx jars used by actor.lib.vertx
+# Vertx jars used by Vert.x modules
 AC_SUBST(PTVERTX_JARS)
 
 # Set to vertx if the Vertx jars are found
 AC_SUBST(PTVERTX_DIR)
 
-# Set to ptolemy.actor.lib.vertx and used in $PTII/doc/makefile if the Vertx jars are found
+# Set to packages that use Vert.x and used in $PTII/doc/makefile if the Vert.x jars are found
 AC_SUBST(PTVERTX_PACKAGES)
 
 # waba/tools/classes.jar file used by the PalmOS WABA
