@@ -841,7 +841,7 @@ public class JSAccessor extends JavaScript {
                     // FIXME: What to do here?
                     System.err.println("Cannot find PtDoc file for "
                             + urlSpec.trim()
-                            + ". Importing without documentation.");
+                            + ". Importing without documentation. Exception was: " + ex);
                 }
 
                 result.append("<property name=\"script\" value=\"");
@@ -916,9 +916,14 @@ public class JSAccessor extends JavaScript {
             String urlSpecTailPath = urlSpec.substring(urlSpec.indexOf(target) + target.length());
             File urlSpecLocalFile = new File(_accessorDirectory(), "accessors/web/" + urlSpecTailPath);
             if (urlSpecLocalFile.exists()) {
-                System.out.println("JSAccessor: urlSpec is " + urlSpec
-                        + ", but " + urlSpecLocalFile + " exists, so the latter is being read.");
-                accessorOrPtDocURL = urlSpecLocalFile.toURI().toURL();
+                if (urlSpecLocalFile.length() == 0) {
+                    System.out.println("JSAccessor: urlSpec is " + urlSpec
+                            + ", but " + urlSpecLocalFile + " has length 0, so the former is being read");
+                } else {
+                    System.out.println("JSAccessor: urlSpec is " + urlSpec
+                            + ", but " + urlSpecLocalFile + " exists, so the latter is being read.");
+                    accessorOrPtDocURL = urlSpecLocalFile.toURI().toURL();
+                }
             }
         }
         return accessorOrPtDocURL;
@@ -950,8 +955,14 @@ public class JSAccessor extends JavaScript {
         // Check that the URL is readable, and import without docs if not.
         // This will throw IOException if not.
         InputStream stream = url.openStream();
+        if (stream.available() == 0) {
+            throw new IOException("Could not find PtDoc for urlSpec: \"" + urlSpec + "\"."
+                    + "The url \"" + url + "\" was opened, but had 0 bytes available?  "
+                    + "Perhaps the file has a zero length because there are no "
+                    + "JSDoc directives in it?");
+        }
         stream.close();
-        
+
         // For some reason, using an input tag results in updating
         // the docs on reload, whereas using the previous method below
         // does not.
