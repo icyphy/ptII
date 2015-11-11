@@ -29,7 +29,6 @@ package ptolemy.actor.lib.fmi;
 
 import java.io.IOException;
 import java.lang.reflect.Method;
-import java.nio.IntBuffer;
 import java.nio.LongBuffer;
 import java.util.List;
 
@@ -52,7 +51,6 @@ import ptolemy.actor.SuperdenseTimeDirector;
 import ptolemy.actor.TimeRegulator;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.continuous.ContinuousStatefulDirector;
-import ptolemy.actor.lib.CurrentMicrostep;
 import ptolemy.actor.util.Time;
 import ptolemy.data.AbsentToken;
 import ptolemy.data.BooleanToken;
@@ -69,6 +67,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.fmima.kernel.FMIMADirector;
 import ptolemy.domains.sr.kernel.SRDirector;
 
 /**
@@ -143,13 +142,26 @@ public class FMUImportHybrid extends FMUImport implements
         boolean allInputsKnown = _allInputsAreKnown();
         if (allInputsKnown) {
             Time proposedTime = proposeTime(currentTime.add(1.0));
-            if (proposedTime != null) {
-                int firstCompare = proposedTime.compareTo(_lastCommitTime);
+            if (proposedTime != null) {                                
+                // Is the FMU aligned at currentTime? 
+                // Before the FMU propose a new future synchronization
+                // point, we have to advance the FMU status to the current
+                // time.
+                int firstCompare = currentTime.compareTo(_lastCommitTime);
+                if (firstCompare > 0) {
+                    _fmiDoStepHybrid(currentTime, 0);
+                    _lastCommitTime = currentTime;
+                    proposedTime = proposeTime(currentTime.add(1.0));
+                }
+                // If the FMU request superdense time iteration increment
+                // currentMicrostep. Otherwise set currentMicrostep to 0/
                 int secondCompare = proposedTime.compareTo(currentTime);
-                if (firstCompare == 0) {
-                    currentMicrostep = currentMicrostep + 1;
+                currentMicrostep = currentMicrostep + 1;
+                if (secondCompare > 0) {
+                    currentMicrostep = 0;
                 }            
-                Time actualTime = director.fireAt(this, proposedTime, _proposedMicrostep);
+                // Now we can request a new firing.
+                Time actualTime = director.fireAt(this, proposedTime, currentMicrostep);
                 _proposedTime = proposedTime;                
                 if (_debugging) {
                     _debug("* Invoked fireAt(/*proposed time*/ "
@@ -167,6 +179,7 @@ public class FMUImportHybrid extends FMUImport implements
                 _debug("* Invoked fire() but not all the inputs are known");
             }
         }
+        _proposedMicrostep = currentMicrostep;
         _firstFireInIteration = false;
     }
     
@@ -369,8 +382,9 @@ public class FMUImportHybrid extends FMUImport implements
             expectedNewTime = new Time(director, ((ContinuousDirector) director).suggestedStepSize());
         } else if (director instanceof DEDirector) {
             expectedNewTime = ((DEDirector) director).getModelNextIterationTime();
-        } else if (director instanceof SRDirector) {
-            expectedNewTime = ((SRDirector) director).getModelNextIterationTime();
+        } else if (director instanceof FMIMADirector) {
+            double period = ((FMIMADirector) director).periodValue();
+            expectedNewTime = new Time(director, period);
         } else {
             throw new IllegalActionException(
                     this,
