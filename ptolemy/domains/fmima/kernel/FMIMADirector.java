@@ -27,16 +27,14 @@
  */
 package ptolemy.domains.fmima.kernel;
 
-import java.util.Iterator;
 import ptolemy.actor.Actor;
-import ptolemy.actor.CompositeActor;
-import ptolemy.actor.TimeRegulator;
 import ptolemy.actor.util.Time;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.BaseType;
 import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.Nameable;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
@@ -66,8 +64,11 @@ public class FMIMADirector extends SRDirector {
      *   an entity with the specified name.
      */
     public FMIMADirector() throws IllegalActionException, NameDuplicationException {
-        // TODO Auto-generated constructor stub
+        super();
         _isFirstFire = true;
+        _defaultPeriod = new Parameter(this, "default period");
+        _defaultPeriod.setTypeEquals(BaseType.DOUBLE);
+        _defaultPeriod.setExpression(period.getValueAsString());
     }
 
     /** Construct a director in the given workspace with an empty name.
@@ -82,7 +83,9 @@ public class FMIMADirector extends SRDirector {
     public FMIMADirector(Workspace workspace) throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _isFirstFire = true;
-        // TODO Auto-generated constructor stub
+        _defaultPeriod = new Parameter(this, "default period");
+        _defaultPeriod.setTypeEquals(BaseType.DOUBLE);
+        _defaultPeriod.setExpression(period.getValueAsString());
     }
 
     /** Construct a director in the given container with the given name.
@@ -101,7 +104,9 @@ public class FMIMADirector extends SRDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         _isFirstFire = true;
-        // TODO Auto-generated constructor stub
+        _defaultPeriod = new Parameter(this, "default period");
+        _defaultPeriod.setTypeEquals(BaseType.DOUBLE);
+        _defaultPeriod.setExpression(period.getValueAsString());
     }
     
     /** Fire FMUs according to a given scheduler until the iteration
@@ -111,6 +116,7 @@ public class FMIMADirector extends SRDirector {
      *  @exception IllegalActionException If we couldn't process an event
      *  or if an event of smaller timestamp is found within the event queue.
      */
+    @SuppressWarnings("deprecation")
     @Override
     public void fire() throws IllegalActionException {        
         if (_debugging) {
@@ -125,42 +131,95 @@ public class FMIMADirector extends SRDirector {
         // When super.fire() returns we reached a fixed point:
         // all FMUs propagated I/O signals.
         super.fire();
-
+    } 
+    
+    /** Request a firing of the given actor at the given absolute
+     *  time, and return the time at which the specified will be
+     *  fired. If the <i>period</i> is 0.0 and there is no enclosing
+     *  director, then this method returns the current time. If
+     *  the period is 0.0 and there is an enclosing director, then
+     *  this method delegates to the enclosing director, returning
+     *  whatever it returns. If the <i>period</i> is not 0.0, then
+     *  this method checks to see whether the
+     *  requested time is equal to the current time plus an integer
+     *  multiple of the period. If so, it returns the requested time.
+     *  If not, it returns current time plus the period.
+     *  @param actor The actor scheduled to be fired.
+     *  @param time The requested time.
+     *  @param microstep The microstep (ignored by this director).
+     *  @exception IllegalActionException If the operation is not
+     *    permissible (e.g. the given time is in the past).
+     *  @return Either the requested time or the current time plus the
+     *  period.
+     */
+    @Override
+    public Time fireAt(Actor actor, Time time, int microstep)
+            throws IllegalActionException {
         if (_debugging) {
-            _debug("FMIMADirector: returned super.fire().");
+            _debug("FMIMADirector: fireAt("
+                    + time.getLongValue() + ", "
+                    + microstep + ")");
+            _debug("* Current period: " + periodValue());
+        }
+        Time newTime = time;
+        Time currentTime = getModelTime();
+        Time hypoteticFutureTime = currentTime.add(periodValue());
+        Time stepSize = newTime.subtract(currentTime);
+        
+        if (newTime.compareTo(hypoteticFutureTime) < 0 && !time.isZero()) {
+            String newPeriod = stepSize.toString();
+            period.setExpression(newPeriod);
         }
         
-         
-        // We can now compute the step size of the FMU
-        // Consult all actors that implement TimeRegulator interface.
-        // FMUs for example, can implement TimeRegulator interface
-        // to check the acceptance of a step size.
-         
-        
-        Time proposedFmiTime = getModelTime().add(1E-8);//Time.POSITIVE_INFINITY;
-        
-        Nameable container = getContainer();
-        Iterator<?> actors = ((CompositeActor) container).deepEntityList()
-                .iterator();
-        while (actors.hasNext()) {
-            Actor actor = (Actor) actors.next();
-            if (actor instanceof TimeRegulator) {
-                Time modifiedTime = ((TimeRegulator) actor).proposeTime(proposedFmiTime);
-                if (proposedFmiTime.compareTo(modifiedTime) > 0) {
-                    proposedFmiTime = modifiedTime;
-                }
-                if (_debugging) {
-                    _debug("FMU " + actor.getFullName() + " proposed: "
-                            + modifiedTime.getLongValue()
-                            + " at time: "
-                            + getModelTime());
-                }
-            }
-        }
         if (_debugging) {
-            _debug("Computed future time: " + proposedFmiTime);
+            _debug("* New period: " + periodValue());
         }
+        return newTime;
     }
+    
+    /** Initialize the director and all deeply contained actors by calling
+     *  the super.initialize() method.
+     *  If the <i>period</i> parameter is greater than zero, then
+     *  request a first firing of the executive director, if there
+     *  is one.
+     *  @exception IllegalActionException If the superclass throws it.
+     */
+    @Override
+    public void initialize() throws IllegalActionException {
+        super.initialize();
+        _defaultPeriod.setExpression(period.getValueAsString());
+    }
+    
+//        // We can now compute the step size of the FMU
+//        // Consult all actors that implement TimeRegulator interface.
+//        // FMUs for example, can implement TimeRegulator interface
+//        // to check the acceptance of a step size.
+//         
+//        
+//        Time proposedFmiTime = getModelTime().add(1E-8);//Time.POSITIVE_INFINITY;
+//        
+//        Nameable container = getContainer();
+//        Iterator<?> actors = ((CompositeActor) container).deepEntityList()
+//                .iterator();
+//        while (actors.hasNext()) {
+//            Actor actor = (Actor) actors.next();
+//            if (actor instanceof TimeRegulator) {
+//                Time modifiedTime = ((TimeRegulator) actor).proposeTime(proposedFmiTime);
+//                if (proposedFmiTime.compareTo(modifiedTime) > 0) {
+//                    proposedFmiTime = modifiedTime;
+//                }
+//                if (_debugging) {
+//                    _debug("FMU " + actor.getFullName() + " proposed: "
+//                            + modifiedTime.getLongValue()
+//                            + " at time: "
+//                            + getModelTime());
+//                }
+//            }
+//        }
+//        if (_debugging) {
+//            _debug("Computed future time: " + proposedFmiTime);
+//        }
+//    }
     
     /** Call postfire() on all contained FMUs that were fired in the current
      *  iteration.  Return false if the model
@@ -176,7 +235,9 @@ public class FMIMADirector extends SRDirector {
      */
     @Override
     public boolean postfire() throws IllegalActionException {
-        boolean result=  super.postfire();        
+        boolean result=  super.postfire();
+        // restore the default period
+        period.setExpression(_defaultPeriod.getValueAsString());
         return result;
     }
 
@@ -193,4 +254,5 @@ public class FMIMADirector extends SRDirector {
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 
+    Parameter _defaultPeriod;
 }
