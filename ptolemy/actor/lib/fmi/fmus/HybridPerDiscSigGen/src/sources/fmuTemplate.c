@@ -566,7 +566,6 @@ fmi2Status fmi2SetReal (fmi2Component c, const fmi2ValueReference vr[], size_t n
 }
 
 fmi2Status fmi2SetHybridReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Real value[], const fmi2Integer hybridValue[]) {
-    // printf("[fmi2SetHybridReal]\n");
     int i;
     ModelInstance *comp = (ModelInstance *)c;
     if (invalidState(comp, "fmi2SetHybridReal", MASK_fmi2SetReal))
@@ -993,7 +992,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
         double ei = getEventIndicator(comp, i);
         if (ei * prevEventIndicators[i] < 0) {
             FILTERED_LOG(comp, fmi2OK, LOG_EVENT,
-                "fmi2HybridDoStep: state event at %u, z%d crosses zero -%c-", comp->time, i, ei < 0 ? '\\' : '/')
+                "fmi2HybridDoStep: state event at %ld, z%d crosses zero -%c-", comp->time, i, ei < 0 ? '\\' : '/')
             stateEvent++;
         }
         prevEventIndicators[i] = ei;
@@ -1002,13 +1001,13 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
 
     // check for missed time event
     if (comp->eventInfo.nextEventTimeDefined && ((comp->time - comp->eventInfo.nextEventTime) > 0)) {
-        FILTERED_LOG(comp, fmi2Discard, LOG_EVENT, "fmi2HybridDoStep: time event missed at %d, it was at %d", comp->time, comp->eventInfo.nextEventTime)
+        FILTERED_LOG(comp, fmi2Discard, LOG_EVENT, "fmi2HybridDoStep: time event missed at %ld, it was at %ld", comp->time, comp->eventInfo.nextEventTime)
         comp->time = comp->eventInfo.nextEventTime; // an overrun occurred! set the time to the time event time
         return fmi2Discard;
     }
     // check for time event
     if (comp->eventInfo.nextEventTimeDefined && (comp->time  == comp->eventInfo.nextEventTime)) {
-        FILTERED_LOG(comp, fmi2OK, LOG_EVENT, "fmi2HybridDoStep: time event detected at %g", comp->time)
+        FILTERED_LOG(comp, fmi2OK, LOG_EVENT, "fmi2HybridDoStep: time event detected at %ld", comp->time)
         timeEvent = 1;
     }
     if (timeEvent == 0) {
