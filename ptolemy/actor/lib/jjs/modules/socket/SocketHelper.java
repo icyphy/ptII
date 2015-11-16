@@ -38,11 +38,24 @@ import io.vertx.core.net.NetServer;
 import io.vertx.core.net.NetServerOptions;
 import io.vertx.core.net.NetSocket;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.SequenceInputStream;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
+import ptolemy.data.AWTImageToken;
+import ptolemy.data.ImageToken;
 import ptolemy.data.LongToken;
+
+
 
 ///////////////////////////////////////////////////////////////////
 //// SocketHelper
@@ -256,6 +269,7 @@ public class SocketHelper extends VertxHelperBase {
         BYTE,
         DOUBLE,
         FLOAT,
+        IMAGE,
         INT,
         LONG,
         NUMBER,
@@ -269,7 +283,7 @@ public class SocketHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     public classes                        ////
 
-    /** Wrapper for connected sockets.
+    /** Wrapper for connected TCP sockets.
      *  An instance of this class handles socket events from the
      *  Vert.x NetSocket object and translates them into JavaScript
      *  events emitted by the eventEmitter specified in the constructor.
@@ -317,14 +331,22 @@ public class SocketHelper extends VertxHelperBase {
                 });
             });
             _socket.drainHandler((Void) -> {
-                // FIXME: This should unblock send(),
-                // which should block itself when the buffer gets full.
+                synchronized(this) {
+                    // This should unblock send(),
+                    notifyAll();
+                }
             });
             _socket.endHandler((Void) -> {
                 // End event on the socket triggers a close of the socket.
                 // This gets called when the remote side sends a FIN packet.
                 // FIXME: This isn't right. Need FIN from both ends to close the socket!
                 // _client.close();
+                
+                // In case a send is blocked, unblock it.
+                synchronized(this) {
+                    _closed = true;
+                    notifyAll();
+                }
             });
             _socket.exceptionHandler(throwable -> {
                 _error(_eventEmitter, throwable.toString());
@@ -333,7 +355,30 @@ public class SocketHelper extends VertxHelperBase {
                 _issueResponse(() -> {
                     if(_receiveType == DATA_TYPE.STRING) {
                         _eventEmitter.callMember("emit", "data", buffer.getString(0, buffer.length()));
+                    } else if (_receiveType == DATA_TYPE.IMAGE) {
+                        try {
+                            // System.err.println("FIXME: Received buffer length: " + buffer.length());
+                            if (_stream == null) {
+                                _stream = new ByteArrayInputStream(buffer.getBytes());
+                            } else {
+                                // Append the current buffer to previously received buffer(s).
+                                _stream = new SequenceInputStream(_stream, new ByteArrayInputStream(buffer.getBytes()));
+                                _actor.log("WARNING: Received what could be an incomplete image. Waiting for more data.");
+                            }
+                            BufferedImage image = ImageIO.read(_stream);
+                            // The above will return null if a full image has not yet been received.
+                            // But it may also return null for other reasons...
+                            // FIXME: It seems there is risk of just continuing to fail
+                            // and using up memory creating new SequenceInputStreams.
+                            if (image != null) {
+                                ImageToken token = new AWTImageToken(image);
+                                _eventEmitter.callMember("emit", "data", token);
+                            }
+                        } catch (IOException e) {
+                            _error(_eventEmitter, "Failed to read incoming image: " + e.toString());
+                        }
                     } else {
+                        // Assume a numeric type.
                         int size = _sizeOfReceiveType();
                         int length = buffer.length();
                         int numberOfElements = length / size;
@@ -387,7 +432,20 @@ public class SocketHelper extends VertxHelperBase {
          *  @param data The data to send.
          */
         public void send(final Object data) {
-            // FIXME: Should block if the send buffer is full.
+            // Block if the send buffer is full.
+            // Note that this should be called in the director thread, not
+            // in the Vert.x thread, so blocking is OK. We need to stall
+            // execution of the model to not get ahead of the capability.
+            while(_socket.writeQueueFull() && !_closed) {
+                synchronized(this) {
+                    try {
+                        _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
+                        wait();
+                    } catch (InterruptedException e) {
+                        _error(_eventEmitter, "Buffer is full, and wait for draining was interrupted");
+                    }
+                }
+            }
 
             submit(() -> {
                 Buffer buffer = Buffer.buffer();
@@ -398,33 +456,57 @@ public class SocketHelper extends VertxHelperBase {
                         // it seems that Nashorn's Java.to() function creates
                         // a bigger array than needed with trailing null elements.
                         if (element != null) {
-                            if (_sendType.equals(DATA_TYPE.STRING)) {
-                                // NOTE: Use of toString() method makes this very tolerant, but
-                                // it won't properly stringify JSON. Is this OK?
-                                // NOTE: A second argument could take an encoding.
-                                // Defaults to UTF-8. Is this OK?
-                                buffer.appendString(element.toString());
-                            } else {
-                                _appendToBuffer(buffer, element);
-                            }
+                            _appendToBuffer(element, buffer);
                         }
                     }
                 } else {
-                    if (_sendType.equals(DATA_TYPE.STRING)) {
-                        // NOTE: Use of toString() method makes this very tolerant, but
-                        // it won't properly stringify JSON. Is this OK?
-                        // NOTE: A second argument could take an encoding.
-                        // Defaults to UTF-8. Is this OK?
-                        buffer.appendString(data.toString());
-                    } else {
-                        _appendToBuffer(buffer, data);
-                    }
+                    _appendToBuffer(data, buffer);
                 }
                 _socket.write(buffer);
             });
         }
+        /** Append data to be sent to the specified buffer.
+         *  @param data The data to send.
+         *  @param buffer The buffer.
+         */
+        private void _appendToBuffer(final Object data, Buffer buffer) {
+            if (_sendType.equals(DATA_TYPE.STRING)) {
+                // NOTE: Use of toString() method makes this very tolerant, but
+                // it won't properly stringify JSON. Is this OK?
+                // NOTE: A second argument could take an encoding.
+                // Defaults to UTF-8. Is this OK?
+                buffer.appendString(data.toString());
+            } else if (_sendType.equals(DATA_TYPE.IMAGE)) {
+                if (data instanceof ImageToken) {
+                    Image image = ((ImageToken)data).asAWTImage();
+                    if (image == null) {
+                        _error(_eventEmitter, "Empty image received: " + data);
+                        return;
+                    }
+                    if (!(image instanceof BufferedImage)) {
+                        _error(_eventEmitter, "Unsupported image token type: " + image.getClass());
+                        return;
+                    }
+                    // FIXME: Image types for sending given by ImageIO.getReaderFormatNames();
+                    String imageType = "jpg";
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    try {
+                        ImageIO.write((BufferedImage)image, imageType, stream);
+                    } catch (IOException e) {
+                        _error("Failed to convert image to byte array for sending: " + e.toString());
+                    }
+                    buffer.appendBytes(stream.toByteArray());
+                    // System.err.println("FIXME: Send buffer length: " + buffer.length());
+                } else {
+                    _error(_eventEmitter, "Expected image to send, but got "
+                            + data.getClass().getName());
+                }
+            } else {
+                _appendNumericToBuffer(buffer, data);
+            }
+        }
         /** Append a numeric instance of _sendType to a buffer. */
-        private void _appendToBuffer(Buffer buffer, Object data) {
+        private void _appendNumericToBuffer(Buffer buffer, Object data) {
             if (data instanceof Number) {
                 switch(_sendType) {
                 case BYTE:
@@ -509,8 +591,7 @@ public class SocketHelper extends VertxHelperBase {
         }
         private void _receiveTypeError(Throwable ex, DATA_TYPE type, Buffer buffer) {
             String expectedType = type.toString().toLowerCase();
-            // FIXME: Remove this?
-            ex.printStackTrace();
+            // ex.printStackTrace();
             _error(_eventEmitter, "Received data that is not of type "
                     + expectedType
                     + ": "
@@ -552,7 +633,9 @@ public class SocketHelper extends VertxHelperBase {
                 return 0;
             }
         }
+        private boolean _closed = false;
         private NetSocket _socket;
+        private InputStream _stream;
         private ScriptObjectMirror _eventEmitter;
         private DATA_TYPE _sendType;
         private DATA_TYPE _receiveType;
