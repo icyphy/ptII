@@ -59,7 +59,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.Entity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.Port;
+import ptolemy.kernel.util.ChangeListener;
 import ptolemy.kernel.util.ChangeRequest;
+import ptolemy.kernel.util.Changeable;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelRuntimeException;
@@ -2012,6 +2014,8 @@ FiringsRecordable {
 
     /** Queue a change request.  If there is a manager, then first call
      *  stopFire() before deferring to the base class.
+     *  Also, if there is a waiting thread registered with the manager,
+     *  then wake it up to let it handle change requests.
      *  @param change The requested change.
      */
     @Override
@@ -2027,6 +2031,20 @@ FiringsRecordable {
         // refresh the GUI.
         if (getManager() != null && change.isStructuralChange()) {
             stopFire();
+        }
+        
+        // If there is a waiting thread (e.g. synchronizeToRealTime),
+        // then interrupt it so it can handle change requests.
+        Manager manager = getManager();
+        if (manager != null) {
+            Thread waitingThread = manager.getWaitingThread();
+            if (waitingThread != null) {
+                // Instead of executing the change requests here,
+                // just interrupt the waiting thread and expect it will
+                // handle change requests.
+                waitingThread.interrupt();
+                return;
+            }
         }
     }
 
