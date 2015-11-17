@@ -253,7 +253,7 @@ function ClientRequest(options, responseCallback) {
   }
   
   // Set the Content-Length header
-  if (options.body !== null) {
+  if (options.body != null && options.body != undefined) {
 	  var headers;
 	  if (typeof options.headers == "undefined") {
 		  headers = {};
