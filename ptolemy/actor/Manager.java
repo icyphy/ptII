@@ -669,6 +669,17 @@ public class Manager extends NamedObj implements Runnable {
         return _throwableToExecutionIdentifier.get(throwable);
     }
 
+    /** Return a thread that is waiting and can be
+     *  interrupted in the event that a change request is made,
+     *  or null to indicate that there is no thread waiting.
+     *  @return The thread that is waiting, or null to indicate
+     *   that no thread is waiting.
+     *  @see #setWaitingThread(Thread)
+     */
+    public Thread getWaitingThread() {
+    	return _waitingThread;
+    }
+
     /** Initialize the model.  This calls the preinitialize() method of
      *  the container, followed by the resolveTypes() and initialize() methods.
      *  Set the Manager's state to PREINITIALIZING and INITIALIZING as
@@ -1269,6 +1280,16 @@ public class Manager extends NamedObj implements Runnable {
     public void setStatusMessage(String message) {
         _statusMessage = message;
     }
+    
+    /** Indicate that the specified thread is waiting and can be
+     *  interrupted in the event that a change request is made.
+     *  @param thread The thread that is waiting, or null to indicate
+     *   that no thread is waiting.
+     *  @see #getWaitingThread()
+     */
+    public void setWaitingThread(Thread thread) {
+    	_waitingThread = thread;
+    }
 
     /** Return a short description of the throwable.
      *  @param throwable The throwable
@@ -1761,6 +1782,9 @@ public class Manager extends NamedObj implements Runnable {
 
     // An indicator of whether type resolution needs to be done.
     private boolean _typesResolved = false;
+    
+    /** A thread that is waiting, e.g. synchronized to real time, or null if there is none. */
+    private Thread _waitingThread;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////

@@ -40,6 +40,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
+import ptolemy.actor.Manager;
 import ptolemy.actor.QuasiTransparentDirector;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.SuperdenseTimeDirector;
@@ -2251,6 +2252,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                         //  {@link TimeRegulator} interface.
                         if (_synchronizeToRealTime) {
                             // If synchronized to the real time.
+                            Manager manager = ((CompositeActor) getContainer()).getManager();
                             while (!_stopRequested && !_stopFireRequested) {
                                 lastFoundEvent = _eventQueue.get();
                                 currentTime = lastFoundEvent.timeStamp();
@@ -2299,17 +2301,36 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                         // SOLUTION: explicitly release read permissions.
                                         depth = _workspace
                                                 .releaseReadPermission();
+                                        // Allow change requests to execute immediately while we are waiting.
+                                        // This will have the side effect of executing any pending change requests.
+                                        setDeferringChangeRequests(false);
+                                        // Tell the manager what thread is waiting.
+                                        manager.setWaitingThread(Thread.currentThread());
                                         _eventQueue.wait(timeToWait);
                                     } catch (InterruptedException ex) {
-                                        // Continue executing?
-                                        // No, because this could be a problem if any
-                                        // actor assumes that model time always exceeds
-                                        // real time when synchronizeToRealTime is set.
+                                    	// Ignore and circulate around the loop.
+                                    	// The interrupt could be due to a change request,
+                                    	// which we will want to process.
+                                    	// This used to do the following with flawed reasoning:
+                                    	/*
                                         throw new IllegalActionException(
                                                 this,
                                                 ex,
                                                 "Thread interrupted when waiting for"
                                                         + " real time to match model time.");
+                                        */
+                                    	// The reasoning was:
+                                        // Continue executing?
+                                        // No, because this could be a problem if any
+                                        // actor assumes that model time always exceeds
+                                        // real time when synchronizeToRealTime is set.
+                                    	//
+                                    	// But this is flawed because we are in a while loop
+                                    	// that will check again for matching to real time.
+                                    	// EAL 10/27/15.
+                                    } finally {
+                                    	setDeferringChangeRequests(true);
+                                        manager.setWaitingThread(null);
                                     }
                                 }
                             } // while
