@@ -818,7 +818,8 @@ public class KielerLayout extends AbstractGlobalLayout {
     private KNode _createFsmSkeleton(KNode root) {
         
         _fsmInputOutput = KimlUtil.createInitializedNode();
-        _fsmInputOutput.getData(KShapeLayout.class).setPos(0, 0);
+        // hopefully no diagram gets this large
+        _fsmInputOutput.getData(KShapeLayout.class).setPos(0, 100000);
         _fsmInputOutput.getData(KLayoutData.class)
                 .setProperty(LayoutOptions.SEPARATE_CC, false);
         _fsmInputOutput.getData(KLayoutData.class).setProperty(Properties.CROSS_MIN,
@@ -839,7 +840,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                 CrossingMinimizationStrategy.INTERACTIVE);
 
         KNode newRoot = KimlUtil.createInitializedNode();
-        newRoot.getData(KShapeLayout.class).setPos(0, 100);
+        newRoot.getData(KShapeLayout.class).setPos(0, 0);
         
         // add the skeleton to the root node
         root.getChildren().add(_fsmInputOutput);
@@ -1118,6 +1119,8 @@ public class KielerLayout extends AbstractGlobalLayout {
                 knode.setParent(_fsmOutput);
             } else {
                 knode.setParent(_fsmInputOutput);
+                knode.getData(KLayoutData.class).setProperty(
+                        LayoutOptions.ALIGNMENT, Alignment.BOTTOM);
             }
         }
 
