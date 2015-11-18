@@ -2,7 +2,7 @@
 #
 # @Authors: Christopher Hylands, based on a file by Thomas M. Parks
 #
-# @Version: $Id: makefile 61761 2011-08-09 16:46:24Z bldmastr $
+# @Version: $Id$
 #
 # @Copyright (c) 1998-2009 The Regents of the University of California.
 # All rights reserved.
