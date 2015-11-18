@@ -99,7 +99,7 @@ public class ImportAccessorAction extends AbstractAction {
     public ImportAccessorAction(Top frame) {
         super("Import Accessor");
         if (!(frame instanceof BasicGraphFrame)) {
-            throw new InternalErrorException("Frame " + _frame
+            throw new InternalErrorException("Frame " + frame
                     + " is not a BasicGraphFrame?");
         }
         _frame = (BasicGraphFrame) frame;
