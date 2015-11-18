@@ -591,7 +591,6 @@ public class HTMLAbout {
         // miss some LiveLinks that are not in the toplevel model file, but
         // it is much faster than parsing each model.
         boolean matches = false;
-        StringBuffer demoBuffer = new StringBuffer();
         BufferedReader in = null;
         try {
             in = new BufferedReader(
