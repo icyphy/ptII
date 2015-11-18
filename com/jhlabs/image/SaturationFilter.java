@@ -33,6 +33,7 @@ public class SaturationFilter extends PointFilter {
     /**
      * Construct a SaturationFilter.
      * The amount of saturation change.
+     * @param amount The amount of saturation change.
      */
     public SaturationFilter(float amount) {
         this.amount = amount;
@@ -40,9 +41,11 @@ public class SaturationFilter extends PointFilter {
     }
 
     /**
-     * Set the amount of saturation change. 1 leaves the image unchanged, values between 0 and 1 desaturate, 0 completely
+     * Set the amount of saturation change. 1 leaves the image
+     * unchanged, values between 0 and 1 desaturate, 0 completely
      * desaturates it and values above 1 increase the saturation.
      * @param amount the amount
+     * @see #getAmount()
      */
     public void setAmount(float amount) {
         this.amount = amount;
@@ -51,6 +54,7 @@ public class SaturationFilter extends PointFilter {
     /**
      * Set the amount of saturation change.
      * @return the amount
+     * @see #setAmount(float)
      */
     public float getAmount() {
         return amount;

@@ -94,8 +94,7 @@ public class SwimFilter extends TransformFilter {
     /**
     * Specifies the angle of the effect.
     * @param angle the angle of the effect.
-    * @angle
-    * @see #getAngle
+    * @see #getAngle()
     */
     public void setAngle(float angle) {
         this.angle = angle;
@@ -137,7 +136,6 @@ public class SwimFilter extends TransformFilter {
     /**
     * Specifies the time. Use this to animate the effect.
     * @param time the time.
-    * @angle
     * @see #getTime
     */
     public void setTime(float time) {

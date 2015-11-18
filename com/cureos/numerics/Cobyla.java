@@ -59,7 +59,7 @@ public class Cobyla {
      * @param maxfun Maximum number of function evaluations before terminating.
      * @param terminate An array of booleans indicating whether to terminate.
      * @return Exit status of the COBYLA2 optimization.
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown by the cobylb() method.
      */
     public static CobylaExitStatus FindMinimum(final Calcfc calcfc, int n,
             int m, double[] x, double rhobeg, double rhoend, int iprint,
