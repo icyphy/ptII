@@ -171,7 +171,7 @@ public class DiscreteClock extends TimedSource {
         offsets.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         // Call this so that we don't have to copy its code here...
-        attributeChanged(offsets);
+        _updateOffsets(offsets);
 
         // Set the values parameter.
         values = new Parameter(this, "values");
@@ -180,8 +180,9 @@ public class DiscreteClock extends TimedSource {
         // Set type constraint on the output.
         output.setTypeAtLeast(ArrayType.elementType(values));
 
-        // Call this so that we don't have to copy its code here...
-        attributeChanged(values);
+        // Don't call attributeChanged here, see _updateOffsets for
+        // details.
+        //attributeChanged(values);
 
         start = new TypedIOPort(this, "start");
         start.setInput(true);
@@ -248,32 +249,9 @@ public class DiscreteClock extends TimedSource {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == offsets) {
-            ArrayToken offsetsValue = (ArrayToken) offsets.getToken();
-            _offsets = new double[offsetsValue.length()];
-
-            double previous = 0.0;
-            for (int i = 0; i < offsetsValue.length(); i++) {
-                _offsets[i] = ((DoubleToken) offsetsValue.getElement(i))
-                        .doubleValue();
-                // Check nondecreasing property.
-                if (_offsets[i] < previous) {
-                    throw new IllegalActionException(this,
-                            "Value of offsets is not nondecreasing "
-                                    + "and nonnegative.");
-                }
-                previous = _offsets[i];
-            }
+            _updateOffsets(attribute);
         } else if (attribute == period) {
-            double periodValue = ((DoubleToken) period.getToken())
-                    .doubleValue();
-            if (_debugging) {
-                _debug("Setting period to " + periodValue);
-            }
-            if (periodValue <= 0.0) {
-                throw new IllegalActionException(this,
-                        "Period is required to be positive.  "
-                                + "Period given: " + periodValue);
-            }
+            _updatePeriod(attribute);
         } else {
             super.attributeChanged(attribute);
         }
@@ -643,6 +621,59 @@ public class DiscreteClock extends TimedSource {
 
     /** The phase of the next output. */
     protected transient int _phase;
+
+    /** Update the offsets attribute.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the offsets array is not
+     *  nondecreasing and nonnegative.
+     */
+    private void _updateOffsets(Attribute attribute)
+            throws IllegalActionException {
+        // This method is necessary because FindBugs reports
+        // "Unitialized read of field in method called from constructor"
+        // if this constructor calls attributeChanged() and this
+        // class has a subclass.  The workaround is to define
+        // a separate method.
+        ArrayToken offsetsValue = (ArrayToken) offsets.getToken();
+        _offsets = new double[offsetsValue.length()];
+
+        double previous = 0.0;
+        for (int i = 0; i < offsetsValue.length(); i++) {
+            _offsets[i] = ((DoubleToken) offsetsValue.getElement(i))
+                .doubleValue();
+            // Check nondecreasing property.
+            if (_offsets[i] < previous) {
+                throw new IllegalActionException(this,
+                        "Value of offsets is not nondecreasing "
+                        + "and nonnegative.");
+            }
+            previous = _offsets[i];
+        }
+    }
+
+    /** Update the period attribute.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the period is not
+     *  positive.
+     */
+    private void _updatePeriod(Attribute attribute)
+            throws IllegalActionException {
+        // This method is necessary because FindBugs reports
+        // "Unitialized read of filed in method called from constructor"
+        // if this constructor calls attributeChanged() and this
+        // class has a subclass.  The workaround is to define
+        // a separate method.
+        double periodValue = ((DoubleToken) period.getToken())
+            .doubleValue();
+        if (_debugging) {
+            _debug("Setting period to " + periodValue);
+        }
+        if (periodValue <= 0.0) {
+            throw new IllegalActionException(this,
+                    "Period is required to be positive.  "
+                    + "Period given: " + periodValue);
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
