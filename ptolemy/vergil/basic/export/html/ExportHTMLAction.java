@@ -1003,9 +1003,9 @@ WebExporter {
                     if (upHTMLParameter != null) {
                         upHTML = upHTMLParameter.stringValue();
                     } else {
-                        if (!usePtWebsite) {
-                            upHTML = " <li><a href=\"../index.html\">Up</a></li>";
-                        } else {
+                        //if (!usePtWebsite) {
+                        //    upHTML = " <li><a href=\"../index.html\">Up</a></li>";
+                        //} else {
                             // Generate links to the domain docs.
                             String domains[] = { "Continuous", "DDF", "DE",
                                     "Modal", "PN", "Rendezvous", "SDF", "SR",
@@ -1019,7 +1019,7 @@ WebExporter {
                                         + "</a></li>");
                             }
                             upHTML = buffer.toString();
-                        }
+                        //}
                     }
                 }
 
