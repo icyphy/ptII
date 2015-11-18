@@ -123,28 +123,28 @@ import certi.rti.impl.CertiRtiAmbassador;
 //// HlaManager
 
 /**
- * <p>This attribute implements a HLA Manager which allows a Ptolemy model to
+ * This attribute implements a HLA Manager which allows a Ptolemy model to
  * cooperate with a HLA/CERTI Federation. The main goal is to allow a Ptolemy
  * simulation as Federate of a Federation.
- * <p></p>
- * The High Level Architecture (HLA) [1][2] is a standard for distributed
+ * 
+ * <p>The High Level Architecture (HLA) [1][2] is a standard for distributed
  * discrete-event simulation. A complex simulation in HLA is called a HLA
  * Federation. A Federation is a collection of Federates (e.g. simpler simulators),
  * each performing a sequence of computations, interconnected by a Run
- * Time Infrastructure (RTI).
- * </p><p>
- * CERTI is an Open-Source middleware RTI compliant with HLA [NRS09] which
+ * Time Infrastructure (RTI).</p>
+ *
+ * <p>CERTI is an Open-Source middleware RTI compliant with HLA [NRS09] which
  * manages every part of federation. It also ensures a real-time behavior of
  * a federation execution. CERTI is implemented in C++ and bindings are
  * provided as JCERTI for Java and PyHLA for Python. For more information see:
- * <br><a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a></br>
- * </p><p>
- * The {@link HlaManager} attribute handles the time synchronization between
+ * <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a></p>
+ *
+ * <p>The {@link HlaManager} attribute handles the time synchronization between
  * Ptolemy model time and HLA logical time by implementing the {@link TimeRegulator}
  * interface. It also manages objects that implement interfaces provided by
  * JCERTI relatives to Federation, Declaration, Object and Time management
  * areas in HLA (each management areas provides a set of services).
- * </p><p>
+ * </p>
  * To develop a HLA Federation it is required to specify a Federate Object
  * Model (FOM) which describes the architecture of the Federation (HLA version,
  * name of Federates which belong to, shared HLA attributes) and the interaction
@@ -152,67 +152,67 @@ import certi.rti.impl.CertiRtiAmbassador;
  * are called HLA attributes and their interaction mechanism is based on the
  * publish/subscribe paradigm. The FOM is specified in a .fed file used by
  * the RTI (e.g. by the RTIG process when using CERTI). More information in [3].
- * <br><a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a></br>
- * </p><p>
- * To enable a Ptolemy model as a Federate, the {@link HlaManager} has to be
+ * <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a></br></p>
+ * <p> To enable a Ptolemy model as a Federate, the {@link HlaManager} has to be
  * deployed and configured (by double-clicking on the attribute).
  * Parameters <i>federateName</i>, <i>federationName</i> have to match the
  * declaration in the FOM (.fed file). <i>fedFile</i> specifies the FOM file and
- * its path.
- * </p><p>
- * Parameters <i>useNextEventRequest</i>, <i>UseTimeAdvanceRequest</i>,
+ * its path.</p>
+ *
+ * <p>Parameters <i>useNextEventRequest</i>, <i>UseTimeAdvanceRequest</i>,
  * <i>isTimeConstrained</i> and <i>isTimeRegulator</i> are
  * used to configure the HLA time management services of the Federate. A
  * Federate can only specify the use of the <i>nextEventRequest()
  * service</i> or the <i>timeAdvanceRequest()</i> service at a time.
  * <i>istimeConstrained</i> is used to specify time-constrained Federate and
  * <i>istimeRegulator</i> to specify time-regulator Federate. The combination of
- * both parameters is possible and is recommended.
- * </p><p>
- * Parameters, <i>hlaStepTime</i> and <i>hlaLookAHead</i>
- * are used to specify Hla Timing attributes of a Federate.
- * </p><p>
- * Parameters <i>requireSynchronization</i>, <i>synchronizationPointName</i>
+ * both parameters is possible and is recommended.</p>
+ *
+ * <p>Parameters, <i>hlaStepTime</i> and <i>hlaLookAHead</i>
+ * are used to specify Hla Timing attributes of a Federate.</p>
+ * 
+ * <p>Parameters <i>requireSynchronization</i>, <i>synchronizationPointName</i>
  * and <i>isCreatorSyncPt</i> are used to configure HLA synchronization point.
  * This mechanism is usually used to synchronize the Federates, during their
  * initialization, to avoid that Federates that only consume some HLA
  * attributes finished their simulation before the other federates have started.
  * <i>isCreatorSyncPt</i> indicates if the Federate is the creator of the
  * synchronization. Only one Federate can create the named synchronization
- * point for the whole HLA Federation.
- * </p><p>
- * {@link HlaPublisher} and {@link HlaSubscriber} actors are used to
+ * point for the whole HLA Federation.</p>
+ *
+ * <p>{@link HlaPublisher} and {@link HlaSubscriber} actors are used to
  * respectively publish and subscribe to HLA attributes. The name of those
  * actors and their <i>classObjectHandle</i> parameter have to match the
  * identifier of the shared HLA attributes and their object class that they
- * belong to, specified in the FOM (.fed file).
- * </p><p>
- * For a correct execution, the <i>CERTI_HOME</i> environment variable has to
+ * belong to, specified in the FOM (.fed file).</p>
+ *
+ * <p>For a correct execution, the <i>CERTI_HOME</i> environment variable has to
  * be set. It could be set in the shell (by running one of the scripts provided
  * by CERTI) where Vergil is executed, or as a parameter of the Ptolemy model
- * or as a parameter of the {@link HlaManager}:
- * </p><pre>
+ * or as a parameter of the {@link HlaManager}:</p>
+ * <pre>
  * CERTI_HOME="/absolute/path/to/certi/"
- * </pre><p>
- * Otherwise, the current implementation is not able to find the CERTI
+ * </pre>
+ * 
+ * <p>Otherwise, the current implementation is not able to find the CERTI
  * environment, the RTIG binary and to perform its execution. See also
- * the {@link CertiRtig} class.
- * </p><p>
- * NOTE: For a correct behavior CERTI has to be compiled with the option
+ * the {@link CertiRtig} class.</p>
+ *
+ * <p>NOTE: For a correct behavior CERTI has to be compiled with the option
  * "CERTI_USE_NULL_PRIME_MESSAGE_PROTOCOL"
  * </p>
  *
- * <b>References</b>:
- * <br>
- * [1] Dpt. of Defense (DoD) Specifications, "High Level Architecture Interface
- *     Specification, Version 1.3", DOD/DMSO HLA IF 1.3, Tech. Rep., Apr 1998.
- * [2] IEEE, "IEEE standard for modeling and simulation High Level Architecture
- *     (HLA)", IEEE Std 1516-2010, vol. 18, pp. 1-38, 2010.
- * [3] D. of Defense (DoD) Specifications, "High Level Architecture Object Model
- *     Template, Version 1.3", DOD/DMSO OMT 1.3, Tech. Rep., Feb 1998.
- * [4] E. Noulard, J.-Y. Rousselot, and P. Siron, "CERTI, an open source RTI,
+ * <p><b>References</b>:</p>
+ * 
+ * <p>[1] Dpt. of Defense (DoD) Specifications, "High Level Architecture Interface
+ *     Specification, Version 1.3", DOD/DMSO HLA IF 1.3, Tech. Rep., Apr 1998.</p>
+ * <p>[2] IEEE, "IEEE standard for modeling and simulation High Level Architecture
+ *     (HLA)", IEEE Std 1516-2010, vol. 18, pp. 1-38, 2010.</p>
+ * <p>[3] D. of Defense (DoD) Specifications, "High Level Architecture Object Model
+ *     Template, Version 1.3", DOD/DMSO OMT 1.3, Tech. Rep., Feb 1998.</p>
+ * <p>[4] E. Noulard, J.-Y. Rousselot, and P. Siron, "CERTI, an open source RTI,
  *     why and how ?", Spring Simulation Interoperability Workshop, pp. 23-27,
- *     Mar 2009.
+ *     Mar 2009.</p>
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, Edward A. Lee, David Come, Yanxuan LI
  *  @version $Id$
@@ -540,7 +540,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  _populateHlaAttributeTables() to initialize HLA attributes to publish
      *  or subscribe to; instantiates and initializes the {@link RTIambassador}
      *  and {@link FederateAmbassador} which handle the communication
-     *  Federate <-> RTIA <-> RTIG. RTIA and RTIG are both external communicant
+     *  Federate &lt;-&gt; RTIA &lt;-&gt; RTIG. RTIA and RTIG are both external communicant
      *  processes (see JCERTI); create the HLA/CERTI Federation (if not exists);
      *  allows the Federate to join the Federation; set the Federate time
      *  management policies (regulator and/or contrained); creates a
@@ -677,7 +677,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *       (TARA) service is used;
      *   -b) if event-based Federate, then the nextEventRequestAvailable()
      *       (NERA) service is used
-     *  Case 2: If lookahead > 0
+     *  Case 2: If lookahead &gt; 0
      *   -c) if time-stepped Federate, then timeAdvanceRequest() (TAR) is used;
      *   -d) if event-based Federate, then the nextEventRequest() (NER) is used;
      *  Otherwise the proposedTime is returned.

@@ -96,7 +96,7 @@ public class SAXDriver implements XmlHandler, Locator, Attributes, XMLReader //i
 
     /**
      * Set the locale.
-     * @param local The Locale
+     * @param locale The Locale
      * @exception SAXException Always thrown in this base class.
      */
     public void setLocale(Locale locale) throws SAXException {

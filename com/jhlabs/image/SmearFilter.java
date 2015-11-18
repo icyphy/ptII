@@ -78,7 +78,6 @@ public class SmearFilter extends WholeImageFilter {
     /**
     * Specifies the angle of the texture.
     * @param angle the angle of the texture.
-    * @angle
     * @see #getAngle
     */
     public void setAngle(float angle) {

@@ -79,7 +79,6 @@ import ptolemy.util.StringUtilities;
  * Federate that has launched the RTIG could shutdown the subprocess at the
  * end of the simulation before the other Federates have left the Federation.
  * Then an exception is throwed.
- * </br>
  *
  * @author Gilles Lasnier, Christopher Brooks
  * @version $Id$

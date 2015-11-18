@@ -83,7 +83,7 @@ public class GradientWipeFilter extends AbstractBufferedImageOp {
     }
 
     /** Set the invert.
-     *  @param True if inverted
+     *  @param invert True if inverted
      *  @see #getInvert()
      */
     public void setInvert(boolean invert) {

@@ -75,8 +75,9 @@ public class Noise implements Function1D, Function2D, Function3D {
      * Compute turbulence using Perlin noise.
      * @param x the x value
      * @param y the y value
+     * @param z the z value
      * @param octaves number of octaves of turbulence
-     * @return turbulence value at (x,y)
+     * @return turbulence value at (x,y,z)
      */
     public static float turbulence3(float x, float y, float z, float octaves) {
         float t = 0.0f;
@@ -185,7 +186,7 @@ public class Noise implements Function1D, Function2D, Function3D {
      * Compute 3-dimensional Perlin noise.
      * @param x the x coordinate
      * @param y the y coordinate
-     * @param y the y coordinate
+     * @param z the z coordinate
      * @return noise value at (x,y,z)
      */
     public static float noise3(float x, float y, float z) {

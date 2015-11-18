@@ -112,8 +112,7 @@ public class TextureFilter extends PointFilter {
     /**
     * Specifies the angle of the texture.
     * @param angle the angle of the texture.
-    * @angle
-    * @see #getAngle
+    * @see #getAngle()
     */
     public void setAngle(float angle) {
         this.angle = angle;
@@ -128,7 +127,7 @@ public class TextureFilter extends PointFilter {
     /**
     * Returns the angle of the texture.
     * @return the angle of the texture.
-    * @see #setAngle
+    * @see #setAngle(float)
     */
     public float getAngle() {
         return angle;

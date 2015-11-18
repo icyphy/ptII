@@ -45,7 +45,7 @@ public class WoodFilter extends PointFilter {
     /**
     * Specifies the rings value.
     * @param rings the rings value. Minimum value:  0, maximum value:  1
-    * @see #getRings
+    * @see #getRings()
     */
     public void setRings(float rings) {
         this.rings = rings;
@@ -54,7 +54,7 @@ public class WoodFilter extends PointFilter {
     /**
      * Returns the rings value.
      * @return the rings value.
-     * @see #setRings
+     * @see #setRings(float)
      */
     public float getRings() {
         return rings;
@@ -63,7 +63,7 @@ public class WoodFilter extends PointFilter {
     /**
     * Specifies the scale of the texture.
     * @param scale the scale of the texture. Minimum value:  1, maximum value:  300+
-    * @see #getScale
+    * @see #getScale()
     */
     public void setScale(float scale) {
         this.scale = scale;
@@ -72,7 +72,7 @@ public class WoodFilter extends PointFilter {
     /**
     * Returns the scale of the texture.
     * @return the scale of the texture.
-    * @see #setScale
+    * @see #setScale(float)
     */
     public float getScale() {
         return scale;
@@ -81,7 +81,7 @@ public class WoodFilter extends PointFilter {
     /**
     * Specifies the stretch factor of the texture.
     * @param stretch the stretch factor of the texture. Minimum value:  1, maximum value:  50+
-    * @see #getStretch
+    * @see #getStretch()
     */
     public void setStretch(float stretch) {
         this.stretch = stretch;
@@ -99,8 +99,7 @@ public class WoodFilter extends PointFilter {
     /**
     * Specifies the angle of the texture.
     * @param angle the angle of the texture.
-    * @angle
-    * @see #getAngle
+    * @see #getAngle()
     */
     public void setAngle(float angle) {
         this.angle = angle;
@@ -115,7 +114,7 @@ public class WoodFilter extends PointFilter {
     /**
     * Returns the angle of the texture.
     * @return the angle of the texture.
-    * @see #setAngle
+    * @see #setAngle(float)
     */
     public float getAngle() {
         return angle;
@@ -151,7 +150,7 @@ public class WoodFilter extends PointFilter {
     /**
     * Returns the amount of fibres in  the texture.
     * @return the amount of fibres in the texture.
-    * @see #setFibres
+    * @see #setFibres(float)
     */
     public float getFibres() {
         return fibres;
