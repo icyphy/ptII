@@ -363,13 +363,12 @@ test StringToken-13.9 {Test convert from Token} {
     list $msg
 } {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.Token 'present' to the type string because the type of the token is higher or incomparable with the given type.}}
 
-
-test StringToken-13.9 {Test convert from an AWTImageToken} {
+test StringToken-13.9.2 {Test convert from an AWTImageToken} {
     set t [java::new ptolemy.data.AWTImageToken [java::null]]
     set result {}
     catch {set result [[java::call ptolemy.data.StringToken convert $t] toString]} msg
     list $msg
-} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.AWTImageToken '{type="class ptolemy.data.AWTImageToken" width="-1" height="-1"}' to the type string because the type of the token is higher or incomparable with the given type.}}
+} {{ptolemy.kernel.util.IllegalActionException: Conversion is not supported from ptolemy.data.AWTImageToken '{type="class ptolemy.data.AWTImageToken", width="-1", height="-1"}' to the type string because the type of the token is higher or incomparable with the given type.}}
 
 test StringToken-13.10 {Test convert from ArrayToken} {
     set t [java::new {ptolemy.data.ArrayToken String} "{1.0, 2.0}"]
