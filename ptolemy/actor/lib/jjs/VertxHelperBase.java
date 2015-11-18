@@ -401,7 +401,7 @@ public class VertxHelperBase extends HelperBase {
             if (cacheDirBase.isEmpty()) {
                 File directory = null;
                 try {
-                    directory = new File(StringUtilities.getProperty("user.dir"),  ".vertxPt");
+                    directory = new File(StringUtilities.getProperty("user.home"),  ".vertxPt");
                     System.setProperty("vertx.cacheDirBase", directory.getCanonicalPath());
                 } catch (Throwable throwable) {
                     System.err.println("Could not set the vertx.cacheDirBase property to " + directory 
