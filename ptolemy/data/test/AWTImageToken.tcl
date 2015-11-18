@@ -46,7 +46,7 @@ if {[string compare test [info procs test]] == 1} then {
 test AWTImageToken-1.0 {Create a nil AWTImageToken} {
     set a [java::new ptolemy.data.AWTImageToken [java::null]]
     $a toString
-} {{type="class ptolemy.data.AWTImageToken" width="-1" height="-1"}}
+} {{type="class ptolemy.data.AWTImageToken", width="-1", height="-1"}}
 
 ######################################################################
 ####
@@ -56,7 +56,7 @@ test AWTImageToken-1.1 {Create a  AWTImageToken} {
 	[java::field java.awt.image.BufferedImage TYPE_INT_RGB]]
     set a [java::new ptolemy.data.AWTImageToken $image]
     list [$a toString] [[$a getType] toString]
-} {{{type="class ptolemy.data.AWTImageToken" width="1" height="1"}} object(null)}
+} {{{type="class ptolemy.data.AWTImageToken", width="1", height="1"}} object(null)}
 
 ######################################################################
 ####
