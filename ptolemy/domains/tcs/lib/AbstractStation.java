@@ -50,6 +50,7 @@ import ptolemy.data.type.Type;
 import ptolemy.domains.tcs.kernel.Rejecting;
 import ptolemy.domains.tcs.kernel.TCSDirector;
 import ptolemy.actor.util.Time;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -130,16 +131,21 @@ public class AbstractStation extends StationWriter implements Rejecting{
         _trainColor.fillColor.setToken("{0.0,0.0,0.0,0.0}");
 		//show id of the station
         _valueId=new AttributeValueAttribute(node_icon, "_IdInStation");
-        _valueId.textSize.setToken("15");
-        _valueId.textColor.setToken("{0.0, 0.0, 0.0, 1.0}");
-        _valueId.anchor.setToken("north");
+        _valueId.textSize.setToken("15"); 
+        Location l = new Location(_valueId,"_location");
+        l.setLocation(new double[]{-8.0,-5.0});
+        _valueId.textColor.setToken("{0.0, 0.0, 0.0, 1.0}");  
         _valueId.attributeName.setExpression("stationId");
+        //_valueId.anchor.setToken("southeast"); 
         //show symbol of the station
         _valueSymbol=new AttributeValueAttribute(node_icon, "_SymbolInStation");
         _valueSymbol.textSize.setToken("15");
         _valueSymbol.textColor.setToken("{0.0, 0.0, 0.0, 1.0}");
-        _valueSymbol.anchor.setToken("south");
+        //_valueSymbol.anchor.setToken("northwest");
         _valueSymbol.attributeName.setExpression("lineSymbol");
+        _valueSymbol.useExpression.setExpression("true");
+        Location l2 = new Location(_valueSymbol,"_location");
+        l2.setLocation(new double[]{-10.0,-15.0});
         
         
     }
