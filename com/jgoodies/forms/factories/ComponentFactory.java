@@ -35,16 +35,16 @@ import javax.swing.JLabel;
 
 /**
  * An interface that defines the factory methods as used by the
- * {@link com.jgoodies.forms.builder.PanelBuilder} and its subclasses.<p>
+ * {@link com.jgoodies.forms.builder.PanelBuilder} and its subclasses.
  *
- * The String arguments passed to the methods <code>#createLabel(String)</code>,
+ * <p>The String arguments passed to the methods <code>#createLabel(String)</code>,
  * <code>#createTitle(String)</code>, and
  * <code>#createSeparator(String, int)</code> can contain an optional
  * mnemonic marker. The mnemonic and mnemonic index are indicated
  * by a single ampersand (<tt>&amp;</tt>). For example
  * <tt>&quot;&amp;Save&quot;</tt>, or <tt>&quot;Save&nbsp;&amp;as&quot;</tt>.
  * To use the ampersand itself duplicate it, for example
- * <tt>&quot;Look&amp;&amp;Feel&quot;</tt>.
+ * <tt>&quot;Look&amp;&amp;Feel&quot;</tt>.</p>
  *
  * @author Karsten Lentzsch
  * @version $Revision$
@@ -73,7 +73,7 @@ public interface ComponentFactory {
 
     /**
      * Creates and returns a title label that uses the foreground color
-     * and font of a <code>TitledBorder</code>.<p>
+     * and font of a <code>TitledBorder</code>.
      *
      * <pre>
      * createTitle("Name");       // No mnemonic
@@ -91,7 +91,7 @@ public interface ComponentFactory {
     /**
      * Creates and returns a labeled separator. Useful to separate
      * paragraphs in a panel, which is often a better choice than a
-     * <code>TitledBorder</code>.<p>
+     * <code>TitledBorder</code>.
      *
      * <pre>
      * final int LEFT = SwingConstants.LEFT;
