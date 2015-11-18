@@ -33,12 +33,17 @@ public class GradientWipeFilter extends AbstractBufferedImageOp {
 
     /**
      * Set the density of the image in the range 0..1.
-     * *arg density The density
+     * @param density The density
+     * @see #getDensity()
      */
     public void setDensity(float density) {
         this.density = density;
     }
 
+    /** Get the density.
+     *  @return the density.
+     *  @see #setDensity(float)
+     */
     public float getDensity() {
         return density;
     }
@@ -55,24 +60,40 @@ public class GradientWipeFilter extends AbstractBufferedImageOp {
     /**
      * Get the softness of the dissolve.
      * @return the softness
-    * @see #setSoftness(float)
+     * @see #setSoftness(float)
      */
     public float getSoftness() {
         return softness;
     }
 
+    /** Set the mask.
+     *  @param mask The mask
+     *  @see #getMask()
+     */
     public void setMask(BufferedImage mask) {
         this.mask = mask;
     }
 
+    /** Get the mask.
+     *  @return The mask
+     *  @see #setMask(BufferedImage)
+     */
     public BufferedImage getMask() {
         return mask;
     }
 
+    /** Set the invert.
+     *  @param True if inverted
+     *  @see #getInvert()
+     */
     public void setInvert(boolean invert) {
         this.invert = invert;
     }
 
+    /** Get the invert.
+     *  @return The invert.
+     *  @see #setInvert(boolean)
+     */
     public boolean getInvert() {
         return invert;
     }

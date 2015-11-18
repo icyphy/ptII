@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// PacketToSensorData
 
 /**
- An adapter class for ptolemy.actor.lib.mbed.PacketToSensorData
+ An adapter class for ptolemy.actor.lib.mbed.PacketToSensorData.
 
  @author Robert Bui
  @version $Id$

@@ -4439,7 +4439,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected Function _fmiGetEventIndicatorsFunction;
     
     /**
-     * Flag identifying the first invocation of fire() after initialize
+     * Flag identifying the first invocation of fire() after initialize.
      */
     protected boolean _firstFire;
 

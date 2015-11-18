@@ -38,9 +38,9 @@ import java.util.concurrent.LinkedBlockingQueue;
 ///// SerialPortReader
 
 /**
- * SerialPortReader is a class meant for reading in bytes from the
- * serial port connection and providing them to the ReaderM class for
- * decoding of the unique packet format used by the IMU sensors.
+ * Read in bytes from the serial port connection and provide them to
+ * the ReaderM class for decoding of the unique packet format used by
+ * the IMU sensors.
  *
  * @author Hunter Massey
  * @version $Id$
@@ -66,7 +66,7 @@ public class SerialPortReader extends Thread {
             System.out.println("OS not supported!");
         }
 
-        charBuf = new LinkedBlockingQueue<Character>();
+        _characterBuffer = new LinkedBlockingQueue<Character>();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -74,12 +74,13 @@ public class SerialPortReader extends Thread {
 
 
     /**	Initialize the serial port and connect a BufferedInputStream to the serialPort.
+     *  @return 1 if the initialization was successfull, -1 otherwise.
      *  @param portNumber The number of theport   
      */
     public int init(int portNumber) {
         portName += portNumber;
         try {
-            commID = CommPortIdentifier.getPortIdentifier(portName);
+            _communicationID = CommPortIdentifier.getPortIdentifier(portName);
         } catch (NoSuchPortException exception) {
             // If port not found, return -1 and print exception			
             exception.printStackTrace();
@@ -91,7 +92,7 @@ public class SerialPortReader extends Thread {
             // This will wait up to 5000 ms for the port to open before failing.
             // Additionally, since the return value is an interface, we must cast
             // it to be a SerialPort
-            serialPort = (SerialPort) commID.open("SerialPortReader", 5000);
+            _serialPort = (SerialPort) _communicationID.open("SerialPortReader", 5000);
         } catch (PortInUseException exception) {
             // If port is in use when attempting to open,
             // return -1 and print exception
@@ -101,7 +102,7 @@ public class SerialPortReader extends Thread {
 
         try {
             // Obtain the InputStream associated with the serial port
-            inStream = new BufferedInputStream(serialPort.getInputStream());
+            _inputStream = new BufferedInputStream(_serialPort.getInputStream());
         } catch (IOException exception) {
             exception.printStackTrace();
             return -1;
@@ -109,7 +110,7 @@ public class SerialPortReader extends Thread {
 
         try {
             // Set the baud rate, data bits, stop bits, and parity bits of the port
-            serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
+            _serialPort.setSerialPortParams(9600, SerialPort.DATABITS_8, SerialPort.STOPBITS_1, SerialPort.PARITY_NONE);
         } catch (UnsupportedCommOperationException exception) {
             exception.printStackTrace();
             return -1;
@@ -126,16 +127,16 @@ public class SerialPortReader extends Thread {
      */
     @Override
     public void run() {
-        threadIsActive = true;
+        _threadIsActive = true;
         int readChar = -1;
 
         try {
-            while (threadIsActive) {
+            while (_threadIsActive) {
                 // Keep attempting to read from BufferedInputStream until success
-                while ((readChar = inStream.read()) != -1) {
+                while ((readChar = _inputStream.read()) != -1) {
                     Character charToBuf = Character.valueOf((char) readChar);
                     try {
-                        charBuf.put(charToBuf);
+                        _characterBuffer.put(charToBuf);
                     } catch (InterruptedException exception) {
                         exception.printStackTrace();
                     }
@@ -153,7 +154,7 @@ public class SerialPortReader extends Thread {
     public String readFromPort() {
         String returnVal = "";
         try {
-            returnVal = charBuf.take().toString();
+            returnVal = _characterBuffer.take().toString();
         } catch (InterruptedException exception) {
             exception.printStackTrace();
         }
@@ -167,14 +168,14 @@ public class SerialPortReader extends Thread {
     public void closePort() {
         stopThread();
         try {
-            // If there is no serial port, then inStream might be null.
-            if (inStream != null) {
-                inStream.close();
+            // If there is no serial port, then _inputStream might be null.
+            if (_inputStream != null) {
+                _inputStream.close();
             }
         } catch (Exception exception) {
             exception.printStackTrace();
         }
-        serialPort.close();
+        _serialPort.close();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -185,32 +186,32 @@ public class SerialPortReader extends Thread {
      *	connection to the serial port.
     */
     private void stopThread() {
-        threadIsActive = false;
+        _threadIsActive = false;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private variables                     ////
 
     /** A boolean stating whether the read thread is active. */
-    private boolean threadIsActive; 
+    private boolean _threadIsActive; 
 
     /** An InputStream connected to serialPort. */
-    private BufferedInputStream inStream; 
+    private BufferedInputStream _inputStream; 
 
-    /**  The communication port identifier used to open serialPort. */
-    private CommPortIdentifier commID; 
+    /**  The communication port identifier used to open _serialPort. */
+    private CommPortIdentifier _communicationID; 
 
     /**  A concurrent Queue implementation for storing read
      *  characters.
      */
-    private LinkedBlockingQueue<Character> charBuf; 
+    private LinkedBlockingQueue<Character> _characterBuffer; 
 
-    /** The serialPort object referencing the incoming serial
+    /** The _serialPort object referencing the incoming serial
      * connection.
      */
-    private SerialPort serialPort; 
+    private SerialPort _serialPort; 
 
-    /** The name of the serial port that serialPort is to connect to -
+    /** The name of the serial port that _serialPort is to connect to -
      * varies by OS.
      */
     private String portName; 

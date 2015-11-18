@@ -97,6 +97,7 @@ public class WarpFilter extends WholeImageFilter {
 
     /**
      * For morphing, sets the image we're morphing to. If not, set then we're just warping.
+     * @param morphImage The image to be morphed or warped.
      */
     public void setMorphImage(BufferedImage morphImage) {
         this.morphImage = morphImage;

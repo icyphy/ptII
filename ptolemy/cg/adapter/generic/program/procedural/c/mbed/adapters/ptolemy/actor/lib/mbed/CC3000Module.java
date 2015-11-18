@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// CC3000Module
 
 /**
- An adapter class for ptolemy.actor.lib.mbed.CC3000Module
+ An adapter class for ptolemy.actor.lib.mbed.CC3000Module.
 
  @author Robert Bui
  @version $Id$

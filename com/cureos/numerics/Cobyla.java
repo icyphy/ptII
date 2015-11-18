@@ -57,6 +57,7 @@ public class Cobyla {
      * @param iprint Print level, 0 &lt;= iprint &lt;= 3, where 0 provides no output and
      * 3 provides full output to the console.
      * @param maxfun Maximum number of function evaluations before terminating.
+     * @param terminate An array of booleans indicating whether to terminate.
      * @return Exit status of the COBYLA2 optimization.
      * @exception IllegalActionException
      */

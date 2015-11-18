@@ -54,9 +54,8 @@ public class VertxBrowserHelper {
     ////                         public methods                    ////
 
     /** Create a web server that serves the specified string.
-     *  @param currentObj The JavaScript object on which this method is called.
      *  @param port The port to listen for requests on.
-     *        @return A new VertxHelper.
+     *  @return A new VertxHelper.
      */
     public static Server createServer(int port) {
         return new Server(port);

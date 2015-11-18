@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// NeoPixelLEDStrip
 
 /**
- An adapter class for ptolemy.actor.lib.mbed.NeoPixelLEDStrip
+ An adapter class for ptolemy.actor.lib.mbed.NeoPixelLEDStrip.
 
  @author Robert Bui
  @version $Id$

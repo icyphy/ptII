@@ -108,6 +108,7 @@ public class VertxHelperBase extends HelperBase {
      *  subclass. That instance will deploy a verticle that will execute jobs
      *  submitted through the {@link #submit(Runnable)} method.
      *  @param actor Either a JavaScript actor or a RestrictedJavaScriptInterface.
+     *  @return An instance of this helper for the specified actor.
      */
     public static VertxHelperBase getHelper(Object actor) {
         if (actor instanceof RestrictedJavaScriptInterface) {

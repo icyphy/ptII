@@ -37,9 +37,7 @@ public class RescaleFilter extends TransferFilter {
 
     /**
     * Specifies the scale factor.
-    * @param scale the scale factor.
-    * @min-value 1
-    * @max-value 5+
+    * @param scale the scale factor. min-value:  1, maximum value:  5+
     * @see #getScale
     */
     public void setScale(float scale) {

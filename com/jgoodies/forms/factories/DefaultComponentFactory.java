@@ -95,7 +95,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
     // Component Creation ***************************************************
 
     /**
-     * Creates and returns a label with an optional mnemonic.<p>
+     * Creates and returns a label with an optional mnemonic.
      *
      * <pre>
      * createLabel("Name");       // No mnemonic
@@ -117,7 +117,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
 
     /**
      * Creates and returns a title label that uses the foreground color
-     * and font of a <code>TitledBorder</code>.<p>
+     * and font of a <code>TitledBorder</code>.
      *
      * <pre>
      * createTitle("Name");       // No mnemonic
@@ -141,7 +141,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
     /**
      * Creates and returns a labeled separator with the label in the left-hand
      * side. Useful to separate paragraphs in a panel; often a better choice
-     * than a <code>TitledBorder</code>.<p>
+     * than a <code>TitledBorder</code>.
      *
      * <pre>
      * createSeparator("Name");       // No mnemonic
@@ -161,7 +161,7 @@ public final class DefaultComponentFactory implements ComponentFactory {
     /**
      * Creates and returns a labeled separator. Useful to separate
      * paragraphs in a panel, which is often a better choice than a
-     * <code>TitledBorder</code>.<p>
+     * <code>TitledBorder</code>.
      *
      * <pre>
      * final int LEFT = SwingConstants.LEFT;
@@ -190,19 +190,19 @@ public final class DefaultComponentFactory implements ComponentFactory {
     /**
      * Creates and returns a labeled separator. Useful to separate
      * paragraphs in a panel, which is often a better choice than a
-     * <code>TitledBorder</code>.<p>
+     * <code>TitledBorder</code>.
      *
-     * The label's position is determined by the label's horizontal alignment,
+     * <p>The label's position is determined by the label's horizontal alignment,
      * which must be one of:
      * <code>SwingConstants.LEFT</code>,
      * <code>SwingConstants.CENTER</code>,
-     * <code>SwingConstants.RIGHT</code>.<p>
+     * <code>SwingConstants.RIGHT</code>.</p>
      *
-     * TODO: Since this method has been marked public in version 1.0.6,
-     * we need to precisely describe the semantic of this method.<p>
+     * <p>TODO: Since this method has been marked public in version 1.0.6,
+     * we need to precisely describe the semantic of this method.</p>
      *
-     * TODO: Check if we can relax the constraint for the label alignment
-     * and also accept LEADING and TRAILING.
+     * <p>TODO: Check if we can relax the constraint for the label alignment
+     * and also accept LEADING and TRAILING.</p>
      *
      * @param label       the title label component
      * @return a separator with title label

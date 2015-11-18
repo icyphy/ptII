@@ -44,9 +44,7 @@ public class WoodFilter extends PointFilter {
 
     /**
     * Specifies the rings value.
-    * @param rings the rings value.
-    * @min-value 0
-    * @max-value 1
+    * @param rings the rings value. Minimum value:  0, maximum value:  1
     * @see #getRings
     */
     public void setRings(float rings) {
@@ -64,9 +62,7 @@ public class WoodFilter extends PointFilter {
 
     /**
     * Specifies the scale of the texture.
-    * @param scale the scale of the texture.
-    * @min-value 1
-    * @max-value 300+
+    * @param scale the scale of the texture. Minimum value:  1, maximum value:  300+
     * @see #getScale
     */
     public void setScale(float scale) {
@@ -84,9 +80,7 @@ public class WoodFilter extends PointFilter {
 
     /**
     * Specifies the stretch factor of the texture.
-    * @param stretch the stretch factor of the texture.
-    * @min-value 1
-    * @max-value 50+
+    * @param stretch the stretch factor of the texture. Minimum value:  1, maximum value:  50+
     * @see #getStretch
     */
     public void setStretch(float stretch) {
@@ -129,9 +123,7 @@ public class WoodFilter extends PointFilter {
 
     /**
     * Specifies the turbulence of the texture.
-    * @param turbulence the turbulence of the texture.
-    * @min-value 0
-    * @max-value 1
+    * @param turbulence the turbulence of the texture. Minimum value:  0, maximum value:  1
     * @see #getTurbulence
     */
     public void setTurbulence(float turbulence) {
@@ -149,9 +141,7 @@ public class WoodFilter extends PointFilter {
 
     /**
     * Specifies the amount of fibres in the texture.
-    * @param fibres the amount of fibres in the texture.
-    * @min-value 0
-    * @max-value 1
+    * @param fibres the amount of fibres in the texture. Minimum value:  0, maximum value:  1
     * @see #getFibres
     */
     public void setFibres(float fibres) {
@@ -169,10 +159,8 @@ public class WoodFilter extends PointFilter {
 
     /**
     * Specifies the gain of the texture.
-    * @param gain the gain of the texture.
-    * @min-value 0
-    * @max-value 1
-    * @see #getGain
+    * @param gain the gain of the texture. Minimum value:  0, maximum value:  1
+    * @see #getGain()
     */
     public void setGain(float gain) {
         this.gain = gain;
@@ -181,7 +169,7 @@ public class WoodFilter extends PointFilter {
     /**
     * Returns the gain of the texture.
     * @return the gain of the texture.
-    * @see #setGain
+    * @see #setGain(float)
     */
     public float getGain() {
         return gain;
@@ -190,7 +178,7 @@ public class WoodFilter extends PointFilter {
     /**
      * Set the colormap to be used for the filter.
      * @param colormap the colormap
-     * @see #getColormap
+     * @see #getColormap()
      */
     public void setColormap(Colormap colormap) {
         this.colormap = colormap;
@@ -199,7 +187,7 @@ public class WoodFilter extends PointFilter {
     /**
      * Get the colormap to be used for the filter.
      * @return the colormap
-     * @see #setColormap
+     * @see #setColormap(Colormap)
      */
     public Colormap getColormap() {
         return colormap;

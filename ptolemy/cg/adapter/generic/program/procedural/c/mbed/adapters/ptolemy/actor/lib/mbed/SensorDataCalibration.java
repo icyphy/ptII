@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// SensorDataCalibration
 
 /**
- An adapter class for ptolemy.actor.lib.mbed.SensorDataCalibration
+ An adapter class for ptolemy.actor.lib.mbed.SensorDataCalibration.
 
  @author Robert Bui
  @version $Id$

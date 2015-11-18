@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// LEDCubeUpdate
 
 /**
- An adapter class for ptolemy.actor.lib.mbed.LEDCubeUpdate
+ An adapter class for ptolemy.actor.lib.mbed.LEDCubeUpdate.
 
  @author Robert Bui
  @version $Id$

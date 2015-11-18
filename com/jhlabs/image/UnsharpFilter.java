@@ -51,10 +51,8 @@ public class UnsharpFilter extends GaussianFilter {
 
     /**
      * Set the amount of sharpening.
-     * @param amount the amount
-    * @min-value 0
-    * @max-value 1
-    * @see #getAmount
+     * @param amount the amount. Minimum value:  0, maximum value:  1
+     * @see #getAmount()
      */
     public void setAmount(float amount) {
         this.amount = amount;
@@ -63,7 +61,7 @@ public class UnsharpFilter extends GaussianFilter {
     /**
      * Get the amount of sharpening.
      * @return the amount
-    * @see #setAmount
+     * @see #setAmount(float)
      */
     public float getAmount() {
         return amount;

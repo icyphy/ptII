@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// Accelerometer
 
 /**
- An adapter class for ptolemy.actor.lib.mbed.Accelerometer
+ An adapter class for ptolemy.actor.lib.mbed.Accelerometer.
 
  @author Robert Bui
  @version $Id$

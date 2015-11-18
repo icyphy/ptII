@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// HSBtoRGB
 
 /**
- An adapter class for ptolemy.actor.lib.mbed.HSBtoRGB
+ An adapter class for ptolemy.actor.lib.mbed.HSBtoRGB.
 
  @author Robert Bui
  @version $Id$

@@ -40,7 +40,7 @@ import com.jgoodies.forms.util.LayoutStyle;
 
 /**
  * A factory that creates instances of FormLayout for frequently used
- * form layouts. It makes form creation easier and more consistent.<p>
+ * form layouts. It makes form creation easier and more consistent.
  *
  * <p><strong>I consider removing the <code>FormLayout</code> factory methods.
  * These seem to be less useful and may lead to poor layout readability.

@@ -173,7 +173,7 @@ public class PanelBuilder extends AbstractFormBuilder {
     // Adding Labels **********************************************************
 
     /**
-     * Adds a textual label to the form using the default constraints.<p>
+     * Adds a textual label to the form using the default constraints.
      *
      * <pre>
      * addLabel("Name");       // No Mnemonic
@@ -193,7 +193,7 @@ public class PanelBuilder extends AbstractFormBuilder {
     }
 
     /**
-     * Adds a textual label to the form using the specified constraints.<p>
+     * Adds a textual label to the form using the specified constraints.
      *
      * <pre>
      * addLabel("Name",       cc.xy(1, 1)); // No Mnemonic
@@ -217,7 +217,7 @@ public class PanelBuilder extends AbstractFormBuilder {
     }
 
     /**
-     * Adds a textual label to the form using the specified constraints.<p>
+     * Adds a textual label to the form using the specified constraints.
      *
      * <pre>
      * addLabel("Name",       "1, 1"); // No Mnemonic
@@ -244,9 +244,9 @@ public class PanelBuilder extends AbstractFormBuilder {
     /**
      * Adds a label and component to the panel using the given cell constraints.
      * Sets the given label as <i>the</i> component label using
-     * {@link JLabel#setLabelFor(java.awt.Component)}.<p>
+     * {@link JLabel#setLabelFor(java.awt.Component)}.
      *
-     * <strong>Note:</strong> The {@link CellConstraints} objects for the label
+     * <p><strong>Note:</strong> The {@link CellConstraints} objects for the label
      * and the component must be different. Cell constraints are implicitly
      * cloned by the <code>FormLayout</code> when added to the container.
      * However, in this case you may be tempted to reuse a
@@ -257,9 +257,10 @@ public class PanelBuilder extends AbstractFormBuilder {
      * just set the coordinates but do <em>not</em> create a new instance.
      * And so the second invocation of <code>xy*(...)</code> overrides
      * the settings performed in the first invocation before the object
-     * is cloned by the <code>FormLayout</code>.<p>
+     * is cloned by the <code>FormLayout</code>.</p>
      *
-     * <strong>Wrong:</strong><pre>
+     * <p><strong>Wrong:</strong></p>
+     * <pre>
      * CellConstraints cc = new CellConstraints();
      * builder.add(
      *     nameLabel,
@@ -268,7 +269,8 @@ public class PanelBuilder extends AbstractFormBuilder {
      *     cc.xy(3, 7)          // sets the single instance to (3, 7)
      * );
      * </pre>
-     * <strong>Correct:</strong><pre>
+     * <p><strong>Correct:</strong></p>
+     * <pre>
      * // Using a single CellConstraints instance and cloning
      * CellConstraints cc = new CellConstraints();
      * builder.add(
@@ -395,7 +397,7 @@ public class PanelBuilder extends AbstractFormBuilder {
     // Adding Titles ----------------------------------------------------------
 
     /**
-     * Adds a title label to the form using the default constraints.<p>
+     * Adds a title label to the form using the default constraints.
      *
      * <pre>
      * addTitle("Name");       // No mnemonic
@@ -415,7 +417,7 @@ public class PanelBuilder extends AbstractFormBuilder {
     }
 
     /**
-     * Adds a title label to the form using the specified constraints.<p>
+     * Adds a title label to the form using the specified constraints.
      *
      * <pre>
      * addTitle("Name",       cc.xy(1, 1)); // No mnemonic
@@ -439,7 +441,7 @@ public class PanelBuilder extends AbstractFormBuilder {
     }
 
     /**
-     * Adds a title label to the form using the specified constraints.<p>
+     * Adds a title label to the form using the specified constraints.
      *
      * <pre>
      * addTitle("Name",       "1, 1"); // No mnemonic
@@ -464,7 +466,7 @@ public class PanelBuilder extends AbstractFormBuilder {
     // Adding Separators ------------------------------------------------------
 
     /**
-     * Adds a titled separator to the form that spans all columns.<p>
+     * Adds a titled separator to the form that spans all columns.
      *
      * <pre>
      * addSeparator("Name");       // No Mnemonic
@@ -482,7 +484,7 @@ public class PanelBuilder extends AbstractFormBuilder {
     }
 
     /**
-     * Adds a titled separator to the form using the specified constraints.<p>
+     * Adds a titled separator to the form using the specified constraints.
      *
      * <pre>
      * addSeparator("Name",       cc.xy(1, 1)); // No Mnemonic
@@ -507,7 +509,7 @@ public class PanelBuilder extends AbstractFormBuilder {
     }
 
     /**
-     * Adds a titled separator to the form using the specified constraints.<p>
+     * Adds a titled separator to the form using the specified constraints.
      *
      * <pre>
      * addSeparator("Name",       "1, 1"); // No Mnemonic
@@ -528,7 +530,7 @@ public class PanelBuilder extends AbstractFormBuilder {
     }
 
     /**
-     * Adds a titled separator to the form that spans the specified columns.<p>
+     * Adds a titled separator to the form that spans the specified columns.
      *
      * <pre>
      * addSeparator("Name",       3); // No Mnemonic
