@@ -895,7 +895,8 @@ implements ParseTreeCodeGenerator {
         boolean flag = node.isLogicalAnd();
 
         for (int i = 1; i < numChildren; i++) {
-            /*ASTPtRootNode child = (ASTPtRootNode)*/node.jjtGetChild(i);
+            // FindBugs: Return value of method without side effect is ignored 
+            /*ASTPtRootNode child = (ASTPtRootNode)*//*node.jjtGetChild(i);*/
 
             result.append(flag ? " && " : " || ");
 

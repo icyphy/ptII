@@ -63,7 +63,7 @@ public class FMUImport extends NamedProgramCodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
-        getComponent();
+        //getComponent();
 
         //         String type = getCodeGenerator().codeGenType(actor.input.getType());
         //         if (!getCodeGenerator().isPrimitive(type)) {

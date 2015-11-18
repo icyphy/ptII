@@ -1236,7 +1236,8 @@ Scene.v().addBasicClass("javax.swing.JTabbedPane",SootClass.SIGNATURES);
             deferredObject = (InstantiableNamedObj) ((InstantiableNamedObj) object)
                     .getParent();
 
-            /* isClass = */((InstantiableNamedObj) object).isClassDefinition();
+            // FindBugs: 'Return value of method without side effect is ignored'
+            /* isClass = *//*((InstantiableNamedObj) object).isClassDefinition();*/
         }
 
         if (deferredObject == null && object.getClassName() != null) {
