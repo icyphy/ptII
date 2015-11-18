@@ -668,6 +668,8 @@ ALLPACKAGES = \
 	ptolemy.domains.taskpt.kernel \
 	ptolemy.domains.taskpt.lib \
 	ptolemy.domains.taskpt.lib.gui \
+	ptolemy.domains.tcs.kernel \
+	ptolemy.domains.tcs.lib \
 	ptolemy.domains.tdl.kernel \
 	ptolemy.domains.tester.kernel \
 	ptolemy.domains.tester.lib \
