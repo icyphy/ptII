@@ -219,6 +219,8 @@
     <include name="ptolemy/domains/taskpt/taskpt.jar" />
     <include name="ptolemy/domains/taskpt/demo/demo.jar" />
     <include name="ptolemy/domains/taskpt/doc/doc.jar" />
+    <include name="ptolemy/domains/tcs/demo/demo.jar" />
+    <include name="ptolemy/domains/tcs/tcs.jar" />
     <include name="ptolemy/domains/tdl/demo/demo.jar" />
     <include name="ptolemy/domains/tdl/tdl.jar" />
     <include name="ptolemy/domains/tester/tester.jar" />
@@ -2960,6 +2962,29 @@
       </fileset>
     </jar>
 
+    <!-- ptolemy/domains/tcs/tcs.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/tcs/tcs.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/tcs/*.xml"/>
+	<include name="ptolemy/domains/tcs/kernel/*.class"/>
+	<include name="ptolemy/domains/tcs/kernel/*.xml"/>
+        <include name="ptolemy/domains/tcs/lib/*.class"/>
+	<include name="ptolemy/domains/tcs/lib/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/domains/tcs/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/domains/tcs/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/domains/tcs/demo/*/*.xml"/>
+        <include name="ptolemy/domains/tcs/demo/*/*.txt"/>
+      </fileset>
+    </jar>
+    
     <!-- ptolemy/domains/tdl/tdl.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/domains/tdl/tdl.jar"
