@@ -535,8 +535,9 @@ public class FMUImportHybrid extends FMUImport {
      * Returns true if all inputs are known. Return false if at least
      * one of the inputs is unknown. If an FMU has no inputs it also
      * returns true.
-     * @return
-     * @throws IllegalActionException
+     * @return true if all the inputs are known.
+     * @throws IllegalActionException If throw while getting the width
+     * of an input port or checking if an input port is known.
      */
     protected boolean _allInputsAreKnown() throws IllegalActionException {
         boolean allInputsKnown = true;

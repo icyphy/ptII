@@ -60,7 +60,7 @@ public abstract class CanvasPane implements EventAcceptor, CanvasComponent {
 
     /** Dispatch an AWT event on this pane. Currently only
      * layer events are handled.
-     * @param The event
+     * @param event The event
      */
     @Override
     public void dispatchEvent(AWTEvent event) {
