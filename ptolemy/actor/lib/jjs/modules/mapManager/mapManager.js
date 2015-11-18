@@ -112,12 +112,12 @@ function _keyedHashToString(hash) {
 //returns a string formatted with "x_" for arguments and "  " as a delimiter
 function _stringsToKey( stringArray) {
 	var x;
-	if (!  (typeof stringArray === "array")  ) {
-		throw "Incorrect arguments to _stringsToKey.";
+	if (!  (stringArray instanceof Array)  ) {
+		throw "Incorrect arguments to _stringsToKey. Input is not an array";
 	}
 	for ( x in stringArray) {
 		if (! (typeof x === "string")) {
-			throw "Incorrect arguments to _stringsToKey."
+			throw "Incorrect arguments to _stringsToKey. Input is not an array of strings."
 		}
 	}
 	if ( stringArray.length < 2) {
@@ -229,8 +229,6 @@ exports.localRepoToJSONString = function() {
 		"entities": entities
 	};
 
-
-	//console.log(JSON.stringify(data));
 	return JSON.stringify(data);
 }
 
@@ -439,7 +437,7 @@ function Entity(name) {
 		}
 
 	 	//Check to see if this entity has been registered.
-	 	if( ! entities.hasOwnProperty(alias._key()) ){
+	 	if( ! entities.hasOwnProperty(this._key()) ){
 	 		throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity a position.";
 	 	} 
 
@@ -542,7 +540,6 @@ exports.registerEntity = function(entity) {
 //  	}
 // }
 
->>>>>>> .r73825
 //******************************************************************************************
 //CoordinateTransformation Specific functions
 //******************************************************************************************
@@ -799,7 +796,7 @@ exports.MapSource = MapSource;
 */
 function ObservationMetadata(provenance, timestamp ){
 	
-	if( ! ( ( provenance instanceof MapSource ) && (timestamp instanceof Date )) ){
+	if( ! ( ( provenance instanceof MapSource ) && (typeof timestamp === "number")) ){
 	 	throw "Incorrect arguments to ObservationMetadata constructor";
 	 }
 
@@ -807,7 +804,7 @@ function ObservationMetadata(provenance, timestamp ){
 	this.timestamp = timestamp;
 
 	this._key = function(){
-		return _stringsToKey( provenance._key(), this.timestamp.toString());
+		return _stringsToKey( [ provenance._key(), this.timestamp.toString() ]);
 	}
 }
 
@@ -834,8 +831,8 @@ var _globalPlacementID = 0;
 */
 function Placement(metadata, center, pose, shape ){
 
-	if( ! ( ( metadata instanceof ObservationMetadata ) && (typeof center === "CoordinatePosition") 
-		&& (pose instanceof Quaternion ) && (typeof placement === "array")) ){
+	if( ! ( ( metadata instanceof ObservationMetadata ) && (center instanceof Array) 
+		&& (pose instanceof Quaternion ) && (shape instanceof Array)) ){
 		throw "Incorrect arguments to Placment constructor";
 	 }
 
@@ -846,7 +843,7 @@ function Placement(metadata, center, pose, shape ){
 	this._placementID = _globalPlacementID++;
 
 	this._key = function(){
-		return _stringsToKey( this.placementID.toString(), this.metadata._key());
+		return _stringsToKey( [ this._placementID.toString(), this.metadata._key() ] );
 	}
 }
 
@@ -887,7 +884,7 @@ var _globalOccupancyID = 0;
 */
 function Occupancy(metadata, grid ){
 	
-	if( ! ( ( metadata instanceof ObservationMetadata ) && (typeof grid === "array") ) ){
+	if( ! ( ( metadata instanceof ObservationMetadata ) && (grid instanceof Array) ) ){
 		throw "Incorrect arguments to Occupancy constructor";
 	 }
 
@@ -897,13 +894,13 @@ function Occupancy(metadata, grid ){
 	this._occupancyID = _globalOccupancyID++;
 
 	var dataTemp = grid;
-	while(typeof dataTemp === "array"){
+	while(dataTemp instanceof Array){
 		this.dimensions.push( dataTemp.length );
 		dataTemp = dataTemp[0];
 	}
 
 	this._key = function(){
-		return _stringsToKey(  this._occupancyID.toString(), this.metadata._key());
+		return _stringsToKey( [ this._occupancyID.toString(), this.metadata._key() ] );
 	}
 
 }
