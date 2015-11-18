@@ -671,7 +671,7 @@ public final class CanvasUtilities {
      * transformation is used that creates and returns a new instance
      * of GeneralPath.
      *
-     * @param a The shape
+     * @param s The shape
      * @param at The AffineTransform
      * @return The shape after the transformation.
      * @deprecated Use ShapeUtilities.transformModify()
@@ -687,6 +687,7 @@ public final class CanvasUtilities {
      * loop.  You asked for it.
      * @param p The point to be transformed
      * @param local The local context
+     * @param root The root
      * @return The transformed point
      * @deprecated Use local.getTransform(root) instead.
      */
