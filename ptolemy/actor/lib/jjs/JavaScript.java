@@ -1663,6 +1663,7 @@ public class JavaScript extends TypedAtomicActor {
     
     /** Convert the specified array into a native JavaScript array.
      *  @param array The array to convert.
+     *  @return The native JavaScript array.
      *  @throws IllegalActionException If the conversion fails.
      */
     public Object toJSArray(Object[] array) throws IllegalActionException {

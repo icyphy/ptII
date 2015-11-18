@@ -678,8 +678,8 @@ public class LightFilter extends WholeImageFilter {
 
         /**
          * Set the centre of the light in the X direction as a proportion of the image size.
-         * @param centreX the center
-         * @see #getCentreX
+         * @param x the center
+         * @see #getCentreX()
          */
         public void setCentreX(float x) {
             centreX = x;
@@ -688,7 +688,7 @@ public class LightFilter extends WholeImageFilter {
         /**
          * Get the centre of the light in the X direction as a proportion of the image size.
          * @return the center
-         * @see #setCentreX
+         * @see #setCentreX(float)
          */
         public float getCentreX() {
             return centreX;
@@ -696,7 +696,7 @@ public class LightFilter extends WholeImageFilter {
 
         /**
          * Set the centre of the light in the Y direction as a proportion of the image size.
-         * @param centreY the center
+         * @param y the center
          * @see #getCentreY
          */
         public void setCentreY(float y) {
@@ -706,7 +706,7 @@ public class LightFilter extends WholeImageFilter {
         /**
          * Get the centre of the light in the Y direction as a proportion of the image size.
          * @return the center
-         * @see #setCentreY
+         * @see #setCentreY(float)
          */
         public float getCentreY() {
             return centreY;

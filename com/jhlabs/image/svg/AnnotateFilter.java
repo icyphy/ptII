@@ -83,6 +83,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
      *  @param source The source image, on which motion is detected.
      *  @param destination The destination image, on which the graphic is added,
      *   or null to specify to add the graphic to the source image.
+     *  @return The filtered image.
      */
     @Override
     public BufferedImage filter(BufferedImage source, BufferedImage destination) {
@@ -267,6 +268,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
     
+    /** The relative URI of the default graphic. */
     public static String DEFAULT_GRAPHIC_URI = "$CLASSPATH/com/jhlabs/image/svg/CapeCodOutline.svg";
 
     ///////////////////////////////////////////////////////////////////

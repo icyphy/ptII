@@ -50,7 +50,9 @@ public class PixelUtils {
     private static Random randomGenerator = new Random();
 
     /**
-     * Clamp a value to the range 0..255
+     * Clamp a value to the range 0..255.
+     * @param c The value to be clamped
+     * @return the clamped value.
      */
     public static int clamp(int c) {
         if (c < 0)
@@ -60,10 +62,20 @@ public class PixelUtils {
         return c;
     }
 
+    /** Interpolate between two values.
+     *  @param v1 The first value
+     *  @param v2 The second value
+     *  @param f The amount of interpolation, typically between 0 and 1.
+     *  @return the interpolated value, clamped to 0..255.
+     */   
     public static int interpolate(int v1, int v2, float f) {
         return clamp((int) (v1 + f * (v2 - v1)));
     }
 
+    /** Return the brightness.
+     *  @param rgb  RFB encoded.
+     *  @return The average of the R, G and B.
+     */
     public static int brightness(int rgb) {
         int r = (rgb >> 16) & 0xff;
         int g = (rgb >> 8) & 0xff;
@@ -71,6 +83,13 @@ public class PixelUtils {
         return (r + g + b) / 3;
     }
 
+    /** Return true of the colors are near each other.
+     *  @param rgb1 The first color
+     *  @param rgb2 The second color
+     *  @param tolerance The maximum difference for r, g, and b
+     *  between the two values.
+     *  @return True if the colors are near each other.
+     */
     public static boolean nearColors(int rgb1, int rgb2, int tolerance) {
         int r1 = (rgb1 >> 16) & 0xff;
         int g1 = (rgb1 >> 8) & 0xff;
@@ -84,15 +103,35 @@ public class PixelUtils {
     private final static float hsb1[] = new float[3];//FIXME-not thread safe
     private final static float hsb2[] = new float[3];//FIXME-not thread safe
 
-    // Return rgb1 painted onto rgb2
+    /** Return rgb1 painted onto rgb2.
+     *  @param rgb1 The first pixel.
+     *  @param rgb2 The second pixel.
+     *  @param op The operation as defined by this class.
+     *  @return the combined pixel.
+     */   
     public static int combinePixels(int rgb1, int rgb2, int op) {
         return combinePixels(rgb1, rgb2, op, 0xff);
     }
 
+    /** Return rgb1 painted onto rgb2.
+     *  @param rgb1 The first pixel.
+     *  @param rgb2 The second pixel.
+     *  @param op The operation as defined by this class.
+     *  @param extraAlpha The extra alpha.
+     *  @param channelMask The channel mask.
+     *  @return the combined pixel.
+     */   
     public static int combinePixels(int rgb1, int rgb2, int op, int extraAlpha, int channelMask) {
         return (rgb2 & ~channelMask) | combinePixels(rgb1 & channelMask, rgb2, op, extraAlpha);
     }
 
+    /** Return rgb1 painted onto rgb2.
+     *  @param rgb1 The first pixel.
+     *  @param rgb2 The second pixel.
+     *  @param op The operation as defined by this class.
+     *  @param extraAlpha The extra alpha.
+     *  @return the combined pixel.
+     */   
     public static int combinePixels(int rgb1, int rgb2, int op, int extraAlpha) {
         if (op == REPLACE)
             return rgb1;

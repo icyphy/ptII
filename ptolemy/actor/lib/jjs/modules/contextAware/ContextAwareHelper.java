@@ -52,16 +52,18 @@ public class ContextAwareHelper {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return the list of services.  
-     * Eventually this should be replaced by querying a known registry or a 
-     * discovery process. Return a list of iot REST service names that are available to the user to choose from
+    /** Return the list of services.  Eventually this should be
+     * replaced by querying a known registry or a discovery
+     * process. Return a list of iot REST service names that are
+     * available to the user to choose from
      * @return the list of of services.
      */
     public String[] availableServices() {
         return _iotServiceList;
     }
     
-    /** convert an XML data format to JSON data format using the XML class from org.json.xml
+    /** Convert an XML data format to JSON data format using the XML
+     * class from org.json.xml.
      * 
      * @param response is the input in xml format
      * @return the json formatted data in an array 
@@ -83,55 +85,65 @@ public class ContextAwareHelper {
             return null;
         }
     }
-    /** Return the discovered services.
-     * Currently, this method sets the selected service to the list of services and
-     * then returns the string "pluto.cs.txstate.edu:22001"
+    /** Return the discovered services.  Currently, this method sets
+     * the selected service to the list of services and then returns
+     * the string "pluto.cs.txstate.edu:22001"
      *
      * @return the discovered services
      */
     public String discoverServices() {
-        // Need to implement a discovery process that takes into account user's preferences and locations
-        // currently, this just presents the set of known services to users and returns the set of
-        // parameters associated with the specific service. Not used by the accessor.
+        // Need to implement a discovery process that takes into
+        // account user's preferences and locations currently, this
+        // just presents the set of known services to users and
+        // returns the set of parameters associated with the specific
+        // service. Not used by the accessor.
         setSelectedService(_iotServiceList);
         return "pluto.cs.txstate.edu:22001";
     }
     
-    /** Return the list of output choices of GSN service. Currently, the list of choices is 
-     * hard coded. Eventually, this list should come from a discovery process
+    /** Return the list of output choices of Firebase
+     * service. Currently, the list of choices is hard
+     * coded. Eventually, this list should come from a discovery
+     * process
+     * @return The list of data type to be extracted from Firebase.
+     */
+    public String[] getFirebaseOutput(){
+        return _firebaseOutputPort;
+    }
+
+    /** Return the list of output choices of Paraimpu
+    /** Return the list of output choices of GSN service. Currently,
+     * the list of choices is hard coded. Eventually, this list should
+     * come from a discovery process
      * @return The list of data type to be extracted from the service
      */
     public String[] getGsnOutput() {
         return _gsnOutputPort;
     }
     
-    /** Return the list of output choices of Firebase service. Currently, the list of choices is 
-     * hard coded. Eventually, this list should come from a discovery process
-     * @return The list of data type to be extracted from Firebase.
-     */
-    public String[] getFirebaseOutput(){
-        return _firebaseOutputPort;
-    }
-    /** Return the list of output choices of Paraimpu service. Currently, the list of choices is 
-     * hard coded. Eventually, this list should come from a discovery process
+    /** Return the list of output choices of Paraimpu
+     * service. Currently, the list of choices is hard
+     * coded. Eventually, this list should come from a discovery
+     * process
      * @return The list of data type to be extracted from Paraimpu.
      */
-  
     public String[] getParaimpuOutput() {
         return _paraimpuOutputPort;
     }
+
     /** Return the name of the selected service. 
      * Currently, this method returns the string "GSN".
      * Eventually, this method will return data from the GUI.
      * @return The name of the service chosen by the user.
+     * @see #setSelectedService(String[])
      */
     public String getSelectedService() {
         //return _selectedService;
         return "GSN";
     }
 
-    /** Return the parameters associated with the selected service. Currently just return 
-     *  a hard wired url for testing.
+    /** Return the parameters associated with the selected
+     *  service. Currently just return a hard wired url for testing.
      * @param selectedService The name of the service that was selected.
      * @return An array of service parameters. Not used now
      */
@@ -142,17 +154,22 @@ public class ContextAwareHelper {
         return "pluto.cs.txstate.edu:22001";
     }
 
-    /** Initializes the list of available iot REST services and creates a GUI
-     *  for a user to make the selection. Not used currently
-     *  
-     *  Currently, this method does nothing.
-     *  
-     * @param list known list of services
+    /** Initializes the list of available iot REST services and
+     *  creates a GUI for a user to make the selection. Not used
+     *  currently Currently, this method does nothing.
+     *  @param list known list of services
+     *  @see #getSelectedService()
      */
     public void setSelectedService(String[] list) {
         //_GUI = new ContextAwareGUI(list);
         // addListeners();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /// The list for gsn, firebase and paraimpu  must match with what//
+    /// is defined in the respective service interfaces             ///
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
@@ -168,12 +185,9 @@ public class ContextAwareHelper {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    /// The list for gsn, firebase and paraimpu  must match with what//
-    /// is defined in the respective service interfaces             ///
-    
-    public String[] _gsnOutputPort = {"sound", "sensorName"};
-    public String[] _firebaseOutputPort = {"microwave", "microwaveStatus", "pastValues"};
-    public String[] _paraimpuOutputPort = {"payload","producer", "sensorId"};
-    private String[] _iotServiceList = { "GSN", "Paraimpu", "Firebase" };
 
+    private String[] _firebaseOutputPort = {"microwave", "microwaveStatus", "pastValues"};
+    private String[] _gsnOutputPort = {"sound", "sensorName"};
+    private String[] _iotServiceList = { "GSN", "Paraimpu", "Firebase" };
+    private String[] _paraimpuOutputPort = {"payload","producer", "sensorId"};
 }

@@ -67,6 +67,7 @@ public class ShellHelper {
     /** Factory method to create a new shell.
      *  @param scriptObjectMirror The JavaScript instance invoking the shell.
      *  @param command The command to be executed.
+     *  @return a new shell.
      */
     public static ShellHelper createShell(
             ScriptObjectMirror scriptObjectMirror, String command) {

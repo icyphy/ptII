@@ -25,16 +25,32 @@ public class Noise implements Function1D, Function2D, Function3D {
 
     private static Random randomGenerator = new Random();
 
-    @Override
+    /** Compute 1-dimensional Perlin noise.
+     * @param x the x value
+     * @return noise value at x in the range -1..1
+     */
+   @Override
     public float evaluate(float x) {
         return noise1(x);
     }
 
+    /** Compute 2-dimensional Perlin noise.
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @return noise value at (x,y)
+     */
     @Override
     public float evaluate(float x, float y) {
         return noise2(x, y);
     }
 
+    /**
+     * Compute 3-dimensional Perlin noise.
+     * @param x the x coordinate
+     * @param y the y coordinate
+     * @param y the y coordinate
+     * @return noise value at (x,y,z)
+     */
     @Override
     public float evaluate(float x, float y, float z) {
         return noise3(x, y, z);
@@ -301,6 +317,9 @@ public class Noise implements Function1D, Function2D, Function3D {
      * Returns the minimum and maximum of a number of random values
      * of the given function. This is useful for making some stab at
      * normalising the function.
+     * @param f The 1D function
+     * @param minmax An array of two floats
+     * @return The minimum and maximum
      */
     public static float[] findRange(Function1D f, float[] minmax) {
         if (minmax == null)
@@ -321,6 +340,9 @@ public class Noise implements Function1D, Function2D, Function3D {
      * Returns the minimum and maximum of a number of random values
      * of the given function. This is useful for making some stab at
      * normalising the function.
+     * @param f The two dimensional function
+     * @param minmax An array of two floats
+     * @return The minimum and maximum
      */
     public static float[] findRange(Function2D f, float[] minmax) {
         if (minmax == null)

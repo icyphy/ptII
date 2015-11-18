@@ -60,9 +60,8 @@ public class SphereFilter extends TransformFilter {
 
     /**
      * Set the radius of the effect.
-     * @param r the radius
-    * @min-value 0
-    * @see #getRadius
+     * @param r the radius min-value: 0
+     * @see #getRadius
      */
     public void setRadius(float r) {
         this.a = r;

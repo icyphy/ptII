@@ -333,6 +333,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
      *  @param time The time.
      *  @param xx The values.
      *  @param uu The derivatives.
+     *  @param xdot The input, which is set to the value of the derivatives.
      *  @return Success (0 for success, else user-defined error code).
      */
     @Override

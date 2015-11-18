@@ -65,7 +65,6 @@ public class SyntaxTextEditorForStringAttributes extends TextEditorForStringAttr
      *  @param rows The number of rows.
      *  @param columns The number of columns.
      *  @param title The window title to use.
-     *  @param effigy The effigy for the text, or null if there is none.
      *  @param document The document
      */
     public SyntaxTextEditorForStringAttributes(TextEditorFactory factory,

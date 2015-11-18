@@ -48,8 +48,7 @@ public class StampFilter extends PointFilter {
 
     /**
      * Set the radius of the effect.
-     * @param radius the radius
-    * @min-value 0
+     * @param radius the radius min-value:  0
     * @see #getRadius
      */
     public void setRadius(float radius) {
@@ -85,10 +84,8 @@ public class StampFilter extends PointFilter {
 
     /**
      * Set the softness of the effect in the range 0..1.
-     * @param softness the softness
-    * @min-value 0
-    * @max-value 1
-    * @see #getSoftness
+     * @param softness the softness, minimum value: 0, maximum value:  1
+     * @see #getSoftness()
      */
     public void setSoftness(float softness) {
         this.softness = softness;
@@ -97,7 +94,7 @@ public class StampFilter extends PointFilter {
     /**
      * Get the softness of the effect.
      * @return the softness
-    * @see #setSoftness
+     * @see #setSoftness
      */
     public float getSoftness() {
         return softness;
@@ -115,17 +112,17 @@ public class StampFilter extends PointFilter {
     /**
     * Get the color to be used for pixels above the upper threshold.
     * @return the color
-    * @see #setWhite
+    * @see #setWhite(int)
     */
     public int getWhite() {
         return white;
     }
 
     /**
-    * Set the color to be used for pixels below the lower threshold.
-    * @param black the color
-    * @see #getBlack
-    */
+     * Set the color to be used for pixels below the lower threshold.
+     * @param black the color
+     * @see #getBlack()
+     */
     public void setBlack(int black) {
         this.black = black;
     }

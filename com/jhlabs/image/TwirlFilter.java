@@ -109,7 +109,7 @@ public class TwirlFilter extends TransformFilter {
     /**
      * Get the centre of the effect as a proportion of the image size.
      * @return the center
-    * @see #setCentre
+     * @see #setCentre
      */
     public Point2D getCentre() {
         return new Point2D.Float(centreX, centreY);
@@ -117,9 +117,8 @@ public class TwirlFilter extends TransformFilter {
 
     /**
      * Set the radius of the effect.
-     * @param radius the radius
-    * @min-value 0
-    * @see #getRadius
+     * @param radius the radius. Minimum value:  0
+     * @see #getRadius()
      */
     public void setRadius(float radius) {
         this.radius = radius;
@@ -128,7 +127,7 @@ public class TwirlFilter extends TransformFilter {
     /**
      * Get the radius of the effect.
      * @return the radius
-    * @see #setRadius
+     * @see #setRadius(float)
      */
     public float getRadius() {
         return radius;

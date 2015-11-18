@@ -103,6 +103,8 @@ public class GaussianFilter extends ConvolveFilter {
      * @param width the width of the pixel array
      * @param height the height of the pixel array
      * @param alpha whether to blur the alpha channel
+     * @param premultiplty whether to premultiply
+     * @param unpremultiply whether to unpremultiply
      * @param edgeAction what to do at the edges
      */
     public static void convolveAndTranspose(Kernel kernel, int[] inPixels, int[] outPixels, int width, int height,

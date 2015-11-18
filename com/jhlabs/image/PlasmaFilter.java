@@ -36,9 +36,7 @@ public class PlasmaFilter extends WholeImageFilter {
 
     /**
     * Specifies the turbulence of the texture.
-    * @param turbulence the turbulence of the texture.
-    * @min-value 0
-    * @max-value 10
+    * @param turbulence the turbulence of the texture. (min value: 0, max-value: 10)
     * @see #getTurbulence
     */
     public void setTurbulence(float turbulence) {
@@ -54,10 +52,18 @@ public class PlasmaFilter extends WholeImageFilter {
         return turbulence;
     }
 
+    /** Set the scaling.
+     *  @param scaling The scaling.
+     *  @see #getScaling()
+     */   
     public void setScaling(float scaling) {
         this.scaling = scaling;
     }
 
+    /** Get the scaling.
+     *  @return The scaling.
+     *  @see #setScaling(float)
+     */
     public float getScaling() {
         return scaling;
     }
@@ -65,7 +71,7 @@ public class PlasmaFilter extends WholeImageFilter {
     /**
      * Set the colormap to be used for the filter.
      * @param colormap the colormap
-     * @see #getColormap
+     * @see #getColormap()
      */
     public void setColormap(Colormap colormap) {
         this.colormap = colormap;
@@ -74,7 +80,7 @@ public class PlasmaFilter extends WholeImageFilter {
     /**
      * Get the colormap to be used for the filter.
      * @return the colormap
-     * @see #setColormap
+     * @see #setColormap(Colormap)
      */
     public Colormap getColormap() {
         return colormap;

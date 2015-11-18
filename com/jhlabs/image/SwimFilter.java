@@ -39,10 +39,8 @@ public class SwimFilter extends TransformFilter {
 
     /**
      * Set the amount of swim.
-     * @param amount the amount of swim
-    * @min-value 0
-    * @max-value 100+
-    * @see #getAmount
+     * @param amount the amount of swim. Minimum value: 0, maximum value:  100+
+     * @see #getAmount()
      */
     public void setAmount(float amount) {
         this.amount = amount;
@@ -51,7 +49,7 @@ public class SwimFilter extends TransformFilter {
     /**
      * Get the amount of swim.
      * @return the amount swim
-    * @see #setAmount
+     * @see #setAmount
      */
     public float getAmount() {
         return amount;
@@ -59,10 +57,8 @@ public class SwimFilter extends TransformFilter {
 
     /**
     * Specifies the scale of the distortion.
-    * @param scale the scale of the distortion.
-    * @min-value 1
-    * @max-value 300+
-    * @see #getScale
+    * @param scale the scale of the distortion. Minimum value:  1, maximum value:  300+
+    * @see #getScale()
     */
     public void setScale(float scale) {
         this.scale = scale;
@@ -71,19 +67,17 @@ public class SwimFilter extends TransformFilter {
     /**
     * Returns the scale of the distortion.
     * @return the scale of the distortion.
-    * @see #setScale
+    * @see #setScale(float)
     */
     public float getScale() {
         return scale;
     }
 
     /**
-    * Specifies the stretch factor of the distortion.
-    * @param stretch the stretch factor of the distortion.
-    * @min-value 1
-    * @max-value 50+
-    * @see #getStretch
-    */
+     * Specifies the stretch factor of the distortion.
+     * @param stretch the stretch factor of the distortion. Minimum value: 1, maximum value:  50+
+     * @see #getStretch()
+     */
     public void setStretch(float stretch) {
         this.stretch = stretch;
     }
@@ -116,19 +110,17 @@ public class SwimFilter extends TransformFilter {
     /**
     * Returns the angle of the effect.
     * @return the angle of the effect.
-    * @see #setAngle
+    * @see #setAngle(float)
     */
     public float getAngle() {
         return angle;
     }
 
     /**
-    * Specifies the turbulence of the texture.
-    * @param turbulence the turbulence of the texture.
-    * @min-value 0
-    * @max-value 1
-    * @see #getTurbulence
-    */
+     * Specifies the turbulence of the texture.
+     * @param turbulence the turbulence of the texture. Minimum value:  0, maximum value:  1
+     * @see #getTurbulence()
+     */
     public void setTurbulence(float turbulence) {
         this.turbulence = turbulence;
     }

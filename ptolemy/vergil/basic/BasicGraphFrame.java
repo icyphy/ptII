@@ -3118,7 +3118,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** Set the center location of the visible part of a specific pane.
      *  This will cause the panner to center on the specified location
      *  with the current zoom factor.
-     *  @param graph The JGraph.
+     *  @param jgraph The JGraph.
      *  @param center The center of the visible part.
      *  @see #getCenter()
      */
@@ -3431,7 +3431,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** Zoom in or out to magnify by the specified factor, from the current
      *  magnification for a specific JGraph.
-     *  @param graph The JGraph.
+     *  @param jgraph The JGraph.
      *  @param factor The magnification factor (relative to 1.0).
      */
     protected void _zoom(JGraph jgraph, double factor) {

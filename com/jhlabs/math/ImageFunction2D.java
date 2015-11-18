@@ -73,6 +73,13 @@ public class ImageFunction2D implements Function2D {
     /**
      * A convenience method for getting ARGB pixels from an image. This tries to avoid the performance
      * penalty of BufferedImage.getRGB unmanaging the image.
+     * @param image The image
+     * @param x The x value of the pixel in one of the corners
+     * @param y The y value of the pixel in one of the corners
+     * @param width The width of the pixels to get
+     * @param height The height of the pixels to get
+     * @param pixels The image
+     * @return The subimage
      */
     public int[] getRGB(BufferedImage image, int x, int y, int width, int height, int[] pixels) {
         int type = image.getType();
@@ -81,6 +88,13 @@ public class ImageFunction2D implements Function2D {
         return image.getRGB(x, y, width, height, pixels, 0, width);
     }
 
+    /** Initialize an image.
+     * @param pixels The image
+     * @param width The width of the pixels to get
+     * @param height The height of the pixels to get
+     * @param edgeAction The edgeAction, one of ZERO, CLAMP or WRAP.
+     * @param alpha The alpha
+     */
     public void init(int[] pixels, int width, int height, int edgeAction, boolean alpha) {
         this.pixels = pixels;
         this.width = width;
@@ -89,6 +103,11 @@ public class ImageFunction2D implements Function2D {
         this.alpha = alpha;
     }
 
+    /** Evaluate the pixel and the x and y values according to the edge action.
+     *  @param x The x value
+     *  @param y The y value
+     *  @return The value
+     */   
     @Override
     public float evaluate(float x, float y) {
         int ix = (int) x;
@@ -112,22 +131,39 @@ public class ImageFunction2D implements Function2D {
                 : PixelUtils.brightness(pixels[iy * width + ix]) / 255.0f;
     }
 
+    /** Set the edgeAction.
+     *  @param edgeAction one of ZERO, CLAMP or WRAP.
+     *  @set #getEdgeAction()
+     */   
     public void setEdgeAction(int edgeAction) {
         this.edgeAction = edgeAction;
     }
 
+    /** Get the edgeAction.
+     *  @return The edgeAction, one of ZERO, CLAMP or WRAP.
+     *  @see #setEdgeAction(int)
+     */
     public int getEdgeAction() {
         return edgeAction;
     }
 
+    /** Get the width.
+     *  @return The width
+     */
     public int getWidth() {
         return width;
     }
 
+    /** Get the height.
+     *  @return the height
+     */
     public int getHeight() {
         return height;
     }
 
+    /** Get the pixels.
+     *  @return the pixels.
+     */
     public int[] getPixels() {
         return pixels;
     }

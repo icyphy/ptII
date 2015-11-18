@@ -629,7 +629,10 @@ public class ImageMath {
     }
 
     /**
-     * Premultiply a block of pixels
+     * Premultiply a block of pixels.
+     * @param p The block of pixels.
+     * @param offset The starting pixel.
+     * @param length The number of pixels to premultiply.
      */
     public static void premultiply(int[] p, int offset, int length) {
         length += offset;
@@ -648,7 +651,10 @@ public class ImageMath {
     }
 
     /**
-     * Premultiply a block of pixels
+     * Unpremultiply a block of pixels
+     * @param p The block of pixels.
+     * @param offset The starting pixel.
+     * @param length The number of pixels to premultiply.
      */
     public static void unpremultiply(int[] p, int offset, int length) {
         length += offset;

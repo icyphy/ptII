@@ -28,7 +28,8 @@ package ptolemy.actor.lib.jjs.modules.IMUSensor;
 ///// ReaderM
 
 /**
- *	This class starts a SerialPortreader and interprets the incoming bytes from the serial port
+ *	Start a SerialPortreader and interpret the incoming bytes from
+ *	the serial port.
  *
  *	@author Hunter Massey and Rajesh Kuni
  *	@version $Id$
@@ -39,26 +40,7 @@ package ptolemy.actor.lib.jjs.modules.IMUSensor;
 
 public class ReaderM extends Thread {
 
-    /** isStart is true when the thread has been started */
-    public boolean isStart = false;
-
-    char dataCount = 0; // The current count of data bytes that have been read in from a packet
-    int com; // The communication port number
-    int baudRate; // The baud rate of the serial port
-    SerialPortReader portReader = null; // SerialPortReader takes care of serial port communication on a lower level
-    static final char DLE = 0x10; // "Data Link Escape" character, signals that next value is a control value
-    static final char SOH = 0x01; // "Start of Header" character, signals start of non-data header value
-    static final char EOT = 0x04; // "End of Transmission" character, signals end of a single packet
-
-    private int window = 0; // The window size of the circular buffer
-    private int bufIndex = 0; // Holds the current index in circular buffer to which next sample will be placed
-    private int nextReadBufIndex = 0; // Holds the current index from which the next unread sample is located
-    private CircularFifoQueue<int[]> buf; // Holds six integer arrays of sample values - [accX, accY, accZ, gyroX, gyroY, gyroZ]
-
-    ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
-
-    /** Constructor for ReaderM, takes in a COM port integer, a baudRate, and a buffer window size
+    /** Construct a ReaderM.
      *  @param com The comm port number to connect to
      *  @param baudRate The baud rate at which the connection runs
      *  @param window The window size of the circular sample buffer
@@ -68,11 +50,14 @@ public class ReaderM extends Thread {
         super();
         this.baudRate = baudRate;
         this.com = com;
-        this.window = window;
-        buf = new CircularFifoQueue<int[]>(window);
+        _window = window;
+        _buffer = new CircularFifoQueue<int[]>(window);
     }
 
-    /** Thread run method, starts a thread. Inside this thread we grab packets from the IMU and decode them */
+    ///////////////////////////////////////////////////////////////////
+    ////                     public methods                        ////
+
+    /** Read the packets from the IMU and decode them. */
     @Override
     public void run() {
         portReader = new SerialPortReader(); // initialize the serial port connection
@@ -142,56 +127,56 @@ public class ReaderM extends Thread {
         }
     }
 
-    /** Grabs the individual raw sensor (accelerometer and gyroscope) values and
-     *	stores them into the circular sample buffer as a 6 integer array
+    /** Grab the individual raw sensor (accelerometer and gyroscope) values and
+     *	store them into the circular sample buffer as a 6 integer array.
      *  @param raw The integer array containing all the sensor values (ADC values)
      */
     public void preProcess(int[] raw) {
 
-        buf.add(raw); // add array of raw data to circular buffer
+        _buffer.add(raw); // add array of raw data to circular buffer
 
-        bufIndex++;
-        if (bufIndex == window) {
-            bufIndex = window - 1;
+        _bufferIndex++;
+        if (_bufferIndex == _window) {
+            _bufferIndex = _window - 1;
         }
     }
 
-    /** Returns the sample buffer, of type CircularFifoQueue<int[]>
+    /** Return the sample buffer.
      *  @return The circular sample buffer
     */
     public CircularFifoQueue<int[]> getBuffer() {
-        return buf;
+        return _buffer;
     }
 
-    /** closes the serial port and ends the connection */
+    /** Close the serial port and end the connection. */
     public void stopRead() {
         portReader.closePort();
     }
 
-    /** returns the current index in the circular buffer
+    /** Return the current index in the circular buffer.
      *  @return the current write index into the circular buffer
-    */
+     */
     public int getBufIndex() {
-        return bufIndex;
+        return _bufferIndex;
     }
 
-    /** Gets the next unread sample from the sample buffer
+    /** Get the next unread sample from the sample buffer.
      *  @return the current read index into the circular buffer
-    */
+     */
     public int[] getNextUnreadSample() {
-        if (nextReadBufIndex < bufIndex) {
-            nextReadBufIndex++;
+        if (_nextReadBufferIndex < _bufferIndex) {
+            _nextReadBufferIndex++;
         }
-        return buf.get(nextReadBufIndex - 1);
+        return _buffer.get(_nextReadBufferIndex - 1);
     }
 
-    /** Converts two 'unsigned char's to an integer by shifting and adding.
+    /** Convert two 'unsigned char's to an integer by shifting and adding.
      *  As a note, Java does not actually have unsigned values but we treat
-     *  these chars as such
+     *  these chars as such.
      *  @param a The most significant 8 bits of the integer in char form
      *  @param b The least significant 8 bits of the integer in char form
      *  @return The integer value from the two input unsigned chars
-    */
+     */
     public int UCharToInt(char a, char b) {
         int myInt = ((a << 8) + b);
         if (myInt >= 32768) {
@@ -200,5 +185,51 @@ public class ReaderM extends Thread {
         }
         return myInt;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     public variables                      ////
+
+    /** True when the thread has been started. */
+    public boolean isStart = false;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     package protected variables           ////
+
+    /** The current count of data bytes that have been read in from a packet. */
+    char dataCount = 0; 
+
+    /** The communication port number. */
+    int com; 
+
+    /** The baud rate of the serial port. */
+    int baudRate;
+    
+    /** SerialPortReader takes care of serial port communication on a lower level. */
+    SerialPortReader portReader = null;
+    
+    /** "Data Link Escape" character, signals that next value is a control value. */
+    static final char DLE = 0x10;
+
+    /**"Start of Header" character, signals start of non-data header value. */
+    static final char SOH = 0x01;
+
+    /** "End of Transmission" character, signals end of a single packet. */
+    static final char EOT = 0x04;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     privae variables                      ////
+
+    /** The window size of the circular buffer. */
+    private int _window = 0;
+    
+    /** Holds the current index in circular buffer to which next sample will be placed. */
+    private int _bufferIndex = 0;
+    
+    /** Holds the current index from which the next unread sample is located. */
+    private int _nextReadBufferIndex = 0; 
+
+    /** Holds six integer arrays of sample values - [accX, accY, accZ, gyroX, gyroY, gyroZ]. */
+    private CircularFifoQueue<int[]> _buffer;
+
 
 }

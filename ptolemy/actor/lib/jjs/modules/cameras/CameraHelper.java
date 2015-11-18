@@ -47,15 +47,15 @@ import com.github.sarxos.webcam.WebcamListener;
 
 /** Helper for the cameras JavaScript module.  This is based on
  *  the webcam-capture package by Bartosz Firyn (SarXos), available from:
- *    https://github.com/sarxos/webcam-capture
+ *  <a href="https://github.com/sarxos/webcam-capture">https://github.com/sarxos/webcam-capture</a>.
  *
- *  Note that you can use the Ptolemy II ImageDisplay actor to display image sequences
+ *  <p>Note that you can use the Ptolemy II ImageDisplay actor to display image sequences
  *  captured using this module, but this does not work well when executed within Eclipse.
  *  In Eclipse, the Swing event thread blocks "waiting for: OGLRenderQueue$QueueFluher",
  *  and spends most of its time blocked rather than rendering. Hence, we do not get
- *  smooth video. Perhaps this is an Eclipse bug?
+ *  smooth video. Perhaps this is an Eclipse bug?</p>
  *
- *  See the documentation for the JavaScript cameras module to see how to use this.
+ *  <p>See the documentation for the JavaScript cameras module to see how to use this.</p>
  *
  *  <p> If invoking the constructor generates a message like:</p>
  *  <pre>
@@ -230,6 +230,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
 
     /** Set the current view size for this camera, representing the desired size
      *  as a Map with integer valued fields "width" and "height".
+     *  @param spec A map with integer valued fields "width" and "height".
      *  @exception IllegalActionException If either field is absent.
      *  @see #getViewSize()
      */

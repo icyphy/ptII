@@ -34,7 +34,7 @@ import ptolemy.kernel.util.IllegalActionException;
 //// GestureRecognition
 
 /**
- An adapter class for ptolemy.actor.lib.mbed.GestureRecognition
+ An adapter class for ptolemy.actor.lib.mbed.GestureRecognition.
 
  @author Robert Bui
  @version $Id$

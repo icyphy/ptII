@@ -83,10 +83,8 @@ public class TransitionFilter extends AbstractBufferedImageOp {
 
     /**
      * Set the transition of the image in the range 0..1.
-     * @param transition the transition
-    * @min-value 0
-    * @max-value 1
-    * @see #getTransition
+     * @param transition the transition. Minimum value:  0, maximum value:  1
+     * @see #getTransition()
      */
     public void setTransition(float transition) {
         this.transition = transition;
@@ -95,7 +93,7 @@ public class TransitionFilter extends AbstractBufferedImageOp {
     /**
      * Get the transition of the image.
      * @return the transition
-    * @see #setTransition
+     * @see #setTransition(float)
      */
     public float getTransition() {
         return transition;
@@ -113,7 +111,7 @@ public class TransitionFilter extends AbstractBufferedImageOp {
     /**
      * Get the destination image.
      * @return the destination image
-     * @see #setDestination
+     * @see #setDestination(BufferedImage)
      */
     public BufferedImage getDestination() {
         return destination;

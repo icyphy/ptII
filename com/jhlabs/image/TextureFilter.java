@@ -41,10 +41,8 @@ public class TextureFilter extends PointFilter {
 
     /**
      * Set the amount of texture.
-     * @param amount the amount
-    * @min-value 0
-    * @max-value 1
-    * @see #getAmount
+     * @param amount the amount Minimum value:  0, maximum value:  1
+     * @see #getAmount()
      */
     public void setAmount(float amount) {
         this.amount = amount;
@@ -53,7 +51,7 @@ public class TextureFilter extends PointFilter {
     /**
      * Get the amount of texture.
      * @return the amount
-    * @see #setAmount
+     * @see #setAmount(float)
      */
     public float getAmount() {
         return amount;
@@ -77,9 +75,7 @@ public class TextureFilter extends PointFilter {
 
     /**
     * Specifies the scale of the texture.
-    * @param scale the scale of the texture.
-    * @min-value 1
-    * @max-value 300+
+    * @param scale the scale of the texture. Minimum value:  1, maximum value:  300+
     * @see #getScale
     */
     public void setScale(float scale) {
@@ -97,9 +93,7 @@ public class TextureFilter extends PointFilter {
 
     /**
     * Specifies the stretch factor of the texture.
-    * @param stretch the stretch factor of the texture.
-    * @min-value 1
-    * @max-value 50+
+    * @param stretch the stretch factor of the texture. Minimum value:  1, maximum value:  50+
     * @see #getStretch
     */
     public void setStretch(float stretch) {
@@ -142,9 +136,7 @@ public class TextureFilter extends PointFilter {
 
     /**
     * Specifies the turbulence of the texture.
-    * @param turbulence the turbulence of the texture.
-    * @min-value 0
-    * @max-value 1
+    * @param turbulence the turbulence of the texture. Minimum value:  0, maximum value:  1
     * @see #getTurbulence
     */
     public void setTurbulence(float turbulence) {

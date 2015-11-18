@@ -42,7 +42,9 @@ public class WarpGrid {
     }
 
     /**
-     * Add a new row to the grid. "before" must be in the range 1..rows-1. i.e. you can only add rows inside the grid.
+     * Add a new row to the grid. "before" must be in the range
+     * 1..rows-1. i.e. you can only add rows inside the grid.
+     * @param before The row before
      */
     public void addRow(int before) {
         int size = (rows + 1) * cols;
@@ -73,7 +75,9 @@ public class WarpGrid {
     }
 
     /**
-     * Add a new column to the grid. "before" must be in the range 1..cols-1. i.e. you can only add columns inside the grid.
+     * Add a new column to the grid. "before" must be in the range
+     * 1..cols-1. i.e. you can only add columns inside the grid.
+     * @param before The column before.
      */
     public void addCol(int before) {
         int size = rows * (cols + 1);
@@ -104,6 +108,7 @@ public class WarpGrid {
 
     /**
      * Remove a row from the grid.
+     * @param r The row to remove.
      */
     public void removeRow(int r) {
         int size = (rows - 1) * cols;
@@ -131,6 +136,7 @@ public class WarpGrid {
 
     /**
      * Remove a column from the grid.
+     * @param r The column to remove.
      */
     public void removeCol(int r) {
         int size = rows * (cols + 1);
