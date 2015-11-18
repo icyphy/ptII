@@ -106,7 +106,7 @@ public class DBFPlot extends Plot {
     }
 
     
-    public void finalize() {
+    protected void finalize() {
         TreeSet<Double> set = new TreeSet<Double>();
         set.addAll(_executionTimesAndDeadlines.keySet());
         Iterator<Double> iterator = set.iterator();
