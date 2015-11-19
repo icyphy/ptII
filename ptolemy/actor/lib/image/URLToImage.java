@@ -29,10 +29,11 @@
 package ptolemy.actor.lib.image;
 
 import java.awt.Image;
+import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 
 import ptolemy.actor.lib.Transformer;
 import ptolemy.data.AWTImageToken;
@@ -43,7 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
-//// ImageReader
+//// URLToImage
 
 /**
  <p>An actor that reads a String input token naming a URL and outputs an
@@ -99,11 +100,15 @@ public class URLToImage extends Transformer {
 
         try {
             URL url = new URL(urlToken.stringValue());
-            Image image = new ImageIcon(url).getImage();
+            Image image = ImageIO.read(url);
             output.send(0, new AWTImageToken(image));
         } catch (MalformedURLException ex) {
-            throw new IllegalActionException("'" + urlToken.stringValue()
-                    + "' is malformed: " + ex);
+            throw new IllegalActionException(this, ex,
+                    "'" + urlToken.stringValue()
+                    + "' is malformed.");
+        } catch (IOException e) {
+            throw new IllegalActionException(this, e,
+                    "Failed to read image.");
         }
     }
 
