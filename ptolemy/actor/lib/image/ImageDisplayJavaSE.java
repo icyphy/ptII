@@ -350,8 +350,15 @@ ImageDisplayInterface {
 
                 if (containerEffigy == null) {
                     throw new InternalErrorException(
-                            "Cannot find effigy for top level: "
-                                    + _display.toplevel().getFullName());
+                            "Cannot find effigy for top level \""
+                            + _display.toplevel().getFullName()
+                            + "\".  This can happen when a is invoked"
+                            + " with a non-graphical execution engine"
+                            + " such as ptolemy.moml.MoMLSimpleApplication"
+                            + " but the "
+                            + " ptolemy.moml.filter.RemoveGraphicalClasses"
+                            + " MoML filter is not replacing the"
+                            + " class that extends ImageDisplay.");
                 }
 
                 try {

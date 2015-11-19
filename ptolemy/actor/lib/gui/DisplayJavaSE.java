@@ -196,8 +196,15 @@ DisplayInterface {
                     try {
                         if (containerEffigy == null) {
                             throw new IllegalActionException(
-                                    "Cannot find effigy for top level: "
-                                            + _display.toplevel().getFullName());
+                                    "Cannot find effigy for top level \""
+                                            + _display.toplevel().getFullName()
+                                            + "\".  This can happen when a is invoked"
+                                            + " with a non-graphical execution engine"
+                                            + " such as ptolemy.moml.MoMLSimpleApplication"
+                                            + " but the "
+                                            + " ptolemy.moml.filter.RemoveGraphicalClasses"
+                                            + " MoML filter is not replacing the"
+                                            + " class that extends Display.");
                         }
                         TextEffigy textEffigy = TextEffigy.newTextEffigy(
                                 containerEffigy, "");
