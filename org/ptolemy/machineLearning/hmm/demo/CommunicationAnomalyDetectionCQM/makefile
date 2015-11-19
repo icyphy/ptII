@@ -31,7 +31,7 @@
 
 ME =		org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionCQM
 
-DIRS =	CommunicationAnomalyDetectionCQM
+DIRS =
 
 # Root of Ptolemy II directory
 ROOT =		../../../../../..
