@@ -40,6 +40,8 @@ import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.filter.BackwardCompatibility;
 import ptolemy.moml.filter.RemoveGraphicalClasses;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.SimpleMessageHandler;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -92,6 +94,10 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         this();
         _workspace = new Workspace("MoMLSimpleApplicationWorkspace");
         _parser = new MoMLParser();
+
+        // The default MessageHandler._error() merely prints the
+        // exception, we want to throw the exception and stop execution.
+        MessageHandler.setMessageHandler(new SimpleMessageHandler());
 
         // The test suite calls MoMLSimpleApplication multiple times,
         // and the list of filters is static, so we reset it each time
