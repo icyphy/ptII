@@ -160,6 +160,7 @@ $CLASSPATH/ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml
 $CLASSPATH/ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/demo/MockHueBridges/MockHueBridges.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/ModelBuilder/ModelBuilder.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/browser/demo/HelloBrowser/HelloBrowser.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Capture/Capture.xml
@@ -174,6 +175,10 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogWriter/GDPLogWriter.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/SocketDoubleArrayBatched.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient.xml
