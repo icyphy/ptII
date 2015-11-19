@@ -29,9 +29,10 @@
 package ptolemy.actor.lib.image;
 
 import java.awt.Image;
+import java.io.IOException;
 import java.net.URL;
 
-import javax.swing.ImageIcon;
+import javax.imageio.ImageIO;
 
 import ptolemy.actor.lib.Source;
 import ptolemy.data.AWTImageToken;
@@ -142,7 +143,12 @@ public class ImageReader extends Source {
             throw new IllegalActionException("sourceURL was null");
         }
 
-        _image = new ImageIcon(_url).getImage();
+        try {
+            _image = ImageIO.read(_url);
+        } catch (IOException e) {
+            throw new IllegalActionException(this, e,
+                    "Failed to read image.");
+        }
 
         if (_image.getWidth(null) == -1 && _image.getHeight(null) == -1) {
             throw new IllegalActionException(this,
