@@ -1,6 +1,6 @@
 #!/bin/sh
 # $Id$
-# mkdemo - create a makefile in a demo directory
+# ptmkdemo - create a makefile in a demo directory
 
 if [ $# -ne 1 ]; then
    echo "$0: Usage: $0 demo/directory/relative/to/ptII. Exiting"
@@ -127,4 +127,5 @@ include \$(ROOT)/mk/ptcommon.mk
 EOF
     echo "$0: $demoDirectory/makefile created."
     echo "Don't forget to edit $parentDirectory/makefile and update DIRS and PTCLASSALLJARS"
+    echo "Also, be sure to add demos to $PTII/ptolemy/configs/doc/completeDemos.htm and run make in that directory"
 fi
