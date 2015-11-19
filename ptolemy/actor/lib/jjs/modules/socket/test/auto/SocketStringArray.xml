@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.160546954895215">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{193.15110683441105, 178.6289495132512}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{193.151106834411, 178.6289495132512}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -36,6 +36,16 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: There is&#10;nondeterminism&#10;here. Order could&#10;be reversed.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 205.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Downsample ensures that neither&#10;Client sends until both clients are&#10;connected">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 280.0]">
         </property>
     </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -219,12 +229,12 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
+        </property>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.error&quot;,x=-85.0,y=55.0}, tail={id=&quot;ServerErrors.input&quot;,x=70.0,y=255.0}, points={-95.0,255.0} } }">
-        </property>
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.connected&quot;,x=-85.0,y=55.0}, tail={id=&quot;ServerConnected.input&quot;,x=70.0,y=95.0}, points={20.0,55.0,20.0,95.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -253,15 +263,20 @@
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[20.0, 55.0]">
+        </vertex>
+    </relation>
     <link port="Client.toSend" relation="relation"/>
     <link port="Client.reply" relation="relation5"/>
     <link port="Server.error" relation="relation4"/>
-    <link port="Server.listening" relation="relation7"/>
-    <link port="Server.connected" relation="relation6"/>
+    <link port="Server.connected" relation="relation9"/>
     <link port="Server.received" relation="relation3"/>
     <link port="ServerErrors.input" relation="relation4"/>
     <link port="ServerReceived.input" relation="relation3"/>
-    <link port="ServerConnected.input" relation="relation6"/>
+    <link port="ServerConnected.input" relation="relation9"/>
     <link port="ListeningPort.input" relation="relation7"/>
     <link port="Const.output" relation="relation"/>
     <link port="Const.trigger" relation="relation7"/>
@@ -272,4 +287,6 @@
     <link port="Test3.input" relation="relation2"/>
     <link port="Client2.toSend" relation="relation8"/>
     <link port="Client2.reply" relation="relation2"/>
+    <link port="DownSample.input" relation="relation9"/>
+    <link port="DownSample.output" relation="relation7"/>
 </entity>

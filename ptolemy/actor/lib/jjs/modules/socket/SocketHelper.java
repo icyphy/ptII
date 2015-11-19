@@ -40,11 +40,10 @@ import io.vertx.core.net.NetSocket;
 
 import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.SequenceInputStream;
+import java.util.LinkedList;
 import java.util.Map;
 
 import javax.imageio.ImageIO;
@@ -73,6 +72,12 @@ import ptolemy.data.LongToken;
    associated with any actor. This ensures that all the socket
    actions and callbacks managed by this instance execute in
    a single verticle.
+   
+   This class supports transmission of strings, images, and binary
+   numerical data of type byte, double, float, int, long, short,
+   unsigned byte, unsigned int, and unsigned short.
+   At this time, an image will be encoded using JPG only for transmission.
+   This may be generalized sometime in the future.
 
    @author Edward A. Lee
    @version $Id$
@@ -283,6 +288,84 @@ public class SocketHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     public classes                        ////
 
+    /** Input stream backed by a list of byte arrays. */
+    public class ByteArrayBackedInputStream extends InputStream {
+        private LinkedList<byte[]> _list = new LinkedList<byte[]>();
+        private int _position, _array;
+        public ByteArrayBackedInputStream(byte[] buffer) {
+            _list.add(buffer);
+            _array = 0;
+            _position = 0;
+        }
+        public void append(byte[] buffer) {
+            _list.add(buffer);
+            // Reset the stream so the next read starts at the top.
+            reset();
+        }
+        @Override
+        public int read() throws IOException {
+            byte[] current = _list.get(_array);
+            if (_position >= current.length) {
+                if (_array < _list.size() - 1) {
+                    _array++;
+                    _position = 0;
+                } else {
+                    // No more data.
+                    return -1;
+                }
+            }
+            return current[_position++];
+        }
+        @Override
+        public int read(byte[] bytes, int offset, int length) throws IOException {
+            if (_array >= _list.size()) {
+                return -1;
+            }
+            byte[] current = _list.get(_array);
+            if (_position >= current.length) {
+                if (_array < _list.size() - 1) {
+                    _array++;
+                    _position = 0;
+                } else {
+                    // No bytes remaining.
+                    return -1;
+                }
+            }
+            int firstCopyLength = Math.min(length, current.length - _position);
+            System.arraycopy(current, _position, bytes, offset, firstCopyLength);
+            
+            _position += firstCopyLength;
+            if (_position >= current.length) {
+                if (_array < _list.size()) {
+                    // Skip to the next array in the list.
+                    _array++;
+                    _position = 0;
+                } else {
+                    // Nothing more to read.
+                    return firstCopyLength;
+                }
+            }
+            if (firstCopyLength == length) {
+                // Read is complete.
+                return firstCopyLength;
+            }
+            int nextCopyLength = read(
+                    bytes,
+                    offset + firstCopyLength,
+                    length - firstCopyLength);
+            if (nextCopyLength >= 0) {
+                return firstCopyLength + nextCopyLength;
+            } else {
+                return firstCopyLength;
+            }
+        }
+        @Override
+        public void reset() {
+            _array = 0;
+            _position = 0;
+        }
+    }
+
     /** Wrapper for connected TCP sockets.
      *  An instance of this class handles socket events from the
      *  Vert.x NetSocket object and translates them into JavaScript
@@ -325,99 +408,113 @@ public class SocketHelper extends VertxHelperBase {
             }
 
             // Set up handlers for data, errors, etc.
-            _socket.closeHandler((Void) -> {
-                _issueResponse(() -> {
-                    _eventEmitter.callMember("emit", "close");
+            // Do this in the verticle.
+            submit(() -> {
+                _socket.closeHandler((Void) -> {
+                    _issueResponse(() -> {
+                        _eventEmitter.callMember("emit", "close");
+                    });
                 });
-            });
-            _socket.drainHandler((Void) -> {
-                synchronized(this) {
-                    // This should unblock send(),
-                    notifyAll();
-                }
-            });
-            _socket.endHandler((Void) -> {
-                // End event on the socket triggers a close of the socket.
-                // This gets called when the remote side sends a FIN packet.
-                // FIXME: This isn't right. Need FIN from both ends to close the socket!
-                // _client.close();
-                
-                // In case a send is blocked, unblock it.
-                synchronized(this) {
-                    _closed = true;
-                    notifyAll();
-                }
-            });
-            _socket.exceptionHandler(throwable -> {
-                _error(_eventEmitter, throwable.toString());
-            });
-            _socket.handler(buffer -> {
-                _issueResponse(() -> {
-                    if(_receiveType == DATA_TYPE.STRING) {
-                        _eventEmitter.callMember("emit", "data", buffer.getString(0, buffer.length()));
-                    } else if (_receiveType == DATA_TYPE.IMAGE) {
-                        try {
-                            // System.err.println("FIXME: Received buffer length: " + buffer.length());
-                            if (_stream == null) {
-                                _stream = new ByteArrayInputStream(buffer.getBytes());
-                            } else {
-                                // Append the current buffer to previously received buffer(s).
-                                _stream = new SequenceInputStream(_stream, new ByteArrayInputStream(buffer.getBytes()));
-                                _actor.log("WARNING: Received what could be an incomplete image. Waiting for more data.");
-                            }
-                            BufferedImage image = ImageIO.read(_stream);
-                            // The above will return null if a full image has not yet been received.
-                            // But it may also return null for other reasons...
-                            // FIXME: It seems there is risk of just continuing to fail
-                            // and using up memory creating new SequenceInputStreams.
-                            if (image != null) {
-                                ImageToken token = new AWTImageToken(image);
-                                _eventEmitter.callMember("emit", "data", token);
-                            }
-                        } catch (IOException e) {
-                            _error(_eventEmitter, "Failed to read incoming image: " + e.toString());
-                        }
-                    } else {
-                        // Assume a numeric type.
-                        int size = _sizeOfReceiveType();
-                        int length = buffer.length();
-                        int numberOfElements = length / size;
-                        if (numberOfElements == 1) {
-                            _eventEmitter.callMember("emit", "data", _extractFromBuffer(buffer, 0));
-                        } else if (numberOfElements > 1) {
-                            if (serializeReceivedArray) {
-                                int position = 0;
-                                for (int i = 0; i < numberOfElements; i++) {
-                                    _eventEmitter.callMember("emit", "data", _extractFromBuffer(buffer, position));
-                                    position += size;
-                                }
-                            } else {
-                                // Not serializing the output, so we output a single array.
-                                Object[] result = new Object[numberOfElements];
-                                int position = 0;
-                                for (int i = 0; i < result.length; i++) {
-                                    result[i] = _extractFromBuffer(buffer, position);
-                                    position += size;
-                                }
-                                // NOTE: If we return result, then the emitter will not
-                                // emit a native JavaScript array. We have to do a song and
-                                // dance here which is probably very inefficient (almost
-                                // certainly... the array gets copied).
-                                try {
-                                    _eventEmitter.callMember("emit", "data", _actor.toJSArray(result));
-                                } catch (Exception e) {
-                                    _error(_eventEmitter, "Failed to convert to a JavaScript array: "
-                                            + e);                    
-                                    _eventEmitter.callMember("emit", "data", result);
-                                }
-                            }
-                        } else if (numberOfElements <= 0) {
-                            _error(_eventEmitter, "Expect to receive type "
-                                    + _receiveType
-                                    + ", but received an insufficient number of bytes: "
-                                    + buffer.length());
-                        }
+                _socket.drainHandler((Void) -> {
+                    synchronized(this) {
+                        // This should unblock send(),
+                        notifyAll();
                     }
+                });
+                _socket.endHandler((Void) -> {
+                    // End event on the socket triggers a close of the socket.
+                    // This gets called when the remote side sends a FIN packet.
+                    // FIXME: This isn't right. Need FIN from both ends to close the socket!
+                    // _client.close();
+
+                    // In case a send is blocked, unblock it.
+                    synchronized(this) {
+                        _closed = true;
+                        notifyAll();
+                    }
+                });
+                _socket.exceptionHandler(throwable -> {
+                    _error(_eventEmitter, throwable.toString());
+                });
+                _socket.handler(buffer -> {
+                    _issueResponse(() -> {
+                        if(_receiveType == DATA_TYPE.STRING) {
+                            _eventEmitter.callMember("emit", "data", buffer.getString(0, buffer.length()));
+                        } else if (_receiveType == DATA_TYPE.IMAGE) {
+                            try {
+                                byte[] bytes = buffer.getBytes();
+                                if (_byteStream == null) {
+                                    _byteStream = new ByteArrayBackedInputStream(bytes);
+                                    _bufferCount = 0;
+                                } else {
+                                    _bufferCount++;
+                                    _actor.log("WARNING: Cannot parse image from data received. Waiting for more data:"
+                                            + _bufferCount);
+                                    // Append the current buffer to previously received buffer(s).
+                                    _byteStream.append(bytes);
+                                }
+                                // FIXME: JPG image at least ends with byte -39.
+                                // Not sure about others. If any stream comes in that never ends in -39,
+                                // then this will fail to produce any more images and will use up memory.
+                                if (bytes[bytes.length - 1] == (byte)-39) {
+                                    BufferedImage image = ImageIO.read(_byteStream);
+                                    _byteStream = null;
+                                    if (image != null && image.getHeight() > 0 && image.getWidth() > 0) {
+                                        if (_bufferCount > 1) {
+                                            _actor.log("Image received over " + _bufferCount
+                                                    + " buffers. Consider increasing buffer size.");
+                                        }
+                                        ImageToken token = new AWTImageToken(image);
+                                        _eventEmitter.callMember("emit", "data", token);
+                                    } else {
+                                        _eventEmitter.callMember("emit", "error", "Received corrupted image.");
+                                    }
+                                }
+                            } catch (IOException e) {
+                                _error(_eventEmitter, "Failed to read incoming image: " + e.toString());
+                            }
+                        } else {
+                            // Assume a numeric type.
+                            int size = _sizeOfReceiveType();
+                            int length = buffer.length();
+                            int numberOfElements = length / size;
+                            if (numberOfElements == 1) {
+                                _eventEmitter.callMember("emit", "data", _extractFromBuffer(buffer, 0));
+                            } else if (numberOfElements > 1) {
+                                if (serializeReceivedArray) {
+                                    int position = 0;
+                                    for (int i = 0; i < numberOfElements; i++) {
+                                        _eventEmitter.callMember("emit", "data", _extractFromBuffer(buffer, position));
+                                        position += size;
+                                    }
+                                } else {
+                                    // Not serializing the output, so we output a single array.
+                                    Object[] result = new Object[numberOfElements];
+                                    int position = 0;
+                                    for (int i = 0; i < result.length; i++) {
+                                        result[i] = _extractFromBuffer(buffer, position);
+                                        position += size;
+                                    }
+                                    // NOTE: If we return result, then the emitter will not
+                                    // emit a native JavaScript array. We have to do a song and
+                                    // dance here which is probably very inefficient (almost
+                                    // certainly... the array gets copied).
+                                    try {
+                                        _eventEmitter.callMember("emit", "data", _actor.toJSArray(result));
+                                    } catch (Exception e) {
+                                        _error(_eventEmitter, "Failed to convert to a JavaScript array: "
+                                                + e);                    
+                                        _eventEmitter.callMember("emit", "data", result);
+                                    }
+                                }
+                            } else if (numberOfElements <= 0) {
+                                _error(_eventEmitter, "Expect to receive type "
+                                        + _receiveType
+                                        + ", but received an insufficient number of bytes: "
+                                        + buffer.length());
+                            }
+                        }
+                    });
                 });
             });
         }
@@ -495,8 +592,8 @@ public class SocketHelper extends VertxHelperBase {
                     } catch (IOException e) {
                         _error("Failed to convert image to byte array for sending: " + e.toString());
                     }
-                    buffer.appendBytes(stream.toByteArray());
-                    // System.err.println("FIXME: Send buffer length: " + buffer.length());
+                    byte[] imageBytes = stream.toByteArray();
+                    buffer.appendBytes(imageBytes);
                 } else {
                     _error(_eventEmitter, "Expected image to send, but got "
                             + data.getClass().getName());
@@ -633,9 +730,10 @@ public class SocketHelper extends VertxHelperBase {
                 return 0;
             }
         }
+        private int _bufferCount = 0;
         private boolean _closed = false;
         private NetSocket _socket;
-        private InputStream _stream;
+        private ByteArrayBackedInputStream _byteStream;
         private ScriptObjectMirror _eventEmitter;
         private DATA_TYPE _sendType;
         private DATA_TYPE _receiveType;
