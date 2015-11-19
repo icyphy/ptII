@@ -26,6 +26,11 @@ if [ ! -d $demoDirectory ]; then
    mkdir -p $demoDirectory
 fi
 
+if [ ! -d $demoDirectory ]; then
+   echo "$0: The demo directory $demoDirectory is not a directory? Exiting."
+   exit 5
+fi
+
 
 if [ ! -f $demoDirectory/makefile ]; then
    
