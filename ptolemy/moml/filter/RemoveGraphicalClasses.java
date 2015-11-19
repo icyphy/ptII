@@ -147,6 +147,11 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         // Display's input port is of type General.
         _graphicalClasses.put("ptolemy.actor.lib.gui.Display",
                 "ptolemy.actor.lib.Discard");
+        // Classes that extend Display
+        _graphicalClasses.put("ptolemy.actor.lib.gui.TimedDisplay",
+                "ptolemy.actor.lib.Discard");
+        _graphicalClasses.put("ptolemy.domains.taskpt.lib.gui.DisplayAll",
+                "ptolemy.actor.lib.Discard");
 
         // We use DiscardDoubles here so that the types are preserved
         // in case enableBackwardTypeInference is set.
@@ -383,6 +388,9 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
                 "ptolemy.domains.wireless.kernel.WirelessComposite");
 
         _graphicalClasses.put("ptolemy.actor.lib.image.ImageDisplay",
+                "ptolemy.moml.filter.DiscardGenerals");
+        // Classes that extend ImageDisplay
+        _graphicalClasses.put("ptolemy.domains.sdf.lib.vq.ImageDisplay",
                 "ptolemy.moml.filter.DiscardGenerals");
 
         // FIXME: If this actors are used when enabledBackwardTypeInference
