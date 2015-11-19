@@ -92,19 +92,19 @@ public class WebSocketHelper extends VertxHelperBase {
         }
         // Defer the rest of the close to the associated verticle.
         submit(new Runnable() {
-        	public void run() {
-        		if (_webSocket != null) {
-        			if (_wsIsOpen) {
-        				_webSocket.close();
-        			}
-        			_webSocket = null;
-        		}
+            public void run() {
+                if (_webSocket != null) {
+                    if (_wsIsOpen) {
+                        _webSocket.close();
+                    }
+                    _webSocket = null;
+                }
 
-        		if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
-        			_error("Unsent messages remain that were queued before the socket opened: "
-        					+ _pendingOutputs.toString());
-        		}
-        	}
+                if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
+                    _error("Unsent messages remain that were queued before the socket opened: "
+                            + _pendingOutputs.toString());
+                }
+            }
         });
     }
 
@@ -154,10 +154,10 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @return True if the socket is open.
      */
     public boolean isOpen() {
-    	if (_webSocket == null) {
-    		return false;
-    	}
-    	return _wsIsOpen;
+        if (_webSocket == null) {
+            return false;
+        }
+        return _wsIsOpen;
     }
 
     /** Send data through the web socket.
@@ -169,15 +169,15 @@ public class WebSocketHelper extends VertxHelperBase {
      *   permanently failed.
      */
     public void send(final Object msg) throws IllegalActionException {
-    	// Defer this action to be executed in the associated verticle.
-    	final Runnable action = new Runnable() {
-    		public void run() {
-    	        if (_wsFailed != null) {
-    	            _error("Failed to establish connection: "
-    	            		+ _wsFailed.toString());
-    	        }
+        // Defer this action to be executed in the associated verticle.
+        final Runnable action = new Runnable() {
+            public void run() {
+                if (_wsFailed != null) {
+                    _error("Failed to establish connection: "
+                            + _wsFailed.toString());
+                }
                 // If the message is not a string, attempt to create a Buffer object.
-    	        Object message = msg;
+                Object message = msg;
                 if (!(msg instanceof String)) {
                     if (msg instanceof ImageToken) {
                         Image image = ((ImageToken)msg).asAWTImage();
@@ -209,18 +209,18 @@ public class WebSocketHelper extends VertxHelperBase {
                     _actor.log("WARNING: Data discarded because socket is not open: "
                             + message);
                 }
-    		}
-    	};
-    	// If there are already pending outputs, we may want to stall
-    	// before submitting.
-    	if (_pendingOutputs != null && _pendingOutputs.size() > 0 && _throttleFactor > 0) {
-    		try {
-				Thread.sleep(_throttleFactor * _pendingOutputs.size());
-			} catch (InterruptedException e) {
-				// Ignore.
-			}
-    	}
-    	submit(action);
+            }
+        };
+        // If there are already pending outputs, we may want to stall
+        // before submitting.
+        if (_pendingOutputs != null && _pendingOutputs.size() > 0 && _throttleFactor > 0) {
+            try {
+                Thread.sleep(_throttleFactor * _pendingOutputs.size());
+            } catch (InterruptedException e) {
+                // Ignore.
+            }
+        }
+        submit(action);
     }
 
     /** Return an array of the types supported by the current host for
@@ -273,10 +273,10 @@ public class WebSocketHelper extends VertxHelperBase {
             _wsIsOpen = false;
             return;
         }
-        */
+         */
         if (!(message instanceof Buffer)) {
             _error("Message type not recognized: "
-            		+ message.getClass()
+                    + message.getClass()
                     + ". Perhaps the sendType doesn't match the data type.");
             return;
         }
@@ -332,19 +332,19 @@ public class WebSocketHelper extends VertxHelperBase {
         // all callbacks that are set up as a side effect will also
         // execute in that thread.
         submit(new Runnable() {
-        	public void run() {
+            public void run() {
                 _client = _vertx.createHttpClient(new HttpClientOptions()
-            			.setDefaultHost(host)
-            			.setDefaultPort(port)
-            			.setKeepAlive(true)
-            			.setConnectTimeout(_connectTimeout)
-            			.setMaxWebsocketFrameSize(_maxFrameSize));
+                .setDefaultHost(host)
+                .setDefaultPort(port)
+                .setKeepAlive(true)
+                .setConnectTimeout(_connectTimeout)
+                .setMaxWebsocketFrameSize(_maxFrameSize));
                 _wsFailed = null;
 
                 // Make the connection. This might eventually be a wrapped in a public method.
                 _numberOfTries = 1;
                 _connectWebsocket(host, port, _client);
-        	}
+            }
         });
     }
 
@@ -361,7 +361,7 @@ public class WebSocketHelper extends VertxHelperBase {
         _webSocket = serverWebSocket;
         // The serverSocket was already opened because a client successfully connected to the server.
         _wsIsOpen = true;
-        
+
         _maxFrameSize = maxFrameSize;
         _receiveType = receiveType;
         _sendType = sendType;
@@ -375,12 +375,12 @@ public class WebSocketHelper extends VertxHelperBase {
         // all callbacks that are set up as a side effect will also
         // execute in that thread.
         submit(new Runnable() {
-        	public void run() {
-        		_webSocket.handler(new DataHandler());
-        		_webSocket.endHandler(new EndHandler());
-        		_webSocket.exceptionHandler(new WebSocketExceptionHandler());
-        		_webSocket.closeHandler(new WebSocketCloseHandler());
-        	}
+            public void run() {
+                _webSocket.handler(new DataHandler());
+                _webSocket.endHandler(new EndHandler());
+                _webSocket.exceptionHandler(new WebSocketExceptionHandler());
+                _webSocket.closeHandler(new WebSocketCloseHandler());
+            }
         });
     }
 
@@ -393,50 +393,50 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param client The HttpClient object.
      */
     private void _connectWebsocket(String host, int port, HttpClient client) {
-    	// FIXME: Header with content type should be provided?
+        // FIXME: Header with content type should be provided?
         client.websocket(port, host, "", new Handler<WebSocket>() {
             @Override
             public void handle(WebSocket websocket) {
-            	if (_numberOfTries < 0) {
-            		// close() has been called. Abort the connection.
-            		websocket.close();
-            		return;
-            	}
-            	if (!_actor.isExecuting()) {
-            		// Either wrapup() has been called, or wrapup() is blocked waiting
-            		// for the _actor lock we now hold.
-            		websocket.close();
-            		return;
-            	}
-            	_wsIsOpen = true;
-            	_webSocket = websocket;
+                if (_numberOfTries < 0) {
+                    // close() has been called. Abort the connection.
+                    websocket.close();
+                    return;
+                }
+                if (!_actor.isExecuting()) {
+                    // Either wrapup() has been called, or wrapup() is blocked waiting
+                    // for the _actor lock we now hold.
+                    websocket.close();
+                    return;
+                }
+                _wsIsOpen = true;
+                _webSocket = websocket;
 
-            	_webSocket.handler(new DataHandler());
-            	_webSocket.endHandler(new EndHandler());
-            	_webSocket.exceptionHandler(new WebSocketExceptionHandler());
-            	_webSocket.closeHandler(new WebSocketCloseHandler());
+                _webSocket.handler(new DataHandler());
+                _webSocket.endHandler(new EndHandler());
+                _webSocket.exceptionHandler(new WebSocketExceptionHandler());
+                _webSocket.closeHandler(new WebSocketCloseHandler());
 
-            	// Socket.io uses the name "connect" for this event, but WS uses "open".
-            	// We choose "open".
-            	_currentObj.callMember("emit", "open");
+                // Socket.io uses the name "connect" for this event, but WS uses "open".
+                // We choose "open".
+                _currentObj.callMember("emit", "open");
 
-            	// Send any pending messages.
-            	if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
-            		for (Object message : _pendingOutputs) {
-            			_sendMessageOverSocket(message);
-            		}
-            		_pendingOutputs.clear();
-            	}
+                // Send any pending messages.
+                if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
+                    for (Object message : _pendingOutputs) {
+                        _sendMessageOverSocket(message);
+                    }
+                    _pendingOutputs.clear();
+                }
             }
         }, new HttpClientExceptionHandler());
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
     /** The HttpClient object. */
     private HttpClient _client;
-    
+
     /** The time to wait before giving up on a connection. */
     private int _connectTimeout = 5000;
 
@@ -445,7 +445,7 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** The host IP or name. */
     private String _host;
-    
+
     /** The maximum frame size for a received message. */
     private int _maxFrameSize = 65536;
 
@@ -460,10 +460,10 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** The host port. */
     private int _port;
-    
+
     /** The MIME type to assume for received messages. */
     private String _receiveType;
-    
+
     /** The MIME type to assume for sent messages. */
     private String _sendType;
 
@@ -490,21 +490,21 @@ public class WebSocketHelper extends VertxHelperBase {
     private class DataHandler implements Handler<Buffer> {
         @Override
         public void handle(Buffer buffer) {
-        	if (_receiveType.equals("application/json")
-        			|| _receiveType.startsWith("text/")) {
-        		// This assumes the input is a string encoded in UTF-8.
-        		_currentObj.callMember("_notifyIncoming", buffer.toString());
-        	} else if (_receiveType.startsWith("image/")) {
-        		try {
-        			BufferedImage image = ImageIO.read(new ByteArrayInputStream(buffer.getBytes()));
-        			ImageToken token = new AWTImageToken(image);
-        			_currentObj.callMember("_notifyIncoming", token);
-        		} catch (IOException e) {
-        			_error("Failed to read incoming image: " + e.toString());
-        		}
-        	} else {
-        		_error("Unsupported receiveType: " + _receiveType);
-        	}
+            if (_receiveType.equals("application/json")
+                    || _receiveType.startsWith("text/")) {
+                // This assumes the input is a string encoded in UTF-8.
+                _currentObj.callMember("_notifyIncoming", buffer.toString());
+            } else if (_receiveType.startsWith("image/")) {
+                try {
+                    BufferedImage image = ImageIO.read(new ByteArrayInputStream(buffer.getBytes()));
+                    ImageToken token = new AWTImageToken(image);
+                    _currentObj.callMember("_notifyIncoming", token);
+                } catch (IOException e) {
+                    _error("Failed to read incoming image: " + e.toString());
+                }
+            } else {
+                _error("Unsupported receiveType: " + _receiveType);
+            }
         }
     }
 
@@ -513,11 +513,11 @@ public class WebSocketHelper extends VertxHelperBase {
     private class EndHandler extends VoidHandler {
         @Override
         protected void handle() {
-        	_currentObj.callMember("emit", "close", "Stream has ended.");
-        	_wsIsOpen = false;
-        	if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
-        		_error("Unsent data remains in the queue.");
-        	}
+            _currentObj.callMember("emit", "close", "Stream has ended.");
+            _wsIsOpen = false;
+            if (_pendingOutputs != null && _pendingOutputs.size() > 0) {
+                _error("Unsent data remains in the queue.");
+            }
         }
     }
 
@@ -527,18 +527,18 @@ public class WebSocketHelper extends VertxHelperBase {
     private class WebSocketExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable throwable) {
-        	_error(throwable.getMessage());
-        	_wsIsOpen = false;
+            _error(throwable.getMessage());
+            _wsIsOpen = false;
         }
     }
-    
+
     /** The event handler that is triggered when a socket is closed.
      */
     private class WebSocketCloseHandler implements Handler<Void> {
         @Override
         public void handle(Void ignored) {
-        	_currentObj.callMember("emit", "close");
-        	_wsIsOpen = false;
+            _currentObj.callMember("emit", "close");
+            _wsIsOpen = false;
         }
     }
 
@@ -548,43 +548,43 @@ public class WebSocketHelper extends VertxHelperBase {
     private class HttpClientExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable arg0) {
-        	if (_numberOfTries >= _numberOfRetries + 1) {
-        		_error("Connection failed after "
-        				+ _numberOfTries
-        				+ " tries: "
-        				+ arg0.getMessage());
-        		_wsIsOpen = false;
-        		_wsFailed = arg0;
-        	} else if (_numberOfTries < 0) {
-        		_error("Connection closed while trying to connect: "
-        				+ arg0.getMessage());
-        		_wsIsOpen = false;
-        	} else {
-        		_actor.log("Connection failed. Will try again: "
-        				+ arg0.getMessage());
-        		// Retry after some time.
-        		final Runnable retry = new Runnable() {
-        			public void run() {
-						// Check again the status of the number of tries.
-						// This may have been changed if close() was called,
-						// which occurs, for example, when the model stops executing.
-						// NOTE: This may actually try connecting even if there will be
-						// no more firings of the JavaScript actor. But it will only try
-						// if wrapup has not yet been called, so if it succeeds in connecting,
-						// presumably either wrapup() or the handler in _connectWebsocket will
-						// disconnect if the model is no longer executing.
-						if (_numberOfTries >= 0
-								&& _numberOfTries <= _numberOfRetries
-								&& _actor.isExecuting()) {
-							_numberOfTries++;
-							_connectWebsocket(_host, _port, _client);
-						}
-					}
-        		};
-        		_vertx.setTimer(_timeBetweenRetries, id -> {
-        			submit(retry);
-        		});
-        	}
+            if (_numberOfTries >= _numberOfRetries + 1) {
+                _error("Connection failed after "
+                        + _numberOfTries
+                        + " tries: "
+                        + arg0.getMessage());
+                _wsIsOpen = false;
+                _wsFailed = arg0;
+            } else if (_numberOfTries < 0) {
+                _error("Connection closed while trying to connect: "
+                        + arg0.getMessage());
+                _wsIsOpen = false;
+            } else {
+                _actor.log("Connection failed. Will try again: "
+                        + arg0.getMessage());
+                // Retry after some time.
+                final Runnable retry = new Runnable() {
+                    public void run() {
+                        // Check again the status of the number of tries.
+                        // This may have been changed if close() was called,
+                        // which occurs, for example, when the model stops executing.
+                        // NOTE: This may actually try connecting even if there will be
+                        // no more firings of the JavaScript actor. But it will only try
+                        // if wrapup has not yet been called, so if it succeeds in connecting,
+                        // presumably either wrapup() or the handler in _connectWebsocket will
+                        // disconnect if the model is no longer executing.
+                        if (_numberOfTries >= 0
+                                && _numberOfTries <= _numberOfRetries
+                                && _actor.isExecuting()) {
+                            _numberOfTries++;
+                            _connectWebsocket(_host, _port, _client);
+                        }
+                    }
+                };
+                _vertx.setTimer(_timeBetweenRetries, id -> {
+                    submit(retry);
+                });
+            }
         }
     }
 }
