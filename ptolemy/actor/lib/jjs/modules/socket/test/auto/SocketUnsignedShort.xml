@@ -23,9 +23,9 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test transmission of type int from client to server&#10;and back.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test transmission of type unsigned short from client to server&#10;and back.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, -45.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, -40.0]">
         </property>
     </property>
     <property name="type" class="ptolemy.data.expr.StringParameter" value="unsignedshort">
@@ -55,6 +55,16 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: There is&#10;nondeterminism&#10;here. Order could&#10;be reversed.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{328.2430704577969, 235.0909055346924}">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Downsample ensures that neither&#10;Client sends until both clients are&#10;connected">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, 245.0]">
         </property>
     </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -133,7 +143,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 100.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 125.0]">
         </property>
     </entity>
     <entity name="ListeningPort" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -232,10 +242,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{495.0, 155.0}">
         </property>
     </entity>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.connected&quot;,x=-85.0,y=60.0}, tail={id=&quot;ServerConnected.input&quot;,x=70.0,y=100.0}, points={20.0,60.0,20.0,100.0} } }">
+    <entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 60.0]">
         </property>
-    </relation>
+    </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
@@ -274,13 +284,18 @@
         <vertex name="vertex1" value="[420.0, 155.0]">
         </vertex>
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[30.0, 60.0]">
+        </vertex>
+    </relation>
     <link port="Client.toSend" relation="relation"/>
     <link port="Client.reply" relation="relation4"/>
-    <link port="Server.listening" relation="relation7"/>
-    <link port="Server.connected" relation="relation6"/>
+    <link port="Server.connected" relation="relation2"/>
     <link port="Server.received" relation="relation3"/>
     <link port="ServerReceived.input" relation="relation3"/>
-    <link port="ServerConnected.input" relation="relation6"/>
+    <link port="ServerConnected.input" relation="relation2"/>
     <link port="ListeningPort.input" relation="relation7"/>
     <link port="Const.output" relation="relation"/>
     <link port="Const.trigger" relation="relation7"/>
@@ -293,4 +308,6 @@
     <link port="Client3.reply" relation="relation5"/>
     <link port="ClientReceived.input" relation="relation4"/>
     <link port="ClientReceived.input" relation="relation5"/>
+    <link port="DownSample.input" relation="relation2"/>
+    <link port="DownSample.output" relation="relation7"/>
 </entity>

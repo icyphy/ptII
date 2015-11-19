@@ -38,6 +38,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 200.0]">
         </property>
     </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Downsample ensures that neither&#10;Client sends until both clients are&#10;connected">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 285.0]">
+        </property>
+    </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	input('toSend');&#10;	parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string', 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'sendType':getParameter('sendType')}&#10;	);&#10;	addInputHandler('toSend', function() {&#10;		var data = get('toSend');&#10;		client.send(data);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
@@ -179,12 +189,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 210.0}">
         </property>
     </entity>
+    <entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
+        </property>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.error&quot;,x=-85.0,y=55.0}, tail={id=&quot;ServerErrors.input&quot;,x=70.0,y=255.0}, points={-95.0,255.0} } }">
-        </property>
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.connected&quot;,x=-85.0,y=55.0}, tail={id=&quot;ServerConnected.input&quot;,x=70.0,y=95.0}, points={20.0,55.0,20.0,95.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -211,14 +221,19 @@
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation3.vertex1&quot;,x=155.0,y=210.0}, tail={id=&quot;Test.input&quot;,x=215.0,y=210.0}, points={} },{ head={id=&quot;Server.received&quot;,x=-85.0,y=55.0}, tail={id=&quot;relation3.vertex1&quot;,x=155.0,y=210.0}, points={5.0,65.0,5.0,210.0} },{ head={id=&quot;ServerReceived.input&quot;,x=205.0,y=270.0}, tail={id=&quot;relation3.vertex1&quot;,x=155.0,y=210.0}, points={155.0,270.0} } }">
         </property>
     </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[15.0, 55.0]">
+        </vertex>
+    </relation>
     <link port="Client.toSend" relation="relation"/>
     <link port="Server.error" relation="relation4"/>
-    <link port="Server.listening" relation="relation7"/>
-    <link port="Server.connected" relation="relation6"/>
+    <link port="Server.connected" relation="relation5"/>
     <link port="Server.received" relation="relation3"/>
     <link port="ServerErrors.input" relation="relation4"/>
     <link port="ServerReceived.input" relation="relation3"/>
-    <link port="ServerConnected.input" relation="relation6"/>
+    <link port="ServerConnected.input" relation="relation5"/>
     <link port="Client2.toSend" relation="relation2"/>
     <link port="ListeningPort.input" relation="relation7"/>
     <link port="Const.output" relation="relation"/>
@@ -226,4 +241,6 @@
     <link port="Const2.output" relation="relation2"/>
     <link port="Const2.trigger" relation="relation7"/>
     <link port="Test.input" relation="relation3"/>
+    <link port="DownSample.input" relation="relation5"/>
+    <link port="DownSample.output" relation="relation7"/>
 </entity>

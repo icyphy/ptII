@@ -1,19 +1,19 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Socket3" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SocketString" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 943, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 884, 641}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[709, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[650, 531]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3676819856666962">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2127613283995273">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{127.54186109253376, 145.0908203125}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{135.8606562614441, 171.98070611283185}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -23,9 +23,15 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test discardMessagesBeforeOpen.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo sends a sequence of strings&#10;to the server. Parameters are set so that&#10;any strings sent before the&#10;server is listening will be discarded.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, -45.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The sequence&#10;of strings sent is:&#10;  a&#10;  aa&#10;  aaa&#10;  aaaa&#10;  ...&#10;Most likely, the&#10;first is discarded.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 25.0]">
         </property>
     </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -41,7 +47,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 60.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 80.0}">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -60,7 +66,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, 195.0}">
         </property>
         <port name="listening" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -80,7 +86,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 305.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 355.0}">
         </property>
     </entity>
     <entity name="ServerReceived" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -88,7 +94,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 260.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 295.0}">
         </property>
     </entity>
     <entity name="ServerConnected" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -96,7 +102,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 240.0}">
         </property>
     </entity>
     <entity name="ListeningPort" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -104,17 +110,17 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 165.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 185.0}">
         </property>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0.5">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-95.0, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-95.0, 195.0}">
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-60.0, 50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-60.0, 70.0}">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -123,62 +129,49 @@
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="&quot;a&quot;">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 60.0}">
-        </property>
-    </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;aa&quot;, &quot;aaa&quot;}">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 200.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 80.0}">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.error&quot;,x=30.0,y=225.0}, tail={id=&quot;ServerErrors.input&quot;,x=165.0,y=305.0}, points={20.0,305.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.error&quot;,x=30.0,y=195.0}, tail={id=&quot;ServerErrors.input&quot;,x=180.0,y=355.0}, points={20.0,355.0} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.connected&quot;,x=30.0,y=225.0}, tail={id=&quot;ServerConnected.input&quot;,x=165.0,y=225.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.connected&quot;,x=30.0,y=195.0}, tail={id=&quot;ServerConnected.input&quot;,x=180.0,y=240.0}, points={130.0,195.0,130.0,240.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.start&quot;,x=30.0,y=225.0}, tail={id=&quot;SingleEvent.output&quot;,x=-95.0,y=225.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.start&quot;,x=30.0,y=195.0}, tail={id=&quot;SingleEvent.output&quot;,x=-95.0,y=195.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=-60.0,y=50.0}, tail={id=&quot;Ramp.trigger&quot;,x=100.0,y=60.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=-60.0,y=70.0}, tail={id=&quot;Ramp.trigger&quot;,x=100.0,y=80.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Client.toSend&quot;,x=235.0,y=60.0}, tail={id=&quot;Ramp.output&quot;,x=100.0,y=60.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Client.toSend&quot;,x=235.0,y=80.0}, tail={id=&quot;Ramp.output&quot;,x=100.0,y=80.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.listening&quot;,x=30.0,y=225.0}, tail={id=&quot;ListeningPort.input&quot;,x=165.0,y=165.0}, points={115.0,215.0,115.0,165.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.listening&quot;,x=30.0,y=195.0}, tail={id=&quot;ListeningPort.input&quot;,x=180.0,y=185.0}, points={} } }">
         </property>
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{250.0, 260.0}">
-        </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation8.vertex1&quot;,x=250.0,y=260.0}, tail={id=&quot;Test.input&quot;,x=315.0,y=200.0}, points={250.0,200.0} },{ head={id=&quot;Server.received&quot;,x=30.0,y=225.0}, tail={id=&quot;relation8.vertex1&quot;,x=250.0,y=260.0}, points={115.0,235.0,115.0,260.0} },{ head={id=&quot;ServerReceived.input&quot;,x=305.0,y=260.0}, tail={id=&quot;relation8.vertex1&quot;,x=250.0,y=260.0}, points={} } }">
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.received&quot;,x=30.0,y=195.0}, tail={id=&quot;ServerReceived.input&quot;,x=180.0,y=295.0}, points={115.0,205.0,115.0,295.0} } }">
         </property>
     </relation>
     <link port="Client.toSend" relation="relation2"/>
     <link port="Server.error" relation="relation4"/>
     <link port="Server.listening" relation="relation7"/>
     <link port="Server.connected" relation="relation6"/>
-    <link port="Server.received" relation="relation8"/>
+    <link port="Server.received" relation="relation5"/>
     <link port="Server.start" relation="relation"/>
     <link port="ServerErrors.input" relation="relation4"/>
-    <link port="ServerReceived.input" relation="relation8"/>
+    <link port="ServerReceived.input" relation="relation5"/>
     <link port="ServerConnected.input" relation="relation6"/>
     <link port="ListeningPort.input" relation="relation7"/>
     <link port="SingleEvent.output" relation="relation"/>
     <link port="DiscreteClock.output" relation="relation3"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp.trigger" relation="relation3"/>
-    <link port="Test.input" relation="relation8"/>
 </entity>
