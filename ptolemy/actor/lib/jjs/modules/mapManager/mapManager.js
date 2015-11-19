@@ -128,12 +128,17 @@ function _stringsToKey( stringArray) {
 	var arg;
 	var c;
 
-	for (arg in stringArray) {
-		for ( c in arg ) {
-			key += (c + '_' );
+	for (arg = 0; arg < stringArray.length; arg++){
+
+		var word = stringArray[arg];
+		for(c = 0; c < word.length; c++){
+			key += ('_' + word.charAt(c)  );
 		}
-		key += "  ";
+		if(arg != stringArray.length -1){
+			key += "  ";	
+		}
 	}
+
 	return key;
 }
 
@@ -144,7 +149,7 @@ function _keyToStrings( key) {
 		throw "Incorrect arguments to _keyToStrings.";
 	}
 
-	if (! key.includes("  ")) {
+	if ( key.indexOf("  ") == -1) {
 		throw "key in _keyToStrings does not have a delimiter.";
 	}
 
@@ -153,22 +158,33 @@ function _keyToStrings( key) {
 	var args = [];
 	var arg = "";
 
-	var realChar = false;
 
+	var state = "parse";
+	var nextState;
 
-	for ( c in key) {
-		if (c_last + c === "  ") {
-			args.push(arg);
+	for ( var i =0; i < key.length; i++){
+		c = key.charAt(i);
+		if(state === "parse"){
+			if(c === "_"){
+				nextState = "append";
+			} else if (c === " "){
+				nextState = "push";
+			}
 		}
-		if (realChar === false) {
-			realChar = true;
-		} else {
+
+		if(state === "append"){
 			arg += c;
-			realChar = false;
+			nextState = "parse";
 		}
-		c_last = c;
-	}
 
+		if(state === "push"){
+			args.push(arg);
+			arg = "";
+			nextState = "parse";
+			//Note that the current value of c is ignored.
+		}
+	}
+	args.push(arg);
 	return args;
 }
 
