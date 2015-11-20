@@ -23,7 +23,7 @@
     <property name="WebServer" class="org.ptolemy.ptango.lib.WebServer">
         <property name="preferredPort" class="ptolemy.data.expr.Parameter" value="">
         </property>
-        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$PTII/org/ptolemy/ptango/test/auto/pages">
+        <property name="resourceLocation" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/org/ptolemy/ptango/test/auto/pages">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 85.0]">
         </property>
