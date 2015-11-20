@@ -58,6 +58,9 @@ import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
 import ptolemy.data.type.Type;
 
+///////////////////////////////////////////////////////////////////
+////AbstractTrack
+
 /** A model of a track in Train  control systems.
  *  This track can have no more than one Train in transit.
  *  If there is one in transit, then it rejects all inputs.
@@ -69,13 +72,10 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
-       
-        
         input = new TypedIOPort(this, "input", true, false);
                 
         output=new TypedIOPort(this, "output", false, true); 
         output.setTypeEquals(new RecordType(_lables, _types));
-        
         
         trackId= new Parameter(this, "trackId");
         trackId.setTypeEquals(BaseType.INT);
@@ -90,7 +90,7 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
         // Create an icon for this Track node.
         EditorIcon node_icon = new EditorIcon(this, "_icon");
         
-        //icon for the broken zone
+        // This part of icon is used to show the broken zone.
         _circle = new EllipseAttribute(node_icon, "_circleShap");
         _circle.centered.setToken("true");
         _circle.width.setToken("40");
@@ -98,8 +98,7 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
         _circle.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
         _circle.lineColor.setToken("{0.0, 0.0, 0.0, 0.0}");
         
-        
-        //icon of train
+        //This part of icon shows shape of the train. 
         _shape = new ResizablePolygonAttribute(node_icon, "_trainShape");
         _shape.centered.setToken("true");
         _shape.width.setToken("50");
@@ -107,7 +106,7 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
         _shape.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
         _shape.lineColor.setToken("{0.0, 0.0, 0.0, 0.0}");
         
-        //icon of track 
+        //This part of  icon is used to show the shape of the track.
         _rectangle=new RectangleAttribute(node_icon, "_trackShape");
         _rectangle.centered.setToken("true");
         _rectangle.width.setToken("30");
@@ -116,16 +115,24 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
                
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                       ports and parameters                ////
+    
     public TypedIOPort input;
     public TypedIOPort output;
     public Parameter trackId, lineSymbol, broken;
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
     @Override
     public boolean reject(Token token, IOPort port) {
         boolean unAvailable=(_inTransit != null || ((BooleanToken)_isBroken).booleanValue());
         return unAvailable;
     }
     
+    /**This method handles changing in the broken and symbol parameter of the track.
+     * Symbol is the symbol of the line.
+     */
     @Override
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         Director director=getDirector();
@@ -133,12 +140,13 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
              if(broken.getToken()!=null){
                 _isBroken=broken.getToken();
                 
-                //change color of the storm zone
-                if(((BooleanToken)_isBroken).booleanValue()==true)
+                //Change color of the storm zone.
+                if(((BooleanToken)_isBroken).booleanValue()==true){
                     _circle.fillColor.setToken("{1.0,0.2,0.2,1.0}");
-                else
+                }
+                else{
                     _circle.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
-                //
+                }
                 ((TCSDirector)director).handleTrackAttributeChanged(this);
             }
         } else if(attribute==lineSymbol && lineSymbol.getToken()!=null){
@@ -180,7 +188,7 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
                 _director.fireAt(this, _transitExpires);
                 return;
             }
-            // Token has been sent successfully
+            // Token has been sent successfully.
             _inTransit = null;
             _changeIcon(_symbol);
             return; 
@@ -189,12 +197,12 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
        
             if(input.hasNewToken(0))
             {
-                // This if is for chacking safety. Instead of throwing exception we can write a record to the file.
+                // This if is used for checking safety. Instead of throwing exception we can write a record to the file.
                 if(_inTransit!=null)
                 {
                     throw new IllegalActionException("two train in one track");
                 }
-                //
+                
                 _inTransit=input.get(0);
                 _setIconForTrain(((RecordToken)_inTransit).get("trainId"));
                 double movingTime=((TCSDirector)_director).movingTimeOfTrain(_inTransit,_id);
@@ -202,7 +210,7 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
                     throw new IllegalActionException("Minstake in calculating moving time of Train");
                 _transitExpires=currentTime.add(movingTime);
                 _director.fireAt(this, _transitExpires);
-    }
+            }
     }
     
    
@@ -225,8 +233,11 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
        _changeIcon(_symbol);
     }
     
-  /** Change icon of the track from train to a rectangle.
-     *  @param symbol The symbol of the line .
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    /** Change icon of the track from train shape to rectangle.
+     *  @param symbol The symbol of the line.
      *  @throws IllegalActionException
      */
     protected void _changeIcon(String symbol) throws IllegalActionException {
@@ -244,11 +255,11 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
         }
     }
     
-	/** Change icon of the track from rectangle to icon of the train.
-	*  @param idOfTrain The id of the train .
-	*  @throws IllegalActionException
-	 */
-    private void _setIconForTrain(Token idOfTrain) throws IllegalActionException {
+    /** Change icon of the track from rectangle to icon of the train.
+    *  @param idOfTrain The id of the train .
+    *  @throws IllegalActionException
+    */
+    protected void _setIconForTrain(Token idOfTrain) throws IllegalActionException {
         int id=((IntToken)idOfTrain).intValue();
         _rectangle.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
         _rectangle.lineColor.setToken("{0.0, 0.0, 0.0, 0.0}");
@@ -271,25 +282,23 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
         return color;
     }
     
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    
+    private EllipseAttribute _circle;
+    private ArrayToken _color;
+    private Director _director;
+    private Token _id;
+    private Token _isBroken;
+    private Token _inTransit;
+    private String[] _lables={"trainId","trainSymbol","movingMap","trainSpeed","fuel","arrivalTimeToStation","dipartureTimeFromStation"};
     private DoubleToken _one = new DoubleToken(1.0);
     private Token[] _white = {_one, _one, _one, _one};
     private ArrayToken _noTrainColor = new ArrayToken(_white);
-    
-    protected ResizablePolygonAttribute _shape;
     private RectangleAttribute _rectangle;
-    private EllipseAttribute _circle;
-  //  private AttributeValueAttribute _value;
-    private ArrayToken _color;
-    
-   
-
-    private Token _inTransit;
-    private Time _transitExpires;
-    private Token _isBroken;
     private String _symbol;
-    private Token _id;
-    private Director _director;
-    private String[] _lables={"trainId","trainSymbol","movingMap","trainSpeed","fuel","arrivalTimeToStation","dipartureTimeFromStation"};
+    protected ResizablePolygonAttribute _shape;
+    private Time _transitExpires;
     private Type[] _types={BaseType.INT,BaseType.STRING,new ArrayType(BaseType.STRING), BaseType.INT,BaseType.DOUBLE,BaseType.DOUBLE,BaseType.DOUBLE};
     
 }

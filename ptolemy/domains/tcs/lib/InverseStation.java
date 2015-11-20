@@ -33,7 +33,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
-/** This actor models a Station. It extends AbstractStation. Input is in east side and output in west side.
+///////////////////////////////////////////////////////////////////
+////InverseStation
+
+/** This actor models the reverse shape of the station.
+ * It extends AbstractStation. Input is in east side and output in the west side.
  *  @author Maryam Bagheri
  */
 public class InverseStation extends AbstractStation {

@@ -33,8 +33,6 @@ import java.util.Map;
 import java.util.Random;
 import java.util.TreeMap;
 import java.util.Map.Entry;
-
-
 import ptolemy.actor.Receiver;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -51,6 +49,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+///////////////////////////////////////////////////////////////////
+////TCSDirector
+
 /** A director for modeling Train control systems.
  *  This director provides a receiver that consults the destination actor
  *  to determine whether it can accept an input, and provides mechanisms
@@ -64,6 +65,9 @@ public class TCSDirector extends DEDirector {
         super(container, name);
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
     @Override
     public Receiver newReceiver() {
         return new TCSReceiver();
@@ -78,30 +82,18 @@ public class TCSDirector extends DEDirector {
         super.initialize();
     }
         
-	/** Set color of the lines in Metro.
+    
+    /** Return the color of the line.
+     *  @param symbol symbol of the line.
+     *  @return Return color of a line in form of ArrayToken.
      *  @throws IllegalActionException 
      */
-    private void lineColoring() throws IllegalActionException  {
-            // TODO Auto-generated method stub
-        _lineColor.put("A", new ArrayToken("{1.0,0.6,0.6,1.0}"));
-        _lineColor.put("I", new ArrayToken("{0.0,0.4,1.0,1.0}"));
-        _lineColor.put("S", new ArrayToken("{0.6,0.8,0.0,1.0}"));
-        _lineColor.put("E", new ArrayToken("{1.0,0.0,0.8,1.0}"));
-        _lineColor.put("G", new ArrayToken("{1.0,0.4,0.0,1.0}"));
-        _lineColor.put("m", new ArrayToken("{1.0,0.0,0.0,1.0}"));
-        _lineColor.put("M", new ArrayToken("{1.0,0.0,0.0,1.0}"));
-        _lineColor.put("H", new ArrayToken("{0.8,0.8,0.8,1.0}"));
-        _lineColor.put("T", new ArrayToken("{0.2,0.8,1.0,1.0}"));
-        _lineColor.put("C", new ArrayToken("{0.0,0.6,0.0,1.0}"));
-        _lineColor.put("Y", new ArrayToken("{1.0,0.8,0.0,1.0}"));
-        _lineColor.put("Z", new ArrayToken("{0.6,0.0,0.6,1.0}"));
-        _lineColor.put("N", new ArrayToken("{0.0,1.0,0.8,1.0}"));
-        _lineColor.put("F", new ArrayToken("{0.8235294,0.4117647,0.11764706,0.84705883}"));
-            
-        }
+    public ArrayToken getColor(String symbol) throws IllegalActionException {
+        lineColoring();
+        return _lineColor.get(symbol);
+    }
 
-    /** Return an additional delay for a track to keep a train in
-     *  transit.
+    /** Return an additional delay for a track to keep a train in transit.
      *  @param track
      *  @param rejector
      *  @return An additional delay, or -1.0 to indicate that a rerouting is possible.
@@ -112,9 +104,8 @@ public class TCSDirector extends DEDirector {
         return 1.0;
     }
     
-    /** Return an additional delay for a Station to keep a Train in
-     *  transit.
-     *  @param Station
+    /** Return an additional delay for a Station to keep a Train in transit.
+     *  @param station
      *  @param rejector
      *  @return An additional delay, or -1.0 to indicate that a rerouting is possible.
      *  @throws IllegalActionException 
@@ -124,7 +115,7 @@ public class TCSDirector extends DEDirector {
         return 1.0;
     }  
     
-    /** Put an entry into _brokenTracks for the initialized track
+    /** Put an entry into _brokenTracks for the initialized track.
      *  @param track
      *  @throws IllegalActionException 
      */
@@ -146,12 +137,11 @@ public class TCSDirector extends DEDirector {
             _brokenTracks.put(symbol, track.broken.getToken());
     }
      
-    /** Put an entry into _brokenStations for the initialized station 
+    /** Put an entry into _brokenStations for the initialized station. 
      *  @param station
      *  @throws IllegalActionException 
      */
     public void handleInitializedStation(AbstractStation station) throws IllegalActionException {
-        // TODO Auto-generated method stub
         int stationId=((IntToken)station.stationId.getToken()).intValue();
         if(stationId==-1)
             throw new IllegalActionException("Invalid id for station (-1)");
@@ -175,7 +165,7 @@ public class TCSDirector extends DEDirector {
         
     }
     
-    /** Update _brokenTracks array because of a change in condition of a track
+    /** Update _brokenTracks array because of a change in condition of a track.
      *  @param track
      *  @throws IllegalActionException 
      */
@@ -196,7 +186,7 @@ public class TCSDirector extends DEDirector {
     }
     
     
-    /** Update _brokenStations array because of a change in condition of a station
+    /** Update _brokenStations array because of a change in condition of a station.
      *  @param station
      *  @throws IllegalActionException 
      */
@@ -218,13 +208,100 @@ public class TCSDirector extends DEDirector {
         }
     }
     
-	   /** Routing a train in a station with more than one output channel which is in the junction, and by using the moving map of the train.
-	* MovingMap of the train is an array in form of "symbolId", that just shows the next station (in trip) of a station with more than one output channel. 
-	* it returns the new train packet and the out channel
-     *  @param lines Shows the Stations which are neighbour of the current station, an array in form of "symbolId"
-     *  @param token token shows the train
+    
+    /** Handle initializing of a SourceStation.
+     *  @param SourceStation
      *  @throws IllegalActionException 
      */
+    public void handleInitializedSourceStation(AbstractSourceStation abstractSourceStation) throws IllegalActionException{
+       
+        int stationId=((IntToken)abstractSourceStation.stationId.getToken()).intValue();
+        if(abstractSourceStation.lineSymbol.getToken()==null)
+            throw new IllegalActionException("Fill Symbol of sourceStation "+stationId);
+        String symbol=((StringToken)(abstractSourceStation.lineSymbol.getToken())).stringValue();
+        symbol=symbol+stationId;
+
+        if(stationId==-1)
+            throw new IllegalActionException("Invalid id for source station");
+        
+        if(_brokenStations.containsKey(symbol))
+            throw new IllegalActionException("Duplication in station id");
+        
+         _brokenStations.put(symbol,(Token)(new BooleanToken(false)));  
+    }
+    
+     /** Retrun color of the train.
+     *  @param id Id of the train.
+     *  @throws IllegalActionException 
+     */
+    public ArrayToken handleTrainColor(int id) throws IllegalActionException{
+        ArrayToken color = _trainsColor.get(id);
+        
+        while(color == null) {
+            Token[] colorSpec = new DoubleToken[4];
+            colorSpec[0] = new DoubleToken(_random.nextDouble());
+            colorSpec[1] = new DoubleToken(_random.nextDouble());
+            colorSpec[2] = new DoubleToken(_random.nextDouble());
+            colorSpec[3] = new DoubleToken(1.0);
+            color = new ArrayToken(colorSpec);
+            Boolean colorExist=false;
+            for(Entry<String, ArrayToken> entry : _lineColor.entrySet()){
+                if(entry.getValue().equals(color))
+                    {
+                    colorExist=true;
+                        break;
+                    }
+            }
+            if(colorExist==false){
+                _trainsColor.put(id, color);
+                break;
+            }
+            color=null;
+        }
+        
+        return color;
+    }
+    
+    /** Set color of the lines in Metro.
+     *  @throws IllegalActionException 
+     */
+    public void lineColoring() throws IllegalActionException  {
+        _lineColor.put("A", new ArrayToken("{1.0,0.6,0.6,1.0}"));
+        _lineColor.put("I", new ArrayToken("{0.0,0.4,1.0,1.0}"));
+        _lineColor.put("S", new ArrayToken("{0.6,0.8,0.0,1.0}"));
+        _lineColor.put("E", new ArrayToken("{1.0,0.0,0.8,1.0}"));
+        _lineColor.put("G", new ArrayToken("{1.0,0.4,0.0,1.0}"));
+        _lineColor.put("m", new ArrayToken("{1.0,0.0,0.0,1.0}"));
+        _lineColor.put("M", new ArrayToken("{1.0,0.0,0.0,1.0}"));
+        _lineColor.put("H", new ArrayToken("{0.8,0.8,0.8,1.0}"));
+        _lineColor.put("T", new ArrayToken("{0.2,0.8,1.0,1.0}"));
+        _lineColor.put("C", new ArrayToken("{0.0,0.6,0.0,1.0}"));
+        _lineColor.put("Y", new ArrayToken("{1.0,0.8,0.0,1.0}"));
+        _lineColor.put("Z", new ArrayToken("{0.6,0.0,0.6,1.0}"));
+        _lineColor.put("N", new ArrayToken("{0.0,1.0,0.8,1.0}"));
+        _lineColor.put("F", new ArrayToken("{0.8235294,0.4117647,0.11764706,0.84705883}"));
+            
+        }
+
+    /** Return moving time of a train in a track or station.
+     *  @param  inTransit inTransit is the moving train.
+     *  @param  id Id is the id of the track or station.
+     *  @return Return time of traveling.
+     *  @throws IllegalActionException 
+     */
+    public double movingTimeOfTrain(Token inTransit, Token id) {
+        // FIXME: Determine time of traveling based on speed.
+        return 1.0;
+    }
+
+    
+    /** Routing a train in a station with more than one output channel which is in the junction and by using the moving map of the train.
+    *   MovingMap of the train is an array in form of "symbolId", that just shows the next station (in trip) of a station with more than one output channel.
+    *  @param lines lines show the stations which are neighbour of the current station, an array in form of "symbolId".
+    *  @param token token shows the train.
+    *  @return Returns a new train packet and the out channel.
+    *  @throws IllegalActionException 
+    */
     public Map<String, Token> routing(ArrayToken lines, Token token) throws IllegalActionException {
         ArrayToken movingMap=(ArrayToken)((RecordToken)token).get("movingMap");
         int outRout=0;
@@ -258,96 +335,23 @@ public class TCSDirector extends DEDirector {
       return temp;
         
     }
-    
-	/** Return the color of the line
-     *  @param symbol symbol of the line
-     *  @throws IllegalActionException 
-     */
-    public ArrayToken getColor(String symbol) throws IllegalActionException {
-        // TODO Auto-generated method stub
-        lineColoring();
-        return _lineColor.get(symbol);
-    }
-
-	/** Return moving time of a train in a track or station
-     *  @param  inTransit inTransit is the moving train
-     *  @param  id Id is the id of the track or station
-     *  @throws IllegalActionException 
-     */
-    public double movingTimeOfTrain(Token inTransit, Token id) {
-        // TODO Auto-generated method stub
-        return 1.0;
-    }
 
     
-    /** Handle initializing of a SourceStation
-     *  @param SourceStation
-     *  @throws IllegalActionException 
-     */
-    public void handleInitializedSourceStation(AbstractSourceStation abstractSourceStation) throws IllegalActionException{
-        // TODO Auto-generated method stub
-       
-        int stationId=((IntToken)abstractSourceStation.stationId.getToken()).intValue();
-        if(abstractSourceStation.lineSymbol.getToken()==null)
-            throw new IllegalActionException("Fill Symbol of sourceStation "+stationId);
-        String symbol=((StringToken)(abstractSourceStation.lineSymbol.getToken())).stringValue();
-        symbol=symbol+stationId;
-
-        if(stationId==-1)
-            throw new IllegalActionException("Invalid id for source station");
-        
-        if(_brokenStations.containsKey(symbol))
-            throw new IllegalActionException("Duplication in station id");
-        
-         _brokenStations.put(symbol,(Token)(new BooleanToken(false)));  
-    }
-    
-      /**Retrun color of the train
-     *  @param id Id of the train
-     *  @throws IllegalActionException 
-     */
-    public ArrayToken handleTrainColor(int id) throws IllegalActionException{
-        ArrayToken color = _trainsColor.get(id);
-        
-        while(color == null) {
-            Token[] colorSpec = new DoubleToken[4];
-            colorSpec[0] = new DoubleToken(_random.nextDouble());
-            colorSpec[1] = new DoubleToken(_random.nextDouble());
-            colorSpec[2] = new DoubleToken(_random.nextDouble());
-            colorSpec[3] = new DoubleToken(1.0);
-            color = new ArrayToken(colorSpec);
-            Boolean colorExist=false;
-            for(Entry<String, ArrayToken> entry : _lineColor.entrySet()){
-                if(entry.getValue().equals(color))
-                    {
-                    colorExist=true;
-                        break;
-                    }
-            }
-            if(colorExist==false){
-                _trainsColor.put(id, color);
-                break;
-            }
-            color=null;
-        }
-        
-        return color;
-    }
-    
-     //private variables which show situation of tracks 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
     
     private Random _random=new Random();
     
-    /**  _brokenTracks stores which track has broken: first element is in form of "symbolId"  in which symbol is symbol of the track (line) and id is id of the track, and last is a boolean token*/
+    /**  _brokenTracks stores which track has broken. First element is in form of "symbolId"  in which symbol is symbol of the track (line) and id is id of the track, and last is a boolean token. */
     private Map<String, Token> _brokenTracks=new TreeMap<>();
     
-	/**  _brokenStations stores which station has broken: first element is in form of "symbolId"  in which symbol is symbol of the station (line) and id is id of the station, and last is a boolean token*/
+	/**  _brokenStations stores which station has broken. First element is in form of "symbolId"  in which symbol is symbol of the station (line) and id is id of the station, and last is a boolean token. */
     private Map<String, Token> _brokenStations=new TreeMap<>();
     
-    /** _lineColor stors color of the lines: first element is symbol of the line and last is its color */
+    /** _lineColor stors color of the lines. First element is symbol of the line and last is its color. */
     private Map<String,ArrayToken> _lineColor=new HashMap<String,ArrayToken>();
     
-    /** _trainsColor stores a color for each train*/
+    /** _trainsColor stores a color for each train. */
     private Map<Integer,ArrayToken> _trainsColor = new HashMap<Integer,ArrayToken>();
 
    

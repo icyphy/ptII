@@ -33,11 +33,13 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
+///////////////////////////////////////////////////////////////////
+////InverseTrack
 
-/** A model of a track in Train  control systems. It extends AbstractTrack with input in east side and output in west side.
-* Shape of the train is differe from the shape of the train in track.
- *  @author Maryam Bagheri
- */
+/** This actor extends AbstractTrack with input in east side and output in west side.
+* Shape of the train in this actor is reverse of the shape of the train in track.
+*  @author Maryam Bagheri
+*/
 public class InverseTrack extends AbstractTrack{
 
     public InverseTrack(CompositeEntity container, String name)
