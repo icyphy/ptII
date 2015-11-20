@@ -31,9 +31,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+///////////////////////////////////////////////////////////////////
+////Track
 
-/** A model of a track in Train  control systems. It extends AbstractTrack. Input is in west side and output in east side.
-* shap of the train is differe from the shap of the train in reverse track. 
+/** A model of a track in Train  control systems.
+ * It extends AbstractTrack. Input is in west side and output in east side. 
  *  @author Maryam Bagheri
  */
 public class Track extends  AbstractTrack{

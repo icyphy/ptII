@@ -34,6 +34,9 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
+///////////////////////////////////////////////////////////////////
+////SourceStation
+
 /** This  actor extends AbstractSourceStation. Input of this actro is in west side and output in east side.
  *  @author Maryam Bagheri
 */

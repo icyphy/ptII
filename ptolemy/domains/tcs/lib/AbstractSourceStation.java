@@ -31,8 +31,6 @@ package ptolemy.domains.tcs.lib;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
-
-
 import ptolemy.actor.Director;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedAtomicActor;
@@ -49,15 +47,18 @@ import ptolemy.domains.tcs.kernel.TCSDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
 import ptolemy.vergil.kernel.attributes.AttributeValueAttribute;
 
-/** This abstract actor receives a record token which shows the train decides to move.
+///////////////////////////////////////////////////////////////////
+////AbstractSourceStation
+
+/** This abstract actor models a source staton which receives a record token. This token is a train decides to move.
  * Therefore, this actor just sends the train out. At each (take off) time, just one train can move. 
- * If the destination track  is unavailable,
- * then station try to send it after a period of time. 
+ * If the destination track  is unavailable, then station try to send it after a period of time. 
  *  @author Maryam Bagheri
 */
 public class AbstractSourceStation extends TypedAtomicActor{ 
@@ -90,7 +91,7 @@ public class AbstractSourceStation extends TypedAtomicActor{
        
        EditorIcon node_icon = new EditorIcon(this, "_icon");
        
-       //border
+       // This part of the icon shows border of the station.
        _sourceStationBorder=new ResizablePolygonAttribute(node_icon, "_stationBorder");
        _sourceStationBorder.centered.setToken("true");
        _sourceStationBorder.width.setToken("30");
@@ -103,27 +104,38 @@ public class AbstractSourceStation extends TypedAtomicActor{
                         "-21.0,25.0,-31.0,-25.0,-31.0,-32.0,-21.0,-33.0,-10.0,-33.0,10.0," +
                         "-32.0,21.0,-25.0,31.0,25.0,31.0,32.0,21.0,33.0,10.0}");
 		
-		//show symbol of the station
-       _valueSymbol=new AttributeValueAttribute(node_icon, "_SymbolInSourceStation");
-       _valueSymbol.textSize.setToken("15");
-       _valueSymbol.textColor.setToken("{0.0, 0.0, 0.0, 1.0}");
-       _valueSymbol.anchor.setToken("south");
-       _valueSymbol.attributeName.setExpression("lineSymbol");		
-		 //show id of the station
-       _valueId=new AttributeValueAttribute(node_icon, "_IdInSourceStation");
-       _valueId.textSize.setToken("15");
-       _valueId.textColor.setToken("{0.0, 0.0, 0.0, 1.0}");
-       _valueId.anchor.setToken("north");
-       _valueId.attributeName.setExpression("stationId");
+    // This part of the icon shows id of the station.
+       _valueIdInSource=new AttributeValueAttribute(node_icon, "_IdInSourceStation");
+       _valueIdInSource.textSize.setToken("15");
+       Location l1 = new Location(_valueIdInSource,"_location");
+       l1.setLocation(new double[]{-10.0, -2.0});
+       _valueIdInSource.textColor.setToken("{0.0, 0.0, 0.0, 1.0}");
+       _valueIdInSource.attributeName.setExpression("stationId");
        
+    // This part of the icon shows symbol of the station.
+       _valueSymbolInSource=new AttributeValueAttribute(node_icon, "_SymbolInSourceStation");
+       _valueSymbolInSource.textSize.setToken("15");
+       Location l2 = new Location(_valueSymbolInSource,"_location");
+       l2.setLocation(new double[]{-12.0, -16.0});
+       _valueSymbolInSource.textColor.setToken("{0.0, 0.0, 0.0, 1.0}");
+       _valueSymbolInSource.attributeName.setExpression("lineSymbol");
        
    }
+   
+   ///////////////////////////////////////////////////////////////////
+   ////                       ports and parameters                ////
    
    public TypedIOPort input;
    public TypedIOPort output;
    public Parameter delay,stationId,takeOff,lineSymbol;
    
    
+   ///////////////////////////////////////////////////////////////////
+   ////                         public methods                    ////
+   
+   /** This method handles changing in the symbol parameter of the source station.
+    * Symbol parameter shows the symbol of the line.
+    */
    @Override
    public void attributeChanged(Attribute attribute) throws IllegalActionException {
        Director director=getDirector();
@@ -132,7 +144,6 @@ public class AbstractSourceStation extends TypedAtomicActor{
            if(_symbol.length()>1)
                throw new IllegalActionException("Inappropriate line symbol");
            ArrayToken color=((TCSDirector)director).getColor(_symbol);
-          
            _sourceStationBorder.fillColor.setToken(color); 
        }
        else {
@@ -146,8 +157,8 @@ public class AbstractSourceStation extends TypedAtomicActor{
        Time currentTime = _director.getModelTime();
        if (currentTime.equals(_transitExpires) && _inTransit!=null ) {
                    try{
-                     //***When station decides to send out an train it must set it's departure time.
-                     //For this purpose, we make a new recordtoken
+                     //When source station decides to send out a train, it should set it's departure time.
+                     //For this purpose, we make a new recordtoken.
                       double departureTime=currentTime.getDoubleValue()-((DoubleToken)takeOff.getToken()).doubleValue();
                       RecordToken firstTrain=_trains.get(0);
                        Map<String, Token> tempTrain=new TreeMap<String, Token>();
@@ -222,13 +233,16 @@ public class AbstractSourceStation extends TypedAtomicActor{
        
    }
    
-
-	private AttributeValueAttribute _valueSymbol;
-   private AttributeValueAttribute _valueId;   
+   ///////////////////////////////////////////////////////////////////
+   ////                         private variables                 ////
+   
+   private Director _director;
+   private Token _inTransit;
    private String _symbol;
    private ResizablePolygonAttribute _sourceStationBorder;
-   private Token _inTransit;
    private Time _transitExpires;
-   private Director _director;
    private ArrayList<RecordToken> _trains;
+   private AttributeValueAttribute _valueSymbolInSource;
+   private AttributeValueAttribute _valueIdInSource;   
+   
 }

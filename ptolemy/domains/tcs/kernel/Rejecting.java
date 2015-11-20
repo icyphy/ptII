@@ -30,6 +30,9 @@ package ptolemy.domains.tcs.kernel;
 import ptolemy.actor.IOPort;
 import ptolemy.data.Token;
 
+///////////////////////////////////////////////////////////////////
+////Rejecting
+
 /** An interface for actors that can reject inputs.
  *  @author Marjan Sirjani and Edward A. Lee
  */

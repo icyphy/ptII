@@ -32,7 +32,11 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
-/** This actor models a Station. It extends AbstractStation. Input is in west side and output is in east side of the actor.
+///////////////////////////////////////////////////////////////////
+////Station
+
+/** This actor models a Station. It extends AbstractStation.
+ * Input is in west side and output is in east side of the actor.
  *  @author Maryam Bagheri
  */
 public class Station extends AbstractStation {
