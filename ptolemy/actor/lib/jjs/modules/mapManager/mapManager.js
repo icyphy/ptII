@@ -476,12 +476,12 @@ function Entity(name) {
 	* @returns {boolean} true if the location was successfully set, false otherwise.
 	*/
 	this.setOccupancy = function(occupancy){
-		if (! (occupancy instanceof occupancy)){
+		if (! (occupancy instanceof Occupancy)){
 			throw "Incorrect arguments to setPosition.";
 		}
 
 	 	//Check to see if this entity has been registered.
-	 	if( ! entities.hasOwnProperty(alias._key()) ){
+	 	if( ! entities.hasOwnProperty(this._key()) ){
 	 		throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity a position.";
 	 	} 
 
