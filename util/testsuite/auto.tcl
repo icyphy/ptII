@@ -148,22 +148,31 @@ foreach file [lsort [glob auto/*.xml]] {
 
             # If a JSAccessor actor was found, then reload all the JSAccessors and rerun the model.
             if {$JSAccessorPresent} {
-                test "Auto-reload1-rerun" "Automatic test reload Accessors and rerun in model file $file" {
-                    set timeout 200000
-                    puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]], then reloading accessor(s)"
-                    set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
+                # Skip reloading certain classes
+                set toplevelName [[$application toplevel] getFullName]
+                if {[lsearch [list {.ContextAware}] $toplevelName] != -1} {
+                    puts "auto.tcl: Skipping reloading accessors in $toplevelName because util/testsuite/auto.tcl asked us to."
+                } else {
+                    test "Auto-reload1-rerun" "Automatic test reload Accessors and rerun in model file $file" {
+                        set timeout 200000
+                        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]], then reloading accessor(s)"
+                        set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
 
-                    set toplevel [$application toplevel]
-                    java::call org.terraswarm.accessor.JSAccessor reloadAllAccessors $toplevel
+                        set toplevel [$application toplevel]
+                        java::call org.terraswarm.accessor.JSAccessor reloadAllAccessors $toplevel
 
-                    if [catch {$application rerun} errMsg] {
-                        $watchDog cancel
-                        error $errMsg
-                    } else {
-                        $watchDog cancel
-                    }
-                    list {}
-                } {{}}
+                        if [catch {$application rerun} errMsg] {
+                            $watchDog cancel
+                            puts "While relading the accessors for [$toplevel getFullName], the rerun failed."
+                            puts "This can happen if the model changes the default values after loading the accessor"
+                            puts "Stack trace was: [jdkStackTrace]"
+                            error $errMsg
+                        } else {
+                            $watchDog cancel
+                        }
+                        list {}
+                    } {{}}
+                }
             }
         }
     }
