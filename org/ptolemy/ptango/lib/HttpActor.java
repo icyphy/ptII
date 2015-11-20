@@ -547,6 +547,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                     }
                 }
             } else {
+                // Note:  This handles PUT requests as well as POST requests
+                // Could make separate ports for PUT if needed
                 if (_debugging) {
                     _debug("Sending post request URI: " + _request.requestURI);
                     _debug("Sending post request parameters: "
@@ -887,6 +889,26 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 IOException {
             _handleRequest(request, response, 1);
         }
+        
+        /** Handle an HTTP put request by creating a web page as the HTTP
+         *  response.
+         *  NOTE: This method is synchronized, and the lock is _not_ released
+         *  while waiting for the response. This strategy helps prevent a pending
+         *  get request from overlapping with a pending put request. The second
+         *  request will be postponed until the first has been completely handled.
+         *  @param request The HTTP get request.
+         *  @param response The HTTP response to write to.
+         *  @exception ServletException  If there is a problem reading from the
+         *  servlet request or other servlet problem
+         *  @exception IOException  If there is a problem writing to the servlet
+         *  response
+         */
+        @Override
+        protected synchronized void doPut(HttpServletRequest request,
+                HttpServletResponse response) throws ServletException,
+                IOException {
+            _handleRequest(request, response, 2);
+        }
 
         /** Handle an HTTP get or post request by creating a web page as the HTTP
          *  response.
@@ -921,7 +943,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 // flushing
 
                 if (_debugging) {
-                    _debug("**** Handling a " + ((type == 0) ? "get" : "post")
+                    _debug("**** Handling a " + ((type == 0) ? "get" :
+                        (type == 1)? "post" : "put")
                             + " request to URI " + _request.requestURI);
                 }
 
@@ -1047,7 +1070,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                     _writeCookies(_response.cookies, response);
                 }
                 if (_debugging) {
-                    _debug("**** Servet received response: "
+                    _debug("**** Servlet received response: "
                             + _response.response);
                 }
 
@@ -1161,29 +1184,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                        body = new AWTImageToken(image);
                    } else {
                        body = Token.NIL;
-                   }
-                   
-                   /*
-                    DataInputStream reader = 
-                            new DataInputStream(request.getInputStream());
-                    ArrayList bytes = new ArrayList();
-                    int numBytes;
-                    int nextByte;
-                    
-                    while ( (nextByte = reader.read()) != -1) {
-                        bytes.add(nextByte);
-                    }
-                    
-                    // Easier way to do this?
-                    IntToken[] tokens = new IntToken[bytes.size()];
-                    for (int i = 0; i < bytes.size(); i++) {
-                        
-                        System.out.println(bytes.get(i));
-                       tokens[i] = new IntToken((int) bytes.get(i));
-                    }
-                    
-                    body = new ArrayToken(tokens);
-                    */
+                   }                 
                     
                     // Read any remaining URL parameters
                     parameters = _readParameterMap(request.getParameterMap());
@@ -1201,11 +1202,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 
                 StringBuffer content = new StringBuffer();
                 
-                // Text or JSON - return StringToken
-                //if (request.getContentType()
-                //      .equalsIgnoreCase("application/json") || 
-                //      request.getContentType().startsWith("text")) {
-                    
+                // Text or JSON - return StringToken                   
                     try {
                         BufferedReader reader = new BufferedReader(new 
                             InputStreamReader(request.getInputStream()));
@@ -1389,7 +1386,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
         /** Parameters received in a get or post. */
         public RecordToken parameters;
 
-        /** The type of request. 0 for get, 1 for put. */
+        /** The type of request. 0 for get, 1 for post, 2 for put. */
         public int requestType;
 
         /** The URI issued in the get request. */
