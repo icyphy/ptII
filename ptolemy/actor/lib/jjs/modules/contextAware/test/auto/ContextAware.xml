@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 100.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 22, 1092, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 23, 1092, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[858, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000009">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{447.2726576063368, 383.0677693684896}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{447.2726576063368, 383.0677693684897}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is a very experimental example of how an accessor&#10;could adapt to different services that provide data via JSON, XML, text.&#10;&#10;Eventually, there will be a gui, but in the mean time&#10;1. Double Click on the ContextAware actor and in the RESTSource parameter, select GSN, press commit.&#10;2. Double Click on the actor again and press reload, and then press commit.&#10;3. Double Click on the actor and the required parameters of  GSN will appear.&#10;4. Provide input for the parameters:&#10;       in the host parameter, enter 'pluto.cs.txstate.edu',&#10;       in the port parameter, enter '22001',&#10;       in the path parameter, enter 'gsn'     &#10;       leave the other paraemters as default,&#10;5. Press commit and run it. &#10;6. If you choose Paraimpu, the input  are:&#10;      in the host parameter, enter 'api.paraimpu.com'&#10;      in the path parameter, enter 'v1/things'&#10;      in the port paraemter, enter 443&#10;      in the access token, enter '46e0ee55195c4dd9dca295a7ac8282d28f4a2259'&#10;7. If you choose Firebase, the required input are:&#10;      in the host parameter, enter 'sizzling-fire-8605.firebaseio.com'&#10;      in the port parameter, enter '443'&#10;      in the path parameter, enter 'devices.json'&#10;  ">
@@ -58,7 +58,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 165.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 170.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -105,6 +105,8 @@
         <property name="options" class="ptolemy.actor.parameters.PortParameter" value=" ">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
         <property name="command" class="ptolemy.actor.parameters.PortParameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -112,6 +114,8 @@
         </property>
         <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <property name="host" class="ptolemy.data.expr.Parameter" value="sizzling-fire-8605.firebaseio.com">
@@ -130,67 +134,60 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
         <port name="command" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="arguments" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="body" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="status" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="headers" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
+        </port>
+        <port name="microwave" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="microwaveStatus" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="pastValues" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
     </entity>
@@ -199,8 +196,6 @@
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.input&quot;,x=470.0,y=165.0}, tail={id=&quot;Const2.output&quot;,x=410.0,y=165.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
@@ -210,7 +205,11 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{255.0, 225.0}">
+        </vertex>
     </relation>
     <link port="SingleEvent.output" relation="relation"/>
     <link port="Display2.input" relation="relation7"/>
@@ -218,9 +217,9 @@
     <link port="MicrostepDelay.input" relation="relation6"/>
     <link port="MicrostepDelay.output" relation="relation5"/>
     <link port="Const2.output" relation="relation6"/>
-    <link port="Const2.trigger" relation="relation7"/>
-    <link port="Test.input" relation="relation2"/>
+    <link port="Const2.trigger" relation="relation3"/>
+    <link port="Test.input" relation="relation3"/>
     <link port="ContextAware.input" relation="relation"/>
     <link port="ContextAware.response" relation="relation7"/>
-    <link port="ContextAware.status" relation="relation2"/>
+    <link port="ContextAware.status" relation="relation3"/>
 </entity>
