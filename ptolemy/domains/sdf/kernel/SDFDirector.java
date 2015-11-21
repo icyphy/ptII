@@ -443,7 +443,11 @@ PeriodicDirector {
     public int getIterations() throws IllegalActionException {
         // See "SDF director iterations parameter default of 0 is unfriendly"
         // http://bugzilla.ecoinformatics.org/show_bug.cgi?id=5546
-        int iterationsValue = ((IntToken) iterations.getToken()).intValue();
+        IntToken token = ((IntToken) iterations.getToken());
+        int iterationsValue = 0;
+        if (token != null) {
+            iterationsValue = token.intValue();
+        }
         if (iterationsValue > 0) {
             return iterationsValue;
         }
