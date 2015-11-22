@@ -44,15 +44,22 @@ PblList* AtomicActor_InputPortList(struct AtomicActor* actor) {
 }
 int AtomicActor_Iterate(struct AtomicActor* actor, int count) {
     int n = 0;
-
 #ifdef _debugging
-    fprintf(stderr, "The actor %s will be iterated\n", ((struct Actor *) actor)->getFullName((struct Actor *)actor));
+    fprintf(stderr, "%s:%d: AtomicActor_Iterate(): Start\n", __FILE__, __LINE__);
+    fprintf(stderr, "%s:%d: The actor %s will be iterated\n", __FILE__, __LINE__, ((struct Actor *) actor)->getFullName((struct Actor *)actor));
 #endif
     while (n++ < count) {
         if ((*(actor->prefire))(actor)) {
+#ifdef _debugging
+            fprintf(stderr, "%s:%d: About to fire %s\n", __FILE__, __LINE__, ((struct Actor *) actor)->getFullName((struct Actor *)actor));
+#endif
             (*(actor->fire))(actor);
-            if (!(*(actor->postfire))(actor))
+#ifdef _debugging
+            fprintf(stderr, "%s:%d: About to postfire%s d\n", __FILE__, __LINE__, ((struct Actor *) actor)->getFullName((struct Actor *)actor));
+#endif
+            if (!(*(actor->postfire))(actor)) {
                 return n;
+            }
         } else {
             return -1;
         }

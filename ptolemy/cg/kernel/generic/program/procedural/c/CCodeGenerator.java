@@ -296,6 +296,11 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     + _eol
 
                     + "   fprintf(stderr, \"throwing returned %d\\n\", (*env)->ThrowNew(env, exceptionClass, \"Check stdout\"));"
+                    + _eol
+                    + "#ifndef _debugging" + _eol
+                    + "   fprintf(stderr, \"To turn on more debugging, edit CCodeGenerator and uncomment the '#define _debugging' line.\\n\");"
+                    + _eol
+                    + "#endif" + _eol
                     + "}" + _eol;
             String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             return throwExceptionCode + _eol + _eol + "JNIEXPORT void JNICALL"
@@ -426,11 +431,20 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // If the container is not in the top level, we are generating code
             // for the Java and C co-simulation.
 
+            // The code below defines a native C fire() method that is
+            // invoked by
+            // ptolemy.cg.lib.CompiledCompositeActor.fire().  The
+            // EmbeddedComposite actor defines another fire() method
+            // that is invoked by the code below.
+            
+            // Define the C fire() method that is invoked from Java.
             String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL"
                     + _eol + "Java_" + escapeName + "_fire (" + _eol
                     + "JNIEnv *env, jobject obj");
 
+            // Generate the remaining arguments.
+            // Iterate through the input ports and add an argument for each port.        
             Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
             while (inputPorts.hasNext()) {
@@ -439,16 +453,27 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         + "_glob");
             }
 
+            // Generate the body.  
             mainEntryCode.append("){" + _eol);
             inputPorts = ((Actor) getContainer()).inputPortList().iterator();
             while (inputPorts.hasNext()) {
                 TypedIOPort inputPort = (TypedIOPort) inputPorts.next();
                 mainEntryCode.append(_eol + inputPort.getName() + " = "
-                        + inputPort.getName() + "_glob;");
+                        + inputPort.getName() + "_glob;" + _eol);
             }
 
-            mainEntryCode.append(_eol + "(*(" + _sanitizedModelName
-                    + "->fire))(" + _sanitizedModelName + ");");
+            mainEntryCode.append("#ifdef _debugging" + _eol
+                    + "fprintf(stderr, \"%s:%d: " + escapeName + "_fire()\\n\", __FILE__, __LINE__);" + _eol
+                    + "#endif" + _eol);
+
+            // Generate embedded code.
+            //CompositeEntity model = (CompositeEntity) getContainer();
+            //NamedProgramCodeGeneratorAdapter compositeAdapter = (NamedProgramCodeGeneratorAdapter) getAdapter(model);
+            //mainEntryCode.append(compositeAdapter.generateFireCode());
+
+            // Invoke the actual C fire() method that was written by the user.
+            mainEntryCode.append("(*(" + _sanitizedModelName
+                    + "->fire))(" + _sanitizedModelName + ");" + _eol);
         }
         return mainEntryCode.toString();
     }
@@ -463,7 +488,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             return _eol + "}" + _eol;
             //return _eol;
         } else {
-            return INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
+            return _eol + INDENT1 + "return tokensToAllOutputPorts;" + _eol + "}"
                     + _eol;
             //return "}" + _eol;
         }
@@ -1523,6 +1548,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         // Appending the code for the types files       //
         //////////////////////////////////////////////////
 
+        // Uncomment the next line to get debugging
+        //codeTypesH.append("#define _debugging" + _eol);
+
         // appending the .h multi-inclusions protection macro
         codeTypesH.append("#ifndef NO_"
                 + _sanitizedModelName.toUpperCase(Locale.getDefault())
@@ -2541,12 +2569,20 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector directorAdapter = (ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.kernel.SDFDirector) getAdapter(((CompositeActor) container)
                     .getDirector());
 
-            CCode.append("#include \"" + sanitizedContainerName + ".h\"");
+            CCode.append("#include \"" + sanitizedContainerName + ".h\"" + _eol
+                    + "void " + sanitizedContainerName
+                    + "_Schedule_iterate() {" + _eol
+                    + "#ifdef _debugging" + _eol
+                    + "    fprintf(stderr, \"%s, line: %d:" + sanitizedContainerName
+                    + "_Schedule_iterate(): Start\\n\", __FILE__, __LINE__);" + _eol
+                    + "#endif" + _eol
+                    + directorAdapter.generateSchedule() + _eol
+                    + "#ifdef _debugging" + _eol
+                    + "    fprintf(stderr, \"%s, line: %d:" + sanitizedContainerName
+                    + "_Schedule_iterate(): Done!\\n\", __FILE__, __LINE__);" + _eol
+                    + "#endif" + _eol
 
-            CCode.append(_eol + "void " + sanitizedContainerName
-                    + "_Schedule_iterate() {");
-            CCode.append(_eol + directorAdapter.generateSchedule());
-            CCode.append(_eol + "}");
+                    + "}" + _eol);
 
             _writeCodeFileName(CCode, directory + "/" + sanitizedContainerName
                     + "_SDFSchedule.c", true, false);
