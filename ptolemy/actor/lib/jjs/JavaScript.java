@@ -802,12 +802,6 @@ public class JavaScript extends TypedAtomicActor {
                 proxy._hasNewInput(false);
             }
         }
-        // Invoke any pending callback functions.
-        Runnable callback = _pendingCallbacks.poll();
-        while(callback != null) {
-            callback.run();
-            callback = _pendingCallbacks.poll();
-        }
         
         // Invoke any timeout callbacks whose timeout matches current time,
         // followed by specific input handlers, followed by generic input handlers,
@@ -819,6 +813,13 @@ public class JavaScript extends TypedAtomicActor {
             // sent immediately.
             _inFire = true;
             try {
+                // Invoke any pending callback functions.
+                Runnable callback = _pendingCallbacks.poll();
+                while(callback != null) {
+                    callback.run();
+                    callback = _pendingCallbacks.poll();
+                }
+
                 // Handle timeout requests that match the current time.
                 if (_pendingTimeoutIDs.size() > 0) {
                     // If current time matches pending timeout requests, invoke them.
