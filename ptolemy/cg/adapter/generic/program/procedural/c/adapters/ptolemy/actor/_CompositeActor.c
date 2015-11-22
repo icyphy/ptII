@@ -104,6 +104,9 @@ void CompositeActor__TransferPortParameterInputs(struct CompositeActor* actor) {
 }
 static int _didNotTransferCount = 0;
 void CompositeActor_Fire(struct CompositeActor* actor) {
+#ifdef _debugging
+    fprintf(stderr, "%s, line: %d: CompositeActor_Fire(%s)\n", __FILE__, __LINE__, ((struct CompositeActor *) actor)->getFullName((struct CompositeActor *)actor));
+#endif
     (*(actor->_transferPortParameterInputs))(actor);
 
     PblIterator* inputPorts = pblIteratorNew((*(actor->inputPortList))(actor));
@@ -128,10 +131,23 @@ void CompositeActor_Fire(struct CompositeActor* actor) {
     //MEMORY_FIX: Uncommented link to free memory
     pblIteratorFree(inputPorts);
 
+#ifdef _debugging
+    fprintf(stderr, "%s, line: %d: CompositeActor_Fire(%s): About to fire director\n", __FILE__, __LINE__, ((struct CompositeActor *) actor)->getFullName((struct CompositeActor *)actor));
+#endif
+
     (*(actor->_director->fire))(actor->_director);
 
+#ifdef _debugging
+    fprintf(stderr, "%s, line: %d: CompositeActor_Fire(%s): About to transfer outputs\n", __FILE__, __LINE__, ((struct CompositeActor *) actor)->getFullName((struct CompositeActor *)actor));
+#endif
     (*(actor->_director->transferOutputs))(actor->_director);
+
+#ifdef _debugging
+    fprintf(stderr, "%s, line: %d: CompositeActor_Fire(%s): Done!\n", __FILE__, __LINE__, ((struct CompositeActor *) actor)->getFullName((struct CompositeActor *)actor));
+#endif
+
 }
+
 void CompositeActor_Initialize(struct CompositeActor* actor) {
     struct Director* director = (*(actor->getDirector))(actor);
     (*(director->initialize))(director);

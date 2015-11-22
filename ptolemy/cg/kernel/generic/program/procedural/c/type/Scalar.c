@@ -151,7 +151,7 @@ Token* Scalar_isCloseTo(Token* thisToken, ...) {
     tolerance = va_arg(argp, Token*);
 
     va_end(argp);
-    return $new(Boolean(fabs(thisToken->payload.Scalar - otherToken->payload.Scalar) < tolerance->payload.Scalar));
+    return $new(Boolean(abs(thisToken->payload.Scalar - otherToken->payload.Scalar) < tolerance->payload.Scalar));
 }
 /**/
 

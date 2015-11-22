@@ -66,8 +66,14 @@ Time SDFDirector_GetModelNextIterationTime(struct SDFDirector* director) {
 }
 
 void SDFDirector_Fire(struct SDFDirector* director) {
+#ifdef _debugging
+    fprintf(stderr, "%s, line: %d: SDFDirector_fire() Start\n", __FILE__, __LINE__);
+#endif
     director->_prefire = false;
     director->schedule();
+#ifdef _debugging
+    fprintf(stderr, "%s, line: %d: SDFDirector_fire() Done\n", __FILE__, __LINE__);
+#endif
 }
 void SDFDirector_Initialize(struct SDFDirector* director) {
     Director_Initialize((struct Director*) director);
@@ -149,6 +155,10 @@ bool SDFDirector_Prefire(struct SDFDirector* director) {
     return true;
 }
 bool SDFDirector_TransferInputs(struct SDFDirector* director, struct IOPort* port) {
+#ifdef _debugging
+    fprintf(stderr, "%s, line: %d: SDFDirector_TransferInputs() Start\n", __FILE__, __LINE__);
+#endif
+
     if (!port->isInput(port) /*|| !port->isOpaque(port)*/) {
         fprintf(stderr, "%s, line: %d: Attempted to transferInputs on a port is not an opaque input port.\n", __FILE__, __LINE__);
         ptExit(-1);
@@ -165,7 +175,11 @@ bool SDFDirector_TransferInputs(struct SDFDirector* director, struct IOPort* por
                     (*(port->sendInside))(port, i, t);
                     wasTransferred = true;
                 } else {
+#ifdef _debugging
+                    fprintf(stderr, "%s, line: %d: SDFDirector_TransferInputs(): Port %s, channel: %d, rate %d should consume 1 token, but there were only 0 tokens available.\n", __FILE__, __LINE__, ((struct IOPort *) port)->getFullName((struct IOPort *)port), i, k);
+#else
                     fprintf(stderr, "%s, line: %d: SDFDirector_TransferInputs(): Port should consume 1 token, but there were only 0 tokens available.\n", __FILE__, __LINE__);
+#endif
                     ptExit(-1);
                 }
             }

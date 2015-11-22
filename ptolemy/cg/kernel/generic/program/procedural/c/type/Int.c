@@ -72,7 +72,7 @@ Token* Int_isCloseTo(Token* thisToken, ...) {
     tolerance = va_arg(argp, Token*);
 
     va_end(argp);
-    return $new(Boolean(fabs(thisToken->payload.Int - otherToken->payload.Int) < tolerance->payload.Double));
+    return $new(Boolean(abs(thisToken->payload.Int - otherToken->payload.Int) < tolerance->payload.Double));
 }
 /**/
 

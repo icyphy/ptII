@@ -107,7 +107,6 @@ public class CompiledCompositeActor extends TypedCompositeActor {
 
         ptolemy.cg.lib.CompiledCompositeActor actor = (ptolemy.cg.lib.CompiledCompositeActor) compositeActor;
         GenericCodeGenerator codeGenerator = _getCodeGenerator(compositeActor);
-
         // Append the output to stderr, stdout and the StringBuffer;
         final StringBufferExec executeCommands = new StringBufferExec(true);
         int returnCode = 0;

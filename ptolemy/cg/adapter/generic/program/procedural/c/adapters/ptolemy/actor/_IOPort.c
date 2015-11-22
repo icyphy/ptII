@@ -414,6 +414,10 @@ bool IOPort_HasRoomInside(struct IOPort* port, int channelIndex) {
     return result;
 }
 bool IOPort_HasToken(struct IOPort* port, int channelIndex) {
+#ifdef _debugging
+    fprintf(stderr, "%s:%d: IOPort_HasToken(%s, %d): Start\n", __FILE__, __LINE__,  ((struct IOPort *) port)->getFullName((struct IOPort *)port), channelIndex);
+#endif
+
     PblList* receivers = (*(port->getReceivers))(port);
     boolean result = false;
 
@@ -428,7 +432,13 @@ bool IOPort_HasToken(struct IOPort* port, int channelIndex) {
     }
 
     if (receivers != NULL && pblListGet(receivers, channelIndex) != NULL) {
+#ifdef _debugging
+    fprintf(stderr, "%s:%d: IOPort_HasToken(%s, %d): receivers is not null.\n", __FILE__, __LINE__,  ((struct IOPort *) port)->getFullName((struct IOPort *)port), channelIndex);
+#endif
         for (int j = 0; j < pblListSize(pblListGet(receivers, channelIndex)); j++) {
+#ifdef _debugging
+            fprintf(stderr, "%s:%d: IOPort_HasToken(%s, %d): receiver %d.\n", __FILE__, __LINE__,  ((struct IOPort *) port)->getFullName((struct IOPort *)port), channelIndex, j);
+#endif
             struct Receiver* receiver = pblListGet(pblListGet(receivers, channelIndex), j);
             if ((*(receiver->hasToken))(receiver)) {
                 result = true;
@@ -437,6 +447,9 @@ bool IOPort_HasToken(struct IOPort* port, int channelIndex) {
         }
     }
 
+#ifdef _debugging
+    fprintf(stderr, "%s:%d: IOPort_HasToken(%s, %d): Done.  Result: %d\n", __FILE__, __LINE__,  ((struct IOPort *) port)->getFullName((struct IOPort *)port), channelIndex, result);
+#endif
     return result;
 }
 bool IOPort_HasToken1(struct IOPort* port, int channelIndex, int tokens) {
@@ -514,16 +527,25 @@ int IOPort_NumberOfSources(struct IOPort* port) {
     return port->_numberOfSources;
 }
 void IOPort_Send(struct IOPort* port, int channelIndex, Token* token) {
+#ifdef _debugging
+    fprintf(stderr, "%s:%d: IOPort_Send(%s, %d, %p): Start\n", __FILE__, __LINE__,  ((struct IOPort *) port)->getFullName((struct IOPort *)port), channelIndex, token);
+#endif
     PblList* farReceivers = (*(port->getRemoteReceivers))(port);
 
     if (farReceivers == NULL || pblListSize(farReceivers) <= channelIndex
             || pblListGet(farReceivers, channelIndex) == NULL) {
+#ifdef _debugging
+        fprintf(stderr, "%s:%d: IOPort_Send(%s, %d, %p): farReceivers is null or out of range.\n", __FILE__, __LINE__,  ((struct IOPort *) port)->getFullName((struct IOPort *)port), channelIndex, token);
+#endif
         return;
     }
     if (pblListSize(pblListGet(farReceivers, channelIndex)) > 0) {
         struct Receiver* receiver = pblListGet(pblListGet(farReceivers, channelIndex), 0);
         (*(receiver->putToAll))(receiver, token, pblListGet(farReceivers, channelIndex));
     }
+#ifdef _debugging
+    fprintf(stderr, "%s:%d: IOPort_Send(%s, %d, %p): Done\n", __FILE__, __LINE__,  ((struct IOPort *) port)->getFullName((struct IOPort *)port), channelIndex, token);
+#endif
 }
 void IOPort_Send1(struct IOPort* port, int channelIndex, Token** tokenArray, int vectorLength) {
     PblList* farReceivers = (*(port->getRemoteReceivers))(port);
