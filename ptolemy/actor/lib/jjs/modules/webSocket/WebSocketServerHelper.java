@@ -81,14 +81,13 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  @param port The port number that the server will use.
      *  @param receiveType The type to assume for incoming messages.
      *  @param sendType The type for outgoing messages.
-     *  @param maxFrameSize The maximum frame size for a received message.
      *  @return A new WebSocketServerHelper instance.
      */
     public static WebSocketServerHelper createServer(
             ScriptObjectMirror currentObj, String hostInterface, int port,
-            String receiveType, String sendType, int maxFrameSize) {
+            String receiveType, String sendType) {
         return new WebSocketServerHelper(
-                currentObj, hostInterface, port, receiveType, sendType, maxFrameSize);
+                currentObj, hostInterface, port, receiveType, sendType);
     }
 
     /** Create and start the server and beginning listening for
@@ -100,13 +99,10 @@ public class WebSocketServerHelper extends VertxHelperBase {
     	// Ask the verticle to start the server.
     	submit(new Runnable() {
     		public void run() {
-    			_server = _vertx.createHttpServer(new HttpServerOptions()
-    					.setMaxWebsocketFrameSize(_maxFrameSize));
+    			_server = _vertx.createHttpServer();
     			_server.websocketHandler(new Handler<ServerWebSocket>() {
     				@Override
     				public void handle(ServerWebSocket serverWebSocket) {
-    					// NOTE: The following doesn't actually do anything, apparently.
-    					serverWebSocket.setWriteQueueMaxSize(_maxFrameSize);
     					// Notify of a new connection.
     					// This will have the side effect of creating a new JS Socket
     					// object, which is an event emitter.
@@ -135,11 +131,9 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  @param port The port on which to create the server.
      *  @param receiveType The type to assume for incoming messages.
      *  @param sendType The type for outgoing messages.
-     *  @param maxFrameSize The maximum frame size for a received message.
      */
     private WebSocketServerHelper(ScriptObjectMirror currentObj,
-            String hostInterface, int port, String receiveType, String sendType,
-            int maxFrameSize) {
+            String hostInterface, int port, String receiveType, String sendType) {
     	// FIXME: Really should have only one of these per actor,
     	// and the argument below should be the actor.
         super(currentObj);
@@ -148,7 +142,6 @@ public class WebSocketServerHelper extends VertxHelperBase {
             _hostInterface = "localhost";
         }
         _port = port;
-        _maxFrameSize = maxFrameSize;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -156,9 +149,6 @@ public class WebSocketServerHelper extends VertxHelperBase {
 
     /** The host interface. */
     private String _hostInterface;
-    
-    /** The maximum frame size for a received message. */
-    private int _maxFrameSize;
 
     /** The port on which the server listens. */
     private int _port;
