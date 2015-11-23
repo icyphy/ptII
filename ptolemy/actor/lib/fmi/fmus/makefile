@@ -51,7 +51,9 @@ HYBRID_FMUS_2_0_CS = \
 		HybridDelay HybridGain HybridConstantSignalGenerator \
 		HybridCheckEquality HybridZeroCrossingDetector \
 		HybridTriggeredConst HybridSampler HybridZeroOrderHold \
-		HybridModalModelDiscContr HybridSequenceCheck
+		HybridModalModelDiscContr HybridSequenceCheck \
+		Adder Delay Integrator ZeroCrossingDetector Constant \
+		Clock
 
 # Co-simulation FMUs that have have fmiVersion >= 2.0
 # New Co-simulation FMUS should be added here.
