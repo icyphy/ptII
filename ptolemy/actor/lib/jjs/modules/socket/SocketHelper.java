@@ -416,9 +416,9 @@ public class SocketHelper extends VertxHelperBase {
                     });
                 });
                 _socket.drainHandler((Void) -> {
-                    synchronized(this) {
+                    synchronized(SocketWrapper.this) {
                         // This should unblock send(),
-                        notifyAll();
+                        SocketWrapper.this.notifyAll();
                     }
                 });
                 _socket.endHandler((Void) -> {
@@ -534,10 +534,10 @@ public class SocketHelper extends VertxHelperBase {
             // in the Vert.x thread, so blocking is OK. We need to stall
             // execution of the model to not get ahead of the capability.
             while(_socket.writeQueueFull() && !_closed) {
-                synchronized(this) {
+                synchronized(SocketWrapper.this) {
                     try {
                         _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
-                        wait();
+                        SocketWrapper.this.wait();
                     } catch (InterruptedException e) {
                         _error(_eventEmitter, "Buffer is full, and wait for draining was interrupted");
                     }
