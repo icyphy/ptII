@@ -45,27 +45,23 @@ FMUS_PRE_2_0_CS =	$(FMUSDK2_FMUS_1_0_CS) ballDynamics helloWorld levelStairs onO
 FMUSDK2_FMUS_2_0_CS = bouncingBall20 dq20 inc20 values20 vanDerPol20
 
 # Hybrid Cosimulation fmus
-HYBRID_FMUS_2_0_CS = \
-		HybridPerPiecCosSigGen HybridPerDiscSigGen \
-		HybridAdder HybridIntegratorReset HybridIntegrator \
-		HybridDelay HybridGain HybridConstantSignalGenerator \
+HYBRID_FMUS_2_0_CS = Adder Clock Constant Delay HybridPerPiecCosSigGen \
+		HybridPerDiscSigGen HybridAdder HybridIntegratorReset \
+		HybridIntegrator HybridDelay HybridGain HybridConstantSignalGenerator \
 		HybridCheckEquality HybridZeroCrossingDetector \
 		HybridTriggeredConst HybridSampler HybridZeroOrderHold \
-		HybridModalModelDiscContr HybridSequenceCheck \
-		Adder Delay Integrator ZeroCrossingDetector Constant \
-		Clock
+		HybridModalModelDiscContr HybridSequenceCheck Integrator\
+		ZeroCrossingDetector \
+		
 
 # Co-simulation FMUs that have have fmiVersion >= 2.0
 # New Co-simulation FMUS should be added here.
 FMUS_2_0_CS =	$(FMUSDK2_FMUS_2_0_CS) bouncingBall20RC1 \
-		dq20RC1 heaterFlowResistance \
-		inc20RC1 inc20RC1pt \
-		output20RC1pt scale20RC1pt \
-		scale20RC1 stairsA20RC1F pumpConstantSpeed tankOpen \
-		values20RC1 \
-		vanDerPol20RC1 floor20pt\
-		inc20pt out20pt fmuA20pt scale20pt fmuB20pt fmuC20pt \
-		fmuD20pt $(HYBRID_FMUS_2_0_CS)
+		dq20RC1 floor20pt fmuA20pt fmuB20pt fmuC20pt fmuD20pt \
+		heaterFlowResistance inc20pt inc20RC1 inc20RC1pt \
+		out20pt output20RC1pt pumpConstantSpeed scale20RC1pt \
+		scale20pt scale20RC1 stairsA20RC1F tankOpen values20RC1 \
+		vanDerPol20RC1 $(HYBRID_FMUS_2_0_CS)
 
 FMUS_CS =	$(FMUS_PRE_2_0_CS) $(FMUS_2_0_CS)
 
