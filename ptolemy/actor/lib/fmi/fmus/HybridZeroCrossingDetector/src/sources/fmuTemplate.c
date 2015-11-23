@@ -948,12 +948,8 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
                     fmi2Integer communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint) {
     ModelInstance *comp = (ModelInstance *)c;
     fmi2Integer h = communicationStepSize;
-    if (h > 0) {
-        i(microstep_) = 0;
-    } else if (h == 0) {
-        i(microstep_) += 1;
-    }
-    printf("HybridZeroCrossingDetector-fmi2HybridDoStep, time: %ld, h: %ld\n", currentCommunicationPoint, communicationStepSize);
+    
+    // printf("HybridZeroCrossingDetector-fmi2HybridDoStep, time: %ld, h: %ld\n", currentCommunicationPoint, communicationStepSize);
     int k;
 #if NUMBER_OF_EVENT_INDICATORS>0 || NUMBER_OF_REALS>0
     int i;
@@ -1004,13 +1000,11 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
 #if NUMBER_OF_EVENT_INDICATORS>0
     for (i = 0; i < NUMBER_OF_EVENT_INDICATORS; i++) {
         double ei = getEventIndicator(comp, i);
-        if (ei * prevEventIndicators[i] < 0) {
+        if (ei < 0) {
             FILTERED_LOG(comp, fmi2OK, LOG_EVENT,
                 "fmi2HybridDoStep: state event at %u, z%d crosses zero -%c-", comp->time, i, ei < 0 ? '\\' : '/')
             stateEvent++;
         }
-        pos(i) = ei > 0;
-        printf("-> pos(0): %d\n", pos(i));
     }
 #endif
 
@@ -1041,6 +1035,12 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
     }
     if (stateEvent) {
         return fmi2Discard; // Discard the step size since the stateEvent
+    }
+
+    if (h > 0) {
+        i(microstep_) = 0;
+    } else if (h == 0) {
+        i(microstep_) += 1;
     }
 
     comp->time += h;

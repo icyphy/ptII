@@ -935,7 +935,6 @@ fmi2Status fmi2CancelStep(fmi2Component c) {
 
 fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
                     fmi2Real communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint) {
-    printf("Instead I am here!\n");
     return fmi2OK;
 }
 
@@ -944,7 +943,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
 
     ModelInstance *comp = (ModelInstance *)c;
     double h = communicationStepSize;
-    printf("HybridConstantSignalGenerator-fmi2HybridDoStep, time: %ld, stepSize: %ld\n", comp->time, communicationStepSize);
+    // printf("HybridConstantSignalGenerator-fmi2HybridDoStep, time: %ld, stepSize: %ld\n", comp->time, communicationStepSize);
     int k;
 #if NUMBER_OF_EVENT_INDICATORS>0 || NUMBER_OF_REALS>0
     int i;

@@ -570,8 +570,7 @@ fmi2Status fmi2SetReal (fmi2Component c, const fmi2ValueReference vr[], size_t n
     return fmi2OK;
 }
 
-fmi2Status fmi2SetHybridReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Real value[], const fmi2Integer hybridValue[]) {
-    // printf("[fmi2SetHybridReal]\n");
+fmi2Status fmi2SetHybridReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Real value[], const fmi2Integer hybridValue[]) {    
     int i;
     ModelInstance *comp = (ModelInstance *)c;
     if (invalidState(comp, "fmi2SetHybridReal", MASK_fmi2SetReal))
@@ -583,9 +582,10 @@ fmi2Status fmi2SetHybridReal (fmi2Component c, const fmi2ValueReference vr[], si
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridReal: nvr = %d", nvr)
     // no check whether setting the value is allowed in the current state
     for (i = 0; i < nvr; i++) {
+        // printf("variable #r%d# = %g, %ld\n", vr[i], value[i], hybridValue[i]);
         if (vrOutOfRange(comp, "fmi2SetHybridReal", vr[i], NUMBER_OF_REALS))
             return fmi2Error;
-        FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridReal: #r%d# = %.16g", vr[i], value[i])
+        FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridReal: #r%d# = %.16g, isPresent = %d", vr[i], value[i], hybridValue[i])
         comp->r[vr[i]] = value[i];
         comp->hr[vr[i]] = hybridValue[i];
     }
@@ -946,6 +946,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
                     fmi2Integer communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint) {
     ModelInstance *comp = (ModelInstance *)c;
     fmi2Integer h = communicationStepSize;
+
     int k;
 #if NUMBER_OF_EVENT_INDICATORS>0 || NUMBER_OF_REALS>0
     int i;
@@ -995,7 +996,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
 #if NUMBER_OF_EVENT_INDICATORS>0
     for (i = 0; i < NUMBER_OF_EVENT_INDICATORS; i++) {
         double ei = getEventIndicator(comp, i);
-        if (ei * prevEventIndicators[i] < 0) {
+        if (ei < 0) {
             FILTERED_LOG(comp, fmi2OK, LOG_EVENT,
                 "fmi2HybridDoStep: state event at %u, z%d crosses zero -%c-", comp->time, i, ei < 0 ? '\\' : '/')
             stateEvent++;
@@ -1012,6 +1013,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
         return fmi2Discard;
     }
     // check for time event
+    // printf("DELAY: doStep, time = %ld, timeDefined = %d, nextEventTime = %ld\n", comp->time, comp->eventInfo.nextEventTimeDefined, comp->eventInfo.nextEventTime);
     if (comp->eventInfo.nextEventTimeDefined && (comp->time  == comp->eventInfo.nextEventTime)) {
         FILTERED_LOG(comp, fmi2OK, LOG_EVENT, "fmi2HybridDoStep: time event detected at %g", comp->time)
         timeEvent = 1;
@@ -1030,6 +1032,11 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
     }
 
     comp->time += h;
+    if (h == 0) {
+        i(microstep_)++;
+    } else {
+        i(microstep_) = 0;
+    }
     return fmi2OK;
 }
 
