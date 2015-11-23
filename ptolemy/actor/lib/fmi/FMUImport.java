@@ -4501,6 +4501,12 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected boolean _stepSizeRejected;
 
     /**
+     * Indicator of whether the actor is strict, meaning that all inputs must be
+     * known to fire it.
+     */
+    protected boolean _isStrict = true;
+
+    /**
      * Indicator that we have had iteration with a rejected step size, so the
      * next suggested step size should be zero.
      */
@@ -4792,12 +4798,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** The workspace version at which the _inputs variable was last updated. */
     private long _inputsVersion = -1;
-
-    /**
-     * Indicator of whether the actor is strict, meaning that all inputs must be
-     * known to fire it.
-     */
-    private boolean _isStrict = true;
 
     /** The library of native binaries for the FMU C functions. */
     private NativeLibrary _nativeLibrary;
