@@ -12800,6 +12800,8 @@ fi
 if test -z "$PTCOPERNICUS_DIR"; then
    updateExcludes "ptolemy/copernicus/"
 else
+   # Note that kieler.jar should be before sootclasses.jar
+   # both jars have a Maps class.
    updateClasspath "$SOOT_DIR/sootclasses.jar"
     # What about JAVA_SYSTEM_JAR?
 fi
