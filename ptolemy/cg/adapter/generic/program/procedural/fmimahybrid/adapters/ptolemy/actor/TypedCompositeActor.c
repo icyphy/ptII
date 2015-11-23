@@ -353,6 +353,9 @@ fmi2Boolean loggingOn, char separator) {
                     return 0;
                 }
                 maxStepSize = maxStepSize * scaleFactor[i] - (time - localTime[i]);
+                if (maxStepSize < 0) {
+                    continue;
+                }
                 stepSize = min(stepSize, maxStepSize);
             }
         }
