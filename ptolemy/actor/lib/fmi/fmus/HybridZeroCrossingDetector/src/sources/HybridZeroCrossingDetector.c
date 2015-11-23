@@ -62,20 +62,25 @@ void setStartValues(ModelInstance *comp) {
 
 void calculateValues(ModelInstance *comp) {
     if (comp->state == modelInitializationMode) {
-        // pos(0) = (r(input_) + epsilon) > 0;
+        comp->eventInfo.nextEventTimeDefined = fmi2False;
     }
     else {
-        int is_zero = (r(input_) - epsilon) < 0 && (r(input_) + epsilon) > 0;
-        int is_pos  = (r(input_) + epsilon) > 0 && !is_zero;
-        int is_neg  = (r(input_) - epsilon) < 0 && !is_zero;
+        fmi2Integer is_zero = (r(input_) - epsilon) < 0 && (r(input_) + epsilon) > 0;
+        fmi2Integer is_pos  = (r(input_) + epsilon) > 0 && !is_zero;
+        fmi2Integer is_neg  = (r(input_) - epsilon) < 0 && !is_zero;
+        // printf("HZC: calculateValues, time = %ld, is_zero = %ld, is_pos = %ld, is_neg = %ld\n", comp->time, is_zero, is_pos, is_neg);
+        // printf("- comp->eventInfo.nextEventTimeDefined: %d\n", comp->eventInfo.nextEventTimeDefined);
 
         if ( ((is_neg && i(was_pos_)) || (is_pos && i(was_neg_)) || (is_zero && !i(was_zero_)))
-                && (hr(input_) == present_) ) {
-            r(output_)  = 0;
+                && (hr(input_) == present_)
+                &&  !comp->eventInfo.nextEventTimeDefined) {
+            // printf("- output event\n");
+            r(output_)  = -2;
             hr(output_) = present_;
         }
         else {
-            r(output_)  = -1;
+            // printf("- output absent\n");
+            r(output_)  = 0;
             hr(output_) = absent_;
         }
     }
@@ -95,40 +100,44 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
 }
 
 fmi2Real getEventIndicator(ModelInstance* comp, int z) {
+
+    fmi2Integer is_zero     = (r(input_) - epsilon) < 0 && (r(input_) + epsilon) > 0;
+    fmi2Integer is_pos      = (r(input_) + epsilon) > 0 && !is_zero;
+    fmi2Integer is_neg      = (r(input_) - epsilon) < 0 && !is_zero;
+    fmi2Boolean event = ( ((is_neg && i(was_pos_)) || (is_pos && i(was_neg_)) || (is_zero && !i(was_zero_))) && (hr(input_) == present_) );
+    // printf("HZC: getEventIndicator = %d\n", event ? -1 : 1);
     switch (z) {
-        case 0 : return (r(input_) + epsilon) > 0 ? 1 : -1;
+        case 0 : return event ? -1 : 1;
         default: return 0;
     }
 }
 
 // Used to set the next time event, if any.
 void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int isTimeEvent) {
-    // Sanity check:
-    // This component only works with continuous time input signals
-    if (hr(input_) == absent_) {
-        printf("->the input is absent :)\n");
-        comp->eventInfo.terminateSimulation = fmi2True;
-    }
-    if (i(microstep_) == 0) {
-        int is_zero     = (r(input_) - epsilon) < 0 && (r(input_) + epsilon) > 0;
-        int is_pos      = (r(input_) + epsilon) > 0 && !is_zero;
-        int is_neg      = (r(input_) - epsilon) < 0 && !is_zero;
 
-        i(was_zero_)    = is_zero;
-        i(was_neg_)     = is_neg;
-        i(was_pos_)     = is_pos;
-    } else {
-        i(was_zero_)    = 0;
-        i(was_neg_)     = 0;
-        i(was_pos_)     = 0;
+    fmi2Integer is_zero     = (r(input_) - epsilon) < 0 && (r(input_) + epsilon) > 0;
+    fmi2Integer is_pos      = (r(input_) + epsilon) > 0 && !is_zero;
+    fmi2Integer is_neg      = (r(input_) - epsilon) < 0 && !is_zero;
+
+    if (comp->eventInfo.nextEventTimeDefined) {
+        comp->eventInfo.nextEventTimeDefined = fmi2False;
+        i(microstep_) = 1;
+        // printf("HZC: eventUpdate, comp->eventInfo.nextEventTimeDefined = fmi2False\n");
+        return;
     }
 
-    comp->eventInfo.nextEventTimeDefined = fmi2False;
-
-    if (i(microstep_) == 1 || (isTimeEvent && i(microstep_) < 2)) {
+    if ( getEventIndicator(comp, 0) < 0 ) {
         comp->eventInfo.nextEventTime = comp->time;
         comp->eventInfo.nextEventTimeDefined = fmi2True;
+        // printf("HXC: eventUpdate, comp->eventInfo.nextEventTimeDefined = fmi2True\n");
     }
+
+    i(microstep_) = 0;
+    
+    i(was_zero_)    = is_zero;
+    i(was_neg_)     = is_neg;
+    i(was_pos_)     = is_pos;
+
 }
 
 /***************************************************
@@ -152,19 +161,14 @@ fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
 fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
     ModelInstance *comp = (ModelInstance *)c;
     fmi2Integer max_step_size;
-    printf("HybridZeroCrossingDetector-fmi2HybridGetMaxStepSize, time: %ld, pos(0): %d, getEventIndicator: %f, i(microstep_): %ld\n", comp->time, pos(0), getEventIndicator(comp, 0), i(microstep_));
-    if ((getEventIndicator(comp, 0) * (pos(0) ? 1 : -1) > 0)
-                || (i(microstep_) >= 2)) {
-        max_step_size = 2;
-    }
-    else if (((getEventIndicator(comp, 0) * (pos(0) ? 1 : -1) < 0)
-                && i(microstep_) == 0)
-                || (i(microstep_) == 1 && comp->eventInfo.nextEventTimeDefined)) {
+    // printf("HZC: getMaxStepSize\n");
+    if (comp->eventInfo.nextEventTimeDefined || (getEventIndicator(comp, 0) < 0 && i(microstep_) == 0)) {        
         max_step_size = 0;
-    } else {
+        // printf("- zero\n");
+    } else {        
         max_step_size = 2;
+        // printf("- two\n");
     }
-    printf("HybridZeroCrossingDetector-fmi2HybridGetMaxStepSize, h: %ld\n", max_step_size);
     *value = max_step_size;
     return fmi2OK;
 }

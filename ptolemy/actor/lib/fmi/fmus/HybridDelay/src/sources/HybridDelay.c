@@ -40,12 +40,13 @@
 typedef struct node {
     fmi2Real value;
     fmi2Integer time;
+    fmi2Integer index;
     struct node *next;
 } Event;
 
 Event *eventQueue;
 
-void _addEvent(fmi2Real event, fmi2Integer t) {
+void _addEvent(ModelInstance *comp, fmi2Real event, fmi2Integer t) {
     Event * current = eventQueue;
     while (current->next != NULL) {
         current = current->next;
@@ -53,6 +54,11 @@ void _addEvent(fmi2Real event, fmi2Integer t) {
     current->next = malloc(sizeof(Event));
     current->value = event;
     current->time = t;
+    if (comp->time ==  t) {
+        current->index = i(microstep_) + 1;
+    } else {
+        current->index = i(microstep_);
+    }
     current->next->next = NULL;
 }
 
@@ -65,6 +71,7 @@ Event _getLast() {
 }
 
 void _removeLast() {
+    // printf("---> removingLast\n");
     Event *tmp = eventQueue->next;
     free(eventQueue);
     eventQueue = tmp;
@@ -75,9 +82,17 @@ fmi2Integer _getTime() {
     return eventQueue->time;
 }
 
+fmi2Integer _getIndex() {
+    return eventQueue->index;
+}
+
 fmi2Boolean _isEmpty() {
-    if (eventQueue->next == NULL) return fmi2True;
-    else return fmi2False;
+    if (eventQueue->next == NULL) {
+        return fmi2True;
+    }
+    else {
+        return fmi2False;
+    }
 }
 
 void deleteQueue() {
@@ -96,7 +111,7 @@ void deleteQueue() {
 void setStartValues(ModelInstance *comp) {
     r(output_) = 0;
     r(status_) = 0;
-    i(microstep_) = 1;
+    i(microstep_) = 0;
     hr(output_) = absent_;
     hr(input_) = absent_;
     hr(delay_) = present_;
@@ -109,7 +124,7 @@ bool _isTime(ModelInstance *comp) {
     if (_isEmpty()) {
         return false;
     }
-    if (comp->time == _getLast().time){
+    if (comp->time == _getTime() && i(microstep_) == _getIndex()){
         return true;
     } else {
         return false;
@@ -122,8 +137,8 @@ void calculateValues(ModelInstance *comp) {
     if (comp->state == modelInitializationMode) {
         r(output_) = 0;
         hr(output_) = absent_;
-        comp->eventInfo.nextEventTime = comp->time;
     } else if (_isTime(comp)){
+        // printf("DELAY: calculateValues, time = %ld, _isTime(comp) = %d\n", comp->time, _isTime(comp));
         Event tmp = _getLast();
         r(output_) = tmp.value;
         hr(output_) = present_;
@@ -154,19 +169,26 @@ fmi2Real getEventIndicator(ModelInstance* comp, int z) {
 // Used to set the next time event, if any.
 void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int isTimeEvent) {
     long currentTime = comp->time;
+    // printf("DELAY: eventUpdate, time = %ld, _isTime(comp) = %d\n", comp->time, _isTime(comp));
     if (_isTime(comp)) {
         _removeLast();
-        i(microstep_) = 1;
         eventInfo->nextEventTimeDefined  = fmi2False;
-    }
-    if (hr(input_) != absent_) {
-        _addEvent(r(input_), currentTime + i(delay_));
-        eventInfo->nextEventTimeDefined  = fmi2True;
     }
     if (!_isEmpty()) {
         Event nextEvent = _getLast();
         comp->eventInfo.nextEventTime = nextEvent.time;
         eventInfo->nextEventTimeDefined  = fmi2True;
+        // printf("- not empty\n");
+        // printf("- eventInfo->nextEventTimeDefined = fmi2True\n");
+        // printf("- addedEvent at time %ld, %ld\n", _getTime(), _getIndex());
+    }
+    if (hr(input_) == present_) {
+        _addEvent(comp, r(input_), currentTime + i(delay_));
+        eventInfo->nextEventTimeDefined  = fmi2True;
+        comp->eventInfo.nextEventTime = _getTime();
+        // printf("- present\n");
+        // printf("- eventInfo->nextEventTimeDefined = fmi2True\n");
+        // printf("- addedEvent at time %ld, %ld\n", _getTime(), _getIndex());
     }
 }
 
@@ -194,8 +216,11 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
 
     if (comp->eventInfo.nextEventTimeDefined) {
         max_step_size = comp->eventInfo.nextEventTime - comp->time;
-    }
-    else {
+    } else if (hr(input_) == present_ && i(delay_) == 0) {
+        max_step_size = 0;
+    } else if (hr(input_) == present_ && i(delay_) < 2) {
+        max_step_size = i(delay_);
+    } else {
         max_step_size = 2;
     }
 
