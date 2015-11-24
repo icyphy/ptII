@@ -136,7 +136,8 @@ public class SocketHelper extends VertxHelperBase {
                 .setSendBufferSize((Integer)options.get("sendBufferSize"))
                 .setSsl((Boolean)options.get("sslTls"))
                 .setTcpKeepAlive((Boolean)options.get("keepAlive"))
-                .setTcpNoDelay((Boolean)options.get("noDelay"));
+                .setTcpNoDelay((Boolean)options.get("noDelay"))
+                .setTrustAll((Boolean)options.get("trustAll"));
         
         // NOTE: Find out the (undocumented) default in Vert.x.
         // System.err.println("TcpNoDelay: " + clientOptions.isTcpNoDelay());
