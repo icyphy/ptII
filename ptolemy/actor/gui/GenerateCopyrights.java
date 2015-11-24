@@ -239,8 +239,9 @@ public class GenerateCopyrights {
         _addIfClassPresent(copyrightsMap,
                 "ptolemy.actor.lib.fmi.fmipp.FMUModelExchange",
                 "ptolemy/actor/lib/fmi/fmipp/fmipp-license.htm");
-        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.io.comm.SerialComm",
-                "ptolemy/actor/lib/io/comm/rxtx-copyright.htm");
+        /* ptolemy.actor.lib.io.comm.SerialComm */
+        _addIfClassPresent(copyrightsMap, "gnu.io.SerialPort", 
+                "lib/rxtx-license.htm");
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.jai.JAIImageToken",
                 "ptolemy/actor/lib/jai/jai-copyright.htm");
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.jjs.JavaScript",
