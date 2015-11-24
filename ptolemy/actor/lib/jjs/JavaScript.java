@@ -620,6 +620,34 @@ public class JavaScript extends TypedAtomicActor {
         MessageHandler.error(getName() + ": " + message);
     }
 
+    /** If the model is executing and the error port is connected, then send the
+     *  message to the error port; otherwise, use the MessageHandler to display the
+     *  error. Note that this should not be used for fatal errors, because it returns.
+     *  For fatal errors, a script should throw an exception.
+     *  In addition, if debugging is turned on, then send the specified message to the
+     *  _debug() method, and otherwise send it out to stderr.
+     *  @param message The message
+     */
+    public void error(String message, Throwable throwable) {
+        if (_debugging) {
+            _debug(message + ": " + throwable);
+        }
+        try {
+            // FIXME: Might not be in a phase where anyone will receive this
+            // error message. It might be after the last firing, and just before
+            // wrapup() sets _executing = false. In this case, the error message
+            // will never appear anywhere!
+            if (_executing && error.getWidth() > 0) {
+                error.send(0, new StringToken(message + ": " + throwable));
+                return;
+            }
+        } catch (Throwable e) {
+            // Sending to the error port fails.
+            // Revert to directly reporting.
+        }
+        MessageHandler.error(getName() + ": " + message, throwable);
+    }
+
     /** Produce any pending outputs specified by send() since the last firing,
      *  invoke any timer tasks that match the current time, and invoke the
      *  fire function. Specifically:

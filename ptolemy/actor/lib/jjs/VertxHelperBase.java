@@ -210,12 +210,36 @@ public class VertxHelperBase extends HelperBase {
             @Override
             public void run() {
                 try {
+                    // FIXME: This should include the name of the actor.
                     emitter.callMember("emit", "error", message);
                     // NOTE: The error handler may not stop execution.
                 } catch (Throwable ex) {
                     // There may be no error event handler registered.
                     // Use the actor to report the error.
-                    _actor.error(message);
+                    _actor.error(message, new IllegalActionException(_actor, ex, message));
+                }
+            }
+        });
+    }
+
+
+        /** Override the base class to emit the error message in the
+     *  director thread.
+     *  @param emitter The JavaScript object that should emit an
+     *   "error" event.
+     *  @param message The error message.
+     */
+    protected void _error(ScriptObjectMirror emitter, final String message, final Throwable throwable) {
+        _issueResponse(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    emitter.callMember("emit", "error", message);
+                    // NOTE: The error handler may not stop execution.
+                } catch (Throwable ex) {
+                    // There may be no error event handler registered.
+                    // Use the actor to report the error.
+                    _actor.error(message, new IllegalActionException(_actor, throwable, message));
                 }
             }
         });
