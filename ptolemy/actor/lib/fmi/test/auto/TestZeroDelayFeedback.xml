@@ -13,109 +13,39 @@
         </property>
         <property name="maxStepSize" class="ptolemy.data.expr.Parameter" value="1E-9">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 80.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 134, 990, 470}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 134, 990, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 360]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0896103155132082">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3156966490299824">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{356.67578125, 212.50240867962466}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{285.5, 181.46825779155495}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="y0 = -1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 260.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 165.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="y0 = 1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 100.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="d = 0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 210.0]">
         </property>
     </property>
-    <entity name="Adder" class="ptolemy.actor.lib.fmi.FMUImportHybrid">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/fabio/Documents/workspacePtII/ptII/ptolemy/actor/lib/fmi/fmus/Adder/Adder.fmu">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 225.0}">
-        </property>
-        <property name="resolution" class="ptolemy.data.expr.Parameter" value="-6">
-        </property>
-        <port name="y0" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-        </port>
-        <port name="u0" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-        </port>
-        <port name="u1" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-        </port>
-    </entity>
     <entity name="Constant" class="ptolemy.actor.lib.fmi.FMUImportHybrid">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/fabio/Documents/workspacePtII/ptII/ptolemy/actor/lib/fmi/fmus/Constant/Constant.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/Constant.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{305.0, 235.0}">
-        </property>
-        <property name="value" class="ptolemy.data.expr.Parameter" value="-1.0">
-        </property>
-        <property name="resolution" class="ptolemy.data.expr.Parameter" value="-6">
-        </property>
-        <port name="y0" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
-                </property>
-            </property>
-        </port>
-    </entity>
-    <entity name="Constant2" class="ptolemy.actor.lib.fmi.FMUImportHybrid">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/fabio/Documents/workspacePtII/ptII/ptolemy/actor/lib/fmi/fmus/Constant/Constant.fmu">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{35.0, 80.0}">
         </property>
         <property name="value" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
@@ -135,10 +65,33 @@
             </property>
         </port>
     </entity>
-    <entity name="Integrator" class="ptolemy.actor.lib.fmi.FMUImportHybrid">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/fabio/Documents/workspacePtII/ptII/ptolemy/actor/lib/fmi/fmus/Integrator/Integrator.fmu">
+    <entity name="Constant2" class="ptolemy.actor.lib.fmi.FMUImportHybrid">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/Constant.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 145.0]">
+        </property>
+        <property name="value" class="ptolemy.data.expr.Parameter" value="-1.0">
+        </property>
+        <property name="resolution" class="ptolemy.data.expr.Parameter" value="-6">
+        </property>
+        <port name="y0" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+    </entity>
+    <entity name="Integrator" class="ptolemy.actor.lib.fmi.FMUImportHybrid">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/Integrator.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 90.0}">
         </property>
         <property name="Initial_Value" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
@@ -184,10 +137,57 @@
             </property>
         </port>
     </entity>
-    <entity name="ZeroCrossingDetector" class="ptolemy.actor.lib.fmi.FMUImportHybrid">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/fabio/Documents/workspacePtII/ptII/ptolemy/actor/lib/fmi/fmus/ZeroCrossingDetector/ZeroCrossingDetector.fmu">
+    <entity name="Adder" class="ptolemy.actor.lib.fmi.FMUImportHybrid">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/Adder.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{575.0, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 100.0}">
+        </property>
+        <property name="resolution" class="ptolemy.data.expr.Parameter" value="-6">
+        </property>
+        <port name="y0" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+        <port name="u0" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+        <port name="u1" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+            <property name="dependencies" class="ptolemy.kernel.util.StringAttribute">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                <property name="style" class="ptolemy.actor.gui.style.HiddenStyle">
+                </property>
+            </property>
+        </port>
+    </entity>
+    <entity name="ZeroCrossingDetector" class="ptolemy.actor.lib.fmi.FMUImportHybrid">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/ZeroCrossingDetector.fmu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 100.0}">
         </property>
         <property name="resolution" class="ptolemy.data.expr.Parameter" value="-6">
         </property>
@@ -218,30 +218,10 @@
             </property>
         </port>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={570, 667, 500, 344}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{425.0, 155.0}">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>TimedPlotter</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="1.0E-9"/>
-<yRange min="0.0" max="0.9999999999999999"/>
-<default marks="dots" stems="yes"/>
-</plot>?>
-        </configure>
-    </entity>
     <entity name="Delay" class="ptolemy.actor.lib.fmi.FMUImportHybrid">
-        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="/Users/fabio/Documents/workspacePtII/ptII/ptolemy/actor/lib/fmi/fmus/Delay/Delay.fmu">
+        <property name="fmuFile" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/Delay.fmu">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 290.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 190.0}">
         </property>
         <property name="d" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -276,45 +256,61 @@
             </property>
         </port>
     </entity>
+    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1030, 548, 500, 344}, maximized=false}">
+        </property>
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 30.0]">
+        </property>
+        <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>TimedPlotter</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="0.0" max="1.0E-9"/>
+<yRange min="0.0" max="0.9999999999999999"/>
+<default marks="dots"/>
+</plot>?>
+        </configure>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Adder.u1&quot;,x=440.0,y=225.0}, tail={id=&quot;Constant.y0&quot;,x=305.0,y=235.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ZeroCrossingDetector.y0&quot;,x=450.0,y=100.0}, tail={id=&quot;Delay.u0&quot;,x=315.0,y=190.0}, points={565.0,100.0,565.0,190.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Constant2.y0&quot;,x=55.0,y=145.0}, tail={id=&quot;Integrator.der&quot;,x=200.0,y=155.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Integrator.reset&quot;,x=200.0,y=155.0}, tail={id=&quot;Delay.y0&quot;,x=440.0,y=290.0}, points={125.0,165.0,125.0,290.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Adder.y0&quot;,x=315.0,y=100.0}, tail={id=&quot;ZeroCrossingDetector.u0&quot;,x=450.0,y=100.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Delay.u0&quot;,x=440.0,y=290.0}, tail={id=&quot;ZeroCrossingDetector.y0&quot;,x=575.0,y=225.0}, points={695.0,290.0,695.0,225.0} } }">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Constant.y0&quot;,x=35.0,y=80.0}, tail={id=&quot;Integrator.der&quot;,x=180.0,y=90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ZeroCrossingDetector.u0&quot;,x=575.0,y=225.0}, tail={id=&quot;Adder.y0&quot;,x=440.0,y=225.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Delay.y0&quot;,x=315.0,y=190.0}, tail={id=&quot;Integrator.reset&quot;,x=180.0,y=90.0}, points={100.0,190.0,100.0,100.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{375.0, 155.0}">
+        <vertex name="vertex1" value="[245.0, 90.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation7.vertex1&quot;,x=375.0,y=155.0}, tail={id=&quot;TimedPlotter.input&quot;,x=425.0,y=155.0}, points={} },{ head={id=&quot;Integrator.y0&quot;,x=200.0,y=155.0}, tail={id=&quot;relation7.vertex1&quot;,x=375.0,y=155.0}, points={} },{ head={id=&quot;Adder.u0&quot;,x=440.0,y=225.0}, tail={id=&quot;relation7.vertex1&quot;,x=375.0,y=155.0}, points={375.0,215.0} } }">
-        </property>
     </relation>
-    <link port="Adder.y0" relation="relation6"/>
-    <link port="Adder.u0" relation="relation7"/>
-    <link port="Adder.u1" relation="relation"/>
-    <link port="Constant.y0" relation="relation"/>
-    <link port="Constant2.y0" relation="relation2"/>
+    <link port="Constant.y0" relation="relation5"/>
+    <link port="Constant2.y0" relation="relation3"/>
     <link port="Integrator.y0" relation="relation7"/>
-    <link port="Integrator.der" relation="relation2"/>
-    <link port="Integrator.reset" relation="relation5"/>
-    <link port="ZeroCrossingDetector.y0" relation="relation3"/>
-    <link port="ZeroCrossingDetector.u0" relation="relation6"/>
+    <link port="Integrator.der" relation="relation5"/>
+    <link port="Integrator.reset" relation="relation6"/>
+    <link port="Adder.y0" relation="relation2"/>
+    <link port="Adder.u0" relation="relation7"/>
+    <link port="Adder.u1" relation="relation3"/>
+    <link port="ZeroCrossingDetector.y0" relation="relation"/>
+    <link port="ZeroCrossingDetector.u0" relation="relation2"/>
+    <link port="Delay.y0" relation="relation6"/>
+    <link port="Delay.u0" relation="relation"/>
     <link port="TimedPlotter.input" relation="relation7"/>
-    <link port="Delay.y0" relation="relation5"/>
-    <link port="Delay.u0" relation="relation3"/>
 </entity>
