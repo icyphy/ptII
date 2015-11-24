@@ -7,6 +7,27 @@ if [ $# -ne 1 ]; then
    exit 2
 fi
 
+if [ -z "$PTII" ]; then
+    echo "$0: \$PTII was not set?  Exiting."
+    exit 6
+fi
+
+if [ ! -d "$PTII" ]; then
+    echo "$0: \$PTII is $PTII, which is not a directory.  Exiting."
+    exit 7
+fi  
+
+ptIIdir=`cd $PTII; pwd`
+
+if [ "`pwd`" != "`cd $PTII; pwd`" ]; then
+    echo "$0: Typically, this command is run from \$PTII ($PTII), not `pwd`."
+    echo "cding to $PTII now."
+    cd $PTII
+    if [ "`pwd`" != "`cd $PTII; pwd`" ]; then
+        echo "$0: Warning: cding to $PTII and running pwd (`pwd`) did not yield the expected results..."
+    fi
+fi
+
 demoDirectory=$1
 
 echo "$demoDirectory" | egrep '^/' >& /dev/null
@@ -20,6 +41,10 @@ parentDirectory=`dirname $demoDirectory`
 if [ `basename $parentDirectory` != demo ]; then
     echo "$0: The demo $demoDirectory is not in a demo/ directory?  Exiting."
     exit 4
+fi
+
+if [ ! -d $parentDirectory ]; then
+    echo "$0: Warning: $parentDirectory does not exist. BTW - $0 should be run from the $PTII directory"
 fi
 
 if [ ! -d $demoDirectory ]; then
