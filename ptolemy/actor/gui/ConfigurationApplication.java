@@ -230,6 +230,9 @@ public class ConfigurationApplication implements ExecutionListener {
         this();
 
         _initializeApplication();
+
+        StringUtilities.addPtolemyLibraryDirectoryToJavaLibraryPath();
+
         _basePath = basePath;
 
         // Create a parser to use.

@@ -34,9 +34,12 @@ import java.io.File;
 import java.io.IOException;
 import java.io.StreamTokenizer;
 import java.io.StringReader;
+import java.lang.reflect.Field;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
@@ -89,6 +92,68 @@ public class StringUtilities {
 
         return longName.substring(0, 37) + ". . ."
         + longName.substring(longName.length() - 38);
+    }
+
+    /** Add a directory to the java.library.path directory..
+     *  The java.library.path directory determines where the JVM
+     *  looks for native shared libraries.  It is typically read once
+     *  when the JVM is started and no longer read after that.
+     *  <p>This code may only work on certain JVMs</p>
+     * 
+     *  <p>Based on code from http://forums.sun.com/thread.jspa?threadID=707176
+     *  and http://stackoverflow.com/questions/5419039/is-djava-library-path-equivalent-to-system-setpropertyjava-library-path</p>
+     *
+     *  @param directoryName The directory to be added.
+     *  @exception IOException If there are insufficient permissions to
+     *  get set the java.library.path environment variable or there
+     *  is no such field as usr_paths in the ClassLoader.
+     */
+    public static void addDirectoryToJavaLibraryPath(String directoryName)
+            throws IOException {
+        try {
+            Field usrPathsField = ClassLoader.class.getDeclaredField("usr_paths");
+            usrPathsField.setAccessible(true);
+            String[] libraryPathsArray = (String[])usrPathsField.get(null);
+            ArrayList<String> libraryPaths = new ArrayList<String>(Arrays.asList(libraryPathsArray));
+            if (libraryPaths.contains(directoryName)) {
+                return;
+            } 
+            libraryPaths.add(directoryName);
+            usrPathsField.set(null, libraryPaths.toArray(new String[libraryPaths.size()]));
+            System.setProperty("java.library.path", System.getProperty("java.library.path") + File.pathSeparator + directoryName);
+        } catch (IllegalAccessException ex) {
+            IOException ioException = new IOException("Failed to get permissions to set library path");
+            ioException.initCause(ex);
+            throw ioException;
+        } catch (NoSuchFieldException ex2) {
+            IOException ioException = new IOException("Failed to get field handle to set library path");
+            ioException.initCause(ex2);
+            throw ioException;
+        }
+    }
+
+    /** Add the $PTII/lib directory to the java.library.path directory.
+     *  The java.library.path directory determines where the JVM
+     *  looks for native shared libraries.  It is typically read once
+     *  when the JVM is started and no longer read after that.
+     *  <p>This code may only work on certain JVMs</p>
+     *
+     *  @exception IOException If there are insufficient permissions to
+     *  get set the java.library.path environment variable or there
+     *  is no such field as usr_paths in the ClassLoader.
+     */
+    public static void addPtolemyLibraryDirectoryToJavaLibraryPath()
+            throws IOException {
+        String ptIIProperty = "ptolemy.ptII.dir";
+        String ptII = StringUtilities.getProperty(ptIIProperty);
+        if (ptII.length() > 0) {
+            StringUtilities.addDirectoryToJavaLibraryPath(ptII + File.separator + "lib");
+        } else {
+            System.err.println("Warning: StringUtilities.addPtolemyLibraryDirectory() "
+                    + "could not get the value of the " + ptIIProperty
+                    + ".  This means that loading shared libraries like the Serial I/O "
+                    + "interface could fail. ");
+        }                   
     }
 
     /** Return a string with a maximum line length of <i>length</i>
