@@ -50,6 +50,7 @@ var defaultClientOptions = {
     'idleTimeout': 0, // In seconds. 0 means don't timeout.
     'discardMessagesBeforeOpen': false,
     'keepAlive': true,
+    'maxUnsentMessages': 100,
     'noDelay': true,
     'receiveBufferSize': 65536,
     'receiveType': 'string',
@@ -59,10 +60,10 @@ var defaultClientOptions = {
     'sendType': 'string',
     'serializeReceivedArrays': true,
     'sslTls': false,
-    'trustAll': true,
+    'trustAll': false,
 }
 
-// FIXME: 'trustAll' is not well explained. What does it mean?
+// FIXME:
 // There are additional options in Vert.x NetClientOptions that
 // are not documented in the Vert.x documentation, so I don't know what
 // they mean.
@@ -112,6 +113,9 @@ var defaultClientOptions = {
  *    defaults to false.
  *  * keepAlive: Whether to keep a connection alive and reuse it. This
  *    defaults to true.
+ *  * maxUnsentMessages: The maximum number of unsent messages to queue before
+ *    further calls to send() will fail. A value of 0 means no limit.
+ *    This defaults to 100.
  *  * noDelay: If true, data as sent as soon as it is available (the default).
  *    If false, data may be accumulated until a reasonable packet size is formed
  *    in order to make more efficient use of the network (using Nagle's algorithm).
@@ -133,7 +137,10 @@ var defaultClientOptions = {
  *    will be emitted as an array rather than doing a separate emit
  *    for each received object.
  *  * sslTls: Whether SSL/TLS is enabled. This defaults to false.
- *  * trustAll: Whether to trust servers. This defaults to true.
+ *  * trustAll: Whether to trust servers. This defaults to false.
+ *    Setting it to true means that if sslTls is set to true, then
+ *    any certificate provided by the server will be trusted.
+ *    FIXME: Need to provide a trusted list if this is false.
  *
  *  The send and receive types can be any of those returned by
  *  supportedReceiveTypes() and supportedSendTypes(), respectively.
@@ -226,6 +233,10 @@ exports.SocketClient.prototype.send = function(data) {
     } else {
         if (!this.options['discardMessagesBeforeOpen']) {
             this.pendingSends.push(data);
+            var maxUnsentMessages = this.options['maxUnsentMessages'];
+            if (maxUnsentMessages > 0 && data.length() >= maxUnsentMessages) {
+                throw "Maximum number of unsent messages has been exceeded: " + maxUnsentMessages;
+            }
         } else {
             console.log('Discarding because socket is not open: ' + data);
         }
@@ -253,8 +264,10 @@ exports.SocketClient.prototype.close = function() {
 var defaultServerOptions = {
     'clientAuth': 'none', // No SSL/TSL will be used.
     'hostInterface': '0.0.0.0', // Means listen on all available interfaces.
-    'idleTimeout': 0, // In second. 0 means don't timeout.
+    'idleTimeout': 0, // In seconds. 0 means don't timeout.
     'keepAlive': true,
+    'keyStorePassword': '',
+    'keyStorePath': '',
     'noDelay': true,
     'port': 4000,
     'receiveBufferSize': 65536,
@@ -333,6 +346,12 @@ var defaultServerOptions = {
  *    timeout.
  *  * keepAlive: Whether to keep a connection alive and reuse it. This
  *    defaults to true.
+ *  * keyStorePassword: If sslTls is set to true, then this option needs to specify
+ *    the password for the key store specified by keyStorePath.
+ *  * keyStorePath: If sslTls is set to true, then this option needs to specify
+ *    the fully qualified filename for the file that stores the certificate that
+ *    this server will use to identify itself. This path can be any of those
+ *    understood by the Ptolemy host, e.g. paths beginning with $CLASSPATH/.
  *  * noDelay: If true, data as sent as soon as it is available (the default).
  *    If false, data may be accumulated until a reasonable packet size is formed
  *    in order to make more efficient use of the network (using Nagle's algorithm).

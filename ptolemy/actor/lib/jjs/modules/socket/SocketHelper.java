@@ -32,6 +32,7 @@ package ptolemy.actor.lib.jjs.modules.socket;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ClientAuth;
+import io.vertx.core.net.JksOptions;
 import io.vertx.core.net.NetClient;
 import io.vertx.core.net.NetClientOptions;
 import io.vertx.core.net.NetServer;
@@ -41,6 +42,7 @@ import io.vertx.core.net.NetSocket;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
@@ -53,6 +55,7 @@ import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.ImageToken;
 import ptolemy.data.LongToken;
+import ptolemy.util.FileUtilities;
 
 
 
@@ -219,6 +222,26 @@ public class SocketHelper extends VertxHelperBase {
                 .setSendBufferSize((Integer)options.get("sendBufferSize"))
                 .setSsl((Boolean)options.get("sslTls"))
                 .setTcpNoDelay((Boolean)options.get("noDelay"));
+        
+        // If SSL/TLS is enabled, it has to be configured.
+        if (serverOptions.isSsl()) {
+            String keyStorePath = (String)options.get("keyStorePath");
+            File keyStoreFile = FileUtilities.nameToFile(keyStorePath, null);
+            if (keyStoreFile == null) {
+                _error(socketServer, "Empty keyStoreFile option. Can't find the key store.");
+                return;
+            }
+            String keyStorePassword = (String)options.get("keyStorePassword");
+            try {
+                serverOptions.setKeyStoreOptions(
+                        new JksOptions().
+                        setPath(keyStoreFile.getCanonicalPath()).
+                        setPassword(keyStorePassword));
+            } catch (IOException e) {
+                _error(socketServer, "Failed to find key store at " + keyStoreFile);
+                return;
+            }
+        }
 
         // NOTE: Find out the (undocumented) default in Vert.x.
         // System.err.println("TcpNoDelay: " + serverOptions.isTcpNoDelay());
@@ -237,15 +260,19 @@ public class SocketHelper extends VertxHelperBase {
                 });
             });
 
-            server.listen(result -> {
-                _issueResponse(() -> {
-                    if (result.succeeded()) {
-                        socketServer.callMember("emit", "listening", server.actualPort());
-                    } else {
-                        _error("Failed to start server listening.");
-                    }
+            try {
+                server.listen(result -> {
+                    _issueResponse(() -> {
+                        if (result.succeeded()) {
+                            socketServer.callMember("emit", "listening", server.actualPort());
+                        } else {
+                            _error("Failed to start server listening: " + result);
+                        }
+                    });
                 });
-            });
+            } catch (Throwable ex) {
+                _error(socketServer, "Failed to start server listening: " + ex);
+            }
         });
     }
 
