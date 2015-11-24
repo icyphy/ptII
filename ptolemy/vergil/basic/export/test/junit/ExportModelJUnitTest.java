@@ -362,6 +362,7 @@ public class ExportModelJUnitTest {
                 "cg/lib/demo/Scale/Scale.xml", // Contains links to other demos.
                 "ScaleC.xml", // FIXME: the JVM crashes while running.
                 "SequencedActors.xml", // Has links to other models
+                "SerialConsole.xml", // Requires serial port.
                 "SerialPort.xml", // Requires serial port.
                 "Signature.xml", // Throws an exception in the normal course of operations.
                 "SimpleTrafficLightSMVModule.xml", // "PedestrianLightSMV can not run in simulation mode."
