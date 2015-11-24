@@ -55,6 +55,7 @@ import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.ImageToken;
 import ptolemy.data.LongToken;
+import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
 
@@ -156,7 +157,9 @@ public class SocketHelper extends VertxHelperBase {
                         socketClient.callMember("_opened", socket, client);
                     });
                 } else {
-                    _error(socketClient, "Failed to connect: " + response.cause().getMessage());
+                    Throwable cause = response.cause();
+                    String errorMessage = "Failed to connect: " + cause.getMessage();
+                    _error(socketClient, errorMessage, cause);
                 }
             });
         });

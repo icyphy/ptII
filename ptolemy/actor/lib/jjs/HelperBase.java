@@ -98,6 +98,24 @@ public class HelperBase {
         }
     }
 
+    /** Handle an error by emitting an error event, or if there is no
+     *  error event handler registered, by invoking the error() method
+     *  of the associated actor. Note that this may not stop execution.
+     *  @param message The error message.
+     *  @param throwable The throwable.
+     */
+    protected void _error(String message, Throwable throwable) {
+        try {
+            _currentObj.callMember("emit", "error",
+                    message + ": " + throwable );
+            // NOTE: The error handler may not stop execution.
+        } catch (Throwable ex) {
+            // There may be no error event handler registered.
+            // Use the actor to report the error.
+            _actor.error(message, throwable);
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected fields                      ////
 
