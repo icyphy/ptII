@@ -51,8 +51,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = SerialComm.java
 
 OTHER_FILES_TO_BE_JARED = \
-	comm.xml \
-	rxtx-copyright.htm
+	comm.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
