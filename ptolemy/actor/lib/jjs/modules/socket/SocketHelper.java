@@ -57,6 +57,7 @@ import ptolemy.data.ImageToken;
 import ptolemy.data.LongToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.MessageHandler;
 
 
 
@@ -83,7 +84,7 @@ import ptolemy.util.FileUtilities;
    At this time, an image will be encoded using JPG only for transmission.
    This may be generalized sometime in the future.
 
-   @author Edward A. Lee
+   @author Edward A. Lee, Contributor: Hokeun Kim
    @version $Id$
    @see SocketServerHelper
    @since Ptolemy II 11.0
@@ -124,6 +125,12 @@ public class SocketHelper extends VertxHelperBase {
             final int port,
             final String host,
             Map<String,Object> options) {
+        if ((Boolean)options.get("trustAll")) {
+            if (!MessageHandler.yesNoQuestion("The client is set to trust all certificates ('trustAll': true). "
+                    + "Are you sure to trust any certificate without verifying it?")) {
+                return;
+            }
+        }
 
         // NOTE: The following assumes all the options are defined.
         // This is handled in the associated JavaScript socket.js module.
