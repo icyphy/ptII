@@ -27,8 +27,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package com.jhlabs.image.svg;
 
-import java.awt.BasicStroke;
-import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
@@ -121,6 +119,13 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
                 System.err.println("Failed to load graphicURI: " + e);
             }
         }
+        /* This used to provide a default graphic is none is specified.
+         * Really, we just want no graphic.
+         */
+        if (!success) {
+            return source;
+        }
+        /* Default graphic used to be retrieved using this code:
         if (!success) {
             try {
                 URL url = FileUtilities.nameToURL(DEFAULT_GRAPHIC_URI, null, null);
@@ -137,6 +142,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
                 g.dispose();
             }
         }
+        */
         Graphics2D g = destination.createGraphics();
         
         // Set offsets and rotation.
@@ -269,7 +275,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
     ////                         public variables                  ////
     
     /** The relative URI of the default graphic. */
-    public static String DEFAULT_GRAPHIC_URI = "$CLASSPATH/com/jhlabs/image/svg/CapeCodOutline.svg";
+    // public static String DEFAULT_GRAPHIC_URI = "$CLASSPATH/com/jhlabs/image/svg/CapeCodOutline.svg";
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
