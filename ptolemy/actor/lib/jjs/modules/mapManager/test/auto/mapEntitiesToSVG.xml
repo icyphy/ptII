@@ -8,7 +8,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 65}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1544, 94, 1325, 792}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 94, 1325, 792}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1091, 682]">
     </property>
@@ -123,7 +123,7 @@
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="mapManager = require('mapManager');&#10;&#10;exports.initialize = function(){&#10;	&#10;	var myCoords = new mapManager.CoordinateSystem(&quot;myCoordsName&quot;);&#10;	var myMap = new mapManager.Map(&quot;myMapName&quot; , mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);&#10;	mapManager.registerMap(myMap);&#10;	&#10;	var cat = new mapManager.Entity(&quot;cat&quot;);&#10;	mapManager.registerEntity(cat);&#10;	myMap.addEntity(cat);&#10;	&#10;	var catMapSource = new mapManager.MapSource(&quot;catTracker&quot;);&#10;	var catTimestamp = Date.UTC(2015, 11);&#10;	&#10;	var catMetadata = new mapManager.ObservationMetadata(catMapSource, catTimestamp);&#10;	var catCenter = [ 10, 15 ];&#10;	var catPose = new mapManager.Quaternion(1,0,0,0);&#10;	var catShape = [ [1,1], [-1,1], [-1,-1], [1,-1] ];&#10;	&#10;&#10;	var catLocation = new mapManager.Placement(catMetadata, catCenter,&#10;			catPose, catShape);&#10;	&#10;	cat.setPlacement(catLocation);&#10;	&#10;	var image = myMap.mapEntitiesToSVG(400,400);&#10;	send(&quot;output&quot;, image);&#10;&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="mapManager = require('mapManager');&#10;&#10;exports.initialize = function(){&#10;	&#10;	var myCoords = new mapManager.CoordinateSystem(&quot;myCoordsName&quot;);&#10;	var myMap = new mapManager.Map(&quot;myMapName&quot; , mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);&#10;	mapManager.registerMap(myMap);&#10;	&#10;	var cat = new mapManager.Entity(&quot;cat&quot;);&#10;	mapManager.registerEntity(cat);&#10;	myMap.addEntity(cat);&#10;	&#10;	var catMapSource = new mapManager.MapSource(&quot;petTracker&quot;);&#10;	var catTimestamp = Date.UTC(2015, 11);&#10;	&#10;	var catMetadata = new mapManager.ObservationMetadata(catMapSource, catTimestamp);&#10;	var catCenter = [ 10, 15 ];&#10;	var catPose = new mapManager.Quaternion(1,0,0,0);&#10;	var catShape = [ [1,1], [-1,1], [-1,-1], [1,-1] ];&#10;	&#10;&#10;	var catLocation = new mapManager.Placement(catMetadata, catCenter,&#10;			catPose, catShape);&#10;	&#10;	cat.setPlacement(catLocation);&#10;	&#10;	&#10;	var dog = new mapManager.Entity(&quot;dog&quot;);&#10;	mapManager.registerEntity(dog);&#10;	myMap.addEntity(dog);&#10;	&#10;	var dogMapSource = new mapManager.MapSource(&quot;petTracker&quot;);&#10;	var dogTimestamp = Date.UTC(2015, 11);&#10;	&#10;	var dogMetadata = new mapManager.ObservationMetadata(dogMapSource, dogTimestamp);&#10;	var dogCenter = [ 20, 35 ];&#10;	var dogPose = new mapManager.Quaternion(1,0,0,0);&#10;	var dogShape = [ [1,1], [-1,1], [-1,-1], [1,-1] ];&#10;	&#10;&#10;	var dogLocation = new mapManager.Placement(dogMetadata, dogCenter,&#10;			dogPose, dogShape);&#10;	&#10;	dog.setPlacement(dogLocation);&#10;	&#10;	var image = myMap.mapEntitiesToSVG(400,400);&#10;	send(&quot;output&quot;, image);&#10;&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -135,7 +135,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 305.0}">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
