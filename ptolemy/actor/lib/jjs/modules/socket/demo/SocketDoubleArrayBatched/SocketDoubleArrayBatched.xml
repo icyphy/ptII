@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2094282693988294">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{231.2076198068982, 130.33560143417554}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{231.20761980689826, 130.33560143417554}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -140,7 +140,7 @@
         </property>
     </entity>
     <entity name="ClientReceived" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={907, 445, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={907, 655, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
