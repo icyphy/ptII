@@ -33,7 +33,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The default options for&#10;the Annotate filter are used here.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A Cape Cod graphic is used for&#10;the Annotate filter here.">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[250.0, 170.0]">
         </property>
@@ -77,18 +77,16 @@
         <property name="viewSize" class="ptolemy.data.expr.StringParameter" value="{&quot;width&quot;:640, &quot;height&quot;:480}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 130.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="image" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="ImageFilter" class="org.terraswarm.accessor.JSAccessor">
@@ -102,11 +100,13 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;Graphic&quot;:&quot;&quot;, &quot;GraphicURL&quot;:&quot;&quot;, &quot;XOffset&quot;:0, &quot;YOffset&quot;:0, &quot;Scale&quot;:1.0, &quot;Rotation&quot;:0}">
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;Graphic&quot;:&quot;&quot;, &quot;GraphicURI&quot;:&quot;$CLASSPATH/com/jhlabs/image/svg/CapeCodOutline.svg&quot;, &quot;XOffset&quot;:0, &quot;YOffset&quot;:0, &quot;Scale&quot;:1.0, &quot;Rotation&quot;:0}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 120.0}">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor filters images provided at the input to produce modified images&#10;on the output. This accessor requires an 'imageFilters' module implemented on&#10;the accessor host. The filters that are available will depend on the particular&#10;host implementation of this module and will be provided as select alternatives for the&#10;'filter' parameter. The options that each filter can accept will also depend on the&#10;module implementation on the host.  The filters that are implemented by the Ptolemy II&#10;host and their options are documented in the&#10;&lt;a href=&quot;https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/module-imageFilters.html&quot;&gt;imageFilters module&lt;/a&gt;&#10;Demos for these filters can be found in the Ptolemy II tree at&#10;org/terraswarm/accessor/demo/ImageFilters.&lt;/p&gt;">
@@ -130,27 +130,21 @@
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
         <port name="filter" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
