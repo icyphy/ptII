@@ -55,7 +55,6 @@ import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.ImageToken;
 import ptolemy.data.LongToken;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 
@@ -126,8 +125,11 @@ public class SocketHelper extends VertxHelperBase {
             final String host,
             Map<String,Object> options) {
         if ((Boolean)options.get("trustAll")) {
-            if (!MessageHandler.yesNoQuestion("The client is set to trust all certificates ('trustAll': true). "
-                    + "Are you sure to trust any certificate without verifying it?")) {
+            if (!MessageHandler.yesNoQuestion(
+                    "The client is set to trust all certificates ('trustAll' option is true). "
+                    + "This means that the client can connect to any server with no "
+                    + "verification of the identity of the server. "
+                    + "Are you sure?")) {
                 return;
             }
         }
