@@ -107,9 +107,8 @@ var defaultLights =
  *  An instance of this object type implements the following functions:
  */
 exports.MockHueBridge = function() {
-	   
+
 };
-util.inherits(exports.MockHueBridge, EventEmitter);
 
 /** Construct an instance of a MockHueBridgeConnection object. 
  * 
@@ -118,9 +117,13 @@ util.inherits(exports.MockHueBridge, EventEmitter);
  *  
  *  @param bridgeID A unique string identifying the bridge.
  */
-MockHueBridgeConnection = function(bridgeID) {
+exports.MockHueBridgeConnection = function(bridgeID) {
+	// Call the super constructor
+	EventEmitter.call(this);
+	
 	this.bridgeID = bridgeID;
 };
+util.inherits(exports.MockHueBridgeConnection, EventEmitter);
 
 /** Connect to the bridge, remembering the bridge ID.
  * 
@@ -133,7 +136,7 @@ exports.MockHueBridge.prototype.connect = function(bridgeID) {
 		bridges[bridgeID] = {};
 	}
 	
-	return new MockHueBridgeConnection(bridgeID);
+	return new exports.MockHueBridgeConnection(bridgeID);
 };
 
 /** Issue a command to the bridge.
@@ -142,7 +145,8 @@ exports.MockHueBridge.prototype.connect = function(bridgeID) {
  * @param URIpath The path part of the HTTP request URI, e.g. /api/username
  * @param body The HTTP request body, if any.  Optional.  
  */
-MockHueBridgeConnection.prototype.command = function(method, URIpath, body) {
+
+exports.MockHueBridgeConnection.prototype.command = function(method, URIpath, body) {
 	
 	  // Match most-specific first
 	  // GET, PUT /api/<username>/lights/<id>/state/
@@ -189,8 +193,11 @@ MockHueBridgeConnection.prototype.command = function(method, URIpath, body) {
 			  }
 		  }		  
 		  
-		  // The actual changes occur after the specified transition time
-		  // However, the HTTP response is generated immediately
+		  // TODO:  Implement or find a setTimeout() for Nashorn.
+		  // In future, changes should occur after the specified transition time
+		  // The HTTP response is generated immediately (as it should be)
+		  
+		  /*
 		  var transitionTime;
 		  if (body.hasOwnProperty('transitiontime')) {
 			  transitionTime = body.transitiontime;
@@ -198,14 +205,15 @@ MockHueBridgeConnection.prototype.command = function(method, URIpath, body) {
 			  transitionTime = bridges[this.bridgeID].transitionTime;
 		  } else {
 			  transitionTime = defaultTime;
-		  }	  
+		  }	
+		  */  
 		  
-		  // TODO:  Implement or find a setTimeout() for Nashorn.  
+		  bridges[this.bridgeID].lights = lights;
 		  if (body.hasOwnProperty('transitiontime')) {
-			  this.setProperties(lights, body.transitiontime);
-		  } else {
-			  this.setProperties(lights);
+			  bridges[this.bridgeID].transitionTime = transitionTime;
 		  }
+		  
+		  this.emit('change', bridges[this.bridgeID]);
 		  
 		  // Respond with list of properties changed
 		  // E.g. // {"success":{"/lights/1/name":"Bedroom Light"}}
@@ -251,42 +259,33 @@ MockHueBridgeConnection.prototype.command = function(method, URIpath, body) {
 /** Initialize bridge with the ID corresponding to this connection.
  *  The default configuration is a set of two lights.
  */
-MockHueBridgeConnection.prototype.initializeToDefault = function() {
+exports.MockHueBridgeConnection.prototype.initializeToDefault = function() {
 	bridges[this.bridgeID] = 
 		{lights: defaultLights, transitionTime :  defaultTime };
-};
-
-/** Set the properties of the bridge.
- * 
- *  @param lights  Light information.
- *  @param transitionTime  The transition time for changes to take effect.  
- *   Optional.
- */
-MockHueBridgeConnection.prototype.setProperties = function(lights, 
-		transitionTime) {
-	  bridges[this.bridgeID].lights = lights;
-	  if (typeof transitionTime !== 'undefined') { 
-		  bridges[this.bridgeID].transitionTime = transitionTime;
-	  }  
 };
 
 /** Given a URI, find the lightID.
  * 
  * @param URIpath The path portion of the URI, e.g. /api/username/lights/1/
- * @returns {Number} The light ID, e.g. 1 for /api/username/lights/1/
+ * @returns {String} The light ID, e.g. 1 for /api/username/lights/1/
  */
-function findLightID(URIpath) {
-	  // Remove last character (in case of trailing slash)
-	  if (URIpath.length > 0 && URIpath[URIpath.length] == '/') {
-		  URIpath = URIpath.substring(0, URIpath.length - 1);
-	  }
-	  var slash = URIpath.lastIndexOf("/");
-	  var lightID = -1;
-	  if (slash > 0) {
-		  lightID = URIpath.substring(0, slash);
-		  slash = lightID.lastIndexOf("/");
-		  lightID = lightID.substring(slash + 1, lightID.length);
-	  }
-	  return lightID;
-}
 
+function findLightID(URIpath) {
+	var index = -1;
+	var lightID = "-1";
+	
+	if (URIpath.length > 0) {
+		index = URIpath.indexOf('lights');
+		if (index != -1) {
+			URIpath = URIpath.substring(index + 7, URIpath.length);
+			index = URIpath.indexOf('/');
+			if (index != -1) {
+				lightID = URIpath.substring(0, index);
+			} else {
+				lightID = URIpath;
+			}
+		}
+	}
+
+	return lightID;
+};

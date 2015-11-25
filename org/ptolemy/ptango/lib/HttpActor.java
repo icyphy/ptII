@@ -173,6 +173,20 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
         
         postBody = new TypedIOPort(this, "postBody", false, true);
         new Parameter(postBody, "_showName").setExpression("true");
+        
+        putRequestURI = new TypedIOPort(this, "putRequestURI", false, true);
+        putRequestURI.setTypeEquals(BaseType.STRING);
+        new Parameter(putRequestURI, "_showName").setExpression("true");
+
+        // NOTE: The type will be inferred from how this output is used.
+        putParameters = new TypedIOPort(this, "putParameters", false, true);
+        new Parameter(putParameters, "_showName").setExpression("true");
+
+        putCookies = new TypedIOPort(this, "putCookies", false, true);
+        new Parameter(putCookies, "_showName").setExpression("true");
+        
+        putBody = new TypedIOPort(this, "putBody", false, true);
+        new Parameter(putBody, "_showName").setExpression("true");
 
         setCookies = new TypedIOPort(this, "setCookies", true, false);
         new Parameter(setCookies, "_showName").setExpression("true");
@@ -236,8 +250,8 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
     public StringParameter path;
     
     /** An output that sends the body of the request, if any.
-     *  HTTPActor only offers a body output for POST requests.  While it is 
-     *  technically possible for a GET request to have a body, this is 
+     *  HTTPActor only offers a body output for POST and PUT requests.  While it 
+     *  is technically possible for a GET request to have a body, this is 
      *  discouraged since GET requests are supposed to be idempotent.
      */
     public TypedIOPort postBody;
@@ -266,6 +280,38 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  This has type string.
      */
     public TypedIOPort postRequestURI;
+    
+    /** An output that sends the body of the request, if any.
+     *  HTTPActor only offers a body output for POST and PUT requests.  While it 
+     *  is technically possible for a GET request to have a body, this is 
+     *  discouraged since GET requests are supposed to be idempotent.
+     */
+    public TypedIOPort putBody;
+
+    /** An output that sends the cookies specified by the
+     *  {@link #requestedCookies} parameter, with values
+     *  provided by a put request. If the put request does
+     *  have cookies with names matching those in requestedCookies,
+     *  then those values will be empty strings.
+     *  The output will be a RecordToken with the field names given by
+     *  requestedCookies, and the field values being strings.
+     */
+    public TypedIOPort putCookies;
+
+    /** An output port that sends parameters included in a put request.
+     *  The output will be a record with
+     *  one field for each name. If the request assigns multiple
+     *  values to the name, then the field value of the record
+     *  will be an array of strings. Otherwise, it will simply
+     *  be a string.
+     */
+    public TypedIOPort putParameters;
+
+    /** An output port that sends the relative URI of a put request,
+     *  which must match the pattern given by the <i>path</i> parameter.
+     *  This has type string.
+     */
+    public TypedIOPort putRequestURI;
 
     /** An array of names of cookies that this actor should retrieve from
      *  an HTTP request and produce on the getCookies and putCookies output
@@ -546,9 +592,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                                 getParameters.getType(), "cookies");
                     }
                 }
-            } else {
-                // Note:  This handles PUT requests as well as POST requests
-                // Could make separate ports for PUT if needed
+            } else if (_request.requestType == 1){
                 if (_debugging) {
                     _debug("Sending post request URI: " + _request.requestURI);
                     _debug("Sending post request parameters: "
@@ -579,6 +623,38 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 }
                 if (_request.body != null) {
                     postBody.send(0, _request.body);
+                }
+            } else {
+                if (_debugging) {
+                    _debug("Sending put request URI: " + _request.requestURI);
+                    _debug("Sending put request parameters: "
+                            + _request.parameters);
+                }
+                putRequestURI.send(0, new StringToken(_request.requestURI));
+                try {
+                    putParameters.send(0, _request.parameters);
+                } catch (TypedIOPort.RunTimeTypeCheckException ex) {
+                    // Parameters provided do not match the required type.
+                    // Construct an appropriate response.
+                    _respondWithBadRequestMessage(_request.parameters,
+                            getParameters.getType(), "parameters");
+                }
+                if (_request.cookies != null && _request.cookies.length() > 0) {
+                    try {
+                        putCookies.send(0, _request.cookies);
+                    } catch (TypedIOPort.RunTimeTypeCheckException ex) {
+                        // Parameters provided do not match the required type.
+                        // Construct an appropriate response.
+                        _respondWithBadRequestMessage(_request.parameters,
+                                getParameters.getType(), "cookies");
+                    }
+                    if (_debugging) {
+                        _debug("Sending cookies to putCookies port: "
+                                + _request.cookies);
+                    }
+                }
+                if (_request.body != null) {
+                    putBody.send(0, _request.body);
                 }
             }
         }
