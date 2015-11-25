@@ -477,6 +477,24 @@ function Entity(name) {
     }
 
     /**
+     * Getter for placements
+     * @function
+     * @returns {object} Hash mapping placement keys to placements.
+     */
+    this.getPlacements = function(){
+    	return this.placements;
+    }
+
+    /**
+     * Getter for name
+     * @function
+     * @returns {string} Name of this entity.
+     */
+    this.getName = function(){
+    	return this.name;
+    }
+
+    /**
      * Specify the location of an entity that is on a map
      * @function
      * @param {Occupancy} occupancy - The location of the entity with respect to its map
@@ -503,6 +521,7 @@ function Entity(name) {
 	    return true;
 	}
     }
+
 
 }
 
@@ -751,6 +770,78 @@ function Map(mapName, spaceType, coordinateSystem) {
 	    return true;
 	}
     }
+
+
+    /**
+     * Create an SVG format image of the entities on the map, from placements having
+     * 2D center coordinates.
+     * @function
+     * @param {number} width - The pixel width of the image.
+     * @param {number} width - The pixel height of the image.
+     * @returns {string} An SVG image displaying the contents of the map.
+     */
+    this.mapEntitiesToSVG = function(width, height){
+    if(  ! ((typeof width === "number") && (typeof height === "number") ) ){
+    	throw "Incorrect arguments to mapEntitiesToSVG";
+    }
+
+    console.log("function is called");
+
+    var svgString = "";
+
+    //Set xml version
+    svgString += '<?xml version="1.0"?>\n';
+
+    //Add a comment to show this program created the image
+    svgString += '<!-- Created by mapManager -->\n';
+
+    //Set width and height
+    svgString +='<svg viewbox="0 0 100 100" preserveAspectRatio="xMidYMid meet" '
+    svgString += 'width="' + width.toString() +  '" height="' + height.toString() + '">\n';
+
+    //Map boarder
+    svgString += '<rect width="100" height="100" x="0" y="0" ' 
+    svgString += 'style="fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)" fill-opacity="0.1" />\n'
+
+    console.log(this.mapEntities);
+
+    //SVG content
+    for( var eKey in this.mapEntities){
+    	var e = entities[eKey];
+    	var placements = e.getPlacements();
+
+    	console.log("eKey is:" + eKey);
+    	console.log("e is:" + e);
+    	console.log("placements is:" + placements);
+    	console.log("placement properties:" + Object.getOwnPropertyNames(e.getPlacements));
+    	for( var pKey in placements){
+    		var p = placements[pKey];
+    		console.log("P is:" + p)
+    		var center = p.getCenter();
+    		//Only consider 2D coordinates
+    		console.log("center is" + center);
+    		if(center.length == 2 ){
+
+    			//TODO fix this! This is wildly incorrect because of different coord systems for svg
+    			//I'm just doing it now for testing.
+    			var cx = center[0];
+    			var cy = center[1];
+   			    svgString += '<circle cx="' + cx.toString() +'" cy="' + cy.toString() + '" r=".5"/>\n';
+   			    svgString += '<text x="' + cx.toString() +'" y="' + (cy-1).toString() 
+   			    + '" font-family="Verdana" font-size="2">\n'; //note the -1 y
+   			    
+   			    svgString += e.getName() + '\n';
+    			svgString += '</text>\n';
+    		}
+    	}
+    }
+    
+    //close SVG
+    svgString +='</svg>';
+    
+    return svgString;
+    }
+
 }
 
 exports.Map = Map;
@@ -867,6 +958,15 @@ function Placement(metadata, center, pose, shape ) {
 
     this._key = function() {
 	return _stringsToKey( [ this._placementID.toString(), this.metadata._key() ] );
+    }
+
+    /**
+     * Getter for center
+     * @function
+     * @returns {array} The coordinate position describing the center of this entity.
+     */
+    this.getCenter = function(){
+    	return this.center;
     }
 }
 
