@@ -148,6 +148,7 @@ $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/MulticoreExecution.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ParallelExecution.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/SpontaneousSources.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ThreadedComposite.xml
+$CLASSPATH/ptolemy/actor/lib/io/comm/demo/SerialPort/SerialConsole.xml
 $CLASSPATH/ptolemy/actor/lib/io/comm/demo/SerialPort/SerialPort.xml
 $CLASSPATH/ptolemy/actor/lib/io/demo/AppendToFile/AppendToFile.xml
 $CLASSPATH/ptolemy/actor/lib/io/demo/CopyFile/CopyFile.xml
