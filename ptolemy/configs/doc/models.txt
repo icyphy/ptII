@@ -84,6 +84,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreServer.
 $CLASSPATH/org/terraswarm/accessor/demo/MoC/MoC.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MotionDetector/MotionDetector.xml
 $CLASSPATH/org/terraswarm/accessor/demo/REST/REST.xml
+$CLASSPATH/org/terraswarm/accessor/demo/SecureSocket/SecureSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/StockTick/StockTick.xml
 $CLASSPATH/org/terraswarm/accessor/demo/SwarmAcousticService/SwarmAcousticService.xml
 $CLASSPATH/org/terraswarm/accessor/demo/UDPSocket/UDPSocket.xml
@@ -148,7 +149,7 @@ $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/MulticoreExecution.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ParallelExecution.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/SpontaneousSources.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ThreadedComposite.xml
-$CLASSPATH/ptolemy/actor/lib/io/comm/demo/SerialPort/SerialConsole.xml
+$CLASSPATH/ptolemy/actor/lib/io/comm/demo/SerialConsole/SerialConsole.xml
 $CLASSPATH/ptolemy/actor/lib/io/comm/demo/SerialPort/SerialPort.xml
 $CLASSPATH/ptolemy/actor/lib/io/demo/AppendToFile/AppendToFile.xml
 $CLASSPATH/ptolemy/actor/lib/io/demo/CopyFile/CopyFile.xml
