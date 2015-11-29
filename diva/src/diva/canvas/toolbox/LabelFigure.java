@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2013 The Regents of the University of California
+ Copyright (c) 1998-2014 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -106,9 +106,9 @@ public class LabelFigure extends AbstractFigure {
     /** The order of anchors used by the autoanchor method.
      */
     private static int[] _anchors = { SwingConstants.SOUTH,
-            SwingConstants.NORTH, SwingConstants.WEST, SwingConstants.EAST,
-            SwingConstants.SOUTH_WEST, SwingConstants.SOUTH_EAST,
-            SwingConstants.NORTH_WEST, SwingConstants.NORTH_EAST };
+        SwingConstants.NORTH, SwingConstants.WEST, SwingConstants.EAST,
+        SwingConstants.SOUTH_WEST, SwingConstants.SOUTH_EAST,
+        SwingConstants.NORTH_WEST, SwingConstants.NORTH_EAST };
 
     /**
      * Construct an empty label figure.

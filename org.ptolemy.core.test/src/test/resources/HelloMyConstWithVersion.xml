@@ -1,7 +1,7 @@
 <entity name="HelloConst" class="ptolemy.actor.CompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
-    <entity name="const" class="org.ptolemy.core.test.actor.MyConst" version="10.1.0">
+    <entity name="const" class="org.ptolemy.core.test.actor.MyConst" version="11.0.0">
         <property name="value" class="ptolemy.data.expr.Parameter" value="1">
         </property>
         <property name="firingCountLimit" class="ptolemy.data.expr.Parameter" value="NONE">

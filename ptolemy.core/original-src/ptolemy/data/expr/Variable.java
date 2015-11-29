@@ -69,6 +69,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.ValueListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// Variable
@@ -790,6 +791,18 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         }
     }
 
+    /** Return true if this variable is suppressing
+     *  variable substitution. That is, it is ignoring dollar signs
+     *  in the string and does not evaluate substrings such as $name
+     *  and ${name}. By default, this returns false.
+     *  @see #isStringMode()
+     *  @see #setSuppressVariableSubstitution(boolean)
+     *  @return True if suppressing variable substitution.
+     */
+    public boolean isSuppressVariableSubstitution() {
+        return _suppressVariableSubstitution;
+    }
+
     /** Check whether the current type of this variable is acceptable.
      *  A type is acceptable if it represents an instantiable object.
      *  @return True if the current type is acceptable.
@@ -1133,7 +1146,11 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
      *  parameter is string. Otherwise, specify that the type is
      *  unknown.  Note that it probably does not make sense to
      *  switch between string mode and not string mode after the
-     *  variable has a value.
+     *  variable has a value. Note that this has the side effect
+     *  of causing any $name or ${name} references in the string
+     *  value to be replaced with value of a parameter named "name"
+     *  in scope. To suppress this behavior, invoke
+     *  {@link #setSuppressVariableSubstitution(boolean)}.
      *  @param stringMode True to put the parameter in string mode.
      *  @exception IllegalActionException If the current value of this
      *   parameter is incompatible with the resulting type.
@@ -1147,6 +1164,18 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
         } else {
             setTypeEquals(BaseType.UNKNOWN);
         }
+    }
+
+    /** If the argument is true, then for a string mode parameter,
+     *  suppress variable substitution. That is, ignore dollar signs
+     *  in the string and do not evaluate substrings such as $name
+     *  and ${name}. By default, this is false.
+     *  @see #setStringMode(boolean)
+     *  @see #isSuppressVariableSubstitution()
+     *  @param suppress True to suppress variable substitution.
+     */
+    public void setSuppressVariableSubstitution(boolean suppress) {
+        _suppressVariableSubstitution = suppress;
     }
 
     /** Set the expression for this variable by calling
@@ -1430,7 +1459,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     public String stringRepresentation() {
         return getExpression();
     }
-
+    
     /** Return a string representation of the current evaluated variable value.
      *  @return A string representing the class and the current token.
      */
@@ -1850,7 +1879,8 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     || (!(ex instanceof UndefinedConstantOrIdentifierException))
                     && !(ex instanceof CircularDependencyError)) {
                 throw new IllegalActionException(this, ex,
-                        "Error evaluating expression: " + _currentExpression);
+                        "Error evaluating expression:\n" 
+                                + StringUtilities.truncateString(_currentExpression, 80, 1));
             }
         } finally {
             workspace().doneReading();
@@ -1902,7 +1932,16 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
             if (isStringMode()) {
                 // Different parse rules for String mode parameters.
-                _parseTree = parser.generateStringParseTree(_currentExpression);
+                if (isSuppressVariableSubstitution()) {
+                    // Suppressing parsing. Create an empty parse tree.
+                    // This is astonishingly difficult to do!!!!
+                    _parseTree = new ASTPtLeafNode(0);
+                    _parseTree.setConstant(true);
+                    _parseTree.setToken(new StringToken(_currentExpression));
+                    _parseTree.setType(BaseType.STRING);
+                } else {
+                    _parseTree = parser.generateStringParseTree(_currentExpression);
+                }
             } else {
                 // Normal parse rules for expressions.
                 _parseTree = parser.generateParseTree(_currentExpression);
@@ -2261,6 +2300,9 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     /** The instance of VariableScope. */
     protected ParserScope _parserScope = null;
 
+    /** True to suppress variable substitution in string mode. */
+    protected boolean _suppressVariableSubstitution = false;
+
     /** Listeners for changes in value. */
     protected List<ValueListener> _valueListeners;
 
@@ -2551,7 +2593,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     // Flag indicating that _propagate() is in progress.
     private boolean _propagating;
-
+    
     // The token contained by this variable.
     private ptolemy.data.Token _token;
 

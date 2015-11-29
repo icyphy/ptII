@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2014 The Regents of the University of California
+ Copyright (c) 1998-2015 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -80,6 +80,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      * that uses the given z-list for its storage. If you have
      * a composite figure that you know is going to contain a
      * lot of children, you can give it an optimized z-list.
+     * @param zlist the z-list used for storage
      */
     public CompositeFigure(ZList zlist) {
         _children = zlist;
@@ -88,6 +89,7 @@ public class CompositeFigure extends AbstractFigureContainer {
     /**
      * Construct a composite figure with the given figure as its
      * background.
+     * @param background The background
      */
     public CompositeFigure(Figure background) {
         this();
@@ -105,6 +107,8 @@ public class CompositeFigure extends AbstractFigureContainer {
     }
 
     /** Insert a figure at the given position.
+     *  @param index The index of the figure
+     *  @param f The figure to be inserted.
      */
     public void add(int index, Figure f) {
         _children.add(index, f);
@@ -151,8 +155,9 @@ public class CompositeFigure extends AbstractFigureContainer {
     }
 
     /** Return the figure at the given index.
-     *
-     * @exception IndexOutOfBoundsException The index is out of range.
+     *  @param index the index of the figure.
+     *  @return The figure.
+     *  @exception IndexOutOfBoundsException The index is out of range.
      */
     public Figure get(int index) {
         return _children.get(index);
@@ -163,6 +168,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      *  getShape(), and most of the methods that return iterators
      *  over figures (such as figures()) do not include the background
      *  figure.
+     *  @return The background figure
      *  @see #figures()
      *  @see #setBackgroundFigure(Figure)
      */
@@ -205,6 +211,7 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Get the internal z-list. Clients must <i>not</i> modify
      * the z-list, but can use it for making queries on its contents.
+     * @return The internal z-list.
      */
     public ZList getChildren() {
         return _children;
@@ -246,6 +253,7 @@ public class CompositeFigure extends AbstractFigureContainer {
     }
 
     /** Return the transform context of this figure.
+     *  @return The tranformation context.
      */
     @Override
     public TransformContext getTransformContext() {
@@ -254,6 +262,8 @@ public class CompositeFigure extends AbstractFigureContainer {
 
     /** Return the index of the given figure in the Z-list, or -1
      * if the figure is not in this list.
+     * @param f The figure
+     * @return The index of the figure
      */
     public int indexOf(Figure f) {
         return _children.indexOf(f);
@@ -438,6 +448,7 @@ public class CompositeFigure extends AbstractFigureContainer {
      *  getShape(), and most of the methods that return iterators
      *  over figures (such as figures()) do not include the background
      *  figure.
+     *  @param background The background of the figure.
      *  @see #figures()
      *  @see #getBackgroundFigure()
      */
@@ -455,7 +466,8 @@ public class CompositeFigure extends AbstractFigureContainer {
     }
 
     /** Set the index of the given figure.
-     *
+     * @param index The index
+     * @param f The figure
      * @exception IndexOutOfBoundsException The new index is out of range.
      */
     public void setIndex(int index, Figure f) {

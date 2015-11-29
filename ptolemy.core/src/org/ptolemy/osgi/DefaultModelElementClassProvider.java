@@ -36,7 +36,7 @@ import ptolemy.kernel.util.NamedObj;
 
    @author erwinDL
    @version $Id$
-   @since Ptolemy II 10.1
+   @since Ptolemy II 11.0
    @Pt.ProposedRating Red (erwinDL)
    @Pt.AcceptedRating Red (reviewmoderator)
  */

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2013 The Regents of the University of California
+ Copyright (c) 1998-2014 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -39,7 +39,6 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 
 import diva.canvas.AbstractFigure;
-import diva.canvas.CanvasUtilities;
 import diva.canvas.interactor.ShapedFigure;
 import diva.util.java2d.ShapeUtilities;
 
@@ -80,6 +79,9 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     /** The paint for the fill.
      */
     private Paint _fillPaint;
+    
+    /** The angle of rotation of the figure. */
+    private double _rotation = 0.0;
 
     /** The stroke.
      */
@@ -200,12 +202,26 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     @Override
     public Point2D getOrigin() {
         if (_centered) {
-            return super.getOrigin();
+            Point2D point = super.getOrigin();
+            // The following overwrites point if there is a transform.
+            _transform.transform(point, point);
+            return point;
         } else {
+            // If the figure is not centered, then the origin is always 0,0,
+            // transformed by the current transform.
             Point2D point = new Point2D.Double(0, 0);
+            // The following overwrites point if there is a transform.
             _transform.transform(point, point);
             return point;
         }
+    }
+    
+    /** Get the angle of rotation of the figure.
+     *  @return The cumulative rotation angle.
+     *  @see #setRotation(double)
+     */
+    public double getRotation() {
+        return _rotation;
     }
 
     /** Get the shape of this figure.
@@ -280,7 +296,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
             g.draw(_shape);
         }
     }
-
+    
     /** Specify whether the figure should be centered on its origin.
      *  By default, it is.
      *  @param centered False to make the origin of the figure, as
@@ -288,11 +304,22 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
      *  @see #getOrigin()
      */
     public void setCentered(boolean centered) {
+        if (_centered == centered) {
+            // Nothing to do.
+            return;
+        }
+        // This redefines what getOrigin() returns for the new centering or not.
+        _centered = centered;
         repaint();
 
-        Point2D point = getOrigin();
-        _centered = centered;
-        CanvasUtilities.translateTo(this, point.getX(), point.getY());
+        // NOTE: This code used to do the following, but this results in
+        // a double application of the translation.
+        // Get the original origin of the figure.
+        // Point2D point = getOrigin();
+        // Redefine what getOrigin() returns for the new centering or not.
+        // _centered = centered;
+        // CanvasUtilities.translateTo(this, point.getX(), point.getY());
+        // repaint();
     }
 
     /** Set the compositing operation for this figure.
@@ -367,6 +394,27 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
         repaint();
     }
 
+    /** Set the rotation angle of the figure to the specified angle in radians.
+     *  @param angle The angle of rotation.
+     *  @see #getRotation()
+     */
+    public void setRotation(double angle) {
+        // FIXME: Use some closeness criterion?
+        if (angle == _rotation) {
+            // Nothing to do.
+            return;
+        }
+        double delta = angle - _rotation;
+        _rotation = angle;
+        // Do not modify _transform or the rotation will
+        // be applied repeatedly.
+        AffineTransform transform = new AffineTransform(_transform);
+        transform.rotate(delta);
+        repaint();
+        _shape = ShapeUtilities.transformModify(_shape, transform);
+        repaint();
+    }
+
     /** Set the shape of this figure.  Note that this method is
      * primarily intended to be used by interactors that modify the
      * figures shape (such as PathManipulator).  In particular, the
@@ -411,7 +459,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     public void transform(AffineTransform at) {
         repaint();
         _transform.preConcatenate(at);
-        _shape = ShapeUtilities.transformModify(_shape, at);
+        _shape = ShapeUtilities.transformModify(_shape, _transform);
         repaint();
     }
 }

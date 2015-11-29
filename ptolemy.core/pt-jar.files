@@ -10,6 +10,7 @@
 /ptolemy/util/ClassUtilities.java
 /ptolemy/util/DoubleUtilities.java
 /ptolemy/util/FileUtilities.java
+/ptolemy/util/StatusHandler.java
 /ptolemy/util/StringUtilities.java
 /ptolemy/kernel/attributes/Actionable.java
 /ptolemy/kernel/attributes/FileAttribute.java

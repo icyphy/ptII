@@ -203,8 +203,7 @@ public class Query extends JPanel {
      *  @return The check box.
      */
     public JCheckBox addCheckBox(String name, String label, boolean defaultValue) {
-        JLabel lbl = new JLabel(label + ": ");
-        lbl.setBackground(_background);
+        JLabel lbl = _constructLabel(label);
 
         JCheckBox checkbox = new JCheckBox();
         checkbox.setBackground(_background);
@@ -260,7 +259,7 @@ public class Query extends JPanel {
     public JComboBox addChoice(String name, String label, Object[] values,
             Object defaultChoice, boolean editable, final Color background,
             final Color foreground) {
-        JLabel lbl = new JLabel(label + ": ");
+        JLabel lbl = _constructLabel(label);
         lbl.setBackground(_background);
 
         JComboBox combobox = new JComboBox(values);
@@ -297,7 +296,7 @@ public class Query extends JPanel {
      */
     public QueryColorChooser addColorChooser(String name, String label,
             String defaultColor) {
-        JLabel lbl = new JLabel(label + ": ");
+        JLabel lbl = _constructLabel(label);
         lbl.setBackground(_background);
 
         QueryColorChooser colorChooser = new QueryColorChooser(this, name,
@@ -328,7 +327,7 @@ public class Query extends JPanel {
      */
     public JTextArea addDisplay(
             String name, String label, String theValue, Color background, Color foreground) {
-        JLabel lbl = new JLabel(label + ": ");
+        JLabel lbl = _constructLabel(label);
         lbl.setBackground(_background);
 
         // NOTE: JLabel would be a reasonable choice here, but at
@@ -338,9 +337,6 @@ public class Query extends JPanel {
         displayField.setEditable(false);
         if (background == null) {
             background = _background;
-        }
-        if (foreground == null) {
-            foreground = Color.BLACK;
         }
         displayField.setBackground(background);
         _addPair(name, lbl, displayField, displayField);
@@ -478,7 +474,7 @@ public class Query extends JPanel {
             String defaultName, URI base, File startingDirectory,
             boolean allowFiles, boolean allowDirectories, boolean save,
             Color background, Color foreground, FilenameFilter filter) {
-        JLabel lbl = new JLabel(label + ": ");
+        JLabel lbl = _constructLabel(label);
         lbl.setBackground(_background);
 
         QueryFileChooser fileChooser = new QueryFileChooser(this, name,
@@ -512,7 +508,7 @@ public class Query extends JPanel {
      */
     public void addLine(String name, String label, String defaultValue,
             Color background, Color foreground) {
-        JLabel lbl = new JLabel(label + ": ");
+        JLabel lbl = _constructLabel(label);
         lbl.setBackground(_background);
 
         JTextField entryBox = new JTextField(defaultValue, _width);
@@ -578,7 +574,7 @@ public class Query extends JPanel {
      */
     public JPasswordField addPassword(String name, String label,
             String defaultValue, Color background, Color foreground) {
-        JLabel lbl = new JLabel(label + ": ");
+        JLabel lbl = _constructLabel(label);
         lbl.setBackground(_background);
 
         JPasswordField entryBox = new JPasswordField(defaultValue, _width);
@@ -641,7 +637,7 @@ public class Query extends JPanel {
      */
     public void addRadioButtons(String name, String label, String[] values,
             String defaultValue) {
-        JLabel lbl = new JLabel(label + ": ");
+        JLabel lbl = _constructLabel(label);
         lbl.setBackground(_background);
 
         FlowLayout flow = new FlowLayout();
@@ -692,7 +688,7 @@ public class Query extends JPanel {
      */
     public void addSelectButtons(String name, String label, String[] values,
             Set initiallySelected) {
-        JLabel lbl = new JLabel(label + ": ");
+        JLabel lbl = _constructLabel(label);
         lbl.setBackground(_background);
 
         FlowLayout flow = new FlowLayout();
@@ -795,7 +791,7 @@ public class Query extends JPanel {
     public JSlider addSlider(String name, String label, int defaultValue,
             int minimum, int maximum, String minLabelText, String maxLabelText)
                     throws IllegalArgumentException {
-        JLabel lbl = new JLabel(label + ": ");
+        JLabel lbl = _constructLabel(label);
 
         if (minimum > maximum) {
             int temp = minimum;
@@ -934,7 +930,7 @@ public class Query extends JPanel {
      */
     public JTextArea addTextArea(String name, String label, String theValue,
             Color background, Color foreground, int height, int width) {
-        JLabel lbl = new JLabel(label + ": ");
+        JLabel lbl = _constructLabel(label);
         lbl.setBackground(_background);
 
         JTextArea textArea = new JTextArea(theValue, height, width);
@@ -1883,6 +1879,22 @@ public class Query extends JPanel {
         _previous.put(name, getObjectValue(name));
 
         _recalculatePreferredSize(widget);
+    }
+
+    /** Construct a lable.
+     * @param label The text for the label.  If the value of the label
+     * argument is non-empty, then ": " is appended.
+     * @return The label.
+     */
+    protected JLabel _constructLabel(String label) {
+        JLabel lbl;
+        if (!label.trim().equals("")) {
+            lbl = new JLabel(label + ": ");
+        } else {
+            lbl = new JLabel("");
+        }
+        lbl.setBackground(_background);
+        return lbl;
     }
 
     /** Recalculate the preferred size of the entry panel.

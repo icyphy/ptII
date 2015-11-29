@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2005 The Regents of the University of California
+ Copyright (c) 1998-2015 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,6 +45,8 @@ public interface FigureSet {
      * Clients should note that, in general, a much better way
      * of making this same test is to check if the parent of the figure
      * is the same object as this set.
+     * @param f The figure
+     * @return True if the figure is contained by the set.
      */
     boolean contains(Figure f);
 
@@ -53,18 +55,21 @@ public interface FigureSet {
      * from front to back, but if there is a substantially more
      * efficient way of returning them, then the implementor can
      * use that.
+     * @return The iterator.
      */
     Iterator figures();
 
     /** Return an iteration of the figures in this set, from
      * back to front. This is the order in which
      * figures should normally be painted.
+     * @return The iterator
      */
     public Iterator figuresFromBack();
 
     /** Return an iteration of the figures in this set, from back to
      * front. This is the order in which events should normally be
      * intercepted.
+     * @return The iterator
      */
     public Iterator figuresFromFront();
 }

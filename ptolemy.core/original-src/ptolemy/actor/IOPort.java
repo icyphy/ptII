@@ -908,14 +908,19 @@ public class IOPort extends ComponentPort {
                 IORelation relation = (IORelation) insideRelations.next();
                 Receiver[][] deepReceiver = relation.deepReceivers(this);
 
-                if (deepReceiver != null) {
+                if (deepReceiver != null && deepReceiver.length > 0) {
                     int size = java.lang.Math.min(deepReceiver.length, width
                             - index);
 
                     for (int i = 0; i < size; i++) {
-                        if (deepReceiver[i] != null) {
-                            _insideReceivers[index++] = deepReceiver[i];
-                        }
+                        _insideReceivers[index++] = deepReceiver[i];
+                    }
+                } else {
+                    // Skip over the width of the relation.
+                    index += relation.getWidth();
+                    if (index >= _insideReceivers.length) {
+                        // No place to put any further receivers (paranoid coding).
+                        break;
                     }
                 }
             }
@@ -1784,7 +1789,7 @@ public class IOPort extends ComponentPort {
             if (!isOutput()) {
                 return _EMPTY_RECEIVER_ARRAY;
             }
-
+            
             int width = getWidth();
 
             if (width <= 0) {
@@ -1819,7 +1824,7 @@ public class IOPort extends ComponentPort {
                 if (relation != null) {
                     Receiver[][] deepReceivers = relation.deepReceivers(this);
 
-                    if (deepReceivers != null) {
+                    if (deepReceivers != null && deepReceivers.length > 0) {
                         for (int i = 0; i < deepReceivers.length; i++) {
                             try {
                                 farReceivers[index] = deepReceivers[i];
@@ -1841,6 +1846,10 @@ public class IOPort extends ComponentPort {
                         // create a number of null entries in farReceivers
                         // corresponding to the width of relation r
                         index += relation.getWidth();
+                        if (index >= farReceivers.length) {
+                            // No place to put any further receivers (paranoid coding).
+                            break;
+                        }
                     }
                 }
             }
@@ -4100,17 +4109,40 @@ public class IOPort extends ComponentPort {
                     // One list item per group
                     result.append(_getIndentPrefix(indent + 1) + "{\n");
 
-                    for (int j = 0; j < receiver.length; j++) {
-                        result.append(_getIndentPrefix(indent + 2));
-                        result.append("{");
+                    // cd $PTII/ptolemy/configs/test; ptjacl allConfigs.tcl
+                    // was failing with NPE here because of the
+                    // RendezvousSynchrony design pattern has a null
+                    // receiver.  This can probably be ignored, it was
+                    // uncovered by recent changes to IOPort.
+                    //
+                    // To replicate, uncomment the receiver == null clause and then do:
+                    //
+                    // bash-3.2$ $PTII/bin/ptjacl
+                    // % java::new ptolemy.moml.MoMLParser
+                    // java0x1
+                    // % set parser [java::new ptolemy.moml.MoMLParser]
+                    // java0x2
+                    // % set t [$parser parseFile /Users/cxh/ptII/ptolemy/actor/designs/RendezvousSynchrony.xml]
+                    // java0x3
+                    // % $t description
+                    // java.lang.NullPointerException: _description had a null reciever?.RendezvousSynchrony._A1_.input
+                    //
+                    //if (receiver == null) {
+                    //    throw new NullPointerException("_description had a null receiver?" + getFullName());
+                    //}
 
-                        if (receiver[j] != null) {
-                            result.append(receiver[j].getClass().getName());
+                    if (receiver != null) {
+                        for (int j = 0; j < receiver.length; j++) {
+                            result.append(_getIndentPrefix(indent + 2));
+                            result.append("{");
+
+                            if (receiver[j] != null) {
+                                result.append(receiver[j].getClass().getName());
+                            }
+                            
+                            result.append("}\n");
                         }
-
-                        result.append("}\n");
                     }
-
                     result.append(_getIndentPrefix(indent + 1) + "}\n");
                 }
 

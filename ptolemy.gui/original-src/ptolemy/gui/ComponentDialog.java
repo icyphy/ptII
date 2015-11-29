@@ -221,17 +221,6 @@ public class ComponentDialog extends JDialog {
         return _buttonPressed;
     }
 
-    /** Change the message that was specified in the constructor to
-     *  read as specified.  If no message was specified in the constructor,
-     *  then do nothing.
-     *  @param message The new message.
-     */
-    public void setMessage(String message) {
-        if (_messageArea != null) {
-            _messageArea.setText(message);
-        }
-    }
-
     @Override
     public void dispose() {
         _optionPane.removePropertyChangeListener(_propChangeListener);
@@ -245,6 +234,27 @@ public class ComponentDialog extends JDialog {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /** Change the message that was specified in the constructor to
+     *  read as specified.  If no message was specified in the constructor,
+     *  then do nothing.
+     *  @param message The new message.
+     */
+    public void setMessage(String message) {
+        if (_messageArea != null) {
+            _messageArea.setText(message);
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public variables                  ////
+
+    /** The component contained by this dialog.
+     */
+    public Component contents;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
     /** If the contents of this dialog implements the CloseListener
      *  interface, then notify it that the window has closed, unless
      *  notification has already been done (it is guaranteed to be done
@@ -254,12 +264,42 @@ public class ComponentDialog extends JDialog {
         // Close the window.
         setVisible(false);
         dispose();
-
+    
         if (contents instanceof CloseListener && !_doneHandleClosing) {
             _doneHandleClosing = true;
             ((CloseListener) contents).windowClosed(this, _buttonPressed);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The label of the button pushed to dismiss the dialog. */
+    protected String _buttonPressed = "";
+
+    /** A reference to the WindowClosingAdapter.*/
+    protected WindowClosingAdapter _windowClosingAdapter;
+
+    /** A reference to the PropertyChangeListener.*/
+    protected PropChangeListener _propChangeListener;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Button labels. */
+    private static String[] _buttons;
+
+    /** Default button labels. */
+    private static String[] _defaultButtons = { "OK", "Cancel" };
+
+    /** Indicator that we have notified of window closing. */
+    private boolean _doneHandleClosing = false;
+
+    /** The pane with the buttons. */
+    private JOptionPane _optionPane;
+
+    /** The container for messages. */
+    private JTextArea _messageArea;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
@@ -301,6 +341,8 @@ public class ComponentDialog extends JDialog {
                 if (value instanceof String) {
                     // A button was pressed...
                     _buttonPressed = (String) value;
+                } else {
+                    _buttonPressed = "";
                 }
 
                 // Take any action that might be associated with
@@ -309,41 +351,4 @@ public class ComponentDialog extends JDialog {
             }
         }
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
-
-    /** The component contained by this dialog.
-     */
-    public Component contents;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    /** The label of the button pushed to dismiss the dialog. */
-    protected String _buttonPressed = "";
-
-    /** A reference to the WindowClosingAdapter.*/
-    protected WindowClosingAdapter _windowClosingAdapter;
-
-    /** A reference to the PropertyChangeListener.*/
-    protected PropChangeListener _propChangeListener;
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
-
-    /** Button labels. */
-    private static String[] _buttons;
-
-    /** Default button labels. */
-    private static String[] _defaultButtons = { "OK", "Cancel" };
-
-    /** Indicator that we have notified of window closing. */
-    private boolean _doneHandleClosing = false;
-
-    /** The pane with the buttons. */
-    private JOptionPane _optionPane;
-
-    /** The container for messages. */
-    private JTextArea _messageArea;
 }

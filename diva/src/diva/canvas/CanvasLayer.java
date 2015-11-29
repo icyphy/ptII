@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2014 The Regents of the University of California
+ Copyright (c) 1998-2015 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -54,12 +54,14 @@ public abstract class CanvasLayer implements CanvasComponent {
     }
 
     /** Create a new layer within the given pane.
+     *  @param pane The pane in which to create the layer
      */
     public CanvasLayer(CanvasPane pane) {
         _containingPane = pane;
     }
 
     /** Get the pane containing this layer. This may be null.
+     *  @return The pane containing the layter
      */
     public final CanvasPane getCanvasPane() {
         return _containingPane;
@@ -67,6 +69,7 @@ public abstract class CanvasLayer implements CanvasComponent {
 
     /** Get the bounds of the shapes draw in this layer.  In this base
      *  class, return an empty rectangle.
+     *  @return The bounds of this layer.
      */
     public Rectangle2D getLayerBounds() {
         return new Rectangle2D.Double();
@@ -83,6 +86,8 @@ public abstract class CanvasLayer implements CanvasComponent {
     /** Get the toolTipText for the point in the given MouseEvent.
      *  This works pretty much as regular event propagation in
      *  processLayerEvent.
+     *  @param e The layer event, ignored in this class.
+     *  @return This method always returns null.
      */
     public String getToolTipText(LayerEvent e) {
         return null;
@@ -122,6 +127,7 @@ public abstract class CanvasLayer implements CanvasComponent {
 
     /** Set the parent component of this layer. This must be an
      * instance of CanvasPane.
+     * @param parent The parent of this layer
      */
     public final void setParent(CanvasComponent parent) {
         if (!(parent instanceof CanvasPane)) {

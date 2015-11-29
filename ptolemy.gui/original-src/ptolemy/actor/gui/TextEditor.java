@@ -35,7 +35,9 @@ import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.RenderingHints;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
+import java.awt.event.KeyEvent;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -56,18 +58,28 @@ import javax.swing.JMenuItem;
 import javax.swing.JOptionPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.event.DocumentEvent;
 import javax.swing.event.DocumentListener;
 import javax.swing.text.BadLocationException;
+import javax.swing.text.DefaultHighlighter;
 import javax.swing.text.Document;
+import javax.swing.text.Highlighter;
+import javax.swing.text.Highlighter.Highlight;
+import javax.swing.undo.CannotRedoException;
+import javax.swing.undo.CannotUndoException;
 
 import ptolemy.actor.injection.PortablePlaceable;
+import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.ExtensionFilenameFilter;
 import ptolemy.gui.ImageExportable;
 import ptolemy.gui.JFileChooserBugFix;
+import ptolemy.gui.Query;
+import ptolemy.gui.QueryListener;
 import ptolemy.gui.UndoListener;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// TextEditor
@@ -86,8 +98,9 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (eal)
  */
 @SuppressWarnings("serial")
-public class TextEditor extends TableauFrame implements DocumentListener,
-ImageExportable, Printable {
+public class TextEditor extends TableauFrame
+        implements DocumentListener, ImageExportable, Printable, QueryListener {
+    
     /** Construct an empty text editor with no name.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -160,12 +173,102 @@ ImageExportable, Printable {
     public void adjustFileMenu() {
     }
 
+    /** React to a change in the find-and-replace query.
+     *  @param name The field that changed.
+     */
+    @Override
+    public void changed(String name) {
+        if (_query != null) {
+            switch (name) {
+            case "Find":
+                Highlighter highlighter = text.getHighlighter();
+                highlighter.removeAllHighlights();
+
+                String textValue = text.getText();
+                String search = _query.getStringValue("Find");
+                _previousSearch = search;
+                int start = text.getCaretPosition();
+                int location = textValue.indexOf(search, start);
+                // If nothing is found from the start position, search again from the top.
+                if (location < 0) {
+                    location = textValue.indexOf(search);
+                }
+                if (location >= 0) {
+                    int firstMatch = location;
+                    // Highlight the first match.
+                    int end = location + search.length();
+                    Highlighter.HighlightPainter painter = 
+                            new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
+                    try {
+                        highlighter.addHighlight(location, end, painter);
+                    } catch (BadLocationException e1) {
+                        // Ignore. Should not occur.
+                    }
+
+                    // Select the first match.
+                    text.setCaretPosition(location);
+                    text.moveCaretPosition(end);
+                    // Highlight the remaining matches.
+                    painter = new DefaultHighlighter.DefaultHighlightPainter(Color.CYAN);
+                    int count = 1;
+                    while (location >= 0 && end < textValue.length()) {
+                        location = textValue.indexOf(search, end);
+                        if (location >= 0) {
+                            count++;
+                            end = location + search.length();
+                            try {
+                                highlighter.addHighlight(location, end, painter);
+                            } catch (BadLocationException e) {
+                                // Ignore. Should not occur.
+                            }
+                        }
+                    }
+                    // Reached the end. Search again from the top.
+                    location = textValue.indexOf(search);
+                    while (location >= 0 && location < firstMatch) {
+                        count++;
+                        end = location + search.length();
+                        try {
+                            highlighter.addHighlight(location, end, painter);
+                        } catch (BadLocationException e) {
+                            // Ignore. Should not occur.
+                        }
+                        location = textValue.indexOf(search, end);
+                    }
+                    _query.set("Result", "Found " + count + 
+                            ((count > 1)? " matches" : " match"));
+                } else {
+                    _query.set("Result", "Not found");
+                }
+                return;
+            case "Replacement":
+                _previousReplacement = _query.getStringValue("Replacement");
+                return;
+            }
+        }
+    }
+
     /** React to notification that an attribute or set of attributes
      *  changed.
      */
     @Override
     public void changedUpdate(DocumentEvent e) {
         // Do nothing... We don't care about attributes.
+    }
+
+    /** Dispose of this frame.
+     *     Override this dispose() method to unattach any listeners that may keep
+     *  this model from getting garbage collected.  This method invokes the
+     *  dispose() method of the superclass,
+     *  {@link ptolemy.actor.gui.TableauFrame}.
+     */
+    @Override
+    public void dispose() {
+        if (_debugClosing) {
+            System.out.println("TextEditor.dispose() : " + this.getName());
+        }
+    
+        super.dispose();
     }
 
     /** Get the background color.
@@ -407,21 +510,6 @@ ImageExportable, Printable {
         }
     }
 
-    /** Dispose of this frame.
-     *     Override this dispose() method to unattach any listeners that may keep
-     *  this model from getting garbage collected.  This method invokes the
-     *  dispose() method of the superclass,
-     *  {@link ptolemy.actor.gui.TableauFrame}.
-     */
-    @Override
-    public void dispose() {
-        if (_debugClosing) {
-            System.out.println("TextEditor.dispose() : " + this.getName());
-        }
-
-        super.dispose();
-    }
-
     /** Write an image to the specified output stream in the specified
      *  format.  Supported formats include at least "gif" and "png",
      *  standard image file formats.  The image is a rendition of the
@@ -439,6 +527,30 @@ ImageExportable, Printable {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+    
+    /** Create an edit menu.
+     */
+    protected void _addMenus() {
+        super._addMenus();
+        
+        _editMenu = new JMenu("Edit");
+        _editMenu.setMnemonic(KeyEvent.VK_E);
+        _menubar.add(_editMenu);
+
+        GUIUtilities.addMenuItem(_editMenu, new UndoAction());
+        GUIUtilities.addMenuItem(_editMenu, new RedoAction());
+        
+        _editMenu.addSeparator();
+
+        GUIUtilities.addMenuItem(_editMenu, new CutAction());
+        GUIUtilities.addMenuItem(_editMenu, new CopyAction());
+        GUIUtilities.addMenuItem(_editMenu, new PasteAction());
+
+        _editMenu.addSeparator();
+        
+        GUIUtilities.addMenuItem(_editMenu, _findAction);
+
+    }
 
     /** Clear the current contents.  First, check to see whether
      *  the contents have been modified, and if so, then prompt the user
@@ -487,6 +599,72 @@ ImageExportable, Printable {
 
         return fileMenuItems;
     }
+    
+    /** Find and replace. */
+    protected void _find() {
+        _query = new Query();
+        _query.addLine("Find", "Find", _previousSearch);
+        _query.addLine("Replacement", "Replacement", _previousReplacement);
+        _query.addDisplay("Result", "", "");
+        
+        // If there was a previous search, perform that search now.
+        if (_previousSearch != null && _previousSearch.length() > 0) {
+            changed("Find");
+        }
+
+        _query.addQueryListener(this);
+        String[] buttons = {"Next", "Close", "Replace", "Replace and Find", "Replace All"};
+        new ComponentDialog(this, "Find and Replace", _query, buttons) {
+            /** If the contents of this dialog implements the CloseListener
+             *  interface, then notify it that the window has closed, unless
+             *  notification has already been done (it is guaranteed to be done
+             *  only once).
+             */
+            protected void _handleClosing() {
+                switch (_buttonPressed) {
+                case "Close":
+                    super._handleClosing();
+                    return;
+                case "Next":
+                    changed("Find");
+                    return;
+                case "Replace":
+                    _undo.startCompoundEdit();
+                    text.replaceSelection(_previousReplacement);
+                    _undo.endCompoundEdit();
+                    return;
+                case "Replace and Find":
+                    _undo.startCompoundEdit();
+                    text.replaceSelection(_previousReplacement);
+                    changed("Find");
+                    _undo.endCompoundEdit();
+                    return;
+                case "Replace All":
+                    _undo.startCompoundEdit();
+                    Highlighter highlighter = text.getHighlighter();
+                    Highlight[] highlights = highlighter.getHighlights();
+                    // No idea why, but first highlight is listed twice.
+                    // Perhaps because it is the selection as well?
+                    boolean first = true;
+                    for (Highlight highlight : highlights) {
+                        if (first) {
+                            first = false;
+                            continue;
+                        }
+                        text.replaceRange(_previousReplacement,
+                                highlight.getStartOffset(), highlight.getEndOffset());
+                    }
+                    _undo.endCompoundEdit();
+                    return;
+                default:
+                    // Some other closing event, like Esc.
+                    super._handleClosing();
+                }
+            }
+        };
+        text.getHighlighter().removeAllHighlights();
+        _query = null;
+    }
 
     /** Display more detailed information than given by _about().
      */
@@ -518,7 +696,22 @@ ImageExportable, Printable {
         _initialSaveAsFileName = "data.txt";
 
         // Set the undo listener, with default key mappings.
-        text.getDocument().addUndoableEditListener(new UndoListener(text));
+        _undo = new UndoListener(text);
+        text.getDocument().addUndoableEditListener(_undo);
+    }
+
+    /** Print the contents.
+     */
+    @Override
+    protected void _print() {
+        // FIXME: What should we print?
+        super._print();
+    }
+    
+    /** Redo the last undo action.
+     */
+    protected void _redo() {
+        _undo.redo();
     }
 
     /** Query the user for a filename, save the model to that file,
@@ -531,18 +724,19 @@ ImageExportable, Printable {
         return _saveAs(".txt");
     }
 
-    /** Print the contents.
+    /** Undo the last action.
      */
-    @Override
-    protected void _print() {
-        // FIXME: What should we print?
-        super._print();
+    protected void _undo() {
+        _undo.undo();
     }
 
     // FIXME: Listen for window closing.
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
+
+    /** The edit menu. */
+    protected JMenu _editMenu;
 
     /** The export to GIF action. */
     protected Action _exportGIFAction;
@@ -552,9 +746,117 @@ ImageExportable, Printable {
 
     /** The scroll pane containing the text area. */
     protected JScrollPane _scrollPane;
+    
+    /** The undo listener. */
+    protected UndoListener _undo;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Return a default set of rendering hints for image export, which
+     *  specifies the use of anti-aliasing.
+     */
+    private RenderingHints _defaultImageRenderingHints() {
+        // From PlotBox
+        RenderingHints hints = new RenderingHints(null);
+        hints.put(RenderingHints.KEY_ANTIALIASING,
+                RenderingHints.VALUE_ANTIALIAS_ON);
+        return hints;
+    }
+
+    /** Print the contents of the editor to a Graphics.
+     *  This used both by the print facility and the exportImage facility.
+     *  @param graphics2D The context into which the page is drawn.
+     *  @return PAGE_EXISTS if the page is rendered successfully, or
+     *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
+     */
+    private int _print(Graphics2D graphics2D, int index, int linesPerPage,
+            double lineHeight, int lineXPosition, int linePosition,
+            double bottomLinePosition) {
+    
+        int startLine = linesPerPage * index;
+    
+        if (startLine > text.getLineCount()) {
+            return NO_SUCH_PAGE;
+        }
+    
+        int endLine = startLine + linesPerPage;
+        for (int line = startLine; line < endLine; line++) {
+            try {
+                String linetext = text.getText(
+                        text.getLineStartOffset(line),
+                        text.getLineEndOffset(line)
+                        - text.getLineStartOffset(line));
+                graphics2D.drawString(linetext, lineXPosition, linePosition);
+            } catch (BadLocationException e) {
+                // Ignore. Never a bad location.
+            }
+    
+            linePosition += lineHeight;
+            if (linePosition > bottomLinePosition) {
+                break;
+            }
+        }
+        return PAGE_EXISTS;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** Action to find and replace. */
+    private Action _findAction = new FindAction();
+    
+    /** Find and replace query, or null if there is none. */
+    private Query _query;
+    
+    /** Previous replacement string, if any. */
+    private String _previousReplacement;
+
+    /** Previous search string, if any. */
+    private String _previousSearch;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
+
+    ///////////////////////////////////////////////////////////////////
+    //// CopyAction
+
+    /** Copy the contents of the selection and put on clipboard. */
+    private class CopyAction extends AbstractAction {
+        public CopyAction() {
+            super("Copy");
+            putValue("tooltip", "Copy to clipboard.");
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_C, Toolkit
+                            .getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_O));
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            text.copy();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// CutAction
+
+    /** Cut the contents of the selection and put on clipboard. */
+    private class CutAction extends AbstractAction {
+        public CutAction() {
+            super("Cut");
+            putValue("tooltip", "Cut to clipboard.");
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_X, Toolkit
+                            .getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_C));
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            text.cut();
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     //// ExportImageAction
@@ -573,9 +875,6 @@ ImageExportable, Printable {
             putValue("tooltip", "Export " + formatName + " image to a file.");
             // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_G));
         }
-
-        ///////////////////////////////////////////////////////////////////
-        ////                         public methods                   ////
 
         /** Export an image.
          *  @param e The ActionEvent that invoked this action.
@@ -662,51 +961,95 @@ ImageExportable, Printable {
         private String _formatName;
     }
 
-    /** Return a default set of rendering hints for image export, which
-     *  specifies the use of anti-aliasing.
-     */
-    private RenderingHints _defaultImageRenderingHints() {
-        // From PlotBox
-        RenderingHints hints = new RenderingHints(null);
-        hints.put(RenderingHints.KEY_ANTIALIASING,
-                RenderingHints.VALUE_ANTIALIAS_ON);
-        return hints;
-    }
+    ///////////////////////////////////////////////////////////////////
+    //// FindAction
 
-    /** Print the contents of the editor to a Graphics.
-     *  This used both by the print facility and the exportImage facility.
-     *  @param graphics2D The context into which the page is drawn.
-     *  @return PAGE_EXISTS if the page is rendered successfully, or
-     *   NO_SUCH_PAGE if pageIndex specifies a non-existent page.
-     */
-    private int _print(Graphics2D graphics2D, int index, int linesPerPage,
-            double lineHeight, int lineXPosition, int linePosition,
-            double bottomLinePosition) {
-
-        int startLine = linesPerPage * index;
-
-        if (startLine > text.getLineCount()) {
-            return NO_SUCH_PAGE;
+    /** Find and replace. */
+    private class FindAction extends AbstractAction {
+        public FindAction() {
+            super("Find");
+            putValue("tooltip", "Find and replace.");
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_F, Toolkit
+                            .getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_F));
         }
-
-        int endLine = startLine + linesPerPage;
-        for (int line = startLine; line < endLine; line++) {
+        @Override
+        public void actionPerformed(ActionEvent e) {
             try {
-                String linetext = text.getText(
-                        text.getLineStartOffset(line),
-                        text.getLineEndOffset(line)
-                        - text.getLineStartOffset(line));
-                graphics2D.drawString(linetext, lineXPosition, linePosition);
-            } catch (BadLocationException e) {
-                // Ignore. Never a bad location.
-            }
-
-            linePosition += lineHeight;
-            if (linePosition > bottomLinePosition) {
-                break;
+                _find();
+            } catch (CannotRedoException ex) {
+                // Ignore.
             }
         }
-        return PAGE_EXISTS;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    //// PasteAction
+
+    /** Copy the contents of the selection and put on clipboard. */
+    private class PasteAction extends AbstractAction {
+        public PasteAction() {
+            super("Paste");
+            putValue("tooltip", "Paste from clipboard.");
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_V, Toolkit
+                            .getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_P));
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            text.paste();
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// RedoAction
+
+    /** Redo the last undo change. */
+    private class RedoAction extends AbstractAction {
+        public RedoAction() {
+            super("Redo");
+            putValue("tooltip", "Redo the last undo.");
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_Y, Toolkit
+                            .getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_R));
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                _redo();
+            } catch (CannotRedoException ex) {
+                // Ignore.
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    //// UndoAction
+
+    /** Undo the last change to the text. */
+    private class UndoAction extends AbstractAction {
+        public UndoAction() {
+            super("Undo");
+            putValue("tooltip", "Undo the last change.");
+            putValue(diva.gui.GUIUtilities.ACCELERATOR_KEY,
+                    KeyStroke.getKeyStroke(KeyEvent.VK_Z, Toolkit
+                            .getDefaultToolkit().getMenuShortcutKeyMask()));
+            putValue(diva.gui.GUIUtilities.MNEMONIC_KEY,
+                    Integer.valueOf(KeyEvent.VK_U));
+        }
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            try {
+                _undo();
+            } catch (CannotUndoException ex) {
+                // Ignore.
+            }
+        }
+    }
 }

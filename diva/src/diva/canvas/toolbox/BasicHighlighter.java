@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2013 The Regents of the University of California
+ Copyright (c) 1998-2014 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -150,11 +150,13 @@ public class BasicHighlighter extends FigureDecorator {
      */
     @Override
     public FigureDecorator newInstance(Figure f) {
-	// Make the halo size independent of the zoom factor.
-	AffineTransform transform = f.getTransformContext().getScreenTransform();
-	// Assume zoom factor is the same in X and Y axes.
-	double scaleX = transform.getScaleX();
-        return new BasicHighlighter(_paint, 6.0f/(float)scaleX, _composite, _stroke);
+        // Make the halo size independent of the zoom factor.
+        AffineTransform transform = f.getTransformContext()
+                .getScreenTransform();
+        // Assume zoom factor is the same in X and Y axes.
+        double scaleX = transform.getScaleX();
+        return new BasicHighlighter(_paint, 6.0f / (float) scaleX, _composite,
+                _stroke);
     }
 
     /** Paint the figure. This method first paints the highlight over

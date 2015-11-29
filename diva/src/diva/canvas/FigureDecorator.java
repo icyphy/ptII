@@ -107,6 +107,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
     }
 
     /** Get the child figure, or null if there isn't one.
+     *  @return The child figure   
      */
     public Figure getChild() {
         return _child;
@@ -114,6 +115,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
 
     /** Get the container, which is defined as the lowest
      * ancestor that is not a FigureDecorator.
+     * @return the container
      */
     public FigureContainer getContainer() {
         if (getParent() instanceof FigureDecorator) {
@@ -125,6 +127,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
 
     /** Get the decorated figure, which is defined as the highest
      * descendent that is not a decorator.
+     * @return The decorated figure.
      */
     public Figure getDecoratedFigure() {
         if (_child instanceof FigureDecorator) {

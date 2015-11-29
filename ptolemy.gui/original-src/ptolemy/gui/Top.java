@@ -41,6 +41,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
+import java.awt.event.WindowFocusListener;
 import java.awt.print.PageFormat;
 import java.awt.print.Pageable;
 import java.awt.print.Printable;
@@ -60,6 +61,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.WeakHashMap;
 
 import javax.print.PrintService;
@@ -79,6 +82,7 @@ import javax.swing.SwingUtilities;
 import javax.swing.filechooser.FileFilter;
 
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StatusHandler;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -142,7 +146,8 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Yellow (janneck)
  */
 @SuppressWarnings("serial")
-public abstract class Top extends JFrame {
+public abstract class Top extends JFrame implements WindowFocusListener, StatusHandler {
+    
     /** Construct an empty top-level frame with the default status
      *  bar.  After constructing this, it is necessary to call
      *  pack() to have the menus added, and then setVisible(true)
@@ -186,6 +191,8 @@ public abstract class Top extends JFrame {
         if (PtGUIUtilities.macOSLookAndFeel()) {
             _macInitializer();
         }
+        
+        addWindowFocusListener(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -280,6 +287,8 @@ public abstract class Top extends JFrame {
             System.out.println("Top.dispose() : " + this.getName());
         }
 
+        removeWindowFocusListener(this);
+
         // Deal with help menu action listeners
         /*int c =*/MemoryCleaner.removeActionListeners(_historyMenu);
         //System.out.println("_historyMenu: "+c);
@@ -327,6 +336,11 @@ public abstract class Top extends JFrame {
         focusManager.clearGlobalFocusOwner();
         focusManager.downFocusCycle();
 
+        // Avoid a leak under RHEL and Java 1.8.0_55
+        // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#LinuxBltSubRegion
+        // http://oracle.developer-works.com/article/5359339/How+to+realy+unregister+listeners+%28or+how+%22great%22+swing+leaks+memory%29
+        focusManager.setGlobalCurrentFocusCycleRoot(null); 
+
         // Set any AbstractActions to null.  This is not strictly necessary,
         // but it helps free up memory more quickly.  By doing this here,
         // we no longer require people to update dispose() by hand.
@@ -370,7 +384,43 @@ public abstract class Top extends JFrame {
         getContentPane().removeAll();
         _disposed = true;
 
+        java.awt.image.BufferStrategy bufferStrategy = getBufferStrategy();
+        if (bufferStrategy != null) {
+            bufferStrategy.dispose();
+        }
+
+        // Sigh.  Under Mac OS X, we need to deal with the peers by hand.
+        // This code is left commented out because it is Mac-specific and
+        // accessing ComponentPeer produces a warning.
+        
+        // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#CPlatformWindow
+        // See http://stackoverflow.com/questions/19781877/mac-os-java-7-jdialog-dispose-memory-leak
+
+        // java.awt.peer.ComponentPeer peer = getPeer();
+
         super.dispose();
+
+        // if (peer != null) {
+        //     try {
+        //         Class<?> componentPeerClass = Class.forName("sun.lwawt.LWComponentPeer");
+        //         Field target = componentPeerClass.getDeclaredField("target");
+        //         target.setAccessible(true);
+        //         target.set(peer, null);
+
+        //         Field window = peer.getClass().getDeclaredField("platformWindow");
+        //         window.setAccessible(true);
+
+        //         Object platformWindow = window.get(peer);
+        //         target = platformWindow.getClass().getDeclaredField("target");
+        //         target.setAccessible(true);
+        //         target.set(platformWindow, null);
+
+        //     } catch (Throwable throwable) {
+        //         if (_debugClosing) {
+        //             throwable.printStackTrace();
+        //         }
+        //     }
+        // }
     }
 
     /** Exit the application after querying the user to save data.
@@ -563,6 +613,69 @@ public abstract class Top extends JFrame {
 
         deferIfNecessary(doShow);
     }
+    
+    /** Display the specified message in the status bar.
+     *  This message will be displayed for a maximum of MAXIMUM_STATUS_MESSAGE_TIME
+     *  (default 30 seconds).
+     *  If there is no status bar, print to standard out.
+     *  @param message The message.
+     */
+    public void status(final String message) {
+        if (_statusBar != null) {
+            if (_statusMessageTimer == null) {
+                // Second argument makes this a daemon thread, so it won't block exiting Vergil.
+                _statusMessageTimer = new Timer("Status message timer", true);
+            }
+            // The status bar update has to be performed in the Swing event thread.
+            // NOTE: If this is called from outside the Swing event thread, then
+            // the order in which messages are reported gets messed up.
+            // The only simple solutions seems to be to call this from the Swing event thread.
+            deferIfNecessary(new Runnable() {
+                public void run() {
+                    if (_lastStatusMessageClearingTask != null) {
+                        _lastStatusMessageClearingTask.cancel();
+                    }
+                    _statusBar.setMessage(message);
+                    
+                    // If the message is non-empty, schedule a clearing message.
+                    if (!message.trim().equals("")) {
+                        _lastStatusMessageClearingTask = new TimerTask() {
+                            public void run() {
+                                status("");
+                                _lastStatusMessageClearingTask = null;
+                            }
+                        };
+                        _statusMessageTimer.schedule(_lastStatusMessageClearingTask,
+                                MAXIMUM_STATUS_MESSAGE_TIME);  
+                    }
+                }
+            });
+        } else {
+            System.out.println(message);
+        }
+    }
+
+    /** Register with the global message handler to receive status messages.
+     *  @see MessageHandler#status(String)
+     *  @param event The window event.
+     */
+    public void windowGainedFocus(WindowEvent event) {
+        MessageHandler.setStatusHandler(this);
+    }
+    
+    /** Unregister with the global message handler to receive status messages.
+     *  @see MessageHandler#status(String)
+     *  @param event The window event.
+     */
+    public void windowLostFocus(WindowEvent event) {
+        MessageHandler.setStatusHandler(null);
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         public fields                     ////
+
+    /** Maximum amount of time that a status message is displayed in milliseconds. */
+    public static final long MAXIMUM_STATUS_MESSAGE_TIME = 30000;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -1224,7 +1337,7 @@ public abstract class Top extends JFrame {
 
     /** Indicator that a file save failed. */
     protected static final int _FAILED = 3;
-
+    
     /** Indicator that a file is saved. */
     protected static final int _SAVED = 0;
 
@@ -1400,18 +1513,36 @@ public abstract class Top extends JFrame {
     // of that list is ensured, since modifications to that list occur
     // only in other places that are also synchronized on the list.
     private static void _executeDeferredActions() {
+        // Copy the list so that we do not hold the synchronization lock
+        // while executing the actions.
+        LinkedList actionsCopy = null;
         synchronized (_deferredActions) {
-            try {
-                Iterator actions = _deferredActions.iterator();
+            actionsCopy = new LinkedList(_deferredActions);
+            _actionsDeferred = false;
+            _deferredActions.clear();
+        }
+        Iterator actions = actionsCopy.iterator();
 
-                while (actions.hasNext()) {
-                    Runnable action = (Runnable) actions.next();
-                    action.run();
+        // Collect and report exceptions.
+        LinkedList<Throwable> exceptions = null;
+        while (actions.hasNext()) {
+            Runnable action = (Runnable) actions.next();
+            try {
+                action.run();
+            } catch (Throwable ex) {
+                if (exceptions == null) {
+                    exceptions = new LinkedList<Throwable>();
                 }
-            } finally {
-                _actionsDeferred = false;
-                _deferredActions.clear();
+                exceptions.add(ex);
             }
+        }
+        if (exceptions != null) {
+            StringBuffer message = new StringBuffer("Exceptions occurred in deferred actions:\n");
+            for (Throwable exception : exceptions) {
+                message.append(exception);
+                message.append("\n");
+            }
+            MessageHandler.error(message.toString(), exceptions.get(0));
         }
     }
 
@@ -1624,6 +1755,10 @@ public abstract class Top extends JFrame {
 
     /** Initialize the menus and key bindings for Mac OS X. */
     private void _macInitializer() {
+        // FIXME: This code causes a memory leak because
+        // MacOSXAdapter and JPopupMenu return retain references to
+        // ActorGraphFrame.  Also, MacOSXAdapter uses deprecated
+        // methods via reflection.
         try {
             // To set the about name, set the
             // com.apple.mrj.application.apple.menu.about.name
@@ -2071,19 +2206,24 @@ public abstract class Top extends JFrame {
     /** Flag to hide the menu bar. */
     private boolean _hideMenuBar = false;
 
-    /** The most recently entered URL in Open URL. */
-    private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
-
     /** History depth. */
     private int _historyDepth = 10;
+
+    /** The most recently entered URL in Open URL. */
+    private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
+    
+    /** Last status message clearing task. */
+    private TimerTask _lastStatusMessageClearingTask = null;
 
     /** Indicator that the menu has been populated. */
     private boolean _menuPopulated = false;
 
     /** Indicator that the data represented in the window has been modified. */
     private boolean _modified = false;
-
+    
     /** True if we have printed the securityException message. */
     private static boolean _printedSecurityExceptionMessage = false;
 
+    /** Timer used for status messages. */
+    private Timer _statusMessageTimer;
 }

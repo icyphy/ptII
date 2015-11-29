@@ -38,7 +38,7 @@ import ptolemy.moml.MoMLParser;
 
    @author ErwinDL
    @version $Id$
-   @since Ptolemy II 10.1
+   @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (ErwinDL)
    @Pt.AcceptedRating Yellow (ErwinDL)
  */

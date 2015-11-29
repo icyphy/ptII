@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2013 The Regents of the University of California
+ Copyright (c) 1998-2015 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -66,28 +66,28 @@ public final class CanvasUtilities {
 
     private final static int m12 = 5;
 
-    /** double representation of WEST: 180 degrees (PI) **/
+    /** double representation of WEST: 180 degrees (PI). **/
     public static final double WEST = Math.PI;
 
-    /** double representation of NORTH: -90 degrees (-PI/2) **/
+    /** double representation of NORTH: -90 degrees (-PI/2). **/
     public static final double NORTH = -Math.PI / 2;
 
-    /** double representation of EAST: 0 degrees **/
+    /** double representation of EAST: 0 degrees. **/
     public static final double EAST = 0;
 
-    /** double representation of SOUTH: 90 degrees (PI/2) **/
+    /** double representation of SOUTH: 90 degrees (PI/2). **/
     public static final double SOUTH = Math.PI / 2;
 
-    /** double representation of NORTHWEST: -135 degrees (-PI*3/4) **/
+    /** double representation of NORTHWEST: -135 degrees (-PI*3/4). **/
     public static final double NORTHWEST = -Math.PI * 3 / 4;
 
-    /** double representation of NORTHEAST: -45 degrees (PI/4) **/
+    /** double representation of NORTHEAST: -45 degrees (PI/4). **/
     public static final double NORTHEAST = -Math.PI / 4;
 
-    /** double representation of SOUTHWEST: 135 degrees (PI*3/4) **/
+    /** double representation of SOUTHWEST: 135 degrees (PI*3/4). **/
     public static final double SOUTHWEST = Math.PI * 3 / 4;
 
-    /** double representation of SOUTHEAST: 45 degrees (PI/4) **/
+    /** double representation of SOUTHEAST: 45 degrees (PI/4). **/
     public static final double SOUTHEAST = Math.PI / 4;
 
     /** Cannot instantiate
@@ -98,7 +98,8 @@ public final class CanvasUtilities {
     /** Clone a shape. This method is needed because Shape by itself
      * does not define clone(), although many (all?) shape instances
      * do.
-     *
+     * @param s The shape.
+     * @return The clone
      * @deprecated Use ShapeUtilities.cloneShape() instead
      */
     @Deprecated
@@ -115,8 +116,10 @@ public final class CanvasUtilities {
      * from which the shapes are obtained and joined into a
      * more complex shape. If the iterator is empty, return
      * a very small rectangle.
+     * @param i The iterator of Figures
+     * @return The composite shape
      */
-    public static Shape computeCompositeShape(Iterator i) {
+    public static Shape computeCompositeShape(Iterator<Figure> i) {
         if (!i.hasNext()) {
             return new Rectangle2D.Double();
         }
@@ -136,8 +139,10 @@ public final class CanvasUtilities {
 
     /** Compute the bounding box of a set of connectors. The iterator
      * must contain connectors.
+     * @param i the iterator of Sites
+     * @return The bounding box
      */
-    public static Rectangle2D computeSiteBounds(Iterator i) {
+    public static Rectangle2D computeSiteBounds(Iterator<Site> i) {
         double x1;
         double y1;
         double x2;
@@ -177,8 +182,10 @@ public final class CanvasUtilities {
      * figures, from which the bounding boxes are obtained and joined
      * into a more complex shape. If the iterator is empty, return
      * a very small rectangle.
+     * @param i The iterator of Figures.
+     * @return The bounding box
      */
-    public static Rectangle2D computeCompositeBounds(Iterator i) {
+    public static Rectangle2D computeCompositeBounds(Iterator<Figure> i) {
         if (!i.hasNext()) {
             return new Rectangle2D.Double();
         }
@@ -208,8 +215,11 @@ public final class CanvasUtilities {
         return bounds;
     }
 
-    /** Get the transform that will make the first
-     * rectangle change into the second.
+    /** Get the transform that will make the first rectangle change
+     * into the second.
+     * @param r The shape to be transformed.
+     * @param s The resulting shape.
+     * @return The transformation
      */
     public static AffineTransform computeTransform(RectangularShape r,
             RectangularShape s) {
@@ -222,6 +232,9 @@ public final class CanvasUtilities {
 
     /** Get the transform that will make the first
      * rectangle change fit within the second, while preserving the shape.
+     * @param r The shape to be transformed.
+     * @param s The resulting shape.
+     * @return The transformation
      */
     public static AffineTransform computeFitTransform(RectangularShape r,
             RectangularShape s) {
@@ -237,21 +250,28 @@ public final class CanvasUtilities {
     }
 
     /** Return the point at the center of a Rectangle.
+     *  @param r The Rectangle.
+     *  @return The point at the center.
      */
     public static Point2D getCenterPoint(Rectangle2D r) {
         return new Point2D.Double(r.getCenterX(), r.getCenterY());
     }
 
     /** Return the point at the center of a figure. This is
-     * simple but so common it's worth having a method for it.
+     *  simple but so common it's worth having a method for it.
+     *  @param f The figure.
+     *  @return The point at the center.
      */
     public static Point2D getCenterPoint(Figure f) {
         return getCenterPoint(f.getBounds());
     }
 
     /** Return the point at the center of a figure, in the
-     * given transform context. This is
-     * simple but so common it's worth having a method for it.
+     *  given transform context. This is
+     *  simple but so common it's worth having a method for it.
+     *  @param f The figure.
+     *  @param root The TransformContext.
+     *  @return The point at the center.
      */
     public static Point2D getCenterPoint(Figure f, TransformContext root) {
         Point2D p = getCenterPoint(f.getBounds());
@@ -260,6 +280,8 @@ public final class CanvasUtilities {
 
     /** Return the closest direction from SwingConstants, based on the
      *  given angle.    West corresponds to 0 degrees and south is PI/2.
+     *  @param angle The angle
+     *  @return The direction, see SwingConstants
      */
     public static int getDirection(double angle) {
         angle = moduloAngle(angle);
@@ -288,6 +310,8 @@ public final class CanvasUtilities {
     /** Return an angle in radians, given a direction from SwingConstants.
      *  West corresponds to 0 degrees and south is PI/2.  The angle returned
      *  is between -PI and PI as per the normalizeAngle method.
+     *  @param direction  The direction, see SwingConstants.
+     *  @return The angle of the normal in radians.
      */
     public static double getNormal(int direction) {
         if (direction == SwingConstants.EAST) {
@@ -327,6 +351,10 @@ public final class CanvasUtilities {
 
     /** Get the point on the given rectangular shape indicated by the location
      * flag. This flag must be one of those defined in javax.swing.Constants.
+     * @param r The give rectangle
+     * @param location One of the directions (CENTER, NORTH etc.)
+     * defined in SwingConstants.
+     * @return The point.
      */
     public static Point2D getLocation(Rectangle2D r, int location) {
         double x;
@@ -389,6 +417,8 @@ public final class CanvasUtilities {
     /** Return true if the given transform maps a rectangle
      * to a rectangle. If this method returns true, then passing
      * a rectangle to transform() is guaranteed to return a rectangle.
+     * @param at The AffineTransformation
+     * @return True if it is orthogonal.
      */
     public static boolean isOrthogonal(AffineTransform at) {
         int t = at.getType();
@@ -402,6 +432,8 @@ public final class CanvasUtilities {
 
     /** Return the angle between -PI and PI that corresponds to the
      *  given angle.
+     *  @param angle The angle
+     *  @return The modulo of the angle.
      */
     public static double moduloAngle(double angle) {
         while (angle > Math.PI) {
@@ -457,6 +489,7 @@ public final class CanvasUtilities {
      *
      * @param i An iterator over figures
      * @param region A rectangle which represents the pick or hit region
+     * @param filter The filter that is called to accept the figure.
      * @return The topmost descendent under the pick region, or null
      * there isn't one.
      */
@@ -513,6 +546,8 @@ public final class CanvasUtilities {
     /** Reverse a direction flag. The flag must one of the eight
      * compass directions defined in SwingConstants. Return the flag
      * that represents the opposite direction.
+     * @param direction One of the directions from SwingContatn
+     * @return The opposite direction.
      */
     public static int reverseDirection(int direction) {
         switch (direction) {
@@ -558,6 +593,9 @@ public final class CanvasUtilities {
      * Otherwise, AffineTransform.createTransformedShape() is used
      * to create a new shape, which is then returned.
      *
+     * @param r The rectangular shape
+     * @param at The AffineTransform
+     * @return The shape after the transformation.
      * @deprecated Use diva.util.java2d.ShapeUtilities.transformRectangle()
      * or diva.util.java2d.ShapeUtilities.transformRectangularShape()
      */
@@ -586,9 +624,9 @@ public final class CanvasUtilities {
 
             switch (at.getType()) {
             case AffineTransform.TYPE_GENERAL_SCALE
-                    | AffineTransform.TYPE_TRANSLATION:
+            | AffineTransform.TYPE_TRANSLATION:
             case AffineTransform.TYPE_UNIFORM_SCALE
-                    | AffineTransform.TYPE_TRANSLATION:
+            | AffineTransform.TYPE_TRANSLATION:
                 xdash = x * m[m00] + m[m02];
                 ydash = y * m[m11] + m[m12];
                 wdash = w * m[m00];
@@ -633,6 +671,9 @@ public final class CanvasUtilities {
      * transformation is used that creates and returns a new instance
      * of GeneralPath.
      *
+     * @param s The shape
+     * @param at The AffineTransform
+     * @return The shape after the transformation.
      * @deprecated Use ShapeUtilities.transformModify()
      */
     @Deprecated
@@ -644,7 +685,11 @@ public final class CanvasUtilities {
      * root transform context.   The root context must enclose
      * the local one, otherwise this method goes into an infinite
      * loop.  You asked for it.
-     *  @deprecated Use local.getTransform(root) instead.
+     * @param p The point to be transformed
+     * @param local The local context
+     * @param root The root
+     * @return The transformed point
+     * @deprecated Use local.getTransform(root) instead.
      */
     @Deprecated
     public static Point2D transformInto(Point2D p, TransformContext local,
@@ -662,6 +707,10 @@ public final class CanvasUtilities {
     /** Translate a figure the given distance in the direction given
      * by the flag. The flag must one of the eight compass directions
      * defined in SwingConstants.
+     * @param f The figure.
+     * @param distance The distance.
+     * @param direction One of the eight compass directions defined in
+     * javax.swing.SwingConstants.
      */
     public static void translate(Figure f, double distance, int direction) {
         Point2D.Double p = new Point2D.Double();
@@ -672,6 +721,11 @@ public final class CanvasUtilities {
     /** Translate a point the given distance in the direction given
      * by the flag. The flag must one of the eight compass directions
      * defined in SwingConstants. Return the same point, but modified.
+     * @param p The point to be translated as a Float or Double.
+     * @param distance The distance.
+     * @param direction One of the eight compass directions defined in
+     * javax.swing.SwingConstants.
+     * @return The translated point.
      */
     public static Point2D translate(Point2D p, double distance, int direction) {
         if (p instanceof Point2D.Double) {
@@ -684,6 +738,11 @@ public final class CanvasUtilities {
     /** Translate a point the given distance in the direction given
      * by the flag. The flag must one of the eight compass directions
      * defined in SwingConstants. Return the same point, but modified.
+     * @param p The point to be translated as a Double.
+     * @param distance The distance.
+     * @param direction One of the eight compass directions defined in
+     * javax.swing.SwingConstants.
+     * @return The translated point.
      */
     public static Point2D translate(Point2D.Double p, double distance,
             int direction) {
@@ -735,6 +794,11 @@ public final class CanvasUtilities {
     /** Translate a point the given distance in the direction given
      * by the flag. The flag must one of the eight compass directions
      * defined in SwingConstants. Return the same point, but modified.
+     * @param p The point to be translated as a float.
+     * @param distance The distance.
+     * @param direction One of the eight compass directions defined in
+     * javax.swing.SwingConstants.
+     * @return The translated point.
      */
     public static Point2D translate(Point2D.Float p, double distance,
             int direction) {
@@ -788,7 +852,10 @@ public final class CanvasUtilities {
      * the passed shape. Otherwise use
      * AffineTransform.createTransformedShape() to create a new translated
      * shape, and return that.
-     *
+     * @param s The shape to translate.
+     * @param x amount to translate.
+     * @param y amount to translate.
+     * @return The transformed shape
      * @deprecated Use ShapeUtilities.translateModify()
      */
     @Deprecated
@@ -798,7 +865,11 @@ public final class CanvasUtilities {
 
     /**
      * Move a figure so that its origin is located at the given
-     * coordinates.
+     * coordinates. If the figure is centered, the origin is the
+     * center of the figure. If it is not, then the origin is 0,0.
+     * @param f The figure to be moved.
+     * @param x The new x location.
+     * @param y The new y location.
      */
     public static void translateTo(Figure f, double x, double y) {
         Point2D origin = f.getOrigin();

@@ -2,14 +2,14 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Ptolemy Testsupport tools
 Bundle-SymbolicName: org.ptolemy.testsupport
-Bundle-Version: 10.1.0.qualifier
+Bundle-Version: 11.0.0.qualifier
 Bundle-Vendor: iSencia Belgium NV
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: junit.framework; version="4.0.0",
  org.junit;version="4.0.0",
- org.ptolemy.commons;version="10.1.0",
- ptolemy.actor;version="10.1.0",
- ptolemy.data.expr;version="10.1.0",
- ptolemy.kernel;version="10.1.0",
- ptolemy.kernel.util;version="10.1.0"
-Export-Package: org.ptolemy.testsupport;version="10.1.0"
+ org.ptolemy.commons;version="11.0.0",
+ ptolemy.actor;version="11.0.0",
+ ptolemy.data.expr;version="11.0.0",
+ ptolemy.kernel;version="11.0.0",
+ ptolemy.kernel.util;version="11.0.0"
+Export-Package: org.ptolemy.testsupport;version="11.0.0"

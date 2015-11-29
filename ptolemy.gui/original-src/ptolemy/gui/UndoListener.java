@@ -40,6 +40,7 @@ import javax.swing.event.UndoableEditListener;
 import javax.swing.text.JTextComponent;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
+import javax.swing.undo.CompoundEdit;
 import javax.swing.undo.UndoManager;
 
 /**
@@ -94,25 +95,64 @@ public class UndoListener implements UndoableEditListener {
                 .getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
         actionMap.put("redo", _redoAction);
     }
+    
+    /** End a compound edit. */
+    public synchronized void endCompoundEdit() {
+        if (_compoundEdit != null) {
+            _compoundEdit.end();
+            _undo.addEdit(_compoundEdit);
+            _undoAction._updateUndoState();
+            _redoAction._updateRedoState();
+            _compoundEdit = null;
+        }
+    }
+
+    /** Perform a redo.
+     *  @exception CannotUndoException  Thrown if the redo
+     *  cannot be done.
+     */
+    public synchronized void redo() throws CannotUndoException {
+        _undo.redo();
+    }
+    
+    /** Start a compound undo edit. */
+    public synchronized void startCompoundEdit() {
+        _compoundEdit = new CompoundEdit();
+    }
+
+    /** Perform an undo.
+     *  @exception CannotUndoException  Thrown if the redo
+     *  cannot be done.
+     */
+    public synchronized void undo() throws CannotUndoException {
+        _undo.undo();
+    }
 
     /** Remember the edit and update the action state.
      *  @param event The event that occurred.
      */
     @Override
-    public void undoableEditHappened(UndoableEditEvent event) {
-        _undo.addEdit(event.getEdit());
-        _undoAction._updateUndoState();
-        _redoAction._updateRedoState();
+    public synchronized void undoableEditHappened(UndoableEditEvent event) {
+        if (_compoundEdit == null) {
+            _undo.addEdit(event.getEdit());
+            _undoAction._updateUndoState();
+            _redoAction._updateRedoState();
+        } else {
+            _compoundEdit.addEdit(event.getEdit());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    /** The undo action. */
-    protected UndoAction _undoAction = new UndoAction();
-
     /** The redo action. */
     protected RedoAction _redoAction = new RedoAction();
+
+    /** A compound undo edit, or null if none is progress. */
+    protected CompoundEdit _compoundEdit;
+    
+    /** The undo action. */
+    protected UndoAction _undoAction = new UndoAction();
 
     /** The undo manager. */
     protected UndoManager _undo = new UndoManager();
@@ -129,13 +169,15 @@ public class UndoListener implements UndoableEditListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                _undo.undo();
-            } catch (CannotUndoException ex) {
-                throw new RuntimeException("Unable to undo.", ex);
+            synchronized(UndoListener.this) {
+                try {
+                    _undo.undo();
+                } catch (CannotUndoException ex) {
+                    throw new RuntimeException("Unable to undo.", ex);
+                }
+                _updateUndoState();
+                _redoAction._updateRedoState();
             }
-            _updateUndoState();
-            _redoAction._updateRedoState();
         }
 
         /** Depending on the whether the undo manager can undo, enable
@@ -162,13 +204,15 @@ public class UndoListener implements UndoableEditListener {
 
         @Override
         public void actionPerformed(ActionEvent e) {
-            try {
-                _undo.redo();
-            } catch (CannotRedoException ex) {
-                throw new RuntimeException("Unable to redo.", ex);
+            synchronized(UndoListener.this) {
+                try {
+                    _undo.redo();
+                } catch (CannotRedoException ex) {
+                    throw new RuntimeException("Unable to redo.", ex);
+                }
+                _updateRedoState();
+                _undoAction._updateUndoState();
             }
-            _updateRedoState();
-            _undoAction._updateUndoState();
         }
 
         /** Depending on the whether the undo manager can redo, enable

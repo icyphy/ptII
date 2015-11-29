@@ -32,7 +32,7 @@ package org.ptolemy.testsupport.statistics;
  * 
  * @author ErwinDL
  * @version $Id$
- * @since Ptolemy II 10.1
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Green (ErwinDL)
  * @Pt.AcceptedRating Red (ErwinDL)
  */

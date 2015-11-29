@@ -116,6 +116,11 @@ public class PeriodicDirectorHelper {
         // precise addition. Determining whether the argument satisfies
         // the criterion seems difficult. Hence, we check to be sure
         // that the test is worth doing.
+        // NOTE: If we switch to an integer time base, we don't have this
+        // problem. With an integer time based we can avoid to accumulate
+        // "futureTime = futureTime.add(periodValue)", but we can instead
+        // compute directly the final futureTime:
+        // futureTime = currentTime + ((time - currentTime) / periodValue + 1) * periodValue
 
         // First check to see whether we are in the initialize phase, in
         // which case, return the start time.

@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2013 The Regents of the University of California
+ Copyright (c) 1998-2014 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -151,11 +151,11 @@ public class ArcConnector extends AbstractConnector {
         // Hm... I don't know why I need the PI/2 here -- johnr
         return new Point2D.Double(
                 _centerX
-                        + _radius
-                        * Math.sin(_startAngle + _extentAngle / 2 + Math.PI / 2),
+                + _radius
+                * Math.sin(_startAngle + _extentAngle / 2 + Math.PI / 2),
                 _centerY
-                        + _radius
-                        * Math.cos(_startAngle + _extentAngle / 2 + Math.PI / 2));
+                + _radius
+                * Math.cos(_startAngle + _extentAngle / 2 + Math.PI / 2));
     }
 
     /** Get the site that marks the midpoint of the connector.
@@ -225,14 +225,23 @@ public class ArcConnector extends AbstractConnector {
         // Figure out the centers of the attached figures
         Point2D headCenter;
 
-        if (tailFigure != null) {
+        // uru: checking that the parent of the tailFigure is not 
+        // null is necessary when using KIELER layout. 
+        // The auto layout generates a spline path which is displayed
+        // using the KielerLayoutArcConnector. However, as soon as 
+        // the user starts dragging a node, the edge turns back to 
+        // being a regular arc. During this transformation the 
+        // parent of the tailFigure _sometimes_ becomes null.
+        // The null check here does not seem to result in any
+        // visual quirks.
+        if (tailFigure != null && tailFigure.getParent() != null) {
             tailCenter = CanvasUtilities.getCenterPoint(tailFigure,
                     currentContext);
         } else {
             tailCenter = tailPt;
         }
 
-        if (headFigure != null) {
+        if (headFigure != null && headFigure.getParent() != null) {
             headCenter = CanvasUtilities.getCenterPoint(headFigure,
                     currentContext);
         } else {

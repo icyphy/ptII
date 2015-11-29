@@ -2012,6 +2012,8 @@ FiringsRecordable {
 
     /** Queue a change request.  If there is a manager, then first call
      *  stopFire() before deferring to the base class.
+     *  Also, if there is a waiting thread registered with the manager,
+     *  then wake it up to let it handle change requests.
      *  @param change The requested change.
      */
     @Override
@@ -2027,6 +2029,20 @@ FiringsRecordable {
         // refresh the GUI.
         if (getManager() != null && change.isStructuralChange()) {
             stopFire();
+        }
+        
+        // If there is a waiting thread (e.g. synchronizeToRealTime),
+        // then interrupt it so it can handle change requests.
+        Manager manager = getManager();
+        if (manager != null) {
+            Thread waitingThread = manager.getWaitingThread();
+            if (waitingThread != null) {
+                // Instead of executing the change requests here,
+                // just interrupt the waiting thread and expect it will
+                // handle change requests.
+                waitingThread.interrupt();
+                return;
+            }
         }
     }
 
@@ -2097,6 +2113,17 @@ FiringsRecordable {
             _relationWidthInference = null;
         }
 
+        // FIXME: Don't call setManager(null) here or else
+        // java -classpath $PTII ptolemy.moml.MoMLSimpleApplication ptolemy/domains/wireless/test/auto/Zigbee.xml
+        // will throw a NPE because MoMLParser calls
+        // setContainer(null) if there is a problem with the
+        // LinkVisualizer change request.
+
+        // However, if we don't set the manager to null, we will leak
+        // memory here.  So, our solution is to modify Manager so that
+        // _container is a WeakReference.
+
+        // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#containerInCompositeActor
         super.setContainer(container);
 
         Director director = getDirector();

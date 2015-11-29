@@ -29,6 +29,7 @@ package ptolemy.util;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.ref.WeakReference;
 import java.util.Locale;
 
 ///////////////////////////////////////////////////////////////////
@@ -48,7 +49,8 @@ import java.util.Locale;
  reporting errors.  For example, a Swing application will probably
  want to report errors in a dialog box, using for example
  the derived class GraphicalMessageHandler.
- @see ptolemy.gui.GraphicalMessageHandler
+
+ <p>See ptolemy.gui.GraphicalMessageHandler</p>
 
  @author  Edward A. Lee, Steve Neuendorffer, Elaine Cheong
  @version $Id$
@@ -131,12 +133,13 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
         return _handler;
     }
 
-    /** If the nightly build is running, then return true.
+    /** Return true if the current process is a non-interactive session.
+     *  If the nightly build is running, then return true.
      *
      *  <p>This method merely checks to see if the
      *  "ptolemy.ptII.isRunningNightlyBuild" property exists and is not empty
      *  or if the "ptolemy.ptII.batchMode" property exists and is not empty
-     *  and the property "ptolemyII.ptII.testingMessageHandler" is not set.
+     *  and the property "ptolemyII.ptII.testingMessageHandler" is not set.</p>
      *
      *  <p>To run the test suite in the Nightly Build mode, use</p>
      *  <pre>
@@ -144,7 +147,13 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
      *  </pre>
      *  @return True if the nightly build is running.
      */
-    public static boolean isRunningNightlyBuild() {
+    public static boolean isNonInteractive() {
+        // This method is necessary because Ptolemy can download models
+        // and files from websites. It is a best practice to prompt the user
+        // and ask them if they actually want to download the resource.  
+        // However, code like the nightly build and the actor indexing code
+        // should run without user interaction, so we set a property
+        // when running non-interactive, batch mode code.
         if ((StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild")
                 .length() > 0 || StringUtilities.getProperty(
                         "ptolemy.ptII.batchMode").length() > 0)
@@ -155,10 +164,11 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
 
         return false;
     }
-
+    
     /** Defer to the set message handler to show the specified
-     *  message.
+     *  message.  An implementation may block, for example with a modal dialog.
      *  @param info The message.
+     *  @see #status(String)
      */
     public static void message(String info) {
         _handler._message(info);
@@ -176,6 +186,15 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
         }
     }
 
+    /** Set the specified status handler, replacing any previously
+     *  set handler.
+     *  @param handler The handler, or null to set no handler.
+     *  @see #status(String)
+     */
+    public static void setStatusHandler(StatusHandler handler) {
+        _statusHandler = new WeakReference<StatusHandler>(handler);
+    }
+    
     /** Return a short description of the throwable.
      *  @param throwable The throwable
      *  @return If the throwable is an Exception, return "Exception",
@@ -194,6 +213,25 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
         }
 
         return throwableType;
+    }
+    
+    /** Display a status message to the user.
+     *  This method is intended for keeping users informed of what is being done.
+     *  The message may be displayed for a very short time and may be cleared after some time.
+     *  This method is not intended for logging or for persistent messages, nor for messages
+     *  that require some acknowledgement from the user.
+     *  If a StatusHandler has been registered using #addStatusHandler(StatusHandler),
+     *  then delegate displaying the message to that status handler.
+     *  Otherwise, display on standard out.
+     *  @param message The message to display.
+     *  @see #message(String)
+     */
+    public static void status(String message) {
+        if (_statusHandler != null && _statusHandler.get() != null) {
+            _statusHandler.get().status(message);
+        } else {
+            System.out.println(message);
+        }
     }
 
     /** Handle uncaught exceptions in a standard way.
@@ -256,7 +294,7 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
      *  @return True if the answer is yes.
      */
     public static boolean yesNoQuestion(String question) {
-        if (!isRunningNightlyBuild()) {
+        if (!isNonInteractive()) {
             return _handler._yesNoQuestion(question);
         } else {
             return true;
@@ -292,8 +330,12 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
     public static boolean yesNoCancelQuestion(String question,
             String trueOption, String falseOption, String exceptionOption)
                     throws ptolemy.util.CancelException {
-        return _handler._yesNoCancelQuestion(question, trueOption, falseOption,
-                exceptionOption);
+        if (!isNonInteractive()) {
+            return _handler._yesNoCancelQuestion(question, trueOption, falseOption,
+                    exceptionOption);
+        } else {
+            return true;
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -439,6 +481,10 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The message handler.
+    
+    /** The message handler. */
     private static MessageHandler _handler = new MessageHandler();
+    
+    /** The status handlers, if any. */
+    private static transient WeakReference<StatusHandler> _statusHandler;
 }

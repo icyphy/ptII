@@ -46,16 +46,15 @@ import javax.swing.event.HyperlinkEvent;
 
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Manager;
-import ptolemy.actor.TypedCompositeActor;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.VersionAttribute;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
@@ -175,6 +174,13 @@ public class HTMLAbout {
                     + _aboutHTML("ptolemy/configs/doc/completeDemosBcvtb.htm")
                     + _aboutHTML("ptolemy/configs/doc/demosBcvtb.htm")
                     + _aboutHTML("ptolemy/configs/doc/docsBcvtb.htm"));
+        }
+        if (_configurationExists("capecode")) {
+            htmlBuffer
+            .append("<tr rowspan=4><center><b>CapeCode</b></center></tr>\n"
+                    + _aboutHTML("ptolemy/configs/capecode/intro.htm")
+                    + _aboutHTML("ptolemy/configs/capecode/docs.htm")
+                    + _aboutHTML("ptolemy/configs/capecode/demonstrations.htm"));
         }
         if (_configurationExists("cyphysim")) {
             htmlBuffer
@@ -585,7 +591,6 @@ public class HTMLAbout {
         // miss some LiveLinks that are not in the toplevel model file, but
         // it is much faster than parsing each model.
         boolean matches = false;
-        StringBuffer demoBuffer = new StringBuffer();
         BufferedReader in = null;
         try {
             in = new BufferedReader(

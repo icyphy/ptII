@@ -717,12 +717,17 @@ public class RelationWidthInference {
         }
         assert outsideUnspecifiedWidthsSize >= 0;
         if (outsideUnspecifiedWidthsSize > 0) {
-            int difference = port.getDefaultWidth();
-            assert difference >= 0;
+            int defaultWidth = port.getDefaultWidth();
+            assert defaultWidth >= 0;
             int unspecifiedWidthsSize = outsideUnspecifiedWidths.size();
             if (unspecifiedWidthsSize == 1
-                    || unspecifiedWidthsSize == difference || difference == 0) {
-                int width = difference / unspecifiedWidthsSize;
+                    || unspecifiedWidthsSize % defaultWidth == 0
+                    || defaultWidth == 0) {
+                int width = 0;
+                // Coverity: Avoid a divide by zero error.
+                if (defaultWidth != 0) {
+                    width = unspecifiedWidthsSize / defaultWidth;
+                }
                 assert width >= 0;
                 for (IORelation relation : outsideUnspecifiedWidths) {
                     relation._setInferredWidth(width);

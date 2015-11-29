@@ -690,6 +690,12 @@ public class PropertyClassChanges extends MoMLFilterSimple {
         HashMap jsAccessorClassChanges = new HashMap();
 
         // Key = property name, Value = new class name
+
+        // Needed by:
+        // ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/ReadFromVertxBus.xml
+        jsAccessorClassChanges.put("accessorSource",
+                "org.terraswarm.accessor.JSAccessor$ActionableAttribute");
+
         jsAccessorClassChanges.put("script",
                 "ptolemy.actor.parameters.PortParameter");
 

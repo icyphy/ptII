@@ -32,12 +32,12 @@ package ptolemy.util;
 /**
  This is a message handler that reports errors in a graphical dialog box.
 
- @see ptolemy.gui.GraphicalMessageHandler
+ <p>See ptolemy.gui.GraphicalMessageHandler</p>
 
  @author  Christopher Brooks
  @version $Id$
  @since Ptolemy II 10.0
- @Pt.ProposedRating Red (cxh)
+b @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
 public class SimpleMessageHandler extends MessageHandler {
@@ -45,7 +45,7 @@ public class SimpleMessageHandler extends MessageHandler {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Throw a RunetimException.
+    /** Throw a RuntimeException.
      *  @param info The message.
      */
     @Override
@@ -66,7 +66,9 @@ public class SimpleMessageHandler extends MessageHandler {
         if (throwable instanceof CancelException) {
             return;
         }
-        //throwable.printStackTrace();
+        // Print out the exception so that if MoMLSimpleApplication
+        // throws an exception, we see it on stdout.
+        throwable.printStackTrace();
         throw new RuntimeException(info, throwable);
     }
 

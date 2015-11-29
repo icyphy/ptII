@@ -1,5 +1,5 @@
 /*
- Copyright (c) 1998-2013 The Regents of the University of California
+ Copyright (c) 1998-2014 The Regents of the University of California
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -56,18 +56,23 @@ public abstract class DamageRegion {
 
     /** Tell the damage region to inflict itself on the given
      * JCanvas.
+     * @param canvas The canvas
      */
     public abstract void apply(JCanvas canvas);
 
     /** Check transform cache validity. This must be called from
      * the repaint(DamageRegion) method of any component that
      * has a transform context.
+     * @param c The TransformContext
      */
     public void checkCacheValid(TransformContext c) {
         _context.checkCacheValid(c);
     }
 
     /** Create a damage region in this context over the given rectangle.
+     *  @param c The Transform Context
+     *  @param r The given rectangle
+     *  @return The Damage Region.
      */
     public static DamageRegion createDamageRegion(TransformContext c,
             Rectangle2D r) {
@@ -76,6 +81,12 @@ public abstract class DamageRegion {
     }
 
     /** Create a damage region in this context over the given rectangle.
+     *  @param c The Transform Context
+     *  @param x The x location of a corner of the damage region
+     *  @param y The y location of a corner of the damage region
+     *  @param w The width of the damage region
+     *  @param h The height of the damage region
+     *  @return The Damage Region.
      */
     public static DamageRegion createDamageRegion(TransformContext c, double x,
             double y, double w, double h) {
@@ -84,14 +95,17 @@ public abstract class DamageRegion {
     }
 
     /** Extend the damage region with the given rectangle.
+     *  @param r The rectangle to which to extend to.
      */
     public abstract void extend(Rectangle2D r);
 
     /** Get the bounds of this damage region.
+     *  @return The bounds of the damage region.
      */
     public abstract Rectangle2D getBounds();
 
     /** Get the transform context in which this damage region was created.
+     *  @return The transformContext.   
      */
     public TransformContext getContext() {
         return _context;
