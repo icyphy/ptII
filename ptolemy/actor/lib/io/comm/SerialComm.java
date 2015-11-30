@@ -28,6 +28,7 @@
 package ptolemy.actor.lib.io.comm;
 
 import gnu.io.CommPortIdentifier;
+import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.SerialPortEvent;
 import gnu.io.SerialPortEventListener;
@@ -51,8 +52,8 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// SerialComm
@@ -114,16 +115,12 @@ import ptolemy.kernel.util.NameDuplicationException;
  <p> If after firing there are additional data available on the
  input port, then the fire() method will call fireAtCurrentTime()
  on the director before returning.
-
- <p> FIXME: This actor has some key limitations.
- <ul>
- <li> It currently works only under Windows.
- <li> If there are multiple instances in a model, then unless
-      the model designer has taken special care to ensure sequential
-      execution of the actor, inputs from the serial port may be
-      nondeterministically received by any of the actors.
- </ul>
-
+ <p>
+ Note that if there are multiple instances of this actor in a model, then unless
+ the model designer has taken special care to ensure sequential
+ execution of the actor, inputs from the serial port may be
+ nondeterministically received by any of the actors.
+ 
  @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
  (Based on my RxDatagram, and on the IRLink class written by Xiaojun Liu)
  @version $Id$
@@ -345,6 +342,8 @@ public class SerialComm extends TypedAtomicActor {
 
         // This needs to be synchronized on a single global static object.
         synchronized (PortListener.class) {
+            // Allow further calls to fireAt().
+            _firingRequested = false;
             try {
                 // Produce output to the serial port first.
                 if (dataToSend.isOutsideConnected() && dataToSend.hasToken(0)) {
@@ -374,7 +373,7 @@ public class SerialComm extends TypedAtomicActor {
                             + bytesAvailable);
                 }
 
-                // NOTE: This needs _minimumOutputSize to be at least 1.
+                // If _minimumOutputSize is at least 1, then wait for available data.
                 // FIXME: stopFire() is called if the serial port receives
                 // a byte while we are in the wait() (by the serialEvent()
                 // method, through fireAtCurrentTime(), I think). But we
@@ -384,7 +383,7 @@ public class SerialComm extends TypedAtomicActor {
                 // is called for some other reason, then this actor will
                 // ignore the call.  This is not quite right, and could
                 // make the actor fail in domains where stopFire() is essential
-                // (are there any?).
+                // such as PN.
                 while (bytesAvailable < _minimumOutputSize && _blocking
                         && !_stopRequested /* && !_stopFireRequested */) {
                     try {
@@ -405,11 +404,7 @@ public class SerialComm extends TypedAtomicActor {
                                 "Thread interrupted waiting for serial port data.");
                     }
                 }
-                if (_debugging) {
-                    _debug("Number of input bytes available on the serial port: "
-                            + bytesAvailable);
-                }
-                if (bytesAvailable >= _minimumOutputSize) {
+                if (bytesAvailable >= _minimumOutputSize && bytesAvailable > 0) {
                     // Read only if at least desired amount of data is present.
                     if (_discardOldData && bytesAvailable > _maximumOutputSize) {
                         // Skip excess bytes.
@@ -458,8 +453,7 @@ public class SerialComm extends TypedAtomicActor {
 
                 }
                 // If there are still enough bytes available to run again,
-                // then call fireAtCurrentTime(). Otherwise, start a thread
-                // to wait for enough bytes.
+                // then call fireAtCurrentTime().
                 int available = in.available();
                 if (available >= _minimumOutputSize) {
                     if (_debugging) {
@@ -468,49 +462,9 @@ public class SerialComm extends TypedAtomicActor {
                     }
 
                     getDirector().fireAtCurrentTime(this);
-                } else {
-                    // There is not enough serial data input to be able
-                    // to fire again. Set up a thread to listen until there
-                    // is, and to then call fireAtCurrentTime().
-                    if (_debugging) {
-                        _debug("Starting a thread to wait for more bytes. Available: "
-                                + available);
-                    }
-                    Runnable runnable = new Runnable() {
-                        @Override
-                        public void run() {
-                            try {
-                                synchronized (PortListener.class) {
-                                    if (_serialPort != null) {
-                                        InputStream in = _serialPort
-                                                .getInputStream();
-                                        int bytesAvailable = in.available();
-                                        while (bytesAvailable < _minimumOutputSize
-                                                && !_stopRequested) {
-                                            PortListener.class.wait();
-                                            bytesAvailable = in.available();
-                                        }
-                                        // Once we get here, unless _stopRequested is set,
-                                        // we have enough data to run again.
-                                        if (!_directorFiredAtAlready) {
-                                            _directorFiredAtAlready = true;
-                                            getDirector().fireAtCurrentTime(
-                                                    SerialComm.this);
-                                        }
-                                    }
-                                }
-                            } catch (Exception ex) {
-                                throw new InternalErrorException(ex);
-                            }
-                        }
-                    };
-                    Thread thread = new Thread(runnable);
-                    thread.start();
                 }
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex, "I/O error.");
-            } finally {
-                _directorFiredAtAlready = false;
             }
         }
     }
@@ -525,7 +479,7 @@ public class SerialComm extends TypedAtomicActor {
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _directorFiredAtAlready = false;
+        _firingRequested = false;
 
         try {
             String serialPortNameValue = serialPortName.stringValue();
@@ -543,7 +497,7 @@ public class SerialComm extends TypedAtomicActor {
                             toplevel().getName(), 2000);
                     if (_serialPortListener == null) {
                         // This should only be done once.
-                        _serialPortListener = new PortListener();
+                        _serialPortListener = new PortListener(this);
                     }
 
                     // The 2000 above is 2000mS to open the port, otherwise time out.
@@ -560,12 +514,15 @@ public class SerialComm extends TypedAtomicActor {
                     // be unexpected.
                     _serialPort.addEventListener(_serialPortListener);
                     _serialPort.notifyOnDataAvailable(true);
-                    _serialPort.notifyOnDSR(true); // DataSetReady isDSR
-                    _serialPort.notifyOnCTS(true); // ClearToSend isCTS
-                    _serialPort.notifyOnCarrierDetect(true); // isCD
-                    _serialPort.notifyOnRingIndicator(true); // isRI
+                    // _serialPort.notifyOnDSR(true); // DataSetReady isDSR
+                    // _serialPort.notifyOnCTS(true); // ClearToSend isCTS
+                    // _serialPort.notifyOnCarrierDetect(true); // isCD
+                    // _serialPort.notifyOnRingIndicator(true); // isRI
                 }
             }
+        } catch (PortInUseException ex) {
+            throw new IllegalActionException(this, ex,
+                    "Port in use by " + ex.getMessage());
         } catch (Exception ex) {
             throw new IllegalActionException(this, ex,
                     "Communication port initialization failed.");
@@ -601,6 +558,16 @@ public class SerialComm extends TypedAtomicActor {
     @Override
     public void wrapup() throws IllegalActionException {
         if (_serialPort != null) {
+            // Close the input stream.
+            // Note that if you fail to do this and call
+            // removeEventListener(), then the JVM crashes with
+            // an access violation.
+            try {
+                _serialPort.getInputStream().close();
+            } catch (IOException e) {
+                // Ignore and print stack trace.
+                e.printStackTrace();
+            }
             // Strangely, this _must_ be called before closing the port.
             _serialPort.removeEventListener();
             _serialPort.close();
@@ -610,36 +577,39 @@ public class SerialComm extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    // The serial port.
-    private static SerialPort _serialPort;
+    
+    /** Indicator that firing has already been requested. */
+    private boolean _firingRequested = false;
+    
+    /** The serial port. */
+    private SerialPort _serialPort;
 
-    // The listener for the serial port.
-    private static PortListener _serialPortListener;
+    /** The listener for the serial port. */
+    private PortListener _serialPortListener;
 
-    // Threshold for reading serial port data.  Don't read unless
-    // at least this many bytes are available.
+    /** Maximum number of output bytes produced in one firing.
+     */
     private int _maximumOutputSize;
 
-    // Threshold for reading serial port data.  Don't read unless
-    // at least this many bytes are available.
+    /** Threshold for reading serial port data.  Don't read unless
+     *  at least this many bytes are available.
+     */
     private int _minimumOutputSize;
 
-    // Indicator to discard older data.
+    /** Indicator to discard older data. */
     private boolean _discardOldData;
 
-    // Whether this actor is blocking.
+    /** Whether this actor is blocking. */
     private boolean _blocking;
-
-    // True if fireAtCurrentTime() has been called on the direcror
-    // but either the director has not yet fired this actor, or it has
-    // been fired but fire() has not completed.  Could be in wait().
-    private boolean _directorFiredAtAlready;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** The SerialPort class allows only one listener */
     private static class PortListener implements SerialPortEventListener {
+        public PortListener(SerialComm actor) {
+            _actor = actor;
+        }
         /** React to an event from the serial port.  This is the one and
          *  only method required to implement SerialPortEventListener
          *  (which this class implements).  Notifies all threads that
@@ -649,9 +619,25 @@ public class SerialComm extends TypedAtomicActor {
         public void serialEvent(SerialPortEvent e) {
             synchronized (PortListener.class) {
                 if (e.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
+                    if (_actor._debugging) {
+                        _actor._debug("Received serial event indicating that data is available.");
+                    }
+                    if (!_actor._firingRequested) {
+                        try {
+                            if (_actor._debugging) {
+                                _actor._debug("Requesting a refiring.");
+                            }
+                            _actor.getDirector().fireAtCurrentTime(_actor);
+                            _actor._firingRequested = true;
+                        } catch (IllegalActionException e1) {
+                            MessageHandler.error("Director is uanble to respond to a firing request.", e1);
+                        }
+                    }
+                    // In case the actor is blocked waiting for data.
                     PortListener.class.notifyAll();
                 }
             }
         }
+        private SerialComm _actor;
     }
 }

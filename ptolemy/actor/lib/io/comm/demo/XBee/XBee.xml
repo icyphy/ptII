@@ -1,0 +1,248 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="XBee" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="annotation" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">This model illustrates using a SerialComm actor to communicate between
+two serial devices (such as an XBee radios), sending a short sequence of bytes.
+Note that there is no chunking of messages here, so the outputs appear in
+random clusters of bytes.</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 215.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 1268, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1034, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9920290179386503">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{531.9879354661512, 475.1206436618682}">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 250.0]">
+        </property>
+    </property>
+    <property name="annotation2" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:black">To use this with XBee radios, you need two such radios
+connected via a USB adapter. These will need to be configured
+(using for example the XCTU app) to be in "transparent mode,"
+which means they just tunnel through any bytes they are given.
+Moreover, they will need the same value for the following parameters:
+
+   Channel (e.g. C, a hex number)
+   PAN ID (e.g. CAFE, a hex number)
+
+They will need to have distinct 16-bit source addresses (e.g. 0 and 1),
+and they will need to be configured to have each other's source addresses
+as their destination addresses. Finally, they need to have the same baud rate
+as the parameter in the SerialComm actors (here 9600), and be configured to
+use 8-bit data, 1 stop bit, and no parity.
+</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 510.0]">
+        </property>
+    </property>
+    <entity name="SerialComm" class="ptolemy.actor.lib.io.comm.SerialComm">
+        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="/dev/tty.usbserial-DA01LK3S">
+        </property>
+        <property name="baudRate" class="ptolemy.data.expr.Parameter" value="9600">
+        </property>
+        <property name="blocking" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{655.0, 345.0}">
+        </property>
+    </entity>
+    <entity name="StringToUnsignedByteArray" class="ptolemy.actor.lib.conversions.StringToUnsignedByteArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{435.0, 345.0}">
+        </property>
+    </entity>
+    <entity name="UnsignedByteArrayToString" class="ptolemy.actor.lib.conversions.UnsignedByteArrayToString">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{760.0, 345.0}">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 345.0}">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 385, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Top Received">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{970.0, 345.0}">
+        </property>
+    </entity>
+    <entity name="SerialComm2" class="ptolemy.actor.lib.io.comm.SerialComm">
+        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="/dev/tty.usbserial-AJV9ONHV">
+        </property>
+        <property name="baudRate" class="ptolemy.data.expr.Parameter" value="9600">
+        </property>
+        <property name="blocking" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 455.0}">
+        </property>
+    </entity>
+    <entity name="StringToUnsignedByteArray2" class="ptolemy.actor.lib.conversions.StringToUnsignedByteArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 455.0}">
+        </property>
+    </entity>
+    <entity name="UnsignedByteArrayToString2" class="ptolemy.actor.lib.conversions.UnsignedByteArrayToString">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{775.0, 455.0}">
+        </property>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{85.0, 455.0}">
+        </property>
+    </entity>
+    <entity name="Display4" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={908, 619, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Bottom Received">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{995.0, 455.0}">
+        </property>
+    </entity>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="top message to bottom">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 345.0}">
+        </property>
+    </entity>
+    <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="bottom message to top">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 455.0}">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SerialComm.dataReceived&quot;,x=655.0,y=345.0}, tail={id=&quot;UnsignedByteArrayToString.input&quot;,x=760.0,y=345.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;UnsignedByteArrayToString.output&quot;,x=760.0,y=345.0}, tail={id=&quot;Display.input&quot;,x=970.0,y=345.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SerialComm2.dataReceived&quot;,x=665.0,y=455.0}, tail={id=&quot;UnsignedByteArrayToString2.input&quot;,x=775.0,y=455.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;UnsignedByteArrayToString2.output&quot;,x=775.0,y=455.0}, tail={id=&quot;Display4.input&quot;,x=995.0,y=455.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SerialComm.dataToSend&quot;,x=655.0,y=345.0}, tail={id=&quot;StringToUnsignedByteArray.output&quot;,x=435.0,y=345.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SerialComm2.dataToSend&quot;,x=665.0,y=455.0}, tail={id=&quot;StringToUnsignedByteArray2.output&quot;,x=440.0,y=455.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst2.trigger&quot;,x=295.0,y=455.0}, tail={id=&quot;DiscreteClock2.output&quot;,x=85.0,y=455.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringToUnsignedByteArray2.input&quot;,x=440.0,y=455.0}, tail={id=&quot;StringConst2.output&quot;,x=295.0,y=455.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst.trigger&quot;,x=290.0,y=345.0}, tail={id=&quot;DiscreteClock.output&quot;,x=85.0,y=345.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringToUnsignedByteArray.input&quot;,x=435.0,y=345.0}, tail={id=&quot;StringConst.output&quot;,x=290.0,y=345.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="SerialComm.dataToSend" relation="relation4"/>
+    <link port="SerialComm.dataReceived" relation="relation5"/>
+    <link port="StringToUnsignedByteArray.input" relation="relation3"/>
+    <link port="StringToUnsignedByteArray.output" relation="relation4"/>
+    <link port="UnsignedByteArrayToString.input" relation="relation5"/>
+    <link port="UnsignedByteArrayToString.output" relation="relation2"/>
+    <link port="DiscreteClock.output" relation="relation10"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="SerialComm2.dataToSend" relation="relation7"/>
+    <link port="SerialComm2.dataReceived" relation="relation"/>
+    <link port="StringToUnsignedByteArray2.input" relation="relation8"/>
+    <link port="StringToUnsignedByteArray2.output" relation="relation7"/>
+    <link port="UnsignedByteArrayToString2.input" relation="relation"/>
+    <link port="UnsignedByteArrayToString2.output" relation="relation6"/>
+    <link port="DiscreteClock2.output" relation="relation9"/>
+    <link port="Display4.input" relation="relation6"/>
+    <link port="StringConst.output" relation="relation3"/>
+    <link port="StringConst.trigger" relation="relation10"/>
+    <link port="StringConst2.output" relation="relation8"/>
+    <link port="StringConst2.trigger" relation="relation9"/>
+</entity>
