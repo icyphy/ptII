@@ -151,6 +151,7 @@ $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/SpontaneousSources.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ThreadedComposite/ThreadedComposite.xml
 $CLASSPATH/ptolemy/actor/lib/io/comm/demo/SerialConsole/SerialConsole.xml
 $CLASSPATH/ptolemy/actor/lib/io/comm/demo/SerialPort/SerialPort.xml
+$CLASSPATH/ptolemy/actor/lib/io/comm/demo/XBee/XBee.xml
 $CLASSPATH/ptolemy/actor/lib/io/demo/AppendToFile/AppendToFile.xml
 $CLASSPATH/ptolemy/actor/lib/io/demo/CopyFile/CopyFile.xml
 $CLASSPATH/ptolemy/actor/lib/io/demo/FilePortParameter/FilePortParameter.xml
