@@ -2,9 +2,9 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="SerialPort" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 400]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[756, 524]">
     </property>
     <property name="_vergilLocation" class="ptolemy.actor.gui.LocationAttribute" value="[104, 127]">
     </property>
@@ -102,7 +102,7 @@ male serial port:
         <property name="_location" class="ptolemy.kernel.util.Location" value="-10.0, 5.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 6, 971, 518}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 22, 990, 634}, maximized=false}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
@@ -125,11 +125,10 @@ male serial port:
         </property>
         <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:red">Caveats:
-This model only works on Windows,
-and only if the Java Comm API is
-installed.  See the documentation
-for the SerialComm actor for more
-information.</text></svg></configure>
+This assumes you have
+an ancient computer
+that has a serial port
+connector.</text></svg></configure>
         </property>
         <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
             <configure>
@@ -142,12 +141,12 @@ information.</text></svg></configure>
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="490.0, 0.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 10.0]">
         </property>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.0, 200.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{378.0, 262.0}">
     </property>
     <entity name="Clock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
