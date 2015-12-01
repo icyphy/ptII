@@ -33,7 +33,7 @@ random clusters of bytes.</text></svg></configure>
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9920290179386503">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{531.9879354661512, 475.1206436618682}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{531.9879354661512, 475.1206436618683}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -75,6 +75,28 @@ use 8-bit data, 1 stop bit, and no parity.
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 510.0]">
+        </property>
+    </property>
+    <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure><svg><text x="20" y="20" style="font-size:12; font-family:SansSerif; fill:black">To get access to the serial port, you may need to adjust permissions:
+
+sudo usermod -a -G dialout username</text></svg></configure>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 510.0]">
         </property>
     </property>
     <entity name="SerialComm" class="ptolemy.actor.lib.io.comm.SerialComm">
