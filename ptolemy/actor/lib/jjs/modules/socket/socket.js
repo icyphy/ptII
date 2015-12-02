@@ -52,6 +52,7 @@ var defaultClientOptions = {
     'keepAlive': true,
     'maxUnsentMessages': 100,
     'noDelay': true,
+    'rawBytes': true,
     'receiveBufferSize': 65536,
     'receiveType': 'string',
     'reconnectAttempts': 10,
@@ -119,6 +120,13 @@ var defaultClientOptions = {
  *  * noDelay: If true, data as sent as soon as it is available (the default).
  *    If false, data may be accumulated until a reasonable packet size is formed
  *    in order to make more efficient use of the network (using Nagle's algorithm).
+ *  * rawBytes: If true (the default), then transmit only the data bytes provided
+ *    to send() without any header. If false, then prepend sent data with length
+ *    information and assume receive data starts with length information.
+ *    Setting this false on both ends will ensure that each data item passed to
+ *    send() is emitted once in its entirety at the receiving end, as a single
+ *    message. When this is false, the receiving end can emit a partially received
+ *    message or could concatenate two messages and emit them together.
  *  * receiveBufferSize: The size of the receive buffer. Defaults to
  *    65536.
  *  * receiveType: See below.
@@ -168,6 +176,12 @@ var defaultClientOptions = {
  *
  *  For strings, you can also send an array of strings in a single call,
  *  but these will be simply be concatenated and received as a single string.
+ *
+ *  If the rawBytes option is set to false, then each data item passed to send(),
+ *  of any type or array of types, will be coalesced into a single message and
+ *  the receiving end (if it also has rawBytes set to false) will emit the entire
+ *  message, and only the message, exactly once.  Otherwise, a message may get
+ *  fragmented, emitted in pieces, or coalesced with subsequent messages.
  *  
  *  The meaning of the options is (partially) defined here:
  *     http://vertx.io/docs/vertx-core/java/
@@ -208,7 +222,8 @@ exports.SocketClient.prototype._opened = function(netSocket, client) {
     this.wrapper = new SocketHelper.SocketWrapper(
             this.helper, this, netSocket,
             this.options['sendType'], this.options['receiveType'],
-            this.options['serializeReceivedArrays']);
+            this.options['serializeReceivedArrays'],
+            this.options['rawBytes']);
     this.emit('open');
     
     // Send any pending data.
@@ -270,6 +285,7 @@ var defaultServerOptions = {
     'keyStorePath': '',
     'noDelay': true,
     'port': 4000,
+    'rawBytes': true,
     'receiveBufferSize': 65536,
     'receiveType': 'string',
     'sendBufferSize': 65536,
@@ -357,6 +373,13 @@ var defaultServerOptions = {
  *    in order to make more efficient use of the network (using Nagle's algorithm).
  *  * port: The default port to listen on. This defaults to 4000.
  *    a value of 0 means to choose a random ephemeral free port.
+ *  * rawBytes: If true (the default), then transmit only the data bytes provided
+ *    to send() without any header. If false, then prepend sent data with length
+ *    information and assume receive data starts with length information.
+ *    Setting this false on both ends will ensure that each data item passed to
+ *    send() is emitted once in its entirety at the receiving end, as a single
+ *    message. When this is false, the receiving end can emit a partially received
+ *    message or could concatenate two messages and emit them together.
  *  * receiveBufferSize: The size of the receive buffer. Defaults to
  *    65536.
  *  * receiveType: See below.
@@ -443,7 +466,8 @@ exports.SocketServer.prototype._socketCreated = function(netSocket) {
     var socket = new exports.Socket(
             this.helper, netSocket,
             this.options['sendType'], this.options['receiveType'],
-            this.options['serializeReceivedArrays']);
+            this.options['serializeReceivedArrays'],
+            this.options['rawBytes']);
     this.emit('connection', socket);
 }
 
@@ -469,14 +493,17 @@ exports.SocketServer.prototype._socketCreated = function(netSocket) {
  *  @param receiveType The type expected to be received over the socket.
  *  @param serializeReceivedArrays Whether to emit batches of received objects as
  *   a single array (false) or as separate data items (true).
+ *  @param rawBytes If false, prepend messages with length information and emit
+ *   only complete messages.
  */
-exports.Socket = function(helper, netSocket, sendType, receiveType, serializeReceivedArrays) {
+exports.Socket = function(helper, netSocket, sendType, receiveType,
+        serializeReceivedArrays, rawBytes) {
     // For a server side socket, this instance of Socket will be the event emitter.
 
     // Because we are creating an inner class, the first argument needs to be
     // the instance of the enclosing socketHelper class.
     this.wrapper = new SocketHelper.SocketWrapper(
-            helper, this, netSocket, sendType, receiveType, serializeReceivedArrays);
+            helper, this, netSocket, sendType, receiveType, serializeReceivedArrays, rawBytes);
 }
 util.inherits(exports.Socket, EventEmitter);
 
