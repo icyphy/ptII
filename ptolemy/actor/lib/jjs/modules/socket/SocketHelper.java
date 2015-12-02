@@ -416,6 +416,16 @@ public class SocketHelper extends VertxHelperBase {
      *  <li> error: Emitted when an error occurs. It is passed an error message.
      *  <li> data: Emitted when the socket received data. It is passed the data.
      *  </ul>
+     *  This wrapper supports message framing, which ensures that data is emitted
+     *  only when a complete message has arrived. To accomplish this, each
+     *  message is prepended with a length, in bytes. To minimize overhead for
+     *  short messages, then if the length of the message is less than 255 bytes,
+     *  the length is encoded in a single byte. Otherwise, it is encoded as a
+     *  byte with value 255 followed by an int (four bytes).
+     *  
+     *  This will only work if both
+     *  ends of the socket connection are using this same protocol (e.g.
+     *  if both ends are implemented using this same class).
      */
     public class SocketWrapper {
 
@@ -425,14 +435,24 @@ public class SocketHelper extends VertxHelperBase {
          *  @param socket The Vertx socket object.
          *  @param sendType The send type.
          *  @param receiveType The receive type.
+         *  @param serializeReceivedArray If true, then emit at most one
+         *   item of the specified receive type at a time. If false, then
+         *   emit all received items of the specified type in an array.
+         *  @param rawBytes If true, send and received raw bytes, with no
+         *   message framing. If false, then prepend each sent item with a
+         *   length, and for received items, assume received data is prepended
+         *   with a length and emit received data only when a complete message
+         *   has arrived.
          */
         public SocketWrapper(
                 ScriptObjectMirror eventEmitter,
                 Object socket,
                 String sendType,
                 String receiveType,
-                final boolean serializeReceivedArray) {
+                final boolean serializeReceivedArray,
+                boolean rawBytes) {
             _eventEmitter = eventEmitter;
+            _rawBytes = rawBytes;
             _socket = (NetSocket)socket;
             
             try {
@@ -476,91 +496,16 @@ public class SocketHelper extends VertxHelperBase {
                 _socket.exceptionHandler(throwable -> {
                     _error(_eventEmitter, throwable.toString());
                 });
+                // Handler for received data.
                 _socket.handler(buffer -> {
-                    _issueResponse(() -> {
-                        if(_receiveType == DATA_TYPE.STRING) {
-                            _eventEmitter.callMember("emit", "data", buffer.getString(0, buffer.length()));
-                        } else if (_receiveType == DATA_TYPE.IMAGE) {
-                            try {
-                                byte[] bytes = buffer.getBytes();
-                                if (_byteStream == null) {
-                                    _byteStream = new ByteArrayBackedInputStream(bytes);
-                                    _bufferCount = 0;
-                                } else {
-                                    _bufferCount++;
-                                    _actor.log("WARNING: Cannot parse image from data received. Waiting for more data:"
-                                            + _bufferCount);
-                                    // Append the current buffer to previously received buffer(s).
-                                    _byteStream.append(bytes);
-                                }
-                                // FIXME: JPG image at least ends with byte -39.
-                                // Not sure about others. If any stream comes in that never ends in -39,
-                                // then this will fail to produce any more images and will use up memory.
-                                if (bytes[bytes.length - 1] == (byte)-39) {
-                                    BufferedImage image = ImageIO.read(_byteStream);
-                                    _byteStream = null;
-                                    if (image != null && image.getHeight() > 0 && image.getWidth() > 0) {
-                                        if (_bufferCount > 1) {
-                                            _actor.log("Image received over " + _bufferCount
-                                                    + " buffers. Consider increasing buffer size.");
-                                        }
-                                        ImageToken token = new AWTImageToken(image);
-                                        _eventEmitter.callMember("emit", "data", token);
-                                    } else {
-                                        _eventEmitter.callMember("emit", "error", "Received corrupted image.");
-                                    }
-                                }
-                            } catch (IOException e) {
-                                _error(_eventEmitter, "Failed to read incoming image: " + e.toString());
-                            }
-                        } else {
-                            // Assume a numeric type.
-                            int size = _sizeOfReceiveType();
-                            int length = buffer.length();
-                            int numberOfElements = length / size;
-                            if (numberOfElements == 1) {
-                                _eventEmitter.callMember("emit", "data", _extractFromBuffer(buffer, 0));
-                            } else if (numberOfElements > 1) {
-                                if (serializeReceivedArray) {
-                                    int position = 0;
-                                    for (int i = 0; i < numberOfElements; i++) {
-                                        _eventEmitter.callMember("emit", "data", _extractFromBuffer(buffer, position));
-                                        position += size;
-                                    }
-                                } else {
-                                    // Not serializing the output, so we output a single array.
-                                    Object[] result = new Object[numberOfElements];
-                                    int position = 0;
-                                    for (int i = 0; i < result.length; i++) {
-                                        result[i] = _extractFromBuffer(buffer, position);
-                                        position += size;
-                                    }
-                                    // NOTE: If we return result, then the emitter will not
-                                    // emit a native JavaScript array. We have to do a song and
-                                    // dance here which is probably very inefficient (almost
-                                    // certainly... the array gets copied).
-                                    try {
-                                        _eventEmitter.callMember("emit", "data", _actor.toJSArray(result));
-                                    } catch (Exception e) {
-                                        _error(_eventEmitter, "Failed to convert to a JavaScript array: "
-                                                + e);                    
-                                        _eventEmitter.callMember("emit", "data", result);
-                                    }
-                                }
-                            } else if (numberOfElements <= 0) {
-                                _error(_eventEmitter, "Expect to receive type "
-                                        + _receiveType
-                                        + ", but received an insufficient number of bytes: "
-                                        + buffer.length());
-                            }
-                        }
-                    });
+                    _processBuffer(serializeReceivedArray, buffer);
                 });
             });
         }
         /** Close the socket.
          */
         public void close() {
+            // FIXME: Send FIN and handshake with the other end.
             submit(() -> {
                 _socket.close();
             });
@@ -598,6 +543,26 @@ public class SocketHelper extends VertxHelperBase {
                     }
                 } else {
                     _appendToBuffer(data, buffer);
+                }
+                if (!_rawBytes) {
+                    // Prepend the buffer with message length information.
+                    // Note that unlike the WebSocket standard, we don't need
+                    // to break the message into frames. The underlying TCP
+                    // implementation will do that.
+                    int length = buffer.length();
+                    Buffer newBuffer = Buffer.buffer();
+                    if (length < 255) {
+                        // The cast will extract the low order 8 bits.
+                        // Note that the appended byte is interpreted by Java as
+                        // being signed, but this does matter, because on the
+                        // receiving end we will interpret it as unsigned.
+                        newBuffer.appendByte((byte)length);
+                    } else {
+                        newBuffer.appendByte((byte)0xFF);
+                        newBuffer.appendInt(length);
+                    }
+                    newBuffer.appendBuffer(buffer);
+                    buffer = newBuffer;
                 }
                 _socket.write(buffer);
             });
@@ -690,6 +655,29 @@ public class SocketHelper extends VertxHelperBase {
                 _sendTypeError(_sendType, data);
             }
         }
+        /** Extract a length from the head of the buffer. Return the number of
+         *  bytes encoding the length (1 or 5) or -1 if there are not enough bytes
+         *  in the buffer yet to encode a length. As a side effect, this will set
+         *  _expectedLength to the expected length, or to -1 if the length has not
+         *  yet been determined.
+         *  @param buffer The buffer.
+         *  @return The number of bytes encoding the length, or -1 if there aren't
+         *   enough bytes in the buffer.
+         */
+        private int _extractLength(Buffer buffer) {
+            _expectedLength = buffer.getByte(0) & 0xFF;
+            if (_expectedLength == 0xFF) {
+                // May not have an additional four bytes yet.
+                if (buffer.length() > 4) {
+                    _expectedLength = buffer.getInt(1);
+                    return 5;
+                } else {
+                    _expectedLength = -1;
+                    return -1;
+                }
+            }
+            return 1;
+        }
         /** Extract a numeric instance of the _receiveType from a buffer. */
         private Object _extractFromBuffer(Buffer buffer, int position) {
             try {
@@ -724,6 +712,207 @@ public class SocketHelper extends VertxHelperBase {
             } catch (Throwable ex) {
                 _receiveTypeError(ex, _receiveType, buffer);
                 return null;
+            }
+        }
+        /** Process new buffer data.
+         *  @param serializeReceivedArray
+         *  @param buffer The buffer, or null to process previously received data.
+         */
+        private void _processBuffer(final boolean serializeReceivedArray,
+                Buffer buffer) {
+            if (!_rawBytes) {
+                // Only issue a response when a complete message has arrived.
+                Buffer residual = null;
+                if (_partialBuffer == null) {
+                    // No prior data has arrived.
+                    if (buffer == null) {
+                        // No new data. Nothing to do.
+                        return;
+                    }
+                    int bytesEncodingLength = _extractLength(buffer);
+                    if (bytesEncodingLength > 0) {
+                        // The length is known.
+                        // It is not documented in Vertx, but apparently a sliced buffer
+                        // cannot be appended to, despite being a Buffer.
+                        _partialBuffer = Buffer.buffer();
+                        _partialBuffer.appendBuffer(buffer.slice(bytesEncodingLength, buffer.length()));
+                    } else {
+                        // The length is not yet known.
+                        _partialBuffer = buffer;
+                        return;
+                    }
+                } else {
+                    // Previous partial data has arrived.
+                    // Check whether the length is known yet.
+                    if (_expectedLength <= 0) {
+                        // Length is not known yet.
+                        if (buffer == null) {
+                            // No new data. Nothing to do.
+                            return;
+                        }
+                        Buffer temporaryBuffer = Buffer.buffer();
+                        temporaryBuffer.appendBuffer(_partialBuffer);
+                        temporaryBuffer.appendBuffer(buffer);
+                        int bytesEncodingLength = _extractLength(temporaryBuffer);
+                        if (bytesEncodingLength > 0) {
+                            // The length is now known.
+                            // The length encoding must be 5 bytes long, some of which is in _partialBuffer.
+                            int additionalLengthInfo = 5 - _partialBuffer.length();
+                            buffer = buffer.slice(additionalLengthInfo, buffer.length());
+                            // No longer need any prior bytes.
+                            _partialBuffer = Buffer.buffer();
+                        } else {
+                            // The length is not yet known.
+                            _partialBuffer.appendBuffer(buffer);
+                            return;
+                        }
+                    }
+                    // How many bytes are still needed?
+                    int stillNeed = _expectedLength - _partialBuffer.length();
+                    if (buffer != null) {
+                        // Have new data.
+                        int contributing = stillNeed;
+                        if (buffer.length() < stillNeed) {
+                            contributing = buffer.length();
+                        }
+                        if (buffer.length() <= stillNeed) {
+                            // The entire received buffer contributes to the current message.
+                            _partialBuffer.appendBuffer(buffer);
+                        } else {
+                            // Only part of the received buffer contributes to the current message.
+                            // NOTE: This assumes that the second argument to slice() is the index
+                            // of the byte AFTER the one in the slice. This is not documented
+                            // in Vert.x.
+                            _partialBuffer.appendBuffer(buffer.slice(0, contributing));
+                            // Put the unused data in the residual buffer.
+                            int bufferLength = buffer.length();
+                            residual = buffer.slice(contributing, bufferLength);
+                        }
+                    } else if (_partialBuffer.length() > stillNeed) {
+                        // Don't have new data, but the old data contains more
+                        // than one message.
+                        // Since buffer == null, this is being called recursively to
+                        // process additional messages in the buffer.
+                        // Note that stillNeed can be negative.
+                        residual = _partialBuffer.slice(_expectedLength, _partialBuffer.length());
+                        _partialBuffer = _partialBuffer.slice(0, _expectedLength);
+                    }
+                }
+                // At this point, _partialBuffer has all received data contributing to the
+                // current message, and residual has any left over data.
+                buffer = _partialBuffer;
+                if (buffer.length() < _expectedLength) {
+                    // Have not yet received all the data. Do not emit data.
+                    return;
+                }
+                // All data for the current message has been received and is in buffer.
+                if (residual != null) {
+                    // Additional data beyond the current message has also arrived.
+                    // Extract the length for the next segment.
+                    int bytesEncodingLength = _extractLength(residual);
+                    // It is not documented in Vertx, but apparently a sliced buffer
+                    // cannot be appended to, despite being a Buffer.
+                    // So we need a new buffer.
+                    _partialBuffer = Buffer.buffer();
+                    if (bytesEncodingLength > 0) {
+                        // The length is known.
+                        _partialBuffer.appendBuffer(residual.slice(bytesEncodingLength, residual.length()));
+                    } else {
+                        // The length is not yet known.
+                        _partialBuffer.appendBuffer(residual);
+                    }
+                } else {
+                    // Indicate that we have no partial message.
+                    _partialBuffer = null;
+                }
+            }
+            // We have a complete message. Issue a response.
+            final Buffer finalBuffer = buffer;
+            _issueResponse(() -> {
+                if(_receiveType == DATA_TYPE.STRING) {
+                    _eventEmitter.callMember("emit", "data", finalBuffer.getString(0, finalBuffer.length()));
+                } else if (_receiveType == DATA_TYPE.IMAGE) {
+                    try {
+                        byte[] bytes = finalBuffer.getBytes();
+                        if (_byteStream == null) {
+                            _byteStream = new ByteArrayBackedInputStream(bytes);
+                            _bufferCount = 0;
+                        } else {
+                            _bufferCount++;
+                            _actor.log("WARNING: Cannot parse image from data received. Waiting for more data:"
+                                    + _bufferCount);
+                            // Append the current buffer to previously received buffer(s).
+                            _byteStream.append(bytes);
+                        }
+                        // FIXME: JPG image at least ends with byte -39.
+                        // Not sure about others. If any stream comes in that never ends in -39,
+                        // then this will fail to produce any more images and will use up memory.
+                        if (bytes[bytes.length - 1] == (byte)-39) {
+                            BufferedImage image = ImageIO.read(_byteStream);
+                            _byteStream = null;
+                            if (image != null && image.getHeight() > 0 && image.getWidth() > 0) {
+                                if (_bufferCount > 1) {
+                                    _actor.log("Image received over " + _bufferCount
+                                            + " buffers. Consider increasing buffer size.");
+                                }
+                                ImageToken token = new AWTImageToken(image);
+                                _eventEmitter.callMember("emit", "data", token);
+                            } else {
+                                _eventEmitter.callMember("emit", "error", "Received corrupted image.");
+                            }
+                        }
+                    } catch (IOException e) {
+                        _error(_eventEmitter, "Failed to read incoming image: " + e.toString());
+                    }
+                } else {
+                    // Assume a numeric type.
+                    int size = _sizeOfReceiveType();
+                    int length = finalBuffer.length();
+                    int numberOfElements = length / size;
+                    if (numberOfElements == 1) {
+                        _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, 0));
+                    } else if (numberOfElements > 1) {
+                        if (_rawBytes && serializeReceivedArray) {
+                            int position = 0;
+                            for (int i = 0; i < numberOfElements; i++) {
+                                _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, position));
+                                position += size;
+                            }
+                        } else {
+                            // Not serializing the output, so we output a single array.
+                            Object[] result = new Object[numberOfElements];
+                            int position = 0;
+                            for (int i = 0; i < result.length; i++) {
+                                result[i] = _extractFromBuffer(finalBuffer, position);
+                                position += size;
+                            }
+                            // NOTE: If we return result, then the emitter will not
+                            // emit a native JavaScript array. We have to do a song and
+                            // dance here which is probably very inefficient (almost
+                            // certainly... the array gets copied).
+                            try {
+                                _eventEmitter.callMember("emit", "data", _actor.toJSArray(result));
+                            } catch (Exception e) {
+                                _error(_eventEmitter, "Failed to convert to a JavaScript array: "
+                                        + e);                    
+                                _eventEmitter.callMember("emit", "data", result);
+                            }
+                        }
+                    } else if (numberOfElements <= 0) {
+                        _error(_eventEmitter, "Expect to receive type "
+                                + _receiveType
+                                + ", but received an insufficient number of bytes: "
+                                + finalBuffer.length());
+                    }
+                }
+            });
+            if (_partialBuffer != null 
+                    && _expectedLength > 0 
+                    && _partialBuffer.length() >= _expectedLength) {
+                // There is at least one more complete message in the buffer.
+                // In the following, the null argument indicates that there no
+                // new data.
+                _processBuffer(serializeReceivedArray, null);
             }
         }
         private void _receiveTypeError(Throwable ex, DATA_TYPE type, Buffer buffer) {
@@ -772,6 +961,9 @@ public class SocketHelper extends VertxHelperBase {
         }
         private int _bufferCount = 0;
         private boolean _closed = false;
+        private int _expectedLength;
+        private Buffer _partialBuffer;
+        private boolean _rawBytes;
         private NetSocket _socket;
         private ByteArrayBackedInputStream _byteStream;
         private ScriptObjectMirror _eventEmitter;
