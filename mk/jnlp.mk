@@ -160,9 +160,10 @@ NATIVE_SIGNED_LIB_JARS = \
 	lib/matlabMacOSX.jar \
 	lib/matlabLinux.jar \
 	lib/matlabSunOS.jar \
-	lib/matlabWindows.jar \
-	lib/rxtxMacOSX.jar \
-	lib/rxtxWindows.jar 
+	lib/matlabWindows.jar
+
+#	lib/rxtxMacOSX.jar
+#	lib/rxtxWindows.jar 
 
 SIGNED_LIB_JARS =	$(NATIVE_SIGNED_LIB_JARS) \
 			lib/diva.jar \
@@ -252,7 +253,7 @@ CAPECODE_JNLP_JARS = \
 	lib/ptcolt.jar \
 	ptolemy/actor/lib/conversions/json/json.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
-	vendors/misc/rxtx/RXTXcomm.jar \
+	lib/nrjavaserial-3.11.0.jar \
 	ptolemy/actor/lib/jjs/jjs.jar \
 	ptolemy/actor/lib/jjs/modules/demo.jar \
 	ptolemy/actor/lib/jjs/modules/modules.jar \
@@ -306,7 +307,6 @@ CYPHYSIM_JNLP_JARS =	\
 	lib/ptcolt.jar \
 	ptolemy/actor/lib/conversions/json/json.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
-	vendors/misc/rxtx/RXTXcomm.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jjs/jjs.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
@@ -674,7 +674,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/fmi/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
-	vendors/misc/rxtx/RXTXcomm.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jai/demo/demo.jar \
 	ptolemy/actor/lib/jjs/jjs.jar \
@@ -737,6 +736,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/taskpt/taskpt.jar \
 	ptolemy/domains/taskpt/demo/demo.jar \
 	ptolemy/domains/taskpt/doc/doc.jar \
+	ptolemy/domains/tcs/tcs.jar \
+	ptolemy/domains/tcs/demo/demo.jar \
 	ptolemy/domains/tdl/tdl.jar \
 	ptolemy/domains/tdl/demo/demo.jar \
 	ptolemy/domains/tester/tester.jar \
