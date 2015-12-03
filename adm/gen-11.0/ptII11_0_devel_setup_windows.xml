@@ -351,8 +351,8 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/comm/demo"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/io/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/io/demo"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/vendors/misc/rxtx/RXTXcomm.jar"
-                  targetdir="$INSTALL_PATH/vendors/misc/rxtx"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/nrjavaserial-3.11.0.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jai/jai.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jai"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jai/demo/demo.jar"
@@ -498,8 +498,14 @@ The Ptiny pack is required.
                   targetdir="$INSTALL_PATH/ptolemy/domains/taskpt/doc"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/tester/tester.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/tester"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/tcs/tcs.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/tcs"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/tcs/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/tcs/demo"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/tdl/tdl.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/tdl"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/tdl/demo/demo.jar"
+                  targetdir="$INSTALL_PATH/ptolemy/domains/tdl/demo"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/tm/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/tm/demo"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/tm/doc/doc.jar"
