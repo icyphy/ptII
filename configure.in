@@ -3866,6 +3866,10 @@ PTLEGO_DIR=
 #
 PTCOMM_DIR=
 
+# PTSERIAL_DIR is set to serial and used in
+# $PTII ptolemy/actor/lib/jjs/modules/makefile if the Java Communications API was found
+PTSERIAL_DIR=
+
 # PTIMUSENSOR_DIR is set to IMUSensor and used in ptolemy/actor/lib/jjs/modules/makefile if the Java Communications API was found
 PTIMUSENSOR_DIR=
 
@@ -3935,6 +3939,7 @@ if test "$RXTX_PRESENT" = "yes"; then
     # Subdirectories that contains Java Communications API specific code
     PTLEGO_DIR=lego
     PTCOMM_DIR=comm
+    PTSERIAL_DIR=serial
     PTIMUSENSOR_DIR=IMUSensor
     # PTRXTX_PACKAGES is used in ptII/doc/makefile
     PTRXTX_PACKAGES="ptolemy.actor.lib.io.comm ptolemy.actor.lib.jjs.modules.IMUSensor"
@@ -7386,6 +7391,10 @@ AC_SUBST(PTQUICKTIME_PACKAGES)
 # Ptolemy II packages that use the RXTX Java Serial Communication facility
 # PTRXTX_PACKAGES is used in ptII/doc/makefile
 AC_SUBST(PTRXTX_PACKAGES)
+
+# PTSERIAL_DIR is set to serial and used in
+# $PTII ptolemy/actor/lib/jjs/modules/makefile if the Java Communications API was found
+AC_SUBST(PTSERIAL_DIR)
 
 # PTSERVER_DIR is set to ptserver and used in
 # $PTII/makefile if dbxml is found

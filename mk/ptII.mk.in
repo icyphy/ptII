@@ -984,6 +984,10 @@ PTQUICKTIME_DIR =	@PTQUICKTIME_DIR@
 # PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
 PTQUICKTIME_PACKAGES = 	@PTQUICKTIME_PACKAGES@
 
+# PTSERIAL_DIR is set to serial and used in
+# $PTII ptolemy/actor/lib/jjs/modules/makefile if the Java Communications API was found
+PTSERIAL_DIR =	@PTSERIAL_DIR@
+
 # PTSERVER_DIR is set to ptserver and used in
 # $PTII/makefile if hessian, jetty, servlet and mqtt jars are found.
 PTSERVER_DIR =	@PTSERVER_DIR@
