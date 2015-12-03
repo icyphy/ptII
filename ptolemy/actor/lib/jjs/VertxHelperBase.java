@@ -38,8 +38,6 @@ import java.util.LinkedList;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -199,52 +197,6 @@ public class VertxHelperBase extends HelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
-    /** Override the base class to emit the error message in the
-     *  director thread.
-     *  @param emitter The JavaScript object that should emit an
-     *   "error" event.
-     *  @param message The error message.
-     */
-    protected void _error(ScriptObjectMirror emitter, final String message) {
-        _issueResponse(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    // FIXME: This should include the name of the actor.
-                    emitter.callMember("emit", "error", message);
-                    // NOTE: The error handler may not stop execution.
-                } catch (Throwable ex) {
-                    // There may be no error event handler registered.
-                    // Use the actor to report the error.
-                    _actor.error(message, new IllegalActionException(_actor, ex, message));
-                }
-            }
-        });
-    }
-
-
-        /** Override the base class to emit the error message in the
-     *  director thread.
-     *  @param emitter The JavaScript object that should emit an
-     *   "error" event.
-     *  @param message The error message.
-     */
-    protected void _error(ScriptObjectMirror emitter, final String message, final Throwable throwable) {
-        _issueResponse(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    emitter.callMember("emit", "error", message);
-                    // NOTE: The error handler may not stop execution.
-                } catch (Throwable ex) {
-                    // There may be no error event handler registered.
-                    // Use the actor to report the error.
-                    _actor.error(message, new IllegalActionException(_actor, throwable, message));
-                }
-            }
-        });
-    }
-
     /** Execute the specified response in the same order as the request
      *  that triggered the response. The execution will be done in the
      *  director thread, not in the verticle,
@@ -331,25 +283,6 @@ public class VertxHelperBase extends HelperBase {
                     }
                 }
             }
-        }
-    }
-
-    /** Execute the specified response in the director thread, not in the verticle,
-     *  so that it is executed atomically with respect to the swarmlet
-     *  execution. This ensures, for example, that if the response
-     *  produces multiple output events or errors, that all those
-     *  output events and errors are simultaneous. It also prevents
-     *  threading issues from having the response execute concurrently
-     *  with the swarmlet execution.
-     *  @param response The response to execute.
-     */
-    protected void _issueResponse(Runnable response) {
-        try {
-            _actor.invokeCallback(response);
-        } catch (IllegalActionException e) {
-            _actor.error(_actor.getName()
-                    + ": Failed to schedule response handler: "
-                    + e.getMessage());
         }
     }
 
