@@ -1,17 +1,33 @@
 /**
  * Module supporting sockets.
  * This module defines three classes, SocketClient, SocketServer, and Socket.
- * To make a connection, create an instance of SocketServer, set up listeners,
+ * To make a connection, create an instance of SocketServer, set up event listeners,
  * and start the server. On another machine (or the same machine), create
- * an instance of SocketClient and set up listeners and/or invoke send() to send
+ * an instance of SocketClient and set up event listeners and/or invoke send() to send
  * data. When a client connects to the SocketServer, the SocketServer will create
- * an instance of the Socket object.
+ * an instance of the Socket object. Users of this module should not directly create
+ * a Socket object.
  *
  * The send() function can accept data in many different forms.
  * You can send a string, a number, or an array of numbers.
  * Two utility functions supportedReceiveTypes() and supportedSendTypes()
  * tell you exactly which data types supported by the host.
  * Arrays of those types are also supported.
+ *
+ * If the rawBytes option is true (the default), then data is sent without any
+ * message framing. As a consequence, the recipient of the data may emit only a
+ * portion of any sent data, or it may even coalesce data provided in separate
+ * invocations of send(). If rawBytes is false, then messages will be framed so
+ * that each invocation of send() results in exactly one data item emitted at the
+ * other end.  This will only work if both sides of the connection implement the
+ * same framing protocol, e.g. if they both are implemented with this same module.
+ * To communicate with external tools that do not support this message framing
+ * protocol, leave rawBytes set to true.
+ *
+ * The message framing protocol used here is very simple. Each message is preceeded
+ * by one byte indicating the length of the message. If the message has length
+ * greater than 254, then the value of this byte will be 255 and the subsequent four
+ * bytes will represent the length of the message. The message then follows these bytes.
  *
  * @module socket
  * @authors: Edward A. Lee
