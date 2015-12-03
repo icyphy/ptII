@@ -725,7 +725,7 @@ public class SocketHelper extends VertxHelperBase {
                 Buffer residual = null;
                 if (_partialBuffer == null) {
                     // No prior data has arrived.
-                    if (buffer == null) {
+                    if (buffer == null || buffer.length() == 0) {
                         // No new data. Nothing to do.
                         return;
                     }
@@ -753,6 +753,10 @@ public class SocketHelper extends VertxHelperBase {
                         Buffer temporaryBuffer = Buffer.buffer();
                         temporaryBuffer.appendBuffer(_partialBuffer);
                         temporaryBuffer.appendBuffer(buffer);
+                        if (temporaryBuffer.length() == 0) {
+                            // Nothing to do.
+                            return;
+                        }
                         int bytesEncodingLength = _extractLength(temporaryBuffer);
                         if (bytesEncodingLength > 0) {
                             // The length is now known.
@@ -806,7 +810,7 @@ public class SocketHelper extends VertxHelperBase {
                     return;
                 }
                 // All data for the current message has been received and is in buffer.
-                if (residual != null) {
+                if (residual != null && residual.length() > 0) {
                     // Additional data beyond the current message has also arrived.
                     // Extract the length for the next segment.
                     int bytesEncodingLength = _extractLength(residual);
