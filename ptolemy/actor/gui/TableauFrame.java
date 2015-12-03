@@ -1305,15 +1305,23 @@ public class TableauFrame extends Top {
                 // to close this window after doing the save.
                 Effigy effigy = getEffigy();
 
-                if (effigy != null) {
-                    String id = effigy.identifier.getExpression();
+                // If the effigy is "Unnamed", then don't call effigy.setContainer(null).
+                // To replicate this:
+                // Create an Unnamed editor: $PTII/bin/vergil, File -> New -> Graph Editor
+                // Save to foo.xml
+                // Close foo.xml
+                // In the Unnamed editor, File -> Open foo.xml
+                // _read() will throw "Expected top-level to be a Configuration"
+                //
+                // if (effigy != null) {
+                //     String id = effigy.identifier.getExpression();
 
-                    if (id.equals("Unnamed")) {
-                        // This will have the effect of closing all the
-                        // tableaux associated with the unnamed model.
-                        effigy.setContainer(null);
-                    }
-                }
+                //     if (id.equals("Unnamed")) {
+                //         // This will have the effect of closing all the
+                //         // tableaux associated with the unnamed model.
+                //         effigy.setContainer(null);
+                //     }
+                // }
 
                 // Change r61021 "dispose the old frame after opening a new one on call to saveAs"
                 // resulted in vergil exiting if one does
