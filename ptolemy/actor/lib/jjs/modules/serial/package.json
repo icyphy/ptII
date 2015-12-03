@@ -1,0 +1,11 @@
+{
+  "name": "serial",
+  "version": "0.1.0",
+  "main": "serial.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Edward A. Lee, Rene Vivanco, Christopher Brooks"
+    , "email" : "eal@eecs.berkeley.edu"}
+  ],
+  "description": "A module for accessing serial port hardware on the host."
+}
