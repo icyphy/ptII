@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.160546954895215">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{193.151106834411, 178.6289495132512}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{193.15110683441088, 178.6289495132512}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -23,7 +23,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test transmission of an array of numbers&#10;from client to server and back, but where&#10;received arrays are batched as a single array output.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test transmission of an array of strings using message framing&#10;where the receiver concatenates the received strings into a single&#10;message.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, -45.0]">
         </property>
@@ -49,7 +49,7 @@
         </property>
     </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	input('toSend');&#10;	output('reply');&#10;	parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;	parameter(&#10;		'serializeReceivedArrays',&#10;		{'value':true, 'type':'boolean'}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType':getParameter('receiveType'),&#10;		 'sendType':getParameter('sendType'),&#10;		 'serializeReceivedArrays':getParameter('serializeReceivedArrays')}&#10;	);&#10;	addInputHandler('toSend', function() {&#10;		var data = get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		send('reply', data);&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	input('toSend');&#10;	output('reply');&#10;	parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;	parameter(&#10;		'rawBytes',&#10;		{'value':false, 'type':'boolean'}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType':getParameter('receiveType'),&#10;		 'sendType':getParameter('sendType'),&#10;		 'rawBytes':getParameter('rawBytes')}&#10;	);&#10;	addInputHandler('toSend', function() {&#10;		var data = get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		send('reply', data);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -71,8 +71,6 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="serializeReceivedArrays" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -81,7 +79,7 @@
         </port>
     </entity>
     <entity name="Server" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	output('listening');&#10;	output('connected');&#10;	output('received');&#10;	parameter(&#10;		'receiveType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	parameter(&#10;		'sendType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;	parameter(&#10;		'serializeReceivedArrays',&#10;		{'value':true, 'type':'boolean'}&#10;	);&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':4000,&#10;		'hostInterface':'localhost',&#10;		'receiveType':getParameter('receiveType'),&#10;		'sendType':getParameter('sendType'),&#10;		'serializeReceivedArrays':getParameter('serializeReceivedArrays')&#10;	});&#10;	server.on('listening', function(port) {&#10;		send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			send('received', data);&#10;			// Respond with the original data.&#10;			serverSocket.send(data);&#10;		});&#10;	});&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.close();&#10;	}&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	output('listening');&#10;	output('connected');&#10;	output('received');&#10;	parameter(&#10;		'receiveType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	parameter(&#10;		'sendType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;	parameter(&#10;		'rawBytes',&#10;		{'value':false, 'type':'boolean'}&#10;	);&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':4000,&#10;		'hostInterface':'localhost',&#10;		'receiveType':getParameter('receiveType'),&#10;		'sendType':getParameter('sendType'),&#10;		'rawBytes':getParameter('rawBytes')&#10;	});&#10;	server.on('listening', function(port) {&#10;		send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			send('received', data);&#10;			// Respond with the original data.&#10;			serverSocket.send(data);&#10;		});&#10;	});&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.close();&#10;	}&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -102,8 +100,6 @@
         <property name="sendType" class="ptolemy.data.expr.Parameter" value="string">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-        </property>
-        <property name="serializeReceivedArrays" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <port name="listening" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -198,7 +194,7 @@
         </property>
     </entity>
     <entity name="Client2" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	input('toSend');&#10;	output('reply');&#10;	parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;	parameter(&#10;		'serializeReceivedArrays',&#10;		{'value':true, 'type':'boolean'}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType':getParameter('receiveType'),&#10;		 'sendType':getParameter('sendType'),&#10;		 'serializeReceivedArrays':getParameter('serializeReceivedArrays')}&#10;	);&#10;	addInputHandler('toSend', function() {&#10;		var data = get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		send('reply', data);&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	input('toSend');&#10;	output('reply');&#10;	parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;	parameter(&#10;		'rawBytes',&#10;		{'value':false, 'type':'boolean'}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType':getParameter('receiveType'),&#10;		 'sendType':getParameter('sendType'),&#10;		 'rawBytes':getParameter('rawBytes')}&#10;	);&#10;	addInputHandler('toSend', function() {&#10;		var data = get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		send('reply', data);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -219,8 +215,6 @@
         <property name="receiveType" class="ptolemy.data.expr.Parameter" value="string">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-        </property>
-        <property name="serializeReceivedArrays" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
