@@ -28,7 +28,6 @@
   </resources>
 
   <resources os="Mac OS X">
-  	<nativelib href="signed/lib/rxtxMacOSX.jar"/>
   	<nativelib href="signed/lib/matlabMacOSX.jar"/>
   </resources>
   <resources os="Linux" arch="i386">
@@ -44,7 +43,6 @@
         <nativelib href="signed/lib/matlabLinux.jar"/>
   </resources>
   <resources os="Windows">
-  	<nativelib href="signed/lib/rxtxWindows.jar"/>
   	<nativelib href="signed/lib/matlabWindows.jar"/>
   </resources>
 
