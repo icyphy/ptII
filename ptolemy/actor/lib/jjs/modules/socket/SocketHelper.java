@@ -435,9 +435,6 @@ public class SocketHelper extends VertxHelperBase {
          *  @param socket The Vertx socket object.
          *  @param sendType The send type.
          *  @param receiveType The receive type.
-         *  @param serializeReceivedArray If true, then emit at most one
-         *   item of the specified receive type at a time. If false, then
-         *   emit all received items of the specified type in an array.
          *  @param rawBytes If true, send and received raw bytes, with no
          *   message framing. If false, then prepend each sent item with a
          *   length, and for received items, assume received data is prepended
@@ -449,7 +446,6 @@ public class SocketHelper extends VertxHelperBase {
                 Object socket,
                 String sendType,
                 String receiveType,
-                final boolean serializeReceivedArray,
                 boolean rawBytes) {
             _eventEmitter = eventEmitter;
             _rawBytes = rawBytes;
@@ -498,7 +494,7 @@ public class SocketHelper extends VertxHelperBase {
                 });
                 // Handler for received data.
                 _socket.handler(buffer -> {
-                    _processBuffer(serializeReceivedArray, buffer);
+                    _processBuffer(buffer);
                 });
             });
         }
@@ -715,11 +711,9 @@ public class SocketHelper extends VertxHelperBase {
             }
         }
         /** Process new buffer data.
-         *  @param serializeReceivedArray
          *  @param buffer The buffer, or null to process previously received data.
          */
-        private void _processBuffer(final boolean serializeReceivedArray,
-                Buffer buffer) {
+        private void _processBuffer(Buffer buffer) {
             if (!_rawBytes) {
                 // Only issue a response when a complete message has arrived.
                 Buffer residual = null;
@@ -876,14 +870,14 @@ public class SocketHelper extends VertxHelperBase {
                     if (numberOfElements == 1) {
                         _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, 0));
                     } else if (numberOfElements > 1) {
-                        if (_rawBytes && serializeReceivedArray) {
+                        if (_rawBytes) {
                             int position = 0;
                             for (int i = 0; i < numberOfElements; i++) {
                                 _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, position));
                                 position += size;
                             }
                         } else {
-                            // Not serializing the output, so we output a single array.
+                            // Using message framing, so we output a single array.
                             Object[] result = new Object[numberOfElements];
                             int position = 0;
                             for (int i = 0; i < result.length; i++) {
@@ -916,7 +910,7 @@ public class SocketHelper extends VertxHelperBase {
                 // There is at least one more complete message in the buffer.
                 // In the following, the null argument indicates that there no
                 // new data.
-                _processBuffer(serializeReceivedArray, null);
+                _processBuffer(null);
             }
         }
         private void _receiveTypeError(Throwable ex, DATA_TYPE type, Buffer buffer) {

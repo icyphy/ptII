@@ -75,7 +75,6 @@ var defaultClientOptions = {
     'reconnectInterval': 100,
     'sendBufferSize': 65536,
     'sendType': 'string',
-    'serializeReceivedArrays': true,
     'sslTls': false,
     'trustAll': false,
 }
@@ -154,12 +153,6 @@ var defaultClientOptions = {
  *  * sendBufferSize: The size of the receive buffer. Defaults to
  *    65536.
  *  * sendType: See below.
- *  * serializeReceivedArrays: If true (the default), each emit from
- *    the socket object consists of a single data item, even if several
- *    data items were received at once. If false, then a batch of incoming
- *    data with any type other than string that is received at once
- *    will be emitted as an array rather than doing a separate emit
- *    for each received object.
  *  * sslTls: Whether SSL/TLS is enabled. This defaults to false.
  *  * trustAll: Whether to trust servers. This defaults to false.
  *    Setting it to true means that if sslTls is set to true, then
@@ -185,10 +178,10 @@ var defaultClientOptions = {
  *
  *  For numeric types, you can also send an array with a single call
  *  to send(). The elements of the array will be sent in sequence all
- *  at once, and may be received in one batch. If the other end has
- *  serializeReceivedArrays set to true (the default), then these
- *  elements will be emitted one by one. Otherwise, they will be emitted
- *  as a single array.
+ *  at once, and may be received in one batch. If both ends have
+ *  rawBytes set to false (specifying message framing), then these
+ *  elements will be emitted at the receiving end all at once in a single
+ *  array. Otherwise, they will be emitted one at a time.
  *
  *  For strings, you can also send an array of strings in a single call,
  *  but these will be simply be concatenated and received as a single string.
@@ -238,7 +231,6 @@ exports.SocketClient.prototype._opened = function(netSocket, client) {
     this.wrapper = new SocketHelper.SocketWrapper(
             this.helper, this, netSocket,
             this.options['sendType'], this.options['receiveType'],
-            this.options['serializeReceivedArrays'],
             this.options['rawBytes']);
     this.emit('open');
     
@@ -306,7 +298,6 @@ var defaultServerOptions = {
     'receiveType': 'string',
     'sendBufferSize': 65536,
     'sendType': 'string',
-    'serializeReceivedArrays': true,
     'sslTls': false,
 }
 
@@ -402,12 +393,6 @@ var defaultServerOptions = {
  *  * sendBufferSize: The size of the receive buffer. Defaults to
  *    65536.
  *  * sendType: See below.
- *  * serializeReceivedArrays: If true (the default), each emit from
- *    the socket object consists of a single data item, even if several
- *    data items were received at once. If false, then a batch of incoming
- *    data with any type other than string that is received at once
- *    will be emitted as an array rather than doing a separate emit
- *    for each received object.
  *  * sslTls: Whether SSL/TLS is enabled. This defaults to false.
  *
  *  The meaning of the options is (partially)defined here:
@@ -432,10 +417,10 @@ var defaultServerOptions = {
  *
  *  For numeric types, you can also send an array with a single call
  *  to send(). The elements of the array will be sent in sequence all
- *  at once, and may be received in one batch. If the other end has
- *  serializeReceivedArrays set to true (the default), then these
- *  elements will be emitted one by one. Otherwise, they will be emitted
- *  as a single array.
+ *  at once, and may be received in one batch. If both ends have
+ *  rawBytes set to false (specifying message framing), then these
+ *  elements will be emitted at the receiving end all at once in a single
+ *  array. Otherwise, they will be emitted one at a time.
  *
  *  For strings, you can also send an array of strings in a single call,
  *  but these will be simply be concatenated and received as a single string.
@@ -482,7 +467,6 @@ exports.SocketServer.prototype._socketCreated = function(netSocket) {
     var socket = new exports.Socket(
             this.helper, netSocket,
             this.options['sendType'], this.options['receiveType'],
-            this.options['serializeReceivedArrays'],
             this.options['rawBytes']);
     this.emit('connection', socket);
 }
@@ -507,19 +491,16 @@ exports.SocketServer.prototype._socketCreated = function(netSocket) {
  *  @param netSocket The Vert.x NetSocket object.
  *  @param sendType The type to send over the socket.
  *  @param receiveType The type expected to be received over the socket.
- *  @param serializeReceivedArrays Whether to emit batches of received objects as
- *   a single array (false) or as separate data items (true).
  *  @param rawBytes If false, prepend messages with length information and emit
  *   only complete messages.
  */
-exports.Socket = function(helper, netSocket, sendType, receiveType,
-        serializeReceivedArrays, rawBytes) {
+exports.Socket = function(helper, netSocket, sendType, receiveType, rawBytes) {
     // For a server side socket, this instance of Socket will be the event emitter.
 
     // Because we are creating an inner class, the first argument needs to be
     // the instance of the enclosing socketHelper class.
     this.wrapper = new SocketHelper.SocketWrapper(
-            helper, this, netSocket, sendType, receiveType, serializeReceivedArrays, rawBytes);
+            helper, this, netSocket, sendType, receiveType, rawBytes);
 }
 util.inherits(exports.Socket, EventEmitter);
 
