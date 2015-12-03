@@ -147,31 +147,44 @@ public class ModifyDate extends TypedAtomicActor {
                         + operationString + " not supported.");
             }
 
+            boolean setUsingCalendar = true;
+            Calendar calendar = token.getCalendarInstance();
             if (unitString.equals("Year")) {
-                token.getCalendarInstance().add(Calendar.YEAR, val);
+                calendar.add(Calendar.YEAR, val);
             } else if (unitString.equals("Month")) {
-                token.getCalendarInstance().add(Calendar.MONTH, val);
+                calendar.add(Calendar.MONTH, val);
             } else if (unitString.equals("Day")) {
-                token.getCalendarInstance().add(Calendar.DAY_OF_MONTH, val);
+                calendar.add(Calendar.DAY_OF_MONTH, val);
             } else if (unitString.equals("Hour")) {
-                token.getCalendarInstance().add(Calendar.HOUR_OF_DAY, val);
+                calendar.add(Calendar.HOUR_OF_DAY, val);
             } else if (unitString.equals("Minute")) {
-                token.getCalendarInstance().add(Calendar.MINUTE, val);
+                calendar.add(Calendar.MINUTE, val);
             } else if (unitString.equals("Second")) {
-                token.getCalendarInstance().add(Calendar.SECOND, val);
+                calendar.add(Calendar.SECOND, val);
             } else if (unitString.equals("Millisecond")) {
-                token.getCalendarInstance().add(Calendar.MILLISECOND, val);
+                calendar.add(Calendar.MILLISECOND, val);
             } else if (unitString.equals("Microsecond")) {
+                setUsingCalendar = false;
                 token.addMicroseconds(val);
+                // Update _value and _calendar in DateToken.
+                token.setTimeInMilliseconds(token.getTimeInMilliseconds());
             } else if (unitString.equals("Nanosecond")) {
+                setUsingCalendar = false;
                 token.addNanoseconds(val);
+                // Update _value and _calendar in DateToken.
+                token.setTimeInMilliseconds(token.getTimeInMilliseconds());
             } else {
                 throw new IllegalActionException(this, "The unit " + unitString
                         + " is not supported");
             }
+            
+            // If units are greater than milliseonds
+            if (setUsingCalendar) {
+                // Update _value and _calendar in DateToken.
+                token.setTimeInMilliseconds(calendar.getTimeInMillis());
+            }
 
             output.send(0, token);
-
         }
     }
 }

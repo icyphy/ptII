@@ -44,13 +44,23 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /** A token that contains a date.
  *
- *  Note: Java 8 provides a much improved implementation of dates and times.
- *  This implementation should be upgraded eventually.
- * @author Patricia Derler, Christopher  based on DateToken in Kepler by Daniel Crawl and Christopher Brooks
- * @version $Id$
- * @since Ptolemy II 10.0
- * @Pt.ProposedRating Red (cxh)
- * @Pt.AcceptedRating Red (cxh)
+ *  <p>This class tries to support both sub-millisecond precision
+ *  and string parsing of dates.  This means that there are two
+ *  fields, a value, which is a Java long, and a calendar, which is
+ *  a java.util.Calendar.  The Calendar class only support milliseconds,
+ *  it does not support microseconds and nanoseconds.  When
+ *  operations are performed, it is essential that 
+ *  {@link #setTimeInMilliseconds(long)} be called so that
+ *  both fields are updated.</p>
+ *
+ *  <p>Note: Java 8 provides a much improved implementation of dates and times.
+ *  This implementation should be upgraded eventually.</p>
+ * 
+ *  @author Patricia Derler, Christopher  based on DateToken in Kepler by Daniel Crawl and Christopher Brooks
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Red (cxh)
+ *  @Pt.AcceptedRating Red (cxh)
  */
 public class DateToken extends AbstractConvertibleToken implements
         PartiallyOrderedToken {
@@ -204,6 +214,7 @@ public class DateToken extends AbstractConvertibleToken implements
      *  @param nanoseconds The nanoseconds to add.
      */
     public void addNanoseconds(int nanoseconds) {
+        // FIXME: This method should probably return a new token like DoubleToken._add().
         if (_precision >= PRECISION_NANOSECOND) {
             _value += nanoseconds;
             if (nanoseconds >= 1000000) {
@@ -217,6 +228,7 @@ public class DateToken extends AbstractConvertibleToken implements
      *  @param microseconds The microseconds to add.
      */
     public void addMicroseconds(int microseconds) {
+        // FIXME: This method should probably return a new token like DoubleToken._add().
         if (_precision == PRECISION_MICROSECOND) {
             _value += microseconds;
         } else if (_precision == PRECISION_NANOSECOND) {
@@ -415,6 +427,7 @@ public class DateToken extends AbstractConvertibleToken implements
 
     /** Get time in milliseconds since January 1, 1970.
      *  @return The time as a long value.
+     *  @see #setTimeInMilliseconds()
      */
     public long getTimeInMilliseconds() {
         if (_precision == PRECISION_NANOSECOND) {
@@ -567,6 +580,25 @@ public class DateToken extends AbstractConvertibleToken implements
         return _isNil;
     }
 
+    /** Set the time in milliseconds since January 1, 1970.
+     *  @paramn The time as a long value.
+     *  @see #getTimeInMilliseconds();
+     */
+    public void setTimeInMilliseconds(long newValue) {
+        // FIXME: This is a poor design because we are exposing
+        // _value with a setter.
+        if (_precision == PRECISION_NANOSECOND) {
+            _value = newValue * 1000000;
+        } else if (_precision == PRECISION_MICROSECOND) {
+            _value = newValue * 1000;
+        } else if (_precision == PRECISION_MILLISECOND) {
+            _value = newValue;
+        } else if (_precision == PRECISION_SECOND) {
+            _value = newValue / 1000;
+        }
+        _calendar.setTimeInMillis(newValue);
+    }
+    
     /** Return the value of the token as a String.
      *  @return The string value, which is the same as
      *  the value returned by {@link #toString()}, except
@@ -615,6 +647,8 @@ public class DateToken extends AbstractConvertibleToken implements
      *  The toString() method on a nil token returns the string "nil".
      */
     public static final DateToken NIL;
+
+    // FIXME: the precision should be an enum.
 
     /** The flag indicating that the the precision is seconds. */
     public static final int PRECISION_SECOND = 1;
