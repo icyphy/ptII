@@ -5,6 +5,7 @@
  * @authors: Edward A. Lee, Rene Vivanco, and Christopher Brooks
  */
 
+var SerialHelper = Java.type('ptolemy.actor.lib.jjs.modules.serial.SerialHelper');
 var CommPortIdentifier = Java.type('gnu.io.CommPortIdentifier');
 var EventEmitter = require('events').EventEmitter;
 
@@ -32,7 +33,7 @@ exports.hostSerialPorts = function() {
 
 /** Construct a serial port object, initialize it with the specified options.
  *  It is an event emitter that emits the following events:
- *  * 'dataReceived': Emitted when new data arrives on the serial port.
+ *  * 'data': Emitted when new data arrives on the serial port.
  *
  *  @param portName The name of the port to open.
  *  @param ownerName The name of the owner assigned to this port, if opening is successful.
@@ -42,10 +43,7 @@ exports.hostSerialPorts = function() {
  *  @throws If the port is in use or initializing the port fails.
  */
 exports.SerialPort = function(portName, ownerName, timeout, options) {
-    var portID = CommPortIdentifier.getPortIdentifier(portName);
-    this.interface = portID.open(ownerName, timeout);
-    // FIXME: Set the options.
-    this.emit('dataReceived', 'hello world');
+    this.helper = new SerialHelper(this, portName, ownerName, timeout, options);
 }
 
 util.inherits(exports.SerialPort, EventEmitter);
@@ -53,8 +51,6 @@ util.inherits(exports.SerialPort, EventEmitter);
 /** Close the port.
  */
 exports.SerialPort.prototype.close = function() {
-    if (this.interface) {
-        this.interface.close();
-    }
+    this.helper.close();
 };
 
