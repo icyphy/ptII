@@ -36,10 +36,11 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTHTTPCLIENT_DIR is set to eventbus if the Vertx jars are found by configure.
 # PTIMUSENSOR_DIR is set to IMUSensor if the Java Communications API (RXTX) jars are found by configure.
 # PTPAHO_MQTT_DIR is set to localStorage if the $PTII/lib/org.eclipse.paho.client.mqttv3.jar is found by configure.
+# PTSERIAL_DIR is set to serial if the Java Communication API is found by configure.
 # PTUDPSOCKET_DIR is set to udpSocket if the Vertx jars are found by configure.
 # PTVERTX_SOCKET_DIR is set to socket if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
-DIRS = 		audio $(PTBROWSER_DIR) $(PTCAMERAS_DIR) contextAware contextAwareTest discovery dsp $(PTEVENTBUS_DIR) $(PTHTTPCLIENT_DIR) $(PTIMUSENSOR_DIR) localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign shell $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR)
+DIRS = 		audio $(PTBROWSER_DIR) $(PTCAMERAS_DIR) contextAware contextAwareTest discovery dsp $(PTEVENTBUS_DIR) $(PTHTTPCLIENT_DIR) $(PTIMUSENSOR_DIR) localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign $(PTSERIAL_DIR) shell $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..
