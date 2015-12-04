@@ -10179,7 +10179,7 @@ if test "$RXTX_PRESENT" = "yes"; then
     PTSERIAL_DIR=serial
     PTIMUSENSOR_DIR=IMUSensor
     # PTRXTX_PACKAGES is used in ptII/doc/makefile
-    PTRXTX_PACKAGES="ptolemy.actor.lib.io.comm ptolemy.actor.lib.jjs.modules.IMUSensor"
+    PTRXTX_PACKAGES="ptolemy.actor.lib.io.comm ptolemy.actor.lib.jjs.modules.IMUSensor ptolemy.actor.lib.jjs.modules.serial"
 else
     RXTX_JAR="$RXTX_JAR_DEFAULT"
     updateExcludes "ptolemy/actor/lib/io/comm/"
