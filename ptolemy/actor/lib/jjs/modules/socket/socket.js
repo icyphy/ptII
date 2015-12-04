@@ -1,5 +1,5 @@
 /**
- * Module supporting sockets.
+ * Module supporting TCP sockets.
  * This module defines three classes, SocketClient, SocketServer, and Socket.
  * To make a connection, create an instance of SocketServer, set up event listeners,
  * and start the server. On another machine (or the same machine), create
@@ -195,6 +195,8 @@ var defaultClientOptions = {
  *  The meaning of the options is (partially) defined here:
  *     http://vertx.io/docs/vertx-core/java/
  *
+ *  @param port The remote port to connect to.
+ *  @param host The remote host to connect to.
  *  @param options The options.
  */
 exports.SocketClient = function(port, host, options) {
@@ -267,9 +269,8 @@ exports.SocketClient.prototype.send = function(data) {
 }
 
 /** Close the current connection with the server.
- *  If there is data that was passed to send() but has not yet
- *  been successfully sent (because the socket was not open),
- *  then throw an exception.
+ *  This will indicate to the server that no more data
+ *  will be sent, but data may still be received from the server.
  */
 exports.SocketClient.prototype.close = function() {
     if (this.wrapper) {
@@ -506,13 +507,13 @@ util.inherits(exports.Socket, EventEmitter);
 
 /** Close the socket. Normally, this would be called on the client side,
  *  not on the server side. But the server can also close the connection.
+ *  This will indicate to the client that the server will be sending no more data.
  */
 exports.Socket.prototype.close = function() {
     this.wrapper.close();
 }
 
-/** Send data over the web socket.
- *  The data can be anything that has a JSON representation.
+/** Send data over the socket.
  *  @param data The data to send.
  */
 exports.Socket.prototype.send = function(data) {
