@@ -47,6 +47,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.TreeSet;
 
 import javax.imageio.ImageIO;
 
@@ -79,9 +80,13 @@ import ptolemy.util.MessageHandler;
    
    This class supports transmission of strings, images, and binary
    numerical data of type byte, double, float, int, long, short,
-   unsigned byte, unsigned int, and unsigned short.
-   At this time, an image will be encoded using JPG only for transmission.
-   This may be generalized sometime in the future.
+   unsigned byte, unsigned int, and unsigned short, and arrays of
+   all the numerical type.
+   If you specify the send type to be "image", then a default
+   JPG encoding will be used for transmission. Otherwise, the specific
+   image type encoding that you specify will be used.
+   For received images, any image type supported by the ImageIO
+   readers can be accepted, so you just need to specify "image".
 
    @author Edward A. Lee, Contributor: Hokeun Kim
    @version $Id$
@@ -293,20 +298,36 @@ public class SocketHelper extends VertxHelperBase {
      *  receiveType arguments.
      */
     public static String[] supportedReceiveTypes() {
+        if (_receiveTypes != null) {
+            return _receiveTypes;
+        }
         int length = DATA_TYPE.values().length;
-        String[] result = new String[length];
+        _receiveTypes = new String[length];
         int i = 0;
         for (DATA_TYPE type : DATA_TYPE.values()) {
-            result[i++] = type.toString().toLowerCase();
+            _receiveTypes[i++] = type.toString().toLowerCase();
         }
-        return result;
+        return _receiveTypes;
     }
 
     /** Return an array of the types supported by the current host for
      *  sendType arguments.
      */
     public static String[] supportedSendTypes() {
-        return supportedReceiveTypes();
+        if (_sendTypes != null) {
+            return _sendTypes;
+        }
+        int length = DATA_TYPE.values().length;
+        _sendImageTypes = _removeDuplicates(ImageIO.getWriterFormatNames());
+        _sendTypes = new String[length + _sendImageTypes.size()];
+        int i = 0;
+        for (DATA_TYPE type : DATA_TYPE.values()) {
+            _sendTypes[i++] = type.toString().toLowerCase();
+        }
+        for (String imageType : _sendImageTypes) {
+            _sendTypes[i++] = imageType;
+        }
+        return _sendTypes;
     }
     
     /** Support data types for send and receive. */
@@ -324,6 +345,33 @@ public class SocketHelper extends VertxHelperBase {
         UNSIGNEDINT,
         UNSIGNEDSHORT
     };
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     protected methods                     ////
+
+    /** Given an array of strings, return an array where everything is
+     *  converted to lower case, duplicates are removed, and the order
+     *  is alphabetical.
+     */
+    protected static TreeSet<String> _removeDuplicates(String[] original) {
+        TreeSet<String> result = new TreeSet<String>();
+        for (String value : original) {
+            result.add(value.toLowerCase());
+        }
+        return result;
+    }
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     private fields                        ////
+    
+    /** The array of receive type names. */
+    private static String[] _receiveTypes;
+
+    /** The set of informal image type names that can be sent. */
+    private static TreeSet<String> _sendImageTypes;
+    
+    /** The array of send type names. */
+    private static String[] _sendTypes;
 
     ///////////////////////////////////////////////////////////////////
     ////                     public classes                        ////
@@ -454,13 +502,19 @@ public class SocketHelper extends VertxHelperBase {
             try {
                 _sendType = Enum.valueOf(DATA_TYPE.class, sendType.trim().toUpperCase());
             } catch (Exception ex) {
-                throw new IllegalArgumentException("Invalid data type: " + sendType);
+                // It might be an image type.
+                if (_sendImageTypes.contains(sendType)) {
+                    _sendImageType = sendType;
+                    _sendType = DATA_TYPE.IMAGE;
+                } else {
+                    throw new IllegalArgumentException("Invalid send data type: " + sendType);
+                }
             }
 
             try {
                 _receiveType = Enum.valueOf(DATA_TYPE.class, receiveType.trim().toUpperCase());
             } catch (Exception ex) {
-                throw new IllegalArgumentException("Invalid data type: " + receiveType);
+                throw new IllegalArgumentException("Invalid receive data type: " + receiveType);
             }
 
             // Set up handlers for data, errors, etc.
@@ -477,18 +531,6 @@ public class SocketHelper extends VertxHelperBase {
                         SocketWrapper.this.notifyAll();
                     }
                 });
-                _socket.endHandler((Void) -> {
-                    // End event on the socket triggers a close of the socket.
-                    // This gets called when the remote side sends a FIN packet.
-                    // FIXME: This isn't right. Need FIN from both ends to close the socket!
-                    // _client.close();
-
-                    // In case a send is blocked, unblock it.
-                    synchronized(this) {
-                        _closed = true;
-                        notifyAll();
-                    }
-                });
                 _socket.exceptionHandler(throwable -> {
                     _error(_eventEmitter, throwable.toString());
                 });
@@ -501,21 +543,27 @@ public class SocketHelper extends VertxHelperBase {
         /** Close the socket.
          */
         public void close() {
-            // FIXME: Send FIN and handshake with the other end.
             submit(() -> {
                 _socket.close();
             });
+            synchronized(SocketWrapper.this) {
+                _closed = true;
+            }
         }
         /** Send data over the socket.
          *  @param data The data to send.
          */
         public void send(final Object data) {
-            // Block if the send buffer is full.
-            // Note that this should be called in the director thread, not
-            // in the Vert.x thread, so blocking is OK. We need to stall
-            // execution of the model to not get ahead of the capability.
-            while(_socket.writeQueueFull() && !_closed) {
-                synchronized(SocketWrapper.this) {
+            synchronized(SocketWrapper.this) {
+                if (_closed) {
+                    _error(_eventEmitter, "Socket is closed. Cannot send data.");
+                    return;
+                }
+                // Block if the send buffer is full.
+                // Note that this should be called in the director thread, not
+                // in the Vert.x thread, so blocking is OK. We need to stall
+                // execution of the model to not get ahead of the capability.
+                while(_socket.writeQueueFull()) {
                     try {
                         _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
                         SocketWrapper.this.wait();
@@ -585,8 +633,11 @@ public class SocketHelper extends VertxHelperBase {
                         _error(_eventEmitter, "Unsupported image token type: " + image.getClass());
                         return;
                     }
-                    // FIXME: Image types for sending given by ImageIO.getReaderFormatNames();
-                    String imageType = "jpg";
+                    String imageType = _sendImageType;
+                    if (_sendImageType == null) {
+                        // If only image is specified, use JPG.
+                        imageType = "jpg";
+                    }
                     ByteArrayOutputStream stream = new ByteArrayOutputStream();
                     try {
                         ImageIO.write((BufferedImage)image, imageType, stream);
@@ -842,10 +893,12 @@ public class SocketHelper extends VertxHelperBase {
                             // Append the current buffer to previously received buffer(s).
                             _byteStream.append(bytes);
                         }
-                        // FIXME: JPG image at least ends with byte -39.
-                        // Not sure about others. If any stream comes in that never ends in -39,
-                        // then this will fail to produce any more images and will use up memory.
-                        if (bytes[bytes.length - 1] == (byte)-39) {
+                        // If we are not doing image framing, then there is no assurance at this point
+                        // that we have a complete image. Thus, we emit a byte array and not an image
+                        // token.
+                        if (_rawBytes) {
+                            _eventEmitter.callMember("emit", "data", bytes);
+                        } else {
                             BufferedImage image = ImageIO.read(_byteStream);
                             _byteStream = null;
                             if (image != null && image.getHeight() > 0 && image.getWidth() > 0) {
@@ -965,7 +1018,8 @@ public class SocketHelper extends VertxHelperBase {
         private NetSocket _socket;
         private ByteArrayBackedInputStream _byteStream;
         private ScriptObjectMirror _eventEmitter;
-        private DATA_TYPE _sendType;
         private DATA_TYPE _receiveType;
+        private String _sendImageType;
+        private DATA_TYPE _sendType;
     }
 }

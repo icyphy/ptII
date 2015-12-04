@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SocketImage" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SocketImageRaw" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1221, 634}, maximized=false}">
@@ -13,7 +13,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{358.6880644223889, 202.70637461999289}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -23,7 +23,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test transmission of type image from client to server&#10;and back.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test transmission of type image from client to server&#10;and back, where the server treats the image as raw&#10;bytes and echoes them back to the client.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, -45.0}">
         </property>
@@ -59,7 +59,7 @@
         </port>
     </entity>
     <entity name="Server" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	output('listening');&#10;	output('connected');&#10;	output('received');&#10;	parameter(&#10;		'receiveType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	parameter(&#10;		'sendType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':4000,&#10;		'hostInterface':'localhost',&#10;		'receiveType':getParameter('receiveType'),&#10;		'sendType':getParameter('sendType'),&#10;		'rawBytes': false&#10;	});&#10;	server.on('listening', function(port) {&#10;		send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			send('received', data);&#10;			serverSocket.send(data);&#10;		});&#10;	});&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.close();&#10;	}&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	output('listening');&#10;	output('connected');&#10;	output('received');&#10;	parameter(&#10;		'receiveType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	parameter(&#10;		'sendType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':4000,&#10;		'hostInterface':'localhost',&#10;		'receiveType':getParameter('receiveType'),&#10;		'sendType':getParameter('sendType'),&#10;		'rawBytes': true&#10;	});&#10;	server.on('listening', function(port) {&#10;		send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			send('received', data);&#10;			serverSocket.send(data);&#10;		});&#10;	});&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.close();&#10;	}&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -73,11 +73,11 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-85.0, 60.0}">
         </property>
-        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="image">
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="unsignedbyte">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="sendType" class="ptolemy.data.expr.Parameter" value="image">
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="unsignedbyte">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -105,16 +105,6 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 50.0}">
-        </property>
-    </entity>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;{type=\&quot;class ptolemy.data.AWTImageToken\&quot;, width=\&quot;176\&quot;, height=\&quot;144\&quot;}&quot;}">
-        </property>
-        <property name="requireOrderedValues" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 335.0}">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -178,43 +168,14 @@
         </port>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={661, 482, 176, 188}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={382, 561, 176, 188}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[176, 144]">
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[91, 0]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 230.0}">
         </property>
-    </entity>
-    <entity name="ImageDisplay2" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={441, 482, 176, 188}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
-        </property>
-        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[176, 144]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 270.0}">
-        </property>
-    </entity>
-    <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="image.toString()">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 335.0}">
-        </property>
-        <port name="image" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
     <entity name="Expression2" class="ptolemy.actor.lib.Expression">
         <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="image.toString()">
@@ -236,13 +197,21 @@
         </port>
     </entity>
     <entity name="ImageDisplay3" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={661, 482, 176, 188}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={579, 562, 176, 188}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[176, 144]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 165.0}">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={804, 594, 526, 255}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{165, 270}">
         </property>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -267,10 +236,6 @@
         <vertex name="vertex1" value="{520.0, 230.0}">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Client.reply&quot;,x=425.0,y=230.0}, tail={id=&quot;relation4.vertex1&quot;,x=520.0,y=230.0}, points={} },{ head={id=&quot;Test2.input&quot;,x=745.0,y=170.0}, tail={id=&quot;relation4.vertex1&quot;,x=505.0,y=110.0}, points={} },{ head={id=&quot;ImageDisplay.input&quot;,x=580.0,y=230.0}, tail={id=&quot;relation4.vertex1&quot;,x=520.0,y=230.0}, points={} },{ head={id=&quot;Expression2.image&quot;,x=625.0,y=290.0}, tail={id=&quot;relation4.vertex1&quot;,x=520.0,y=230.0}, points={520.0,290.0} } }">
-        </property>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=290.0,y=335.0}, tail={id=&quot;Expression.output&quot;,x=150.0,y=335.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -300,15 +265,12 @@
     <link port="Server.received" relation="relation3"/>
     <link port="ServerConnected.input" relation="relation2"/>
     <link port="ListeningPort.input" relation="relation7"/>
-    <link port="Test.input" relation="relation"/>
     <link port="Test2.input" relation="relation8"/>
     <link port="Camera.trigger" relation="relation2"/>
     <link port="Camera.image" relation="relation5"/>
     <link port="ImageDisplay.input" relation="relation4"/>
-    <link port="ImageDisplay2.input" relation="relation3"/>
-    <link port="Expression.output" relation="relation"/>
-    <link port="Expression.image" relation="relation3"/>
     <link port="Expression2.output" relation="relation8"/>
     <link port="Expression2.image" relation="relation4"/>
     <link port="ImageDisplay3.input" relation="relation5"/>
+    <link port="Display.input" relation="relation3"/>
 </entity>

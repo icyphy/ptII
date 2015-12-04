@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SocketImage" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SocketImagePNG" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1221, 634}, maximized=false}">
@@ -23,7 +23,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test transmission of type image from client to server&#10;and back.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test transmission of type image from client to server&#10;and back, where the image is transmitted to the server&#10;in PNG format, converted to JPG, and sent back.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{10.0, -45.0}">
         </property>
@@ -43,7 +43,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{425.0, 230.0}">
         </property>
-        <property name="sendType" class="ptolemy.data.expr.Parameter" value="image">
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="png">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -77,7 +77,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="sendType" class="ptolemy.data.expr.Parameter" value="image">
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="jpg">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -188,7 +188,7 @@
         </property>
     </entity>
     <entity name="ImageDisplay2" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={441, 482, 176, 188}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={471, 482, 177, 185}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
