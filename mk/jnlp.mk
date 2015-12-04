@@ -307,6 +307,7 @@ CYPHYSIM_JNLP_JARS =	\
 	lib/ptcolt.jar \
 	ptolemy/actor/lib/conversions/json/json.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
+	lib/nrjavaserial-3.11.0.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jjs/jjs.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
@@ -674,6 +675,7 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/fmi/demo/demo.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/io/comm/demo/demo.jar \
+	lib/nrjavaserial-3.11.0.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jai/demo/demo.jar \
 	ptolemy/actor/lib/jjs/jjs.jar \
