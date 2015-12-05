@@ -406,6 +406,8 @@ public class RemoveGraphicalClasses extends MoMLFilterSimple {
         //if the actor supports '-redirectgui', it should be put into file: $Kepler/common/configs/ptolemy/configs/kepler/KeplerDisplayActorWithRedirect.xml.
         //if the actor does not support '-redirectgui', it should be put into file: $Kepler/common/configs/ptolemy/configs/kepler/KeplerDisplayActorNoRedirect.xml.
 
+        _graphicalClasses.put("ptolemy.vergil.actor.LayoutHint", null);
+
     }
 
     /** Read in a MoML file, remove graphical classes and
