@@ -1787,6 +1787,8 @@
 	<include name="ptolemy/actor/lib/jjs/external/*.md"/>
 	<include name="ptolemy/actor/lib/jjs/external/*.htm"/>
 	<include name="ptolemy/actor/lib/jjs/external/*.js"/>
+	<include name="ptolemy/actor/lib/jjs/node/README.txt"/>
+	<include name="ptolemy/actor/lib/jjs/node/*.js"/>
       </fileset>
     </jar>
 
