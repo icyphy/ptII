@@ -186,18 +186,20 @@ NUMBER_OF_JARS_TO_LOAD_EAGERLY = 999
 
 # Order matters here, include the most important jars first
 # PTMATLAB_JARS is set by configure in $PTII/mk/ptII.mk
-CORE_JNLP_JARS = \
+CORE_NONGUI_JARS = \
+	ptolemy/ptsupport.jar \
 	doc/docConfig.jar \
 	lib/diva.jar \
 	lib/ptliblicenses.jar \
-	lib/kieler.jar \
-	ptolemy/vergil/basic/layout/layout.jar \
-	ptolemy/ptsupport.jar \
-	ptolemy/vergil/vergil.jar \
 	ptolemy/domains/domains.jar \
-	ptolemy/actor/parameters/demo/demo.jar \
 	$(PTMATLAB_JARS)
 
+CORE_JNLP_JARS = \
+	$(CORE_NONGUI_JARS) \
+	lib/kieler.jar \
+	ptolemy/vergil/basic/layout/layout.jar \
+	ptolemy/vergil/vergil.jar \
+	ptolemy/actor/parameters/demo/demo.jar
 
 #######
 # DSP - The smallest runtime
@@ -229,41 +231,45 @@ DSP_JNLP_JARS =	\
 # doc/design/usingVergil/usingVergil.jar is used in dsp, ptiny and full,
 # but not hyvisual.
 
-CAPECODE_MAIN_JAR = \
-	ptolemy/actor/gui/jnlp/CapeCodeApplication.jar
-
-CAPECODE_JNLP_JARS = \
+CAPECODE_NONGUI_JARS = \
+	$(CORE_NONGUI_JARS) \
 	edu/umich/eecs/april/april.jar \
 	com/cureos/cureos.jar \
 	org/json/json.jar \
-	$(CAPECODE_MAIN_JAR) \
-	$(CORE_JNLP_JARS) \
-	$(DOC_CODEDOC_JAR) \
-	$(EXPORT_JARS) \
-	$(PDFRENDERER_JARS) \
 	$(PTJAVASCRIPT_JARS) \
 	ptolemy/actor/lib/mail/mail.jar \
 	$(PTJAVAMAIL_JARS) \
-	$(PTRSYNTAXTEXTAREA_JAR) \
 	org/terraswarm/accessor/accessor.jar \
-	org/terraswarm/accessor/demo/demo.jar \
 	org/ptolemy/ssm/ssm.jar \
-	ptolemy/actor/gui/syntax/syntax.jar \
 	ptolemy/actor/lib/colt/colt.jar \
 	lib/ptcolt.jar \
 	ptolemy/actor/lib/conversions/json/json.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
 	lib/nrjavaserial-3.11.0.jar \
 	ptolemy/actor/lib/jjs/jjs.jar \
-	ptolemy/actor/lib/jjs/modules/demo.jar \
 	ptolemy/actor/lib/jjs/modules/modules.jar \
 	ptolemy/actor/lib/js/js.jar \
-	ptolemy/vergil/basic/export/html/jsoup/jsoup.jar \
 	org/ptolemy/ptango/ptango.jar \
 	$(PTANGO_JAR_FILES) \
 	$(PTDATABASE_JNLP_JARS) \
 	org/ptolemy/machineLearning/machineLearning.jar \
 	org/ptolemy/optimization/optimization.jar
+
+CAPECODE_MAIN_JAR = \
+	ptolemy/actor/gui/jnlp/CapeCodeApplication.jar
+
+CAPECODE_JNLP_JARS = \
+	$(CORE_JNLP_JARS) \
+	$(CAPECODE_NONGUI_JARS) \
+	$(CAPECODE_MAIN_JAR) \
+	$(DOC_CODEDOC_JAR) \
+	$(EXPORT_JARS) \
+	$(PDFRENDERER_JARS) \
+	ptolemy/actor/gui/syntax/syntax.jar \
+	$(PTRSYNTAXTEXTAREA_JAR) \
+	org/terraswarm/accessor/demo/demo.jar \
+	ptolemy/actor/lib/jjs/modules/demo.jar \
+	ptolemy/vergil/basic/export/html/jsoup/jsoup.jar
 
 # As per Edward, exclude these from CapeCode
 #	ptolemy/actor/gt/gt.jar
@@ -1855,22 +1861,41 @@ echo_classpath_jars:
 # make vergil_run_full
 # We run in the /tmp directory to avoid looking in $PTII
 vergil_run:
-	(cd /tmp; $(JAVA) -Xmx4000m $(JAVAFLAGS) -classpath `(cd ${PTII}; make echo_classpath_jars JARS=${CONFIGURATION_JARS})` ptolemy.vergil.VergilApplication $(CONFIGURATION))
+	(cd /tmp; $(JAVA) -Xmx4000m $(JAVAFLAGS) -classpath `(cd ${PTII}; make echo_classpath_jars JARS=${CONFIGURATION_JARS})` ptolemy.vergil.VergilApplication -$(CONFIGURATION))
 vergil_run_bcvtb:
-	$(MAKE) vergil_run CONFIGURATION_JARS=BCVTB_JNLP_JARS CONFIGURATION=-bcvtb
+	$(MAKE) vergil_run CONFIGURATION_JARS=BCVTB_JNLP_JARS CONFIGURATION=bcvtb
+vergil_run_capecode:
+	$(MAKE) vergil_run CONFIGURATION_JARS=BCVTB_JNLP_JARS CONFIGURATION=capecode
 vergil_run_full:
-	$(MAKE) vergil_run CONFIGURATION_JARS=FULL_JNLP_JARS
+	$(MAKE) vergil_run CONFIGURATION_JARS=FULL_JNLP_JARS CONFIGURATION=full
 vergil_run_hyvisual:
-	$(MAKE) vergil_run CONFIGURATION_JARS=HYVISUAL_JNLP_JARS CONFIGURATION=-hyvisual
+	$(MAKE) vergil_run CONFIGURATION_JARS=HYVISUAL_JNLP_JARS CONFIGURATION=hyvisual
 vergil_run_ptiny:
-	$(MAKE) vergil_run CONFIGURATION_JARS=PTINY_JNLP_JARS CONFIGURATION=-ptiny 
+	$(MAKE) vergil_run CONFIGURATION_JARS=PTINY_JNLP_JARS CONFIGURATION=ptiny 
 vergil_run_visualsense:
-	$(MAKE) vergil_run CONFIGURATION_JARS=VISUAL_SENSE_JNLP_JARS CONFIGURATION=-visualsense
+	$(MAKE) vergil_run CONFIGURATION_JARS=VISUAL_SENSE_JNLP_JARS CONFIGURATION=visualsense
 
 
 vergil_run_signed:
 	(cd /tmp; $(JAVA) $(JAVAFLAGS) -classpath `(cd $(PTII); make echo_classpath_jars JARS=PTINY_JNLP_JARS)` ptolemy.vergil.VergilApplication $(CONFIGURATION))
 
+
+####################################################
+# Generate a shell script that will invoke a configuration based on the jar files
+MAIN_CLASS = ptolemy.vergil.VergilApplication
+PACKAGE_RUN = $(CONFIGURATION)
+package_run: $(PACKAGE_RUN)
+$(PACKAGE_RUN):
+	echo "#! /bin/sh" > $(PACKAGE_RUN)
+	echo "java -classpath `(cd ${PTII}; make echo_classpath_jars JARS=${CONFIGURATION_JARS})` $(MAIN_CLASS) $(CONFIGURATION) \$$@" >> $(PACKAGE_RUN)
+	chmod a+x $(PACKAGE_RUN)
+
+capecode_nongui:
+	$(MAKE) package_run CONFIGURATION_JARS=CAPECODE_NONGUI_JARS MAIN_CLASS=ptolemy.moml.MoMLSimpleApplication PACKAGE_RUN=capecode_nongui
+
+# Create a tar file that contains what is necessary to run CapeCode without a gui.
+capecode_nongui.tar: capecode_nongui
+	tar -cf $@ capecode_nongui `$(MAKE) echo_plist_jars JARS=CAPECODE_NONGUI_JARS`
 
 ################################################################
 ################################################################
