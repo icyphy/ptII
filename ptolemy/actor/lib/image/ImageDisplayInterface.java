@@ -56,8 +56,10 @@ public interface ImageDisplayInterface {
 
     /** Display the specified token.
      *  @param in The token to display
+     *  @throws IllegalActionException If the input is not acceptable to the
+     *   implementation.
      */
-    public void display(Token in);
+    public void display(Token in) throws IllegalActionException;
 
     /** Get the background.
      *  @return The background color.
