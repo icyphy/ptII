@@ -1,18 +1,22 @@
 /**
  * Module supporting TCP sockets.
  * This module defines three classes, SocketClient, SocketServer, and Socket.
- * To make a connection, create an instance of SocketServer, set up event listeners,
- * and start the server. On another machine (or the same machine), create
- * an instance of SocketClient and set up event listeners and/or invoke send() to send
- * data. When a client connects to the SocketServer, the SocketServer will create
- * an instance of the Socket object. Users of this module should not directly create
- * a Socket object.
+ *
+ * To establish a connection, create an instance of SocketServer and listen for
+ * connection events. When a connection request comes in, the listener will be
+ * passed an instance of Socket. The server can send data through that instance
+ * and listen for incoming data events.
+ *
+ * On another machine (or the same machine), create an instance of SocketClient.
+ * When the connection is established to the server, this instance will emit an
+ * 'open' event. When data arrives from the server, it will emit a 'data' event.
+ * You can invoke send() to send data to the server.
  *
  * The send() function can accept data in many different forms.
- * You can send a string, a number, or an array of numbers.
+ * You can send a string, an image, a number, or an array of numbers.
  * Two utility functions supportedReceiveTypes() and supportedSendTypes()
  * tell you exactly which data types supported by the host.
- * Arrays of those types are also supported.
+ * Arrays of numeric types are also supported.
  *
  * If the rawBytes option is true (the default), then data is sent without any
  * message framing. As a consequence, the recipient of the data may emit only a
@@ -24,7 +28,7 @@
  * To communicate with external tools that do not support this message framing
  * protocol, leave rawBytes set to true.
  *
- * The message framing protocol used here is very simple. Each message is preceeded
+ * The message framing protocol used here is very simple. Each message is preceded
  * by one byte indicating the length of the message. If the message has length
  * greater than 254, then the value of this byte will be 255 and the subsequent four
  * bytes will represent the length of the message. The message then follows these bytes.
@@ -119,7 +123,7 @@ var defaultClientOptions = {
  *  
  *  The options argument is a JSON object that can include:
  *  * connectTimeout: The time to wait (in milliseconds) before declaring
- *    a connection attempt to have failed.
+ *    a connection attempt to have failed. This defaults to 6000.
  *  * idleTimeout: The amount of idle time in seconds that will cause
  *    a disconnection of a socket. This defaults to 0, which means no
  *    timeout.
@@ -259,7 +263,7 @@ exports.SocketClient.prototype.send = function(data) {
         if (!this.options['discardMessagesBeforeOpen']) {
             this.pendingSends.push(data);
             var maxUnsentMessages = this.options['maxUnsentMessages'];
-            if (maxUnsentMessages > 0 && data.length() >= maxUnsentMessages) {
+            if (maxUnsentMessages > 0 && this.pendingSends.length() >= maxUnsentMessages) {
                 throw "Maximum number of unsent messages has been exceeded: " + maxUnsentMessages;
             }
         } else {
@@ -299,7 +303,7 @@ var defaultServerOptions = {
     'receiveType': 'string',
     'sendBufferSize': 65536,
     'sendType': 'string',
-    'sslTls': false,
+    'sslTls': false
 }
 
 // FIXME: one of the server options in NetServerOptions is 'acceptBacklog'.
@@ -475,8 +479,8 @@ exports.SocketServer.prototype._socketCreated = function(netSocket) {
 /////////////////////////////////////////////////////////////////
 //// Socket
 
-/** Construct (using new) a Socket object for the server side of a new connection.
- *  This is called by the _socketCreated function above whenever a new connection is
+/** A Socket object for the server side of a new connection.
+ *  This is created by the _socketCreated function above whenever a new connection is
  *  established at the request of a client. It should not normally be called by
  *  the JavaScript programmer. The returned Socket is an event emitter that emits
  *  the following events:
@@ -502,6 +506,7 @@ exports.Socket = function(helper, netSocket, sendType, receiveType, rawBytes) {
     // the instance of the enclosing socketHelper class.
     this.wrapper = new SocketHelper.SocketWrapper(
             helper, this, netSocket, sendType, receiveType, rawBytes);
+    this.netSocket = netSocket;
 }
 util.inherits(exports.Socket, EventEmitter);
 
@@ -511,6 +516,22 @@ util.inherits(exports.Socket, EventEmitter);
  */
 exports.Socket.prototype.close = function() {
     this.wrapper.close();
+}
+
+/** Return the remote host (an IP address) for this socket.
+ *  @return The remote host, a string.
+ */
+exports.Socket.prototype.remoteHost = function() {
+    var remoteAddress = this.netSocket.remoteAddress();
+    return remoteAddress.host();
+}
+
+/** Return the remote port for this socket.
+ *  @return The remote port, a number.
+ */
+exports.Socket.prototype.remotePort = function() {
+    var remoteAddress = this.netSocket.remoteAddress();
+    return remoteAddress.port();
 }
 
 /** Send data over the socket.
