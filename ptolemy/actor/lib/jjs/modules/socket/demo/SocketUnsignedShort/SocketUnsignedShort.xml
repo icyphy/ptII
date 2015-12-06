@@ -54,13 +54,21 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The server&#10;adds 1 to&#10;received&#10;data and&#10;sends the&#10;result back.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-105.0, 290.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-5.0, 80.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Server">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The above array is converted&#10;to unsigned shorts (16-bit&#10;non-negative integers) and&#10;sent as a batch to the server.&#10;&#10;This is triggered only when the&#10;Server has begun listening.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The above array is converted&#10;to unsigned shorts (16-bit&#10;non-negative integers) and&#10;sent as a batch to the server.&#10;&#10;This is triggered only when the&#10;Server has established a connection.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 305.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-45.0, 70.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Const">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
         </property>
     </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
