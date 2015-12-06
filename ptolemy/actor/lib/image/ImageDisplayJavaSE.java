@@ -89,9 +89,15 @@ ImageDisplayInterface {
     /** Display the specified token. This must be called in the Swing
      *  event thread.
      *  @param in The token to display
+     *  @throws IllegalActionException If the input is not an ImageToken
      */
     @Override
-    public void display(final Token in) {
+    public void display(final Token in) throws IllegalActionException {
+        if (!(in instanceof ImageToken)) {
+            throw new IllegalActionException(_display,
+                    "Input is not an ImageToken. It is: " + in);
+        }
+
         // Display probably to be done in the Swing event thread.
         Runnable doDisplay = new Runnable() {
             @Override
