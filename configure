@@ -1769,7 +1769,7 @@ Optional Packages:
                           defaults to \$PTII/vendors/misc/javacv-bin/javacv.jar
   --with-oscp5=JAR       use oscP5.jar from JAR,
                           defaults to \$PTII/lib/oscP5.jar
-  --with-rxtx=DIR       use Java Serial Port Interfacrxtx from DIR,
+  --with-rxtx=DIR       use Java Serial Port Interface rxtx from DIR,
                           defaults to $RXTX_JAR_DEFAULT
   --with-lejos=DIR       use Java lejos from DIR,
                           defaults to \$PTII/vendors/lejos/lejosBeta3
@@ -10068,7 +10068,7 @@ fi
 #--------------------------------------------------------------------
 # We only need to look for rxtx if $PTII/ptolemy/actor/lib/io/comm is present
 RXTX_USER_DIR="$PTII/ptolemy/actor/lib/io/comm"
-RXTX_JAR_DEFAULT='${PTII}/lib/nrjavaserial-3.11.0.jar'
+RXTX_JAR_DEFAULT='${PTII}/lib/nrjavaserial-3.11.0.7Dec2015jar'
 RXTX_PRESENT=no
 # PTLEGO_DIR is set to lego
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
@@ -10101,7 +10101,7 @@ $as_echo_n "checking for rxtx directory... " >&6; }
 if test "${with_rxtx+set}" = set; then :
   withval=$with_rxtx; RXTX_JAR=$withval
 else
-  RXTX_JAR=$PTII/lib/nrjavaserial-3.11.0.jar
+  RXTX_JAR=$PTII/lib/nrjavaserial-3.11.0.7Dec2015.jar
 fi
 
 
@@ -10163,12 +10163,12 @@ $as_echo "ok, RXTX is probably in the jre directory" >&6; }; fi
     You need not download rxtx unless you plan the actors in actor.lib.comm.
     The rxtx package can be found at
     https://github.com/NeuronRobotics/nrjavaserial/releases and the jar
-    file placed at $PTII/lib/nrjavaserial-3.11.0.jar and configure rerun." >&5
+    file placed at $PTII/lib/nrjavaserial-3.11.0.7Dec2015.jar and configure rerun." >&5
 $as_echo "$as_me: WARNING: Perhaps rxtx is not installed?
     You need not download rxtx unless you plan the actors in actor.lib.comm.
     The rxtx package can be found at
     https://github.com/NeuronRobotics/nrjavaserial/releases and the jar
-    file placed at $PTII/lib/nrjavaserial-3.11.0.jar and configure rerun." >&2;}
+    file placed at $PTII/lib/nrjavaserial-3.11.0.7Dec2015.jar and configure rerun." >&2;}
     fi
 fi
 
