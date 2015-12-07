@@ -1,0 +1,203 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="DiscoveryJSStdout" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={126, 38, 1080, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[846, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{413.0, 252.0}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 25.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Delay ensures that model displays results before stopping.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 455.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Javascript Accessor Version&#10;This demo uses an accessor to discover devices on the local area network.&#10;The accessor uses the discovery module.  &#10;&#10;The discovery module determines the host platform (Linux, Mac, Windows), &#10;then executes OS commands to find IP addresses, names (when available), &#10;and MAC addresses (when available) of devices on the local network.  &#10;&#10;By default, discovery uses the ping and arp commands.  To use nmap, &#10;double-click on the accessor and check &quot;useNmap&quot;.  The nmap program must&#10;be installed on your system.  See link below for nmap setup info.&#10;&#10;For more info, please see:&#10;https://www.terraswarm.org/accessors/wiki/Version0/Discovery">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, -15.0]">
+        </property>
+    </property>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 375.0]">
+        </property>
+    </entity>
+    <entity name="Stop" class="ptolemy.actor.lib.Stop">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 380.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[443.25, 375.0]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 380.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 430.0]">
+        </property>
+    </entity>
+    <entity name="Discovery" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor discovers devices on the local area network.&#10; *  It requires the discovery module.  Please see:&#10; *  https://www.terraswarm.org/accessors/wiki/Version0/Discovery&#10; * &#10; *  @accessor Discovery&#10; *  @author Elizabeth Latronico (beth@berkeley.edu)&#10; *  @input {string} hostIP The IP address of the host.  Used to discover other&#10; *   devices on the local area network.&#10; *  @output devices An object containing IP addresses and (when&#10; *   available) names and MAC addresses of devices on the local area network.&#10; *  @parameter {boolean} useNmap True if nmap should be used for discovery, &#10; *   false to use ping and arp.  Default is false.&#10; */&#10;&#10;var discovery = require('discovery');&#10;// Initialize ds here, instead of in setup(), so that the ds object is defined&#10;// when the ds.on() function is encountered&#10;var ds = new discovery.DiscoveryService();  &#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function () {&#10;    &#10;    accessor.input('hostIP', {&#10;        type: 'string',&#10;      });&#10;    &#10;    accessor.output('devices');&#10;    &#10;    accessor.parameter('useNmap', {&#10;        type: 'boolean',&#10;        value: false,&#10;      });&#10;};&#10;&#10;var handle;&#10;&#10;/** Upon receiving a host IP address, discover devices on the corresponding &#10; *  local area network.&#10; */&#10;exports.initialize = function () {&#10;	handle = addInputHandler('hostIP', function() {&#10;		if (get('useNmap')) {&#10;		    ds.discoverDevices(get('hostIP'), 'nmap');&#10;		} else {&#10;			ds.discoverDevices(get('hostIP'));&#10;		}&#10;	});&#10;};&#10;&#10;/** Upon wrapup, stop handling new inputs.  */&#10;exports.wrapup = function () {&#10;    removeInputHandler(handle);&#10;};&#10;&#10;/** When discovery is finished, send a list of devices.  */&#10;ds.on('discovered', function(data) {&#10;	if (data == &quot;&quot;) {&#10;       send('error', 'Error:  No devices found.  At minimum, the host machine should be found.');&#10;    } else {&#10;   send('devices', data);&#10;    }&#10;});&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/net/Discovery.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor discovers devices on the local area network.&#10; It requires the discovery module.  Please see:&#10; https://www.terraswarm.org/accessors/wiki/Version0/Discovery&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Elizabeth Latronico (beth@berkeley.edu)">
+            </property>
+            <property name="hostIP (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;string&quot;]}) The IP address of the host.  Used to discover other&#10;  devices on the local area network.">
+            </property>
+            <property name="devices (port)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;string&quot;]}) A JSON object containing IP addresses and (when&#10;  available) names and MAC addresses of devices on the local area network.">
+            </property>
+            <property name="useNmap (parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;boolean&quot;]}) True if nmap should be used for discovery, &#10;  false to use ping and arp.  Default is false.">
+            </property>
+            <property name="hostIP (port)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;string&quot;]}) The IP address of the host.  Used to discover other&#10;  devices on the local area network.">
+            </property>
+        </property>
+        <property name="useNmap" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 375.0]">
+        </property>
+        <port name="hostIP" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="devices" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="IPAddress" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor outputs the IP address of the local machine.&#10; * &#10; *  @accessor IPAddress&#10; *  @module Discovery&#10; *  @author Elizabeth Latronico (beth@berkeley.edu), based on IPAddress actor&#10; *  by Christopher Brooks&#10; *  @input {boolean} trigger Send a token here to produce an output.&#10; *  @output {string} IPAddress The IP address of the local machine.&#10; */&#10;&#10;var discovery = require('discovery');&#10;// Initialize ds here, instead of in setup(), so that the ds object is defined&#10;// when the ds.on() function is encountered&#10;var ds = new discovery.DiscoveryService(); &#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function () {&#10;    &#10;    accessor.input('trigger', {&#10;        type: 'boolean',&#10;      });&#10;    &#10;    accessor.output('IPAddress', {&#10;        type: 'string',&#10;      });&#10;};&#10;&#10;var handle;&#10;&#10;/** Upon receiving a trigger input, output the host machine's IP address.&#10; */&#10;exports.initialize = function () {&#10;	handle = addInputHandler('trigger', function() {&#10;		send('IPAddress', ds.getHostAddress());&#10;	});&#10;};&#10;&#10;/** Upon wrapup, stop handling new inputs.  */&#10;exports.wrapup = function () {&#10;    removeInputHandler(handle);&#10;};&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/net/IPAddress.js">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 375.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="IPAddress" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="LineWriter" class="ptolemy.actor.lib.io.LineWriter">
+        <doc>Write the value of a string token, one per line, to a text file.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 305.0]">
+        </property>
+    </entity>
+    <entity name="TokenToExpression" class="ptolemy.actor.lib.conversions.TokenToExpression">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{425, 270}">
+        </property>
+    </entity>
+    <entity name="TokenToExpression2" class="ptolemy.actor.lib.conversions.TokenToExpression">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 270.0]">
+        </property>
+    </entity>
+    <entity name="TokenToExpression3" class="ptolemy.actor.lib.conversions.TokenToExpression">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{321.0, 447.0}">
+        </property>
+    </entity>
+    <entity name="LineWriter2" class="ptolemy.actor.lib.io.LineWriter">
+        <property name="fileName" class="ptolemy.actor.parameters.FilePortParameter" value="System.err">
+        </property>
+        <doc>Write the value of a string token, one per line, to a text file.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 475.0]">
+        </property>
+    </entity>
+    <entity name="TokenToExpression4" class="ptolemy.actor.lib.conversions.TokenToExpression">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 445.0]">
+        </property>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Stop.input&quot;,x=645.0,y=220.0}, tail={id=&quot;Const.output&quot;,x=580.0,y=220.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[410.0, 375.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[275.0, 430.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[210.0, 375.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="SingleEvent.output" relation="relation8"/>
+    <link port="Stop.input" relation="relation6"/>
+    <link port="MicrostepDelay.input" relation="relation7"/>
+    <link port="MicrostepDelay.output" relation="relation5"/>
+    <link port="Const.output" relation="relation6"/>
+    <link port="Const.trigger" relation="relation5"/>
+    <link port="Const.trigger" relation="relation2"/>
+    <link port="MicrostepDelay2.input" relation="relation"/>
+    <link port="MicrostepDelay2.output" relation="relation2"/>
+    <link port="Discovery.error" relation="relation"/>
+    <link port="Discovery.hostIP" relation="relation3"/>
+    <link port="Discovery.devices" relation="relation7"/>
+    <link port="IPAddress.error" relation="relation11"/>
+    <link port="IPAddress.trigger" relation="relation8"/>
+    <link port="IPAddress.IPAddress" relation="relation3"/>
+    <link port="LineWriter.input" relation="relation4"/>
+    <link port="LineWriter.input" relation="relation9"/>
+    <link port="TokenToExpression.input" relation="relation7"/>
+    <link port="TokenToExpression.output" relation="relation4"/>
+    <link port="TokenToExpression2.input" relation="relation3"/>
+    <link port="TokenToExpression2.output" relation="relation9"/>
+    <link port="TokenToExpression3.input" relation="relation"/>
+    <link port="TokenToExpression3.output" relation="relation10"/>
+    <link port="LineWriter2.input" relation="relation10"/>
+    <link port="LineWriter2.input" relation="relation12"/>
+    <link port="TokenToExpression4.input" relation="relation11"/>
+    <link port="TokenToExpression4.output" relation="relation12"/>
+</entity>
