@@ -41,6 +41,11 @@ if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
 } {}
 
+# Load up the test definitions.
+if {[string compare test [info procs nightlyMake]] == 1} then {
+    source nightlyMake.tcl
+} {}
+
 # Override the default of 8400 seconds in $PTII/util/testsuite/testDefs.tcl because the Coverity
 # server is swamped, so we increase the time here and set the default back to 7200 in testDefs.tcl
 set timeOutSeconds 9876
@@ -73,29 +78,6 @@ set gendir $PTII/adm/gen-$major_version
 set ptII_full $gendir/ptII$version.tar
 set ptII_src_jar $gendir/ptII$version.src.jar
 set ptsetup ptII${windows_version}_setup_windows
-
-proc nightlyMake {target {pattern {.*\*\*\*.*}}} {
-    global PTII gendir
-    set ptIIhome $PTII
-    set ptIIadm $PTII/adm
-    set user hudson
-
-    # Use StreamExec so that we echo the results to stdout as the
-    # results are produced.
-    set streamExec [java::new ptolemy.util.StreamExec]
-    set commands [java::new java.util.LinkedList]
-    cd $PTII
-    $commands add "make -C $gendir USER=$user PTII=${PTII} PTIIHOME=${ptIIhome} PTIIADM=${ptIIadm} JAR=/usr/bin/jar TAR=/usr/local/bin/tar $target"
-    $streamExec setCommands $commands
-    $streamExec setPattern $pattern
-    $streamExec start
-    set returnCode [$streamExec getLastSubprocessReturnCode]
-    if { $returnCode != 0 } {
-	return [list "Last subprocess returned non-zero: $returnCode" \
-		    [$streamExec getPatternLog]]
-    }
-    return [$streamExec getPatternLog]
-}
 
 set startingDirectory [pwd]
 cd $gendir
