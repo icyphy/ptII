@@ -11,16 +11,17 @@ As these modules are very much under development, these interface definitions ma
 
 *   [eventbus][3]: Provide publish and subscribe on a local network through a Vert.x event bus. 
 *   [httpClient][4]: Provide support for HTTP clients. 
-*   [webSocket][5]: Provide full-duplex web socket interfaces and functions for web socket servers. 
+*   [socket][5]: TCP socket communication, including optional message framing. 
+*   [webSocket][6]: Provide full-duplex web socket interfaces and functions for web socket servers. 
 
 
 
 ## Reasonably Well-Developed Image Processing Modules
 
-*   [aprilTags][6]: Recognize and locate AprilTags in images. 
-*   [cameras][7]: Capture images and video from cameras on the host (built in or USB connected). 
-*   [imageFilters][8]: Filter images to create new images. 
-*   [motionDetector][9]: Detect and locate motion in streams of images. 
+*   [aprilTags][7]: Recognize and locate AprilTags in images. 
+*   [cameras][8]: Capture images and video from cameras on the host (built in or USB connected). 
+*   [imageFilters][9]: Filter images to create new images. 
+*   [motionDetector][10]: Detect and locate motion in streams of images. 
 
 
 
@@ -28,7 +29,7 @@ As these modules are very much under development, these interface definitions ma
 
 Some modules designed for Node.js are pure JavaScript with no particular dependency on Node. These can be required as well by an accessor. These include, at least, 
 
-*   [querystring][10] 
+*   [querystring][11] 
 
 
 
@@ -36,58 +37,59 @@ Some modules designed for Node.js are pure JavaScript with no particular depende
 
 *In case-insensitive alphabetical order, please* 
 
-*   [audio][11]: Provide access to the host audio hardware. 
-*   [ble][12]: Provide access to Bluetooth Low Energy peripherals. 
-*   [browser][13]: Provide display in the default browser. 
-*   [coapClient][14]: Provide support for CoAP clients. 
-*   [discovery][15]: Provide device discovery for devices on the local area network. 
-*   [GMTK][16]: GMTK accessor that requires some setup through the [webSocket][5] or shell accessors 
-*   [IMUSensor][17]: Provides bluetooth connection and packet output from Roozbeh's IMU Sensors. 
-*   [localStorage][18]: Provide persistent key-value storage based on local files. 
-*   [mapManager][19]: Provides resources for creating maps and combining information across them. 
-*   [mdnsClient][20]: mDNS and DNS-SD support. 
-*   [mqtt][21]: Provide support for MQTT protocol clients. 
+*   [audio][12]: Provide access to the host audio hardware. 
+*   [ble][13]: Provide access to Bluetooth Low Energy peripherals. 
+*   [browser][14]: Provide display in the default browser. 
+*   [coapClient][15]: Provide support for CoAP clients. 
+*   [discovery][16]: Provide device discovery for devices on the local area network. 
+*   [GMTK][17]: GMTK accessor that requires some setup through the [webSocket][6] or shell accessors 
+*   [IMUSensor][18]: Provides bluetooth connection and packet output from Roozbeh's IMU Sensors. 
+*   [localStorage][19]: Provide persistent key-value storage based on local files. 
+*   [mapManager][20]: Provides resources for creating maps and combining information across them. 
+*   [mdnsClient][21]: mDNS and DNS-SD support. 
+*   [mqtt][22]: Provide support for MQTT protocol clients. 
 *   obd 
 *   rabbitmq 
 *   serial 
-*   [ssdpClient][22]: UPnP device discovery. 
-*   [textToSpeech][23]: Provide spoken word output. 
-*   [UDPSocket][24]: Provide interfaces and functions for UDP sockets. 
+*   [ssdpClient][23]: UPnP device discovery. 
+*   [textToSpeech][24]: Provide spoken word output. 
+*   [UDPSocket][25]: Provide interfaces and functions for UDP sockets. 
 
-To implement a module, see the [Module Specification][25]. 
+To implement a module, see the [Module Specification][26]. 
 
 
 
 * * *
 
-[Back to accessor specification][26]
+[Back to accessor specification][27]
 
  [1]: https://www.terraswarm.org/accessors/wiki/Version0/Require
  [2]: https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/index.html
  [3]: https://www.terraswarm.org/accessors/wiki/Version0/Eventbus
  [4]: https://www.terraswarm.org/accessors/wiki/Version0/HttpClient
- [5]: https://www.terraswarm.org/accessors/wiki/Version0/WebSocket
- [6]: https://www.terraswarm.org/accessors/wiki/Version0/AprilTags
- [7]: https://www.terraswarm.org/accessors/wiki/Version0/Cameras
- [8]: https://www.terraswarm.org/accessors/wiki/Version0/ImageFilters
- [9]: https://www.terraswarm.org/accessors/wiki/Version0/MotionDetector
- [10]: https://nodejs.org/api/querystring.html
- [11]: https://www.terraswarm.org/accessors/wiki/Version0/Audio
- [12]: https://www.terraswarm.org/accessors/wiki/Version0/Ble
- [13]: https://www.terraswarm.org/accessors/wiki/Version0/Browser
- [14]: https://www.terraswarm.org/accessors/wiki/Version0/CoapClient
- [15]: https://www.terraswarm.org/accessors/wiki/Version0/Discovery
- [16]: https://www.terraswarm.org/accessors/wiki/Version0/GMTK
- [17]: https://www.terraswarm.org/accessors/wiki/Version0/IMUSensor
- [18]: https://www.terraswarm.org/accessors/wiki/Version0/LocalStorage
- [19]: https://www.terraswarm.org/accessors/wiki/Version0/MapManager?action=edit
- [20]: https://www.terraswarm.org/accessors/wiki/Version0/MdnsClient?action=edit
- [21]: https://www.terraswarm.org/accessors/wiki/Version0/Mqtt
- [22]: https://www.terraswarm.org/accessors/wiki/Version0/SsdpClient
- [23]: https://www.terraswarm.org/accessors/wiki/Version0/TextToSpeech
- [24]: https://www.terraswarm.org/accessors/wiki/Version0/UDPSocket
- [25]: https://www.terraswarm.org/accessors/wiki/Version0/ModuleSpecification
- [26]: https://www.terraswarm.org/accessors/wiki/Version0/1aAccessorsSpecification
+ [5]: https://www.terraswarm.org/accessors/wiki/Version0/Socket
+ [6]: https://www.terraswarm.org/accessors/wiki/Version0/WebSocket
+ [7]: https://www.terraswarm.org/accessors/wiki/Version0/AprilTags
+ [8]: https://www.terraswarm.org/accessors/wiki/Version0/Cameras
+ [9]: https://www.terraswarm.org/accessors/wiki/Version0/ImageFilters
+ [10]: https://www.terraswarm.org/accessors/wiki/Version0/MotionDetector
+ [11]: https://nodejs.org/api/querystring.html
+ [12]: https://www.terraswarm.org/accessors/wiki/Version0/Audio
+ [13]: https://www.terraswarm.org/accessors/wiki/Version0/Ble
+ [14]: https://www.terraswarm.org/accessors/wiki/Version0/Browser
+ [15]: https://www.terraswarm.org/accessors/wiki/Version0/CoapClient
+ [16]: https://www.terraswarm.org/accessors/wiki/Version0/Discovery
+ [17]: https://www.terraswarm.org/accessors/wiki/Version0/GMTK
+ [18]: https://www.terraswarm.org/accessors/wiki/Version0/IMUSensor
+ [19]: https://www.terraswarm.org/accessors/wiki/Version0/LocalStorage
+ [20]: https://www.terraswarm.org/accessors/wiki/Version0/MapManager?action=edit
+ [21]: https://www.terraswarm.org/accessors/wiki/Version0/MdnsClient?action=edit
+ [22]: https://www.terraswarm.org/accessors/wiki/Version0/Mqtt
+ [23]: https://www.terraswarm.org/accessors/wiki/Version0/SsdpClient
+ [24]: https://www.terraswarm.org/accessors/wiki/Version0/TextToSpeech
+ [25]: https://www.terraswarm.org/accessors/wiki/Version0/UDPSocket
+ [26]: https://www.terraswarm.org/accessors/wiki/Version0/ModuleSpecification
+ [27]: https://www.terraswarm.org/accessors/wiki/Version0/1aAccessorsSpecification
 
 * * *
 
