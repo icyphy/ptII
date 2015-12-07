@@ -2,7 +2,7 @@
 # Create a demo with LiveLinks to other demos
 # Sample Usage:
 #   cd $PTII
-#   $PTII/adm/bin/ptmkLiveLinkDemo ptolemy/data/ontologies/demo/ConstPropagation > ptolemy/data/ontologies/demo/ConstPropagation/ConstPropagation.xml
+#   $PTII/bin/mkptmklivelinkdemo ptolemy/data/ontologies/demo/ConstPropagation > ptolemy/data/ontologies/demo/ConstPropagation/ConstPropagation.xml
 #
 
 demoBase=`basename $1`
@@ -87,7 +87,7 @@ cat <<EOFEND
     <property name="Annotation999" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(Created with $PTIIadm/bin/ptmkLiveLinkDemo.)">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="(Created with bin/mkptlivelinkdemo.)">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 485.0]">
         </property>

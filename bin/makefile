@@ -93,6 +93,7 @@ EXTRA_EXECUTABLE_SRCS = \
 	mkl4j \
 	mkosgi \
 	mkptdemo \
+	mkptlivelinkdemo \
 	mkpttest \
 	ptjunit \
 	updateFmu \

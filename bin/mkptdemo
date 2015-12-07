@@ -114,7 +114,13 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	$demoName.xml
+EOF
 
+    # List the .xml files in the directory.
+    (cd $demoDirectory; find . -name "*.xml" | awk '{printf("\t%s\\\n", $1)}' >> makefile)
+
+    # Continue creating the makefile.
+    cat >> $demoDirectory/makefile <<EOF2
 EXTRA_SRCS = \
 	\$(JSRCS) \
 	\$(OTHER_FILES_TO_BE_JARED)
@@ -154,8 +160,14 @@ demo_vergil:
 # Get the rest of the rules
 include \$(ROOT)/mk/ptcommon.mk
 
-EOF
+EOF2
     echo "$0: $demoDirectory/makefile created."
     echo "Don't forget to edit $parentDirectory/makefile and update DIRS and PTCLASSALLJARS"
+    numberOfXMLFiles=`find $demoDirectory -name "*.xml" | wc -l`
+    if [ $numberOfXMLFiles -ge 1 -a ! -f $demoDirectory/$demoName.xml ]; then
+        echo "There are $numberOfXMLFiles .xml files in $demoDirectory and $demoName.xml does not exist."
+        echo "Consider running:"
+        echo "   $PTII/bin/mkptlivelinkdemo $demoDirectory > $demoDirectory/$demoName.xml"
+    fi
     echo "Also, be sure to add demos to $PTII/ptolemy/configs/doc/completeDemos.htm and run make in that directory"
 fi
