@@ -35,7 +35,8 @@ ROOT = ../../../..
 DIRS = AprilTags Audio Camera HappySadStock HueToggle \
 	IMUSensor ImageAnnotate ImageFilters KeyValueStoreClient \
 	MoC MotionDetector StockTick \
-	SwarmAcousticService UDPSocket VertxBus \
+	SwarmAcousticService TCPSocket \
+	UDPSocket VertxBus \
 	Weather WebSocketClient WebSocketImage c4po
 
 # $(ME) is used in ptdir.mk
@@ -70,6 +71,7 @@ PTCLASSALLJARS = \
 	MotionDetector/MotionDetector.jar \
 	StockTick/StockTick.jar \
 	SwarmAcousticService/SwarmAcousticService.jar \
+	TCPSocket/TCPSocket.jar \
 	UDPSocket/UDPSocket.jar \
 	VertxBus/VertxBus.jar \
 	Weather/Weather.jar \
