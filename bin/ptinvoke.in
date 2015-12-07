@@ -1782,13 +1782,13 @@ EOF6
 		   cp $PTII/lib/libptmatlab.jnilib $MACAPP_APP/Contents/MacOS/
 
 		   # RXTX SerialComm
-		   if [ -f /Library/Java/Extensions/librxtxSerial.jnilib ]; then
-		       cp /Library/Java/Extensions/librxtxSerial.jnilib $MACAPP_APP/Contents/MacOS/
-		   fi
-		   if [ -f /Library/Java/Extensions/RXTXcomm.jar ]; then
-		       cp /Library/Java/Extensions/RXTXcomm.jar $jreApp/lib/ext/ 
-		   fi
-		   cp $PTII/ptolemy/actor/lib/io/comm/rxtx-copyright.htm $jreApp
+		   #if [ -f /Library/Java/Extensions/librxtxSerial.jnilib ]; then
+		   #    cp /Library/Java/Extensions/librxtxSerial.jnilib $MACAPP_APP/Contents/MacOS/
+		   #fi
+		   #if [ -f /Library/Java/Extensions/RXTXcomm.jar ]; then
+		   #    cp /Library/Java/Extensions/RXTXcomm.jar $jreApp/lib/ext/ 
+		   #fi
+		   #cp $PTII/ptolemy/actor/lib/io/comm/rxtx-copyright.htm $jreApp
 
 
 	       fi
