@@ -3302,6 +3302,8 @@ update_moog:
 		$(MOOG_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.htm
 	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/logs/ptIInightly.txt \
 		$(MOOG_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.txt
+	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/capeCodeNonGUI.tar.gz \
+		$(MOOG_HUDSON_HOME3)/builds/capeCodeNonGUI.tar.gz
 	#
 	@echo "Create links for tars and logs"
 	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
@@ -3315,6 +3317,8 @@ update_moog:
 	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
 	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/ \
+		$(PTEXTERNAL_NIGHTLY)/builds
+	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/capeCodeNonGUI.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
 	# 
 	@echo "Create links for latest tars and logs"
