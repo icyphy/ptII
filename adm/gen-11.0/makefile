@@ -3433,3 +3433,32 @@ $(PTBUILDRELEASE)/ptolemy/plot/dists.out:
 clean_ptrelease_dists.out:
 	rm -f $(PTBUILDRELEASE)/ptolemy/plot/dists.out
 
+################################################################
+################################################################
+################################################################
+
+# Create a tar file that contains what is necessary to run CapeCode without a gui.
+CAPECODE_TMPDIR=capecode_tmpdir
+capeCodeNonGUI.tar.gz:
+	(cd $(PTII); $(MAKE) package_run CONFIGURATION_JARS=CAPECODE_NONGUI_JARS MAIN_CLASS=ptolemy.moml.MoMLSimpleApplication PACKAGE_RUN=capeCodeNonGUI)
+	rm -rf $(CAPECODE_TMPDIR)
+	mkdir -p $(CAPECODE_TMPDIR)/capeCodeNonGUI
+	(cd $(PTII); tar -cf - `$(MAKE) echo_plist_jars JARS=CAPECODE_NONGUI_JARS`) | (cd $(CAPECODE_TMPDIR)/capeCodeNonGUI; tar -xpf -)
+	# Avoid absolute path to capeCodeNonGUI and copy it.
+	cp $(PTII)/capeCodeNonGUI $(CAPECODE_TMPDIR)/capeCodeNonGUI
+	# Need to unjar files that have .js files in them because our
+	# impl of require does not look in jar files.
+	(cd $(CAPECODE_TMPDIR)/capeCodeNonGUI; jar -xf ptolemy/actor/lib/jjs/jjs.jar)
+	(cd $(CAPECODE_TMPDIR)/capeCodeNonGUI; jar -xf ptolemy/actor/lib/jjs/modules/modules.jar)
+	(cd $(CAPECODE_TMPDIR); tar -czf tmp.tar.gz capeCodeNonGUI)
+	mv $(CAPECODE_TMPDIR)/tmp.tar.gz $@
+	rm -rf $(CAPECODE_TMPDIR)
+	ls -l $@
+
+test_capeCodeNonGUI.tar.gz: capeCodeNonGUI.tar.gz
+	rm -rf /tmp/capeCodeNonGUI
+	cat $^ | (cd /tmp; tar -zxf - )
+	cp $(PTII)/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml /tmp/capeCodeNonGUI
+	# Running DiscoveryJSStdout.xml, this could take a minute or two.
+	(cd /tmp/capeCodeNonGUI; ./capeCodeNonGUI ./DiscoveryJSStdout.xml)
+

@@ -121,5 +121,16 @@ test nightly-1.5 {setup} {
     list $r0 $matches [file exists $filename]
 } {0 {} 1}
 
+test nightly-1.6 {capeCodeNonGUI tar file} {
+    set filename $gendir/capeCodeNonGUI.tar.gz
+    file delete -force $filename
+    set r0  [file exists $filename]
+
+    set matches [nightlyMake capeCodeNonGUI.tar.gz]
+
+    puts "nightly-1.6: $filename"
+    list $r0 $matches [file exists $filename]
+} {0 {} 1}
+
 set VERBOSE 0
 cd $startingDirectory
