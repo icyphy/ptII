@@ -44,7 +44,7 @@ include $(CONFIG)
 # Tcl sources that are part of the testing infrastructure
 TCL_SRCS = 	testDefs.tcl
 
-JSRCS =
+JSRCS = SerialTest.java
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
