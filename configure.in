@@ -3855,7 +3855,7 @@ fi
 #--------------------------------------------------------------------
 # We only need to look for rxtx if $PTII/ptolemy/actor/lib/io/comm is present
 RXTX_USER_DIR="$PTII/ptolemy/actor/lib/io/comm"
-RXTX_JAR_DEFAULT='${PTII}/lib/nrjavaserial-3.11.0.jar'
+RXTX_JAR_DEFAULT='${PTII}/lib/nrjavaserial-3.11.0.7Dec2015jar'
 RXTX_PRESENT=no
 # PTLEGO_DIR is set to lego
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
@@ -3880,10 +3880,10 @@ if test ! -d "$RXTX_USER_DIR"; then
     # then ${PTII} will appear in ptinvoke.
 else
     AC_MSG_CHECKING([for rxtx directory])
-    AC_ARG_WITH(rxtx, [  --with-rxtx=DIR       use Java Serial Port Interfacrxtx from DIR,
+    AC_ARG_WITH(rxtx, [  --with-rxtx=DIR       use Java Serial Port Interface rxtx from DIR,
                           defaults to $RXTX_JAR_DEFAULT],
 	RXTX_JAR=$withval,
-	RXTX_JAR=$PTII/lib/nrjavaserial-3.11.0.jar)
+	RXTX_JAR=$PTII/lib/nrjavaserial-3.11.0.7Dec2015.jar)
 
     if test -f "$RXTX_JAR"; then
         PT_MSG_RESULT($RXTX_JAR)
@@ -3931,7 +3931,7 @@ else
     You need not download rxtx unless you plan the actors in actor.lib.comm.
     The rxtx package can be found at
     https://github.com/NeuronRobotics/nrjavaserial/releases and the jar
-    file placed at $PTII/lib/nrjavaserial-3.11.0.jar and configure rerun.])
+    file placed at $PTII/lib/nrjavaserial-3.11.0.7Dec2015.jar and configure rerun.])
     fi
 fi
 
