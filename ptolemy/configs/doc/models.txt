@@ -87,6 +87,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/REST/REST.xml
 $CLASSPATH/org/terraswarm/accessor/demo/SecureSocket/SecureSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/StockTick/StockTick.xml
 $CLASSPATH/org/terraswarm/accessor/demo/SwarmAcousticService/SwarmAcousticService.xml
+$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/UDPSocket/UDPSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/VertxBus/VertxBus.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Weather/Weather.xml
