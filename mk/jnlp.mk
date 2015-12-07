@@ -1882,20 +1882,15 @@ vergil_run_signed:
 
 ####################################################
 # Generate a shell script that will invoke a configuration based on the jar files
+# See the capeCodeNonGUI.tar.gz target in adm/gen-N.M/makefile 
 MAIN_CLASS = ptolemy.vergil.VergilApplication
 PACKAGE_RUN = $(CONFIGURATION)
 package_run: $(PACKAGE_RUN)
 $(PACKAGE_RUN):
 	echo "#! /bin/sh" > $(PACKAGE_RUN)
-	echo "java -classpath `(cd ${PTII}; make echo_classpath_jars JARS=${CONFIGURATION_JARS})` $(MAIN_CLASS) $(CONFIGURATION) \$$@" >> $(PACKAGE_RUN)
+	echo "java -classpath `(cd ${PTII}; make echo_classpath_jars JARS=${CONFIGURATION_JARS})|sed s@${PTII}@.@g` $(MAIN_CLASS) $(CONFIGURATION) \$$@" >> $(PACKAGE_RUN)
 	chmod a+x $(PACKAGE_RUN)
 
-capecode_nongui:
-	$(MAKE) package_run CONFIGURATION_JARS=CAPECODE_NONGUI_JARS MAIN_CLASS=ptolemy.moml.MoMLSimpleApplication PACKAGE_RUN=capecode_nongui
-
-# Create a tar file that contains what is necessary to run CapeCode without a gui.
-capecode_nongui.tar: capecode_nongui
-	tar -cf $@ capecode_nongui `$(MAKE) echo_plist_jars JARS=CAPECODE_NONGUI_JARS`
 
 ################################################################
 ################################################################
