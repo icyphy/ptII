@@ -40,7 +40,8 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTUDPSOCKET_DIR is set to udpSocket if the Vertx jars are found by configure.
 # PTVERTX_SOCKET_DIR is set to socket if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
-DIRS = 		audio $(PTBROWSER_DIR) $(PTCAMERAS_DIR) contextAware contextAwareTest discovery dsp $(PTEVENTBUS_DIR) $(PTHTTPCLIENT_DIR) $(PTIMUSENSOR_DIR) localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign $(PTSERIAL_DIR) shell $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR)
+# PTXBEE_DIR is set to xbee if the XBee Java Interface was found
+DIRS = 		audio $(PTBROWSER_DIR) $(PTCAMERAS_DIR) contextAware contextAwareTest discovery dsp $(PTEVENTBUS_DIR) $(PTHTTPCLIENT_DIR) $(PTIMUSENSOR_DIR) localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign $(PTSERIAL_DIR) shell $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) $(PTXBEE_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..
