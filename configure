@@ -13716,6 +13716,10 @@ PTWEBCAMCAPTURE_JARS=
 # PTWEBCAMCAPTURE_PACKAGES is used in doc/makefile
 PTWEBCAMCAPTURE_PACKAGES=
 
+PTSLF4J_API_JAR="$PTII/lib/slf4j-api-1.7.12.jar"
+PTSLF4J_NOP_JAR="$PTII/lib/slf4j-nop-1.7.12.jar"
+
+
 WEBCAMCAPTURE_USER_DIR=$PTII/ptolemy/actor/lib/jjs/modules/cameras
 # We only need to look for webcam-capture*.jar if the directory that uses it exists.
 if test ! -d "$WEBCAMCAPTURE_USER_DIR"; then
@@ -13736,22 +13740,25 @@ fi
 
 
     if test -f "$PTWEBCAMCAPTURE_JAR"; then
-        PTSLF4J_JAR="$PTII/lib/slf4j-api-1.7.2.jar"
-        if test -f "$PTSLF4J_JAR"; then
+        if test -f "$PTSLF4J_API_JAR"; then
            PTBRIDG_JAR="$PTII/lib/bridj-0.6.2.jar"
            if test -f "$PTBRIDG_JAR"; then
               if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTWEBCAMCAPTURE_JAR" >&5
 $as_echo "$PTWEBCAMCAPTURE_JAR" >&6; }; fi
               PTCAMERAS_DIR=cameras
-              PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR$CLASSPATHSEPARATOR$PTSLF4J_JAR$CLASSPATHSEPARATOR$PTBRIDG_JAR$CLASSPATHSEPARATOR$PTSLF4J_NOP_JAR"
+              PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR$CLASSPATHSEPARATOR$PTSLF4J_JAR$CLASSPATHSEPARATOR$PTBRIDG_JAR$CLASSPATHSEPARATOR$PTSLF4J_API_JAR"
               PTWEBCAMCAPTURE_PACKAGES=ptolemy.actor.lib.jjs.modules.cameras
               updateClasspath "$PTWEBCAMCAPTURE_JAR"
-              updateClasspath "$PTSLF4J_JAR"
+
+              ADDED_PTSLF4J_API_JAR_TO_CLASSPATH=1
+              updateClasspath "$PTSLF4J_API_JAR"
+
               updateClasspath "$PTBRIDG_JAR"
-              PTSLF4J_NOP_JAR="$PTII/lib/slf4j-nop-1.7.12.jar"
               if test -f "$PTSLF4J_NOP_JAR"; then
                   PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JARS$CLASSPATHSEPARATOR$PTSLF4J_NOP_JAR"
+
+                  ADDED_PTSLF4J_NOP_JAR_TO_CLASSPATH=1
                   updateClasspath "$PTSLF4J_NOP_JAR"
               else
                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTSLF4J_NOP_JAR
@@ -13815,7 +13822,6 @@ PTXBJLIB_JARS=
 # PTXBEE_DIR is set to xbee and used in
 # $PTII/ptolemy/actor/lib/jjs/modules/makefile if the XBee Java Interface was found
 PTXBEE_DIR=
-
 if test ! -d "$XBJLIB_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $XBJLIB_USER_DIR is not present,
     so we need not find the XBee xbjlib." >&5
@@ -13836,28 +13842,38 @@ fi
 
 
     if test -f "$XBJLIB_JAR"; then
-        if test -f "$PTII/lib/slf4j-nop-1.7.12.jar"; then
-            if test -f "$PTII/lib/slf4j-api-1.7.12.jar"; then
+        if test -f "$PTSLF4J_API_JAR"; then
+            if test -f "$PTSLF4J_NOP_JAR"; then
                 if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $XBJLIB_JAR" >&5
 $as_echo "$XBJLIB_JAR" >&6; }; fi
                 PTXBEE_DIR=xbee
                 # PTXBJLIB_PACKAGES is used in ptII/doc/makefile
                 PTXBJLIB_PACKAGES="ptolemy.actor.lib.jjs.modules.xbee"
-                PTXBJLIB_JARS="$XBJLIB_JAR${CLASSPATHSEPARATOR}$PTII/lib/slf4j-nop-1.7.12.jar${CLASSPATHSEPARATOR}$PTII/lib/slf4j-api-1.7.12.jar"
+                PTXBJLIB_JARS="$XBJLIB_JAR${CLASSPATHSEPARATOR}"
                 updateClasspath "$XBJLIB_JAR"
-                updateClasspath "$PTII/lib/slf4j-nop-1.7.12.jar"
-                updateClasspath "$PTII/lib/slf4j-api-1.7.12.jar"
+
+                # Webcam-capture might have already added slf4j-api
+                if test -z "$ADDED_PTSLF4J_API_JAR_TO_CLASSPATH" ; then
+                    updateClasspath "$PTSLF4J_API_JAR"
+                    PTXBJLIB_JARS="$PTXBJLIB_JAR${CLASSPATHSEPARATOR}$PTSLF4J_API_JAR${CLASSPATHSEPARATOR}$PTSLF4J_NOP_JAR"
+                fi
+
+                # Webcam-capture might have already added slf4j-nop
+                if test -z "$ADDED_PTSLF4J_NOP_JAR_TO_CLASSPATH" ; then
+                    updateClasspath "$PTSLF4J_NOP_JAR"
+                    PTXBJLIB_JARS="$PTXBJLIB_JAR${CLASSPATHSEPARATOR}$PTSLF4J_NOP_JAR"
+                fi
              else
-                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find $PTII/lib/slf4j-api-1.7.12.jar,
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find $PTSLF4J_NOP_JAR
     which is needed by the XBee xbjlib jar" >&5
-$as_echo "$as_me: WARNING: Could not find $PTII/lib/slf4j-api-1.7.12.jar,
+$as_echo "$as_me: WARNING: Could not find $PTSLF4J_NOP_JAR
     which is needed by the XBee xbjlib jar" >&2;}
              fi
         else
-             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find $PTII/lib/slf4j-nop-1.7.12.jar,
+             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find $PTSLF4J_API_JAR
     which is needed by the XBee xbjlib jar" >&5
-$as_echo "$as_me: WARNING: Could not find $PTII/lib/slf4j-nop-1.7.12.jar,
+$as_echo "$as_me: WARNING: Could not find $PTSLF4J_API_JAR
     which is needed by the XBee xbjlib jar" >&2;}
         fi
     else
