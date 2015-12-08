@@ -77,9 +77,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 10.0}">
         </property>
-        <property name="reconnectAttempts" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="reconnectAttempts" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="reconnectInterval" class="ptolemy.data.expr.Parameter" value="1000">
+        <property name="reconnectInterval" class="ptolemy.data.expr.Parameter" value="200">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -192,9 +192,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-70.0, 10.0}">
         </property>
-        <property name="reconnectAttempts" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="reconnectAttempts" class="ptolemy.data.expr.Parameter" value="20">
         </property>
-        <property name="reconnectInterval" class="ptolemy.data.expr.Parameter" value="1000">
+        <property name="reconnectInterval" class="ptolemy.data.expr.Parameter" value="200">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
