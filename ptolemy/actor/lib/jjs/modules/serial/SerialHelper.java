@@ -83,10 +83,10 @@ public class SerialHelper extends HelperBase implements SerialPortEventListener 
         _serialPort = (SerialPort) portID.open(ownerName, timeout);
         
         // FIXME: Set the options.
-        
-        _inputStream = _serialPort.getInputStream();
-        _outputStream = _serialPort.getOutputStream();
-        _serialPort.addEventListener(this);
+                
+        // _inputStream = _serialPort.getInputStream();
+        // _outputStream = _serialPort.getOutputStream();
+        // _serialPort.addEventListener(this);
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -76,7 +76,7 @@ var defaultClientOptions = {
     'receiveBufferSize': 65536,
     'receiveType': 'string',
     'reconnectAttempts': 10,
-    'reconnectInterval': 100,
+    'reconnectInterval': 1000,
     'sendBufferSize': 65536,
     'sendType': 'string',
     'sslTls': false,
@@ -153,7 +153,7 @@ var defaultClientOptions = {
  *    If this is greater than 0, then a failure to attempt will trigger
  *    additional attempts. This defaults to 10.
  *  * reconnectInterval: The time between reconnect attempts, in
- *    milliseconds. This defaults to 100.
+ *    milliseconds. This defaults to 1000 (1 second).
  *  * sendBufferSize: The size of the receive buffer. Defaults to
  *    65536.
  *  * sendType: See below.
