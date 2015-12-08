@@ -644,6 +644,9 @@ RXTX_JAR
 QTJAVA_ZIP
 PTII_LOCALURL
 PTXMPP_DIR
+PTXBJLIB_PACKAGES
+PTXBJLIB_JARS
+PTXBEE_DIR
 PTWEBCAMCAPTURE_PACKAGES
 PTWEBCAMCAPTURE_JARS
 PTWABA_DIR
@@ -1827,6 +1830,8 @@ Optional Packages:
                           defaults to \$PTII/vendors/misc/waba/wabasdk
   --with-webcam-capture=WEBCAMCAPTURE_JAR     use webcam-capture WEBCAMCAPTURE_JAR
                           defaults to \$PTII/lib/webcam-capture-0.3.10.jar
+  --with-xbjlib=DIR       use Java Serial Port Interface rxtx from DIR,
+                          defaults to $XBJLIB_JAR_DEFAULT
   --with-expat-include=DIR       use expat.h from DIR
                           defaults to /usr/include
 
@@ -13796,6 +13801,85 @@ if test -z "$PTCAMERAS_DIR"; then
 fi
 
 #--------------------------------------------------------------------
+#       XBee are wireless devices that are connected to via serial
+#       We are using nrjavaserial from https://github.com/NeuronRobotics/nrjavaserial/, so we have our own custom version of xbjlib.
+#       See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/XBee
+#--------------------------------------------------------------------
+# We only need to look for xbjlib if $PTII/ptolemy/actor/lib/jjs/modules/xbee is present
+XBJLIB_USER_DIR="$PTII/ptolemy/actor/lib/jjs/modules/xbee"
+XBJLIB_JAR_DEFAULT='${PTII}/lib/xbjlib-1.1.0.nrjavaserial.jar'
+
+# Jar files used in ptolemy/actor/lib/jjs/modules/xbee/makefile
+PTXBJLIB_JARS=
+
+# PTXBEE_DIR is set to xbee and used in
+# $PTII/ptolemy/actor/lib/jjs/modules/makefile if the XBee Java Interface was found
+PTXBEE_DIR=
+
+if test ! -d "$XBJLIB_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $XBJLIB_USER_DIR is not present,
+    so we need not find the XBee xbjlib." >&5
+$as_echo "$XBJLIB_USER_DIR is not present,
+    so we need not find the XBee xbjlib." >&6; }; fi
+    # Use curly brackets around PTII so that if xbjlib is not present
+    # then ${PTII} will appear in ptinvoke.
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for xbjlib directory" >&5
+$as_echo_n "checking for xbjlib directory... " >&6; }
+
+# Check whether --with-rxtx was given.
+if test "${with_rxtx+set}" = set; then :
+  withval=$with_rxtx; XBJLIB_JAR=$withval
+else
+  XBJLIB_JAR=$PTII/lib/xbjlib-1.1.0.nrjavaserial.jar
+fi
+
+
+    if test -f "$XBJLIB_JAR"; then
+        if test -f "$PTII/lib/slf4j-nop-1.7.12.jar"; then
+            if test -f "$PTII/lib/slf4j-api-1.7.12.jar"; then
+                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $XBJLIB_JAR" >&5
+$as_echo "$XBJLIB_JAR" >&6; }; fi
+                PTXBEE_DIR=xbee
+                # PTXBJLIB_PACKAGES is used in ptII/doc/makefile
+                PTXBJLIB_PACKAGES="ptolemy.actor.lib.jjs.modules.xbee"
+                PTXBJLIB_JARS="$XBJLIB_JAR${CLASSPATHSEPARATOR}$PTII/lib/slf4j-nop-1.7.12.jar${CLASSPATHSEPARATOR}$PTII/lib/slf4j-api-1.7.12.jar"
+                updateClasspath "$XBJLIB_JAR"
+                updateClasspath "$PTII/lib/slf4j-nop-1.7.12.jar"
+                updateClasspath "$PTII/lib/slf4j-api-1.7.12.jar"
+             else
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find $PTII/lib/slf4j-api-1.7.12.jar,
+    which is needed by the XBee xbjlib jar" >&5
+$as_echo "$as_me: WARNING: Could not find $PTII/lib/slf4j-api-1.7.12.jar,
+    which is needed by the XBee xbjlib jar" >&2;}
+             fi
+        else
+             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find $PTII/lib/slf4j-nop-1.7.12.jar,
+    which is needed by the XBee xbjlib jar" >&5
+$as_echo "$as_me: WARNING: Could not find $PTII/lib/slf4j-nop-1.7.12.jar,
+    which is needed by the XBee xbjlib jar" >&2;}
+        fi
+    else
+	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: Did not find
+	'$XBJLIB_JAR'" >&5
+$as_echo "Did not find
+	'$XBJLIB_JAR'" >&6; }
+    fi
+fi
+
+if test -z "$PTXBEE_DIR"; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Perhaps the XBee Java Library xbjlib is not installed?
+    You need not use xbjlib unless you plan on using the XBee Accessor
+    in ptolemy/actor/lib/jjs/modules/xbee" >&5
+$as_echo "$as_me: WARNING: Perhaps the XBee Java Library xbjlib is not installed?
+    You need not use xbjlib unless you plan on using the XBee Accessor
+    in ptolemy/actor/lib/jjs/modules/xbee" >&2;}
+    XBJLIB_JAR="$XBJLIB_JAR_DEFAULT"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/xbee"
+fi
+
+#--------------------------------------------------------------------
 #       libexpat is used by the lbnl simulation interface in ptII/lbnl
 #--------------------------------------------------------------------
 
@@ -14965,6 +15049,16 @@ fi
 
 
 # PTWEBCAMCAPTURE_PACKAGES is used in doc/makefile
+
+
+# PTXBEE_DIR is set to xbee and used in
+# $PTII/ptolemy/actor/lib/io/makefile if the Java Communications API was found
+
+
+# Jar files used in ptolemy/actor/lib/jjs/modules/xbee/makefile
+
+
+# PTXBJLIB_PACKAGES is used in ptII/doc/makefile
 
 
 # PTXMPP_DIR is set to xmpp if smack.jar and smackx.jar are found.  See org/ptolemy/ptango/makefile
