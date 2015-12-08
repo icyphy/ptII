@@ -161,6 +161,54 @@ exports.get = function(options, responseCallback) {
   return request;
 };
 
+/** Convenience method to issue an HTTP POST.  This just calls request() and then
+ *  calls end() on the object returned by request(). It returns the object returned
+ *  by request() (an instance of ClientRequest). See request() for documentation of
+ *  the arguments.
+ *
+ *  This implementation ensures that for any accessor that calls this function,
+ *  the callback functions are called in the same order as
+ *  invocations of this request() function that triggered the request.
+ *  If you call this function from the same accessor before the previous
+ *  request has been completed (the callback function has been called or it has
+ *  timed out), then the request will be queued to be issued only after the previous
+ *  request has been satisfied.
+ *
+ *  @param options The options.
+ *  @param responseCallback The callback function to call with an instance of IncomingMessage,
+ *   or with a null argument to signal an error.
+ */
+exports.post = function(options, responseCallback) {
+  options.method = "POST";
+  var request = exports.request(options, responseCallback);
+  request.end();
+  return request;
+};
+
+/** Convenience method to issue an HTTP PUT.  This just calls request() and then
+ *  calls end() on the object returned by request(). It returns the object returned
+ *  by request() (an instance of ClientRequest). See request() for documentation of
+ *  the arguments.
+ *
+ *  This implementation ensures that for any accessor that calls this function,
+ *  the callback functions are called in the same order as
+ *  invocations of this request() function that triggered the request.
+ *  If you call this function from the same accessor before the previous
+ *  request has been completed (the callback function has been called or it has
+ *  timed out), then the request will be queued to be issued only after the previous
+ *  request has been satisfied.
+ *
+ *  @param options The options.
+ *  @param responseCallback The callback function to call with an instance of IncomingMessage,
+ *   or with a null argument to signal an error.
+ */
+exports.put = function(options, responseCallback) {
+  options.method = "PUT";
+  var request = exports.request(options, responseCallback);
+  request.end();
+  return request;
+};
+
 // NOTE: The following events are produced by ClientRequest in Node.js
 // From: http.ClientRequest 
 // Event: 'response'
