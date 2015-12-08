@@ -219,6 +219,11 @@ DSP_JNLP_JARS =	\
 	$(CORE_JNLP_JARS) \
 	$(DOC_CODEDOC_JAR)
 
+PTXBEE_JARS = \
+	lib/xbjlib-1.1.0.nrjavaserial.jar \
+	lib/slf4j-nop-1.7.12.jar \
+	lib/slf4j-api-1.7.12.jar
+
 #######
 #
 # CapeCode: This subset has the convenient feature that it
@@ -253,7 +258,8 @@ CAPECODE_NONGUI_JARS = \
 	$(PTANGO_JAR_FILES) \
 	$(PTDATABASE_JNLP_JARS) \
 	org/ptolemy/machineLearning/machineLearning.jar \
-	org/ptolemy/optimization/optimization.jar
+	org/ptolemy/optimization/optimization.jar \
+	$(PTXBEE_JARS)
 
 CAPECODE_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/CapeCodeApplication.jar
@@ -346,6 +352,7 @@ CYPHYSIM_JNLP_JARS =	\
 	$(PTMATLAB_JARS) \
 	$(PTDATABASE_JNLP_JARS) \
 	$(WIRELESS_JARS) \
+	$(PTXBEE_JARS)
 
 #######
 # Building Controls Virtual Test Bed (https://gaia.lbl.gov/bcvtb)
@@ -646,7 +653,8 @@ FULL_11_0_JARS = \
 	ptolemy/domains/qss/demo/demo.jar \
 	$(PTPAHO_MQTT_JAR) \
 	$(PTRSYNTAXTEXTAREA_JAR) \
-	$(PTVERTX_JARS)
+	$(PTVERTX_JARS) \
+	$(PTXBEE_JARS)
 
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
