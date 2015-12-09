@@ -13884,15 +13884,17 @@ $as_echo "Did not find
     fi
 fi
 
-if test -z "$PTXBEE_DIR"; then
-    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Perhaps the XBee Java Library xbjlib is not installed?
-    You need not use xbjlib unless you plan on using the XBee Accessor
-    in ptolemy/actor/lib/jjs/modules/xbee" >&5
-$as_echo "$as_me: WARNING: Perhaps the XBee Java Library xbjlib is not installed?
-    You need not use xbjlib unless you plan on using the XBee Accessor
-    in ptolemy/actor/lib/jjs/modules/xbee" >&2;}
-    XBJLIB_JAR="$XBJLIB_JAR_DEFAULT"
-    updateExcludes "ptolemy/actor/lib/jjs/modules/xbee"
+if test -d "$XBJLIB_USER_DIR"; then
+    if test -z "$PTXBEE_DIR"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $XBJLIB_USER_DIR exists, but the XBee Java Library xbjlib is not installed?
+        You need not use xbjlib unless you plan on using the XBee Accessor
+        in ptolemy/actor/lib/jjs/modules/xbee" >&5
+$as_echo "$as_me: WARNING: $XBJLIB_USER_DIR exists, but the XBee Java Library xbjlib is not installed?
+        You need not use xbjlib unless you plan on using the XBee Accessor
+        in ptolemy/actor/lib/jjs/modules/xbee" >&2;}
+        XBJLIB_JAR="$XBJLIB_JAR_DEFAULT"
+        updateExcludes "ptolemy/actor/lib/jjs/modules/xbee"
+    fi
 fi
 
 #--------------------------------------------------------------------
