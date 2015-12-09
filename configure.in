@@ -6460,12 +6460,14 @@ else
     fi
 fi
 
-if test -z "$PTXBEE_DIR"; then
-    AC_MSG_WARN([Perhaps the XBee Java Library xbjlib is not installed?
-    You need not use xbjlib unless you plan on using the XBee Accessor
-    in ptolemy/actor/lib/jjs/modules/xbee])
-    XBJLIB_JAR="$XBJLIB_JAR_DEFAULT"
-    updateExcludes "ptolemy/actor/lib/jjs/modules/xbee"
+if test -d "$XBJLIB_USER_DIR"; then
+    if test -z "$PTXBEE_DIR"; then
+        AC_MSG_WARN([$XBJLIB_USER_DIR exists, but the XBee Java Library xbjlib is not installed?
+        You need not use xbjlib unless you plan on using the XBee Accessor
+        in ptolemy/actor/lib/jjs/modules/xbee])
+        XBJLIB_JAR="$XBJLIB_JAR_DEFAULT"
+        updateExcludes "ptolemy/actor/lib/jjs/modules/xbee"
+    fi
 fi 
 
 #--------------------------------------------------------------------
