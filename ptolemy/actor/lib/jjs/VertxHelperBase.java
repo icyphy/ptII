@@ -29,15 +29,24 @@ package ptolemy.actor.lib.jjs;
 
 import io.vertx.core.AbstractVerticle;
 import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.eventbus.EventBus;
 
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
+import javax.imageio.ImageIO;
+
+import ptolemy.data.ImageToken;
+import ptolemy.data.LongToken;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -172,6 +181,25 @@ public class VertxHelperBase extends HelperBase {
     }
 
     ///////////////////////////////////////////////////////////////////
+    ////                     public fields                         ////
+
+    /** Support data types for reading and writing to buffers. */
+    public static enum DATA_TYPE {
+        BYTE,
+        DOUBLE,
+        FLOAT,
+        IMAGE,
+        INT,
+        LONG,
+        NUMBER,
+        SHORT,
+        STRING,
+        UNSIGNEDBYTE,
+        UNSIGNEDINT,
+        UNSIGNEDSHORT
+    };
+
+    ///////////////////////////////////////////////////////////////////
     ////                     protected constructor                 ////
 
     /** Construct a helper for the specified JavaScript actor and
@@ -196,6 +224,104 @@ public class VertxHelperBase extends HelperBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
+
+    /** Append a numeric instance of the specified type to a buffer. */
+    protected void _appendNumericToBuffer(Buffer buffer, Object data, DATA_TYPE type) {
+        if (data instanceof Number) {
+            switch(type) {
+            case BYTE:
+                buffer.appendByte(((Number)data).byteValue());
+                break;
+            case DOUBLE:
+            case NUMBER:
+                buffer.appendDouble(((Number)data).doubleValue());
+                break;
+            case FLOAT:
+                buffer.appendFloat(((Number)data).floatValue());
+                break;
+            case INT:
+                buffer.appendInt(((Number)data).intValue());
+                break;
+            case LONG:
+                buffer.appendLong(((Number)data).longValue());
+                break;
+            case SHORT:
+                buffer.appendShort(((Number)data).shortValue());
+                break;
+            case UNSIGNEDBYTE:
+                // Number class can't extract an unsigned byte, so we use short.
+                buffer.appendUnsignedByte(((Number)data).shortValue());
+                break;
+            case UNSIGNEDINT:
+                // Number class can't extract an unsigned int, so we use long.
+                buffer.appendUnsignedInt(((Number)data).longValue());
+                break;
+            case UNSIGNEDSHORT:
+                // Number class can't extract an unsigned short, so we use int.
+                buffer.appendUnsignedShort(((Number)data).intValue());
+                break;
+            default:
+                _error("Unsupported type for buffer: "
+                        + type.toString()); 
+            }
+        } else if (data instanceof LongToken) {
+            // JavaScript has no long data type, and long is not convertible to
+            // "number" (which is double), so the Ptolemy host will pass in a
+            // LongToken.  Handle this specially.
+            buffer.appendLong(((LongToken)data).longValue());
+        } else {
+            _typeError(type, data);
+        }
+    }
+
+    /** Append data to be sent to the specified buffer.
+     *  @param data The data to append.
+     *  @param type The type of data append.
+     *  @param imageType If the type is IMAGE, then then the image encoding to use, or
+     *   null to use the default (JPG).
+     *  @param buffer The buffer.
+     *  @param errorEmitter The JavaScript event emitter to which to emit
+     *   "error" events if errors occur.
+     */
+    protected void _appendToBuffer(
+            final Object data, DATA_TYPE type, String imageType, Buffer buffer) {
+        if (type.equals(DATA_TYPE.STRING)) {
+            // NOTE: Use of toString() method makes this very tolerant, but
+            // it won't properly stringify JSON. Is this OK?
+            // NOTE: A second argument could take an encoding.
+            // Defaults to UTF-8. Is this OK?
+            buffer.appendString(data.toString());
+        } else if (type.equals(DATA_TYPE.IMAGE)) {
+            if (data instanceof ImageToken) {
+                Image image = ((ImageToken)data).asAWTImage();
+                if (image == null) {
+                    _error("Empty image received: " + data);
+                    return;
+                }
+                if (!(image instanceof BufferedImage)) {
+                    _error("Unsupported image token type: " + image.getClass());
+                    return;
+                }
+                if (imageType == null) {
+                    // If only image is specified, use JPG.
+                    imageType = "jpg";
+                }
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                try {
+                    ImageIO.write((BufferedImage)image, imageType, stream);
+                } catch (IOException e) {
+                    _error("Failed to convert image to byte array for sending: " + e.toString());
+                }
+                byte[] imageBytes = stream.toByteArray();
+                buffer.appendBytes(imageBytes);
+            } else {
+                _error("Expected image to send, but got "
+                        + data.getClass().getName());
+            }
+        } else {
+            _appendNumericToBuffer(buffer, data, type);
+        }
+    }
 
     /** Execute the specified response in the same order as the request
      *  that triggered the response. The execution will be done in the
@@ -332,6 +458,12 @@ public class VertxHelperBase extends HelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     protected fields                      ////
 
+    /** Verticle supporting this helper. */
+    protected AccessorVerticle _verticle;
+
+    /** Global (unclustered) instance of Vert.x core. */
+    protected static Vertx _vertx = null;
+
     /** Event bus address for notifications. */
     private String _address;
 
@@ -343,12 +475,6 @@ public class VertxHelperBase extends HelperBase {
 
     /** Queue of pending jobs. */
     private ConcurrentLinkedQueue<Runnable> _pendingJobs = new ConcurrentLinkedQueue<Runnable>();
-
-    /** Verticle supporting this helper. */
-    protected AccessorVerticle _verticle;
-
-    /** Global (unclustered) instance of Vert.x core. */
-    protected static Vertx _vertx = null;
 
     static {
         try {
@@ -376,66 +502,14 @@ public class VertxHelperBase extends HelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
 
-//    /** Register a shutdown hook that calls close() on the Vertx object.
-//     *  Closing the Vertx object causes the .vertx directories
-//     *  that are created to be removed.  Note that the directories
-//     *  are only removed if the the Vertx was created with the 
-//     *  clustering option.
-//     */
-//    private static void _registerShutdownHook(Vertx vertx) {
-//        
-//        // Create a Weak Reference for the Vertx.  Currently,
-//        // there is only one because _vertx is static.
-//        final WeakReference<Vertx> vertxToShutdownReference = new WeakReference<Vertx>(vertx);
-//
-//        // The downside to shutdown hooks include:
-//        // 1. Shutdown hooks can be called in any order.  Manager
-//        // has a shutdown hook, what if it is called before or
-//        // after this shutdown hook.
-//        // 2. This code almost certainly will hold on to a
-//        // a reference to the Vertx class even after all the
-//        // models are closed.  The reference to the Vertx class
-//        // will only be freed when the JVM exits.
-//        
-//        // Alternatives to registering a shutdown hook include:
-//
-//        // 1. The .vertx directory is used to serve files that are
-//        // included in jar files.  To not use this facility Set the
-//        // vertx.disableFileCPResolving property to true, or change
-//        // the location with vertx.cacheDirBase. See
-//        // https://groups.google.com/forum/?fromgroups#!topic/vertx/7cBbKrjYfeI
-//        // However, we may want to deploy using jar files, so this is
-//        // not an option
-//        
-//        // 2. Create a separate Vertx object for each model.
-//        // Vert.x needs to be kept running as long as the JVM is running.
-//        // Models can come and go and communicate via the event bus.
-//        // We want to avoid the overhead of joining a cluster each time
-//
-//        // 3. We could have code that would get the configuration and
-//        // check to see if the last model was closing and then call
-//        // close().  This would involve having the code in this class
-//        // be more tightly connected with the actor.gui code, which
-//        // could cause deployment issues.
-//        
-//        Thread shutdownThread =  new Thread() {
-//                @Override
-//                public void run() {
-//                    System.out.println("Calling close on " + vertxToShutdownReference.get());
-//                    //System.out.println("size of sharedHttpServers: " + ((io.vertx.core.impl.VertxImpl)vertxToShutdownReference.get()).sharedHttpServers().size());
-//                    //System.out.println("size of sharedNetServers: " + ((io.vertx.core.impl.VertxImpl)vertxToShutdownReference.get()).sharedNetServers().size());
-//                    vertxToShutdownReference.get().close();
-//                }
-//            };
-//        try {
-//            Runtime.getRuntime().addShutdownHook(shutdownThread);
-//        } catch (java.security.AccessControlException ex) {
-//            // This exception gets triggered by
-//            // http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/ptII10.0.devel/ptolemy/vergil/Vergil.htm
-//            System.out.println("Warning: failed to add a shutdown hook for VertxHelperBase."
-//                    + "(Running a model in an applet always causes this)");
-//        }
-//    }
+    /** Indicate a conversion error of data to a buffer. */
+    private void _typeError(DATA_TYPE type, Object data) {
+        String expectedType = type.toString().toLowerCase();
+        _error("Data to send is not a "
+                + expectedType
+                + ". It is: "
+                + data.getClass().getName());
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////

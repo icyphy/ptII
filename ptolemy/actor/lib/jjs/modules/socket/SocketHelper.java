@@ -39,9 +39,7 @@ import io.vertx.core.net.NetServer;
 import io.vertx.core.net.NetServerOptions;
 import io.vertx.core.net.NetSocket;
 
-import java.awt.Image;
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -330,22 +328,6 @@ public class SocketHelper extends VertxHelperBase {
         return _sendTypes;
     }
     
-    /** Support data types for send and receive. */
-    public static enum DATA_TYPE {
-        BYTE,
-        DOUBLE,
-        FLOAT,
-        IMAGE,
-        INT,
-        LONG,
-        NUMBER,
-        SHORT,
-        STRING,
-        UNSIGNEDBYTE,
-        UNSIGNEDINT,
-        UNSIGNEDSHORT
-    };
-
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
@@ -582,11 +564,11 @@ public class SocketHelper extends VertxHelperBase {
                         // it seems that Nashorn's Java.to() function creates
                         // a bigger array than needed with trailing null elements.
                         if (element != null) {
-                            _appendToBuffer(element, buffer);
+                            _appendToBuffer(element, _sendType, _sendImageType, buffer);
                         }
                     }
                 } else {
-                    _appendToBuffer(data, buffer);
+                    _appendToBuffer(data, _sendType, _sendImageType, buffer);
                 }
                 if (!_rawBytes) {
                     // Prepend the buffer with message length information.
@@ -610,97 +592,6 @@ public class SocketHelper extends VertxHelperBase {
                 }
                 _socket.write(buffer);
             });
-        }
-        /** Append data to be sent to the specified buffer.
-         *  @param data The data to send.
-         *  @param buffer The buffer.
-         */
-        private void _appendToBuffer(final Object data, Buffer buffer) {
-            if (_sendType.equals(DATA_TYPE.STRING)) {
-                // NOTE: Use of toString() method makes this very tolerant, but
-                // it won't properly stringify JSON. Is this OK?
-                // NOTE: A second argument could take an encoding.
-                // Defaults to UTF-8. Is this OK?
-                buffer.appendString(data.toString());
-            } else if (_sendType.equals(DATA_TYPE.IMAGE)) {
-                if (data instanceof ImageToken) {
-                    Image image = ((ImageToken)data).asAWTImage();
-                    if (image == null) {
-                        _error(_eventEmitter, "Empty image received: " + data);
-                        return;
-                    }
-                    if (!(image instanceof BufferedImage)) {
-                        _error(_eventEmitter, "Unsupported image token type: " + image.getClass());
-                        return;
-                    }
-                    String imageType = _sendImageType;
-                    if (_sendImageType == null) {
-                        // If only image is specified, use JPG.
-                        imageType = "jpg";
-                    }
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    try {
-                        ImageIO.write((BufferedImage)image, imageType, stream);
-                    } catch (IOException e) {
-                        _error("Failed to convert image to byte array for sending: " + e.toString());
-                    }
-                    byte[] imageBytes = stream.toByteArray();
-                    buffer.appendBytes(imageBytes);
-                } else {
-                    _error(_eventEmitter, "Expected image to send, but got "
-                            + data.getClass().getName());
-                }
-            } else {
-                _appendNumericToBuffer(buffer, data);
-            }
-        }
-        /** Append a numeric instance of _sendType to a buffer. */
-        private void _appendNumericToBuffer(Buffer buffer, Object data) {
-            if (data instanceof Number) {
-                switch(_sendType) {
-                case BYTE:
-                    buffer.appendByte(((Number)data).byteValue());
-                    break;
-                case DOUBLE:
-                case NUMBER:
-                    buffer.appendDouble(((Number)data).doubleValue());
-                    break;
-                case FLOAT:
-                    buffer.appendFloat(((Number)data).floatValue());
-                    break;
-                case INT:
-                    buffer.appendInt(((Number)data).intValue());
-                    break;
-                case LONG:
-                    buffer.appendLong(((Number)data).longValue());
-                    break;
-                case SHORT:
-                    buffer.appendShort(((Number)data).shortValue());
-                    break;
-                case UNSIGNEDBYTE:
-                    // Number class can't extract an unsigned byte, so we use short.
-                    buffer.appendUnsignedByte(((Number)data).shortValue());
-                    break;
-                case UNSIGNEDINT:
-                    // Number class can't extract an unsigned int, so we use long.
-                    buffer.appendUnsignedInt(((Number)data).longValue());
-                    break;
-                case UNSIGNEDSHORT:
-                    // Number class can't extract an unsigned short, so we use int.
-                    buffer.appendUnsignedShort(((Number)data).intValue());
-                    break;
-                default:
-                    _error(_eventEmitter, "Unsupported type for socket: "
-                            + _sendType.toString()); 
-                }
-            } else if (data instanceof LongToken) {
-                // JavaScript has no long data type, and long is not convertible to
-                // "number" (which is double), so the Ptolemy host will pass in a
-                // LongToken.  Handle this specially.
-                buffer.appendLong(((LongToken)data).longValue());
-            } else {
-                _sendTypeError(_sendType, data);
-            }
         }
         /** Extract a length from the head of the buffer. Return the number of
          *  bytes encoding the length (1 or 5) or -1 if there are not enough bytes
@@ -975,13 +866,6 @@ public class SocketHelper extends VertxHelperBase {
                     + buffer.toString()
                     + "\nException occurred: "
                     + ex);
-        }
-        private void _sendTypeError(DATA_TYPE type, Object data) {
-            String expectedType = type.toString().toLowerCase();
-            _error(_eventEmitter, "Data to send is not a "
-                    + expectedType
-                    + ". It is: "
-                    + data.getClass().getName());
         }
         private int _sizeOfReceiveType() {
             switch(_receiveType) {
