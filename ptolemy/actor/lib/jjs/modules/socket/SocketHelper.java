@@ -53,7 +53,6 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.ImageToken;
-import ptolemy.data.LongToken;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 
@@ -616,42 +615,6 @@ public class SocketHelper extends VertxHelperBase {
             }
             return 1;
         }
-        /** Extract a numeric instance of the _receiveType from a buffer. */
-        private Object _extractFromBuffer(Buffer buffer, int position) {
-            try {
-                switch(_receiveType) {
-                case BYTE:
-                    return buffer.getByte(position);
-                case DOUBLE:
-                case NUMBER:
-                    return buffer.getDouble(position);
-                case FLOAT:
-                    return buffer.getFloat(position);
-                case INT:
-                    return buffer.getInt(position);
-                case LONG:
-                    // Note that long is not representable in JavaScript.
-                    // Hence, we return a LongToken.
-                    long result = buffer.getLong(position);
-                    return new LongToken(result);
-                case SHORT:
-                    return buffer.getShort(position);
-                case UNSIGNEDBYTE:
-                    return buffer.getUnsignedByte(position);
-                case UNSIGNEDINT:
-                    return buffer.getUnsignedInt(position);
-                case UNSIGNEDSHORT:
-                    return buffer.getUnsignedShort(position);
-                default:
-                    _error(_eventEmitter, "Unsupported type for socket: "
-                            + _receiveType.toString());
-                    return null;
-                }
-            } catch (Throwable ex) {
-                _receiveTypeError(ex, _receiveType, buffer);
-                return null;
-            }
-        }
         /** Process new buffer data.
          *  @param buffer The buffer, or null to process previously received data.
          */
@@ -800,7 +763,7 @@ public class SocketHelper extends VertxHelperBase {
                                 ImageToken token = new AWTImageToken(image);
                                 _eventEmitter.callMember("emit", "data", token);
                             } else {
-                                _eventEmitter.callMember("emit", "error", "Received corrupted image.");
+                                _error(_eventEmitter, "Received corrupted image.");
                             }
                         }
                     } catch (IOException e) {
@@ -812,12 +775,12 @@ public class SocketHelper extends VertxHelperBase {
                     int length = finalBuffer.length();
                     int numberOfElements = length / size;
                     if (numberOfElements == 1) {
-                        _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, 0));
+                        _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, _receiveType, 0));
                     } else if (numberOfElements > 1) {
                         if (_rawBytes) {
                             int position = 0;
                             for (int i = 0; i < numberOfElements; i++) {
-                                _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, position));
+                                _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, _receiveType, position));
                                 position += size;
                             }
                         } else {
@@ -825,7 +788,7 @@ public class SocketHelper extends VertxHelperBase {
                             Object[] result = new Object[numberOfElements];
                             int position = 0;
                             for (int i = 0; i < result.length; i++) {
-                                result[i] = _extractFromBuffer(finalBuffer, position);
+                                result[i] = _extractFromBuffer(finalBuffer, _receiveType, position);
                                 position += size;
                             }
                             // NOTE: If we return result, then the emitter will not
@@ -856,16 +819,6 @@ public class SocketHelper extends VertxHelperBase {
                 // new data.
                 _processBuffer(null);
             }
-        }
-        private void _receiveTypeError(Throwable ex, DATA_TYPE type, Buffer buffer) {
-            String expectedType = type.toString().toLowerCase();
-            // ex.printStackTrace();
-            _error(_eventEmitter, "Received data that is not of type "
-                    + expectedType
-                    + ": "
-                    + buffer.toString()
-                    + "\nException occurred: "
-                    + ex);
         }
         private int _sizeOfReceiveType() {
             switch(_receiveType) {

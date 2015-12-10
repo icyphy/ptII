@@ -270,7 +270,7 @@ public class VertxHelperBase extends HelperBase {
             // LongToken.  Handle this specially.
             buffer.appendLong(((LongToken)data).longValue());
         } else {
-            _typeError(type, data);
+            _toTypeError(type, data);
         }
     }
 
@@ -320,6 +320,47 @@ public class VertxHelperBase extends HelperBase {
             }
         } else {
             _appendNumericToBuffer(buffer, data, type);
+        }
+    }
+
+    /** Extract a numeric instance of the specified type from a buffer.
+     *  @param buffer The buffer containing the data.
+     *  @param type The type to extract.
+     *  @param position The position in the buffer from which to extract it.
+     */
+    protected Object _extractFromBuffer(Buffer buffer, DATA_TYPE type, int position) {
+        try {
+            switch(type) {
+            case BYTE:
+                return buffer.getByte(position);
+            case DOUBLE:
+            case NUMBER:
+                return buffer.getDouble(position);
+            case FLOAT:
+                return buffer.getFloat(position);
+            case INT:
+                return buffer.getInt(position);
+            case LONG:
+                // Note that long is not representable in JavaScript.
+                // Hence, we return a LongToken.
+                long result = buffer.getLong(position);
+                return new LongToken(result);
+            case SHORT:
+                return buffer.getShort(position);
+            case UNSIGNEDBYTE:
+                return buffer.getUnsignedByte(position);
+            case UNSIGNEDINT:
+                return buffer.getUnsignedInt(position);
+            case UNSIGNEDSHORT:
+                return buffer.getUnsignedShort(position);
+            default:
+                _error("Unsupported type for buffer: "
+                        + type.toString());
+                return null;
+            }
+        } catch (Throwable ex) {
+            _fromTypeError(ex, type, buffer);
+            return null;
         }
     }
 
@@ -502,10 +543,29 @@ public class VertxHelperBase extends HelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     private methods                       ////
 
-    /** Indicate a conversion error of data to a buffer. */
-    private void _typeError(DATA_TYPE type, Object data) {
+    /** Indicate that the expected type cannot be extracted from the buffer.
+     *  @param ex The exception that occurred.
+     *  @param type The expected type.
+     *  @param buffer The buffer.
+     */
+    private void _fromTypeError(Throwable ex, DATA_TYPE type, Buffer buffer) {
         String expectedType = type.toString().toLowerCase();
-        _error("Data to send is not a "
+        // ex.printStackTrace();
+        _error("Cannot convert buffer data to type "
+                + expectedType
+                + ": "
+                + buffer.toString()
+                + "\nException occurred: "
+                + ex);
+    }
+
+    /** Indicate a conversion error of data to a buffer.
+     *  @param type The type to convert to.
+     *  @param data The data that cannot be converted to that type.
+     */
+    private void _toTypeError(DATA_TYPE type, Object data) {
+        String expectedType = type.toString().toLowerCase();
+        _error("Data cannot be converted to "
                 + expectedType
                 + ". It is: "
                 + data.getClass().getName());
