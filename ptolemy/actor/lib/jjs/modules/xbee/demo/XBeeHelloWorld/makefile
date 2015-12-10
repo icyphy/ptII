@@ -1,8 +1,8 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript Xbee Port Modules
+# Makefile for Ptolemy II XBeeHelloWorld demo
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
@@ -29,55 +29,59 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/xbee
-
-DIRS = 		test demo
+ME =		ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../../../
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(RXTX_JAR)$(CLASSPATHSEPARATOR)$(PTXBJLIB_JARS)$(CLASSPATHSEPARATOR)$(PTSLF4J_API_JAR)$(CLASSPATHSEPARATOR)$(PTSLF4J_NOP_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	xbee
+PTPACKAGE = 	XBeeHelloWorld
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
-JSRCS = \
-	XBeeHelper.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	xbee.js
+	XBeeHelloWorld.xml
 
-	#	package.json
-
-
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	doc \
-	$(PTCLASSJAR) \
-	'XBeeHelper$$1.class'
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
 
-run: XBeeHello.class
-	$(JAVA) -classpath $(CLASSPATH) ptolemy.actor.lib.jjs.modules.xbee.XBeeHello
+install: all $(PTCLASSJAR)
+
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer XBeeHelloWorld.htm
+
+#demo_applet_vergil:
+#	CLASSPATH="$(CLASSPATH)" appletviewer .htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" XBeeHelloWorld.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" XBeeHelloWorld.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+
