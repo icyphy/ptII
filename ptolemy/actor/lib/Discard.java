@@ -27,8 +27,13 @@
  */
 package ptolemy.actor.lib;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.net.URL;
 
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.TypeConstant;
+import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Configurable;
 import ptolemy.kernel.util.IllegalActionException;
@@ -117,5 +122,24 @@ public class Discard extends Sink implements Configurable {
     @Override
     public String getConfigureText() {
         return null;
+    }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+    
+    /** Set the input port greater than or equal to
+     *  <code>BaseType.GENERAL</code> in case backward type inference is
+     *  enabled and the input port has no type declared.
+     *
+     *  @return A set of inequalities.
+     */
+    @Override
+    protected Set<Inequality> _customTypeConstraints() {
+        HashSet<Inequality> result = new HashSet<Inequality>();
+        if (isBackwardTypeInferenceEnabled()
+                && input.getTypeTerm().isSettable()) {
+            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), input
+                    .getTypeTerm()));
+        }
+        return result;
     }
 }
