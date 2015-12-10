@@ -33,17 +33,26 @@ import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 import io.vertx.core.buffer.Buffer;
 
+import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.Enumeration;
 import java.util.TooManyListenersException;
 
+import javax.imageio.ImageIO;
+
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
+import ptolemy.actor.lib.jjs.VertxHelperBase.DATA_TYPE;
+import ptolemy.actor.lib.jjs.modules.socket.SocketHelper.ByteArrayBackedInputStream;
+import ptolemy.data.AWTImageToken;
+import ptolemy.data.ImageToken;
 import ptolemy.util.StringUtilities;
 
 import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.exceptions.TimeoutException;
 import com.digi.xbee.api.exceptions.XBeeException;
+import com.digi.xbee.api.listeners.IDataReceiveListener;
+import com.digi.xbee.api.models.XBeeMessage;
 
 ///////////////////////////////////////////////////////////////////
 //// XBeeHelper
@@ -57,7 +66,7 @@ Helper for XBee radio modules.
 @Pt.ProposedRating red (winthrop)
 @Pt.AcceptedRating red (winthrop)
 */
-public class XBeeHelper extends VertxHelperBase {
+public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener {
     
     /** Create an XBee device.
      *  The first argument is an instance of the JavaScript XBee object.
@@ -71,6 +80,7 @@ public class XBeeHelper extends VertxHelperBase {
      *  @throws TooManyListenersException If there are too many listeners to
      *   the port (this should not occur).
      *  @throws IOException If we can't get an input or output stream for the port.
+     * @throws XBeeException 
      */
     public XBeeHelper(
             ScriptObjectMirror helping,
@@ -78,13 +88,15 @@ public class XBeeHelper extends VertxHelperBase {
             String ownerName, 
             int timeout,
             Object options)
-                    throws NoSuchPortException,
-                    PortInUseException,
-                    TooManyListenersException, IOException {
+                    throws XBeeException {
         super(helping);
         
         // FIXME: Configure using SerialPortParameters argument.
         _device = new XBeeDevice(portName, 9600);
+        
+        _device.open();
+        
+        _device.addDataListener(this);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -93,8 +105,95 @@ public class XBeeHelper extends VertxHelperBase {
     /** Close the port, if it is open. */
     public void close() {
         if (_device != null && _device.isOpen()) {
-            _device.close();
+            // _device.close();
         }
+    }
+
+    @Override
+    public void dataReceived(XBeeMessage message) {
+        _currentObj.callMember("emit", "data", message.getDataString());
+        
+        /** FIXME: Handler received type. Something like this:
+        byte[] bytes = message.getData();
+        if(_receiveType == DATA_TYPE.STRING) {
+            _eventEmitter.callMember("emit", "data", finalBuffer.getString(0, finalBuffer.length()));
+        } else if (_receiveType == DATA_TYPE.IMAGE) {
+            try {
+                byte[] bytes = finalBuffer.getBytes();
+                if (_byteStream == null) {
+                    _byteStream = new ByteArrayBackedInputStream(bytes);
+                    _bufferCount = 0;
+                } else {
+                    _bufferCount++;
+                    _actor.log("WARNING: Cannot parse image from data received. Waiting for more data:"
+                            + _bufferCount);
+                    // Append the current buffer to previously received buffer(s).
+                    _byteStream.append(bytes);
+                }
+                // If we are not doing image framing, then there is no assurance at this point
+                // that we have a complete image. Thus, we emit a byte array and not an image
+                // token.
+                if (_rawBytes) {
+                    _eventEmitter.callMember("emit", "data", bytes);
+                } else {
+                    BufferedImage image = ImageIO.read(_byteStream);
+                    _byteStream = null;
+                    if (image != null && image.getHeight() > 0 && image.getWidth() > 0) {
+                        if (_bufferCount > 1) {
+                            _actor.log("Image received over " + _bufferCount
+                                    + " buffers. Consider increasing buffer size.");
+                        }
+                        ImageToken token = new AWTImageToken(image);
+                        _eventEmitter.callMember("emit", "data", token);
+                    } else {
+                        _error(_eventEmitter, "Received corrupted image.");
+                    }
+                }
+            } catch (IOException e) {
+                _error(_eventEmitter, "Failed to read incoming image: " + e.toString());
+            }
+        } else {
+            // Assume a numeric type.
+            int size = _sizeOfReceiveType();
+            int length = finalBuffer.length();
+            int numberOfElements = length / size;
+            if (numberOfElements == 1) {
+                _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, _receiveType, 0));
+            } else if (numberOfElements > 1) {
+                if (_rawBytes) {
+                    int position = 0;
+                    for (int i = 0; i < numberOfElements; i++) {
+                        _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, _receiveType, position));
+                        position += size;
+                    }
+                } else {
+                    // Using message framing, so we output a single array.
+                    Object[] result = new Object[numberOfElements];
+                    int position = 0;
+                    for (int i = 0; i < result.length; i++) {
+                        result[i] = _extractFromBuffer(finalBuffer, _receiveType, position);
+                        position += size;
+                    }
+                    // NOTE: If we return result, then the emitter will not
+                    // emit a native JavaScript array. We have to do a song and
+                    // dance here which is probably very inefficient (almost
+                    // certainly... the array gets copied).
+                    try {
+                        _eventEmitter.callMember("emit", "data", _actor.toJSArray(result));
+                    } catch (Exception e) {
+                        _error(_eventEmitter, "Failed to convert to a JavaScript array: "
+                                + e);                    
+                        _eventEmitter.callMember("emit", "data", result);
+                    }
+                }
+            } else if (numberOfElements <= 0) {
+                _error(_eventEmitter, "Expect to receive type "
+                        + _receiveType
+                        + ", but received an insufficient number of bytes: "
+                        + finalBuffer.length());
+            }
+        }
+        */
     }
 
     /** FIXME: Remove this main function.
@@ -177,6 +276,8 @@ public class XBeeHelper extends VertxHelperBase {
             }
         }
         try {
+            // FIXME: May not want to broadcast.
+            // How to address another device?
             _device.sendBroadcastData(buffer.getBytes());
         } catch (TimeoutException e) {
             _error(_actor.getFullName() + ": Timeout on send.", e);
