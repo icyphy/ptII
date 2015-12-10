@@ -657,6 +657,8 @@ PTSPACEDOMAIN_PACKAGES
 PTSPACEDOMAIN_JAR
 PTSPACE_DIR
 PTSOCKETIO_JAR
+PTSLF4J_NOP_JAR
+PTSLF4J_API_JAR
 PTSERVLET_JAR
 PTSERVER_JARS
 PTSERVER_PACKAGES
@@ -1052,6 +1054,8 @@ with_svgsalamanderjar
 with_tini
 with_giotto
 with_waba
+with_slf4j_api
+with_slf4j_nop
 with_webcam_capture
 with_expat_include
 '
@@ -1828,6 +1832,10 @@ Optional Packages:
                               defaults to \$PTII/lib
   --with-waba=DIR       use PalmOS WABA from DIR,
                           defaults to \$PTII/vendors/misc/waba/wabasdk
+  --with-slf4j-api=SLF4J_API_JAR     use slf4j-api SLF4J_API_JAR
+                          defaults to \$PTII/lib/slf4j-api-1.7.12.jar
+  --with-slf4j-nop=SLF4J_NOP_JAR     use slf4j-nop SLF4J_NOP_JAR
+                              defaults to \$PTII/lib/slf4j-nop-1.7.12.jar
   --with-webcam-capture=WEBCAMCAPTURE_JAR     use webcam-capture WEBCAMCAPTURE_JAR
                           defaults to \$PTII/lib/webcam-capture-0.3.10.jar
   --with-xbjlib=DIR       use Java Serial Port Interface rxtx from DIR,
@@ -10073,7 +10081,7 @@ fi
 #--------------------------------------------------------------------
 # We only need to look for rxtx if $PTII/ptolemy/actor/lib/io/comm is present
 RXTX_USER_DIR="$PTII/ptolemy/actor/lib/io/comm"
-RXTX_JAR_DEFAULT='${PTII}/lib/nrjavaserial-3.11.0.7Dec2015jar'
+RXTX_JAR_DEFAULT='${PTII}/lib/nrjavaserial-3.11.0.devel.jar'
 RXTX_PRESENT=no
 # PTLEGO_DIR is set to lego
 # $PTII/ptolemy/apps/makefile if the Java Communications API was found
@@ -10106,7 +10114,7 @@ $as_echo_n "checking for rxtx directory... " >&6; }
 if test "${with_rxtx+set}" = set; then :
   withval=$with_rxtx; RXTX_JAR=$withval
 else
-  RXTX_JAR=$PTII/lib/nrjavaserial-3.11.0.7Dec2015.jar
+  RXTX_JAR=$PTII/lib/nrjavaserial-3.11.0.devel.jar
 fi
 
 
@@ -10168,12 +10176,12 @@ $as_echo "ok, RXTX is probably in the jre directory" >&6; }; fi
     You need not download rxtx unless you plan the actors in actor.lib.comm.
     The rxtx package can be found at
     https://github.com/NeuronRobotics/nrjavaserial/releases and the jar
-    file placed at $PTII/lib/nrjavaserial-3.11.0.7Dec2015.jar and configure rerun." >&5
+    file placed at $PTII/lib/nrjavaserial-3.11.0.devel.jar and configure rerun." >&5
 $as_echo "$as_me: WARNING: Perhaps rxtx is not installed?
     You need not download rxtx unless you plan the actors in actor.lib.comm.
     The rxtx package can be found at
     https://github.com/NeuronRobotics/nrjavaserial/releases and the jar
-    file placed at $PTII/lib/nrjavaserial-3.11.0.7Dec2015.jar and configure rerun." >&2;}
+    file placed at $PTII/lib/nrjavaserial-3.11.0.devel.jar and configure rerun." >&2;}
     fi
 fi
 
@@ -13716,11 +13724,62 @@ PTWEBCAMCAPTURE_JARS=
 # PTWEBCAMCAPTURE_PACKAGES is used in doc/makefile
 PTWEBCAMCAPTURE_PACKAGES=
 
-PTSLF4J_API_JAR="$PTII/lib/slf4j-api-1.7.12.jar"
-PTSLF4J_NOP_JAR="$PTII/lib/slf4j-nop-1.7.12.jar"
-
-
+# We only need to look for webcam-capture if $PTII/ptolemy/actor/lib/jjs/modules/cameras is present
 WEBCAMCAPTURE_USER_DIR=$PTII/ptolemy/actor/lib/jjs/modules/cameras
+
+# We only need to look for xbjlib if $PTII/ptolemy/actor/lib/jjs/modules/xbee is present.
+# XBJLIB is here because both xbjlib and webcam-capture use slf4j-api and sl4j-nop.
+XBJLIB_USER_DIR="$PTII/ptolemy/actor/lib/jjs/modules/xbee"
+
+# Look for slf4j-api and slf4j-nop jar files
+PTSLF4J_API_JAR=""
+PTSLF4J_NOP_JAR=""
+if test -d "$WEBCAMCAPTURE_USER_DIR" -o -d "$XBJLIB_USER_DIR"; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for slf4-api" >&5
+$as_echo_n "checking for slf4-api... " >&6; }
+
+# Check whether --with-slf4j-api was given.
+if test "${with_slf4j_api+set}" = set; then :
+  withval=$with_slf4j_api; PTSLF4J_API_JAR=$withval
+else
+  PTSLF4J_API_JAR=$PTII/lib/slf4j-api-1.7.12.jar
+fi
+
+    if test -f "$PTSLF4J_API_JAR"; then
+        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSLF4J_API_JAR" >&5
+$as_echo "$PTSLF4J_API_JAR" >&6; }; fi
+        updateClasspath "$PTSLF4J_API_JAR"
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for slf4-nop" >&5
+$as_echo_n "checking for slf4-nop... " >&6; }
+
+# Check whether --with-slf4j-nop was given.
+if test "${with_slf4j_nop+set}" = set; then :
+  withval=$with_slf4j_nop; PTSLF4J_NOP_JAR=$withval
+else
+  PTSLF4J_NOP_JAR=$PTII/lib/slf4j-nop-1.7.12.jar
+fi
+
+        if test -f "$PTSLF4J_NOP_JAR"; then
+            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSLF4J_NOP_JAR" >&5
+$as_echo "$PTSLF4J_NOP_JAR" >&6; }; fi
+            updateClasspath "$PTSLF4J_NOP_JAR"
+        else
+            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTSLF4J_NOP_JAR, so the accessors in
+    $WEBCAMCAPTURE_USER_DIR and $XBJLIB_USER_DIR will not work." >&5
+$as_echo "$as_me: WARNING: Failed to find $PTSLF4J_NOP_JAR, so the accessors in
+    $WEBCAMCAPTURE_USER_DIR and $XBJLIB_USER_DIR will not work." >&2;}
+        fi
+    else
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTSLF4J_API_JAR, so the accessors in
+    $WEBCAMCAPTURE_USER_DIR and $XBJLIB_USER_DIR will not work." >&5
+$as_echo "$as_me: WARNING: Failed to find $PTSLF4J_API_JAR, so the accessors in
+    $WEBCAMCAPTURE_USER_DIR and $XBJLIB_USER_DIR will not work." >&2;}
+    fi
+
+fi
+
 # We only need to look for webcam-capture*.jar if the directory that uses it exists.
 if test ! -d "$WEBCAMCAPTURE_USER_DIR"; then
     if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $WEBCAMCAPTURE_USER_DIR is not present,
@@ -13728,7 +13787,8 @@ if test ! -d "$WEBCAMCAPTURE_USER_DIR"; then
 $as_echo "$WEBCAMCAPTURE_USER_DIR is not present,
     so we need not find webcam-capture." >&6; }; fi
 else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for webcam-capture" >&5
+    if test ! -z "$PTSLF4J_API_JAR" -a ! -z "$PTSLF4J_NOP_JAR"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for webcam-capture" >&5
 $as_echo_n "checking for webcam-capture... " >&6; }
 
 # Check whether --with-webcam-capture was given.
@@ -13739,39 +13799,19 @@ else
 fi
 
 
-    if test -f "$PTWEBCAMCAPTURE_JAR"; then
-        if test -f "$PTSLF4J_API_JAR"; then
-           PTBRIDG_JAR="$PTII/lib/bridj-0.6.2.jar"
-           if test -f "$PTBRIDG_JAR"; then
-              if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+        if test -f "$PTWEBCAMCAPTURE_JAR"; then
+            PTBRIDG_JAR="$PTII/lib/bridj-0.6.2.jar"
+            if test -f "$PTBRIDG_JAR"; then
+                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTWEBCAMCAPTURE_JAR" >&5
 $as_echo "$PTWEBCAMCAPTURE_JAR" >&6; }; fi
-              PTCAMERAS_DIR=cameras
-              PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR$CLASSPATHSEPARATOR$PTSLF4J_JAR$CLASSPATHSEPARATOR$PTBRIDG_JAR$CLASSPATHSEPARATOR$PTSLF4J_API_JAR"
-              PTWEBCAMCAPTURE_PACKAGES=ptolemy.actor.lib.jjs.modules.cameras
-              updateClasspath "$PTWEBCAMCAPTURE_JAR"
-
-              ADDED_PTSLF4J_API_JAR_TO_CLASSPATH=1
-              updateClasspath "$PTSLF4J_API_JAR"
-
-              updateClasspath "$PTBRIDG_JAR"
-              if test -f "$PTSLF4J_NOP_JAR"; then
-                  PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JARS$CLASSPATHSEPARATOR$PTSLF4J_NOP_JAR"
-
-                  ADDED_PTSLF4J_NOP_JAR_TO_CLASSPATH=1
-                  updateClasspath "$PTSLF4J_NOP_JAR"
-              else
-                  { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTSLF4J_NOP_JAR
-   which means you may get error messages when using the camera accessor.
-   See http://www.slf4j.org/codes.html StaticLoggerBinder for details.
-   The webcam accessor will be compiled anyway." >&5
-$as_echo "$as_me: WARNING: Failed to find $PTSLF4J_NOP_JAR
-   which means you may get error messages when using the camera accessor.
-   See http://www.slf4j.org/codes.html StaticLoggerBinder for details.
-   The webcam accessor will be compiled anyway." >&2;}
-              fi
-           else
-              { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTBRIDG_JAR
+                PTCAMERAS_DIR=cameras
+                PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR"
+                PTWEBCAMCAPTURE_PACKAGES=ptolemy.actor.lib.jjs.modules.cameras
+                updateClasspath "$PTWEBCAMCAPTURE_JAR"
+                updateClasspath "$PTBRIDG_JAR"
+            else
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTBRIDG_JAR
    perhaps webcam-capture was not installed from
    https://github.com/sarxos/webcam-capture?
    The webcam accessor will not be compiled." >&5
@@ -13781,17 +13821,7 @@ $as_echo "$as_me: WARNING: Failed to find $PTBRIDG_JAR
    The webcam accessor will not be compiled." >&2;}
            fi
         else
-           { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTSLF4J_JAR
-   perhaps webcam-capture was not installed from
-   https://github.com/sarxos/webcam-capture?
-   The webcam accessor will not be compiled." >&5
-$as_echo "$as_me: WARNING: Failed to find $PTSLF4J_JAR
-   perhaps webcam-capture was not installed from
-   https://github.com/sarxos/webcam-capture?
-   The webcam accessor will not be compiled." >&2;}
-        fi
-    else
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTWEBCAMCAPTURE_JAR
+            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTWEBCAMCAPTURE_JAR
    perhaps webcam-capture was not installed from
    https://github.com/sarxos/webcam-capture?
    The webcam accessor will not be compiled." >&5
@@ -13800,6 +13830,7 @@ $as_echo "$as_me: WARNING: Failed to find $PTWEBCAMCAPTURE_JAR
    https://github.com/sarxos/webcam-capture?
    The webcam accessor will not be compiled." >&2;}
 	PTWEBCAMCAPTURE_JARS=
+        fi
     fi
 fi
 
@@ -13813,7 +13844,7 @@ fi
 #       See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/XBee
 #--------------------------------------------------------------------
 # We only need to look for xbjlib if $PTII/ptolemy/actor/lib/jjs/modules/xbee is present
-XBJLIB_USER_DIR="$PTII/ptolemy/actor/lib/jjs/modules/xbee"
+# See the webcam-capture section for the setting of XBJLIB_JAR
 XBJLIB_JAR_DEFAULT='${PTII}/lib/xbjlib-1.1.0.nrjavaserial.jar'
 
 # Jar files used in ptolemy/actor/lib/jjs/modules/xbee/makefile
@@ -13830,7 +13861,8 @@ $as_echo "$XBJLIB_USER_DIR is not present,
     # Use curly brackets around PTII so that if xbjlib is not present
     # then ${PTII} will appear in ptinvoke.
 else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for xbjlib directory" >&5
+    if test ! -z "$PTSLF4J_API_JAR" -a ! -z "$PTSLF4J_NOP_JAR"; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for xbjlib directory" >&5
 $as_echo_n "checking for xbjlib directory... " >&6; }
 
 # Check whether --with-rxtx was given.
@@ -13841,46 +13873,21 @@ else
 fi
 
 
-    if test -f "$XBJLIB_JAR"; then
-        if test -f "$PTSLF4J_API_JAR"; then
-            if test -f "$PTSLF4J_NOP_JAR"; then
-                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+        if test -f "$XBJLIB_JAR"; then
+            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $XBJLIB_JAR" >&5
 $as_echo "$XBJLIB_JAR" >&6; }; fi
-                PTXBEE_DIR=xbee
-                # PTXBJLIB_PACKAGES is used in ptII/doc/makefile
-                PTXBJLIB_PACKAGES="ptolemy.actor.lib.jjs.modules.xbee"
-                PTXBJLIB_JARS="$XBJLIB_JAR${CLASSPATHSEPARATOR}"
-                updateClasspath "$XBJLIB_JAR"
-
-                # Webcam-capture might have already added slf4j-api
-                if test -z "$ADDED_PTSLF4J_API_JAR_TO_CLASSPATH" ; then
-                    updateClasspath "$PTSLF4J_API_JAR"
-                    PTXBJLIB_JARS="$PTXBJLIB_JAR${CLASSPATHSEPARATOR}$PTSLF4J_API_JAR${CLASSPATHSEPARATOR}$PTSLF4J_NOP_JAR"
-                fi
-
-                # Webcam-capture might have already added slf4j-nop
-                if test -z "$ADDED_PTSLF4J_NOP_JAR_TO_CLASSPATH" ; then
-                    updateClasspath "$PTSLF4J_NOP_JAR"
-                    PTXBJLIB_JARS="$PTXBJLIB_JAR${CLASSPATHSEPARATOR}$PTSLF4J_NOP_JAR"
-                fi
-             else
-                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find $PTSLF4J_NOP_JAR
-    which is needed by the XBee xbjlib jar" >&5
-$as_echo "$as_me: WARNING: Could not find $PTSLF4J_NOP_JAR
-    which is needed by the XBee xbjlib jar" >&2;}
-             fi
+            PTXBEE_DIR=xbee
+            # PTXBJLIB_PACKAGES is used in ptII/doc/makefile
+            PTXBJLIB_PACKAGES="ptolemy.actor.lib.jjs.modules.xbee"
+            PTXBJLIB_JARS="$XBJLIB_JAR"
+            updateClasspath "$XBJLIB_JAR"
         else
-             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find $PTSLF4J_API_JAR
-    which is needed by the XBee xbjlib jar" >&5
-$as_echo "$as_me: WARNING: Could not find $PTSLF4J_API_JAR
-    which is needed by the XBee xbjlib jar" >&2;}
-        fi
-    else
-	{ $as_echo "$as_me:${as_lineno-$LINENO}: result: Did not find
-	'$XBJLIB_JAR'" >&5
+	    { $as_echo "$as_me:${as_lineno-$LINENO}: result: Did not find
+    '$XBJLIB_JAR'" >&5
 $as_echo "Did not find
-	'$XBJLIB_JAR'" >&6; }
+    '$XBJLIB_JAR'" >&6; }
+        fi
     fi
 fi
 
@@ -15024,6 +15031,12 @@ fi
 
 
 # javax.servlet-api*.jar used by Ptango and ptserver.
+
+
+# slf4j-api*.jar, used by webcam-capture and xbjlib (XBee).
+
+
+# slf4j-nop*.jar, used by webcam-capture and xbjlib (XBee).
 
 
 # socketio Jar used by the JavaScript actor $PTII/lib/socketio.jar The
