@@ -88,6 +88,10 @@ $CLASSPATH/org/terraswarm/accessor/demo/SecureSocket/SecureSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/StockTick/StockTick.xml
 $CLASSPATH/org/terraswarm/accessor/demo/SwarmAcousticService/SwarmAcousticService.xml
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocket.xml
+$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketDoubleArrayBatched.xml
+$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketImage.xml
+$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketTwoClients.xml
+$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketUnsignedShort.xml
 $CLASSPATH/org/terraswarm/accessor/demo/UDPSocket/UDPSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/VertxBus/VertxBus.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Weather/Weather.xml
@@ -186,6 +190,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketU
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeHelloWorld.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.xml
 $CLASSPATH/ptolemy/actor/lib/js/demo/Factorial/Factorial.xml
