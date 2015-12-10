@@ -496,6 +496,34 @@ public class VertxHelperBase extends HelperBase {
         }
     }
 
+    protected int _sizeOfType(DATA_TYPE type) {
+        switch(type) {
+        case BYTE:
+            return Byte.BYTES;
+        case DOUBLE:
+        case NUMBER:
+            return Double.BYTES;
+        case FLOAT:
+            return Float.BYTES;
+        case INT:
+            return Integer.BYTES;
+        case LONG:
+            return Long.BYTES;
+        case SHORT:
+            return Short.BYTES;
+        case UNSIGNEDBYTE:
+            return Byte.BYTES;
+        case UNSIGNEDINT:
+            return Integer.BYTES;
+        case UNSIGNEDSHORT:
+            return Short.BYTES;
+        default:
+            _error("Unsupported type for socket: "
+                    + type.toString());
+            return 0;
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected fields                      ////
 

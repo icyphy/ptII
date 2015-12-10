@@ -327,20 +327,6 @@ public class SocketHelper extends VertxHelperBase {
         return _sendTypes;
     }
     
-    ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
-
-    /** Given an array of strings, return an array where everything is
-     *  converted to lower case, duplicates are removed, and the order
-     *  is alphabetical.
-     */
-    protected static TreeSet<String> _removeDuplicates(String[] original) {
-        TreeSet<String> result = new TreeSet<String>();
-        for (String value : original) {
-            result.add(value.toLowerCase());
-        }
-        return result;
-    }
     
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
@@ -771,7 +757,7 @@ public class SocketHelper extends VertxHelperBase {
                     }
                 } else {
                     // Assume a numeric type.
-                    int size = _sizeOfReceiveType();
+                    int size = _sizeOfType(_receiveType);
                     int length = finalBuffer.length();
                     int numberOfElements = length / size;
                     if (numberOfElements == 1) {
@@ -818,33 +804,6 @@ public class SocketHelper extends VertxHelperBase {
                 // In the following, the null argument indicates that there no
                 // new data.
                 _processBuffer(null);
-            }
-        }
-        private int _sizeOfReceiveType() {
-            switch(_receiveType) {
-            case BYTE:
-                return Byte.BYTES;
-            case DOUBLE:
-            case NUMBER:
-                return Double.BYTES;
-            case FLOAT:
-                return Float.BYTES;
-            case INT:
-                return Integer.BYTES;
-            case LONG:
-                return Long.BYTES;
-            case SHORT:
-                return Short.BYTES;
-            case UNSIGNEDBYTE:
-                return Byte.BYTES;
-            case UNSIGNEDINT:
-                return Integer.BYTES;
-            case UNSIGNEDSHORT:
-                return Short.BYTES;
-            default:
-                _error(_eventEmitter, "Unsupported type for socket: "
-                        + _receiveType.toString());
-                return 0;
             }
         }
         private int _bufferCount = 0;

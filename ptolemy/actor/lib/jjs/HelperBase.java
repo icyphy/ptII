@@ -27,6 +27,8 @@
  */
 package ptolemy.actor.lib.jjs;
 
+import java.util.TreeSet;
+
 import javax.script.ScriptContext;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
@@ -178,6 +180,18 @@ public class HelperBase {
                     + ": Failed to schedule response handler: "
                     + e.getMessage());
         }
+    }
+
+    /** Given an array of strings, return an array where everything is
+     *  converted to lower case, duplicates are removed, and the order
+     *  is alphabetical.
+     */
+    protected static TreeSet<String> _removeDuplicates(String[] original) {
+        TreeSet<String> result = new TreeSet<String>();
+        for (String value : original) {
+            result.add(value.toLowerCase());
+        }
+        return result;
     }
 
     ///////////////////////////////////////////////////////////////////
