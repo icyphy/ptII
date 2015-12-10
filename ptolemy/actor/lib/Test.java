@@ -45,6 +45,7 @@ import ptolemy.data.type.TypeConstant;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 ///////////////////////////////////////////////////////////////////
@@ -398,30 +399,46 @@ public class Test extends NonStrictTest {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
-    /** Set the input port greater than or equal to the type of elements 
-     *  in the correctValues array in case backward type inference is
-     *  enabled and the input port has no type declared.
-     *
-     *  @return A set of inequalities.
-     */
-    @Override
-    protected Set<Inequality> _customTypeConstraints() {
-        HashSet<Inequality> result = new HashSet<Inequality>();
-        if (isBackwardTypeInferenceEnabled()
-                && input.getTypeTerm().isSettable()) {
-            try {
-                result.add(
-                        new Inequality(
-                                new TypeConstant(
-                                        ((ArrayToken) correctValues.getToken())
-                                                .getElementType()),
-                        input.getTypeTerm()));
-            } catch (IllegalActionException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
-        }
-        return result;
-    }
+    // /** Set the input port greater than or equal to the type of elements 
+    //  *  in the correctValues array in case backward type inference is
+    //  *  enabled and the input port has no type declared.
+    //  *
+    //  *  @return A set of inequalities.
+    //  */
+    // @Override
+    // protected Set<Inequality> _customTypeConstraints() {
+    //     HashSet<Inequality> result = new HashSet<Inequality>();
+    //     if (isBackwardTypeInferenceEnabled()
+    //             && input.getTypeTerm().isSettable()) {
+    //         try {
+    //             TypeConstant typeConstant = null;
+    //             if (((BooleanToken) trainingMode.getToken())
+    //                     .booleanValue()) {
+    //                 typeConstant = new TypeConstant(BaseType.GENERAL);
+    //             } else {
+    //                 ArrayToken correctValuesToken = (ArrayToken) correctValues.getToken();
+    //                 if (input.getWidth() == 1) {
+    //                 // result.add(
+    //                 //         new Inequality(
+    //                 //                 new TypeConstant(
+    //                 //                         ((ArrayToken) correctValues.getToken())
+    //                 //                         .getElementType()),
+    //                 //                 input.getTypeTerm()));
+
+    //                 typeConstant = new TypeConstant(
+    //                         correctValuesToken.getElementType());
+    //                 } else {
+    //                     typeConstant = new TypeConstant(
+    //                             ((ArrayToken) correctValuesToken.getElement(0)).getElementType());
+    //                 }
+    //             }
+    //             result.add( new Inequality(typeConstant, 
+    //                             input.getTypeTerm()));
+    //         } catch (IllegalActionException ex) {
+    //             throw new InternalErrorException(this, ex, "Failed to set the type constraint.");
+    //         }
+    //     }
+    //     return result;
+    // }
     
 }
