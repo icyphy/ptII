@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="XBeeHelloWorld" class="ptolemy.actor.TypedCompositeActor">
+<entity name="XBeeDataTypes" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -17,25 +17,25 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this, you will need XBee modules available on a serial port on your host computer.&#10;You can get modules that plug into your USB port here:   FIXME&#10;For this demo, you will need two such devices.&#10;&#10;You will need to configure the module to be in &quot;API Mode&quot; (not &quot;AT Mode&quot;, which is the default).&#10;Use XCTU to configure the modules, available here: FIXME&#10;&#10;In XCTU, discover the devices and add them.&#10;Click on the devices and scroll down to &quot;AP API Enable&quot; and enable the API Mode.&#10;Save the configuration to the device by clicking on the pencil icon.&#10;Make sure both devices are using the same radio channel and protocols.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model sends a sequence of arrays of numbers&#10;wirelessly from the top radio to the bottom one,&#10;and a sequence of strings from the bottom to the&#10;top.  The top radio is configured to interpret the&#10;incoming strings as bytes rather than as a string,&#10;so you will see the byte values in the display.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 55.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 946, 728}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 934, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[712, 618]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0476717503335393">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0712387093097566">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.91085290908825, 294.34886132482103}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.2133200085117, 244.0908203125}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstration of wireless communication from one&#10;XBee radio to another.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstration of wireless communication from one&#10;XBee radio to another with data types.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 10.0]">
         </property>
@@ -49,11 +49,11 @@
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="XBeeDataTypes">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This requires the same setup as XBeeHelloWorld.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 185.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="XBeeDataTypes.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="XBeeHelloWorld.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -73,29 +73,6 @@
             </property>
         </property>
     </property>
-    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also:">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 490.0]">
-        </property>
-    </property>
-    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="Hello World">
-        </property>
-        <doc>Create a constant sequence with a string value.</doc>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 295.0]">
-        </property>
-    </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var xbee = require('xbee');&#10;&#10;exports.setup = function() {&#10;	parameter('port', {&#10;		'type':'string',&#10;		'options': xbee.hostSerialPorts()&#10;		// FIXME: Set a default value&#10;	});&#10;	parameter('receiveType', {&#10;		'type': 'string',&#10;		'value': 'string',&#10;		'options': xbee.supportedReceiveTypes()&#10;	});&#10;	parameter('sendType', {&#10;		'type':'string',&#10;		'value': 'string',&#10;		'options': xbee.supportedSendTypes()&#10;	});&#10;	input('toSend');&#10;	output('received');&#10;};&#10;&#10;var port;&#10;&#10;exports.initialize = function() {&#10;	port = new xbee.XBee(&#10;		get('port'), {&#10;			'receiveType': getParameter('receiveType'),&#10;			'sendType': getParameter('sendType'),&#10;		}); // FIXME: baud rate, etc.&#10;		&#10;	port.on('data', function(data) {&#10;		send('received', data);&#10;	});&#10;		&#10;	addInputHandler('toSend', function() {&#10;		port.send(get('toSend'));&#10;	});&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (port) {&#10;		port.close();&#10;	}&#10;}&#10;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
@@ -115,11 +92,11 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="string">
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="byte">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="sendType" class="ptolemy.data.expr.Parameter" value="string">
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="number">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -192,7 +169,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="string">
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="number">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -211,8 +188,15 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 295.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="{0, 0}">
+        </property>
+        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="{1, -1}">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 295.0]">
+        </property>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -227,8 +211,8 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="StringConst.output" relation="relation2"/>
-    <link port="StringConst.trigger" relation="relation"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="JavaScript.toSend" relation="relation2"/>
     <link port="JavaScript.received" relation="relation4"/>
     <link port="Display.input" relation="relation4"/>
@@ -240,4 +224,6 @@
     <link port="JavaScript3.toSend" relation="relation3"/>
     <link port="JavaScript3.received" relation="relation6"/>
     <link port="DiscreteClock.output" relation="relation"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp.trigger" relation="relation"/>
 </entity>
