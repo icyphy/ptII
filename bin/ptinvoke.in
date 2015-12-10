@@ -729,7 +729,7 @@ fi
 
 # Webcam-capture and XBee use slf4j.
 if [ "$PTCAMERAS_DIR" = "cameras" -o "$PTXBEE_DIR" = "xbee" ]; then
-    PTSLF4J_JARS=@PTSLF4J_API_JAR@${CLASSPATHSEPARATOR}@PTSLF4J_NOP_JAR@${CLASSPATHSEPARATOR}
+    PTSLF4J_JARS="${CLASSPATHSEPARATOR}@PTSLF4J_API_JAR@${CLASSPATHSEPARATOR}@PTSLF4J_NOP_JAR@"
 fi
 
 #### All the jar files.  Useful for Vergil and ptolemy rules which must load
