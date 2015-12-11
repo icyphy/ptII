@@ -46,7 +46,7 @@ public:
     };
 
     // Attributes
-    static const int SIZEOF_ATT = 65; //61;
+    static const int SIZEOF_ATT = 68; //65 //61;
     static const char *attNames[SIZEOF_ATT];
     /*static const*/ enum Att {
         att_BAD_DEFINED = -1,
@@ -64,8 +64,9 @@ public:
         att_canSerializeFMUstate, att_providesDirectionalDerivative, att_canHandleVariableCommunicationStepSize, att_canInterpolateInputs, att_maxOutputDerivativeOrder,
         att_canRunAsynchronuously,
         // additional attribute for getMaxStepSize() as proposed in the EMSOFT paper
-        att_canGetMaxStepSize,
-
+        att_canGetMaxStepSize, att_canSetTimeResolution, att_canGetPreferredResolution,
+        // additional attributes for Hybrid CoSimulation
+        att_handleIntegerTime,
         att_xmlnsXsi, att_providesDirectionalDerivatives, att_canHandleEvents
     };
 

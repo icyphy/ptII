@@ -241,6 +241,22 @@ Functions for FMI2 for Co-Simulation
 #define fmi2GetBooleanStatus             fmi2FullName(fmi2GetBooleanStatus)
 #define fmi2GetStringStatus              fmi2FullName(fmi2GetStringStatus)
 
+
+/***************************************************
+Functions for FMI2 for Hybrid Co-Simulation
+****************************************************/
+#define fmi2HybridDoStep               fmi2FullName(fmi2HybridDoStep)
+#define fmi2HybridGetMaxStepSize       fmi2FullName(fmi2HybridGetMaxStepSize)
+#define fmi2GetPreferredResolution     fmi2FullName(fmi2GetPreferredResolution)
+#define fmi2SetResolution              fmi2FullName(fmi2SetResolution)
+#define fmi2HybridSetupExperiment      fmi2FullName(fmi2HybridSetupExperiment)
+#define fmi2GetHybridReal              fmi2FullName(fmi2GetHybridReal)
+#define fmi2SetHybridReal              fmi2FullName(fmi2SetHybridReal)
+#define fmi2GetHybridInteger           fmi2FullName(fmi2GetHybridInteger)
+#define fmi2SetHybridInteger           fmi2FullName(fmi2SetHybridInteger)
+#define fmi2GetHybridBoolean           fmi2FullName(fmi2GetHybridBoolean)
+#define fmi2SetHybridBoolean           fmi2FullName(fmi2SetHybridBoolean)
+
 /* Version number */
 #define fmi2Version "2.0"
 
@@ -267,7 +283,6 @@ Common Functions
 
 /* Getting and setting variables values */
    FMI2_Export fmi2GetRealTYPE        fmi2GetReal;
-   FMI2_Export fmi2GetMaxStepSizeTYPE fmi2GetMaxStepSize;
    FMI2_Export fmi2GetIntegerTYPE     fmi2GetInteger;
    FMI2_Export fmi2GetBooleanTYPE     fmi2GetBoolean;
    FMI2_Export fmi2GetStringTYPE      fmi2GetString;
@@ -294,14 +309,14 @@ Functions for FMI2 for Model Exchange
 ****************************************************/
 
 /* Enter and exit the different modes */
-   FMI2_Export fmi2EnterEventModeTYPE               fmi2EnterEventMode;
-   FMI2_Export fmi2NewDiscreteStatesTYPE            fmi2NewDiscreteStates;
-   FMI2_Export fmi2EnterContinuousTimeModeTYPE      fmi2EnterContinuousTimeMode;
-   FMI2_Export fmi2CompletedIntegratorStepTYPE      fmi2CompletedIntegratorStep;
+   FMI2_Export fmi2EnterEventModeTYPE                fmi2EnterEventMode;
+   FMI2_Export fmi2NewDiscreteStatesTYPE             fmi2NewDiscreteStates;
+   FMI2_Export fmi2EnterContinuousTimeModeTYPE       fmi2EnterContinuousTimeMode;
+   FMI2_Export fmi2CompletedIntegratorStepTYPE       fmi2CompletedIntegratorStep;
 
 /* Providing independent variables and re-initialization of caching */
-   FMI2_Export fmi2SetTimeTYPE             fmi2SetTime;
-   FMI2_Export fmi2SetContinuousStatesTYPE fmi2SetContinuousStates;
+   FMI2_Export fmi2SetTimeTYPE                       fmi2SetTime;
+   FMI2_Export fmi2SetContinuousStatesTYPE           fmi2SetContinuousStates;
 
 /* Evaluation of the model equations */
    FMI2_Export fmi2GetDerivativesTYPE                fmi2GetDerivatives;
@@ -317,16 +332,35 @@ Functions for FMI2 for Co-Simulation
 /* Simulating the slave */
    FMI2_Export fmi2SetRealInputDerivativesTYPE  fmi2SetRealInputDerivatives;
    FMI2_Export fmi2GetRealOutputDerivativesTYPE fmi2GetRealOutputDerivatives;
-
-   FMI2_Export fmi2DoStepTYPE     fmi2DoStep;
-   FMI2_Export fmi2CancelStepTYPE fmi2CancelStep;
+   FMI2_Export fmi2DoStepTYPE                   fmi2DoStep;
+   FMI2_Export fmi2CancelStepTYPE               fmi2CancelStep;
+   FMI2_Export fmi2GetMaxStepSizeTYPE           fmi2GetMaxStepSize;
 
 /* Inquire slave status */
-   FMI2_Export fmi2GetStatusTYPE        fmi2GetStatus;
-   FMI2_Export fmi2GetRealStatusTYPE    fmi2GetRealStatus;
-   FMI2_Export fmi2GetIntegerStatusTYPE fmi2GetIntegerStatus;
-   FMI2_Export fmi2GetBooleanStatusTYPE fmi2GetBooleanStatus;
-   FMI2_Export fmi2GetStringStatusTYPE  fmi2GetStringStatus;
+   FMI2_Export fmi2GetStatusTYPE                fmi2GetStatus;
+   FMI2_Export fmi2GetRealStatusTYPE            fmi2GetRealStatus;
+   FMI2_Export fmi2GetIntegerStatusTYPE         fmi2GetIntegerStatus;
+   FMI2_Export fmi2GetBooleanStatusTYPE         fmi2GetBooleanStatus;
+   FMI2_Export fmi2GetStringStatusTYPE          fmi2GetStringStatus;
+
+// /***************************************************
+// Functions for FMI2 for Hybrid Co-Simulation
+// ****************************************************/
+   FMI2_Export fmi2HybridDoStepTYPE            fmi2HybridDoStep;
+   FMI2_Export fmi2GetPreferredResolutionTYPE  fmi2GetPreferredResolution;
+   FMI2_Export fmi2SetResolutionTYPE           fmi2SetTimeResolution;
+   FMI2_Export fmi2HybridGetMaxStepSizeTYPE    fmi2HybridGetMaxStepSize;
+   FMI2_Export fmi2HybridSetupExperimentTYPE   fmi2HybridSetupExperiment;
+
+   FMI2_Export fmi2GetHybridRealTYPE           fmi2GetHybridReal;
+   FMI2_Export fmi2GetHybridIntegerTYPE        fmi2GetHybridInteger;
+   FMI2_Export fmi2GetHybridBooleanTYPE        fmi2GetHybridBoolean;
+   FMI2_Export fmi2GetHybridStringTYPE         fmi2GetHybridString;
+
+   FMI2_Export fmi2SetHybridRealTYPE           fmi2SetHybridReal;
+   FMI2_Export fmi2SetHybridIntegerTYPE        fmi2SetHybridInteger;
+   FMI2_Export fmi2SetHybridBooleanTYPE        fmi2SetHybridBoolean;
+   FMI2_Export fmi2SetHybridStringTYPE         fmi2SetHybridString;
 
 #ifdef __cplusplus
 }  /* end of extern "C" { */

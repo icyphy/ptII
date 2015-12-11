@@ -101,11 +101,12 @@
    typedef void*           fmi2FMUstate;                /* Pointer to internal FMU state */
    typedef unsigned int    fmi2ValueReference;
    typedef double          fmi2Real   ;
-   typedef int             fmi2Integer;
+   typedef long            fmi2Integer;
    typedef int             fmi2Boolean;
    typedef char            fmi2Char;
    typedef const fmi2Char* fmi2String;
    typedef char            fmi2Byte;
+   typedef uint64_t        fmi2IntegerTime;
 
 /* Values for fmi2Boolean  */
 #define fmi2True  1
