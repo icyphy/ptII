@@ -381,7 +381,7 @@ static void doubleToCommaString(char* buffer, double r){
 // if separator is ',', columns are separated by ',' and '.' is used for floating-point numbers.
 // otherwise, the given separator (e.g. ';' or '\t') is to separate columns, and ',' is used
 // as decimal dot in floating-point numbers.
-void outputRow(FMU fmus[], int numberOfFMUs, const char* NAMES_OF_FMUS[], int time, int resolution, FILE* file, char separator, boolean header) {
+void outputRow(FMU fmus[], int numberOfFMUs, const char* NAMES_OF_FMUS[], double time, int resolution, FILE* file, char separator, boolean header) {
 
     char buffer[32];
 
@@ -391,7 +391,7 @@ void outputRow(FMU fmus[], int numberOfFMUs, const char* NAMES_OF_FMUS[], int ti
     }
     else {
         if (separator==',') {
-            fprintf(file, "%.d E%d", time, resolution);
+            fprintf(file, "%g", time);
         }
         else {
             // separator is e.g. ';' or '\t'

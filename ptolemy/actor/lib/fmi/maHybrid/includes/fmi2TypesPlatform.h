@@ -106,6 +106,7 @@
    typedef char            fmi2Char;
    typedef const fmi2Char* fmi2String;
    typedef char            fmi2Byte;
+   typedef uint64_t        fmi2IntegerTime;
 
 /* Values for fmi2Boolean  */
 #define fmi2True  1
