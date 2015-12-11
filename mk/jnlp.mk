@@ -250,7 +250,7 @@ CAPECODE_NONGUI_JARS = \
 	lib/ptcolt.jar \
 	ptolemy/actor/lib/conversions/json/json.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
-	lib/nrjavaserial-3.11.0.jar \
+	lib/nrjavaserial-3.11.0.devel.jar \
 	ptolemy/actor/lib/jjs/jjs.jar \
 	ptolemy/actor/lib/jjs/modules/modules.jar \
 	ptolemy/actor/lib/js/js.jar \
