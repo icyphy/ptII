@@ -22,13 +22,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 55.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 946, 728}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 23, 946, 728}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[712, 618]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0476717503335393">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.91085290908825, 294.34886132482103}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.9108529090883, 294.348861324821}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -111,7 +111,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 295.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-AJV9ONHV">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01R74U">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -131,7 +131,7 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 22, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 23, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -188,7 +188,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 405.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01LK3S">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01QVBK">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
