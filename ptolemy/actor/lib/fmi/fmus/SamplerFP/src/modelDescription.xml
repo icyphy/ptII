@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.1"
+  modelName="SamplerFP"
+  guid="{7f1e474f-d7e9-468a-b947-bd257a67c5b5}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="SamplerFP"
+  canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"
+  canGetMaxStepSize="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+    <ScalarVariable name="y0" valueReference="0" description="output" causality="output">
+     <Real />
+    </ScalarVariable>
+
+    <ScalarVariable name="u0" valueReference="1" description="input" causality="input">
+     <Real />
+    </ScalarVariable>
+
+    <ScalarVariable name="s" valueReference="2" description="sampler" causality="input">
+     <Real />
+    </ScalarVariable>
+</ModelVariables>
+
+<ModelStructure>
+    <Outputs>
+        <Unknown index="1" dependencies="3"/>
+    </Outputs>
+</ModelStructure>
+
+</fmiModelDescription>
