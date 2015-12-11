@@ -464,22 +464,6 @@ $PTII/bin/vergil ./demo/MatlabExpression/MatlabExpression
    </blockquote>
 
 
-<h3>Quicktime</h3>
-The <a hreg="codedoc/ptolemy/domains/gr/lib/quicktime/package-summary.html">Quicktime</a> GR domain actors use Quicktime from Apple.
-
-<p>To use these actors, go to <a href="https://www.apple.com/quicktime/download/#inbrowser" target="_top"><code>https://www.apple.com/quicktime/download/</code></a> 
-<br/>(Note that the QuickTime SDK <b>does not</b> include QuickTime For Jav)
-<br/>We chose the "Quicktime Standalone Installer", which does not contain iTunes.
-
-<br>During installation, choose "custom" and then "select all".
-This drops <code>QTJava.zip</code> into the lib/ext of all your installed JREs.
-Then you have to copy this zip file to the jre/lib/ext directory
-of your SDK, for example:
-<pre>
-cp c:/Program\ Files\ \(x86\)/Java/jre7/lib/ext/QTJava.zip c:/Program\ Files/Java/jdk1.7.0_51/jre/lib/ext/
-cp c:/Program\ Files\ \(x86\)/Java/jre7/lib/ext/QTJava.zip c:/Program\ Files/Java/jre7/lib/ext/
-</pre>
-
 <h3>RXTX: Serial Port API</h3>
 The <a hreg="codedoc/ptolemy/actor/lib/io/comm/package-summary.html">actor.lib.io.comm</a> actors use 
 the RXTX serial port API from  <a href="http://mfizz.com/oss/rxtx-for-java#in_browser" target="_top">http://mfizz.com/oss/rxtx-for-java</a>.
