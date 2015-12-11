@@ -157,6 +157,7 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
     set result1 \
 {{
 ?       .maven} {
+?       capeCodeNonGUI} {
 ?       cobertura.ser} {
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.bmp} {
 ?       ptolemy/actor/lib/jai/test/auto/PtolemyII.jpg} {
