@@ -132,7 +132,7 @@
     <pathelement location="lib/mapss.jar" />
     <pathelement location="lib/oscP5.jar" />
     <pathelement location="lib/rsyntaxtextarea-2.5.7.jar" />
-    <pathelement location="lib/slf4j-api-1.7.2.jar" />
+    <pathelement location="lib/slf4j-api-1.7.12.jar" />
     <pathelement location="lib/slf4j-nop-1.7.12.jar" />
     <pathelement location="lib/smack.jar" />
     <pathelement location="lib/smackx.jar" />
@@ -150,6 +150,7 @@
     <pathelement location="ptserver/lib/jetty-all-8.1.2.v20120308.jar" />
     <pathelement location="ptserver/lib/servlet-api-2.5.jar" />
     <pathelement location="ptserver/lib/wmqtt.jar" />
+    <pathelement location="lib/nrjavaserial-3.11.0.devel.jar" />
     <pathelement location="lib/org-netbeans-api-visual.jar" />
     <pathelement location="lib/org-openide-util-lookup.jar" />
     <pathelement location="lib/org-openide-util.jar" />
@@ -173,6 +174,7 @@
     <pathelement location="lib/jackson-annotations-2.6.0.jar" />
     <pathelement location="lib/hazelcast-3.5.2.jar" />
     <pathelement location="lib/webcam-capture-0.3.10.jar" />
+    <pathelement location="lib/xbjlib-1.1.0.nrjavaserial.jar" />
     <pathelement location="${env.JAVA_HOME}/lib/tools.jar" />
   </path>
 
