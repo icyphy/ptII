@@ -24,6 +24,9 @@
 <doc>Discrete derivative.</doc>
 </entity>
 
+<entity name="EventButton" class="ptolemy.actor.lib.gui.EventButton">
+</entity>
+
 <entity name="EventFilter" class="ptolemy.domains.de.lib.EventFilter">
 </entity>
 

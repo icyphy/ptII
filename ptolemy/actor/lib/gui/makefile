@@ -56,12 +56,13 @@ JSRCS = \
 	ArrayPlotterXY.java \
 	ArrowKeyProbe.java \
 	ArrowKeySensor.java \
+	BarGraph.java \
 	ConstPlaceable.java \
 	DisplayJavaSE.java \
-	BarGraph.java \
 	Display.java \
 	DisplayInterface.java \
 	ExceptionManagerGUIFactory.java \
+	EventButton.java \
 	HistogramPlotter.java \
 	InteractiveShell.java \
 	MatrixViewer.java \
@@ -87,6 +88,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	ArrowKeySensorIcon.xml \
+	EventButtonIcon.xml \
 	XYPlotter.gif
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
