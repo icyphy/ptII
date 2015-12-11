@@ -30,7 +30,7 @@ extern "C" {
 } // closing brace for extern "C"
 #endif // STANDALONE_XML_PARSER
 
-const char *XmlParser::elmNames[SIZEOF_ELM] = { 
+const char *XmlParser::elmNames[SIZEOF_ELM] = {
     "fmiModelDescription", "ModelExchange", "CoSimulation", "SourceFiles", "File",
     "UnitDefinitions", "Unit", "BaseUnit", "DisplayUnit", "TypeDefinitions",
     "SimpleType", "Real", "Integer", "Boolean", "String",
@@ -55,7 +55,7 @@ const char *XmlParser::attNames[SIZEOF_ATT] = {
     "canSerializeFMUstate", "providesDirectionalDerivative","canHandleVariableCommunicationStepSize", "canInterpolateInputs", "maxOutputDerivativeOrder",
     "canRunAsynchronuously",
     "canGetMaxStepSize",              // Attribute for getMaxStepSize() as proposed in the EMSOFT paper of EECS Berkeley
-    "handleIntegerTime",              // Attribute for Hybrid CoSimulation
+    "handleIntegerTime", "canSetTimeResolution", "canGetPreferredResolution"             // Attribute for Hybrid CoSimulation
     // not conform with the FMI 2.0 doc. // Todo : remove then used models become mature.
     // FIXME: Watch out! These values are not added to the attribute enums in the header files. Values have to be added BEFORE this block!
     "xmlns:xsi",                       // Dymola examples from 2014 FD01
@@ -174,7 +174,7 @@ void XmlParser::parseSkipChildElement() {
     }
 }
 
-/* -------------------------------------------------------------------------* 
+/* -------------------------------------------------------------------------*
  * Helper functions to check validity of xml.
  * -------------------------------------------------------------------------*/
 
@@ -273,9 +273,9 @@ ModelDescription *XmlParser::validate(ModelDescription *md) {
 }
 
 //#define TEST
-#ifdef TEST 
+#ifdef TEST
 #ifndef STANDALONE_XML_PARSER
-int main () { 
+int main () {
     //{ char c='c'; while(c!='g') scanf("%c", &c); } // to debug: wait for the g key
 
     XmlParser *parser = new XmlParser("c:\\_data\\fmi-fmu\\fmi-fmuVS\\fmi-fmuVS\\modelDescriptionDymola - ManuallyModifiedCopy.xml");

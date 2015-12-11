@@ -34,7 +34,12 @@ typedef struct {
     fmi2FMUstate lastFMUstate;
     fmi2Boolean canGetAndSetFMUstate;
     fmi2Boolean canGetMaxStepSize;
-    fmi2Boolean handleIntegerTime;
+    fmi2Boolean canHandleIntegerTime;
+    fmi2Integer maxOutputDerivativeOrder;
+    fmi2Boolean canInterpolateInputs;
+    fmi2Integer derivativeOrder;
+    fmi2Boolean canGetPreferredResolution;
+    fmi2Boolean canSetTimeResolution;
 
     HMODULE dllHandle; // fmu.dll handle
     /***************************************************
@@ -96,8 +101,8 @@ typedef struct {
     ****************************************************/
     fmi2HybridDoStepTYPE                  *doHybridStep;
     fmi2HybridGetMaxStepSizeTYPE          *getHybridMaxStepSize;
-    fmi2RequiredTimeResolutionTYPE        *getTimeResolution;
-    fmi2SetTimeResolutionTYPE             *setTimeResolution;
+    fmi2GetPreferredResolutionTYPE        *getPreferredResolution;
+    fmi2SetResolutionTYPE                 *setResolution;
     fmi2HybridSetupExperimentTYPE         *setupHybridExperiment;
     fmi2GetHybridRealTYPE                 *getHybridReal;
     fmi2GetHybridIntegerTYPE              *getHybridInteger;
@@ -127,4 +132,3 @@ typedef struct {
 } portConnection;
 
 #endif // FMI_H
-

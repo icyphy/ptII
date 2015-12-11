@@ -62,7 +62,7 @@ typedef enum {
     // additional attribute for getMaxStepSize() as proposed in the EMSOFT paper
     att_canGetMaxStepSize,
     // additional attributes for Hybrid CoSimulation
-    att_canHandleIntegerTime
+    att_canHandleIntegerTime, att_canGetPreferredResolution, att_canSetTimeResolution
 } Att;
 
 // Enumerated values names used in ModelDescription.xml
