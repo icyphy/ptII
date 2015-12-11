@@ -1,0 +1,247 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="XBeeHelloWorld" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this, you will need XBee modules available on a serial port on your host computer.&#10;You can get modules that plug into your USB port here:   FIXME&#10;For this demo, you will need two such devices.&#10;&#10;You will need to configure the module to be in &quot;API Mode&quot; (not &quot;AT Mode&quot;, which is the default).&#10;Use XCTU to configure the modules, available here: FIXME&#10;&#10;In XCTU, discover the devices and add them.&#10;Click on the devices and scroll down to &quot;AP API Enable&quot; and enable the API Mode.&#10;Save the configuration to the device by clicking on the pencil icon.&#10;Make sure both devices are using the same radio channel and protocols.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 55.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 946, 728}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[712, 618]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0476717503335393">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.9108529090883, 294.348861324821}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstration of wireless communication from one&#10;XBee radio to another.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 10.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Before running this,&#10;double click on the&#10;two JavaScript actors&#10;and select the serial&#10;ports hosting your&#10;two XBee radios.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 335.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="XBeeDataTypes">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 515.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="XBeeDataTypes.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{210, 195}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also:">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 490.0]">
+        </property>
+    </property>
+    <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Hello World">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 295.0]">
+        </property>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 22, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Top Received">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 295.0]">
+        </property>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 240, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Bottom Received">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 405.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 470.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="Hello Back!">
+        </property>
+        <doc>Create a constant sequence with a string value.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="80">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 470.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 295.0]">
+        </property>
+    </entity>
+    <entity name="XBee" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2014-2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor sends and/or receives messages from an XBee radio located on a&#10; *  specified serial port on the host. The accessor lists all the serial ports&#10; *  that it finds as options, although most likely only some of these are actually&#10; *  XBee radio devices. It is quite tricky to get this accessor working, as you have&#10; *  to have properly configured the XBee devices, for example to be on the same&#10; *  network as each other and to use the same baud rate as specified in this&#10; *  accessor. Information about XBee devices can be found here:&#10; *&#10; *  * https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/XBee&#10; *&#10; *&#10; *  Whenever an input is received on the `toSend` input,&#10; *  the data on that input is sent to the serial port, and then presumably over&#10; *  the readio.&#10; *&#10; *  Whenever a message is received from the serial port, that message is&#10; *  produced on the `received` output.&#10; *&#10; *  When `wrapup()` is invoked, this accessor closes the serial port.&#10; *&#10; *  The send and receive types can be any of those supported by the host.&#10; *  The list of supported types will be provided as options for the `sendType`&#10; *  and `receiveType` parameters. For the Ptolemy II host, these include at&#10; *  least 'string', 'number', and a variety of numeric types.&#10; *&#10; *  If both ends of the socket are known to be JavaScript clients,&#10; *  then you should use the 'number' data type for numeric data.&#10; *  If one end or the other is not JavaScript, then&#10; *  you can use more specified types such as 'float' or 'int', if they&#10; *  are supported by the host. In all cases, received numeric&#10; *  data will be converted to JavaScript 'number' when emitted.&#10; *  For sent data, this will try to convert a JavaScript number&#10; *  to the specified type. The type 'number' is equivalent&#10; *  to 'double'.&#10; *&#10; *  When type conversions are needed, e.g. when you send a double&#10; *  with `sendType` set to int, or an int with `sendType` set to byte,&#10; *  then a &quot;primitive narrowing conversion&quot; will be applied, as specified here:&#10; *  https://docs.oracle.com/javase/specs/jls/se8/html/jls-5.html#jls-5.1.3 .&#10; *&#10; *  For numeric types, you can also send an array with a single call&#10; *  to send(). The elements of the array will be sent in sequence all&#10; *  at once, and will be received in one batch and emitted as an array.&#10; *&#10; *  Accessors that extend this one can override the `toSendInputHandler` function&#10; *  to customize what is sent.&#10; *&#10; *  This accessor requires the 'xbee' module.&#10; *&#10; *  @accessor net/XBee&#10; *&#10; *  @input toSend The data to be sent over the radio.&#10; *  @output received The data received from the radio.&#10; *&#10; *  @parameter {int} port The port on the server to connect to. This defaults to the&#10; *   last (most recently added, presumably) serial port in the list of serial ports on&#10; *   the host.&#10; *  @parameter {string} receiveType See above.&#10; *  @parameter {string} sendType See above.&#10; *&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;/* These are needed by JSLint, see https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSLint */&#10;&quot;use strict&quot;;&#10;/*global addInputHandler, error, get, getParameter, input, output, parameter, removeInputHandler, send */&#10;&#10;var xbee = require('xbee');&#10;var port = null;&#10;&#10;/** Set up the accessor by defining the parameters, inputs, and outputs. */&#10;exports.setup = function () {&#10;    input('toSend');&#10;    output('received');&#10;&#10;    var serialPorts = xbee.hostSerialPorts();&#10;	parameter('baudRate', {&#10;		'type': 'int',&#10;		'value': 9600&#10;	});&#10;	parameter('port', {&#10;		'type':'string',&#10;		'options': serialPorts,&#10;		'value': serialPorts[serialPorts.length - 1]&#10;	});&#10;	parameter('receiveType', {&#10;		'type': 'string',&#10;		'value': 'string',&#10;		'options': xbee.supportedReceiveTypes()&#10;	});&#10;	parameter('sendType', {&#10;		'type':'string',&#10;		'value': 'string',&#10;		'options': xbee.supportedSendTypes()&#10;	});&#10;};&#10;&#10;/** Handle input on 'toSend' by sending the specified data over the radio. */&#10;exports.toSendInputHandler = function () {&#10;    port.send(get('toSend'));&#10;};&#10;&#10;/** Initiate a connection to the server using the current parameter values,&#10; *  set up handlers for for establishment of the connection, incoming data,&#10; *  errors, and closing from the server, and set up a handler for inputs&#10; *  on the toSend() input port.&#10; */&#10;exports.initialize = function() {&#10;	port = new xbee.XBee(&#10;		get('port'), {&#10;		    'baudRate': getParameter('baudRate'),&#10;			'receiveType': getParameter('receiveType'),&#10;			'sendType': getParameter('sendType'),&#10;		});&#10;		&#10;	port.on('data', function(data) {&#10;		send('received', data);&#10;	});&#10;		&#10;    // Record the object that calls it (could be a derived accessor).&#10;    var callObj = this;&#10;&#10;    addInputHandler('toSend', exports.toSendInputHandler.bind(callObj));&#10;};&#10;&#10;/** Close the web socket connection. */&#10;exports.wrapup = function() {&#10;	if (port) {&#10;		port.close();&#10;	}&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/net/XBee.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/cu.usbserial-AJV9ONHV">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="string">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="string">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 295.0]">
+        </property>
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="XBee2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2014-2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor sends and/or receives messages from an XBee radio located on a&#10; *  specified serial port on the host. The accessor lists all the serial ports&#10; *  that it finds as options, although most likely only some of these are actually&#10; *  XBee radio devices. It is quite tricky to get this accessor working, as you have&#10; *  to have properly configured the XBee devices, for example to be on the same&#10; *  network as each other and to use the same baud rate as specified in this&#10; *  accessor. Information about XBee devices can be found here:&#10; *&#10; *  * https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/XBee&#10; *&#10; *&#10; *  Whenever an input is received on the `toSend` input,&#10; *  the data on that input is sent to the serial port, and then presumably over&#10; *  the readio.&#10; *&#10; *  Whenever a message is received from the serial port, that message is&#10; *  produced on the `received` output.&#10; *&#10; *  When `wrapup()` is invoked, this accessor closes the serial port.&#10; *&#10; *  The send and receive types can be any of those supported by the host.&#10; *  The list of supported types will be provided as options for the `sendType`&#10; *  and `receiveType` parameters. For the Ptolemy II host, these include at&#10; *  least 'string', 'number', and a variety of numeric types.&#10; *&#10; *  If both ends of the socket are known to be JavaScript clients,&#10; *  then you should use the 'number' data type for numeric data.&#10; *  If one end or the other is not JavaScript, then&#10; *  you can use more specified types such as 'float' or 'int', if they&#10; *  are supported by the host. In all cases, received numeric&#10; *  data will be converted to JavaScript 'number' when emitted.&#10; *  For sent data, this will try to convert a JavaScript number&#10; *  to the specified type. The type 'number' is equivalent&#10; *  to 'double'.&#10; *&#10; *  When type conversions are needed, e.g. when you send a double&#10; *  with `sendType` set to int, or an int with `sendType` set to byte,&#10; *  then a &quot;primitive narrowing conversion&quot; will be applied, as specified here:&#10; *  https://docs.oracle.com/javase/specs/jls/se8/html/jls-5.html#jls-5.1.3 .&#10; *&#10; *  For numeric types, you can also send an array with a single call&#10; *  to send(). The elements of the array will be sent in sequence all&#10; *  at once, and will be received in one batch and emitted as an array.&#10; *&#10; *  Accessors that extend this one can override the `toSendInputHandler` function&#10; *  to customize what is sent.&#10; *&#10; *  This accessor requires the 'xbee' module.&#10; *&#10; *  @accessor net/XBee&#10; *&#10; *  @input toSend The data to be sent over the radio.&#10; *  @output received The data received from the radio.&#10; *&#10; *  @parameter {int} port The port on the server to connect to. This defaults to the&#10; *   last (most recently added, presumably) serial port in the list of serial ports on&#10; *   the host.&#10; *  @parameter {string} receiveType See above.&#10; *  @parameter {string} sendType See above.&#10; *&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;/* These are needed by JSLint, see https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSLint */&#10;&quot;use strict&quot;;&#10;/*global addInputHandler, error, get, getParameter, input, output, parameter, removeInputHandler, send */&#10;&#10;var xbee = require('xbee');&#10;var port = null;&#10;&#10;/** Set up the accessor by defining the parameters, inputs, and outputs. */&#10;exports.setup = function () {&#10;    input('toSend');&#10;    output('received');&#10;&#10;    var serialPorts = xbee.hostSerialPorts();&#10;	parameter('baudRate', {&#10;		'type': 'int',&#10;		'value': 9600&#10;	});&#10;	parameter('port', {&#10;		'type':'string',&#10;		'options': serialPorts,&#10;		'value': serialPorts[serialPorts.length - 1]&#10;	});&#10;	parameter('receiveType', {&#10;		'type': 'string',&#10;		'value': 'string',&#10;		'options': xbee.supportedReceiveTypes()&#10;	});&#10;	parameter('sendType', {&#10;		'type':'string',&#10;		'value': 'string',&#10;		'options': xbee.supportedSendTypes()&#10;	});&#10;};&#10;&#10;/** Handle input on 'toSend' by sending the specified data over the radio. */&#10;exports.toSendInputHandler = function () {&#10;    port.send(get('toSend'));&#10;};&#10;&#10;/** Initiate a connection to the server using the current parameter values,&#10; *  set up handlers for for establishment of the connection, incoming data,&#10; *  errors, and closing from the server, and set up a handler for inputs&#10; *  on the toSend() input port.&#10; */&#10;exports.initialize = function() {&#10;	port = new xbee.XBee(&#10;		get('port'), {&#10;		    'baudRate': getParameter('baudRate'),&#10;			'receiveType': getParameter('receiveType'),&#10;			'sendType': getParameter('sendType'),&#10;		});&#10;		&#10;	port.on('data', function(data) {&#10;		send('received', data);&#10;	});&#10;		&#10;    // Record the object that calls it (could be a derived accessor).&#10;    var callObj = this;&#10;&#10;    addInputHandler('toSend', exports.toSendInputHandler.bind(callObj));&#10;};&#10;&#10;/** Close the web socket connection. */&#10;exports.wrapup = function() {&#10;	if (port) {&#10;		port.close();&#10;	}&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/net/XBee.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01LK3S">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="string">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="string">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 405.0]">
+        </property>
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{345.0, 405.0}">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="StringConst.output" relation="relation7"/>
+    <link port="StringConst.trigger" relation="relation"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="Display2.input" relation="relation6"/>
+    <link port="MicrostepDelay.input" relation="relation6"/>
+    <link port="MicrostepDelay.output" relation="relation5"/>
+    <link port="StringConst2.output" relation="relation4"/>
+    <link port="StringConst2.trigger" relation="relation5"/>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="XBee.toSend" relation="relation7"/>
+    <link port="XBee.received" relation="relation2"/>
+    <link port="XBee2.toSend" relation="relation4"/>
+    <link port="XBee2.received" relation="relation6"/>
+</entity>
