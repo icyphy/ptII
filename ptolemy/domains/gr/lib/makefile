@@ -31,9 +31,9 @@
 
 ME =		ptolemy/domains/gr/lib
 
-# $PTII/configure looks for Quicktime for Java  and sets PTQUICKTIME_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTQUICKTIME_DIR is empty.
-DIRS =	$(PTQUICKTIME_DIR)
+# We used to have Quicktime actors, but QuickTime for Java is no longer available,
+# see https://en.wikipedia.org/wiki/QuickTime_for_Java
+DIRS =
 
 # Root of the Java directory
 ROOT =		../../../..
