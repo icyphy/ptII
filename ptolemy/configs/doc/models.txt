@@ -99,6 +99,8 @@ $CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketClient.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketServer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketFullDuplex/WebSocketFullDuplex.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketImage/WebSocketImage.xml
+$CLASSPATH/org/terraswarm/accessor/demo/XBeeHelloWorld/XBeeDataTypes.xml
+$CLASSPATH/org/terraswarm/accessor/demo/XBeeHelloWorld/XBeeHelloWorld.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/Ros.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/RosPublisher.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/RosSubscriber.xml
@@ -190,8 +192,6 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketU
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeDataTypes.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/xbee/demo/XBeeHelloWorld/XBeeHelloWorld.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.xml
 $CLASSPATH/ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.xml
 $CLASSPATH/ptolemy/actor/lib/js/demo/Factorial/Factorial.xml
@@ -451,6 +451,7 @@ $CLASSPATH/ptolemy/domains/de/demo/Bus/Bus.xml
 $CLASSPATH/ptolemy/domains/de/demo/Clock/Clock.xml
 $CLASSPATH/ptolemy/domains/de/demo/ClockDrift/ClockDrift.xml
 $CLASSPATH/ptolemy/domains/de/demo/DateDemo/DateDemo.xml
+$CLASSPATH/ptolemy/domains/de/demo/EventButton/EventButton.xml
 $CLASSPATH/ptolemy/domains/de/demo/Inspection/Inspection.xml
 $CLASSPATH/ptolemy/domains/de/demo/LineFault/LineFault.xml
 $CLASSPATH/ptolemy/domains/de/demo/LongRuns/LongRuns.xml
