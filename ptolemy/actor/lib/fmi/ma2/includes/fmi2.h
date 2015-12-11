@@ -1,4 +1,4 @@
-/* ------------------------------------------------------------------------- 
+/* -------------------------------------------------------------------------
  * fmi.h
  * Struct with the corresponding function pointers for FMI 2.0.
  * Copyright QTronic GmbH. All rights reserved.
@@ -34,6 +34,12 @@ typedef struct {
     fmi2FMUstate lastFMUstate;
     fmi2Boolean canGetAndSetFMUstate;
     fmi2Boolean canGetMaxStepSize;
+    fmi2Boolean canHandleIntegerTime;
+    fmi2Integer maxOutputDerivativeOrder;
+    fmi2Boolean canInterpolateInputs;
+    fmi2Integer derivativeOrder;
+    fmi2Boolean canGetPreferredResolution;
+    fmi2Boolean canSetTimeResolution;
 
     HMODULE dllHandle; // fmu.dll handle
     /***************************************************
@@ -90,6 +96,21 @@ typedef struct {
     fmi2GetEventIndicatorsTYPE            *getEventIndicators;
     fmi2GetContinuousStatesTYPE           *getContinuousStates;
     fmi2GetNominalsOfContinuousStatesTYPE *getNominalsOfContinuousStates;
+    /***************************************************
+    Functions for FMI2 for Hybrid Co-Simulation
+    ****************************************************/
+    fmi2HybridDoStepTYPE                  *doHybridStep;
+    fmi2HybridGetMaxStepSizeTYPE          *getHybridMaxStepSize;
+    fmi2HybridSetupExperimentTYPE         *setupHybridExperiment;
+    fmi2GetHybridRealTYPE                 *getHybridReal;
+    fmi2GetHybridIntegerTYPE              *getHybridInteger;
+    fmi2GetHybridBooleanTYPE              *getHybridBoolean;
+    fmi2GetHybridStringTYPE               *getHybridString;
+    fmi2SetHybridRealTYPE                 *setHybridReal;
+    fmi2SetHybridIntegerTYPE              *setHybridInteger;
+    fmi2SetHybridBooleanTYPE              *setHybridBoolean;
+    fmi2SetHybridStringTYPE               *setHybridString;
+
 } FMU;
 
 typedef enum {
@@ -109,4 +130,3 @@ typedef struct {
 } portConnection;
 
 #endif // FMI_H
-
