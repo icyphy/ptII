@@ -3104,12 +3104,19 @@ else
     This is only a problem if you are using Eclipse])
         fi
     else
+        case "`uname -s`" in
+            Darwin) JMF_MESSAGE="
+    Under Mac OS X, download the Cross-Platform Java version, unzip it,
+    run \"sudo -i cp ~yourlogin/src/jmf/JMF-2.1.1e/lib/*.jar /Library/Java/Extensions/\"
+    and then rerun ./configure.";;
+            *) JMF_MESSAGE="";;
+        esac
         AC_MSG_WARN(['"$JAVAC" JMFTest.java' failed.
     perhaps the Java Media Framework (JMF) is not installed?
     You need not download the JMF unless you plan on using the video
     actors in $JMF_USER_DIR
     The JMF SDK can be downloaded from 
-    http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html])
+    http://www.oracle.com/technetwork/java/javase/download-142937.html $JMF_MESSAGE])
     fi
     cd "$startdir"
 fi
@@ -5440,55 +5447,60 @@ if test ! -d "$QUICKTIME_USER_DIR"; then
     so we need not find Quicktime for Java.])
 else
     AC_MSG_CHECKING([for Quicktime for Java])
-    # We need to run javac in the config directory so that javac from jdk1.1.6
-    # under NT and cygwin works properly
-    startdir=$PTII
-    cd "$srcdir/config"
-    # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    # Use -classpath here because that is what we use when we compile
-    # In javac 1.4.2, -classpath seems to mean we ignore $CLASSPATH
-    if "$JAVAC" -classpath "$PTII" quickTimeTest.java ; then
-       PT_MSG_RESULT(Quicktime found in the default classpath.)
-       PTQUICKTIME_DIR=quicktime
+    if test -z "$PTJAVA3D_DIR"; then
+        AC_MSG_WARN([$QUICKTIME_USER_DIR is present, but Java 3D was not found,
+    QuickTime for Java is only needed if you want to build in
+    $QUICKTIME_USER_DIR,
+    otherwise the build will proceed fine without Quicktime for Java.])
     else
-       if test "${MAJOR_OS_NAME:-none}" = "none"; then
-	    if "$JAVAC" MajorOSName.java ; then
-	        AC_MSG_CHECKING([the which major type of OS we are running under])
-		# Older versions of cygwin might not have env, but 1.1 does
-		if env CLASSPATH="$PTII/config" "$JAVA" MajorOSName > /dev/null; then
-		    # Run it again and get the results
-		    MAJOR_OS_NAME=`CLASSPATH="$PTII/config" "$JAVA" MajorOSName`
-		    PT_MSG_RESULT($MAJOR_OS_NAME)
-		else   
-		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MajorOSName' failed.
-    This means we cannot look for the Quicktime zip file in the likely places]);		    
-		fi
-	    fi
-       fi	    
-       if test "${MAJOR_OS_NAME:-none}" = "Windows"; then
-	   SAFE_PROGRAMFILES=`echo $PROGRAMFILES | sed -e 's@\\\@/@g'`
-
-           AC_MSG_WARN(['"$JAVAC" quickTime3dTest.java' failed, looking for
+        # We need to run javac in the config directory so that javac from jdk1.1.6
+        # under NT and cygwin works properly
+        startdir=$PTII
+        cd "$srcdir/config"
+        # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
+        # Use -classpath here because that is what we use when we compile
+        # In javac 1.4.2, -classpath seems to mean we ignore $CLASSPATH
+        if "$JAVAC" -classpath "$PTII" quickTimeTest.java ; then
+            PT_MSG_RESULT(Quicktime found in the default classpath.)
+            PTQUICKTIME_DIR=quicktime
+        else
+            if test "${MAJOR_OS_NAME:-none}" = "none"; then
+	        if "$JAVAC" MajorOSName.java ; then
+	            AC_MSG_CHECKING([the which major type of OS we are running under])
+		    # Older versions of cygwin might not have env, but 1.1 does
+		    if env CLASSPATH="$PTII/config" "$JAVA" MajorOSName > /dev/null; then
+		        # Run it again and get the results
+		        MAJOR_OS_NAME=`CLASSPATH="$PTII/config" "$JAVA" MajorOSName`
+		        PT_MSG_RESULT($MAJOR_OS_NAME)
+		    else   
+		        AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MajorOSName' failed.
+    This means we cannot look for the Quicktime zip file in the likely places]);
+                    fi
+	        fi
+            fi	    
+            if test "${MAJOR_OS_NAME:-none}" = "Windows"; then
+	        SAFE_PROGRAMFILES=`echo $PROGRAMFILES | sed -e 's@\\\@/@g'`
+                AC_MSG_WARN(['"$JAVAC" quickTime3dTest.java' failed, looking for
     QTJava.zip in $SAFE_PROGRAMFILES/java/*/lib/ext/QTJava.zip'])
-	  # Under Windows try to find the jar file
-	  #c:/Program Files/Java/j2re1.4.1_02/lib/ext/QTJava.zip
-	  QTJAVA_ZIP=`cd "$SAFE_PROGRAMFILES"; ls -tr java/*/lib/ext/QTJava.zip | head -1`
-	  if test -z "$QTJAVA_ZIP" ; then
-    	     AC_MSG_WARN(['Did not find "$SAFE_PROGRAMFILES/java/*/lib/ext/QTJava.zip"'])
-	  else    
-	     QTJAVA_ZIP="$SAFE_PROGRAMFILES/$QTJAVA_ZIP"
-	     PT_MSG_RESULT([    ok, found '$QTJAVA_ZIP'])
-	     AC_MSG_CHECKING([again for Quicktime for Java])
-	     if "$JAVAC" -classpath "$QTJAVA_ZIP" quickTimeTest.java ; then
-	         PT_MSG_RESULT($QTJAVA_ZIP)
-	         PTQUICKTIME_DIR=quicktime
-		 # PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
-		 PTQUICKTIME_PACKAGES=ptolemy.domains.gr.lib.quicktime
-	     fi
-	  fi    
-       fi
-       if test -z "$PTQUICKTIME_DIR" ; then
-           AC_MSG_WARN(['"$JAVAC" quickTime3dTest.java' failed.
+	        # Under Windows try to find the jar file
+	        #c:/Program Files/Java/j2re1.4.1_02/lib/ext/QTJava.zip
+	        QTJAVA_ZIP=`cd "$SAFE_PROGRAMFILES"; ls -tr java/*/lib/ext/QTJava.zip | head -1`
+	        if test -z "$QTJAVA_ZIP" ; then
+    	            AC_MSG_WARN(['Did not find "$SAFE_PROGRAMFILES/java/*/lib/ext/QTJava.zip"'])
+	        else    
+	            QTJAVA_ZIP="$SAFE_PROGRAMFILES/$QTJAVA_ZIP"
+	            PT_MSG_RESULT([ok, found '$QTJAVA_ZIP'])
+	            AC_MSG_CHECKING([again for Quicktime for Java])
+	            if "$JAVAC" -classpath "$QTJAVA_ZIP" quickTimeTest.java ; then
+	                PT_MSG_RESULT($QTJAVA_ZIP)
+	                PTQUICKTIME_DIR=quicktime
+		        # PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
+		        PTQUICKTIME_PACKAGES=ptolemy.domains.gr.lib.quicktime
+	            fi
+	        fi    
+            fi
+            if test -z "$PTQUICKTIME_DIR" ; then
+                AC_MSG_WARN(['"$JAVAC" quickTime3dTest.java' failed.
     You may need to install QuickTime with the 'QuickTime For
     Java' option from http://developer.apple.com/quicktime/qtjava/
     During installation, choose 'custom' and then 'select all'.
@@ -5497,15 +5509,16 @@ else
     of your SDK and rerun configure.
     If configure still fails, you may need to unzip the QTJava.zip
     file and create a QTJava.jar file:
-       # unzip QTJava.zip
-       cd QTJava
-       jar -cf ../QTJava.jar .
+        # unzip QTJava.zip
+        cd QTJava
+        jar -cf ../QTJava.jar .
     QuickTime for Java is only needed if you want to build in
     $QUICKTIME_USER_DIR,
     otherwise the build will proceed fine without Quicktime for Java.])
+            fi
         fi
+        cd "$startdir"
     fi
-    cd "$startdir"
 fi
 
 if test -z "$PTQUICKTIME_DIR"; then

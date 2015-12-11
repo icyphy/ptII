@@ -353,10 +353,14 @@ cp $PTII/vendors/misc/joystick/lib/jjstick.dll $PTII/bin
 <h3>JMF</h3>
 The <a name="codeDoc/ptolemy/actor/lib/jmf/package-summary.html">Java Media Framework (JMF) actors</a> require that JMF, which can be  downloaded from
 <a href="http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html#in_browser" target="_top"><code>http://www.oracle.com/technetwork/java/javase/tech/index-jsp-140239.html</code></a>
-<p>You need not install JMF if you are not planning on using the JMF Actors.
+
+<p>You need not install JMF if you are not planning on using the JMF Actors.</p>
+
 <p>The installer also looks for the USB camera, so you may find
 it helpful if you connect a USB camera before running the installer.
-To configure a USB camera after installation, run <code>c:/Program Files/JMF2.1.1e/bin/jmfinit.exe</code>
+To configure a USB camera after installation, run <code>JMF2.1.1e/bin/jmfinit.exe</code>.
+  (Note that the camera does not appear to work under Mac OS X 10.11.1).</p>
+
 <p>Under 64-bit Windows, we copied the jar files and other files into the JRE.
 <pre>
 cp c:/Program\ Files\ \(x86\)/JMF2.1.1e/lib/* c:/Program\ Files/Java/jdk1.7.0_51/jre/lib/ext 
@@ -364,6 +368,13 @@ cp c:/Program\ Files\ \(x86\)/JMF2.1.1e/lib/* c:/Program\ Files/Java/jre7/lib/ex
 </pre>
 
 <p>We verified that <code>jmf-2_1_1e-windows-i586.exe</code> works with these actors.
+
+<p> Under Mac OS X, download the Cross-Platform Java version, unzip it, run</p>
+<pre>
+  sudo -i cp ~yourlogin/src/jmf/JMF-2.1.1e/lib/*.jar /Library/Java/Extensions/
+</pre>
+<p>    and then rerun ./configure.</p>
+
 
 
 <h3><a name="matlab">Matlab</a></h3>
