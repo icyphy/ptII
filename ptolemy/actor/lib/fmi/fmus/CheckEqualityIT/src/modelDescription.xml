@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.1"
+  modelName="CheckEqualityIT"
+  guid="{18926048-be42-4833-8da4-8f4fbd832776}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="CheckEqualityIT"
+  canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"
+  canGetMaxStepSize="true"
+  canGetPreferredResolution="true"
+  canSetResolution="true"
+  handleIntegerTime="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+    <ScalarVariable name="y0" valueReference="0" description="output" causality="output">
+    <Boolean />
+    </ScalarVariable>
+
+    <ScalarVariable name="u0" valueReference="0" description="input a" causality="input">
+    <Real />
+    </ScalarVariable>
+
+    <ScalarVariable name="u1" valueReference="1" description="input b" causality="input">
+    <Real />
+</ModelVariables>
+
+<ModelStructure>
+    <Outputs>
+    <Unknown index="1" dependencies="1 2"/>
+    </Outputs>
+</ModelStructure>
+
+</fmiModelDescription>
