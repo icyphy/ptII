@@ -32,6 +32,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.Token;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
@@ -180,6 +181,12 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
                 for (int i = 0; i < _classificationLength; i++) {
                     _observations[i][0] = ((DoubleToken) ((ArrayToken) observationArray)
                             .getElement(i)).doubleValue();
+                }
+            } else if (((ArrayToken)observationArray).getElementType().isCompatible(BaseType.INT)) {
+                _observations = new double[_classificationLength][1];
+                for (int i = 0; i < _classificationLength; i++) {
+                    _observations[i][0] = ((IntToken) ((ArrayToken) observationArray)
+                            .getElement(i)).intValue();
                 }
             } else {
                 int obsDim = ((ArrayToken) ((ArrayToken) observationArray).getElement(0)).length();
