@@ -28,7 +28,6 @@ COPYRIGHTENDKEY
 package org.ptolemy.machineLearning.hmm;
 
 import java.util.HashMap;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;
@@ -295,7 +294,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
             Token observationArray = input.get(0);
             // observation length is inferred from the input array length.
             int _observationLength = ((ArrayToken) observationArray).length();
-
+            _obsDimension =1;
             if (_observationLength <= 0) {
                 throw new IllegalActionException(this,
                         "Observation sequence length " + _observationLength
@@ -307,11 +306,18 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                     _observations[i][0] = ((DoubleToken) ((ArrayToken) observationArray)
                             .getElement(i)).doubleValue();
                 }
+            } else if ( ((ArrayToken)observationArray).getElementType().equals(BaseType.INT)) {
+                _observations = new double[_observationLength][1];
+                for (int i = 0; i < _observationLength; i++) {
+                    _observations[i][0] = ((IntToken) ((ArrayToken) observationArray)
+                            .getElement(i)).intValue();
+                }
             } else {
                 int observationDimension = ((ArrayToken) ((ArrayToken) observationArray)
                         .getElement(0)).length();
-                _observations = new double[_observationLength][observationDimension];
-                for (int i = 0; i < _observationLength; i++) {
+                _obsDimension = observationDimension;
+                _observations = new double[_observationLength][_obsDimension];
+                for (int i = 0; i < _observationLength; i++) { 
                     for (int j = 0; j < observationDimension; j++) {
                         _observations[i][j] = ((DoubleToken)((ArrayToken) ((ArrayToken) observationArray)
                                 .getElement(i)).getElement(j)).doubleValue();
