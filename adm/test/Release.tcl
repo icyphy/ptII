@@ -176,6 +176,7 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 !       ptolemy/vergil/basic/layout/kieler/test/layoutPerformance.xml} {
 !       ptolemy/vergil/basic/layout/kieler/test/layoutPerformance2.xml} {
 ?       .maven} {
+?       capeCodeNonGUI} {
 ?       cobertura.ser} {
 ?       generated-sources} {
 ?       org/terraswarm/accessor/accessors} {
