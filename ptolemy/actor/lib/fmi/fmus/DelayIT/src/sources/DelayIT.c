@@ -199,7 +199,7 @@ fmi2IntegerTime getMaxStepSize(ModelInstance *comp) {
     } else if (hr(input_) == present_ && i(delay_) < 2) {
         communicationStepSize = i(delay_);
     } else {
-        communicationStepSize = 2;
+        communicationStepSize = 1000;//2;
     }
     return communicationStepSize;
 }
