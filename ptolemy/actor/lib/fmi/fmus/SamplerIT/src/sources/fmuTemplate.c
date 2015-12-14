@@ -214,7 +214,6 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
     return comp;
 }
 
-#ifndef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2SetupExperiment(fmi2Component c, fmi2Boolean toleranceDefined, fmi2Real tolerance,
                             fmi2Real startTime, fmi2Boolean stopTimeDefined, fmi2Real stopTime) {
 
@@ -228,7 +227,6 @@ fmi2Status fmi2SetupExperiment(fmi2Component c, fmi2Boolean toleranceDefined, fm
     comp->microstep = 0;
     return fmi2OK;
 }
-#else
 fmi2Status fmi2HybridSetupExperiment(fmi2Component c, fmi2Boolean toleranceDefined, fmi2Integer tolerance,
                             fmi2Integer startTime, fmi2Boolean stopTimeDefined, fmi2Integer stopTime) {
 
@@ -243,8 +241,6 @@ fmi2Status fmi2HybridSetupExperiment(fmi2Component c, fmi2Boolean toleranceDefin
     comp->microstep = 0;
     return fmi2OK;
 }
-#endif
-
 fmi2Status fmi2EnterInitializationMode(fmi2Component c) {
     ModelInstance *comp = (ModelInstance *)c;
     if (invalidState(comp, "fmi2EnterInitializationMode", MASK_fmi2EnterInitializationMode))
@@ -995,12 +991,10 @@ fmi2Status fmi2CancelStep(fmi2Component c) {
     return fmi2Error;
 }
 
-#ifndef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
                     fmi2Real communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint) {
     return fmi2OK;
 }
-#else
 fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2IntegerTime currentCommunicationPoint,
                     fmi2IntegerTime communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint,
                     fmi2IntegerTime *computedStepSize) {
@@ -1048,8 +1042,6 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2IntegerTime currentCommunicatio
 
     return fmi2OK;
 }
-#endif
-#ifdef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2GetPreferredResolution (fmi2Component c, fmi2Integer *resolution) {
     ModelInstance *comp = (ModelInstance *)c;
     *resolution = comp->requestedResolution;
@@ -1087,11 +1079,9 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2IntegerTime currentCom
     *value = (localCommunicationStepSize + comp->time) * comp->resMagnitude - currentCommunicationPoint;
     return fmi2OK;
 }
-#else
 fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
     return fmi2OK;
 }
-#endif
 
 /* Inquire slave status */
 static fmi2Status getStatus(char* fname, fmi2Component c, const fmi2StatusKind s) {
