@@ -27,12 +27,12 @@
  */
 package ptolemy.actor.lib.jjs.modules.serial;
 
+import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
-import gnu.io.SerialPortEvent;
-import gnu.io.SerialPortEventListener;
+import gnu.io.UnsupportedCommOperationException;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -41,6 +41,7 @@ import java.util.TooManyListenersException;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
+import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// SerialHelper
@@ -54,7 +55,7 @@ import ptolemy.actor.lib.jjs.HelperBase;
  @Pt.ProposedRating red (winthrop)
  @Pt.AcceptedRating red (winthrop)
  */
-public class SerialHelper extends HelperBase implements SerialPortEventListener {
+public class SerialHelper extends HelperBase {
     
     /** Open a serial port.
      *  The argument is an instance of the JavaScript SerialPort object.
@@ -74,19 +75,11 @@ public class SerialHelper extends HelperBase implements SerialPortEventListener 
             String portName,
             String ownerName, 
             int timeout,
-            Object options)
-                    throws NoSuchPortException,
-                    PortInUseException,
-                    TooManyListenersException, IOException {
+            Object options) {
         super(helping);
-        CommPortIdentifier portID = CommPortIdentifier.getPortIdentifier(portName);
-        _serialPort = (SerialPort) portID.open(ownerName, timeout);
-        
-        // FIXME: Set the options.
-                
-        // _inputStream = _serialPort.getInputStream();
-        // _outputStream = _serialPort.getOutputStream();
-        // _serialPort.addEventListener(this);
+        _portName = portName;
+        _ownerName = ownerName;
+        _timeout = timeout;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -95,11 +88,8 @@ public class SerialHelper extends HelperBase implements SerialPortEventListener 
     /** Close the serial port.
      */
     public synchronized void close() {
+        _open = false;
         if (_serialPort != null) {
-            // FIXME: For some reason, upon closing,
-            // RXTX goes into an infinite loop in some phantom thread
-            // consuming all your CPU.
-            _serialPort.removeEventListener();
             if (_inputStream != null) {
                 try {
                     _inputStream.close();
@@ -110,59 +100,63 @@ public class SerialHelper extends HelperBase implements SerialPortEventListener 
             }
             if (_outputStream != null) {
                 try {
+                    _outputStream.flush();
                     _outputStream.close();
                 } catch (IOException e) {
                     // No idea why closing this would fail.
                     e.printStackTrace();
                 }
             }
-            _serialPort.setDTR(false);
-            _serialPort.setRTS(false);
-            Thread closeThread = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        Thread.sleep(1000);
-                    } catch (InterruptedException e) {
-                        // Ignore
-                    }
-                    _serialPort.close();                    
-                }
-                
-            }, "closeThread");
-            closeThread.start();
+            _serialPort.close();
+            _serialPort = null;
+            _actor.log("Serial port closed.");
         }
     }
-
-    /** React to an event from the serial port.  This is the one and
-     *  only method required to implement SerialPortEventListener
-     *  (which this class implements).  Notifies all threads that
-     *  are blocked on this PortListener class.
+    
+    /** Open the serial port. If there is already a serial port open,
+     *  close it first.
+     *  @throws NoSuchPortException If the port does not exist.
+     *  @throws PortInUseException If the port is in use (should not be thrown; error invoked instead).
+     *  @throws IOException If opening the input or output stream fails.
+     *  @throws TooManyListenersException If there are already too many listeners to the port.
+     *  @throws UnsupportedCommOperationException If the specified parameters cannot be set on the port.
      */
-    @Override
-    public synchronized void serialEvent(SerialPortEvent e) {
-        System.out.println("FIXME: Serial event: " + e);
-        if (e.getEventType() == SerialPortEvent.DATA_AVAILABLE) {
-            try {
-                int bytesAvailable = _inputStream.available();
-                final byte[] dataBytes = new byte[bytesAvailable];
-                int bytesRead = _inputStream.read(dataBytes, 0, bytesAvailable);
-                // FindBugs asks us to check the return value of in.read().
-                if (bytesRead != bytesAvailable) {
-                    _error(_currentObj, "Read only " + bytesRead
-                            + " bytes from the serial port, but was expecting"
-                            + bytesAvailable);
-                    // Continue to issue the bytes that were received.
-                }
-
-                // FIXME: Here is where data types and message framing should be handled.
-
-                _issueResponse(() -> {
-                    _currentObj.callMember("emit", "data", dataBytes);
-                });
-            } catch (IOException e1) {
-                _error(_currentObj, "Failed to read serial port", e1);
+    public synchronized void open() throws IllegalActionException {
+        if(_serialPort != null) {
+            _serialPort.close();
+        }
+        CommPortIdentifier portID = null;
+        try {
+            portID = CommPortIdentifier.getPortIdentifier(_portName);
+            CommPort port = portID.open(_ownerName, _timeout);
+            if (!(port instanceof SerialPort)) {
+                _error("Port " + _portName + " is not a serial port.");
+                return;
             }
+            _serialPort = (SerialPort) port;
+            
+            // FIXME: Set the options.
+            _serialPort.setSerialPortParams(9600,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
+            
+            _inputStream = _serialPort.getInputStream();
+            _outputStream = _serialPort.getOutputStream();
+            
+            _open = true;
+
+            // The RXTX event listener mechanism does not work under OS X.
+            // It causes the JVM to crash.
+            // _serialPort.addEventListener(this);
+            
+            (new Thread(new SerialReader())).start();
+            (new Thread(new SerialWriter())).start();
+        } catch (NoSuchPortException e) {
+            throw new IllegalActionException(_actor, e, "No such port: " + _portName);
+        } catch (PortInUseException e) {
+            throw new IllegalActionException(_actor, e, "Port " + _portName + " is currently owned by " + portID.getCurrentOwner());
+        } catch (UnsupportedCommOperationException e) {
+            throw new IllegalActionException(_actor, e, "Port does not support the specified parameters: " + _portName);
+        } catch (IOException e) {
+            throw new IllegalActionException(_actor, e, "Failed to input input or output stream: " + _portName);
         }
     }
 
@@ -174,7 +168,68 @@ public class SerialHelper extends HelperBase implements SerialPortEventListener 
     
     /** Output stream. */
     private OutputStream _outputStream;
+    
+    /** The name of the owner. */
+    private String _ownerName;
+    
+    /** The name of the serial port. */
+    private String _portName;
+    
+    /** Indicator of whether the port is open. */
+    private boolean _open;
+    
+    /** The timeout for opening. */
+    private int _timeout;
 
     /** The serial port. */
     private SerialPort _serialPort;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+
+    /** Read from the serial port and emit data.
+     */
+    public class SerialReader implements Runnable {        
+        public void run () {
+            byte[] buffer = new byte[1024];
+            int length = -1;
+            try {
+                // Perform blocking read of up to 1024 bytes until
+                // end of stream is observed.
+                // FIXME: look for a message delimitter here.
+                while ((length = _inputStream.read(buffer)) > -1 ) {
+                    final String message = new String(buffer, 0, length);
+                    _issueResponse(() -> {
+                        _currentObj.callMember("emit", "data", message);
+                    });
+                }
+            } catch ( IOException e ) {
+                _error("Exception occurred reading from serial port.", e);
+            }
+            _actor.log("Serial port reader thread exiting.");
+        }
+    }
+
+    /** Write to the serial port.
+     */
+    public class SerialWriter implements Runnable  {
+        public void run () {
+            try {
+                int count = 0;
+                // FIXME: Just outputting a count.
+                while (_open) {
+                    String message = _ownerName + ": " + count++;
+                    _outputStream.write(message.getBytes());
+                    try {
+                        Thread.sleep(1000);
+                    } catch (InterruptedException e) {
+                        break;
+                    }
+                }                
+            } catch ( IOException e ) {
+                _error("Exception occurred reading from serial port.", e);
+            }
+            _actor.log("Serial port writer thread exiting.");
+        }
+    }
 }
