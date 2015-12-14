@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<fmiModelDescription
+  fmiVersion="2.1"
+  modelName="ClockW"
+  guid="{c2043fd6-aa6e-4012-8047-18a43b6436fb}"
+  numberOfEventIndicators="0">
+
+<CoSimulation
+  modelIdentifier="ClockW"
+  canHandleVariableCommunicationStepSize="true"
+  canGetAndSetFMUstate="true"
+  canGetMaxStepSize="true"
+  canGetPreferredResolution="true"
+  canSetResolution="true"
+  handleIntegerTime="true"/>
+
+<LogCategories>
+  <Category name="logAll"/>
+  <Category name="logError"/>
+  <Category name="logFmiCall"/>
+  <Category name="logEvent"/>
+</LogCategories>
+
+<ModelVariables>
+    <ScalarVariable name="y0" valueReference="0" description="constant output" causality="output">
+       <Real />
+    </ScalarVariable>
+
+    <ScalarVariable name="value" valueReference="1" description="Output high level value"
+                    causality="parameter" variability="fixed" initial="exact">
+    <Real start="1"/>
+    </ScalarVariable>
+
+    <ScalarVariable name="period" valueReference="0" description="Period"
+                    causality="parameter" variability="fixed" initial="exact">
+    <Integer start="1"/>
+    </ScalarVariable>
+</ModelVariables>
+
+<ModelStructure>
+    <Outputs>
+      <Unknown index="1" dependencies=""/>
+    </Outputs>
+</ModelStructure>
+
+</fmiModelDescription>
