@@ -105,7 +105,7 @@ void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent,
 }
 
 fmi2Real getMaxStepSize(ModelInstance *comp) {
-    fmi2Integer communicationStepSize;
+    fmi2Real communicationStepSize;
     if (pos(0) == fmi2True)
         communicationStepSize = 0;
     else
