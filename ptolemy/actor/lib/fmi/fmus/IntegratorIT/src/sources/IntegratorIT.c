@@ -103,7 +103,7 @@ void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent,
 }
 
 fmi2Real getMaxStepSize(ModelInstance *comp) {
-    fmi2Real communicationStepSize = 10.0; // default value
+    fmi2Real communicationStepSize = 1000.0; // default value
     return communicationStepSize;
 }
 
