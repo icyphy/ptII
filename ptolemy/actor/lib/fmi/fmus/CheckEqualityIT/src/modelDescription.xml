@@ -32,6 +32,7 @@
 
     <ScalarVariable name="u1" valueReference="1" description="input b" causality="input">
     <Real />
+    </ScalarVariable>
 </ModelVariables>
 
 <ModelStructure>
