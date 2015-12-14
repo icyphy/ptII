@@ -51,6 +51,12 @@ util.inherits(exports.SerialPort, EventEmitter);
 /** Close the port.
  */
 exports.SerialPort.prototype.close = function() {
+    this.removeAllListeners();
     this.helper.close();
 };
 
+/** Open the port.
+ */
+exports.SerialPort.prototype.open = function() {
+    this.helper.open();
+};
