@@ -10,8 +10,9 @@
   canHandleVariableCommunicationStepSize="true"
   canGetAndSetFMUstate="true"
   canGetMaxStepSize="true"
-  canGetPreferredResolution="true"
-  canSetResolution="false"
+  canGetPreferredResolution="false"
+  canSetResolution="true"
+  maxOutputDerivativeOrder="1"
   handleIntegerTime="true"/>
 
 <LogCategories>

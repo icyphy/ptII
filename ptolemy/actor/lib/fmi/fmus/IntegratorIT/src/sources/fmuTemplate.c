@@ -971,11 +971,14 @@ fmi2Status fmi2GetRealOutputDerivatives(fmi2Component c, const fmi2ValueReferenc
     ModelInstance *comp = (ModelInstance *)c;
     if (invalidState(comp, "fmi2GetRealOutputDerivatives", MASK_fmi2GetRealOutputDerivatives))
         return fmi2Error;
-    FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2GetRealOutputDerivatives: nvr= %d", nvr)
-    FILTERED_LOG(comp, fmi2Error, LOG_ERROR,"fmi2GetRealOutputDerivatives: ignoring function call."
-        " This model cannot compute derivatives of outputs: MaxOutputDerivativeOrder=\"0\"")
-    for (i = 0; i < nvr; i++) value[i] = 0;
-    return fmi2Error;
+    if (nvr > 1) return fmi2Error;
+    if (vr[0] != 0) return fmi2Error;
+    if (order[0] != 1) return fmi2Error;
+    else value[0] = r(der_);
+    FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL,
+            "fmi2GetRealOutputDerivatives: nvr= %d, vr= %d, order= %d, value= %g",
+            nvr, vr[0], order[0], value[0])
+    return fmi2OK;
 }
 
 fmi2Status fmi2CancelStep(fmi2Component c) {
@@ -1055,13 +1058,11 @@ fmi2Status fmi2SetResolution (fmi2Component c, fmi2Integer value) {
 fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2IntegerTime currentCommunicationPoint, fmi2IntegerTime *value) {
     ModelInstance *comp = (ModelInstance *)c;
     fmi2Real localCommunicationStepSize = getMaxStepSize(comp);
-
+    *value = ((fmi2IntegerTime) ((localCommunicationStepSize + comp->time) * comp->resMagnitude)) - currentCommunicationPoint;
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2HybridGetMaxStepSize: "
-        "currentCommunicationPoint = (%u, %u), "
-        "communicationStepSize = %u, ",
-        comp->time, comp->microstep, localCommunicationStepSize)
-
-    *value = ((fmi2IntegerTime) (localCommunicationStepSize + comp->time) * comp->resMagnitude) - currentCommunicationPoint;
+        "currentCommunicationPoint = (%g, %u), "
+        "communicationStepSize = %g, converted communicationStepSize = %llu",
+        comp->time, comp->microstep, localCommunicationStepSize, *value)
     return fmi2OK;
 }
 #endif
