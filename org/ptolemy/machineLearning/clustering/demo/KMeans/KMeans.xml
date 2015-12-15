@@ -1,0 +1,524 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="KMeans" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 22, 819, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[585, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2923305187978342">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{139.46630859374997, 36.047175611413024}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="_defaultInferredWidthTo1" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-30.0, -135.0}">
+        </property>
+    </property>
+    <property name="numberOfClusters" class="ptolemy.data.expr.Parameter" value="2">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, -155.0}">
+        </property>
+    </property>
+    <property name="samplesPerCluster" class="ptolemy.data.expr.Parameter" value="100">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-75.0, -95.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo generates a set of 2-dimensional &#10;samples and displays the K-Means clustering result for the data. &#10;&#10;The ground truth generation model includes &#10;samples from two different multivariate Gaussian distributions.&#10;&#10;Change the numberOfClusters parameter to display&#10;arbitrary clustering results. Note that K-Means is a heuristic&#10;algorithm and yields a local optimum that depends on the&#10;initial setting of cluster centers: same input data may yield &#10;different clustering results for repeated trials.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 25.0]">
+        </property>
+    </property>
+    <entity name="KMeans" class="org.ptolemy.machineLearning.clustering.KMeans">
+        <property name="numClusters" class="ptolemy.data.expr.Parameter" value="numberOfClusters">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, -30.0}">
+        </property>
+    </entity>
+    <entity name="GenerateData" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-50.0, -30.0}">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{853.4112191133718, 134.38712754360466}">
+        </property>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{985.0, -65.0}">
+            </property>
+        </port>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="multivariateGaussian({0.0,0.0},[1.0,0.0;0.0,1.0])">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 115.0}">
+            </property>
+            <port name="in" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="multivariateGaussian({3.0,4.0},[1.0,0.5;0.5,1.0]) + {0.0,0.0}">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 170.0}">
+            </property>
+            <port name="in" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{660.0, 115.0}">
+            </property>
+        </entity>
+        <entity name="AnythingToDouble" class="ptolemy.actor.lib.conversions.AnythingToDouble">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{830.0, 0.0}">
+            </property>
+        </entity>
+        <entity name="AnythingToDouble2" class="ptolemy.actor.lib.conversions.AnythingToDouble">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{825.0, 120.0}">
+            </property>
+        </entity>
+        <entity name="ArrayToElements2" class="ptolemy.actor.lib.ArrayToElements">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{660.0, 170.0}">
+            </property>
+        </entity>
+        <entity name="AnythingToDouble3" class="ptolemy.actor.lib.conversions.AnythingToDouble">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{825.0, 60.0}">
+            </property>
+        </entity>
+        <entity name="AnythingToDouble4" class="ptolemy.actor.lib.conversions.AnythingToDouble">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{825.0, 175.0}">
+            </property>
+        </entity>
+        <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
+            <property name="numberOfTimes" class="ptolemy.actor.parameters.PortParameter" value="samplesPerCluster">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 170.0}">
+            </property>
+        </entity>
+        <entity name="GroundTruth" class="ptolemy.actor.lib.gui.XYScope">
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="cluster 1, cluster 2">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={866, 23, 556, 401}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[556, 357]">
+            </property>
+            <property name="persistence" class="ptolemy.data.expr.Parameter" value="samplesPerCluster">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{1010.0, 115.0}">
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>Ground Truth Cluster Assignments</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="-2.562596476804798" max="5.209287729008405"/>
+<yRange min="-2.9592839592397926" max="6.219233288005638"/>
+<default connected="no" marks="dots"/>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{680.0, -75.0}">
+            </property>
+        </entity>
+        <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+            <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="samplesPerCluster*2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{845.0, -65.0}">
+            </property>
+        </entity>
+        <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{-50.0, 160.0}">
+            </property>
+        </entity>
+        <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{155.0, 170.0}">
+            </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Expression.in&quot;,x=365.0,y=115.0}, tail={id=&quot;relation8.vertex1&quot;,x=155.0,y=170.0}, points={155.0,115.0} },{ head={id=&quot;Expression2.in&quot;,x=365.0,y=170.0}, tail={id=&quot;relation8.vertex1&quot;,x=155.0,y=170.0}, points={} },{ head={id=&quot;Repeat.output&quot;,x=70.0,y=170.0}, tail={id=&quot;relation8.vertex1&quot;,x=155.0,y=170.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=660.0,y=115.0,index=2}, tail={id=&quot;AnythingToDouble.input&quot;,x=830.0,y=0.0}, points={765.0,115.0,765.0,0.0} } }">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=660.0,y=115.0,index=2}, tail={id=&quot;AnythingToDouble2.input&quot;,x=825.0,y=120.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=660.0,y=170.0,index=2}, tail={id=&quot;AnythingToDouble.input&quot;,x=830.0,y=60.0}, points={} },{ head={id=&quot;ArrayToElements2.output&quot;,x=660.0,y=170.0,index=2}, tail={id=&quot;AnythingToDouble3.input&quot;,x=825.0,y=60.0}, points={780.0,170.0,780.0,60.0} } }">
+            </property>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=660.0,y=170.0,index=2}, tail={id=&quot;AnythingToDouble2.input&quot;,x=825.0,y=175.0}, points={560.0,150.0,560.0,205.0} },{ head={id=&quot;ArrayToElements2.output&quot;,x=660.0,y=170.0,index=2}, tail={id=&quot;AnythingToDouble4.input&quot;,x=825.0,y=175.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{600.0, 115.0}">
+            </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.input&quot;,x=660.0,y=115.0}, tail={id=&quot;relation13.vertex1&quot;,x=600.0,y=115.0}, points={} },{ head={id=&quot;Expression.output&quot;,x=365.0,y=115.0}, tail={id=&quot;relation13.vertex1&quot;,x=600.0,y=115.0}, points={} },{ head={id=&quot;Merge.input&quot;,x=680.0,y=-75.0,index=2}, tail={id=&quot;relation13.vertex1&quot;,x=600.0,y=115.0}, points={600.0,-80.0} } }">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{615.0, 170.0}">
+            </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Expression2.output&quot;,x=365.0,y=170.0}, tail={id=&quot;relation.vertex1&quot;,x=615.0,y=170.0}, points={} },{ head={id=&quot;Merge.input&quot;,x=680.0,y=-75.0,index=2}, tail={id=&quot;relation.vertex1&quot;,x=615.0,y=170.0}, points={615.0,-75.0} },{ head={id=&quot;ArrayToElements2.input&quot;,x=660.0,y=170.0}, tail={id=&quot;relation.vertex1&quot;,x=615.0,y=170.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.output&quot;,x=680.0,y=-75.0}, tail={id=&quot;SequenceToArray.input&quot;,x=845.0,y=-65.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AnythingToDouble.output&quot;,x=830.0,y=0.0}, tail={id=&quot;GroundTruth.inputX&quot;,x=1010.0,y=115.0,index=2}, points={960.0,0.0,960.0,100.0} } }">
+            </property>
+        </relation>
+        <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AnythingToDouble2.output&quot;,x=825.0,y=120.0}, tail={id=&quot;GroundTruth.inputY&quot;,x=1010.0,y=115.0,index=2}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Repeat.input&quot;,x=70.0,y=170.0}, tail={id=&quot;SingleEvent.output&quot;,x=-50.0,y=160.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation16_1" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;data._location&quot;,x=985.0,y=-65.0}, tail={id=&quot;SequenceToArray.output&quot;,x=845.0,y=-65.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AnythingToDouble3.output&quot;,x=825.0,y=60.0}, tail={id=&quot;GroundTruth.inputX&quot;,x=1010.0,y=115.0,index=2}, points={945.0,60.0,945.0,105.0} } }">
+            </property>
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AnythingToDouble4.output&quot;,x=825.0,y=175.0}, tail={id=&quot;GroundTruth.inputY&quot;,x=1010.0,y=115.0,index=2}, points={945.0,175.0,945.0,125.0} } }">
+            </property>
+        </relation>
+        <link port="data" relation="relation16_1"/>
+        <link port="Expression.output" relation="relation13"/>
+        <link port="Expression.in" relation="relation8"/>
+        <link port="Expression2.output" relation="relation"/>
+        <link port="Expression2.in" relation="relation8"/>
+        <link port="ArrayToElements.input" relation="relation13"/>
+        <link port="ArrayToElements.output" relation="relation2"/>
+        <link port="ArrayToElements.output" relation="relation3"/>
+        <link port="AnythingToDouble.input" relation="relation2"/>
+        <link port="AnythingToDouble.output" relation="relation4"/>
+        <link port="AnythingToDouble2.input" relation="relation3"/>
+        <link port="AnythingToDouble2.output" relation="relation10"/>
+        <link port="ArrayToElements2.input" relation="relation"/>
+        <link port="ArrayToElements2.output" relation="relation6"/>
+        <link port="ArrayToElements2.output" relation="relation7"/>
+        <link port="AnythingToDouble3.input" relation="relation6"/>
+        <link port="AnythingToDouble3.output" relation="relation5"/>
+        <link port="AnythingToDouble4.input" relation="relation7"/>
+        <link port="AnythingToDouble4.output" relation="relation9"/>
+        <link port="Repeat.input" relation="relation12"/>
+        <link port="Repeat.output" relation="relation8"/>
+        <link port="GroundTruth.inputX" relation="relation4"/>
+        <link port="GroundTruth.inputX" relation="relation5"/>
+        <link port="GroundTruth.inputY" relation="relation10"/>
+        <link port="GroundTruth.inputY" relation="relation9"/>
+        <link port="Merge.input" relation="relation13"/>
+        <link port="Merge.input" relation="relation"/>
+        <link port="Merge.output" relation="relation15"/>
+        <link port="SequenceToArray.input" relation="relation15"/>
+        <link port="SequenceToArray.output" relation="relation16_1"/>
+        <link port="SingleEvent.output" relation="relation12"/>
+    </entity>
+    <entity name="PlotClusters" class="ptolemy.actor.TypedCompositeActor">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, -40.0}">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{515.8252180232557, 120.21173691860466}">
+        </property>
+        <port name="samples" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 55.0}">
+            </property>
+        </port>
+        <port name="clusterAssignments" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, -10.0}">
+            </property>
+        </port>
+        <port name="centers" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 150.0}">
+            </property>
+        </port>
+        <entity name="Switch" class="ptolemy.actor.lib.Switch">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 60.0}">
+            </property>
+        </entity>
+        <entity name="Clusters" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="samplesPerCluster*2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{265.0, -10.0}">
+            </property>
+        </entity>
+        <entity name="Samples" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="samplesPerCluster*2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 55.0}">
+            </property>
+        </entity>
+        <entity name="ArrayToElements3" class="ptolemy.actor.lib.ArrayToElements">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 55.0}">
+            </property>
+        </entity>
+        <entity name="AnythingToDouble5" class="ptolemy.actor.lib.conversions.AnythingToDouble">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, -65.0}">
+            </property>
+        </entity>
+        <entity name="AnythingToDouble6" class="ptolemy.actor.lib.conversions.AnythingToDouble">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 60.0}">
+            </property>
+        </entity>
+        <entity name="Switch2" class="ptolemy.actor.lib.Switch">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, -65.0}">
+            </property>
+        </entity>
+        <entity name="ClusterResult" class="ptolemy.actor.lib.gui.XYScope">
+            <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="cluster 1, cluster 2, cluster centers">
+            </property>
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={869, 429, 556, 425}, maximized=false}">
+            </property>
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[556, 381]">
+            </property>
+            <property name="persistence" class="ptolemy.data.expr.Parameter" value="samplesPerCluster*2">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{750.0, -50.0}">
+            </property>
+            <configure>
+<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
+"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
+<plot>
+<title>K-Means Result</title>
+<xLabel></xLabel>
+<yLabel></yLabel>
+<xRange min="-2.562596476804798" max="5.209287729008405"/>
+<yRange min="-2.9592839592397926" max="6.219233288005638"/>
+<default connected="no" marks="dots"/>
+</plot>?>
+            </configure>
+        </entity>
+        <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 150.0}">
+            </property>
+        </entity>
+        <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+            <property name="arrayLength" class="ptolemy.data.expr.Parameter" value="numberOfClusters">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 150.0}">
+            </property>
+        </entity>
+        <entity name="AnythingToDouble" class="ptolemy.actor.lib.conversions.AnythingToDouble">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{560.0, 150.0}">
+            </property>
+        </entity>
+        <entity name="AnythingToDouble2" class="ptolemy.actor.lib.conversions.AnythingToDouble">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 210.0}">
+            </property>
+        </entity>
+        <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements3.output&quot;,x=235.0,y=55.0,index=2}, tail={id=&quot;AnythingToDouble5.input&quot;,x=390.0,y=-65.0}, points={340.0,55.0,340.0,-65.0} } }">
+            </property>
+        </relation>
+        <relation name="relation19" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements3.output&quot;,x=235.0,y=55.0,index=2}, tail={id=&quot;AnythingToDouble6.input&quot;,x=390.0,y=60.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Samples.output&quot;,x=125.0,y=55.0}, tail={id=&quot;ArrayToElements3.input&quot;,x=235.0,y=55.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation21" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Switch.input&quot;,x=590.0,y=60.0}, tail={id=&quot;AnythingToDouble6.output&quot;,x=390.0,y=60.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AnythingToDouble5.output&quot;,x=390.0,y=-65.0}, tail={id=&quot;Switch2.input&quot;,x=590.0,y=-65.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation23" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{510.0, -10.0}">
+            </vertex>
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Switch2.control&quot;,x=590.0,y=-65.0}, tail={id=&quot;relation23.vertex1&quot;,x=510.0,y=-10.0}, points={590.0,-10.0} },{ head={id=&quot;Clusters.output&quot;,x=265.0,y=-10.0}, tail={id=&quot;relation23.vertex1&quot;,x=510.0,y=-10.0}, points={} },{ head={id=&quot;Switch.control&quot;,x=590.0,y=60.0}, tail={id=&quot;relation23.vertex1&quot;,x=510.0,y=-10.0}, points={590.0,110.0,510.0,110.0} } }">
+            </property>
+        </relation>
+        <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="numberOfClusters">
+            </property>
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Switch2.output&quot;,x=590.0,y=-65.0}, tail={id=&quot;ClusterResult.inputX&quot;,x=750.0,y=-50.0,index=2}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="numberOfClusters">
+            </property>
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Switch.output&quot;,x=590.0,y=60.0}, tail={id=&quot;ClusterResult.inputY&quot;,x=750.0,y=-50.0,index=2}, points={675.0,60.0,675.0,-45.0} } }">
+            </property>
+        </relation>
+        <relation name="relation16_2" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;samples._location&quot;,x=20.0,y=55.0}, tail={id=&quot;Samples.input&quot;,x=125.0,y=55.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;clusterAssignments._location&quot;,x=80.0,y=-10.0}, tail={id=&quot;Clusters.input&quot;,x=265.0,y=-10.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;centers._location&quot;,x=140.0,y=150.0}, tail={id=&quot;ArrayToSequence.input&quot;,x=250.0,y=150.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.input&quot;,x=395.0,y=150.0}, tail={id=&quot;ArrayToSequence.output&quot;,x=250.0,y=150.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ClusterResult.inputY&quot;,x=750.0,y=-50.0,index=2}, tail={id=&quot;AnythingToDouble2.output&quot;,x=555.0,y=210.0}, points={705.0,-40.0,705.0,210.0} } }">
+            </property>
+        </relation>
+        <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ClusterResult.inputX&quot;,x=750.0,y=-50.0,index=2}, tail={id=&quot;AnythingToDouble.output&quot;,x=560.0,y=150.0}, points={690.0,-60.0,690.0,150.0} } }">
+            </property>
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=395.0,y=150.0,index=2}, tail={id=&quot;AnythingToDouble.input&quot;,x=560.0,y=150.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=395.0,y=150.0,index=2}, tail={id=&quot;AnythingToDouble2.input&quot;,x=555.0,y=210.0}, points={510.0,155.0,510.0,210.0} } }">
+            </property>
+        </relation>
+        <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+            <vertex name="vertex1" value="{15.0, -120.0}">
+            </vertex>
+        </relation>
+        <link port="samples" relation="relation16_2"/>
+        <link port="clusterAssignments" relation="relation14"/>
+        <link port="centers" relation="relation"/>
+        <link port="Switch.input" relation="relation21"/>
+        <link port="Switch.output" relation="relation25"/>
+        <link port="Switch.control" relation="relation23"/>
+        <link port="Clusters.input" relation="relation14"/>
+        <link port="Clusters.output" relation="relation23"/>
+        <link port="Samples.input" relation="relation16_2"/>
+        <link port="Samples.output" relation="relation20"/>
+        <link port="ArrayToElements3.input" relation="relation20"/>
+        <link port="ArrayToElements3.output" relation="relation18"/>
+        <link port="ArrayToElements3.output" relation="relation19"/>
+        <link port="AnythingToDouble5.input" relation="relation18"/>
+        <link port="AnythingToDouble5.output" relation="relation22"/>
+        <link port="AnythingToDouble6.input" relation="relation19"/>
+        <link port="AnythingToDouble6.output" relation="relation21"/>
+        <link port="Switch2.input" relation="relation22"/>
+        <link port="Switch2.output" relation="relation9"/>
+        <link port="Switch2.control" relation="relation23"/>
+        <link port="ClusterResult.inputX" relation="relation9"/>
+        <link port="ClusterResult.inputX" relation="relation4"/>
+        <link port="ClusterResult.inputY" relation="relation25"/>
+        <link port="ClusterResult.inputY" relation="relation5"/>
+        <link port="ArrayToElements.input" relation="relation2"/>
+        <link port="ArrayToElements.output" relation="relation3"/>
+        <link port="ArrayToElements.output" relation="relation6"/>
+        <link port="ArrayToSequence.input" relation="relation"/>
+        <link port="ArrayToSequence.output" relation="relation2"/>
+        <link port="AnythingToDouble.input" relation="relation3"/>
+        <link port="AnythingToDouble.output" relation="relation4"/>
+        <link port="AnythingToDouble2.input" relation="relation6"/>
+        <link port="AnythingToDouble2.output" relation="relation5"/>
+    </entity>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{50.0, -30.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;.Samples.input&quot;,x=125.0,y=-65.0}, tail={id=&quot;relation16.vertex1&quot;,x=60.0,y=-65.0}, points={} },{ head={id=&quot;.SequenceToArray.output&quot;,x=845.0,y=-40.0}, tail={id=&quot;relation16.vertex1&quot;,x=1070.0,y=-40.0}, points={} },{ head={id=&quot;GenerateData.data&quot;,x=-50.0,y=-30.0}, tail={id=&quot;relation16.vertex1&quot;,x=50.0,y=-30.0}, points={} },{ head={id=&quot;KMeans.input&quot;,x=110.0,y=-30.0}, tail={id=&quot;relation16.vertex1&quot;,x=50.0,y=-30.0}, points={} },{ head={id=&quot;PlotClusters.samples&quot;,x=235.0,y=-40.0}, tail={id=&quot;relation16.vertex1&quot;,x=50.0,y=-30.0}, points={175.0,-50.0,175.0,-70.0,50.0,-70.0} } }">
+        </property>
+    </relation>
+    <relation name="relation14_4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;KMeans.clusters&quot;,x=110.0,y=-30.0}, tail={id=&quot;PlotClusters.clusterAssignments&quot;,x=235.0,y=-40.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="KMeans.input" relation="relation16"/>
+    <link port="KMeans.clusters" relation="relation14_4"/>
+    <link port="KMeans.clusterCenters" relation="relation"/>
+    <link port="GenerateData.data" relation="relation16"/>
+    <link port="PlotClusters.samples" relation="relation16"/>
+    <link port="PlotClusters.clusterAssignments" relation="relation14_4"/>
+    <link port="PlotClusters.centers" relation="relation"/>
+</entity>
