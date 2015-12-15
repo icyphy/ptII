@@ -1,0 +1,183 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="KMeansTest" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 22, 993, 878}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[759, 768]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.19141742522756866">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{162.8169694767439, -384.5426326308143}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="_defaultInferredWidthTo1" class="ptolemy.data.expr.Parameter" value="true">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-275.0, -390.0}">
+        </property>
+    </property>
+    <entity name="KMeans" class="org.ptolemy.machineLearning.clustering.KMeans">
+        <property name="numClusters" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, -310.0}">
+        </property>
+    </entity>
+    <entity name="Input" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{{-2.6587134107854, -0.1523207158256}, {-0.7982272932235, 1.2925614490485}, {0.7802852957289, -0.1743249413129}, {-0.291698852801, -0.5240060876809}, {-0.3779839591966, 1.6303249688507}, {0.8861345444094, 0.9827753931897}, {0.4670297148274, 1.0577958304568}, {-1.1205222748945, 1.4817008800799}, {1.0471740870828, 0.7853023913896}, {-0.9492989576607, 0.9446212636888}, {-0.0585730808574, 0.1943537905143}, {-0.0931723757685, 0.3712095192066}, {0.8257398210484, -0.9621767595589}, {0.8428426280514, 1.0485770107829}, {-0.1202573567824, -1.4558562726872}, {1.180132899298, -1.03453483706}, {0.2030405510365, 0.2200497675591}, {-0.3714955301441, -0.5062728779368}, {0.4321423250495, 0.013202053541}, {0.8850727675114, 0.9461033717856}, {0.1040210284219, -0.0563545673391}, {0.2850222557234, -0.844809339862}, {-1.5118097566423, -0.9678272123925}, {0.2381720173198, 1.1313029349312}, {1.3682670747462, -0.0157415425109}, {0.2803974098806, 0.4276674366317}, {-0.0279692110281, -0.4707603693408}, {0.4434513772862, 0.085668060848}, {-0.1517782451539, -1.1897881896675}, {-1.6927009530596, 1.6352470600516}, {0.378656615328, -2.1202720897415}, {0.14258900272, 0.500670784107}, {1.8380180656737, -0.3718487903279}, {0.8603345677784, -0.4111998442986}, {0.9309798212019, -0.3924455855449}, {-0.8170189932478, -2.0637770940686}, {0.3207927186663, 1.9443203516151}, {-0.6728770596459, 1.219622147445}, {-0.6192953292287, 1.0166238154759}, {0.7299723392074, -0.8081680523098}, {-0.0691903977248, 0.5070535786141}, {-0.4453028167347, 0.6975590278594}, {0.0015466729169, 0.9054762712672}, {-2.7025708174622, 0.6410018803912}, {0.3994261383752, 0.4659003214627}, {0.9617979204695, -0.2109726095481}, {0.4595364129101, 0.5490460622271}, {0.8331212731287, -1.2571535958147}, {-0.3881670420989, -0.5797452269605}, {0.7398564649446, -0.2792288163915}, {-0.9577125288832, -1.1216597703328}, {0.4060957459505, 0.7090235453656}, {0.8195690120883, -0.4430431909226}, {-0.2300645685752, 0.7244137783653}, {-0.1188484711726, -0.8188702359783}, {-0.6098630144971, 0.9717845122204}, {-1.1056823571486, 0.7929245967009}, {-0.0099884055199, 0.4498135217697}, {-1.0208141872851, -0.9608124377322}, {0.3089702656109, -0.708765569913}, {-2.4987742549202, -0.9002360357888}, {1.121406962715, -1.2965892101795}, {0.0955982133683, -1.5266891381434}, {0.513776515774, 0.7760850068383}, {1.3957591807226, 2.6311899999258}, {-0.836795006076, -1.4851629858364}, {1.8158031499907, -0.2739390812904}, {0.8136034929118, 0.5875550002777}, {-0.3330509025944, 0.7817535293591}, {2.0793067586577, -0.1101519409844}, {-0.5617214675827, -1.5609229953236}, {0.507046708768, 0.1449852357506}, {2.0291477520363, 0.8090597295326}, {-1.0492081555933, 0.7428189300818}, {0.0317267570401, -0.6715639181084}, {0.3299907822014, 0.278262617107}, {1.0099596970822, -1.5920677743445}, {-1.9736080586767, -0.872679453391}, {-0.2173066505262, 0.3608095508808}, {2.245501567476, 0.2762494748319}, {2.0882265925584, 1.065520327881}, {-0.7308418169264, 1.2222503056086}, {-0.6081916407852, -0.9070394910706}, {0.7769935505231, 0.6742349866362}, {-0.7886097023167, -0.1734554478207}, {-0.3319971545264, 1.9133855436918}, {-0.2620163358195, 0.9526060439853}, {-1.0666407771315, 0.3467150096969}, {-0.4920523874687, 0.1685256308357}, {-0.6199513765948, 0.3992454008725}, {-0.1810206161577, -2.5151576775263}, {1.324092634786, -1.0713195184507}, {-1.7138444284371, 1.3501069850756}, {0.6599142554237, 0.2655294804607}, {-0.0704936509488, 0.2569745999813}, {-0.9611236057492, -0.6399122065614}, {-0.0879433697718, -0.6156235683835}, {0.711156980632, -2.0987110036523}, {-0.4305342316812, -0.6597900989581}, {0.3830700394281, -1.0144263157356}, {4.1485796451421, 5.929384669596}, {1.8526206936485, 3.7072681744744}, {4.0324169760034, 3.587064138413}, {2.6050084479481, 3.7490041466954}, {3.4855855231871, 4.6516276914929}, {3.2272742563453, 4.270025831889}, {2.8396988706529, 4.40416721501}, {3.4461769749032, 3.504629265519}, {0.6999887286533, 2.46499214942}, {2.653105604679, 2.8502377124248}, {4.2039709675908, 4.8150441169044}, {2.4852124512646, 4.6548280226479}, {2.8362264706745, 4.3217885169653}, {3.8543131285383, 4.8904151657712}, {1.2362319942519, 3.8432698776431}, {3.974200004974, 5.2688101957183}, {2.3240402204389, 3.4267717886252}, {3.4993938827762, 6.0146422634922}, {4.7846851546918, 2.6769735444083}, {1.7341938948646, 3.424466560682}, {3.0887656759842, 4.3882900898167}, {3.4243223560588, 4.5376664843826}, {4.6064095200731, 3.1843375500351}, {3.0455497811924, 3.000398984044}, {3.0844178647539, 6.1653065600974}, {1.6276673970636, 1.6307354022062}, {2.9088380378813, 3.6846064485522}, {2.0297856603283, 2.9398034057485}, {4.3327298256308, 5.4243439900488}, {4.0210074587475, 4.5139347277568}, {1.0288612343161, 3.5085163460494}, {4.1265051295344, 3.8502197677937}, {3.547787991075, 3.6357730417362}, {3.6744570274664, 3.4695994633875}, {3.7738450935059, 4.4848490729323}, {3.1029146866074, 2.6798201723043}, {1.3629356900434, 3.5746982713383}, {2.5462031249645, 4.1690957101734}, {2.8594734330303, 3.3931035120782}, {3.8678934248734, 3.7359882632748}, {4.9577140380205, 6.2887522185295}, {3.9910976043014, 5.0656405716379}, {3.8897387960263, 3.9582491530744}, {2.1556176385488, 4.1386419222384}, {3.2750976185781, 5.3378629775402}, {2.0547660216688, 3.2529722625177}, {3.0496240332517, 2.9530855846564}, {2.7327486013338, 5.5432929221339}, {2.1934009494137, 3.7515856026367}, {2.7365174461372, 3.412161108607}, {2.1324974474656, 3.9020298862598}, {4.6868841595458, 4.9095044161101}, {2.1317113774247, 3.5848875490668}, {4.1733169365905, 6.6714072123364}, {2.9075542159382, 6.5843635196554}, {4.3950296230847, 4.6767581722425}, {3.0092086316943, 3.150544473673}, {1.4684738745656, 2.9038446068388}, {2.0926518015238, 3.316243748309}, {3.5593974420307, 4.544882678994}, {2.9560273454622, 4.1338707667252}, {1.6293008265834, 5.5914490420304}, {3.7479187579616, 4.8466247118466}, {4.7878121674632, 5.4289852563977}, {2.767024709829, 3.3879842797052}, {2.6965235474584, 3.3131687869901}, {3.5619208391719, 4.8803581650022}, {1.682256359152, 3.576584849944}, {3.8329718820428, 5.8758418348398}, {2.7909418334896, 3.055236739943}, {2.9673573099059, 4.2737069076807}, {2.3994066703049, 2.794952621896}, {3.4090366154596, 5.5703975075186}, {3.8164290396873, 4.0320811087664}, {3.5060616516008, 4.8085964516486}, {5.1834793571265, 3.9118308978553}, {0.9066934784431, 2.2496340150766}, {2.2010276932434, 4.5024060807699}, {2.9111374680786, 3.393764031173}, {3.9679817868663, 6.1561458646167}, {3.6197004400189, 4.87208748558}, {2.9281914488112, 2.4542635576827}, {1.9947316715778, 1.4335607899049}, {3.9780479848115, 4.5761299135437}, {2.6563613205455, 3.917994990634}, {4.40807908597, 4.1318199280823}, {2.2708789221141, 5.1037759615659}, {2.5620080446431, 4.6781182682125}, {3.4692961643111, 3.3623132206216}, {3.6219159881375, 4.0368183110853}, {3.5275261368017, 2.9128636885773}, {2.9650712986889, 5.243257147122}, {4.3601022906229, 5.3500368638375}, {3.0610535257691, 4.1064636953531}, {2.6008450386716, 3.9390986882265}, {2.1256299735754, 2.8430876979703}, {3.6393336420413, 4.3129422224473}, {3.3919708346162, 4.5365583591341}, {2.0461533815225, 3.5276068681425}, {3.4708022762457, 2.1148016893896}}&#10;">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, -310.0}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{{0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 1.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0}}}">
+        </property>
+        <property name="requireOrderedValues" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1425.0, -280.0}">
+        </property>
+    </entity>
+    <entity name="FIR" class="ptolemy.domains.sdf.lib.FIR">
+        <property name="taps" class="ptolemy.data.expr.Parameter" value="{1.0,-1.0}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{815.0, -290.0}">
+        </property>
+    </entity>
+    <entity name="AbsoluteValue" class="ptolemy.actor.lib.AbsoluteValue">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{960.0, -290.0}">
+        </property>
+    </entity>
+    <entity name="ArrayToSequence" class="ptolemy.domains.sdf.lib.ArrayToSequence">
+        <property name="enforceArrayLength" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{485.0, -320.0}">
+        </property>
+    </entity>
+    <entity name="ArrayExtract" class="ptolemy.actor.lib.ArrayExtract">
+        <property name="sourcePosition" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <property name="extractLength" class="ptolemy.actor.parameters.PortParameter" value="198">
+        </property>
+        <property name="outputArrayLength" class="ptolemy.actor.parameters.PortParameter" value="198">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1270.0, -280.0}">
+        </property>
+    </entity>
+    <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
+        <property name="arrayLength" class="ptolemy.actor.parameters.PortParameter" value="200">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1120.0, -280.0}">
+        </property>
+    </entity>
+    <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{675.0, -275.0}">
+        </property>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-295.0, -310.0}">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;KMeans.input&quot;,x=360.0,y=-310.0}, tail={id=&quot;Input.output&quot;,x=60.0,y=-310.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{665.0, -320.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation8.vertex1&quot;,x=665.0,y=-320.0}, tail={id=&quot;FIR.input&quot;,x=815.0,y=-290.0}, points={} },{ head={id=&quot;KMeans.clusters&quot;,x=415.0,y=-235.0}, tail={id=&quot;relation8.vertex1&quot;,x=495.0,y=-245.0}, points={} },{ head={id=&quot;relation8.vertex1&quot;,x=660.0,y=-325.0}, tail={id=&quot;.Display.input&quot;,x=865.0,y=-190.0,index=2}, points={660.0,-190.0} },{ head={id=&quot;.ArrayToElements.output&quot;,x=525.0,y=-320.0}, tail={id=&quot;relation8.vertex1&quot;,x=655.0,y=-320.0}, points={} },{ head={id=&quot;relation8.vertex1&quot;,x=665.0,y=-320.0}, tail={id=&quot;ArrayToSequence.output&quot;,x=485.0,y=-320.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{885.0, -290.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation5.vertex1&quot;,x=885.0,y=-290.0}, tail={id=&quot;FIR.output&quot;,x=815.0,y=-290.0}, points={} },{ head={id=&quot;relation5.vertex1&quot;,x=885.0,y=-290.0}, tail={id=&quot;AbsoluteValue.input&quot;,x=960.0,y=-290.0}, points={} },{ head={id=&quot;relation5.vertex1&quot;,x=810.0,y=-325.0}, tail={id=&quot;.Display.input&quot;,x=865.0,y=-190.0,index=2}, points={810.0,-195.0} },{ head={id=&quot;relation5.vertex1&quot;,x=810.0,y=-325.0}, tail={id=&quot;.SequencePlotter.input&quot;,x=860.0,y=-255.0}, points={810.0,-255.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;KMeans.clusters&quot;,x=360.0,y=-310.0}, tail={id=&quot;ArrayToSequence.input&quot;,x=485.0,y=-320.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{1045.0, -290.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=1045.0,y=-290.0}, tail={id=&quot;SequenceToArray.input&quot;,x=1120.0,y=-280.0}, points={} },{ head={id=&quot;AbsoluteValue.output&quot;,x=960.0,y=-290.0}, tail={id=&quot;relation6.vertex1&quot;,x=1045.0,y=-290.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayExtract.input&quot;,x=1270.0,y=-280.0}, tail={id=&quot;SequenceToArray.output&quot;,x=1120.0,y=-280.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{1365.0, -280.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation9.vertex1&quot;,x=1365.0,y=-280.0}, tail={id=&quot;.ArrayPlotter.input&quot;,x=1415.0,y=-210.0}, points={1365.0,-210.0} },{ head={id=&quot;ArrayExtract.output&quot;,x=1270.0,y=-280.0}, tail={id=&quot;relation9.vertex1&quot;,x=1365.0,y=-280.0}, points={} },{ head={id=&quot;Test.input&quot;,x=1425.0,y=-280.0}, tail={id=&quot;relation9.vertex1&quot;,x=1365.0,y=-280.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;.Test2.input&quot;,x=690.0,y=-270.0}, tail={id=&quot;relation2.vertex&quot;,x=555.0,y=-270.0}, points={} },{ head={id=&quot;KMeans.clusterCenters&quot;,x=360.0,y=-310.0}, tail={id=&quot;relation2.vertex&quot;,x=500.0,y=-275.0}, points={425.0,-300.0,425.0,-275.0} },{ head={id=&quot;relation2.vertex&quot;,x=500.0,y=-275.0}, tail={id=&quot;MonitorValue.input&quot;,x=675.0,y=-275.0}, points={} } }">
+        </property>
+        <vertex name="vertex" value="{500.0, -275.0}">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{-220.0, -310.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Input.trigger&quot;,x=60.0,y=-310.0}, tail={id=&quot;relation10.vertex1&quot;,x=-220.0,y=-310.0}, points={} },{ head={id=&quot;.DiscreteClock.output&quot;,x=-260.0,y=-300.0}, tail={id=&quot;relation10.vertex1&quot;,x=-165.0,y=-300.0}, points={} },{ head={id=&quot;relation10.vertex1&quot;,x=-220.0,y=-310.0}, tail={id=&quot;SingleEvent.output&quot;,x=-295.0,y=-310.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="KMeans.input" relation="relation4"/>
+    <link port="KMeans.clusters" relation="relation3"/>
+    <link port="KMeans.clusterCenters" relation="relation2"/>
+    <link port="Input.output" relation="relation4"/>
+    <link port="Input.trigger" relation="relation10"/>
+    <link port="Test.input" relation="relation9"/>
+    <link port="FIR.input" relation="relation8"/>
+    <link port="FIR.output" relation="relation5"/>
+    <link port="AbsoluteValue.input" relation="relation5"/>
+    <link port="AbsoluteValue.output" relation="relation6"/>
+    <link port="ArrayToSequence.input" relation="relation3"/>
+    <link port="ArrayToSequence.output" relation="relation8"/>
+    <link port="ArrayExtract.input" relation="relation"/>
+    <link port="ArrayExtract.output" relation="relation9"/>
+    <link port="SequenceToArray.input" relation="relation6"/>
+    <link port="SequenceToArray.output" relation="relation"/>
+    <link port="MonitorValue.input" relation="relation2"/>
+    <link port="SingleEvent.output" relation="relation10"/>
+</entity>
