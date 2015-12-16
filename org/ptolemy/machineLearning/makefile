@@ -29,7 +29,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = hmm hmmAOM hsmm lib particleFilter test
+DIRS = clustering hmm hmmAOM hsmm lib particleFilter test
 
 # Root of Ptolemy II directory
 ROOT =		../../..

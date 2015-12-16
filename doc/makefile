@@ -179,6 +179,9 @@ PTJUNITTESTS = \
 	ptolemy.vergil.basic.test.junit
 
 COREPACKAGES = \
+	org.ptolemy.classloading \
+	org.ptolemy.classloading.osgi \
+	org.ptolemy.commons \
 	ptolemy.kernel \
 	ptolemy.kernel.attributes \
 	ptolemy.kernel.undo \
@@ -460,6 +463,7 @@ PTMACHINE_LEARNING_PACKAGES = \
 	org.ptolemy.faultModels \
 	org.ptolemy.machineImprovisation \
 	org.ptolemy.machineLearning \
+	org.ptolemy.machineLearning.clustering \
 	org.ptolemy.machineLearning.hmm \
 	org.ptolemy.machineLearning.hmmAOM \
 	org.ptolemy.machineLearning.lib \
