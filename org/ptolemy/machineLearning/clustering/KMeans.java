@@ -31,9 +31,7 @@ package org.ptolemy.machineLearning.clustering;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Random;
-
-import org.ptolemy.machineLearning.hmm.ParameterEstimator;
+import java.util.Random;  
 
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
