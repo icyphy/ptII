@@ -144,8 +144,8 @@ typedef struct {
    fmi2Real nextEventTime;
    #else
    fmi2Integer nextEventTime;
-   fmi2Integer nextEventMicrostep;
    #endif
+   fmi2Integer nextEventMicrostep;
 } fmi2EventInfo;
 
 
@@ -229,9 +229,9 @@ Types for Functions for FMI2 for Co-Simulation
 /* Simulating the slave */
    typedef fmi2Status fmi2SetRealInputDerivativesTYPE (fmi2Component, const fmi2ValueReference [], size_t, const fmi2Integer [], const fmi2Real []);
    typedef fmi2Status fmi2GetRealOutputDerivativesTYPE(fmi2Component, const fmi2ValueReference [], size_t, const fmi2Integer [], fmi2Real []);
-   typedef fmi2Status fmi2DoStepTYPE     (fmi2Component, fmi2Real, fmi2Real, fmi2Boolean);
-   typedef fmi2Status fmi2CancelStepTYPE (fmi2Component);
-   typedef fmi2Status fmi2GetMaxStepSizeTYPE   (fmi2Component, fmi2Real*);
+   typedef fmi2Status fmi2DoStepTYPE                  (fmi2Component, fmi2Real, fmi2Real, fmi2Boolean);
+   typedef fmi2Status fmi2CancelStepTYPE              (fmi2Component);
+   typedef fmi2Status fmi2GetMaxStepSizeTYPE          (fmi2Component, fmi2Real*);
 
 /* Inquire slave status */
    typedef fmi2Status fmi2GetStatusTYPE       (fmi2Component, const fmi2StatusKind, fmi2Status* );
@@ -244,10 +244,10 @@ Types for Functions for FMI2 for Co-Simulation
 Types for Functions for FMI2 for Hybrid Co-Simulation
 ****************************************************/
    typedef fmi2Status fmi2HybridDoStepTYPE           (fmi2Component, fmi2IntegerTime, fmi2IntegerTime, fmi2Boolean, fmi2IntegerTime*);
-   typedef fmi2Status fmi2GetPreferredResolutionTYPE (fmi2Component, fmi2IntegerTime *);
-   typedef fmi2Status fmi2SetResolutionTYPE          (fmi2Component, fmi2IntegerTime );
+   typedef fmi2Status fmi2GetPreferredResolutionTYPE (fmi2Component, fmi2Integer *);
+   typedef fmi2Status fmi2SetResolutionTYPE          (fmi2Component, fmi2Integer  );
    typedef fmi2Status fmi2HybridGetMaxStepSizeTYPE   (fmi2Component, fmi2IntegerTime, fmi2IntegerTime* );
-   typedef fmi2Status fmi2HybridSetupExperimentTYPE  (fmi2Component, fmi2Boolean, fmi2Integer, fmi2Integer, fmi2Boolean, fmi2Integer);
+   typedef fmi2Status fmi2HybridSetupExperimentTYPE  (fmi2Component, fmi2Boolean, fmi2IntegerTime, fmi2IntegerTime, fmi2Boolean, fmi2IntegerTime);
 
    typedef fmi2Status fmi2GetHybridRealTYPE          (fmi2Component, const fmi2ValueReference[], size_t, fmi2Real   [], fmi2Integer   []);
    typedef fmi2Status fmi2GetHybridIntegerTYPE       (fmi2Component, const fmi2ValueReference[], size_t, fmi2Integer[], fmi2Integer   []);
