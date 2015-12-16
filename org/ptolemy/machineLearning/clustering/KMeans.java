@@ -76,7 +76,7 @@ public class KMeans extends TypedAtomicActor {
         input = new TypedIOPort(this,"input",true,false);
 
 
-        output = new TypedIOPort(this, "clusters", false, true);
+        output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.INT));
 
         clusterCenters = new TypedIOPort(this, "clusterCenters", false, true); 
