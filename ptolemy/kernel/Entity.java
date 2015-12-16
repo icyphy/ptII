@@ -305,6 +305,12 @@ public class Entity<T extends Port> extends InstantiableNamedObj {
      */
     @Override
     public Attribute getAttribute(String name) {
+        // FindBugs states that MoMLParser.endElement() might pass
+        // null to getAttribute() because there is a chance
+        // that _currentDocName is null.
+        if (name == null) {
+            return null;
+        }
         try {
             _workspace.getReadAccess();
 
