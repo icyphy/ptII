@@ -1,6 +1,7 @@
 /***variableDeclareBlock***/
 
 #include <stdio.h>
+#include <math.h>
 
 /* Check for __linux__ after including stdio.h, otherwise it is sometimes not defined. */
 #ifdef __linux__
@@ -21,20 +22,37 @@
 
 #include <stdlib.h>
 #include <string.h>
-#include <math.h>
 #include <stdbool.h>
 #include "fmi2.h"
 #include "sim_support.h"
 
-fmi2Integer tEnd = 10;
-fmi2Integer tStart = 0;
+#ifndef max
+#define max(a,b) ((a)>(b) ? (a) : (b))
+#endif
+
+#ifndef pow10
+fmi2Real pow10(fmi2Integer a) {
+    if (a > 0) {
+        return 10 * pow10(a-1);
+    } else if (a == 0) {
+        return 1;
+    } else {
+        return 0.1 * pow10(a+1);
+    }
+}
+#endif
+
+fmi2IntegerTime tEnd   = 1000000;
+fmi2IntegerTime tStart = 0;
+#define DEFAULT_COMM_STEP_SIZE 1000
+#define ERROR 0
+#define OK 1
 
 /**/
 
 /***staticDeclareBlock***/
 
-static fmi2Component initializeFMU(FMU *fmu, fmi2Boolean visible,
-fmi2Boolean loggingOn, int nCategories, fmi2String * categories[], const char* name) {
+static fmi2Component initializeFMU(FMU *fmu, fmi2Boolean visible, fmi2Boolean loggingOn, int nCategories, fmi2String * categories[], const char* name) {
     fmi2Status fmi2Flag;                     // return code of the fmu functions
     // instantiate the fmu
     fmu->callbacks.logger = fmuLogger;
@@ -45,25 +63,21 @@ fmi2Boolean loggingOn, int nCategories, fmi2String * categories[], const char* n
     fmi2Real tolerance = 0;                 // used in setting up the experiment
     fmi2Boolean toleranceDefined = fmi2False; // true if model description define tolerance
     ValueStatus vs = valueIllegal;
-    // handle to the parsed XML file
+    // parsed ModelDescription schema
     ModelDescription* md = fmu->modelDescription;
-    // global unique id of the fmu
     const char *guid = getAttributeValue((Element *) md, att_guid);
-    // check for ability to get and set state
-    fmu->canGetAndSetFMUstate = getAttributeBool((Element*) getCoSimulation(md),
-    att_canGetAndSetFMUstate, &vs);
-    fmu->canGetMaxStepSize = getAttributeBool((Element*) getCoSimulation(md),
-    att_canGetMaxStepSize, &vs);
-    // instance name
-    const char *instanceName = getAttributeValue(
-    (Element *) getCoSimulation(md), att_modelIdentifier);
-    // path to the fmu resources as URL, "file://C:\QTronic\sales"
+    // check capability flags
+    fmu->canGetAndSetFMUstate = getAttributeBool((Element*) getCoSimulation(md), att_canGetAndSetFMUstate, &vs);
+    fmu->canGetMaxStepSize = getAttributeBool((Element*) getCoSimulation(md), att_canGetMaxStepSize, &vs);
+    const char *instanceName = getAttributeValue((Element *) getCoSimulation(md), att_modelIdentifier);
     char *fmuResourceLocation = getTempResourcesLocation(); // TODO: returns crap. got to save the location for every FMU somehow.
-    fmu->handleIntegerTime = (fmi2Boolean) getAttributeValue((Element *) getCoSimulation(md), att_canHandleIntegerTime);
-    fmi2Component comp = fmu->instantiate(instanceName, fmi2CoSimulation, guid,
-    fmuResourceLocation, &fmu->callbacks, visible, loggingOn);
-    printf("instance name: %s, \nguid: %s, \nressourceLocation: %s\n",
-    instanceName, guid, fmuResourceLocation);
+    fmu->canHandleIntegerTime = getAttributeBool((Element *) getCoSimulation(md), att_handleIntegerTime, &vs);
+    fmu->maxOutputDerivativeOrder = getAttributeInt((Element *) getCoSimulation(md), att_maxOutputDerivativeOrder, &vs);
+    fmu->canInterpolateInputs = getAttributeBool((Element *) getCoSimulation(md), att_canInterpolateInputs, &vs);
+    fmu->canGetPreferredResolution = getAttributeBool((Element *) getCoSimulation(md), att_canGetPreferredResolution, &vs);
+    fmu->canSetResolution = getAttributeBool((Element *) getCoSimulation(md), att_canSetResolution, &vs);
+    fmi2Component comp = fmu->instantiate(name, fmi2CoSimulation, guid, fmuResourceLocation, &fmu->callbacks, visible, loggingOn);
+    printf("instance name: %s, \nguid: %s, \nressourceLocation: %s\n", instanceName, guid, fmuResourceLocation);
     free(fmuResourceLocation);
     if (!comp) {
         printf("Could not initialize model with guid: %s\n", guid);
@@ -77,15 +91,13 @@ fmi2Boolean loggingOn, int nCategories, fmi2String * categories[], const char* n
         toleranceDefined = fmi2True;
     }
     if (nCategories > 0) {
-        fmi2Flag = fmu->setDebugLogging(comp, fmi2True, nCategories,
-        (const fmi2String*) categories);
+        fmi2Flag = fmu->setDebugLogging(comp, fmi2True, nCategories, (const fmi2String*) categories);
         if (fmi2Flag > fmi2Warning) {
             error("could not initialize model; failed FMI set debug logging");
             return NULL;
         }
     }
-    fmi2Flag = fmu->setupExperiment(comp, toleranceDefined, tolerance, tStart,
-    fmi2True, tEnd);
+    fmi2Flag = fmu->setupHybridExperiment(comp, toleranceDefined, tolerance, tStart, fmi2True, tEnd);
     if (fmi2Flag > fmi2Warning) {
         error("could not initialize model; failed FMI setup experiment");
         return NULL;
@@ -119,28 +131,28 @@ static fmi2Status setValue(portConnection* connection) {
     // get source value and cast if necessary
     switch (connection->sourceType) {
         case fmi2_Integer:
-        fmi2Flag = connection->sourceFMU->getHybridInteger(connection->sourceFMU->component, &connection->sourcePort, 1, &tempInt, &tmpAbsent);
-        tempReal = (fmi2Real) tempInt;
-        tempBoolean = (tempInt == 0 ? fmi2False : fmi2True);
-        break;
+            fmi2Flag = connection->sourceFMU->getHybridInteger(connection->sourceFMU->component, &connection->sourcePort, 1, &tempInt, &tmpAbsent);
+            tempReal = (fmi2Real) tempInt;
+            tempBoolean = (tempInt == 0 ? fmi2False : fmi2True);
+            break;
         case fmi2_Real:
-        fmi2Flag = connection->sourceFMU->getHybridReal(connection->sourceFMU->component, &connection->sourcePort, 1, &tempReal, &tmpAbsent);
-        tempInt = (fmi2Integer) round(tempReal);
-        tempBoolean = (tempReal == 0.0 ? fmi2False : fmi2True);
-        break;
+            fmi2Flag = connection->sourceFMU->getHybridReal(connection->sourceFMU->component, &connection->sourcePort, 1, &tempReal, &tmpAbsent);
+            tempInt = (fmi2Integer) round(tempReal);
+            tempBoolean = (tempReal == 0.0 ? fmi2False : fmi2True);
+            break;
         case fmi2_Boolean:
-        fmi2Flag = connection->sourceFMU->getHybridBoolean(connection->sourceFMU->component, &connection->sourcePort, 1, &tempBoolean, &tmpAbsent);
-        tempInt = (fmi2Integer) tempBoolean;
-        tempReal = (fmi2Real) tempBoolean;
-        break;
+            fmi2Flag = connection->sourceFMU->getHybridBoolean(connection->sourceFMU->component, &connection->sourcePort, 1, &tempBoolean, &tmpAbsent);
+            tempInt = (fmi2Integer) tempBoolean;
+            tempReal = (fmi2Real) tempBoolean;
+            break;
         case fmi2_String:
-        fmi2Flag = connection->sourceFMU->getHybridString(connection->sourceFMU->component, &connection->sourcePort, 1, &tempString, &tmpAbsent);
-        break;
+            fmi2Flag = connection->sourceFMU->getHybridString(connection->sourceFMU->component, &connection->sourcePort, 1, &tempString, &tmpAbsent);
+            break;
         default:
-        return fmi2Error;
+            return fmi2Error;
     }
     if (fmi2Flag > fmi2Warning) {
-        printf("Getting the value of an FMU caused an error.");
+        printf("Getting the value from the FMU caused an error.\n");
         return fmi2Flag;
     }
     if (connection->sourceType != connection->sinkType && (connection->sinkType == fmi2_String || connection->sourceType == fmi2_String)) {
@@ -150,213 +162,153 @@ static fmi2Status setValue(portConnection* connection) {
     // set sink value
     switch (connection->sinkType) {
         case fmi2_Integer:
-        fmi2Flag = connection->sinkFMU->setHybridInteger(connection->sinkFMU->component, &connection->sinkPort, 1, &tempInt, &tmpAbsent);
-        break;
+            fmi2Flag = connection->sinkFMU->setHybridInteger(connection->sinkFMU->component, &connection->sinkPort, 1, &tempInt, &tmpAbsent);
+            break;
         case fmi2_Real:
-        fmi2Flag = connection->sinkFMU->setHybridReal(connection->sinkFMU->component, &connection->sinkPort, 1, &tempReal, &tmpAbsent);
-        break;
+            fmi2Flag = connection->sinkFMU->setHybridReal(connection->sinkFMU->component, &connection->sinkPort, 1, &tempReal, &tmpAbsent);
+            break;
         case fmi2_Boolean:
-        fmi2Flag = connection->sinkFMU->setHybridBoolean(connection->sinkFMU->component, &connection->sinkPort, 1, &tempBoolean, &tmpAbsent);
-        break;
+            fmi2Flag = connection->sinkFMU->setHybridBoolean(connection->sinkFMU->component, &connection->sinkPort, 1, &tempBoolean, &tmpAbsent);
+            break;
         case fmi2_String:
-        fmi2Flag = connection->sinkFMU->setHybridString(connection->sinkFMU->component, &connection->sinkPort, 1,        &tempString, &tmpAbsent);
-        break;
+            fmi2Flag = connection->sinkFMU->setHybridString(connection->sinkFMU->component, &connection->sinkPort, 1, &tempString, &tmpAbsent);
+            break;
         default:
-        return fmi2Error;
+            return fmi2Error;
+    }
+    if (fmi2Flag > fmi2Warning) {
+        printf("Setting the value from the FMU caused an error.\n");
+        return fmi2Flag;
     }
     return fmi2Flag;
 }
-void terminateSimulation(FMU *fmus, int returnValue, FILE* file, fmi2Integer stepSize,
-int nSteps) {
-    const char* STATUS[] = { "fmi2OK", "fmi2Warning", "fmi2Discard",
-    "fmi2Error", "fmi2Fatal", "fmi2Pending" };
+
+static fmi2Status setDerivatives(portConnection* connection) {
+    fmi2Status fmi2Flag;
+    FMU *source = connection->sourceFMU;
+    FMU *sink   = connection->sinkFMU;
+    fmi2Real tempDer;
+    fmi2Integer derOrder = 1;
+    if (source->maxOutputDerivativeOrder > 0 && sink->canInterpolateInputs == fmi2True) {
+        fmi2Flag = source->getRealOutputDerivatives(source->component, &connection->sourcePort, 1, &derOrder, &tempDer);
+        if (fmi2Flag > fmi2Warning) {
+            printf("Getting the derivatives from the FMU caused an error.\n");
+            return fmi2Flag;
+        }
+        fmi2Flag = sink->setRealInputDerivatives(sink->component, &connection->sinkPort, 1, &derOrder, &tempDer);
+        if (fmi2Flag > fmi2Warning) {
+            printf("Setting the derivatives from the FMU caused an error.\n");
+            return fmi2Flag;
+        }
+    }
+    return fmi2OK;
+}
+
+void terminateSimulation(FMU *fmus, int returnValue, FILE* file, fmi2IntegerTime stepSize, int nSteps) {
+    const char* STATUS[] = { "fmi2OK", "fmi2Warning", "fmi2Discard", "fmi2Error", "fmi2Fatal", "fmi2Pending" };
     for (int i = 0; i < NUMBER_OF_FMUS; i++) {
         fmus[i].terminate(fmus[i].component);
         if (fmus[i].lastFMUstate != NULL) {
-            fmi2Status status = fmus[i].freeFMUstate(fmus[i].component,
-            &fmus[i].lastFMUstate);
+            fmi2Status status = fmus[i].freeFMUstate(fmus[i].component, &fmus[i].lastFMUstate);
             printf("Terminating with status: %s\n", STATUS[status]);
         }
         fmus[i].freeInstance(fmus[i].component);
     }
     // print simulation summary
     if (returnValue == 1) {
-        printf("Simulation from %ld to %ld terminated successful\n", tStart,
-        tEnd);
+        printf("Simulation from %llu to %llu terminated successful\n", tStart, tEnd);
     } else {
-        printf("Simulation from %ld to %ld terminated early!\n", tStart, tEnd);
+        printf("Simulation from %llu to %llu terminated early!\n", tStart, tEnd);
     }
     printf("  steps ............ %d\n", nSteps);
-    printf("  fixed step size .. %ld\n", stepSize);
+    printf("  fixed step size .. %llu\n", stepSize);
     fclose(file);
     return;
 }
-static fmi2Status rollbackFMUs(FMU *fmus) {
-    for (int i = 0; i < NUMBER_OF_FMUS; i++) {
-        if (fmus[i].canGetAndSetFMUstate && !fmus[i].canGetMaxStepSize) {
-            fmi2Status localStatus = fmus[i].setFMUstate(fmus[i].component, fmus[i].lastFMUstate);
-            if (localStatus > fmi2Warning) {
-                printf("Rolling back FMU (%s) failed!\n", NAMES_OF_FMUS[i]);
-                return localStatus;
-            }
-        }
-    }
-    return fmi2OK;
-}
 
-// Determine the minimum resolution among the User-Defined and the resolution required by the FMUs
-// It also return the scaleFactor for each FMU, in order to perform conversion of time between
-// the MA resolution and the FMU resolution
-void setTimingResolutions(FMU *fmus, fmi2Integer *resolution, fmi2Integer scaleFactor[]) {
-    // Determine the minimum resolution
-    fmi2Integer ma_resolution = *resolution;
+// Determine the highest resolution among the User-Defined resolution
+// and the resolution required by the FMUs
+fmi2Status setTimeResolutions(FMU *fmus, fmi2Integer *resolution) {
+    // Determine the highest resolution
+    fmi2Integer maResolution = *resolution;
+    fmi2Status currentStatus;
     for (int i = 0; i < NUMBER_OF_FMUS; i++) {
         FMU fmu = fmus[i];
-        if (fmu.handleIntegerTime) {
-            fmi2Integer fmu_resolution;
-            fmi2Status currentStatus = fmu.getTimeResolution(fmu.component, &fmu_resolution);
-            if (currentStatus > fmi2OK)
-            	printf("FMU (%s) does generated an error while retrieving the time resolution\n", NAMES_OF_FMUS[i]);
-            ma_resolution = min(ma_resolution, fmu_resolution);
+        fmi2Integer fmuResolution;
+        currentStatus = fmu.getPreferredResolution(fmu.component, &fmuResolution);
+        if (currentStatus > fmi2OK) {
+        	printf("FMU (%s): Error while retrieving the time resolution\n", NAMES_OF_FMUS[i]);
         }
+        maResolution = max(maResolution, fmuResolution);
     }
-    *resolution = ma_resolution;
-    for (int i = 0; i < NUMBER_OF_FMUS; i++) {
-        FMU fmu = fmus[i];
-        if (fmu.handleIntegerTime) {
-            fmi2Integer fmu_resolution;
-            fmi2Status currentStatus = fmu.getTimeResolution(fmu.component, &fmu_resolution);
-            if (currentStatus > fmi2OK)
-            	printf("FMU (%s) does generated an error while retrieving the time resolution\n", NAMES_OF_FMUS[i]);
-            fmi2Integer precision_mismatch = fmu_resolution - *resolution;
-            scaleFactor[i] = (fmi2Integer) pow(10, precision_mismatch);
-        }
-    }
-//    // Set the resolution
-//    for (int i = 0; i < NUMBER_OF_FMUS; i++) {
-//        FMU fmu = fmus[i];
-//        if (fmu.handleIntegerTime) {
-//            fmi2Integer precision;
-//            fmi2Status currentStatus = fmu.getTimeResolution(fmu.component, &precision);
-//            scaleFactor[i] = (fmi2Integer) pow(10,  precision - *resolution);
-//            currentStatus = fmu.setTimeResolution(fmu.component, precision);
-//        }
-//        else {
-//            scaleFactor[i] = (fmi2Integer) pow(10, - *resolution);
-//        }
-//    }
+    *resolution = maResolution;
+   // Notify the FMU with the resolution to adopt
+   for (int i = 0; i < NUMBER_OF_FMUS; i++) {
+       FMU fmu = fmus[i];
+       if (fmu.canSetResolution == fmi2True) {
+           currentStatus = fmu.setResolution(fmu.component, maResolution);
+       } else {
+           printf("FMU (%s) does not support setTimeResolution!\n", NAMES_OF_FMUS[i]);
+           return fmi2Error;
+       }
+   }
+   return fmi2OK;
 }
-
-fmi2Status getMaxStepSize(FMU *fmu, fmi2Integer scaleFactor, fmi2Integer *maxStepSize) {
-    fmi2Status currentStatus = fmi2OK;
-    if ((*fmu).handleIntegerTime) {
-        fmi2Integer tmp;
-        currentStatus = (*fmu).getHybridMaxStepSize((*fmu).component, &tmp);
-        *maxStepSize = tmp * scaleFactor;
-    }
-//    else {
-//        fmi2Real maxStepSize_tmp;
-//        currentStatus = (*fmu).getMaxStepSize((*fmu).component, &maxStepSize_tmp);
-//        maxStepSize_tmp = maxStepSize_tmp * scaleFactor;
-//        *maxStepSize = (fmi2Integer) maxStepSize_tmp;
-//    }
-    return currentStatus;
-}
-fmi2Status doStep(FMU *fmu, fmi2Integer time, fmi2Integer stepSize, fmi2Boolean stateAction, fmi2Integer localTime, fmi2Integer scaleFactor) {
-    fmi2Status currentStatus = fmi2OK;
-    if ((*fmu).handleIntegerTime) {
-        fmi2Integer stepSize_c = stepSize + (time - localTime);
-        fmi2Integer stepSize_c_local = stepSize_c / scaleFactor;
-        if (stepSize_c >= scaleFactor || stepSize == 0) {
-            currentStatus = (*fmu).doHybridStep((*fmu).component, time, stepSize_c_local, stateAction);
-        }
-    }
-    //    else {
-        //        fmi2Real time_tmp = (time / 1.0) / scaleFactor;
-        //        fmi2Real stepSize_tmp = (fmi2Real) (stepSize / 1.0);
-        //        stepSize_tmp = stepSize_tmp / scaleFactor;
-        //        currentStatus = (*fmu).doStep((*fmu).component, time_tmp, stepSize_tmp, noSetFMUStatePriorToCurrentPoint);
-    //    }
-    return currentStatus;
-}
-
-//fmi2Status getRealStatus(FMU *fmu, fmi2StatusKind fmi2LastSuccessfulTime, fmi2Integer *lastSuccessfulTime, fmi2Integer scaleFactor) {
-//    fmi2Status currentStatus = fmi2OK;
-//    if ((*fmu).handleIntegerTime) {
-//        currentStatus = fmu->getRealStatus((*fmu).component, fmi2LastSuccessfulTime, &lastSuccessfulTime);
-//        *lastSuccessfulTime = *lastSuccessfulTime * scaleFactor;
-//    }
-//    else {
-//        fmi2Real lastSuccessfulTime_tmp;
-//        currentStatus = (*fmu).getRealStatus(fmu->component, fmi2LastSuccessfulTime, &lastSuccessfulTime_tmp);
-//        lastSuccessfulTime_tmp = lastSuccessfulTime_tmp * scaleFactor;
-//        *lastSuccessfulTime = (fmi2Integer) lastSuccessfulTime_tmp;
-//    }
-//    return currentStatus;
-//}
 
 // simulate the given FMUs from tStart = 0 to tEnd.
-static int simulate(FMU *fmus, portConnection* connections, fmi2Integer requiredResolution,
-fmi2Boolean loggingOn, char separator) {
+static int simulate(FMU *fmus, portConnection* connections, fmi2Integer requiredResolution, fmi2Boolean loggingOn, char separator) {
     // Simulation variables
-    fmi2Integer time = 0;
-    fmi2Integer nSteps = 0;
-    fmi2Integer stepSize = 1;
-    fmi2Integer resolution = requiredResolution;
-    fmi2Integer scaleFactor[NUMBER_OF_FMUS];
-    fmi2Integer localTime[NUMBER_OF_FMUS]; // keep track of the FMU local time
-    FILE* file;
-    int legacyFmuIndex = 0;
-    bool isLegacyFmu = false;
-
+    fmi2IntegerTime time           = 0;
+    fmi2Integer     nSteps         = 0;
+    fmi2IntegerTime stepSize       = DEFAULT_COMM_STEP_SIZE;
+    fmi2Integer     resolution     = requiredResolution;
+    fmi2Integer     timeMagnitude  = 1;
+    FILE*           file           = NULL;
+    int             legacyFmuIndex = 0;
+    bool            isLegacyFmu    = false;
     // Open result file
     if (!(file = fopen(RESULT_FILE, "w"))) {
         printf("could not write %s because:\n", RESULT_FILE);
         printf("    %s\n", strerror(errno));
-        return 0;
+        return ERROR;
     }
     // Check for legacy FMUs
     fmi2Status legacyFmuStatus = checkForLegacyFMUs(fmus, &isLegacyFmu, &legacyFmuIndex);
     if ( legacyFmuStatus > fmi2Warning) {
-        terminateSimulation(fmus, 0, file, stepSize, nSteps);
-        return 0;
+        terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+        return ERROR;
     }
-    // Set FMU parameters from PtolemyII model
+    // Set FMU default parameters for each FMU
     for (int i = 0; i < NUMBER_OF_FMUS; i++) {
         setupParameters(&fmus[i]);
     }
-    // Set FMUs local time to 0 (locally)
-    for (int i = 0; i < NUMBER_OF_FMUS; i++) {
-        localTime[i] = 0;
-    }
-
     // Determine the simulation resolution
-    setTimingResolutions(fmus, &resolution, scaleFactor);
-
+    fmi2Status timeResolutionStatus = setTimeResolutions(fmus, &resolution);
+    if (timeResolutionStatus == fmi2Error) {
+        terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+    }
+    timeMagnitude = pow10(resolution);
     // output solution for time t0
-    outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time, 0, file, separator, TRUE);
+    outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time/timeMagnitude, 0, file, separator, TRUE);
     // Simulation loop
     while (time <= tEnd) {
         // Set connection values
         for (int i = 0; i < NUMBER_OF_EDGES; i++) {
             setValue(&connections[i]);
+            setDerivatives(&connections[i]);
         }
-        outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time, 0, file, separator, FALSE);
+        outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time/1.0/timeMagnitude, 0, file, separator, FALSE);
         // Compute the maximum step size
         // (I) Predictable FMUs
         for (int i = 0; i < NUMBER_OF_FMUS; i++) {
             if (fmus[i].canGetMaxStepSize) {
-                fmi2Integer maxStepSize;
-                fmi2Status currentStatus = getMaxStepSize(&(fmus[i]), scaleFactor[i], &maxStepSize);
+                fmi2IntegerTime fmuMaxStepSize;
+                fmi2Status currentStatus = fmus[i].getHybridMaxStepSize(fmus[i].component, time, &fmuMaxStepSize);
                 if (currentStatus > fmi2Warning) {
-                    terminateSimulation(fmus, 0, file, stepSize, nSteps);
-                    return 0;
+                    terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+                    return ERROR;
                 }
-                maxStepSize = maxStepSize * scaleFactor[i] - (time - localTime[i]);
-                if (maxStepSize < 0) {
-                    continue;
-                }
-                stepSize = min(stepSize, maxStepSize);
+                stepSize = min(stepSize, fmuMaxStepSize);
             }
         }
         // Compute the maximum step size
@@ -365,72 +317,59 @@ fmi2Boolean loggingOn, char separator) {
             if (fmus[i].canGetAndSetFMUstate && !fmus[i].canGetMaxStepSize) {
                 fmi2Status currentStatus = fmus[i].getFMUstate(fmus[i].component, &fmus[i].lastFMUstate);
                 if (currentStatus > fmi2Warning) {
-                    terminateSimulation(fmus, 0, file, stepSize, nSteps);
-                    return 0;
+                    terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+                    return ERROR;
                 }
-                currentStatus = doStep(&fmus[i], time, stepSize, fmi2False, localTime[i], scaleFactor[i]);
+                fmi2IntegerTime lastSuccessfulTime;
+                currentStatus = fmus[i].doHybridStep(fmus[i].component, time, stepSize, fmi2False, &lastSuccessfulTime);
                 if (currentStatus > fmi2Discard) {
-                    terminateSimulation(fmus, 0, file, stepSize, nSteps);
-                    return 0;
+                    terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+                    return ERROR;
                 }
-                fmi2Integer lastSuccessfulTime = time + stepSize; // This is an artifact! We need a method to retrive the integer time
-                fmi2Integer maxStepSize;
-                maxStepSize = (lastSuccessfulTime - localTime[i]) - (time - localTime[i]);
-                if (maxStepSize != 0) {
-                    stepSize = min(stepSize, maxStepSize);
-                }
+                stepSize = min(stepSize, lastSuccessfulTime);
             }
         }
         // Compute the maximum step size
         // (III) Legacy FMUs
-           if (isLegacyFmu) {
-                           fmi2Status currentStatus = doStep(&fmus[legacyFmuIndex], time, stepSize, fmi2False, localTime[i], scaleFactor[legacyFmuIndex]);
-                           if (currentStatus > fmi2Warning) {
-                                           printf("Could not step FMU (%s) [Legacy FMU]. Terminating simulation.\n", NAMES_OF_FMUS[legacyFmuIndex]);
-                                           terminateSimulation(fmus, 0, file, stepSize, nSteps);
-                                           return 0;
-                           }
-                           fmi2Real lastSuccessfulTime;
-                           currentStatus = fmus[i].getRealStatus(fmus[i].component, fmi2LastSuccessfulTime, &lastSuccessfulTime);
-                           if (currentStatus > fmi2Warning) {
-                                           printf("Could get the last successful time instant for FMU (%s). Terminating simulation.\n", NAMES_OF_FMUS[legacyFmuIndex]);
-                                           terminateSimulation(fmus, 0, file, stepSize, nSteps);
-                                           return 0;
-                           }
-                           fmi2Integer maxStepSize;
-                           maxStepSize = lastSuccessfulTime - time;
-                           if (maxStepSize == 0) {
-                                           stepSize = min(stepSize, maxStepSize);
-                           }
-           }
-        // Rolling back FMUs of type (II)
-        {
-            fmi2Status currentStatus = rollbackFMUs(fmus);
+        if (isLegacyFmu) {
+            fmi2IntegerTime lastSuccessfulTime;
+            fmi2Status currentStatus = fmus[i].doHybridStep(fmus[i].component, time, stepSize, fmi2True, &lastSuccessfulTime);
             if (currentStatus > fmi2Warning) {
-                terminateSimulation(fmus, 0, file, stepSize, nSteps);
-                return 0;
+               printf("Could not step FMU (%s) [Legacy FMU]. Terminating simulation.\n", NAMES_OF_FMUS[legacyFmuIndex]);
+               terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+               return ERROR;
+            }
+            stepSize = min(stepSize, lastSuccessfulTime);
+        }
+        // Rolling back FMUs of type (II)
+        fmi2Status currentStatus;
+        for (int i = 0; i < NUMBER_OF_FMUS; i++) {
+            if (fmus[i].canGetAndSetFMUstate && !fmus[i].canGetMaxStepSize) {
+                currentStatus = fmus[i].setFMUstate(fmus[i].component, fmus[i].lastFMUstate);
+                if (currentStatus > fmi2Warning) {
+                    printf("Rolling back FMU (%s) failed!\n", NAMES_OF_FMUS[i]);
+                    terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+                    return ERROR;
+                }
             }
         }
-        // Perform doStep() for all FMUs with the discovered stepSize
+        // Perform the final doStep() for all FMUs with the discovered stepSize
         for (int i = 0; i < NUMBER_OF_FMUS; i++) {
             if (fmus[i].canGetMaxStepSize || fmus[i].canGetAndSetFMUstate) {
-                fmi2Status currentStatus = doStep(&fmus[i], time, stepSize, fmi2True, localTime[i], scaleFactor[i]);
+                fmi2IntegerTime lastSuccessfulTime;
+                fmi2Status currentStatus = fmus[i].doHybridStep(fmus[i].component, time, stepSize, fmi2True, &lastSuccessfulTime);
                 if (currentStatus > fmi2Warning) {
-                    terminateSimulation(fmus, 0, file, stepSize, nSteps);
-                    return 0;
-                }
-                fmi2Integer stepSize_c = stepSize - (time - localTime[i]);
-//                fmi2Integer stepSize_c_local = stepSize_c / scaleFactor[i];
-                if (stepSize_c >= scaleFactor[i]) {
-                    localTime[i] += stepSize;
+                    printf("Error while performing final doStep() on FMU (%s)\n", NAMES_OF_FMUS[i]);
+                    terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+                    return ERROR;
                 }
             }
         }
         nSteps++;
         time += stepSize;
-        stepSize = 1;
+        stepSize = DEFAULT_COMM_STEP_SIZE;
     }
-    terminateSimulation(fmus, 1, file, stepSize, nSteps);
-    return 1;
+    terminateSimulation(fmus, OK, file, stepSize, nSteps);
+    return OK;
 }
 /**/

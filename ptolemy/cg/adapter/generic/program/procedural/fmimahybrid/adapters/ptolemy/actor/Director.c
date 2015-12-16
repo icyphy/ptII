@@ -8,7 +8,8 @@ int i;
 
 // parse command line arguments and load the FMU
 // default arguments value
-fmi2Integer requiredResolution = 0;
+fmi2Integer requiredResolution = 9;
+fmi2IntegerTime h = DEFAULT_COMM_STEP_SIZE;
 int loggingOn = 0;
 char csv_separator = ',';
 fmi2String *categories = NULL;
@@ -20,18 +21,17 @@ FMU *fmus = calloc(NUMBER_OF_FMUS, sizeof(FMU));
 portConnection* connections = calloc(NUMBER_OF_EDGES, sizeof(portConnection));
 
 printf("-> Parsing arguments...\n");
-parseArguments(argc, argv, &tEnd, &requiredResolution, &loggingOn, &csv_separator, &nCategories, &categories);
+parseArguments(argc, argv, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, &categories);
 
 /**/
 
 /***mainEndBlock***/
 // run the simulation
-        printf("FMU Simulator: run '%s' from t=0..%ld with step size h=%ld, loggingOn=%d, csv separator='%c' ",
-                        MODEL_NAME, tEnd, requiredResolution, loggingOn, csv_separator);
+    printf("FMU Simulator: run '%s' from t=0..%llu with step size h=%llu, loggingOn=%d, csv separator='%c' ", MODEL_NAME, tEnd, h, loggingOn, csv_separator);
     printf("log categories={ ");
-        for (i = 0; i < nCategories; i++) {
-            printf("%s ", categories[i]);
-        }
+    for (i = 0; i < nCategories; i++) {
+        printf("%s ", categories[i]);
+    }
     printf("}\n");
 
     simulate( fmus, connections, requiredResolution, loggingOn, csv_separator);
@@ -56,5 +56,4 @@ parseArguments(argc, argv, &tEnd, &requiredResolution, &loggingOn, &csv_separato
         free(fmuFileNames[i]);
     }
     free(fmus);
-    return EXIT_SUCCESS;
 /**/
