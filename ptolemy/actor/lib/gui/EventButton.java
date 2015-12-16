@@ -42,6 +42,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
@@ -120,6 +121,23 @@ public class EventButton extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the actor into the specified workspace.
+     *  This method sets the type constraint of the output
+     *  to be at least the type of the value. 
+     *  @param workspace The workspace for the new object.
+     *  @return A new actor.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        EventButton newObject = (EventButton) super.clone(workspace);
+
+        // set the type constraints.
+        newObject.output.setTypeAtLeast(newObject.value);
+        return newObject;
+    }
 
     /** Fire the actor.
      */

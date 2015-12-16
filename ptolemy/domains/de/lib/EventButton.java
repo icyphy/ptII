@@ -56,6 +56,7 @@ import ptolemy.kernel.util.StringAttribute;
  @author  Winthrop Williams
  @version $Id$
  @since Ptolemy II 2.0
+ @deprecated Use ptolemy.actor.lib.gui.EventButton, it is domain polymorphic.
  @Pt.ProposedRating Red (winthrop)
  @Pt.AcceptedRating Red (winthrop)
  */
