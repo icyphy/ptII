@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/xbee
 
-DIRS = 		test demo
+DIRS = 		test #demo
 
 # Root of the Java directory
 ROOT =		../../../../../..
