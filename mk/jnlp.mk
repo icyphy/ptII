@@ -647,6 +647,8 @@ FULL_10_0_JARS = \
 
 FULL_11_0_JARS = \
 	edu/umich/eecs/april/april.jar \
+	org/ptolemy/classloading/classloading.jar \
+	org/ptolemy/commons/commons.jar \
 	org/ptolemy/qss/qss.jar \
 	org/ptolemy/qss/demo/demo.jar \
 	ptolemy/actor/gui/syntax/syntax.jar \

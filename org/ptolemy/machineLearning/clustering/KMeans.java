@@ -74,8 +74,8 @@ public class KMeans extends TypedAtomicActor {
         input = new TypedIOPort(this,"input",true,false);
 
 
-        output = new TypedIOPort(this, "output", false, true);
-        output.setTypeEquals(new ArrayType(BaseType.INT));
+        clusters = new TypedIOPort(this, "clusters", false, true);
+        clusters.setTypeEquals(new ArrayType(BaseType.INT));
 
         clusterCenters = new TypedIOPort(this, "clusterCenters", false, true); 
 
@@ -95,7 +95,7 @@ public class KMeans extends TypedAtomicActor {
     public TypedIOPort input;
 
     /** Cluster indices for each element of the input. */
-    public TypedIOPort output;
+    public TypedIOPort clusters;
 
     /** Cluster centers. */
     public TypedIOPort clusterCenters;
@@ -171,14 +171,14 @@ public class KMeans extends TypedAtomicActor {
                 iters ++;
             }
 
-            // send the assigned clusters to the output.
+            // send the assigned clusters to the clusters port.
 
             IntToken[] clusterAssignments = new IntToken[_trainingData.length];
             for (int i=0; i< _clusterAssignment.length; i++) {
                 clusterAssignments[i] = new IntToken(_clusterAssignment[i]);
             }
-            ArrayToken outputToken = new ArrayToken(clusterAssignments);
-            output.broadcast(outputToken);
+            ArrayToken clustersToken = new ArrayToken(clusterAssignments);
+            clusters.broadcast(clustersToken);
             System.out.println("K-Means Converged in " + iters + " iterations.");
 
             // output cluster centers
