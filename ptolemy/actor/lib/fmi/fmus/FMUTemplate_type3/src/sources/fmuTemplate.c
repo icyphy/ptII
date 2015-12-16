@@ -167,12 +167,10 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
         comp->s = (fmi2String *) functions->allocateMemory(NUMBER_OF_STRINGS,  sizeof(fmi2String));
         comp->isPositive = (fmi2Boolean *)functions->allocateMemory(NUMBER_OF_EVENT_INDICATORS,
             sizeof(fmi2Boolean));
-        #ifdef FMI_HYBRID_COSIMULATION
         comp->hr = (fmi2Integer *)functions->allocateMemory(NUMBER_OF_REALS,     sizeof(fmi2Integer));
         comp->hi = (fmi2Integer *)functions->allocateMemory(NUMBER_OF_INTEGERS,  sizeof(fmi2Integer));
         comp->hb = (fmi2Integer *)functions->allocateMemory(NUMBER_OF_BOOLEANS,  sizeof(fmi2Integer));
         comp->hs = (fmi2Integer *)functions->allocateMemory(NUMBER_OF_STRINGS,   sizeof(fmi2Integer));
-        #endif
         comp->instanceName = functions->allocateMemory(1 + strlen(instanceName), sizeof(char));
         comp->GUID = functions->allocateMemory(1 + strlen(fmuGUID), sizeof(char));
 
@@ -189,8 +187,8 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
         return NULL;
     }
     comp->time = 0; // overwrite in fmi2SetupExperiment, fmi2SetTime
-    #ifdef FMI_HYBRID_COSIMULATION
     comp->microstep = 0;
+    #ifdef FMI_HYBRID_COSIMULATION
     comp->requestedResolution = RESOLUTION;
     #endif
     strcpy((char *)comp->instanceName, (char *)instanceName);
@@ -209,23 +207,28 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
     comp->eventInfo.valuesOfContinuousStatesChanged = fmi2False;
     comp->eventInfo.nextEventTimeDefined = fmi2False;
     comp->eventInfo.nextEventTime = 0;
-    #ifdef FMI_HYBRID_COSIMULATION
     comp->eventInfo.nextEventMicrostep = 0;
-    #endif
 
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2Instantiate: GUID=%s", fmuGUID)
 
     return comp;
 }
 
-#ifndef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2SetupExperiment(fmi2Component c, fmi2Boolean toleranceDefined, fmi2Real tolerance,
                             fmi2Real startTime, fmi2Boolean stopTimeDefined, fmi2Real stopTime) {
+
+    ModelInstance *comp = (ModelInstance *)c;
+    if (invalidState(comp, "fmi2SetupExperiment", MASK_fmi2SetupExperiment))
+        return fmi2Error;
+    FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetupExperiment: toleranceDefined=%g tolerance=%g",
+        toleranceDefined, tolerance)
+
+    comp->time = startTime;
+    comp->microstep = 0;
     return fmi2OK;
 }
-#else
-fmi2Status fmi2HybridSetupExperiment(fmi2Component c, fmi2Boolean toleranceDefined, fmi2Integer tolerance,
-                            fmi2Integer startTime, fmi2Boolean stopTimeDefined, fmi2Integer stopTime) {
+fmi2Status fmi2HybridSetupExperiment(fmi2Component c, fmi2Boolean toleranceDefined, fmi2IntegerTime tolerance,
+                            fmi2IntegerTime startTime, fmi2Boolean stopTimeDefined, fmi2IntegerTime stopTime) {
 
     // ignore arguments: stopTimeDefined, stopTime
     ModelInstance *comp = (ModelInstance *)c;
@@ -238,7 +241,6 @@ fmi2Status fmi2HybridSetupExperiment(fmi2Component c, fmi2Boolean toleranceDefin
     comp->microstep = 0;
     return fmi2OK;
 }
-#endif
 
 fmi2Status fmi2EnterInitializationMode(fmi2Component c) {
     ModelInstance *comp = (ModelInstance *)c;
@@ -299,21 +301,15 @@ void fmi2FreeInstance(fmi2Component c) {
 
     if (comp->r) {
         comp->functions->freeMemory(comp->r);
-        #ifdef FMI_HYBRID_COSIMULATION
         comp->functions->freeMemory(comp->hr);
-        #endif
     }
     if (comp->i) {
         comp->functions->freeMemory(comp->i);
-        #ifdef FMI_HYBRID_COSIMULATION
         comp->functions->freeMemory(comp->hi);
-        #endif
     }
     if (comp->b) {
         comp->functions->freeMemory(comp->b);
-        #ifdef FMI_HYBRID_COSIMULATION
         comp->functions->freeMemory(comp->hb);
-        #endif
     }
     if (comp->s) {
         int i;
@@ -321,9 +317,7 @@ void fmi2FreeInstance(fmi2Component c) {
             if (comp->s[i]) comp->functions->freeMemory((void *)comp->s[i]);
         }
         comp->functions->freeMemory((void *)comp->s);
-        #ifdef FMI_HYBRID_COSIMULATION
         comp->functions->freeMemory((void *)comp->hs);
-        #endif
     }
     if (comp->isPositive) comp->functions->freeMemory(comp->isPositive);
     if (comp->instanceName) comp->functions->freeMemory((void *)comp->instanceName);
@@ -390,7 +384,6 @@ fmi2Status fmi2SetDebugLogging(fmi2Component c, fmi2Boolean loggingOn, size_t nC
     return fmi2OK;
 }
 
-#ifndef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2GetReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2Real value[]) {
 #if NUMBER_OF_REALS > 0
     int i;
@@ -416,7 +409,6 @@ fmi2Status fmi2GetReal (fmi2Component c, const fmi2ValueReference vr[], size_t n
 #endif
     return fmi2OK;
 }
-#else
 fmi2Status fmi2GetHybridReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2Real value[], fmi2Integer hybridValue[]) {
 #if NUMBER_OF_REALS > 0
     int i;
@@ -445,8 +437,6 @@ fmi2Status fmi2GetHybridReal (fmi2Component c, const fmi2ValueReference vr[], si
 #endif
     return fmi2OK;
 }
-#endif
-#ifndef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2GetInteger(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2Integer value[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -468,7 +458,6 @@ fmi2Status fmi2GetInteger(fmi2Component c, const fmi2ValueReference vr[], size_t
     }
     return fmi2OK;
 }
-#else
 fmi2Status fmi2GetHybridInteger(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2Integer value[], fmi2Integer hybridValue[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -496,8 +485,6 @@ fmi2Status fmi2GetHybridInteger(fmi2Component c, const fmi2ValueReference vr[], 
     }
     return fmi2OK;
 }
-#endif
-#ifndef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2GetBoolean(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2Boolean value[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -519,7 +506,6 @@ fmi2Status fmi2GetBoolean(fmi2Component c, const fmi2ValueReference vr[], size_t
     }
     return fmi2OK;
 }
-#else
 fmi2Status fmi2GetHybridBoolean(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2Boolean value[], fmi2Integer hybridValue[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -547,8 +533,6 @@ fmi2Status fmi2GetHybridBoolean(fmi2Component c, const fmi2ValueReference vr[], 
     }
     return fmi2OK;
 }
-#endif
-#ifndef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2GetString (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2String value[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -570,7 +554,6 @@ fmi2Status fmi2GetString (fmi2Component c, const fmi2ValueReference vr[], size_t
     }
     return fmi2OK;
 }
-#else
 fmi2Status fmi2GetHybridString (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2String value[], fmi2Integer hybridValue[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -598,8 +581,6 @@ fmi2Status fmi2GetHybridString (fmi2Component c, const fmi2ValueReference vr[], 
     }
     return fmi2OK;
 }
-#endif
-#ifndef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2SetReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Real value[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -620,7 +601,6 @@ fmi2Status fmi2SetReal (fmi2Component c, const fmi2ValueReference vr[], size_t n
     if (nvr > 0) comp->isDirtyValues = 1;
     return fmi2OK;
 }
-#else
 fmi2Status fmi2SetHybridReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Real value[], const fmi2Integer hybridValue[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -649,8 +629,6 @@ fmi2Status fmi2SetHybridReal (fmi2Component c, const fmi2ValueReference vr[], si
     }
     return fmi2OK;
 }
-#endif
-#ifndef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2SetInteger(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Integer value[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -671,7 +649,6 @@ fmi2Status fmi2SetInteger(fmi2Component c, const fmi2ValueReference vr[], size_t
     if (nvr > 0) comp->isDirtyValues = 1;
     return fmi2OK;
 }
-#else
 fmi2Status fmi2SetHybridInteger(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Integer value[], const fmi2Integer hybridValue[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -698,8 +675,6 @@ fmi2Status fmi2SetHybridInteger(fmi2Component c, const fmi2ValueReference vr[], 
     if (nvr > 0) comp->isDirtyValues = 1;
     return fmi2OK;
 }
-#endif
-#ifndef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2SetBoolean(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Boolean value[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -720,7 +695,6 @@ fmi2Status fmi2SetBoolean(fmi2Component c, const fmi2ValueReference vr[], size_t
     if (nvr > 0) comp->isDirtyValues = 1;
     return fmi2OK;
 }
-#else
 fmi2Status fmi2SetHybridBoolean(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Boolean value[], const fmi2Integer hybridValue[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -747,8 +721,6 @@ fmi2Status fmi2SetHybridBoolean(fmi2Component c, const fmi2ValueReference vr[], 
     if (nvr > 0) comp->isDirtyValues = 1;
     return fmi2OK;
 }
-#endif
-#ifndef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2SetString (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2String value[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -786,7 +758,6 @@ fmi2Status fmi2SetString (fmi2Component c, const fmi2ValueReference vr[], size_t
     if (nvr > 0) comp->isDirtyValues = 1;
     return fmi2OK;
 }
-#else
 fmi2Status fmi2SetHybridString (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2String value[], const fmi2Integer hybridValue[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
@@ -831,7 +802,6 @@ fmi2Status fmi2SetHybridString (fmi2Component c, const fmi2ValueReference vr[], 
     if (nvr > 0) comp->isDirtyValues = 1;
     return fmi2OK;
 }
-#endif
 fmi2Status fmi2GetFMUstate (fmi2Component c, fmi2FMUstate* FMUstate) {
     ModelInstance *source = (ModelInstance*)c;
     int i;
@@ -847,12 +817,10 @@ fmi2Status fmi2GetFMUstate (fmi2Component c, fmi2FMUstate* FMUstate) {
         dest->s = (fmi2String  *)source->functions->allocateMemory(NUMBER_OF_STRINGS, sizeof(fmi2String));
         dest->isPositive = (fmi2Boolean *)source->functions->allocateMemory(NUMBER_OF_EVENT_INDICATORS,
                                                                            sizeof(fmi2Boolean));
-        #ifdef FMI_HYBRID_COSIMULATION
         dest->hr = (fmi2Integer *)source->functions->allocateMemory(NUMBER_OF_REALS,     sizeof(fmi2Integer));
         dest->hi = (fmi2Integer *)source->functions->allocateMemory(NUMBER_OF_INTEGERS,  sizeof(fmi2Integer));
         dest->hb = (fmi2Integer *)source->functions->allocateMemory(NUMBER_OF_BOOLEANS,  sizeof(fmi2Integer));
         dest->hs = (fmi2Integer *)source->functions->allocateMemory(NUMBER_OF_STRINGS,   sizeof(fmi2Integer));
-        #endif
     }
     else {
         dest = (ModelInstance *)*FMUstate;
@@ -862,27 +830,21 @@ fmi2Status fmi2GetFMUstate (fmi2Component c, fmi2FMUstate* FMUstate) {
     if (NUMBER_OF_REALS > 0) {
         for (i = 0; i < NUMBER_OF_REALS; i++) {
             dest->r[i] = source->r[i];
-            #ifdef FMI_HYBRID_COSIMULATION
             dest->hr[i] = source->hr[i];
-            #endif
         }
     }
 
     if (NUMBER_OF_INTEGERS > 0) {
         for (i = 0; i < NUMBER_OF_INTEGERS; i++) {
             dest->i[i] = source->i[i];
-            #ifdef FMI_HYBRID_COSIMULATION
             dest->hi[i] = source->hi[i];
-            #endif
         }
     }
 
     if (NUMBER_OF_BOOLEANS > 0) {
         for (i = 0; i < NUMBER_OF_BOOLEANS; i++) {
             dest->b[i] = source->b[i];
-            #ifdef FMI_HYBRID_COSIMULATION
             dest->hb[i] = source->hb[i];
-            #endif
         }
     }
 
@@ -893,9 +855,7 @@ fmi2Status fmi2GetFMUstate (fmi2Component c, fmi2FMUstate* FMUstate) {
             dest->s[i] = source->functions->allocateMemory(1 + strlen(source->s[i]), sizeof(char));
             strcpy((char*)dest->s[i], (char*)source->s[i]);
         }
-        #ifdef FMI_HYBRID_COSIMULATION
         dest->hs[i] = source->hs[i];
-        #endif
     }
 
     if (NUMBER_OF_EVENT_INDICATORS > 0) {
@@ -961,12 +921,10 @@ fmi2Status fmi2FreeFMUstate(fmi2Component c, fmi2FMUstate* FMUstate) {
         }
         comp->functions->freeMemory(state->s);
     }
-    #ifdef FMI_HYBRID_COSIMULATION
     if (state->hr) comp->functions->freeMemory(state->hr);
     if (state->hi) comp->functions->freeMemory(state->hi);
     if (state->hb) comp->functions->freeMemory(state->hb);
     if (state->hs) comp->functions->freeMemory(state->hs);
-    #endif
     if (state->isPositive) comp->functions->freeMemory(state->isPositive);
     if (state->instanceName) comp->functions->freeMemory((void *)state->instanceName);
     if (state->GUID) comp->functions->freeMemory((void *)state->GUID);
@@ -1034,12 +992,10 @@ fmi2Status fmi2CancelStep(fmi2Component c) {
     return fmi2Error;
 }
 
-#ifndef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
                     fmi2Real communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint) {
     return fmi2OK;
 }
-#else
 fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2IntegerTime currentCommunicationPoint,
                     fmi2IntegerTime communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint,
                     fmi2IntegerTime *computedStepSize) {
@@ -1087,9 +1043,8 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2IntegerTime currentCommunicatio
 
     return fmi2OK;
 }
-#endif
 #ifdef FMI_HYBRID_COSIMULATION
-fmi2Status fmi2GetPreferredResolution (fmi2Component c, fmi2IntegerTime *resolution) {
+fmi2Status fmi2GetPreferredResolution (fmi2Component c, fmi2Integer *resolution) {
     ModelInstance *comp = (ModelInstance *)c;
     *resolution = comp->requestedResolution;
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2GetPreferredResolution: "
@@ -1098,7 +1053,7 @@ fmi2Status fmi2GetPreferredResolution (fmi2Component c, fmi2IntegerTime *resolut
     return fmi2OK;
 }
 
-fmi2Status fmi2SetResolution (fmi2Component c, fmi2IntegerTime value) {
+fmi2Status fmi2SetResolution (fmi2Component c, fmi2Integer value) {
     ModelInstance *comp = (ModelInstance *)c;
     if (value < comp->requestedResolution) {
         FILTERED_LOG(comp, fmi2Error, LOG_FMI_CALL, "fmi2SetResolution: "
@@ -1126,11 +1081,10 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2IntegerTime currentCom
     *value = (localCommunicationStepSize + comp->time) * comp->resMagnitude - currentCommunicationPoint;
     return fmi2OK;
 }
-#else
+#endif
 fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
     return fmi2OK;
 }
-#endif
 
 /* Inquire slave status */
 static fmi2Status getStatus(char* fname, fmi2Component c, const fmi2StatusKind s) {
