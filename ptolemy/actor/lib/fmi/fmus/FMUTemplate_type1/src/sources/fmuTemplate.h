@@ -143,7 +143,6 @@ typedef struct {
     fmi2String  *s;
     fmi2Boolean *isPositive;
 
-    #ifdef FMI_HYBRID_COSIMULATION
     // These variables stores additional information
     // for the I/O variables.
     // Their value can be:
@@ -154,13 +153,11 @@ typedef struct {
     fmi2Integer *hi; // for integers
     fmi2Integer *hb; // for booleans
     fmi2Integer *hs; // for strings
-    #endif
 
-    #ifndef FMI_HYBRID_COSIMULATION
-    fmi2Real time;
-    #else
     fmi2Real time;
     fmi2Integer microstep;
+
+    #ifdef FMI_HYBRID_COSIMULATION
     fmi2IntegerTime resMagnitude;
     fmi2Integer requestedResolution;
     #endif

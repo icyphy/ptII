@@ -248,7 +248,7 @@ Functions for FMI2 for Hybrid Co-Simulation
 #define fmi2HybridDoStep               fmi2FullName(fmi2HybridDoStep)
 #define fmi2HybridGetMaxStepSize       fmi2FullName(fmi2HybridGetMaxStepSize)
 #define fmi2GetPreferredResolution     fmi2FullName(fmi2GetPreferredResolution)
-#define fmi2SetResolution          fmi2FullName(fmi2SetResolution)
+#define fmi2SetResolution              fmi2FullName(fmi2SetResolution)
 #define fmi2HybridSetupExperiment      fmi2FullName(fmi2HybridSetupExperiment)
 #define fmi2GetHybridReal              fmi2FullName(fmi2GetHybridReal)
 #define fmi2SetHybridReal              fmi2FullName(fmi2SetHybridReal)
@@ -348,7 +348,7 @@ Functions for FMI2 for Co-Simulation
 // ****************************************************/
    FMI2_Export fmi2HybridDoStepTYPE            fmi2HybridDoStep;
    FMI2_Export fmi2GetPreferredResolutionTYPE  fmi2GetPreferredResolution;
-   FMI2_Export fmi2SetResolutionTYPE       fmi2SetResolution;
+   FMI2_Export fmi2SetResolutionTYPE           fmi2SetResolution;
    FMI2_Export fmi2HybridGetMaxStepSizeTYPE    fmi2HybridGetMaxStepSize;
    FMI2_Export fmi2HybridSetupExperimentTYPE   fmi2HybridSetupExperiment;
 
