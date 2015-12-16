@@ -347,7 +347,7 @@ Functions for FMI2 for Co-Simulation
 // Functions for FMI2 for Hybrid Co-Simulation
 // ****************************************************/
    FMI2_Export fmi2HybridDoStepTYPE            fmi2HybridDoStep;
-   FMI2_Export fmi2PreferredResolutionTYPE     fmi2RequiredTimeResolution;
+   FMI2_Export fmi2GetPreferredResolutionTYPE  fmi2GetPreferredResolution;
    FMI2_Export fmi2SetResolutionTYPE           fmi2SetTimeResolution;
    FMI2_Export fmi2HybridGetMaxStepSizeTYPE    fmi2HybridGetMaxStepSize;
    FMI2_Export fmi2HybridSetupExperimentTYPE   fmi2HybridSetupExperiment;
