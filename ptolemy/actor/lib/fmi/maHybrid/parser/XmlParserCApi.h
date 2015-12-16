@@ -58,11 +58,8 @@ typedef enum {
     att_reinit, att_index, att_dependencies, att_dependenciesKind, att_modelIdentifier,
     att_needsExecutionTool, att_completedIntegratorStepNotNeeded, att_canBeInstantiatedOnlyOncePerProcess, att_canNotUseMemoryManagementFunctions, att_canGetAndSetFMUstate,
     att_canSerializeFMUstate, att_providesDirectionalDerivative, att_canHandleVariableCommunicationStepSize, att_canInterpolateInputs, att_maxOutputDerivativeOrder,
-    att_canRunAsynchronuously,
-    // additional attribute for getMaxStepSize() as proposed in the EMSOFT paper
-    att_canGetMaxStepSize,
-    // additional attributes for Hybrid CoSimulation
-    att_canHandleIntegerTime, att_canGetPreferredResolution, att_canSetTimeResolution
+    att_canRunAsynchronuously, att_canGetMaxStepSize, att_canSetResolution, att_canGetPreferredResolution, att_handleIntegerTime,
+    att_xmlnsXsi, att_providesDirectionalDerivatives, att_canHandleEvents
 } Att;
 
 // Enumerated values names used in ModelDescription.xml

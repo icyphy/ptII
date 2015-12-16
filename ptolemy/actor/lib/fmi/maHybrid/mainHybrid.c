@@ -98,7 +98,7 @@ fmi2Boolean loggingOn, int nCategories, char ** categories, char* name) {
     (Element *) getCoSimulation(md), att_modelIdentifier);
     // path to the fmu resources as URL, "file://C:\QTronic\sales"
     char *fmuResourceLocation = getTempResourcesLocation(); // TODO: returns crap. got to save the location for every FMU somehow.
-    fmu->handleIntegerTime = (fmi2Boolean) getAttributeValue((Element *) getCoSimulation(md), att_canHandleIntegerTime);
+    fmu->handleIntegerTime = (fmi2Boolean) getAttributeValue((Element *) getCoSimulation(md), att_handleIntegerTime);
     fmi2Component comp = fmu->instantiate(instanceName, fmi2CoSimulation, guid,
     fmuResourceLocation, &fmu->callbacks, visible, loggingOn);
     printf("instance name: %s, \nguid: %s, \nressourceLocation: %s\n",

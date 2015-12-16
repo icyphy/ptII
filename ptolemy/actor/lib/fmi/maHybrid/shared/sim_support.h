@@ -67,7 +67,7 @@
 
 void fmuLogger(fmi2Component c, fmi2String instanceName, fmi2Status status, fmi2String category, fmi2String message, ...);
 int unzip(const char *zipPath, const char *outPath);
-void parseArguments(int argc, char *argv[], fmi2Integer *tEnd, fmi2Integer *h,
+void parseArguments(int argc, char *argv[], fmi2IntegerTime *tEnd, fmi2IntegerTime *h,
         int *loggingOn, char *csv_separator, int *nCategories, fmi2String *logCategories[]);
 void loadFMU(FMU *fmu, const char *fmuFileName);
 #ifndef _MSC_VER

@@ -39,7 +39,7 @@ typedef struct {
     fmi2Boolean canInterpolateInputs;
     fmi2Integer derivativeOrder;
     fmi2Boolean canGetPreferredResolution;
-    fmi2Boolean canSetTimeResolution;
+    fmi2Boolean canSetResolution;
 
     HMODULE dllHandle; // fmu.dll handle
     /***************************************************

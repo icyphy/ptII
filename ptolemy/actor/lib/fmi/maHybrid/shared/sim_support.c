@@ -258,8 +258,8 @@ static int loadDll(const char* dllPath, FMU *fmu) {
     /* Methods for Hybrid Co-Simulation */
     fmu->doHybridStep              = (fmi2HybridDoStepTYPE *)          getAdr(&s, h, "fmi2HybridDoStep");
     fmu->getHybridMaxStepSize      = (fmi2HybridGetMaxStepSizeTYPE *)  getAdr(&s, h, "fmi2HybridGetMaxStepSize");
-    fmu->getTimeResolution         = (fmi2RequiredTimeResolutionTYPE *) getAdr(&s, h, "fmi2RequiredTimeResolution");
-    fmu->setTimeResolution         = (fmi2SetTimeResolutionTYPE *)     getAdr(&s, h, "fmi2SetTimeResolution");
+    fmu->getPreferredResolution    = (fmi2GetPreferredResolutionTYPE *) getAdr(&s, h, "fmi2GetPreferredResolution");
+    fmu->setResolution             = (fmi2SetResolutionTYPE *)         getAdr(&s, h, "fmi2SetResolution");
     fmu->setupHybridExperiment     = (fmi2HybridSetupExperimentTYPE *) getAdr(&s, h, "fmi2HybridSetupExperiment");
     fmu->getHybridReal             = (fmi2GetHybridRealTYPE *)         getAdr(&s, h, "fmi2GetHybridReal");
     fmu->getHybridInteger          = (fmi2GetHybridIntegerTYPE *)      getAdr(&s, h, "fmi2GetHybridInteger");
@@ -618,17 +618,17 @@ int error(const char* message){
     return 0;
 }
 
-void parseArguments(int argc, char *argv[], fmi2Integer *tEnd, fmi2Integer *h,
+void parseArguments(int argc, char *argv[], fmi2IntegerTime *tEnd, fmi2IntegerTime *h,
         int *loggingOn, char *csv_separator, int *nCategories, fmi2String *logCategories[]) {
     // parse command line arguments
     if (argc > 1) {
-        if (sscanf(argv[1],"%ld", tEnd) != 1) {
+        if (sscanf(argv[1],"%llu", tEnd) != 1) {
             printf("error: The given end time (%s) is not a number\n", argv[1]);
             exit(EXIT_FAILURE);
         }
     }
     if (argc > 2) {
-        if (sscanf(argv[2],"%ld", h) != 1) {
+        if (sscanf(argv[2],"%llu", h) != 1) {
             printf("error: The given stepsize (%s) is not a number\n", argv[2]);
             exit(EXIT_FAILURE);
         }
