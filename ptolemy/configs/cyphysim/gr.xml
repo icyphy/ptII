@@ -14,7 +14,6 @@
           </property>
         </entity>  
         <input source="ptolemy/domains/gr/lib/grentities.xml"/>
-        <input source="ptolemy/domains/gr/lib/quicktime/quicktime.xml"/>
       </group>
     ?>
   </configure>
