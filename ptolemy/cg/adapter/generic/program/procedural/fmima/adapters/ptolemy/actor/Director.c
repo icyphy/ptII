@@ -8,7 +8,7 @@ int i;
 
 // parse command line arguments and load the FMU
 // default arguments value
-double h = 0.1;
+double h = 10.0;
 int loggingOn = 0;
 char csv_separator = ',';
 fmi2String *categories = NULL;
@@ -26,42 +26,32 @@ parseArguments(argc, argv, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, 
 
 /***mainEndBlock***/
 // run the simulation
-printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c' ", MODEL_NAME, tEnd, h, loggingOn, csv_separator);
-printf("log categories={ ");
-
-for (i = 0; i < nCategories; i++) {
+    printf("FMU Simulator: run '%s' from t=0..%g with step size h=%g, loggingOn=%d, csv separator='%c' ", MODEL_NAME, tEnd, h, loggingOn, csv_separator);
+    printf("log categories={ ");
+    for (i = 0; i < nCategories; i++) {
         printf("%s ", categories[i]);
-}
-
-printf("}\n");
-
-simulate( fmus, connections, h, loggingOn, csv_separator); // TODO: Create experiment settings struct
-
-printf("CSV file '%s' written\n", RESULT_FILE);
-
-// release FMUs
-#ifdef _MSC_VER
-for (i = 0; i < NUMBER_OF_FMUS; i++) {
+    }
+    printf("}\n");
+    simulate( fmus, connections, h, loggingOn, csv_separator); // TODO: Create experiment settings struct
+    printf("CSV file '%s' written\n", RESULT_FILE);
+    // release FMUs
+    #ifdef _MSC_VER
+    for (i = 0; i < NUMBER_OF_FMUS; i++) {
         FreeLibrary(fmus[i]->dllHandle);
-}
-#else
-for (i = 0; i < NUMBER_OF_FMUS; i++) {
+    }
+    #else
+    for (i = 0; i < NUMBER_OF_FMUS; i++) {
         dlclose(fmus[i].dllHandle);
-}
-#endif
-
-for (i = 0; i < NUMBER_OF_FMUS; i++) {
+    }
+    #endif
+    for (i = 0; i < NUMBER_OF_FMUS; i++) {
         freeModelDescription(fmus[i].modelDescription);
-}
-
-if (categories) {
+    }
+    if (categories) {
         free(categories);
-}
-for (int i = 0; i < NUMBER_OF_FMUS; i++) {
+    }
+    for (int i = 0; i < NUMBER_OF_FMUS; i++) {
         free(fmuFileNames[i]);
     }
-
-free( fmus);
-
-return EXIT_SUCCESS;
+    free(fmus);
 /**/
