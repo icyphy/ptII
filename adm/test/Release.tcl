@@ -101,7 +101,6 @@ ptolemy.component.domains.ptinyos
 ptolemy.copernicus.interpreted
 ptolemy.copernicus.kernel.fragment
 ptolemy.domains.gr.lib.experimental
-ptolemy.domains.gr.lib.quicktime
 ptolemy.domains.wireless.lib.network
 ptolemy.domains.wireless.lib.network.mac
 ptolemy.domains.wireless.lib.tinyOS
