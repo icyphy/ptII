@@ -1559,9 +1559,18 @@ public class ConfigurationApplication implements ExecutionListener {
                             //((ptolemy.vergil.basic.BasicGraphFrame)frame).getJGraph().getCanvasPane().getCanvas().setBackground(java.awt.Color.WHITE);
                             PtolemyPreferences preferences = PtolemyPreferences
                                     .getPtolemyPreferencesWithinConfiguration(_configuration);
-                            preferences.backgroundColor
-                            .setExpression("{1.0, 1.0, 1.0, 1.0}");
-                            frame.repaint();
+                            // Coverity Scan suggests avoiding a NPE here.
+                            if (preferences == null) {
+                                throw new InternalErrorException(_configuration, null,
+                                        "Could not get PtolemyPreferences?"
+                                        + "  Perhaps \""
+                                        + PtolemyPreferences.PREFERENCES_WITHIN_CONFIGURATION
+                                        + "\" could not be read in the configuration?");
+                            } else {
+                                preferences.backgroundColor
+                                    .setExpression("{1.0, 1.0, 1.0, 1.0}");
+                                frame.repaint();
+                            }
                         } catch (Exception ex) {
                             System.out
                             .println("Failed to set the background to white.");
