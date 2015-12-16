@@ -1,9 +1,10 @@
-# Makefile org.ptolemy sources
+# Makefile for Class Loader OSGi used by MoMLParser with Triquetrum
+#
+# @Authors: Christopher Brooks
 #
 # @Version: $Id$
-# @Author: Christopher Brooks
 #
-# @Copyright (c) 2012-2014 The Regents of the University of California.
+# @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -27,32 +28,54 @@
 #
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
-##########################################################################
 
-# PTANGO_DIR is set by configure in $PTII/mk if jetty and javax.servlet are found.
-DIRS = classloading commons \
-	faultModels fmi machineImprovisation machineLearning optimization $(PTOSCP5_DIR) \
-	ptulip $(PTANGO_DIR) qss ssm
+ME =		org/ptolemy/classloader/osgi
 
-# Root of Ptolemy II directory
-ROOT =		../..
+DIRS =
 
-# $(ME) is used in ptdir.mk
-ME =		org.ptolemy
+# Root of the Ptolemy II directory
+ROOT =		../../../..
 
-# True source directory
-VPATH =		$(ROOT)/$(ME)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-all: suball
-install: subinstall
+# Variables and rules used to create source file distributions
+PTPACKAGE = 	osgi
+PTCLASSJAR =	$(PTPACKAGE).jar
+PTCLASSALLJAR = 
 
-# Sources that may or may not be present, but if they are present, we don't
-# want make checkjunk to report an error on them.
-MISC_FILES = $(DIRS)
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	osgi/osgi.jar
+
+# Java Sources, keep these alphabetical,
+JSRCS = \
+	DefaultModelElementClassProvider.java \
+	OSGiClassLoadingStrategy.java \
+	PackageBasedModelElementClassProvider.java
+
+OTHER_FILES_TO_BE_JARED =
+
+# Files that are not compiled, such as .tcl and .itcl files.
+EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+
+# Non-source files such as README files and subdirectories
+MISC_FILES =
+
+# make checkjunk will not report OPTIONAL_FILES as trash
+# make distclean removes OPTIONAL_FILES
+OPTIONAL_FILES =
+
+KRUFT =
+
+JCLASS = $(JSRCS:%.java=%.class)
+
+all: sources jclass
+
+install: all jars 
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
