@@ -9,6 +9,7 @@ $CLASSPATH/org/hlacerti/demo/SimpleProducerConsumerMulti/SimpleProducerConsumerM
 $CLASSPATH/org/hlacerti/demo/SimpleProducerMultipleConsumerTAR/SimpleProducerMultipleConsumerTAR.xml
 $CLASSPATH/org/hlacerti/demo/SynchronizeToRealTime/SynchronizeToRealTime.xml
 $CLASSPATH/org/ptolemy/machineImprovisation/demo/JazzImprovisation/JazzImprovisation.xml
+$CLASSPATH/org/ptolemy/machineLearning/clustering/demo/KMeans/KMeans.xml
 $CLASSPATH/org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionAOM/CommunicationAnomalyDetectionAOM.xml
 $CLASSPATH/org/ptolemy/machineLearning/hmm/demo/CommunicationAnomalyDetectionCQM/CommunicationAnomalyDetectionCQM.xml
 $CLASSPATH/org/ptolemy/machineLearning/particleFilter/demo/MultiRobotIntruderTracking/MultiRobotIntruderTracking.xml
