@@ -44,4 +44,3 @@ outMessage += dog.toString() + "\n";
 myMap.addEntity(cat);
 myMap.addEntity(dog);
 
-outMessage += 
