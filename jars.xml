@@ -164,7 +164,6 @@
     <include name="ptolemy/domains/gr/demo/demo.jar" />
     <include name="ptolemy/domains/gr/doc/doc.jar" />
     <include name="ptolemy/domains/gr/gr.jar" />
-    <include name="ptolemy/domains/gr/lib/quicktime/quicktime.jar" />
     <include name="ptolemy/domains/hdf/demo/demo.jar" />
     <include name="ptolemy/domains/hdf/doc/doc.jar" />
     <include name="ptolemy/domains/hdf/hdf.jar" />
@@ -2700,21 +2699,6 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/domains/gr/doc/*.htm"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/domains/gr/lib/quicktime/quicktime.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/domains/gr/lib/quicktime/quicktime.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/gr/lib/quicktime/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/gr/lib/quicktime/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/domains/gr/lib/quicktime/*.xml"/>
       </fileset>
     </jar>
 
