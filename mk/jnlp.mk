@@ -337,7 +337,6 @@ CYPHYSIM_JNLP_JARS =	\
 	ptolemy/domains/atc/atc.jar \
 	ptolemy/domains/fmima/fmima.jar \
 	ptolemy/domains/gr/gr.jar \
-	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
 	ptolemy/domains/qss/qss.jar \
 	ptolemy/domains/qss/demo/demo.jar \
 	ptolemy/domains/sdf/lib/vq/vq.jar \
@@ -482,7 +481,6 @@ HYBRID_SYSTEMS_JNLP_JARS =	\
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/ptsupport.jar \
 	ptolemy/vergil/vergil.jar \
-	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
 	$(PTMATLAB_JARS) 
 
 HYVISUAL_JNLP_JARS = $(HYBRID_SYSTEMS_JNLP_JARS)
@@ -739,7 +737,6 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/domains/giotto/doc/doc.jar \
 	ptolemy/domains/gr/demo/demo.jar \
 	ptolemy/domains/gr/doc/doc.jar \
-	ptolemy/domains/gr/lib/quicktime/quicktime.jar \
 	ptolemy/domains/petrinet/demo/demo.jar \
 	ptolemy/domains/psdf/psdf.jar \
 	ptolemy/domains/psdf/demo/demo.jar \
@@ -1568,8 +1565,6 @@ $(UNJAR_DIST_DIR):
 	done;
 	# Remove jars lie pn/demo/demo.jar, but leave pn/pn.jar
 	rm $(UNJAR_DIST_DIR)/ptolemy/domains/*/*/*.jar
-	# Fix for quicktime.jar
-	rm $(UNJAR_DIST_DIR)/ptolemy/domains/*/*/*/*.jar
 
 # Verify the jar files.  This is useful for debugging if you are
 # getting errors about unsigned applications
