@@ -17,18 +17,18 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this, you will need XBee modules available on a serial port on your host computer.&#10;You can get modules that plug into your USB port here:   FIXME&#10;For this demo, you will need two such devices.&#10;&#10;You will need to configure the module to be in &quot;API Mode&quot; (not &quot;AT Mode&quot;, which is the default).&#10;Use XCTU to configure the modules, available here: FIXME&#10;&#10;In XCTU, discover the devices and add them.&#10;Click on the devices and scroll down to &quot;AP API Enable&quot; and enable the API Mode.&#10;Save the configuration to the device by clicking on the pencil icon.&#10;Make sure both devices are using the same radio channel and protocols.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this, you will need XBee modules available on a serial port on your host computer.&#10;You can get modules that plug into your USB port here from SparkFun.  We are using&#10;2 of XBee Pro 60mW PCB Antenna - Series 1 (802.15.4) WRL-11216 $37.95 ea and&#10;2 of SparkFun XBee Explorer Dongle WRL-11697 $24.95 ea.  See&#10;https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/XBee#USB&#10;&#10;For this demo, you will need two such devices.&#10;&#10;You will need to configure the module to be in &quot;API Mode&quot; (not &quot;AT Mode&quot;, which is the default).&#10;Use XCTU to configure the modules, available from &#10;http://www.digi.com/support/productdetail?pid=3352&#10;&#10;In XCTU, discover the devices and add them.&#10;Click on the devices and scroll down to &quot;AP API Enable&quot; and enable the API Mode.&#10;Save the configuration to the device by clicking on the pencil icon.&#10;Make sure both devices are using the same radio channel and protocols.&#10;See https://docs.digi.com/display/XBJLIB/Configuring+your+XBee+modules for details.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 55.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 60.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 22, 946, 728}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 23, 966, 809}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[712, 618]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[732, 699]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0476717503335393">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.9108529090883, 294.348861324821}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.4558272742141, 333.0060075035799}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -45,13 +45,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Before running this,&#10;double click on the&#10;two JavaScript actors&#10;and select the serial&#10;ports hosting your&#10;two XBee radios.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 435.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="XBeeDataTypes">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 615.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="XBeeDataTypes.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -78,7 +78,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See also:">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 590.0]">
         </property>
     </property>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
@@ -93,17 +93,17 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 395.0]">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 22, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 23, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Top Received">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 395.0]">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
@@ -113,11 +113,11 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Bottom Received">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 505.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 570.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -134,13 +134,13 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 470.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 570.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 395.0]">
         </property>
     </entity>
     <entity name="XBee" class="org.terraswarm.accessor.JSAccessor">
@@ -158,7 +158,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/cu.usbserial-AJV9ONHV">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01QWMR">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -170,7 +170,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 395.0]">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -194,7 +194,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01LK3S">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01QZI2">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -206,7 +206,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 405.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 505.0]">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -220,7 +220,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{345.0, 405.0}">
+        <vertex name="vertex1" value="[350.0, 505.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
