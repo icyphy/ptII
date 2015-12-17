@@ -628,7 +628,6 @@ For example:
       <arg value="doc/codeDoc/js" />
 
       <arg value="ptolemy/actor/lib/jjs"/>
-      <arg value="ptolemy/actor/lib/vertx/demo"/>
       <arg value="org/terraswarm/accessor"/>
     </exec>
   </target>
