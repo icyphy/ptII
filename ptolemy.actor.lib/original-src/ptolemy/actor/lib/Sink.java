@@ -81,20 +81,20 @@ public abstract class Sink extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
     
-    /** Set the input port greater than or equal to
-     *  <code>BaseType.GENERAL</code> in case backward type inference is
-     *  enabled and the input port has no type declared.
-     *
-     *  @return A set of inequalities.
-     */
-    @Override
-    protected Set<Inequality> _customTypeConstraints() {
-        HashSet<Inequality> result = new HashSet<Inequality>();
-        if (isBackwardTypeInferenceEnabled()
-                && input.getTypeTerm().isSettable()) {
-            result.add(new Inequality(new TypeConstant(BaseType.GENERAL), input
-                    .getTypeTerm()));
-        }
-        return result;
-    }
+    // /** Set the input port greater than or equal to
+    //  *  <code>BaseType.GENERAL</code> in case backward type inference is
+    //  *  enabled and the input port has no type declared.
+    //  *
+    //  *  @return A set of inequalities.
+    //  */
+    // @Override
+    // protected Set<Inequality> _customTypeConstraints() {
+    //     HashSet<Inequality> result = new HashSet<Inequality>();
+    //     if (isBackwardTypeInferenceEnabled()
+    //             && input.getTypeTerm().isSettable()) {
+    //         result.add(new Inequality(new TypeConstant(BaseType.GENERAL), input
+    //                 .getTypeTerm()));
+    //     }
+    //     return result;
+    // }
 }

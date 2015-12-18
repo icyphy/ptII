@@ -246,7 +246,7 @@ DisplayInterface {
                     }
                 } else {
                     // Erase previous text.
-                    textArea.setText(null);
+                    textArea.setText("");
                 }
 
                 if (_frame != null) {
