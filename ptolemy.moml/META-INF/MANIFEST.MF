@@ -7,7 +7,7 @@ Bundle-Vendor: CHESS
 Eclipse-BuddyPolicy: registered
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.ptolemy.commons;version="11.0.0",
- org.ptolemy.osgi;version="11.0.0"
+ org.ptolemy.classloading;version="11.0.0"
 Export-Package: com.microstar.xml;version="11.0.0",
  ptolemy.moml;version="11.0.0",
  ptolemy.moml.filter;version="11.0.0",

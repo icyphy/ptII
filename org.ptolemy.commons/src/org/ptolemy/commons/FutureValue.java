@@ -36,7 +36,7 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * A Future implementation that just waits until its result value/exception is available.
- * 
+ *
  * @author ErwinDL
  * @version $Id$
  * @since Ptolemy II 11.0
@@ -83,18 +83,11 @@ public class FutureValue<V> implements Future<V>, Serializable {
     return true;
   }
 
-  /**
-   * @throws CancellationException
-   * 
-   */
   public synchronized V get() throws InterruptedException, ExecutionException {
     _waitFor();
     return _getResult();
   }
 
-  /**
-   * @throws CancellationException
-   */
   public synchronized V get(long timeout, TimeUnit unit) throws InterruptedException, ExecutionException, TimeoutException {
     _waitFor(unit.toNanos(timeout));
     return _getResult();
@@ -102,7 +95,7 @@ public class FutureValue<V> implements Future<V>, Serializable {
 
   /**
    * Sets the result of this Future to the given value unless this future has already been set or has been cancelled.
-   * 
+   *
    * @param v
    *          the value
    */
@@ -111,9 +104,9 @@ public class FutureValue<V> implements Future<V>, Serializable {
   }
 
   /**
-   * Causes this future to report an <tt>ExecutionException</tt> with the given throwable as its cause, 
-   * unless this Future has already been set or has been cancelled. 
-   * 
+   * Causes this future to report an <tt>ExecutionException</tt> with the given throwable as its cause,
+   * unless this Future has already been set or has been cancelled.
+   *
    * @param t
    *          the cause of failure
    */
@@ -133,9 +126,9 @@ public class FutureValue<V> implements Future<V>, Serializable {
   // protected things
 
   /**
-  * Protected method invoked when this task transitions to state <tt>isDone</tt> (whether normally or via cancellation). 
-  * 
-  * The default implementation does nothing. Subclasses may override this method to invoke completion callbacks or perform bookkeeping. 
+  * Protected method invoked when this task transitions to state <tt>isDone</tt> (whether normally or via cancellation).
+  *
+  * The default implementation does nothing. Subclasses may override this method to invoke completion callbacks or perform bookkeeping.
   */
   protected void _done() {
   }
@@ -166,7 +159,7 @@ public class FutureValue<V> implements Future<V>, Serializable {
 
   /**
    * Marks the future's underlying task as completed with the given result value.
-   * 
+   *
    * @param result
    *          the result of a task.
    */
@@ -189,7 +182,7 @@ public class FutureValue<V> implements Future<V>, Serializable {
 
   /**
    * Marks the future's underlying task as failed, with the given exception as failure cause.
-   * 
+   *
    * @param exception
    *          the cause of the task failure.
    */
@@ -211,7 +204,7 @@ public class FutureValue<V> implements Future<V>, Serializable {
   }
 
   /**
-   * Waits for the task to complete. 
+   * Waits for the task to complete.
    * Assumes that a lock is owned on this future instance!
    */
   private void _waitFor() throws InterruptedException {
@@ -221,7 +214,7 @@ public class FutureValue<V> implements Future<V>, Serializable {
   }
 
   /**
-   * Waits for the task to complete for timeout nanoseconds or throw TimeoutException if still not completed after that 
+   * Waits for the task to complete for timeout nanoseconds or throw TimeoutException if still not completed after that
    * Assumes that a lock is owned on this future instance!
    */
   private void _waitFor(long nanos) throws InterruptedException, TimeoutException {
@@ -244,7 +237,7 @@ public class FutureValue<V> implements Future<V>, Serializable {
 
   /**
    * Gets the result of the future's underlying task.
-   * 
+   *
    * Assumes that a lock is owned on this future instance!
    */
   private V _getResult() throws ExecutionException {

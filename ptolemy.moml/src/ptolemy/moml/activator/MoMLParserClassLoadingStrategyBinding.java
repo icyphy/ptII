@@ -27,8 +27,7 @@ COPYRIGHTENDKEY
 */
 package ptolemy.moml.activator;
 
-import org.ptolemy.osgi.ClassLoadingStrategy;
-import org.ptolemy.osgi.SimpleClassLoadingStrategy;
+import org.ptolemy.classloading.ClassLoadingStrategy;
 
 import ptolemy.moml.MoMLParser;
 
@@ -44,7 +43,7 @@ import ptolemy.moml.MoMLParser;
  */
 
 public class MoMLParserClassLoadingStrategyBinding {
-  
+
   public void init(ClassLoadingStrategy clStrategy) {
     MoMLParser.setDefaultClassLoadingStrategy(clStrategy);
   }

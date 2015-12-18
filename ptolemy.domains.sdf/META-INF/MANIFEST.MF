@@ -7,7 +7,8 @@ Bundle-Vendor: CHESS
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.osgi.framework;version="1.7.0",
  org.ptolemy.commons;version="11.0.0",
- org.ptolemy.osgi;version="11.0.0",
+ org.ptolemy.classloading;version="11.0.0",
+ org.ptolemy.classloading.osgi;version="11.0.0",
  ptolemy.actor;version="11.0.0",
  ptolemy.actor.lib;version="11.0.0",
  ptolemy.actor.parameters;version="11.0.0",

@@ -6,7 +6,8 @@ Bundle-Version: 11.0.0.qualifier
 Bundle-Vendor: CHESS
 Eclipse-BuddyPolicy: registered
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
-Export-Package: org.ptolemy.osgi;version="11.0.0",
+Export-Package: org.ptolemy.classloading;version="11.0.0",
+ org.ptolemy.classloading.osgi;version="11.0.0",
  ptolemy.actor;version="11.0.0",
  ptolemy.actor.parameters;version="11.0.0",
  ptolemy.actor.sched;version="11.0.0",

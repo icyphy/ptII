@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="MomlParserClassLoadingStrategy">
-   <implementation class="org.ptolemy.osgi.OSGiClassLoadingStrategy"/>
+   <implementation class="org.ptolemy.classloading.osgi.OSGiClassLoadingStrategy"/>
    <service>
-      <provide interface="org.ptolemy.osgi.ClassLoadingStrategy"/>
+      <provide interface="org.ptolemy.classloading.ClassLoadingStrategy"/>
    </service>
-   <reference bind="addModelElementClassProvider" cardinality="0..n" interface="org.ptolemy.osgi.ModelElementClassProvider" name="ModelElementClassProvider" policy="dynamic" unbind="removeModelElementClassProvider"/>
-   <reference bind="addActorOrientedClassProvider" cardinality="0..n" interface="org.ptolemy.osgi.ActorOrientedClassProvider" name="ActorOrientedClassProvider" policy="dynamic" unbind="removeActorOrientedClassProvider"/>
+   <reference bind="addModelElementClassProvider" cardinality="0..n" interface="org.ptolemy.classloading.ModelElementClassProvider" name="ModelElementClassProvider" policy="dynamic" unbind="removeModelElementClassProvider"/>
+   <reference bind="addActorOrientedClassProvider" cardinality="0..n" interface="org.ptolemy.classloading.ActorOrientedClassProvider" name="ActorOrientedClassProvider" policy="dynamic" unbind="removeActorOrientedClassProvider"/>
 </scr:component>
