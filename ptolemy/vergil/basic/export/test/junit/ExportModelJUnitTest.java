@@ -391,6 +391,7 @@ public class ExportModelJUnitTest {
                 "WebSocketClient.xml", // Times out unless the server is running.
                 "WebSocketImage.xml", // Uses the camera.
                 "MatlabWirelessSoundDetection.xml", // If it takes more than 30 seconds to start up, then killing it causes an infinite loop because killing this is difficult when inside a native call.
+                "demo/XBee", // Needs XBee hardware.
                 "modules/xbee", // Needs XBee hardware.
         };
         for (String element : skip) {
