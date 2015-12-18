@@ -1,7 +1,7 @@
 /* This is a trial "builder" class to generate .project files from pt-jar.files contents
 
  Copyright (c) 2014 The Regents of the University of California.
- 
+
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -40,11 +40,11 @@ import org.stringtemplate.v4.STGroupFile;
 /**
  * Launch this with the names of the module projects for which the module project files should be built.
  * Run this in the normal way as Java application from your eclipse workspace.
- * The resulting project files are generated in the results folder, in sub-folders per module. 
+ * The resulting project files are generated in the results folder, in sub-folders per module.
  * <p>
  * It assumes a working directory ${workspace_loc:org.ptolemy.modulebuilder}, and that the requested module projects are present in the workspace.
  * </p>
- * 
+ *
  * @author ErwinDL
  * @version $Id$
  * @since Ptolemy II 11.0
@@ -58,14 +58,15 @@ public class ModuleBuilderByCopying {
     String ptSrcPath = System.getProperty("org.ptolemy.src.loc", "../");
     if(projects.length==0) {
       projects = new String[] {
-          "ptolemy.actor.lib", 
-          "ptolemy.actor.lib.gui", 
-          "ptolemy.core", 
+          "org.ptolemy.commons",
+          "ptolemy.actor.lib",
+          "ptolemy.actor.lib.gui",
+          "ptolemy.core",
           "ptolemy.core.test",
-          "ptolemy.domains.process", 
-          "ptolemy.domains.sdf", 
-          "ptolemy.gui", 
-          "ptolemy.moml" 
+          "ptolemy.domains.process",
+          "ptolemy.domains.sdf",
+          "ptolemy.gui",
+          "ptolemy.moml"
           };
     }
     File ptSrcFolder = new File(ptSrcPath);
@@ -78,7 +79,7 @@ public class ModuleBuilderByCopying {
         template.add("project", project);
         File projectResultsFolder = new File("results", project);
         writeProjectFile(projectResultsFolder, template.render());
-        File resultSrcFolder = new File(projectResultsFolder, "src");
+        File resultSrcFolder = new File(projectResultsFolder, "original-src");
         copySrcFiles(ptSrcFolder, resultSrcFolder, ptJarFile);
       } else {
         System.err.println("No pt-jar.files found for project " + project);

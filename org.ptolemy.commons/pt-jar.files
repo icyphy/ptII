@@ -1,0 +1,4 @@
+# files for org.ptolemy.commons
+/org/ptolemy/commons/FutureValue.java
+/org/ptolemy/commons/ThreeDigitVersionSpecification.java
+/org/ptolemy/commons/VersionSpecification.java

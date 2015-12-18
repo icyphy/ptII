@@ -7,6 +7,7 @@
 /ptolemy/moml/MissingClassException.java
 /ptolemy/moml/MoMLChangeRequest.java
 /ptolemy/moml/MoMLFilter.java
+/ptolemy/moml/MoMLParser.java
 /ptolemy/moml/MoMLUndoEntry.java
 /ptolemy/moml/ParserAttribute.java
 /ptolemy/moml/SimpleErrorHandler.java

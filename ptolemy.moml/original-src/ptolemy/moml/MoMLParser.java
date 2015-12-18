@@ -58,10 +58,6 @@ import org.ptolemy.classloading.ClassLoadingStrategy;
 import org.ptolemy.classloading.SimpleClassLoadingStrategy;
 import org.ptolemy.commons.VersionSpecification;
 
-import com.microstar.xml.HandlerBase;
-import com.microstar.xml.XmlException;
-import com.microstar.xml.XmlParser;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.SharedParameter;
@@ -95,6 +91,10 @@ import ptolemy.util.CancelException;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
+
+import com.microstar.xml.HandlerBase;
+import com.microstar.xml.XmlException;
+import com.microstar.xml.XmlParser;
 
 ///////////////////////////////////////////////////////////////////
 //// MoMLParser
@@ -1835,8 +1835,6 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  @see #resetAll()
      */
     public static void purgeAllModelRecords() {
-        if (_imports != null)
-          _imports.clear();
         _imports = null;
     }
 
@@ -2384,7 +2382,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
                 if (!existedAlready) {
                     String version = (String) _attributes.get("version");
-                    VersionSpecification versionSpec = buildVersionSpecification(version);
+                    VersionSpecification versionSpec = _buildVersionSpecification(version);
                     NamedObj candidate = _createEntity(className, versionSpec, entityName, source, true);
 
                     if (candidate instanceof Entity) {
@@ -2720,7 +2718,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 _pushContext();
 
                 String version = (String) _attributes.get("version");
-                VersionSpecification versionSpec = buildVersionSpecification(version);
+                VersionSpecification versionSpec = _buildVersionSpecification(version);
 
                 Class newClass = _loadClass(className, versionSpec);
 
@@ -2821,10 +2819,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     }
                 } else {
                     String version = (String) _attributes.get("version");
-                    VersionSpecification versionSpec = buildVersionSpecification(version);
+                    VersionSpecification versionSpec = _buildVersionSpecification(version);
 
                     NamedObj candidate = _createEntity(className, versionSpec, entityName, source, false);
-
 
                     if (candidate instanceof Entity) {
                         entity = (Entity) candidate;
@@ -4152,7 +4149,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         return reference;
     }
 
-    protected VersionSpecification buildVersionSpecification(String version) throws XmlException {
+    /**
+     * Parses the given version string and builds a version specification instance.
+     *
+     * @param version in some text format, e.g. 11.0.1
+     * @return the parsed version specification
+     * @throws XmlException if the version string is not in a supported format
+     */
+    private VersionSpecification _buildVersionSpecification(String version) throws XmlException {
       VersionSpecification versionSpec = null;
       try {
         versionSpec = (version != null ? VersionSpecification.parse(version) : null);
