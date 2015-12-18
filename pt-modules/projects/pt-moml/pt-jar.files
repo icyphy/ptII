@@ -1,4 +1,8 @@
 # files for pt-moml @ /Users/hal/java/workspaces/ptolemy/ptII/pt-modules/build/../projects/pt-moml
+/org/ptolemy/classloading/ClassLoadingStrategy.java
+/org/ptolemy/classloading/SimpleClassLoadingStrategy.java
+/org/ptolemy/commons/ThreeDigitVersionSpecification.java
+/org/ptolemy/commons/VersionSpecification.java
 /ptolemy/moml/Documentation.java
 /ptolemy/moml/EntityLibrary.java
 /ptolemy/moml/ErrorHandler.java
