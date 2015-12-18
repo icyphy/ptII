@@ -456,6 +456,12 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
             _parseIfNecessary();
 
             ParseTreeFreeVariableCollector collector = new ParseTreeFreeVariableCollector();
+            // hoc/test/auto/RunCompositeActor4.xml was throwing a NPE here.
+            if (_parseTree == null) {
+                throw new InternalErrorException(this, null,
+                        "getFreeIdentifiers(): failed to set _parseTree? _parseTree is null, "
+                        + "_parseTreeValid is " + _parseTreeValid);
+            }
             return collector.collectFreeVariables(_parseTree);
         } finally {
             workspace().doneReading();
