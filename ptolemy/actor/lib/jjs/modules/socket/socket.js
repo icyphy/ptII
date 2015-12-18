@@ -263,7 +263,7 @@ exports.SocketClient.prototype.send = function(data) {
         if (!this.options['discardMessagesBeforeOpen']) {
             this.pendingSends.push(data);
             var maxUnsentMessages = this.options['maxUnsentMessages'];
-            if (maxUnsentMessages > 0 && this.pendingSends.length() >= maxUnsentMessages) {
+            if (maxUnsentMessages > 0 && this.pendingSends.length >= maxUnsentMessages) {
                 throw "Maximum number of unsent messages has been exceeded: "
                         + maxUnsentMessages
                         + ". Consider setting discardMessagesBeforeOpen to true.";
