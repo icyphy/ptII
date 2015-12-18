@@ -87,7 +87,7 @@ function addInputHandler(name, func) {
     var argCount = 2, callback, id, proxy = null, tail;
     if (name && typeof name !== 'string') {
         // Tolerate a single argument, a function.
-        if (typeof name === 'function' && arguments.length === 1) {
+        if (typeof name === 'function') {
             func = name;
             name = null;
             argCount = 1;
@@ -98,7 +98,7 @@ function addInputHandler(name, func) {
     if (!func) {
         func = nullHandlerFunction;
     } else if (typeof func !== 'function') {
-        throw ('First argument of addInputHandler is required to be a function. Provided: ' + func);
+        throw ('Argument of addInputHandler is not a function. It is: ' + func);
     }
 
     if (name) {
