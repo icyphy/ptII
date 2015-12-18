@@ -54,6 +54,10 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
+import org.ptolemy.classloading.ClassLoadingStrategy;
+import org.ptolemy.classloading.SimpleClassLoadingStrategy;
+import org.ptolemy.commons.VersionSpecification;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.parameters.SharedParameter;
@@ -251,6 +255,11 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         if (loader != null) {
             _classLoader = loader;
         }
+    }
+
+    public MoMLParser(Workspace workspace, VersionSpecification defaultVersionSpec, ClassLoader loader) {
+      this(workspace, loader);
+      this._defaultVersionSpec = defaultVersionSpec;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1330,7 +1339,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     // If we get to here, the the user did not hit cancel,
                     // so we cache the file or host.
                     if (answer) {
-                        _approvedRemoteXmlFiles.add(result);                        
+                        _approvedRemoteXmlFiles.add(result);
                     } else {
                         _approvedRemoteXmlFiles.add(host);
                     }
@@ -2078,6 +2087,22 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         _originalContext = context;
     }
 
+    /**
+     * Set the static default class loading strategy that will be used by all instances of this class.
+     * @param classLoadingStrategy
+     */
+    public static void setDefaultClassLoadingStrategy(ClassLoadingStrategy classLoadingStrategy) {
+      _defaultClassLoadingStrategy = classLoadingStrategy;
+    }
+
+    /**
+     *
+     * @return the current static _defaultClassLoadingStrategy instance
+     */
+    public static ClassLoadingStrategy getDefaultClassLoadingStrategy() {
+      return _defaultClassLoadingStrategy;
+    }
+
     /** Set the error handler to handle parsing errors.
      *  Note that this method is static. The specified error handler
      *  will handle all errors for any instance of this class.
@@ -2356,8 +2381,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 boolean existedAlready = entity != null;
 
                 if (!existedAlready) {
-                    NamedObj candidate = _createEntity(className, entityName,
-                            source, true);
+                    String version = (String) _attributes.get("version");
+                    VersionSpecification versionSpec = _buildVersionSpecification(version);
+                    NamedObj candidate = _createEntity(className, versionSpec, entityName, source, true);
 
                     if (candidate instanceof Entity) {
                         entity = (Entity) candidate;
@@ -2691,7 +2717,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // NamedObj container = _current;
                 _pushContext();
 
-                Class newClass = Class.forName(className, true, _classLoader);
+                String version = (String) _attributes.get("version");
+                VersionSpecification versionSpec = _buildVersionSpecification(version);
+
+                Class newClass = _loadClass(className, versionSpec);
 
                 // NOTE: No propagation occurs here... Hopefully, deprecated
                 // elements are not used with class structures.
@@ -2789,8 +2818,10 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         converted = true;
                     }
                 } else {
-                    NamedObj candidate = _createEntity(className, entityName,
-                            source, false);
+                    String version = (String) _attributes.get("version");
+                    VersionSpecification versionSpec = _buildVersionSpecification(version);
+
+                    NamedObj candidate = _createEntity(className, versionSpec, entityName, source, false);
 
                     if (candidate instanceof Entity) {
                         entity = (Entity) candidate;
@@ -3066,7 +3097,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 Class newClass = null;
 
                 if (className != null && !className.trim().equals("")) {
-                    newClass = Class.forName(className, true, _classLoader);
+                    newClass = _loadClass(className, null);
                 }
 
                 Port port = container.getPort(portName);
@@ -3245,7 +3276,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 Class newClass = null;
 
                 if (className != null) {
-                    newClass = Class.forName(className, true, _classLoader);
+                    newClass = _loadClass(className, null);
                 }
 
                 Relation relation = container.getRelation(relationName);
@@ -3858,8 +3889,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  They are included here for backward compatibility.  See the MoML
      *  chapter of the Ptolemy II design document for a view of the
      *  current (nondeprecated) DTD.
+   *  CHANGE from Triquetrum : add version attributes for director, entity & property
      */
-    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | display | doc | entity | group | import | input | link | property | relation | rename | rendition | unlink)*><!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | display | doc | entity | group | import | input | link | port | property | relation | rename | rendition | unlink)*><!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED source CDATA #IMPLIED><!ELEMENT configure (#PCDATA)><!ATTLIST configure source CDATA #IMPLIED><!ELEMENT deleteEntity EMPTY><!ATTLIST deleteEntity name CDATA #REQUIRED><!ELEMENT deletePort EMPTY><!ATTLIST deletePort name CDATA #REQUIRED><!ELEMENT deleteProperty EMPTY><!ATTLIST deleteProperty name CDATA #REQUIRED><!ELEMENT deleteRelation EMPTY><!ATTLIST deleteRelation name CDATA #REQUIRED><!ELEMENT director (configure | doc | property)*><!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED><!ELEMENT display EMPTY><!ATTLIST display name CDATA #REQUIRED><!ELEMENT doc (#PCDATA)><!ATTLIST doc name CDATA #IMPLIED><!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | display | doc | entity | group | import | input | link | port | property | relation | rename | rendition | unlink)*><!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED source CDATA #IMPLIED><!ELEMENT group ANY><!ATTLIST group name CDATA #IMPLIED><!ELEMENT import EMPTY><!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT input EMPTY><!ATTLIST input source CDATA #REQUIRED base CDATA #IMPLIED><!ELEMENT link EMPTY><!ATTLIST link insertAt CDATA #IMPLIED insertInsideAt CDATA #IMPLIED port CDATA #IMPLIED relation CDATA #IMPLIED relation1 CDATA #IMPLIED relation2 CDATA #IMPLIED vertex CDATA #IMPLIED><!ELEMENT location EMPTY><!ATTLIST location value CDATA #REQUIRED><!ELEMENT port (configure | display | doc | property | rename)*><!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED><!ELEMENT property (configure | display | doc | input | property | rename)*><!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED><!ELEMENT relation (configure | display | doc | property | rename | vertex)*><!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED><!ELEMENT rename EMPTY><!ATTLIST rename name CDATA #REQUIRED><!ELEMENT rendition (configure | location | property)*><!ATTLIST rendition class CDATA #REQUIRED><!ELEMENT unlink EMPTY><!ATTLIST unlink index CDATA #IMPLIED insideIndex CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #IMPLIED><!ELEMENT vertex (configure | display | doc | location | property | rename)*><!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED value CDATA #IMPLIED>";
+    public static String MoML_DTD_1 = "<!ELEMENT model (class | configure | deleteEntity | deletePort | deleteRelation | director | display | doc | entity | group | import | input | link | property | relation | rename | rendition | unlink)*> <!ATTLIST model name CDATA #REQUIRED class CDATA #IMPLIED> <!ELEMENT class (class | configure | deleteEntity | deletePort | deleteRelation | director | display | doc | entity | group | import | input | link | port | property | relation | rename | rendition | unlink)*> <!ATTLIST class name CDATA #REQUIRED extends CDATA #IMPLIED source CDATA #IMPLIED> <!ELEMENT configure (#PCDATA)> <!ATTLIST configure source CDATA #IMPLIED> <!ELEMENT deleteEntity EMPTY> <!ATTLIST deleteEntity name CDATA #REQUIRED> <!ELEMENT deletePort EMPTY> <!ATTLIST deletePort name CDATA #REQUIRED> <!ELEMENT deleteProperty EMPTY> <!ATTLIST deleteProperty name CDATA #REQUIRED> <!ELEMENT deleteRelation EMPTY> <!ATTLIST deleteRelation name CDATA #REQUIRED> <!ELEMENT director (configure | doc | property)*> <!ATTLIST director name CDATA \"director\" class CDATA #REQUIRED version CDATA #IMPLIED> <!ELEMENT display EMPTY> <!ATTLIST display name CDATA #REQUIRED> <!ELEMENT doc (#PCDATA)> <!ATTLIST doc name CDATA #IMPLIED> <!ELEMENT entity (class | configure | deleteEntity | deletePort | deleteRelation | director | display | doc | entity | group | import | input | link | port | property | relation | rename | rendition | unlink)*> <!ATTLIST entity name CDATA #REQUIRED class CDATA #IMPLIED source CDATA #IMPLIED version CDATA #IMPLIED> <!ELEMENT group ANY> <!ATTLIST group name CDATA #IMPLIED> <!ELEMENT import EMPTY> <!ATTLIST import source CDATA #REQUIRED base CDATA #IMPLIED> <!ELEMENT input EMPTY> <!ATTLIST input source CDATA #REQUIRED base CDATA #IMPLIED> <!ELEMENT link EMPTY> <!ATTLIST link insertAt CDATA #IMPLIED insertInsideAt CDATA #IMPLIED port CDATA #IMPLIED relation CDATA #IMPLIED relation1 CDATA #IMPLIED relation2 CDATA #IMPLIED vertex CDATA #IMPLIED> <!ELEMENT location EMPTY> <!ATTLIST location value CDATA #REQUIRED> <!ELEMENT port (configure | display | doc | property | rename)*> <!ATTLIST port class CDATA #IMPLIED name CDATA #REQUIRED> <!ELEMENT property (configure | display | doc | property | rename)*> <!ATTLIST property class CDATA #IMPLIED name CDATA #REQUIRED value CDATA #IMPLIED version CDATA #IMPLIED> <!ELEMENT relation (configure | display | doc | property | rename | vertex)*> <!ATTLIST relation name CDATA #REQUIRED class CDATA #IMPLIED> <!ELEMENT rename EMPTY> <!ATTLIST rename name CDATA #REQUIRED> <!ELEMENT rendition (configure | location | property)*> <!ATTLIST rendition class CDATA #REQUIRED> <!ELEMENT unlink EMPTY> <!ATTLIST unlink index CDATA #IMPLIED insideIndex CDATA #IMPLIED port CDATA #REQUIRED relation CDATA #IMPLIED> <!ELEMENT vertex (configure | display | doc | location | property | rename)*> <!ATTLIST vertex name CDATA #REQUIRED pathTo CDATA #IMPLIED value CDATA #IMPLIED>";
 
     // NOTE: The master file for the above DTD is at
     // $PTII/ptolemy/moml/MoML_1.dtd.  If modified, it needs to be also
@@ -3916,14 +3948,26 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  If there is no source defined, then search for the file
      *  relative to the classpath.
      *  @param className The class name.
+     *  @param versionSpec
      *  @param source The source as specified in the XML.
      *  @return The class definition.
      */
-    private ComponentEntity _attemptToFindMoMLClass(String className,
+    private ComponentEntity _attemptToFindMoMLClass(String className, VersionSpecification versionSpec,
             String source) throws Exception {
         String classAsFile = null;
         String altClassAsFile = null;
         ComponentEntity reference = null;
+        // From Triquetrum : also consider loading actor classes via the pluggable _classLoadingStrategy,
+        // to allow OSGi-based dynamic loading strategies.
+        try {
+          VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpec;
+          reference = _defaultClassLoadingStrategy.loadActorOrientedClass(className, _vSpec);
+        } catch (Exception e) {
+          // ignore here, just means we need to look further to find the moml class
+        }
+        if (reference != null) {
+          return reference;
+        }
 
         if (source == null) {
             // No source defined.  Use the classpath.
@@ -4105,6 +4149,23 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         return reference;
     }
 
+    /**
+     * Parses the given version string and builds a version specification instance.
+     *
+     * @param version in some text format, e.g. 11.0.1
+     * @return the parsed version specification
+     * @throws XmlException if the version string is not in a supported format
+     */
+    private VersionSpecification _buildVersionSpecification(String version) throws XmlException {
+      VersionSpecification versionSpec = null;
+      try {
+        versionSpec = (version != null ? VersionSpecification.parse(version) : null);
+      } catch (Exception e) {
+        throw new XmlException("Invalid version spec " + version, _currentExternalEntity(), _getLineNumber(), _getColumnNumber(), e);
+      }
+      return versionSpec;
+    }
+
     // If the first argument is not an instance of the second,
     // throw an exception with the given message.
     private void _checkClass(Object object, Class correctClass, String msg)
@@ -4147,6 +4208,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  entity.
      *
      * @param className
+     * @param versionSpec
      * @param entityName
      * @param source
      * @param isClass True to create a class definition, false to create
@@ -4154,7 +4216,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      * @return The created NamedObj
      * @exception Exception If anything goes wrong.
      */
-    private NamedObj _createEntity(String className, String entityName,
+    private NamedObj _createEntity(String className, VersionSpecification versionSpec, String entityName,
             String source, boolean isClass) throws Exception {
         if (_current != null && !(_current instanceof CompositeEntity)) {
             throw new XmlException("Cannot create an entity inside "
@@ -4193,13 +4255,13 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 // with the cause of the original error in the unlikely event
                 // that our error correction fails
                 try {
-                    newClass = Class.forName(className, true, _classLoader);
+                    newClass = _loadClass(className, versionSpec);
                 } catch (Exception ex) {
                     // NOTE: Java sometimes throws ClassNotFoundException
                     // and sometimes NullPointerException when the class
                     // does not exist.  Hence the broad catch here.
                     try {
-                        reference = _attemptToFindMoMLClass(className, source);
+                        reference = _attemptToFindMoMLClass(className, versionSpec, source);
                     } catch (Exception ex2) {
                         // If we are running inside an applet, then
                         // we may end up getting a SecurityException,
@@ -4280,7 +4342,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                     }
 
                     try {
-                        reference = _attemptToFindMoMLClass(className, source);
+                        reference = _attemptToFindMoMLClass(className, versionSpec, source);
                     } catch (XmlException ex2) {
                         _updateMissingClasses(className);
                         throw new Exception("-- " + errorMessage.toString()
@@ -5779,7 +5841,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         } else {
             // Ordinary attribute.
             NamedObj property = null;
-            
+
             if (_current != null) {
                 property = _current.getAttribute(propertyName);
             }
@@ -5788,7 +5850,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
             if (className != null) {
                 try {
-                    newClass = Class.forName(className, true, _classLoader);
+                    newClass = _loadClass(className, null);
                 } catch (ClassNotFoundException ex) {
                     throw new XmlException("Failed to find class '" + className
                             + "'", _currentExternalEntity(), _getLineNumber(),
@@ -6265,6 +6327,23 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
 
         return false;
+    }
+
+    private Class _loadClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
+      // If no specific version info was in the model's MOML, and a default version spec was set, we need to use that one.
+      // This is especially important for submodels based on actor-oriented-classes, where we want to maintain some consistency
+      // between a related "group" of MOMLs (the parent models and their submodels).
+      VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpec;
+      try {
+        return _defaultClassLoadingStrategy.loadJavaClass(className, _vSpec);
+      } catch (ClassNotFoundException e) {
+  //      System.out.println("Did not find "+className+" "+_vSpec + " via " + _defaultClassLoadingStrategy);
+        if(_classLoader!=null) {
+          return _classLoader.loadClass(className);
+        } else {
+          throw e;
+        }
+      }
     }
 
     /** If the file with the specified name exists, parse it in
@@ -7466,6 +7545,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // The class loader that will be used to instantiate objects.
     private ClassLoader _classLoader = getClass().getClassLoader();
+
+    // The default class loading strategy that can be adjusted for specific runtime requirements,
+    // e.g. it can be modified for OSGi-based runtimes.
+    private static ClassLoadingStrategy _defaultClassLoadingStrategy = new SimpleClassLoadingStrategy(MoMLParser.class.getClassLoader());
+
+    // The optional default version specification to be used for loading java & actor-oriented classes,
+    // in cases where this concept is supported by the class loading strategy.
+    private VersionSpecification _defaultVersionSpec;
 
     // Count of configure tags so that they can nest.
     private int _configureNesting = 0;

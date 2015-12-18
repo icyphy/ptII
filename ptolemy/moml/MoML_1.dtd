@@ -1,4 +1,4 @@
-<!-- MoML DTD Version 1.5, UC Berkeley -->
+<!-- MoML DTD Version 1.6, UC Berkeley -->
 <!-- $Id$ -->
 <!-- If you update this file, please also update:  -->
 <!--    ptweb/xml/dtd/MoML_1.dtd, -->
@@ -43,7 +43,8 @@
 <!-- NOTE: deprecated.  Use property instead. -->
 <!ELEMENT director (configure | doc | property)*>
 <!ATTLIST director name CDATA "director"
-                   class CDATA #REQUIRED>
+                   class CDATA #REQUIRED
+                   version CDATA #IMPLIED>
 
 <!ELEMENT display EMPTY>
 <!ATTLIST display name CDATA #REQUIRED>
@@ -57,7 +58,8 @@
                   property | relation | rename | rendition | unlink)*>
 <!ATTLIST entity name CDATA #REQUIRED
                  class CDATA #IMPLIED
-		 source CDATA #IMPLIED>
+                 source CDATA #IMPLIED
+                 version CDATA #IMPLIED>
 
 <!ELEMENT group ANY>
 <!ATTLIST group name CDATA #IMPLIED>
@@ -92,7 +94,8 @@
 <!ELEMENT property (configure | display | doc | input | property | rename)*>
 <!ATTLIST property class CDATA #IMPLIED
                     name CDATA #REQUIRED
-                    value CDATA #IMPLIED>
+                    value CDATA #IMPLIED
+                    version CDATA #IMPLIED>
 
 <!ELEMENT relation (configure | display | doc | property | rename | vertex)*>
 <!ATTLIST relation name CDATA #REQUIRED
