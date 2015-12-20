@@ -1,0 +1,97 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="SerialHelloWorld" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 45.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 23, 1042, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[808, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8925375025394905">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{419.04003906249994, 305.1247234296678}">
+    </property>
+    <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
+    </property>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var serial = require('serial');&#10;&#10;exports.setup = function() {&#10;	parameter('port', {&#10;		'type':'string',&#10;		'options': serial.hostSerialPorts()&#10;		// FIXME: Set a default value&#10;	});&#10;	output('dataReceived');&#10;};&#10;&#10;var port;&#10;&#10;exports.initialize = function() {&#10;	port = new serial.SerialPort(&#10;		get('port'),&#10;		&quot;Foo&quot;, // FIXME: Instance name of accessor.&#10;		2000,  // FIXME: Need a timeout parameter.&#10;		null); // FIXME: baud rate, etc.&#10;		&#10;	port.on('data', function(data) {&#10;        console.log('Sending data: ' + data);&#10;		send('dataReceived', data);&#10;	});&#10;	&#10;	port.open();&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (port) {&#10;		port.close();&#10;	}&#10;}&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 50.0}">
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-AJV9ONHV">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="dataReceived" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{260.0, 50.0}">
+        </property>
+    </entity>
+    <entity name="JavaScript2" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var serial = require('serial');&#10;&#10;exports.setup = function() {&#10;	parameter('port', {&#10;		'type':'string',&#10;		'options': serial.hostSerialPorts()&#10;		// FIXME: Set a default value&#10;	});&#10;	output('dataReceived');&#10;};&#10;&#10;var port;&#10;&#10;exports.initialize = function() {&#10;	port = new serial.SerialPort(&#10;		get('port'),&#10;		&quot;Foo&quot;, // FIXME: Instance name of accessor.&#10;		2000,  // FIXME: Need a timeout parameter.&#10;		null); // FIXME: baud rate, etc.&#10;		&#10;	port.on('data', function(data) {&#10;        console.log('Sending data: ' + data);&#10;		send('dataReceived', data);&#10;	});&#10;	&#10;	port.open();&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (port) {&#10;		alert('FIXME');&#10;		port.close();&#10;	}&#10;}&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 155.0]">
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01LK3S">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="dataReceived" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 155.0]">
+        </property>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.dataReceived&quot;,x=120.0,y=50.0}, tail={id=&quot;Display.input&quot;,x=260.0,y=50.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.dataReceived&quot;,x=120.0,y=50.0}, tail={id=&quot;Display.input&quot;,x=260.0,y=50.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="JavaScript.dataReceived" relation="relation"/>
+    <link port="Display.input" relation="relation"/>
+    <link port="JavaScript2.dataReceived" relation="relation2"/>
+    <link port="Display2.input" relation="relation2"/>
+</entity>
