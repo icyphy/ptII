@@ -427,7 +427,7 @@ public class DateToken extends AbstractConvertibleToken implements
 
     /** Get time in milliseconds since January 1, 1970.
      *  @return The time as a long value.
-     *  @see #setTimeInMilliseconds()
+     *  @see #setTimeInMilliseconds(long)
      */
     public long getTimeInMilliseconds() {
         if (_precision == PRECISION_NANOSECOND) {
@@ -582,7 +582,7 @@ public class DateToken extends AbstractConvertibleToken implements
 
     /** Set the time in milliseconds since January 1, 1970.
      *  @paramn The time as a long value.
-     *  @see #getTimeInMilliseconds();
+     *  @see #getTimeInMilliseconds()
      */
     public void setTimeInMilliseconds(long newValue) {
         // FIXME: This is a poor design because we are exposing

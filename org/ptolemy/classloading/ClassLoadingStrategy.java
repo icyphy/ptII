@@ -33,12 +33,17 @@ import org.ptolemy.commons.VersionSpecification;
 import ptolemy.kernel.CompositeEntity;
 
 /**
- * Strategy to be able to switch class loading mechanisms, depending on the needs for a runtime environment
- *  (especially for actors and other model entities),
+ * Strategy to be able to switch class loading mechanisms, depending
+ *  on the needs for a runtime environment (especially for actors and
+ *  other model entities),
  * <p>
- * In a "plain" Java SE runtime, a default implementation would use simple <code>Class.forName()</code> 
- * (for Java classes) or local file-lookup (for actor-oriented classes) or similar.<br/>
- * In an OSGi-based runtime, more advanced options can be implemented to allow dynamic actor class updates, version management etc.
+ * In a "plain" Java SE runtime, a default implementation would use
+ * simple <code>Class.forName()</code> (for Java classes) or local
+ * file-lookup (for actor-oriented classes) or similar.
+ * </p>
+ * <p>
+ * In an OSGi-based runtime, more advanced options can be implemented
+ * to allow dynamic actor class updates, version management etc.
  * </p>
  * @author ErwinDL
  * @version $Id$
@@ -47,23 +52,23 @@ import ptolemy.kernel.CompositeEntity;
  * @Pt.AcceptedRating Yellow (ErwinDL)
  */
 public interface ClassLoadingStrategy {
-  
+
   /**
-   * 
-   * @param className
-   * @param versionSpec
-   * @return the Class for the given name
-   * @throws ClassNotFoundException
+   * Load a Java class.
+   * @param className The namee of the class.
+   * @param versionSpec The version
+   * @return the Class for the given name.
+   * @exception ClassNotFoundException If the class is not found.
    */
   @SuppressWarnings("rawtypes")
   Class loadJavaClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException;
-  
+
   /**
-   * 
-   * @param className
-   * @param versionSpec
-   * @return
-   * @throws ClassNotFoundException
+   *  Load an actor-oriented class, which is typically a .moml file.
+   * @param className The namee of the class.
+   * @param versionSpec The version
+   * @return the Class for the given name.
+   * @exception ClassNotFoundException If the class is not found.
    */
   CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException;
 }

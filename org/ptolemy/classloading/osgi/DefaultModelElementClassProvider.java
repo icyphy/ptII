@@ -32,22 +32,26 @@ import org.ptolemy.commons.VersionSpecification;
 
 import ptolemy.kernel.util.NamedObj;
 
+///////////////////////////////////////////////////////////////////
+//// DefaultModelElementClassProvider
+
 /**
  * A simple provider that gets a list of classes to be provided in its constructor.
-
-   @author erwinDL
-   @version $Id$
-   @since Ptolemy II 11.0
-   @Pt.ProposedRating Red (erwinDL)
-   @Pt.AcceptedRating Red (reviewmoderator)
+ *
+ *  @author erwinDL
+ *  @version $Id$
+ *  @since Ptolemy II 11.0
+ *  @Pt.ProposedRating Red (erwinDL)
+ *  @Pt.AcceptedRating Red (reviewmoderator)
  */
 public class DefaultModelElementClassProvider implements ModelElementClassProvider {
 
   /**
-   * Creates a provider that does not care about class versions,
-   * i.e. it will only check on class names to check if it can provide a requested class.
-   *  
-   * @param knownClasses
+   * Create a provider that does not care about class versions,
+   * i.e. it will only check on class names to check if it can provide
+   * a requested class.
+   *
+   * @param knownClasses The known classes
    */
   @SafeVarargs
   public DefaultModelElementClassProvider(Class<? extends NamedObj>... knownClasses) {
@@ -55,19 +59,29 @@ public class DefaultModelElementClassProvider implements ModelElementClassProvid
   }
 
   /**
-   * Creates a provider that cares about class versions,
-   * i.e. it will check on class names and on the requested version to check if it can provide a requested class.
-   * 
+   * Create a provider that cares about class versions, i.e. it will
+   * check on class names and on the requested version to check if it
+   * can provide a requested class.
+   *
    * @param version if null, the provider will not care about versions
    * @param knownClasses
    */
   @SafeVarargs
   public DefaultModelElementClassProvider(VersionSpecification version, Class<? extends NamedObj>... knownClasses) {
-    this._knownClasses = knownClasses;
-    this._versionSpec = version;
+    _knownClasses = knownClasses;
+    _versionSpec = version;
   }
 
-  public Class<? extends NamedObj> getClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    /** Get a class by name and version.
+     *  @param className The class name
+     *  @param versionSpec The version
+     *  @return The class
+     *  @exception ClassNotFoundException If the class is not found.
+     */
+  public Class<? extends NamedObj> getClass(String className,
+          VersionSpecification versionSpec) throws ClassNotFoundException {
     if (_versionSpec != null && _versionSpec.compareTo(versionSpec)<0) {
       throw new ClassNotFoundException(className + " " + versionSpec);
     } else {
@@ -80,7 +94,8 @@ public class DefaultModelElementClassProvider implements ModelElementClassProvid
     }
   }
 
-  // private stuff
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
   private VersionSpecification _versionSpec;
   private Class<? extends NamedObj>[] _knownClasses;

@@ -42,10 +42,10 @@ import ptolemy.kernel.CompositeEntity;
  * This is the preferred <code>ClassLoadingStrategy</code> implementation in a full-blown OSGi-based runtime.
  * It supports dynamic actor class updates through OSGi's great dynamism based on micro-services.
  * <p>
- * This dynamism is obtained by delegating the class loading to the registered implementations of 
+ * This dynamism is obtained by delegating the class loading to the registered implementations of
  * <code>ModelElementClassProvider</code> and <code>ActorOrientedClassProvider</code>.
  * </p>
- * 
+ *
  * @author ErwinDL
  * @version $Id$
  * @since Ptolemy II 11.0
@@ -54,40 +54,59 @@ import ptolemy.kernel.CompositeEntity;
  */
 public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
 
-  public Class<?> loadJavaClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+  /**
+   * Load a Java class.
+   * @param className The namee of the class.
+   * @param versionSpec The version
+   * @return the Class for the given name.
+   * @exception ClassNotFoundException If the class is not found.
+   */
+  public Class<?> loadJavaClass(String className,
+          VersionSpecification versionSpec) throws ClassNotFoundException {
     Class<?> result = null;
-    
-    for(ModelElementClassProvider classProvider : _modelElementClassProviders) {
+
+    for (ModelElementClassProvider classProvider : _modelElementClassProviders) {
       try {
         result=classProvider.getClass(className, versionSpec);
-        if(result!=null) {
+        if (result!=null) {
           break;
         }
       } catch (ClassNotFoundException e) {
         // just means the provider doesn't know about this one
       }
     }
-    if(result!=null) {
+    if (result!=null) {
       return result;
     } else {
       throw new ClassNotFoundException(className);
     }
   }
 
-  public CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
+  /**
+   *  Load an actor-oriented class, which is typically a .moml file.
+   * @param className The namee of the class.
+   * @param versionSpec The version
+   * @return the Class for the given name.
+   * @exception ClassNotFoundException If the class is not found.
+   */
+  public CompositeEntity loadActorOrientedClass(String className,
+          VersionSpecification versionSpec) throws ClassNotFoundException {
     CompositeEntity result = null;
-    
-    for(ActorOrientedClassProvider classProvider : _actorOrientedClassProviders) {
+
+    for (ActorOrientedClassProvider classProvider : _actorOrientedClassProviders) {
       try {
         result=classProvider.getActorOrientedClass(className, versionSpec);
-        if(result!=null) {
+        if (result!=null) {
           break;
         }
       } catch (ClassNotFoundException e) {
         // just means the provider doesn't know about this one
       }
     }
-    if(result!=null) {
+    if (result!=null) {
       return result;
     } else {
       throw new ClassNotFoundException(className);
@@ -95,35 +114,38 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
   }
 
   // provider registration mgmt stuff
-  
+
   /**
-   * Adds the given provider to the set of registered ModelElementClassProviders.
-   * 
+   * Add the given provider to the set of registered
+   * ModelElementClassProviders.
+   *
    * @param classProvider should be not-null
    * @return true if the entry was added successfully
-   * @throws IllegalArgumentException when the given provider is null
+   * @exception IllegalArgumentException when the given provider is null
    */
   public boolean addModelElementClassProvider(ModelElementClassProvider classProvider) {
-    if(classProvider==null) {
+    if (classProvider==null) {
       throw new IllegalArgumentException("classProvider can not be null");
     }
     return _modelElementClassProviders.add(classProvider);
   }
-  
+
   /**
-   * Removes the given provider from the set of registered ModelElementClassProviders.
-   * 
+   * Remove the given provider from the set of registered
+   * ModelElementClassProviders.
+   *
    * @param classProvider should be not-null
-   * @return true if the set of registered providers contained the given instance and it was removed successfully
-   * @throws IllegalArgumentException when the given provider is null
+   * @return true if the set of registered providers contained the
+   * given instance and it was removed successfully
+   * @exception IllegalArgumentException when the given provider is null
    */
   public boolean removeModelElementClassProvider(ModelElementClassProvider classProvider) {
-    if(classProvider==null) {
+    if (classProvider==null) {
       throw new IllegalArgumentException("classProvider can not be null");
     }
     return _modelElementClassProviders.remove(classProvider);
   }
-  
+
   /**
    * Clears the set of registered ModelElementClassProviders.
    * Does not touch the registered ActorOrientedClassProviders.
@@ -131,16 +153,16 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
   public void clearModelElementClassProviders() {
     _modelElementClassProviders.clear();
   }
-  
+
   /**
    * Adds the given provider to the set of registered ActorOrientedClassProviders.
-   * 
+   *
    * @param classProvider should be not-null
    * @return true if the entry was added successfully
-   * @throws IllegalArgumentException when the given provider is null
+   * @exception IllegalArgumentException when the given provider is null
    */
   public boolean addActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
-    if(classProvider==null) {
+    if (classProvider==null) {
       throw new IllegalArgumentException("classProvider can not be null");
     }
     return _actorOrientedClassProviders.add(classProvider);
@@ -148,24 +170,27 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
 
   /**
    * Removes the given provider from the set of registered ActorOrientedClassProviders.
-   * 
+   *
    * @param classProvider should be not-null
-   * @return true if the set of registered providers contained the given instance and it was removed successfully
-   * @throws IllegalArgumentException when the given provider is null
+   * @return true if the set of registered providers contained the
+   * given instance and it was removed successfully
+   * @exception IllegalArgumentException when the given provider is null
    */
   public boolean removeActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
     return _actorOrientedClassProviders.remove(classProvider);
   }
 
   /**
-   * Clears the set of registered ActorOrientedClassProviders.
+   * Clear the set of registered ActorOrientedClassProviders.
    * Does not touch the registered ModelElementClassProviders.
    */
   public void clearActorOrientedClassProviders() {
     _actorOrientedClassProviders.clear();
   }
 
-  // private stuff
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
   /** All registered providers for "plain" model elements like actors, directors, ...*/
   private Set<ModelElementClassProvider> _modelElementClassProviders = new HashSet<ModelElementClassProvider>();
   /** All registered providers for actor-oriented classes in a model */
