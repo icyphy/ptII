@@ -33,12 +33,12 @@ import org.ptolemy.commons.VersionSpecification;
 import ptolemy.kernel.CompositeEntity;
 
 /**
- * As the name says... a simple strategy implementation providing a bridge 
- * between the <code>ClassLoadingStrategy</code> approach and 
+ * As the name says... a simple strategy implementation providing a bridge
+ * between the <code>ClassLoadingStrategy</code> approach and
  * the usage of a plain <code>ClassLoader</code>, for loading Java classes.
- * <br/>
- * REMARK : It does not support loading actor-oriented classes! 
- * 
+ *
+ * <p>REMARK: It does not support loading actor-oriented classes! </p>
+ *
  * @author ErwinDL
  * @version $Id$
  * @since Ptolemy II 11.0
@@ -46,9 +46,9 @@ import ptolemy.kernel.CompositeEntity;
  * @Pt.AcceptedRating Yellow (ErwinDL)
  */
 public class SimpleClassLoadingStrategy implements ClassLoadingStrategy {
-  
+
   /**
-   * Constructor that uses the default class loader, 
+   * Construct a strategy that uses the default class loader,
    * i.e. the one with which this own class was loaded.
    */
   public SimpleClassLoadingStrategy() {
@@ -56,24 +56,39 @@ public class SimpleClassLoadingStrategy implements ClassLoadingStrategy {
   }
 
   /**
-   * Enforces the usage of the given class loader.
-   * 
-   * @param classLoader
+   * Construct a strategy that uses the given class loader.
+   *
+   * @param classLoader The class loader
    */
   public SimpleClassLoadingStrategy(ClassLoader classLoader) {
-    this._classLoader = classLoader;
+    _classLoader = classLoader;
   }
 
+  /**
+   * Load a Java class.
+   * @param className The namee of the class.
+   * @param versionSpec The version
+   * @return the Class for the given name.
+   * @exception ClassNotFoundException If the class is not found.
+   */
   @SuppressWarnings("rawtypes")
   public Class loadJavaClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
     return Class.forName(className, true, _classLoader);
   }
 
-  public CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
+  /**
+   *  Load an actor-oriented class, which is typically a .moml file.
+   * @param className The namee of the class.
+   * @param versionSpec The version
+   * @return the Class for the given name.
+   * @exception ClassNotFoundException Always thrown in this base class.
+   */
+  public CompositeEntity loadActorOrientedClass(String className,
+          VersionSpecification versionSpec) throws ClassNotFoundException {
     throw new ClassNotFoundException();
   }
-  
-  // private stuff
 
+  ///////////////////////////////////////////////////////////////////
+  ////                         private variables                 ////
   private ClassLoader _classLoader;
 }
