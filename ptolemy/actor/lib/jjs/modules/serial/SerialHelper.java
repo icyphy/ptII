@@ -138,6 +138,8 @@ public class SerialHelper extends HelperBase {
             // FIXME: Set the options.
             _serialPort.setSerialPortParams(9600,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
             
+            // FIXME: Uncomment the next line to avoid jjs/modules/serial/test/auto/SerialHelloWorld.xml hanging.
+            //_serialPort.enableReceiveTimeout(_timeout);
             _inputStream = _serialPort.getInputStream();
             _outputStream = _serialPort.getOutputStream();
             
