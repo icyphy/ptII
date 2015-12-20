@@ -53,22 +53,23 @@ import ptolemy.kernel.CompositeEntity;
  */
 public interface ClassLoadingStrategy {
 
-  /**
-   * Load a Java class.
-   * @param className The namee of the class.
-   * @param versionSpec The version
-   * @return the Class for the given name.
-   * @exception ClassNotFoundException If the class is not found.
-   */
-  @SuppressWarnings("rawtypes")
-  Class loadJavaClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException;
+    /**
+     * Load a Java class.
+     * @param className The namee of the class.
+     * @param versionSpec The version
+     * @return the Class for the given name.
+     * @exception ClassNotFoundException If the class is not found.
+     */
+    @SuppressWarnings("rawtypes")
+    Class loadJavaClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException;
 
-  /**
-   *  Load an actor-oriented class, which is typically a .moml file.
-   * @param className The namee of the class.
-   * @param versionSpec The version
-   * @return the Class for the given name.
-   * @exception ClassNotFoundException If the class is not found.
-   */
-  CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException;
+    /**
+     *  Load an actor-oriented class, which is typically a .moml file.
+     * @param className The namee of the class.
+     * @param versionSpec The version
+     * @return the Class for the given name.
+     * @exception ClassNotFoundException If the class is not found.
+     */
+    CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec)
+            throws ClassNotFoundException;
 }

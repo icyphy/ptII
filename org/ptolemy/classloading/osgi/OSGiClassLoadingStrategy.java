@@ -57,142 +57,143 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-  /**
-   * Load a Java class.
-   * @param className The namee of the class.
-   * @param versionSpec The version
-   * @return the Class for the given name.
-   * @exception ClassNotFoundException If the class is not found.
-   */
-  public Class<?> loadJavaClass(String className,
-          VersionSpecification versionSpec) throws ClassNotFoundException {
-    Class<?> result = null;
+    /**
+     * Load a Java class.
+     * @param className The namee of the class.
+     * @param versionSpec The version
+     * @return the Class for the given name.
+     * @exception ClassNotFoundException If the class is not found.
+     */
+    @Override
+    public Class<?> loadJavaClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
+        Class<?> result = null;
 
-    for (ModelElementClassProvider classProvider : _modelElementClassProviders) {
-      try {
-        result=classProvider.getClass(className, versionSpec);
-        if (result!=null) {
-          break;
+        for (ModelElementClassProvider classProvider : _modelElementClassProviders) {
+            try {
+                result = classProvider.getClass(className, versionSpec);
+                if (result != null) {
+                    break;
+                }
+            } catch (ClassNotFoundException e) {
+                // just means the provider doesn't know about this one
+            }
         }
-      } catch (ClassNotFoundException e) {
-        // just means the provider doesn't know about this one
-      }
-    }
-    if (result!=null) {
-      return result;
-    } else {
-      throw new ClassNotFoundException(className);
-    }
-  }
-
-  /**
-   *  Load an actor-oriented class, which is typically a .moml file.
-   * @param className The namee of the class.
-   * @param versionSpec The version
-   * @return the Class for the given name.
-   * @exception ClassNotFoundException If the class is not found.
-   */
-  public CompositeEntity loadActorOrientedClass(String className,
-          VersionSpecification versionSpec) throws ClassNotFoundException {
-    CompositeEntity result = null;
-
-    for (ActorOrientedClassProvider classProvider : _actorOrientedClassProviders) {
-      try {
-        result=classProvider.getActorOrientedClass(className, versionSpec);
-        if (result!=null) {
-          break;
+        if (result != null) {
+            return result;
+        } else {
+            throw new ClassNotFoundException(className);
         }
-      } catch (ClassNotFoundException e) {
-        // just means the provider doesn't know about this one
-      }
     }
-    if (result!=null) {
-      return result;
-    } else {
-      throw new ClassNotFoundException(className);
+
+    /**
+     *  Load an actor-oriented class, which is typically a .moml file.
+     * @param className The namee of the class.
+     * @param versionSpec The version
+     * @return the Class for the given name.
+     * @exception ClassNotFoundException If the class is not found.
+     */
+    @Override
+    public CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec)
+            throws ClassNotFoundException {
+        CompositeEntity result = null;
+
+        for (ActorOrientedClassProvider classProvider : _actorOrientedClassProviders) {
+            try {
+                result = classProvider.getActorOrientedClass(className, versionSpec);
+                if (result != null) {
+                    break;
+                }
+            } catch (ClassNotFoundException e) {
+                // just means the provider doesn't know about this one
+            }
+        }
+        if (result != null) {
+            return result;
+        } else {
+            throw new ClassNotFoundException(className);
+        }
     }
-  }
 
-  // provider registration mgmt stuff
+    // provider registration mgmt stuff
 
-  /**
-   * Add the given provider to the set of registered
-   * ModelElementClassProviders.
-   *
-   * @param classProvider should be not-null
-   * @return true if the entry was added successfully
-   * @exception IllegalArgumentException when the given provider is null
-   */
-  public boolean addModelElementClassProvider(ModelElementClassProvider classProvider) {
-    if (classProvider==null) {
-      throw new IllegalArgumentException("classProvider can not be null");
+    /**
+     * Add the given provider to the set of registered
+     * ModelElementClassProviders.
+     *
+     * @param classProvider should be not-null
+     * @return true if the entry was added successfully
+     * @exception IllegalArgumentException when the given provider is null
+     */
+    public boolean addModelElementClassProvider(ModelElementClassProvider classProvider) {
+        if (classProvider == null) {
+            throw new IllegalArgumentException("classProvider can not be null");
+        }
+        return _modelElementClassProviders.add(classProvider);
     }
-    return _modelElementClassProviders.add(classProvider);
-  }
 
-  /**
-   * Remove the given provider from the set of registered
-   * ModelElementClassProviders.
-   *
-   * @param classProvider should be not-null
-   * @return true if the set of registered providers contained the
-   * given instance and it was removed successfully
-   * @exception IllegalArgumentException when the given provider is null
-   */
-  public boolean removeModelElementClassProvider(ModelElementClassProvider classProvider) {
-    if (classProvider==null) {
-      throw new IllegalArgumentException("classProvider can not be null");
+    /**
+     * Remove the given provider from the set of registered
+     * ModelElementClassProviders.
+     *
+     * @param classProvider should be not-null
+     * @return true if the set of registered providers contained the
+     * given instance and it was removed successfully
+     * @exception IllegalArgumentException when the given provider is null
+     */
+    public boolean removeModelElementClassProvider(ModelElementClassProvider classProvider) {
+        if (classProvider == null) {
+            throw new IllegalArgumentException("classProvider can not be null");
+        }
+        return _modelElementClassProviders.remove(classProvider);
     }
-    return _modelElementClassProviders.remove(classProvider);
-  }
 
-  /**
-   * Clears the set of registered ModelElementClassProviders.
-   * Does not touch the registered ActorOrientedClassProviders.
-   */
-  public void clearModelElementClassProviders() {
-    _modelElementClassProviders.clear();
-  }
-
-  /**
-   * Adds the given provider to the set of registered ActorOrientedClassProviders.
-   *
-   * @param classProvider should be not-null
-   * @return true if the entry was added successfully
-   * @exception IllegalArgumentException when the given provider is null
-   */
-  public boolean addActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
-    if (classProvider==null) {
-      throw new IllegalArgumentException("classProvider can not be null");
+    /**
+     * Clears the set of registered ModelElementClassProviders.
+     * Does not touch the registered ActorOrientedClassProviders.
+     */
+    public void clearModelElementClassProviders() {
+        _modelElementClassProviders.clear();
     }
-    return _actorOrientedClassProviders.add(classProvider);
-  }
 
-  /**
-   * Removes the given provider from the set of registered ActorOrientedClassProviders.
-   *
-   * @param classProvider should be not-null
-   * @return true if the set of registered providers contained the
-   * given instance and it was removed successfully
-   * @exception IllegalArgumentException when the given provider is null
-   */
-  public boolean removeActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
-    return _actorOrientedClassProviders.remove(classProvider);
-  }
+    /**
+     * Adds the given provider to the set of registered ActorOrientedClassProviders.
+     *
+     * @param classProvider should be not-null
+     * @return true if the entry was added successfully
+     * @exception IllegalArgumentException when the given provider is null
+     */
+    public boolean addActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
+        if (classProvider == null) {
+            throw new IllegalArgumentException("classProvider can not be null");
+        }
+        return _actorOrientedClassProviders.add(classProvider);
+    }
 
-  /**
-   * Clear the set of registered ActorOrientedClassProviders.
-   * Does not touch the registered ModelElementClassProviders.
-   */
-  public void clearActorOrientedClassProviders() {
-    _actorOrientedClassProviders.clear();
-  }
+    /**
+     * Removes the given provider from the set of registered ActorOrientedClassProviders.
+     *
+     * @param classProvider should be not-null
+     * @return true if the set of registered providers contained the
+     * given instance and it was removed successfully
+     * @exception IllegalArgumentException when the given provider is null
+     */
+    public boolean removeActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
+        return _actorOrientedClassProviders.remove(classProvider);
+    }
+
+    /**
+     * Clear the set of registered ActorOrientedClassProviders.
+     * Does not touch the registered ModelElementClassProviders.
+     */
+    public void clearActorOrientedClassProviders() {
+        _actorOrientedClassProviders.clear();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-  /** All registered providers for "plain" model elements like actors, directors, ...*/
-  private Set<ModelElementClassProvider> _modelElementClassProviders = new HashSet<ModelElementClassProvider>();
-  /** All registered providers for actor-oriented classes in a model */
-  private Set<ActorOrientedClassProvider> _actorOrientedClassProviders = new HashSet<ActorOrientedClassProvider>();
+    /** All registered providers for "plain" model elements like actors, directors, ...*/
+    private Set<ModelElementClassProvider> _modelElementClassProviders = new HashSet<ModelElementClassProvider>();
+    /** All registered providers for actor-oriented classes in a model */
+    private Set<ActorOrientedClassProvider> _actorOrientedClassProviders = new HashSet<ActorOrientedClassProvider>();
 }

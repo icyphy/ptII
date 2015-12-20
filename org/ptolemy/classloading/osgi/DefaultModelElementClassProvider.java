@@ -46,31 +46,31 @@ import ptolemy.kernel.util.NamedObj;
  */
 public class DefaultModelElementClassProvider implements ModelElementClassProvider {
 
-  /**
-   * Create a provider that does not care about class versions,
-   * i.e. it will only check on class names to check if it can provide
-   * a requested class.
-   *
-   * @param knownClasses The known classes
-   */
-  @SafeVarargs
-  public DefaultModelElementClassProvider(Class<? extends NamedObj>... knownClasses) {
-    this(null, knownClasses);
-  }
+    /**
+     * Create a provider that does not care about class versions,
+     * i.e. it will only check on class names to check if it can provide
+     * a requested class.
+     *
+     * @param knownClasses The known classes
+     */
+    @SafeVarargs
+    public DefaultModelElementClassProvider(Class<? extends NamedObj>... knownClasses) {
+        this(null, knownClasses);
+    }
 
-  /**
-   * Create a provider that cares about class versions, i.e. it will
-   * check on class names and on the requested version to check if it
-   * can provide a requested class.
-   *
-   * @param version if null, the provider will not care about versions
-   * @param knownClasses
-   */
-  @SafeVarargs
-  public DefaultModelElementClassProvider(VersionSpecification version, Class<? extends NamedObj>... knownClasses) {
-    _knownClasses = knownClasses;
-    _versionSpec = version;
-  }
+    /**
+     * Create a provider that cares about class versions, i.e. it will
+     * check on class names and on the requested version to check if it
+     * can provide a requested class.
+     *
+     * @param version if null, the provider will not care about versions
+     * @param knownClasses
+     */
+    @SafeVarargs
+    public DefaultModelElementClassProvider(VersionSpecification version, Class<? extends NamedObj>... knownClasses) {
+        _knownClasses = knownClasses;
+        _versionSpec = version;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -80,23 +80,24 @@ public class DefaultModelElementClassProvider implements ModelElementClassProvid
      *  @return The class
      *  @exception ClassNotFoundException If the class is not found.
      */
-  public Class<? extends NamedObj> getClass(String className,
-          VersionSpecification versionSpec) throws ClassNotFoundException {
-    if (_versionSpec != null && _versionSpec.compareTo(versionSpec)<0) {
-      throw new ClassNotFoundException(className + " " + versionSpec);
-    } else {
-      for (Class<? extends NamedObj> knownClass : _knownClasses) {
-        if (knownClass.getName().equals(className)) {
-          return knownClass;
+    @Override
+    public Class<? extends NamedObj> getClass(String className, VersionSpecification versionSpec)
+            throws ClassNotFoundException {
+        if (_versionSpec != null && _versionSpec.compareTo(versionSpec) < 0) {
+            throw new ClassNotFoundException(className + " " + versionSpec);
+        } else {
+            for (Class<? extends NamedObj> knownClass : _knownClasses) {
+                if (knownClass.getName().equals(className)) {
+                    return knownClass;
+                }
+            }
+            throw new ClassNotFoundException(className);
         }
-      }
-      throw new ClassNotFoundException(className);
     }
-  }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-  private VersionSpecification _versionSpec;
-  private Class<? extends NamedObj>[] _knownClasses;
+    private VersionSpecification _versionSpec;
+    private Class<? extends NamedObj>[] _knownClasses;
 }
