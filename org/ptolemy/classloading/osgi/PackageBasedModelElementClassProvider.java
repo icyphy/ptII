@@ -77,13 +77,15 @@ public class PackageBasedModelElementClassProvider implements ModelElementClassP
      *
      */
     @Override
-    public Class<? extends NamedObj> getClass(String className,
-            VersionSpecification versionSpec) throws ClassNotFoundException {
-        if (_packageNames!=null) {
+    public Class<? extends NamedObj> getClass(String className, VersionSpecification versionSpec)
+            throws ClassNotFoundException {
+        if (_packageNames != null) {
             boolean packageNameMatch = false;
             for (String packageName : _packageNames) {
                 packageNameMatch = className.startsWith(packageName);
-                if (packageNameMatch) break;
+                if (packageNameMatch) {
+                    break;
+                }
             }
             if (!packageNameMatch) {
                 throw new ClassNotFoundException();

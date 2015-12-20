@@ -83,22 +83,26 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
      */
     @Override
     public int compareTo(VersionSpecification otherVersionSpecification) {
-        if (otherVersionSpecification == this)
+        if (otherVersionSpecification == this) {
             return 0;
-        if (otherVersionSpecification == null)
+        }
+        if (otherVersionSpecification == null) {
             return 1;
+        }
         if (otherVersionSpecification instanceof ThreeDigitVersionSpecification) {
             ThreeDigitVersionSpecification other = (ThreeDigitVersionSpecification) otherVersionSpecification;
             int result = _major - other._major;
-            if (result != 0)
+            if (result != 0) {
                 return result;
+            }
             result = _minor - other._minor;
-            if (result != 0)
+            if (result != 0) {
                 return result;
+            }
             result = _micro - other._micro;
-            if (result != 0)
+            if (result != 0) {
                 return result;
-            else if (_qualifiers.length > 0) {
+            } else if (_qualifiers.length > 0) {
                 if (other._qualifiers.length > 0) {
                     int maxQualifierCount = Math.max(_qualifiers.length, other._qualifiers.length);
                     for (int i = 0; i < maxQualifierCount; ++i) {
@@ -157,7 +161,7 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
         if (_minor != other._minor) {
             return false;
         }
-        if (!Arrays.equals(_qualifiers,other._qualifiers)) {
+        if (!Arrays.equals(_qualifiers, other._qualifiers)) {
             return false;
         }
         return true;
@@ -215,7 +219,7 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
      * @return a new version spec with increased micro digit.
      */
     public ThreeDigitVersionSpecification increaseMicro() {
-        return new ThreeDigitVersionSpecification(_major, _minor, _micro+1);
+        return new ThreeDigitVersionSpecification(_major, _minor, _micro + 1);
     }
 
     /** Return a new version spec with increased minor digit.
@@ -223,7 +227,7 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
      * @return a new version spec with increased minor digit.
      */
     public ThreeDigitVersionSpecification increaseMinor() {
-        return new ThreeDigitVersionSpecification(_major, _minor+1, _micro);
+        return new ThreeDigitVersionSpecification(_major, _minor + 1, _micro);
     }
 
     /** Return a new version spec with increased major digit.
@@ -231,7 +235,7 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
      * @return a new version spec with increased major digit.
      */
     public ThreeDigitVersionSpecification increaseMajor() {
-        return new ThreeDigitVersionSpecification(_major+1, _minor, _micro);
+        return new ThreeDigitVersionSpecification(_major + 1, _minor, _micro);
     }
 
     /** Produce a string representation that is itself valid again to

@@ -47,48 +47,50 @@ import ptolemy.kernel.CompositeEntity;
  */
 public class SimpleClassLoadingStrategy implements ClassLoadingStrategy {
 
-  /**
-   * Construct a strategy that uses the default class loader,
-   * i.e. the one with which this own class was loaded.
-   */
-  public SimpleClassLoadingStrategy() {
-    _classLoader = getClass().getClassLoader();
-  }
+    /**
+     * Construct a strategy that uses the default class loader,
+     * i.e. the one with which this own class was loaded.
+     */
+    public SimpleClassLoadingStrategy() {
+        _classLoader = getClass().getClassLoader();
+    }
 
-  /**
-   * Construct a strategy that uses the given class loader.
-   *
-   * @param classLoader The class loader
-   */
-  public SimpleClassLoadingStrategy(ClassLoader classLoader) {
-    _classLoader = classLoader;
-  }
+    /**
+     * Construct a strategy that uses the given class loader.
+     *
+     * @param classLoader The class loader
+     */
+    public SimpleClassLoadingStrategy(ClassLoader classLoader) {
+        _classLoader = classLoader;
+    }
 
-  /**
-   * Load a Java class.
-   * @param className The namee of the class.
-   * @param versionSpec The version
-   * @return the Class for the given name.
-   * @exception ClassNotFoundException If the class is not found.
-   */
-  @SuppressWarnings("rawtypes")
-  public Class loadJavaClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
-    return Class.forName(className, true, _classLoader);
-  }
+    /**
+     * Load a Java class.
+     * @param className The namee of the class.
+     * @param versionSpec The version
+     * @return the Class for the given name.
+     * @exception ClassNotFoundException If the class is not found.
+     */
+    @Override
+    @SuppressWarnings("rawtypes")
+    public Class loadJavaClass(String className, VersionSpecification versionSpec) throws ClassNotFoundException {
+        return Class.forName(className, true, _classLoader);
+    }
 
-  /**
-   *  Load an actor-oriented class, which is typically a .moml file.
-   * @param className The namee of the class.
-   * @param versionSpec The version
-   * @return the Class for the given name.
-   * @exception ClassNotFoundException Always thrown in this base class.
-   */
-  public CompositeEntity loadActorOrientedClass(String className,
-          VersionSpecification versionSpec) throws ClassNotFoundException {
-    throw new ClassNotFoundException();
-  }
+    /**
+     *  Load an actor-oriented class, which is typically a .moml file.
+     * @param className The namee of the class.
+     * @param versionSpec The version
+     * @return the Class for the given name.
+     * @exception ClassNotFoundException Always thrown in this base class.
+     */
+    @Override
+    public CompositeEntity loadActorOrientedClass(String className, VersionSpecification versionSpec)
+            throws ClassNotFoundException {
+        throw new ClassNotFoundException();
+    }
 
-  ///////////////////////////////////////////////////////////////////
-  ////                         private variables                 ////
-  private ClassLoader _classLoader;
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private ClassLoader _classLoader;
 }
