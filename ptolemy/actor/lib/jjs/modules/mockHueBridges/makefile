@@ -47,7 +47,8 @@ PTPACKAGE = 	mockHueBridges
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS = \
+	MockHueBridgeHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
 	mockHueBridges.js \
