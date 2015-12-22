@@ -207,7 +207,7 @@ import com.microstar.xml.XmlParser;
  master exports MoML.
 
  @see MoMLChangeRequest
- @author Edward A. Lee, Steve Neuendorffer, John Reekie, Contributor: Christopher Hylands
+ @author Edward A. Lee, Steve Neuendorffer, John Reekie, Contributor: Christopher Brooks, Erwin de Ley.
  @version $Id$
  @since Ptolemy II 0.4
  @Pt.ProposedRating Red (eal)
