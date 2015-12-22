@@ -31,30 +31,6 @@
 
 FMU_NAME = VanDerPol
 
-# We can't use $(wildcard *.c) here because the .c files are not
-# always present when make is invoked.
-# To update, use:
-# ls -1 *.c | sort | grep -v _me_ | grep -v _info.c | grep -v _init.c
-CFILES = \
-	VanDerPol.c \
-	VanDerPol_01exo.c \
-	VanDerPol_02nls.c \
-	VanDerPol_03lsy.c \
-	VanDerPol_04set.c \
-	VanDerPol_05evt.c \
-	VanDerPol_06inz.c \
-	VanDerPol_07dly.c \
-	VanDerPol_08bnd.c \
-	VanDerPol_09alg.c \
-	VanDerPol_10asr.c \
-	VanDerPol_11mix.c \
-	VanDerPol_12jac.c \
-	VanDerPol_13opt.c \
-	VanDerPol_14lnz.c \
-	VanDerPol_FMU.c \
-	VanDerPol_functions.c \
-	VanDerPol_records.c
-
 OTHER_OTHER_FILES_TO_BE_JARED = \
 	$(FMU_NAME).mo \
 	$(FMU_NAME).mos
