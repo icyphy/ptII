@@ -641,7 +641,6 @@ SOOT_DIR
 SOOT_CLASSES
 RXTX_PRESENT
 RXTX_JAR
-QTJAVA_ZIP
 PTII_LOCALURL
 PTXMPP_DIR
 PTXBJLIB_PACKAGES
@@ -665,8 +664,6 @@ PTSERVER_PACKAGES
 PTSERVER_DIR
 PTSERIAL_DIR
 PTRXTX_PACKAGES
-PTQUICKTIME_PACKAGES
-PTQUICKTIME_DIR
 ANTLR_DIR
 PTPTALON_PACKAGES
 PTPTALON_DIR
@@ -4519,7 +4516,7 @@ $as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 i
     done
 else
         # Packages that do not use vertx or other packages, but do use Java 1.8.
-        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.contextAware ptolemy.actor.lib.jjs.modules.contextAwareTest ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.shell"
+        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.contextAware ptolemy.actor.lib.jjs.modules.contextAwareTest ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.mockHueBridges ptolemy.actor.lib.jjs.modules.shell"
         # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
         PTJJS_DIR=jjs
         # org.terraswarm.accessor depends on jjs/JavaScript.java so we
@@ -12572,142 +12569,6 @@ else
 fi
 
 #--------------------------------------------------------------------
-#	Test for quicktime
-#--------------------------------------------------------------------
-# PTQUICKTIME_DIR is set to quicktime and used in
-# $PTII/ptolemy/domains/gr/lib/makefile if Quicktime for Java was found
-PTQUICKTIME_DIR=
-
-# Set to the location of the QTJava.zip file
-QTJAVA_ZIP=
-# We only need to look for Java3D if the gr domain is present
-QUICKTIME_USER_DIR="$PTII/ptolemy/domains/gr/lib/quicktime"
-
-if test ! -d "$QUICKTIME_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $QUICKTIME_USER_DIR is not present,
-    so we need not find Quicktime for Java." >&5
-$as_echo "$QUICKTIME_USER_DIR is not present,
-    so we need not find Quicktime for Java." >&6; }; fi
-else
-    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Quicktime for Java" >&5
-$as_echo_n "checking for Quicktime for Java... " >&6; }
-    if test -z "$PTJAVA3D_DIR"; then
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: $QUICKTIME_USER_DIR is present, but Java 3D was not found,
-    QuickTime for Java is only needed if you want to build in
-    $QUICKTIME_USER_DIR,
-    otherwise the build will proceed fine without Quicktime for Java." >&5
-$as_echo "$as_me: WARNING: $QUICKTIME_USER_DIR is present, but Java 3D was not found,
-    QuickTime for Java is only needed if you want to build in
-    $QUICKTIME_USER_DIR,
-    otherwise the build will proceed fine without Quicktime for Java." >&2;}
-    else
-        # We need to run javac in the config directory so that javac from jdk1.1.6
-        # under NT and cygwin works properly
-        startdir=$PTII
-        cd "$srcdir/config"
-        # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-        # Use -classpath here because that is what we use when we compile
-        # In javac 1.4.2, -classpath seems to mean we ignore $CLASSPATH
-        if "$JAVAC" -classpath "$PTII" quickTimeTest.java ; then
-            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: Quicktime found in the default classpath." >&5
-$as_echo "Quicktime found in the default classpath." >&6; }; fi
-            PTQUICKTIME_DIR=quicktime
-        else
-            if test "${MAJOR_OS_NAME:-none}" = "none"; then
-	        if "$JAVAC" MajorOSName.java ; then
-	            { $as_echo "$as_me:${as_lineno-$LINENO}: checking the which major type of OS we are running under" >&5
-$as_echo_n "checking the which major type of OS we are running under... " >&6; }
-		    # Older versions of cygwin might not have env, but 1.1 does
-		    if env CLASSPATH="$PTII/config" "$JAVA" MajorOSName > /dev/null; then
-		        # Run it again and get the results
-		        MAJOR_OS_NAME=`CLASSPATH="$PTII/config" "$JAVA" MajorOSName`
-		        if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MAJOR_OS_NAME" >&5
-$as_echo "$MAJOR_OS_NAME" >&6; }; fi
-		    else
-		        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed.
-    This means we cannot look for the Quicktime zip file in the likely places" >&5
-$as_echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed.
-    This means we cannot look for the Quicktime zip file in the likely places" >&2;};
-                    fi
-	        fi
-            fi
-            if test "${MAJOR_OS_NAME:-none}" = "Windows"; then
-	        SAFE_PROGRAMFILES=`echo $PROGRAMFILES | sed -e 's@\\\@/@g'`
-                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" quickTime3dTest.java' failed, looking for
-    QTJava.zip in $SAFE_PROGRAMFILES/java/*/lib/ext/QTJava.zip'" >&5
-$as_echo "$as_me: WARNING: '\"$JAVAC\" quickTime3dTest.java' failed, looking for
-    QTJava.zip in $SAFE_PROGRAMFILES/java/*/lib/ext/QTJava.zip'" >&2;}
-	        # Under Windows try to find the jar file
-	        #c:/Program Files/Java/j2re1.4.1_02/lib/ext/QTJava.zip
-	        QTJAVA_ZIP=`cd "$SAFE_PROGRAMFILES"; ls -tr java/*/lib/ext/QTJava.zip | head -1`
-	        if test -z "$QTJAVA_ZIP" ; then
-    	            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'Did not find \"$SAFE_PROGRAMFILES/java/*/lib/ext/QTJava.zip\"'" >&5
-$as_echo "$as_me: WARNING: 'Did not find \"$SAFE_PROGRAMFILES/java/*/lib/ext/QTJava.zip\"'" >&2;}
-	        else
-	            QTJAVA_ZIP="$SAFE_PROGRAMFILES/$QTJAVA_ZIP"
-	            if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok, found '$QTJAVA_ZIP'" >&5
-$as_echo "ok, found '$QTJAVA_ZIP'" >&6; }; fi
-	            { $as_echo "$as_me:${as_lineno-$LINENO}: checking again for Quicktime for Java" >&5
-$as_echo_n "checking again for Quicktime for Java... " >&6; }
-	            if "$JAVAC" -classpath "$QTJAVA_ZIP" quickTimeTest.java ; then
-	                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $QTJAVA_ZIP" >&5
-$as_echo "$QTJAVA_ZIP" >&6; }; fi
-	                PTQUICKTIME_DIR=quicktime
-		        # PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
-		        PTQUICKTIME_PACKAGES=ptolemy.domains.gr.lib.quicktime
-	            fi
-	        fi
-            fi
-            if test -z "$PTQUICKTIME_DIR" ; then
-                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVAC\" quickTime3dTest.java' failed.
-    You may need to install QuickTime with the 'QuickTime For
-    Java' option from http://developer.apple.com/quicktime/qtjava/
-    During installation, choose 'custom' and then 'select all'.
-    This drops QTJava.zip into the lib/ext of all your installed JREs.
-    Then you have to copy this zip file to the jre/lib/ext directory
-    of your SDK and rerun configure.
-    If configure still fails, you may need to unzip the QTJava.zip
-    file and create a QTJava.jar file:
-        # unzip QTJava.zip
-        cd QTJava
-        jar -cf ../QTJava.jar .
-    QuickTime for Java is only needed if you want to build in
-    $QUICKTIME_USER_DIR,
-    otherwise the build will proceed fine without Quicktime for Java." >&5
-$as_echo "$as_me: WARNING: '\"$JAVAC\" quickTime3dTest.java' failed.
-    You may need to install QuickTime with the 'QuickTime For
-    Java' option from http://developer.apple.com/quicktime/qtjava/
-    During installation, choose 'custom' and then 'select all'.
-    This drops QTJava.zip into the lib/ext of all your installed JREs.
-    Then you have to copy this zip file to the jre/lib/ext directory
-    of your SDK and rerun configure.
-    If configure still fails, you may need to unzip the QTJava.zip
-    file and create a QTJava.jar file:
-        # unzip QTJava.zip
-        cd QTJava
-        jar -cf ../QTJava.jar .
-    QuickTime for Java is only needed if you want to build in
-    $QUICKTIME_USER_DIR,
-    otherwise the build will proceed fine without Quicktime for Java." >&2;}
-            fi
-        fi
-        cd "$startdir"
-    fi
-fi
-
-if test -z "$PTQUICKTIME_DIR"; then
-    updateExcludes "ptolemy/domains/gr/lib/quicktime/"
-else
-    if test ! -z "$QTJAVA_ZIP"; then
-        updateClasspath "$QTJAVA_ZIP"
-    fi
-fi
-
-#--------------------------------------------------------------------
 #       Soot is a Java Optimization Framework, see
 #	http://www.sable.mcgill.ca/soot/
 #       See if there was a command-line option for where Soot is
@@ -15021,14 +14882,6 @@ fi
 # Directory that contains the antlr.jar file, used by ptalon
 
 
-# Set to quicktime and used in $PTII/ptolemy/domains/gr/lib/makefile if
-# QuickTime for Java was found.
-
-
-# Ptolemy II packages that use the Quicktime facility
-# PTQUICKTIME_PACKAGES is used in ptII/doc/makefile
-
-
 # Ptolemy II packages that use the RXTX Java Serial Communication facility
 # PTRXTX_PACKAGES is used in ptII/doc/makefile
 
@@ -15085,10 +14938,6 @@ fi
 # $PTII/ptolemy/apps/makefile if Giotto was found
 
 
-# Set to quicktime and used in
-# $PTII/ptolemy/domains/gr/lib/makefile if Quicktime for Java was found
-
-
 # Set to waba and used in
 # $PTII/ptolemy/apps/makefile if Waba was found
 
@@ -15114,9 +14963,6 @@ fi
 
 # Location of the local $PTII directory as a file:/// URL
 # This variable is used with the Java Network Launching Protocol files
-
-
-# Set to the location of the QTJava.zip file
 
 
 # Jar file that contains RXTX Serial Port Interface
