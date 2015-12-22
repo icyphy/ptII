@@ -1040,7 +1040,7 @@ ANT_EXCLUDE_TESTS=''
 # A shell function that adds its argument to the ECLIPSE_CLASSPATH_ENTRY_LIBS
 # and to ANT_CLASSPATH
 updateClasspath () {
-        if test ! -z $1; then
+        if test ! -z "$1"; then
             ECLIPSE_CLASSPATHENTRY_LIBS="$ECLIPSE_CLASSPATHENTRY_LIBS \
 	        <classpathentry kind=\"lib\" path=\"$1\"/> "
             ANT_CLASSPATH="$ANT_CLASSPATH <pathelement location=\"$1\"/> "
