@@ -41,7 +41,7 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTVERTX_SOCKET_DIR is set to socket if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
 # PTXBEE_DIR is set to xbee if the XBee Java Interface was found
-DIRS = 		audio $(PTBROWSER_DIR) $(PTCAMERAS_DIR) contextAware contextAwareTest discovery dsp $(PTEVENTBUS_DIR) $(PTHTTPCLIENT_DIR) $(PTIMUSENSOR_DIR) localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign $(PTSERIAL_DIR) shell $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) $(PTXBEE_DIR)
+DIRS = 		audio $(PTBROWSER_DIR) $(PTCAMERAS_DIR) contextAware contextAwareTest discovery dsp $(PTEVENTBUS_DIR) $(PTHTTPCLIENT_DIR) $(PTIMUSENSOR_DIR) localStorage mapManager mockHueBridges motionDetector $(PTPAHO_MQTT_DIRS) objectAssign $(PTSERIAL_DIR) shell $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) $(PTXBEE_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -75,7 +75,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	IMUSensor aprilTags audio browser cameras contextAware contextAwareTest discovery dsp eventbus gdp httpClient imageFilters localStorage mapManager motionDetector mqtt objectAssign shell socket udpSocket webSocket #test
+MISC_FILES =	IMUSensor aprilTags audio browser cameras contextAware contextAwareTest discovery dsp eventbus gdp httpClient imageFilters localStorage mapManager mockHueBridges motionDetector mqtt objectAssign shell socket udpSocket webSocket #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
