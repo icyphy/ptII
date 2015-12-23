@@ -61,7 +61,8 @@ $(FMU_NAME).fmu: $(FMU_NAME).mos $(FMU_NAME).mo
 	# Rebuild and avoid various crashes.
 	rm -rf tmp
 	mkdir tmp
-	(cd tmp; unzip ../$(FMU_NAME).fmu; cd sources;env;LDFLAGS= ./configure;make)
+	# Add -lrt for VanDerPol
+	(cd tmp; unzip ../$(FMU_NAME).fmu; cd sources;env;LDFLAGS= ./configure; sed 's/^\(LDFLAGS=.*\)$$/\1 -lrt/' Makefile > Makefile.tmp; mv Makefile.tmp Makefile; LDFLAGS= make)
 
 # # CBITSFLAGS is set to -m32 to build linux32 fmus
 # %.o: %.c
@@ -120,4 +121,4 @@ include $(PTII)/ptolemy/actor/lib/fmi/fmus/omc/fmuBase.mk
 # Get the rest of the rules
 include $(PTII)/mk/ptcommon.mk
 
-KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu $(FMU_NAME).c fmuTmp* modelDescription.xml binaries sources *.so *.dylib *.o src/binaries $(FMU_NAME).libs $(FMU_NAME).log $(FMU_NAME).fmutmp
+KRUFT = $(FMU_NAME)_* $(FMU_NAME).fmu $(FMU_NAME).c fmuTmp* modelDescription.xml binaries sources *.so *.dylib *.o src/binaries $(FMU_NAME).libs $(FMU_NAME).log $(FMU_NAME).fmutmp tmp

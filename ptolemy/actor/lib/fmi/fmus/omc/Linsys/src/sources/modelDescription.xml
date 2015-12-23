@@ -4,15 +4,13 @@
   modelName="Linsys"
   guid="{8c4e810f-3df3-4a00-8276-176fa3c9f9e0}"
   description=""
-  generationTool="OpenModelica Compiler 1.9.2+dev (r23912)"
-  generationDateAndTime="2014-12-28T09:07:29Z"
+  generationTool="OpenModelica Compiler 1.9.3+dev (r25909)"
+  generationDateAndTime="2015-08-06T14:54:28Z"
   variableNamingConvention="structured"
   numberOfEventIndicators="0">
   <ModelExchange
     modelIdentifier="Linsys">
   </ModelExchange>
-  <TypeDefinitions>
-  </TypeDefinitions>
   <LogCategories>
     <Category name="logEvents" />
     <Category name="logSingularLinearSystems" />
@@ -102,13 +100,5 @@
   </ScalarVariable>
   </ModelVariables>
   <ModelStructure>
-    <Outputs>
-    </Outputs>
-    <Derivatives>
-      <Unknown index="3" dependencies="1 2" dependenciesKind="dependent dependent" />
-      <Unknown index="4" dependencies="1 2" dependenciesKind="dependent dependent" />
-    </Derivatives>
-    <InitialUnknowns>
-    </InitialUnknowns>
   </ModelStructure>
 </fmiModelDescription>

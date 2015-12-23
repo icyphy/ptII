@@ -69,20 +69,20 @@ static const fmi2ValueReference STATESDERIVATIVES[NUMBER_OF_STATES] = { _DER_x_0
 
 
 /*
- equation index: 11
+ equation index: 5
  type: SIMPLE_ASSIGN
  der(x[2]) = A[2,1] * x[1] + A[2,2] * x[2]
  */
-static void eqFunction_11(model_data *data)
+static void eqFunction_5(model_data *data)
 {
     _DER_x_1_ = ((_A_1_0_ * _x_0_) + (_A_1_1_ * _x_1_));
 }
 /*
- equation index: 12
+ equation index: 6
  type: SIMPLE_ASSIGN
  der(x[1]) = A[1,1] * x[1] + A[1,2] * x[2]
  */
-static void eqFunction_12(model_data *data)
+static void eqFunction_6(model_data *data)
 {
     _DER_x_0_ = ((_A_0_0_ * _x_0_) + (_A_0_1_ * _x_1_));
 }
@@ -94,16 +94,16 @@ static void eqFunction_12(model_data *data)
 static void setupEquationGraph(model_data *data)
 {
     // Dynamic equations
-    data->link(eqFunction_11,&_DER_x_1_);
-    data->link(&_A_1_0_,eqFunction_11);
-    data->link(&_x_0_,eqFunction_11);
-    data->link(&_A_1_1_,eqFunction_11);
-    data->link(&_x_1_,eqFunction_11);
-    data->link(eqFunction_12,&_DER_x_0_);
-    data->link(&_A_0_0_,eqFunction_12);
-    data->link(&_x_0_,eqFunction_12);
-    data->link(&_A_0_1_,eqFunction_12);
-    data->link(&_x_1_,eqFunction_12);
+    data->link(eqFunction_5,&_DER_x_1_);
+    data->link(&_A_1_0_,eqFunction_5);
+    data->link(&_x_0_,eqFunction_5);
+    data->link(&_A_1_1_,eqFunction_5);
+    data->link(&_x_1_,eqFunction_5);
+    data->link(eqFunction_6,&_DER_x_0_);
+    data->link(&_A_0_0_,eqFunction_6);
+    data->link(&_x_0_,eqFunction_6);
+    data->link(&_A_0_1_,eqFunction_6);
+    data->link(&_x_1_,eqFunction_6);
     // Zero crossings
 }
 
@@ -111,74 +111,38 @@ static void setupEquationGraph(model_data *data)
 
 
 /*
- equation index: 4
- type: SIMPLE_ASSIGN
- A[2,2] = -1.0
- */
-static void eqFunction_4(model_data *data)
-{
-    _A_1_1_ = -1.0;
-}
-/*
- equation index: 3
- type: SIMPLE_ASSIGN
- A[2,1] = 0.0
- */
-static void eqFunction_3(model_data *data)
-{
-    _A_1_0_ = 0.0;
-}
-/*
- equation index: 2
- type: SIMPLE_ASSIGN
- A[1,2] = 0.0
- */
-static void eqFunction_2(model_data *data)
-{
-    _A_0_1_ = 0.0;
-}
-/*
  equation index: 1
- type: SIMPLE_ASSIGN
- A[1,1] = -0.5
- */
-static void eqFunction_1(model_data *data)
-{
-    _A_0_0_ = -0.5;
-}
-/*
- equation index: 5
  type: SIMPLE_ASSIGN
  x[2] = 2.0
  */
-static void eqFunction_5(model_data *data)
+static void eqFunction_1(model_data *data)
 {
     _x_1_ = 2.0;
 }
 /*
- equation index: 6
+ equation index: 2
  type: SIMPLE_ASSIGN
  x[1] = 1.0
  */
-static void eqFunction_6(model_data *data)
+static void eqFunction_2(model_data *data)
 {
     _x_0_ = 1.0;
 }
 /*
- equation index: 7
+ equation index: 3
  type: SIMPLE_ASSIGN
  der(x[2]) = A[2,1] * x[1] + A[2,2] * x[2]
  */
-static void eqFunction_7(model_data *data)
+static void eqFunction_3(model_data *data)
 {
     _DER_x_1_ = ((_A_1_0_ * _x_0_) + (_A_1_1_ * _x_1_));
 }
 /*
- equation index: 8
+ equation index: 4
  type: SIMPLE_ASSIGN
  der(x[1]) = A[1,1] * x[1] + A[1,2] * x[2]
  */
-static void eqFunction_8(model_data *data)
+static void eqFunction_4(model_data *data)
 {
     _DER_x_0_ = ((_A_0_0_ * _x_0_) + (_A_0_1_ * _x_1_));
 }
@@ -202,22 +166,18 @@ static void setDefaultStartValues(model_data *comp)
 static void initialEquations(model_data* data)
 {
 
-    eqFunction_4(data);
-    eqFunction_3(data);
-    eqFunction_2(data);
     eqFunction_1(data);
-    eqFunction_5(data);
-    eqFunction_6(data);
-    eqFunction_7(data);
-    eqFunction_8(data);
+    eqFunction_2(data);
+    eqFunction_3(data);
+    eqFunction_4(data);
 
 }
 
 // Solve all dynamic equations
 static void allEquations(model_data* data)
 {
-    eqFunction_11(data);
-    eqFunction_12(data);
+    eqFunction_5(data);
+    eqFunction_6(data);
 
 }
 
