@@ -128,7 +128,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.731500000000001E-7">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 95.0]">
         </property>
@@ -146,7 +146,7 @@
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="2.731500000000001E-7">
         </property>
-        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 295.0}">
         </property>

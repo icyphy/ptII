@@ -58,6 +58,10 @@ all: $(FMU_NAME).fmu #modelDescription.xml
 
 $(FMU_NAME).fmu: $(FMU_NAME).mos $(FMU_NAME).mo
 	omc $(FMU_NAME).mos
+	# Rebuild and avoid various crashes.
+	rm -rf tmp
+	mkdir tmp
+	(cd tmp; unzip ../$(FMU_NAME).fmu; cd sources;env;LDFLAGS= ./configure;make)
 
 # # CBITSFLAGS is set to -m32 to build linux32 fmus
 # %.o: %.c
