@@ -150,9 +150,9 @@ foreach file [lsort [glob auto/*.xml]] {
             if {$JSAccessorPresent} {
                 # Skip reloading certain classes
                 set toplevelName [[$application toplevel] getFullName]
-                if {[lsearch [list {.ContextAware}] $toplevelName] != -1} {
-                    puts "auto.tcl: Skipping reloading accessors in $toplevelName because util/testsuite/auto.tcl asked us to."
-                } else {
+                #if {[lsearch [list {.ContextAware}] $toplevelName] != -1} {
+                #    puts "auto.tcl: Skipping reloading accessors in $toplevelName because util/testsuite/auto.tcl asked us to."
+                #} else {
                     test "Auto-reload1-rerun" "Automatic test reload Accessors and rerun in model file $file" {
                         set timeout 200000
                         puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}] seconds at [clock format [clock seconds]], then reloading accessor(s)"
@@ -172,7 +172,7 @@ foreach file [lsort [glob auto/*.xml]] {
                         }
                         list {}
                     } {{}}
-                }
+                #}
             }
         }
     }
