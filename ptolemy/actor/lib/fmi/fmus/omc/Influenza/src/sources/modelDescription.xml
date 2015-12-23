@@ -4,15 +4,13 @@
   modelName="Influenza"
   guid="{8c4e810f-3df3-4a00-8276-176fa3c9f9e0}"
   description=""
-  generationTool="OpenModelica Compiler 1.9.2+dev (r23912)"
-  generationDateAndTime="2014-12-28T08:47:08Z"
+  generationTool="OpenModelica Compiler 1.9.3+dev (r25909)"
+  generationDateAndTime="2015-08-06T14:54:27Z"
   variableNamingConvention="structured"
   numberOfEventIndicators="0">
   <ModelExchange
     modelIdentifier="Influenza">
   </ModelExchange>
-  <TypeDefinitions>
-  </TypeDefinitions>
   <LogCategories>
     <Category name="logEvents" />
     <Category name="logSingularLinearSystems" />
@@ -124,8 +122,8 @@
     valueReference="10"
     variability="continuous"
     causality="local"
-    initial="calculated">
-    <Real/>
+    initial="approx">
+    <Real start="499000.0"/>
   </ScalarVariable>
   <!-- Index of variable = "12" -->
   <ScalarVariable
@@ -133,8 +131,8 @@
     valueReference="11"
     variability="continuous"
     causality="local"
-    initial="calculated">
-    <Real/>
+    initial="approx">
+    <Real start="0.6"/>
   </ScalarVariable>
   <!-- Index of variable = "13" -->
   <ScalarVariable
@@ -183,16 +181,5 @@
   </ScalarVariable>
   </ModelVariables>
   <ModelStructure>
-    <Outputs>
-    </Outputs>
-    <Derivatives>
-      <Unknown index="6" dependencies="2" dependenciesKind="dependent" />
-      <Unknown index="7" dependencies="3 5 2" dependenciesKind="dependent dependent dependent" />
-      <Unknown index="8" dependencies="2" dependenciesKind="dependent" />
-      <Unknown index="9" dependencies="2" dependenciesKind="dependent" />
-      <Unknown index="10" dependencies="3 5 2" dependenciesKind="dependent dependent dependent" />
-    </Derivatives>
-    <InitialUnknowns>
-    </InitialUnknowns>
   </ModelStructure>
 </fmiModelDescription>

@@ -58,7 +58,7 @@ mv src/sources/modelDescription.xml src/
 echo "FIXME: src/build/bild_fmu.bat will probably not work because it expects a $FMUName.c, not $FMUName.cpp"
 
 # Mac OS X sed does not support -i.
-sed -e 's/fmuBaseName\.c/fmuBaseName\.cpp/g'  < $fmuSourcesTemplate/build_fmu src/sources/ > src/sources/build_fmu
+sed -e 's/fmuBaseName\.c/fmuBaseName\.cpp/g'  < $fmuSourcesTemplate/build_fmu > src/sources/build_fmu
 
 
 # Generate makefile
