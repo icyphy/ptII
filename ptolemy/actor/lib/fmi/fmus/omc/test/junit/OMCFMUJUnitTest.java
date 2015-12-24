@@ -211,31 +211,20 @@ public class OMCFMUJUnitTest {
                                 + "\n t: " + t
                                 + "\nx1: " + x1
                                 + " calculatedValue: " + x1CalculatedValue
-                                + (checkX2
-                                        ? ("\nx2: " + x2
-                                                + " caclulatedValue: " + x2CalculatedValue)
-                                        : "");
-
-
+                                + "\nx2: " + x2 + " calculatedValue: " + x2CalculatedValue;
                         assertEquals(message, x2, x2CalculatedValue, epsilon);
                     } else {
                         // Test1_check.cpp
                         x1CalculatedValue = 1.0 * Math.exp(-1.0 * t);
                     }
                     x1MaximumError = Math.max(x1MaximumError, Math.abs(x1 - x1CalculatedValue));
-                    String message = "Error: While validating the results for "
+                    String message2 = "Error: While validating the results for "
                                 + testName + " and reading " + csvFile
                                 + " row: " + row
                                 + "\n t: " + t
                                 + "\nx1: " + x1
-                                + " calculatedValue: " + x1CalculatedValue
-                                + (checkX2
-                                        ? ("\nx2: " + x2
-                                                + " caclulatedValue: " + x2CalculatedValue)
-                                        : "");
-
-
-                    assertEquals(message, x1, x1CalculatedValue, epsilon);
+                                + " calculatedValue: " + x1CalculatedValue;
+                    assertEquals(message2, x1, x1CalculatedValue, epsilon);
                 }
             }
         } finally {
