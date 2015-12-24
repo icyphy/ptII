@@ -1,0 +1,17 @@
+#!/bin/sh
+# $Id$
+# Fix the OpenModelica FMU Makefile.
+# See https://trac.openmodelica.org/OpenModelica/ticket/3615:RHEL 6.7: VanDerPol FMU fails to compile: undefined reference to clock_gettime
+# See https://trac.openmodelica.org/OpenModelica/ticket/3616: RHEL 6.7: FMU fails to compile: stringAppend missing
+
+omc=`which omc`
+
+omcBin=`dirname $omc`
+
+omcDir=`dirname $omcBin`
+
+omcLibOmc="$omcDir/lib/omc"
+
+sed "s=^\(LDFLAGS.*\)$=\1 -lrt -L$omcLibOmc -lSimulationRuntimeC=" Makefile > Makefile.tmp
+
+mv Makefile.tmp Makefile

@@ -70,6 +70,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	fixOmcMakefile \
 	fmus.mk \
 	README.txt \
 	exportOMFMU \
