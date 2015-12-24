@@ -315,8 +315,10 @@ public class VertxHelperBase extends HelperBase {
                 byte[] imageBytes = stream.toByteArray();
                 buffer.appendBytes(imageBytes);
             } else {
-                _error("Expected image to send, but got "
-                        + data.getClass().getName());
+                _error("Expected an image to send, but instead got "
+                        + (data == null
+                                ? "a null object"
+                                : data.getClass().getName()));
             }
         } else {
             _appendNumericToBuffer(buffer, data, type);
