@@ -373,10 +373,11 @@ public class ExportModelJUnitTest {
                 "SwarmAcousticService.xml", // Times out while connecting to a port
                 "SynthesizedVoice.xml", // "Audio Device Unavailable"
                 "SystemLevelType", // The SystemLevelType demos are not meant to be run.
+                "TCPSocket.xml", // Has links to other demos.
                 "ThreadedComposite.xml", // Has links to other demos.
                 "TokenTransmissionTime.xml", // This demo has links to the demo that are to run
                 "TunnelingBallDevice", // Annotation says that it cannot be run.
-                          "Ultrasonic.xml", // Arduino only
+                "Ultrasonic.xml", // Arduino only
                 "ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/ReadFromVertxBus.xml", // Requires that other demos run.
                 "ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBus.xml", // Requires that other demos run.
                 "ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBusServer.xml", // Just has links to other demos.
