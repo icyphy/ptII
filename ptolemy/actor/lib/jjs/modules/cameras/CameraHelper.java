@@ -44,6 +44,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import com.github.sarxos.webcam.Webcam;
 import com.github.sarxos.webcam.WebcamEvent;
 import com.github.sarxos.webcam.WebcamListener;
+import com.github.sarxos.webcam.ds.dummy.WebcamDummyDriver;
 
 /** Helper for the cameras JavaScript module.  This is based on
  *  the webcam-capture package by Bartosz Firyn (SarXos), available from:
@@ -87,7 +88,7 @@ import com.github.sarxos.webcam.WebcamListener;
  *  <code>yum search v4l2</code> and if v4l2 is not installed, then
  *  <code>yum install libv4l.x86_64</code>.</p>
 
- *  @author Edward A. Lee
+ *  @author Edward A. Lee, Contributor: Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 11.0
  *  @Pt.ProposedRating Yellow (eal)
@@ -97,6 +98,8 @@ import com.github.sarxos.webcam.WebcamListener;
 public class CameraHelper extends HelperBase implements WebcamListener {
 
     /** Create the system default camera.
+     *  If the system does not have a physical camera, then the dummy
+     *  is used.
      *  @exception IOException If there is no such camera.
      *  @param currentObj The JavaScript object that this is helping.
      */
@@ -106,7 +109,8 @@ public class CameraHelper extends HelperBase implements WebcamListener {
 
     /** Create a camera with the specified name. The name is
      *  required to be one of those returned by {@link #cameras()},
-     *  or else a exception will be thrown.
+     *  or else a exception will be thrown.  If {@link #cameras()}
+     *  returns no cameras, then the dummy camera is used.
      *  @param name The name of the camera.
      *  @param currentObj The JavaScript object that this is helping.
      *  @exception IOException If the camera does not exist.
@@ -121,14 +125,17 @@ public class CameraHelper extends HelperBase implements WebcamListener {
                 // Refresh the list.
                 cameras();
             }
-            if (_webcams == null) {
-                System.err.println("ptolemy/actor/lib/jjs/modules/cameras/CameraHelper.java: No Cameras were found.");
-                return;
+            if (_webcams != null) {
+                _webcam = _webcams.get(name);
             }
-            _webcam = _webcams.get(name);
         }
         if (_webcam == null) {
-            throw new IOException("No such camera: " + name);
+            System.out.println("No physical cameras found, using WebcamDummyDriver.");
+            Webcam.setDriver(new WebcamDummyDriver(1));
+            _webcam = Webcam.getDefault();
+        }
+        if (_webcam == null) {
+            throw new IOException("No such camera: " + name + " and no dummy camera found.");
         }
         _webcam.addWebcamListener(this);
     }
