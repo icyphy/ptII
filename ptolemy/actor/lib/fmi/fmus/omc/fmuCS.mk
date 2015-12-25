@@ -62,7 +62,7 @@ $(FMU_NAME).fmu: $(FMU_NAME).mos $(FMU_NAME).mo
 	rm -rf tmp
 	mkdir tmp
 	# Add -lrt for VanDerPol
-	(cd tmp; unzip ../$(FMU_NAME).fmu; cd sources;env;LDFLAGS= ./configure; ../../../fixOmcMakefile; LDFLAGS= make)
+	(cd tmp; unzip ../$(FMU_NAME).fmu; cd sources;env;LDFLAGS= ./configure; sh ../../../fixOmcMakefile; LDFLAGS= make)
 
 # # CBITSFLAGS is set to -m32 to build linux32 fmus
 # %.o: %.c
