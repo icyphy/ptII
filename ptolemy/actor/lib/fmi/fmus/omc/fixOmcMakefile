@@ -12,6 +12,17 @@ omcDir=`dirname $omcBin`
 
 omcLibOmc="$omcDir/lib/omc"
 
+# Attempt to deal with having /usr/local/bin/omc in the path
+runtime=`find $omcLibOmc -name "libSimulationRuntimeC.*" | head -1`
+if [ ! -f $runtime ]; then
+    if [ ! -d $omcLibOmc ]; then
+	omcLibOmc=/usr/local/openmodelica/lib/omc
+        if [ ! -d $omcLibOmc ]; then
+	    omcLibOmc=/usr/local/lib
+        fi
+    fi
+fi
+
 sed "s=^\(LDFLAGS.*\)$=\1 -lrt -L$omcLibOmc -lSimulationRuntimeC=" Makefile > Makefile.tmp
 
 mv Makefile.tmp Makefile
