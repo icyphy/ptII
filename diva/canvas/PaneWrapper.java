@@ -70,6 +70,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * transform will be unity. After creating, the coordinate transform
      * can be changed with setTransform(), and a background figure added
      * if desired with setBackground().
+     * @param pane The given pane
      */
     public PaneWrapper(CanvasPane pane) {
         super();
@@ -91,6 +92,8 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
     }
 
     /** Get the background figure.
+     * @return The background figure.   
+     * @see #setBackground(Figure)
      */
     public Figure getBackground() {
         return _background;
@@ -114,13 +117,16 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
         }
     }
 
-    /** Get the wrapped pane
+    /** Get the wrapped pane.
+     * @return The wrapped pane.
      */
     public CanvasPane getWrappedPane() {
         return _wrappedPane;
     }
 
     /** Get the clipping enabled flag.
+     * @return True if clipping is enabled.   
+     * @see #setClipEnabled(true)
      */
     public boolean isClipEnabled() {
         return _clipEnabled;
@@ -130,6 +136,8 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * on this figure will be passed to the wrapped pane; otherwise, the
      * whole pane will be treated as though it were a single figure, and
      * events passed to its event dispatcher, if it has one.
+     * @return the value of the enabled flag
+     * @see #setEnabled(true)
      */
     @Override
     public boolean isEnabled() {
@@ -223,7 +231,8 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * panes. If this PaneWrapper has a selection interactor, and
      * it is in the selection, then don't process the event. This
      * means that the outer pane gets to handle all events if
-     * the wrapper has already been selected.
+     * the wrapper has already been selected.</p>
+     * @param event The layer event to be processed.
      */
     protected void processLayerEvent(LayerEvent event) {
         if (!isEnabled()) {
@@ -268,6 +277,8 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
     }
 
     /** Set the background figure.
+     * @param background The background figure   
+     * @see #getBackground()
      */
     public void setBackground(Figure background) {
         if (background != null) {
@@ -286,6 +297,8 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * before painting the contents. This is on by default,
      * but if the pane is well-behaved, this should be turned
      * off as it seems to slow things down.
+     * @param flag The clipping enabled flag
+     * @see #setClipEnable()
      */
     public void setClipEnabled(boolean flag) {
         _clipEnabled = flag;
@@ -295,6 +308,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * on this figure will be passed to the wrapped pane; otherwise, the
      * whole pane will be treated as though it were a single figure, and
      * events passed to its event dispatcher, if it has one.
+     * @see #isEnabled()
      */
     @Override
     public void setEnabled(boolean flag) {
@@ -304,6 +318,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
     /** Set the transform of the internal pane, relative to the
      * external one. This call will not affect the background
      * figure.
+     * @param at The affine transform
      */
     public void setTransform(AffineTransform at) {
         repaint();

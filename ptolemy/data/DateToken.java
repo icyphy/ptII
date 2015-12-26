@@ -581,7 +581,7 @@ public class DateToken extends AbstractConvertibleToken implements
     }
 
     /** Set the time in milliseconds since January 1, 1970.
-     *  @paramn The time as a long value.
+     *  @param newValue The time as a long value.
      *  @see #getTimeInMilliseconds()
      */
     public void setTimeInMilliseconds(long newValue) {
