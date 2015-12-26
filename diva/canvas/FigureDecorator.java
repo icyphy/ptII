@@ -174,11 +174,14 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
      * be used by this method to initialize the new instance; however,
      * the new instance must <i>not</i> be wrapped around the figure,
      * since that should be done by the caller.
+     * @param f The figure
+     * @return The new instance of the figure decorator.
      */
     public abstract FigureDecorator newInstance(Figure f);
 
     /** Paint the figure. By default, this method simply forwards the
      * paint request to the contained figure.
+     * @param g The Graphics context
      */
     @Override
     public void paint(Graphics2D g) {
@@ -189,6 +192,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
 
     /** Set the child figure. If there is already a child
      * figure, remove it from this container.
+     * @param f The child figure.
      */
     public void setChild(Figure f) {
         if (_child != null) {

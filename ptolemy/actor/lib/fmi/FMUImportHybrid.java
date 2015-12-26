@@ -482,6 +482,9 @@ public class FMUImportHybrid extends FMUImport {
      * The FMU in this case can partially accept the step size.
      * We can check this looking at the internal state of the FMU.
      * _fmiDoStepHybrid() returns the step size actually accepted from the FMU.
+     * @param proposedTime The proposed time
+     * @return the new time
+     * @exception IllegalActionException If thrown by while doing the step.
      */    
     public Time getNextStepSize(Time proposedTime) throws IllegalActionException {
         int currentMicrostep = 0;
@@ -894,11 +897,10 @@ public class FMUImportHybrid extends FMUImport {
      * (all the dependent inputs are known) than we get this value, we
      * create a Token and we send the token on the correspondent output port.
      * 
-     * @throws IllegalActionException 
-     * @throws NoRoomException 
-     * 
+     * @throws IllegalActionException If thrown while getting the inputs, determining
+     * if the inputs are known or have a token
      */
-    protected void _getFmuOutputs() throws NoRoomException, IllegalActionException {
+    protected void _getFmuOutputs() throws IllegalActionException {
         
         Director director = getDirector();
         Time currentTime = director.getModelTime();
@@ -1039,11 +1041,10 @@ public class FMUImportHybrid extends FMUImport {
      * Iterate through the scalarVariables and set all the inputs
      * that are known.
      * 
-     * @throws IllegalActionException 
-     * @throws NoTokenException 
-     * 
+     * @throws IllegalActionException If thrown while getting the inputs, determining
+     * if the inputs are known or have a token
      */
-    protected void _setFmuInputs() throws NoTokenException, IllegalActionException {
+    protected void _setFmuInputs() throws IllegalActionException {
         for (Input input : _getInputs()) {
             if (input.port.getWidth() > 0 && input.port.isKnown(0)) {
                 if (input.port.hasToken(0)) {

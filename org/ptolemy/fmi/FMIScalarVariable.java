@@ -521,6 +521,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @param value The value of this variable.
+     *  @param isAbsent True if the variable can have the value of absent.
      *  @see #getBoolean(Pointer fmiComponent)
      */
     public void setBooleanHybrid(Pointer fmiComponent, boolean value,
@@ -538,6 +539,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @param value The value of this variable.
+     *  @param isAbsent True if the variable can have the value of absent.
      *  @see #getDouble(Pointer)
      */
     public void setDoubleHybrid(Pointer fmiComponent, Double value,
@@ -554,6 +556,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @param value The value of this variable.
+     *  @param isAbsent True if the variable can have the value of absent.
      *  @see #getInt(Pointer)
      */
     public void setIntHybrid(Pointer fmiComponent, Integer value,
@@ -573,6 +576,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @param value The value of this variable.
+     *  @param isAbsent True if the variable can have the value of absent.
      *  @see #getString(Pointer)
      */
     public void setStringHybrid(Pointer fmiComponent, String value,
