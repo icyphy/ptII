@@ -38,7 +38,14 @@
  *
  *  @module motionDetector
  *  @authors Edward A. Lee
+ *  @version $$Id$$
  */
+
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals exports, Java */
+/*jshint globalstrict: true */
+"use strict";
  
 ////////////////////////////////////////////////////////////
 //// Private variables.
@@ -75,7 +82,7 @@ exports.filter = function(image, options) {
     }
     // The second (null) argument declines to give a destination image.
     return filter.filter(image, null);
-}
+};
 
 /** Return a percentage of area covered by motion in the most recently provided
  *  image, where 0 means no motion and 100 means full image motion.
@@ -83,7 +90,7 @@ exports.filter = function(image, options) {
  */
 exports.area = function() {
     return filter.getMotionArea();
-}
+};
 
 /** Return an array of two numbers giving the center of gravity of
  *  the detected motion in pixel coordinates, or return null if no
@@ -96,4 +103,4 @@ exports.cog = function() {
         return [cog.x, cog.y];
     }
     return null;
-}
+};

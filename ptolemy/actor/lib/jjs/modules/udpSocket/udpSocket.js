@@ -1,5 +1,3 @@
-// Below is the copyright agreement for the Ptolemy II system.
-//
 // Copyright (c) 2015 The Regents of the University of California.
 // All rights reserved.
 //
@@ -21,15 +19,18 @@
 // PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
 // CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
 // ENHANCEMENTS, OR MODIFICATIONS.
-//
-// Ptolemy II includes the work of others, to see those copyrights, follow
-// the copyright link on the splash page or see copyright.htm.
+
 /**
  * Module supporting UDP sockets.
  * @module udpSocket
- * @authors: Hokeun Kim
+ * @author Hokeun Kim
+ * @version $$Id$$
  */
+
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
 /*globals Java, exports, require, util */
+/*jshint globalstrict: true */
 "use strict";
 
 var UDPSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.udpSocket.UDPSocketHelper');

@@ -1,9 +1,38 @@
+// Copyright (c) 2015 The Regents of the University of California.
+// All rights reserved.
+
+// Permission is hereby granted, without written agreement and without
+// license or royalty fees, to use, copy, modify, and distribute this
+// software and its documentation for any purpose, provided that the above
+// copyright notice and the following two paragraphs appear in all copies
+// of this software.
+
+// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+
+// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 /**
  * Module supporting serial port access.
  *
  * @module socket
- * @authors: Edward A. Lee, Rene Vivanco, and Christopher Brooks
+ * @author Edward A. Lee, Rene Vivanco, and Christopher Brooks
+ * @version $$Id$$
  */
+
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals exports, Java, require, util */
+/*jshint globalstrict: true */
+"use strict";
 
 var SerialHelper = Java.type('ptolemy.actor.lib.jjs.modules.serial.SerialHelper');
 var CommPortIdentifier = Java.type('gnu.io.CommPortIdentifier');
@@ -44,7 +73,7 @@ exports.hostSerialPorts = function() {
  */
 exports.SerialPort = function(portName, ownerName, timeout, options) {
     this.helper = new SerialHelper(this, portName, ownerName, timeout, options);
-}
+};
 
 util.inherits(exports.SerialPort, EventEmitter);
 

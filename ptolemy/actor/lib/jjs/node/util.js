@@ -24,6 +24,12 @@
 // --- Removed deprecated functions and the deprecate function that deprecates them.
 // FIXME: Test all functions.
 
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals console, exports, process */
+/*jshint globalstrict: true */
+"use strict";
+
 var formatRegExp = /%[sdj%]/g;
 exports.format = function(f) {
   if (!isString(f)) {
@@ -490,7 +496,7 @@ function isNull(arg) {
 exports.isNull = isNull;
 
 function isNullOrUndefined(arg) {
-  return arg == null;
+  return arg === null;
 }
 exports.isNullOrUndefined = isNullOrUndefined;
 

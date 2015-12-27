@@ -19,7 +19,11 @@
 // OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE
 // USE OR OTHER DEALINGS IN THE SOFTWARE.
 
-'use strict';
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals console, module, process, require */
+/*jshint globalstrict: true */
+"use strict";
  
 var domain;
 var util = require('util');

@@ -28,12 +28,13 @@
 
 /**  Map Manager
  *  @author Matt Weber
- *  @version $$Id$$                                                        */
+ *  @version $$Id$$
+ */
 
 // Stop extra messages from jslint and jshint.  Note that there should
 // be no space between the / and the * and global. See
 // https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */
-/*globals addInputHandler, error, exports, get, input, output, parameter, require, send */
+/*globals addInputHandler, console, error, exports, get, input, output, parameter, require, send */
 /*jshint globalstrict: true*/
 'use strict';
 
@@ -86,7 +87,7 @@ function _simpleHashToString(hash) {
 		text += ", ";
 	    }
 	}
-	text += " }"
+	text += " }";
 
 	return text;
     }();
@@ -95,12 +96,11 @@ function _simpleHashToString(hash) {
 //Assumes the key for the hash is a specially formatted string
 function _keyedHashToString(hash) {
 
-
     //This closure exists to protect the scope of "text" and i and hashNames when there is a recursive call
     //from the toString method below.
     return function() {
 	var text = "{ ";
-	hashNames = Object.keys(hash);
+	var hashNames = Object.keys(hash);
 
 	for (var i = 0; i < hashNames.length; i++  ) {
 	    text += _keyToStrings(hashNames[i]) + ": " + hash[hashNames[i]].toString();
@@ -109,7 +109,7 @@ function _keyedHashToString(hash) {
 	    }
 	}
 
-	text += " }"
+	text += " }";
 	return text;
     }();
 }
@@ -123,12 +123,12 @@ function _stringsToKey( stringArray) {
 	throw "Incorrect arguments to _stringsToKey. Input is not an array";
     }
     for ( x in stringArray) {
-	if (! (typeof x === "string")) {
-	    throw "Incorrect arguments to _stringsToKey. Input is not an array of strings."
+	if ( typeof x !== "string") {
+	    throw "Incorrect arguments to _stringsToKey. Input is not an array of strings.";
 	}
     }
     if ( stringArray.length < 2) {
-	throw "Incorrect arguments to _stringsToKey."
+	throw "Incorrect arguments to _stringsToKey.";
     }
 
     var key = "";
@@ -152,7 +152,7 @@ function _stringsToKey( stringArray) {
 //argument is a string formatted with "x_" for arguments and "  " as a delimiter
 //returns an array of strings
 function _keyToStrings( key) {
-    if (! ( typeof key === "string" ) ) {
+    if ( typeof key !== "string") {
 	throw "Incorrect arguments to _keyToStrings.";
     }
 
@@ -209,7 +209,7 @@ function _keyToStrings( key) {
 
 function __coordinateTransformationKey( domainName, codomainName ) {
     if (! ( typeof domainName === "string" && typeof codomainName === "string" )) {
-	throw "Incorrect arguments to _coordinateTransformationKey"
+	throw "Incorrect arguments to _coordinateTransformationKey";
     }
 
     return _stringsToKey([domainName, codomainName ]);
@@ -230,7 +230,7 @@ exports.SpaceTypeEnum = {
     METRIC : "Metric",
     TOPOLOGICAL : "Topological",
     SET : "Set"
-}
+};
 
 
 
@@ -253,7 +253,7 @@ exports.localRepoToJSONString = function() {
     };
 
     return JSON.stringify(data);
-}
+};
 
 
 /**
@@ -263,7 +263,7 @@ exports.localRepoToJSONString = function() {
  */
 exports.mapsToJSONString = function() {
     return JSON.stringify(maps);
-}
+};
 
 /**
  * Returns the current state of the global coordinate transformations storage as a JSON string.
@@ -272,7 +272,7 @@ exports.mapsToJSONString = function() {
  */
 exports.coordinateTransformationsToJSONString = function() {
     return JSON.stringify(coordinateTransformations);
-}
+};
 
 
 /**
@@ -282,7 +282,7 @@ exports.coordinateTransformationsToJSONString = function() {
  */
 exports.entitiesToJSONString = function() {
     return JSON.stringify(entities);
-}
+};
 
 //******************************************************************************************
 //Public toString functions for MapManager hashes
@@ -295,7 +295,7 @@ exports.entitiesToJSONString = function() {
  */
 exports.mapsToString = function() {
     return _simpleHashToString(maps);
-}
+};
 
 /**
  * Returns the current state of the global coordinate transformations storage as a string.
@@ -304,7 +304,7 @@ exports.mapsToString = function() {
  */
 exports.coordinateTransformationsToString = function() {
     return _keyedHashToString(coordinateTransformations);
-}
+};
 
 
 /**
@@ -314,7 +314,7 @@ exports.coordinateTransformationsToString = function() {
  */
 exports.entitiesToString = function() {
     return _simpleHashToString(entities);
-}
+};
 
 //******************************************************************************************
 //Data Control Functions
@@ -331,7 +331,7 @@ exports.clearRepo = function() {
     coordinateTransformations= {};
     entities = {};
     return;
-}
+};
 
 
 //Todo - Validate the input map before replacing the repo.
@@ -346,7 +346,7 @@ exports.clearRepo = function() {
  * @returns {boolean} if the input was an acceptably formatted repo.
  */
 exports.replaceRepo = function(repo) {
-    if (! (typeof name === "string") ) {
+    if (typeof name !== "string") {
 	throw "Incorrect arguments to replaceRepo.";
     }
 
@@ -368,11 +368,9 @@ exports.replaceRepo = function(repo) {
 	maps = receivedRepo.maps;
 	coordinateTransformations= receivedRepo.coordinateTransformations;
 	entities = receivedRepo.entities;
-	return true
+	return true;
     }
-
-    ;
-}
+};
 
 //******************************************************************************************
 //Entity Specific functions
@@ -385,7 +383,7 @@ exports.replaceRepo = function(repo) {
  */
 
 function Entity(name) {
-    if (! (typeof name === "string") ) {
+    if (typeof name !== "string") {
 	throw "Incorrect arguments to Entity constructor.";
     }
 
@@ -397,7 +395,7 @@ function Entity(name) {
 
     this._key = function() {
 	return this.name;
-    }
+    };
 
     /**
      * @function
@@ -405,8 +403,7 @@ function Entity(name) {
      */
     this.toString = function() {
 	return "{ " + "name: " + this.name + " }";
-    }
-
+    };
 
     /**
      * @function
@@ -414,8 +411,7 @@ function Entity(name) {
      */
     this.aliasesToString = function() {
 	return _simpleHashToString(this.aliases);
-    }
-
+    };
 
     //Todo should this be registerAlias instead? What counts as registering or adding?
     /**
@@ -446,7 +442,7 @@ function Entity(name) {
 	    this.aliases[alias._key()] = true;
 	    return true;
 	}
-    }
+    };
 
     /**
      * Specify the location of an entity that is on a map
@@ -474,7 +470,7 @@ function Entity(name) {
 	    this.placements[placement._key()] = placement;
 	    return true;
 	}
-    }
+    };
 
     /**
      * Getter for placements
@@ -483,7 +479,7 @@ function Entity(name) {
      */
     this.getPlacements = function(){
     	return this.placements;
-    }
+    };
 
     /**
      * Getter for name
@@ -492,7 +488,7 @@ function Entity(name) {
      */
     this.getName = function(){
     	return this.name;
-    }
+    };
 
     /**
      * Specify the location of an entity that is on a map
@@ -520,9 +516,7 @@ function Entity(name) {
 	    this.occupancies[occupancy._key()] = occupancy;
 	    return true;
 	}
-    }
-
-
+    };
 }
 
 exports.Entity = Entity;
@@ -545,7 +539,7 @@ exports.registerEntity = function(entity) {
 	entities[entity._key()] = entity;
 	return true;
     }
-}
+};
 
 
 
@@ -626,9 +620,9 @@ exports.CoordinateSystem =  CoordinateSystem;
 
 
 exports.registerCoordinateTransformation = function registerCoordinateTransformation( domainName, codomainName, transformation ) {
-    if (! ( typeof domainName === "string" && typeof codomainName === "string"
-	    && typeof transformation === "function" )  ) {
-	throw "Incorrect arguments to addCoordinateTransformation constructor."
+    if (! ( typeof domainName === "string" && typeof codomainName === "string" &&
+            typeof transformation === "function" )  ) {
+	throw "Incorrect arguments to addCoordinateTransformation constructor.";
     }
 
     var key = __coordinateTransformationKey( domainName, codomainName );
@@ -639,7 +633,7 @@ exports.registerCoordinateTransformation = function registerCoordinateTransforma
 	coordinateTransformations[key] = transformation;
 	return true;
     }
-}
+};
 
 /**
  * Retrieve a previously registered coordinate transformation from the global storage.
@@ -651,13 +645,13 @@ exports.registerCoordinateTransformation = function registerCoordinateTransforma
  */
 exports.getCoordinateTransformation = function getCoordinateTransformation( domainName, codomainName) {
     if (! ( typeof domainName === "string" && typeof codomainName === "string" )) {
-	throw "Incorrect arguments to getCoordinateTransformation constructor."
+	throw "Incorrect arguments to getCoordinateTransformation constructor.";
     }
 
     var key = __coordinateTransformationKey( domainName, codomainName );
 
     return coordinateTransformations[ key ];
-}
+};
 
 //Todo, think through the possible messy complications of unregistering a coordinate transformation.
 //This might be impossible.
@@ -690,12 +684,11 @@ function Map(mapName, spaceType, coordinateSystem) {
 
     this._key = function() {
 	return mapName;
-    }
+    };
 
     this.mapEntitiesToString = function() {
 	return _simpleHashToString(this.mapEntities);
-    }
-
+    };
 
     /**
      * @function
@@ -703,7 +696,7 @@ function Map(mapName, spaceType, coordinateSystem) {
      */
     this.toString = function() {
 	return "{ mapName: " + mapName + ", spaceType: " + this.spaceType + ", coordinateSystem: " + this.coordinateSystem + " }";
-    }
+    };
 
     /**
      * Attach an entity to this map. This does not entail giving it a position.
@@ -711,10 +704,9 @@ function Map(mapName, spaceType, coordinateSystem) {
      * @param {Entity} entity - The entity to be attached to this map
      * @returns {boolean} if successful returns true, false otherwise.
      */
-
     this.addEntity = function(entity) {
 	if ( ! (entity instanceof Entity )  ) {
-	    throw "Incorrect arguments to Map.addEntity."
+	    throw "Incorrect arguments to Map.addEntity.";
 	}
 
 	if (! entities.hasOwnProperty(entity._key()) ) {
@@ -734,7 +726,7 @@ function Map(mapName, spaceType, coordinateSystem) {
 	    entity.containingMap = this._key();
 	    return true;
 	}
-    }
+    };
 
 
     //Todo: should it be allowed to remove an entity?
@@ -748,9 +740,8 @@ function Map(mapName, spaceType, coordinateSystem) {
      */
     this.removeEntity = function(entity) {
 	if ( ! (entity instanceof Entity )  ) {
-	    throw "Incorrect arguments to Map.addEntity."
+	    throw "Incorrect arguments to Map.addEntity.";
 	}
-
 
 	if (! entities.hasOwnProperty(entity._key()) ) {
 	    throw "Cannot remove an unregistered entity from the map" + entity.toString();
@@ -769,7 +760,7 @@ function Map(mapName, spaceType, coordinateSystem) {
 	    entity.containingMap = null;
 	    return true;
 	}
-    }
+    };
 
 
     /**
@@ -781,67 +772,66 @@ function Map(mapName, spaceType, coordinateSystem) {
      * @returns {string} An SVG image displaying the contents of the map.
      */
     this.mapEntitiesToSVG = function(width, height){
-    if(  ! ((typeof width === "number") && (typeof height === "number") ) ){
-    	throw "Incorrect arguments to mapEntitiesToSVG";
-    }
+        if(  ! ((typeof width === "number") && (typeof height === "number") ) ){
+    	    throw "Incorrect arguments to mapEntitiesToSVG";
+        }
 
-    console.log("function is called");
+        console.log("function is called");
 
-    var svgString = "";
+        var svgString = "";
 
-    //Set xml version
-    svgString += '<?xml version="1.0"?>\n';
+        //Set xml version
+        svgString += '<?xml version="1.0"?>\n';
 
-    //Add a comment to show this program created the image
-    svgString += '<!-- Created by mapManager -->\n';
+        //Add a comment to show this program created the image
+        svgString += '<!-- Created by mapManager -->\n';
 
-    //Set width and height
-    svgString +='<svg viewbox="0 0 100 100" preserveAspectRatio="xMidYMid meet" '
-    svgString += 'width="' + width.toString() +  '" height="' + height.toString() + '">\n';
+        //Set width and height
+        svgString +='<svg viewbox="0 0 100 100" preserveAspectRatio="xMidYMid meet" ';
+        svgString += 'width="' + width.toString() +  '" height="' + height.toString() + '">\n';
 
-    //Map boarder
-    svgString += '<rect width="100" height="100" x="0" y="0" ' 
-    svgString += 'style="fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)" fill-opacity="0.1" />\n'
+        //Map boarder
+        svgString += '<rect width="100" height="100" x="0" y="0" ';
+        svgString += 'style="fill:rgb(0,0,0);stroke-width:1;stroke:rgb(0,0,0)" fill-opacity="0.1" />\n';
 
-    console.log(this.mapEntities);
+        console.log(this.mapEntities);
 
-    //SVG content
-    for( var eKey in this.mapEntities){
-    	var e = entities[eKey];
-    	var placements = e.getPlacements();
+        //SVG content
+        for( var eKey in this.mapEntities){
+    	    var e = entities[eKey];
+    	    var placements = e.getPlacements();
 
-    	console.log("eKey is:" + eKey);
-    	console.log("e is:" + e);
-    	console.log("placements is:" + placements);
-    	console.log("placement properties:" + Object.getOwnPropertyNames(e.getPlacements));
-    	for( var pKey in placements){
+    	    console.log("eKey is:" + eKey);
+    	    console.log("e is:" + e);
+    	    console.log("placements is:" + placements);
+    	    console.log("placement properties:" + Object.getOwnPropertyNames(e.getPlacements));
+    	    for( var pKey in placements){
     		var p = placements[pKey];
-    		console.log("P is:" + p)
+    		console.log("P is:" + p);
     		var center = p.getCenter();
     		//Only consider 2D coordinates
     		console.log("center is" + center);
     		if(center.length == 2 ){
 
-    			//TODO fix this! This is wildly incorrect because of different coord systems for svg
-    			//I'm just doing it now for testing.
-    			var cx = center[0];
-    			var cy = center[1];
-   			    svgString += '<circle cx="' + cx.toString() +'" cy="' + cy.toString() + '" r=".5"/>\n';
-   			    svgString += '<text x="' + cx.toString() +'" y="' + (cy-1).toString() 
-   			    + '" font-family="Verdana" font-size="2">\n'; //note the -1 y
-   			    
-   			    svgString += e.getName() + '\n';
-    			svgString += '</text>\n';
+    		    //TODO fix this! This is wildly incorrect because of different coord systems for svg
+    		    //I'm just doing it now for testing.
+    		    var cx = center[0];
+    		    var cy = center[1];
+   		    svgString += '<circle cx="' + cx.toString() +'" cy="' + cy.toString() + '" r=".5"/>\n';
+   		    svgString += '<text x="' + cx.toString() +'" y="' + (cy-1).toString() +
+   			'" font-family="Verdana" font-size="2">\n'; //note the -1 y
+   			
+   		    svgString += e.getName() + '\n';
+    		    svgString += '</text>\n';
     		}
-    	}
-    }
-    
-    //close SVG
-    svgString +='</svg>';
-    
-    return svgString;
-    }
-
+    	    }
+        }
+        
+        //close SVG
+        svgString +='</svg>';
+        
+        return svgString;
+    };
 }
 
 exports.Map = Map;
@@ -858,8 +848,8 @@ exports.registerMap = function(map) {
 	throw "Incorrect arguments to registerMap.";
     }
 
-    if (map == undefined) {
-	throw "undefined argument to registerMap."
+    if (map === undefined) {
+	throw "undefined argument to registerMap.";
     }
 
     if (maps.hasOwnProperty( map._key()) ) {
@@ -868,7 +858,7 @@ exports.registerMap = function(map) {
 	maps[map._key()] = map;
 	return true;
     }
-}
+};
 
 
 //******************************************************************************************
@@ -883,16 +873,15 @@ exports.registerMap = function(map) {
  */
 function MapSource(source) {
 
-    if (! ( typeof source === "string" ) ) {
+    if (typeof source !== "string") {
 	throw "Incorrect arguments to MapSource constructor";
     }
 
     this.name = source;
 
-
     this._key = function() {
 	return this.name;
-    }
+    };
 }
 
 exports.MapSource = MapSource;
@@ -919,7 +908,7 @@ function ObservationMetadata(provenance, timestamp ) {
 
     this._key = function() {
 	return _stringsToKey( [ provenance._key(), this.timestamp.toString() ]);
-    }
+    };
 }
 
 exports.ObservationMetadata = ObservationMetadata;
@@ -945,8 +934,8 @@ var _globalPlacementID = 0;
  */
 function Placement(metadata, center, pose, shape ) {
 
-    if (! ( ( metadata instanceof ObservationMetadata ) && (center instanceof Array)
-	    && (pose instanceof Quaternion ) && (shape instanceof Array)) ) {
+    if (! ( ( metadata instanceof ObservationMetadata ) && (center instanceof Array) &&
+	    (pose instanceof Quaternion ) && (shape instanceof Array)) ) {
 	throw "Incorrect arguments to Placment constructor";
     }
 
@@ -958,7 +947,7 @@ function Placement(metadata, center, pose, shape ) {
 
     this._key = function() {
 	return _stringsToKey( [ this._placementID.toString(), this.metadata._key() ] );
-    }
+    };
 
     /**
      * Getter for center
@@ -967,7 +956,7 @@ function Placement(metadata, center, pose, shape ) {
      */
     this.getCenter = function(){
     	return this.center;
-    }
+    };
 }
 
 exports.Placement = Placement;
@@ -1024,7 +1013,7 @@ function Occupancy(metadata, grid ) {
 
     this._key = function() {
 	return _stringsToKey( [ this._occupancyID.toString(), this.metadata._key() ] );
-    }
+    };
 
 }
 
