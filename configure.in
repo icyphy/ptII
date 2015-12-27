@@ -6259,17 +6259,17 @@ PTSLF4J_NOP_JAR=""
 if test -d "$WEBCAMCAPTURE_USER_DIR" -o -d "$XBJLIB_USER_DIR"; then
     AC_MSG_CHECKING([for slf4-api])
     AC_ARG_WITH(slf4j-api, [  --with-slf4j-api=SLF4J_API_JAR     use slf4j-api SLF4J_API_JAR
-                          defaults to \$PTII/lib/slf4j-api-1.7.12.jar],
+                          defaults to \$PTII/lib/slf4j-api-1.7.13.jar],
 	PTSLF4J_API_JAR=$withval,
-	PTSLF4J_API_JAR=$PTII/lib/slf4j-api-1.7.12.jar)
+	PTSLF4J_API_JAR=$PTII/lib/slf4j-api-1.7.13.jar)
     if test -f "$PTSLF4J_API_JAR"; then
         PT_MSG_RESULT([$PTSLF4J_API_JAR])
         updateClasspath "$PTSLF4J_API_JAR"
         AC_MSG_CHECKING([for slf4-nop])
         AC_ARG_WITH(slf4j-nop, [  --with-slf4j-nop=SLF4J_NOP_JAR     use slf4j-nop SLF4J_NOP_JAR
-                              defaults to \$PTII/lib/slf4j-nop-1.7.12.jar],
+                              defaults to \$PTII/lib/slf4j-nop-1.7.13.jar],
 	    PTSLF4J_NOP_JAR=$withval,
-	    PTSLF4J_NOP_JAR=$PTII/lib/slf4j-nop-1.7.12.jar)
+	    PTSLF4J_NOP_JAR=$PTII/lib/slf4j-nop-1.7.13.jar)
         if test -f "$PTSLF4J_NOP_JAR"; then
             PT_MSG_RESULT([$PTSLF4J_NOP_JAR])
             updateClasspath "$PTSLF4J_NOP_JAR"
