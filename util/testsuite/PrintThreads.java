@@ -117,6 +117,18 @@ public class PrintThreads {
      *  @return A string naming all the threads.
      */
     public static String allThreads(boolean indicateEventDispatchThread) {
+        return PrintThreads.allThreads(indicateEventDispatchThread, null);
+    }
+
+    /** Return a string containing all the threads in the JVM
+     *  who are members of ThreadGroups which are descendants of the
+     *  root ThreadGroup and if they hold the lock on a monitor object.
+     *  @param indicateEventDispatchThread true if we should indicate
+     *  which thread is the Swing Event Dispatch Thread.
+     *  @param monitor The monitor to check if the Thread holds the lock
+     *  @return A string naming all the threads.
+     */
+    public static String allThreads(boolean indicateEventDispatchThread, Object monitor) {
         ThreadGroup rootGroup = null;
 
         try {
@@ -143,7 +155,11 @@ public class PrintThreads {
         rootGroup.enumerate(threads);
 
         for (Thread thread : threads) {
-            results.append(toThreadDescription(thread) + "\n");
+            results.append(toThreadDescription(thread));
+            if (monitor != null) {
+                results.append( " holds lock: " + thread.holdsLock(monitor));
+            }
+            results.append("\n");
         }
 
         return results.toString();

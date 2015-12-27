@@ -709,6 +709,13 @@ public class FMUFile {
             zipInputStream = new ZipInputStream(new BufferedInputStream(
                     fileInputStream));
             ZipEntry entry;
+            // Note that calling getNextEntry() could throw an error:
+            // "java.util.zip.ZipException: invalid entry CRC (expected
+            // 0x0 but got 0xcec8e25e)" This is because getNextEntry
+            // does not ignore these problems.  See
+            // http://bugs.java.com/view_bug.do?bug_id=4879507 Note
+            // that there is a comment that the Java implementation
+            // should implement the same algorithm as unzip.
             while ((entry = zipInputStream.getNextEntry()) != null) {
                 // System.out.println("Extracting: " + entry);
                 String entryName = entry.getName();
