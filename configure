@@ -1830,9 +1830,9 @@ Optional Packages:
   --with-waba=DIR       use PalmOS WABA from DIR,
                           defaults to \$PTII/vendors/misc/waba/wabasdk
   --with-slf4j-api=SLF4J_API_JAR     use slf4j-api SLF4J_API_JAR
-                          defaults to \$PTII/lib/slf4j-api-1.7.12.jar
+                          defaults to \$PTII/lib/slf4j-api-1.7.13.jar
   --with-slf4j-nop=SLF4J_NOP_JAR     use slf4j-nop SLF4J_NOP_JAR
-                              defaults to \$PTII/lib/slf4j-nop-1.7.12.jar
+                              defaults to \$PTII/lib/slf4j-nop-1.7.13.jar
   --with-webcam-capture=WEBCAMCAPTURE_JAR     use webcam-capture WEBCAMCAPTURE_JAR
                           defaults to \$PTII/lib/webcam-capture-0.3.10.jar
   --with-xbjlib=DIR       use Java Serial Port Interface rxtx from DIR,
@@ -13620,7 +13620,7 @@ $as_echo_n "checking for slf4-api... " >&6; }
 if test "${with_slf4j_api+set}" = set; then :
   withval=$with_slf4j_api; PTSLF4J_API_JAR=$withval
 else
-  PTSLF4J_API_JAR=$PTII/lib/slf4j-api-1.7.12.jar
+  PTSLF4J_API_JAR=$PTII/lib/slf4j-api-1.7.13.jar
 fi
 
     if test -f "$PTSLF4J_API_JAR"; then
@@ -13635,7 +13635,7 @@ $as_echo_n "checking for slf4-nop... " >&6; }
 if test "${with_slf4j_nop+set}" = set; then :
   withval=$with_slf4j_nop; PTSLF4J_NOP_JAR=$withval
 else
-  PTSLF4J_NOP_JAR=$PTII/lib/slf4j-nop-1.7.12.jar
+  PTSLF4J_NOP_JAR=$PTII/lib/slf4j-nop-1.7.13.jar
 fi
 
         if test -f "$PTSLF4J_NOP_JAR"; then
