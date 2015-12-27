@@ -24,29 +24,41 @@
 //
 // Ptolemy II includes the work of others, to see those copyrights, follow
 // the copyright link on the splash page or see copyright.htm.
-'use strict';
+
+/**
+ * 
+ * @module objectAssign
+ * @author Edward A. Lee
+ * @version $$Id$$
+ */
+
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals module */
+/*jshint globalstrict: true */
+"use strict";
 
 function ToObject(val) {
-	if (val == null) {
-		throw new TypeError('Object.assign cannot be called with null or undefined');
-	}
+    if (val === null) {
+	throw new TypeError('Object.assign cannot be called with null or undefined');
+    }
 
-	return Object(val);
+    return Object(val);
 }
 
 module.exports = Object.assign || function (target, source) {
-	var from;
-	var keys;
-	var to = ToObject(target);
+    var from;
+    var keys;
+    var to = ToObject(target);
 
-	for (var s = 1; s < arguments.length; s++) {
-		from = arguments[s];
-		keys = Object.keys(Object(from));
+    for (var s = 1; s < arguments.length; s++) {
+	from = arguments[s];
+	keys = Object.keys(Object(from));
 
-		for (var i = 0; i < keys.length; i++) {
-			to[keys[i]] = from[keys[i]];
-		}
+	for (var i = 0; i < keys.length; i++) {
+	    to[keys[i]] = from[keys[i]];
 	}
+    }
 
-	return to;
+    return to;
 };

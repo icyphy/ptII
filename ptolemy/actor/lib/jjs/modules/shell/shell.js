@@ -24,12 +24,18 @@
 //
 // Ptolemy II includes the work of others, to see those copyrights, follow
 // the copyright link on the splash page or see copyright.htm.
+
 /**
  * Module supporting shell commands.
  * @module shell
- * @authors: Armin Wasicek
+ * @authors Armin Wasicek
+ * @version $$Id$$
  */
+
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
 /*globals Java, exports, require, util */
+/*jshint globalstrict: true */
 "use strict";
 
 var EventEmitter = require('events').EventEmitter;

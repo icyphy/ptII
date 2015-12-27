@@ -1,3 +1,25 @@
+// Copyright (c) 2015 The Regents of the University of California.
+// All rights reserved.
+
+// Permission is hereby granted, without written agreement and without
+// license or royalty fees, to use, copy, modify, and distribute this
+// software and its documentation for any purpose, provided that the above
+// copyright notice and the following two paragraphs appear in all copies
+// of this software.
+
+// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+
+// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 /**
  * Module supporting web sockets.
  * This module defines three classes, Client, Server, and Socket.
@@ -11,8 +33,14 @@
  * of MIME types supported for sending or receiving messages.
  *
  * @module webSocket
- * @authors: Hokeun Kim and Edward A. Lee
+ * @authors Hokeun Kim and Edward A. Lee
  */
+
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals exports, Java, require, util */
+/*jshint globalstrict: true */
+"use strict";
 
 var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
 var WebSocketServerHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketServerHelper');
@@ -26,7 +54,7 @@ var EventEmitter = require('events').EventEmitter;
  */
 exports.supportedReceiveTypes = function() {
     return WebSocketHelper.supportedReceiveTypes();
-}
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 //// supportedSendTypes
@@ -36,7 +64,7 @@ exports.supportedReceiveTypes = function() {
  */
 exports.supportedSendTypes = function() {
     return WebSocketHelper.supportedSendTypes();
-}
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 //// Client
@@ -98,15 +126,15 @@ exports.supportedSendTypes = function() {
  */
 exports.Client = function(options) {
     options = options || {};
-    this.port = options['port'] || 80;
-    this.host = options['host'] || 'localhost';
-    this.receiveType = options['receiveType'] || 'application/json';
-    this.sendType = options['sendType'] || 'application/json';
-    this.connectTimeout = options['connectTimeout'] || 5000;
-    this.numberOfRetries = options['numberOfRetries'] || 1;
-    this.timeBetweenRetries = options['timeBetweenRetries'] || 100;
-    this.discardMessagesBeforeOpen = options['discardMessagesBeforeOpen'] || false;
-    this.throttleFactor = options['throttleFactor'] || 0;
+    this.port = options.port || 80;
+    this.host = options.host || 'localhost';
+    this.receiveType = options.receiveType || 'application/json';
+    this.sendType = options.sendType || 'application/json';
+    this.connectTimeout = options.connectTimeout || 5000;
+    this.numberOfRetries = options.numberOfRetries || 1;
+    this.timeBetweenRetries = options.timeBetweenRetries || 100;
+    this.discardMessagesBeforeOpen = options.discardMessagesBeforeOpen || false;
+    this.throttleFactor = options.throttleFactor || 0;
     this.helper = WebSocketHelper.createClientSocket(
         this,
         this.host,
@@ -118,7 +146,7 @@ exports.Client = function(options) {
         this.timeBetweenRetries,
         this.discardMessagesBeforeOpen,
         this.throttleFactor);
-}
+};
 util.inherits(exports.Client, EventEmitter);
 
 /** Send data over the web socket.
@@ -129,12 +157,12 @@ util.inherits(exports.Client, EventEmitter);
 exports.Client.prototype.send = function(data) {
     if (this.sendType == 'application/json') {
         this.helper.send(JSON.stringify(data));
-    } else if (this.sendType.search(/text\//) == 0) {
+    } else if (this.sendType.search(/text\//) === 0) {
         this.helper.send(data.toString());
     } else {
         this.helper.send(data);
     }        
-}
+};
 
 /** Close the current connection with the server.
  *  If there is data that was passed to send() but has not yet
@@ -143,7 +171,7 @@ exports.Client.prototype.send = function(data) {
  */
 exports.Client.prototype.close = function() {
     this.helper.close();
-}
+};
 
 /** Notify this object of a received message from the socket.
  *  This function attempts to interpret the message according to the
@@ -219,25 +247,25 @@ exports.Client.prototype._notifyIncoming = function(message) {
  *  @param options The options.
  */
 exports.Server = function(options) {
-    this.port = options['port'] || 80;
-    this.hostInterface = options['hostInterface'] || 'localhost';
-    this.receiveType = options['receiveType'] || 'application/json';
-    this.sendType = options['sendType'] || 'application/json';
+    this.port = options.port || 80;
+    this.hostInterface = options.hostInterface || 'localhost';
+    this.receiveType = options.receiveType || 'application/json';
+    this.sendType = options.sendType || 'application/json';
     this.helper = WebSocketServerHelper.createServer(
             this, this.hostInterface, this.port, this.receiveType, this.sendType
             );
-}
+};
 util.inherits(exports.Server, EventEmitter);
 
 /** Start the server. */
 exports.Server.prototype.start = function() {
     this.helper.startServer();
-}
+};
 
 /** Stop the server. */
 exports.Server.prototype.close = function() {
     this.helper.closeServer();
-}
+};
 
 /** Notify that a handshake was successful and a websocket has been created.
  *  This is called by the helper class is not meant to be called by the JavaScript
@@ -252,7 +280,7 @@ exports.Server.prototype.socketCreated = function(serverWebSocket) {
     var socket = new exports.Socket(
             serverWebSocket, this.receiveType, this.sendType);
     this.emit('connection', socket);
-}
+};
 
 /////////////////////////////////////////////////////////////////
 //// Socket
@@ -271,7 +299,7 @@ exports.Socket = function(serverWebSocket, receiveType, sendType) {
             this, serverWebSocket, receiveType, sendType);
     this.receiveType = receiveType;
     this.sendType = sendType;
-}
+};
 util.inherits(exports.Socket, EventEmitter);
 
 /** Close the socket. Normally, this would be called on the client side,
@@ -279,13 +307,13 @@ util.inherits(exports.Socket, EventEmitter);
  */
 exports.Socket.prototype.close = function() {
     this.helper.close();
-}
+};
 
 /** Return true if the socket is open.
  */
 exports.Socket.prototype.isOpen = function() {
     return this.helper.isOpen();
-}
+};
 
 /** Notify this object of a received message from the socket.
  *  This function attempts to parse the message as JSON and then
@@ -314,9 +342,9 @@ exports.Socket.prototype._notifyIncoming = function(message) {
 exports.Socket.prototype.send = function(data) {
     if (this.sendType == 'application/json') {
         this.helper.send(JSON.stringify(data));
-    } else if (this.sendType.search(/text\//) == 0) {
+    } else if (this.sendType.search(/text\//) === 0) {
         this.helper.send(data.toString());
     } else {
         this.helper.send(data);
     }        
-}
+};

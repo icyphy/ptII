@@ -1,3 +1,25 @@
+// Copyright (c) 2015 The Regents of the University of California.
+// All rights reserved.
+
+// Permission is hereby granted, without written agreement and without
+// license or royalty fees, to use, copy, modify, and distribute this
+// software and its documentation for any purpose, provided that the above
+// copyright notice and the following two paragraphs appear in all copies
+// of this software.
+
+// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+
+// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+
 /**
  * Module to simulate selected functions of a Hue bridge.
  * 
@@ -6,10 +28,14 @@
  * information for the bridge.  
  *
  * @module mockHueBridge
- * @authors Elizabeth Osyk
- * @copyright http://terraswarm.org/accessors/copyright.txt
+ * @author Elizabeth Osyk
+ * @version $$Id$$
  */
 
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals console, exports, Java, require, transitionTime */
+/*jshint globalstrict: true */
 "use strict";
 
 var EventEmitter = require('events').EventEmitter;
@@ -136,7 +162,7 @@ exports.MockHueBridge = (function(){
     	}
     	
     	return new MockHueBridgeConnection(bridgeID);
-    };
+    }
     
 	/** Construct an instance of a MockHueBridgeConnection object.  
 	 *  This object remembers the bridgeID so the caller does not have to 
@@ -193,8 +219,8 @@ exports.MockHueBridge = (function(){
       		  return helper.getState(bridgeID).lights[lightID];
       		  
       	  }
-      	  */ if ((method == "POST" || method == "PUT") 
-      			  && URIpath.match(expression1)){
+      	 */ if ((method == "POST" || method == "PUT") &&
+                URIpath.match(expression1)){
       		// POST or PUT /api/<username>/lights/<id>/state/
       		  var lightID = findLightID(URIpath);
       		  
@@ -203,7 +229,7 @@ exports.MockHueBridge = (function(){
       		  
       		  var state = JSON.parse(helper.getState(bridgeID));
       		  
-      		  if (typeof state.lights[lightID] != 'undefined') {
+      		  if (typeof state.lights[lightID] !== 'undefined') {
       			  if (typeof body != undefined) {
       				  for (var prop in body) {
       					  if (prop != 'transitiontime') {
@@ -233,8 +259,8 @@ exports.MockHueBridge = (function(){
       		  changeList = "{\"success\" : {" ;
       		  
       		  for (var prop in body) {
-      			  changeList = changeList + "\"/lights/" + lightID + "/" + prop 
-      			    + "\":\"" + body[prop] + "\",";
+      			  changeList = changeList + "\"/lights/" + lightID + "/" + prop + 
+      			  "\":\"" + body[prop] + "\",";
       		  }
       		  
       		  // Remove last comma
@@ -352,7 +378,7 @@ exports.MockHueBridge = (function(){
      		} else {
      			return true;
      		}
-     	};  
+     	}  
      	
      	/** Given a URI, find the lightID.
      	 * @param URIpath The path portion of the URI, e.g. /api/username/lights/1/
@@ -377,9 +403,8 @@ exports.MockHueBridge = (function(){
      		}
 
      		return lightID;
-     	};
-      
-    };
+     	}
+    }
     util.inherits(MockHueBridgeConnection, EventEmitter);
     
     // Return public functions for MockHueBridge

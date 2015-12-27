@@ -35,7 +35,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 50.0}">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01QVBK">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01QWMR">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -52,7 +52,7 @@
         </property>
     </entity>
     <entity name="SerialComm" class="ptolemy.actor.lib.io.comm.SerialComm">
-        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="/dev/tty.usbserial-DA01R74U">
+        <property name="serialPortName" class="ptolemy.data.expr.StringParameter" value="/dev/tty.usbserial-DA01QZI2">
         </property>
         <property name="baudRate" class="ptolemy.data.expr.Parameter" value="9600">
         </property>

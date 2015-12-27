@@ -206,15 +206,15 @@
     _loadedModules[canonizedFilename] = moduleInfo;
     var compiledWrapper = null;
     try {
-      compiledWrapper = eval(code);
+        compiledWrapper = eval(code);
     } catch (e) {
       var message = e.message;
       if (!message) {
         message = e.toString();
       }
-      throw new Error( "Error evaluating module " + path
-        + " line #" + e.lineNumber
-        + " : " + message + "\nIn file: " + canonizedFilename);
+      throw new Error( "Error evaluating module " + path +
+                       " line #" + e.lineNumber +
+                       " : " + message + "\nIn file: " + canonizedFilename);
     }
     var __dirname = '' + file.parentFile.canonicalPath;
     var parameters = [
@@ -234,9 +234,9 @@
       if (!message) {
         message = e.toString();
       }
-      throw new Error( "Error executing module " + path
-        + " line #" + e.lineNumber
-        + " : " + message + "\nIn file: " + canonizedFilename);
+      throw new Error( "Error executing module " + path +
+                       " line #" + e.lineNumber +
+                       " : " + message + "\nIn file: " + canonizedFilename);
     }
     if ( hooks ) { 
       hooks.loaded( canonizedFilename );

@@ -5,7 +5,11 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 45.0}">
         </property>
@@ -35,7 +39,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 50.0}">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-AJV9ONHV">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01QWMRxx">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -66,7 +70,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 155.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01LK3S">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01QZI2yy">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>

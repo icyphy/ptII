@@ -37,6 +37,10 @@ import gnu.io.UnsupportedCommOperationException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+
+import java.util.Enumeration;
+import java.util.List;
+import java.util.LinkedList;
 import java.util.TooManyListenersException;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
@@ -107,6 +111,10 @@ public class SerialHelper extends HelperBase {
                     e.printStackTrace();
                 }
             }
+            if (SerialHelper._openedPorts != null) {
+                SerialHelper._openedPorts.remove(_portName);
+            }
+            _serialPort.removeEventListener();
             _serialPort.close();
             _serialPort = null;
             _actor.log("Serial port closed.");
@@ -115,6 +123,14 @@ public class SerialHelper extends HelperBase {
     
     /** Open the serial port. If there is already a serial port open,
      *  close it first.
+     *
+     *  <p>If the port is not found, then try each available port in
+     *  turn and open the first as yet unopened port.  Port names that
+     *  include "Bluetooth" and "/dev/cu."  are skipped.  Different
+     *  machines may have different port names so port scanning makes
+     *  it possible to have models that will open the first N serial
+     *  ports.  </p>
+     *
      *  @throws NoSuchPortException If the port does not exist.
      *  @throws PortInUseException If the port is in use (should not be thrown; error invoked instead).
      *  @throws IOException If opening the input or output stream fails.
@@ -127,8 +143,63 @@ public class SerialHelper extends HelperBase {
         }
         CommPortIdentifier portID = null;
         try {
-            portID = CommPortIdentifier.getPortIdentifier(_portName);
-            CommPort port = portID.open(_ownerName, _timeout);
+            CommPort port = null;
+            try {
+                portID = CommPortIdentifier.getPortIdentifier(_portName);
+                port = portID.open(_ownerName, _timeout);
+            } catch (NoSuchPortException ex) {
+                // If the model on a different machine, then the port names maybe different.
+                // As a workaround, we cycle through the ports and open the first available port.
+
+                if (SerialHelper._openedPorts == null) {
+                    SerialHelper._openedPorts = new LinkedList<String>();
+                }
+                boolean openedPort = false;
+                // Enumerate the available ports.
+                Enumeration ports = CommPortIdentifier.getPortIdentifiers();
+                while (ports.hasMoreElements()) {
+                    CommPortIdentifier identifier = (CommPortIdentifier) ports
+                        .nextElement();
+                    // Try to open each port in turn.
+                    if (identifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                        if (identifier.getName().indexOf("/dev/cu.") != -1) {
+                            System.out.println("SerialHelper.java: " + _actor.getFullName()
+                                    + " Could not find or open " + _portName
+                                    + ".  Skipping " + identifier.getName() + " because it is a calling unit (/dev/cu) port");
+                            continue;
+                        }
+                        if (identifier.getName().indexOf("Bluetooth") != -1) {
+                            System.out.println("SerialHelper.java: " + _actor.getFullName()
+                                    + " Could not find or open " + _portName
+                                    + ".  Skipping " + identifier.getName() + " because it is a Bluetooth port");
+                            continue;
+                        }
+                        // Only try to open the port if it has not yet been opened.
+                        if (!SerialHelper._openedPorts.contains(identifier.getName())) {
+                            try {
+                                portID = CommPortIdentifier.getPortIdentifier(identifier.getName());
+                                port = portID.open(_ownerName, _timeout);
+                                System.out.println("SerialHelper.java: " + _actor.getFullName()
+                                        + " Successfully opened "
+                                        + identifier.getName() + " because " + _portName
+                                        + " could not be opened, the exception was " + ex);
+                                _portName = identifier.getName();
+                                SerialHelper._openedPorts.add(_portName);
+                                openedPort = true;
+                                break;
+                            } catch (Throwable throwable) {
+                                System.out.println("SerialHelper.java: "  + _actor.getFullName()
+                                        + " Failed to open " + identifier.getName() + ": "
+                                        + throwable + ". Will try the next port (if available).");
+                            }
+                        }
+                    }
+                }                
+                if (!openedPort) {
+                    throw ex;
+                }
+            }
+
             if (!(port instanceof SerialPort)) {
                 _error("Port " + _portName + " is not a serial port.");
                 return;
@@ -139,7 +210,7 @@ public class SerialHelper extends HelperBase {
             _serialPort.setSerialPortParams(9600,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
             
             // FIXME: Uncomment the next line to avoid jjs/modules/serial/test/auto/SerialHelloWorld.xml hanging.
-            //_serialPort.enableReceiveTimeout(_timeout);
+            _serialPort.enableReceiveTimeout(_timeout);
             _inputStream = _serialPort.getInputStream();
             _outputStream = _serialPort.getOutputStream();
             
@@ -171,14 +242,19 @@ public class SerialHelper extends HelperBase {
     /** Output stream. */
     private OutputStream _outputStream;
     
-    /** The name of the owner. */
-    private String _ownerName;
-    
     /** The name of the serial port. */
     private String _portName;
     
     /** Indicator of whether the port is open. */
     private boolean _open;
+
+    /** List of ports that have been opened while searching because
+     *  the initial port could not be found.
+     */
+    private static List<String> _openedPorts;
+
+    /** The name of the owner. */
+    private String _ownerName;
     
     /** The timeout for opening. */
     private int _timeout;

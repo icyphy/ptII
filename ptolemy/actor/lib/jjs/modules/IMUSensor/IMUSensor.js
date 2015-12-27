@@ -24,13 +24,21 @@
 //
 // Ptolemy II includes the work of others, to see those copyrights, follow
 // the copyright link on the splash page or see copyright.htm.
+
 /**
  * Module to access bluetooth IMU sensor (MotionNet sensor from  UTDallas)
  * @module IMUSensor
  * @author Hunter Massey
+ * @version $$Id$$
  */
 
- // Reference to the Java class that controls the bluetooth serial stream
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals exports, Java */
+/*jshint globalstrict: true */
+"use strict";
+
+// Reference to the Java class that controls the bluetooth serial stream
 var Controller = Java.type('ptolemy.actor.lib.jjs.modules.IMUSensor.SerialPortController');
 var SensorStream = null;
 
@@ -62,25 +70,22 @@ exports.Stream = function(sensorPort) {
 	// Baud rate: 115200
 	// Buffer window: 60 samples - @ 20HZ, this is 3 seconds
 	SensorStream = new Controller();
-}
+};
 
-/* Initializes connection and collection of data from sensor
-* 
-*/
+/** Initializes connection and collection of data from sensor. */
 exports.Stream.prototype.start = function(sensorPort) {
 	SensorStream.start(sensorPort);
-}
+};
 
-/** Returns the sample buffer - the sample buffer size should be modifiable in the future
- *  
+/** Return the sample buffer - the sample buffer size should be
+ * modifiable in the future.
  */
 exports.Stream.prototype.getSample = function(){	
 	var sample = Java.from(SensorStream.getSample());
 	return [sample, []];
-}
+};
 
-/** Stops the sensor stream from continuing to collect data
-*/
+/** Stop the sensor stream from continuing to collect data. */
 exports.Stream.prototype.stop = function() {
 	SensorStream.stop();
-}
+};

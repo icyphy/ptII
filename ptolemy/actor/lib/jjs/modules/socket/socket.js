@@ -1,3 +1,26 @@
+// Copyright (c) 2015 The Regents of the University of California.
+// All rights reserved.
+//
+// Permission is hereby granted, without written agreement and without
+// license or royalty fees, to use, copy, modify, and distribute this
+// software and its documentation for any purpose, provided that the above
+// copyright notice and the following two paragraphs appear in all copies
+// of this software.
+//
+// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+//
+// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
+//
+
 /**
  * Module supporting TCP sockets.
  * This module defines three classes, SocketClient, SocketServer, and Socket.
@@ -34,8 +57,15 @@
  * bytes will represent the length of the message. The message then follows these bytes.
  *
  * @module socket
- * @authors: Edward A. Lee
+ * @authors Edward A. Lee
+ * @version $$Id$$
  */
+
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals actor, console, exports, Java, require, util */
+/*jshint globalstrict: true */
+"use strict";
 
 var SocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.socket.SocketHelper');
 var EventEmitter = require('events').EventEmitter;
@@ -48,7 +78,7 @@ var EventEmitter = require('events').EventEmitter;
  */
 exports.supportedReceiveTypes = function() {
     return SocketHelper.supportedReceiveTypes();
-}
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 //// supportedSendTypes
@@ -58,7 +88,7 @@ exports.supportedReceiveTypes = function() {
  */
 exports.supportedSendTypes = function() {
     return SocketHelper.supportedSendTypes();
-}
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 //// defaultClientOptions
@@ -81,7 +111,7 @@ var defaultClientOptions = {
     'sendType': 'string',
     'sslTls': false,
     'trustAll': false,
-}
+};
 
 // FIXME:
 // There are additional options in Vert.x NetClientOptions that
@@ -206,7 +236,7 @@ var defaultClientOptions = {
 exports.SocketClient = function(port, host, options) {
     // Set default values of arguments.
     // Careful: port == 0 means to find an available port, I think.
-    if (port == null) {
+    if (port === null) {
         port = 4000;
     }
     host = host || 'localhost';
@@ -219,7 +249,7 @@ exports.SocketClient = function(port, host, options) {
     this.helper.openClientSocket(this, port, host, this.options);
     
     this.pendingSends = [];
-}
+};
 util.inherits(exports.SocketClient, EventEmitter);
 
 /** This method will be called by the helper when a client's request to
@@ -236,8 +266,8 @@ exports.SocketClient.prototype._opened = function(netSocket, client) {
     // the instance of the enclosing socketHelper class.
     this.wrapper = new SocketHelper.SocketWrapper(
             this.helper, this, netSocket,
-            this.options['sendType'], this.options['receiveType'],
-            this.options['rawBytes']);
+            this.options.sendType, this.options.receiveType,
+            this.options.rawBytes);
     this.emit('open');
     
     // Send any pending data.
@@ -245,7 +275,7 @@ exports.SocketClient.prototype._opened = function(netSocket, client) {
         this.send(this.pendingSends[i]);
     }
     this.pendingSends = [];
-}
+};
 
 /** Send data over the socket.
  *  If the socket has not yet been successfully opened, then queue
@@ -260,19 +290,19 @@ exports.SocketClient.prototype.send = function(data) {
         }
         this.wrapper.send(data);
     } else {
-        if (!this.options['discardMessagesBeforeOpen']) {
+        if (!this.options.discardMessagesBeforeOpen) {
             this.pendingSends.push(data);
-            var maxUnsentMessages = this.options['maxUnsentMessages'];
+            var maxUnsentMessages = this.options.maxUnsentMessages;
             if (maxUnsentMessages > 0 && this.pendingSends.length >= maxUnsentMessages) {
-                throw "Maximum number of unsent messages has been exceeded: "
-                        + maxUnsentMessages
-                        + ". Consider setting discardMessagesBeforeOpen to true.";
+                throw "Maximum number of unsent messages has been exceeded: " +
+                    maxUnsentMessages +
+                    ". Consider setting discardMessagesBeforeOpen to true.";
             }
         } else {
             console.log('Discarding because socket is not open: ' + data);
         }
     }      
-}
+};
 
 /** Close the current connection with the server.
  *  This will indicate to the server that no more data
@@ -284,7 +314,7 @@ exports.SocketClient.prototype.close = function() {
     } else {
         // FIXME: Set a flag to close immediately upon opening.
     }      
-}
+};
 
 ///////////////////////////////////////////////////////////////////////////////
 //// defaultServerOptions
@@ -306,7 +336,7 @@ var defaultServerOptions = {
     'sendBufferSize': 65536,
     'sendType': 'string',
     'sslTls': false
-}
+};
 
 // FIXME: one of the server options in NetServerOptions is 'acceptBacklog'.
 // This is undocumented in Vert.x, so I have no idea what it is. Left it out.
@@ -441,7 +471,7 @@ exports.SocketServer = function(options) {
 
     this.helper = SocketHelper.getOrCreateHelper(actor);
     this.helper.openServer(this, this.options);
-}
+};
 util.inherits(exports.SocketServer, EventEmitter);
 
 /** Stop the server. */
@@ -450,7 +480,7 @@ exports.SocketServer.prototype.close = function() {
         this.server.close();
         this.server = null;
     }
-}
+};
 
 /** Notify this SocketServer that the server has been created.
  *  This is called by the helper, and should not be called by the user of this module.
@@ -458,7 +488,7 @@ exports.SocketServer.prototype.close = function() {
  */
 exports.SocketServer.prototype._serverCreated = function(netServer) {
     this.server = netServer;
-}
+};
 
 /** Notify that a handshake was successful and a websocket has been created.
  *  This is called by the helper class is not meant to be called by the JavaScript
@@ -473,10 +503,10 @@ exports.SocketServer.prototype._serverCreated = function(netServer) {
 exports.SocketServer.prototype._socketCreated = function(netSocket) {
     var socket = new exports.Socket(
             this.helper, netSocket,
-            this.options['sendType'], this.options['receiveType'],
-            this.options['rawBytes']);
+            this.options.sendType, this.options.receiveType,
+            this.options.rawBytes);
     this.emit('connection', socket);
-}
+};
 
 /////////////////////////////////////////////////////////////////
 //// Socket
@@ -509,7 +539,7 @@ exports.Socket = function(helper, netSocket, sendType, receiveType, rawBytes) {
     this.wrapper = new SocketHelper.SocketWrapper(
             helper, this, netSocket, sendType, receiveType, rawBytes);
     this.netSocket = netSocket;
-}
+};
 util.inherits(exports.Socket, EventEmitter);
 
 /** Close the socket. Normally, this would be called on the client side,
@@ -518,7 +548,7 @@ util.inherits(exports.Socket, EventEmitter);
  */
 exports.Socket.prototype.close = function() {
     this.wrapper.close();
-}
+};
 
 /** Return the remote host (an IP address) for this socket.
  *  @return The remote host, a string.
@@ -526,7 +556,7 @@ exports.Socket.prototype.close = function() {
 exports.Socket.prototype.remoteHost = function() {
     var remoteAddress = this.netSocket.remoteAddress();
     return remoteAddress.host();
-}
+};
 
 /** Return the remote port for this socket.
  *  @return The remote port, a number.
@@ -534,7 +564,7 @@ exports.Socket.prototype.remoteHost = function() {
 exports.Socket.prototype.remotePort = function() {
     var remoteAddress = this.netSocket.remoteAddress();
     return remoteAddress.port();
-}
+};
 
 /** Send data over the socket.
  *  @param data The data to send.
@@ -544,4 +574,4 @@ exports.Socket.prototype.send = function(data) {
         data = Java.to(data);
     }
     this.wrapper.send(data);
-}
+};
