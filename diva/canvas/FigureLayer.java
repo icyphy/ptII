@@ -95,6 +95,7 @@ EventAcceptor {
     }
 
     /** Create a new figure layer within the given pane.
+     *  @param pane The given pane.
      */
     public FigureLayer(CanvasPane pane) {
         super(pane);
@@ -103,6 +104,8 @@ EventAcceptor {
 
     /** Create a new figure layer within the given pane and with
      * the given ZList to hold the figures it contains.
+     * @param pane The given pane.
+     * @param zlist The given zlist.
      */
     public FigureLayer(CanvasPane pane, ZList zlist) {
         super(pane);
@@ -113,6 +116,7 @@ EventAcceptor {
      * the given ZList to hold its figures. This can be used
      * to create a more efficient z-list than the default,
      * which is an instance of BasicZList.
+     * @param zlist The given zlist.
      */
     public FigureLayer(ZList zlist) {
         super();
@@ -125,6 +129,7 @@ EventAcceptor {
      * the top of all existing figures. It does <i>not</i>
      * check whether the figure is already in the layer -- clients
      * clients are therefore responsible for being bug-free.
+     * @param f The figure to be added
      */
     @Override
     public void add(Figure f) {
@@ -143,7 +148,10 @@ EventAcceptor {
      *
      *  <p>Clients should assume that an implementation of this method
      *  does <i>not</i> check if the figure is already contained --
-     *  clients are therefore responsible for being bug-free.
+     *  clients are therefore responsible for being bug-free.</p>
+     *
+     *  @param index The index
+     *  @param f The figure to be added.
      */
     public void add(int index, Figure f) {
         _zlist.add(index, f);
@@ -162,6 +170,7 @@ EventAcceptor {
      * general, a much better way of making this same test is to check
      * if the parent of the figure is the same object as this
      * layer.
+     * @param f The figure to be checked.
      */
     @Override
     public boolean contains(Figure f) {
@@ -248,6 +257,8 @@ EventAcceptor {
     /** Get the figure at the given index. Indexes are contiguous from
      * zero to getFigureCount()-1, with figures at lower indexes
      * being displayed "on top of" figures with higher indexes.
+     * @param index The given index
+     * @return The figure at the given index
      */
     public Figure get(int index) {
         return _zlist.get(index);
@@ -276,6 +287,7 @@ EventAcceptor {
 
     /** Get the internal z-list. Clients must <i>not</i> modify
      * the z-list, but can use it for making queries on its contents.
+     * @return The internal z-list.
      */
     public ZList getFigures() {
         return _zlist;
@@ -292,6 +304,8 @@ EventAcceptor {
     /** Get the "pick halo". This is the distance in either axis
      * that an object can be from the mouse to be considered
      * hit.
+     * @return the pick halo.
+     * @see #setPickHalo(double)
      */
     public final double getPickHalo() {
         return _pickHalo;
@@ -306,6 +320,8 @@ EventAcceptor {
      * and dragging on a graph node creates and the drags a new edge,
      * this method will be called after constructing the edge to make
      * the edge itself handle the mouse drag  events instead of the node.
+     *  @param e The LayerEvent
+     *  @param f The figure
      */
     public void grabPointer(LayerEvent e, Figure f) {
         if (e.getID() != MouseEvent.MOUSE_PRESSED) {
@@ -325,7 +341,7 @@ EventAcceptor {
 
         // If the event isn't consumed yet, scan up the tree to dispatch it
         if (!e.isConsumed()) {
-            dispatchEventUpTree(f, e);
+            _dispatchEventUpTree(f, e);
         }
     }
 
@@ -365,6 +381,7 @@ EventAcceptor {
 
     /** Return the index of the given figure. Figures
      *  with a higher index are drawn behind figures with a lower index.
+     *  @param f The figure
      */
     public int indexOf(Figure f) {
         return _zlist.indexOf(f);
@@ -464,6 +481,7 @@ EventAcceptor {
 
     /** Remove the figure at the given position in the list. The figure's
      * layer is set to null.
+     * @param index The given position.
      */
     public void remove(int index) {
         Figure f = _zlist.get(index);
@@ -473,6 +491,7 @@ EventAcceptor {
     }
 
     /** Repaint all figures that intersect the given rectangle.
+     *  @param region The given rectangle   
      */
     public void repaint(Rectangle2D region) {
         repaint(DamageRegion.createDamageRegion(getTransformContext(), region));
@@ -490,6 +509,8 @@ EventAcceptor {
      * can be from the mouse in either axis to be considered
      * hit by the mouse. By default, it it set to 0.5, meaning
      * that the hit detection rectangle is 1.0 along each side.
+     * @param halo The pick halo
+     * @see #getPickHalo()
      */
     public final void setPickHalo(double halo) {
         _pickHalo = halo;
@@ -505,8 +526,10 @@ EventAcceptor {
      *
      * <p> Note that this method does <i>not</i> check if the figure
      * is already contained -- clients are therefore responsible for
-     * being bug-free.
+     * being bug-free.</p>
      *
+     * @param index The index to be set
+     * @param f The figure
      * @exception IndexOutOfBoundsException The new index is out of range.
      */
     public void setIndex(int index, Figure f) {
@@ -544,14 +567,192 @@ EventAcceptor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //// protected methods
+    ////                     protected methods                     ////
+
+    /** Return the figure pointed to by the given LayerEvent.  If
+     * there is no figure, then return null.
+     */
+    protected final Figure getFigure(LayerEvent e) {
+        // Get the figure that the mouse hit, if any
+        double wh = _pickHalo * 2;
+        Rectangle2D region = new Rectangle2D.Double(e.getLayerX() - _pickHalo,
+                e.getLayerY() - _pickHalo, wh, wh);
+        return pick(region);
+    }
+
+    /** Process a layer event. The behaviour of this method depends on
+     * the action type. If it is MOUSE_PRESSED, then it recurses
+     * down the figure tree searching for the top-most figure under
+     * the cursor. (If a figure has been hit on its transparent part,
+     * then it will not be considered to be above another figure --
+     * the method Figure.hits() determines whether a figure gets the
+     * event.) When it finds it, it remembers it, and then
+     * proceeds back up the tree, passing the event to the event
+     * dispatcher of any figures that have one. After each such
+     * call, if the event has been consumed, then the upwards-traversal
+     * stops. Finally, if this layer is reached, and the event has
+     * not been consumed, then any registered LayerListeners are
+     * called. (Or should they be notified in any case?)
+     *
+     * <p>If the event type is MOUSE_DRAGGED or MOUSE_RELEASED, then
+     * the downwards recursion is skipped, and the upwards propagation
+     * is begun from the figure remembered from the MOUSE_PRESSED
+     * processing. Again, the propagation stops when the event is
+     * consumed.</p>
+     *
+     * <p><b>Note</b>: the above strategy will not work with more than
+     * one input device. Is there anything in MouseEvent that allows
+     * us to identify the input device?</p>
+     *
+     * @param e The LayerEvent
+     */
+    protected void processLayerEvent(LayerEvent e) {
+        Figure f;
+        int id = e.getID();
+        _lastLayerEvent = e;
+        e.setLayerSource(this);
+
+        switch (id) {
+        case MouseEvent.MOUSE_PRESSED:
+            f = getFigure(e);
+
+            // If there's a figure, grab the pointer and process the event
+            if (f != null) {
+                grabPointer(e, f);
+            } else {
+                // If the pointer was grabbed, and the new mouse press
+                // was on the background, then all we have to do is
+                // forget the previous grab.
+                _pointerGrabber = null;
+            }
+
+            break;
+
+        case MouseEvent.MOUSE_DRAGGED:
+
+            if (_pointerGrabber == null) {
+                // Ignore the event if noone grabbed the pointer before
+                return;
+            }
+
+            // If the figure is prepared to handle events itself, let it
+            if (_pointerGrabber instanceof EventAcceptor) {
+                ((EventAcceptor) _pointerGrabber).dispatchEvent(e);
+            }
+
+            // If the event isn't consumed yet, scan up
+            // the tree and dispatch it
+            if (!e.isConsumed()) {
+                _dispatchEventUpTree(_pointerGrabber, e);
+            }
+
+            break;
+
+        case MouseEvent.MOUSE_RELEASED:
+
+            if (_pointerGrabber == null) {
+                // Ignore the event if noone grabbed the pointer before
+                return;
+            }
+
+            // If the figure is prepared to handle events itself, let it
+            if (_pointerGrabber instanceof EventAcceptor) {
+                ((EventAcceptor) _pointerGrabber).dispatchEvent(e);
+            }
+
+            // If the event isn't consumed yet, scan up
+            // the tree and dispatch it
+            if (!e.isConsumed()) {
+                _dispatchEventUpTree(_pointerGrabber, e);
+            }
+
+            // Clear the pointer grab
+            _pointerGrabber = null;
+            break;
+
+            // Process a click event only. This code ignores the
+            // grab, as it should have already been cleared by a
+            // preceding MOUSE_RELEASED event. I'm not entirely
+            // sure if this is actually correct or not.
+            //
+        case MouseEvent.MOUSE_CLICKED:
+
+            // Get the figure that the mouse hit, if any
+            f = getFigure(e);
+
+            // If there's no figure, we're done
+            if (f == null) {
+                return;
+            }
+
+            // If the figure is prepared to handle events itself, let it
+            if (f instanceof EventAcceptor) {
+                ((EventAcceptor) f).dispatchEvent(e);
+            }
+
+            // If the event isn't consumed yet, scan up the tree to dispatch it
+            if (!e.isConsumed()) {
+                _dispatchEventUpTree(f, e);
+            }
+
+            break;
+        }
+    }
+
+    /** Process a layer motion event. The behavior of this method
+     * depends on the action type. If the action is MOUSE_ENTERED.
+     * then the figure tree is scanned to find if the mouse is
+     * now over a figure, and the event is dispatched to that
+     * figure if so. If the action is MOUSE_MOVED, then the tree
+     * is scanned again to find the figure currently under the mouse;
+     * if it is different, then leave and enter events are generated
+     * on the previous and current figures (either may not exist);
+     * otherwise a motion event is generated on the current figure.
+     * If the action is MOUSE_EXITED, then the current figure, if
+     * there is one, has an exit event sent to it. In all of these cases
+     * the event is propagated from the current figure up the hierarchy
+     * until consumed.
+     *
+     * @param e The LayerEvent
+     */
+    protected void processLayerMotionEvent(LayerEvent e) {
+        int id = e.getID();
+        _lastLayerEvent = e;
+        e.setLayerSource(this);
+
+        if (id == MouseEvent.MOUSE_EXITED) {
+            _dispatchMotionEventUpTree(_pointerOver, e);
+            _pointerOver = null;
+        } else if (id == MouseEvent.MOUSE_ENTERED) {
+            // Get the figure that the mouse hit, if any.
+            _pointerOver = getFigure(e);
+            _dispatchMotionEventUpTree(_pointerOver, e);
+        } else if (id == MouseEvent.MOUSE_MOVED) {
+            // Get the figure that the mouse hit, if any.
+            Figure figure = getFigure(e);
+
+            if (figure != _pointerOver) {
+                LayerEvent event;
+                event = new LayerEvent(e, MouseEvent.MOUSE_EXITED);
+                _dispatchMotionEventUpTree(_pointerOver, event);
+                _pointerOver = figure;
+                event = new LayerEvent(e, MouseEvent.MOUSE_ENTERED);
+                _dispatchMotionEventUpTree(_pointerOver, event);
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                     ////
 
     /** Dispatch a layer event up the tree. Proceed up the hierarchy
      * looking for a figure that has an interactor that is
      * enabled for layer events. Dispatch the event to the first
      * one found. If the event is not consumed, repeat.
+     * @param f The figure
+     * @param e The layer event to be dispatched up the tree.
      */
-    private void dispatchEventUpTree(Figure f, LayerEvent e) {
+    private void _dispatchEventUpTree(Figure f, LayerEvent e) {
         // Scan up the tree try to dispatch the event
         while (f != null) {
             Interactor interactor = f.getInteractor();
@@ -605,7 +806,7 @@ EventAcceptor {
      * further, regardless of whether the event was consumed or not.
      * (Is this the right behavior??)
      */
-    private void dispatchMotionEventUpTree(Figure f, LayerEvent e) {
+    private void _dispatchMotionEventUpTree(Figure f, LayerEvent e) {
         // Scan up the tree try to dispatch the event
         while (f != null) {
             Interactor interactor = f.getInteractor();
@@ -640,175 +841,6 @@ EventAcceptor {
             }
 
             f = (Figure) p;
-        }
-    }
-
-    /** Return the figure pointed to by the given LayerEvent.  If
-     * there is no figure, then return null.
-     */
-    protected final Figure getFigure(LayerEvent e) {
-        // Get the figure that the mouse hit, if any
-        double wh = _pickHalo * 2;
-        Rectangle2D region = new Rectangle2D.Double(e.getLayerX() - _pickHalo,
-                e.getLayerY() - _pickHalo, wh, wh);
-        return pick(region);
-    }
-
-    /** Process a layer event. The behaviour of this method depends on
-     * the action type. If it is MOUSE_PRESSED, then it recurses
-     * down the figure tree searching for the top-most figure under
-     * the cursor. (If a figure has been hit on its transparent part,
-     * then it will not be considered to be above another figure --
-     * the method Figure.hits() determines whether a figure gets the
-     * event.) When it finds it, it remembers it, and then
-     * proceeds back up the tree, passing the event to the event
-     * dispatcher of any figures that have one. After each such
-     * call, if the event has been consumed, then the upwards-traversal
-     * stops. Finally, if this layer is reached, and the event has
-     * not been consumed, then any registered LayerListeners are
-     * called. (Or should they be notified in any case?)
-     *
-     * <p>If the event type is MOUSE_DRAGGED or MOUSE_RELEASED, then
-     * the downwards recursion is skipped, and the upwards propagation
-     * is begun from the figure remembered from the MOUSE_PRESSED
-     * processing. Again, the propagation stops when the event is
-     * consumed.
-     *
-     * <p><b>Note</b>: the above strategy will not work with more than
-     * one input device. Is there anything in MouseEvent that allows
-     * us to identify the input device?
-     */
-    protected void processLayerEvent(LayerEvent e) {
-        Figure f;
-        int id = e.getID();
-        _lastLayerEvent = e;
-        e.setLayerSource(this);
-
-        switch (id) {
-        case MouseEvent.MOUSE_PRESSED:
-            f = getFigure(e);
-
-            // If there's a figure, grab the pointer and process the event
-            if (f != null) {
-                grabPointer(e, f);
-            } else {
-                // If the pointer was grabbed, and the new mouse press
-                // was on the background, then all we have to do is
-                // forget the previous grab.
-                _pointerGrabber = null;
-            }
-
-            break;
-
-        case MouseEvent.MOUSE_DRAGGED:
-
-            if (_pointerGrabber == null) {
-                // Ignore the event if noone grabbed the pointer before
-                return;
-            }
-
-            // If the figure is prepared to handle events itself, let it
-            if (_pointerGrabber instanceof EventAcceptor) {
-                ((EventAcceptor) _pointerGrabber).dispatchEvent(e);
-            }
-
-            // If the event isn't consumed yet, scan up
-            // the tree and dispatch it
-            if (!e.isConsumed()) {
-                dispatchEventUpTree(_pointerGrabber, e);
-            }
-
-            break;
-
-        case MouseEvent.MOUSE_RELEASED:
-
-            if (_pointerGrabber == null) {
-                // Ignore the event if noone grabbed the pointer before
-                return;
-            }
-
-            // If the figure is prepared to handle events itself, let it
-            if (_pointerGrabber instanceof EventAcceptor) {
-                ((EventAcceptor) _pointerGrabber).dispatchEvent(e);
-            }
-
-            // If the event isn't consumed yet, scan up
-            // the tree and dispatch it
-            if (!e.isConsumed()) {
-                dispatchEventUpTree(_pointerGrabber, e);
-            }
-
-            // Clear the pointer grab
-            _pointerGrabber = null;
-            break;
-
-            // Process a click event only. This code ignores the
-            // grab, as it should have already been cleared by a
-            // preceding MOUSE_RELEASED event. I'm not entirely
-            // sure if this is actually correct or not.
-            //
-        case MouseEvent.MOUSE_CLICKED:
-
-            // Get the figure that the mouse hit, if any
-            f = getFigure(e);
-
-            // If there's no figure, we're done
-            if (f == null) {
-                return;
-            }
-
-            // If the figure is prepared to handle events itself, let it
-            if (f instanceof EventAcceptor) {
-                ((EventAcceptor) f).dispatchEvent(e);
-            }
-
-            // If the event isn't consumed yet, scan up the tree to dispatch it
-            if (!e.isConsumed()) {
-                dispatchEventUpTree(f, e);
-            }
-
-            break;
-        }
-    }
-
-    /** Process a layer motion event. The behavior of this method
-     * depends on the action type. If the action is MOUSE_ENTERED.
-     * then the figure tree is scanned to find if the mouse is
-     * now over a figure, and the event is dispatched to that
-     * figure if so. If the action is MOUSE_MOVED, then the tree
-     * is scanned again to find the figure currently under the mouse;
-     * if it is different, then leave and enter events are generated
-     * on the previous and current figures (either may not exist);
-     * otherwise a motion event is generated on the current figure.
-     * If the action is MOUSE_EXITED, then the current figure, if
-     * there is one, has an exit event sent to it. In all of these cases
-     * the event is propagated from the current figure up the hierarchy
-     * until consumed.
-     */
-    protected void processLayerMotionEvent(LayerEvent e) {
-        int id = e.getID();
-        _lastLayerEvent = e;
-        e.setLayerSource(this);
-
-        if (id == MouseEvent.MOUSE_EXITED) {
-            dispatchMotionEventUpTree(_pointerOver, e);
-            _pointerOver = null;
-        } else if (id == MouseEvent.MOUSE_ENTERED) {
-            // Get the figure that the mouse hit, if any.
-            _pointerOver = getFigure(e);
-            dispatchMotionEventUpTree(_pointerOver, e);
-        } else if (id == MouseEvent.MOUSE_MOVED) {
-            // Get the figure that the mouse hit, if any.
-            Figure figure = getFigure(e);
-
-            if (figure != _pointerOver) {
-                LayerEvent event;
-                event = new LayerEvent(e, MouseEvent.MOUSE_EXITED);
-                dispatchMotionEventUpTree(_pointerOver, event);
-                _pointerOver = figure;
-                event = new LayerEvent(e, MouseEvent.MOUSE_ENTERED);
-                dispatchMotionEventUpTree(_pointerOver, event);
-            }
         }
     }
 }

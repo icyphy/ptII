@@ -109,6 +109,7 @@ public class JCanvas extends JComponent implements Printable {
 
     /** Create a new canvas that contains the given CanvasPane. Mouse
      * events on the canvas are enabled by default.
+     * @param pane The given CanvasPane
      */
     public JCanvas(CanvasPane pane) {
         super();
@@ -178,6 +179,7 @@ public class JCanvas extends JComponent implements Printable {
     }
 
     /** Get the canvas pane contained by this component.
+     * @return The canvas pane.   
      */
     public final CanvasPane getCanvasPane() {
         return _canvasPane;
@@ -359,6 +361,7 @@ public class JCanvas extends JComponent implements Printable {
     /** Accept notification that a repaint has occurred on
      * in this canvas. Call the given damage region to generate
      * the appropriate calls to the Swing repaint manager.
+     * @param d The damage region.
      */
     public void repaint(DamageRegion d) {
         d.apply(this);
@@ -368,6 +371,7 @@ public class JCanvas extends JComponent implements Printable {
      * If there is already a pane in this JCanvas, replace it.
      * If the pane already is in a canvas, remove it from
      * that other canvas.
+     * @param pane The canvas pane.
      */
     public final void setCanvasPane(CanvasPane pane) {
         if (_canvasPane != null) {
@@ -410,14 +414,16 @@ public class JCanvas extends JComponent implements Printable {
     }
 
     /**
-     * return the horizontal range model for this canvas
+     * Return the horizontal range model for this canvas.
+     * @return the horizontal range model for this canvas.
      */
     public BoundedRangeModel getHorizontalRangeModel() {
         return _horizontalRangeModel;
     }
 
     /**
-     * return the vertical range model for this canvas
+     * Return the vertical range model for this canvas.
+     * @return the vertical range model for this canvas.
      */
     public BoundedRangeModel getVerticalRangeModel() {
         return _verticalRangeModel;
@@ -425,7 +431,8 @@ public class JCanvas extends JComponent implements Printable {
 
     /**
      * Return the total size of everything in the canvas, in canvas
-     *  coordinates.
+     * coordinates.
+     * @return The total size of everything in the canvas.
      */
     public Rectangle2D getViewSize() {
         Rectangle2D viewRect = null;
@@ -455,6 +462,7 @@ public class JCanvas extends JComponent implements Printable {
     /**
      * Return the size of the visible part of the canvas, in canvas
      *  coordinates.
+     * @return the size of the visible part of the canvas.
      */
     public Rectangle2D getVisibleSize() {
         AffineTransform current = getCanvasPane().getTransformContext()
