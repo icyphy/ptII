@@ -92,9 +92,11 @@ public class SerialHelper extends HelperBase {
     /** Close the serial port.
      */
     public synchronized void close() {
+        _actor.log("Closing serial port.");
         _open = false;
         if (_serialPort != null) {
             if (_inputStream != null) {
+                _actor.log("Closing inputStream.");
                 try {
                     _inputStream.close();
                 } catch (IOException e) {
@@ -103,6 +105,7 @@ public class SerialHelper extends HelperBase {
                 }
             }
             if (_outputStream != null) {
+                _actor.log("Closing outputStream.");
                 try {
                     _outputStream.flush();
                     _outputStream.close();
@@ -114,7 +117,9 @@ public class SerialHelper extends HelperBase {
             if (SerialHelper._openedPorts != null) {
                 SerialHelper._openedPorts.remove(_portName);
             }
+            _actor.log("About to remove event listeners from the serial port.");
             _serialPort.removeEventListener();
+            _actor.log("About to call _serialPort.close().");
             _serialPort.close();
             _serialPort = null;
             _actor.log("Serial port closed.");
@@ -275,7 +280,7 @@ public class SerialHelper extends HelperBase {
                 // Perform blocking read of up to 1024 bytes until
                 // end of stream is observed.
                 // FIXME: look for a message delimitter here.
-                while ((length = _inputStream.read(buffer)) > -1 ) {
+                while (_open && (length = _inputStream.read(buffer)) > -1) {
                     final String message = new String(buffer, 0, length);
                     _issueResponse(() -> {
                         _currentObj.callMember("emit", "data", message);
