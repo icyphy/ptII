@@ -1053,13 +1053,12 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2IntegerTime currentCommunicatio
 
     // *** start of fix ***
     // Comment David:
-    // The following code is correct, but it is not expressed exactly as in the
-    // paper. 
-        *computedStepSize = ((fmi2IntegerTime) (comp->time * comp->resMagnitude)) - currentCommunicationPoint;
+    //  The following code does not capture the property of performing the ceil funtion.
+    //    *computedStepSize = ((fmi2IntegerTime) (comp->time * comp->resMagnitude)) - currentCommunicationPoint;
     // Therefore, I have translated into the following, which directly corresponds
     // to the paper.
         *computedStepSize =
-           ((fmi2IntegerTime) ((prevTime + localStepPerformed) * comp->resMagnitude))
+          ((fmi2IntegerTime) ceil((prevTime + localStepPerformed) * comp->resMagnitude))
             - currentCommunicationPoint;
      
     // *** end of fix ***
@@ -1089,7 +1088,14 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2IntegerTime currentCom
         "communicationStepSize = %u, ",
         comp->time, comp->microstep, localCommunicationStepSize)
 
-    *value = ((fmi2IntegerTime) (localCommunicationStepSize + comp->time) * comp->resMagnitude) - currentCommunicationPoint;
+     // *** start of fix ***
+    // Comment David:
+      // The following function was correct, besides that the ceiling
+      // function was missing
+      //
+      //    *value = ((fmi2IntegerTime) (localCommunicationStepSize + comp->time) * comp->resMagnitude) - currentCommunicationPoint;
+    
+      *value = (fmi2IntegerTime) (ceil((localCommunicationStepSize + comp->time) * comp->resMagnitude)) - currentCommunicationPoint;
     return fmi2OK;
 }
 #else
