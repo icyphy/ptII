@@ -372,7 +372,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     @Override
     public void addDebugListener(DebugListener listener) {
         if (_eventQueue != null) {
-            synchronized (_eventQueue) {
+            synchronized (_eventQueueLock) {
                 _eventQueue.addDebugListener(listener);
             }
         }
@@ -637,7 +637,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             // then the following will throw an exception.
             result = fireContainerAt(result, index);
         }
-        synchronized (_eventQueue) {
+        synchronized (_eventQueueLock) {
             if (!_delegateFireAt) {
                 // If we have not made a request to the executive director,
                 // then we can modify time here. If we have, then we can't,
@@ -678,8 +678,8 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
             //    held will result in an IllegalMonitorStateException
             //    being thrown.
             // Actually, this seems to be Find Bugs error since the
-            // statement is within a synchronized (_eventQueue) block.
-            _eventQueue.notifyAll();
+            // statement is within a synchronized (_eventQueueLock) block.
+            _eventQueueLock.notifyAll();
         }
         return result;
     }
@@ -776,7 +776,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     public Time getModelNextIterationTime() throws IllegalActionException {
         Time aFutureTime = Time.POSITIVE_INFINITY;
 
-        synchronized (_eventQueue) {
+        synchronized (_eventQueueLock) {
             // Record the model next iteration time as the tag of the the earliest
             // event in the queue.
             if (_eventQueue.size() > 0) {
@@ -896,7 +896,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     public void initialize() throws IllegalActionException {
         _isInitializing = true;
 
-        synchronized (_eventQueue) {
+        synchronized (_eventQueueLock) {
             _eventQueue.clear();
 
             // Reset the following private variables.
@@ -943,7 +943,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         // actors and they may need to post events.
         super.initialize();
 
-        synchronized (_eventQueue) {
+        synchronized (_eventQueueLock) {
             // Register the stop time as an event such that the model is
             // guaranteed to stop at that time. This event also serves as
             // a guideline for an embedded Continuous model to know how much
@@ -1037,7 +1037,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         // Reset the microstep to zero if the next event is
         // in the future.
-        synchronized (_eventQueue) {
+        synchronized (_eventQueueLock) {
             if (!_eventQueue.isEmpty() && !moreOutputsToTransfer) {
                 DEEvent next = _eventQueue.get();
                 if (next.timeStamp().compareTo(getModelTime()) > 0) {
@@ -1177,7 +1177,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         // If embedded, check the timestamp of the next event to decide
         // whether this director is ready to fire.
-        synchronized (_eventQueue) {
+        synchronized (_eventQueueLock) {
             Time modelTime = getModelTime();
             Time nextEventTime = Time.POSITIVE_INFINITY;
 
@@ -1292,7 +1292,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         if (_eventQueue != null) {
             // This execution may be overlapped with the previous.
             // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/NotifyAll
-            synchronized(_eventQueue) {
+            synchronized (_eventQueueLock) {
                 _isInitializing = true;
                 // Initialize an event queue.
                 _eventQueue = new DECQEventQueue(
@@ -1355,7 +1355,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     @Override
     public void removeDebugListener(DebugListener listener) {
         if (_eventQueue != null) {
-            synchronized (_eventQueue) {
+            synchronized (_eventQueueLock) {
                 _eventQueue.removeDebugListener(listener);
             }
         }
@@ -1434,9 +1434,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     @Override
     public void stop() {
         if (_eventQueue != null) {
-            synchronized (_eventQueue) {
+            synchronized (_eventQueueLock) {
                 _stopRequested = true;
-                _eventQueue.notifyAll();
+                _eventQueueLock.notifyAll();
             }
         }
 
@@ -1452,9 +1452,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     @Override
     public void stopFire() {
         if (_eventQueue != null) {
-            synchronized (_eventQueue) {
+            synchronized (_eventQueueLock) {
                 _stopFireRequested = true;
-                _eventQueue.notifyAll();
+                _eventQueueLock.notifyAll();
             }
         }
 
@@ -1525,7 +1525,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         _disabledActors = null;
-        synchronized (_eventQueue) {
+        synchronized (_eventQueueLock) {
             _eventQueue.clear();
         }
         _noMoreActorsToFire = false;
@@ -1558,7 +1558,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         // If the earliest event in the event queue is in the future,
         // this code terminates the current iteration.
         // This code is applied on both embedded and top-level directors.
-        synchronized (_eventQueue) {
+        synchronized (_eventQueueLock) {
             if (!_eventQueue.isEmpty()) {
                 DEEvent next = _eventQueue.get();
 
@@ -1674,7 +1674,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
         }
 
         DEEvent newEvent = new DEEvent(actor, time, microstep, depth);
-        synchronized (_eventQueue) {
+        synchronized (_eventQueueLock) {
             _eventQueue.put(newEvent);
         }
     }
@@ -1777,7 +1777,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
 
         // Register this trigger event.
         DEEvent newEvent = new DEEvent(ioPort, time, microstep, depth);
-        synchronized (_eventQueue) {
+        synchronized (_eventQueueLock) {
             _eventQueue.put(newEvent);
         }
     }
@@ -2184,7 +2184,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 // Otherwise, if the event queue is empty,
                 // a blocking read is performed on the queue.
                 // stopFire() needs to also cause this to fall out!
-                synchronized (_eventQueue) {
+                synchronized (_eventQueueLock) {
                     while (_eventQueue.isEmpty() && !_stopRequested
                             && !_stopFireRequested) {
                         if (_debugging) {
@@ -2253,7 +2253,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 Time currentTime;
                 int depth = 0;
                 try {
-                    synchronized (_eventQueue) {
+                    synchronized (_eventQueueLock) {
                         lastFoundEvent = _eventQueue.get();
                         currentTime = _consultTimeRegulators(lastFoundEvent
                                 .timeStamp());
@@ -2318,7 +2318,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                         setDeferringChangeRequests(false);
                                         // Tell the manager what thread is waiting.
                                         manager.setWaitingThread(Thread.currentThread());
-                                        _eventQueue.wait(timeToWait);
+                                        _eventQueueLock.wait(timeToWait);
                                     } catch (InterruptedException ex) {
                                     	// Ignore and circulate around the loop.
                                     	// The interrupt could be due to a change request,
@@ -2389,7 +2389,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                 // which will not be executed during the above wait.
                 // Nonetheless, we are conservative here, and take the earliest
                 // event in the event queue.
-                synchronized (_eventQueue) {
+                synchronized (_eventQueueLock) {
                     lastFoundEvent = _eventQueue.take();
                     currentTime = lastFoundEvent.timeStamp();
                     actorToFire = lastFoundEvent.actor();
@@ -2458,7 +2458,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                     // However, there could be events with the same tag
                     // and different depths, e.g. a trigger event and a pure
                     // event going to the same actor.
-                    synchronized (_eventQueue) {
+                    synchronized (_eventQueueLock) {
                         _eventQueue.take();
                     }
                 } else {
@@ -2587,6 +2587,9 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
     /** The queue used for sorting events. */
     protected DEEventQueue _eventQueue;
 
+    /** The lock for the queue. */
+    protected final Object _eventQueueLock = new Object();
+
     /** A local boolean variable indicating whether this director is in
      *  initialization phase execution.
      */
@@ -2684,7 +2687,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     protected void _requestFiring() throws IllegalActionException {
         DEEvent nextEvent = null;
-        synchronized (_eventQueue) {
+        synchronized (_eventQueueLock) {
             nextEvent = _eventQueue.get();
         }
 
