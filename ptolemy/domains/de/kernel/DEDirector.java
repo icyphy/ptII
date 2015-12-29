@@ -1289,13 +1289,25 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
      */
     @Override
     public void preinitialize() throws IllegalActionException {
-        _isInitializing = true;
-        // Initialize an event queue.
-        _eventQueue = new DECQEventQueue(
-                ((IntToken) minBinCount.getToken()).intValue(),
-                ((IntToken) binCountFactor.getToken()).intValue(),
-                ((BooleanToken) isCQAdaptive.getToken()).booleanValue());
-
+        if (_eventQueue != null) {
+            // This execution may be overlapped with the previous.
+            // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/NotifyAll
+            synchronized(_eventQueue) {
+                _isInitializing = true;
+                // Initialize an event queue.
+                _eventQueue = new DECQEventQueue(
+                        ((IntToken) minBinCount.getToken()).intValue(),
+                        ((IntToken) binCountFactor.getToken()).intValue(),
+                        ((BooleanToken) isCQAdaptive.getToken()).booleanValue());
+            }
+        } else {
+            _isInitializing = true;
+            // Initialize an event queue.
+            _eventQueue = new DECQEventQueue(
+                    ((IntToken) minBinCount.getToken()).intValue(),
+                    ((IntToken) binCountFactor.getToken()).intValue(),
+                    ((BooleanToken) isCQAdaptive.getToken()).booleanValue());
+        }
         // Add debug listeners.
         if (_debugListeners != null) {
             Iterator<?> listeners = _debugListeners.iterator();
