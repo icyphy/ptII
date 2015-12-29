@@ -172,7 +172,7 @@ public class GraphicsPane extends CanvasPane {
 
     /** Get the overlay layer.
      * @return The layer.
-     * @see #setOverlayLayter(OverlayLayer)
+     * @see #setOverlayLayer(OverlayLayer)
      */
     public OverlayLayer getOverlayLayer() {
         return _overlayLayer;
@@ -180,7 +180,7 @@ public class GraphicsPane extends CanvasPane {
 
     /** Get the foreground event layer.
      * @return The layer.
-     * @see #getForegroundEventLayer(EventLayer)
+     * @see #setForegroundEventLayer(EventLayer)
      */
     public EventLayer getForegroundEventLayer() {
         return _foregroundEventLayer;
@@ -290,7 +290,7 @@ public class GraphicsPane extends CanvasPane {
 
     /** Set the foreground event layer.
      *  @param l The layer.
-     *  @see #setForegroundEventLayer()
+     *  @see #getForegroundEventLayer()
      */
     public void setForegroundEventLayer(EventLayer l) {
         _nullifyLayer(_foregroundEventLayer);

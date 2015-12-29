@@ -196,6 +196,7 @@ public class TransformContext {
      * is incremented whenever the transform changes, so can be
      * used by client components to figure out when to update cached
      * data based upon the transform.
+     * @param The version number of the transform context.
      */
     public int getVersion() {
         return _version;

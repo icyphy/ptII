@@ -382,6 +382,7 @@ EventAcceptor {
     /** Return the index of the given figure. Figures
      *  with a higher index are drawn behind figures with a lower index.
      *  @param f The figure
+     *  @return The index of the given figure
      */
     public int indexOf(Figure f) {
         return _zlist.indexOf(f);
@@ -571,6 +572,8 @@ EventAcceptor {
 
     /** Return the figure pointed to by the given LayerEvent.  If
      * there is no figure, then return null.
+     * @param e The given LayerEvent
+     * @return The figure or null
      */
     protected final Figure getFigure(LayerEvent e) {
         // Get the figure that the mouse hit, if any

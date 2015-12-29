@@ -330,7 +330,7 @@ Connector {
 
     /** Set the dash array of the stroke. The existing stroke will
      * be removed, but the line width will be preserved if possible.
-     * @param The dashArray
+     * @param dashArray The dashArray
      * @see #getDashArray()
      */
     public void setDashArray(float[] dashArray) {

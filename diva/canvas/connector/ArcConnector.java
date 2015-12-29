@@ -122,6 +122,8 @@ public class ArcConnector extends AbstractConnector {
      * sites. The connector is drawn with a width of one
      * and in black, and at the default incident angle of
      * 45 degrees (PI/4 radians).
+     * @param tail The tail
+     * @param head The head
      */
     public ArcConnector(Site tail, Site head) {
         super(tail, head);
@@ -131,6 +133,8 @@ public class ArcConnector extends AbstractConnector {
     }
 
     /** Get the angle at which the arc leaves the tail figure.
+     * @return the angle
+     * @see #setAngle(double)
      */
     public double getAngle() {
         return _exitAngle;
@@ -139,6 +143,8 @@ public class ArcConnector extends AbstractConnector {
     /** Get the angle that determines the orientation of a
      * self-loop. This method should be used when saving an arc
      * to an external representation, if the arc is a self-loop.
+     * @return the gamma
+     * @see #setGamma(double)
      */
     public double getGamma() {
         return _gamma;
@@ -170,7 +176,9 @@ public class ArcConnector extends AbstractConnector {
         return _midpointSite;
     }
 
-    /** Get the flag saying whether this arc is to be drawn as a self-loop
+    /** Get the flag saying whether this arc is to be drawn as a self-loop.
+     * @return True if this arc is to be drawn as a self-loop.
+     * @see #setSelfLoop(boolean)
      */
     public boolean getSelfLoop() {
         return _selfloop;
@@ -375,6 +383,8 @@ public class ArcConnector extends AbstractConnector {
      *  angles should be somewhat less than PI/2, and PI/4 a good
      *  general maximum figure.  If the angle is outside the range -PI
      *  to PI, then it is corrected to lie within that range.
+     *  @param angle The angle
+     *  @see #getAngle()
      */
     public void setAngle(double angle) {
         while (angle > Math.PI) {
@@ -392,6 +402,8 @@ public class ArcConnector extends AbstractConnector {
      * This value is roughly equal to the angle of the tangent to the
      * loop at it's mid-point. This method is only intended for use
      * when creating self-loop arcs from a saved representation.
+     * @param gamma The gamma
+     * @see #getGamma()
      */
     public void setGamma(double gamma) {
         _gamma = gamma;
@@ -406,6 +418,8 @@ public class ArcConnector extends AbstractConnector {
      * Not, however, that this method should only be called when the
      * arc changes, otherwise manipulation won't work properly. Use
      * getSelfLoop() to test the current state of this flag.
+     * @param true if this is a self-loop.
+     * @see #getSelfLoop()
      */
     public void setSelfLoop(boolean selfloop) {
         // If becoming a self-loop, use the current angle if it is
@@ -452,6 +466,8 @@ public class ArcConnector extends AbstractConnector {
     /** Translate the midpoint of the arc. This method is not exact,
      * but attempts to alter the shape of the arc so that the
      * midpoint moves by something close to the given amount.
+     * @param dx The x value to transform
+     * @param dy The y value to transform
      */
     public void translateMidpoint(double dx, double dy) {
         // Calculate some parameters
