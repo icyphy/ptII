@@ -146,6 +146,11 @@ public class DocAttribute extends SingletonAttribute {
         if (parameterAttribute instanceof Settable) {
             return ((Settable) parameterAttribute).getExpression();
         }
+        // Might be a port-parameter misidentified as a port. Try that.
+        parameterAttribute = getAttribute(name + " (port)");
+        if (parameterAttribute instanceof Settable) {
+            return ((Settable) parameterAttribute).getExpression();
+        }
         return null;
     }
 
@@ -165,7 +170,8 @@ public class DocAttribute extends SingletonAttribute {
     }
 
     /** For each parameter and port in the container, create a
-     *  parameter with the same name appended with either " (port)"
+     *  parameter with the same name appended with either " (port)",
+     *  " (port-parameter)",
      *  or " (parameter)".  For parameters, only those that are
      *  settable are shown, and only if the visibility is "FULL".
      *  This method also removes any parameters that have no
@@ -244,9 +250,8 @@ public class DocAttribute extends SingletonAttribute {
                 String name = attribute.getName() + modifier;
                 if (getAttribute(name) == null) {
                     try {
-                        // FIXME: Using a StringParameter here is a really poor choice.
+                        // NOTE: Using a StringParameter here is a really poor choice.
                         // It will try to parse anything with a dollar sign.
-                        // But fixing this in a backward compatible way appears to be hard.
                         // new StringParameter(this, name);
                         new StringAttribute(this, name);
                     } catch (KernelException e) {
