@@ -1134,7 +1134,7 @@ public class JavaScript extends TypedAtomicActor {
                 }
                 previous.setContainer(null);
             }
-            if (!(options instanceof Map)) {
+            if (options == null) {
                 // No options given. Use defaults.
                 if (previousValue == null) {
                     // No previous value, so just create an ordinary port.
