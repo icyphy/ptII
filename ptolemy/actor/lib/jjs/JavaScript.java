@@ -998,7 +998,7 @@ public class JavaScript extends TypedAtomicActor {
             BufferedReader in = null;
             try {
                 in = new BufferedReader(new InputStreamReader(
-                    url.openStream()));
+                        url.openStream(), java.nio.charset.Charset.defaultCharset()));
                 StringBuffer contents = new StringBuffer();
                 String input;
                 while ((input = in.readLine()) != null) {
