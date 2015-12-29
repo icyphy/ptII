@@ -105,7 +105,7 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
 
     /** Get the current paint stroke.
      *  @return The stroke   
-     *  @see #setStroke(s)
+     *  @see #setStroke(Stroke)
      */
     public Stroke getStroke() {
         return _stroke;

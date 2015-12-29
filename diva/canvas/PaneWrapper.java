@@ -126,7 +126,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
 
     /** Get the clipping enabled flag.
      * @return True if clipping is enabled.   
-     * @see #setClipEnabled(true)
+     * @see #setClipEnabled(boolean)
      */
     public boolean isClipEnabled() {
         return _clipEnabled;
@@ -137,7 +137,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * whole pane will be treated as though it were a single figure, and
      * events passed to its event dispatcher, if it has one.
      * @return the value of the enabled flag
-     * @see #setEnabled(true)
+     * @see #setClipEnabled(boolean)
      */
     @Override
     public boolean isEnabled() {
@@ -298,7 +298,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
      * but if the pane is well-behaved, this should be turned
      * off as it seems to slow things down.
      * @param flag The clipping enabled flag
-     * @see #setClipEnable()
+     * @see #isClipEnabled()
      */
     public void setClipEnabled(boolean flag) {
         _clipEnabled = flag;
