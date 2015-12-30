@@ -35,9 +35,10 @@ import java.awt.image.ImageObserver;
 import diva.canvas.CanvasUtilities;
 
 /**
- *
+ * Painted Images.
  * @version        $Id$
  * @author         Steve Neuendorffer
+ * @since Ptolemy II 1.0
  */
 public class PaintedImage implements PaintedObject, ImageObserver {
     // Note that this class was deprecated becase we were to use
@@ -53,6 +54,10 @@ public class PaintedImage implements PaintedObject, ImageObserver {
     // The bounds
     private Rectangle2D _bounds;
 
+    /** Construct a painted image.
+     *  @param image The image
+     *  @param bounds The bounds
+     */   
     public PaintedImage(Image image, Rectangle2D bounds) {
         _image = image;
         _bounds = bounds;

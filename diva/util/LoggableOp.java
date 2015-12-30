@@ -43,7 +43,7 @@ public class LoggableOp {
      */
     private PrintStream _err = System.err;
 
-    /* If true, then print extra information in the error output.
+    /** If true, then print extra information in the error output.
      * This variable is protected so that subclasses can check it
      * easily.
      */
@@ -67,12 +67,15 @@ public class LoggableOp {
 
     /** Get the number of errors generated during the most
      * recent operation.
+     * @return The number of errors
      */
     public int getErrorCount() {
         return _errCount;
     }
 
     /** Get the stream to which errors are printed.
+     * @return The error stream   
+     * @see #setErrorStream(PrintStream)
      */
     public PrintStream getErrorStream() {
         return _err;
@@ -80,14 +83,16 @@ public class LoggableOp {
 
     /** Get the number of warnings generated during the most
      * recent parse.
+     * @return The warning count
      */
     public int getWarningCount() {
         return _warnCount;
     }
 
-    /* Get the current line number. Subclasses should override
+    /** Get the current line number. Subclasses should override
      * if they know about line numbers. The default implementation
      * returns -1, which means that line numbers are not understood.
+     * @return The line number.  In this base class, return -1.
      */
     public int getLineNumber() {
         return -1;
@@ -95,6 +100,7 @@ public class LoggableOp {
 
     /** Print an error message to the error stream. This message
      * includes the line number, and info message.
+     * @param msg The message
      */
     public void logError(String msg) {
         logError("ERROR", msg, null);
@@ -102,6 +108,8 @@ public class LoggableOp {
 
     /** Print an error message to the error stream. This prints
      * the error id, line number, and info message.
+     * @param id The error id
+     * @param msg The info message
      */
     public void logError(String id, String msg) {
         logError(id, msg, null);
@@ -110,6 +118,9 @@ public class LoggableOp {
     /** Print an error message to the error stream. This prints
      * the error id, line number, info message. On a second line,
      * it prints the detail information.
+     * @param id The error id
+     * @param msg The infor message
+     * @para detail The detail information
      */
     public void logError(String id, String msg, String detail) {
         int linenum = getLineNumber();
@@ -133,6 +144,7 @@ public class LoggableOp {
      * and info message. The output is indented by the current
      * indentation amount, allowing recursive operations to be printed
      * more clearly.
+     * @param msg The info message
      */
     public void logInfo(String msg) {
         logInfo(null, msg);
@@ -143,6 +155,8 @@ public class LoggableOp {
      * info message. The output is indented by the current indentation
      * amount, allowing recursive operations to be printed more
      * clearly.
+     * @param id The error id
+     * @param msg The info message
      */
     public void logInfo(String id, String msg) {
         for (int i = _indent; i > 0; i--) {
@@ -168,7 +182,9 @@ public class LoggableOp {
         _indent++;
     }
 
-    /** Test if we are in verbose mode
+    /** Test if we are in verbose mode.
+     * @return True if we are in verbose mode
+     * @see #setVerbose(boolean)
      */
     public final boolean isVerbose() {
         return _verbose;
@@ -184,6 +200,8 @@ public class LoggableOp {
 
     /** Set the stream to which errors are printed. The default
      * error stream is System.err.
+     * @param err The stream
+     * @see #getErrorStream
      */
     public void setErrorStream(PrintStream err) {
         _err = err;
@@ -191,6 +209,8 @@ public class LoggableOp {
 
     /** Set the verbose mode flag. In verbose mode, calls to
      * the logInfo() method write to the error output.
+     * @param v True if we are in verbose mode.
+     * @see #isVerbose()
      */
     public void setVerbose(boolean v) {
         _verbose = v;
@@ -204,6 +224,7 @@ public class LoggableOp {
 
     /** Print an warning message to the error stream. This message
      * includes the line number, and info message.
+     * @param msg The warning message
      */
     public void logWarning(String msg) {
         logWarning("Warning", msg, null);
@@ -211,6 +232,8 @@ public class LoggableOp {
 
     /** Print an warning message to the error stream. This prints
      * the warning id, line number, and info message.
+     * @param id The warning id
+     * @param msg The warning message
      */
     public void logWarning(String id, String msg) {
         logWarning(id, msg, null);
@@ -219,6 +242,9 @@ public class LoggableOp {
     /** Print an warning message to the error stream. This prints
      * the warning id, line number, info message. On a second line,
      * it prints the detail information.
+     * @param id The warning id
+     * @param msg The warning message
+     * @param detail The detail message
      */
     public void logWarning(String id, String msg, String detail) {
         int linenum = getLineNumber();
