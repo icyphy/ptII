@@ -213,13 +213,7 @@ exports.MockHueBridge = (function(){
       	  
       	  console.log("Executing method " + method + ", command " + URIpath);
       	  
-      	 /* if (method == "GET" && URIpath.match(expression1)) {
-      		// GET /api/<username>/lights/<id>/state/ - gettable?
-      		  var lightID = findLightID(URIpath);
-      		  return helper.getState(bridgeID).lights[lightID];
-      		  
-      	  }
-      	 */ if ((method == "POST" || method == "PUT") &&
+      	  if ((method == "POST" || method == "PUT") &&
                 URIpath.match(expression1)){
       		// POST or PUT /api/<username>/lights/<id>/state/
       		  var lightID = findLightID(URIpath);

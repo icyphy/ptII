@@ -34,6 +34,7 @@ import java.io.Reader;
 import java.io.StringReader;
 import java.net.URI;
 import java.net.URL;
+import java.util.Date;
 
 import ptolemy.util.FileUtilities;
 
@@ -216,7 +217,12 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
      */
     public void setGraphic(String graphic) {
         if (!_graphic.equals(graphic)) {
-            _graphicVersion++;
+            // Use the current date and time for the version to guarantee a 
+            // unique new version number.  A counter is insufficient 
+            // if a user edits a non-running model.  (I.e., the counter starts 
+            // at "1", the user stops the model, edits the svg, runs the model
+            // and the counter is reset to "1" again).
+            _graphicVersion = (int) (new Date().getTime()/1000);
         }
         _graphic = graphic;
     }
