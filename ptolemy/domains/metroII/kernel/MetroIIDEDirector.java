@@ -485,7 +485,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
         // If the earliest event in the event queue is in the future,
         // this code terminates the current iteration.
         // This code is applied on both embedded and top-level directors.
-        synchronized (_eventQueue) {
+        synchronized (_eventQueueLock) {
             if (!_eventQueue.isEmpty()) {
                 DEEvent next = _eventQueue.get();
 
@@ -829,16 +829,17 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
 
         long idleEventTimeStamp = Long.MAX_VALUE;
 
-        if (!_eventQueue.isEmpty()
-                && !_eventQueue.get().timeStamp().isNegative()) {
-            idleEventTimeStamp = _eventQueue.get().timeStamp().getLongValue();
+        synchronized (_eventQueueLock) {
+            if (!_eventQueue.isEmpty()
+                    && !_eventQueue.get().timeStamp().isNegative()) {
+                idleEventTimeStamp = _eventQueue.get().timeStamp().getLongValue();
+            }
+            idleEvent = MetroIIEventBuilder.newProposedEvent(getFullName()
+                    + ".Idle", idleEventTimeStamp, getTimeResolution());
+
+            _events.clear();
+            _events.add(idleEvent);
         }
-
-        idleEvent = MetroIIEventBuilder.newProposedEvent(getFullName()
-                + ".Idle", idleEventTimeStamp, getTimeResolution());
-
-        _events.clear();
-        _events.add(idleEvent);
 
         while (idleEvent.getStatus() != Event.Status.NOTIFIED) {
             // System.out.println(idleEvent.getTime().getValue());

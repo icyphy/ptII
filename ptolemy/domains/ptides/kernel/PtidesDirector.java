@@ -619,10 +619,12 @@ public class PtidesDirector extends DEDirector implements Decorator {
             // If there is a still event on the event queue with time stamp
             // equal to the stop time, we want to process that event before
             // we declare that we are done.
-            if (_eventQueue.size() == 0
-                    || !_eventQueue.get().timeStamp()
-                    .equals(getModelStopTime())) {
-                result = false;
+            synchronized (_eventQueueLock) {
+                if (_eventQueue.size() == 0
+                        || !_eventQueue.get().timeStamp()
+                        .equals(getModelStopTime())) {
+                    result = false;
+                }
             }
         }
 
@@ -713,7 +715,15 @@ public class PtidesDirector extends DEDirector implements Decorator {
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _eventQueue = new PtidesListEventQueue();
+        if (_eventQueue != null) {
+            // This execution may be overlapped with the previous.
+            // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/NotifyAll
+            synchronized (_eventQueueLock) {
+                _eventQueue = new PtidesListEventQueue();
+            }
+        } else {
+            _eventQueue = new PtidesListEventQueue();
+        }
         _inputEventQueue = new HashMap<Time, List<PtidesEvent>>();
         _outputEventDeadlines = new HashMap<Time, List<PtidesEvent>>();
         _ptidesOutputPortEventQueue = new HashMap<PtidesPort, Queue<PtidesEvent>>();
@@ -809,10 +819,13 @@ public class PtidesDirector extends DEDirector implements Decorator {
 
         Actor actor = (Actor) ioPort.getContainer();
 
-        if (_eventQueue == null || _disabledActors != null
-                && _disabledActors.contains(actor)) {
-            return;
+        synchronized (_eventQueueLock) {
+            if (_eventQueue == null || _disabledActors != null
+                    && _disabledActors.contains(actor)) {
+                return;
+            }
         }
+        
         int depth = _getDepthOfIOPort(ioPort);
 
         if (_debugging) {
@@ -881,7 +894,9 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 }
             }
         } else {
-            _eventQueue.put(newEvent);
+            synchronized (_eventQueueLock) {
+                _eventQueue.put(newEvent);
+            }
             if (_numberOfTokensPerPort == null) {
                 _numberOfTokensPerPort = new HashMap<IOPort, Integer>();
             }
@@ -948,12 +963,14 @@ public class PtidesDirector extends DEDirector implements Decorator {
         if (actor != null) {
             return actor;
         }
-        actor = _getNextActorFrom(_eventQueue);
-        if (actor != null) {
-            return actor;
+        synchronized (_eventQueueLock) {
+            actor = _getNextActorFrom(_eventQueue);
+            if (actor != null) {
+                return actor;
+            }
+            _currentLogicalTime = null;
+            return null;
         }
-        _currentLogicalTime = null;
-        return null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1464,12 +1481,14 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 // trigger events with a smaller timestamp, pick that one
 
                 if (queue == _pureEvents) {
-                    for (Object triggeredEventObject : _eventQueue.toArray()) {
-                        PtidesEvent triggeredEvent = (PtidesEvent) triggeredEventObject;
-                        if (triggeredEvent.actor() == actor
-                                && triggeredEvent.timeStamp().compareTo(
-                                        timestamp) < 0) {
-                            ptidesEvent = triggeredEvent;
+                    synchronized (_eventQueueLock) {
+                        for (Object triggeredEventObject : _eventQueue.toArray()) {
+                            PtidesEvent triggeredEvent = (PtidesEvent) triggeredEventObject;
+                            if (triggeredEvent.actor() == actor
+                                    && triggeredEvent.timeStamp().compareTo(
+                                            timestamp) < 0) {
+                                ptidesEvent = triggeredEvent;
+                            }
                         }
                     }
                 }
@@ -1537,8 +1556,10 @@ public class PtidesDirector extends DEDirector implements Decorator {
                     _currentSourceTimestamp = ptidesEvent.sourceTimestamp();
 
                     // remove all events with same tag from all queues.
-                    _removeEventsFromQueue(_eventQueue, ptidesEvent);
-                    _removeEventsFromQueue(_pureEvents, ptidesEvent);
+                    synchronized (_eventQueueLock) {
+                        _removeEventsFromQueue(_eventQueue, ptidesEvent);
+                        _removeEventsFromQueue(_pureEvents, ptidesEvent);
+                    }
                     _actorsFinished.remove(actor);
                     if (_debugging) {
                         _debug(">>> next actor: " + actor + " @ " + timestamp);
@@ -1671,24 +1692,26 @@ public class PtidesDirector extends DEDirector implements Decorator {
 
         // Check if there are any events upstream that have to be
         // processed before this one.
-        Object[] eventArray = _eventQueue.toArray();
-        for (Object object : eventArray) {
-            PtidesEvent ptidesEvent = (PtidesEvent) object;
-            if (event.timeStamp().compareTo(ptidesEvent.timeStamp()) > 0) {
-                break;
-            }
-            if (ptidesEvent.actor() != event.actor()
-                    && ptidesEvent.ioPort() != null && event.ioPort() != null) {
-                SuperdenseDependency minDelay = _getSuperdenseDependencyPair(
-                        (TypedIOPort) ptidesEvent.ioPort(),
-                        (TypedIOPort) event.ioPort());
-                if (event.timeStamp().getDoubleValue()
-                        - ptidesEvent.timeStamp().getDoubleValue() >= minDelay
-                        .timeValue()) {
-                    if (_debugging) {
-                        _debug("*** upstream !safe" + event);
+        synchronized (_eventQueueLock) {
+            Object[] eventArray = _eventQueue.toArray();
+            for (Object object : eventArray) {
+                PtidesEvent ptidesEvent = (PtidesEvent) object;
+                if (event.timeStamp().compareTo(ptidesEvent.timeStamp()) > 0) {
+                    break;
+                }
+                if (ptidesEvent.actor() != event.actor()
+                        && ptidesEvent.ioPort() != null && event.ioPort() != null) {
+                    SuperdenseDependency minDelay = _getSuperdenseDependencyPair(
+                            (TypedIOPort) ptidesEvent.ioPort(),
+                            (TypedIOPort) event.ioPort());
+                    if (event.timeStamp().getDoubleValue()
+                            - ptidesEvent.timeStamp().getDoubleValue() >= minDelay
+                            .timeValue()) {
+                        if (_debugging) {
+                            _debug("*** upstream !safe" + event);
+                        }
+                        return false;
                     }
-                    return false;
                 }
             }
         }
