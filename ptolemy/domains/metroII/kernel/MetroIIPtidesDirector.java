@@ -812,7 +812,15 @@ public class MetroIIPtidesDirector extends MetroIIDEDirectorForPtides {
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        _eventQueue = new MetroIIPtidesListEventQueue();
+        if (_eventQueue != null) {
+            // This execution may be overlapped with the previous.
+            // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/NotifyAll
+            synchronized (_eventQueueLock) {
+                _eventQueue = new MetroIIPtidesListEventQueue();
+            }
+        } else {
+            _eventQueue = new MetroIIPtidesListEventQueue();
+        }
         _inputEventQueue = new HashMap<Time, List<PtidesEvent>>();
         _outputEventQueue = new HashMap<Time, List<PtidesEvent>>();
         _ptidesOutputPortEventQueue = new HashMap<MetroIIPtidesPort, Queue<PtidesEvent>>();
