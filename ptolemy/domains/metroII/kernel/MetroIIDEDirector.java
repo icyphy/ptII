@@ -114,43 +114,43 @@ import ptolemy.kernel.util.Workspace;
 public class MetroIIDEDirector extends DEDirector implements GetFirable {
 
     /**
-     * Constructs a director in the given container with the given name. The
+     * Construct a director in the given container with the given name. The
      * container argument must not be null, or a NullPointerException will be
      * thrown. If the name argument is null, then the name is set to the empty
      * string. Increment the version number of the workspace.
      *
-     * @param container
-     *            Container of the director.
-     * @param name
-     *            Name of this director.
-     * @exception IllegalActionException
-     *                If the director is not compatible with the specified
-     *                container. May be thrown in a derived class.
-     * @exception NameDuplicationException
-     *                If the container is not a CompositeActor and the name
-     *                collides with an entity in the container.
+     * @param container  Container of the director.
+     * @param name Name of this director.
+     * @exception IllegalActionException If the director is not
+     * compatible with the specified container. May be thrown in a
+     * derived class.
+     * @exception NameDuplicationException If the container is not a CompositeActor and the name
+     * collides with an entity in the container.
      */
     public MetroIIDEDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         setEmbedded(false);
         _initializeParameters();
-
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         parameters                        ////
+
+    /** True if the trace information is printed. */
+    public Parameter printTrace;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
     /**
-     * Clones the object into the specified workspace. The new object is
+     * Clone the object into the specified workspace. The new object is
      * <i>not</i> added to the directory of that workspace (you must do this
      * yourself if you want it there).
      *
-     * @param workspace
-     *            The workspace for the cloned object.
-     * @exception CloneNotSupportedException
-     *                Not thrown in this base class
+     * @param workspace The workspace for the cloned object.
      * @return The new Attribute.
+     * @exception CloneNotSupportedException Not thrown in this base class
      */
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
@@ -171,20 +171,20 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     }
 
     /**
-     * Initializes the model controlled by this director. Call the initialize()
-     * of super class and then wrap each actor that is controlled by this
-     * director.
+     * Initialize the model controlled by this director. Call the
+     * initialize() of super class and then wrap each actor that is
+     * controlled by this director.
      *
-     * This method should typically be invoked once per execution, after the
-     * preinitialization phase, but before any iteration. It may be invoked in
-     * the middle of an execution, if reinitialization is desired.
+     * <p>This method should typically be invoked once per execution,
+     * after the preinitialization phase, but before any iteration. It
+     * may be invoked in the middle of an execution, if
+     * reinitialization is desired.</p>
      *
-     * This method is <i>not</i> synchronized on the workspace, so the caller
-     * should be.
+     * <p>This method is <i>not</i> synchronized on the workspace, so
+     * the caller should be.</p>
      *
-     * @exception IllegalActionException
-     *                If the initialize() method of one of the associated actors
-     *                throws it.
+     * @exception IllegalActionException If the initialize() method of
+     * one of the associated actors throws it.
      */
     @Override
     public void initialize() throws IllegalActionException {
@@ -219,10 +219,9 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     }
 
     /**
-     * Requests the execution of the current iteration to stop. This is similar
+     * Request the execution of the current iteration to stop. This is similar
      * to stopFire(), except that the current iteration is not allowed to
      * complete.
-     *
      */
     @Override
     public void stop() {
@@ -236,20 +235,16 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     }
 
     /**
-     * Option parameter whether trace info is printed out.
-     */
-    public Parameter printTrace;
-
-    /**
-     * Returns the actor that is about to fire and its state.
+     * Return the actor that is about to fire and its state.
      *
-     * @return 0 if firing can be executed, and the next event in event queue
-     *         should be checked for processing; -1 if there's no actor to fire,
-     *         and we should not keep firing; 1 if there's no actor to fire, but
-     *         the next event should be checked for processing.
-     * @exception IllegalActionException
-     *                If the firing actor throws it, or event queue is not
-     *                ready, or an event is missed, or time is set backwards.
+     * @return 0 if firing can be executed, and the next event in
+     * event queue should be checked for processing; -1 if there's no
+     * actor to fire, and we should not keep firing; 1 if there's no
+     * actor to fire, but the next event should be checked for
+     * processing.
+     * @exception IllegalActionException If the firing actor throws
+     * it, or event queue is not ready, or an event is missed, or time
+     * is set backwards.
      */
     protected Pair<Actor, Integer> _checkNextActorToFire()
             throws IllegalActionException {
@@ -475,14 +470,13 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     }
 
     /**
-     * Enforces a firing of a DE director only handles events with the same tag.
+     * Enforce a firing of a DE director only handles events with the same tag.
      * Checks what is the model time of the earliest event in the event queue.
      *
      * @return true if the earliest event in the event queue is at the same
-     *         model time as the event that was just processed. Else if that
-     *         event's timestamp is in the future, return false.
-     * @exception IllegalActionException
-     *                If model time is set backwards.
+     * model time as the event that was just processed. Else if that
+     * event's timestamp is in the future, return false.
+     * @exception IllegalActionException If model time is set backwards.
      */
     @Override
     protected boolean _checkForNextEvent() throws IllegalActionException {
@@ -520,16 +514,18 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     }
 
     /**
-     * Processes the mappable actors. The assumption is that a mappable actor has
+     * Process the mappable actors. The assumption is that a mappable actor has
      * a delay strictly greater than zero.
      *
-     * @exception IllegalActionException
-     * @exception CollectionAbortedException
+     * @exception IllegalActionException If there is problem with
+     * starting or resuming an event, prefiring or postfiring
+     * @exception CollectionAbortedException If thrown while handling
+     * the resulting events.
      */
     void processMappableActorEventsUntil(
             ResultHandler<Iterable<Event.Builder>> resultHandler,
-            Event.Builder event) throws IllegalActionException,
-            CollectionAbortedException {
+            Event.Builder event)
+            throws IllegalActionException, CollectionAbortedException {
 
         assert event.getStatus() == Event.Status.PROPOSED;
         do {
@@ -588,7 +584,7 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     }
 
     /**
-     * Fires actors according to events in the event queue. Whether the actual
+     * Fire actors according to events in the event queue. Whether the actual
      * firing of an actor can be done also depend on the MetroII events
      * associated with the actor if the actor is a MetroII actor. Only when the
      * associated MetroII event is NOTIFIED, the firing can be executed.
@@ -598,12 +594,11 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
      * MetroIIDEDirector or the event in architectural model which this model is
      * mapped to.
      *
-     * The time advancing is via proposing a MetroII event with time tag as its
-     * quantity (@see TimeScheduler).
+     * <p>The time advancing is via proposing a MetroII event with time tag as its
+     * quantity, see {@link ptolemy.domains.metroII.kernel.TimeScheduler}.</p>
      *
-     * @exception IllegalActionException
-     *                If we couldn't process an event or if an event of smaller
-     *                timestamp is found within the event queue.
+     * @exception IllegalActionException If we couldn't process an event or if an event of smaller
+     * timestamp is found within the event queue.
      */
     @Override
     public void getfire(ResultHandler<Iterable<Event.Builder>> resultHandler)
@@ -873,11 +868,12 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
 
     /**
      * Since the MetroIIDEDirector is always used inside a
-     * MetroIICompositeActor, the adapter() in MetroIICompositeActor is
-     * responsible for creating the iterator of getfire(), this adapter() should
-     * never be called.
+     * MetroIICompositeActor, the adapter() in MetroIICompositeActor
+     * is responsible for creating the iterator of getfire(), this
+     * adapter() should never be called.
      *
-     * @return iterator
+     * @return An iterator, in this case null.  However, in this
+     * base class, an assertion will be thrown.
      */
     @Override
     public YieldAdapterIterable<Iterable<Builder>> adapter() {
@@ -889,10 +885,12 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     ////                         private methods                   ////
 
     /**
-     * Initializes parameters. This is called by the constructor.
+     * Initialize parameters. This is called by the constructor.
      *
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+     * @exception IllegalActionException If thrown while creating
+     * the printTrace parameter.
+     * @exception NameDuplicationException If thrown while creating
+     * the printTrace parameter.
      */
     private void _initializeParameters() throws IllegalActionException,
     NameDuplicationException {
@@ -904,28 +902,18 @@ public class MetroIIDEDirector extends DEDirector implements GetFirable {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /**
-     * Lookup table for actor by MetroII event name
-     */
+    /** Lookup table for actor by MetroII event name. */
     private Hashtable<String, Actor> _nameToActor = new Hashtable<String, Actor>();
 
-    /**
-     * The list of actors governed by MetroIIDEDirector
-     */
+    /** The list of actors governed by MetroIIDEDirector. */
     private Hashtable<String, FireMachine> _actorDictionary = new Hashtable<String, FireMachine>();
 
-    /**
-     * The list of current live MetroII events
-     */
+    /** The list of current live MetroII events. */
     private ArrayList<Event.Builder> _events = new ArrayList<Event.Builder>();
 
-    /**
-     * The list of actors that are governed by MetroIIDEDirector
-     */
+    /** The list of actors that are governed by MetroIIDEDirector. */
     private ArrayList<Actor> actorList = new ArrayList<Actor>();
 
-    /**
-     * The pending iterations for refiring actor.
-     */
+    /** The pending iterations for refiring actor. */
     private Hashtable<String, Integer> _pendingIteration = new Hashtable<String, Integer>();
 }
