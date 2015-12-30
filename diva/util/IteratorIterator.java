@@ -44,7 +44,8 @@ public abstract class IteratorIterator extends IteratorAdapter {
 
     private Iterator _subiterator = null;
 
-    /* Construct a new iterator over the contents of the given iterator
+    /** Construct a new iterator over the contents of the given iterator.
+     *  @param i The iterator
      */
     public IteratorIterator(Iterator i) {
         _iterator = i;
@@ -54,7 +55,7 @@ public abstract class IteratorIterator extends IteratorAdapter {
         }
     }
 
-    /* Test if there are more elements. This will return false if
+    /** Test if there are more elements. This will return false if
      * the top-level iterator has no more elements.
      */
     @Override
@@ -65,12 +66,13 @@ public abstract class IteratorIterator extends IteratorAdapter {
         return _subiterator != null;
     }
 
-    /* Convert an object returned by the top-level iterator
+    /** Convert an object returned by the top-level iterator
      * into a sub-iterator.
      */
     abstract protected Iterator iterator(Object o);
 
-    /* Return the next object.
+    /** Return the next object.
+     * @return The next object
      */
     @Override
     public Object next() throws NoSuchElementException {

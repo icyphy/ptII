@@ -41,6 +41,10 @@ public class FilteredIterator extends IteratorAdapter {
 
     private Object _nextObject = null;
 
+    /** Construct a filtered iterator.
+     *  @param i The iterator
+     *  @param f The filter
+     */
     public FilteredIterator(Iterator i, Filter f) {
         _iterator = i;
         _filter = f;

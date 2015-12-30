@@ -55,6 +55,7 @@ public class BasicPropertyContainer implements PropertyContainer {
 
     /**
      * A property container with no defaults.
+     * @param defaults The defaults.
      */
     public BasicPropertyContainer(PropertyContainer defaults) {
         _defaults = defaults;
@@ -64,6 +65,7 @@ public class BasicPropertyContainer implements PropertyContainer {
      * Return the property corresponding to
      * the given key, or null if no such property
      * exists.
+     * @see #setProperty(String, Object)
      */
     @Override
     public Object getProperty(String key) {
@@ -83,6 +85,7 @@ public class BasicPropertyContainer implements PropertyContainer {
     /**
      * Set the property corresponding to
      * the given key.
+     * @see #getProperty(String)
      */
     @Override
     public void setProperty(String key, Object value) {
@@ -93,18 +96,20 @@ public class BasicPropertyContainer implements PropertyContainer {
         _mapping.put(key, value);
     }
 
-    //XXX remove property
-    //added by Heloise
+    /** Remove all properties. */
     public void removeAllProperties() {
         _mapping.clear();
     }
 
-    //added by Heloise
+    /** Return a Iterator.
+     *  @return An iterator.
+     */
     public Iterator properties() {
         return _mapping.values().iterator();
     }
 
-    /** Return an iteration of the names of the properties
+    /** Return an iteration of the names of the properties.
+     *  @return An iterator.
      */
     @Override
     public Iterator propertyNames() {

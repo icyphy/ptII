@@ -36,11 +36,15 @@ package diva.util;
 public interface SemanticObjectContainer {
     /**
      * Return the semantic object.
+     * @return The semantic object
+     * @see #setSemanticObject(Object)
      */
     public Object getSemanticObject();
 
     /**
      * Set the semantic object.
+     * @param o The semantic object
+     * @see #getSemanticObject()
      */
     public void setSemanticObject(Object o);
 }

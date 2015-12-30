@@ -38,6 +38,9 @@ import java.util.Iterator;
 public class ProxyIterator extends IteratorAdapter {
     private Iterator _iterator;
 
+    /** Construct an iterator that takes another iterator.
+     * @param i The source iterator.
+     */
     public ProxyIterator(Iterator i) {
         _iterator = i;
     }

@@ -36,11 +36,13 @@ package diva.util;
 public interface UserObjectContainer {
     /** Return the user object.
      *  @return The user object.
+     *  @see #setUserObject(Object)
      */
     public Object getUserObject();
 
     /** Set the user object.
      *  @param object The user object.
+     *  @see #getUserObject()
      */
     public void setUserObject(Object object);
 }
