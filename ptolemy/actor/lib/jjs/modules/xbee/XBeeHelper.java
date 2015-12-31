@@ -244,7 +244,7 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
     private static String[] _types;
 
     /** A mutex used when creating _types. */
-    private static Object _typesMutex;
+    private static Object _typesMutex = new Object();
     
     /** The send type for this instance of XBee. */
     private DATA_TYPE _sendType;
