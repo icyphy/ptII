@@ -145,11 +145,14 @@ public class VertxHelperBase extends HelperBase {
         submit(new Runnable() {
             @Override
             public void run() {
-                _busy = false;
-                // Ensure that any future callbacks are ignored.
-                _nextResponse = 0L;
-                // If there are pending responses, discard them.
-                _deferredHandlers.clear();
+                // Coverity Scan warned that we were accessing _busy without holding the lock.
+                synchronized (VertxHelperBase.this) {
+                    _busy = false;
+                    // Ensure that any future callbacks are ignored.
+                    _nextResponse = 0L;
+                    // If there are pending responses, discard them.
+                    _deferredHandlers.clear();
+                }
             }
         });
     }
@@ -640,7 +643,8 @@ public class VertxHelperBase extends HelperBase {
     }
 
     /** A structure for storing a deferred handler invocation. */
-    private class HandlerInvocation {
+    private static class HandlerInvocation {
+        // Coverity Scan suggested making this inner class static.
         public Runnable response;
         public boolean done;
     }
