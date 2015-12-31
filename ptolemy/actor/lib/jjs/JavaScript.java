@@ -1260,8 +1260,11 @@ public class JavaScript extends TypedAtomicActor {
      *  @throws IllegalActionException If the director cannot respect the request.
      */
     public void invokeCallback(final Runnable function) throws IllegalActionException {
-        _pendingCallbacks.offer(function);
-        getDirector().fireAtCurrentTime(this);
+        // Coverity Scan warned that we were missing a lock when reading _pendingCallbacks.
+        synchronized (this) {
+            _pendingCallbacks.offer(function);
+            getDirector().fireAtCurrentTime(this);
+        }
     }
 
     /** Return true if the model is executing (between initialize() and
