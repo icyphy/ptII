@@ -176,8 +176,22 @@ public class WebSocketHelper extends VertxHelperBase {
             while(isOpen() && _webSocket.writeQueueFull()) {
                 synchronized(this) {
                     try {
-                        _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
-                        wait();
+                        // Coverity Scan warned:
+                        // "wait_cond_improperly_checked: The wait
+                        // condition prompting the wait upon
+                        // WebSocketHelper.this is not checked
+                        // correctly. This code can wait for a
+                        // condition that has already been satisfied,
+                        // which can cause a never-ending wait."
+
+                        // The suggested fix: "Refactor the code to
+                        // protect the call to wait with a loop that
+                        // rechecks the wait condition inside the
+                        // locked region."
+                        if (isOpen() && _webSocket.writeQueueFull()) {
+                            _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
+                            wait();
+                        }
                     } catch (InterruptedException e) {
                         _error("Buffer is full, and wait for draining was interrupted");
                     }
