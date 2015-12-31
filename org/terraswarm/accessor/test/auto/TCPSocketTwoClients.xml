@@ -362,17 +362,19 @@
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 3}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{60, 65}">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 3}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 70.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{380.0, 70.0}">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
