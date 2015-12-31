@@ -293,36 +293,46 @@ public class SocketHelper extends VertxHelperBase {
 
     /** Return an array of the types supported by the current host for
      *  receiveType arguments.
+     *  @return An array of types
      */
     public static String[] supportedReceiveTypes() {
-        if (_receiveTypes != null) {
-            return _receiveTypes;
-        }
-        int length = DATA_TYPE.values().length;
-        _receiveTypes = new String[length];
-        int i = 0;
-        for (DATA_TYPE type : DATA_TYPE.values()) {
-            _receiveTypes[i++] = type.toString().toLowerCase();
+        if (_receiveTypes == null) {
+            // Avoid FindBugs LI: Unsynchronized Lazy Initialization (FB.LI_LAZY_INIT_UPDATE_STATIC)
+            synchronized (_receiveTypesMutex) {
+                if (_receiveTypes == null) {
+                    int length = DATA_TYPE.values().length;
+                    _receiveTypes = new String[length];
+                    int i = 0;
+                    for (DATA_TYPE type : DATA_TYPE.values()) {
+                        _receiveTypes[i++] = type.toString().toLowerCase();
+                    }
+                }
+            }
         }
         return _receiveTypes;
     }
 
     /** Return an array of the types supported by the current host for
      *  sendType arguments.
+     *  @return An array of types
      */
     public static String[] supportedSendTypes() {
-        if (_sendTypes != null) {
-            return _sendTypes;
-        }
-        int length = DATA_TYPE.values().length;
-        _sendImageTypes = _removeDuplicates(ImageIO.getWriterFormatNames());
-        _sendTypes = new String[length + _sendImageTypes.size()];
-        int i = 0;
-        for (DATA_TYPE type : DATA_TYPE.values()) {
-            _sendTypes[i++] = type.toString().toLowerCase();
-        }
-        for (String imageType : _sendImageTypes) {
-            _sendTypes[i++] = imageType;
+        if (_sendTypes == null) {
+            // Avoid FindBugs LI: Unsynchronized Lazy Initialization (FB.LI_LAZY_INIT_UPDATE_STATIC)
+            synchronized (_sendTypesMutex) {
+                if (_sendTypes == null) {
+                    int length = DATA_TYPE.values().length;
+                    _sendImageTypes = _removeDuplicates(ImageIO.getWriterFormatNames());
+                    _sendTypes = new String[length + _sendImageTypes.size()];
+                    int i = 0;
+                    for (DATA_TYPE type : DATA_TYPE.values()) {
+                        _sendTypes[i++] = type.toString().toLowerCase();
+                    }
+                    for (String imageType : _sendImageTypes) {
+                        _sendTypes[i++] = imageType;
+                    }
+                }
+            }
         }
         return _sendTypes;
     }
@@ -334,17 +344,23 @@ public class SocketHelper extends VertxHelperBase {
     /** The array of receive type names. */
     private static String[] _receiveTypes;
 
+    /** A mutex used when creating _receiveTypes. */
+    private static Object _receiveTypesMutex = new Object();
+
     /** The set of informal image type names that can be sent. */
     private static TreeSet<String> _sendImageTypes;
     
     /** The array of send type names. */
     private static String[] _sendTypes;
 
+    /** A mutex used when creating _sendTypes. */
+    private static Object _sendTypesMutex = new Object();
+
     ///////////////////////////////////////////////////////////////////
     ////                     public classes                        ////
 
     /** Input stream backed by a list of byte arrays. */
-    public class ByteArrayBackedInputStream extends InputStream {
+    public static class ByteArrayBackedInputStream extends InputStream {
         private LinkedList<byte[]> _list = new LinkedList<byte[]>();
         private int _position, _array;
         public ByteArrayBackedInputStream(byte[] buffer) {

@@ -129,7 +129,10 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
             Buffer buffer = Buffer.buffer(message.getData());
             int size = _sizeOfType(_receiveType);
             int length = buffer.length();
-            int numberOfElements = length / size;
+            int numberOfElements = 0;
+            if (size > 0) {
+                numberOfElements = length / size;
+            }
             if (numberOfElements == 1) {
                 _currentObj.callMember("emit", "data", _extractFromBuffer(buffer, _receiveType, 0));
             } else if (numberOfElements > 1) {
@@ -153,6 +156,7 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
             } else if (numberOfElements <= 0) {
                 _error("Expect to receive type "
                         + _receiveType
+                        + ", of size " + size
                         + ", but received an insufficient number of bytes: "
                         + buffer.length());
             }
@@ -201,16 +205,20 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
      *  receiveType arguments.
      */
     public static String[] supportedReceiveTypes() {
-        if (_types != null) {
-            return _types;
-        }
-        // Don't support image type.
-        int length = DATA_TYPE.values().length - 1;
-        _types = new String[length];
-        int i = 0;
-        for (DATA_TYPE type : DATA_TYPE.values()) {
-            if (type != DATA_TYPE.IMAGE) {
-                _types[i++] = type.toString().toLowerCase();
+        if (_types == null) {
+            // Avoid FindBugs LI: Unsynchronized Lazy Initialization (FB.LI_LAZY_INIT_UPDATE_STATIC)
+            synchronized (_typesMutex) {
+                if (_types == null) {
+                    // Don't support image type.
+                    int length = DATA_TYPE.values().length - 1;
+                    _types = new String[length];
+                    int i = 0;
+                    for (DATA_TYPE type : DATA_TYPE.values()) {
+                        if (type != DATA_TYPE.IMAGE) {
+                            _types[i++] = type.toString().toLowerCase();
+                        }
+                    }
+                }
             }
         }
         return _types;
@@ -235,6 +243,9 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
     /** The array of send and receive type names. */
     private static String[] _types;
 
+    /** A mutex used when creating _types. */
+    private static Object _typesMutex;
+    
     /** The send type for this instance of XBee. */
     private DATA_TYPE _sendType;
 }
