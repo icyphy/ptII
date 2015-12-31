@@ -39,12 +39,14 @@ import org.json.JSONException;
 import ptolemy.actor.lib.jjs.JavaScript;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.InvalidStateException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// AccessorLibrary
@@ -189,21 +191,39 @@ public class AccessorLibrary extends EntityLibrary {
                                     String message = "Loading accessor failed: " + valueString;
                                     MessageHandler.status(message);
                                     System.err.println(message + "\n" + ex);
+                                    // If we are running the nightly build and trying
+                                    // to populate the library, then throw an exception if there is a problem.
+                                    if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild").length() > 0) {
+                                        throw new InternalErrorException(this, ex,
+                                                message);
+                                    }
                                 }
                             } else {
                                 String message = "Cannot parse index entry: " + value;
                                 MessageHandler.status(message);
                                 System.err.println(message);
+                                if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild").length() > 0) {
+                                    throw new InternalErrorException(this, null,
+                                            message);
+                                }
                             }
                         }
                     } catch (IOException ex) {
                         String message = "Cannot open index file: " + indexFile;
                         MessageHandler.status(message);
                         System.err.println(message + "\n" + ex);
+                        if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild").length() > 0) {
+                            throw new InternalErrorException(this, ex,
+                                    message);
+                        }
                     } catch (JSONException ex) {
                         String message = "Cannot open index data: " + contents;
                         MessageHandler.status(message);
                         System.err.println(message + "\n" + ex);
+                        if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild").length() > 0) {
+                            throw new InternalErrorException(this, ex,
+                                    message);
+                        }
                     } finally {
                         if (in != null) {
                             in.close();
