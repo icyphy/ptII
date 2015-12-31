@@ -8,6 +8,6 @@ testdirs=/tmp/chktestdir.testdirs.$$
 find . -type d -name test | egrep -v '(/adm/|/codeDoc/|/reports/|/vendors/)' | sort > $testdirs
 # Skip ptolemy/acor/lib/jjs/node_modules because those directories may
 # have test/ directories, but might not have makefiles.
-cat $testdirs | awk '{print $1 "/../makefile"}' | grep -v ptolemy/actor/lib/jjs/node_modules | grep -v org/terraswarm/accessor/accessors/web/hosts | xargs grep 'DIRS =' | egrep -v '[ 	]test' | grep -v PTPOWERMOCK | grep -v PTCUNIT_DIR
+cat $testdirs | awk '{print $1 "/../makefile"}' | grep -v ptolemy/actor/lib/jjs/node_modules | grep -v org/terraswarm/accessor/accessors/web/ | xargs grep 'DIRS =' | egrep -v '[ 	]test' | grep -v PTPOWERMOCK | grep -v PTCUNIT_DIR
 
 rm -r $testdirs
