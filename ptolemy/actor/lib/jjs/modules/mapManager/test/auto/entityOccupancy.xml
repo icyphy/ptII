@@ -4,7 +4,7 @@
 <entity name="entityOccupancy" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1113, 122, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 122, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -19,7 +19,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="mapManager = require('mapManager');&#10;&#10;exports.initialize = function(){&#10;	&#10;	var myCoords = new mapManager.CoordinateSystem(&quot;myCoordsName&quot;);&#10;	var myMap = new mapManager.Map(&quot;myMapName&quot; , mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);&#10;	mapManager.registerMap(myMap);&#10;	&#10;	var cat = new mapManager.Entity(&quot;cat&quot;);&#10;	&#10;	send(&quot;output&quot;, &quot;Registering cat (should be true)&quot;);&#10;	send(&quot;output&quot;, mapManager.registerEntity(cat));&#10;	&#10;	send(&quot;output&quot;, &quot;Adding cat to myMap (should be true)&quot;);&#10;	send(&quot;output&quot;, myMap.addEntity(cat));&#10;&#10;	send(&quot;output&quot;, &quot;myMap's mapEntities.&quot;);&#10;	send(&quot;output&quot;, myMap.mapEntitiesToString());&#10;	send(&quot;output&quot;, &quot;Global entities&quot;);&#10;	send(&quot;output&quot;, mapManager.entitiesToString());&#10;	&#10;	var catMapSource = new mapManager.MapSource(&quot;catTracker&quot;);&#10;	var catTimestamp = Date.UTC(2015, 11);&#10;	&#10;	var catMetadata = new mapManager.ObservationMetadata(catMapSource, catTimestamp);&#10;	var catArray = [ [0, 0, 1, 1 ], [0,0,1 ,1 ], [0, 0, 0, 1], [0, 0, 0, 1] ];&#10;	var catOccupancy = new mapManager.Occupancy(catMetadata, catArray);&#10;	&#10;	send(&quot;output&quot;, &quot;setting cat position (should return true)&quot;);&#10;	send(&quot;output&quot;, cat.setOccupancy(catOccupancy));&#10;	&#10;	send(&quot;output&quot;, mapManager.localRepoToJSONString());&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var mapManager = require('mapManager');&#10;&#10;exports.initialize = function(){&#10;	&#10;	var myCoords = new mapManager.CoordinateSystem(&quot;myCoordsName&quot;);&#10;	var myMap = new mapManager.Map(&quot;myMapName&quot; , mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);&#10;	mapManager.registerMap(myMap);&#10;	&#10;	var cat = new mapManager.Entity(&quot;cat&quot;);&#10;	&#10;	send(&quot;output&quot;, &quot;Registering cat (should be true)&quot;);&#10;	send(&quot;output&quot;, mapManager.registerEntity(cat));&#10;	&#10;	send(&quot;output&quot;, &quot;Adding cat to myMap (should be true)&quot;);&#10;	send(&quot;output&quot;, myMap.addEntity(cat));&#10;&#10;	send(&quot;output&quot;, &quot;myMap's mapEntities.&quot;);&#10;	send(&quot;output&quot;, myMap.mapEntitiesToString());&#10;	send(&quot;output&quot;, &quot;Global entities&quot;);&#10;	send(&quot;output&quot;, mapManager.entitiesToString());&#10;	&#10;	var catMapSource = new mapManager.MapSource(&quot;catTracker&quot;);&#10;	var catTimestamp = Date.UTC(2015, 11);&#10;	&#10;	var catMetadata = new mapManager.ObservationMetadata(catMapSource, catTimestamp);&#10;	var catArray = [ [0, 0, 1, 1 ], [0,0,1 ,1 ], [0, 0, 0, 1], [0, 0, 0, 1] ];&#10;	var catOccupancy = new mapManager.Occupancy(catMetadata, catArray);&#10;	&#10;	send(&quot;output&quot;, &quot;setting cat position (should return true)&quot;);&#10;	send(&quot;output&quot;, cat.setOccupancy(catOccupancy));&#10;	&#10;	send(&quot;output&quot;, mapManager.localRepoToJSONString());&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -48,7 +48,7 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1638, 140, 832, 397}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 140, 832, 397}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[832, 353]">
         </property>
