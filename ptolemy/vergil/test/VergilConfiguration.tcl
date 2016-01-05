@@ -91,14 +91,12 @@ proc expandConfiguration {configuration} {
     $inputFileNamesToSkip add "utilityIDAttribute.xml"
     $inputFileNamesToSkip add "/x10/x10.xml"
 
-    set osName [java::call System getProperty {os.name}]
-
-    set osNameStartsWith [string range $osName 0 5]
-
-    if {$osNameStartsWith == "Mac OS"} {
-	puts "Skipping backtrack.xml because Backtracking has problems on the Mac"
-	$inputFileNamesToSkip add "/backtrack.xml"
-    }
+    # set osName [java::call System getProperty {os.name}]
+    # set osNameStartsWith [string range $osName 0 5]
+    # if {$osNameStartsWith == "Mac OS"} {
+    #   puts "Skipping backtrack.xml because Backtracking has problems on the Mac"
+    #   $inputFileNamesToSkip add "/backtrack.xml"
+    #}
 
     # Tell the parser to skip inputting the above files
     java::field $parser inputFileNamesToSkip $inputFileNamesToSkip 
