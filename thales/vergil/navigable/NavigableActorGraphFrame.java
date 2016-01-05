@@ -24,7 +24,7 @@
  */
 package thales.vergil.navigable;
 
-import java.awt.BorderLayout;
+import java.awt.GridBagConstraints;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.net.URL;
@@ -128,8 +128,19 @@ public class NavigableActorGraphFrame extends ActorGraphFrame {
 
         _tabbedPalette.add("Palette", _libraryScrollPane);
 
-        _palettePane.add(_tabbedPalette, BorderLayout.CENTER);
-        _palettePane.add(_graphPanner, BorderLayout.SOUTH);
+        // In BasicGraphFrame, _palettePane now uses a GridBagConstraint.
+        //_palettePane.add(_tabbedPalette, BorderLayout.CENTER);
+        GridBagConstraints tabbedConstraints = new GridBagConstraints();
+        tabbedConstraints.gridx = 0;
+        tabbedConstraints.gridheight = 3;
+        tabbedConstraints.gridy = 1;
+        _palettePane.add(_tabbedPalette, tabbedConstraints);
+        //_palettePane.add(_graphPanner, BorderLayout.SOUTH);
+        GridBagConstraints graphPannerConstraints = new GridBagConstraints();
+        graphPannerConstraints.gridx = 0;
+        graphPannerConstraints.gridheight = 3;
+        graphPannerConstraints.gridy = 2;
+        _palettePane.add(_graphPanner, graphPannerConstraints);
     }
 
     ///////////////////////////////////////////////////////////////////
