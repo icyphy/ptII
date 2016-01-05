@@ -22,6 +22,7 @@
  */
 package thales.actor.gui;
 
+import java.awt.Dimension;
 import java.net.URI;
 import java.net.URL;
 import java.util.Iterator;
@@ -32,8 +33,10 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.EffigyFactory;
 import ptolemy.actor.gui.ModelDirectory;
 import ptolemy.actor.gui.PtolemyEffigy;
+import ptolemy.actor.gui.SizeAttribute;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.gui.TableauFactory;
+import ptolemy.data.IntMatrixToken;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.InstantiableNamedObj;
 import ptolemy.kernel.attributes.URIAttribute;
@@ -194,10 +197,31 @@ public class SingleWindowConfiguration extends Configuration {
      */
 
     //THALES MODIF
-    private void catchTableau(Tableau tableau) {
+    private void catchTableau(Tableau tableau) throws IllegalActionException {
         if (SingleWindowApplication._mainFrame == null) {
             SingleWindowHTMLViewer mainView = new SingleWindowHTMLViewer();
+            
+            NamedObj container = tableau.getContainer();
+            if (container instanceof PtolemyEffigy) {
+                // Handle $PTII/bin/vergil -single ptolemy/domains/de/demo/DateDemo/DateDemo.xml  
+                NamedObj model = ((PtolemyEffigy)tableau.getContainer()).getModel();
+                SizeAttribute size = (SizeAttribute) model.getAttribute(
+                           "_vergilSize", SizeAttribute.class);
+                if (size != null) {
+                    IntMatrixToken token = (IntMatrixToken) size.getToken();
+                    int[][] sizeMatrix = token.intMatrix();
+                    // FIXME: This is a hack to increase the width to include the panner and the tabs.
+                    sizeMatrix[0][0]+= 200;
+                    sizeMatrix[0][1]+= 100;
+                    size.setToken(new IntMatrixToken(sizeMatrix));
+                    size.setSize(mainView);
+                } 
+            } else {
+                // Handle $PTII/bin/vergil -single $PTII/ptolemy/configs/full/intro.htm 
+                mainView.setSize(new Dimension(800, 600));
+            }
             mainView.setConfiguration(this);
+            
             mainView.show();
         }
 
