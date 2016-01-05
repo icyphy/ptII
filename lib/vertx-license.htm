@@ -5,13 +5,15 @@
 <title>License for Vert.x</title>
 </head>
 <body>
-<h1>License for Vert.x</h1>
-<p>(<i>See <a href="#updating">Updating Vertx</a></i>)</p>
+  <h1>License for Vert.x</h1>
+  
+<p>(<i>See <a href="#updating">Updating Vertx</a> below</i>)</p>
 
 <p>Vert.x <a href="http://vertx.io/#in_browser">http://vertx.io/</a> is a lightweight, high performance application platform for the JVM that's designed for modern mobile, web, and enterprise applications.</p>
+
 <p>Vert.x is used by the VertxEventBusHandler actor.</p>
 
-<p>On October 26, 2015, the website stated that the code is:</p>
+<p>On January 5, 2016, the website stated that the code is:</p>
   <blockquote>
     <p>"Vert.x is open source and dual licensed under the <a href="https://www.eclipse.org/org/documents/epl-v10.php#in_browser" target="_top">Eclipse Public License 1.0</a> and <a href="https://www.apache.org/licenses/LICENSE-2.0.html#in_browser" target="_top">Apache License 2.0</a>.</p>
   </blockquote>
@@ -225,20 +227,24 @@
 <h2><a name="updating">Updating Vertx</a></h2>
 <pre>
   cd $PTII/vendors
-  wget https://bintray.com/artifact/download/vertx/downloads/vert.x-3.1.0-full.tar.gz
-  tar -zxf vert.x-3.1.0-full.tar.gz
-  cd vert.x-3.1.0/lib
-  cp hazelcast-3.5.2.jar jackson-annotations-2.6.0.jar jackson-core-2.6.1.jar jackson-databind-2.6.1.jar netty-buffer-4.0.31.Final.jar netty-codec-http-4.0.31.Final.jar netty-codec-4.0.31.Final.jar netty-common-4.0.31.Final.jar netty-handler-4.0.31.Final.jar netty-transport-4.0.31.Final.jar vertx-core-3.1.0.jar vertx-hazelcast-3.1.0.jar vertx-lang-groovy-3.1.0.jar vertx-lang-js-3.1.0.jar vertx-lang-ruby-3.1.0.jar vertx-service-proxy-3.1.0.jar vertx-web-3.1.0.jar ../../../lib/
+  wget https://bintray.com/artifact/download/vertx/downloads/vert.x-3.2.0-full.tar.gz
+  tar -zxf vert.x-3.2.0-full.tar.gz
+  cd vert.x-3.2.0/lib
+  cp hazelcast-3.5.2.jar jackson-annotations-2.6.0.jar jackson-core-2.6.1.jar jackson-databind-2.6.1.jar netty-buffer-4.0.33.Final.jar netty-codec-http-4.0.33.Final.jar netty-codec-4.0.33.Final.jar netty-common-4.0.33.Final.jar netty-handler-4.0.33.Final.jar netty-transport-4.0.33.Final.jar vertx-core-3.2.0.jar vertx-hazelcast-3.2.0.jar vertx-lang-groovy-3.2.0.jar vertx-lang-js-3.2.0.jar vertx-lang-ruby-3.2.0.jar vertx-service-proxy-3.2.0.jar vertx-web-3.2.0.jar $PTII/lib/
 </pre>
-  Delete the previous version
+  Delete the previous versions:
 <pre>
-  svn delete --force vertx-*3.0.0.jar
-  svn delete --force *4.0.28*.jar
-  svn delete --force jackson-annotations-2.5.0.jar
-  svn delete --force *2.5.3*
-  svn delete --force hazelcast-3.5.jar 
+  cd $PTII/lib
+  svn delete --force vertx-*3.1.0.jar
+  svn delete --force netty-*4.0.31*.jar
 </pre>
 
+Between 3.1.0 and 3.2.0, the files below were not changed, but if they were, we would do:
+<pre>
+  svn delete --force jackson-annotations-2.6.0.jar
+  svn delete --force jackson-2.6.1*
+  svn delete --force hazelcast-3.5.2.jar 
+</pre>
 Fix
 <pre>
     [javac] /Users/cxh/src/ptIIv3/lib/vertx-core-3.1.0.jar(io/vertx/core/http/WebSocketBase.class): warning: Cannot find annotation method 'concrete()' in type 'VertxGen': class file for io.vertx.codegen.annotations.VertxGen not found
@@ -248,13 +254,36 @@ See <a href="https://www.terraswarm.org/testbeds/wiki/Vert/UpgradeFrom2To3#Canno
 
 <pre>
   cd $PTII/lib
-  wget http://repo1.maven.org/maven2/io/vertx/vertx-codegen/3.1.0/vertx-codegen-3.1.0.jar
+  wget http://repo1.maven.org/maven2/io/vertx/vertx-codegen/3.2.0/vertx-codegen-3.2.0.jar
 </pre>
 
-Add the new jar files
+Add the new jar files:
 <pre>
-(cd lib; svn add `svn status | egrep "^\?" | awk '{print $2}'`)
+  (cd lib; svn add `svn status | egrep "^\?" | awk '{print $2}'`)
 </pre>
+
+Update the files in <code>$PTII/adm/gen-11.0/ptII11_0_devel_setup_windows.xml</code>. (<i>This file is used to build the installers</i>)
+
+Rerun configure (<i>If only the version numbers changes, then there is
+no need to edit configure.in because configure.in uses wildcards to
+find the jar files.  If a new Vert.x jar file is added, then
+edit <code>$PTII/configure.in</code> and
+run <code>autoconf</code></i>)
+<pre>
+  cd $PTII
+  ./configure
+</pre>
+
+Test that the configuration is ok:
+<pre>
+  $PTII/bin/vergil $PTII/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml
+</pre>
+
+<pre>
+  svn commit -m "Upgraded from vertx-3.1.0 to vertx-3.2.0." lib adm/gen-11.0/ptII11_0_devel_setup_windows.xml
+</pre>
+
+Refresh your Eclipse project.
 
 </body>
 </html>

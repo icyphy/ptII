@@ -220,7 +220,7 @@ public class GenerateCopyrights {
                 "lib/hazelcast-3.5.2-license.htm");
 
         _addIfClassPresent(copyrightsMap, "io.vertx.core.Vertx",
-                "lib/vertx-3.1.0-license.htm");
+                "lib/vertx-license.htm");
 
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
                 "ptolemy/actor/gui/BrowserLauncher-license.htm");
