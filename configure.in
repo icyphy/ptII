@@ -4187,7 +4187,29 @@ else
        JavaVM WARNING: JAWT_GetAWT must be called after loading a JVM
        AWT not found
     The fix is to remove the files from /System/Library/Java/Extensions:
-       sudo rm /System/Library/Java/Extensions/{*J3D*,*j3d*}])
+       sudo rm /System/Library/Java/Extensions/{*J3D*,*j3d*}
+    WARNING: Sadly, El Capitan has a new feature called
+    System Integrity Protection (SIP), that prevents root from removing files.
+    So to remove these files, you will need to reboot into recovery mode,
+    disable SIP, reboot, remove the files and reboot again to enable SIP:
+
+    1. Reboot by restarting and holding down Command+R until the Apple logo appears
+    2. Click on Utilities -> Terminals and run:
+          csrutil disable
+    3. Reboot
+    4. Login, start a terminal, run:
+          sudo rm /System/Library/Java/Extensions/{*J3D*,*j3d*}
+    5. Reconfigure and build: (cd $PTII;./configure; ant build build-bin)
+       Note that you have not yet done so, you will need to install Jogl.
+    6. Verify that Java3D runs:
+          $PTII/bin/vergil ptolemy/domains/gr/demo/Pendulum/Pendulum.xml
+    7. Reboot by restarting and holding down Command+R until the Apple logo appears
+    8. Click on Utilities -> Terminals and run:
+          csrutil enable
+    9. Reboot
+
+    For details, see
+    https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Java3D])
             fi
 	    if test -z "$JOGL_DIR" ; then
                 directory=`ls -d $PTII/vendors/jogl/*/jar`
@@ -4195,11 +4217,12 @@ else
        	            JOGL_JAR_DIR="$directory"
 		    PTJOGL_DIR=`dirname $JOGL_JAR_DIR`
                 fi
-		if test -f "$JOGL_JAR_DIR/gluegen.jar" -a -f "$JOGL_JAR_DIR/jogl-all.jar"; then
+		if test -f "$JOGL_JAR_DIR/gluegen.jar" -a -f "$JOGL_JAR_DIR/jogl-all.jar" -a -f "$JOGL_JAR_DIR/gluegen-rt-natives-macosx-universal.jar"; then
 		     PT_MSG_RESULT($JOGL_JAR_DIR)
-		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATH}$JOGL_JAR_DIR/gluegen.jar$CLASSPATHSEPARATOR$JOGL_JAR_DIR/jogl-all.jar"
+		    JAVA3D_JARS="$JAVA3D_JARS${CLASSPATH}$JOGL_JAR_DIR/gluegen.jar$CLASSPATHSEPARATOR$JOGL_JAR_DIR/jogl-all.jar$CLASSPATHSEPARATOR$JOGL_JAR_DIR/gluegen-rt-natives-macosx-universal.jar"
 		    updateClasspath "$JOGL_JAR_DIR/gluegen.jar"
 		    updateClasspath "$JOGL_JAR_DIR/jogl-all.jar"
+		    updateClasspath "$JOGL_JAR_DIR/gluegen-rt-natives-macosx-universal.jar"
 		else
 		    AC_MSG_WARN([Could not find the Jogl directory.
    This could be problem at runtime for Mac OS X with Java 3D.
