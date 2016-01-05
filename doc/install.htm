@@ -371,11 +371,11 @@ cp c:/Program\ Files\ \(x86\)/JMF2.1.1e/lib/* c:/Program\ Files/Java/jre7/lib/ex
 
 <p> Under Mac OS X, download the Cross-Platform Java version, unzip it, run</p>
 <pre>
-  sudo -i cp ~yourlogin/src/jmf/JMF-2.1.1e/lib/*.jar /Library/Java/Extensions/
+  mkdir -p ~/Library/Java/Extensions/
+  ~yourlogin/src/jmf/JMF-2.1.1e/lib/* ~/Library/Java/Extensions/
 </pre>
-<p>    and then rerun ./configure.</p>
 
-
+<p> and then rerun ./configure and ant.</p>
 
 <h3><a name="matlab">Matlab</a></h3>
 Ptolemy II includes an interface to Matlab that was  
