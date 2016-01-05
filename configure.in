@@ -1083,9 +1083,8 @@ else
 	        updateExcludes "ptolemy/apps/eclipse/awt/"
             fi	    
      	    ;;
-         *)  ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS='<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
-	    ;;
     esac
+    ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS='<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
 fi
 
 PRE_JDK17=no
@@ -1947,6 +1946,10 @@ changequote([, ])dnl
         fi
 	if test -d "/Applications/eclipse"; then
 	    TMP_ECLIPSE_DIR=/Applications/eclipse
+        else
+changequote(<<, >>)dnl
+            TMP_ECLIPSE_DIR=`ls -1dr /Applications/[Ee]clipse* | head -1`
+changequote([, ])dnl
         fi
         AC_ARG_WITH(eclipse, [  --with-eclipse=ECLIPSE_DIR     use Eclipse from ECLIPSE_DIR,
                          defaults to $TMP_ECLIPSE_DIR],
@@ -2000,7 +2003,7 @@ changequote([, ])dnl
 	    AC_MSG_CHECKING([for jars used by backtracking in $ECLIPSE_DIR])
 
 	    case "`uname -s`" in
-	    Darwin) ECLIPSE_SWT_JAR=org.eclipse.swt.carbon.macosx_
+	    Darwin) ECLIPSE_SWT_JAR=org.eclipse.swt.cocoa.macosx
 		;;
 	    Linux) ECLIPSE_SWT_JAR=eclipse.swt.gtk.linux
 		;;
@@ -2047,7 +2050,7 @@ changequote([, ])dnl
 
 	        # Get the plugin jar files for use with javadoc in $PTII/doc
 		case "`uname -s`" in
-		Darwin) ECLIPSE_SWT_JAR=org.eclipse.swt.carbon.macosx_
+		Darwin) ECLIPSE_SWT_JAR=org.eclipse.swt.cocoa.macosx
 			# Darwin has problems with echo -n?
 			PT_ECHO="/bin/echo -n"
 			;;
