@@ -1083,8 +1083,10 @@ else
 	        updateExcludes "ptolemy/apps/eclipse/awt/"
             fi	    
      	    ;;
+            *)
+            ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS='<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
+            ;;
     esac
-    ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS='<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
 fi
 
 PRE_JDK17=no
