@@ -4466,8 +4466,10 @@ $as_echo "$as_me: WARNING: Under Eclipse on Mac OS X, ptolemy/apps/eclipse/awt
 	        updateExcludes "ptolemy/apps/eclipse/awt/"
             fi
      	    ;;
+            *)
+            ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS='<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
+            ;;
     esac
-    ECLIPSE_CLASSPATHENTRY_PDE_REQUIREDPLUGINS='<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>'
 fi
 
 PRE_JDK17=no
