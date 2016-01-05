@@ -257,33 +257,43 @@ See <a href="https://www.terraswarm.org/testbeds/wiki/Vert/UpgradeFrom2To3#Canno
   wget http://repo1.maven.org/maven2/io/vertx/vertx-codegen/3.2.0/vertx-codegen-3.2.0.jar
 </pre>
 
-Add the new jar files:
+  <p>Add the new jar files:</p>
 <pre>
   (cd lib; svn add `svn status | egrep "^\?" | awk '{print $2}'`)
 </pre>
 
-Update the files in <code>$PTII/adm/gen-11.0/ptII11_0_devel_setup_windows.xml</code>. (<i>This file is used to build the installers</i>)
+<p>Update the files in <code>$PTII/adm/gen-11.0/ptII11_0_devel_setup_windows.xml</code>. (<i>This file is used to build the installers</i>)</p>
 
-Rerun configure (<i>If only the version numbers changes, then there is
+<p>Update the files in <code>$PTII/build.default.xml</code> and test:</p>
+<pre>
+  cd $PTII
+  cp build.default.xml build.xml
+  ant clean
+  ant
+  ant vergil -Dmodel=$PTII/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml
+</pre>  
+
+<p>Rerun configure (<i>If only the version numbers changes, then there is
 no need to edit configure.in because configure.in uses wildcards to
 find the jar files.  If a new Vert.x jar file is added, then
 edit <code>$PTII/configure.in</code> and
-run <code>autoconf</code></i>)
+run <code>autoconf</code></i>)</p>
 <pre>
   cd $PTII
   ./configure
 </pre>
 
-Test that the configuration is ok:
+<p>Test that the configuration is ok:</p>
 <pre>
   $PTII/bin/vergil $PTII/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml
 </pre>
 
+<p>Commit your changes.</p>
 <pre>
-  svn commit -m "Upgraded from vertx-3.1.0 to vertx-3.2.0." lib adm/gen-11.0/ptII11_0_devel_setup_windows.xml
+  svn commit -m "Upgraded from vertx-3.1.0 to vertx-3.2.0." lib adm/gen-11.0/ptII11_0_devel_setup_windows.xml build.xml.default.xml
 </pre>
 
-Refresh your Eclipse project.
+<p>Refresh your Eclipse project.</p>
 
 </body>
 </html>
