@@ -1260,11 +1260,22 @@ public class JavaScript extends TypedAtomicActor {
      *  @throws IllegalActionException If the director cannot respect the request.
      */
     public void invokeCallback(final Runnable function) throws IllegalActionException {
-        // Coverity Scan warned that we were missing a lock when reading _pendingCallbacks.
-        synchronized (this) {
-            _pendingCallbacks.offer(function);
-            getDirector().fireAtCurrentTime(this);
-        }
+        // Coverity Scan warned: "CID 1346508 (#1 of 1): Unguarded
+        // read (GUARDED_BY_VIOLATION)1. missing_lock: Accessing
+        // _pendingCallbacks without holding lock
+        // JavaScript.this. Elsewhere,
+        // "ptolemy.actor.lib.jjs.JavaScript._pendingCallbacks" is
+        // accessed with JavaScript.this held 3 out of 4 times."
+
+        // However, if we synchronize on this, then
+        // $PTII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml
+        // hangs.  See
+        // https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock
+
+        //synchronized (this) {
+        _pendingCallbacks.offer(function);
+        getDirector().fireAtCurrentTime(this);
+        //}
     }
 
     /** Return true if the model is executing (between initialize() and
