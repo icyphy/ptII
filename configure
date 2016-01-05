@@ -9020,7 +9020,9 @@ $as_echo "$as_me: WARNING: '\"$JAVAC\" FindClass.java' failed.
         case "`uname -s`" in
             Darwin) JMF_MESSAGE="
     Under Mac OS X, download the Cross-Platform Java version, unzip it,
-    run \"sudo -i cp ~yourlogin/src/jmf/JMF-2.1.1e/lib/*.jar /Library/Java/Extensions/\"
+    run:
+        mkdir -p ~/Library/Java/Extensions/
+        cp ~yourlogin/src/jmf/JMF-2.1.1e/lib/* ~/Library/Java/Extensions/
     and then rerun ./configure.";;
             *) JMF_MESSAGE="";;
         esac
