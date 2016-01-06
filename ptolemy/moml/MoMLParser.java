@@ -3023,6 +3023,14 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                         String inputFileName = (String) inputFileNames.next();
 
                         if (source.endsWith(inputFileName)) {
+                            if (!_printedMacOSSkippingMessage
+                                    && inputFileName.equals("backtrack.xml")
+                                    && System.getProperty("os.name").equals("Mac OS X")) {
+                                _printedMacOSSkippingMessage = true;
+                                System.out.println("MoMLParser: Skipping"
+                                        + source + " under Mac OS X.  "
+                                        + "This message is printed only printed once per run.");
+                            }
                             skip = true;
                             break;
                         }
@@ -3906,7 +3914,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *  element names a file name that should _not_ be loaded if
      *  it is encountered in an input statement.
      */
-    public static List inputFileNamesToSkip = null;
+    public static List<String> inputFileNamesToSkip = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -7681,6 +7689,9 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     // List of missing actors.
     private Set<String> _missingClasses;
 
+    // True if we have printed the message about backtrack.xml being skipped.
+    private static boolean _printedMacOSSkippingMessage = false;
+    
     // If greater than zero, skipping an element.
     private int _skipElement = 0;
 
@@ -7847,6 +7858,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         @Override
         public String toString() {
             return "unlink " + _portName + " from " + _relationName;
+        }
+    }
+
+    // Under Mac OS X, skip backtrack.xml.  See
+    // http://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Mac2008 and
+    // follow the 'Problems with Eclipse and Ptolemy on the Mac' link.
+    static {
+        if (System.getProperty("os.name").equals("Mac OS X")) {
+            inputFileNamesToSkip = new LinkedList<String>();
+            inputFileNamesToSkip.add("backtrack.xml");
         }
     }
 }
