@@ -288,6 +288,10 @@ public class VertxHelperBase extends HelperBase {
      */
     protected void _appendToBuffer(
             final Object data, DATA_TYPE type, String imageType, Buffer buffer) {
+        if (data == null) {
+            // Nothing to do.
+            return;
+        }
         if (type.equals(DATA_TYPE.STRING)) {
             // NOTE: Use of toString() method makes this very tolerant, but
             // it won't properly stringify JSON. Is this OK?
