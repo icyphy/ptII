@@ -836,19 +836,26 @@ public class JavaScript extends TypedAtomicActor {
         // followed by the fire function.
         // Synchronize to ensure that this function invocation is atomic
         // w.r.t. to any callbacks.
-        synchronized (this) {
-            // Mark that we are in the fire() method, enabling outputs to be
-            // sent immediately.
-            _inFire = true;
-            try {
-                // Invoke any pending callback functions.
-                Runnable callback = _pendingCallbacks.poll();
-                while(callback != null) {
-                    callback.run();
-                    callback = _pendingCallbacks.poll();
-                }
 
+        // Mark that we are in the fire() method, enabling outputs to be
+        // sent immediately.
+        _inFire = true;
+        try {
+            // Invoke any pending callback functions.
+
+            // No need to grab the lock when accessing
+            // _pendingCallbacks because it is a
+            // ConcurrentLinkedQueue.
+            Runnable callback = _pendingCallbacks.poll();
+            while(callback != null) {
+                synchronized (this) {
+                    callback.run();
+                }
+                callback = _pendingCallbacks.poll();
+            }
+            synchronized (this) {
                 // Handle timeout requests that match the current time.
+
                 if (_pendingTimeoutIDs.size() > 0) {
                     // If current time matches pending timeout requests, invoke them.
                     Time currentTime = getDirector().getModelTime();
@@ -880,7 +887,7 @@ public class JavaScript extends TypedAtomicActor {
                                         _debug("Invoked timeout function.");
                                     }
                                     if (_removePendingTimeoutFunction) {
-                                    	_pendingTimeoutFunctions.remove(id);
+                                        _pendingTimeoutFunctions.remove(id);
                                     }
                                 }
                             }
@@ -923,9 +930,9 @@ public class JavaScript extends TypedAtomicActor {
                 if (_debugging) {
                     _debug("Invoked fire function.");
                 }
-            } finally {
-                _inFire = false;
             }
+        } finally {
+            _inFire = false;
         }
     }
 
@@ -1272,10 +1279,12 @@ public class JavaScript extends TypedAtomicActor {
         // hangs.  See
         // https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock
 
-        //synchronized (this) {
+        // Instead, we move the other accesses of _pendingCallbacks
+        // outside of critical sections because there is no need to
+        // grab the lock when accessing _pendingCallbacks because it
+        // is a ConcurrentLinkedQueue.
         _pendingCallbacks.offer(function);
         getDirector().fireAtCurrentTime(this);
-        //}
     }
 
     /** Return true if the model is executing (between initialize() and
@@ -1595,9 +1604,14 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-
+        // Potential issue if there are overlapped executions.  This
+        // will clear out callbacks from other invocations.
+        
+        // No need to grab the lock when accessing
+        // _pendingCallbacks because it is a
+        // ConcurrentLinkedQueue.
+        _pendingCallbacks.clear();
         synchronized (this) {
-            _pendingCallbacks.clear();
             _pendingTimeoutFunctions.clear();
             _pendingTimeoutIDs.clear();
             _timeoutCount = 0;
