@@ -26,6 +26,14 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: This illustrates that, erroneously, sending to my own&#10;inputs triggers two firings: One coincident with the callback&#10;being invoked and one due to the sending to my own input.&#10;But one coincident with the callback should not be seeing the&#10;output value produced in that callback!  There should be&#10;a microstep delay before that output becomes visible.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 265.0]">
+        </property>
+    </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 3.0, 4.0, 10.0, 11.0, 12.0, 13.0, 14.0, 20.0}">
         </property>
@@ -47,23 +55,15 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 180.0}">
         </property>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={826, 195, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 120.0}">
-        </property>
-    </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">
         <doc>Output the current time.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 190.0}">
         </property>
     </entity>
     <entity name="CallbackWithSuppress" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    var count;&#10;    exports.initialize = function() {&#10;      count = 0;&#10;      setInterval(&#10;        function() {&#10;          send('produce', true);&#10;        },&#10;        1000);&#10;    }&#10;	exports.fire = function() {&#10;	  var isSuppressed = get('suppress');&#10;	  var toProduce = get('produce');&#10;	  if (toProduce) {&#10;        count = count + 1;&#10;        if (!isSuppressed) {&#10;          send('output', count);&#10;        }&#10;      }&#10;	}&#10;	// &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** This accessor produces outputs periodically, at one second intervals,&#10; *  as long as the most recently received suppress input is not true.&#10; *  The 'output' is a count of the periods, starting with 1.&#10; */&#10;exports.setup = function() {&#10;    input('suppress', {'value':false, 'type':'boolean'});&#10;    input('produce');&#10;    output('output', {'type':'number'});&#10;}&#10;var count;&#10;var handle;&#10;exports.initialize = function() {&#10;  count = 0;&#10;  handle = setInterval(&#10;    function() {&#10;      // Send to my own input to trigger fire().&#10;      send('produce', true);&#10;    },&#10;    1000);&#10;}&#10;exports.fire = function() {&#10;  var isSuppressed = get('suppress');&#10;  var toProduce = get('produce');&#10;  if (toProduce) {&#10;    count = count + 1;&#10;    if (!isSuppressed) {&#10;      send('output', count);&#10;    }&#10;  }&#10;}&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        clearInterval(handle);&#10;    }&#10;}&#10;">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/CallbackWithSuppress.xml">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/CallbackWithSuppress.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor produces outputs periodically, at one second intervals,&#10;as long as the most recently received suppress input is not true.&#10;The output is a count of the firing, starting with 1.&#10;	&#10;  ">
@@ -85,10 +85,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 190.0]">
         </property>
+        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
         <port name="suppress" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
@@ -102,6 +102,14 @@
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
+    </entity>
+    <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={659, 95, 499, 208}, maximized=true}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 105.0]">
+        </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -117,9 +125,9 @@
     </relation>
     <link port="Test.input" relation="relation3"/>
     <link port="DiscreteClock.output" relation="relation"/>
-    <link port="Display.input" relation="relation4"/>
     <link port="CurrentTime.output" relation="relation3"/>
     <link port="CurrentTime.trigger" relation="relation4"/>
     <link port="CallbackWithSuppress.suppress" relation="relation"/>
     <link port="CallbackWithSuppress.output" relation="relation4"/>
+    <link port="TimedDisplay.input" relation="relation4"/>
 </entity>
