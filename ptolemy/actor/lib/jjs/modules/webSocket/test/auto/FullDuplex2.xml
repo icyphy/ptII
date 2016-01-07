@@ -5,16 +5,16 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="100.0">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 50.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 22, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={40, 147, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -25,9 +25,9 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is not synchronized to real&#10;time, so we rely on throttling in&#10;the WebSocketClient.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This is synchronized to real&#10;time, so that the model stops&#10;running after 15 seconds.&#10;This should be enough to&#10;establish the connection and&#10;send all the data.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 65.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -60,19 +60,14 @@
     </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 180.0}">
-        </property>
-    </entity>
-    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
-        <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 185.0]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
         <property name="step" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 325.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -133,7 +128,7 @@
         </property>
         <property name="port" class="ptolemy.data.expr.Parameter" value="8092">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 185.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Hokeun Kim, Edward Lee">
@@ -156,13 +151,13 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={713, 22, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={713, 23, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Server">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[455.0, 195.0]">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
@@ -211,10 +206,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 270.0]">
         </property>
     </entity>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock2.output&quot;,x=95.0,y=315.0}, tail={id=&quot;Ramp2.trigger&quot;,x=235.0,y=325.0}, points={} } }">
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 305.0]">
         </property>
-    </relation>
+    </entity>
+    <entity name="Repeat" class="ptolemy.domains.sdf.lib.Repeat">
+        <property name="numberOfTimes" class="ptolemy.actor.parameters.PortParameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 315.0]">
+        </property>
+    </entity>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -237,11 +238,14 @@
         <vertex name="vertex1" value="[450.0, 335.0]">
         </vertex>
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Ramp.output" relation="relation5"/>
     <link port="Ramp.trigger" relation="relation"/>
-    <link port="DiscreteClock2.output" relation="relation4"/>
     <link port="Ramp2.output" relation="relation8"/>
-    <link port="Ramp2.trigger" relation="relation4"/>
+    <link port="Ramp2.trigger" relation="relation6"/>
     <link port="Test.input" relation="relation10"/>
     <link port="WebSocketClient3.toSend" relation="relation8"/>
     <link port="WebSocketClient3.connected" relation="relation7"/>
@@ -256,4 +260,7 @@
     <link port="MicrostepDelay.output" relation="relation"/>
     <link port="Test2.input" relation="relation3"/>
     <link port="Display4.input" relation="relation10"/>
+    <link port="SingleEvent.output" relation="relation4"/>
+    <link port="Repeat.input" relation="relation4"/>
+    <link port="Repeat.output" relation="relation6"/>
 </entity>
