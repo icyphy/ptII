@@ -54,7 +54,7 @@
 
 // The commonHost is defined in the accessors repo, so we use
 // requireAccessor to load it.
-var commonHost = requireAccessor('hosts/common/commonHost.js');
+var commonHost = require('commonHost.js');
 
 ////////////////////
 // Set a prototype for the exports object with default functions.
