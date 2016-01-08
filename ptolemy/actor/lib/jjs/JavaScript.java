@@ -1436,14 +1436,15 @@ public class JavaScript extends TypedAtomicActor {
     /** Create a new parameter if it does not already exist.
      *  This parameter will have an undeclared type and no description.
      *  @param name The name of the parameter.
+     *  @return The token, if any.
      *  @exception IllegalActionException If no name is given, or if the
      *   model is executing.
      *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
      */
-    public void parameter(String name) throws IllegalActionException,
+    public Token parameter(String name) throws IllegalActionException,
             NameDuplicationException {
-        parameter(name, null);
+        return parameter(name, null);
     }
 
     /** Create a new parameter if it does not already exist.
@@ -1458,11 +1459,12 @@ public class JavaScript extends TypedAtomicActor {
      *  if it does not already have a value.
      *  @param name The name of the parameter.
      *  @param options The options, or null to accept the defaults.
+     *  @return The token, if any.
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
      */
-    public void parameter(String name, Map<String,Object> options)
+    public Token parameter(String name, Map<String,Object> options)
             throws IllegalActionException, NameDuplicationException {
         /* Don't constrain when this executes.
          * FIXME: Instead, we should use a ChangeRequest if we are executing.
@@ -1573,6 +1575,11 @@ public class JavaScript extends TypedAtomicActor {
             PortOrParameterProxy proxy = new PortOrParameterProxy(parameter);
             _proxies.put(parameter, proxy);
             _proxiesByName.put(parameter.getName(), proxy);
+        }
+        if (parameter instanceof Parameter) {
+            return ((Parameter)parameter).getToken();
+        } else {
+            return null;
         }
     }
 
