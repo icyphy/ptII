@@ -4,7 +4,7 @@
 <entity name="JavaScriptInputHandler1" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 22, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 23, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -19,7 +19,9 @@
         </property>
     </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="ptolemy.kernel.util.IllegalActionException: Not an input port: output&#10;  in .JavaScriptInputHandler1.JavaScript">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Failure executing the initialize function: Cannot add an input handler to a non-existent input: output in /ptII/ptolemy/actor/lib/jjs/external/require.js#209:26&lt;eval&gt; at line number 399 at column number 8&#10;  in .JavaScriptInputHandler1.JavaScript&#10;Because:&#10;Cannot add an input handler to a non-existent input: output in /ptII/ptolemy/actor/lib/jjs/external/require.js#209:26&lt;eval&gt; at line number 399 at column number 8">
+        </property>
+        <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -33,7 +35,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Multiply the input by 2.&#10;function handler() {&#10;  send('output', get('input',0)*2, 0);&#10;}&#10;exports.initialize = function() {&#10;  addInputHandler('output', handler);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;    input('input');&#10;    output('output');&#10;}&#10;// Multiply the input by 2.&#10;function handler() {&#10;  send('output', get('input',0)*2, 0);&#10;}&#10;exports.initialize = function() {&#10;  addInputHandler('output', handler);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -45,15 +47,11 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">

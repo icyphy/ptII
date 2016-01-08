@@ -33,7 +33,7 @@
         </property>
     </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Failure executing the fire function: ReferenceError: &quot;result&quot; is not defined in &lt;eval&gt; at line number 4&#10;  in .JavaScript7.JavaScript2&#10;Because:&#10;ReferenceError: &quot;result&quot; is not defined in &lt;eval&gt; at line number 4">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Failure executing the react function: ReferenceError: &quot;result&quot; is not defined in /ptII/ptolemy/actor/lib/jjs/external/require.js#209:26&lt;eval&gt;#261:18&lt;eval&gt; at line number 4&#10;  in .JavaScript7.JavaScript2&#10;Because:&#10;ReferenceError: &quot;result&quot; is not defined in /ptII/ptolemy/actor/lib/jjs/external/require.js#209:26&lt;eval&gt;#261:18&lt;eval&gt; at line number 4">
         </property>
         <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="50">
         </property>
@@ -57,8 +57,6 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
@@ -81,8 +79,6 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>

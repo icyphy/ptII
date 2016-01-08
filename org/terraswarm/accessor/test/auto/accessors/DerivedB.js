@@ -8,7 +8,7 @@ exports.inputHandler = function() {
 }
 
 exports.initialize = function() {
-   Object.getPrototypeOf(exports).initialize.apply(this);
+   this.ssuper.initialize.apply(this);
    printProperties(exports);
 }
 

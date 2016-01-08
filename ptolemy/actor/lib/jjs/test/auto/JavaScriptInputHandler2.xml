@@ -4,7 +4,7 @@
 <entity name="JavaScriptInputHandler2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 22, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={31, 23, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -19,13 +19,13 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that adding an input handler for an output port fails.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that adding an input handler for an input.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 25.0]">
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Multiply the input by 2.&#10;function handler() {&#10;  send('output', get('input',0)*2, 0);&#10;}&#10;exports.initialize = function() {&#10;  addInputHandler('input', handler);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;    input('input');&#10;    output('output');&#10;}&#10;// Multiply the input by 2.&#10;function handler() {&#10;  send('output', get('input')*2);&#10;}&#10;exports.initialize = function() {&#10;  addInputHandler('input', handler);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -37,15 +37,11 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">

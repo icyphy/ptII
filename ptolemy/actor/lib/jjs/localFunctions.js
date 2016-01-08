@@ -52,6 +52,10 @@
 /*jshint globalstrict: true*/
 "use strict";
 
+// The commonHost is defined in the accessors repo, so we use
+// requireAccessor to load it.
+var commonHost = requireAccessor('hosts/common/commonHost.js');
+
 ////////////////////
 // Set a prototype for the exports object with default functions.
 var exports = {};
@@ -62,161 +66,51 @@ Object.setPrototypeOf(exports, {
     wrapup: function () {return undefined; }
 });
 
-/** Default empty function to use if the function argument to
- *  addInputHandler is null.
+/** Evaluate the specified code in the current context.
+ *  @param accessorName The name to give to the accessor.
+ *  @param code The code to evaluate.
  */
-function nullHandlerFunction() {}
-
-/** Add a handler function to call when the specified input receives new data.
- *  If the name argument is null, or if there is no name argument and the first
- *  argument is a function, then call the handler when any input receives data.
- *  Return a handle to use in removeInputHandler(). If there are additional arguments
- *  beyond the function, then those arguments will be passed to the function
- *  when it is invoked. The handler can retrieve the input input value by invoking get().
- *  Note that with this implementation, it is not necessary to
- *  call removeInputHandler() in the actor's wrapup() function.
- *  Nevertheless, it is a good idea to do that in an accessor
- *  since other accessor hosts may not work the same way.
- *  The handler function will be invoked in the context of the exports object
- *  defined in the accessor script (i.e., 'this' will resolve to that exports object).
- *  @param name The input name (a string), or null to react to any input.
- *  @param func The function to invoke when the input receives data.
- *  @param arguments Additional arguments, if any, to pass to the callback function.
- */
-function addInputHandler(name, func) {
-    var argCount = 2, callback, id, proxy = null, tail;
-    if (name && typeof name !== 'string') {
-        // Tolerate a single argument, a function.
-        if (typeof name === 'function') {
-            func = name;
-            name = null;
-            argCount = 1;
-        } else {
-            throw ('name argument is required to be a string. Got: ' + (typeof name));
-        }
-    }
-    if (!func) {
-        func = nullHandlerFunction;
-    } else if (typeof func !== 'function') {
-        throw ('Argument of addInputHandler is not a function. It is: ' + func);
-    }
-
-    if (name) {
-        proxy = actor.getPortOrParameterProxy(name);
-    }
-    if (!proxy && name) {
-        throw ('No such input: ' + name);
-    }
-
-    // If there are arguments to the callback, create a new function.
-    // Get an array of arguments excluding the first two.
-    tail = Array.prototype.slice.call(arguments, argCount);
-    if (tail.length !== 0) {
-        callback = function() {
-            func.apply(exports, tail);
-        };
-    } else {
-        callback = function() {
-            func.apply(exports);
-        };
-    }
-    if (proxy) {
-        id = proxy.addInputHandler(callback);
-        return id;
-    } else {
-        // Add generic input handler.
-        id = actor.addInputHandler(callback);
-        return id;
-    }
+function evaluateCode(accessorName, code) {
+    var bindings = {
+        'getParameter': getParameter,
+        'input': input,
+        'output': output,
+        'parameter': parameter,
+        'require': require,
+        'send': send,
+        'setDefault': setDefault,
+        'setParameter': setParameter
+    };
+    // eval(code);
+    return new commonHost.Accessor(accessorName, code, getAccessorCode, bindings);
 }
 
-/** Specify that a derived accessor extends a specified base accessor.
- *  Call this in the setup() function of the derived accessor as:
- *  ```javascript
- *     extend('MyBaseAccessor');
- *  ```
- *  This will cause the setup() function of the base accessor to be invoked,
- *  which means that this accessor will acquire all inputs, outputs, and parameters
- *  of the base accessor.
- *
- *  In addition, the derived accessor inherits all fields of the exports
- *  field of the base accessor, including its initialize(), wrapup(), and any other
- *  exported function.  To override these, simply define new functions. The override
- *  can invoke the base accessor's function as in the following example:
- *  ```javascript
- *     exports.initialize = function() {
- *        Object.getPrototypeOf(exports).initialize.apply(this);
- *        ... code specific to the current accessor ...
- *     };
- *  ```
- *  or more simply
- *  ```javascript
- *     exports.initialize = function() {
- *        ssuper.initialize.apply(this);
- *        ... code specific to the current accessor ...
- *     };
- *  ```
- *
- *  In this implementation, the accessor definition is searched for in
- *  $PTII/org/terraswarm/accessor/accessors/web, which is expected to be a clone
- *  of the repository at http://terraswarm.org/accessors.
- *
- *  FIXME: Need a way to specify a different search location for the accessor,
- *  including online.
- *
- *  @param accessorName The name of the accessor to extend.
- *  @see #implement()
+/** Return the source code for an accessor from its fully qualified name.
+ *  This will throw an exception if there is no such accessor on the accessor
+ *  search path.
+ *  @param name Fully qualified accessor name, e.g. 'net/REST'.
  */
-var extend = function(exportsExtending) {
-    return function(accessorName) {
-        var exportsPrototype = requireAccessor(accessorName);
-        // Make sure the prototype has default methods defined.
-        if (!exportsPrototype.fire ||
-                !exportsPrototype.initialize ||
-                !exportsPrototype.setup ||
-                !exportsPrototype.wrapup) {
-            Object.setPrototypeOf(exportsPrototype, {
-                fire: function() {},
-                initialize: function() {},
-                setup: function() {},
-                wrapup: function() {}
-            });
-        }
-        Object.setPrototypeOf(exportsExtending, exportsPrototype);
-        
-        // NOTE: The super keyword is built in to ECMA 6.
-        // Since it isn't available in earlier versions, we provide an alternate:
-        exportsExtending.ssuper = exportsPrototype;
-        
-        // OK, this is mind-blowing difficult to understand, but the setup() method
-        // below may itself include an invocation of extend(), realizing multi-level
-        // inheritance. To make sure to not overwrite the prototype at this level
-        // of the prototype chain, change the value of the exportsExtending argument
-        // to be the new object whose prototype is to be set by the nested call to
-        // extend().
-        exportsExtending = exportsPrototype;
-        // Now invoke the setup method.
-        exportsPrototype.setup();
-    };
-}(exports);
+function getAccessorCode(name) {
+    var code;
+    // Append a '.js' to the name, if needed.
+    if (name.indexOf('.js') !== name.length - 3) {
+        name += '.js';
+    }
+    var js = Java.type('ptolemy.actor.lib.jjs.JavaScript');
 
-/** Get data from an input.
- *  @param name The name of the input (a string).
- *  @param channel The (optional) channel number, where null is equivalent to 0.
- *  @return The value received on the input, or null if no value is received.
- */
-function get(name, channel) {
-    if (typeof name !== 'string') {
-        throw ('name argument is required to be a string. Got: ' + (typeof name));
+    // _accessorPath is defined in basicFunctions.js.
+    for (var i = 0; i < _accessorPath.length; i++) {
+        var location = _accessorPath[i].concat(name);
+        try {
+            code = js.getFileAsString(location);
+        } catch(error) {
+            continue;
+        }
     }
-    var proxy = actor.getPortOrParameterProxy(name);
-    if (!proxy) {
-        throw ('No such input: ' + name);
+    if (!code) {
+        throw('Accessor ' + name + ' not found on path: ' + _accessorPath);
     }
-    // Give channel a default value of 0.
-    channel = (typeof channel !== 'undefined') ? channel : 0;
-    var result = proxy.get(channel);
-    return convertFromToken(result, proxy.isJSON());
+    return code;
 }
 
 /** Get data from a parameter.
@@ -239,30 +133,6 @@ function getParameter(name) {
     return convertFromToken(result, proxy.isJSON());
 }
 
-/** Specify that a derived accessor implements a specified base accessor interface.
- *  Call this in the setup() function of the derived accessor as:
- *  ```javascript
- *     implement('MyInterface');
- *  ```
- *  This will cause the setup() function of the interface to be invoked,
- *  which means that this accessor will acquire all inputs, outputs, and parameters
- *  of the interface.
- *
- *  In this implementation, the interface is searched for in
- *  $PTII/org/terraswarm/accessor/accessors/web, which is expected to be a clone
- *  of the repository at http://terraswarm.org/accessors.
- *
- *  FIXME: Need a way to specify a different search location for the interface,
- *  including online.
- *
- *  @param interfaceName The name of the interface to implement.
- *  @see #extend()
- */
-function implement(interfaceName) {
-    var interfaceExports = requireAccessor(interfaceName);
-    interfaceExports.setup();
-}
-
 /** Specify an input for the accessor.
  *  The name argument is a required string, recommended to be camelCase with a leading
  *  lower-case character). The options argument can have the following fields:
@@ -279,13 +149,27 @@ function implement(interfaceName) {
  *  @param options The options, or null or omitted to accept the defaults.
  */
 function input(name, options) {
+    // Invoke the basic input() functionality of commonHost.
+    // Make sure the context is this, not the prototype.
+    commonHost.Accessor.prototype.input.call(this.extendedBy, name, options);
+    
+    // Then invoke the Ptolemy functionality, which will create the input if it doesn't
+    // already exist.
     // Nashorn bug if options is undefined, where it says:
     // Cannot cast jdk.nashorn.internal.runtime.Undefined to java.util.Map.
     // Replace with null.
-    if (options === undefined) {
+    if (typeof options === 'undefined') {
         options = null;
     }
-    actor.input(name, options);
+    // The following will return a Token if there was a previous value
+    // stored in the input port-parameter that overrides the defaults.
+    // The value of that token should become the default value of this input,
+    // regardless of what the options state.
+    var previousValue = actor.input(name, options);
+    if (previousValue) {
+        var proxy = actor.getPortOrParameterProxy(name);
+        this.extendedBy.inputs[name]['value'] = convertFromToken(previousValue, proxy.isJSON());
+    }
 }
 
 /** Specify an output for the accessor.
@@ -296,10 +180,16 @@ function input(name, options) {
  *  @param options The options, or null or omitted to accept the defaults.
  */
 function output(name, options) {
+    // Invoke the basic output() functionality of commonHost.
+    // Make sure the context is this, not the prototype.
+    commonHost.Accessor.prototype.output.call(this.extendedBy, name, options);
+    
+    // Then invoke the Ptolemy functionality, which will create the input if it doesn't
+    // already exist. 
     // Nashorn bug if options is undefined, where it says:
     // Cannot cast jdk.nashorn.internal.runtime.Undefined to java.util.Map.
     // Replace with null.
-    if (options === undefined) {
+    if (typeof options === 'undefined') {
         options = null;
     }
     actor.output(name, options);
@@ -321,21 +211,23 @@ function output(name, options) {
  *  @param options The options, or null or omitted to accept the defaults.
  */
 function parameter(name, options) {
-    // Nashorn bug if options is undefined, where it says:
+    // Invoke the basic parameter() functionality of commonHost.
+    // Make sure the context is this, not the prototype.
+    commonHost.Accessor.prototype.parameter.call(this.extendedBy, name, options);
+    
+    // Then invoke the Ptolemy functionality, which will create the input if it doesn't
+    // already exist.
+    // Avoid this error:
     // Cannot cast jdk.nashorn.internal.runtime.Undefined to java.util.Map.
     // Replace with null.
-    if (options === undefined) {
+    if (typeof options === 'undefined') {
         options = null;
     }
-    actor.parameter(name, options);
-}
-
-/** Remove the input handler with the specified handle.
- *  @param handle The handle.
- *  @see #addInputHandler()
- */
-function removeInputHandler(handle) {
-    actor.removeInputHandler(handle);
+    var previousValue = actor.parameter(name, options);
+    if (previousValue) {
+        var proxy = actor.getPortOrParameterProxy(name);
+        this.extendedBy.parameters[name]['value'] = convertFromToken(previousValue, proxy.isJSON());
+    }
 }
 
 /** Send data to an output or an input.
@@ -357,6 +249,15 @@ function send(name, value, channel) {
     if (!proxy) {
         error('No such port: ' + name);
     } else {
+        var output = this.extendedBy.outputs[name];
+        if (output) {
+            // Invoke the basic send() functionality of commonHost so that latestOutput()
+            // works. Make sure the context is this, not the prototype.
+            // Do not do this if sending to my own input, however.
+            // The JavaScript actor handles that.
+            commonHost.Accessor.prototype.send.call(this.extendedBy, name, value, channel);
+        }
+
         // Give channel a default value of 0.
         channel = (typeof channel !== 'undefined') ? channel : 0;
         if (proxy.isJSON()) {
@@ -416,6 +317,10 @@ function setParameter(parameter, value) {
     if (!proxy) {
         error('No such parameter: ' + parameter);
     } else {
+        // Invoke the basic parameter() functionality of commonHost.
+        // Make sure the context is this, not the prototype.
+        commonHost.Accessor.prototype.setParameter.call(this.extendedBy, parameter, value);
+    
         if (proxy.isJSON()) {
             token = new StringToken(JSON.stringify(value));
         } else {
@@ -426,7 +331,6 @@ function setParameter(parameter, value) {
 }
 
 //------------------------ Functions Invoked by JavaScript.java ------------------------
-// FIXME: Should these names have leading underscores?
 
 // Default fire function, which invokes exports.fire().
 // Note that if the script simply defines a top-level fire() function instead
@@ -434,11 +338,10 @@ function setParameter(parameter, value) {
 // as expected.
 function fire() {exports.fire(); }
 
-/** Initialize function used by the Ptolemy II/Nashorn host to provide the host
- *  context as an argument to the initialize() function of the accessor.
- *  This should not be called directly or overridden by the accessor.
- *  FIXME: Above comment not yet implemented.
- */
+// Default initialize function, which invokes exports.initialize().
+// Note that if the script simply defines a top-level initialize() function instead
+// of exports.initialize(), that function will overwrite this one and will still work
+// as expected.
 function initialize() {exports.initialize(); }
 
 // Default setup function, which invokes exports.setup().
@@ -490,14 +393,18 @@ var JSONToToken = Java.type('ptolemy.actor.lib.conversions.json.JSONToToken');
 //---------------------------- Utility functions -----------------------------
 /** Convert the specified argument from a Ptolemy II Token
  *  to a JavaScript type if there is a lossless conversion.
- *  This is a utility function, not intended for script writers to use.
  *  Otherwise, just return the value.
+ *  A nil token results in returning null.
+ *  This is a utility function, not intended for script writers to use.
  *  @param value The token to convert.
  */
 function convertFromToken(value, isJSON) {
     // If the value is not a Token, just return it.
     if (!(value instanceof Token)) {
         return value;
+    }
+    if (value.isNil()) {
+        return null;
     }
     if (value instanceof DoubleToken) {
         return value.doubleValue();

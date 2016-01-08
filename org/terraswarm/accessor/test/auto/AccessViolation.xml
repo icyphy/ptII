@@ -23,7 +23,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
-        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Failure executing the fire function: Actor is restricted. Only HTTP and HTTPS requests will be honored by readURL(). in &lt;eval&gt; at line number 181 at column number 8&#10;  in .AccessViolation.StockTick&#10;Because:&#10;Actor is restricted. Only HTTP and HTTPS requests will be honored by readURL(). in &lt;eval&gt; at line number 181 at column number 8">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Failure executing the react function: Actor is restricted. Only HTTP and HTTPS requests will be honored by readURL(). in &lt;eval&gt; at line number 182 at column number 8&#10;  in .AccessViolation.StockTick&#10;Because:&#10;Actor is restricted. Only HTTP and HTTPS requests will be honored by readURL(). in &lt;eval&gt; at line number 182 at column number 8">
         </property>
         <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="80">
         </property>
@@ -64,8 +64,6 @@
         </property>
         <port name="symbol" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>

@@ -33,7 +33,7 @@
         </property>
     </entity>
     <entity name="JavaScript2" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  // value does not override value stored in the model.&#10;  actor.parameter(&quot;foo&quot;, {'value':'y', 'type':'string'});&#10;  actor.output('bar');&#10;}&#10;exports.initialize = function() {&#10;  send('bar', get('foo'));&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  // value does not override value stored in the model.&#10;  parameter(&quot;foo&quot;, {'value':'y', 'type':'string'});&#10;  output('bar');&#10;}&#10;exports.initialize = function() {&#10;  send('bar', getParameter('foo'));&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -44,11 +44,11 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 155.0]">
         </property>
         <property name="foo" class="ptolemy.data.expr.StringParameter" value="x">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
         <port name="bar" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">

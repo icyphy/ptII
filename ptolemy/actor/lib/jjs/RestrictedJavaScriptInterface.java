@@ -30,6 +30,7 @@ package ptolemy.actor.lib.jjs;
 import java.util.Map;
 
 import ptolemy.actor.lib.jjs.JavaScript.PortOrParameterProxy;
+import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
@@ -59,18 +60,6 @@ public class RestrictedJavaScriptInterface {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Add an input handler to be invoked when there is a new token on
-     *  any input port.
-     *  @param function The function to handle the token.
-     *  @return The incremented input handler index.
-     *  @exception IllegalActionException Not thrown in this base class.
-     *  @see #removeInputHandler(Integer)
-     */
-    public int addInputHandler(final Runnable function)
-            throws IllegalActionException {
-        return _actor.addInputHandler(function);
-    }
 
     /** Specify author information to appear in the documentation for this actor.
      *  @param author Author information to appear in documentation.
@@ -150,12 +139,14 @@ public class RestrictedJavaScriptInterface {
     /** Create a new input port if it does not already exist.
      *  Leave the type unspecified so that it will be inferred.
      *  @param name The name of the port.
+     *  @return The previous value of this input, if it has one, and
+     *   null otherwise.
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public void input(String name) throws IllegalActionException,
+    public Token input(String name) throws IllegalActionException,
             NameDuplicationException {
-        _actor.input(name, null);
+        return _actor.input(name, null);
     }
 
     /** Create a new input port if it does not already exist.
@@ -170,12 +161,14 @@ public class RestrictedJavaScriptInterface {
      *  an ordinary port and set its default value.
      *  @param name The name of the port.
      *  @param options The options, or null to accept the defaults.
+     *  @return The previous value of this input, if it has one, and
+     *   null otherwise.
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public void input(String name, Map options) throws IllegalActionException,
+    public Token input(String name, Map options) throws IllegalActionException,
             NameDuplicationException {
-        _actor.input(name, options);
+        return _actor.input(name, options);
     }
 
     /** Return true.
@@ -227,14 +220,16 @@ public class RestrictedJavaScriptInterface {
     /** Create a new parameter if it does not already exist.
      *  This parameter will have an undeclared type and no description.
      *  @param name The name of the parameter.
+     *  @return The previous value of this parameter, if it has one, and
+     *   null otherwise.
      *  @exception IllegalActionException If no name is given, or if the
      *   model is executing.
      *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
      */
-    public void parameter(String name) throws IllegalActionException,
+    public Token parameter(String name) throws IllegalActionException,
             NameDuplicationException {
-        _actor.parameter(name);
+        return _actor.parameter(name);
     }
 
     /** Create a new parameter if it does not already exist.
@@ -249,21 +244,15 @@ public class RestrictedJavaScriptInterface {
      *  if it does not already have a value.
      *  @param name The name of the parameter.
      *  @param options The options, or null to accept the defaults.
+     *  @return The previous value of this parameter, if it has one, and
+     *   null otherwise.
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
      */
-    public void parameter(String name, Map options)
+    public Token parameter(String name, Map options)
             throws IllegalActionException, NameDuplicationException {
-        _actor.parameter(name, options);
-    }
-
-    /** Remove the input handler with the specified handle, if it exists.
-     *  @param handle The handler handle.
-     *  @see #addInputHandler(Runnable)
-     */
-    public void removeInputHandler(Integer handle) {
-        _actor.removeInputHandler(handle);
+        return _actor.parameter(name, options);
     }
 
     /** Invoke the specified function after the specified interval and

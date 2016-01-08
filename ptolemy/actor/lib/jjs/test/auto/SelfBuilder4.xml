@@ -17,7 +17,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;     accessor.input('input1', {'description':'first input', 'type':'number'});&#10;     accessor.input('input2', {'description':'second input', 'type':'number'});&#10;     accessor.output('output', {'description':'sum of the two inputs', 'type':'number'});&#10;}&#10;exports.fire = function() {&#10;     var foo = get('input1');&#10;     var bar = get('input2');&#10;     send('output', foo + bar);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;     input('input1', {'description':'first input', 'type':'number'});&#10;     input('input2', {'description':'second input', 'type':'number'});&#10;     output('output', {'description':'sum of the two inputs', 'type':'number'});&#10;}&#10;exports.fire = function() {&#10;     var foo = get('input1');&#10;     var bar = get('input2');&#10;     send('output', foo + bar);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -34,21 +34,21 @@
             </property>
             <property name="input2 (port)" class="ptolemy.kernel.util.StringAttribute" value="second input">
             </property>
+            <property name="input1" class="ptolemy.kernel.util.StringAttribute" value="first input">
+            </property>
+            <property name="input2" class="ptolemy.kernel.util.StringAttribute" value="second input">
+            </property>
+            <property name="output" class="ptolemy.kernel.util.StringAttribute" value="sum of the two inputs">
+            </property>
         </property>
         <port name="input1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="input2" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">

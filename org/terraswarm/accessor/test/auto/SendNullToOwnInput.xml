@@ -12,16 +12,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 20.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 790, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 790, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[556, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.064327485380117">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.49999999999994, 233.64867359203294}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.4999999999999, 233.64867359203294}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="According to the accessor spec, sending null to an input&#10;with a default value indicates the _lack_ of an input and does&#10;not trigger a firing. Hence, the send to my own input should not&#10;trigger a firing.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 75.0]">
+        </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{42.0, nil}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{42}">
         </property>
         <property name="tolerance" class="ptolemy.data.expr.Parameter" value="1.100000000000001E-8">
         </property>
@@ -57,8 +63,6 @@
         </property>
         <port name="input" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>

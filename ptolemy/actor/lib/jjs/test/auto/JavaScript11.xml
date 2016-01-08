@@ -19,13 +19,13 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test multiports.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test multiports.&#10;Note that multiports are no longer supported.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 15.0]">
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.fire = function() {&#10;var in1 = get('input', 0);&#10;var in2 = get('input', 1);&#10;&#10;send('output', in1 + in2, 0);&#10;send('output', in1 - in2, 1);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;    input('input');&#10;    output('output');&#10;}&#10;exports.fire = function() {&#10;var in1 = get('input', 0);&#10;var in2 = get('input', 1);&#10;&#10;send('output', in1 + in2, 0);&#10;send('output', in1 - in2, 1);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -38,16 +38,12 @@
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="multiport"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="multiport"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -56,7 +52,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, -2, -4}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -73,7 +69,7 @@
         </property>
     </entity>
     <entity name="NonStrictTest2" class="ptolemy.actor.lib.NonStrictTest">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 2, 4}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{0, 0, 0}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>

@@ -12,16 +12,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 165.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={95, 22, 945, 676}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={95, 23, 945, 676}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[711, 566]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0870580209385436">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.58614173419284, 384.736119549516}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.5861417341929, 384.736119549516}">
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  actor.input('input');&#10;  actor.output('output', {'type':'number'});&#10;}&#10;&#10;var handler;&#10;&#10;exports.initialize = function() {&#10;  handler = addInputHandler(null, function() {&#10;    send('output', get('input') * 2);&#10;  });&#10;}&#10;&#10;exports.wrapup = function() {&#10;  removeInputHandler(handler);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  input('input');&#10;  output('output', {'type':'number'});&#10;}&#10;&#10;var handler;&#10;&#10;exports.initialize = function() {&#10;  handler = addInputHandler(null, function() {&#10;    send('output', get('input') * 2);&#10;  });&#10;}&#10;&#10;exports.wrapup = function() {&#10;  removeInputHandler(handler);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -33,15 +33,9 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">

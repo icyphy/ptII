@@ -42,14 +42,16 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 240.0]">
         </property>
     </property>
-    <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;Error Occurred in &lt;eval&gt; at line number 2 at column number 4&quot;}">
+    <property name="TestExceptionAttribute" class="ptolemy.actor.lib.TestExceptionAttribute">
+        <property name="correctExceptionMessage" class="ptolemy.data.expr.StringParameter" value="Failure executing the react function: Error Occurred in /ptII/ptolemy/actor/lib/jjs/external/require.js#209:26&lt;eval&gt;#261:18&lt;eval&gt; at line number 2 at column number 4&#10;  in .JavaScriptErrorOutput.JavaScript&#10;Because:&#10;Error Occurred in /ptII/ptolemy/actor/lib/jjs/external/require.js#209:26&lt;eval&gt;#261:18&lt;eval&gt; at line number 2 at column number 4">
+        </property>
+        <property name="matchPrefixOfLength" class="ptolemy.data.expr.Parameter" value="30">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 90.0}">
         </property>
-    </entity>
+    </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.fire = function() {&#10;    throw(&quot;Error Occurred&quot;);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -62,8 +64,4 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 95.0]">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="Test.input" relation="relation2"/>
-    <link port="JavaScript.error" relation="relation2"/>
 </entity>
