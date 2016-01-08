@@ -668,65 +668,27 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="com/microstar/xml/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
+	<include name="org/ptolemy/classloading/*.class"/>
+	<include name="org/ptolemy/classloading/osgi/*.class"/>
 	<include name="com/microstar/xml/*.txt"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="com/microstar/xml/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/*.properties"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/designs/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/continuous/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/*.htm.in"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/doc/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/doc/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/properties/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/properties/*.html"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/gui/style/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/injection/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/*.gif"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/*.png"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/*.xml"/>
       </fileset>
       <fileset dir="${basedir}">
