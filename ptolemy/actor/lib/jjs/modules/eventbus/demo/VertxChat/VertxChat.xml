@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0558352825063892">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.8477417467165, 265.63416524805444}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.84774174671645, 265.63416524805444}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
@@ -87,7 +87,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var name;&#10;&#10;exports.initialize = function() {&#10;  name = null;&#10;  send('feedback', &quot;Please type your name. Type quit to exit.&quot;);&#10;}&#10;&#10;var handleInput = function() {&#10;  var read = get('input');&#10;  send('feedback', read);&#10;  if (read == 'quit' || read == 'exit') {&#10;    if (name) {&#10;      send('output', name + ' has left.');&#10;    }&#10;    send('stop', true);&#10;   } else  if (!name) {&#10;    name = read;&#10;    send('output', name + ' has joined.');&#10;    first = false;&#10;  } else {&#10;    send('output', name + ': ' + read);&#10;  }&#10;}&#10;&#10;addInputHandler('input', handleInput);">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var name;&#10;&#10;exports.setup = function() {&#10;  input('input');&#10;  output('output');&#10;  output('stop', {'type':'boolean'});&#10;  output('feedback', {'type':'string'});&#10;}&#10;&#10;exports.initialize = function() {&#10;  name = null;&#10;  send('feedback', &quot;Please type your name. Type quit to exit.&quot;);&#10;  addInputHandler('input', handleInput);&#10;}&#10;&#10;var handleInput = function() {&#10;  var read = get('input');&#10;  send('feedback', read);&#10;  if (read == 'quit' || read == 'exit') {&#10;    if (name) {&#10;      send('output', name + ' has left.');&#10;    }&#10;    send('stop', true);&#10;   } else  if (!name) {&#10;    name = read;&#10;    send('output', name + ' has joined.');&#10;  } else {&#10;    send('output', name + ': ' + read);&#10;  }&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -99,27 +99,19 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
         <port name="stop" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
             </property>
         </port>
         <port name="feedback" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
@@ -163,7 +155,7 @@
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={917, 22, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={917, 23, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -171,7 +163,7 @@
         </property>
     </entity>
     <entity name="VertxSubscribe2" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2014-2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor subscribes to a Vert.x event bus, which is a peer-to-peer&#10; *  publish-and-subscribe system. This accessor will receive data that is&#10; *  sent by any subscriber that publishes to the same address and runs in&#10; *  the same Vertx cluster (see the VertxPublish accessor).&#10; *  The Vertx cluster normally includes all machines that hear multicast&#10; *  packets sent by the machine hosting this accessor.&#10; *&#10; *  The output produced by this accessor may be any data type supported by&#10; *  accessors that has a string representation in JSON syntax.&#10; *  The data sent by a VertxPublish accessor is first converted to a string&#10; *  in JSON format and sent to the event bus. This VertxSubscribe accessor&#10; *  will parse that string and output the data in the native format of its host.&#10; *&#10; *  If the reply input is set to a non-empty value, then whenever this accessor&#10; *  receives a point-to-point message from the event bus (see VertxPublish),&#10; *  then it will reply with the specified message, acknowledging receipt.&#10; *  The reply can also be any data type that has a JSON string representation.&#10; *&#10; *  The busHost input specifies the name of the network interface through&#10; *  which to connect to the Vert.x event bus cluster, and busHostPort specifies&#10; *  the port to use for this. Normally, you can leave these at their default&#10; *  values unless you need to need to use a network interface that is not&#10; *  'localhost' or you need to use a particular port.&#10; *  These two inputs are examined only at initialization time,&#10; *  so changing them during execution of a swarmlet will have no effect.&#10; *&#10; *  @accessor VertxSubscribe&#10; *  @module VertxSubscribe&#10; *  @author Patricia Derler, Edward A. Lee, Ben Zhang&#10; *  @version $$Id$$&#10; *  @input {string} address The event bus address, which is the name of the event stream&#10; *   to which to subscribe. This defaults to 'topic'.&#10; *  @output {JSON} message The message received.&#10; *  @input {JSON} reply The reply to send back to the sender for point-to-point messages,&#10; *   or empty to send no reply (the default).&#10; *  @parameter {string} busHost The name of the network interface to use for the Vert.x&#10; *   event bus. A blank string is interpreted as 'localhost' (the default).&#10; *  @parameter {int} busHostPort The port for the Vert.x event bus. A value of 0&#10; *   indicates to just find an available port (the default).&#10; */&#10;var eventbus = require('eventbus');&#10;&#10;/** Set up the accessor by defining the inputs, outputs, and parameters. */&#10;exports.setup = function() {&#10;    accessor.input('address', {&#10;        'value':'topic',&#10;        'type':'string',&#10;    });&#10;    accessor.output('message', {&#10;        'type':'JSON',&#10;    });&#10;    accessor.parameter('busHost', {&#10;        'type':'string',&#10;    });&#10;    accessor.parameter('busHostPort', {&#10;        'value':0,&#10;        'type':'int',&#10;    });&#10;    accessor.input('reply', {&#10;        'type':'JSON',&#10;    });&#10;};&#10;&#10;var bus, currentAddress, addressHandle, replyHandle;&#10;&#10;var onReceived = function(msg) {&#10;    send('message', msg);&#10;}&#10;&#10;exports.initialize = function() {&#10;    var port = get('busHostPort');&#10;    var host = get('busHost');&#10;    bus = new eventbus.VertxBus({'port':port, 'host':host});&#10;    currentAddress = get('address');&#10;    bus.subscribe(currentAddress);&#10;    bus.on(get('address'), onReceived);&#10;    var replyText = get('reply');&#10;    if (replyText) {&#10;        bus.setReply(replyText);&#10;    }&#10;    addressHandle = addInputHandler('address', function() {&#10;        var topic = get('address');&#10;        if (topic != currentAddress) {&#10;            bus.unsubscribe(currentAddress);&#10;            bus.subscribe(topic);&#10;        }&#10;    });&#10;&#10;    replyHandle = addInputHandler('reply', function() {&#10;        var replyText = get('reply');&#10;        if (replyText) {&#10;            bus.setReply(replyText);&#10;        } else {&#10;            bus.setReply(null);&#10;        }&#10;    });&#10;}&#10;&#10;exports.wrapup = function() {&#10;    bus.unsubscribe();&#10;    removeInputHandler('address', addressHandle);&#10;    removeInputHandler('reply', replyHandle);&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2014-2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor subscribes to a Vert.x event bus, which is a peer-to-peer&#10; *  publish-and-subscribe system. This accessor will receive data that is&#10; *  sent by any subscriber that publishes to the same address and runs in&#10; *  the same Vertx cluster (see the VertxPublish accessor).&#10; *  The Vertx cluster normally includes all machines that hear multicast&#10; *  packets sent by the machine hosting this accessor.&#10; *&#10; *  The output produced by this accessor may be any data type supported by&#10; *  accessors that has a string representation in JSON syntax.&#10; *  The data sent by a VertxPublish accessor is first converted to a string&#10; *  in JSON format and sent to the event bus. This VertxSubscribe accessor&#10; *  will parse that string and output the data in the native format of its host.&#10; *&#10; *  If the reply input is set to a non-empty value, then whenever this accessor&#10; *  receives a point-to-point message from the event bus (see VertxPublish),&#10; *  then it will reply with the specified message, acknowledging receipt.&#10; *  The reply can also be any data type that has a JSON string representation.&#10; *&#10; *  The busHost input specifies the name of the network interface through&#10; *  which to connect to the Vert.x event bus cluster, and busHostPort specifies&#10; *  the port to use for this. Normally, you can leave these at their default&#10; *  values unless you need to need to use a network interface that is not&#10; *  'localhost' or you need to use a particular port.&#10; *  These two inputs are examined only at initialization time,&#10; *  so changing them during execution of a swarmlet will have no effect.&#10; *&#10; *  @accessor net/VertxSubscribe&#10; *  @author Patricia Derler, Edward A. Lee, Ben Zhang&#10; *  @version $$Id$$&#10; *  @input {string} address The event bus address, which is the name of the event stream&#10; *   to which to subscribe. This defaults to 'topic'.&#10; *  @output message The message received.&#10; *  @input reply The reply to send back to the sender for point-to-point messages,&#10; *   or empty to send no reply (the default).&#10; *  @parameter {string} busHost The name of the network interface to use for the Vert.x&#10; *   event bus. A blank string is interpreted as 'localhost' (the default).&#10; *  @parameter {int} busHostPort The port for the Vert.x event bus. A value of 0&#10; *   indicates to just find an available port (the default).&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals addInputHandler, exports, get, input, output, parameter, removeInputHandler, require, send */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10;&#10;var eventbus = require('eventbus');&#10;&#10;/** Set up the accessor by defining the inputs, outputs, and parameters. */&#10;exports.setup = function() {&#10;    input('address', {&#10;        'value':'topic',&#10;        'type':'string'&#10;    });&#10;    output('message');&#10;    parameter('busHost', {&#10;        'type':'string'&#10;    });&#10;    parameter('busHostPort', {&#10;        'value':0,&#10;        'type':'int'&#10;    });&#10;    input('reply', {&#10;        'value': ''&#10;    });&#10;};&#10;&#10;var bus, currentAddress, addressHandle, replyHandle;&#10;&#10;var onReceived = function(msg) {&#10;    send('message', msg);&#10;};&#10;&#10;exports.initialize = function() {&#10;    var port = get('busHostPort');&#10;    var host = get('busHost');&#10;    bus = new eventbus.VertxBus({'port':port, 'host':host});&#10;    currentAddress = get('address');&#10;    bus.subscribe(currentAddress);&#10;    bus.on(get('address'), onReceived);&#10;    var replyText = get('reply');&#10;    if (replyText !== null &amp;&amp; replyText !== '') {&#10;        bus.setReply(replyText);&#10;    }&#10;    addressHandle = addInputHandler('address', function() {&#10;        var topic = get('address');&#10;        if (topic != currentAddress) {&#10;            bus.unsubscribe(currentAddress);&#10;            bus.subscribe(topic);&#10;        }&#10;    });&#10;&#10;    replyHandle = addInputHandler('reply', function() {&#10;        var replyText = get('reply');&#10;        if (replyText) {&#10;            bus.setReply(replyText);&#10;        } else {&#10;            bus.setReply(null);&#10;        }&#10;    });&#10;};&#10;&#10;exports.wrapup = function() {&#10;    bus.unsubscribe();&#10;    removeInputHandler('address', addressHandle);&#10;    removeInputHandler('reply', replyHandle);&#10;};&#10;">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/net/VertxSubscribe.js">
         </property>
@@ -187,21 +179,37 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 155.0]">
         </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor subscribes to a Vert.x event bus, which is a peer-to-peer&#10; publish-and-subscribe system. This accessor will receive data that is&#10; sent by any subscriber that publishes to the same address and runs in&#10; the same Vertx cluster (see the VertxPublish accessor).&#10; The Vertx cluster normally includes all machines that hear multicast&#10; packets sent by the machine hosting this accessor.&lt;/p&gt;&#10;&lt;p&gt; The output produced by this accessor may be any data type supported by&#10; accessors that has a string representation in JSON syntax.&#10; The data sent by a VertxPublish accessor is first converted to a string&#10; in JSON format and sent to the event bus. This VertxSubscribe accessor&#10; will parse that string and output the data in the native format of its host.&lt;/p&gt;&#10;&lt;p&gt; If the reply input is set to a non-empty value, then whenever this accessor&#10; receives a point-to-point message from the event bus (see VertxPublish),&#10; then it will reply with the specified message, acknowledging receipt.&#10; The reply can also be any data type that has a JSON string representation.&lt;/p&gt;&#10;&lt;p&gt; The busHost input specifies the name of the network interface through&#10; which to connect to the Vert.x event bus cluster, and busHostPort specifies&#10; the port to use for this. Normally, you can leave these at their default&#10; values unless you need to need to use a network interface that is not&#10; 'localhost' or you need to use a particular port.&#10; These two inputs are examined only at initialization time,&#10; so changing them during execution of a swarmlet will have no effect.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Patricia Derler, Edward A. Lee, Ben Zhang">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="busHost (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The name of the network interface to use for the Vert.x&#10;  event bus. A blank string is interpreted as 'localhost' (the default).">
+            </property>
+            <property name="busHostPort (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port for the Vert.x event bus. A value of 0&#10;  indicates to just find an available port (the default).">
+            </property>
+            <property name="message (port)" class="ptolemy.kernel.util.StringAttribute" value="The message received.">
+            </property>
+            <property name="reply (port)" class="ptolemy.kernel.util.StringAttribute" value="The reply to send back to the sender for point-to-point messages,&#10;  or empty to send no reply (the default).">
+            </property>
+            <property name="address (port)" class="ptolemy.kernel.util.StringAttribute" value="The event bus address, which is the name of the event stream&#10;  to which to subscribe. This defaults to 'topic'.">
+            </property>
+        </property>
         <port name="address" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="message" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
-        <port name="reply" class="ptolemy.actor.TypedIOPort">
+        <port name="reply" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
     </entity>
@@ -246,27 +254,19 @@
         </property>
         <port name="address" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="broadcast" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="message" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="reply" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">

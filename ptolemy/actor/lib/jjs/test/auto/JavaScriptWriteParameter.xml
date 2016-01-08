@@ -51,7 +51,7 @@
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var count;&#10;exports.initialize = function() {&#10;    count = 0;&#10;    set('test', count);&#10;}&#10;exports.fire = function() {&#10;    var value = get('test');&#10;    send('output', value);&#10;    set('test', value + 1);&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var count;&#10;exports.setup = function() {&#10;    input('input', {'type':'int'});&#10;    output('output', {'type':'int'});&#10;    parameter('test', {'type':'int'});&#10;}&#10;exports.initialize = function() {&#10;    count = 0;&#10;    setParameter('test', count);&#10;}&#10;exports.fire = function() {&#10;    var value = getParameter('test');&#10;    send('output', value);&#10;    setParameter('test', value + 1);&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -65,15 +65,11 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">

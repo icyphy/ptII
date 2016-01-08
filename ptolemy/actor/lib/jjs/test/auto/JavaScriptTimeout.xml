@@ -48,7 +48,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var count = 0;&#10;var timeout = 0;&#10;var pendingTimeout;&#10;exports.setup = function() {&#10;   parameter('timeout');&#10;}&#10;function produce() {&#10;   send('out', count);&#10;   count = count + 1;&#10;   timeout = getParameter('timeout');&#10;   console.log(&quot;JavaScriptTimeout: timeout = &quot; + timeout);&#10;   pendingTimeout = setTimeout(produce, timeout);&#10;}&#10;exports.initialize = function() {&#10;   produce();&#10;}&#10;exports.wrapup = function() {&#10;   clearTimeout(pendingTimeout);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var count = 0;&#10;var timeout = 0;&#10;var pendingTimeout;&#10;exports.setup = function() {&#10;   output('out');&#10;   parameter('timeout');&#10;}&#10;function produce() {&#10;   send('out', count);&#10;   count = count + 1;&#10;   timeout = getParameter('timeout');&#10;   console.log(&quot;JavaScriptTimeout: timeout = &quot; + timeout);&#10;   pendingTimeout = setTimeout(produce, timeout);&#10;}&#10;exports.initialize = function() {&#10;   produce();&#10;}&#10;exports.wrapup = function() {&#10;   clearTimeout(pendingTimeout);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -62,8 +62,6 @@
         </property>
         <port name="out" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
             </property>
         </port>

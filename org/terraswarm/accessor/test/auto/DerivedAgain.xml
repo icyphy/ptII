@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.99999999999983, 252.99999999999946}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.99999999999983, 252.9999999999994}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
@@ -21,7 +21,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that a derived accessor can see 2 inheritance levels above it.&#10;&#10;Base3:&#10;exports.baseField = 1;&#10;&#10;DerivedC extends BaseC&#10;exports.derivedField = 2;&#10;&#10;DerivedAgainA extends DerivedC.&#10;&#10;ensure DerivedAgainA can access baseField and derivedField">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that a derived accessor can see 2 inheritance levels above it.&#10;&#10;BaseC:&#10;exports.baseField = 1;&#10;inputHandler&#10;&#10;DerivedC extends BaseC&#10;exports.baseField = 2;&#10;&#10;DerivedAgainA extends DerivedC.&#10;&#10;ensure DerivedAgainA can access baseField and inputHandler.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 315.0]">
         </property>
@@ -49,7 +49,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{550.0, 225.0}">
         </property>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
@@ -87,18 +87,12 @@
         </property>
         <port name="in1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="out1" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="out2" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

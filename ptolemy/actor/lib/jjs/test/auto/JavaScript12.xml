@@ -31,7 +31,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var TypedCompositeActor = Java.type('ptolemy.actor.TypedCompositeActor');&#10;var Ramp = Java.type('ptolemy.actor.lib.Ramp');&#10;var FileWriter = Java.type('ptolemy.actor.lib.FileWriter');&#10;var SetVariable = Java.type('ptolemy.actor.lib.SetVariable');&#10;var SDFDirector = Java.type('ptolemy.domains.sdf.kernel.SDFDirector');&#10;var Parameter = Java.type('ptolemy.data.expr.Parameter');&#10;&#10;exports.fire = function() {&#10;    var toplevel = new TypedCompositeActor();&#10;    var ramp = new Ramp(toplevel, &quot;ramp&quot;);&#10;    var writer = new FileWriter(toplevel, &quot;writer&quot;);&#10;    var setVariable = new SetVariable(toplevel, &quot;setVariable&quot;);&#10;    setVariable.variableName.setExpression(&quot;count&quot;);&#10;    new Parameter(toplevel, &quot;count&quot;);&#10;&#10;    var relation = toplevel.connect(ramp.output, writer.input);&#10;    setVariable.input.link(relation);&#10;&#10;    var director = new SDFDirector(toplevel, &quot;SDFDirector&quot;);&#10;    director.getAttribute('iterations').setExpression(get('iterations'));&#10;&#10;    send('actor', toplevel);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	parameter('iterations', {'type':'int', 'value':1});&#10;	output('model', {'type':'actor'});&#10;}&#10;&#10;var TypedCompositeActor = Java.type('ptolemy.actor.TypedCompositeActor');&#10;var Ramp = Java.type('ptolemy.actor.lib.Ramp');&#10;var FileWriter = Java.type('ptolemy.actor.lib.FileWriter');&#10;var SetVariable = Java.type('ptolemy.actor.lib.SetVariable');&#10;var SDFDirector = Java.type('ptolemy.domains.sdf.kernel.SDFDirector');&#10;var Parameter = Java.type('ptolemy.data.expr.Parameter');&#10;&#10;exports.fire = function() {&#10;    var toplevel = new TypedCompositeActor();&#10;    var ramp = new Ramp(toplevel, &quot;ramp&quot;);&#10;    var writer = new FileWriter(toplevel, &quot;writer&quot;);&#10;    var setVariable = new SetVariable(toplevel, &quot;setVariable&quot;);&#10;    setVariable.variableName.setExpression(&quot;count&quot;);&#10;    new Parameter(toplevel, &quot;count&quot;);&#10;&#10;    var relation = toplevel.connect(ramp.output, writer.input);&#10;    setVariable.input.link(relation);&#10;&#10;    var director = new SDFDirector(toplevel, &quot;SDFDirector&quot;);&#10;    director.getAttribute('iterations').setExpression(getParameter('iterations'));&#10;&#10;    send('model', toplevel);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -43,12 +43,8 @@
         </property>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <port name="actor" class="ptolemy.actor.TypedIOPort">
+        <port name="model" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="actor">
-            </property>
         </port>
     </entity>
     <entity name="ExecuteActor" class="ptolemy.actor.lib.hoc.ExecuteActor">
@@ -79,12 +75,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{295, 125}">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="JavaScript.actor" relation="relation2"/>
-    <link port="ExecuteActor.actor" relation="relation2"/>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="JavaScript.model" relation="relation3"/>
+    <link port="ExecuteActor.actor" relation="relation3"/>
     <link port="ExecuteActor.count" relation="relation"/>
     <link port="Test.input" relation="relation"/>
 </entity>

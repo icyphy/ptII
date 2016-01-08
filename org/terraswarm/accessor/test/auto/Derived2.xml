@@ -35,7 +35,7 @@
         </property>
     </entity>
     <entity name="DerivedB2" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   extend('BaseB');&#10;}&#10;//Override input Handler of base&#10;exports.inputHandler = function() {&#10;   console.log('sending false');&#10;   send('output', false);&#10;}&#10;&#10;exports.initialize = function() {&#10;   Object.getPrototypeOf(exports).initialize.apply(this);&#10;   printProperties(exports);&#10;}&#10;&#10;function printProperties(obj) {&#10;   console.log('printing non-prototype properties');&#10;   for (var i in obj) {&#10;      if (obj.hasOwnProperty(i)) {&#10;         console.log(i + &quot;: &quot; + obj[i].toString());&#10;      }&#10;   }&#10;   console.log('printing protoytpe');&#10;   for (var j in Object.getPrototypeOf(obj)) {&#10;      console.log(j + &quot;: &quot; + obj[j].toString());&#10;   }&#10;}&#10;&#10;&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   extend('BaseB');&#10;}&#10;//Override input Handler of base&#10;exports.inputHandler = function() {&#10;   console.log('sending false');&#10;   send('output', false);&#10;}&#10;&#10;exports.initialize = function() {&#10;   this.ssuper.initialize.apply(this);&#10;   printProperties(exports);&#10;}&#10;&#10;function printProperties(obj) {&#10;   console.log('printing non-prototype properties');&#10;   for (var i in obj) {&#10;      if (obj.hasOwnProperty(i)) {&#10;         console.log(i + &quot;: &quot; + obj[i].toString());&#10;      }&#10;   }&#10;   console.log('printing protoytpe');&#10;   for (var j in Object.getPrototypeOf(obj)) {&#10;      console.log(j + &quot;: &quot; + obj[j].toString());&#10;   }&#10;}&#10;&#10;&#10;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -53,17 +53,9 @@
         </property>
         <port name="in1" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">

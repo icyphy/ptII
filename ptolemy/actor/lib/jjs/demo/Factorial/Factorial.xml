@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{75, 45}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={481, 248, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 80, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -53,36 +53,38 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 120.0]">
         </property>
     </entity>
-    <entity name="JavaScript2" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.fire = function() {&#10;       var value = get('input');&#10;       if (value &lt; 0) {&#10;           throw &quot;Input must be greater than or equal to 0.&quot;;&#10;       } else {&#10;           var total = 1;&#10;           while (value &gt; 1) {&#10;               total *= value;&#10;               value--;&#10;           }&#10;           send('output', total, 0);&#10;       }&#10;   }">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	input('input', {'type': 'int'});&#10;	output('output', {'type': 'int'});&#10;}&#10;exports.fire = function() {&#10;    var value = get('input');&#10;    if (value &lt; 0) {&#10;        throw &quot;Input must be greater than or equal to 0.&quot;;&#10;    } else {&#10;        var total = 1;&#10;        while (value &gt; 1) {&#10;            total *= value;&#10;            value--;&#10;        }&#10;        send('output', total, 0);&#10;    }&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 120.0]">
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 120.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Ramp.output" relation="relation3"/>
-    <link port="Display.input" relation="relation"/>
-    <link port="JavaScript2.input" relation="relation3"/>
-    <link port="JavaScript2.output" relation="relation"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="Display.input" relation="relation2"/>
+    <link port="JavaScript.input" relation="relation"/>
+    <link port="JavaScript.output" relation="relation2"/>
 </entity>
