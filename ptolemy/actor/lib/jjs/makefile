@@ -57,6 +57,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	basicFunctions.js \
+	commonHost.js \
 	console.js \
 	JavaScriptIcon.xml \
 	jjs-license.htm \
