@@ -1083,12 +1083,13 @@ public class JavaScript extends TypedAtomicActor {
     /** Create a new input port if it does not already exist.
      *  This port will have an undeclared type and no description.
      *  @param name The name of the port.
+     *  @return The token at the input.
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public void input(String name) throws IllegalActionException,
+    public Token input(String name) throws IllegalActionException,
             NameDuplicationException {
-        input(name, null);
+        return input(name, null);
     }
 
     /** Create a new input port if it does not already exist.
@@ -1112,10 +1113,11 @@ public class JavaScript extends TypedAtomicActor {
      *  @param name The name of the port.
      *  @param options The options, or null to accept the defaults.
      *   To give options, this argument must implement the Map interface.
+     *  @return The token at the input.
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
-    public void input(String name, Map<String,Object> options)
+    public Token input(String name, Map<String,Object> options)
             throws IllegalActionException, NameDuplicationException {
         // FIXME: Should check whether the model is running and use a change
         // request if so.
@@ -1260,6 +1262,7 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
         port.setInput(true);
+        return token;
     }
     
     /** Invoke the specified function in the fire() method as soon as possible.
