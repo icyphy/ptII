@@ -1262,7 +1262,7 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
         port.setInput(true);
-        return token;
+        return (Token)token;
     }
     
     /** Invoke the specified function in the fire() method as soon as possible.
