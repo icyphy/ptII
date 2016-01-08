@@ -35,6 +35,9 @@ import java.net.InetAddress;
 import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -54,6 +57,7 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
+import ptolemy.actor.TypeAttribute;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.conversions.json.TokenToJSON;
@@ -91,42 +95,43 @@ import ptolemy.util.StringUtilities;
 //// JavaScript
 
 /**
-   An actor whose functionality is given in JavaScript.
+   An actor whose functionality is given in JavaScript using the accessor
+   interface defined at
+   <a href="http://terraswarm.org/accessors">http://terraswarm.org/accessors</a>.
+   Refer to that page for complete documentation of the
+   functions and modules that are provided to the script.
+   <p>
    The script defines one or more functions that configure this actor
-   with ports and documentation information, initialize the actor,
+   with ports and parameters, initialize the actor,
    perform runtime functions such as reacting to inputs and producing outputs,
    and perform finalization (wrapup) functions. The script may be provided
    as the textual value of the <i>script</i> parameter, or as an input
    on the <i>script</i> port. You can add to the script or modify
    function definitions on each firing.
-   <p>
-   To use this actor, add input and output ports, parameters (if you like),
-   and specify a script. The names of the ports and parameters are currently
-   required to be valid JavaScript identifiers and are not permitted to be
-   JavaScript keywords, but this constraint will be relaxed in the future.
-   </p>
-   <p>
-   The script may also reference parameters in the scope of this actor
-   using get('<i>parameterName</i>').  To get a parameter in the container, use
-   actor.getContainer().getAttribute('<i>interval</i>').
+   </p><p>
+   To use this actor, specify a script. Define an exports.setup() function
+   that declares inputs, outputs, and parameters.
    </p>
    <p>
    Your script can define zero or more of the following functions:</p>
    <ul>
    <li> <b>exports.setup</b>. This function is invoked when the script parameter
    is first set and whenever the script parameter is updated. This function can
-   be used to configure this actor with input and output ports.  For example,
+   be used to configure this actor with input and output ports
+   and parameters.  For example,
    <pre>
      exports.setup = function() {
-         actor.input('foo', {'type':'string'});
+         input('foo', {'type':'string'});
      }
    </pre>
    will create an input port named "foo" (if one does not already exist), and set
    its type to "string", possibly overriding any previously set data type.
    The methods that are particularly useful to use in setup are input, output,
-   author, description, and version.
+   parameter, instantiate, and connect.
+   </li>
    <li> <b>exports.initialize</b>. This function is invoked each time this actor
-   is initialized. This function should not read inputs or produce outputs.</li>
+   is initialized. This function should not read inputs or produce outputs.
+   </li>
    <li> <b>exports.fire</b>. This function is invoked each time this actor fires.
    It can read inputs using get() and write outputs using send().
    This actor will consume at most one input token from each input port on
@@ -134,10 +139,14 @@ import ptolemy.util.StringUtilities;
    firing will return the same consumed value, or will return null if there
    is no available input on that firing.  If you want it to instead return
    a previously read input, then mark the port persistent by giving it a
-   <i>defaultValue</i> parameter, or use a PortParameter instead of an ordinary port.</li>
+   <i>value</i> option when you call input() in setup().
+   This provides a default value and makes any newly provided values
+   persistent.
+   </li>
    <li> <b>exports.wrapup</b>. This function is invoked at the end of execution of
    of the model. It can read parameters, but normally should not
-   read inputs nor write outputs.</li>
+   read inputs nor write outputs.
+   </li>
    </ul>
    These functions are fields of the exports object, as usual JavaScript CommonJS modules.
    For example, to define the fire function, specify code like this:
@@ -151,20 +160,35 @@ import ptolemy.util.StringUtilities;
    </pre>
    Your script may also register <b>input handler</b> functions by invoking
    <pre>
-      var handle = addInputHandler(function, port);
+      var handle = addInputHandler(portName, function);
    </pre>
-   <p>
-   The specified function will be invoked whenever the port receives a new input.
+   Normally you would do this in initialize().
+   The returned handle can be used to call removeInputHandler().
+   Handlers will be automatically
+   unregistered upon wrapup(), so unless you want to cancel a handler earlier,
+   you do not need to explicitly unregister a handler.
+   </p><p>
+   The function specified as the input handler
+   will be invoked whenever the port receives a new input.
    Note that the fire() function, if defined, will also be invoked (after the
    specified function) and will see
    the same input. If the specified function is null, then only the fire() function
-   will be invoked. The returned handle can be used to call removeInputHandler().
+   will be invoked.
+   If the portName is null, then the handler will be invoked whenever
+   a new input arrives on any input, after which the fire function will
+   be invoked, if it exists.
    </p>
    <p>
-   Usually, you will need to explicitly set the types
-   of the output ports. Alternatively, you can enable backward
-   type inference on the enclosing model, and the types of output
-   ports will be inferred by how the data are used.</p>
+   Often you can leave the types of input and output ports unspecified.
+   Sometimes, however, you will need to explicitly set the types
+   of the output ports. You can do this by specifying a 'type'
+   option to the input() function in setup().
+   This implementation extends the accessor interface definition by allowing
+   any Ptolemy II type to be specified.
+   Keep in mind, however, that if you specify Ptolemy II types that are
+   not also accessor types, then your script will likely not work in some
+   other accessor host.
+   </p>
    <p>
    You may also need to set the type of input ports. Usually, forward
    type inference will work, and the type of the input port will be based
@@ -172,9 +196,12 @@ import ptolemy.util.StringUtilities;
    if the input comes from an output port whose output is undefined,
    such as JSONToToken, then you may want to
    enable backward type inference, and specify here the type of input
-   that your script requires.</p>
+   that your script requires. Again, you do this with a 'type' option
+   to the input() function in setup().
+   </p>
    <p>
-   The context in which your functions run provide the following global functions:</p>
+   The context in which your functions run provide the following global functions,
+   at least:</p>
    <ul>
    <li> addInputHandler(function, input): Specify a function to invoke when the input
         with name input (a string) receives a new input value. Note that after that
@@ -187,25 +214,24 @@ import ptolemy.util.StringUtilities;
    <li> clearInterval(int): clear an interval with the specified handle.</li>
    <li> clearTimeout(int): clear a timeout with the specified handle.</li>
    <li> error(string): send a message to error port, or throw an exception if the error port is not connected.</li>
-   <li> get(portOrParameter, n): get an input from a port on channel n or a parameter
-        (return null if there is no such port or parameter).</li>
+   <li> get(portName): get an input from a port on channel 0.</li>
+   <li> getParameter(parameterName): get a value from a parameter.</li>
    <li> httpRequest(url, method, properties, body, timeout): HTTP request (GET, POST, PUT, etc.)</li>
    <li> localHostAddress(): If not in restricted mode, return the local host IP address as a string. </li>
    <li> print(string): print the specified string to the console (standard out).</li>
    <li> readURL(string): read the specified URL and return its contents as a string (HTTP GET).</li>
-   <li> removeInputHandler(handle, input): Remove the callback function with the specified handle
-        (returned by addInputHandler()) for the specified input (a string). </li>
+   <li> removeInputHandler(handle): Remove the callback function with the specified handle
+        (returned by addInputHandler()). </li>
    <li> require(string): load and return a CommonJS module by name. See
+        <a href="http://terraswarm.org/accessors">http://terraswarm.org/accessors</a> for
+        supported modules. See
         <a href="http://wiki.commonjs.org/wiki/Modules">http://wiki.commonjs.org/wiki/Modules</a></li>
-   <li> send(value, port, n): send a value to an output port on channel n</li>
-   <li> set(value, parameter): set the value of a parameter of this JavaScript actor. </li>
+        for what a CommonJS module is.
+   <li> send(portName, value): send a value to an output port on channel 0</li>
+   <li> setParameter(parameterName, value): set the value of a parameter of this JavaScript actor. </li>
    <li> setInterval(function, int): set the function to execute after specified time and then periodically and return handle.</li>
    <li> setTimeout(function, int): set the function to execute after specified time and return handle.</li>
    </ul>
-   <p>
-   The last argument of get() and send() (the channel number) is optional.
-   If you leave it off, the channel number will be assumed to be zero
-   (designating the first channel connected to the port).</p>
    <p>
    Note that get() may be called within a JavaScript callback function. In that case,
    if the callback function is invoked during the firing of this actor, then the get()
@@ -218,17 +244,21 @@ import ptolemy.util.StringUtilities;
    <p>
    The following example script calculates the factorial of the input.</p>
    <pre>
+   exports.setup = function() {
+       input('input', {'type':'int'});
+       output('output', {'type':'int'});
+   }
    exports.fire = function() {
-       var value = get(input);
+       var value = get('input');
        if (value < 0) {
-           throw "Input must be greater than or equal to 0.";
+           error("Input must be greater than or equal to 0.");
        } else {
            var total = 1;
            while (value > 1) {
                total *= value;
                value--;
            }
-           send(total, output);
+           send('output', total);
        }
    }
    </pre>
@@ -236,19 +266,24 @@ import ptolemy.util.StringUtilities;
    Your script may also store values from one firing to the next, or from
    initialization to firing.  For example,</p>
    <pre>
+   exports.setup = function() {
+       output('output', {'type':'int'});
+   }
    var init;
    exports.initialize() = function() {
        init = 0;
    }
    exports.fire = function() {
        init = init + 1;
-       send(init, output);
+       send('output', init);
    }
    </pre>
    <p>will send a count of firings to the output named "output".</p>
    <p>
    In addition, the symbols "actor" and "accessor" are defined to be the instance of
    this actor. In JavaScript, you can invoke methods on it.
+   (Note that in an accessor, which is implemented by a subclass of this
+   JavaScript actor, invocation of these functions is blocked for security reasons.)
    For example, the JavaScript</p>
    <pre>
    actor.toplevel().getName();
@@ -256,7 +291,9 @@ import ptolemy.util.StringUtilities;
    <p>will return the name of the top-level composite actor containing
    this actor.</p>
    <p>
-   Not all Ptolemy II data types translate naturally to
+   This actor can be used in any Ptolemy II model and can interact with native
+   Ptolemy II actors through its ports.
+   However, not all Ptolemy II data types translate naturally to
    JavaScript types. Simple types will "just work."
    This actor converts Ptolemy types int,
    double, string, and boolean to and from equivalent JavaScript
@@ -275,7 +312,7 @@ import ptolemy.util.StringUtilities;
    var ObjectToken = Java.type('ptolemy.data.ObjectToken');
    exports.fire = function() {
       var token = new ObjectToken([1, 2, 'foo']);
-      send(token, output);
+      send('output', token);
    }
    </pre>
    <p>The type of the output port will need to be set to object or general.
@@ -284,7 +321,7 @@ import ptolemy.util.StringUtilities;
    <pre>
    var ObjectToken = Java.type('ptolemy.data.ObjectToken');
    exports.fire = function() {
-      var token = get(input);
+      var token = get('input');
       var array = token.getValue();
       ... operate on array, which is the original [1, 2, 'foo'] ...
    }
@@ -306,7 +343,7 @@ import ptolemy.util.StringUtilities;
    a number of type long to an input of a JavaScript actor,
    the script (inside a fire() function):</p>
    <pre>
-      var value = get(input);
+      var value = get('input');
       print(value.getClass().toString());
    </pre>
    <p>will print on standard out the string</p>
@@ -360,12 +397,14 @@ import ptolemy.util.StringUtilities;
    For example,</p>
    <pre>
    exports.fire = function() {
-      send(toplevel, output);
+      send('output', toplevel);
    }
    </pre>
    where "output" is the name of the output port. Note that the manager
    does not get included with the model, so the recipient will need to
    associate a new manager to be able to execute the model.
+   Note further that you may want to declare the type of the output
+   to be 'actor', a Ptolemy II type.
    <p>
    Subclasses of this actor may put it in "restricted" mode, which
    limits the functionality as follows:</p>
@@ -376,7 +415,12 @@ import ptolemy.util.StringUtilities;
    they do not support the "file" protocol, and hence cannot access local files).</li>
    </ul>
    <p>
-   FIXME: document console package, Listen to actor, util package.</p>
+   For debugging, it can be useful to right click on this actor and select Listen to Actor.
+   Refer to <a href="http://terraswarm.org/accessors">http://terraswarm.org/accessors</a>
+   for a complete definition of the available functionality. For example,
+   it is explained there how to create composite accessors, which instantiate and connect
+   multiple subaccessors within this one.
+   </p>
 
    @author Edward A. Lee
    @version $Id$
@@ -452,24 +496,6 @@ public class JavaScript extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Add an input handler to be invoked when there is a new token on
-     *  any input port.
-     *  @param function The function to handle the token.
-     *  @return The incremented input handler index.
-     *  @exception IllegalActionException Not thrown in this base class.
-     *  @see #removeInputHandler(Integer)
-     */
-    public int addInputHandler(final Runnable function)
-            throws IllegalActionException {
-        if (_genericInputHandlers == null) {
-            _genericInputHandlers = new LinkedList<Runnable>();
-        }
-        _genericInputHandlers.add(function);
-        _handle++;
-        _handleToIndex.put(_handle, _genericInputHandlers.size() - 1);
-        return _handle;
-    }
 
     /** React to a change in an attribute, and if the attribute is the
      *  script parameter, and the script parameter possibly contains a
@@ -553,15 +579,12 @@ public class JavaScript extends TypedAtomicActor {
                     "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
         }
         newObject._exports = null;
-        newObject._inputTokens = new HashMap<IOPort, HashMap<Integer, Token>>();
+        newObject._instance = null;
         newObject._pendingCallbacks = new ConcurrentLinkedQueue<Runnable>();
         newObject._pendingTimeoutFunctions = new HashMap<Integer, Runnable>();
         newObject._pendingTimeoutIDs = new HashMap<Time, Queue<Integer>>();
         newObject._proxies = null;
         newObject._proxiesByName = null;
-        newObject._genericInputHandlers = null;
-        newObject._handleToIndex = new HashMap<Integer, Integer>();
-        newObject._handleToProxy = new HashMap<Integer, PortOrParameterProxy>();
         return newObject;
     }
 
@@ -689,8 +712,11 @@ public class JavaScript extends TypedAtomicActor {
      */
     @Override
     public void fire() throws IllegalActionException {
+        // This method needs to be synchronized because Nashorn executes
+        // the JavaScript functions in a separate thread, for some reason.
+        // Need to ensure this is atomic w.r.t. callbacks.
         super.fire();
-
+        
         if (_debugging) {
             // Set a global variable for debugging.
             _engine.put("_debug", true);
@@ -707,8 +733,10 @@ public class JavaScript extends TypedAtomicActor {
             String scriptValue = ((StringToken) script.getToken())
                     .stringValue();
             try {
-                _engine.eval(scriptValue);
-                _exports = _engine.eval("exports");
+                _engine.put("_topLevelCode", scriptValue);
+                _instance = ((Invocable)_engine).invokeFunction(
+                        "evaluateCode", getName(), scriptValue);
+                _exports = ((Map)_instance).get("exports");
             } catch (Throwable throwable) {
                 if (error.getWidth() > 0) {
                     error.send(0, new StringToken(throwable.getMessage()));
@@ -722,61 +750,29 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
 
-        // Send out buffered outputs, if there are any.
-        // This has to be synchronized in case a callback calls send() at the
-        // same time.
-/*        synchronized (this) {
-            if (_outputTokens != null) {
-                for (IOPort port : _outputTokens.keySet()) {
-                    HashMap<Integer, List<Token>> tokens = _outputTokens
-                            .get(port);
-                    for (Map.Entry<Integer, List<Token>> entry : tokens
-                            .entrySet()) {
-                        List<Token> queue = entry.getValue();
-                        if (queue != null) {
-                            for (Token token : queue) {
-                                port.send(entry.getKey(), token);
-                                if (_debugging) {
-                                    _debug("Sent to output port "
-                                            + port.getName() + " the value "
-                                            + token);
-                                }
-                            }
-                        }
-                    }
-                }
-                _outputTokens.clear();
-            }
-        }
-*/
         // Update port parameters.
-        boolean foundNewInput = false;
         for (PortParameter portParameter : attributeList(PortParameter.class)) {
             if (portParameter == script) {
                 continue;
             }
             PortOrParameterProxy proxy = _proxies.get(portParameter.getPort());
             if (portParameter.update()) {
-                proxy._hasNewInput(true);
-                foundNewInput = true;
+                Token token = portParameter.getToken();
+                _provideInput(portParameter.getName(), token, proxy.isJSON());
                 if (_debugging) {
                     _debug("Received new input on " + portParameter.getName()
-                            + " with value " + portParameter.getToken());
+                            + " with value " + token);
                 }
             } else if (proxy._localInputTokens != null
                     && proxy._localInputTokens.size() > 0) {
                 // There is no new input, but there is a locally provided one.
-                portParameter
-                        .setCurrentValue(proxy._localInputTokens.remove(0));
-                proxy._hasNewInput(true);
-                foundNewInput = true;
-            } else {
-                proxy._hasNewInput(false);
+                Token token = proxy._localInputTokens.remove(0);
+                portParameter.setCurrentValue(token);
+                _provideInput(portParameter.getName(), token, proxy.isJSON());
             }
         }
 
         // Read all the available inputs.
-        _inputTokens.clear();
         for (IOPort input : inputPortList()) {
             // Skip the scriptIn input.
             if (input == script.getPort()) {
@@ -786,25 +782,32 @@ public class JavaScript extends TypedAtomicActor {
             if (input instanceof ParameterPort) {
                 continue;
             }
-            HashMap<Integer, Token> tokens = new HashMap<Integer, Token>();
-            boolean hasInput = false;
             PortOrParameterProxy proxy = _proxies.get(input);
             for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {
-                    hasInput = true;
-                    tokens.put(i, input.get(i));
+                    Token token = input.get(i);
+                    _provideInput(input.getName(), token, proxy.isJSON());
                     if (_debugging) {
                         _debug("Received new input on " + input.getName()
-                                + " with value " + tokens.get(i));
+                                + " with value " + token);
                     }
+                } else if (proxy._localInputTokens != null
+                        && proxy._localInputTokens.size() > 0) {
+                    // There is no external input, but there is one
+                    // sent by the accessor to itself.
+                    Token token = proxy._localInputTokens.remove(0);
+                    _provideInput(input.getName(), token, proxy.isJSON());
                 } else {
-                    // There is no external input, but there might be one
-                    // sent by the token to itself.
-                    if (proxy._localInputTokens != null
-                            && proxy._localInputTokens.size() > 0) {
-                        tokens.put(i, proxy._localInputTokens.remove(0));
-                        hasInput = true;
-                    }
+                    // There is no input. Notify by providing an input of null.
+                    // Per the current specification for accessors, if the port
+                    // has a default value (it is a PortParameter, handled above),
+                    // then sending null will trigger input handlers and get() will
+                    // return null. However, in this case, the port presumably has
+                    // no default value (or this would be a PortParameter), and sending
+                    // null will be interpreted by commonHost.provideInput() as an
+                    // indication that there is no input, no input handler will
+                    // be invoked, and calls to get() will return null.
+                    _provideInput(input.getName(), null, proxy.isJSON());
                 }
             }
             // Even if the input width is zero, there might be a token
@@ -812,50 +815,40 @@ public class JavaScript extends TypedAtomicActor {
             if (input.getWidth() == 0) {
                 if (proxy._localInputTokens != null
                         && proxy._localInputTokens.size() > 0) {
-                    tokens.put(0, proxy._localInputTokens.remove(0));
-                    hasInput = true;
+                    Token token = proxy._localInputTokens.remove(0);
+                    _provideInput(input.getName(), token, proxy.isJSON());
                 } else {
-                    Token defaultValue = input.defaultValue.getToken();
-                    if (defaultValue != null) {
-                        tokens.put(0, defaultValue);
-                        hasInput = true;
-                    }
+                    // The input is always null if there is no local token
+                    // and the width is zero.
+                    _provideInput(input.getName(), null, proxy.isJSON());
                 }
-            }
-            _inputTokens.put(input, tokens);
-            if (hasInput) {
-                proxy._hasNewInput(true);
-                foundNewInput = true;
-            } else {
-                proxy._hasNewInput(false);
             }
         }
         
-        // Invoke any timeout callbacks whose timeout matches current time,
-        // followed by specific input handlers, followed by generic input handlers,
-        // followed by the fire function.
-        // Synchronize to ensure that this function invocation is atomic
-        // w.r.t. to any callbacks.
-
         // Mark that we are in the fire() method, enabling outputs to be
         // sent immediately.
         _inFire = true;
         try {
             // Invoke any pending callback functions.
-
-            // No need to grab the lock when accessing
-            // _pendingCallbacks because it is a
-            // ConcurrentLinkedQueue.
+            // First, copy the _pendingCallbacks list, because a callback may
+            // trigger additional callbacks (e.g. setTimeout(f, 0)), but those
+            // should not be handled until the _next_ reaction.
+            // Note that we cannot bulk copy the elements of the _pendingCallbacks
+            // queue because then we would have to separately clear it, and
+            // between the last copy and the clear, another element might be added
+            // and then lost.
             Runnable callback = _pendingCallbacks.poll();
+            List<Runnable> callbacks = new LinkedList<Runnable>();
             while(callback != null) {
-                synchronized (this) {
-                    callback.run();
-                }
+                callbacks.add(callback);
                 callback = _pendingCallbacks.poll();
             }
-            synchronized (this) {
+            synchronized(this) {
+                // Now, holding a lock on this actor, invoke the pending callbacks.
+                for (Runnable callbackFunction : callbacks) {
+                    callbackFunction.run();
+                }
                 // Handle timeout requests that match the current time.
-
                 if (_pendingTimeoutIDs.size() > 0) {
                     // If current time matches pending timeout requests, invoke them.
                     Time currentTime = getDirector().getModelTime();
@@ -864,76 +857,65 @@ public class JavaScript extends TypedAtomicActor {
                         // Copy the list, because setInterval reschedules a firing
                         // and will cause a concurrent modification exception otherwise.
                         List<Integer> copy = new LinkedList<Integer>(ids);
-                        if (ids != null) {
-                            for (Integer id : copy) {
-                                Runnable function = _pendingTimeoutFunctions.get(id);
-                                if (function != null) {
-                                    // Previously, we removed the id _before_ firing the function
-                                    // because it may reschedule itself using the same id.
-                                    // But that's not right, because the function may or may not
-                                    // cancel a setInterval, and if we remove the id here, we
-                                    // have no way to tell in _runThenReschedule
-                                    // whether it cancelled it. So don't do this now:
-                                    // _pendingTimeoutFunctions.remove(id);
-                                    // Instead, to prevent a memory leak, _runThenReschedule
-                                    // will set the following flag to true to prevent removal
-                                    // of the function.
-                                    _removePendingTimeoutFunction = true;
-                                    
-                                    // NOTE: Is it OK to run this holding the synchronization lock?
-                                    function.run();
-                                    
-                                    if (_debugging) {
-                                        _debug("Invoked timeout function.");
-                                    }
-                                    if (_removePendingTimeoutFunction) {
-                                        _pendingTimeoutFunctions.remove(id);
-                                    }
+                        for (Integer id : copy) {
+                            Runnable function = _pendingTimeoutFunctions.get(id);
+                            if (function != null) {
+                                // Previously, we removed the id _before_ firing the function
+                                // because it may reschedule itself using the same id.
+                                // But that's not right, because the function may or may not
+                                // cancel a setInterval, and if we remove the id here, we
+                                // have no way to tell in _runThenReschedule
+                                // whether it cancelled it. So don't do this now:
+                                // _pendingTimeoutFunctions.remove(id);
+                                // Instead, to prevent a memory leak, _runThenReschedule
+                                // will set the following flag to true to prevent removal
+                                // of the function.
+                                _removePendingIntervalFunction = true;
+
+                                // FIXME: Is it OK to run this holding the synchronization lock?
+                                // Probably should replace all the synchronized keywords here with
+                                // use of a ReentrantLock, and release the lock before making any
+                                // callback calls.
+                                function.run();
+
+                                if (_debugging) {
+                                    _debug("Invoked timeout function.");
+                                }
+                                if (_removePendingIntervalFunction) {
+                                    _pendingTimeoutFunctions.remove(id);
                                 }
                             }
+                            // Remove this ID, and this ID only, from the pending IDs
+                            // at the current time.  The callback may have inserted
+                            // additional ids at the current time.
+                            ids.remove(id);
+                        }
+                        if (ids.isEmpty()) {
                             _pendingTimeoutIDs.remove(currentTime);
                         }
                     }
                 }
 
-                // Invoke input handlers.
-                for (IOPort input : inputPortList()) {
-                    // Skip the scriptIn input
-                    if (input == script.getPort()) {
-                        continue;
-                    }
-                    try {
-                        _proxies.get(input).invokeHandlers();
-                    } catch (Throwable throwable) {
-                        // localFunctions.js has an undefined reference, then catch it here.
-                        throw new IllegalActionException(this, throwable,
-                                "Failed to invoke a handler on the input \""
-                                + input.getName() + "\".");
-                    }
-                }
-
-                // Invoke generic input handlers.
-                if (foundNewInput && _genericInputHandlers != null
-                        && _genericInputHandlers.size() > 0) {
-                    for (Runnable function : _genericInputHandlers) {
-                        if (function != null) {
-                            function.run();
-                            if (_debugging) {
-                                _debug("Invoked generic input handler function.");
-                            }
-                        }
-                    }
-                }
-
-                // Invoke the fire function.
-                _invokeMethodInContext("fire");
+                // Invoke react.
+                _invokeMethodInContext(_instance, "react");
                 if (_debugging) {
-                    _debug("Invoked fire function.");
+                    _debug("Invoked react function.");
                 }
             }
         } finally {
             _inFire = false;
         }
+    }
+    
+    /** Return the string contents of the file at the specified location.
+     *  @param path The location.  This is used in localFunctions.js.
+     *  @return The contents as a string, assuming the default encoding of
+     *   this JVM (probably utf-8).
+     *  @throws IOException If the file cannot be read.
+     */
+    public static String getFileAsString(String path) throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded, Charset.defaultCharset());
     }
 
     /** If this actor has been initialized, return the JavaScript engine,
@@ -1075,7 +1057,10 @@ public class JavaScript extends TypedAtomicActor {
         // Note that the callbacks might be invoked after a model has terminated
         // execution.
         synchronized (this) {
-            _invokeMethodInContext("initialize");
+            // Be sure to use the instance version, not the exports version.
+            // The instance version invokes initialize
+            // on contained accessors, and invokes exports.initialize(), if defined.
+            _invokeMethodInContext(_instance, "initialize");
         }
         _running = true;
     }
@@ -1083,9 +1068,10 @@ public class JavaScript extends TypedAtomicActor {
     /** Create a new input port if it does not already exist.
      *  This port will have an undeclared type and no description.
      *  @param name The name of the port.
-     *  @return The token at the input.
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
+     *  @return The previous value of this input, if it has one, and
+     *   null otherwise.
      */
     public Token input(String name) throws IllegalActionException,
             NameDuplicationException {
@@ -1095,15 +1081,20 @@ public class JavaScript extends TypedAtomicActor {
     /** Create a new input port if it does not already exist.
      *  The options argument can specify a "type", a "description",
      *  and/or a "value".
-     *  If a type is given, set the type as specified. Otherwise,
+     *  If a type is given, and neither the port nor its
+     *  corresponding parameter contain a TypeAttribute, then
+     *  set the type as specified. Otherwise,
      *  leave the type unspecified so that it will be inferred.
      *  If a description is given, then create, append to, or modify the
      *  DocAttribute named "documentation" contained by this actor to
      *  include documentation of this output.
      *  If a value is given, then create a PortParameter instead of
-     *  an ordinary port and set its default value.
+     *  an ordinary port and set its default value, unless it already
+     *  has a value that overrides the default.
+     *  In that case, the prior value will be returned.
+     *  Otherwise, null will be returned.
      *  If a Parameter already exists with the same name, then convert
-     *  it to a PortParameter and preserve its value.
+     *  it to a PortParameter and preserve and return its value.
      *  
      *  The options can also include a field
      *  "visibility" with one of the values "none", "expert",
@@ -1113,7 +1104,8 @@ public class JavaScript extends TypedAtomicActor {
      *  @param name The name of the port.
      *  @param options The options, or null to accept the defaults.
      *   To give options, this argument must implement the Map interface.
-     *  @return The token at the input.
+     *  @return The previous value of this input, if it has one, and
+     *   null otherwise.
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word.
      */
@@ -1129,6 +1121,7 @@ public class JavaScript extends TypedAtomicActor {
         PortParameter parameter = null;
         Object token = null;
         Token previousValue = null;
+        String previousExpression = "";
         if (port == null) {
             // No pre-existing port.
             // If there is a parameter with the same name, then
@@ -1173,6 +1166,12 @@ public class JavaScript extends TypedAtomicActor {
             }
             if (port instanceof ParameterPort) {
                 parameter = ((ParameterPort) port).getParameter();
+                // Oddly, we need to initialize PortParameter so that its current
+                // value matches its previous value. Otherwise, the token
+                // retrieved here could be left over from a previous run.
+                ((PortParameter)parameter).initialize();
+                previousValue = parameter.getToken();
+                previousExpression = parameter.getExpression();
             } else {
                 // Check to see whether there is now a default value.
                 // This might be a derived class that is adding a default
@@ -1196,20 +1195,26 @@ public class JavaScript extends TypedAtomicActor {
         }
         
         if (options instanceof Map) {
-            Object type = ((Map<String,Object>) options).get("type");
-            if (type instanceof String) {
-                // The following will put the parameter in string mode,
-                // if appropriate.
-                Type ptType = _typeAccessorToPtolemy((String) type, port);
-                port.setTypeEquals(ptType);
-                _setOptionsForSelect(port, options);
-                if (parameter != null) {
-                    parameter.setTypeEquals(ptType);
+            // If the port has its own type already (a TypeAttribute),
+            // do not override it.
+            if (port.attributeList(TypeAttribute.class).isEmpty()
+                    && (parameter == null
+                    || parameter.attributeList(TypeAttribute.class).isEmpty())) {
+                Object type = ((Map<String,Object>) options).get("type");
+                if (type instanceof String) {
+                    // The following will put the parameter in string mode,
+                    // if appropriate.
+                    Type ptType = _typeAccessorToPtolemy((String) type, port);
+                    port.setTypeEquals(ptType);
+                    if (parameter != null) {
+                        parameter.setTypeEquals(ptType);
+                    }
+                } else if (type != null) {
+                    throw new IllegalActionException(this, "Unsupported type: "
+                            + type);
                 }
-            } else if (type != null) {
-                throw new IllegalActionException(this, "Unsupported type: "
-                        + type);
             }
+            _setOptionsForSelect(port, options);
             Object description = ((Map<String,Object>) options).get("description");
             if (description != null) {
                 _setPortDescription(port, description.toString());
@@ -1232,6 +1237,7 @@ public class JavaScript extends TypedAtomicActor {
             }
             _setPortVisibility(options, port, parameter);
         }
+        Token result = null;
         // Make sure to do this after setting the type to catch
         // string mode and type checks.
         if (parameter != null) {
@@ -1251,18 +1257,17 @@ public class JavaScript extends TypedAtomicActor {
                 // The above will have the side effect that a parameter will not be saved
                 // when you save the model unless it is overridden.
             }
+            if (parameter.isOverridden()) {
+                result = previousValue;
+            }
             // If there was a previous value from a parameter that got deleted, then override the
             // specified value.
             if (previousValue != null) {
-                if (parameter.isStringMode() && previousValue instanceof StringToken) {
-                    parameter.setExpression(((StringToken)previousValue).stringValue());
-                } else {
-                    parameter.setExpression(previousValue.toString());
-                }
+                parameter.setExpression(previousExpression);
             }
         }
         port.setInput(true);
-        return (Token)token;
+        return result;
     }
     
     /** Invoke the specified function in the fire() method as soon as possible.
@@ -1282,12 +1287,10 @@ public class JavaScript extends TypedAtomicActor {
         // hangs.  See
         // https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock
 
-        // Instead, we move the other accesses of _pendingCallbacks
-        // outside of critical sections because there is no need to
-        // grab the lock when accessing _pendingCallbacks because it
-        // is a ConcurrentLinkedQueue.
-        _pendingCallbacks.offer(function);
-        getDirector().fireAtCurrentTime(this);
+        // synchronized (this) {
+            _pendingCallbacks.offer(function);
+            getDirector().fireAtCurrentTime(this);
+        // }
     }
 
     /** Return true if the model is executing (between initialize() and
@@ -1381,7 +1384,8 @@ public class JavaScript extends TypedAtomicActor {
 
     /** Create a new output port if it does not already exist.
      *  The options argument can specify a "type" and/or a "description".
-     *  If a type is given, set the type as specified. Otherwise,
+     *  If a type is given and the port does not contain a TypeAttribute,
+     *  then set the type as specified. Otherwise,
      *  set the type to general.
      *  If a description is given, then create, append to, or modify the
      *  DocAttribute named "documentation" contained by this actor to
@@ -1410,25 +1414,30 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
         if (options != null) {
-            Object type = ((Map<String,Object>) options).get("type");
-            if (type instanceof String) {
-                port.setTypeEquals(_typeAccessorToPtolemy((String) type, port));
-                _setOptionsForSelect(port, options);
-            } else {
-                if (type == null) {
-                    port.setTypeEquals(BaseType.GENERAL);
+            if (port.attributeList(TypeAttribute.class).isEmpty()) {
+                // Do not override the type if the port has a TypeAttribute.
+                Object type = ((Map<String,Object>) options).get("type");
+                if (type instanceof String) {
+                    port.setTypeEquals(_typeAccessorToPtolemy((String) type, port));
                 } else {
-                    throw new IllegalActionException(this, "Unsupported type: "
-                            + type);
+                    if (type == null) {
+                        port.setTypeEquals(BaseType.GENERAL);
+                    } else {
+                        throw new IllegalActionException(this, "Unsupported type: "
+                                + type);
+                    }
                 }
             }
+            _setOptionsForSelect(port, options);
             Object description = ((Map<String,Object>) options).get("description");
             if (description != null) {
                 _setPortDescription(port, description.toString());
             }
             _setPortVisibility(options, port, null);
         } else {
-            port.setTypeEquals(BaseType.GENERAL);
+            if (port.attributeList(TypeAttribute.class).isEmpty()) {
+                port.setTypeEquals(BaseType.GENERAL);
+            }
         }
         port.setOutput(true);
     }
@@ -1436,7 +1445,8 @@ public class JavaScript extends TypedAtomicActor {
     /** Create a new parameter if it does not already exist.
      *  This parameter will have an undeclared type and no description.
      *  @param name The name of the parameter.
-     *  @return The token, if any.
+     *  @return The previous value of this parameter, if it has one, and
+     *   null otherwise.
      *  @exception IllegalActionException If no name is given, or if the
      *   model is executing.
      *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
@@ -1459,7 +1469,8 @@ public class JavaScript extends TypedAtomicActor {
      *  if it does not already have a value.
      *  @param name The name of the parameter.
      *  @param options The options, or null to accept the defaults.
-     *  @return The token, if any.
+     *  @return The previous value of this parameter, if it has one, and
+     *   null otherwise.
      *  @exception IllegalActionException If no name is given.
      *  @exception NameDuplicationException If the name is a reserved word, or if an attribute
      *   already exists with the name and is not a parameter.
@@ -1491,7 +1502,7 @@ public class JavaScript extends TypedAtomicActor {
                         + name);
             }
         }
-
+        Token result = null;
         if (options != null) {
             // Find the type, if it is specified.
             Type ptType = null;
@@ -1535,6 +1546,9 @@ public class JavaScript extends TypedAtomicActor {
                 // The above will have the side effect that a parameter will not be saved
                 // when you save the model unless it is overridden.
             }
+            if (parameter.isOverridden()) {
+                result = ((Parameter)parameter).getToken();
+            }
 
             Object visibility = ((Map<String,Object>) options).get("visibility");
             if (visibility instanceof String) {
@@ -1576,11 +1590,7 @@ public class JavaScript extends TypedAtomicActor {
             _proxies.put(parameter, proxy);
             _proxiesByName.put(parameter.getName(), proxy);
         }
-        if (parameter instanceof Parameter) {
-            return ((Parameter)parameter).getToken();
-        } else {
-            return null;
-        }
+        return result;
     }
 
     /** If there are any pending self-produced inputs, then request a firing
@@ -1595,12 +1605,6 @@ public class JavaScript extends TypedAtomicActor {
             if (input == script.getPort()) {
                 continue;
             }
-            PortOrParameterProxy proxy = _proxies.get(input);
-            if (proxy._localInputTokens != null
-                    && proxy._localInputTokens.size() > 0) {
-                _fireAtCurrentTime();
-                break;
-            }
         }
         return super.postfire();
     }
@@ -1614,12 +1618,9 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-        // Potential issue if there are overlapped executions.  This
-        // will clear out callbacks from other invocations.
-        
-        // No need to grab the lock when accessing
-        // _pendingCallbacks because it is a
-        // ConcurrentLinkedQueue.
+
+        // Note that this will clear out any pending
+        // callbacks from the previous execution.
         _pendingCallbacks.clear();
         synchronized (this) {
             _pendingTimeoutFunctions.clear();
@@ -1655,32 +1656,6 @@ public class JavaScript extends TypedAtomicActor {
         }
         reader.close();
         return response.toString();
-    }
-
-    /** Remove the input handler with the specified handle, if it exists.
-     *  @param handle The handler handle.
-     *  @see #addInputHandler(Runnable)
-     */
-    public void removeInputHandler(Integer handle) {
-        if (handle != null && _handleToIndex != null) {
-            Integer index = _handleToIndex.get(handle);
-            if (index != null) {
-                int n = index.intValue();
-                // If there is a proxy recorded, use that.
-                PortOrParameterProxy proxy = _handleToProxy.get(handle);
-                if (proxy == null) {
-                    // No proxy, so this is a generic input handler.
-                    if (_genericInputHandlers != null
-                            && n < _genericInputHandlers.size()) {
-                        _genericInputHandlers.remove(n);
-                    }
-                    _handleToIndex.remove(handle);
-                } else {
-                    // Delegate to the proxy.
-                    proxy.removeInputHandler(handle);
-                }
-            }
-        }
     }
 
     /** Invoke the specified function after the specified amount of time and again
@@ -1769,7 +1744,10 @@ public class JavaScript extends TypedAtomicActor {
         // Synchronize so that this invocation is atomic w.r.t. any callbacks.
         synchronized (this) {
             // Invoke the wrapup function.
-            _invokeMethodInContext("wrapup");
+            // Be sure to use the instance version, not the exports version.
+            // The instance version removes input handlers, invokes wrapup
+            // on contained accessors, and invokes exports.wrapup(), if defined.
+            _invokeMethodInContext(_instance, "wrapup");
             
             if (_pendingTimeoutIDs.size() > 0) {
                 String message = "WARNING: "
@@ -1782,15 +1760,6 @@ public class JavaScript extends TypedAtomicActor {
                 } else {
                     System.err.println(message);
                 }
-            }
-                
-            // If there are any remaining input handlers, remove them.
-            if (_handleToIndex != null) {
-            	// Copy the handle list to prevent a concurrent modification exception.
-            	Set<Integer> copy = new HashSet<Integer>(_handleToIndex.keySet());
-            	for (Integer handle : copy) {
-            		removeInputHandler(handle);
-            	}
             }
         }
         super.wrapup();
@@ -1851,18 +1820,20 @@ public class JavaScript extends TypedAtomicActor {
      *  If there is no such method in that context, attempt to invoke the
      *  method in the top-level context. The exports object becomes the
      *  value of the 'this' variable during execution of the method.
+     *  @param context The context.
      *  @param methodName The method name.
+     *  @param args Arguments to pass to the function.
      *  @exception IllegalActionException If the method does not exist in either
      *   context, or if an error occurs invoking the method.
      */
-    protected void _invokeMethodInContext(String methodName)
+    protected void _invokeMethodInContext(Object context, String methodName, Object... args)
             throws IllegalActionException {
         try {
-            ((Invocable) _engine).invokeMethod(_exports, methodName);
+            ((Invocable) _engine).invokeMethod(context, methodName, args);
         } catch (NoSuchMethodException e) {
             // Attempt to invoke it in the top-level contenxt.
             try {
-                ((Invocable) _engine).invokeFunction(methodName);
+                ((Invocable) _engine).invokeFunction(methodName, args);
             } catch (NoSuchMethodException e1) {
                 throw new IllegalActionException(this, e1,
                         "No function defined named " + methodName);
@@ -1930,6 +1901,9 @@ public class JavaScript extends TypedAtomicActor {
             + "// In the fire() function, use get(parameterName, channel) to read inputs.\n"
             + "// Send to output ports using send(value, portName, channel).\n");
 
+    /** The instance returned when evaluating the script. */
+    protected Object _instance;
+
     /** JavaScript keywords. */
     protected static final String[] _JAVASCRIPT_KEYWORDS = new String[] {
             "abstract", "as", "boolean", "break", "byte", "case", "catch",
@@ -1963,19 +1937,48 @@ public class JavaScript extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                        Private Methods                    ////
 
+    /** Construct a JavaScript options object for the specified port
+     *  or parameter.
+     *  @param portOrParameter A port or parameter.
+     *  @param valueToken The value as a Ptolemy II token.
+     *  @return A JavaScript object of the form {'value': value}.
+     *  @throws IllegalActionException If conversion fails and the user
+     *   responds "Cancel" to the warning.
+     */
+    private Object _constructOptionsObject(NamedObj portOrParameter, Token valueToken)
+            throws IllegalActionException {
+        // Song and dance to get JSON representation of the default value.
+        PortOrParameterProxy proxy = _proxies.get(portOrParameter);
+        if (proxy == null) {
+            // Skip this. Probably PortParameter.
+            return null;
+        }
+        Map<String,Object> options = new HashMap<String,Object>();
+        try {
+            Object converted = ((Invocable) _engine).invokeFunction(
+                    "convertFromToken", valueToken, proxy.isJSON());
+            options.put("value", converted);
+        } catch (Exception ex) {
+            try {
+                MessageHandler.warning(
+                        "Failed to specify default value for port "
+                                + portOrParameter.getName(),
+                        ex);
+            } catch (CancelException e) {
+                throw new IllegalActionException(this, ex,
+                        "Failed to specify default value for port "
+                                + portOrParameter.getName());
+            }
+        }
+        return options;
+    }
+
     /** Create a script engine, evaluate basic function definitions,
      *  define the 'actor' variable, evaluate the script, and invoke the
      *  setup method if it exists.
      *  @exception IllegalActionException If an error occurs.
      */
     private void _createEngineAndEvaluateSetup() throws IllegalActionException {
-
-        // Reset state so that there isn't spillover from previous scripts.
-        _genericInputHandlers = null;
-        _handleToIndex = new HashMap<Integer, Integer>();
-        _handleToProxy = new HashMap<Integer, PortOrParameterProxy>();
-
-        _handle = 0;
 
         // Create a script engine.
         // This is private to this class, so each instance of JavaScript
@@ -2010,15 +2013,23 @@ public class JavaScript extends TypedAtomicActor {
             }
         });
          */
+        if (_debugging) {
+            _debug("** Instantiated engine. Loading local and basic functions.");
+            // Set a global variable for debugging.
+            _engine.put("_debug", true);
+        } else {
+            _engine.put("_debug", false);
+        }
+        try {
+            _engine.eval(FileUtilities.openForReading(
+                    "$CLASSPATH/ptolemy/actor/lib/jjs/basicFunctions.js", null,
+                    null));
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable,
+                    "Failed to load basicFunctions.js");
+        }
         String localFunctionsPath = "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js";
         try {
-            if (_debugging) {
-                _debug("** Instantiated engine. Loading local and basic functions.");
-                // Set a global variable for debugging.
-                _engine.put("_debug", true);
-            } else {
-                _engine.put("_debug", false);
-            }
             _engine.eval(FileUtilities.openForReading(localFunctionsPath, null, null));
         } catch (Throwable throwable) {
             // eval() can throw a ClassNotFoundException if a Ptolemy class is not found.
@@ -2059,14 +2070,6 @@ public class JavaScript extends TypedAtomicActor {
                 throw new IllegalActionException(this, throwable,
                         "Failed to load " + localFunctionsPath + ".");
             }
-        }
-        try {
-            _engine.eval(FileUtilities.openForReading(
-                    "$CLASSPATH/ptolemy/actor/lib/jjs/basicFunctions.js", null,
-                    null));
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable,
-                    "Failed to load basicFunctions.js");
         }
         // Define the actor and accessor variables.
         if (!_restricted) {
@@ -2120,8 +2123,9 @@ public class JavaScript extends TypedAtomicActor {
         // Evaluate the script.
         String scriptValue = script.getValueAsString();
         try {
-            _engine.eval(scriptValue);
-            _exports = _engine.eval("exports");
+            _instance = ((Invocable)_engine).invokeFunction(
+                    "evaluateCode", getName(), scriptValue);
+            _exports = ((Map)_instance).get("exports");
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
                     "Failed to evaluate script during initialize.");
@@ -2131,8 +2135,48 @@ public class JavaScript extends TypedAtomicActor {
         // Synchronize to ensure that this is atomic w.r.t. any callbacks.
         // Note that the callbacks might be invoked after a model has terminated
         // execution.
+        // This is now handled by evaluateCode() above.
+        /*
         synchronized (this) {
             _invokeMethodInContext("setup");
+        }
+        */
+        // For backward compatibility, if there is no setup() function,
+        // then define all inputs, outputs, and parameters.
+        if (((Map)_exports).get("setup") == null) {
+            for (TypedIOPort port : portList()) {
+                // Do not handle the script or error ports to a JavaScript variable.
+                if (port == script.getPort() || port == error) {
+                    continue;
+                }
+                if (port instanceof ParameterPort) {
+                    Token valueToken = ((ParameterPort)port).getParameter().getToken();
+                    if (valueToken != null) {
+                        Object options = _constructOptionsObject(port, valueToken);
+                        _invokeMethodInContext(_instance, "input", port.getName(), options);
+                        continue;
+                    }
+                }
+                // For ordinary inputs or ParameterPort with no default value, just
+                // create an input or output with no default.
+                if (port.isInput()) {
+                    _invokeMethodInContext(_instance, "input", port.getName());
+                } else {
+                    _invokeMethodInContext(_instance, "output", port.getName());
+                }
+            }
+            for (Attribute attribute : attributes) {
+                if (attribute instanceof Parameter && !(attribute instanceof PortParameter)) {
+                    Token valueToken = ((Parameter)attribute).getToken();
+                    if (valueToken != null) {
+                        Object options = _constructOptionsObject(attribute, valueToken);
+                        _invokeMethodInContext(_instance, "parameter", attribute.getName(), options);
+                        continue;
+                    } else {
+                        _invokeMethodInContext(_instance, "parameter", attribute.getName());
+                    }
+                }
+            }
         }
     }
 
@@ -2175,6 +2219,23 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
     }
+    
+    /** Provide an input value (a token) to the specified input name.
+     *  This will convert the token to a suitable form.
+     *  @param name The input name.
+     *  @param token The token.
+     *  @param isJSON True if the declare input type is JSON.
+     *  @exception IllegalActionException If the token cannot be provided.
+     */
+    private void _provideInput(String name, Token token, boolean isJSON)
+            throws IllegalActionException {
+        try {
+            Object converted = ((Invocable) _engine).invokeFunction("convertFromToken", token, isJSON);
+            _invokeMethodInContext(_instance, "provideInput", name, converted);
+        } catch (Exception e) {
+            throw new IllegalActionException(this, e, "Failed to provide input token.");
+        }
+    }
 
     /** Invoke the specified function, then schedule another call to this
      *  same method after the specified number of milliseconds, using the specified
@@ -2208,7 +2269,7 @@ public class JavaScript extends TypedAtomicActor {
                     "Failed to reschedule function scheduled with setInterval().");
         }
         // Prevent removal of the id from _pendingTimeoutFunctions
-        _removePendingTimeoutFunction = false;
+        _removePendingIntervalFunction = false;
     }
 
     /** If the options argument inlucdes an "options" field, then use that field
@@ -2432,34 +2493,21 @@ public class JavaScript extends TypedAtomicActor {
             _setStringMode(typeable, false);
             return (BaseType.STRING);
         } else {
-            throw new IllegalActionException(this, "Unsupported type: " + type);
+            // Support any Ptolemy type as a last resort.
+            // The type of the port will have to be set manually.
+            Type ptType = BaseType.forName(type);
+            if (ptType == null) {
+                throw new IllegalActionException(this, "Unsupported type: " + type);
+            }
+            return ptType;
         }
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                        Private Variables                  ////
 
-    /** A list of generic input handlers, in the order in which they are invoked. */
-    private List<Runnable> _genericInputHandlers;
-
-    /** The current handle to assign to an input handler. */
-    private int _handle;
-
-    /** A mapping of the handle for an input handler to its index in the list. */
-    private Map<Integer, Integer> _handleToIndex;
-
-    /** A mapping of the handle for an input handler to the port or parameter proxy. */
-    private Map<Integer, PortOrParameterProxy> _handleToProxy;
-
     /** True while the actor is firing, false otherwise. */
     private boolean _inFire;
-
-    /** Buffer for all input tokens before calling the fire function
-     *  in the script. Calls to get in the script will then retrieve
-     *  the value from this buffer instead of actually calling get on
-     *  the port.
-     */
-    private HashMap<IOPort, HashMap<Integer, Token>> _inputTokens = new HashMap<IOPort, HashMap<Integer, Token>>();
 
     /** Queue containing callback functions that are to be invoked in the fire
      *  method as soon as possible.
@@ -2479,7 +2527,7 @@ public class JavaScript extends TypedAtomicActor {
     private HashMap<String, PortOrParameterProxy> _proxiesByName;
     
     /** Flag indicating that timeoutID should be removed. */
-    private boolean _removePendingTimeoutFunction = true;
+    private boolean _removePendingIntervalFunction = true;
 
     /** Count to give a unique handle to pending timeouts. */
     private int _timeoutCount = 0;
@@ -2516,46 +2564,21 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
 
-        /** Add an input handler for this port.
-         *  @param function The function to invoke.
-         *  @return The handler handle.
-         *  @exception IllegalActionException If this proxy is not for an input port.
-         *  @see #removeInputHandler(Integer)
+        /** Return true if the port or parameter value is required to be JSON.
+         *  @return True for JSON ports and parameters.
          */
-        public int addInputHandler(final Runnable function)
-                throws IllegalActionException {
-            if (_inputHandlers == null) {
-                _inputHandlers = new LinkedList<Runnable>();
+        public boolean isJSON() {
+            if (_parameter != null) {
+                return (_parameter.getAttribute("_JSON") != null);
+            } else {
+                return (_port.getAttribute("_JSON") != null);
             }
-            if (_port == null || !_port.isInput()) {
-                if (_parameter instanceof PortParameter) {
-                    TypedIOPort port = ((PortParameter) _parameter).getPort();
-                    if (port != null) {
-                        _inputHandlers.add(function);
-                        int index = _inputHandlers.size() - 1;
-                        _handle++;
-                        _handleToIndex.put(_handle, index);
-                        _handleToProxy.put(_handle, this);
-                        return _handle;
-                    }
-                }
-                throw new IllegalActionException(JavaScript.this,
-                        "Not an input port: "
-                                + ((_port == null) ? _parameter.getName()
-                                        : _port.getName()));
-            }
-            _inputHandlers.add(function);
-            int index = _inputHandlers.size() - 1;
-            _handle++;
-            _handleToIndex.put(_handle, index);
-            _handleToProxy.put(_handle, this);
-            return _handle;
         }
-
+        
         /** Get the current value of the input port or a parameter.
          *  If it is a ParameterPort, then retrieve the value
          *  from the corresponding parameter instead (the fire() method
-         *  will have done update).
+         *  will have done update). This should now only be used by getParameter.
          *  @param channelIndex The channel index. This is ignored for parameters.
          *  @return The current value of the input or parameter, or null if there is none.
          *  @exception IllegalActionException If the port is not an input port
@@ -2576,66 +2599,8 @@ public class JavaScript extends TypedAtomicActor {
                 }
                 return token;
             }
-            synchronized (JavaScript.this) {
-                Map<Integer, Token> tokens = _inputTokens.get(_port);
-                if (tokens != null) {
-                    Token token = tokens.get(channelIndex);
-                    if (token == null || token.isNil()) {
-                        return null;
-                    }
-                    return token;
-                }
-            }
-            return null;
-        }
-
-        /** Invoke any input handlers that have been added if there
-         *  are new inputs.
-         *  @see #addInputHandler(Runnable)
-         */
-        public void invokeHandlers() {
-            synchronized(JavaScript.this) {
-                if (_inputHandlers != null && _hasNewInput) {
-                    for (Runnable function : _inputHandlers) {
-                        if (function != null) {
-                            function.run();
-                            if (_debugging) {
-                                _debug("Invoked handler function for "
-                                        + _port.getName());
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        
-        /** Return true if the port or parameter value is required to be JSON.
-         *  @return True for JSON ports and parameters.
-         */
-        public boolean isJSON() {
-            if (_parameter != null) {
-                return (_parameter.getAttribute("_JSON") != null);
-            } else {
-                return (_port.getAttribute("_JSON") != null);
-            }
-        }
-
-        /** Remove the input handler with the specified handle, if it exists.
-         *  @param handle The handler handle.
-         *  @see #addInputHandler(Runnable)
-         */
-        public void removeInputHandler(Integer handle) {
-            if (handle != null && _handleToIndex != null) {
-                Integer index = _handleToIndex.get(handle);
-                if (index != null) {
-                    int n = index.intValue();
-                    if (_inputHandlers != null && n < _inputHandlers.size()) {
-                        _inputHandlers.remove(n);
-                    }
-                    _handleToIndex.remove(handle);
-                    _handleToProxy.remove(handle);
-                }
-            }
+            throw new IllegalActionException(
+                    JavaScript.this, "Use provideInput() rather than get()");
         }
 
         /** Expose the send() method of the port.
@@ -2649,7 +2614,7 @@ public class JavaScript extends TypedAtomicActor {
             if (_port == null) {
                 throw new IllegalActionException(JavaScript.this,
                         "Cannot call send on a parameter: "
-                                + _parameter.getName() + ". Use set().");
+                                + _parameter.getName() + ". Use setParameter().");
             }
             // If the model is not in a phase of execution where it can send (in initialize()
             // or during execution), then do not send the token. Instead, send messages
@@ -2703,14 +2668,14 @@ public class JavaScript extends TypedAtomicActor {
                     }
                     _localInputTokens.add(data);
                     if (_inFire) {
-                    	// The following uses the current model time of the director,
-                    	// unlike the director's fireAtCurrentTime() method, which could use the current
-                    	// real time if the director is synchronized to real time.
-                    	_fireAtCurrentTime();
+                        // The following uses the current model time of the director,
+                        // unlike the director's fireAtCurrentTime() method, which could use the current
+                        // real time if the director is synchronized to real time.
+                        _fireAtCurrentTime();
                     } else {
-                    	// The following will use real time if the director is synchronized to
-                    	// real time. This seems reasonable if we are not currently in the fire method.
-                    	getDirector().fireAtCurrentTime(JavaScript.this);
+                        // The following will use real time if the director is synchronized to
+                        // real time. This seems reasonable if we are not currently in the fire method.
+                        getDirector().fireAtCurrentTime(JavaScript.this);
                     }
                 } else if (_inFire) {
                     // Currently firing. Can go ahead and send data.
@@ -2720,12 +2685,12 @@ public class JavaScript extends TypedAtomicActor {
                     _port.send(channelIndex, data);
                 } else {
                     // Not currently firing. 
-                	// Enqueue runnable object to be invoked upon the next firing.
+                    // Enqueue runnable object to be invoked upon the next firing.
                     
-                	// Request a firing at the current time.
-                	// If the director is synchronized to real time, that will be real
-                	// time, not the current model time. This allows the director to advance
-                	// time before processing this output.
+                    // Request a firing at the current time.
+                    // If the director is synchronized to real time, that will be real
+                    // time, not the current model time. This allows the director to advance
+                    // time before processing this output.
                     // In this case, we _do_ want to use the director's
                     // fireAtCurrentTime(), and not our _fireAtCurrentTime()
                     // method, because we are not in firing, so if we are
@@ -2784,23 +2749,7 @@ public class JavaScript extends TypedAtomicActor {
         }
 
         /////////////////////////////////////////////////////////////////
-        ////           Protected methods
-
-        /** Indicate to this proxy there is a new input from the outside,
-         *  so handlers should be invoked.
-         *  @param hasNewInput True to indicate that there is a new input.
-         */
-        protected void _hasNewInput(boolean hasNewInput) {
-            _hasNewInput = hasNewInput;
-        }
-
-        /////////////////////////////////////////////////////////////////
         ////           Protected variables
-
-        /** Indicator that there is a new input from the outside,
-         *  so handlers should be invoked.
-         */
-        protected boolean _hasNewInput;
 
         /** A list of input handlers, in the order in which they are invoked. */
         protected List<Runnable> _inputHandlers;
@@ -2835,17 +2784,17 @@ public class JavaScript extends TypedAtomicActor {
 
         /** Invoke send on the port or parameter proxy.
          */ 
-		public void run() {
-			try {
-				proxy.send(channelIndex, data);
-			} catch (KernelException e) {
-				error("Send to "
-						+ proxy._port.getName()
-						+ " failed: "
-						+ e.getMessage());
-			}
-		}
-		/** The output channel on the port to send data on. */
+        public void run() {
+            try {
+                proxy.send(channelIndex, data);
+            } catch (KernelException e) {
+                error("Send to "
+                        + proxy._port.getName()
+                        + " failed: "
+                        + e.getMessage());
+            }
+        }
+        /** The output channel on the port to send data on. */
         private int channelIndex;
         /** The data to send. */
         private Token data;
