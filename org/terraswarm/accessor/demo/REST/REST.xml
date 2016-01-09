@@ -4,7 +4,7 @@
 <entity name="REST" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -36,11 +36,15 @@
         <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 140.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 140.0]">
         </property>
         <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://ptolemy.eecs.berkeley.edu&quot;">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <property name="outputCompleteResponseOnly" class="ptolemy.data.expr.Parameter" value="true">
@@ -73,49 +77,37 @@
         </property>
         <port name="command" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="arguments" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="status" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="headers" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="body" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
@@ -129,15 +121,15 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[872, 409]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 85.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 85.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 130.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 130.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{355.0, 130.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 130.0]">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -150,7 +142,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 130.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 130.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -160,7 +152,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{235.0, 130.0}">
+        <vertex name="vertex1" value="[265.0, 130.0]">
         </vertex>
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;REST.response&quot;,x=150.0,y=140.0}, tail={id=&quot;relation4.vertex1&quot;,x=235.0,y=130.0}, points={} },{ head={id=&quot;Display.input&quot;,x=275.0,y=85.0}, tail={id=&quot;relation4.vertex1&quot;,x=235.0,y=130.0}, points={235.0,85.0} },{ head={id=&quot;relation4.vertex1&quot;,x=235.0,y=130.0}, tail={id=&quot;Const.trigger&quot;,x=295.0,y=130.0}, points={} } }">
         </property>
