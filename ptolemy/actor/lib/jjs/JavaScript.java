@@ -758,7 +758,7 @@ public class JavaScript extends TypedAtomicActor {
             PortOrParameterProxy proxy = _proxies.get(portParameter.getPort());
             if (portParameter.update()) {
                 Token token = portParameter.getToken();
-                _provideInput(portParameter.getName(), token, proxy.isJSON());
+                _provideInput(portParameter.getName(), token);
                 if (_debugging) {
                     _debug("Received new input on " + portParameter.getName()
                             + " with value " + token);
@@ -768,7 +768,7 @@ public class JavaScript extends TypedAtomicActor {
                 // There is no new input, but there is a locally provided one.
                 Token token = proxy._localInputTokens.remove(0);
                 portParameter.setCurrentValue(token);
-                _provideInput(portParameter.getName(), token, proxy.isJSON());
+                _provideInput(portParameter.getName(), token);
             }
         }
 
@@ -786,7 +786,7 @@ public class JavaScript extends TypedAtomicActor {
             for (int i = 0; i < input.getWidth(); i++) {
                 if (input.hasToken(i)) {
                     Token token = input.get(i);
-                    _provideInput(input.getName(), token, proxy.isJSON());
+                    _provideInput(input.getName(), token);
                     if (_debugging) {
                         _debug("Received new input on " + input.getName()
                                 + " with value " + token);
@@ -796,7 +796,7 @@ public class JavaScript extends TypedAtomicActor {
                     // There is no external input, but there is one
                     // sent by the accessor to itself.
                     Token token = proxy._localInputTokens.remove(0);
-                    _provideInput(input.getName(), token, proxy.isJSON());
+                    _provideInput(input.getName(), token);
                 } else {
                     // There is no input. Notify by providing an input of null.
                     // Per the current specification for accessors, if the port
@@ -807,7 +807,7 @@ public class JavaScript extends TypedAtomicActor {
                     // null will be interpreted by commonHost.provideInput() as an
                     // indication that there is no input, no input handler will
                     // be invoked, and calls to get() will return null.
-                    _provideInput(input.getName(), null, proxy.isJSON());
+                    _provideInput(input.getName(), null);
                 }
             }
             // Even if the input width is zero, there might be a token
@@ -816,11 +816,11 @@ public class JavaScript extends TypedAtomicActor {
                 if (proxy._localInputTokens != null
                         && proxy._localInputTokens.size() > 0) {
                     Token token = proxy._localInputTokens.remove(0);
-                    _provideInput(input.getName(), token, proxy.isJSON());
+                    _provideInput(input.getName(), token);
                 } else {
                     // The input is always null if there is no local token
                     // and the width is zero.
-                    _provideInput(input.getName(), null, proxy.isJSON());
+                    _provideInput(input.getName(), null);
                 }
             }
         }
@@ -2224,13 +2224,12 @@ public class JavaScript extends TypedAtomicActor {
      *  This will convert the token to a suitable form.
      *  @param name The input name.
      *  @param token The token.
-     *  @param isJSON True if the declare input type is JSON.
      *  @exception IllegalActionException If the token cannot be provided.
      */
-    private void _provideInput(String name, Token token, boolean isJSON)
+    private void _provideInput(String name, Token token)
             throws IllegalActionException {
         try {
-            Object converted = ((Invocable) _engine).invokeFunction("convertFromToken", token, isJSON);
+            Object converted = ((Invocable) _engine).invokeFunction("convertFromToken", token);
             _invokeMethodInContext(_instance, "provideInput", name, converted);
         } catch (Exception e) {
             throw new IllegalActionException(this, e, "Failed to provide input token.");

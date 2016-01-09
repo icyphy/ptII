@@ -130,7 +130,7 @@ function getParameter(name) {
     //    channel = 0;
     //}
     var result = proxy.get(0 /*channel*/);
-    return convertFromToken(result, proxy.isJSON());
+    return convertFromToken(result);
 }
 
 /** Specify an input for the accessor.
@@ -167,8 +167,7 @@ function input(name, options) {
     // regardless of what the options state.
     var previousValue = actor.input(name, options);
     if (previousValue) {
-        var proxy = actor.getPortOrParameterProxy(name);
-        this.extendedBy.inputs[name]['value'] = convertFromToken(previousValue, proxy.isJSON());
+        this.extendedBy.inputs[name]['value'] = convertFromToken(previousValue);
     }
 }
 
@@ -225,8 +224,7 @@ function parameter(name, options) {
     }
     var previousValue = actor.parameter(name, options);
     if (previousValue) {
-        var proxy = actor.getPortOrParameterProxy(name);
-        this.extendedBy.parameters[name]['value'] = convertFromToken(previousValue, proxy.isJSON());
+        this.extendedBy.parameters[name]['value'] = convertFromToken(previousValue);
     }
 }
 
@@ -260,11 +258,7 @@ function send(name, value, channel) {
 
         // Give channel a default value of 0.
         channel = (typeof channel !== 'undefined') ? channel : 0;
-        if (proxy.isJSON()) {
-            token = new StringToken(JSON.stringify(value));
-        } else {
-            token = convertToToken(value);
-        }
+        token = convertToToken(value, proxy.isJSON());
         proxy.send(channel, token);
     }
 }
@@ -296,11 +290,7 @@ function setDefault(input, value) {
         error('No such input: ' + input);
     } else {
         var token;
-        if (proxy.isJSON()) {
-            token = new StringToken(JSON.stringify(value));
-        } else {
-            token = convertToToken(value);
-        }
+        token = convertToToken(value, proxy.isJSON());
         proxy.set(token);
     }
 }
@@ -321,11 +311,7 @@ function setParameter(parameter, value) {
         // Make sure the context is this, not the prototype.
         commonHost.Accessor.prototype.setParameter.call(this.extendedBy, parameter, value);
     
-        if (proxy.isJSON()) {
-            token = new StringToken(JSON.stringify(value));
-        } else {
-            token = convertToToken(value);
-        }
+        token = convertToToken(value, proxy.isJSON());
         proxy.set(token);
     }
 }
@@ -398,7 +384,7 @@ var JSONToToken = Java.type('ptolemy.actor.lib.conversions.json.JSONToToken');
  *  This is a utility function, not intended for script writers to use.
  *  @param value The token to convert.
  */
-function convertFromToken(value, isJSON) {
+function convertFromToken(value) {
     // If the value is not a Token, just return it.
     if (!(value instanceof Token)) {
         return value;
@@ -410,14 +396,7 @@ function convertFromToken(value, isJSON) {
         return value.doubleValue();
     }
     if (value instanceof StringToken) {
-        if (isJSON) {
-            var json = value.stringValue();
-            if (json.trim() === '') {
-                // Empty string.
-                return null;
-            }
-            return JSON.parse(value.stringValue());
-        }
+        // NOTE: Used to parse JSON here, but that is now handled in the common host.
         return value.stringValue();
     }
     if (value instanceof IntToken) {
@@ -473,8 +452,10 @@ function convertToJSArray(array) {
 /** Convert the specified argument to a Ptolemy II Token.
  *  This is a utility function, not intended for script writers to use.
  *  @param value The JavaScript value to convert.
+ *  @param isJSON If the destination type is JSON, then return a StringToken
+ *   containing the results of JSON.stringify().
  */
-function convertToToken(value) {
+function convertToToken(value, isJSON) {
     // NOTE: This is better done in JavaScript than in Java
     // because while the Nashorn interface to Java objects
     // seems standardized, the access to JavaScript objects from
@@ -482,6 +463,10 @@ function convertToToken(value) {
     // Supposedly, ScriptObjectMirror will solve this problem, but it's
     // API is currently poorly documented, and what documentation there is
     // disagrees with the implementation in Java 8.
+    
+    if (isJSON) {
+         return new StringToken(JSON.stringify(value));
+    }
     
     // If the value is already a Token, just return it.
     if (value instanceof Token) {
