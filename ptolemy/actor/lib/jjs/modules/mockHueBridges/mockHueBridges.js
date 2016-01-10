@@ -34,7 +34,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals console, exports, Java, require, transitionTime */
+/*globals console, exports, Java, require */
 /*jshint globalstrict: true */
 "use strict";
 
@@ -239,7 +239,7 @@ exports.MockHueBridge = (function(){
       		  
       		  helper.setState(bridgeID, JSON.stringify({lights : state.lights}));
       		  if (body.hasOwnProperty('transitiontime')) {
-      			  helper.setTransitionTime(bridgeID, transitionTime);
+      			  helper.setTransitionTime(bridgeID, body.transitiontime);
       		  }
       		  
       		  // Emit an event on change.  The listening accessor will then 
