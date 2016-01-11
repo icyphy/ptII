@@ -191,7 +191,7 @@ exports.filter = function(image, filterName, options) {
             try {
                 Filter = Java.type(root + 'svg.' + filterName + 'Filter');
             } catch(ex2) {
-                error('Cannot find filter: ' + filterName);
+                throw new Error('Cannot find filter: ' + filterName);
                 return image;
             }
         }
