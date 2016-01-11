@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={660, 22, 779, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={660, 23, 779, 641}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[545, 531]">
     </property>
@@ -48,7 +48,7 @@
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 22, 256, 300}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={8, 23, 91, 44}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -58,15 +58,15 @@
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
-    <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-        </property>
-        <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-        </property>
-    </property>
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** An accessor for a camera on the local host. This can be a built-in camera or&#10; *  a USB-connected camera. This accessor has two modes of operation, &quot;triggered&quot;&#10; *  and &quot;open loop.&quot; In triggered mode, it captures an image whenever a trigger&#10; *  input is received and produces that image on its output. In open-loop mode,&#10; *  it captures every image produced by the camera, at the speed of the camera,&#10; *  and produces on the output a stream of such images.&#10; * &#10; *  @accessor Camera&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @input trigger A trigger input for triggered mode.&#10; *  @output image A stream of captured images.&#10; *  @parameter {boolean} triggered If true, use triggered mode. Otherwise, use open-loop mode.&#10; *  @parameter {string} camera The name of the camera to use. A list of available cameras is presented as options. This defaults to &quot;default camera&quot;, which uses the system default, if there is one.&#10; *  @parameter {string} viewSize The view size to use for capture, in pixels. A list of available view sizes for the selected camara is presented as options.&#10; */&#10;var cameras = require(&quot;cameras&quot;);&#10;var camera;&#10;var handle = null;&#10;&#10;/** Create the inputs, outputs, and parameters, and update the parameters for the selected camera. */&#10;exports.setup = function() {&#10;  input('trigger');&#10;  output('image');&#10;  parameter('triggered', {'type':'boolean', 'value':true});&#10;  parameter('camera', {'type':'string', 'value':'default camera', 'options':cameras.cameras()});&#10;  // NOTE: The following assumes that setup() is reinvoked whenever a parameter value changes,&#10;  // since the camera will change and so will the available options.&#10;  camera = new cameras.Camera(getParameter('camera'));&#10;  parameter('viewSize', {'type':'JSON', 'value':camera.getViewSize(), 'options':camera.viewSizes()});&#10;}&#10;&#10;/** Set the view size of the camera, open it, and depending on the triggered mode, either&#10; *  set up an input handler for the trigger input or set up a handler for the 'image'&#10; *  event notification from the camera.&#10; */&#10;exports.initialize = function() {&#10;  camera.setViewSize(getParameter('viewSize'));&#10;  camera.open();&#10;  if (getParameter('triggered')) {&#10;    handle = addInputHandler('trigger', function() {&#10;      send('image', camera.snapshot());&#10;    });&#10;  } else {&#10;    camera.on('image', function(image) {&#10;      send('image', image);&#10;    });&#10;  }&#10;}&#10;&#10;/** Remove handlers and close the camera. */&#10;exports.wrapup = function() {&#10;  camera.removeAllListeners('image');&#10;  if (handle != null) {&#10;    removeInputHandler(handle);&#10;  }&#10;  camera.close();&#10;}&#10;">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/cameras/Camera.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
         </property>
         <property name="triggered" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -77,33 +77,33 @@
         <property name="viewSize" class="ptolemy.data.expr.StringParameter" value="{&quot;width&quot;:640, &quot;height&quot;:480}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 130.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="image" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="ImageFilter" class="org.terraswarm.accessor.JSAccessor">
-    <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-        </property>
-        <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-        </property>
-    </property>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/**&#10;This accessor filters images provided at the input to produce modified images&#10;on the output. This accessor requires an 'imageFilters' module implemented on&#10;the accessor host. The filters that are available will depend on the particular&#10;host implementation of this module and will be provided as select alternatives for the&#10;'filter' parameter. The options that each filter can accept will also depend on the&#10;module implementation on the host.  The filters that are implemented by the Ptolemy II&#10;host and their options are documented in the&#10;[imageFilters module](https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/module-imageFilters.html)&#10;Demos for these filters can be found in the Ptolemy II tree at&#10;org/terraswarm/accessor/demo/ImageFilters.&#10;&#10;@accessor ImageFilter&#10;@parameter {string} filter The filter to apply.&#10;@input input The image to filter.&#10;@input {JSON} options The options controlling the filter.&#10;@output output The filtered image.&#10;@author Edward A. Lee&#10;@version $$Id$$&#10; */&#10;&#10;var imageFilters = require('imageFilters');&#10;&#10;exports.setup = function() {&#10;    input('input');&#10;    output('output');&#10;    input('options', {'value':{}, 'type':'JSON'});&#10;    input('filter', {'type':'string', 'value':'Threshold', 'options':imageFilters.filters()});&#10;}&#10;&#10;exports.initialize = function() {&#10;    handle = addInputHandler('input', function() {&#10;        var options = get('options');&#10;        var image = get('input');&#10;        var result = imageFilters.filter(image, getParameter('filter'), options);&#10;        send('output', result);&#10;    });&#10;}&#10;&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        removeInputHandler(handle);&#10;    }&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/**&#10;This accessor filters images provided at the input to produce modified images&#10;on the output. This accessor requires an 'imageFilters' module implemented on&#10;the accessor host. The filters that are available will depend on the particular&#10;host implementation of this module and will be provided as select alternatives for the&#10;'filter' parameter. The options that each filter can accept will also depend on the&#10;module implementation on the host.  The filters that are implemented by the Ptolemy II&#10;host and their options are documented in the&#10;[imageFilters module](https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/module-imageFilters.html)&#10;Demos for these filters can be found in the Ptolemy II tree at&#10;org/terraswarm/accessor/demo/ImageFilters.&#10;&#10;@accessor image/ImageFilter&#10;@parameter {string} filter The filter to apply.&#10;@input input The image to filter.&#10;@input {JSON} options The options controlling the filter.&#10;@output output The filtered image.&#10;@author Edward A. Lee&#10;@version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var imageFilters = require('imageFilters');&#10;&#10;exports.setup = function() {&#10;    input('input');&#10;    output('output');&#10;    input('options', {'value':'', 'type':'JSON'});&#10;    input('filter', {'type':'string', 'value':'Threshold', 'options':imageFilters.filters()});&#10;};&#10;&#10;var handle = null;&#10;exports.initialize = function() {&#10;    handle = addInputHandler('input', function() {&#10;        var options = get('options');&#10;        var image = get('input');&#10;        var result = imageFilters.filter(image, getParameter('filter'), options);&#10;        send('output', result);&#10;    });&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        removeInputHandler(handle);&#10;    }&#10;};&#10;">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/image/ImageFilter.js">
         </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
         <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;Width&quot;:256, &quot;Height&quot;:256}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 120.0]">
@@ -113,44 +113,38 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$Id$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
             </property>
-            <property name="filter (parameter)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;string&quot;]}) The filter to apply.">
+            <property name="filter (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The filter to apply.">
             </property>
-            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="undefined The image to filter.">
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The image to filter.">
             </property>
-            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="undefined The filtered image.">
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The filtered image.">
             </property>
-            <property name="options (port)" class="ptolemy.kernel.util.StringAttribute" value="({names:[&quot;JSON&quot;]}) The options controlling the filter.">
+            <property name="options (port)" class="ptolemy.kernel.util.StringAttribute" value="The options controlling the filter.">
             </property>
         </property>
-        <property name="filter" class="ptolemy.actor.parameters.PortParameter" value="null">
+        <property name="filter" class="ptolemy.actor.parameters.PortParameter" value="BicubicScale">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="filter" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="filter" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
