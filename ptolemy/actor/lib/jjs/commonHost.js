@@ -442,6 +442,9 @@ Accessor.prototype.addInputHandler = function(name, func) {
         'name': name,
         'index': index
     };
+    // Record the handle in the callback function so that it can be
+    // removed if it throws an exception.
+    callback.handle = result;
     return result;
 }
 
@@ -1069,6 +1072,8 @@ function pushIfNotPresent(item, list) {
  *  all inputs that have been provided with input value using provideInput()
  *  since the last time input handlers were invoked.
  *  Also invoke the fire function of the accessor, if one has been defined.
+ *  If a handler throws an exception, then remove it from the registered
+ *  handlers before rethrowing the exception.
  *  @param name The name of the input.
  */
 Accessor.prototype.react = function(name) {
@@ -1082,7 +1087,16 @@ Accessor.prototype.react = function(name) {
             for (var i = 0; i < thiz.inputHandlers[name].length; i++) {
                 if (typeof thiz.inputHandlers[name][i] === 'function') {
                     // Input handlers functions are bound to the exports object.
-                    thiz.inputHandlers[name][i]();
+                    try {
+                        thiz.inputHandlers[name][i]();
+                    } catch (exception) {
+                        // Remove the input handler.
+                        thiz.extendedBy.removeInputHandler(
+                                thiz.extendedBy.inputHandlers[name][i].handle);
+                        error('Exception occurred in input handler.'
+                                + ' Handler has been removed: '
+                                + exception);
+                    }
                 }
             }
         }
@@ -1106,7 +1120,16 @@ Accessor.prototype.react = function(name) {
         for (var i = 0; i < this.extendedBy.anyInputHandlers.length; i++) {
             if (typeof this.extendedBy.anyInputHandlers[i] === 'function') {
                 // Call input handlers in the context of the exports object.
-                this.extendedBy.anyInputHandlers[i]();
+                try {
+                    this.extendedBy.anyInputHandlers[i]();
+                } catch (exception) {
+                    // Remove the input handler.
+                    this.extendedBy.removeInputHandler(
+                            this.extendedBy.anyInputHandlers[i].handle);
+                    error('Exception occurred in input handler.'
+                            + ' Handler has been removed: '
+                            + exception);
+                }
             }
         }
     }
