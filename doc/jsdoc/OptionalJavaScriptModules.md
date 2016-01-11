@@ -89,4 +89,4 @@ To implement a module, see the [Module Specification][26].
  [24]: https://www.terraswarm.org/accessors/wiki/Version0/TextToSpeech
  [25]: https://www.terraswarm.org/accessors/wiki/Version0/UDPSocket
  [26]: https://www.terraswarm.org/accessors/wiki/Version0/ModuleSpecification
- [27]: https://www.terraswarm.org/accessors/wiki/Version0/1aAccessorsSpecification
+ [27]: https://www.terraswarm.org/accessors/wiki/Version1/AccessorSpecification
