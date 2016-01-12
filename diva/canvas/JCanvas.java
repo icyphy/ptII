@@ -494,11 +494,23 @@ public class JCanvas extends JComponent implements Printable {
     protected void processMouseEvent(MouseEvent e) {
         internalProcessMouseEvent(e);
 
+        // With r33656, we were checking to see if the event was
+        // consumed, and if it was not, we were calling super.processMouseEvent()
+        // However, this resulted in a problem:
+
+        // "vergil has an extremely annoying feature of popping up a
+        // tooltip right in the middle of any dialog you open. E.g.,
+        // double click on an actor, and a tooltip immediately blocks
+        // your view of what you were requesting... "
+
+        // The fix is to always call super.processMouseEvent(e)
+        // See https://chess.eecs.berkeley.edu/ptolemy/wiki/Ptolemy/ToolTips
+        
         // The below call *should* be extranneous, but at least on the
         // Macintosh, it prevents popup menus from being created...
-        if (!e.isConsumed()) {
+        //if (!e.isConsumed()) {
             super.processMouseEvent(e);
-        }
+        //}
     }
 
     /** Process a mouse motion event. This method overrides the
@@ -511,11 +523,13 @@ public class JCanvas extends JComponent implements Printable {
     protected void processMouseMotionEvent(MouseEvent e) {
         internalProcessMouseEvent(e);
 
+        // See processMouseEvent() for why we always call
+        // super.processMouseMotionEvent(e)
         // The below call *should* be extranneous, but at least on the
         // Macintosh, it is probably necessary (see above).
-        if (!e.isConsumed()) {
+        //if (!e.isConsumed()) {
             super.processMouseMotionEvent(e);
-        }
+        //}
     }
 
     ///////////////////////////////////////////////////////////////////
