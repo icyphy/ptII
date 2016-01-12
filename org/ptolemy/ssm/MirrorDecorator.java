@@ -105,11 +105,11 @@ public class MirrorDecorator extends TypedAtomicActor implements Decorator {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         MirrorDecorator newObject = (MirrorDecorator) super
                 .clone(workspace);
-        newObject._listeners = null;
-        newObject._addedPortNames = null;
-        newObject._addedParameters = null;
-        newObject._addedPortParameterNames = null;
-        newObject._decoratedObjects = null;
+        newObject._listeners = new ArrayList<>();
+        newObject._addedPortNames = new ArrayList<>();
+        newObject._addedParameters = new ArrayList<>();
+        newObject._addedPortParameterNames = new ArrayList<>();
+        newObject._decoratedObjects = new ArrayList<>();
         return newObject;
     }
 

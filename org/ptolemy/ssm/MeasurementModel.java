@@ -116,7 +116,7 @@ implements StateSpaceActor {
 
     }
     @Override
-    public boolean validUniqueDecoratorAssociationExists()
+    public boolean validDecoratorAssociationExists()
             throws IllegalActionException {
         boolean found = false;
         for (Decorator d : this.decorators()) {

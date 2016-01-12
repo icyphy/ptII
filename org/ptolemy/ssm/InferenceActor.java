@@ -33,6 +33,6 @@ package org.ptolemy.ssm;
  * @author ilgea
  *
  */
-public interface InferenceActor extends StateSpaceActor{
+public interface InferenceActor extends StateSpaceActor {
 
 }

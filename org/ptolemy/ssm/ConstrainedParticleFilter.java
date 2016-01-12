@@ -59,9 +59,9 @@ public class ConstrainedParticleFilter extends ParticleFilter {
      * @exception IllegalActionException
      */
     @Override
-    public boolean validUniqueDecoratorAssociationExists()
+    public boolean validDecoratorAssociationExists()
             throws IllegalActionException {
-        if (!super.validUniqueDecoratorAssociationExists()) {
+        if (!super.validDecoratorAssociationExists()) {
             return false;
         }
         boolean found = false;

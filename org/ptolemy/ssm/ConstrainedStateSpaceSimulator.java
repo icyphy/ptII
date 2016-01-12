@@ -113,8 +113,8 @@ public class ConstrainedStateSpaceSimulator extends StateSpaceSimulator {
      * @exception IllegalActionException
      */
     @Override
-    public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {
-        if ( !super.validUniqueDecoratorAssociationExists()) {
+    public boolean validDecoratorAssociationExists() throws IllegalActionException {
+        if ( !super.validDecoratorAssociationExists()) {
             return false;
         }
         boolean found = false;
