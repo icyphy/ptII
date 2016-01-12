@@ -313,6 +313,7 @@ public class ActorGraphFrame extends ExtendedGraphFrame
 
         _graphMenu.addSeparator();
         _addLayoutMenu(_graphMenu);
+        _addReloadAccessorsMenu(_graphMenu);
 
         // Only include the various actions if there is an actor library
         // The ptinyViewer configuration uses this.

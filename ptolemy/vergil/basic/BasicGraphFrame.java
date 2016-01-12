@@ -69,6 +69,7 @@ import java.io.OutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -1973,6 +1974,18 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         GUIUtilities.addMenuItem(_graphMenu, _findAction);
     }
 
+    /** Add a Reload Accessors menu choice.
+     *  @param graphMenu The menu to which to add the Reload Accessors
+     *  menu choice.
+     */
+    protected void _addReloadAccessorsMenu(JMenu graphMenu) {
+        // The action is created by BasicGraphFrame.
+        if (_reloadAccessorsAction != null) {
+            GUIUtilities.addMenuItem(graphMenu, _reloadAccessorsAction);
+            graphMenu.addSeparator();
+        }
+    }
+
     /** Return true if any element of the specified list is implied.
      *  An element is implied if its getDerivedLevel() method returns
      *  anything smaller than Integer.MAX_VALUE.
@@ -2890,6 +2903,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _editPreferencesAction = new EditPreferencesAction();
 
         _initLayoutGuiAction();
+        _initReloadAccessorsAction();
     }
 
     /** Set up the right component. */
@@ -3020,6 +3034,33 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         _layoutAction.putValue(GUIUtilities.MNEMONIC_KEY,
                 Integer.valueOf(KeyEvent.VK_L));
     }
+
+    /** Initialize the reload accessors menu choice. */
+    protected void _initReloadAccessorsAction() {
+        // If the JSAccessors.reloadAllAccessors(CompositeEntity)
+        // method can be found, then add a menu choice.
+        Method accessorReloader = null;
+        try {
+            Class accessorClass = Class.forName("org.terraswarm.accessor.JSAccessor");
+            accessorReloader = accessorClass.getDeclaredMethod("reloadAllAccessors", new Class [] {CompositeEntity.class});
+        } catch (Throwable throwable) {
+            // Fail silently!
+        }
+        final Method accessorReloaderFinal = accessorReloader;
+        if (accessorReloader != null) {
+            _reloadAccessorsAction = new AbstractAction("Reload Accessors") {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    try {
+                        accessorReloaderFinal.invoke(null, (CompositeEntity)getModel());
+                    } catch (Exception ex) {
+                        MessageHandler.error("Failed to reload all the accessors.", ex);
+                    }
+                }
+            };
+        }
+    }
+
 
     /** Return true if this is a design pattern.
      *  @return true if the model corresponding to this object
@@ -3553,6 +3594,9 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
     /** The paste action. */
     protected Action _pasteAction;
 
+    /** The action for reloading accessors. */
+    protected Action _reloadAccessorsAction;
+    
     /** The right component for this editor. */
     protected JComponent _rightComponent;
 
