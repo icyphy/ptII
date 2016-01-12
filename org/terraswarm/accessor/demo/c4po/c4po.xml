@@ -4,7 +4,7 @@
 <entity name="c4po" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={412, 58, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={435, 25, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -37,8 +37,8 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55, 125}">
         </property>
     </entity>
-    <entity name="BluetoothDistance" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// &#10;function fire() {&#10;     var strength = get('rssi');&#10; var power = get('txPower');&#10; var result = -1.0;&#10; var ratio;&#10; 	  if (strength != 0) { 		ratio = strength*1.0/power; 	  	if (ratio &lt; 1.0) { 	    	result = Math.pow(ratio,10); 	  	} 	  	else { 	    	result = (0.89976)*Math.pow(ratio,7.7095) + 0.111;     	  	} 	 }send('distance', result);&#10;}&#10;// ">
+    <entity name="BluetoothDistance" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// &#10;exports.fire = function () {&#10;     var strength = get('rssi');&#10;     var power = get('txPower');&#10;     var result = -1.0;&#10;     var ratio;&#10;     if (strength != 0) {&#10;         ratio = strength*1.0/power;&#10;         if (ratio &lt; 1.0) {&#10;            result = Math.pow(ratio,10);&#10;         } else {&#10;            result = (0.89976)*Math.pow(ratio,7.7095) + 0.111; &#10;         }&#10;     }&#10;     send('distance', result);&#10;};">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -50,22 +50,16 @@
         </property>
         <port name="rssi" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
         <port name="txPower" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
         <port name="distance" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
             </property>
         </port>
