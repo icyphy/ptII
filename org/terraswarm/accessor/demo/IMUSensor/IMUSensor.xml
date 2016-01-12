@@ -4,13 +4,13 @@
 <entity name="IMUSensor" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, -4, 1855, 956}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 873}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1641, 839]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 763]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000016">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{813.4999999999999, 410.49999999999983}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{596.0000000000003, 372.49999999999994}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
@@ -47,7 +47,7 @@
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Accessor for bluetooth sensor stream.&#10;var imuSensor = require('IMUSensor');&#10;&#10;// Set up the accessor.&#10;exports.setup = function() {&#10;    accessor.author('Hunter');&#10;    accessor.version('0.1 $$Date$$');&#10;        accessor.parameter('port', {&#10;            'type' : 'number',&#10;            'description' : 'The port used by the sensor'&#10;        });&#10;    accessor.parameter('samplingRate', {'description':'Sampling rate of sensor, rate to grab data from buffer in ms'});&#10;    accessor.output('stream', {&#10;                'description' : 'The stream obtained from the sensor'&#10;        });&#10;};&#10;&#10;var stream = new imuSensor.Stream();&#10;var handle;&#10;&#10;// Initialize by hooking to sensor port and setting interval for obtaining samples&#10;exports.initialize = function() {&#10;    // Instantiate a stream&#10;    // This should hook the sensor stream and start filling a buffer Java-side automatically&#10;    stream.start(getParameter('port'));&#10;    handle = setInterval(getLatestSample, getParameter('samplingRate'));&#10;}&#10;&#10;var prevSample = [[0,0,0,0,0,0,0,0,0],[]];&#10;&#10;// function to invoke on interval, grab a sample from the buffer. Have to determine if sample is a new one.&#10;getLatestSample = function() {&#10;    var sample = stream.getSample();&#10;        if (prevSample[0][0] == sample[0][0]) {&#10;        }&#10;        else {&#10;           prevSample = sample;&#10;           sample = sample[0].map(Number);&#10;&#10;           // convert the samples to real values from their ADC values&#10;           sample[0] = sample[0]/16384;&#10;           sample[1] = sample[1]/16384;&#10;           sample[2] = sample[2]/16384;&#10;           sample[3] = sample[3]/131;&#10;           sample[4] = sample[4]/131;&#10;           sample[5] = sample[5]/131;&#10;           sample[6] = sample[6]/3.3;&#10;           sample[7] = sample[7]/3.3;&#10;           sample[8] = sample[8]/3.3;&#10;           sample = JSON.stringify([sample,[]]);&#10;           send('stream', sample);&#10;        }&#10;}&#10;&#10;// Called on stop&#10;exports.wrapup = function() {&#10;    if (stream != null) {&#10;        stream.stop();&#10;    }&#10;    clearInterval(handle);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Accessor for bluetooth sensor stream.&#10;var imuSensor = require('IMUSensor');&#10;&#10;// Set up the accessor.&#10;exports.setup = function() {&#10;    accessor.author('Hunter');&#10;    accessor.version('0.1 $$Date$$');&#10;    parameter('port', {&#10;            'type' : 'number',&#10;            'description' : 'The port used by the sensor'&#10;        });&#10;    parameter('samplingRate', {'description':'Sampling rate of sensor, rate to grab data from buffer in ms'});&#10;    output('stream', {&#10;                'description' : 'The stream obtained from the sensor'&#10;        });&#10;};&#10;&#10;var stream = new imuSensor.Stream();&#10;var handle;&#10;&#10;// Initialize by hooking to sensor port and setting interval for obtaining samples&#10;exports.initialize = function() {&#10;    // Instantiate a stream&#10;    // This should hook the sensor stream and start filling a buffer Java-side automatically&#10;    stream.start(getParameter('port'));&#10;    handle = setInterval(getLatestSample, getParameter('samplingRate'));&#10;}&#10;&#10;var prevSample = [[0,0,0,0,0,0,0,0,0],[]];&#10;&#10;// function to invoke on interval, grab a sample from the buffer. Have to determine if sample is a new one.&#10;var getLatestSample = function() {&#10;    var sample = stream.getSample();&#10;        if (prevSample[0][0] == sample[0][0]) {&#10;        }&#10;        else {&#10;           prevSample = sample;&#10;           sample = sample[0].map(Number);&#10;&#10;           // convert the samples to real values from their ADC values&#10;           sample[0] = sample[0]/16384;&#10;           sample[1] = sample[1]/16384;&#10;           sample[2] = sample[2]/16384;&#10;           sample[3] = sample[3]/131;&#10;           sample[4] = sample[4]/131;&#10;           sample[5] = sample[5]/131;&#10;           sample[6] = sample[6]/3.3;&#10;           sample[7] = sample[7]/3.3;&#10;           sample[8] = sample[8]/3.3;&#10;           sample = JSON.stringify([sample,[]]);&#10;           send('stream', sample);&#10;        }&#10;}&#10;&#10;// Called on stop&#10;exports.wrapup = function() {&#10;    if (stream != null) {&#10;        stream.stop();&#10;    }&#10;    clearInterval(handle);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -64,7 +64,7 @@
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Hunter">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $$Date$$">
             </property>
             <property name="port" class="ptolemy.kernel.util.StringAttribute" value="The port used by the sensor">
             </property>
@@ -75,8 +75,6 @@
         </property>
         <port name="stream" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
