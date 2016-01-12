@@ -66,7 +66,7 @@ implements StateSpaceActor {
     protected void _checkParameters() throws IllegalActionException {
         // Check state variable names.
 
-        if (validUniqueDecoratorAssociationExists()) {
+        if (validDecoratorAssociationExists()) {
             Parameter stateVariableNames =
                     (Parameter) this.getDecoratorAttribute(_decorator, STATE_VARIABLE_NAMES);
             _stateNames = (ArrayToken) stateVariableNames.getToken();
@@ -103,7 +103,7 @@ implements StateSpaceActor {
      * @exception IllegalActionException
      */
     @Override
-    public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {
+    public boolean validDecoratorAssociationExists() throws IllegalActionException {
         boolean found = false;
         Set<Decorator> decoratorSet =decorators();
         for (Decorator d : decoratorSet) {

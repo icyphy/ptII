@@ -80,7 +80,7 @@ public class ParticleFilter extends AbstractParticleFilter implements
     protected void _checkParameters() throws IllegalActionException {
         // Check state variable names.
 
-        if (validUniqueDecoratorAssociationExists()) {
+        if (validDecoratorAssociationExists()) {
             Parameter stateVariableNames = (Parameter) getDecoratorAttribute(
                     _decorator, STATE_VARIABLE_NAMES);
             _stateNames = (ArrayToken) stateVariableNames.getToken();
@@ -122,7 +122,7 @@ public class ParticleFilter extends AbstractParticleFilter implements
      * @exception IllegalActionException
      */
     @Override
-    public boolean validUniqueDecoratorAssociationExists()
+    public boolean validDecoratorAssociationExists()
             throws IllegalActionException {
         boolean found = false;
         Set<Decorator> decoratorSet =decorators();
@@ -201,7 +201,10 @@ public class ParticleFilter extends AbstractParticleFilter implements
         }
     }
 
+    /** The state space model of the target 
+     * being tracked by this particle filter. */
     private StateSpaceModel _decorator;
+    
     private HashMap<String, GaussianMeasurementModel> _measurementDecorators;
 
     @Override

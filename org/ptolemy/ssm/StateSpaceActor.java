@@ -29,6 +29,6 @@ package org.ptolemy.ssm;
 import ptolemy.actor.Actor;
 import ptolemy.kernel.util.IllegalActionException;
 
-public interface StateSpaceActor extends Actor{
-    public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException;
+public interface StateSpaceActor extends Actor {
+    public boolean validDecoratorAssociationExists() throws IllegalActionException;
 }

@@ -40,7 +40,8 @@ A  special decorator that defines a Gaussian measurement model.
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
  */
-public class GaussianMeasurementModel extends MeasurementModel {
+public class GaussianMeasurementModel extends MeasurementModel 
+implements TrainableGaussianModel {
 
     public GaussianMeasurementModel(CompositeEntity container, String name)
 
@@ -72,6 +73,21 @@ public class GaussianMeasurementModel extends MeasurementModel {
 
         noiseCovariance = new Parameter(this, "noiseCovariance");
         noiseCovariance.setExpression("5.0");
+    }
+    @Override
+    public double[] getMean() {
+        return null;
+    }
+    @Override
+    public double[][] getCovariance() {
+        // TODO Auto-generated method stub
+        return null;
+    }
+    @Override
+    public boolean validDecoratorAssociationExists()
+            throws IllegalActionException {
+        // TODO Auto-generated method stub
+        return false;
     }
 
 }

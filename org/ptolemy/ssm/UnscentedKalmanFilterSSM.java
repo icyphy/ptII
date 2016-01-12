@@ -80,7 +80,7 @@ implements InferenceActor {
     protected void _checkParameters() throws IllegalActionException {
         // Check state variable names. 
 
-        if (validUniqueDecoratorAssociationExists()) { 
+        if (validDecoratorAssociationExists()) { 
             Parameter stateVariableNames = 
                     (Parameter) this.getDecoratorAttribute(_decorator, STATE_VARIABLE_NAMES);
             _stateNames = (ArrayToken) stateVariableNames.getToken();
@@ -121,7 +121,7 @@ implements InferenceActor {
      * @throws IllegalActionException 
      */
     @Override
-    public boolean validUniqueDecoratorAssociationExists() throws IllegalActionException {
+    public boolean validDecoratorAssociationExists() throws IllegalActionException {
         boolean found = false;
         for (Decorator d : this.decorators()) {
             if (d instanceof StateSpaceModel) {

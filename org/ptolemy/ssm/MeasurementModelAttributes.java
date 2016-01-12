@@ -122,7 +122,7 @@ public class MeasurementModelAttributes extends MirrorDecoratorAttributes {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
 
         MeasurementModelAttributes result = (MeasurementModelAttributes) super.clone(workspace);
-        result._addedContainerParameters = null;
+        result._addedContainerParameters = new ArrayList<>();
         return result;
     }
 
