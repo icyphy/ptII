@@ -125,6 +125,10 @@ public class AutoTests extends ModelTests {
                     .getMethod("toplevel", new Class[]{});
             }
 
+            // If a model is in org/terraswarm/accessors/test, the delay before reloading.
+            // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock#Starvation
+            _delay(fullPath);
+
             Object instance = _applicationConstructor.newInstance(fullPath);
 
             System.out.println("----------------- testing again " + fullPath);
@@ -140,6 +144,19 @@ public class AutoTests extends ModelTests {
                 _applicationToplevelMethod = _applicationClass
                     .getMethod("toplevel", new Class[]{});
 
+
+                // If a model is in org/terraswarm/accessors/test, the delay before reloading.
+                // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock#Starvation
+                _delay(fullPath);
+
+                if (fullPath.indexOf("org/terraswarm/accessors/test") != -1) {
+                    System.out.println("----------------- About to sleep for 5 seconds before reloading accessors in org/terraswarm/accessors/test" + fullPath);
+                    try {
+                        Thread.sleep(5000);
+                    } catch (InterruptedException ex) {
+                        System.err.println("Sleep before reloading of accessors was interrupted: " + ex); 
+                    }
+                }
                 Object toplevel = _applicationToplevelMethod.invoke(instance, (Object[]) null);
                 if (_jsAccessorReloadAllAccessorsMethod == null) {
                     throw new InternalError("Found the JSAccessor class, but not the reloadAllAccessors() method?");
@@ -206,6 +223,23 @@ public class AutoTests extends ModelTests {
         }
     }
     
+    private static void _delay(String fullPath) {
+        String accessorTests = "org/terraswarm/accessor";
+        int delay = 5000;
+        if (fullPath.indexOf(accessorTests) != -1) {
+            System.out.println("----------------- "
+                    + (new java.util.Date())
+                    + " About to sleep for "
+                    + delay/1000 + " seconds before rerunning in "
+                    + accessorTests + ".  Test is: " + fullPath);
+            try {
+                Thread.sleep(5000);
+            } catch (InterruptedException ex) {
+                System.err.println("Sleep before reloading of accessors was interrupted: " + ex); 
+            }
+        }
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private fields                    ////
 
