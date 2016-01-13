@@ -30,7 +30,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.796002626845216">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{459.04296874999943, 171.6113030159549}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{459.0429687499992, 171.6113030159549}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="120.0">
@@ -388,7 +388,7 @@
         <entity name="StateSpaceSimulator" class="org.ptolemy.ssm.StateSpaceSimulator">
             <property name="initialState" class="ptolemy.data.expr.Parameter" value="{initialPosition.x, initialPosition.y}">
             </property>
-            <property name="t" class="ptolemy.data.expr.Parameter" value="24.0">
+            <property name="t" class="ptolemy.data.expr.Parameter" value="1.0">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-160.0, -100.0}">
             </property>
@@ -513,7 +513,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="4.300000000000001">
+                <property name="y" class="ptolemy.data.expr.Parameter" value="2.0">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -626,7 +626,7 @@
         </property>
         <property name="outputParticleCount" class="ptolemy.data.expr.Parameter" value="Nout">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="24.0">
+        <property name="t" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{620.0, 145.0}">
         </property>
@@ -675,11 +675,11 @@
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="5.33229380495517">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="5.982027644595428">
             </property>
             <property name="x_update" class="ptolemy.data.expr.Parameter" value="x">
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="7.79949832461601">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="4.703404115322906">
             </property>
             <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
             </property>
@@ -694,7 +694,7 @@
         </property>
         <property name="r1" class="ptolemy.actor.parameters.PortParameter" value="{x=0.0,y=0.0}">
         </property>
-        <property name="RangeSensor_z" class="ptolemy.data.expr.Parameter" value="4.4655036530645">
+        <property name="RangeSensor_z" class="ptolemy.data.expr.Parameter" value="3.9584118905845">
         </property>
         <property name="DecoratorAttributesFor_StateSpaceModel" class="org.ptolemy.ssm.MirrorDecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="OracleTargetModel">
@@ -738,7 +738,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="5.558559915790448">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="5.829288059397344">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -751,7 +751,7 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="8.134155003734552">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="5.114895373364751">
             </property>
             <port name="output" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -930,7 +930,7 @@
         </property>
     </entity>
     <entity name="ParticleVisualizer" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var BufferedImage = Java.type('java.awt.image.BufferedImage');&#10;var image;&#10;var imageWithParticles;&#10;var width;&#10;var height;&#10;var redColor = 4294901760;&#10;var blueColor = 4278190335;&#10;var greenColor = 4278255360;&#10;var iconWidth = 3;&#10;exports.setup = function() {&#10;	input('map');&#10;	parameter('binaryImage',{'type':'boolean', 'value':true});&#10;	parameter('resolution',{'type':'number', 'value':0.05});&#10;	output('image');&#10;	input('particles');&#10;	input('searchRobot');&#10;	input('target');&#10;}&#10;&#10;exports.initialize = function() {&#10;	&#10;	addInputHandler('map', getOccupancyGrid);&#10;	addInputHandler('particles', function() {&#10;		// add particles to view.&#10;	var particleIn = get('particles');&#10;	var res = getParameter('resolution'); &#10;	print(res);&#10;	if (particleIn != null) { &#10;		imageWithParticles = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);&#10;		//copy the base map and add particles on top of it&#10;		for (var i = 0; i &lt; width; i++) {&#10;		   for (var j = 0; j &lt; height; j++) {&#10;		   		imageWithParticles.setRGB(i,j,image.getRGB(i,j));&#10;		   }&#10;		}&#10;		print('setting image with particles on');&#10;		for (var i = 0 ; i &lt; particleIn.length; i++) {&#10;			var px = particleIn[i].x;&#10;			var py = particleIn[i].y;&#10;			var pixelY = Math.floor(py/res); &#10;			var pixelX = Math.floor(px/res);&#10;			if (pixelX &gt;= 1 &amp;&amp; pixelX &lt; width-1 &amp;&amp; &#10;			pixelY &gt;=1 &amp; pixelY &lt; height-1) { &#10;				imageWithParticles.setRGB(pixelX, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX+1, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX-1, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX, pixelY-1,redColor);&#10;				imageWithParticles.setRGB(pixelX, pixelY+1,redColor);&#10;			}&#10;		} &#10;		print('Sending image to output');&#10;		send('image',imageWithParticles); &#10;	}&#10;	&#10;	var searchRobotLoc = get('searchRobot');&#10;	if (searchRobotLoc!=null) {&#10;		var x = searchRobotLoc.x;&#10;		var y = searchRobotLoc.y;&#10;		var pixelY = Math.floor(y/res); &#10;		var pixelX = Math.floor(x/res);&#10;		if (pixelX &gt;= iconWidth &amp;&amp; pixelX &lt; width-iconWidth &amp;&amp; &#10;			pixelY &gt;=iconWidth &amp; pixelY &lt; height-iconWidth) {&#10;				for (i = pixelX - iconWidth; i &lt;= pixelX + iconWidth; i++) {&#10;					for (j = pixelY - iconWidth; j &lt;= pixelY + iconWidth; j++) {&#10;						imageWithParticles.setRGB(i, j,blueColor);&#10;					}&#10;				}&#10;			}&#10;	}&#10;	var targetLoc = get('target');&#10;	if (targetLoc!=null) {&#10;		var x = targetLoc.x;&#10;		var y = targetLoc.y;&#10;		var pixelY = Math.floor(y/res); &#10;		var pixelX = Math.floor(x/res);&#10;		if (pixelX &gt;= iconWidth &amp;&amp; pixelX &lt; width-iconWidth &amp;&amp; &#10;			pixelY &gt;=iconWidth &amp; pixelY &lt; height-iconWidth) {&#10;				for (var i = pixelX - iconWidth; i &lt;= pixelX + iconWidth; i++) {&#10;					for (var j = pixelY - iconWidth; j &lt;= pixelY + iconWidth; j++) {&#10;						imageWithParticles.setRGB(i, j,greenColor);&#10;					}&#10;				}&#10;			}&#10;	    }&#10;	});&#10;}&#10;&#10;function getOccupancyGrid() {&#10;	&#10;	var mapObject = get('map'); &#10;	var imageData = mapObject.grid;&#10;	var width = mapObject.width;&#10;	var height = mapObject.height;&#10;	print(width);&#10;	print(height);&#10;	var binaryThresholding = getParameter('binaryImage');&#10;	var image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);&#10;	for (var y = 0; y &lt; height; y++) {&#10;		for (var x = 0; x &lt; width; x++) { &#10;			var index = x + y*width;&#10;			var pixel = imageData[index];&#10;			if (pixel &lt; 0) {&#10;				// Opaque red for unknown&#10;				image.setRGB(x, y, 4294901760);&#10;			} else {&#10;				var intensity;&#10;				if ( binaryThresholding ) {&#10;					if ( pixel &gt;= 32768) {&#10;						intensity = 255;&#10;					} else if ( pixel &lt; 10) {&#10;						intensity = 0;&#10;					} else {&#10;						intensity = 127;&#10;					}&#10;				} else {&#10;					intensity = pixel;&#10;				}&#10;				// To make the color opaque:&#10;				var alpha = 4278190080; &#10;				var color = alpha + intensity * (65536 + 256 + 1);&#10;				image.setRGB(x, y, color);&#10;			}&#10;		}&#10;	} &#10;	send('image', image);&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var BufferedImage = Java.type('java.awt.image.BufferedImage');&#10;var image;&#10;var imageWithParticles;&#10;var width;&#10;var height;&#10;var redColor = 4294901760;&#10;var blueColor = 4278190335;&#10;var greenColor = 4278255360;&#10;var iconWidth = 3;&#10;exports.setup = function() {&#10;	input('map');&#10;	parameter('binaryImage',{'type':'boolean', 'value':true});&#10;	parameter('resolution',{'type':'number', 'value':0.05});&#10;	output('image');&#10;	input('particles');&#10;	input('searchRobot');&#10;	input('target');&#10;}&#10;&#10;exports.initialize = function() {&#10;	&#10;	addInputHandler('map', getOccupancyGrid);&#10;	addInputHandler('particles', function() {&#10;		// add particles to view.&#10;	var particleIn = get('particles');&#10;	var res = getParameter('resolution');  &#10;	if (particleIn != null) { &#10;		imageWithParticles = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);&#10;		//copy the base map and add particles on top of it&#10;		for (var i = 0; i &lt; width; i++) {&#10;		   for (var j = 0; j &lt; height; j++) {&#10;		   		imageWithParticles.setRGB(i,j,image.getRGB(i,j));&#10;		   }&#10;		} &#10;		for (var i = 0 ; i &lt; particleIn.length; i++) {&#10;			var px = particleIn[i].x;&#10;			var py = particleIn[i].y;&#10;			var pixelY = Math.floor(py/res); &#10;			var pixelX = Math.floor(px/res);&#10;			if (pixelX &gt;= 1 &amp;&amp; pixelX &lt; width-1 &amp;&amp; &#10;			pixelY &gt;=1 &amp; pixelY &lt; height-1) { &#10;				imageWithParticles.setRGB(pixelX, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX+1, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX-1, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX, pixelY-1,redColor);&#10;				imageWithParticles.setRGB(pixelX, pixelY+1,redColor);&#10;			}&#10;		}  &#10;		send('image',imageWithParticles); &#10;	}&#10;	&#10;	var searchRobotLoc = get('searchRobot');&#10;	if (searchRobotLoc!=null) {&#10;		var x = searchRobotLoc.x;&#10;		var y = searchRobotLoc.y;&#10;		var pixelY = Math.floor(y/res); &#10;		var pixelX = Math.floor(x/res);&#10;		if (pixelX &gt;= iconWidth &amp;&amp; pixelX &lt; width-iconWidth &amp;&amp; &#10;			pixelY &gt;=iconWidth &amp; pixelY &lt; height-iconWidth) {&#10;				for (i = pixelX - iconWidth; i &lt;= pixelX + iconWidth; i++) {&#10;					for (j = pixelY - iconWidth; j &lt;= pixelY + iconWidth; j++) {&#10;						imageWithParticles.setRGB(i, j,blueColor);&#10;					}&#10;				}&#10;			}&#10;	}&#10;	var targetLoc = get('target');&#10;	if (targetLoc!=null) {&#10;		var x = targetLoc.x;&#10;		var y = targetLoc.y;&#10;		var pixelY = Math.floor(y/res); &#10;		var pixelX = Math.floor(x/res);&#10;		if (pixelX &gt;= iconWidth &amp;&amp; pixelX &lt; width-iconWidth &amp;&amp; &#10;			pixelY &gt;=iconWidth &amp; pixelY &lt; height-iconWidth) {&#10;				for (var i = pixelX - iconWidth; i &lt;= pixelX + iconWidth; i++) {&#10;					for (var j = pixelY - iconWidth; j &lt;= pixelY + iconWidth; j++) {&#10;						imageWithParticles.setRGB(i, j,greenColor);&#10;					}&#10;				}&#10;			}&#10;	    }&#10;	});&#10;}&#10;&#10;function getOccupancyGrid() {&#10;	&#10;	var mapObject = get('map'); &#10;	var imageData = mapObject.grid;&#10;	width = mapObject.width;&#10;	height = mapObject.height; &#10;	var binaryThresholding = getParameter('binaryImage');&#10;	image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);&#10;	for (var y = 0; y &lt; height; y++) {&#10;		for (var x = 0; x &lt; width; x++) { &#10;			var index = x + y*width;&#10;			var pixel = imageData[index];&#10;			if (pixel &lt; 0) {&#10;				// Opaque red for unknown&#10;				image.setRGB(x, y, 4294901760);&#10;			} else {&#10;				var intensity;&#10;				if ( binaryThresholding ) {&#10;					if ( pixel &gt;= 32768) {&#10;						intensity = 255;&#10;					} else if ( pixel &lt; 10) {&#10;						intensity = 0;&#10;					} else {&#10;						intensity = 127;&#10;					}&#10;				} else {&#10;					intensity = pixel;&#10;				}&#10;				// To make the color opaque:&#10;				var alpha = 4278190080; &#10;				var color = alpha + intensity * (65536 + 256 + 1);&#10;				image.setRGB(x, y, color);&#10;			}&#10;		}&#10;	} &#10;	send('image', image);&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -965,7 +965,7 @@
     <entity name="ConstrainedTargetSimulator" class="org.ptolemy.ssm.ConstrainedStateSpaceSimulator">
         <property name="initialState" class="ptolemy.data.expr.Parameter" value="{5.0,6.0}">
         </property>
-        <property name="t" class="ptolemy.data.expr.Parameter" value="24.0">
+        <property name="t" class="ptolemy.data.expr.Parameter" value="1.0">
         </property>
         <property name="maxTrialsToSatisfyConstraints" class="ptolemy.data.expr.Parameter" value="10">
         </property>
