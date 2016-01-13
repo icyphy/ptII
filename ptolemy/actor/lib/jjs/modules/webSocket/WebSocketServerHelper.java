@@ -63,12 +63,12 @@ public class WebSocketServerHelper extends VertxHelperBase {
     public void closeServer() {
     	// Ask the verticle to perform the close.
     	submit(new Runnable() {
-    		public void run() {
-                if (_server != null) {
-                    _server.close();
-                    _server = null;
-                }
-    		}
+    	    public void run() {
+    	        if (_server != null) {
+    	            _server.close();
+    	            _server = null;
+    	        }
+    	    }
     	});
     }
 
@@ -97,25 +97,31 @@ public class WebSocketServerHelper extends VertxHelperBase {
     public void startServer() {
     	// Ask the verticle to start the server.
     	submit(new Runnable() {
-    		public void run() {
-    			_server = _vertx.createHttpServer();
-    			_server.websocketHandler(new Handler<ServerWebSocket>() {
-    				@Override
-    				public void handle(ServerWebSocket serverWebSocket) {
-    					// Notify of a new connection.
-    					// This will have the side effect of creating a new JS Socket
-    					// object, which is an event emitter.
-    					_currentObj.callMember("socketCreated", serverWebSocket);
-    				}
-    			});
-    			_server.listen(_port, _hostInterface,
-    					new Handler<AsyncResult<HttpServer>>() {
-    				@Override
-    				public void handle(AsyncResult<HttpServer> arg0) {
-    					_currentObj.callMember("emit", "listening");
-    				}
-    			});
-    		}
+    	    public void run() {
+    	        _server = _vertx.createHttpServer();
+    	        _server.websocketHandler(new Handler<ServerWebSocket>() {
+    	            @Override
+    	            public void handle(ServerWebSocket serverWebSocket) {
+    	                // Notify of a new connection.
+    	                // This will have the side effect of creating a new JS Socket
+    	                // object, which is an event emitter.
+    	                // Issue the response in the director thread, not in the verticle.
+    	                _issueResponse(() -> {
+    	                    _currentObj.callMember("socketCreated", serverWebSocket);
+    	                });
+    	            }
+    	        });
+    	        _server.listen(_port, _hostInterface,
+    	                new Handler<AsyncResult<HttpServer>>() {
+    	            @Override
+    	            public void handle(AsyncResult<HttpServer> arg0) {
+    	                // Issue the response in the director thread, not in the verticle.
+    	                _issueResponse(() -> {
+    	                    _currentObj.callMember("emit", "listening");
+    	                });
+    	            }
+    	        });
+    	    }
         });
     }
 
