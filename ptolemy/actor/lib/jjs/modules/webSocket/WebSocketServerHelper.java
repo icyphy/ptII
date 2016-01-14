@@ -102,13 +102,14 @@ public class WebSocketServerHelper extends VertxHelperBase {
     	        _server.websocketHandler(new Handler<ServerWebSocket>() {
     	            @Override
     	            public void handle(ServerWebSocket serverWebSocket) {
-    	                // Notify of a new connection.
+    	                // Notify of a new connection by emitting a 'connection' event.
     	                // This will have the side effect of creating a new JS Socket
     	                // object, which is an event emitter.
-    	                // Issue the response in the director thread, not in the verticle.
-    	                _issueResponse(() -> {
-    	                    _currentObj.callMember("socketCreated", serverWebSocket);
-    	                });
+    	                // This has to be done in the verticle thread, not later in the
+    	                // director thread, because it will set up listeners to the socket.
+    	                // If that is deferred, then the server could miss messages that are
+    	                // sent after the connection is established.
+    	                _currentObj.callMember("socketCreated", serverWebSocket);
     	            }
     	        });
     	        _server.listen(_port, _hostInterface,
