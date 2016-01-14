@@ -266,7 +266,9 @@ public class SocketHelper extends VertxHelperBase {
             final NetServer server = _vertx.createNetServer(serverOptions);
 
             // Notify the JavaScript SocketServer object of the server.
-            socketServer.callMember("_serverCreated", server);
+            _issueResponse(() -> {
+                socketServer.callMember("_serverCreated", server);
+            });
 
             server.connectHandler(socket -> {
                 // Connection is established with a client.
