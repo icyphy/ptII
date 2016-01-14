@@ -269,7 +269,7 @@ exports.Server.prototype.close = function() {
 
 /** Notify that a handshake was successful and a websocket has been created.
  *  This is called by the helper class is not meant to be called by the JavaScript
- *  programmer. When this is called, the Server will a new Socket object
+ *  programmer. When this is called, the Server will create a new Socket object
  *  and emit a 'connection' event with that Socket as an argument.
  *  The 'connection' handler can then register for 'message' events from the
  *  Socket or issue replies to the Socket using send(). It can also close() the
