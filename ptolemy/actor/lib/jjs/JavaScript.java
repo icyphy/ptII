@@ -1618,6 +1618,7 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+        _executing = true;
 
         // Note that this will clear out any pending
         // callbacks from the previous execution.
@@ -1629,7 +1630,6 @@ public class JavaScript extends TypedAtomicActor {
 
             _createEngineAndEvaluateSetup();
         }
-        _executing = true;
         _running = false;
     }
 
