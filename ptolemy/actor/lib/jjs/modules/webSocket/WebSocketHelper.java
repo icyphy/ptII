@@ -382,19 +382,13 @@ public class WebSocketHelper extends VertxHelperBase {
         // However, the headers don't seem to available.
         // MultiMap headers = serverWebSocket.headers();
 
-        // Ask the verticle to set up the web socket.
-        // This will execute in a vert.x event loop thread, and
-        // all callbacks that are set up as a side effect will also
-        // execute in that thread.
-        submit(new Runnable() {
-            public void run() {
-                _webSocket.frameHandler(new DataHandler());
-                _webSocket.endHandler(new EndHandler());
-                _webSocket.exceptionHandler(new WebSocketExceptionHandler());
-                _webSocket.closeHandler(new WebSocketCloseHandler());
-                _webSocket.drainHandler(new WebSocketDrainHandler());
-            }
-        });
+        // Note that his is already called in a vert.x thread, so we do not
+        // (and should not) defer this using submit().
+        _webSocket.frameHandler(new DataHandler());
+        _webSocket.endHandler(new EndHandler());
+        _webSocket.exceptionHandler(new WebSocketExceptionHandler());
+        _webSocket.closeHandler(new WebSocketCloseHandler());
+        _webSocket.drainHandler(new WebSocketDrainHandler());
     }
 
     ///////////////////////////////////////////////////////////////////
