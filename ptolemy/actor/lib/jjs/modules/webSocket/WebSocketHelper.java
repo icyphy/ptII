@@ -612,26 +612,21 @@ public class WebSocketHelper extends VertxHelperBase {
                 _actor.log("Connection failed. Will try again: "
                         + arg0.getMessage());
                 // Retry after some time.
-                final Runnable retry = new Runnable() {
-                    public void run() {
-                        // Check again the status of the number of tries.
-                        // This may have been changed if close() was called,
-                        // which occurs, for example, when the model stops executing.
-                        // NOTE: This may actually try connecting even if there will be
-                        // no more firings of the JavaScript actor. But it will only try
-                        // if wrapup has not yet been called, so if it succeeds in connecting,
-                        // presumably either wrapup() or the handler in _connectWebsocket will
-                        // disconnect if the model is no longer executing.
-                        if (_numberOfTries >= 0
-                                && _numberOfTries <= _numberOfRetries
-                                && _actor.isExecuting()) {
-                            _numberOfTries++;
-                            _connectWebsocket(_host, _port, _client);
-                        }
-                    }
-                };
                 _vertx.setTimer(_timeBetweenRetries, id -> {
-                    submit(retry);
+                    // Check again the status of the number of tries.
+                    // This may have been changed if close() was called,
+                    // which occurs, for example, when the model stops executing.
+                    // NOTE: This may actually try connecting even if there will be
+                    // no more firings of the JavaScript actor. But it will only try
+                    // if wrapup has not yet been called, so if it succeeds in connecting,
+                    // presumably either wrapup() or the handler in _connectWebsocket will
+                    // disconnect if the model is no longer executing.
+                    if (_numberOfTries >= 0
+                            && _numberOfTries <= _numberOfRetries
+                            && _actor.isExecuting()) {
+                        _numberOfTries++;
+                        _connectWebsocket(_host, _port, _client);
+                    }
                 });
             }
         }
