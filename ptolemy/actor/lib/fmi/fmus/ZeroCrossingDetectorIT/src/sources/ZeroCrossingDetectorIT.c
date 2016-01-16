@@ -62,9 +62,9 @@ void setStartValues(ModelInstance *comp) {
 }
 
 fmi2Boolean _isTime(ModelInstance *comp) {
-    return comp->eventInfo.nextEventTimeDefined &&
-        (comp->eventInfo.nextEventTime - comp->time < epsilon) &&
-        (comp->eventInfo.nextEventTime - comp->time > - epsilon);
+    return comp->eventInfo.nextEventTimeDefined; &&
+        (comp->eventInfo.nextEventTime - comp->time < epsilon);// &&
+        // (comp->eventInfo.nextEventTime - comp->time > - epsilon);
 }
 
 // called by fmi2GetReal, fmi2GetInteger, fmi2GetBoolean, fmi2GetString, fmi2ExitInitialization

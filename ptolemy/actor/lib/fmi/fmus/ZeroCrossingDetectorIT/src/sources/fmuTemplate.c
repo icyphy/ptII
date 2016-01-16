@@ -1012,7 +1012,9 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2IntegerTime currentCommunicatio
     int stateEvent = 0;
     int timeEvent  = 0;
 
-    fmi2Real hLocal = ((currentCommunicationPoint + communicationStepSize) / 1.0 / comp->resMagnitude - comp->time);
+    // fmi2Real hLocal = ((currentCommunicationPoint + communicationStepSize) / 1.0 / comp->resMagnitude - comp->time);
+    fmi2Real hLocal = (((fmi2Real)(currentCommunicationPoint + communicationStepSize))
+                       / comp->resMagnitude - comp->time);
 
     if (invalidState(comp, "fmi2HybridDoStep", MASK_fmi2DoStep))
         return fmi2Error;
@@ -1042,7 +1044,10 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2IntegerTime currentCommunicatio
     if (success) {
         *computedStepSize = communicationStepSize;
     } else {
-        *computedStepSize = ((fmi2IntegerTime) (comp->time * comp->resMagnitude)) - currentCommunicationPoint;
+        // *computedStepSize = ((fmi2IntegerTime) (comp->time * comp->resMagnitude)) - currentCommunicationPoint;
+        *computedStepSize =
+          ((fmi2IntegerTime) ceil((prevTime + localStepPerformed) * comp->resMagnitude))
+            - currentCommunicationPoint;
     }
 
 
@@ -1066,7 +1071,8 @@ fmi2Status fmi2GetPreferredResolution (fmi2Component c, fmi2Integer *value) {
 fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2IntegerTime currentCommunicationPoint, fmi2IntegerTime *value) {
     ModelInstance *comp = (ModelInstance *)c;
     fmi2Real localCommunicationStepSize = getMaxStepSize(comp);
-    *value = ((fmi2IntegerTime) ((localCommunicationStepSize + comp->time) * comp->resMagnitude)) - currentCommunicationPoint;
+    // *value = ((fmi2IntegerTime) ((localCommunicationStepSize + comp->time) * comp->resMagnitude)) - currentCommunicationPoint;
+    *value = (fmi2IntegerTime) (ceil((localCommunicationStepSize + comp->time) * comp->resMagnitude)) - currentCommunicationPoint;
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2HybridGetMaxStepSize: "
         "currentCommunicationPoint = (%g, %u), "
         "communicationStepSize = %g, converted communicationStepSize = %llu",
