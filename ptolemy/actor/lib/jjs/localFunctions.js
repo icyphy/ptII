@@ -79,7 +79,8 @@ function evaluateCode(accessorName, code) {
         'require': require,
         'send': send,
         'setDefault': setDefault,
-        'setParameter': setParameter
+        'setParameter': setParameter,
+        'superSend': superSend
     };
     // eval(code);
     return new commonHost.Accessor(accessorName, code, getAccessorCode, bindings);
@@ -247,19 +248,18 @@ function send(name, value, channel) {
     if (!proxy) {
         error('No such port: ' + name);
     } else {
-        var output = this.extendedBy.outputs[name];
-        if (output) {
-            // Invoke the basic send() functionality of commonHost so that latestOutput()
-            // works. Make sure the context is this, not the prototype.
-            // Do not do this if sending to my own input, however.
-            // The JavaScript actor handles that.
-            commonHost.Accessor.prototype.send.call(this.extendedBy, name, value, channel);
-        }
+        /* The following used to be done here, but this send() function could be
+         * be invoked in a Vert.x thread, and then there would be a race condition.
+         * A send() could overtake another.
+         * So I've moved this invocation to the place in the helper where the
+         * send via the port actually occurs.
+         */
+        this.superSend(name, value, channel);
 
         // Give channel a default value of 0.
-        channel = (typeof channel !== 'undefined') ? channel : 0;
+        channel = (typeof channel !== 'undefined') && (channel !== null) ? channel : 0;
         token = convertToToken(value, proxy.isJSON());
-        proxy.send(channel, token);
+        proxy.send(channel, token, value);
     }
 }
 
@@ -313,6 +313,21 @@ function setParameter(parameter, value) {
     
         token = convertToToken(value, proxy.isJSON());
         proxy.set(token);
+    }
+}
+
+/** Invoke send() of the commonHost accessor prototype to ensure that latestOutput()
+ *  works.  This is a separate function so that the proxy can invoke it at the same
+ *  time that it actually sends the data via the port. If the port is an input,
+ *  then do nothing.
+ *  @param name The name of the output (a string).
+ *  @param value The value to send.
+ *  @param channel The (optional) channel number, where null is equivalent to 0.
+ */
+function superSend(name, value, channel) {
+    var output = this.extendedBy.outputs[name];
+    if (output) {
+        commonHost.Accessor.prototype.send.call(this.extendedBy, name, value, channel);
     }
 }
 

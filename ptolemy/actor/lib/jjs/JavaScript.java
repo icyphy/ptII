@@ -2605,10 +2605,11 @@ public class JavaScript extends TypedAtomicActor {
         /** Expose the send() method of the port.
          *  @param channelIndex The channel index.
          *  @param data The token to send.
+         *  @param value The JavaScript value to pass back when the send actually occurs.
          *  @exception IllegalActionException If this is a proxy for a parameter or if sending fails.
          *  @exception NoRoomException If there is no room at the destination.
          */
-        public void send(int channelIndex, Token data) throws NoRoomException,
+        public void send(int channelIndex, Token data, Object value) throws NoRoomException,
                 IllegalActionException {
             if (_port == null) {
                 throw new IllegalActionException(JavaScript.this,
@@ -2682,6 +2683,11 @@ public class JavaScript extends TypedAtomicActor {
                         _debug("Sending " + data + " to " + _port.getName());
                     }
                     _port.send(channelIndex, data);
+                    // Invoke the basic send() functionality of commonHost so that latestOutput()
+                    // works. Make sure the context is this, not the prototype.
+                    // Do not do this if sending to my own input, however.
+                    // The JavaScript actor handles that.
+                    _invokeMethodInContext(_instance, "superSend", _port.getName(), value, channelIndex);
                 } else {
                     // Not currently firing. 
                     // Enqueue runnable object to be invoked upon the next firing.
@@ -2698,7 +2704,7 @@ public class JavaScript extends TypedAtomicActor {
                     // matching current real time.
                     final Time now = getDirector().fireAtCurrentTime(JavaScript.this);
                     final Integer id = Integer.valueOf(_timeoutCount++);
-                    final Runnable function = new DeferredSend(this, channelIndex, data);
+                    final Runnable function = new DeferredSend(this, channelIndex, data, value);
                     
                     // Record the callback function indexed by ID.
                     _pendingTimeoutFunctions.put(id, function);
@@ -2766,38 +2772,42 @@ public class JavaScript extends TypedAtomicActor {
     /** Runnable object intended to be run inside of the fire method to
      *  send out a token that was attempted to be send out at an earlier
      *  time, asynchronous with fire.
-     *  @author Marten Lohstroh
      */
     public class DeferredSend implements Runnable {
 
     	/** Construct an object that defers a send operation.
     	 * @param proxy A proxy corresponding to the port or parameter. 
     	 * @param channelIndex The channel to send data on.
-    	 * @param data The data to send through the port or update the parameter with.
+    	 * @param data The data token to send through the port or update the parameter with.
+         * @param value The JavaScript value to pass back when the send actually occurs.
     	 */
-        public DeferredSend(PortOrParameterProxy proxy, int channelIndex, Token data) {
-           this.proxy = proxy;
-           this.channelIndex = channelIndex;
-           this.data = data;
+        public DeferredSend(
+                PortOrParameterProxy proxy, int channelIndex, Token data, Object value) {
+           _proxy = proxy;
+           _channelIndex = channelIndex;
+           _token = data;
+           _value = value;
         }
 
         /** Invoke send on the port or parameter proxy.
          */ 
         public void run() {
             try {
-                proxy.send(channelIndex, data);
+                _proxy.send(_channelIndex, _token, _value);
             } catch (KernelException e) {
                 error("Send to "
-                        + proxy._port.getName()
+                        + _proxy._port.getName()
                         + " failed: "
                         + e.getMessage());
             }
         }
         /** The output channel on the port to send data on. */
-        private int channelIndex;
+        private int _channelIndex;
         /** The data to send. */
-        private Token data;
+        private Token _token;
         /** The proxy for the port to send data through. */
-        private PortOrParameterProxy proxy;
+        private PortOrParameterProxy _proxy;
+        /** The JavaScript value to pass back. */
+        private Object _value;
 	}
 }
