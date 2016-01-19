@@ -4,7 +4,7 @@
 <entity name="RESTWithBody" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={46, 29, 1195, 639}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={113, 50, 1195, 639}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[961, 529]">
     </property>
@@ -28,7 +28,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 20.0]">
         </property>
     </property>
-    <property name="baseURL" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:8078&quot;">
+    <property name="baseURL" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:8004&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -55,7 +55,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[820.0, 65.0]">
         </property>
     </property>
-    <property name="port" class="ptolemy.data.expr.Parameter" value="8078">
+    <property name="port" class="ptolemy.data.expr.Parameter" value="8004">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -311,13 +311,13 @@
     <entity name="Client" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, 215.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={53, 196, 1166, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={12, 208, 1166, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[932, 524]">
         </property>
         <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{463.0, 430.265625}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{466.0, 262.0}">
         </property>
         <property name="annotation" class="ptolemy.kernel.util.Attribute">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -336,7 +336,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 440.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 260.0]">
             </property>
         </property>
         <property name="annotation2" class="ptolemy.kernel.util.Attribute">
@@ -357,21 +357,42 @@ ${parameter} notation</text></svg></configure>
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 330.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 150.0]">
+            </property>
+        </property>
+        <property name="annotation3" class="ptolemy.kernel.util.Attribute">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_iconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure><svg><text x="20" y="20" style="font-size:14; font-family:SansSerif; fill:blue">Pass in options to force evaluating the baseURL parameter just prior to 
+executing the REST accessor, so that baseURL's port number is updated</text></svg></configure>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+                <svg> 
+                    <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-A-</text>
+                </svg>
+              </configure>
+            </property>
+            <property name="_controllerFactory" class="ptolemy.vergil.basic.NodeControllerFactory">
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.AnnotationEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 5.0]">
             </property>
         </property>
         <port name="start" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 435.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 255.0]">
             </property>
         </port>
         <port name="done" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{625.0, 350.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[680.0, 170.0]">
             </property>
         </port>
         <entity name="REST" class="org.terraswarm.accessor.JSAccessor">
@@ -397,7 +418,7 @@ ${parameter} notation</text></svg></configure>
             </property>
             <property name="outputCompleteResponseOnly" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{240.0, 415.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 235.0]">
             </property>
             <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
                 <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor for RESTful interfaces.&#10; Upon receipt of a trigger input, this accessor will issue an HTTP request&#10; specified by the inputs. Some time later, the accessor will receive a response&#10; from the server or a timeout. In the first case, the accessor will produce&#10; the response (body, status code, and headers) on output ports.&#10; In the second case, it will produce a nil output on the response port&#10; and an error.&lt;/p&gt;&#10;&lt;p&gt; The accessor does not block waiting for the response, but any additional&#10; triggered requests will be queued to be issued only after the pending request&#10; has received either a response or a timeout. This strategy ensures that outputs&#10; from this accessor are produced in the same order as the inputs that trigger the&#10; HTTP requests.&lt;/p&gt;&#10;&lt;p&gt; The &lt;i&gt;options&lt;/i&gt; input can be a string URL (with surrounding quotation marks)&#10; or an object with the following fields:&#10; &lt;ul&gt;&#10; &lt;li&gt; headers: An object containing request headers. By default this&#10;      is an empty object. Items may have a value that is an array of values,&#10;      for headers with more than one value.&#10; &lt;li&gt; keepAlive: A boolean that specified whether to keep sockets around&#10;      in a pool to be used by other requests in the future. This defaults to false.&#10; &lt;li&gt; method: A string specifying the HTTP request method.&#10;      This defaults to 'GET', but can also be 'PUT', 'POST', 'DELETE', etc.&#10; &lt;li&gt; url: A string that can be parsed as a URL, or an object containing&#10;      the following fields:&#10;      &lt;ul&gt;&#10;      &lt;li&gt; host: A string giving the domain name or IP address of&#10;           the server to issue the request to. This defaults to 'localhost'.&#10;      &lt;li&gt; protocol: The protocol. This is a string that defaults to 'http'.&#10;      &lt;li&gt; port: Port of remote server. This defaults to 80. &#10;      &lt;/ul&gt;&#10; &lt;/ul&gt;&lt;/p&gt;&#10;&lt;p&gt; For example, the &lt;i&gt;options&lt;/i&gt; parameter could be set to&#10; &lt;code&gt;&#10; {&amp;quot;headers&amp;quot;:{&amp;quot;Content-Type&amp;quot;:&amp;quot;application/x-www-form-urlencoded&amp;quot;}, &amp;quot;method&amp;quot;:&amp;quot;POST&amp;quot;, &amp;quot;url&amp;quot;:&amp;quot;...&amp;quot;}&#10; &lt;/code&gt;&lt;/p&gt;&#10;&lt;p&gt; In addition, there is a &lt;i&gt;command&lt;/i&gt; input that is a string that is appended&#10; as a path to the URL constructed from the &lt;i&gt;options&lt;/i&gt; input. This defaults&#10; to the empty string.&lt;/p&gt;&#10;&lt;p&gt; The &lt;i&gt;arguments&lt;/i&gt; input an object with fields that are converted to a query&#10; string to append to the url, for example '?arg=value'. If the value contains&#10; characters that are not allowed in a URL, such as spaces, they will encoded&#10; according to the ASCII standard, see http://www.w3schools.com/tags/ref_urlencode.asp .&lt;/p&gt;&#10;&lt;p&gt; A &lt;i&gt;trigger&lt;/i&gt; input triggers invocation of the current command. Any value provided&#10; on the trigger input is ignored.&lt;/p&gt;&#10;&lt;p&gt; The output response will be a string if the MIME type of the accessed page&#10; begins with &amp;quot;text&amp;quot;. If the MIME type begins with anything else, then the&#10; binary data will be produced. It is up to the host implementation to ensure&#10; that the data is given in some form that is usable by downstream accessors&#10; or actors.&lt;/p&gt;&#10;&lt;p&gt; The parameter 'timeout' specifies how long this accessor will wait for response.&#10; If it does not receive the response by the specified time, then it will issue&#10; a null response output and an error event (calling the error() function of the host).&lt;/p&gt;&#10;&lt;p&gt; If the parameter 'outputCompleteResponseOnly' is true (the default), then this&#10; accessor will produce a 'response' output only upon receiving a complete response.&#10; If it is false, then multiple outputs may result from a single input or trigger.&lt;/p&gt;">
@@ -472,7 +493,7 @@ ${parameter} notation</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 435.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 255.0]">
             </property>
         </entity>
         <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -480,7 +501,7 @@ ${parameter} notation</text></svg></configure>
             </property>
             <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{655.0, 395.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[710.0, 215.0]">
             </property>
         </entity>
         <entity name="StringReplace" class="ptolemy.actor.lib.string.StringReplace">
@@ -489,11 +510,11 @@ ${parameter} notation</text></svg></configure>
             <property name="stringToEdit" class="ptolemy.actor.parameters.PortParameter" value="&quot;&lt;!DOCTYPE html&gt; &lt;head&gt; &lt;meta charset=\&quot;utf-8\&quot;&gt; &lt;title&gt;Data received&lt;/title&gt;&lt;/head&gt;&lt;body&gt;Received hello&lt;/body&gt;&lt;/html&gt;&quot;">
             </property>
             <doc>Replace the patterns that match a regular expression</doc>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{555.0, 395.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 215.0]">
             </property>
         </entity>
         <entity name="TokenToExpression" class="ptolemy.actor.lib.conversions.TokenToExpression">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 405.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 225.0]">
             </property>
         </entity>
         <entity name="Const4" class="ptolemy.actor.lib.Const">
@@ -506,17 +527,36 @@ ${parameter} notation</text></svg></configure>
                 <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 350.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 170.0]">
             </property>
         </entity>
         <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{510.0, 350.0}">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 170.0]">
             </property>
+        </entity>
+        <entity name="Expression" class="ptolemy.actor.lib.Expression">
+            <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;{\&quot;headers\&quot;:{\&quot;Content-Type\&quot;:\&quot;application/x-www-form-urlencoded\&quot;}, \&quot;method\&quot;:\&quot;POST\&quot;, \&quot;url\&quot;:\&quot;&quot; + baseURL + &quot;\&quot;}&quot;">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+                <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 80.0]">
+            </property>
+            <port name="trigger" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+                <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+                </property>
+            </port>
         </entity>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-            <vertex name="vertex1" value="{325.0, 405.0}">
+            <vertex name="vertex1" value="[380.0, 225.0]">
             </vertex>
             <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const4.trigger&quot;,x=410.0,y=350.0}, tail={id=&quot;relation9.vertex1&quot;,x=325.0,y=405.0}, points={325.0,350.0} },{ head={id=&quot;REST.response&quot;,x=240.0,y=415.0}, tail={id=&quot;relation9.vertex1&quot;,x=325.0,y=405.0}, points={} },{ head={id=&quot;TokenToExpression.input&quot;,x=360.0,y=405.0}, tail={id=&quot;relation9.vertex1&quot;,x=325.0,y=405.0}, points={} } }">
             </property>
@@ -540,11 +580,14 @@ ${parameter} notation</text></svg></configure>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
             </property>
-            <vertex name="vertex1" value="[155.0, 435.0]">
+            <vertex name="vertex1" value="[210.0, 255.0]">
             </vertex>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
         </relation>
         <link port="start" relation="relation8"/>
         <link port="done" relation="relation12"/>
+        <link port="REST.options" relation="relation"/>
         <link port="REST.trigger" relation="relation2"/>
         <link port="REST.response" relation="relation9"/>
         <link port="REST.body" relation="relation2"/>
@@ -559,6 +602,8 @@ ${parameter} notation</text></svg></configure>
         <link port="Const4.trigger" relation="relation9"/>
         <link port="MicrostepDelay.input" relation="relation11"/>
         <link port="MicrostepDelay.output" relation="relation12"/>
+        <link port="Expression.output" relation="relation"/>
+        <link port="Expression.trigger" relation="relation2"/>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[745.0, 255.0]">
