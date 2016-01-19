@@ -86,7 +86,7 @@ function DiscoveryService() {
 	this.discoverDevices = function(IPAddress, discoveryMethod) {
 		
 		var devices;
-		if (typeof discoveryMethod !== undefined) {
+		if (typeof discoveryMethod !== 'undefined') {
 			devices = helper.discoverDevices(IPAddress, discoveryMethod);
 		} else {
 			devices = helper.discoverDevices(IPAddress, "ping");
