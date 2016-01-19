@@ -224,7 +224,7 @@ exports.MockHueBridge = (function(){
       		  var state = JSON.parse(helper.getState(bridgeID));
       		  
       		  if (typeof state.lights[lightID] !== 'undefined') {
-      			  if (typeof body != undefined) {
+      			  if (typeof body !== 'undefined') {
       				  for (var prop in body) {
       					  if (prop != 'transitiontime') {
       						  state.lights[lightID].state[prop] = body[prop];
