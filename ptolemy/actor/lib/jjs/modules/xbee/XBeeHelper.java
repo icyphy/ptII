@@ -205,18 +205,30 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
      *  receiveType arguments.
      */
     public static String[] supportedReceiveTypes() {
-        if (_types == null) {
-            // Avoid FindBugs LI: Unsynchronized Lazy Initialization (FB.LI_LAZY_INIT_UPDATE_STATIC)
-            synchronized (_typesMutex) {
-                if (_types == null) {
-                    // Don't support image type.
-                    int length = DATA_TYPE.values().length - 1;
-                    _types = new String[length];
-                    int i = 0;
-                    for (DATA_TYPE type : DATA_TYPE.values()) {
-                        if (type != DATA_TYPE.IMAGE) {
-                            _types[i++] = type.toString().toLowerCase();
-                        }
+        // Formerly, we checked to see if _types was null outside of the syncronized block
+
+        // However, Coverity Scan warns: 
+        // "CID 1349633 (#1 of 1): Check of thread-shared field evades
+        // lock acquisition
+        // (LOCK_EVASION)5. thread2_checks_field_early: Thread2 checks
+        // _types, reading it after Thread1 assigns to _types but
+        // before some of the correlated field assignments can
+        // occur. It sees the condition
+        // ptolemy.actor.lib.jjs.modules.xbee.XBeeHelper._types ==
+        // null as being false. It continues on before the critical
+        // section has completed, and can read data changed by that
+        // critical section while it is in an inconsistent state."
+
+        // Avoid FindBugs LI: Unsynchronized Lazy Initialization (FB.LI_LAZY_INIT_UPDATE_STATIC)
+        synchronized (_typesMutex) {
+            if (_types == null) {
+                // Don't support image type.
+                int length = DATA_TYPE.values().length - 1;
+                _types = new String[length];
+                int i = 0;
+                for (DATA_TYPE type : DATA_TYPE.values()) {
+                    if (type != DATA_TYPE.IMAGE) {
+                        _types[i++] = type.toString().toLowerCase();
                     }
                 }
             }
