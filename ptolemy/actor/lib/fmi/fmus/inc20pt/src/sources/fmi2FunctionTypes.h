@@ -127,15 +127,15 @@ typedef void      (*fmi2CallbackFreeMemory)    (void*);
 typedef void      (*fmi2StepFinished)          (fmi2ComponentEnvironment, fmi2Status);
 
 typedef struct {
-   const fmi2CallbackLogger         logger;
-   const fmi2CallbackAllocateMemory allocateMemory;
-   const fmi2CallbackFreeMemory     freeMemory;
-   const fmi2StepFinished           stepFinished;
-   const fmi2ComponentEnvironment   componentEnvironment;
+   fmi2CallbackLogger         logger;
+   fmi2CallbackAllocateMemory allocateMemory;
+   fmi2CallbackFreeMemory     freeMemory;
+   fmi2StepFinished           stepFinished;
+   fmi2ComponentEnvironment   componentEnvironment;
 } fmi2CallbackFunctions;
 
 typedef struct {
-         fmi2Boolean newDiscreteStatesNeeded;
+   fmi2Boolean newDiscreteStatesNeeded;
    fmi2Boolean terminateSimulation;
    fmi2Boolean nominalsOfContinuousStatesChanged;
    fmi2Boolean valuesOfContinuousStatesChanged;
@@ -173,10 +173,10 @@ Types for Common Functions
    typedef fmi2Status fmi2ResetTYPE                  (fmi2Component);
 
 /* Getting and setting variable values */
-   typedef fmi2Status fmi2GetRealTYPE   (fmi2Component, const fmi2ValueReference[], size_t, fmi2Real   []);
-   typedef fmi2Status fmi2GetIntegerTYPE(fmi2Component, const fmi2ValueReference[], size_t, fmi2Integer[]);
-   typedef fmi2Status fmi2GetBooleanTYPE(fmi2Component, const fmi2ValueReference[], size_t, fmi2Boolean[]);
-   typedef fmi2Status fmi2GetStringTYPE (fmi2Component, const fmi2ValueReference[], size_t, fmi2String []);
+   typedef fmi2Status fmi2GetRealTYPE          (fmi2Component, const fmi2ValueReference[], size_t, fmi2Real   []);
+   typedef fmi2Status fmi2GetIntegerTYPE       (fmi2Component, const fmi2ValueReference[], size_t, fmi2Integer[]);
+   typedef fmi2Status fmi2GetBooleanTYPE       (fmi2Component, const fmi2ValueReference[], size_t, fmi2Boolean[]);
+   typedef fmi2Status fmi2GetStringTYPE        (fmi2Component, const fmi2ValueReference[], size_t, fmi2String []);
 
    typedef fmi2Status fmi2SetRealTYPE   (fmi2Component, const fmi2ValueReference[], size_t, const fmi2Real   []);
    typedef fmi2Status fmi2SetIntegerTYPE(fmi2Component, const fmi2ValueReference[], size_t, const fmi2Integer[]);
@@ -224,9 +224,9 @@ Types for Functions for FMI2 for Co-Simulation
 /* Simulating the slave */
    typedef fmi2Status fmi2SetRealInputDerivativesTYPE (fmi2Component, const fmi2ValueReference [], size_t, const fmi2Integer [], const fmi2Real []);
    typedef fmi2Status fmi2GetRealOutputDerivativesTYPE(fmi2Component, const fmi2ValueReference [], size_t, const fmi2Integer [], fmi2Real []);
-
    typedef fmi2Status fmi2DoStepTYPE     (fmi2Component, fmi2Real, fmi2Real, fmi2Boolean);
    typedef fmi2Status fmi2CancelStepTYPE (fmi2Component);
+   typedef fmi2Status fmi2GetMaxStepSizeTYPE   (fmi2Component, fmi2Real*);
 
 /* Inquire slave status */
    typedef fmi2Status fmi2GetStatusTYPE       (fmi2Component, const fmi2StatusKind, fmi2Status* );
@@ -234,6 +234,24 @@ Types for Functions for FMI2 for Co-Simulation
    typedef fmi2Status fmi2GetIntegerStatusTYPE(fmi2Component, const fmi2StatusKind, fmi2Integer*);
    typedef fmi2Status fmi2GetBooleanStatusTYPE(fmi2Component, const fmi2StatusKind, fmi2Boolean*);
    typedef fmi2Status fmi2GetStringStatusTYPE (fmi2Component, const fmi2StatusKind, fmi2String* );
+
+/***************************************************
+Types for Functions for FMI2 for Hybrid Co-Simulation
+****************************************************/
+   typedef fmi2Status fmi2HybridDoStepTYPE           (fmi2Component, fmi2Integer, fmi2Integer, fmi2Boolean);
+   typedef fmi2Status fmi2RequiredTimeResolutionTYPE (fmi2Component, fmi2Integer *);
+   typedef fmi2Status fmi2SetTimeResolutionTYPE      (fmi2Component, fmi2Integer );
+   typedef fmi2Status fmi2HybridGetMaxStepSizeTYPE   (fmi2Component, fmi2Integer*);
+   typedef fmi2Status fmi2HybridSetupExperimentTYPE  (fmi2Component, fmi2Boolean, fmi2Integer, fmi2Integer, fmi2Boolean, fmi2Integer);
+
+   typedef fmi2Status fmi2GetHybridRealTYPE          (fmi2Component, const fmi2ValueReference[], size_t, fmi2Real   [], fmi2Integer   []);
+   typedef fmi2Status fmi2GetHybridIntegerTYPE       (fmi2Component, const fmi2ValueReference[], size_t, fmi2Integer[], fmi2Integer   []);
+   typedef fmi2Status fmi2GetHybridBooleanTYPE       (fmi2Component, const fmi2ValueReference[], size_t, fmi2Boolean[], fmi2Integer   []);
+   typedef fmi2Status fmi2GetHybridStringTYPE        (fmi2Component, const fmi2ValueReference[], size_t, fmi2String [], fmi2Integer   []);
+   typedef fmi2Status fmi2SetHybridRealTYPE   (fmi2Component, const fmi2ValueReference[], size_t, const fmi2Real   [], const fmi2Integer   []);
+   typedef fmi2Status fmi2SetHybridIntegerTYPE(fmi2Component, const fmi2ValueReference[], size_t, const fmi2Integer[], const fmi2Integer   []);
+   typedef fmi2Status fmi2SetHybridBooleanTYPE(fmi2Component, const fmi2ValueReference[], size_t, const fmi2Boolean[], const fmi2Integer   []);
+   typedef fmi2Status fmi2SetHybridStringTYPE (fmi2Component, const fmi2ValueReference[], size_t, const fmi2String [], const fmi2Integer   []);
 
 
 #ifdef __cplusplus

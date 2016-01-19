@@ -156,6 +156,10 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
         comp->s = (fmi2String *) functions->allocateMemory(NUMBER_OF_STRINGS,  sizeof(fmi2String));
         comp->isPositive = (fmi2Boolean *)functions->allocateMemory(NUMBER_OF_EVENT_INDICATORS,
             sizeof(fmi2Boolean));
+        comp->hr = (fmi2Integer *)functions->allocateMemory(NUMBER_OF_REALS,     sizeof(fmi2Integer));
+        comp->hi = (fmi2Integer *)functions->allocateMemory(NUMBER_OF_INTEGERS,  sizeof(fmi2Integer));
+        comp->hb = (fmi2Integer *)functions->allocateMemory(NUMBER_OF_BOOLEANS,  sizeof(fmi2Integer));
+        comp->hs = (fmi2Integer *)functions->allocateMemory(NUMBER_OF_STRINGS,   sizeof(fmi2Integer));
         comp->instanceName = functions->allocateMemory(1 + strlen(instanceName), sizeof(char));
         comp->GUID = functions->allocateMemory(1 + strlen(fmuGUID), sizeof(char));
 
@@ -164,14 +168,15 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
             comp->logCategories[i] = loggingOn;
         }
     }
-    if (!comp || !comp->r || !comp->i || !comp->b || !comp->s || !comp->isPositive
-        || !comp->instanceName || !comp->GUID) {
+    if (!comp || !comp->r || !comp->i || !comp->b || !comp->s || !comp->hr || !comp->hi || !comp->hb
+        || !comp->hs || !comp->isPositive || !comp->instanceName || !comp->GUID) {
 
         functions->logger(functions->componentEnvironment, instanceName, fmi2Error, "error",
             "fmi2Instantiate: Out of memory.");
         return NULL;
     }
     comp->time = 0; // overwrite in fmi2SetupExperiment, fmi2SetTime
+    comp->microstep = 0;
     strcpy((char *)comp->instanceName, (char *)instanceName);
     comp->type = fmuType;
     strcpy((char *)comp->GUID, (char *)fmuGUID);
@@ -265,15 +270,25 @@ void fmi2FreeInstance(fmi2Component c) {
         return;
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2FreeInstance")
 
-    if (comp->r) comp->functions->freeMemory(comp->r);
-    if (comp->i) comp->functions->freeMemory(comp->i);
-    if (comp->b) comp->functions->freeMemory(comp->b);
+    if (comp->r) {
+        comp->functions->freeMemory(comp->r);
+        comp->functions->freeMemory(comp->hr);
+    }
+    if (comp->i) {
+        comp->functions->freeMemory(comp->i);
+        comp->functions->freeMemory(comp->hi);
+    }
+    if (comp->b) {
+        comp->functions->freeMemory(comp->b);
+        comp->functions->freeMemory(comp->hb);
+    }
     if (comp->s) {
         int i;
         for (i = 0; i < NUMBER_OF_STRINGS; i++){
             if (comp->s[i]) comp->functions->freeMemory((void *)comp->s[i]);
         }
         comp->functions->freeMemory((void *)comp->s);
+        comp->functions->freeMemory((void *)comp->hs);
     }
     if (comp->isPositive) comp->functions->freeMemory(comp->isPositive);
     if (comp->instanceName) comp->functions->freeMemory((void *)comp->instanceName);
@@ -865,6 +880,300 @@ fmi2Status fmi2GetBooleanStatus(fmi2Component c, const fmi2StatusKind s, fmi2Boo
 
 fmi2Status fmi2GetStringStatus(fmi2Component c, const fmi2StatusKind s, fmi2String *value) {
     return getStatus("fmi2GetStringStatus", c, s);
+}
+
+fmi2Status fmi2HybridSetupExperiment(fmi2Component c, fmi2Boolean toleranceDefined, fmi2Integer tolerance,
+                            fmi2Integer startTime, fmi2Boolean stopTimeDefined, fmi2Integer stopTime) {
+
+    // ignore arguments: stopTimeDefined, stopTime
+    ModelInstance *comp = (ModelInstance *)c;
+    if (invalidState(comp, "fmi2SetupExperiment", MASK_fmi2SetupExperiment))
+        return fmi2Error;
+    FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetupExperiment: toleranceDefined=%d tolerance=%u",
+        toleranceDefined, tolerance)
+
+    comp->time = startTime;
+    comp->microstep = 0;
+    return fmi2OK;
+}
+
+fmi2Status fmi2GetHybridReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2Real value[], fmi2Integer hybridValue[]) {
+#if NUMBER_OF_REALS > 0
+    int i;
+#endif
+    ModelInstance *comp = (ModelInstance *)c;
+    if (invalidState(comp, "fmi2GetHybridReal", MASK_fmi2GetReal))
+        return fmi2Error;
+    if (nvr > 0 && nullPointer(comp, "fmi2GetHybridReal", "vr[]", vr))
+        return fmi2Error;
+    if (nvr > 0 && nullPointer(comp, "fmi2GetHybridReal", "value[]", value))
+        return fmi2Error;
+    calculateValues(comp);
+#if NUMBER_OF_REALS > 0
+    for (i = 0; i < nvr; i++) {
+        if (vrOutOfRange(comp, "fmi2GetHybridReal", vr[i], NUMBER_OF_REALS))
+            return fmi2Error;
+        value[i] = getReal(comp, vr[i]); // to be implemented by the includer of this file
+        hybridValue[i] = comp->hr[vr[i]];
+        if (hybridValue[i] == absent_) {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2GetHybridReal: #r%u# = ABSENT", vr[i])
+        }
+        else {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2GetHybridReal: #r%u# = %.16g", vr[i], value[i])
+        }
+    }
+#endif
+    return fmi2OK;
+}
+
+fmi2Status fmi2GetHybridInteger(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2Integer value[], fmi2Integer hybridValue[]) {
+    int i;
+    ModelInstance *comp = (ModelInstance *)c;
+    if (invalidState(comp, "fmi2GetHybridInteger", MASK_fmi2GetInteger))
+        return fmi2Error;
+    if (nvr > 0 && nullPointer(comp, "fmi2GetHybridInteger", "vr[]", vr))
+            return fmi2Error;
+    if (nvr > 0 && nullPointer(comp, "fmi2GetHybridInteger", "value[]", value))
+            return fmi2Error;
+    if (nvr > 0 && comp->isDirtyValues) {
+        calculateValues(comp);
+        comp->isDirtyValues = 0;
+    }
+    for (i = 0; i < nvr; i++) {
+        if (vrOutOfRange(comp, "fmi2GetHybridInteger", vr[i], NUMBER_OF_INTEGERS))
+            return fmi2Error;
+        hybridValue[i] = comp->hi[vr[i]];
+        value[i] = comp->i[vr[i]];
+        if (hybridValue[i] == absent_) {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2GetHybridInteger: #r%u# = ABSENT", vr[i])
+        }
+        else {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2GetHybridInteger: #i%u# = %d", vr[i], value[i])
+        }
+    }
+    return fmi2OK;
+}
+
+fmi2Status fmi2GetHybridBoolean(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2Boolean value[], fmi2Integer hybridValue[]) {
+    int i;
+    ModelInstance *comp = (ModelInstance *)c;
+    if (invalidState(comp, "fmi2GetHybridBoolean", MASK_fmi2GetBoolean))
+        return fmi2Error;
+    if (nvr > 0 && nullPointer(comp, "fmi2GetHybridBoolean", "vr[]", vr))
+            return fmi2Error;
+    if (nvr > 0 && nullPointer(comp, "fmi2GetHybridBoolean", "value[]", value))
+            return fmi2Error;
+    if (nvr > 0 && comp->isDirtyValues) {
+        calculateValues(comp);
+        comp->isDirtyValues = 0;
+    }
+    for (i = 0; i < nvr; i++) {
+        if (vrOutOfRange(comp, "fmi2GetHybridBoolean", vr[i], NUMBER_OF_BOOLEANS))
+            return fmi2Error;
+        hybridValue[i] = comp->hb[vr[i]];
+        value[i] = comp->b[vr[i]];
+        if (hybridValue[i] == absent_) {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2GetHybridBoolean: #r%u# = ABSENT", vr[i])
+        }
+        else {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2GetHybridBoolean: #b%u# = %s", vr[i], value[i]? "true" : "false")
+        }
+    }
+    return fmi2OK;
+}
+
+fmi2Status fmi2GetHybridString (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, fmi2String value[], fmi2Integer hybridValue[]) {
+    int i;
+    ModelInstance *comp = (ModelInstance *)c;
+    if (invalidState(comp, "fmi2GetHybridString", MASK_fmi2GetString))
+        return fmi2Error;
+    if (nvr>0 && nullPointer(comp, "fmi2GetHybridString", "vr[]", vr))
+            return fmi2Error;
+    if (nvr>0 && nullPointer(comp, "fmi2GetHybridString", "value[]", value))
+            return fmi2Error;
+    if (nvr > 0 && comp->isDirtyValues) {
+        calculateValues(comp);
+        comp->isDirtyValues = 0;
+    }
+    for (i=0; i<nvr; i++) {
+        if (vrOutOfRange(comp, "fmi2GetHybridString", vr[i], NUMBER_OF_STRINGS))
+            return fmi2Error;
+        hybridValue[i] = comp->hs[vr[i]];
+        value[i] = comp->s[vr[i]];
+        if (hybridValue[i] == absent_) {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2GetHybridString: #r%u# = ABSENT", vr[i])
+        }
+        else {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2GetHybridString: #s%u# = '%s'", vr[i], value[i])
+        }
+    }
+    return fmi2OK;
+}
+
+fmi2Status fmi2SetHybridReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Real value[], const fmi2Integer hybridValue[]) {
+    int i;
+    ModelInstance *comp = (ModelInstance *)c;
+    if (invalidState(comp, "fmi2SetHybridReal", MASK_fmi2SetReal))
+        return fmi2Error;
+    if (nvr > 0 && nullPointer(comp, "fmi2SetHybridReal", "vr[]", vr))
+        return fmi2Error;
+    if (nvr > 0 && nullPointer(comp, "fmi2SetHybridReal", "value[]", value))
+        return fmi2Error;
+    FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridReal: nvr = %d", nvr)
+    // no check whether setting the value is allowed in the current state
+    for (i = 0; i < nvr; i++) {
+        if (vrOutOfRange(comp, "fmi2SetHybridReal", vr[i], NUMBER_OF_REALS))
+            return fmi2Error;
+        if (hybridValue[i] == absent_) {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridReal: #r%u# = ABSENT", vr[i])
+        }
+        else {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridReal: #r%d# = %.16g", vr[i], value[i])
+        }
+        comp->r[vr[i]] = value[i];
+        comp->hr[vr[i]] = hybridValue[i];
+    }
+    if (nvr > 0) {
+        comp->isDirtyValues = 1;
+    }
+    return fmi2OK;
+}
+
+fmi2Status fmi2SetHybridInteger(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Integer value[], const fmi2Integer hybridValue[]) {
+    int i;
+    ModelInstance *comp = (ModelInstance *)c;
+    if (invalidState(comp, "fmi2SetHybridInteger", MASK_fmi2SetInteger))
+        return fmi2Error;
+    if (nvr > 0 && nullPointer(comp, "fmi2SetHybridInteger", "vr[]", vr))
+        return fmi2Error;
+    if (nvr > 0 && nullPointer(comp, "fmi2SetHybridInteger", "value[]", value))
+        return fmi2Error;
+    FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridInteger: nvr = %d", nvr)
+
+    for (i = 0; i < nvr; i++) {
+        if (vrOutOfRange(comp, "fmi2SetHybridInteger", vr[i], NUMBER_OF_INTEGERS))
+            return fmi2Error;
+        if (hybridValue[i] == absent_) {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridInteger: #r%u# = ABSENT", vr[i])
+        }
+        else {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridInteger: #i%d# = %d", vr[i], value[i])
+        }
+        comp->i[vr[i]] = value[i];
+        comp->hi[vr[i]] = hybridValue[i];
+    }
+    if (nvr > 0) comp->isDirtyValues = 1;
+    return fmi2OK;
+}
+
+fmi2Status fmi2SetHybridBoolean(fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Boolean value[], const fmi2Integer hybridValue[]) {
+    int i;
+    ModelInstance *comp = (ModelInstance *)c;
+    if (invalidState(comp, "fmi2SetHybridBoolean", MASK_fmi2SetBoolean))
+        return fmi2Error;
+    if (nvr>0 && nullPointer(comp, "fmi2SetHybridBoolean", "vr[]", vr))
+        return fmi2Error;
+    if (nvr>0 && nullPointer(comp, "fmi2SetHybridBoolean", "value[]", value))
+        return fmi2Error;
+    FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridBoolean: nvr = %d", nvr)
+
+    for (i = 0; i < nvr; i++) {
+        if (vrOutOfRange(comp, "fmi2SetHybridBoolean", vr[i], NUMBER_OF_BOOLEANS))
+            return fmi2Error;
+        if (hybridValue[i] == absent_) {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridBoolean: #r%u# = ABSENT", vr[i])
+        }
+        else {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridBoolean: #b%d# = %s", vr[i], value[i] ? "true" : "false")
+        }
+        comp->b[vr[i]] = value[i];
+        comp->hb[vr[i]] = hybridValue[i];
+    }
+    if (nvr > 0) comp->isDirtyValues = 1;
+    return fmi2OK;
+}
+
+fmi2Status fmi2SetHybridString (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2String value[], const fmi2Integer hybridValue[]) {
+    int i;
+    ModelInstance *comp = (ModelInstance *)c;
+    if (invalidState(comp, "fmi2SetHybridString", MASK_fmi2SetString))
+        return fmi2Error;
+    if (nvr>0 && nullPointer(comp, "fmi2SetHybridString", "vr[]", vr))
+        return fmi2Error;
+    if (nvr>0 && nullPointer(comp, "fmi2SetHybridString", "value[]", value))
+        return fmi2Error;
+    FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridString: nvr = %d", nvr)
+
+    for (i = 0; i < nvr; i++) {
+        char *string = (char *)comp->s[vr[i]];
+        if (vrOutOfRange(comp, "fmi2SetHybridString", vr[i], NUMBER_OF_STRINGS))
+            return fmi2Error;
+        if (hybridValue[i] == absent_) {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridString: #r%u# = ABSENT", vr[i])
+        }
+        else {
+            FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetHybridString: #s%d# = '%s'", vr[i], value[i])
+        }
+
+        if (value[i] == NULL) {
+            if (string) comp->functions->freeMemory(string);
+            comp->s[vr[i]] = NULL;
+            comp->hs[vr[i]] = hybridValue[i];
+            FILTERED_LOG(comp, fmi2Warning, LOG_ERROR, "fmi2SetHybridString: string argument value[%d] = NULL.", i);
+        } else {
+            if (string == NULL || strlen(string) < strlen(value[i])) {
+                if (string) comp->functions->freeMemory(string);
+                comp->s[vr[i]] = comp->functions->allocateMemory(1 + strlen(value[i]), sizeof(char));
+                if (!comp->s[vr[i]]) {
+                    comp->state = modelError;
+                    FILTERED_LOG(comp, fmi2Error, LOG_ERROR, "fmi2SetHybridString: Out of memory.")
+                    return fmi2Error;
+                }
+            }
+            strcpy((char *)comp->s[vr[i]], (char *)value[i]);
+            comp->hs[vr[i]] = hybridValue[i];
+        }
+    }
+    if (nvr > 0) comp->isDirtyValues = 1;
+    return fmi2OK;
+}
+
+fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoint,
+                    fmi2Integer communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint) {
+    ModelInstance *comp = (ModelInstance *)c;
+
+    comp->time = currentCommunicationPoint;
+    comp->communicationStepSize = communicationStepSize;
+
+    if (invalidState(comp, "fmi2HybridDoStep", MASK_fmi2DoStep))
+        return fmi2Error;
+
+    FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2HybridDoStep: "
+        "currentCommunicationPoint = (%u, %u), "
+        "communicationStepSize = %u, "
+        "noSetFMUStatePriorToCurrentPoint = fmi2%s",
+        currentCommunicationPoint, comp->microstep, communicationStepSize,
+        noSetFMUStatePriorToCurrentPoint ? "True" : "False")
+
+    if (communicationStepSize < 0) {
+        FILTERED_LOG(comp, fmi2Error, LOG_ERROR,
+            "fmi2HybridDoStep: communication step size must be >= 0. Fount %u.", communicationStepSize)
+        comp->state = modelError;
+        return fmi2Error;
+    }
+
+    comp->time += communicationStepSize;
+    if (communicationStepSize > 0) {
+        comp->microstep = 0;
+    } else {
+        comp->microstep++;
+    }
+    return fmi2OK;
+}
+
+fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
+    *value = -1;
+    return fmi2OK;
 }
 
 // ---------------------------------------------------------------------------

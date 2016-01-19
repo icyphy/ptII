@@ -29,6 +29,10 @@ fmi2Status setString(fmi2Component comp, fmi2ValueReference vr, fmi2String value
 
 #define NUMBER_OF_CATEGORIES 4
 
+#define present_ 0
+#define absent_ 1
+#define unknown_ 2
+
 typedef enum {
     modelStartAndEnd        = 1<<0,
     modelInstantiated       = 1<<1,
@@ -138,7 +142,11 @@ typedef struct {
     fmi2Boolean *b;
     fmi2String  *s;
     fmi2Boolean *isPositive;
-
+    fmi2Integer *hr;
+    fmi2Integer *hi;
+    fmi2Integer *hb;
+    fmi2Integer *hs;
+    fmi2Integer microstep;
     fmi2Real time;
     fmi2Real communicationStepSize;
     fmi2String instanceName;

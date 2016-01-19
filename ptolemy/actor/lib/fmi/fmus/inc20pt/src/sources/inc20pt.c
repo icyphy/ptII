@@ -17,6 +17,10 @@
 #define NUMBER_OF_STATES 0
 #define NUMBER_OF_EVENT_INDICATORS 0
 
+#define present_ 0
+#define absent_ 1
+#define unknown_ 2
+
 // include fmu header files, typedefs and macros
 #include "fmuTemplate.h"
 
@@ -88,4 +92,3 @@ fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *maxStepSize) {
 
 // include code that implements the FMI based on the above definitions
 #include "fmuTemplate.c"
-

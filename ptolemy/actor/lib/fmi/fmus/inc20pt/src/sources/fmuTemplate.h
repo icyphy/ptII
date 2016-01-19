@@ -138,6 +138,11 @@ typedef struct {
     fmi2Boolean *b;
     fmi2String  *s;
     fmi2Boolean *isPositive;
+    fmi2Integer *hr;
+    fmi2Integer *hi;
+    fmi2Integer *hb;
+    fmi2Integer *hs;
+    fmi2Integer microstep;
 
     fmi2Real time;
     fmi2Real communicationStepSize;
