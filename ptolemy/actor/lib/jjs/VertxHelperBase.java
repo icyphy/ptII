@@ -322,10 +322,9 @@ public class VertxHelperBase extends HelperBase {
                 byte[] imageBytes = stream.toByteArray();
                 buffer.appendBytes(imageBytes);
             } else {
+                // Coverity Scan: data cannot be null here.
                 _error("Expected an image to send, but instead got "
-                        + (data == null
-                                ? "a null object"
-                                : data.getClass().getName()));
+                        + data.getClass().getName());
             }
         } else {
             _appendNumericToBuffer(buffer, data, type);
