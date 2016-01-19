@@ -298,16 +298,27 @@ public class SocketHelper extends VertxHelperBase {
      *  @return An array of types
      */
     public static String[] supportedReceiveTypes() {
-        if (_receiveTypes == null) {
-            // Avoid FindBugs LI: Unsynchronized Lazy Initialization (FB.LI_LAZY_INIT_UPDATE_STATIC)
-            synchronized (_receiveTypesMutex) {
-                if (_receiveTypes == null) {
-                    int length = DATA_TYPE.values().length;
-                    _receiveTypes = new String[length];
-                    int i = 0;
-                    for (DATA_TYPE type : DATA_TYPE.values()) {
-                        _receiveTypes[i++] = type.toString().toLowerCase();
-                    }
+        // Formerly, we checked to see if _receiveTypes was null outside of the syncronized block
+        // However, Coverity scan warned:
+        // "CID 1349635 (#1 of 1): Check of thread-shared field evades
+        // lock acquisition
+        // (LOCK_EVASION)5. thread2_checks_field_early: Thread2 checks
+        // _receiveTypes, reading it after Thread1 assigns to
+        // _receiveTypes but before some of the correlated field
+        // assignments can occur. It sees the condition
+        // ptolemy.actor.lib.jjs.modules.socket.SocketHelper._receiveTypes
+        // == null as being false. It continues on before the critical
+        // section has completed, and can read data changed by that
+        // critical section while it is in an inconsistent state."
+
+        // Avoid FindBugs LI: Unsynchronized Lazy Initialization (FB.LI_LAZY_INIT_UPDATE_STATIC)
+        synchronized (_receiveTypesMutex) {
+            if (_receiveTypes == null) {
+                int length = DATA_TYPE.values().length;
+                _receiveTypes = new String[length];
+                int i = 0;
+                for (DATA_TYPE type : DATA_TYPE.values()) {
+                    _receiveTypes[i++] = type.toString().toLowerCase();
                 }
             }
         }
@@ -319,20 +330,18 @@ public class SocketHelper extends VertxHelperBase {
      *  @return An array of types
      */
     public static String[] supportedSendTypes() {
-        if (_sendTypes == null) {
-            // Avoid FindBugs LI: Unsynchronized Lazy Initialization (FB.LI_LAZY_INIT_UPDATE_STATIC)
-            synchronized (_sendTypesMutex) {
-                if (_sendTypes == null) {
-                    int length = DATA_TYPE.values().length;
-                    _sendImageTypes = _removeDuplicates(ImageIO.getWriterFormatNames());
-                    _sendTypes = new String[length + _sendImageTypes.size()];
-                    int i = 0;
-                    for (DATA_TYPE type : DATA_TYPE.values()) {
-                        _sendTypes[i++] = type.toString().toLowerCase();
-                    }
-                    for (String imageType : _sendImageTypes) {
-                        _sendTypes[i++] = imageType;
-                    }
+        // See supportedReceiveTypes() for why we grab the lock.
+        synchronized (_sendTypesMutex) {
+            if (_sendTypes == null) {
+                int length = DATA_TYPE.values().length;
+                _sendImageTypes = _removeDuplicates(ImageIO.getWriterFormatNames());
+                _sendTypes = new String[length + _sendImageTypes.size()];
+                int i = 0;
+                for (DATA_TYPE type : DATA_TYPE.values()) {
+                    _sendTypes[i++] = type.toString().toLowerCase();
+                }
+                for (String imageType : _sendImageTypes) {
+                    _sendTypes[i++] = imageType;
                 }
             }
         }
