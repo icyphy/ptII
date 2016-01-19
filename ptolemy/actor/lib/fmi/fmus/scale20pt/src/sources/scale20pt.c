@@ -84,8 +84,9 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
 
 // We are adding fmi2GetMaxStepSize as a global, so we need to set up the exports.
 
+// However, if this line is present under gcc-4.9.2, then we get an error.
 // Lines like this appear in fmi2FunctionTypes.h for other fmi2* functions.
-typedef fmi2Status fmi2GetMaxStepSizeTYPE                  (fmi2Component, fmi2Real *);
+//typedef fmi2Status fmi2GetMaxStepSizeTYPE                  (fmi2Component, fmi2Real *);
 
 // Lines like thes appear in fmi2Functions.h for other fmi2* functions.
 #define fmi2GetMaxStepSize fmi2FullName(fmi2GetMaxStepSize)
