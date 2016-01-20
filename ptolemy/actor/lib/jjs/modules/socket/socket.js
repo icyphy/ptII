@@ -111,6 +111,7 @@ var defaultClientOptions = {
     'sendType': 'string',
     'sslTls': false,
     'trustAll': false,
+    'trustedCACertPath': ''
 };
 
 // FIXME:
@@ -326,8 +327,8 @@ var defaultServerOptions = {
     'hostInterface': '0.0.0.0', // Means listen on all available interfaces.
     'idleTimeout': 0, // In seconds. 0 means don't timeout.
     'keepAlive': true,
-    'keyStorePassword': '',
-    'keyStorePath': '',
+    'pfxKeyCertPassword': '',
+    'pfxKeyCertPath': '',
     'noDelay': true,
     'port': 4000,
     'rawBytes': true,
