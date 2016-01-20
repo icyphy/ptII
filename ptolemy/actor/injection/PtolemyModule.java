@@ -2,7 +2,7 @@
  PtolemyModule loads interface to implementation mappings from the provided
  ResourceBundle and configures Guice AbstractModule to use those mappings.
 
- Copyright (c) 2011-2013 The Regents of the University of California.
+ Copyright (c) 2011-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,7 +43,7 @@ import java.util.ResourceBundle;
  * the Ptolemy by providing different interface to implementation mappings for different
  * platforms such as Android and Java SE.
  *
- * @author Anar Huseynov
+ * @author Anar Huseynov, Erwini de Ley
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (ahuseyno)
@@ -52,7 +52,25 @@ import java.util.ResourceBundle;
 public class PtolemyModule {
 
     /**
-     * Create a new instance of the PtolemyModule based on the provided moduleBundle.
+     * Create a new instance of the PtolemyModule based on the
+     * provided moduleBundle, and specifying a specific class loader
+     * that should be used to load the implementation classes.
+     *
+     * @param classLoader The ClassLoader
+     * @param moduleBundle The moduleBundle contains mappings from
+     * platform independent interfaces to platform dependent
+     * implementations.  The bundle must have key value mappings from
+     * the fully specified interface name to the fully specified class
+     * name.
+     */
+    public PtolemyModule(ClassLoader classLoader, ResourceBundle moduleBundle) {
+        this(moduleBundle);
+        this._classLoader = classLoader;
+    }
+
+    /**
+     * Create a new instance of the PtolemyModule based on the
+     * provided moduleBundle.
      * @param moduleBundle The moduleBundle contains mappings from platform independent
      * interfaces to platform dependent implementations.  The bundle must have key value mappings
      * from the fully specified interface name to the fully specified class name.
@@ -77,8 +95,23 @@ public class PtolemyModule {
         return _interfaceToImplementationMap;
     }
 
+    /**
+     * Return the (optional) specific class loader for the
+     * implementation classes.
+     * @return the (optional) specific class loader for the implementation classes.
+     */
+    public ClassLoader getClassLoader() {
+      return _classLoader;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /**
+     * An optional custom class loader that should be used to load the
+     * mapped implementation classes.
+     */
+    private ClassLoader _classLoader;
 
     /**
      * The mapping from interface to implementation.
