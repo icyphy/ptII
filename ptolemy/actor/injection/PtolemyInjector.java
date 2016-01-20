@@ -2,7 +2,7 @@
  PtolemyInjector contains a static reference to the Injector loaded with Ptolemy Modules
  for the given target platform.
 
- Copyright (c) 2011-2013 The Regents of the University of California.
+ Copyright (c) 2011-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -36,7 +36,7 @@ package ptolemy.actor.injection;
  * The rationale for having a static reference is to avoid hurdle of passing
  * the injector to all needed parties.
  *
- * @author Anar Huseynov
+ * @author Anar Huseynov, Erwin de Ley
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (ahuseyno)
@@ -55,7 +55,7 @@ public class PtolemyInjector {
     public static synchronized void createInjector(PtolemyModule... modules) {
         _instance = new Injector();
         for (PtolemyModule ptolemyModule : modules) {
-            _instance.loadMappings(ptolemyModule.getBindings());
+            _instance.loadMappings(ptolemyModule);
         }
     }
 
@@ -68,7 +68,7 @@ public class PtolemyInjector {
             Iterable<? extends PtolemyModule> modules) {
         _instance = new Injector();
         for (PtolemyModule ptolemyModule : modules) {
-            _instance.loadMappings(ptolemyModule.getBindings());
+            _instance.loadMappings(ptolemyModule);
         }
     }
 
