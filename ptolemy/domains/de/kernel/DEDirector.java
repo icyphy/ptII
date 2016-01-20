@@ -2422,17 +2422,16 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                         _debug("Current time is: (" + currentTime + ", "
                                 + _microstep + ")");
                     }
-                }
+                    // Exceeding stop time means the current time is strictly
+                    // bigger than the model stop time.
+                    if (currentTime.compareTo(getModelStopTime()) > 0) {
+                        if (_debugging) {
+                            _debug("Current time has passed the stop time.");
+                        }
 
-                // Exceeding stop time means the current time is strictly
-                // bigger than the model stop time.
-                if (currentTime.compareTo(getModelStopTime()) > 0) {
-                    if (_debugging) {
-                        _debug("Current time has passed the stop time.");
+                        _exceedStopTime = true;
+                        return null;
                     }
-
-                    _exceedStopTime = true;
-                    return null;
                 }
             } else { // i.e., actorToFire != null
                 // In a previous iteration of this while loop,
