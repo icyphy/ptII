@@ -153,8 +153,8 @@ public class SocketHelper extends VertxHelperBase {
                 .setTcpNoDelay((Boolean)options.get("noDelay"))
                 .setTrustAll((Boolean)options.get("trustAll"));
 
-        // If SSL/TLS is enabled, it has to be configured.
-        if (clientOptions.isSsl()) {
+        // If SSL/TLS is enabled and trustAll is false, it has to be configured.
+        if (clientOptions.isSsl() && !clientOptions.isTrustAll()) {
             PemTrustOptions pemTrustOptions = new PemTrustOptions();
 
             String caCertPath = (String)options.get("trustedCACertPath");
@@ -173,6 +173,26 @@ public class SocketHelper extends VertxHelperBase {
                 return;
             }
         }
+        
+        String pfxKeyCertPath = (String)options.get("pfxKeyCertPath");
+        File pfxKeyCertFile = FileUtilities.nameToFile(pfxKeyCertPath, null);
+
+        // If the client has its own certificate 
+        if (pfxKeyCertFile != null) {
+            PfxOptions pfxOptions = new PfxOptions();
+            
+            try {
+                pfxOptions.setPath(pfxKeyCertFile.getCanonicalPath());
+            } catch (IOException e) {
+                _error(socketClient, "Failed to find the server key-certificate at " + pfxKeyCertFile);
+                return;
+            }
+            String pfxKeyCertPassword = (String)options.get("pfxKeyCertPassword");
+            
+            pfxOptions.setPassword(pfxKeyCertPassword);
+            clientOptions.setPfxKeyCertOptions(pfxOptions);
+        }
+        
         // NOTE: Find out the (undocumented) default in Vert.x.
         // System.err.println("TcpNoDelay: " + clientOptions.isTcpNoDelay());
 
@@ -261,6 +281,7 @@ public class SocketHelper extends VertxHelperBase {
                 .setSsl((Boolean)options.get("sslTls"))
                 .setTcpNoDelay((Boolean)options.get("noDelay"));
         
+        
         // If SSL/TLS is enabled, it has to be configured.
         if (serverOptions.isSsl()) {
             PfxOptions pfxOptions = new PfxOptions();
@@ -282,29 +303,28 @@ public class SocketHelper extends VertxHelperBase {
             String pfxKeyCertPassword = (String)options.get("pfxKeyCertPassword");
             
             pfxOptions.setPassword(pfxKeyCertPassword);
-            //pfxOptions.setPath("/Users/hokeunkim/Development/workspace/ptII/org/terraswarm/accessor/demo/Junk/certs/Server.pfx");
-            //pfxOptions.setPassword("asdf");
             serverOptions.setPfxKeyCertOptions(pfxOptions);
-            //serverOptions.setPfxKeyCertOptions(options)
-            //serverOptions.setPemKeyCertOptions(pemKeyCertOptions);
-            /*
-            String keyStorePath = (String)options.get("keyStorePath");
-            File keyStoreFile = FileUtilities.nameToFile(keyStorePath, null);
-            if (keyStoreFile == null) {
-                _error(socketServer, "Empty keyStoreFile option. Can't find the key store.");
-                return;
+            
+            // if the server requests/requires a certificate for the client
+            if (serverOptions.getClientAuth() != ClientAuth.NONE) {
+                PemTrustOptions pemTrustOptions = new PemTrustOptions();
+
+                String caCertPath = (String)options.get("trustedCACertPath");
+                File caCertFile = FileUtilities.nameToFile(caCertPath, null);
+                
+                if (caCertFile == null) {
+                    _error(socketServer, "Empty trustedCACertPath option. Can't find the trusted CA certificate.");
+                    return;
+                }
+                try {
+                    pemTrustOptions.addCertPath(caCertFile.getCanonicalPath());
+
+                    serverOptions.setPemTrustOptions(pemTrustOptions);
+                } catch (IOException e) {
+                    _error(socketServer, "Failed to find the trusted CA certificate at " + caCertFile);
+                    return;
+                }
             }
-            String keyStorePassword = (String)options.get("keyStorePassword");
-            try {
-                serverOptions.setKeyStoreOptions(
-                        new JksOptions().
-                        setPath(keyStoreFile.getCanonicalPath()).
-                        setPassword(keyStorePassword));
-            } catch (IOException e) {
-                _error(socketServer, "Failed to find key store at " + keyStoreFile);
-                return;
-            }
-            */
         }
 
         // NOTE: Find out the (undocumented) default in Vert.x.

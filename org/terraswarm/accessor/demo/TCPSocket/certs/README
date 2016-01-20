@@ -3,8 +3,10 @@
 # steps:
 # (1) Create RSA keys
 # (2) Generate CSR (certificate signing request)
-# (3) Create certificate by signing with CA(auth)'s private key
+# (3) Create certificate by signing with CA's private key
 # (4) Check subject and issuer (CA)
+# (5) Create PKCS #12 file using the certificate and private key
+# (6) Check inside of PKCS #12 file
 
 # self-signed certificate for CA
 
@@ -23,11 +25,15 @@ openssl x509 -req -in ServerReq.pem -sha256 -extensions usr_cert -CA CACert.pem 
 openssl x509 -subject -issuer -noout -in ServerCert.pem
 
 openssl pkcs12 -export -out Server.pfx -inkey ServerKey.pem -in ServerCert.pem -password pass:asdf
+openssl pkcs12 -in Server.pfx
 
 # certificate for client
 
-./openssl genrsa -out ClientKey.pem 2048
-./openssl req -new -key ClientKey.pem -sha256 -out ClientReq.pem
-./openssl x509 -req -in ClientReq.pem -sha256 -extensions usr_cert -CA CACert.pem -CAkey CAKey.pem -CAcreateserial -out ClientCert.pem
+openssl genrsa -out ClientKey.pem 2048
+openssl req -new -key ClientKey.pem -sha256 -out ClientReq.pem
+openssl x509 -req -in ClientReq.pem -sha256 -extensions usr_cert -CA CACert.pem -CAkey CAKey.pem -CAcreateserial -out ClientCert.pem
 
-./openssl x509 -subject -issuer -noout -in ClientCert.pem
+openssl x509 -subject -issuer -noout -in ClientCert.pem
+
+openssl pkcs12 -export -out Client.pfx -inkey ClientKey.pem -in ClientCert.pem -password pass:asdf
+openssl pkcs12 -in Client.pfx
