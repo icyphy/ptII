@@ -32,13 +32,11 @@ package ptolemy.actor.lib.jjs.modules.socket;
 
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ClientAuth;
-import io.vertx.core.net.JksOptions;
 import io.vertx.core.net.NetClient;
 import io.vertx.core.net.NetClientOptions;
 import io.vertx.core.net.NetServer;
 import io.vertx.core.net.NetServerOptions;
 import io.vertx.core.net.NetSocket;
-import io.vertx.core.net.PemKeyCertOptions;
 import io.vertx.core.net.PemTrustOptions;
 import io.vertx.core.net.PfxOptions;
 
@@ -580,6 +578,7 @@ public class SocketHelper extends VertxHelperBase {
                 throw new IllegalArgumentException("Invalid receive data type: " + receiveType);
             }
 
+            System.out.println("registering _socket.handler");
             // Set up handlers for data, errors, etc.
             // Do this in the verticle.
             submit(() -> {
@@ -599,6 +598,7 @@ public class SocketHelper extends VertxHelperBase {
                 });
                 // Handler for received data.
                 _socket.handler(buffer -> {
+                    System.out.println("_socket.handler: " + buffer.toString());
                     _processBuffer(buffer);
                 });
             });
