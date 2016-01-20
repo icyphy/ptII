@@ -55,7 +55,7 @@ public class PtolemyInjector {
     public static synchronized void createInjector(PtolemyModule... modules) {
         _instance = new Injector();
         for (PtolemyModule ptolemyModule : modules) {
-            _instance.loadMappings(ptolemyModule.getBindings());
+            _instance.loadMappings(ptolemyModule);
         }
     }
 
@@ -68,7 +68,7 @@ public class PtolemyInjector {
             Iterable<? extends PtolemyModule> modules) {
         _instance = new Injector();
         for (PtolemyModule ptolemyModule : modules) {
-            _instance.loadMappings(ptolemyModule.getBindings());
+            _instance.loadMappings(ptolemyModule);
         }
     }
 

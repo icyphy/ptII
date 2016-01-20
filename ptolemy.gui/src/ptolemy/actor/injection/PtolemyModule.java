@@ -52,6 +52,20 @@ import java.util.ResourceBundle;
 public class PtolemyModule {
 
     /**
+     * Create a new instance of the PtolemyModule based on the provided moduleBundle,
+     * and specifying a specific class loader that should be used to load the implementation classes.
+     *
+     * @param _classLoader
+     * @param moduleBundle The moduleBundle contains mappings from platform independent
+     * interfaces to platform dependent implementations.  The bundle must have key value mappings
+     * from the fully specified interface name to the fully specified class name.
+     */
+    public PtolemyModule(ClassLoader _classLoader, ResourceBundle moduleBundle) {
+        this(moduleBundle);
+        this._classLoader = _classLoader;
+    }
+
+    /**
      * Create a new instance of the PtolemyModule based on the provided moduleBundle.
      * @param moduleBundle The moduleBundle contains mappings from platform independent
      * interfaces to platform dependent implementations.  The bundle must have key value mappings
@@ -77,8 +91,21 @@ public class PtolemyModule {
         return _interfaceToImplementationMap;
     }
 
+    /**
+     * Return the (optional) specific class loader for the implementation classes.
+     * @return the (optional) specific class loader for the implementation classes.
+     */
+    public ClassLoader getClassLoader() {
+      return _classLoader;
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
+    /**
+     * An optional custom class loader that should be used to load the mapped implementation classes.
+     */
+    private ClassLoader _classLoader;
 
     /**
      * The mapping from interface to implementation.
