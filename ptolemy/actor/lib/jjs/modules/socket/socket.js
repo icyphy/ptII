@@ -102,6 +102,8 @@ var defaultClientOptions = {
     'keepAlive': true,
     'maxUnsentMessages': 100,
     'noDelay': true,
+    'pfxKeyCertPassword': '',
+    'pfxKeyCertPath': '',
     'rawBytes': true,
     'receiveBufferSize': 65536,
     'receiveType': 'string',
@@ -336,7 +338,8 @@ var defaultServerOptions = {
     'receiveType': 'string',
     'sendBufferSize': 65536,
     'sendType': 'string',
-    'sslTls': false
+    'sslTls': false,
+    'trustedCACertPath': ''
 };
 
 // FIXME: one of the server options in NetServerOptions is 'acceptBacklog'.
