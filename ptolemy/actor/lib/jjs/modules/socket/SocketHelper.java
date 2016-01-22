@@ -598,7 +598,6 @@ public class SocketHelper extends VertxHelperBase {
                 });
                 // Handler for received data.
                 _socket.handler(buffer -> {
-                    System.out.println("_socket.handler: " + buffer.toString());
                     _processBuffer(buffer);
                 });
             });
