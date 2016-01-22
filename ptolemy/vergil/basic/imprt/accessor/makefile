@@ -54,8 +54,8 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 #PTCLASSALLJARS =
 
 JSRCS = \
-	ImportAccessorAction.java
-
+	ImportAccessorAction.java \
+	ReloadAccessors.java
 
 OTHER_FILES_TO_BE_JARED =
 
