@@ -1,4 +1,4 @@
 exports.setup = function() {
-	extend('BaseC');
+	this.extend('BaseC');
     exports.baseField = 2;
 }

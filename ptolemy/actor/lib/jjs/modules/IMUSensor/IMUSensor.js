@@ -61,7 +61,7 @@ var SensorStream = null;
  *  	var sample = stream.getSample();
  *  	if (prevSample != sample) {
  *  		prevSample = sample;
- *  		send('stream', sample);
+ *  		this.send('stream', sample);
  *  	}
  */
 exports.Stream = function(sensorPort) {
