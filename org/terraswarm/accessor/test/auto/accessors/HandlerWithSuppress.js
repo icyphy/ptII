@@ -8,22 +8,22 @@
  *  @author Edward A. Lee
  */
 exports.setup = function() {
-    input("suppress", {'value':false, 'type': "boolean"});
-    input("produce");
-    output("output", {'type':"number"});
+    this.input("suppress", {'value':false, 'type': "boolean"});
+    this.input("produce");
+    this.output("output", {'type':"number"});
 }
 var count;
 var handleTimeout = function() {
-    send('produce', true);
+    this.send('produce', true);
 };
 var inputHandler = function() {
     count = count + 1;
     if (!get('suppress')) {
-        send('output', count);
+        this.send('output', count);
     }
 };
 exports.initialize = function() {
-	addInputHandler('produce', inputHandler);
+	this.addInputHandler('produce', inputHandler);
     count = 0;
     setInterval(handleTimeout, 1000);
 }
