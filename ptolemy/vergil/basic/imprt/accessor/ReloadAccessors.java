@@ -34,6 +34,7 @@ import javax.swing.SwingUtilities;
 import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.CompositeEntity;
+import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.BasicGraphFrame;
 
 
@@ -66,6 +67,7 @@ public class ReloadAccessors {
     public static void main(String [] args) {
         try {
             for (int i = 0; i < args.length; i++) {
+                System.out.println("ReloadAccessors: " + args[i]);
                 ReloadAccessors.reloadAccessors(args[i]);
             }
         } catch (Throwable throwable) {
@@ -80,6 +82,8 @@ public class ReloadAccessors {
      *  cannot be reloaded or the model saved.
      */
     public static void reloadAccessors(final String modelFileName) throws Throwable {
+        String oldValue = StringUtilities.getProperty("ptolemy.ptII.doNotExit");
+        System.setProperty("ptolemy.ptII.doNotExit", "true");
         Runnable reloadAccessorsAction = new Runnable() {
                 @Override
                 public void run() {
@@ -108,6 +112,7 @@ public class ReloadAccessors {
                 }
             };
         SwingUtilities.invokeAndWait(reloadAccessorsAction);
+        System.setProperty("ptolemy.ptII.doNotExit", oldValue);
     }
 
     static {
