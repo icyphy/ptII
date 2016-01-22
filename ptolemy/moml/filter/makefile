@@ -60,6 +60,7 @@ JSRCS = \
 	DocAttributeChanges.java \
 	GRColorChanges.java \
 	HideAnnotationNames.java \
+	JavaScriptThisUpdate.java \
 	MultiportToSinglePort.java \
 	MoMLFilterSimple.java \
 	NamedObjClassesSeen.java \
