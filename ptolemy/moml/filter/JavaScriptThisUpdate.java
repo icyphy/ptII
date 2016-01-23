@@ -27,6 +27,7 @@
  */
 package ptolemy.moml.filter;
 
+import java.lang.reflect.Method;
 import java.util.HashSet;
 
 import ptolemy.kernel.util.NamedObj;
@@ -37,13 +38,42 @@ import ptolemy.moml.MoMLParser;
 //// JavaScriptThisUpdate
 
 /**
- Add "this." to certain places in the script parameter of a JavaScript actor.
-
- @author Christopher Brooks.
- @version $Id$
- @since Ptolemy II 11.0
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Red (cxh)
+ * Add "this." to certain places in the script parameter of a JavaScript actor.
+ *
+ * <p>This class will eventually be removed after we have updated the files.</p>
+ *
+ * <p>To update a model, try:</p>
+ * <pre>
+ * $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors model.xml
+ * </pre> 
+ *
+ * To update all the models that contain JavaScript actors:
+ * <pre>
+ * # Generate a list of all the text files in the ptII tree, excluding certain directories like vendors.
+ * $PTII/adm/bin/ptIItxtfiles &lt;&amp; /tmp/f
+ *
+ * # Generate a list of all of the .xml files.
+ * cat /tmp/f | egrep '.xml$' &lt; /tmp/x
+ *
+ * # Generate a list of all the .xml files that contain the JavaScript actor.
+ * cat /tmp/x | xargs egrep 'ptolemy.actor.lib.jjs.JavaScript' | awk -F ':' '{print $1}' | sort | uniq &lt; /tmp/javascriptx
+ * 
+ * # Reload the accessors on all the .xml files that contain the JavaScript actor,
+ * # which as a side effect runs the Backward Compatibility script
+ * cat /tmp/jsaccessorx | xargs $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors
+ * </pre>
+ * 
+ * <p>We use <code>ptinvoke</code> to set the classpath.</p>
+ * 
+ * <p>ReloadAccessors, opens a model, reloads all the accessors (if any) and
+ * saves the model.  While opening the model, the BackwardCompatibility MoML
+ * filters are run.  This class can be one of those filters.</p>
+ * 
+ * @author Christopher Brooks
+ * @version $Id$
+ * @since Ptolemy II 11.0
+ * @Pt.ProposedRating Yellow (eal)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class JavaScriptThisUpdate extends MoMLFilterSimple {
 
@@ -92,15 +122,27 @@ public class JavaScriptThisUpdate extends MoMLFilterSimple {
                     .startsWith("ptolemy.actor.lib.jjs.JavaScript")) {
                 String value = ((Settable) container).getExpression().trim();
 
-                System.out.println("JavaScriptThisUpdate: " + actor.getFullName() + " has a script ");
-                
                 // Prepend "this." to keywords that have leading whitespace.
                 for (int i = 0; i < _keywords.length; i++) {
                     value = value.replaceAll(" " + _keywords[i] + "\\(", " this." + _keywords[i] +"(");
                     value = value.replaceAll("\t" + _keywords[i] + "\\(", "\tthis." + _keywords[i] +"(");
                 }
-                ((Settable) container).setExpression(value);
-                MoMLParser.setModified(true);
+
+                // If the old and new values are different, then print them out
+                // and mark the container as modified.
+                String previousValue = ((Settable) container).getExpression().trim();
+                if (!value.equals(previousValue)) {
+                    System.out.println("JavaScriptThisUpdate: " + actor.getFullName() + " has a script:\n" + previousValue);
+                    System.out.println("That has been updated to:\n" + value);
+                    // $PTII/ptolemy/util/test/Diff.java is not necessarily present.
+                    if (_diff != null) {
+                        System.out.println("The diff is:\n");
+                        System.out.println(_diff.invoke(null, ((Settable) container).getExpression().trim(),
+                                    value));
+                    }
+                    ((Settable) container).setExpression(value);
+                    MoMLParser.setModified(true);
+                }
             }
         }
     }
@@ -133,4 +175,21 @@ public class JavaScriptThisUpdate extends MoMLFilterSimple {
         "send",
         "setDefault",
         "setParameter"};
+
+    static {
+        try { 
+            Class diffClass = Class.forName("ptolemy.util.test.Diff");
+            _diff = diffClass.getDeclaredMethod("diff", new Class [] {String.class, String.class});
+        } catch (ClassNotFoundException ex) {
+            System.err.println("JavaScriptThisUpdated could not find ptolemy.util.test.Diff, so diffs will not be printed.");
+        } catch (NoSuchMethodException ex2) {
+            System.err.println("JavaScriptThisUpdated could not find ptolemy.util.test.Diff.diff(String, String), so diffs will not be printed.");
+        }
+
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    protected static Method _diff = null;
 }
