@@ -19,7 +19,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;&#10;exports.setup = function () {&#10;	output('txt');&#10;}&#10;&#10;exports.initialize = function () {&#10;	var a = setInterval(function () {&#10;		send('txt', 'FIRED');&#10;		clearInterval(a);&#10;	}, 500);&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use this.get(parameterName, channel) to read inputs.&#10;// Send to output ports using this.send(value, portName, channel).&#10;&#10;exports.setup = function () {&#10;	this.output('txt');&#10;}&#10;&#10;exports.initialize = function () {&#10;	var self = this;&#10;	var a = setInterval(function () {&#10;		self.send('txt', 'FIRED');&#10;		clearInterval(a);&#10;	}, 500);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -35,8 +35,6 @@
         </property>
         <port name="txt" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
