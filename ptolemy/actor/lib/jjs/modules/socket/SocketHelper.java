@@ -388,8 +388,8 @@ public class SocketHelper extends VertxHelperBase {
                     _receiveTypes[i++] = type.toString().toLowerCase();
                 }
             }
+            return _receiveTypes;
         }
-        return _receiveTypes;
     }
 
     /** Return an array of the types supported by the current host for
@@ -411,8 +411,8 @@ public class SocketHelper extends VertxHelperBase {
                     _sendTypes[i++] = imageType;
                 }
             }
+            return _sendTypes;
         }
-        return _sendTypes;
     }
     
     
