@@ -37,7 +37,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date$">
             </property>
             <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
             </property>
@@ -46,7 +46,7 @@
             <property name="price (port)" class="ptolemy.kernel.util.StringAttribute" value="The most recent stock price (bid).">
             </property>
         </property>
-        <property name="symbol" class="ptolemy.actor.parameters.PortParameter" value="&quot;true&quot;">
+        <property name="symbol" class="ptolemy.actor.parameters.PortParameter" value="&quot;YHOO&quot;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 150.0]">
         </property>
@@ -54,8 +54,6 @@
         </property>
         <port name="symbol" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>

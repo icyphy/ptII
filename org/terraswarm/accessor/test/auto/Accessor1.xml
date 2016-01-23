@@ -123,7 +123,7 @@
         </property>
         <property name="stringInput" class="ptolemy.actor.parameters.PortParameter" value="&quot;Foo&quot;">
         </property>
-        <property name="numericInput" class="ptolemy.actor.parameters.PortParameter" value="1">
+        <property name="numericInput" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 285.0]">
         </property>
