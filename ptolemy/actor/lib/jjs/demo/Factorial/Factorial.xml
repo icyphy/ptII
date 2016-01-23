@@ -54,7 +54,7 @@
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	input('input', {'type': 'int'});&#10;	output('output', {'type': 'int'});&#10;}&#10;exports.fire = function() {&#10;    var value = get('input');&#10;    if (value &lt; 0) {&#10;        throw &quot;Input must be greater than or equal to 0.&quot;;&#10;    } else {&#10;        var total = 1;&#10;        while (value &gt; 1) {&#10;            total *= value;&#10;            value--;&#10;        }&#10;        send('output', total, 0);&#10;    }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('input', {'type': 'int'});&#10;	this.output('output', {'type': 'int'});&#10;}&#10;exports.fire = function() {&#10;    var value = this.get('input');&#10;    if (value &lt; 0) {&#10;        throw &quot;Input must be greater than or equal to 0.&quot;;&#10;    } else {&#10;        var total = 1;&#10;        while (value &gt; 1) {&#10;            total *= value;&#10;            value--;&#10;        }&#10;        this.send('output', total, 0);&#10;    }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -70,13 +70,9 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

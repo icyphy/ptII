@@ -31,7 +31,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;    input('input');&#10;    output('output');&#10;}&#10;exports.fire = function() { send('output', -get('input'), 0);}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;    this.input('input');&#10;    this.output('output');&#10;}&#10;exports.fire = function() { this.send('output', -get('input'), 0);}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -64,7 +64,7 @@
         </property>
     </entity>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="exports.setup = function() {&#10;    input('input');&#10;    output('output');&#10;}&#10;exports.fire = function() {&#10;    send('output', -get('input'), 0);&#10;}">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="exports.setup = function() {&#10;    this.input('input');&#10;    this.output('output');&#10;}&#10;exports.fire = function() {&#10;    this.send('output', -this.get('input'), 0);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -81,7 +81,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 320.0]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

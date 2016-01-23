@@ -331,8 +331,7 @@ function setInterval(func, milliseconds) {
 
 /**
  * Set a timeout to call the specified function after the specified time.
- * 
- * <p>Return a handle to use in clearTimeout(). If there are
+ * Return a handle to use in clearTimeout(). If there are
  * additional arguments beyond the first two, then those arguments
  * will be passed to the function when it is invoked. This
  * implementation uses fireAt() of the director in charge of the host
@@ -345,12 +344,10 @@ function setInterval(func, milliseconds) {
  * two actors specify the same timeout time in, say, their
  * initialize() function, then they will be invoked at the same model
  * time, and their outputs will be simultaneous. Any downstream actor
- * will see them simultaneously.</p>
+ * will see them simultaneously.
  *
- * <p>Note with this implementation, it is not necessary to
+ * Note with this implementation, it is not necessary to
  * call clearTimeout() in the actor's wrapup() function.
- * Nevertheless, it is a good idea to do that in an accessor
- * since other accessor hosts may not work the same way.</p>
  * @param func The callback function.
  * @param milliseconds The interval in milliseconds.
  */
