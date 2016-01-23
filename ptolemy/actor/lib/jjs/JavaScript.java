@@ -121,7 +121,7 @@ import ptolemy.util.StringUtilities;
    and parameters.  For example,
    <pre>
      exports.setup = function() {
-         input('foo', {'type':'string'});
+         this.input('foo', {'type':'string'});
      }
    </pre>
    will create an input port named "foo" (if one does not already exist), and set
@@ -158,12 +158,14 @@ import ptolemy.util.StringUtilities;
       var fire = function() {... function body ...};
       exports.fire = fire;
    </pre>
+   When these functions are invoked, 'this' will be bound to the accessor instance.
+   <p>
    Your script may also register <b>input handler</b> functions by invoking
    <pre>
-      var handle = addInputHandler(portName, function);
+      var handle = this.addInputHandler(portName, function);
    </pre>
    Normally you would do this in initialize().
-   The returned handle can be used to call removeInputHandler().
+   The returned handle can be used to call this.removeInputHandler().
    Handlers will be automatically
    unregistered upon wrapup(), so unless you want to cancel a handler earlier,
    you do not need to explicitly unregister a handler.
@@ -200,8 +202,8 @@ import ptolemy.util.StringUtilities;
    to the input() function in setup().
    </p>
    <p>
-   The context in which your functions run provide the following global functions,
-   at least:</p>
+   The accessor instance (the value of 'this' inside setup(), initialize(),
+   fire(), and wrapup()) has the following functions,  at least:</p>
    <ul>
    <li> addInputHandler(function, input): Specify a function to invoke when the input
         with name input (a string) receives a new input value. Note that after that
@@ -210,25 +212,28 @@ import ptolemy.util.StringUtilities;
         function will be invoked. If the input argument is null or omitted, then
         the specified function will be invoked when any new input arrives to the
         accessor. This function returns a handle that can be used to call removeInputHandler().</li>
+   <li> get(portName): get an input from a port on channel 0.</li>
+   <li> getParameter(parameterName): get a value from a parameter.</li>
+   <li> removeInputHandler(handle): Remove the callback function with the specified handle
+        (returned by addInputHandler()). </li>
+   <li> send(portName, value): send a value to an output port on channel 0</li>
+   <li> setParameter(parameterName, value): set the value of a parameter of this JavaScript actor. </li>
+   </ul>
+   In addition, there are some top-level functions provided (which do not require a this prefix):
+   <ul>
    <li> alert(string): pop up a dialog with the specified message.</li>
    <li> clearInterval(int): clear an interval with the specified handle.</li>
    <li> clearTimeout(int): clear a timeout with the specified handle.</li>
    <li> error(string): send a message to error port, or throw an exception if the error port is not connected.</li>
-   <li> get(portName): get an input from a port on channel 0.</li>
-   <li> getParameter(parameterName): get a value from a parameter.</li>
    <li> httpRequest(url, method, properties, body, timeout): HTTP request (GET, POST, PUT, etc.)</li>
    <li> localHostAddress(): If not in restricted mode, return the local host IP address as a string. </li>
    <li> print(string): print the specified string to the console (standard out).</li>
    <li> readURL(string): read the specified URL and return its contents as a string (HTTP GET).</li>
-   <li> removeInputHandler(handle): Remove the callback function with the specified handle
-        (returned by addInputHandler()). </li>
    <li> require(string): load and return a CommonJS module by name. See
         <a href="http://terraswarm.org/accessors">http://terraswarm.org/accessors</a> for
         supported modules. See
         <a href="http://wiki.commonjs.org/wiki/Modules">http://wiki.commonjs.org/wiki/Modules</a></li>
         for what a CommonJS module is.
-   <li> send(portName, value): send a value to an output port on channel 0</li>
-   <li> setParameter(parameterName, value): set the value of a parameter of this JavaScript actor. </li>
    <li> setInterval(function, int): set the function to execute after specified time and then periodically and return handle.</li>
    <li> setTimeout(function, int): set the function to execute after specified time and return handle.</li>
    </ul>
@@ -245,11 +250,11 @@ import ptolemy.util.StringUtilities;
    The following example script calculates the factorial of the input.</p>
    <pre>
    exports.setup = function() {
-       input('input', {'type':'int'});
-       output('output', {'type':'int'});
+       this.input('input', {'type':'int'});
+       this.output('output', {'type':'int'});
    }
    exports.fire = function() {
-       var value = get('input');
+       var value = this.get('input');
        if (value < 0) {
            error("Input must be greater than or equal to 0.");
        } else {
@@ -258,7 +263,7 @@ import ptolemy.util.StringUtilities;
                total *= value;
                value--;
            }
-           send('output', total);
+           this.send('output', total);
        }
    }
    </pre>
@@ -267,7 +272,7 @@ import ptolemy.util.StringUtilities;
    initialization to firing.  For example,</p>
    <pre>
    exports.setup = function() {
-       output('output', {'type':'int'});
+       this.output('output', {'type':'int'});
    }
    var init;
    exports.initialize() = function() {
@@ -275,7 +280,7 @@ import ptolemy.util.StringUtilities;
    }
    exports.fire = function() {
        init = init + 1;
-       send('output', init);
+       this.send('output', init);
    }
    </pre>
    <p>will send a count of firings to the output named "output".</p>
@@ -312,7 +317,7 @@ import ptolemy.util.StringUtilities;
    var ObjectToken = Java.type('ptolemy.data.ObjectToken');
    exports.fire = function() {
       var token = new ObjectToken([1, 2, 'foo']);
-      send('output', token);
+      this.send('output', token);
    }
    </pre>
    <p>The type of the output port will need to be set to object or general.
@@ -321,7 +326,7 @@ import ptolemy.util.StringUtilities;
    <pre>
    var ObjectToken = Java.type('ptolemy.data.ObjectToken');
    exports.fire = function() {
-      var token = get('input');
+      var token = this.get('input');
       var array = token.getValue();
       ... operate on array, which is the original [1, 2, 'foo'] ...
    }
@@ -343,7 +348,7 @@ import ptolemy.util.StringUtilities;
    a number of type long to an input of a JavaScript actor,
    the script (inside a fire() function):</p>
    <pre>
-      var value = get('input');
+      var value = this.get('input');
       print(value.getClass().toString());
    </pre>
    <p>will print on standard out the string</p>
@@ -364,7 +369,7 @@ import ptolemy.util.StringUtilities;
    var IntMatrixToken = Java.type('ptolemy.data.IntMatrixToken');
    exports.fire = function() {
       var token = new IntMatrixToken([[1, 2], [3, 4]]);
-      send(token, output);
+      this.send('output', token);
    }
    </pre>
    <p>
@@ -397,7 +402,7 @@ import ptolemy.util.StringUtilities;
    For example,</p>
    <pre>
    exports.fire = function() {
-      send('output', toplevel);
+      this.send('output', toplevel);
    }
    </pre>
    where "output" is the name of the output port. Note that the manager
