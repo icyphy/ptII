@@ -87,7 +87,7 @@
             <property name="quasiTypelessOutput (port)" class="ptolemy.kernel.util.StringAttribute">
             </property>
         </property>
-        <property name="quasiTypelessInput" class="ptolemy.actor.parameters.PortParameter" value="1">
+        <property name="quasiTypelessInput" class="ptolemy.actor.parameters.PortParameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 265.0}">
         </property>
@@ -95,8 +95,6 @@
         </property>
         <port name="quasiTypelessInput" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>

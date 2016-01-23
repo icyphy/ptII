@@ -31,7 +31,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Every 2 seconds,&#10;trigger a write to&#10;the kay-value store.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-25.0, -95.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-25.0, -95.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="DiscreteClock">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -45,7 +45,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Every 4 seconds, trigger a read from&#10;the kay-value store. The trigger&#10;input esures that this occurs after&#10;the write that occurs at the same time.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-35.0, 60.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-35.0, 60.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="DiscreteClock2">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -59,7 +59,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The &quot;remove&quot; input is used here as&#10;a trigger, to cause this actor fire.&#10;The value is &quot;false&quot; on that input,&#10;so this actor reads from the key-value&#10;store rather than removing a value.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[60.0, 85.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[60.0, 85.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="KeyValueStore2">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -73,7 +73,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The input at &quot;value&quot; is written to the&#10;key-value store with key &quot;test&quot;.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[55.0, 25.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[55.0, 25.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="KeyValueStore">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -189,7 +189,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date: 2016-01-09 08:45:51 -0800 (Sat, 09 Jan 2016) $">
             </property>
             <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
             </property>
@@ -225,15 +225,11 @@
         </port>
         <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="key" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
@@ -241,15 +237,11 @@
         </port>
         <port name="remove" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="value" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
@@ -271,7 +263,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1 $Date: 2016-01-09 08:45:51 -0800 (Sat, 09 Jan 2016) $">
             </property>
             <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
             </property>
@@ -307,15 +299,11 @@
         </port>
         <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="key" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
@@ -323,15 +311,11 @@
         </port>
         <port name="remove" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="value" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
