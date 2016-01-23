@@ -232,8 +232,8 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
                     }
                 }
             }
+            return _types;
         }
-        return _types;
     }
 
     /** Return an array of the types supported by the current host for
