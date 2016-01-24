@@ -19,7 +19,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;var discovery = require(&quot;discovery&quot;);&#10;&#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function () {&#10;    input('input');&#10;    output('output');&#10;    extend(&quot;net/Discovery.js&quot;);&#10;}&#10;&#10;var handle;&#10;&#10;/** Upon receiving details of a REST service, construct a concrete accessor to access it.&#10; */&#10;exports.initialize = function () {&#10;    handle = addInputHandler('input', function() {&#10;        send('output', get('input') *2);&#10;        send('hostIP', '127.0.9.1');&#10;        this.ssuper.initialize();&#10;        console.log('Initialize extended accessor.');&#10;    });&#10;};&#10;&#10;/** Upon wrapup, stop handling new inputs.  */&#10;exports.wrapup = function () {&#10;    removeInputHandler(handle);&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use this.get(parameterName, channel) to read inputs.&#10;// Send to output ports using this.send(value, portName, channel).&#10;var discovery = require(&quot;discovery&quot;);&#10;&#10;&#10;/** Define inputs and outputs. */&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output');&#10;    this.extend(&quot;net/Discovery.js&quot;);&#10;}&#10;&#10;var handle;&#10;&#10;/** Upon receiving details of a REST service, construct a concrete accessor to access it.&#10; */&#10;exports.initialize = function () {&#10;	var self = this;&#10;    handle = this.addInputHandler('input', function() {&#10;        self.send('output', self.get('input') *2);&#10;        self.send('hostIP', '127.0.9.1');&#10;        self.ssuper.initialize();&#10;        console.log('Initialize extended accessor.');&#10;    });&#10;};&#10;&#10;/** Upon wrapup, stop handling new inputs.  */&#10;exports.wrapup = function () {&#10;    this.removeInputHandler(handle);&#10;};">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -37,23 +37,15 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="hostIP" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="devices" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
