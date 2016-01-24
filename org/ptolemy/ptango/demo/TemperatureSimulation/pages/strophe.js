@@ -1740,7 +1740,7 @@ Strophe.Request.prototype = {
  *  authentication.
  *
  *  After creating a Strophe.Connection object, the user will typically
- *  call connect() with a user supplied callback to handle connection level
+ *  call this.connect() with a user supplied callback to handle connection level
  *  events like authentication failure, disconnection, or connection
  *  complete.
  *
@@ -1750,7 +1750,7 @@ Strophe.Request.prototype = {
  *  connection.  These handlers will be active once authentication is
  *  finished.
  *
- *  To send data to the connection, use send().
+ *  To send data to the connection, use this.send().
  */
 
 /** Constructor: Strophe.Connection
@@ -1869,7 +1869,7 @@ Strophe.Connection.prototype = {
      *
      *  This will prevent Strophe from sending any more requests to the
      *  server.  This is very useful for temporarily pausing while a lot
-     *  of send() calls are happening quickly.  This causes Strophe to
+     *  of this.send() calls are happening quickly.  This causes Strophe to
      *  send the data in a single request, saving many request trips.
      */
     pause: function ()
@@ -2128,9 +2128,9 @@ Strophe.Connection.prototype = {
     /** Function: flush
      *  Immediately send any pending outgoing data.
      *
-     *  Normally send() queues outgoing data until the next idle period
+     *  Normally this.send() queues outgoing data until the next idle period
      *  (100ms), which optimizes network use in the common cases when
-     *  several send()s are called in succession. flush() can be used to
+     *  several this.send()s are called in succession. flush() can be used to
      *  immediately send all pending data.
      */
     flush: function ()

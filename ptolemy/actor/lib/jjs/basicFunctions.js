@@ -98,7 +98,7 @@ function error(message) {
  *  @param uri A specification for the resource.
  *  @param timeout The timeout in milliseconds.
  */
-function getResource(uri, timeout) {
+function this.getResource(uri, timeout) {
     return actor.getResource(uri, timeout);
 }
 
