@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0558352825063892">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.84774174671645, 265.63416524805444}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{302.8477417467164, 265.63416524805444}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
@@ -87,7 +87,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var name;&#10;&#10;exports.setup = function() {&#10;  input('input');&#10;  output('output');&#10;  output('stop', {'type':'boolean'});&#10;  output('feedback', {'type':'string'});&#10;}&#10;&#10;exports.initialize = function() {&#10;  name = null;&#10;  send('feedback', &quot;Please type your name. Type quit to exit.&quot;);&#10;  addInputHandler('input', handleInput);&#10;}&#10;&#10;var handleInput = function() {&#10;  var read = get('input');&#10;  send('feedback', read);&#10;  if (read == 'quit' || read == 'exit') {&#10;    if (name) {&#10;      send('output', name + ' has left.');&#10;    }&#10;    send('stop', true);&#10;   } else  if (!name) {&#10;    name = read;&#10;    send('output', name + ' has joined.');&#10;  } else {&#10;    send('output', name + ': ' + read);&#10;  }&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var name;&#10;&#10;exports.setup = function() {&#10;  this.input('input');&#10;  this.output('output');&#10;  this.output('stop', {'type':'boolean'});&#10;  this.output('feedback', {'type':'string'});&#10;}&#10;&#10;exports.initialize = function() {&#10;  name = null;&#10;  this.send('feedback', &quot;Please type your name. Type quit to exit.&quot;);&#10;  this.addInputHandler('input', handleInput.bind(this));&#10;}&#10;&#10;var handleInput = function() {&#10;  var read = this.get('input');&#10;  this.send('feedback', read);&#10;  if (read == 'quit' || read == 'exit') {&#10;    if (name) {&#10;      this.send('output', name + ' has left.');&#10;    }&#10;    this.send('stop', true);&#10;   } else  if (!name) {&#10;    name = read;&#10;    this.send('output', name + ' has joined.');&#10;  } else {&#10;    this.send('output', name + ': ' + read);&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -196,6 +196,8 @@
             </property>
             <property name="address (port)" class="ptolemy.kernel.util.StringAttribute" value="The event bus address, which is the name of the event stream&#10;  to which to subscribe. This defaults to 'topic'.">
             </property>
+        </property>
+        <property name="reply" class="ptolemy.actor.parameters.PortParameter">
         </property>
         <port name="address" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>

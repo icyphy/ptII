@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={129, 79, 955, 608}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={129, 79, 955, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 498]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[721, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 239.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 252.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for JavaScript MQTT publisher / subscriber.&#10;&#10;NOTE: The default assumes you have a broker server (e.g. mosquitto) running on 'localhost'.&#10;If you don't have a broker server, then try 'iot.eclipse.org' as the broker server address.&#10;It is an open and public broker server provided by the Paho project (https://eclipse.org/paho/).&#10;&#10;The publisher publishes a message every second.&#10;The subscriber unsubscribes after the 7th message arrives.">
@@ -37,7 +37,7 @@
         </property>
     </property>
     <entity name="MqttSubscriber" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var mqtt = require('mqtt');&#10;var client;&#10;&#10;var receivedCount = 0;&#10;function onMessage(topic, data) {&#10;  data = mqtt.binToStr(data);&#10;  send(data, output);&#10;  receivedCount++;&#10;  if (receivedCount &gt;= 7) {&#10;    client.unsubscribe(topic);&#10;  }&#10;}&#10;&#10;function onConnect() {&#10;  send(&quot;Subscriber connected&quot;, output);&#10;  client.subscribe('ptTest');&#10;}&#10;&#10;exports.initialize = function() {&#10;  // if you want to assign a specified clientId,&#10;  //client = mqtt.createClient(1883, 'localhost', {clientId: 'subscriber'});&#10;  // if you don't have a broker server on localhost,&#10;  //client = mqtt.createClient(1883, 'iot.eclipse.org');&#10;  client = mqtt.createClient(1883, 'localhost');&#10;  client.on('connect', onConnect);&#10;  client.on('message', onMessage);&#10;  client.start();&#10;  send('output', 'Subscriber started');&#10;}&#10;&#10;exports.wrapup = function() {&#10;  client.end();&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var mqtt = require('mqtt');&#10;var client;&#10;&#10;var receivedCount = 0;&#10;function onMessage(topic, data) {&#10;  data = mqtt.binToStr(data);&#10;  this.send(data, output);&#10;  receivedCount++;&#10;  if (receivedCount &gt;= 7) {&#10;    client.unsubscribe(topic);&#10;  }&#10;}&#10;&#10;function onConnect() {&#10;  this.send(&quot;Subscriber connected&quot;, output);&#10;  client.subscribe('ptTest');&#10;}&#10;&#10;exports.initialize = function() {&#10;  // if you want to assign a specified clientId,&#10;  //client = mqtt.createClient(1883, 'localhost', {clientId: 'subscriber'});&#10;  // if you don't have a broker server on localhost,&#10;  //client = mqtt.createClient(1883, 'iot.eclipse.org');&#10;  client = mqtt.createClient(1883, 'localhost');&#10;  client.on('connect', onConnect.bind(this));&#10;  client.on('message', onMessage.bind(this));&#10;  client.start();&#10;  this.send('output', 'Subscriber started');&#10;}&#10;&#10;exports.wrapup = function() {&#10;  client.end();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -49,8 +49,6 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
@@ -76,8 +74,6 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">

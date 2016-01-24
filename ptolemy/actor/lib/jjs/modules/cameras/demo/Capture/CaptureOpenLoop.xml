@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={468, 22, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={468, 23, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -54,7 +54,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var cameras = require(&quot;cameras&quot;);&#10;var camera;&#10;var handle = null;&#10;&#10;exports.setup = function() {&#10;  input('trigger');&#10;  output('snapshot');&#10;  parameter('triggered', {'type':'boolean', 'value':true});&#10;  parameter('camera', {'type':'string', 'value':cameras.defaultCamera(), 'options':cameras.cameras()});&#10;  // NOTE: The following assumes that setup() is reinvoked whenever a parameter value changes,&#10;  // since the camera will change and so will the available options.&#10;  camera = new cameras.Camera(getParameter('camera'));&#10;  parameter('viewSize', {'type':'string', 'value':camera.getViewSize(), 'options':camera.viewSizes()});&#10;}&#10;&#10;&#10;exports.initialize = function() {&#10;  camera.setViewSize(getParameter('viewSize'));&#10;  camera.open();&#10;  if (getParameter('triggered')) {&#10;    handle = addInputHandler('trigger', function() {&#10;      send('snapshot', camera.snapshot());&#10;    });&#10;  } else {&#10;    camera.on('image', function(image) {&#10;      send('snapshot', image);&#10;    });&#10;  }&#10;}&#10;exports.wrapup = function() {&#10;  camera.removeAllListeners('image');&#10;  camera.close();&#10;  if (handle != null) {&#10;    removeInputHandler(handle);&#10;  }&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var cameras = require(&quot;cameras&quot;);&#10;var camera;&#10;var handle = null;&#10;&#10;exports.setup = function() {&#10;  this.input('trigger');&#10;  this.output('snapshot');&#10;  this.parameter('triggered', {'type':'boolean', 'value':true});&#10;  this.parameter('camera', {'type':'string', 'value':cameras.defaultCamera(), 'options':cameras.cameras()});&#10;  // NOTE: The following assumes that setup() is reinvoked whenever a parameter value changes,&#10;  // since the camera will change and so will the available options.&#10;  camera = new cameras.Camera(this.getParameter('camera'));&#10;  this.parameter('viewSize', {'type':'string', 'value':camera.getViewSize(), 'options':camera.viewSizes()});&#10;}&#10;&#10;&#10;exports.initialize = function() {&#10;  camera.setViewSize(getParameter('viewSize'));&#10;  camera.open();&#10;  var self = this;&#10;  if (getParameter('triggered')) {&#10;    handle = this.addInputHandler('trigger', function() {&#10;      self.send('snapshot', camera.snapshot());&#10;    });&#10;  } else {&#10;    camera.on('image', function(image) {&#10;      self.send('snapshot', image);&#10;    });&#10;  }&#10;}&#10;exports.wrapup = function() {&#10;  camera.removeAllListeners('image');&#10;  camera.close();&#10;  if (handle != null) {&#10;    this.removeInputHandler(handle);&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -65,22 +65,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 135.0}">
         </property>
         <property name="camera" class="ptolemy.data.expr.StringParameter" value="default camera">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
         <property name="viewSize" class="ptolemy.data.expr.StringParameter" value="{&quot;width&quot;:640, &quot;height&quot;:480}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
         <property name="triggered" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <port name="snapshot" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="object">
             </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
