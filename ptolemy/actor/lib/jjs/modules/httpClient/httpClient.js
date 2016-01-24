@@ -391,7 +391,7 @@ ClientRequest.prototype._response = function(response, body) {
 /** Incoming message object type.  This should not be constructed by the user,
  *  but rather is constructed by the _response function above.
  *  An instance of this object type will be passed to the callback passed to the
- *  request() or get() functions. The instance contains:
+ *  request() or this.get() functions. The instance contains:
  *  <ul>
  *  <li> body: a string with the body of the response. </li>
  *  <li> cookies: an array of strings with cookies returned. </li>

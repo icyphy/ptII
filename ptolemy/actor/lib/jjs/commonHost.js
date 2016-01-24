@@ -170,11 +170,11 @@
  *  * **get**: A function to retrieve the value of an input. The default
  *     implementation returns the the value specified by a provideInput() call, or
  *     if there has been no provideInput() call, then the value provided in the
- *     options argument of the input() call, or null if there is no value.
+ *     options argument of the this.input() call, or null if there is no value.
  *  * **getParameter**: A function to retrieve the value of a parameter. The default
- *     implementation returns the the value specified by a setParameter() call, or
- *     if there has been no setParameter() call, then the value provided in the
- *     options argument of the parameter() call, or null if there is no value.
+ *     implementation returns the the value specified by a this.setParameter() call, or
+ *     if there has been no this.setParameter() call, then the value provided in the
+ *     options argument of the this.parameter() call, or null if there is no value.
  *  * **send**: A function to send an output. The default implementation produces
  *     the output using console.log().
  *
@@ -206,7 +206,7 @@
  *  * **inputHandlersIndex**: An object indexed by handler id (returned
  *    by this.addInputHandler()) that contains objects of the form
  *    {'name': nameOfInput, 'index': arrayIndexOfHandler}.
- *    This is used by removeInputHandler(). If the handler is one
+ *    This is used by this.removeInputHandler(). If the handler is one
  *    for any input, then nameOfInput is null and arrayIndexOfHandler
  *    specifies the position of the handler in the anyInputHandlers array.
  *
@@ -244,7 +244,7 @@
  *  @param accessorName A name to give to the accessor.
  *  @param code The accessor source code.
  *  @param getAccessorCode A function that will retrieve the source code of a specified
- *   accessor (used to implement the extend() and implement() functions), or null if
+ *   accessor (used to implement the this.extend() and this.implement() functions), or null if
  *   the host does not support accessors that extend other accessors.
  *  @param bindings The function bindings to be used by the accessor.
  *  @param extendedBy An optional argument specifying what accessor is extending
@@ -326,7 +326,7 @@ function Accessor(
     // Even if there is an object extending this one, this one has its own
     // exports property. If this object is being extended (rather than
     // implemented), then this new exports object will become the prototype
-    // of the exports object of the immediate parent (see the extend() function
+    // of the exports object of the immediate parent (see the this.extend() function
     // below).
     this.exports = {};
     
@@ -482,7 +482,7 @@ function Accessor(
  *  @param name The name of the input (a string).
  *  @param func The function to be invoked.
  *  @param args Additional arguments to pass to the function.
- *  @return An ID that can be passed to removeInputHandler().
+ *  @return An ID that can be passed to this.removeInputHandler().
  */
 Accessor.prototype.addInputHandler = function(name, func) {
     var argCount = 2, callback, id, tail;
@@ -691,10 +691,10 @@ Accessor.prototype.assignImpliedPrioritiesUpstream = function(accessor, cyclePri
 /** Connect the specified inputs and outputs.
  *  There are four forms of this function:
  *
- *  1. connect(sourceAccessor, 'outputName', destinationAccessor, 'inputName');
- *  2. connect('myInputName', destinationAccessor, 'inputName');
- *  3. connect(sourceAccessor, 'outputName', 'myOutputName');
- *  4. connect('myInputName', 'myOutputName');
+ *  1. this.connect(sourceAccessor, 'outputName', destinationAccessor, 'inputName');
+ *  2. this.connect('myInputName', destinationAccessor, 'inputName');
+ *  3. this.connect(sourceAccessor, 'outputName', 'myOutputName');
+ *  4. this.connect('myInputName', 'myOutputName');
  *
  *  In all cases, this connects a data source to a destination.
  *  An input port of this accessor, with name 'myInputName', can be a source of data
@@ -879,7 +879,7 @@ Accessor.prototype.extend = function(accessorClass) {
             baseName, accessorClass, this.getAccessorCode, null, this, null);
 }
 
-/** Default implementation of get(), which reads the current value of the input
+/** Default implementation of this.get(), which reads the current value of the input
  *  provided by provideInput(), or the default value if none has been provided,
  *  or null if neither has been provided.
  *  @param name The name of the input.
@@ -891,10 +891,10 @@ Accessor.prototype.get = function(name) {
     var input = thiz.inputs[name];
     
     if (!input) {
-        // Tolerate using get() to retrieve a parameter instead of input,
+        // Tolerate using this.get() to retrieve a parameter instead of input,
         // since names are required to be unique anyway. This ensure backward
         // compatibility with earlier models for the Ptolemy host, which used
-        // get() for both inputs and parameters.
+        // this.get() for both inputs and parameters.
         input = thiz.parameters[name];
         if (!input) {
             throw('get(name): No input named ' + name);
@@ -918,8 +918,8 @@ Accessor.prototype.get = function(name) {
     return value;
 }
 
-/** Default implementation of getParameter(), which reads the current value of the
- *  parameter provided by setParameter(), or the default value if none has been provided,
+/** Default implementation of this.getParameter(), which reads the current value of the
+ *  parameter provided by this.setParameter(), or the default value if none has been provided,
  *  or null if neither has been provided.
  *  @param name The name of the parameter.
  */
@@ -928,7 +928,7 @@ Accessor.prototype.getParameter = function(name) {
     if (!parameter) {
         throw('getParameter(name): No parameter named ' + name);
     }
-    // If setParameter() has been called, return that value.
+    // If this.setParameter() has been called, return that value.
     if (parameter['currentValue']) {
         return parameter['currentValue'];
     }
@@ -938,11 +938,11 @@ Accessor.prototype.getParameter = function(name) {
     return value;
 }
 
-/** Default implement of the getResource() function, which throws an exception stating
+/** Default implement of the this.getResource() function, which throws an exception stating
  *  that getResource is not supported.
  */    
 Accessor.prototype.getResource = function() {
-    throw 'This swarmlet host does not support getResource().';
+    throw 'This swarmlet host does not support this.getResource().';
 }
 
 /** Default implement of the httpRequest() function, which throws an exception stating
@@ -1019,7 +1019,7 @@ Accessor.prototype.instantiate = function(instanceName, accessorClass) {
  *  @param accessorName A name to give to the accessor instance.
  *  @param accessorClass Fully qualified accessor class, e.g. 'net/REST'.
  *  @param getAccessorCode A function that will retrieve the source code of a specified
- *   accessor (used to implement the extend() and implement() functions), or null if
+ *   accessor (used to implement the this.extend() and this.implement() functions), or null if
  *   the host does not support accessors that extend other accessors.
  *  @param bindings The function bindings to be used by the accessor.
  *  @param extendedBy An optional argument specifying what accessor is extending
@@ -1403,10 +1403,10 @@ Accessor.prototype.send = function(name, value) {
                 if (thiz.container) {
                     thiz.container.send(destination, value);
                 } else {
-                    // If no other implementation of send() has been provided and
+                    // If no other implementation of this.send() has been provided and
                     // there is no container, this used to produce to standard output.
                     // But this is not a good idea, because hosts should invoke this
-                    // superclass function in their own send(), and this will produce
+                    // superclass function in their own this.send(), and this will produce
                     // a lot of noise on the console.
                     // console.log('Output named "' + name + '" produced: ' + value);
                 }
@@ -1416,18 +1416,18 @@ Accessor.prototype.send = function(name, value) {
             }
         }
     } else {
-        // If no other implementation of send() has been provided and
+        // If no other implementation of this.send() has been provided and
         // there are no destinations, this used to produce to standard output.
         // But this is not a good idea, because hosts should invoke this
-        // superclass function in their own send(), and this will produce
+        // superclass function in their own this.send(), and this will produce
         // a lot of noise on the console.
         // console.log('Output named "' + name + '" produced: ' + value);
     }
 }
 
 /** Set the default value of an input. Note that unlike
- *  using send(), no input handler will be triggered.
- *  Also, unlike send(), the provided value will be persistent,
+ *  using this.send(), no input handler will be triggered.
+ *  Also, unlike this.send(), the provided value will be persistent,
  *  in that once it is set, the host will store the new value along with the model.
  *  @param name The input name (a string).
  *  @param value The value to set.
