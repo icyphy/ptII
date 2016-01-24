@@ -339,9 +339,7 @@ public class SocketHelper extends VertxHelperBase {
 
             server.connectHandler(socket -> {
                 // Connection is established with a client.
-                _issueResponse(() -> {
-                    socketServer.callMember("_socketCreated", socket);
-                });
+                socketServer.callMember("_socketCreated", socket);
             });
 
             try {
