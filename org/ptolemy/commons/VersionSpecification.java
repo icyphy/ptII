@@ -27,6 +27,7 @@
 */
 package org.ptolemy.commons;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 /**
@@ -44,7 +45,8 @@ import java.util.Arrays;
  * @Pt.ProposedRating Yellow (ErwinDL)
  * @Pt.AcceptedRating Yellow (ErwinDL)
  */
-public abstract class VersionSpecification implements Comparable<VersionSpecification> {
+public abstract class VersionSpecification implements Comparable<VersionSpecification>, Serializable {
+    private static final long serialVersionUID = 4728405057895700793L;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////

@@ -54,6 +54,7 @@ import java.util.Arrays;
  * @Pt.AcceptedRating Yellow (ErwinDL)
  */
 public class ThreeDigitVersionSpecification extends VersionSpecification implements Comparable<VersionSpecification> {
+    private static final long serialVersionUID = -383837397410414307L;
 
     /** Construct a three digit version specification.
      * @param major The major version number.
