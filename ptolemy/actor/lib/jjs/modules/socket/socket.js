@@ -302,7 +302,7 @@ exports.SocketClient.prototype.send = function(data) {
                     ". Consider setting discardMessagesBeforeOpen to true.";
             }
         } else {
-            console.log('Discarding because socket is not open: ' + data);
+            console.log('Discarding because socket is not open.');
         }
     }      
 };
@@ -379,9 +379,7 @@ var defaultServerOptions = {
  *         console.log('Server connected on a new socket number: ' + connectionNumber);
  *         serverSocket.on('data', function(data) {
  *             console.log('Server received data on connection '
- *                     + connectionNumber
- *                     + ": "
- *                     + data);
+ *                     + connectionNumber);
  *         });
  *     });
  * 

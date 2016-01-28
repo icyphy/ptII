@@ -18,10 +18,10 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0870580209385436">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.586141734193, 384.736119549516}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.58614173419306, 384.736119549516}">
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  input('input');&#10;  output('output', {'type':'number'});&#10;}&#10;addInputHandler(null, function() {&#10;    send('output', get('input') * 2);&#10;});">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;  this.output('output', {'type':'number'});&#10;}&#10;exports.initialize = function() {&#10;    var self = this;&#10;    this.addInputHandler(null, function() {&#10;        self.send('output', this.get('input') * 2);&#10;    });&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
