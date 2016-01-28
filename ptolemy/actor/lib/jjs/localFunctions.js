@@ -100,7 +100,7 @@ function getAccessorCode(name) {
  *  @param name The name of the parameter (a string).
  *  @return The value of the parameter, or null if it has no value.
  */
-function this.getParameter(name) {
+function getParameter(name) {
     if (typeof name !== 'string') {
         throw ('name argument is required to be a string. Got: ' + (typeof name));
     }
@@ -131,8 +131,8 @@ function this.getParameter(name) {
  *  @param name The name of the input.
  *  @param options The options, or null or omitted to accept the defaults.
  */
-function this.input(name, options) {
-    // Invoke the basic this.input() functionality of commonHost.
+function input(name, options) {
+    // Invoke the basic input() functionality of commonHost.
     // Make sure the context is this, not the prototype.
     commonHost.Accessor.prototype.input.call(this, name, options);
     
@@ -161,8 +161,8 @@ function this.input(name, options) {
  *  @param name The name of the output.
  *  @param options The options, or null or omitted to accept the defaults.
  */
-function this.output(name, options) {
-    // Invoke the basic this.output() functionality of commonHost.
+function output(name, options) {
+    // Invoke the basic output() functionality of commonHost.
     // Make sure the context is this, not the prototype.
     commonHost.Accessor.prototype.output.call(this, name, options);
     
@@ -192,8 +192,8 @@ function this.output(name, options) {
  *  @param name The name of the parameter.
  *  @param options The options, or null or omitted to accept the defaults.
  */
-function this.parameter(name, options) {
-    // Invoke the basic this.parameter() functionality of commonHost.
+function parameter(name, options) {
+    // Invoke the basic parameter() functionality of commonHost.
     // Make sure the context is this, not the prototype.
     commonHost.Accessor.prototype.parameter.call(this, name, options);
     
@@ -215,14 +215,14 @@ function this.parameter(name, options) {
  *  If the type of the output or input is JSON, then the value
  *  is converted to a JSON string using JSON.stringify(value) before sending.
  *  If you are sending to an input, the value of that input will not be changed
- *  immediately, but instead, after conclusion of the function calling this.send(),
+ *  immediately, but instead, after conclusion of the function calling send(),
  *  any input handlers registered with that input and any fire() method defined
  *  will be invoked.
  *  @param name The name of the output or input (a string).
  *  @param value The value to send.
  *  @param channel The (optional) channel number, where null is equivalent to 0.
  */
-function this.send(name, value, channel) {
+function send(name, value, channel) {
     if (typeof name !== 'string') {
         throw ('name argument is required to be a string. Got: ' + (typeof name));
     }
@@ -230,9 +230,9 @@ function this.send(name, value, channel) {
     if (!proxy) {
         error('No such port: ' + name);
     } else {
-        /* The following used to be done here, but this this.send() function could be
+        /* The following used to be done here, but this send() function could be
          * be invoked in a Vert.x thread, and then there would be a race condition.
-         * A this.send() could overtake another.
+         * A send() could overtake another.
          * So I've moved this invocation to the place in the helper where the
          * send via the port actually occurs.
          */
@@ -247,23 +247,23 @@ function this.send(name, value, channel) {
 
 /** Set the value of a parameter.
  *  Note that this can also be used to set the value of an input that has a
- *  default value, instead of using this.send(), but no input handler will be triggered.
+ *  default value, instead of using send(), but no input handler will be triggered.
  *  @param parameter The parameter name (a string).
  *  @param value The value to set.
- *  @deprecated Use this.setParameter() or this.setDefault().
+ *  @deprecated Use setParameter() or setDefault().
  */
 function set(parameter, value) {
     this.setParameter(parameter, value);
 }
 
 /** Set the default value of an input. Note that unlike
- *  using this.send(), no input handler will be triggered.
- *  Also, unlike this.send(), the provided value will be persistent,
+ *  using send(), no input handler will be triggered.
+ *  Also, unlike send(), the provided value will be persistent,
  *  in that once it is set, the host will store the new value along with the model.
  *  @param input The input name (a string).
  *  @param value The value to set.
  */
-function this.setDefault(input, value) {
+function setDefault(input, value) {
     if (typeof input !== 'string') {
         throw ('input argument is required to be a string. Got: ' + (typeof input));
     }
@@ -281,7 +281,7 @@ function this.setDefault(input, value) {
  *  @param parameter The parameter name (a string).
  *  @param value The value to set.
  */
-function this.setParameter(parameter, value) {
+function setParameter(parameter, value) {
     if (typeof parameter !== 'string') {
         throw ('parameter argument is required to be a string. Got: ' + (typeof parameter));
     }
@@ -289,7 +289,7 @@ function this.setParameter(parameter, value) {
     if (!proxy) {
         error('No such parameter: ' + parameter);
     } else {
-        // Invoke the basic this.parameter() functionality of commonHost.
+        // Invoke the basic parameter() functionality of commonHost.
         // Make sure the context is this, not the prototype.
         commonHost.Accessor.prototype.setParameter.call(this, parameter, value);
     
@@ -298,7 +298,7 @@ function this.setParameter(parameter, value) {
     }
 }
 
-/** Invoke this.send() of the commonHost accessor prototype to ensure that latestOutput()
+/** Invoke send() of the commonHost accessor prototype to ensure that latestOutput()
  *  works.  This is a separate function so that the proxy can invoke it at the same
  *  time that it actually sends the data via the port. If the port is an input,
  *  then do nothing.
