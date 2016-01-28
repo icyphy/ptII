@@ -840,11 +840,11 @@ function convertType(value, destination, name) {
         // JSON representation.
         try {
             JSON.stringify(value);
-        } catch(error) {
+        } catch(err) {
             throw('Object provided to '
                     + name
                     + ' does not have a JSON representation: '
-                    + error);
+                    + err);
         }
     }
     return value;
@@ -1302,7 +1302,14 @@ Accessor.prototype.removeInputHandler = function(handle) {
  *  that require is not supported.
  */    
 Accessor.prototype.require = function() {
-    throw 'This swarmlet host does not support require().';
+    // Print a stack trace.
+    var e = new Error('This swarmlet host does not support require().');
+    var stack = e.stack.replace(/^[^\(]+?[\n$]/gm, '')
+            .replace(/^\s+at\s+/gm, '')
+            .replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@')
+            .split('\n');
+    console.log(stack);
+    throw e;
 }
 
 /** Schedule a reaction of the specified contained accessor.

@@ -86,7 +86,7 @@ function getAccessorCode(name) {
         var location = _accessorPath[i].concat(name);
         try {
             code = js.getFileAsString(location);
-        } catch(error) {
+        } catch(err) {
             continue;
         }
     }
