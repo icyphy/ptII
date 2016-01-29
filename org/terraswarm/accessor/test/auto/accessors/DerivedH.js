@@ -10,6 +10,6 @@ exports.fire = function() {
     if (value !== null) {
         this.setDefault('in1', value);
     }
-    this.ssuper.fire();
+    exports.ssuper.fire.call(this);
 }
 

@@ -43,7 +43,7 @@
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;exports.setup = function() {&#10;  input('trigger');&#10;  output('JSONOut');&#10;}&#10;var handle;&#10;exports.initialize = function() {&#10;  handle = addInputHandler('trigger', handler);&#10;}&#10;&#10;function handler() {&#10;  var toSend = {'data': 1}&#10;  console.log(toSend);&#10;  send('JSONOut', toSend);&#10;}&#10;&#10;exports.wrapup = function() {&#10;  removeInputHandler(handle);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('trigger');&#10;  this.output('JSONOut');&#10;}&#10;var handle;&#10;exports.initialize = function() {&#10;  handle = this.addInputHandler('trigger', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;  var toSend = {'data': 1}&#10;  console.log(toSend);&#10;  this.send('JSONOut', toSend);&#10;}&#10;&#10;exports.wrapup = function() {&#10;  this.removeInputHandler(handle);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -55,17 +55,13 @@
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="JSONOut" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="JavaScript3" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;exports.setup = function() {&#10;  input('JSONIn');&#10;  output('JSONParsed');&#10;}&#10;var handle;&#10;exports.initialize = function() {&#10;  handle = addInputHandler('JSONIn', handler);&#10;}&#10;&#10;function handler() {&#10;  var JSONIn = get('JSONIn');&#10;  console.log(JSONIn.data);&#10;  send('JSONParsed', JSONIn.data);&#10;}&#10;&#10;exports.wrapup = function() {&#10;  removeInputHandler(handle);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use this.get(parameterName, channel) to read inputs.&#10;// Send to output ports using this.send(value, portName, channel).&#10;exports.setup = function() {&#10;  this.input('JSONIn');&#10;  this.output('JSONParsed');&#10;}&#10;var handle;&#10;exports.initialize = function() {&#10;  handle = this.addInputHandler('JSONIn', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;  var JSONIn = this.get('JSONIn');&#10;  console.log(JSONIn.data);&#10;  this.send('JSONParsed', JSONIn.data);&#10;}&#10;&#10;exports.wrapup = function() {&#10;  this.removeInputHandler(handle);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -77,13 +73,9 @@
         </property>
         <port name="JSONIn" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="JSONParsed" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">

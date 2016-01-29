@@ -63,7 +63,7 @@
         </property>
     </entity>
     <entity name="DerivedAgainE" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Derived class to test hiding of ports and parameters.&#10;exports.setup = function() {&#10;   extend('DerivedI');&#10;   input('in1', {'visibility':'expert'});&#10;   input('trigger', {'visibility':'none'});&#10;   input('anotherTrigger');&#10;   parameter('test', {'visibility':'expert'});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Derived class to test hiding of ports and parameters.&#10;exports.setup = function() {&#10;   this.extend('DerivedI');&#10;   this.input('in1', {'visibility':'expert'});&#10;   this.input('trigger', {'visibility':'none'});&#10;   this.input('anotherTrigger');&#10;   this.parameter('test', {'visibility':'expert'});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -77,7 +77,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 335.0}">
         </property>
         <property name="in1" class="ptolemy.actor.parameters.PortParameter" value="{&quot;foo&quot;:42}">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">

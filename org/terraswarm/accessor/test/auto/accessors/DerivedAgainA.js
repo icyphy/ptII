@@ -12,7 +12,7 @@ exports.setup = function() {
 //base and derived
 exports.inputHandler = function() {
    // Invoke the base class inputHandler, defined two levels up.
-   Object.getPrototypeOf(exports).inputHandler.apply(this);
+   Object.getPrototypeOf(exports).inputHandler.call(this);
    this.send('out2', this.derivedField);
 }
 

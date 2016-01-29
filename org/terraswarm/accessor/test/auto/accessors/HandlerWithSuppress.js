@@ -18,12 +18,12 @@ var handleTimeout = function() {
 };
 var inputHandler = function() {
     count = count + 1;
-    if (!get('suppress')) {
+    if (!this.get('suppress')) {
         this.send('output', count);
     }
 };
 exports.initialize = function() {
-	this.addInputHandler('produce', inputHandler);
+	this.addInputHandler('produce', inputHandler.bind(this));
     count = 0;
-    setInterval(handleTimeout, 1000);
+    setInterval(handleTimeout.bind(this), 1000);
 }

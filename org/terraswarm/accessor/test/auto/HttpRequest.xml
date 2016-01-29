@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 200.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={103, 59, 928, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={103, 59, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -28,7 +28,7 @@
     </entity>
     <entity name="HttpRequest" class="org.terraswarm.accessor.JSAccessor">
         <display name="Modified&#10;StockTick&#10;Accessor"/>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    exports.fire = function() {&#10;        var stock = get('symbol');&#10;        var url = &quot;http://ptolemy.org&quot;;&#10;        var result = httpRequest(url,'GET',null,null,1000);&#10;        send('price', result);&#10;    }&#10;	// &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    exports.fire = function() {&#10;        var stock = this.get('symbol');&#10;        var url = &quot;http://ptolemy.org&quot;;&#10;        var result = httpRequest(url,'GET',null,null,1000);&#10;        this.send('price', result);&#10;    }&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/HttpRequest.xml">
         </property>
