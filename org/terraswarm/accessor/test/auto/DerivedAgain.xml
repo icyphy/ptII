@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.99999999999983, 252.9999999999994}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{339.99999999999983, 252.99999999999935}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
@@ -69,7 +69,7 @@
         </property>
     </entity>
     <entity name="DerivedAgainA" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Doubly derived accessor that overrides a function (inputHandler) of the base&#10; *  two levels up, it should produce an output value of 2 on both outputs.&#10; *  @accessor TestDerivedC&#10; *  @author Edward A. Lee&#10; */ &#10;exports.setup = function() {&#10;   extend('DerivedC');&#10;   output('out2');&#10;}&#10;&#10;//Override input Handler of base. try to access fields defined in&#10;//base and derived&#10;exports.inputHandler = function() {&#10;   // Invoke the base class inputHandler, defined two levels up.&#10;   Object.getPrototypeOf(exports).inputHandler.apply(this);&#10;   send('out2', this.derivedField);&#10;}&#10;&#10;&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Doubly derived accessor that overrides a function (inputHandler) of the base&#10; *  two levels up, it should produce an output value of 2 on both outputs.&#10; *  @accessor TestDerivedC&#10; *  @author Edward A. Lee&#10; */ &#10;exports.setup = function() {&#10;   this.extend('DerivedC');&#10;   this.output('out2');&#10;}&#10;&#10;//Override input Handler of base. try to access fields defined in&#10;//base and derived&#10;exports.inputHandler = function() {&#10;   // Invoke the base class inputHandler, defined two levels up.&#10;   Object.getPrototypeOf(exports).inputHandler.call(this);&#10;   this.send('out2', this.derivedField);&#10;}&#10;&#10;&#10;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>

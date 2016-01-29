@@ -6,10 +6,11 @@ exports.setup = function() {
 }
 
 exports.initialize = function() {
-   this.ssuper.initialize();
+   exports.ssuper.initialize.call(this);
    console.log('derived init');
+   var self = this;
    this.addInputHandler('in1', function() {
-      this.send('output', this.get('in1'));
+      self.send('output', self.get('in1'));
    });
 }
 

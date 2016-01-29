@@ -4,7 +4,7 @@ exports.setup = function() {
 }
 
 exports.initialize = function() {
-   this.addInputHandler('in1', this.inputHandler);
+   this.addInputHandler('in1', this.exports.inputHandler.bind(this));
 }
 
 exports.inputHandler = function() {

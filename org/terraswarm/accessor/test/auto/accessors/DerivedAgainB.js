@@ -8,8 +8,8 @@ exports.setup = function() {
 exports.inputHandler = function() {
    // Invoke the base class inputHandler, defined two levels up.
    // Note that in ECMA 6, we can just say super.inputHandler().
-   this.ssuper.inputHandler();
-   this.send('out2', this.derivedField);
+   exports.ssuper.inputHandler.call(this);
+   this.send('out2', exports.derivedField);
 }
 
 

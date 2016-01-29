@@ -11,6 +11,5 @@ exports.fire = function() {
     if (value !== null) {
         this.send('in1', value);
     }
-    this.ssuper.fire();
+    exports.ssuper.fire.call(this);
 }
-

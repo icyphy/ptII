@@ -11,10 +11,11 @@ var count;
 var handle;
 exports.initialize = function() {
   count = 0;
+  var self = this;
   handle = setInterval(
     function() {
       // Send to my own input to trigger fire().
-      this.send('produce', true);
+      self.send('produce', true);
     },
     1000);
 }
