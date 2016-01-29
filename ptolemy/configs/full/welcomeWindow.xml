@@ -1,6 +1,18 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<!-- This is the window that is displayed with Vergil is invoked
+     with no arguments and it is what is displayed when
+     help->about is invoked.
+     The default is to not bring up a blank editor.  To
+     change this, include the following in defaultFullConfiguration.xml:
+     
+     property name="_applicationBlankPtolemyEffigyAtStartup"
+            class="ptolemy.data.expr.Parameter"
+            value="true"
+            
+     See VergilApplication for the code that handles the details.
+     -->
 <entity name="directory">
   <entity name="doc" class="ptolemy.actor.gui.HTMLEffigy">
     <entity name="tableau" class="ptolemy.actor.gui.HTMLViewerTableau">
