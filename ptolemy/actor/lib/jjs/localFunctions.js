@@ -55,14 +55,20 @@ Object.setPrototypeOf(exports, {
  */
 function evaluateCode(accessorName, code) {
     var bindings = {
+        'clearInterval': clearInterval,
+        'clearTimeout': clearTimeout,
         'getParameter': getParameter,
+        'httpRequest': httpRequest,
         'input': input,
         'output': output,
         'parameter': parameter,
+        'readURL': readURL,
         'require': require,
         'send': send,
         'setDefault': setDefault,
+        'setInterval': setInterval,
         'setParameter': setParameter,
+        'setTimeout': setTimeout,
         'superSend': superSend
     };
     return new commonHost.Accessor(accessorName, code, getAccessorCode, bindings);

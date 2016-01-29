@@ -419,7 +419,7 @@ function Accessor(
     }
         
     ////////////////////////////////////////////////////////////////////
-    //// Provide wrapper functions for initialize() and wrapup().
+    //// Provide wrapper functions for initialize(), fire(), and wrapup().
 
     if (!extendedBy && !implementedBy) {
         // The instance versions of initialize() and wrapup() perform
@@ -443,8 +443,16 @@ function Accessor(
             }
             this.initialized = true;
         };
+        
+        this.fire = function() {
+            if (typeof this.exports.fire === 'function') {
+                // Call with 'this' being the accessor instance, not the exports
+                // property.
+                this.exports.fire.call(this);
+            }
+        }
 
-        this.wrapup = function(inside) {
+        this.wrapup = function() {
             // Mark that this accessor has not been initialized.
             this.initialized = false;
    
