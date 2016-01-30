@@ -75,14 +75,13 @@ exports.dir = function(object, options) {
     actor.log(result);
 };
 
-/** Same as console.log, but prefix the message with "ERROR: " and send to stderr
- *  (if debugging is off).
+/** Same as console.log, but prefix the message with "ERROR: ".
  *  @param arguments One or more arguments to display in the log, where the
  *   first argument is optionally a formatting specification string.
  */
 exports.error = function() {
     var formatted = util.format.apply(this, arguments);
-    actor.error('ERROR: ' + formatted);
+    console.log('ERROR: ' + formatted);
 };
 
 /** Same as console.log.
