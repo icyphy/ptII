@@ -388,8 +388,8 @@ public class SocketHelper extends VertxHelperBase {
                     _receiveTypes[i++] = type.toString().toLowerCase();
                 }
             }
+            return _receiveTypes;
         }
-        return _receiveTypes;
     }
 
     /** Return an array of the types supported by the current host for
@@ -411,8 +411,8 @@ public class SocketHelper extends VertxHelperBase {
                     _sendTypes[i++] = imageType;
                 }
             }
+            return _sendTypes;
         }
-        return _sendTypes;
     }
     
     
@@ -578,7 +578,7 @@ public class SocketHelper extends VertxHelperBase {
                 throw new IllegalArgumentException("Invalid receive data type: " + receiveType);
             }
 
-            System.out.println("registering _socket.handler");
+            // System.out.println("registering _socket.handler");
             // Set up handlers for data, errors, etc.
             // Do this in the verticle.
             submit(() -> {
@@ -598,7 +598,6 @@ public class SocketHelper extends VertxHelperBase {
                 });
                 // Handler for received data.
                 _socket.handler(buffer -> {
-                    System.out.println("_socket.handler: " + buffer.toString());
                     _processBuffer(buffer);
                 });
             });

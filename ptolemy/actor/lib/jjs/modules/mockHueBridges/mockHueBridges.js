@@ -63,7 +63,7 @@ var MockHueBridgeHelper = Java.type('ptolemy.actor.lib.jjs.modules.mockHueBridge
  * 
  *  An instance of this object type implements the following functions:
  *  <ul>
- *  <li> this.connect(bridgeID): Connect to the bridge with the given ID string. 
+ *  <li> connect(bridgeID): Connect to the bridge with the given ID string. 
  *   Remembers the bridgeID so the caller doesn't have to specify it for every 
  *   command. </li>
  *  <li> MockHueBridgeConnection(bridgeID): Create a connection with the given 
@@ -156,7 +156,7 @@ exports.MockHueBridge = (function(){
      * @returns {MockHueBridgeConnection} A connection to the bridge that remembers
      *  the bridgeID.
      */
-    function this.connect(bridgeID) {
+    function connect(bridgeID) {
     	if (!helper.hasBridge(bridgeID)) {
     		helper.addBridge(bridgeID);
     	}
