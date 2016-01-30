@@ -67,6 +67,7 @@ import ptolemy.actor.util.Time;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Constants;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.expr.Variable;
@@ -2499,7 +2500,7 @@ public class JavaScript extends TypedAtomicActor {
         } else {
             // Support any Ptolemy type as a last resort.
             // The type of the port will have to be set manually.
-            Type ptType = BaseType.forName(type);
+            Type ptType = Constants.nameToType(type);
             if (ptType == null) {
                 throw new IllegalActionException(this, "Unsupported type: " + type);
             }
