@@ -4,13 +4,13 @@
 <entity name="MoC" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 23, 1184, 712}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={41, 23, 1190, 705}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[956, 595]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.017059654460502">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{477.8630074786325, 296.59375}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{477.8630074786325, 296.59374999999994}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="1">
@@ -111,7 +111,7 @@
         </property>
     </entity>
     <entity name="Dog" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(getParameter('clipUrl'));&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = get('trigger');&#10;   var stopValue = get('stop');&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      send('output', false);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      send('output', true);&#10;   }&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(getParameter('clipUrl'));&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = this.get('trigger');&#10;   var stopValue = this.get('stop');&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      this.send('output', false);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      this.send('output', true);&#10;   }&#10;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 205.0]">
         </property>
@@ -137,7 +137,7 @@
         </port>
     </entity>
     <entity name="Cat" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(getParameter('clipUrl'));&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = get('trigger');&#10;   var stopValue = get('stop');&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      send('output', false);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      send('output', true);&#10;   }&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(getParameter('clipUrl'));&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = this.get('trigger');&#10;   var stopValue = this.get('stop');&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      this.send('output', false);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      this.send('output', true);&#10;   }&#10;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 205.0]">
         </property>
@@ -163,7 +163,7 @@
         </port>
     </entity>
     <entity name="Bird" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(getParameter('clipUrl'));&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = get('trigger');&#10;   var stopValue = get('stop');&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      send('output', false);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      send('output', true);&#10;   }&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(getParameter('clipUrl'));&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = this.get('trigger');&#10;   var stopValue = this.get('stop');&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      this.send('output', false);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      this.send('output', true);&#10;   }&#10;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, 205.0]">
         </property>
@@ -189,7 +189,7 @@
         </port>
     </entity>
     <entity name="Mouse?" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(getParameter('clipUrl'));&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = get('trigger');&#10;   var stopValue = get('stop');&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      send('output', false);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      send('output', true);&#10;   }&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Declare audio clip globally so it may be started and stopped in separate invocations&#10;&#10;var audio = new javafx.scene.media.AudioClip(getParameter('clipUrl'));&#10;&#10;function fire() {&#10;   // Attempt to get tokens from both input ports&#10;   var triggerValue = this.get('trigger');&#10;   var stopValue = this.get('stop');&#10;   &#10;   // If stop port has a token, stop playback, regardless of whether or not trigger has a token&#10;   // This is consistent with ClipPlayer&#10;&#10;   if (stopValue != null) {&#10;      audio.stop();  &#10;      this.send('output', false);&#10;   } else if (triggerValue != null) {&#10;      audio.play();&#10;      this.send('output', true);&#10;   }&#10;}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[635.0, 205.0]">
         </property>
