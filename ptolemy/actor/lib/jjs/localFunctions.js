@@ -57,6 +57,7 @@ function evaluateCode(accessorName, code) {
     var bindings = {
         'clearInterval': clearInterval,
         'clearTimeout': clearTimeout,
+        'error': error,
         'getParameter': getParameter,
         'httpRequest': httpRequest,
         'input': input,
