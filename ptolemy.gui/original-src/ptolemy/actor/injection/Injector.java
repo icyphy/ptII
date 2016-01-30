@@ -2,7 +2,7 @@
  The Injector class is responsible for loading implementation based on a
  interface.
 
- Copyright (c) 2011-2014 The Regents of the University of California.
+ Copyright (c) 2011-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -34,10 +34,11 @@ import java.util.HashMap;
 ///////////////////////////////////////////////////////////////////
 //// Injector
 /**
- * The Injector class is responsible for loading implementation based on a interface. The mappings from the interface to implementation must be loaded prior to
- * that.
+ * The Injector class is responsible for loading implementation based
+ * on a interface. The mappings from the interface to implementation
+ * must be loaded prior to that.
  *
- * @author Anar Huseynov
+ * @author Anar Huseynov, Erwin de Ley
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (ahuseyno)
@@ -46,15 +47,14 @@ import java.util.HashMap;
 public class Injector {
 
   ///////////////////////////////////////////////////////////////////
-  //// public methods ////
+  ////                   public methods                          ////
 
   /**
-   * Get implementation for the provided interface based on the mappings loaded into the injector.
+   * Get implementation for the provided interface based on the
+   * mappings loaded into the injector.
    *
-   * @param T
-   *          The implementation.
-   * @param type
-   *          The interface type to load.
+   * @param T The implementation.
+   * @param type The interface type to load.
    * @return The implementation of the interface.
    */
   public <T> T getInstance(Class<T> type) {
@@ -89,7 +89,9 @@ public class Injector {
         // skip, the exception is thrown below
       }
     }
-    throw new IllegalStateException("Implementation for the interface " + type + " was not found. " + "Perhaps\n" + type.getName() + "=" + type.getName()
+    throw new IllegalStateException("Implementation for the interface " + type
+        + " was not found. " + "Perhaps\n"
+        + type.getName() + "=" + type.getName()
         + "\nneeds to be added to the implementations class mappings file ptolemy/actor/*.properties such as ptolemy/actor/ActorModule.properties or some other injector file.");
 
   }
@@ -97,8 +99,8 @@ public class Injector {
   /**
    * Load the interface to implementation mappings into the injector.
    *
-   * @param interfaceToImplementationMap
-   *          The interface to implementation mapping.
+   * @param interfaceToImplementationMap The interface to
+   * implementation mapping.
    */
   public void loadMappings(PtolemyModule module) {
     for (String interfaceType : module.getBindings().keySet()) {
@@ -107,7 +109,7 @@ public class Injector {
   }
 
   ///////////////////////////////////////////////////////////////////
-  //// private variables ////
+  ////                   private variables                       ////
   /**
    * The resolved interface to the implementation class mappings.
    */
