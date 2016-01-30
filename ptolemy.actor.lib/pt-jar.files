@@ -23,6 +23,7 @@
 /ptolemy/actor/lib/ArrayToMatrix.java
 /ptolemy/actor/lib/ArrayUpdate.java
 /ptolemy/actor/lib/Average.java
+/ptolemy/actor/lib/Clock.java
 /ptolemy/actor/lib/Const.java
 /ptolemy/actor/lib/Counter.java
 /ptolemy/actor/lib/CurrentMicrostep.java
@@ -54,6 +55,9 @@
 /ptolemy/actor/lib/TimedSource.java
 /ptolemy/actor/lib/Transformer.java
 /ptolemy/actor/lib/Triangular.java
+/ptolemy/actor/lib/TrigFunction.java
+/ptolemy/actor/lib/TriggeredClock.java
+/ptolemy/actor/lib/UnaryMathFunction.java
 /ptolemy/actor/lib/Uniform.java
 /ptolemy/actor/lib/conversions/AnythingToDouble.java
 /ptolemy/actor/lib/conversions/BooleanToAnything.java
