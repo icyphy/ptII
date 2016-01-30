@@ -27,32 +27,34 @@ COPYRIGHTENDKEY
 */
 package org.ptolemy.commons;
 
+import java.io.Serializable;
 import java.util.Arrays;
 
 
 /**
- * Abstract base class for version specifications. 
+ * Abstract base class for version specifications.
  * Most important thing for a version specification is that it can be compared to another one.
  * <p>
  * Versions can be specified in two formats : a simple 3-digit spec (+ qualifiers) or a code/tag (not yet ;-) ).
  * </p>
- * 
+ *
  * @author ErwinDL
  * @version $Id$
  * @since Ptolemy II 11.0
  * @Pt.ProposedRating Yellow (ErwinDL)
  * @Pt.AcceptedRating Yellow (ErwinDL)
  */
-public abstract class VersionSpecification implements Comparable<VersionSpecification> {
+public abstract class VersionSpecification implements Comparable<VersionSpecification>, Serializable {
+  private static final long serialVersionUID = 4728405057895700793L;
 
   /**
-   * Parses the given version String, using '.' , '-' , '_' as potential delimiters. 
+   * Parses the given version String, using '.' , '-' , '_' as potential delimiters.
    * <p>
-   * For 3-digit version spec, currently the only supported format, the first 3 version ids are mandatory and should be integer numbers. 
-   * Extra (optional) trailing ids can be textual. Spaces are not allowed in a version string. 
+   * For 3-digit version spec, currently the only supported format, the first 3 version ids are mandatory and should be integer numbers.
+   * Extra (optional) trailing ids can be textual. Spaces are not allowed in a version string.
    * E.g. "1.2_3-hello.world" is a valid version identifier.
    * </p>
-   * 
+   *
    * @param version
    * @return the version specification based on the passed string representation
    * @throws IllegalArgumentException when the overall string format is not valid
@@ -84,7 +86,7 @@ public abstract class VersionSpecification implements Comparable<VersionSpecific
   }
 
   // protected things
-  
+
   protected String _versionString;
 
 

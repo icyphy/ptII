@@ -40,7 +40,7 @@ import java.util.Arrays;
  * <li>Compare qualifiers using plain text-compare</li>
  * </ul>
  * </p>
- * 
+ *
  * @author ErwinDL
  * @version $Id$
  * @since Ptolemy II 11.0
@@ -48,6 +48,7 @@ import java.util.Arrays;
  * @Pt.AcceptedRating Yellow (ErwinDL)
  */
 public class ThreeDigitVersionSpecification extends VersionSpecification implements Comparable<VersionSpecification> {
+  private static final long serialVersionUID = -383837397410414307L;
 
   /**
    * @param major
@@ -65,7 +66,7 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
   }
 
   /**
-   * 
+   *
    * @return the major (leading) version digit
    */
   public int getMajor() {
@@ -73,7 +74,7 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
   }
 
   /**
-   * 
+   *
    * @return the minor (middle) version digit
    */
   public int getMinor() {
@@ -81,7 +82,7 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
   }
 
   /**
-   * 
+   *
    * @return the micro (third) version digit
    */
   public int getMicro() {
@@ -89,16 +90,16 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
   }
 
   /**
-   * 
+   *
    * @return the optional array of version qualifiers. When no qualifiers are present, this returns an empty array.
    */
   public String[] getQualifiers() {
     return Arrays.copyOf(_qualifiers, _qualifiers.length);
   }
-  
+
   /**
    * @return a new version spec with increased micro digit.
-   * Does not change the current version spec instance. 
+   * Does not change the current version spec instance.
    */
   public ThreeDigitVersionSpecification increaseMicro() {
     return new ThreeDigitVersionSpecification(_major, _minor, _micro+1);
@@ -106,7 +107,7 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
 
   /**
    * @return a new version spec with increased minor digit.
-   * Does not change the current version spec instance. 
+   * Does not change the current version spec instance.
    */
   public ThreeDigitVersionSpecification increaseMinor() {
     return new ThreeDigitVersionSpecification(_major, _minor+1, _micro);
@@ -114,7 +115,7 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
 
   /**
    * @return a new version spec with increased major digit.
-   * Does not change the current version spec instance. 
+   * Does not change the current version spec instance.
    */
   public ThreeDigitVersionSpecification increaseMajor() {
     return new ThreeDigitVersionSpecification(_major+1, _minor, _micro);
@@ -214,10 +215,10 @@ public class ThreeDigitVersionSpecification extends VersionSpecification impleme
     }
     return _versionString;
   }
-  
-  
+
+
   // private things
-  
+
   private int _major;
   private int _minor;
   private int _micro;
