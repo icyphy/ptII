@@ -86,7 +86,7 @@
  *  lists of inputs, outputs, and parameters. And thus, when the setup() function of
  *  B creates an input, that input becomes an input of A.  Accessor A can reference
  *  the instance of B as A.ssuper.  The exported functions of B are accessible via
- *  as A.ssuper.exports.
+ *  as A.ssuper.exports or A.exports.ssuper.
  *
  *  Accessor A **implements** accessor B if its setup function includes:
  *
@@ -267,6 +267,19 @@ function Accessor(
     this.accessorName = accessorName;
     this.extendedBy = extendedBy;
     
+    this.bindings = bindings;
+
+    ////////////////////////////////////////////////////////////////////
+    //// Override using specified bindings.
+
+    // Any property defined in the bindings argument overrides prototype functions
+    // for this instance. Do this before creating other own properties in case
+    // the caller accidentally tries to provide bindings whose names match key
+    // properties of this instance.
+    for (var binding in bindings) {
+        this[binding] = bindings[binding];
+    }
+
     // If no extendedBy or implementedBy is given, then initialize the data structures
     // to be used by this accessor instance.  These data structures will be in the
     // prototype chain for any instance that this accessor implements or extends,
@@ -274,18 +287,6 @@ function Accessor(
     if (!extendedBy && !implementedBy) {
 
         this.getAccessorCode = getAccessorCode;
-        this.bindings = bindings;
-
-        ////////////////////////////////////////////////////////////////////
-        //// Override using specified bindings.
-
-        // Any property defined in the bindings argument overrides prototype functions
-        // for this instance. Do this before creating other own properties in case
-        // the caller accidentally tries to provide bindings whose names match key
-        // properties of this instance.
-        for (var binding in bindings) {
-            this[binding] = bindings[binding];
-        }
 
         ////////////////////////////////////////////////////////////////////
         //// Define the properties that define inputs and input handlers
@@ -351,9 +352,8 @@ function Accessor(
     // as top-level functions in the accessor specification.
     // FIXME: Probably need to include setInterval, clearInterval,
     // setTimeout, clearTimeout, because these will need to overridden.
-        
-    var wrapper = new Function(
-            'error, \
+    var wrapper = new Function('\
+            error, \
             exports, \
             getResource, \
             httpRequest, \
@@ -863,6 +863,15 @@ function convertType(value, destination, name) {
  */
 Accessor.prototype.error = function(message) {
     console.error(message);
+    // Print a stack trace to the console.
+    console.error('------------------------- error stack trace:');
+    var e = new Error('dummy');
+    var stack = e.stack.replace(/^[^\(]+?[\n$]/gm, '')
+            .replace(/^\s+at\s+/gm, '')
+            .replace(/^Object.<anonymous>\s*\(/gm, '{anonymous}()@')
+            .split('\n');
+    console.error(stack);
+    console.error('-------------------------');
 }
 
 /** Extend the specified accessor, inheriting its interface as defined
@@ -881,10 +890,8 @@ Accessor.prototype.extend = function(accessorClass) {
     var baseName = this.accessorName + '_' + accessorClass;
     
     // Create an instance of the accessor this is extending.
-    // Note that that instance inherits the bindings
-    // of this one, so that argument is null.
     var extendedInstance = instantiateAccessor(
-            baseName, accessorClass, this.getAccessorCode, null, this, null);
+            baseName, accessorClass, this.getAccessorCode, this.bindings, this, null);
 }
 
 /** Default implementation of this.get(), which reads the current value of the input
@@ -977,10 +984,8 @@ Accessor.prototype.implement = function(accessorClass) {
     var interfaceName = this.accessorName + '_' + accessorClass;
 
     // Create an instance of the accessor this is implementing.
-    // Note that that instance inherits the bindings
-    // of this one, so that argument is null.
     var extendedInstance = instantiateAccessor(
-            interfaceName, accessorClass, this.getAccessorCode, null, null, this);
+            interfaceName, accessorClass, this.getAccessorCode, this.bindings, null, this);
 }
 
 /** Default implementation of the function to define an accessor input.
@@ -1006,11 +1011,17 @@ Accessor.prototype.instantiate = function(instanceName, accessorClass) {
     if (!this.getAccessorCode) {
         throw('instantiate() is not supported by this swarmlet host.');
     }
-    // The only binding we want to inherit from this is require.
-    // For all other functions, we want the default implementation
+    // For functions that accessor ports, etc., we want the default implementation
     // when instantiating the contained accessor.
     var insideBindings = {
-        'require': this.require
+        'clearInterval': this.clearInterval,
+        'clearTimeout': this.clearTimeout,
+        'error': this.error,
+        'httpRequest': this.httpRequest,
+        'readURL': this.readURL,
+        'require': this.require,
+        'setInterval': this.setInterval,
+        'setTimeout': this.setTimeout,
     };
     var instanceName = this.accessorName + '.' + instanceName;
     var containedInstance = instantiateAccessor(
