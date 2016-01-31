@@ -185,6 +185,7 @@
 
 'use strict';
 
+
 /** Create (using new) an accessor instance whose interface and functionality is given by
  *  the specified code. This will evaluate the specified code, and if it exports a
  *  setup() function, invoke that function. The created object includes at least the
@@ -1240,13 +1241,20 @@ Accessor.prototype.react = function(name) {
         invokeSpecificHandler(name);
     } else {
         // No specific input has been given.
-        for (var i = 0; i < thiz.inputList.length; i++) {
-            name = thiz.inputList[i];
-            if (thiz.inputs[name].pendingHandler) {
-                thiz.inputs[name].pendingHandler = false;
-                invokeSpecificHandler(name);
-            }
-        }
+    	// Invoke pending inputHandlers.  An accessor might send to its own 
+    	// inputs, so repeat until there are no more pending handlers.
+    	var moreInputsPossiblyAvailable = true;
+    	while (moreInputsPossiblyAvailable) {
+    		moreInputsPossiblyAvailable = false;
+	        for (var i = 0; i < thiz.inputList.length; i++) {
+	            name = thiz.inputList[i];
+	            if (thiz.inputs[name].pendingHandler) {
+	                thiz.inputs[name].pendingHandler = false;
+	                moreInputsPossiblyAvailable = true;
+	                invokeSpecificHandler(name);
+	            }
+	        }
+    	}
     }
     // Next, invoke handlers registered to handle any input.
     if (thiz.anyInputHandlers.length > 0) {
@@ -1501,8 +1509,3 @@ var _accessorInstanceTable = {};
 
 exports.Accessor = Accessor;
 exports.instantiateAccessor = instantiateAccessor;
-
-
-
-
-
