@@ -64,9 +64,7 @@ public class Activator implements BundleActivator {
 
     _apSvcReg = context.registerService(ModelElementClassProvider.class.getName(),
         new PackageBasedModelElementClassProvider(this.getClass().getClassLoader(),
-            "ptolemy.actor",
-            "ptolemy.data",
-            "ptolemy.kernel"
+            "ptolemy.actor.lib"
             ),
         null);
 

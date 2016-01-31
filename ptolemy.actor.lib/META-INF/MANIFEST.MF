@@ -7,9 +7,9 @@ Bundle-Vendor: CHESS
 Eclipse-RegisterBuddy: ptolemy.moml
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Import-Package: org.osgi.framework;version="1.7.0",
- org.ptolemy.commons;version="11.0.0",
  org.ptolemy.classloading;version="11.0.0",
  org.ptolemy.classloading.osgi;version="11.0.0",
+ org.ptolemy.commons;version="11.0.0",
  ptolemy.actor;version="11.0.0",
  ptolemy.actor.parameters;version="11.0.0",
  ptolemy.actor.util;version="11.0.0",
@@ -19,7 +19,8 @@ Import-Package: org.osgi.framework;version="1.7.0",
  ptolemy.graph;version="11.0.0",
  ptolemy.kernel;version="11.0.0",
  ptolemy.kernel.util;version="11.0.0",
- ptolemy.math;version="11.0.0"
+ ptolemy.math;version="11.0.0",
+ ptolemy.util;version="11.0.0"
 Export-Package: ptolemy.actor.lib;version="11.0.0",
  ptolemy.actor.lib.conversions;version="11.0.0",
  ptolemy.actor.lib.logic;version="11.0.0",

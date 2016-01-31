@@ -38,6 +38,7 @@
 /ptolemy/actor/lib/Limiter.java
 /ptolemy/actor/lib/Maximum.java
 /ptolemy/actor/lib/Minimum.java
+/ptolemy/actor/lib/NonStrictTest.java
 /ptolemy/actor/lib/Pulse.java
 /ptolemy/actor/lib/Ramp.java
 /ptolemy/actor/lib/RandomInteger.java
@@ -52,6 +53,7 @@
 /ptolemy/actor/lib/Sink.java
 /ptolemy/actor/lib/Source.java
 /ptolemy/actor/lib/StringConst.java
+/ptolemy/actor/lib/Test.java
 /ptolemy/actor/lib/TimedSource.java
 /ptolemy/actor/lib/Transformer.java
 /ptolemy/actor/lib/Triangular.java
