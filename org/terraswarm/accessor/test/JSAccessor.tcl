@@ -72,7 +72,7 @@ test JSAccessor-1.1 {Test out importing of accessors} {
     regsub {value=".*\\org\\terraswarm\\accessor\\test\\auto\\accessors\Accessor1.xml"} $moml2 {value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml"} moml3
     list $moml3
 } {{<entity name="Accessor" class="org.terraswarm.accessor.JSAccessor">
-    <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	exports.fire = function() {&#10;	  var stringValue = get('stringInput');&#10;	  send('stringOutput', stringValue);&#10;	  var numericValue = get('numericInput');&#10;	  send('numericOutput', numericValue);&#10;	  stringValue = get('stringInputWithoutValue');&#10;	  send('stringOutputWithoutValue', stringValue);&#10;	  send('inputIsAbsent', stringValue == null);&#10;	}&#10;	// &#10;  ">
+    <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	exports.fire = function() {&#10;	  var stringValue = this.get('stringInput');&#10;	  this.send('stringOutput', stringValue);&#10;	  var numericValue = this.get('numericInput');&#10;	  this.send('numericOutput', numericValue);&#10;	  stringValue = this.get('stringInputWithoutValue');&#10;	  this.send('stringOutputWithoutValue', stringValue);&#10;	  this.send('inputIsAbsent', stringValue == null);&#10;	}&#10;	// &#10;  ">
         <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
             <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
             </property>
