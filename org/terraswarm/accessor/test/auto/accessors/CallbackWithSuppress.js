@@ -3,28 +3,29 @@
  *  The 'output' is a count of the periods, starting with 1.
  */
 exports.setup = function() {
-    input('suppress', {'value':false, 'type':'boolean'});
-    input('produce');
-    output('output', {'type':'number'});
+    this.input('suppress', {'value':false, 'type':'boolean'});
+    this.input('produce');
+    this.output('output', {'type':'number'});
 }
 var count;
 var handle;
 exports.initialize = function() {
   count = 0;
+  var self = this;
   handle = setInterval(
     function() {
       // Send to my own input to trigger fire().
-      send('produce', true);
+      self.send('produce', true);
     },
     1000);
 }
 exports.fire = function() {
-  var isSuppressed = get('suppress');
-  var toProduce = get('produce');
+  var isSuppressed = this.get('suppress');
+  var toProduce = this.get('produce');
   if (toProduce) {
     count = count + 1;
     if (!isSuppressed) {
-      send('output', count);
+      this.send('output', count);
     }
   }
 }

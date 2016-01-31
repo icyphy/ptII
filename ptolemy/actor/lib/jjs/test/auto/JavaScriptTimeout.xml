@@ -48,7 +48,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var count = 0;&#10;var timeout = 0;&#10;var pendingTimeout;&#10;exports.setup = function() {&#10;   output('out');&#10;   parameter('timeout');&#10;}&#10;function produce() {&#10;   send('out', count);&#10;   count = count + 1;&#10;   timeout = getParameter('timeout');&#10;   console.log(&quot;JavaScriptTimeout: timeout = &quot; + timeout);&#10;   pendingTimeout = setTimeout(produce, timeout);&#10;}&#10;exports.initialize = function() {&#10;   produce();&#10;}&#10;exports.wrapup = function() {&#10;   clearTimeout(pendingTimeout);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var count = 0;&#10;var timeout = 0;&#10;var pendingTimeout;&#10;exports.setup = function() {&#10;   this.output('out');&#10;   this.parameter('timeout');&#10;}&#10;function produce() {&#10;   this.send('out', count);&#10;   count = count + 1;&#10;   timeout = this.getParameter('timeout');&#10;   console.log(&quot;JavaScriptTimeout: timeout = &quot; + timeout);&#10;   pendingTimeout = setTimeout(produce.bind(this), timeout);&#10;}&#10;exports.initialize = function() {&#10;  produce.call(this);&#10;}&#10;exports.wrapup = function() {&#10;   clearTimeout(pendingTimeout);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
@@ -56,7 +56,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 160.0}">
         </property>
         <property name="timeout" class="ptolemy.data.expr.Parameter" value="interval">
         </property>

@@ -120,6 +120,10 @@ public class BackwardCompatibility {
         _filterList.add(new DocAttributeChanges());
         //_filterList.add(new UpdateAnnotations());
         _filterList.add(new HideAnnotationNames());
+
+        // JavaScriptThisUpdate is temporary while we add "this." to certain keywords.
+        // _filterList.add(new JavaScriptThisUpdate());
+
         _filterList.add(new MultiportToSinglePort());
         _filterList.add(new ParameterNameChanges());
         _filterList.add(new PortClassChanges());

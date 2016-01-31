@@ -28,8 +28,8 @@
 // Add ports and parameters.
 // Define JavaScript functions initialize(), fire(), and/or wrapup().
 // Refer to parameters in scope using dollar-sign{parameterName}.
-// In the fire() function, use get(parameterName, channel) to read inputs.
-// Send to output ports using send(value, portName, channel).
+// In the fire() function, use this.get(parameterName, channel) to read inputs.
+// Send to output ports using this.send(value, portName, channel).
 
 
 mapManager = require('mapManager');

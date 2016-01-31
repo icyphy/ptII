@@ -45,8 +45,6 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </port>

@@ -1,20 +1,23 @@
 exports.setup = function() {
-   input('in1');
-   output('out1');
+   this.input('in1');
+   this.output('out1');
 }
 
 var handle;
 
 exports.initialize = function() {
-   handle = addInputHandler('in1', this.inputHandler);
+    // Be sure to refer to the input handler using this.exports
+    // so that it can be overridden in derived classes. If you just
+    // use exports.inputHandler, it will not be overridden.
+    handle = this.addInputHandler('in1', this.exports.inputHandler.bind(this));
 }
 
 exports.inputHandler = function() {
-   send('out1', this.baseField);
+   this.send('out1', this.exports.baseField);
 }
 
 exports.wrapup = function() {
-   removeInputHandler(exports.handle);
+   this.removeInputHandler(exports.handle);
 }
 
 exports.baseField = 1;

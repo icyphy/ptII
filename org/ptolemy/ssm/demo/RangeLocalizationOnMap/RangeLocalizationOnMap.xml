@@ -502,11 +502,12 @@
                 </property>
                 <property name="x" class="ptolemy.data.expr.Parameter" value="5.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                     </property>
-                </port>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
             </entity>
             <entity name="y_update" class="ptolemy.actor.lib.Expression">
                 <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y + control.y">
@@ -515,11 +516,12 @@
                 </property>
                 <property name="y" class="ptolemy.data.expr.Parameter" value="2.0">
                 </property>
-                <port name="output" class="ptolemy.actor.TypedIOPort">
-                    <property name="output"/>
-                    <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                    <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                     </property>
-                </port>
+                    <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                    </property>
+                </property>
             </entity>
         </entity>
         <entity name="Search Robot Dynamics" class="org.ptolemy.ssm.StateSpaceModel">
@@ -675,11 +677,11 @@
             </property>
             <property name="enable" class="ptolemy.data.expr.Parameter" value="true">
             </property>
-            <property name="x" class="ptolemy.data.expr.Parameter" value="5.982027644595428">
+            <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="x_update" class="ptolemy.data.expr.Parameter" value="x">
             </property>
-            <property name="y" class="ptolemy.data.expr.Parameter" value="4.703404115322906">
+            <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="y_update" class="ptolemy.data.expr.Parameter" value="y">
             </property>
@@ -740,11 +742,12 @@
             </property>
             <property name="x" class="ptolemy.data.expr.Parameter" value="5.829288059397344">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
-            </port>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
         </entity>
         <entity name="y_update" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="y">
@@ -753,81 +756,54 @@
             </property>
             <property name="y" class="ptolemy.data.expr.Parameter" value="5.114895373364751">
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
-            </port>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
         </entity>
         <entity name="setmap" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="map">
             </property>
             <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
-            </port>
         </entity>
         <entity name="setr1" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="r1">
             </property>
             <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
-            </port>
         </entity>
         <entity name="RangeSensor_z_equation" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sqrt((r1.x-x)^2+(r1.y-y)^2)">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
-            </port>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
         </entity>
         <entity name="RangeSensor_z_noise" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="0.2">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
-            </port>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
         </entity>
         <entity name="setRangeSensor_z" class="ptolemy.actor.lib.SetVariable">
             <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="RangeSensor_z">
             </property>
             <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <port name="input" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
-            </port>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
-            </port>
         </entity>
     </entity>
     <entity name="SequenceToArray" class="ptolemy.domains.sdf.lib.SequenceToArray">
@@ -930,7 +906,7 @@
         </property>
     </entity>
     <entity name="ParticleVisualizer" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var BufferedImage = Java.type('java.awt.image.BufferedImage');&#10;var image;&#10;var imageWithParticles;&#10;var width;&#10;var height;&#10;var redColor = 4294901760;&#10;var blueColor = 4278190335;&#10;var greenColor = 4278255360;&#10;var iconWidth = 3;&#10;exports.setup = function() {&#10;	input('map');&#10;	parameter('binaryImage',{'type':'boolean', 'value':true});&#10;	parameter('resolution',{'type':'number', 'value':0.05});&#10;	output('image');&#10;	input('particles');&#10;	input('searchRobot');&#10;	input('target');&#10;}&#10;&#10;exports.initialize = function() {&#10;	&#10;	addInputHandler('map', getOccupancyGrid);&#10;	addInputHandler('particles', function() {&#10;		// add particles to view.&#10;	var particleIn = get('particles');&#10;	var res = getParameter('resolution');  &#10;	if (particleIn != null) { &#10;		imageWithParticles = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);&#10;		//copy the base map and add particles on top of it&#10;		for (var i = 0; i &lt; width; i++) {&#10;		   for (var j = 0; j &lt; height; j++) {&#10;		   		imageWithParticles.setRGB(i,j,image.getRGB(i,j));&#10;		   }&#10;		} &#10;		for (var i = 0 ; i &lt; particleIn.length; i++) {&#10;			var px = particleIn[i].x;&#10;			var py = particleIn[i].y;&#10;			var pixelY = Math.floor(py/res); &#10;			var pixelX = Math.floor(px/res);&#10;			if (pixelX &gt;= 1 &amp;&amp; pixelX &lt; width-1 &amp;&amp; &#10;			pixelY &gt;=1 &amp; pixelY &lt; height-1) { &#10;				imageWithParticles.setRGB(pixelX, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX+1, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX-1, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX, pixelY-1,redColor);&#10;				imageWithParticles.setRGB(pixelX, pixelY+1,redColor);&#10;			}&#10;		}  &#10;		send('image',imageWithParticles); &#10;	}&#10;	&#10;	var searchRobotLoc = get('searchRobot');&#10;	if (searchRobotLoc!=null) {&#10;		var x = searchRobotLoc.x;&#10;		var y = searchRobotLoc.y;&#10;		var pixelY = Math.floor(y/res); &#10;		var pixelX = Math.floor(x/res);&#10;		if (pixelX &gt;= iconWidth &amp;&amp; pixelX &lt; width-iconWidth &amp;&amp; &#10;			pixelY &gt;=iconWidth &amp; pixelY &lt; height-iconWidth) {&#10;				for (i = pixelX - iconWidth; i &lt;= pixelX + iconWidth; i++) {&#10;					for (j = pixelY - iconWidth; j &lt;= pixelY + iconWidth; j++) {&#10;						imageWithParticles.setRGB(i, j,blueColor);&#10;					}&#10;				}&#10;			}&#10;	}&#10;	var targetLoc = get('target');&#10;	if (targetLoc!=null) {&#10;		var x = targetLoc.x;&#10;		var y = targetLoc.y;&#10;		var pixelY = Math.floor(y/res); &#10;		var pixelX = Math.floor(x/res);&#10;		if (pixelX &gt;= iconWidth &amp;&amp; pixelX &lt; width-iconWidth &amp;&amp; &#10;			pixelY &gt;=iconWidth &amp; pixelY &lt; height-iconWidth) {&#10;				for (var i = pixelX - iconWidth; i &lt;= pixelX + iconWidth; i++) {&#10;					for (var j = pixelY - iconWidth; j &lt;= pixelY + iconWidth; j++) {&#10;						imageWithParticles.setRGB(i, j,greenColor);&#10;					}&#10;				}&#10;			}&#10;	    }&#10;	});&#10;}&#10;&#10;function getOccupancyGrid() {&#10;	&#10;	var mapObject = get('map'); &#10;	var imageData = mapObject.grid;&#10;	width = mapObject.width;&#10;	height = mapObject.height; &#10;	var binaryThresholding = getParameter('binaryImage');&#10;	image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);&#10;	for (var y = 0; y &lt; height; y++) {&#10;		for (var x = 0; x &lt; width; x++) { &#10;			var index = x + y*width;&#10;			var pixel = imageData[index];&#10;			if (pixel &lt; 0) {&#10;				// Opaque red for unknown&#10;				image.setRGB(x, y, 4294901760);&#10;			} else {&#10;				var intensity;&#10;				if ( binaryThresholding ) {&#10;					if ( pixel &gt;= 32768) {&#10;						intensity = 255;&#10;					} else if ( pixel &lt; 10) {&#10;						intensity = 0;&#10;					} else {&#10;						intensity = 127;&#10;					}&#10;				} else {&#10;					intensity = pixel;&#10;				}&#10;				// To make the color opaque:&#10;				var alpha = 4278190080; &#10;				var color = alpha + intensity * (65536 + 256 + 1);&#10;				image.setRGB(x, y, color);&#10;			}&#10;		}&#10;	} &#10;	send('image', image);&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var BufferedImage = Java.type('java.awt.image.BufferedImage');&#10;var image;&#10;var imageWithParticles;&#10;var width;&#10;var height;&#10;var redColor = 4294901760;&#10;var blueColor = 4278190335;&#10;var greenColor = 4278255360;&#10;var iconWidth = 3;&#10;exports.setup = function() {&#10;	this.input('map');&#10;	this.parameter('binaryImage',{'type':'boolean', 'value':true});&#10;	this.parameter('resolution',{'type':'number', 'value':0.05});&#10;	this.output('image');&#10;	this.input('particles');&#10;	this.input('searchRobot');&#10;	this.input('target');&#10;}&#10;&#10;exports.initialize = function() {&#10;	&#10;	this.addInputHandler('map', getOccupancyGrid);&#10;	this.addInputHandler('particles', function() {&#10;		// add particles to view.&#10;	var particleIn = this.get('particles');&#10;	var res = this.getParameter('resolution');  &#10;	if (particleIn != null) { &#10;		imageWithParticles = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);&#10;		//copy the base map and add particles on top of it&#10;		for (var i = 0; i &lt; width; i++) {&#10;		   for (var j = 0; j &lt; height; j++) {&#10;		   		imageWithParticles.setRGB(i,j,image.getRGB(i,j));&#10;		   }&#10;		} &#10;		for (var i = 0 ; i &lt; particleIn.length; i++) {&#10;			var px = particleIn[i].x;&#10;			var py = particleIn[i].y;&#10;			var pixelY = Math.floor(py/res); &#10;			var pixelX = Math.floor(px/res);&#10;			if (pixelX &gt;= 1 &amp;&amp; pixelX &lt; width-1 &amp;&amp; &#10;			pixelY &gt;=1 &amp; pixelY &lt; height-1) { &#10;				imageWithParticles.setRGB(pixelX, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX+1, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX-1, pixelY,redColor);&#10;				imageWithParticles.setRGB(pixelX, pixelY-1,redColor);&#10;				imageWithParticles.setRGB(pixelX, pixelY+1,redColor);&#10;			}&#10;		}  &#10;		this.send('image',imageWithParticles); &#10;	}&#10;	&#10;	var searchRobotLoc = this.get('searchRobot');&#10;	if (searchRobotLoc!=null) {&#10;		var x = searchRobotLoc.x;&#10;		var y = searchRobotLoc.y;&#10;		var pixelY = Math.floor(y/res); &#10;		var pixelX = Math.floor(x/res);&#10;		if (pixelX &gt;= iconWidth &amp;&amp; pixelX &lt; width-iconWidth &amp;&amp; &#10;			pixelY &gt;=iconWidth &amp; pixelY &lt; height-iconWidth) {&#10;				for (i = pixelX - iconWidth; i &lt;= pixelX + iconWidth; i++) {&#10;					for (j = pixelY - iconWidth; j &lt;= pixelY + iconWidth; j++) {&#10;						imageWithParticles.setRGB(i, j,blueColor);&#10;					}&#10;				}&#10;			}&#10;	}&#10;	var targetLoc = this.get('target');&#10;	if (targetLoc!=null) {&#10;		var x = targetLoc.x;&#10;		var y = targetLoc.y;&#10;		var pixelY = Math.floor(y/res); &#10;		var pixelX = Math.floor(x/res);&#10;		if (pixelX &gt;= iconWidth &amp;&amp; pixelX &lt; width-iconWidth &amp;&amp; &#10;			pixelY &gt;=iconWidth &amp; pixelY &lt; height-iconWidth) {&#10;				for (var i = pixelX - iconWidth; i &lt;= pixelX + iconWidth; i++) {&#10;					for (var j = pixelY - iconWidth; j &lt;= pixelY + iconWidth; j++) {&#10;						imageWithParticles.setRGB(i, j,greenColor);&#10;					}&#10;				}&#10;			}&#10;	    }&#10;	});&#10;}&#10;&#10;function getOccupancyGrid() {&#10;	&#10;	var mapObject = this.get('map'); &#10;	var imageData = mapObject.grid;&#10;	width = mapObject.width;&#10;	height = mapObject.height; &#10;	var binaryThresholding = this.getParameter('binaryImage');&#10;	image = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);&#10;	for (var y = 0; y &lt; height; y++) {&#10;		for (var x = 0; x &lt; width; x++) { &#10;			var index = x + y*width;&#10;			var pixel = imageData[index];&#10;			if (pixel &lt; 0) {&#10;				// Opaque red for unknown&#10;				image.setRGB(x, y, 4294901760);&#10;			} else {&#10;				var intensity;&#10;				if ( binaryThresholding ) {&#10;					if ( pixel &gt;= 32768) {&#10;						intensity = 255;&#10;					} else if ( pixel &lt; 10) {&#10;						intensity = 0;&#10;					} else {&#10;						intensity = 127;&#10;					}&#10;				} else {&#10;					intensity = pixel;&#10;				}&#10;				// To make the color opaque:&#10;				var alpha = 4278190080; &#10;				var color = alpha + intensity * (65536 + 256 + 1);&#10;				image.setRGB(x, y, color);&#10;			}&#10;		}&#10;	} &#10;	this.send('image', image);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -1043,22 +1019,24 @@
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
-            </port>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
         </entity>
         <entity name="y_update" class="ptolemy.actor.lib.Expression">
             <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="t &lt; 7.5/Vtarget ? y+Vtarget : y">
                 <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
             </property>
-            <port name="output" class="ptolemy.actor.TypedIOPort">
-                <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                 </property>
-            </port>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
         </entity>
     </entity>
     <entity name="OracleTargetModel" class="org.ptolemy.ssm.StateSpaceModel">

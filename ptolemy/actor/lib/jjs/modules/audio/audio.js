@@ -91,7 +91,7 @@ exports.Player.prototype.stop = function() {
  *  An instance of this object type implements the following functions:
  *  (FIXME: replace with your design)
  *  <ul>
- *  <li> get(): Return an array of audio data.
+ *  <li> this.get(): Return an array of audio data.
  *  <li> stop(): Stop capture and free the audio resources.
  *  </ul>
  *  @param options A JSON object with fields 'FIXME' and 'FIXME' that give the

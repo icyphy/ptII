@@ -23,23 +23,6 @@
 
 /** JavaScript functions for a Ptolemy II (Nashorn) accessor host.
  *
- * <p> This file includes local functions that are specific to the
- * Nashorn implementation.</p>
- *
- * <p> The First section is utility functions that accessors are not meant
- * to use directly, but that the accessor support functions below
- * use. These all have names beginning with underscore.</p>
- *
- * <p>Set a global variable _debug to true to see console outputs.</p>
- *
- * <h2>References</h2>
- *
- * <p><name="VisionOfSwarmLets">Elizabeth Latronico, Edward A. Lee,
- * Marten Lohstroh, Chris Shaver, Armin Wasicek, Matt Weber.</a>
- * <a href="http://www.terraswarm.org/pubs/332.html">A Vision of Swarmlets</a>,
- * <i>IEEE Internet Computing, Special Issue on Building Internet
- * of Things Software</i>, 19(2):20-29, March 2015.</p>
- *
  * @module localFunctions
  * @author Edward A. Lee, Contributor: Christopher Brooks, Chris Shaver
  * @version $$Id$$
@@ -52,8 +35,8 @@
 /*jshint globalstrict: true*/
 "use strict";
 
-// The commonHost is defined in the accessors repo, so we use
-// requireAccessor to load it.
+// The commonHost is defined in the accessors repo, but we have a local copy
+// in this same directory.
 var commonHost = require('commonHost.js');
 
 ////////////////////
@@ -72,17 +55,23 @@ Object.setPrototypeOf(exports, {
  */
 function evaluateCode(accessorName, code) {
     var bindings = {
+        'clearInterval': clearInterval,
+        'clearTimeout': clearTimeout,
+        'error': error,
         'getParameter': getParameter,
+        'httpRequest': httpRequest,
         'input': input,
         'output': output,
         'parameter': parameter,
+        'readURL': readURL,
         'require': require,
         'send': send,
         'setDefault': setDefault,
+        'setInterval': setInterval,
         'setParameter': setParameter,
+        'setTimeout': setTimeout,
         'superSend': superSend
     };
-    // eval(code);
     return new commonHost.Accessor(accessorName, code, getAccessorCode, bindings);
 }
 
@@ -104,7 +93,7 @@ function getAccessorCode(name) {
         var location = _accessorPath[i].concat(name);
         try {
             code = js.getFileAsString(location);
-        } catch(error) {
+        } catch(err) {
             continue;
         }
     }
@@ -152,7 +141,7 @@ function getParameter(name) {
 function input(name, options) {
     // Invoke the basic input() functionality of commonHost.
     // Make sure the context is this, not the prototype.
-    commonHost.Accessor.prototype.input.call(this.extendedBy, name, options);
+    commonHost.Accessor.prototype.input.call(this, name, options);
     
     // Then invoke the Ptolemy functionality, which will create the input if it doesn't
     // already exist.
@@ -168,7 +157,7 @@ function input(name, options) {
     // regardless of what the options state.
     var previousValue = actor.input(name, options);
     if (previousValue) {
-        this.extendedBy.inputs[name]['value'] = convertFromToken(previousValue);
+        this.inputs[name]['value'] = convertFromToken(previousValue);
     }
 }
 
@@ -182,7 +171,7 @@ function input(name, options) {
 function output(name, options) {
     // Invoke the basic output() functionality of commonHost.
     // Make sure the context is this, not the prototype.
-    commonHost.Accessor.prototype.output.call(this.extendedBy, name, options);
+    commonHost.Accessor.prototype.output.call(this, name, options);
     
     // Then invoke the Ptolemy functionality, which will create the input if it doesn't
     // already exist. 
@@ -213,7 +202,7 @@ function output(name, options) {
 function parameter(name, options) {
     // Invoke the basic parameter() functionality of commonHost.
     // Make sure the context is this, not the prototype.
-    commonHost.Accessor.prototype.parameter.call(this.extendedBy, name, options);
+    commonHost.Accessor.prototype.parameter.call(this, name, options);
     
     // Then invoke the Ptolemy functionality, which will create the input if it doesn't
     // already exist.
@@ -225,7 +214,7 @@ function parameter(name, options) {
     }
     var previousValue = actor.parameter(name, options);
     if (previousValue) {
-        this.extendedBy.parameters[name]['value'] = convertFromToken(previousValue);
+        this.parameters[name]['value'] = convertFromToken(previousValue);
     }
 }
 
@@ -253,8 +242,10 @@ function send(name, value, channel) {
          * A send() could overtake another.
          * So I've moved this invocation to the place in the helper where the
          * send via the port actually occurs.
-         */
+        
         this.superSend(name, value, channel);
+        
+         */
 
         // Give channel a default value of 0.
         channel = (typeof channel !== 'undefined') && (channel !== null) ? channel : 0;
@@ -271,7 +262,7 @@ function send(name, value, channel) {
  *  @deprecated Use setParameter() or setDefault().
  */
 function set(parameter, value) {
-    setParameter(parameter, value);
+    this.setParameter(parameter, value);
 }
 
 /** Set the default value of an input. Note that unlike
@@ -309,7 +300,7 @@ function setParameter(parameter, value) {
     } else {
         // Invoke the basic parameter() functionality of commonHost.
         // Make sure the context is this, not the prototype.
-        commonHost.Accessor.prototype.setParameter.call(this.extendedBy, parameter, value);
+        commonHost.Accessor.prototype.setParameter.call(this, parameter, value);
     
         token = convertToToken(value, proxy.isJSON());
         proxy.set(token);
@@ -325,9 +316,13 @@ function setParameter(parameter, value) {
  *  @param channel The (optional) channel number, where null is equivalent to 0.
  */
 function superSend(name, value, channel) {
-    var output = this.extendedBy.outputs[name];
+    if (!this.outputs) {
+        throw new Error(
+                "No outputs property. Perhaps 'this' is not bound to the accessor?");
+    }
+    var output = this.outputs[name];
     if (output) {
-        commonHost.Accessor.prototype.send.call(this.extendedBy, name, value, channel);
+        commonHost.Accessor.prototype.send.call(this, name, value, channel);
     }
 }
 

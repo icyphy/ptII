@@ -13,6 +13,7 @@
 /ptolemy/moml/filter/DocAttributeChanges.java
 /ptolemy/moml/filter/GRColorChanges.java
 /ptolemy/moml/filter/HideAnnotationNames.java
+/ptolemy/moml/filter/JavaScriptThisUpdate.java
 /ptolemy/moml/filter/MultiportToSinglePort.java
 /ptolemy/moml/filter/ParameterNameChanges.java
 /ptolemy/moml/filter/PortClassChanges.java

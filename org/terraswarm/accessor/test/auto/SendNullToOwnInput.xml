@@ -18,7 +18,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.064327485380117">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.4999999999999, 233.64867359203294}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{258.49999999999983, 233.64867359203294}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="According to the accessor spec, sending null to an input&#10;with a default value indicates the _lack_ of an input and does&#10;not trigger a firing. Hence, the send to my own input should not&#10;trigger a firing.">
@@ -37,7 +37,7 @@
         </property>
     </entity>
     <entity name="SendNullToOwnInput" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;var count = 0;&#10;exports.initialize = function() {&#10;    count = 0;&#10;    setTimeout(null, 0);&#10;}&#10;exports.fire = function() {&#10;    count = count + 1;&#10;    if (count &lt;= 2) {&#10;       var value = get('input');&#10;       send('output', value);&#10;       send('input', null);&#10;   }&#10;}&#10;	// &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;var count = 0;&#10;exports.initialize = function() {&#10;    count = 0;&#10;    setTimeout(null, 0);&#10;}&#10;exports.fire = function() {&#10;    count = count + 1;&#10;    if (count &lt;= 2) {&#10;       var value = this.get('input');&#10;       this.send('output', value);&#10;       this.send('input', null);&#10;   }&#10;}&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/SendNullToOwnInput.xml">
         </property>
@@ -55,7 +55,7 @@
             <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The count of the firing.">
             </property>
         </property>
-        <property name="input" class="ptolemy.actor.parameters.PortParameter" value="42.0">
+        <property name="input" class="ptolemy.actor.parameters.PortParameter" value="42">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 190.0]">
         </property>

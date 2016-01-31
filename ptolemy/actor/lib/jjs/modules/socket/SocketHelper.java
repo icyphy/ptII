@@ -576,7 +576,7 @@ public class SocketHelper extends VertxHelperBase {
                 throw new IllegalArgumentException("Invalid receive data type: " + receiveType);
             }
 
-            System.out.println("registering _socket.handler");
+            // System.out.println("registering _socket.handler");
             // Set up handlers for data, errors, etc.
             // Do this in the verticle.
             submit(() -> {

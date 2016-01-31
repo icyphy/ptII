@@ -184,7 +184,7 @@ VertxBus.prototype.notifyReply = function(handler, message) {
  *   This is a string.
  *  @param data The data to publish. This can be any JavaScript object
  *   that has a JSON representation using JSON.stringify().
- *  @see send()
+ *  @see this.send()
  */
 VertxBus.prototype.publish = function(address, data) {
     if (typeof(data) != 'string') {
@@ -222,7 +222,7 @@ VertxBus.prototype.send = function(address, data, handler) {
  *  @param reply The reply to respond with, or null to send no reply.
  *   this should be a string or any object that can be encoded as a
  *   JSON string.
- *  @see send(address, data)
+ *  @see this.send(address, data)
  */
 VertxBus.prototype.setReply = function(reply) {
     if (typeof(reply) != 'string') {

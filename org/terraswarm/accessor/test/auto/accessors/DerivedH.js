@@ -1,15 +1,15 @@
 // Derived class that sets the value of in1, which has type JSON.
 exports.setup = function() {
-   extend('BaseD');
-   input('in1', {'type':'JSON', 'value':'{"foo":42}'});
-   input('trigger');
+   this.extend('BaseD');
+   this.input('in1', {'type':'JSON', 'value':'{"foo":42}'});
+   this.input('trigger');
 }
 
 exports.fire = function() {
-    var value = get('trigger');
+    var value = this.get('trigger');
     if (value !== null) {
-        setDefault('in1', value);
+        this.setDefault('in1', value);
     }
-    this.ssuper.fire();
+    exports.ssuper.fire.call(this);
 }
 

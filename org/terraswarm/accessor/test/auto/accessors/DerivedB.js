@@ -1,14 +1,14 @@
 exports.setup = function() {
-   extend('BaseB');
+   this.extend('BaseB');
 }
 //Override input Handler of base
 exports.inputHandler = function() {
    console.log('sending false');
-   send('output', false);
+   this.send('output', false);
 }
 
 exports.initialize = function() {
-   this.ssuper.initialize.apply(this);
+   exports.ssuper.initialize.call(this);
    printProperties(exports);
 }
 
