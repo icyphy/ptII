@@ -80,7 +80,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="publications">
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="publications/">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>

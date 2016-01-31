@@ -242,8 +242,10 @@ function send(name, value, channel) {
          * A send() could overtake another.
          * So I've moved this invocation to the place in the helper where the
          * send via the port actually occurs.
-         */
+        
         this.superSend(name, value, channel);
+        
+         */
 
         // Give channel a default value of 0.
         channel = (typeof channel !== 'undefined') && (channel !== null) ? channel : 0;
