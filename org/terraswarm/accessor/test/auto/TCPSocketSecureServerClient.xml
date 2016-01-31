@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, 30.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={6, 23, 934, 789}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 844, 730}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 679]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[610, 620]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1047249757653461">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.984191109922165">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{324.294921875, 304.97193444293475}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{316.81884765625, 312.0808024088542}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -303,22 +303,6 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="ServerReceived" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={529, 688, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 280.0]">
-        </property>
-    </entity>
-    <entity name="ClientConnected" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 688, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 180.0]">
-        </property>
-    </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
@@ -572,22 +556,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 390.0]">
         </property>
     </entity>
-    <entity name="ClientConnected2" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={322, 688, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 380.0]">
-        </property>
-    </entity>
-    <entity name="ServerReceived2" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 688, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[359.58740234375, 480.096435546875]">
-        </property>
-    </entity>
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.Clock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0">
         </property>
@@ -598,36 +566,44 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 390.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;This string message&quot;, &quot;is&quot;, &quot;received by ServerA&quot;, &quot;over SSL/TLS(Secure Socket Layer/Transport Layer Security)&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 280.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;This server (Server B on port 41019)&quot;, &quot;requires&quot;, &quot;a client certificate&quot;, &quot;when it builds a SSL/TLS connection with a client.&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 480.0]">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ClientA.toSend" relation="relation4"/>
-    <link port="ClientA.connected" relation="relation2"/>
     <link port="ServerA.received" relation="relation"/>
-    <link port="ServerReceived.input" relation="relation"/>
-    <link port="ClientConnected.input" relation="relation2"/>
     <link port="DiscreteClock.output" relation="relation3"/>
     <link port="Sequence.enable" relation="relation3"/>
     <link port="Sequence.output" relation="relation4"/>
     <link port="ServerB.received" relation="relation6"/>
     <link port="ClientB.toSend" relation="relation7"/>
-    <link port="ClientB.connected" relation="relation5"/>
     <link port="Sequence2.enable" relation="relation8"/>
     <link port="Sequence2.output" relation="relation7"/>
-    <link port="ClientConnected2.input" relation="relation5"/>
-    <link port="ServerReceived2.input" relation="relation6"/>
     <link port="DiscreteClock2.output" relation="relation8"/>
+    <link port="Test.input" relation="relation"/>
+    <link port="Test2.input" relation="relation6"/>
 </entity>

@@ -92,6 +92,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/SwarmAcousticService/SwarmAcousticServic
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketDoubleArrayBatched.xml
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketImage.xml
+$CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketSecureServerClient.xml
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketTwoClients.xml
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketUnsignedShort.xml
 $CLASSPATH/org/terraswarm/accessor/demo/UDPSocket/UDPSocket.xml
