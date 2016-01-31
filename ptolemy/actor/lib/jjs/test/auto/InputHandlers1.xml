@@ -21,7 +21,7 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.5861417341929, 384.736119549516}">
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  input('input');&#10;  output('output', {'type':'number'});&#10;}&#10;&#10;var handler;&#10;&#10;exports.initialize = function() {&#10;  handler = addInputHandler(null, function() {&#10;    send('output', get('input') * 2);&#10;  });&#10;}&#10;&#10;exports.wrapup = function() {&#10;  removeInputHandler(handler);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;  this.output('output', {'type':'number'});&#10;}&#10;&#10;var handler;&#10;&#10;exports.initialize = function() {&#10;  handler = this.addInputHandler(null, function() {&#10;    this.send('output', this.get('input') * 2);&#10;  });&#10;}&#10;&#10;exports.wrapup = function() {&#10;  this.removeInputHandler(handler);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>

@@ -33,7 +33,7 @@
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;&#10;exports.setup = function () {&#10;	input('test');&#10;	output('output');&#10;}&#10;&#10;exports.initialize = function () {&#10;	addInputHandler('test', t);&#10;}&#10;&#10;var t = function  () {&#10;	var i= get('test');&#10;	send('output', i, 0);&#10;}&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use this.get(parameterName, channel) to read inputs.&#10;// Send to output ports using this.send(value, portName, channel).&#10;&#10;exports.setup = function () {&#10;	this.input('test');&#10;	this.output('output');&#10;}&#10;&#10;exports.initialize = function () {&#10;	this.addInputHandler('test', t);&#10;}&#10;&#10;var t = function  () {&#10;	var i= this.get('test');&#10;	this.send('output', i, 0);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -49,13 +49,9 @@
         </property>
         <port name="test" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
