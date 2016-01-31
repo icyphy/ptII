@@ -274,11 +274,8 @@ public class ExportModelJUnitTest {
                 "AMS_AMSSim", // FMU does not reliably build everywhere.
                 "wireless/demo/AntennaPattern/AntennaModel.xml", // Used by other models.
                 "AntennaPattern.xml", // Has links to other models
-                "AprilTags", // Uses the camera.         
                 "AudioFFT.xml", // Wrong Audio Hardware on the test machine.
                 "org/terraswarm/accessor/demo/Audio/Audio.xml", // Wrong Audio Hardware on the test machine.
-                "demo/Camera", // Uses the camera.
-                "cameras/demo/", // Uses the camera.
                 "ConstScaleZeroDemoProductLattice.xml", // Lattice, used by other models.
 
                 // CRoom, MatlabRoom, SystemCommand
@@ -324,9 +321,6 @@ public class ExportModelJUnitTest {
                 "GeneratorRegulatorProtectorSimXRhapsodyFMU.xml", // 32-bit Windows only.
                 "HappySadStock.xml", // Run only if there is a Hue on the local network.
                 "HierarchyFlattening.xml", // gt
-                "/ImageAnnotate/", // Uses the camera, which is not present on the nightly build machine.
-                "ImageFilters.xml", // Links to other demos.          
-                "/ImageFilters/", // Uses the camera, which is not present on the nightly build machine.
                 "IMUSensor.xml", // Uses the serial port.
                 "actor/lib/io", // Don't run the demos in actor/lib/io, some read from stdin and never exit.
                 "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
@@ -339,7 +333,6 @@ public class ExportModelJUnitTest {
                 "MapReduceDDF.xml", // Hangs.
                 "MoC.xml", // "No line matching interface Clip supporting format PCM_SIGNED unknown sample rate, 16 bit, stereo, 4 bytes/frame, big-endian is supported."
                 "ModularCG.xml", // cg model fails to run while exporting.
-                "MotionDetector.xml", //Uses the camera
                 "data/ontologies/demo/ProductLattices/ProductLattices.xml", // Has links to other models
                 "PageAssembler.xml", // Has links to other models.
                 "ProbabilisticModels.xml", // Has links to other models.
@@ -391,7 +384,6 @@ public class ExportModelJUnitTest {
                 "VideoCapture.xml", // Requires a video camera.
                 "Weather.xml", // Skip because it requires a key          
                 "WebSocketClient.xml", // Times out unless the server is running.
-                "WebSocketImage.xml", // Uses the camera.
                 "MatlabWirelessSoundDetection.xml", // If it takes more than 30 seconds to start up, then killing it causes an infinite loop because killing this is difficult when inside a native call.
                 "demo/XBee", // Needs XBee hardware.
                 "modules/xbee", // Needs XBee hardware.
