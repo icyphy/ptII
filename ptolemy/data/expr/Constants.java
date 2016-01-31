@@ -47,6 +47,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.UnsizedFixToken;
 import ptolemy.data.XMLToken;
+import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.math.Complex;
@@ -128,6 +129,18 @@ public class Constants {
     public static ptolemy.data.Token get(String name) {
         return (ptolemy.data.Token) _table.get(name);
     }
+    
+    /** Given a name defining a type, return the type, or null if
+     *  there is no such type.
+     *  @param name The type name.
+     */
+    public static Type nameToType(String name) {
+        ptolemy.data.Token token = _types.get(name);
+        if (token != null) {
+            return token.getType();
+        }
+        return null;
+    }
 
     /** Remove the constant with the given name from the table.
      *  If there is no constant with the given name in the table,
@@ -138,15 +151,15 @@ public class Constants {
         _table.remove(name);
     }
 
-    /** Return a copy of the types.
-     *  @return a copy of the hash table tha name types.
+    /** Return a map from names to types, with the names sorted alphabetically.
+     *  @return A copy of the table of named types.
      */
     public static TreeMap types() {
         // We use a separate map of types so that we can list the
         // types in the port configurer dialog
         // We return a TreeMap here because we do not need the
         // synchronization in a Hashtable, but we do want it sorted.
-        return new TreeMap(_types);
+        return _types;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -157,7 +170,8 @@ public class Constants {
     /** The treemap containing the named constants.
      *  We use a treemap so that we get sorting in natural order.
      */
-    private static TreeMap _types = new TreeMap();
+    private static TreeMap<String,ptolemy.data.Token> _types
+            = new TreeMap<String,ptolemy.data.Token>();
 
     ///////////////////////////////////////////////////////////////////
     ////                         static initializer                ////

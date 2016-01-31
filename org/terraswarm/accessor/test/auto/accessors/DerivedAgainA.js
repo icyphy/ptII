@@ -4,16 +4,16 @@
  *  @author Edward A. Lee
  */ 
 exports.setup = function() {
-   extend('DerivedC');
-   output('out2');
+   this.extend('DerivedC');
+   this.output('out2');
 }
 
 //Override input Handler of base. try to access fields defined in
 //base and derived
 exports.inputHandler = function() {
    // Invoke the base class inputHandler, defined two levels up.
-   Object.getPrototypeOf(exports).inputHandler.apply(this);
-   send('out2', this.derivedField);
+   Object.getPrototypeOf(exports).inputHandler.call(this);
+   this.send('out2', this.derivedField);
 }
 
 

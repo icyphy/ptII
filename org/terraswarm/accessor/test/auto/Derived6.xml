@@ -37,7 +37,7 @@
         </property>
     </entity>
     <entity name="DerivedF" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Derived class that sends the trigger input to in1.&#10;exports.setup = function() {&#10;   extend('BaseD');&#10;   input('trigger');&#10;}&#10;&#10;exports.fire = function() {&#10;    var value = get('trigger');&#10;    if (value !== null) {&#10;        send('in1', value);&#10;    }&#10;    this.ssuper.fire();&#10;}&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Derived class that sends the trigger input to in1.&#10;exports.setup = function() {&#10;   this.extend('BaseD');&#10;   this.input('trigger');&#10;}&#10;&#10;exports.fire = function() {&#10;    var value = this.get('trigger');&#10;    if (value !== null) {&#10;        this.send('in1', value);&#10;    }&#10;    exports.ssuper.fire.call(this);&#10;}&#10;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -59,20 +59,14 @@
         </property>
         <port name="in1" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="CurrentTime" class="ptolemy.actor.lib.CurrentTime">

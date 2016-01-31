@@ -1,15 +1,16 @@
 exports.setup = function() {
-   extend('BaseA');
-   input('in2');
-   output('output');
+   this.extend('BaseA');
+   this.input('in2');
+   this.output('output');
    console.log('derived set up');
 }
 
 exports.initialize = function() {
-   this.ssuper.initialize();
+   exports.ssuper.initialize.call(this);
    console.log('derived init');
-   addInputHandler('in1', function() {
-      send('output', get('in1'));
+   var self = this;
+   this.addInputHandler('in1', function() {
+      self.send('output', self.get('in1'));
    });
 }
 

@@ -1,8 +1,8 @@
 // Derived class to test hiding of ports and parameters.
 exports.setup = function() {
-   extend('DerivedI');
-   input('in1', {'visibility':'expert'});
-   input('trigger', {'visibility':'none'});
-   input('anotherTrigger');
-   parameter('test', {'visibility':'expert'});
+   this.extend('DerivedI');
+   this.input('in1', {'visibility':'expert'});
+   this.input('trigger', {'visibility':'none'});
+   this.input('anotherTrigger');
+   this.parameter('test', {'visibility':'expert'});
 }

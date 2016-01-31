@@ -25,7 +25,7 @@
  * This module defines three classes, Client, Server, and Socket.
  * To make a connection, create an instance of Server, set up listeners,
  * and start the server. On another machine (or the same machine), create
- * an instance of Client and set up listeners and/or invoke send() to send
+ * an instance of Client and set up listeners and/or invoke this.send() to send
  * a message. When a client connects to the Server, the Server will create
  * an instance of the Socket object.
  *
@@ -76,7 +76,7 @@ exports.supportedSendTypes = function() {
  *  The event 'open' will be emitted when the socket has been successfully opened.
  *  The event 'message' will be emitted with the body of the message as an
  *  argument when an incoming message arrives on the socket.
- *  You can invoke the send() function to send data to the server.
+ *  You can invoke the this.send() function to send data to the server.
  *
  *  The type of data sent and received can be specified with the 'sendType'
  *  and 'receiveType' options.
@@ -87,14 +87,14 @@ exports.supportedSendTypes = function() {
  *  The default type for both sending and receiving
  *  is 'application/json'. The types supported by this implementation
  *  include at least:
- *  * __application/json__: The send() function uses JSON.stringify() and sends the
+ *  * __application/json__: The this.send() function uses JSON.stringify() and sends the
  *    result with a UTF-8 encoding. An incoming byte stream will be parsed as JSON,
  *    and if the parsing fails, will be provided as a string interpretation of the byte
  *    stream.
  *  * __text/\*__: Any text type is sent as a string encoded in UTF-8.
  *  * __image/x__: Where __x__ is one of __json__, __png__, __gif__,
  *    and more (FIXME: which, exactly?).
- *    In this case, the data passed to send() is assumed to be an image, as encoded
+ *    In this case, the data passed to this.send() is assumed to be an image, as encoded
  *    on the host, and the image will be encoded as a byte stream in the specified
  *    format before sending.  A received byte stream will be decoded as an image,
  *    if possible. FIXME: What happens if decoding fails?
@@ -165,7 +165,7 @@ exports.Client.prototype.send = function(data) {
 };
 
 /** Close the current connection with the server.
- *  If there is data that was passed to send() but has not yet
+ *  If there is data that was passed to this.send() but has not yet
  *  been successfully sent (because the socket was not open),
  *  then throw an exception.
  */
@@ -272,7 +272,7 @@ exports.Server.prototype.close = function() {
  *  programmer. When this is called, the Server will create a new Socket object
  *  and emit a 'connection' event with that Socket as an argument.
  *  The 'connection' handler can then register for 'message' events from the
- *  Socket or issue replies to the Socket using send(). It can also close() the
+ *  Socket or issue replies to the Socket using this.send(). It can also close() the
  *  Socket.
  *  @param serverWebSocket The Java ServerWebSocket object.
  */

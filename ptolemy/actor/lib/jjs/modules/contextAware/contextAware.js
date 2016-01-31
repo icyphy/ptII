@@ -99,10 +99,10 @@ function DiscoveryOfRESTService() {
     var serviceParam;
     /** Discover IoT services */
     this.discoverServices = function() {
-	var currentService;
-	currentService = helper.getSelectedService();
-	serviceParam = helper.getSelectedServiceParameter(currentService);
-	console.log("Service Param :" + serviceParam);
-	return serviceParam;
+        var currentService;
+        currentService = helper.getSelectedService();
+        serviceParam = helper.getSelectedServiceParameter(currentService);
+        console.log("Service Param :" + serviceParam);
+        return serviceParam;
     };
 }

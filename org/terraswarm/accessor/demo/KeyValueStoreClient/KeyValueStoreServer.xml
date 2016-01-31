@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="KeyValueStoreServer" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="localClock" class="ptolemy.actor.LocalClock">
@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, -35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1046, 874}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1166, 866}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[812, 764]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[932, 756]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8563620230700976">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8797709923664122">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{439.2599055039789, 373.76562499999994}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{480.0, 357.50521963123634}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
@@ -102,7 +102,7 @@
         </property>
     </property>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{500.0, 790.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{545.0, 370.0}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -125,86 +125,13 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{590.0, 180.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{645.0, 210.0}">
         </property>
-    </entity>
-    <entity name="ConstructLookup" class="ptolemy.actor.lib.js.JavaScript">
-        <display name="ConstructLookup&#10;."/>
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="function fire() {&#10;  var uriValue = get(uri);&#10;  var parametersValue = get(parameters);&#10;  if (uriValue.indexOf('/keyvalue/get') == 0) {&#10;    // Request is get.&#10;    if (parametersValue.id) {&#10;      send(parametersValue.id, readKey);&#10;    } else {&#10;      send('&lt;html&gt;Error (400): Bad Request. Got parameters: ' + JSON.stringify(parametersValue) + '&lt;/html&gt;', response);&#10;      send(400, responseCode);&#10;    }&#10;  } else if(uriValue.indexOf('/keyvalue/set') == 0) {&#10;    // Request is set.&#10;    if (parametersValue.id &amp;&amp; parametersValue.value) {&#10;      send(parametersValue.id, writeKey);&#10;      send(parametersValue.value, value);&#10;      send('&lt;html&gt;' + parametersValue.id + ' set to: ' + parametersValue.value + '&lt;/html&gt;', response);&#10;    } else {&#10;      send('&lt;html&gt;Error (400): Bad Request. Got parameters: ' + JSON.stringify(parametersValue) + '&lt;/html&gt;', response);&#10;      send(400, responseCode);&#10;    }&#10;  } else if(uriValue.indexOf('/keyvalue/delete') == 0) {&#10;    // Request is delete.&#10;    if (parametersValue.id) {&#10;      send(parametersValue.id, writeKey);&#10;      send('&lt;html&gt;' + parametersValue.id + ' deleted from store&lt;/html&gt;', response);&#10;    } else {&#10;      send('&lt;html&gt;Error (400): Bad Request. Got parameters: ' + JSON.stringify(parametersValue) + '&lt;/html&gt;', response);&#10;      send(400, responseCode);&#10;    }&#10;  } else {&#10;      // Request is not recognized.&#10;      send('&lt;html&gt;Error (400): Bad Request. Got URI: ' + uriValue + '&lt;/html&gt;', response);&#10;      send(400, responseCode);&#10;  }&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="initialize" class="ptolemy.kernel.util.Attribute">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="8">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="wrapup" class="ptolemy.kernel.util.Attribute">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="8">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{315.0, 520.0}">
-        </property>
-        <port name="uri" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="readKey" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="headers" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="record">
-            </property>
-        </port>
-        <port name="parameters" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="record">
-            </property>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="value" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="writeKey" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="response" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="responseCode" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
     </entity>
     <entity name="HttpRequestHandler" class="org.ptolemy.ptango.lib.http.HttpRequestHandler">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/*">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 530.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 530.0}">
         </property>
     </entity>
     <entity name="Dictionary" class="ptolemy.actor.lib.Dictionary">
@@ -214,17 +141,17 @@
         </property>
         <property name="loggingDirectory" class="ptolemy.data.expr.FileParameter" value="$HOME/logs">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{530.0, 500.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{575.0, 500.0}">
         </property>
     </entity>
     <entity name="HttpRequestHandler2" class="org.ptolemy.ptango.lib.http.HttpRequestHandler">
         <property name="path" class="ptolemy.data.expr.StringParameter" value="/help">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 200.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 230.0}">
         </property>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 295.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{250.0, 110.0}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -234,15 +161,15 @@
         </property>
         <property name="responseContentType" class="ptolemy.actor.parameters.PortParameter" value="application/json">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 415.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{345.0, 430.0}">
         </property>
     </entity>
     <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{650.0, 440.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{725.0, 535.0}">
         </property>
     </entity>
     <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{495.0, 345.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 325.0}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -250,11 +177,11 @@
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
         <property name="discardEvents" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 615.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{740.0, 595.0}">
         </property>
     </entity>
     <entity name="MicrostepDelay4" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{285.0, 745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 710.0}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -262,7 +189,7 @@
     <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
         <property name="discardEvents" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{505.0, 695.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{550.0, 685.0}">
         </property>
     </entity>
     <entity name="StringConst2" class="ptolemy.actor.lib.StringConst">
@@ -283,7 +210,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{815.0, 445.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{920.0, 590.0}">
         </property>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -296,128 +223,173 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{780.0, 520.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{885.0, 630.0}">
         </property>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.uri&quot;,x=315.0,y=520.0}, tail={id=&quot;HttpRequestHandler.uri&quot;,x=105.0,y=530.0}, points={} } }">
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <display name="ConstructLookup&#10;."/>
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('uri', {'type': 'string'});&#10;	// Note that 'record' is a Ptolemy II type, not an accessor type.&#10;	this.input('headers', {'type': 'record'});&#10;	this.input('parameters', {'type': 'record'});&#10;	this.output('readKey', {'type': 'string'});&#10;	this.output('value', {'type': 'string'});&#10;	this.output('writeKey', {'type': 'string'});&#10;	this.output('response', {'type': 'string'});&#10;	this.output('responseCode', {'type': 'int'});&#10;}&#10;exports.fire = function() {&#10;  	var uriValue = this.get('uri');&#10;  	var parametersValue = this.get('parameters');&#10;  	if (uriValue.indexOf('/keyvalue/get') == 0) {&#10;    	// Request is get.&#10;    	if (parametersValue.id) {&#10;      		this.send('readKey', parametersValue.id);&#10;    	} else {&#10;      		this.send('response',&#10;      				'&lt;html&gt;Error (400): Bad Request. Got parameters: '&#10;      				+ JSON.stringify(parametersValue)&#10;      				+ '&lt;/html&gt;');&#10;      		this.send('responseCode', 400);&#10;    	}&#10;  	} else if(uriValue.indexOf('/keyvalue/set') == 0) {&#10;    	// Request is set.&#10;    	if (parametersValue.id &amp;&amp; parametersValue.value) {&#10;      		this.send('writeKey', parametersValue.id);&#10;      		this.send('value', parametersValue.value);&#10;      		this.send('response',&#10;      				'&lt;html&gt;'&#10;      				+ parametersValue.id&#10;      				+ ' set to: '&#10;      				+ parametersValue.value&#10;      				+ '&lt;/html&gt;');&#10;    	} else {&#10;      		this.send('response',&#10;      				'&lt;html&gt;Error (400): Bad Request. Got parameters: '&#10;      				+ JSON.stringify(parametersValue)&#10;      				+ '&lt;/html&gt;');&#10;      		this.send('responseCode', 400);&#10;    	}&#10;  	} else if(uriValue.indexOf('/keyvalue/delete') == 0) {&#10;    	// Request is delete.&#10;    	if (parametersValue.id) {&#10;      		this.send('writeKey', parametersValue.id);&#10;      		this.send('response',&#10;      				'&lt;html&gt;' + parametersValue.id&#10;      				+ ' deleted from store&lt;/html&gt;');&#10;    	} else {&#10;      		this.send('response',&#10;      				'&lt;html&gt;Error (400): Bad Request. Got parameters: '&#10;      				+ JSON.stringify(parametersValue)&#10;      				+ '&lt;/html&gt;');&#10;      		this.send('responseCode', 400);&#10;    	}&#10;  	} else {&#10;      	// Request is not recognized.&#10;      	this.send('response', '&lt;html&gt;Error (400): Bad Request. Got URI: ' + uriValue + '&lt;/html&gt;');&#10;      	this.send('responseCode', 400);&#10;  	}&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
         </property>
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.parameters&quot;,x=315.0,y=520.0}, tail={id=&quot;HttpRequestHandler.parameters&quot;,x=105.0,y=530.0}, points={} } }">
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
         </property>
-    </relation>
-    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.headers&quot;,x=315.0,y=520.0}, tail={id=&quot;HttpRequestHandler.headers&quot;,x=105.0,y=530.0}, points={} } }">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{335.0, 520.0}">
         </property>
-    </relation>
+        <port name="uri" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="headers" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="parameters" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="readKey" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="value" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="writeKey" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="responseCode" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{815, 695}">
+        </property>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst.trigger&quot;,x=590.0,y=180.0}, tail={id=&quot;HttpRequestHandler2.uri&quot;,x=100.0,y=200.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst.trigger&quot;,x=645.0,y=210.0}, tail={id=&quot;HttpRequestHandler2.uri&quot;,x=100.0,y=230.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst.output&quot;,x=590.0,y=180.0}, tail={id=&quot;MicrostepDelay2.input&quot;,x=225.0,y=295.0}, points={850.0,180.0,850.0,295.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringConst.output&quot;,x=645.0,y=210.0}, tail={id=&quot;MicrostepDelay2.input&quot;,x=250.0,y=110.0}, points={920.0,210.0,920.0,110.0} } }">
         </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Dictionary.triggerKeys&quot;,x=530.0,y=500.0}, tail={id=&quot;HttpRequestHandler3.uri&quot;,x=325.0,y=415.0}, points={530.0,575.0,440.0,575.0,440.0,395.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Dictionary.triggerKeys&quot;,x=575.0,y=500.0}, tail={id=&quot;HttpRequestHandler3.uri&quot;,x=345.0,y=430.0}, points={575.0,590.0,470.0,590.0,470.0,410.0} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Dictionary.keys&quot;,x=530.0,y=500.0}, tail={id=&quot;TokenToJSON.input&quot;,x=650.0,y=440.0}, points={615.0,480.0,615.0,440.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Dictionary.keys&quot;,x=575.0,y=500.0}, tail={id=&quot;TokenToJSON.input&quot;,x=725.0,y=535.0}, points={685.0,480.0,685.0,535.0} } }">
         </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TokenToJSON.output&quot;,x=650.0,y=440.0}, tail={id=&quot;MicrostepDelay3.input&quot;,x=495.0,y=345.0}, points={720.0,440.0,720.0,345.0} } }">
-        </property>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.readKey&quot;,x=315.0,y=520.0}, tail={id=&quot;Dictionary.readKey&quot;,x=530.0,y=500.0}, points={425.0,500.0,425.0,480.0} } }">
-        </property>
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.value&quot;,x=315.0,y=520.0}, tail={id=&quot;Dictionary.value&quot;,x=530.0,y=500.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.writeKey&quot;,x=315.0,y=520.0}, tail={id=&quot;Dictionary.writeKey&quot;,x=530.0,y=500.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TokenToJSON.output&quot;,x=725.0,y=535.0}, tail={id=&quot;MicrostepDelay3.input&quot;,x=540.0,y=325.0}, points={815.0,535.0,815.0,325.0} } }">
         </property>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.input&quot;,x=500.0,y=790.0}, tail={id=&quot;Merge.output&quot;,x=665.0,y=615.0}, points={720.0,790.0,720.0,615.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.input&quot;,x=545.0,y=370.0}, tail={id=&quot;Merge.output&quot;,x=740.0,y=595.0}, points={810.0,370.0,810.0,595.0} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler2.responseBody&quot;,x=100.0,y=200.0}, tail={id=&quot;MicrostepDelay2.output&quot;,x=225.0,y=295.0}, points={-25.0,180.0,-25.0,295.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler2.responseBody&quot;,x=100.0,y=230.0}, tail={id=&quot;MicrostepDelay2.output&quot;,x=250.0,y=110.0}, points={-40.0,210.0,-40.0,110.0} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.output&quot;,x=500.0,y=790.0}, tail={id=&quot;HttpRequestHandler.responseBody&quot;,x=105.0,y=530.0}, points={-25.0,790.0,-25.0,510.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay.output&quot;,x=545.0,y=370.0}, tail={id=&quot;HttpRequestHandler.responseBody&quot;,x=100.0,y=530.0}, points={-40.0,370.0,-40.0,510.0} } }">
         </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler3.responseBody&quot;,x=325.0,y=415.0}, tail={id=&quot;MicrostepDelay3.output&quot;,x=495.0,y=345.0}, points={200.0,395.0,200.0,345.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler3.responseBody&quot;,x=345.0,y=430.0}, tail={id=&quot;MicrostepDelay3.output&quot;,x=540.0,y=325.0}, points={205.0,410.0,205.0,325.0} } }">
         </property>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler.responseCode&quot;,x=105.0,y=530.0}, tail={id=&quot;MicrostepDelay4.output&quot;,x=285.0,y=745.0}, points={-20.0,520.0,-20.0,745.0} } }">
-        </property>
-    </relation>
-    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.responseCode&quot;,x=315.0,y=520.0}, tail={id=&quot;Merge2.input&quot;,x=505.0,y=695.0,index=2}, points={425.0,540.0,425.0,690.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;HttpRequestHandler.responseCode&quot;,x=100.0,y=530.0}, tail={id=&quot;MicrostepDelay4.output&quot;,x=300.0,y=710.0}, points={-40.0,520.0,-40.0,710.0} } }">
         </property>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay4.input&quot;,x=285.0,y=745.0}, tail={id=&quot;Merge2.output&quot;,x=505.0,y=695.0}, points={615.0,745.0,615.0,695.0} } }">
-        </property>
-    </relation>
-    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ConstructLookup.response&quot;,x=315.0,y=520.0}, tail={id=&quot;Merge.input&quot;,x=665.0,y=615.0,index=3}, points={435.0,530.0,435.0,605.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MicrostepDelay4.input&quot;,x=300.0,y=710.0}, tail={id=&quot;Merge2.output&quot;,x=550.0,y=685.0}, points={670.0,710.0,670.0,685.0} } }">
         </property>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=665.0,y=615.0,index=3}, tail={id=&quot;StringConst2.output&quot;,x=815.0,y=445.0}, points={615.0,610.0,615.0,645.0,890.0,645.0,890.0,445.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=740.0,y=595.0,index=3}, tail={id=&quot;StringConst2.output&quot;,x=920.0,y=590.0}, points={685.0,585.0,685.0,555.0,1000.0,555.0,1000.0,590.0} } }">
         </property>
     </relation>
     <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Dictionary.result&quot;,x=530.0,y=500.0}, tail={id=&quot;Merge.input&quot;,x=665.0,y=615.0,index=3}, points={620.0,490.0,620.0,615.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Dictionary.result&quot;,x=575.0,y=500.0}, tail={id=&quot;Merge.input&quot;,x=740.0,y=595.0,index=3}, points={680.0,490.0,680.0,590.0} } }">
         </property>
     </relation>
     <relation name="relation23" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{720.0, 520.0}">
+        <vertex name="vertex1" value="{815.0, 630.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=780.0,y=520.0}, tail={id=&quot;relation23.vertex1&quot;,x=720.0,y=520.0}, points={} },{ head={id=&quot;StringConst2.trigger&quot;,x=815.0,y=445.0}, tail={id=&quot;relation23.vertex1&quot;,x=720.0,y=520.0}, points={720.0,445.0} },{ head={id=&quot;Dictionary.notFound&quot;,x=530.0,y=500.0}, tail={id=&quot;relation23.vertex1&quot;,x=720.0,y=520.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=885.0,y=630.0}, tail={id=&quot;relation23.vertex1&quot;,x=815.0,y=630.0}, points={} },{ head={id=&quot;StringConst2.trigger&quot;,x=920.0,y=590.0}, tail={id=&quot;relation23.vertex1&quot;,x=815.0,y=630.0}, points={815.0,590.0} },{ head={id=&quot;Dictionary.notFound&quot;,x=575.0,y=500.0}, tail={id=&quot;relation23.vertex1&quot;,x=815.0,y=630.0}, points={670.0,520.0,670.0,630.0} } }">
         </property>
     </relation>
     <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=505.0,y=695.0,index=2}, tail={id=&quot;Const.output&quot;,x=780.0,y=520.0}, points={440.0,695.0,440.0,650.0,880.0,650.0,880.0,520.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge2.input&quot;,x=550.0,y=685.0,index=2}, tail={id=&quot;Const.output&quot;,x=885.0,y=630.0}, points={470.0,680.0,470.0,645.0,1000.0,645.0,1000.0,630.0} } }">
+        </property>
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.parameters&quot;,x=335.0,y=520.0}, tail={id=&quot;HttpRequestHandler.parameters&quot;,x=100.0,y=530.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.headers&quot;,x=335.0,y=520.0}, tail={id=&quot;HttpRequestHandler.headers&quot;,x=100.0,y=530.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.uri&quot;,x=335.0,y=520.0}, tail={id=&quot;HttpRequestHandler.uri&quot;,x=100.0,y=530.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.readKey&quot;,x=335.0,y=520.0}, tail={id=&quot;Dictionary.readKey&quot;,x=575.0,y=500.0}, points={460.0,500.0,460.0,480.0} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.value&quot;,x=335.0,y=520.0}, tail={id=&quot;Dictionary.value&quot;,x=575.0,y=500.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.writeKey&quot;,x=335.0,y=520.0}, tail={id=&quot;Dictionary.writeKey&quot;,x=575.0,y=500.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.responseCode&quot;,x=335.0,y=520.0}, tail={id=&quot;Merge2.input&quot;,x=550.0,y=685.0,index=2}, points={460.0,540.0,460.0,685.0} } }">
+        </property>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.response&quot;,x=335.0,y=520.0}, tail={id=&quot;Merge.input&quot;,x=740.0,y=595.0,index=3}, points={465.0,530.0,465.0,595.0} } }">
         </property>
     </relation>
     <link port="MicrostepDelay.input" relation="relation17"/>
     <link port="MicrostepDelay.output" relation="relation6"/>
     <link port="StringConst.output" relation="relation5"/>
     <link port="StringConst.trigger" relation="relation4"/>
-    <link port="ConstructLookup.uri" relation="relation3"/>
-    <link port="ConstructLookup.readKey" relation="relation"/>
-    <link port="ConstructLookup.headers" relation="relation15"/>
-    <link port="ConstructLookup.parameters" relation="relation9"/>
-    <link port="ConstructLookup.value" relation="relation10"/>
-    <link port="ConstructLookup.writeKey" relation="relation11"/>
-    <link port="ConstructLookup.response" relation="relation16"/>
-    <link port="ConstructLookup.responseCode" relation="relation21"/>
     <link port="HttpRequestHandler.responseBody" relation="relation6"/>
     <link port="HttpRequestHandler.responseCode" relation="relation19"/>
-    <link port="HttpRequestHandler.uri" relation="relation3"/>
-    <link port="HttpRequestHandler.headers" relation="relation15"/>
-    <link port="HttpRequestHandler.parameters" relation="relation9"/>
+    <link port="HttpRequestHandler.uri" relation="relation15"/>
+    <link port="HttpRequestHandler.headers" relation="relation9"/>
+    <link port="HttpRequestHandler.parameters" relation="relation24"/>
     <link port="Dictionary.keys" relation="relation8"/>
-    <link port="Dictionary.readKey" relation="relation"/>
+    <link port="Dictionary.readKey" relation="relation3"/>
     <link port="Dictionary.result" relation="relation22"/>
     <link port="Dictionary.triggerKeys" relation="relation7"/>
-    <link port="Dictionary.value" relation="relation10"/>
-    <link port="Dictionary.writeKey" relation="relation11"/>
+    <link port="Dictionary.value" relation="relation"/>
+    <link port="Dictionary.writeKey" relation="relation10"/>
     <link port="Dictionary.notFound" relation="relation23"/>
     <link port="HttpRequestHandler2.responseBody" relation="relation2"/>
     <link port="HttpRequestHandler2.uri" relation="relation4"/>
@@ -429,17 +401,25 @@
     <link port="TokenToJSON.output" relation="relation12"/>
     <link port="MicrostepDelay3.input" relation="relation12"/>
     <link port="MicrostepDelay3.output" relation="relation13"/>
-    <link port="Merge.input" relation="relation16"/>
     <link port="Merge.input" relation="relation14"/>
     <link port="Merge.input" relation="relation22"/>
+    <link port="Merge.input" relation="relation11"/>
     <link port="Merge.output" relation="relation17"/>
     <link port="MicrostepDelay4.input" relation="relation18"/>
     <link port="MicrostepDelay4.output" relation="relation19"/>
-    <link port="Merge2.input" relation="relation21"/>
     <link port="Merge2.input" relation="relation20"/>
+    <link port="Merge2.input" relation="relation16"/>
     <link port="Merge2.output" relation="relation18"/>
     <link port="StringConst2.output" relation="relation14"/>
     <link port="StringConst2.trigger" relation="relation23"/>
     <link port="Const.output" relation="relation20"/>
     <link port="Const.trigger" relation="relation23"/>
+    <link port="JavaScript.uri" relation="relation15"/>
+    <link port="JavaScript.headers" relation="relation9"/>
+    <link port="JavaScript.parameters" relation="relation24"/>
+    <link port="JavaScript.readKey" relation="relation3"/>
+    <link port="JavaScript.value" relation="relation"/>
+    <link port="JavaScript.writeKey" relation="relation10"/>
+    <link port="JavaScript.response" relation="relation11"/>
+    <link port="JavaScript.responseCode" relation="relation16"/>
 </entity>

@@ -33,9 +33,9 @@
  * On another machine (or the same machine), create an instance of SocketClient.
  * When the connection is established to the server, this instance will emit an
  * 'open' event. When data arrives from the server, it will emit a 'data' event.
- * You can invoke send() to send data to the server.
+ * You can invoke this.send() to send data to the server.
  *
- * The send() function can accept data in many different forms.
+ * The this.send() function can accept data in many different forms.
  * You can send a string, an image, a number, or an array of numbers.
  * Two utility functions supportedReceiveTypes() and supportedSendTypes()
  * tell you exactly which data types supported by the host.
@@ -44,8 +44,8 @@
  * If the rawBytes option is true (the default), then data is sent without any
  * message framing. As a consequence, the recipient of the data may emit only a
  * portion of any sent data, or it may even coalesce data provided in separate
- * invocations of send(). If rawBytes is false, then messages will be framed so
- * that each invocation of send() results in exactly one data item emitted at the
+ * invocations of this.send(). If rawBytes is false, then messages will be framed so
+ * that each invocation of this.send() results in exactly one data item emitted at the
  * other end.  This will only work if both sides of the connection implement the
  * same framing protocol, e.g. if they both are implemented with this same module.
  * To communicate with external tools that do not support this message framing
@@ -133,7 +133,7 @@ var defaultClientOptions = {
  *  * close: Emitted with no arguments when the socket is closed.
  *  * error: Emitted with an error message when an error occurs.
  *
- *  You can invoke the send() function of this SocketClient object
+ *  You can invoke the this.send() function of this SocketClient object
  *  to send data to the server. If the socket is not opened yet,
  *  then data will be discarded or queued to be sent later,
  *  depending on the value of the discardMessagesBeforeOpen option
@@ -167,16 +167,16 @@ var defaultClientOptions = {
  *  * keepAlive: Whether to keep a connection alive and reuse it. This
  *    defaults to true.
  *  * maxUnsentMessages: The maximum number of unsent messages to queue before
- *    further calls to send() will fail. A value of 0 means no limit.
+ *    further calls to this.send() will fail. A value of 0 means no limit.
  *    This defaults to 100.
  *  * noDelay: If true, data as sent as soon as it is available (the default).
  *    If false, data may be accumulated until a reasonable packet size is formed
  *    in order to make more efficient use of the network (using Nagle's algorithm).
  *  * rawBytes: If true (the default), then transmit only the data bytes provided
- *    to send() without any header. If false, then prepend sent data with length
+ *    to this.send() without any header. If false, then prepend sent data with length
  *    information and assume receive data starts with length information.
  *    Setting this false on both ends will ensure that each data item passed to
- *    send() is emitted once in its entirety at the receiving end, as a single
+ *    this.send() is emitted once in its entirety at the receiving end, as a single
  *    message. When this is false, the receiving end can emit a partially received
  *    message or could concatenate two messages and emit them together.
  *  * receiveBufferSize: The size of the receive buffer. Defaults to
@@ -214,7 +214,7 @@ var defaultClientOptions = {
  *  https://docs.oracle.com/javase/specs/jls/se8/html/jls-5.html#jls-5.1.3 .
  *
  *  For numeric types, you can also send an array with a single call
- *  to send(). The elements of the array will be sent in sequence all
+ *  to this.send(). The elements of the array will be sent in sequence all
  *  at once, and may be received in one batch. If both ends have
  *  rawBytes set to false (specifying message framing), then these
  *  elements will be emitted at the receiving end all at once in a single
@@ -223,7 +223,7 @@ var defaultClientOptions = {
  *  For strings, you can also send an array of strings in a single call,
  *  but these will be simply be concatenated and received as a single string.
  *
- *  If the rawBytes option is set to false, then each data item passed to send(),
+ *  If the rawBytes option is set to false, then each data item passed to this.send(),
  *  of any type or array of types, will be coalesced into a single message and
  *  the receiving end (if it also has rawBytes set to false) will emit the entire
  *  message, and only the message, exactly once.  Otherwise, a message may get
@@ -302,7 +302,7 @@ exports.SocketClient.prototype.send = function(data) {
                     ". Consider setting discardMessagesBeforeOpen to true.";
             }
         } else {
-            console.log('Discarding because socket is not open: ' + data);
+            console.log('Discarding because socket is not open.');
         }
     }      
 };
@@ -379,14 +379,12 @@ var defaultServerOptions = {
  *         console.log('Server connected on a new socket number: ' + connectionNumber);
  *         serverSocket.on('data', function(data) {
  *             console.log('Server received data on connection '
- *                     + connectionNumber
- *                     + ": "
- *                     + data);
+ *                     + connectionNumber);
  *         });
  *     });
  * 
  *  When the 'connection' event is emitted, it will be passed a Socket object,
- *  which has a send() function. For example, to send a reply to each incoming
+ *  which has a this.send() function. For example, to send a reply to each incoming
  *  message, replace the above 'data' handler as follows:
  * 
  *     serverSocket.on('data', function(data) {
@@ -422,10 +420,10 @@ var defaultServerOptions = {
  *  * port: The default port to listen on. This defaults to 4000.
  *    a value of 0 means to choose a random ephemeral free port.
  *  * rawBytes: If true (the default), then transmit only the data bytes provided
- *    to send() without any header. If false, then prepend sent data with length
+ *    to this.send() without any header. If false, then prepend sent data with length
  *    information and assume receive data starts with length information.
  *    Setting this false on both ends will ensure that each data item passed to
- *    send() is emitted once in its entirety at the receiving end, as a single
+ *    this.send() is emitted once in its entirety at the receiving end, as a single
  *    message. When this is false, the receiving end can emit a partially received
  *    message or could concatenate two messages and emit them together.
  *  * receiveBufferSize: The size of the receive buffer. Defaults to
@@ -457,7 +455,7 @@ var defaultServerOptions = {
  *  https://docs.oracle.com/javase/specs/jls/se8/html/jls-5.html#jls-5.1.3 .
  *
  *  For numeric types, you can also send an array with a single call
- *  to send(). The elements of the array will be sent in sequence all
+ *  to this.send(). The elements of the array will be sent in sequence all
  *  at once, and may be received in one batch. If both ends have
  *  rawBytes set to false (specifying message framing), then these
  *  elements will be emitted at the receiving end all at once in a single
@@ -499,7 +497,7 @@ exports.SocketServer.prototype._serverCreated = function(netServer) {
  *  programmer. When this is called, the Server will create a new Socket object
  *  and emit a 'connection' event with that Socket as an argument.
  *  The 'connection' handler can then register for 'data' events from the
- *  Socket or issue replies to the Socket using its send() function.
+ *  Socket or issue replies to the Socket using its this.send() function.
  *  It can also close() the Socket.
  *  @param netSocket The Vert.x NetSocket object.
  *  @param server The Vert.x NetServer object.

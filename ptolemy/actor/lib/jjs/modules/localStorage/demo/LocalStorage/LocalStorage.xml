@@ -33,7 +33,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var storage = require('localStorage');&#10;&#10;exports.initialize = function() {&#10;  // If you want to set your own directory for persistent storage, do as follows&#10;  // storage.initSync({dir:'/tmp'});&#10;  storage.initSync();&#10;}&#10;&#10;function currentStatus() {&#10;  var result = &quot;&quot;;&#10;  var len = storage.length();&#10;  for (var i = 0; i &lt; len; i++) {&#10;    var curKey = storage.key(i);&#10;    var curValue = storage.getItem(curKey);&#10;    result = result + '(' + curKey + ', ' + curValue + ')';&#10;    if (i &lt; (len - 1)) {&#10;      result = result + ', '&#10;    }&#10;  }&#10;  return result;&#10;}&#10;&#10;exports.fire = function() {&#10;  var inputKey = get('key');&#10;  var inputValue = get('value');&#10;&#10;  var inputIsGet = get('isGet');&#10;&#10;  if (inputIsGet) {&#10;    send('output', 'Inserting (Key,Value) = (' + inputKey + ', ' + inputValue + ')');&#10;    storage.setItem(inputKey, inputValue);&#10;    send('output', 'Result: ' + currentStatus());&#10;  }&#10;  else {&#10;    send('output', 'Retrieving Key: ' + inputKey);&#10;    var foundValue = storage.getItem(inputKey);&#10;    send('output', 'Result: ' + foundValue);&#10;  }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var storage = require('localStorage');&#10;&#10;exports.initialize = function() {&#10;  // If you want to set your own directory for persistent storage, do as follows&#10;  // storage.initSync({dir:'/tmp'});&#10;  storage.initSync();&#10;}&#10;&#10;function currentStatus() {&#10;  var result = &quot;&quot;;&#10;  var len = storage.length();&#10;  for (var i = 0; i &lt; len; i++) {&#10;    var curKey = storage.key(i);&#10;    var curValue = storage.getItem(curKey);&#10;    result = result + '(' + curKey + ', ' + curValue + ')';&#10;    if (i &lt; (len - 1)) {&#10;      result = result + ', '&#10;    }&#10;  }&#10;  return result;&#10;}&#10;&#10;exports.fire = function() {&#10;  var inputKey = this.get('key');&#10;  var inputValue = this.get('value');&#10;&#10;  var inputIsGet = this.get('isGet');&#10;&#10;  if (inputIsGet) {&#10;    this.send('output', 'Inserting (Key,Value) = (' + inputKey + ', ' + inputValue + ')');&#10;    storage.setItem(inputKey, inputValue);&#10;    this.send('output', 'Result: ' + currentStatus());&#10;  }&#10;  else {&#10;    this.send('output', 'Retrieving Key: ' + inputKey);&#10;    var foundValue = storage.getItem(inputKey);&#10;    this.send('output', 'Result: ' + foundValue);&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -47,25 +47,17 @@
         </property>
         <port name="key" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="value" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
         <port name="isGet" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
         </port>
     </entity>
     <entity name="Input" class="ptolemy.actor.lib.Sequence">

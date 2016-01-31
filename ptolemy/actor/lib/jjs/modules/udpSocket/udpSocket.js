@@ -86,7 +86,7 @@ exports.Socket.prototype.bind = function(port) {
 };
 
 /** Close the current connection with the server.
- *  If there is data that was passed to send() but has not yet
+ *  If there is data that was passed to this.send() but has not yet
  *  been successfully sent (because the socket was not open),
  *  then throw an exception.
  */

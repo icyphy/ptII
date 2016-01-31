@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2127613283995273">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{135.8606562614441, 171.98070611283185}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{135.86065626144412, 171.98070611283185}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -35,7 +35,7 @@
         </property>
     </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	input('toSend');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(4000, 'localhost',&#10;		{'discardMessagesBeforeOpen':true}&#10;	);&#10;	addInputHandler('toSend', function() {&#10;		var data = get('toSend');&#10;		client.send(data);&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(4000, 'localhost',&#10;		{'discardMessagesBeforeOpen':true}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		client.send(data);&#10;	});&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -54,7 +54,7 @@
         </port>
     </entity>
     <entity name="Server" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	output('listening');&#10;	output('connected');&#10;	output('received');&#10;	input('start');&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	addInputHandler('start', function() {&#10;		server = new socket.SocketServer();&#10;		server.on('listening', function(port) {&#10;			send('listening', port);&#10;		});&#10;		server.on('connection', function(serverSocket) {&#10;			connectionCount++;&#10;			send('connected', connectionCount);&#10;			serverSocket.on('data', function(data) {&#10;				send('received', data);&#10;			});&#10;		});&#10;	});&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.close();&#10;	}&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.output('listening');&#10;	this.output('connected');&#10;	this.output('received');&#10;	this.input('start');&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('start', function() {&#10;		server = new socket.SocketServer();&#10;		server.on('listening', function(port) {&#10;			self.send('listening', port);&#10;		});&#10;		server.on('connection', function(serverSocket) {&#10;			connectionCount++;&#10;			self.send('connected', connectionCount);&#10;			serverSocket.on('data', function(data) {&#10;				self.send('received', data);&#10;			});&#10;		});&#10;	});&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.close();&#10;	}&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -106,7 +106,7 @@
         </property>
     </entity>
     <entity name="ListeningPort" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 22, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 23, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>

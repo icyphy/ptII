@@ -25,7 +25,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function handler() {&#10;  send('output', get('input0')*2);&#10;  send('output', get('input1'));&#10;}&#10;exports.initialize = function() {&#10;  addInputHandler(null, handler);&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="function handler() {&#10;  this.send('output', this.get('input0')*2);&#10;  this.send('output', this.get('input1'));&#10;}&#10;exports.initialize = function() {&#10;  this.addInputHandler(null, handler);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>

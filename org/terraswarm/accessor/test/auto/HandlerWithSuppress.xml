@@ -18,13 +18,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 50.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={54, 82, 934, 634}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 793, 436}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[559, 326]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{269.5, 153.0}">
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
         <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0, 3.0, 4.0, 10.0, 11.0, 12.0, 13.0, 14.0, 20.0}">
@@ -61,7 +61,7 @@
         </property>
     </entity>
     <entity name="HandlerWithSuppress" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** This accessor produces outputs periodically, at one second intervals,&#10; *  as long as the most recently received suppress input is not true.&#10; *  The output is a count of the periods, starting with 1.&#10; *  @accessor HandlerWithSuppress&#10; *  @input suppress If true, then suppress the output triggered by a callback.&#10; *  @input produce An event here is produced as an output, unless suppressed.&#10; *  @output output The count of the firing.&#10; *  @author Edward A. Lee&#10; */&#10;exports.setup = function() {&#10;    input(&quot;suppress&quot;, {'value':false, 'type': &quot;boolean&quot;});&#10;    input(&quot;produce&quot;);&#10;    output(&quot;output&quot;, {'type':&quot;number&quot;});&#10;}&#10;var count;&#10;var handleTimeout = function() {&#10;    send('produce', true);&#10;};&#10;var inputHandler = function() {&#10;    count = count + 1;&#10;    if (!get('suppress')) {&#10;        send('output', count);&#10;    }&#10;};&#10;exports.initialize = function() {&#10;	addInputHandler('produce', inputHandler);&#10;    count = 0;&#10;    setInterval(handleTimeout, 1000);&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** This accessor produces outputs periodically, at one second intervals,&#10; *  as long as the most recently received suppress input is not true.&#10; *  The output is a count of the periods, starting with 1.&#10; *  @accessor HandlerWithSuppress&#10; *  @input suppress If true, then suppress the output triggered by a callback.&#10; *  @input produce An event here is produced as an output, unless suppressed.&#10; *  @output output The count of the firing.&#10; *  @author Edward A. Lee&#10; */&#10;exports.setup = function() {&#10;    this.input(&quot;suppress&quot;, {'value':false, 'type': &quot;boolean&quot;});&#10;    this.input(&quot;produce&quot;);&#10;    this.output(&quot;output&quot;, {'type':&quot;number&quot;});&#10;}&#10;var count;&#10;var handleTimeout = function() {&#10;    this.send('produce', true);&#10;};&#10;var inputHandler = function() {&#10;    count = count + 1;&#10;    if (!this.get('suppress')) {&#10;        this.send('output', count);&#10;    }&#10;};&#10;exports.initialize = function() {&#10;    this.addInputHandler('produce', inputHandler.bind(this));&#10;    count = 0;&#10;    setInterval(handleTimeout.bind(this), 1000);&#10;}&#10;">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/HandlerWithSuppress.js">
         </property>

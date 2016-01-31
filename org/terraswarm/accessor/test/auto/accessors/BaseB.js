@@ -1,13 +1,13 @@
 exports.setup = function() {
-   input('in1');
-   output('output');
+   this.input('in1');
+   this.output('output');
 }
 
 exports.initialize = function() {
-   addInputHandler('in1', this.inputHandler);
+   this.addInputHandler('in1', this.exports.inputHandler.bind(this));
 }
 
 exports.inputHandler = function() {
    console.log('sending true');
-   send('output', true);
+   this.send('output', true);
 }

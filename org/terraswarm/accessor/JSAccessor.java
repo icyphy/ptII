@@ -585,6 +585,13 @@ public class JSAccessor extends JavaScript {
         // silently do nothing at all.  This is not OK.
         // Anyway, avoiding overwriting overrides is already handled
         // when the setup() method in the script is invoked.
+        if (accessorSource == null) {
+            throw new NullPointerException("accessorSource == null?");
+        }
+        if (accessorSource.asURL() == null) {
+            throw new NullPointerException("accessorSource.asURL() == null? accessorSource was: " + accessorSource
+                                           + " This can happen if there is no accessorSource attribute in the MoML file because a JavaScript actor was replaced with a JSAccessor actor via an edit of the MoML file.");
+        }
         String moml = "<group>"
             + JSAccessor._accessorToMoML(accessorSource.asURL().toExternalForm(),
                     obeyCheckoutOrUpdateRepositoryParameter)
