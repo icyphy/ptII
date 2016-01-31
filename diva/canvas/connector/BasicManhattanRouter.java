@@ -346,7 +346,7 @@ public class BasicManhattanRouter implements ManhattanRouter {
                 }
             }
         } else {
-            throw new RuntimeException("unknown dir");
+            throw new RuntimeException("unknown direction: " + headDir);
         }
 
         Polyline2D route = _route(point, dir, tail, tailDir);
