@@ -1128,6 +1128,7 @@ public class JavaScript extends TypedAtomicActor {
         Object token = null;
         Token previousValue = null;
         String previousExpression = "";
+        boolean deletedPriorParameter = false;
         if (port == null) {
             // No pre-existing port.
             // If there is a parameter with the same name, then
@@ -1141,6 +1142,7 @@ public class JavaScript extends TypedAtomicActor {
                     previousValue = null;
                 }
                 previous.setContainer(null);
+                deletedPriorParameter = true;
             }
             if (options == null) {
                 // No options given. Use defaults.
@@ -1268,7 +1270,7 @@ public class JavaScript extends TypedAtomicActor {
             }
             // If there was a previous value from a parameter that got deleted, then override the
             // specified value.
-            if (previousValue != null) {
+            if (deletedPriorParameter && previousValue != null) {
                 parameter.setExpression(previousExpression);
             }
         }
@@ -2134,7 +2136,7 @@ public class JavaScript extends TypedAtomicActor {
             _exports = ((Map)_instance).get("exports");
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable,
-                    "Failed to evaluate script during initialize.");
+                    "Failed to evaluate script.");
         }
 
         // Invoke the setup function.
