@@ -22,10 +22,10 @@ This accessor, when fired, reads the ptolemy website using readURL()
   <script type="text/javascript">
     // <![CDATA[
     exports.fire = function() {
-        var stock = get('symbol');
+        var stock = this.get('symbol');
         var url = "http://ptolemy.org";
         var result = readURL(url);
-        send('price', result);
+        this.send('price', result);
     }
 	// ]]>
   </script>

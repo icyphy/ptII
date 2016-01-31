@@ -22,12 +22,12 @@ This accessor, when fired, reads the most recent bid price for the specified sto
   <script type="text/javascript">
     // <![CDATA[
 	exports.fire = function() {
-	  var stock = get('symbol');
+	  var stock = this.get('symbol');
 	  var url = "file://foo";
 	  var record = readURL(url);
 	  var json = JSON.parse(record);
 	  var tick = parseFloat(json.query.results.quote.LastTradePriceOnly);
-	  send('price', tick);
+	  this.send('price', tick);
 	}
 	// ]]>
   </script>

@@ -28,9 +28,9 @@ exports.initialize = function() {
 exports.fire = function() {
     count = count + 1;
     if (count <= 2) {
-       var value = get('input');
-       send('output', value);
-       send('input', null);
+       var value = this.get('input');
+       this.send('output', value);
+       this.send('input', null);
    }
 }
 	// ]]>
