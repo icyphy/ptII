@@ -104,7 +104,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="RESTSource" class="ptolemy.data.expr.Parameter" value="Make a selection">
+        <property name="RESTSource" class="ptolemy.data.expr.Parameter" value="Paraimpu">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -122,6 +122,40 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="host" class="ptolemy.data.expr.Parameter" value="api.paraimpu.com">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="443">
+        </property>
+        <property name="protocol" class="ptolemy.data.expr.Parameter" value="https">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="path" class="ptolemy.data.expr.Parameter" value="v1/things/67de5874-33b1-48be-a99b-85ed5c55d7a4/data/last">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="username" class="ptolemy.data.expr.Parameter" value="admin">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="password" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="method" class="ptolemy.data.expr.Parameter" value="GET">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="dataType" class="ptolemy.actor.parameters.PortParameter" value="all">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="accessToken" class="ptolemy.data.expr.Parameter" value="46e0ee55195c4dd9dca295a7ac8282d28f4a2259">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
@@ -160,6 +194,38 @@
         </port>
         <port name="headers" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+        </port>
+        <port name="sound" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="sensorName" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="dataType" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="payload" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="producer" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="sensorId" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
