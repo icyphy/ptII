@@ -102,7 +102,7 @@ import ptolemy.util.StringUtilities;
  <h2>References</h2>
 
  <p><name="VisionOfSwarmLets">Elizabeth Latronico, Edward A. Lee, Marten Lohstroh, Chris Shaver, Armin Wasicek, Matt Weber.</a>
- <a href="http://www.terraswarm.org/pubs/332.html">A Vision of Swarmlets</a>,
+ <a href="https://www.terraswarm.org/pubs/332.html">A Vision of Swarmlets</a>,
  <i>IEEE Internet Computing, Special Issue on Building Internet of Things Software</i>,
  19(2):20-29, March 2015.</p>
 
@@ -787,7 +787,7 @@ public class JSAccessor extends JavaScript {
      *  accessor repo will be checked out or updated.</p>
      *
      *  <p>After the repo is loaded or updated, if url starts with
-     *  http://terraswarm.org/accessors/ or
+     *  https://www.terraswarm.org/accessors/ or
      *  https://terraswarm.org/accessors/, and the corresponding file
      *  in the local svn accessors repo directory exists, then the
      *  file in the local svn directory is used instead of the file
