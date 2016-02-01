@@ -37,7 +37,7 @@ DIRS = AprilTags Audio Camera HappySadStock HueToggle \
 	MoC MotionDetector StockTick \
 	SwarmAcousticService TCPSocket \
 	UDPSocket VertxBus \
-	Weather WebSocketClient WebSocketImage c4po
+	Weather WebSocketClient WebSocketImage
 
 # $(ME) is used in ptdir.mk
 ME =  org/terraswarm/accessor/demo
