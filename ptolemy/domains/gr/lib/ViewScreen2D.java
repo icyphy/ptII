@@ -38,6 +38,17 @@ import java.util.Iterator;
 
 import javax.swing.JFrame;
 
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Figure;
+import diva.canvas.FigureLayer;
+import diva.canvas.GraphicsPane;
+import diva.canvas.JCanvas;
+import diva.canvas.OverlayLayer;
+import diva.canvas.event.EventLayer;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.event.LayerListener;
+import diva.canvas.event.LayerMotionListener;
+import diva.canvas.toolbox.BasicFigure;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Placeable;
@@ -52,17 +63,6 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.Figure;
-import diva.canvas.FigureLayer;
-import diva.canvas.GraphicsPane;
-import diva.canvas.JCanvas;
-import diva.canvas.OverlayLayer;
-import diva.canvas.event.EventLayer;
-import diva.canvas.event.LayerEvent;
-import diva.canvas.event.LayerListener;
-import diva.canvas.event.LayerMotionListener;
-import diva.canvas.toolbox.BasicFigure;
 
 ///////////////////////////////////////////////////////////////////
 //// ViewScreen2D

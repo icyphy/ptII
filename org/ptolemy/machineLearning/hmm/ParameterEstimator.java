@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 package org.ptolemy.machineLearning.hmm;
 
 import java.util.HashMap;
+
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.ArrayToken;

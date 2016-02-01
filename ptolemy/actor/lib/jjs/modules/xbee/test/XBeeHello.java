@@ -28,13 +28,11 @@
 
 package ptolemy.actor.lib.jjs.modules.xbee.test;
 
-import com.digi.xbee.api.XBeeDevice;
-import com.digi.xbee.api.exceptions.XBeeException;
-
-import gnu.io.CommPortIdentifier;
-
 import java.util.Enumeration;
 
+import com.digi.xbee.api.XBeeDevice;
+
+import gnu.io.CommPortIdentifier;
 import ptolemy.util.StringUtilities;
 /** 
  * Generate "Hello XBee World!" on a XBee radio connected to a serial port.

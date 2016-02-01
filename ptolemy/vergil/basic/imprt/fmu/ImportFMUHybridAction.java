@@ -32,6 +32,7 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.AbstractAction;
 
+import diva.graph.GraphController;
 import ptolemy.actor.gui.PtolemyQuery;
 import ptolemy.actor.lib.fmi.FMUImportHybrid;
 import ptolemy.data.expr.FileParameter;
@@ -44,7 +45,6 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
-import diva.graph.GraphController;
 
 /**
  * Implement the Import FMU Hybrid menu choice.

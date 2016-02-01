@@ -27,10 +27,10 @@
  */
 package ptolemy.plot.plotml;
 
+import com.microstar.xml.XmlException;
+
 // Ptolemy imports.
 import ptolemy.plot.PlotInterface;
-
-import com.microstar.xml.XmlException;
 
 ///////////////////////////////////////////////////////////////////
 //// PlotMLParser

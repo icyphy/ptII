@@ -40,6 +40,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import com.cureos.numerics.Calcfc;
+import com.cureos.numerics.Cobyla;
+
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.FilePortParameter;
 import ptolemy.data.ArrayToken;
@@ -60,9 +63,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.math.SignalProcessing;
 import ptolemy.util.StringUtilities;
-
-import com.cureos.numerics.Calcfc;
-import com.cureos.numerics.Cobyla;
 
 public class HSMMTimeAwareMultinomialEstimatorWithCodegen extends
 HSMMTimeAwareMultinomialEstimator {

@@ -30,9 +30,10 @@ package ptolemy.domains.tcs.kernel;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Random;
 import java.util.TreeMap;
-import java.util.Map.Entry;
+
 import ptolemy.actor.Receiver;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
@@ -41,10 +42,10 @@ import ptolemy.data.IntToken;
 import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
-import ptolemy.domains.tcs.lib.AbstractTrack;
+import ptolemy.domains.de.kernel.DEDirector;
 import ptolemy.domains.tcs.lib.AbstractSourceStation;
 import ptolemy.domains.tcs.lib.AbstractStation;
-import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.tcs.lib.AbstractTrack;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

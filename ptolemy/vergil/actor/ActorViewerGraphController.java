@@ -38,6 +38,17 @@ import java.util.Vector;
 
 import javax.swing.SwingConstants;
 
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.interactor.SelectionDragger;
+import diva.canvas.toolbox.LabelFigure;
+import diva.graph.EdgeController;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
+import diva.graph.NodeController;
+import diva.graph.basic.BasicLayoutTarget;
+import diva.graph.layout.AbstractGlobalLayout;
 import ptolemy.actor.Actor;
 import ptolemy.actor.FiringEvent;
 import ptolemy.actor.IOPort;
@@ -68,17 +79,6 @@ import ptolemy.vergil.kernel.AnimationRenderer;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.kernel.RelationController;
 import ptolemy.vergil.toolbox.PortSite;
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.interactor.SelectionDragger;
-import diva.canvas.toolbox.LabelFigure;
-import diva.graph.EdgeController;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
-import diva.graph.JGraph;
-import diva.graph.NodeController;
-import diva.graph.basic.BasicLayoutTarget;
-import diva.graph.layout.AbstractGlobalLayout;
 
 ///////////////////////////////////////////////////////////////////
 //// ActorViewerGraphController

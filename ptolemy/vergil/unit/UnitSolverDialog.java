@@ -48,6 +48,18 @@ import javax.swing.ListSelectionModel;
 import javax.swing.event.ListSelectionEvent;
 import javax.swing.event.ListSelectionListener;
 
+import diva.canvas.Figure;
+import diva.canvas.interactor.BasicSelectionRenderer;
+import diva.canvas.interactor.Interactor;
+import diva.canvas.interactor.SelectionEvent;
+import diva.canvas.interactor.SelectionInteractor;
+import diva.canvas.interactor.SelectionListener;
+import diva.canvas.interactor.SelectionModel;
+import diva.canvas.interactor.SelectionRenderer;
+import diva.graph.GraphController;
+import diva.graph.GraphPane;
+import diva.graph.GraphUtilities;
+import diva.graph.JGraph;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
@@ -68,18 +80,6 @@ import ptolemy.moml.unit.UnitConstraints;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphFrame;
-import diva.canvas.Figure;
-import diva.canvas.interactor.BasicSelectionRenderer;
-import diva.canvas.interactor.Interactor;
-import diva.canvas.interactor.SelectionEvent;
-import diva.canvas.interactor.SelectionInteractor;
-import diva.canvas.interactor.SelectionListener;
-import diva.canvas.interactor.SelectionModel;
-import diva.canvas.interactor.SelectionRenderer;
-import diva.graph.GraphController;
-import diva.graph.GraphPane;
-import diva.graph.GraphUtilities;
-import diva.graph.JGraph;
 
 ///////////////////////////////////////////////////////////////////
 //// UnitSolverDialog

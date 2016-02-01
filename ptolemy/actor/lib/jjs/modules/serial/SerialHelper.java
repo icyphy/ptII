@@ -27,22 +27,20 @@
  */
 package ptolemy.actor.lib.jjs.modules.serial;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.TooManyListenersException;
+
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import java.util.Enumeration;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.TooManyListenersException;
-
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.kernel.util.IllegalActionException;

@@ -24,15 +24,15 @@
 */
 package ptolemy.actor.lib.jjs.modules.IMUSensor;
 
+import java.io.BufferedInputStream;
+import java.io.IOException;
+import java.util.concurrent.LinkedBlockingQueue;
+
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
-
-import java.io.BufferedInputStream;
-import java.io.IOException;
-import java.util.concurrent.LinkedBlockingQueue;
 
 /////////////////////////////////////////////////////////////////////////
 ///// SerialPortReader

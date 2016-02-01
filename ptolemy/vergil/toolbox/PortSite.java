@@ -31,9 +31,9 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingConstants;
 
-import ptolemy.kernel.Port;
 import diva.canvas.AbstractSite;
 import diva.canvas.Figure;
+import ptolemy.kernel.Port;
 
 /**
  A site that locates itself on the bounds of a figure's shape, designed

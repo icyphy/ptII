@@ -38,6 +38,8 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import com.caucho.hessian.client.HessianProxyFactory;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.injection.ActorModuleInitializer;
 import ptolemy.actor.injection.PtolemyInjector;
@@ -58,8 +60,6 @@ import ptserver.test.SysOutActor;
 import ptserver.test.SysOutActor.TokenDelegator;
 import ptserver.util.ProxyModelBuilder.ProxyModelType;
 import ptserver.util.ServerUtility;
-
-import com.caucho.hessian.client.HessianProxyFactory;
 
 ///////////////////////////////////////////////////////////////////
 //// RemoteModelTest

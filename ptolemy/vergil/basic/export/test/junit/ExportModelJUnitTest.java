@@ -37,13 +37,12 @@ import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 import ptolemy.actor.Manager;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.util.StringUtilities;

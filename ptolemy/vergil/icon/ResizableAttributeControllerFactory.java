@@ -27,6 +27,8 @@
  */
 package ptolemy.vergil.icon;
 
+import diva.canvas.interactor.SelectionInteractor;
+import diva.graph.GraphController;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
@@ -34,8 +36,6 @@ import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.basic.NodeControllerFactory;
 import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.AttributeBoundsManipulator;
-import diva.canvas.interactor.SelectionInteractor;
-import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
 //// ResizableAttributeControllerFactory

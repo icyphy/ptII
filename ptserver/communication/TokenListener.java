@@ -30,6 +30,8 @@ package ptserver.communication;
 
 import java.util.logging.Logger;
 
+import com.ibm.mqtt.MqttSimpleCallback;
+
 import ptolemy.data.Token;
 import ptolemy.kernel.util.Settable;
 import ptserver.data.AttributeChangeToken;
@@ -38,8 +40,6 @@ import ptserver.data.PingToken;
 import ptserver.data.PongToken;
 import ptserver.data.RemoteEventToken;
 import ptserver.data.Tokenizer;
-
-import com.ibm.mqtt.MqttSimpleCallback;
 
 ///////////////////////////////////////////////////////////////////
 //// TokenListener

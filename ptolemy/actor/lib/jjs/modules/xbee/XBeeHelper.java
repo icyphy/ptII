@@ -28,22 +28,21 @@
 
 package ptolemy.actor.lib.jjs.modules.xbee;
 
-import gnu.io.NoSuchPortException;
-import gnu.io.PortInUseException;
-import io.vertx.core.buffer.Buffer;
-
 import java.io.IOException;
 import java.util.Map;
 import java.util.TooManyListenersException;
-
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import ptolemy.actor.lib.jjs.VertxHelperBase;
 
 import com.digi.xbee.api.XBeeDevice;
 import com.digi.xbee.api.exceptions.TimeoutException;
 import com.digi.xbee.api.exceptions.XBeeException;
 import com.digi.xbee.api.listeners.IDataReceiveListener;
 import com.digi.xbee.api.models.XBeeMessage;
+
+import gnu.io.NoSuchPortException;
+import gnu.io.PortInUseException;
+import io.vertx.core.buffer.Buffer;
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import ptolemy.actor.lib.jjs.VertxHelperBase;
 
 ///////////////////////////////////////////////////////////////////
 //// XBeeHelper

@@ -28,7 +28,6 @@
 package ptolemy.moml.filter;
 
 import java.lang.reflect.Method;
-import java.util.HashSet;
 
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;

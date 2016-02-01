@@ -41,6 +41,17 @@ import javax.swing.JMenu;
 import javax.swing.JToolBar;
 import javax.swing.SwingUtilities;
 
+import diva.canvas.Figure;
+import diva.canvas.connector.Connector;
+import diva.canvas.interactor.SelectionRenderer;
+import diva.graph.AbstractGraphController;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.GraphUtilities;
+import diva.graph.JGraph;
+import diva.graph.NodeController;
+import diva.gui.toolbox.MenuCreator;
 import ptolemy.actor.gui.ColorAttribute;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
@@ -67,17 +78,6 @@ import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
 import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import ptolemy.vergil.unit.UnitSolverDialog;
-import diva.canvas.Figure;
-import diva.canvas.connector.Connector;
-import diva.canvas.interactor.SelectionRenderer;
-import diva.graph.AbstractGraphController;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
-import diva.graph.GraphUtilities;
-import diva.graph.JGraph;
-import diva.graph.NodeController;
-import diva.gui.toolbox.MenuCreator;
 
 ///////////////////////////////////////////////////////////////////
 //// BasicGraphController

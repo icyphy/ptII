@@ -64,13 +64,6 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.Token;
-import ptolemy.kernel.util.IllegalActionException;
-
 import com.jhlabs.image.AbstractBufferedImageOp;
 
 import edu.umich.eecs.april.jmat.LinAlg;
@@ -82,6 +75,12 @@ import edu.umich.eecs.april.tag.TagFamily;
 import edu.umich.eecs.april.util.Gridder;
 import edu.umich.eecs.april.util.ReflectUtil;
 import edu.umich.eecs.april.util.UnionFindSimple;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.Token;
+import ptolemy.kernel.util.IllegalActionException;
 
 /** An AprilTag detector image filter.
  *  This filter identifies April tags (https://april.eecs.umich.edu/wiki/index.php/AprilTags),

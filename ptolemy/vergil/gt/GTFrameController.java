@@ -44,6 +44,11 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import diva.canvas.event.LayerAdapter;
+import diva.canvas.event.LayerEvent;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
+import diva.gui.toolbox.JCanvasPanner;
 import ptolemy.actor.gt.CompositeActorMatcher;
 import ptolemy.actor.gt.FSMMatcher;
 import ptolemy.actor.gt.TransformationRule;
@@ -60,11 +65,6 @@ import ptolemy.vergil.basic.EditorDropTarget;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
 import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.modal.FSMGraphModel;
-import diva.canvas.event.LayerAdapter;
-import diva.canvas.event.LayerEvent;
-import diva.graph.GraphPane;
-import diva.graph.JGraph;
-import diva.gui.toolbox.JCanvasPanner;
 
 /**
 

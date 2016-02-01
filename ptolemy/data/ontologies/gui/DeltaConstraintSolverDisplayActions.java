@@ -2,6 +2,7 @@ package ptolemy.data.ontologies.gui;
 
 import java.awt.event.ActionEvent;
 
+import diva.graph.GraphController;
 import ptolemy.data.ontologies.lattice.DeltaConstraintSolver;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -11,7 +12,6 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.NamedObjController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import diva.graph.GraphController;
 
 /* An attribute that creates options to configure and run actions of
  * the DeltaConstraintSolver.

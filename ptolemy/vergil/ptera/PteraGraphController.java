@@ -40,6 +40,12 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JToolBar;
 
+import diva.canvas.Figure;
+import diva.graph.GraphException;
+import diva.graph.GraphPane;
+import diva.graph.NodeRenderer;
+import diva.gui.GUIUtilities;
+import diva.gui.toolbox.FigureIcon;
 import ptolemy.domains.ptera.kernel.Event;
 import ptolemy.domains.ptera.kernel.EventDebugEvent;
 import ptolemy.kernel.CompositeEntity;
@@ -56,12 +62,6 @@ import ptolemy.vergil.modal.FSMGraphController;
 import ptolemy.vergil.modal.FSMGraphModel;
 import ptolemy.vergil.modal.StateController;
 import ptolemy.vergil.toolbox.FigureAction;
-import diva.canvas.Figure;
-import diva.graph.GraphException;
-import diva.graph.GraphPane;
-import diva.graph.NodeRenderer;
-import diva.gui.GUIUtilities;
-import diva.gui.toolbox.FigureIcon;
 
 /**
  A controller for a Ptera model.

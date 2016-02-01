@@ -65,7 +65,6 @@ import ptolemy.data.type.BaseType;
 import ptolemy.domains.de.kernel.DEEventQueue;
 import ptolemy.domains.metroII.kernel.util.ProtoBuf.metroIIcomm.Event;
 import ptolemy.domains.ptides.kernel.PtidesEvent;
-import ptolemy.domains.ptides.kernel.PtidesReceiver;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;

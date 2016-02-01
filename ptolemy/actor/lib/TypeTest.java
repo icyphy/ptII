@@ -28,7 +28,6 @@
 package ptolemy.actor.lib;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
@@ -40,7 +39,6 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.data.type.TypeConstant;
 import ptolemy.graph.Inequality;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.CompositeEntity;

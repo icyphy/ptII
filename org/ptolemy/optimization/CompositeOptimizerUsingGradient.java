@@ -30,6 +30,10 @@ package org.ptolemy.optimization;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import com.cureos.numerics.Calcfc;
+import com.cureos.numerics.Cobyla;
+import com.cureos.numerics.CobylaExitStatus;
+
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
@@ -57,10 +61,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-
-import com.cureos.numerics.Calcfc;
-import com.cureos.numerics.Cobyla;
-import com.cureos.numerics.CobylaExitStatus;
 
 /**
 This actor implements a composite optimizer that optimizes a function

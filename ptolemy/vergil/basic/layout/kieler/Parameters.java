@@ -29,16 +29,6 @@ package ptolemy.vergil.basic.layout.kieler;
 
 import java.util.List;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.vergil.actor.ActorGraphModel;
-import ptolemy.vergil.basic.layout.AbstractLayoutConfiguration;
-import ptolemy.vergil.basic.layout.AbstractLayoutConfiguration.InteractionMode;
-import ptolemy.vergil.basic.layout.ActorLayoutConfiguration;
-import ptolemy.vergil.basic.layout.ModalLayoutConfiguration;
-import ptolemy.vergil.modal.FSMGraphModel;
 import de.cau.cs.kieler.core.properties.IProperty;
 import de.cau.cs.kieler.core.properties.Property;
 import de.cau.cs.kieler.kiml.klayoutdata.KLayoutData;
@@ -53,6 +43,16 @@ import de.cau.cs.kieler.klay.layered.p4nodes.NodePlacementStrategy;
 import de.cau.cs.kieler.klay.layered.properties.FixedAlignment;
 import de.cau.cs.kieler.klay.layered.properties.Properties;
 import diva.graph.GraphModel;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.vergil.actor.ActorGraphModel;
+import ptolemy.vergil.basic.layout.AbstractLayoutConfiguration;
+import ptolemy.vergil.basic.layout.AbstractLayoutConfiguration.InteractionMode;
+import ptolemy.vergil.basic.layout.ActorLayoutConfiguration;
+import ptolemy.vergil.basic.layout.ModalLayoutConfiguration;
+import ptolemy.vergil.modal.FSMGraphModel;
 
 /**
  * Responsible for translating layout configuration parameters into the KIELER format.

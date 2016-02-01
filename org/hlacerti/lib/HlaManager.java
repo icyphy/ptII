@@ -30,6 +30,20 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.hlacerti.lib;
 
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.NoSuchElementException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import certi.rti.impl.CertiLogicalTime;
+import certi.rti.impl.CertiLogicalTimeInterval;
+import certi.rti.impl.CertiRtiAmbassador;
 import hla.rti.ArrayIndexOutOfBounds;
 import hla.rti.AttributeHandleSet;
 import hla.rti.AttributeNotDefined;
@@ -74,18 +88,6 @@ import hla.rti.jlc.EncodingHelpers;
 import hla.rti.jlc.NullFederateAmbassador;
 import hla.rti.jlc.RtiFactory;
 import hla.rti.jlc.RtiFactoryFactory;
-
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
-import java.util.NoSuchElementException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 import ptolemy.actor.AbstractInitializableAttribute;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
@@ -115,9 +117,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
-import certi.rti.impl.CertiLogicalTime;
-import certi.rti.impl.CertiLogicalTimeInterval;
-import certi.rti.impl.CertiRtiAmbassador;
 
 ///////////////////////////////////////////////////////////////////
 //// HlaManager

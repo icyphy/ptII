@@ -69,6 +69,7 @@ import javax.swing.text.Highlighter.Highlight;
 import javax.swing.undo.CannotRedoException;
 import javax.swing.undo.CannotUndoException;
 
+import diva.gui.GUIUtilities;
 import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.ExtensionFilenameFilter;
@@ -79,7 +80,6 @@ import ptolemy.gui.QueryListener;
 import ptolemy.gui.UndoListener;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// TextEditor

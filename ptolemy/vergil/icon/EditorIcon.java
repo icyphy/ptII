@@ -36,6 +36,13 @@ import java.util.List;
 import javax.swing.Icon;
 import javax.swing.SwingConstants;
 
+import diva.canvas.CanvasUtilities;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.LabelFigure;
+import diva.gui.toolbox.FigureIcon;
 import ptolemy.actor.gui.PtolemyPreferences;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
@@ -55,13 +62,6 @@ import ptolemy.vergil.basic.RelativeLocatable;
 import ptolemy.vergil.basic.RelativeLocation;
 import ptolemy.vergil.kernel.RelativeLinkFigure;
 import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicFigure;
-import diva.canvas.toolbox.BasicRectangle;
-import diva.canvas.toolbox.LabelFigure;
-import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// EditorIcon

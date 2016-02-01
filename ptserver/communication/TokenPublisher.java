@@ -34,16 +34,16 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
+import com.ibm.mqtt.IMqttClient;
+import com.ibm.mqtt.MqttException;
+import com.ibm.mqtt.MqttNotConnectedException;
+import com.ibm.mqtt.MqttPersistenceException;
+
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptserver.actor.ProxySink;
 import ptserver.control.Ticket;
 import ptserver.data.TokenParser;
-
-import com.ibm.mqtt.IMqttClient;
-import com.ibm.mqtt.MqttException;
-import com.ibm.mqtt.MqttNotConnectedException;
-import com.ibm.mqtt.MqttPersistenceException;
 
 ///////////////////////////////////////////////////////////////////
 //// TokenPublisher
