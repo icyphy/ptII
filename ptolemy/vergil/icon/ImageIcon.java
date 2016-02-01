@@ -36,6 +36,10 @@ import java.util.Iterator;
 
 import javax.swing.SwingUtilities;
 
+import diva.canvas.Figure;
+import diva.canvas.toolbox.BasicRectangle;
+import diva.canvas.toolbox.ImageFigure;
+import diva.gui.toolbox.FigureIcon;
 import ptolemy.gui.Top;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.IllegalActionException;
@@ -43,10 +47,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.FileUtilities;
-import diva.canvas.Figure;
-import diva.canvas.toolbox.BasicRectangle;
-import diva.canvas.toolbox.ImageFigure;
-import diva.gui.toolbox.FigureIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageIcon

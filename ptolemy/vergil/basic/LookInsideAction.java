@@ -36,6 +36,7 @@ import java.net.URI;
 
 import javax.swing.KeyStroke;
 
+import diva.gui.GUIUtilities;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
@@ -49,7 +50,6 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.actor.ActorInteractionAddon;
 import ptolemy.vergil.toolbox.FigureAction;
-import diva.gui.GUIUtilities;
 
 /** <p>The action to open a composite actor model, an ontology, or a
  *  MoMLModelAttribute. This class must remain named LookInsideAction for

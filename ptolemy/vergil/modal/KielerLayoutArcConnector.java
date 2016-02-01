@@ -35,15 +35,15 @@ import java.util.List;
 
 import javax.swing.SwingConstants;
 
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Site;
+import diva.canvas.connector.ArcConnector;
+import diva.canvas.toolbox.LabelFigure;
 import ptolemy.kernel.Relation;
 import ptolemy.vergil.actor.KielerLayoutUtil;
 import ptolemy.vergil.actor.LayoutHint;
 import ptolemy.vergil.actor.LayoutHint.LayoutHintItem;
 import ptolemy.vergil.kernel.Link;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.Site;
-import diva.canvas.connector.ArcConnector;
-import diva.canvas.toolbox.LabelFigure;
 
 ///////////////////////////////////////////////////////////////////
 //// KielerLayoutArcConnector

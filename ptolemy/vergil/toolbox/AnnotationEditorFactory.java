@@ -41,6 +41,10 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 
+import diva.canvas.toolbox.SVGParser;
+import diva.util.xml.XmlDocument;
+import diva.util.xml.XmlElement;
+import diva.util.xml.XmlReader;
 import ptolemy.actor.gui.EditorFactory;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
@@ -52,10 +56,6 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.SingletonConfigurableAttribute;
 import ptolemy.moml.MoMLChangeRequest;
-import diva.canvas.toolbox.SVGParser;
-import diva.util.xml.XmlDocument;
-import diva.util.xml.XmlElement;
-import diva.util.xml.XmlReader;
 
 ///////////////////////////////////////////////////////////////////
 //// AnnotationEditorFactory

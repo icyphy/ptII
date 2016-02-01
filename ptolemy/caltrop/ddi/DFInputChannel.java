@@ -32,10 +32,10 @@ package ptolemy.caltrop.ddi;
 import java.util.ArrayList;
 import java.util.List;
 
+import caltrop.interpreter.InputChannel;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.caltrop.CalIOException;
 import ptolemy.kernel.util.IllegalActionException;
-import caltrop.interpreter.InputChannel;
 
 //////////////////////////////////////////////////////////////////////////
 //// DFInputChannel

@@ -29,15 +29,15 @@ package ptolemy.vergil.ontologies;
 
 import java.awt.event.ActionEvent;
 
+import diva.graph.GraphController;
+import diva.graph.JGraph;
+import diva.gui.GUIUtilities;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.LookInsideAction;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import diva.graph.GraphController;
-import diva.graph.JGraph;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// OntologyEntityController

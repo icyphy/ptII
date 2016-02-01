@@ -27,14 +27,12 @@
  */
 package ptolemy.actor.lib.jjs.modules.serial.test;
 
-import gnu.io.CommPortIdentifier;
-import gnu.io.NRSerialPort;
-import gnu.io.PortInUseException;
-
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.util.Enumeration;
 
+import gnu.io.CommPortIdentifier;
+import gnu.io.NRSerialPort;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////

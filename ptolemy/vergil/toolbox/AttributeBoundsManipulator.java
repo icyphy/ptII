@@ -29,6 +29,14 @@ package ptolemy.vergil.toolbox;
 
 import java.awt.geom.Rectangle2D;
 
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Figure;
+import diva.canvas.FigureDecorator;
+import diva.canvas.event.LayerEvent;
+import diva.canvas.interactor.BoundsGeometry;
+import diva.canvas.interactor.BoundsManipulator;
+import diva.canvas.interactor.DragInteractor;
+import diva.canvas.interactor.GrabHandle;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.Token;
@@ -39,14 +47,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.Figure;
-import diva.canvas.FigureDecorator;
-import diva.canvas.event.LayerEvent;
-import diva.canvas.interactor.BoundsGeometry;
-import diva.canvas.interactor.BoundsManipulator;
-import diva.canvas.interactor.DragInteractor;
-import diva.canvas.interactor.GrabHandle;
 
 ///////////////////////////////////////////////////////////////////
 //// AttributeBoundsManipulator

@@ -28,6 +28,7 @@
 
 package ptolemy.vergil.ptera;
 
+import diva.graph.GraphPane;
 import ptolemy.actor.gt.GTTools;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.domains.ptera.kernel.Event;
@@ -37,7 +38,6 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.modal.FSMGraphFrame;
 import ptolemy.vergil.modal.FSMGraphModel;
-import diva.graph.GraphPane;
 
 /**
  A graph view for Ptolemy Event Relation Actor (PTERA) domain models.

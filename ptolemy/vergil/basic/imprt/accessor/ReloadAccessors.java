@@ -29,6 +29,7 @@ package ptolemy.vergil.basic.imprt.accessor;
 
 import java.io.File;
 import java.lang.reflect.Method;
+
 import javax.swing.SwingUtilities;
 
 import ptolemy.actor.gui.ConfigurationApplication;

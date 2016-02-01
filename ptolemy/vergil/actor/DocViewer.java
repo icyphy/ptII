@@ -53,6 +53,12 @@ import javax.swing.SwingUtilities;
 import javax.swing.border.EtchedBorder;
 import javax.swing.event.HyperlinkEvent;
 
+import diva.canvas.CanvasUtilities;
+import diva.canvas.JCanvas;
+import diva.canvas.toolbox.LabelFigure;
+import diva.graph.GraphPane;
+import diva.graph.GraphViewEvent;
+import diva.graph.JGraph;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -83,12 +89,6 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.DocAttribute;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.JCanvas;
-import diva.canvas.toolbox.LabelFigure;
-import diva.graph.GraphPane;
-import diva.graph.GraphViewEvent;
-import diva.graph.JGraph;
 
 ///////////////////////////////////////////////////////////////////
 //// DocViewer

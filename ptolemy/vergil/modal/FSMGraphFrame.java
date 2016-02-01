@@ -40,6 +40,7 @@ import java.util.Set;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 
+import diva.graph.GraphPane;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.gui.DebugListenerTableau;
 import ptolemy.actor.gui.Effigy;
@@ -62,7 +63,6 @@ import ptolemy.util.CancelException;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-import diva.graph.GraphPane;
 
 ///////////////////////////////////////////////////////////////////
 //// FSMGraphFrame

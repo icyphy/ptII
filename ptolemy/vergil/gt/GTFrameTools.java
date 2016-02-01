@@ -35,6 +35,8 @@ import java.awt.geom.Point2D;
 
 import javax.swing.SwingUtilities;
 
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.undo.UndoAction;
@@ -54,8 +56,6 @@ import ptolemy.vergil.basic.RunnableGraphController;
 import ptolemy.vergil.modal.FSMGraphController;
 import ptolemy.vergil.modal.FSMGraphFrame;
 import ptolemy.vergil.modal.FSMGraphModel;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
 
 /**
 

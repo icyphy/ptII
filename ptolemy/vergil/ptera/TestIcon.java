@@ -35,6 +35,12 @@ import java.awt.geom.Rectangle2D;
 
 import javax.swing.SwingConstants;
 
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.ZList;
+import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.LabelFigure;
+import diva.util.java2d.Polygon2D;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.ScalarToken;
 import ptolemy.data.expr.Parameter;
@@ -44,12 +50,6 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.icon.NameIcon;
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.ZList;
-import diva.canvas.toolbox.BasicFigure;
-import diva.canvas.toolbox.LabelFigure;
-import diva.util.java2d.Polygon2D;
 
 ///////////////////////////////////////////////////////////////////
 //// TestIcon

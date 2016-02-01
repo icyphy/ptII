@@ -29,6 +29,10 @@ package ptolemy.vergil.basic;
 
 import java.util.List;
 
+import diva.graph.GraphEvent;
+import diva.graph.modular.CompositeModel;
+import diva.graph.modular.ModularGraphModel;
+import diva.graph.modular.NodeModel;
 import ptolemy.data.ObjectToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Variable;
@@ -43,10 +47,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.kernel.AttributeNodeModel;
 import ptolemy.vergil.kernel.CompositePtolemyModel;
-import diva.graph.GraphEvent;
-import diva.graph.modular.CompositeModel;
-import diva.graph.modular.ModularGraphModel;
-import diva.graph.modular.NodeModel;
 
 ///////////////////////////////////////////////////////////////////
 //// AbstractBasicGraphModel

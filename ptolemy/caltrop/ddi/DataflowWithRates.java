@@ -34,10 +34,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import ptolemy.actor.IOPort;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.util.DFUtilities;
-import ptolemy.caltrop.ddi.util.DataflowWithRatesActorInterpreter;
 import caltrop.interpreter.Context;
 import caltrop.interpreter.ExprEvaluator;
 import caltrop.interpreter.ast.Action;
@@ -48,6 +44,10 @@ import caltrop.interpreter.ast.Expression;
 import caltrop.interpreter.ast.InputPattern;
 import caltrop.interpreter.ast.OutputExpression;
 import caltrop.interpreter.environment.Environment;
+import ptolemy.actor.IOPort;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.util.DFUtilities;
+import ptolemy.caltrop.ddi.util.DataflowWithRatesActorInterpreter;
 
 ///////////////////////////////////////////////////////////////////
 //// DataflowWithRates

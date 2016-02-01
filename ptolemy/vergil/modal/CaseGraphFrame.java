@@ -41,6 +41,12 @@ import javax.swing.JTabbedPane;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
+import diva.canvas.event.LayerAdapter;
+import diva.canvas.event.LayerEvent;
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
+import diva.gui.GUIUtilities;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.actor.lib.hoc.Case;
@@ -60,12 +66,6 @@ import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.basic.EditorDropTarget;
 import ptolemy.vergil.toolbox.FigureAction;
-import diva.canvas.event.LayerAdapter;
-import diva.canvas.event.LayerEvent;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
-import diva.graph.JGraph;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// CaseGraphFrame

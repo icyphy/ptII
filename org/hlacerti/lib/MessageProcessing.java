@@ -33,12 +33,12 @@ the copyright link on the splash page or see copyright.htm.
  */
 package org.hlacerti.lib;
 
-import hla.rti.jlc.EncodingHelpers;
-
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
+import certi.communication.MessageBuffer;
+import hla.rti.jlc.EncodingHelpers;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.FloatToken;
@@ -51,7 +51,6 @@ import ptolemy.data.UnsignedByteToken;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
-import certi.communication.MessageBuffer;
 
 /**
  *

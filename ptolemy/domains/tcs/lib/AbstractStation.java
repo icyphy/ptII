@@ -30,10 +30,12 @@ package ptolemy.domains.tcs.lib;
 
 import java.util.Map;
 import java.util.TreeMap;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.util.Time;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
@@ -48,17 +50,16 @@ import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.tcs.kernel.Rejecting;
 import ptolemy.domains.tcs.kernel.TCSDirector;
-import ptolemy.actor.util.Time;
-import ptolemy.kernel.util.Location;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
+import ptolemy.vergil.kernel.attributes.AttributeValueAttribute;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
-import ptolemy.vergil.kernel.attributes.AttributeValueAttribute;
 
 ///////////////////////////////////////////////////////////////////
 ////AbstractStation

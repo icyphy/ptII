@@ -35,6 +35,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 
+import diva.gui.toolbox.JContextMenu;
 import ptolemy.actor.Actor;
 import ptolemy.kernel.ComponentEntity;
 import ptolemy.kernel.Entity;
@@ -42,7 +43,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.BasicGraphController;
 import ptolemy.vergil.toolbox.MenuItemFactory;
-import diva.gui.toolbox.JContextMenu;
 
 ///////////////////////////////////////////////////////////////////
 //// BreakpointDialogFactory

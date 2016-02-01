@@ -112,16 +112,16 @@ import org.mlc.swing.layout.ContainerLayout;
 import org.mlc.swing.layout.FormEditor;
 import org.mlc.swing.layout.LayoutConstraintsManager;
 
+import com.jgoodies.forms.factories.Borders;
+import com.jgoodies.forms.factories.DefaultComponentFactory;
+import com.jgoodies.forms.layout.CellConstraints;
+
 import ptolemy.actor.gui.Placeable;
 import ptolemy.actor.injection.PortablePlaceable;
 import ptolemy.gui.ComponentDialog;
 import ptolemy.gui.Query;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
-
-import com.jgoodies.forms.factories.Borders;
-import com.jgoodies.forms.factories.DefaultComponentFactory;
-import com.jgoodies.forms.layout.CellConstraints;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyFormEditor

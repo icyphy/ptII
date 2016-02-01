@@ -32,6 +32,10 @@ import java.util.List;
 
 import javax.swing.JFrame;
 
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.basic.BasicLayoutTarget;
+import diva.util.Filter;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
@@ -49,10 +53,6 @@ import ptolemy.vergil.basic.IGuiAction;
 import ptolemy.vergil.basic.PtolemyLayoutAction;
 import ptolemy.vergil.basic.layout.AbstractLayoutConfiguration;
 import ptolemy.vergil.modal.FSMGraphFrame;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.basic.BasicLayoutTarget;
-import diva.util.Filter;
 
 ///////////////////////////////////////////////////////////////////
 //// KielerLayoutAction

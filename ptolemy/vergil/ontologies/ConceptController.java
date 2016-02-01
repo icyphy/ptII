@@ -29,6 +29,9 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
+import diva.graph.GraphController;
+import diva.graph.JGraph;
+import diva.gui.GUIUtilities;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.ontologies.Concept;
@@ -38,9 +41,6 @@ import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import diva.graph.GraphController;
-import diva.graph.JGraph;
-import diva.gui.GUIUtilities;
 
 /** The node controller for ontology concept model elements.
  *  This class provides interaction with nodes that represent concepts in an

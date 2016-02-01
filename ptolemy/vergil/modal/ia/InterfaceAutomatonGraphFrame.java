@@ -27,13 +27,13 @@
  */
 package ptolemy.vergil.modal.ia;
 
+import diva.graph.GraphPane;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.LibraryAttribute;
 import ptolemy.vergil.modal.FSMGraphFrame;
 import ptolemy.vergil.modal.FSMGraphModel;
-import diva.graph.GraphPane;
 
 ///////////////////////////////////////////////////////////////////
 //// InterfaceAutomatonGraphFrame

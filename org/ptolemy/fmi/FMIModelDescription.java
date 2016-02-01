@@ -43,11 +43,11 @@ import org.ptolemy.fmi.type.FMIRealType;
 import org.w3c.dom.NamedNodeMap;
 import org.w3c.dom.Node;
 
-import ptolemy.actor.TypedIOPort;
-
 import com.sun.jna.Function;
 import com.sun.jna.Library;
 import com.sun.jna.NativeLibrary;
+
+import ptolemy.actor.TypedIOPort;
 
 ///////////////////////////////////////////////////////////////////
 //// FMUModelDescription

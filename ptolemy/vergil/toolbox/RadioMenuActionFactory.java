@@ -36,8 +36,8 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.JRadioButtonMenuItem;
 
-import ptolemy.kernel.util.NamedObj;
 import diva.gui.toolbox.JContextMenu;
+import ptolemy.kernel.util.NamedObj;
 
 //////////////////////////////////////////////////////////////////////////
 //// RadioMenuActionFactory

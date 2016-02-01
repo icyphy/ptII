@@ -34,6 +34,9 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
+import com.sun.pdfview.PDFFile;
+import com.sun.pdfview.PDFPage;
+
 import ptolemy.data.DoubleToken;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
@@ -46,9 +49,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.FileUtilities;
 import ptolemy.vergil.kernel.attributes.VisibleAttribute;
-
-import com.sun.pdfview.PDFFile;
-import com.sun.pdfview.PDFPage;
 
 ///////////////////////////////////////////////////////////////////
 //// PDFAttribute

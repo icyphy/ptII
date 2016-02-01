@@ -31,10 +31,10 @@ import java.awt.geom.GeneralPath;
 import java.awt.geom.Point2D;
 import java.util.List;
 
+import diva.canvas.Site;
 import ptolemy.kernel.Relation;
 import ptolemy.vergil.actor.LayoutHint.LayoutHintItem;
 import ptolemy.vergil.kernel.Link;
-import diva.canvas.Site;
 
 ///////////////////////////////////////////////////////////////////
 ////KielerLayoutConnector

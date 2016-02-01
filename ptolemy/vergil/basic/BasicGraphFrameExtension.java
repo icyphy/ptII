@@ -31,9 +31,9 @@ package ptolemy.vergil.basic;
 
 import java.io.Serializable;
 
+import diva.graph.JGraph;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
-import diva.graph.JGraph;
 
 /**
  * This class provides default extensions points which are overridden in the

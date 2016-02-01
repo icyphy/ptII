@@ -27,9 +27,9 @@
  */
 package ptolemy.vergil.basic;
 
-import ptolemy.actor.gui.Configuration;
 import diva.graph.GraphController;
 import diva.graph.JGraph;
+import ptolemy.actor.gui.Configuration;
 
 ///////////////////////////////////////////////////////////////////
 //// NamedObjController

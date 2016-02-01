@@ -27,21 +27,10 @@
  */
 package ptolemy.actor.lib.jjs.modules.serial.test;
 
+import java.util.Enumeration;
+
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
-import gnu.io.NoSuchPortException;
-import gnu.io.PortInUseException;
-import gnu.io.SerialPort;
-import gnu.io.UnsupportedCommOperationException;
-
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-
-import java.util.Enumeration;
-import java.util.List;
-import java.util.LinkedList;
-import java.util.TooManyListenersException;
 
 ///////////////////////////////////////////////////////////////////
 //// SerialPortLockTest

@@ -28,12 +28,12 @@ package ptolemy.vergil.kernel;
 
 import java.util.Iterator;
 
+import diva.util.NullIterator;
 import ptolemy.kernel.util.ChangeRequest;
 import ptolemy.kernel.util.Locatable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.NamedObjNodeModel;
-import diva.util.NullIterator;
 
 //////////////////////////////////////////////////////////////////////////
 //// AttributeNodeModel

@@ -45,10 +45,7 @@ import com.sun.jna.Function;
 
 import ptolemy.actor.Director;
 import ptolemy.actor.Initializable;
-import ptolemy.actor.NoRoomException;
-import ptolemy.actor.NoTokenException;
 import ptolemy.actor.SuperdenseTimeDirector;
-import ptolemy.actor.TimeRegulator;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.continuous.ContinuousStatefulDirector;
 import ptolemy.actor.util.Time;
@@ -60,15 +57,15 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
+import ptolemy.domains.de.kernel.DEDirector;
+import ptolemy.domains.fmima.kernel.FMIMADirector;
+import ptolemy.domains.sr.kernel.SRDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
-import ptolemy.domains.continuous.kernel.ContinuousDirector;
-import ptolemy.domains.de.kernel.DEDirector;
-import ptolemy.domains.fmima.kernel.FMIMADirector;
-import ptolemy.domains.sr.kernel.SRDirector;
 
 /**
  * Import a Hybrid Co-Simulation FMU.

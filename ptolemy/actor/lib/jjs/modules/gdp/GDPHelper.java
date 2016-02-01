@@ -28,9 +28,9 @@
 
 package ptolemy.actor.lib.jjs.modules.gdp;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-
 import org.terraswarm.gdp.GDP_GCL;
+
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 /** Helper for the GDP JavaScript module for use by accessors.
  *

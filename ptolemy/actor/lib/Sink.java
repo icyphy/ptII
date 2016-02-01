@@ -27,14 +27,8 @@
  */
 package ptolemy.actor.lib;
 
-import java.util.HashSet;
-import java.util.Set;
-
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.TypeConstant;
-import ptolemy.graph.Inequality;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;

@@ -38,12 +38,12 @@ import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Locale;
 
-import junitparams.JUnitParamsRunner;
-import junitparams.Parameters;
-
 import org.junit.AfterClass;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+
+import junitparams.JUnitParamsRunner;
+import junitparams.Parameters;
 
 ///////////////////////////////////////////////////////////////////
 //// TclTests

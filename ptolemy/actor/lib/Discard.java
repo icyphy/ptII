@@ -27,9 +27,9 @@
  */
 package ptolemy.actor.lib;
 
+import java.net.URL;
 import java.util.HashSet;
 import java.util.Set;
-import java.net.URL;
 
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.TypeConstant;

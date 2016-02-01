@@ -43,6 +43,7 @@ import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.KeyStroke;
 
+import diva.gui.GUIUtilities;
 import ptdb.common.dto.DBGraphSearchCriteria;
 import ptdb.common.dto.PTDBSearchAttribute;
 import ptdb.common.dto.PTDBSearchComponentEntity;
@@ -77,7 +78,6 @@ import ptolemy.moml.LibraryAttribute;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.gt.TransformationEditor;
 import ptolemy.vergil.toolbox.FigureAction;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// GraphPatternSearchEditor

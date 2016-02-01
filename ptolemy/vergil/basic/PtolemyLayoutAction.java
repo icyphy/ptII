@@ -34,6 +34,17 @@ import java.util.Iterator;
 import javax.swing.JFrame;
 import javax.swing.SwingConstants;
 
+import diva.canvas.CanvasUtilities;
+import diva.canvas.Figure;
+import diva.canvas.Site;
+import diva.canvas.connector.FixedNormalSite;
+import diva.canvas.connector.Terminal;
+import diva.graph.GraphController;
+import diva.graph.GraphModel;
+import diva.graph.GraphUtilities;
+import diva.graph.basic.BasicLayoutTarget;
+import diva.graph.layout.LayoutTarget;
+import diva.graph.layout.LevelLayout;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Tableau;
 import ptolemy.kernel.undo.UndoStackAttribute;
@@ -46,17 +57,6 @@ import ptolemy.moml.MoMLUndoEntry;
 import ptolemy.util.MessageHandler;
 import ptolemy.vergil.actor.ActorGraphFrame;
 import ptolemy.vergil.modal.FSMGraphFrame;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.Figure;
-import diva.canvas.Site;
-import diva.canvas.connector.FixedNormalSite;
-import diva.canvas.connector.Terminal;
-import diva.graph.GraphController;
-import diva.graph.GraphModel;
-import diva.graph.GraphUtilities;
-import diva.graph.basic.BasicLayoutTarget;
-import diva.graph.layout.LayoutTarget;
-import diva.graph.layout.LevelLayout;
 
 ///////////////////////////////////////////////////////////////////
 //// PtolemyLayoutAction

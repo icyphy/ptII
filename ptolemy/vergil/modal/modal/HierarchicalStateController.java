@@ -36,6 +36,7 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.TreeMap;
 
+import diva.graph.GraphController;
 import ptolemy.actor.TypedActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.domains.modal.kernel.RefinementActor;
@@ -56,7 +57,6 @@ import ptolemy.vergil.modal.FSMGraphController;
 import ptolemy.vergil.modal.StateController;
 import ptolemy.vergil.toolbox.FigureAction;
 import ptolemy.vergil.toolbox.MenuActionFactory;
-import diva.graph.GraphController;
 
 ///////////////////////////////////////////////////////////////////
 //// HierarchicalStateController

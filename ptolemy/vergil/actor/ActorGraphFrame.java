@@ -44,6 +44,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuItem;
 import javax.swing.KeyStroke;
 
+import diva.graph.GraphController;
+import diva.graph.GraphPane;
+import diva.gui.GUIUtilities;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Director;
@@ -73,9 +76,6 @@ import ptolemy.util.MessageHandler;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.BasicGraphPane;
 import ptolemy.vergil.basic.ExtendedGraphFrame;
-import diva.graph.GraphController;
-import diva.graph.GraphPane;
-import diva.gui.GUIUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ActorGraphFrame

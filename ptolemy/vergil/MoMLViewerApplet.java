@@ -32,6 +32,9 @@ import java.awt.Dimension;
 import java.net.URL;
 import java.util.Locale;
 
+import diva.graph.GraphModel;
+import diva.graph.GraphPane;
+import diva.graph.JGraph;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.actor.gui.MoMLApplet;
@@ -44,9 +47,6 @@ import ptolemy.vergil.actor.ActorGraphModel;
 import ptolemy.vergil.actor.ActorViewerGraphController;
 import ptolemy.vergil.modal.FSMGraphController;
 import ptolemy.vergil.modal.FSMGraphModel;
-import diva.graph.GraphModel;
-import diva.graph.GraphPane;
-import diva.graph.JGraph;
 
 ///////////////////////////////////////////////////////////////////
 //// MoMLViewerApplet

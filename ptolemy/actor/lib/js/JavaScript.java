@@ -27,11 +27,6 @@
  */
 package ptolemy.actor.lib.js;
 
-import io.socket.IOAcknowledge;
-import io.socket.IOCallback;
-import io.socket.SocketIO;
-import io.socket.SocketIOException;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -79,6 +74,10 @@ import org.mozilla.javascript.WrappedException;
 import org.ptolemy.ptango.lib.HttpRequest;
 import org.ptolemy.ptango.lib.HttpResponse;
 
+import io.socket.IOAcknowledge;
+import io.socket.IOCallback;
+import io.socket.SocketIO;
+import io.socket.SocketIOException;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;

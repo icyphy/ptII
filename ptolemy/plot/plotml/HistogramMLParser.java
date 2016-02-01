@@ -27,9 +27,9 @@
  */
 package ptolemy.plot.plotml;
 
-import ptolemy.plot.Histogram;
-
 import com.microstar.xml.XmlException;
+
+import ptolemy.plot.Histogram;
 
 ///////////////////////////////////////////////////////////////////
 //// HistogramMLParser

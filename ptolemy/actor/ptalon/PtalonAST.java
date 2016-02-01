@@ -31,10 +31,10 @@ package ptolemy.actor.ptalon;
 import java.io.IOException;
 import java.io.Writer;
 
-import ptolemy.util.StringUtilities;
 import antlr.CommonAST;
 import antlr.Token;
 import antlr.collections.AST;
+import ptolemy.util.StringUtilities;
 
 /**
  This is just like CommonAST, except it allows XML serialization to be

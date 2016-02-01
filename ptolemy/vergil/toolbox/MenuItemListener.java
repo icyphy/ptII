@@ -33,8 +33,8 @@ package ptolemy.vergil.toolbox;
 
 import javax.swing.JMenuItem;
 
-import ptolemy.kernel.util.NamedObj;
 import diva.gui.toolbox.JContextMenu;
+import ptolemy.kernel.util.NamedObj;
 
 /**
  An interface for listeners that are invoked when a menu item is created.

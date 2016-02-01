@@ -42,6 +42,12 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
+import com.sleepycat.db.TransactionConfig;
+import com.sleepycat.dbxml.XmlException;
+import com.sleepycat.dbxml.XmlQueryContext;
+import com.sleepycat.dbxml.XmlResults;
+import com.sleepycat.dbxml.XmlValue;
+
 import ptdb.common.dto.DBConnectionParameters;
 import ptdb.common.dto.GetModelTask;
 import ptdb.common.dto.XMLDBModel;
@@ -50,12 +56,6 @@ import ptdb.common.exception.DBExecutionException;
 import ptdb.common.exception.XMLDBModelParsingException;
 import ptdb.common.util.DBConnectorFactory;
 import ptdb.common.util.Utilities;
-
-import com.sleepycat.db.TransactionConfig;
-import com.sleepycat.dbxml.XmlException;
-import com.sleepycat.dbxml.XmlQueryContext;
-import com.sleepycat.dbxml.XmlResults;
-import com.sleepycat.dbxml.XmlValue;
 
 ///////////////////////////////////////////////////////////////////
 //// RebuildReferenceFile

@@ -37,26 +37,6 @@ import java.awt.event.KeyEvent;
 
 import javax.swing.KeyStroke;
 
-import ptolemy.actor.TypedActor;
-import ptolemy.actor.gui.Configuration;
-import ptolemy.data.DoubleToken;
-import ptolemy.domains.modal.kernel.State;
-import ptolemy.domains.modal.kernel.Transition;
-import ptolemy.kernel.ComponentRelation;
-import ptolemy.kernel.Entity;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.util.MessageHandler;
-import ptolemy.util.StringUtilities;
-import ptolemy.vergil.basic.PopupMouseFilter;
-import ptolemy.vergil.kernel.Link;
-import ptolemy.vergil.toolbox.ConfigureAction;
-import ptolemy.vergil.toolbox.FigureAction;
-import ptolemy.vergil.toolbox.MenuActionFactory;
-import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.connector.ArcConnector;
@@ -80,6 +60,26 @@ import diva.graph.GraphController;
 import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
 import diva.gui.toolbox.MenuCreator;
+import ptolemy.actor.TypedActor;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.data.DoubleToken;
+import ptolemy.domains.modal.kernel.State;
+import ptolemy.domains.modal.kernel.Transition;
+import ptolemy.kernel.ComponentRelation;
+import ptolemy.kernel.Entity;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.moml.MoMLChangeRequest;
+import ptolemy.util.MessageHandler;
+import ptolemy.util.StringUtilities;
+import ptolemy.vergil.basic.PopupMouseFilter;
+import ptolemy.vergil.kernel.Link;
+import ptolemy.vergil.toolbox.ConfigureAction;
+import ptolemy.vergil.toolbox.FigureAction;
+import ptolemy.vergil.toolbox.MenuActionFactory;
+import ptolemy.vergil.toolbox.PtolemyMenuFactory;
 
 ///////////////////////////////////////////////////////////////////
 //// TransitionController

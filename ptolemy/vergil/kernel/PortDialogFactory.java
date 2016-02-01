@@ -35,6 +35,7 @@ import javax.swing.AbstractAction;
 import javax.swing.Action;
 import javax.swing.JMenuItem;
 
+import diva.gui.toolbox.JContextMenu;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.DialogTableau;
 import ptolemy.actor.gui.PortConfigurerDialog;
@@ -43,7 +44,6 @@ import ptolemy.kernel.Entity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.vergil.toolbox.MenuItemFactory;
 import ptolemy.vergil.unit.UnitConstraintsDialog;
-import diva.gui.toolbox.JContextMenu;
 
 ///////////////////////////////////////////////////////////////////
 //// PortDialogFactory

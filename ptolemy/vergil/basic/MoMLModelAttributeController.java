@@ -24,12 +24,12 @@
 
 package ptolemy.vergil.basic;
 
-import ptolemy.actor.gui.Configuration;
-import ptolemy.vergil.kernel.AttributeController;
-import ptolemy.vergil.toolbox.MenuActionFactory;
 import diva.graph.GraphController;
 import diva.graph.JGraph;
 import diva.gui.GUIUtilities;
+import ptolemy.actor.gui.Configuration;
+import ptolemy.vergil.kernel.AttributeController;
+import ptolemy.vergil.toolbox.MenuActionFactory;
 
 /**
  * A controller that provides binding of an attribute and a refinement model.

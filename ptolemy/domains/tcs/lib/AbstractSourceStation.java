@@ -31,6 +31,7 @@ package ptolemy.domains.tcs.lib;
 import java.util.ArrayList;
 import java.util.Map;
 import java.util.TreeMap;
+
 import ptolemy.actor.Director;
 import ptolemy.actor.NoRoomException;
 import ptolemy.actor.TypedAtomicActor;
@@ -50,8 +51,8 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
-import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
 import ptolemy.vergil.kernel.attributes.AttributeValueAttribute;
+import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
 
 ///////////////////////////////////////////////////////////////////
 ////AbstractSourceStation

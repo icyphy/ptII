@@ -33,6 +33,9 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
 
+import diva.util.xml.XmlDocument;
+import diva.util.xml.XmlElement;
+import diva.util.xml.XmlReader;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.ConfigurableAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -49,9 +52,6 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 import ptolemy.vergil.kernel.attributes.FilledShapeAttribute;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 import ptolemy.vergil.kernel.attributes.ShapeAttribute;
-import diva.util.xml.XmlDocument;
-import diva.util.xml.XmlElement;
-import diva.util.xml.XmlReader;
 
 ///////////////////////////////////////////////////////////////////
 //// SVGIcon

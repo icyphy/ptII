@@ -46,8 +46,9 @@ import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.RecordType;
-import ptolemy.domains.tcs.kernel.TCSDirector;
+import ptolemy.data.type.Type;
 import ptolemy.domains.tcs.kernel.Rejecting;
+import ptolemy.domains.tcs.kernel.TCSDirector;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -56,7 +57,6 @@ import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 import ptolemy.vergil.kernel.attributes.RectangleAttribute;
 import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
-import ptolemy.data.type.Type;
 
 ///////////////////////////////////////////////////////////////////
 ////AbstractTrack

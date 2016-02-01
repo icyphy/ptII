@@ -39,6 +39,18 @@ import java.util.List;
 import javax.swing.Action;
 import javax.swing.SwingConstants;
 
+import diva.canvas.CanvasUtilities;
+import diva.canvas.CompositeFigure;
+import diva.canvas.Figure;
+import diva.canvas.Site;
+import diva.canvas.connector.FixedNormalSite;
+import diva.canvas.connector.PerimeterSite;
+import diva.canvas.connector.TerminalFigure;
+import diva.canvas.toolbox.BasicFigure;
+import diva.canvas.toolbox.LabelFigure;
+import diva.graph.GraphController;
+import diva.graph.GraphPane;
+import diva.util.java2d.Polygon2D;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.PubSubPort;
 import ptolemy.actor.PublisherPort;
@@ -63,18 +75,6 @@ import ptolemy.vergil.kernel.AttributeController;
 import ptolemy.vergil.toolbox.EditIconAction;
 import ptolemy.vergil.toolbox.RemoveIconAction;
 import ptolemy.vergil.toolbox.SnapConstraint;
-import diva.canvas.CanvasUtilities;
-import diva.canvas.CompositeFigure;
-import diva.canvas.Figure;
-import diva.canvas.Site;
-import diva.canvas.connector.FixedNormalSite;
-import diva.canvas.connector.PerimeterSite;
-import diva.canvas.connector.TerminalFigure;
-import diva.canvas.toolbox.BasicFigure;
-import diva.canvas.toolbox.LabelFigure;
-import diva.graph.GraphController;
-import diva.graph.GraphPane;
-import diva.util.java2d.Polygon2D;
 
 ///////////////////////////////////////////////////////////////////
 //// ExternalIOPortController

@@ -30,18 +30,18 @@ import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.util.List;
 
-import ptolemy.kernel.Relation;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.Locatable;
-import ptolemy.kernel.util.Location;
-import ptolemy.kernel.util.NamedObj;
 import diva.canvas.Figure;
 import diva.canvas.Site;
 import diva.canvas.TransformContext;
 import diva.canvas.connector.BasicManhattanRouter;
 import diva.canvas.connector.Connector;
 import diva.canvas.connector.PerimeterSite;
+import ptolemy.kernel.Relation;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.Locatable;
+import ptolemy.kernel.util.Location;
+import ptolemy.kernel.util.NamedObj;
 
 /**
  * Static helper class for the KIELER classes 

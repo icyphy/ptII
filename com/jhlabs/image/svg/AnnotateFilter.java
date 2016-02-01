@@ -36,10 +36,10 @@ import java.net.URI;
 import java.net.URL;
 import java.util.Date;
 
-import ptolemy.util.FileUtilities;
-
 import com.jhlabs.image.AbstractBufferedImageOp;
 import com.kitfox.svg.app.beans.SVGIcon;
+
+import ptolemy.util.FileUtilities;
 
 /** An image filter that overlays SVG graphics.
  *  The graphic can be specified by invoking

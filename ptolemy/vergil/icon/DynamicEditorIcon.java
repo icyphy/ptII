@@ -34,11 +34,11 @@ import java.util.List;
 import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
+import diva.canvas.Figure;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
-import diva.canvas.Figure;
 
 ///////////////////////////////////////////////////////////////////
 //// DynamicEditorIcon

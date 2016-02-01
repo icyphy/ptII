@@ -42,6 +42,10 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Stack;
 
+import com.microstar.xml.HandlerBase;
+import com.microstar.xml.XmlException;
+import com.microstar.xml.XmlParser;
+
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.data.expr.Parameter;
@@ -53,10 +57,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.vergil.basic.DocAttribute;
-
-import com.microstar.xml.HandlerBase;
-import com.microstar.xml.XmlException;
-import com.microstar.xml.XmlParser;
 
 ///////////////////////////////////////////////////////////////////
 //// DocManager

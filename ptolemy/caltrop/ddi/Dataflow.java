@@ -37,10 +37,6 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
-import ptolemy.kernel.util.IllegalActionException;
 import caltrop.interpreter.Context;
 import caltrop.interpreter.InputPort;
 import caltrop.interpreter.SingleInputPort;
@@ -52,6 +48,10 @@ import caltrop.interpreter.ast.QID;
 import caltrop.interpreter.ast.Transition;
 import caltrop.interpreter.environment.Environment;
 import caltrop.interpreter.util.PriorityUtil;
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.caltrop.ddi.util.DataflowActorInterpreter;
+import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////////////////////////
 //// Dataflow

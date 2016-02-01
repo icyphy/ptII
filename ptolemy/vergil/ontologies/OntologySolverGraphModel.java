@@ -29,6 +29,10 @@ package ptolemy.vergil.ontologies;
 
 import java.util.Iterator;
 
+import diva.graph.GraphEvent;
+import diva.graph.modular.EdgeModel;
+import diva.graph.modular.NodeModel;
+import diva.util.NullIterator;
 import ptolemy.data.ontologies.Ontology;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.ChangeListener;
@@ -39,10 +43,6 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.vergil.basic.AbstractBasicGraphModel;
 import ptolemy.vergil.basic.NamedObjNodeModel;
-import diva.graph.GraphEvent;
-import diva.graph.modular.EdgeModel;
-import diva.graph.modular.NodeModel;
-import diva.util.NullIterator;
 
 ///////////////////////////////////////////////////////////////////
 //// OntologySolverGraphModel
