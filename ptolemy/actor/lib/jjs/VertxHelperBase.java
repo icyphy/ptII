@@ -159,7 +159,7 @@ public class VertxHelperBase extends HelperBase {
     /** Submit a job to be executed by the associated verticle.
      *  The job can invoke Vert.x functionality, specifying callbacks,
      *  and those callbacks will be ensured of running in the same thread
-     *  as the job itself.
+     *  as the job itself. This can be called from any thread.
      *  @param job The job to execute.
      */
     public void submit(Runnable job) {
