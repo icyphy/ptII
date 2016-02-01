@@ -74,7 +74,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[746, 188]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 120.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 105.0]">
         </property>
     </entity>
     <entity name="ContextAwareTest" class="org.terraswarm.accessor.JSAccessor">
@@ -85,6 +85,8 @@
             </property>
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://www.terraswarm.org/accessors/contextAware/ContextAwareTest.js">
+        </property>
+        <property name="checkoutOrUpdateAccessorsRepository" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor discovers IOT services on web.&#10; It requires the contextAware module.  Please see:&#10; https://www.terraswarm.org/accessors/wiki/Version0/ContextAware&lt;/p&gt;">
@@ -126,17 +128,17 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="host" class="ptolemy.data.expr.Parameter" value="pluto.cs.txstate.edu">
+        <property name="host" class="ptolemy.data.expr.Parameter" value="sizzling-fire-8605.firebaseio.com">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="22001">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="443">
         </property>
-        <property name="protocol" class="ptolemy.data.expr.Parameter" value="http">
+        <property name="protocol" class="ptolemy.data.expr.Parameter" value="https">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="path" class="ptolemy.data.expr.Parameter" value="gsn">
+        <property name="path" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -153,6 +155,10 @@
             </property>
         </property>
         <property name="dataType" class="ptolemy.actor.parameters.PortParameter" value="all">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="accessToken" class="ptolemy.data.expr.Parameter" value="46e0ee55195c4dd9dca295a7ac8282d28f4a2259">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -208,6 +214,28 @@
         </port>
         <port name="sensorName" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+        </port>
+        <port name="payload" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="producer" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="sensorId" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="microwave" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="microwaveStatus" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="pastValues" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
