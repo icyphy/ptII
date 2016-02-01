@@ -301,9 +301,14 @@ public class WebSocketHelper extends VertxHelperBase {
                     + ". Perhaps the sendType doesn't match the data type.");
             return;
         }
+        // Vert.x at the current time appears to have a deadlock bug.
+        // If we write directly to the socket, and we are writing to multiple
+        // sockets, then we can deadlock. Instead, go through the event bus.
         // NOTE: If the message exceeds the frame buffer size, the following will break
         // it down into chunks.
-        _webSocket.writeBinaryMessage((Buffer)message);
+        // _webSocket.writeBinaryMessage((Buffer)message);
+        String eventBusID = _webSocket.binaryHandlerID();
+        _vertx.eventBus().send(eventBusID, (Buffer)message);
     }
 
     ///////////////////////////////////////////////////////////////////
