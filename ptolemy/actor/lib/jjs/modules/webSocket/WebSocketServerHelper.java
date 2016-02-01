@@ -116,10 +116,10 @@ public class WebSocketServerHelper extends VertxHelperBase {
     	                new Handler<AsyncResult<HttpServer>>() {
     	            @Override
     	            public void handle(AsyncResult<HttpServer> arg0) {
-    	                // Issue the response in the director thread, not in the verticle.
-    	                _issueResponse(() -> {
-    	                    _currentObj.callMember("emit", "listening");
-    	                });
+    	                // Do this in the vertx thread, not the director thread, so that the
+    	                // listening event is assured of occurring before the 'connection'
+    	                // event, which is emitted above by socketCreated().
+    	                _currentObj.callMember("emit", "listening");
     	            }
     	        });
     	    }
