@@ -47,7 +47,7 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires audio files at: &#10;http://www.terraswarm.org/accessors/wiki/Main/WhatMoCs?&#10;&#10;&#10;&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model requires audio files at: &#10;https://www.terraswarm.org/accessors/wiki/Main/WhatMoCs?&#10;&#10;&#10;&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 15.0]">
         </property>
