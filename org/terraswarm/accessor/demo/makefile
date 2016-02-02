@@ -76,8 +76,7 @@ PTCLASSALLJARS = \
 	VertxBus/VertxBus.jar \
 	Weather/Weather.jar \
 	WebSocketClient/WebSocketClient.jar \
-	WebSocketImage/WebSocketImage.jar \
-	c4po/c4po.jar
+	WebSocketImage/WebSocketImage.jar
 
 JSRCS = 
 
