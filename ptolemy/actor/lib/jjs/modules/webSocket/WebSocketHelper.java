@@ -136,15 +136,17 @@ public class WebSocketHelper extends VertxHelperBase {
      *  Socket instance for the server side of the socket.
      *  @param currentObj The JavaScript instance of the Socket.
      *  @param serverWebSocket The given server-side Java socket.
+     *  @param helper The helper in charge of this socket.
      *  @param receiveType The type to assume for incoming messages.
      *  @param sendType The type for outgoing messages.
      *  @return A new WebSocketHelper instance.
      */
     public static WebSocketHelper createServerSocket(
             ScriptObjectMirror currentObj, WebSocketBase serverWebSocket,
+            WebSocketServerHelper helper,
             String receiveType, String sendType) {
         return new WebSocketHelper(
-                currentObj, serverWebSocket, receiveType, sendType);
+                currentObj, serverWebSocket, helper, receiveType, sendType);
     }
 
     /** Return whether the web socket is opened successfully.
@@ -301,14 +303,14 @@ public class WebSocketHelper extends VertxHelperBase {
                     + ". Perhaps the sendType doesn't match the data type.");
             return;
         }
-        // Vert.x at the current time appears to have a deadlock bug.
-        // If we write directly to the socket, and we are writing to multiple
-        // sockets, then we can deadlock. Instead, go through the event bus.
         // NOTE: If the message exceeds the frame buffer size, the following will break
         // it down into chunks.
-        // _webSocket.writeBinaryMessage((Buffer)message);
+        _webSocket.writeBinaryMessage((Buffer)message);
+        /* NOTE: Previously, we had a bug where we created two verticles, and the following
+         * workaround _seemed_ to solve the problem. It was an illusion.
         String eventBusID = _webSocket.binaryHandlerID();
         _vertx.eventBus().send(eventBusID, (Buffer)message);
+        */
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -369,12 +371,17 @@ public class WebSocketHelper extends VertxHelperBase {
     /** Private constructor for WebSocketHelper for a server-side web socket.
      *  @param currentObj The JavaScript instance of Socket that this helps.
      *  @param serverWebSocket The server-side web socket, provided by the web socket server.
+     *  @param helper The server helper in charge of this socket.
      *  @param receiveType The type to assume for incoming messages.
      *  @param sendType The type for outgoing messages.
      */
-    private WebSocketHelper(ScriptObjectMirror currentObj,
-            WebSocketBase serverWebSocket, String receiveType, String sendType) {
-        super(currentObj);
+    private WebSocketHelper(
+            ScriptObjectMirror currentObj,
+            WebSocketBase serverWebSocket,
+            WebSocketServerHelper helper,
+            String receiveType,
+            String sendType) {
+        super(currentObj, helper);
         _webSocket = serverWebSocket;
         // The serverSocket was already opened because a client successfully connected to the server.
         _wsIsOpen = true;

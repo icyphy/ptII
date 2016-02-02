@@ -109,7 +109,10 @@ public class WebSocketServerHelper extends VertxHelperBase {
     	                // director thread, because it will set up listeners to the socket.
     	                // If that is deferred, then the server could miss messages that are
     	                // sent after the connection is established.
-    	                _currentObj.callMember("socketCreated", serverWebSocket);
+    	                // Pass this helper to ensure that the verticle and event bus handler
+    	                // of this verticle is used rather than creating a new one.
+    	                _currentObj.callMember(
+    	                        "_socketCreated", serverWebSocket, WebSocketServerHelper.this);
     	            }
     	        });
     	        _server.listen(_port, _hostInterface,
@@ -118,7 +121,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
     	            public void handle(AsyncResult<HttpServer> arg0) {
     	                // Do this in the vertx thread, not the director thread, so that the
     	                // listening event is assured of occurring before the 'connection'
-    	                // event, which is emitted above by socketCreated().
+    	                // event, which is emitted above by _socketCreated().
     	                _currentObj.callMember("emit", "listening");
     	            }
     	        });
