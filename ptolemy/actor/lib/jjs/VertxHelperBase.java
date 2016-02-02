@@ -136,8 +136,8 @@ public class VertxHelperBase extends HelperBase {
         return null;
     }
 
-    /** Reset this handler. This method discards any pending submitted jobs
-     *  and marks the handler not busy.
+    /** Reset this helper. This method discards any pending submitted jobs
+     *  and marks the helper not busy.
      */
     public void reset() {
         // Execute this in the vert.x event thread.
@@ -202,7 +202,7 @@ public class VertxHelperBase extends HelperBase {
     };
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected constructor                 ////
+    ////                     protected constructors                ////
 
     /** Construct a helper for the specified JavaScript actor and
      *  create a verticle that can execute submitted jobs atomically.
@@ -212,15 +212,37 @@ public class VertxHelperBase extends HelperBase {
      *   a RestrictedJavaScriptInterface proxy for that actor.
      */
     protected VertxHelperBase(Object actor) {
+        this(actor, null);             
+    }
+    
+    /** Construct a helper for the specified JavaScript actor and
+     *  create a verticle that can execute submitted jobs atomically.
+     *  This is protected to help prevent applications from creating
+     *  more than one instance per actor.
+     *  @param actor The JavaScript actor that this is helping, or
+     *   a RestrictedJavaScriptInterface proxy for that actor.
+     *  @param helper The helper providing the verticle and event
+     *   handler, or null to create a new verticle and event handler.
+     */
+    protected VertxHelperBase(Object actor, VertxHelperBase helper) {
         super(actor);             
 
-        _vertxHelpers.put(_actor, new WeakReference<VertxHelperBase>(this));
+        // If no verticle is specified, then create one. Also register
+        // this helper as the helper for the actor. If a verticle is specified,
+        // then we assume that there is already a helper registered for the actor.
+        if (helper == null) {
+            _vertxHelpers.put(_actor, new WeakReference<VertxHelperBase>(this));
 
-        _verticle = new AccessorVerticle();
-        _vertx.deployVerticle(_verticle, result -> {
-            _deploymentID = result.result();
-        });
-
+            _verticle = new AccessorVerticle();
+            _vertx.deployVerticle(_verticle, result -> {
+                _deploymentID = result.result();
+            });
+        } else {
+            _verticle = helper._verticle;
+            // Also use the _pendingJobs list of the helper so that any submitted jobs
+            // are handled by that helper.
+            _pendingJobs = helper._pendingJobs;
+        }
         _address = _actor.getFullName();
     }
 
@@ -483,7 +505,7 @@ public class VertxHelperBase extends HelperBase {
      *  request. After this is called with argument true, any subsequent
      *  calls to {@link #submit(Runnable)} will defer execution of the
      *  job until this is later called with argument false. If you call
-     *  this with argument, please be sure you later call it with argument
+     *  this with argument true, please be sure you later call it with argument
      *  false. The purpose of this method is to ensure that if a job
      *  involves some callbacks, that those callbacks are processed
      *  before the next job is executed. Normally, you would call this
@@ -623,7 +645,7 @@ public class VertxHelperBase extends HelperBase {
 
     /** Verticle to handle requests.
      */
-    private class AccessorVerticle extends AbstractVerticle {
+    public class AccessorVerticle extends AbstractVerticle {
 
         /** Register a handler to the event bus to process pending jobs. */
         @Override

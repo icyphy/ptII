@@ -275,10 +275,11 @@ exports.Server.prototype.close = function() {
  *  Socket or issue replies to the Socket using this.send(). It can also close() the
  *  Socket.
  *  @param serverWebSocket The Java ServerWebSocket object.
+ *  @param helper The helper in charge of this socket.
  */
-exports.Server.prototype.socketCreated = function(serverWebSocket) {
+exports.Server.prototype._socketCreated = function(serverWebSocket, helper) {
     var socket = new exports.Socket(
-            serverWebSocket, this.receiveType, this.sendType);
+            serverWebSocket, helper, this.receiveType, this.sendType);
     this.emit('connection', socket);
 };
 
@@ -291,12 +292,13 @@ exports.Server.prototype.socketCreated = function(serverWebSocket) {
  *  the JavaScript programmer. The returned Socket is an event emitter that emits
  *  'message' events.
  *  @param serverWebSocket The Java ServerWebSocket object.
+ *  @param helper The helper in charge of this web socket.
  *  @param receiveType The MIME type for incoming messages, which defaults to 'application/json'.
  *  @param sendType The MIME type for outgoing messages, which defaults to 'application/json'.
  */
-exports.Socket = function(serverWebSocket, receiveType, sendType) {
+exports.Socket = function(serverWebSocket, helper, receiveType, sendType) {
     this.helper = WebSocketHelper.createServerSocket(
-            this, serverWebSocket, receiveType, sendType);
+            this, serverWebSocket, helper, receiveType, sendType);
     this.receiveType = receiveType;
     this.sendType = sendType;
 };
