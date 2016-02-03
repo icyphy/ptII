@@ -203,6 +203,10 @@ public class GenerateCopyrights {
                 "mescal/configs/doc/jsat-copyright.htm");
 
         _addIfClassPresent(copyrightsMap,
+                "org.terraswarm.accessor.JSAccessor",
+                "org/terraswarm/accessor/accessors/web/accessors-license.htm");
+
+        _addIfClassPresent(copyrightsMap,
                 "org.terraswarm.gdp.GDP_GCL",
                 "lib/gdp-license.htm");
 
@@ -985,6 +989,7 @@ public class GenerateCopyrights {
      */
     private static String[][] _licenses = {
             // Name, Ptiny, Windows JRE, Included in Sources, Included in Kepler, Summary
+            { "accessors", " ", " ", "Y", "Y", "BSD and MIT" },
             { "aelfred", "Y", " ", "Y", "Y", "Include Microstar's copyright" },
             { "Audio", "Y", " ", "Y", "Y ", "Include credit text" },
             { "BrowserLauncher", "Y", " ", "Y", "Y",
