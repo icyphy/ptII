@@ -1,0 +1,24 @@
+#!/bin/sh
+# Upload stats to coverity for the coverity project
+
+cd $PTII
+
+ant clean
+
+# Use --fs-capture-search so that we get JavaScript and Java.  See https://scan.coverity.com/download?tab=other
+/home/hudson/src/cov-analysis-linux64/bin/cov-build --dir reports/accessors/cov-int --no-command --fs-capture-search org/terraswarm/accessor/accessors/web
+
+(cd $PTII/reports/accessors; tar czvf myproject.tgz cov-int)
+
+VERSION=`egrep ^PTVERSION $PTII/makefile | awk '{print $NF}'`.`date +%Y%M%d`
+
+
+# Old:
+#curl --form project=Ptolemy\ II --form token=Z11RGxhJDN81JVxPjgszbw --form email=cxh@eecs.berkeley.edu  --form file=@reports/myproject.tgz --form version=$VERSION --form description=nightly http://scan5.coverity.com/cgi-bin/upload.py
+
+curl --form token=zmkem_JmcyjWLZBXP1fhvw \
+     --form email=cxh@eecs.berkeley.edu \
+     --form file=@reports/accessors/myproject.tgz \
+     --form version="Version" \
+     --form description="Description" \
+     https://scan.coverity.com/builds?project=accessors
