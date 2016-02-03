@@ -3330,6 +3330,7 @@ update_moog:
 # Invoke the coverity scan.
 coverity:
 	(cd $(PTIIHOME); adm/bin/coverity)
+	(cd $(PTIIHOME); adm/bin/coverityAccessors)
 
 
 # Build from the website
