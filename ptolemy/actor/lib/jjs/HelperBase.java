@@ -169,7 +169,10 @@ public class HelperBase {
      *  produces multiple output events or errors, that all those
      *  output events and errors are simultaneous. It also prevents
      *  threading issues from having the response execute concurrently
-     *  with the swarmlet execution.
+     *  with the swarmlet execution. Generally, this should not be used
+     *  for callbacks that will register listeners in reaction to some
+     *  event, because the listeners will be registered an arbitrary
+     *  amount of time in the future, which can cause events to be missed.
      *  @param response The response to execute.
      */
     protected void _issueResponse(Runnable response) {
