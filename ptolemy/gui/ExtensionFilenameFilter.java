@@ -63,10 +63,15 @@ import javax.swing.filechooser.FileFilter;
  * and javax.swing.JFileChooser because it implements java.io.FilenameFilter
  * and extends javax.swing.FilenameFilter.</p>
  *
+ * <p>In 2016, it was determined that this file is based on a file
+ * similar JDK1.2.2_05 file found in the JDK "Packages and
+ * Documentation" for that release.
+ * See <a href="http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase12-419414.html">http://www.oracle.com/technetwork/java/javasebusiness/downloads/java-archive-downloads-javase12-419414.html</a>
+ * The file that was downloaded was <a href="http://download.oracle.com/otn/java/JDK-JRE122-05/1.2.2_05_jdk_i386.tar.Z">http://download.oracle.com/otn/java/JDK-JRE122-05/1.2.2_05_jdk_i386.tar.Z</a>.</p>
+ *
  * @version $Id$
  * @author Jeff Dinkins
-@version $Id$
-@since Ptolemy II 10.0
+ * @since Ptolemy II 10.0
  */
 public class ExtensionFilenameFilter extends PtFilenameFilter {
     // This is a duplicate of diva.gui.ExtensionFileFilter because
