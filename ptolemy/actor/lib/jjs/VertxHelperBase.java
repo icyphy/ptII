@@ -163,6 +163,9 @@ public class VertxHelperBase extends HelperBase {
      *  @param job The job to execute.
      */
     public void submit(Runnable job) {
+        // NOTE: Perhaps could use _vertx.currentContext().isEventLoopContext()
+        // to determine whether this job can be run immediately. But for now,
+        // we always defer the job using the event bus.
         _pendingJobs.add(job);
 
         // Notify the verticle to process the next job.

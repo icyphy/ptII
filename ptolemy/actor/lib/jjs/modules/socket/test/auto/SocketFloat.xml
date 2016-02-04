@@ -4,13 +4,13 @@
 <entity name="SocketFloat" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1163, 620}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1163, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[929, 510]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[929, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0467377189185394">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{330.982938796495, 196.0189305033977}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{330.982938796495, 202.70637461999286}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -68,7 +68,7 @@
         </property>
     </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType')}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType')}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;	client.open();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -98,7 +98,7 @@
         </port>
     </entity>
     <entity name="Server" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.output('listening');&#10;	this.output('connected');&#10;	this.output('received');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':4000,&#10;		'hostInterface':'localhost',&#10;		'receiveType': this.getParameter('receiveType'),&#10;		'sendType': this.getParameter('sendType')&#10;	});&#10;	var self = this;&#10;	server.on('listening', function(port) {&#10;		self.send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		self.send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			self.send('received', data);&#10;			serverSocket.send(data + 1);&#10;		});&#10;	});&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.close();&#10;	}&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.output('listening');&#10;	this.output('connected');&#10;	this.output('received');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':4000,&#10;		'hostInterface':'localhost',&#10;		'receiveType': this.getParameter('receiveType'),&#10;		'sendType': this.getParameter('sendType')&#10;	});&#10;	var self = this;&#10;	server.on('listening', function(port) {&#10;		self.send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		self.send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			self.send('received', data);&#10;			serverSocket.send(data + 1);&#10;		});&#10;	});&#10;	server.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.stop();&#10;	}&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -135,7 +135,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 275.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 210.0}">
         </property>
     </entity>
     <entity name="ServerConnected" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -185,7 +185,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 210.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 270.0}">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -205,7 +205,7 @@
         </property>
     </entity>
     <entity name="Client3" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType')}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType')}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		console.log('Sending data: ' + data);&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;	client.open();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -251,7 +251,7 @@
         </property>
         <vertex name="vertex1" value="{295.0, 90.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.listening&quot;,x=-85.0,y=60.0}, tail={id=&quot;relation7.vertex1&quot;,x=155.0,y=50.0}, points={} },{ head={id=&quot;Const.trigger&quot;,x=420.0,y=90.0}, tail={id=&quot;relation7.vertex1&quot;,x=295.0,y=90.0}, points={} },{ head={id=&quot;Const2.trigger&quot;,x=420.0,y=190.0}, tail={id=&quot;relation7.vertex1&quot;,x=295.0,y=90.0}, points={295.0,190.0} },{ head={id=&quot;ListeningPort.input&quot;,x=205.0,y=105.0}, tail={id=&quot;relation7.vertex1&quot;,x=155.0,y=50.0}, points={155.0,105.0} },{ head={id=&quot;relation7.vertex1&quot;,x=295.0,y=90.0}, tail={id=&quot;DownSample.output&quot;,x=185.0,y=90.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.listening&quot;,x=-85.0,y=65.0}, tail={id=&quot;relation7.vertex1&quot;,x=295.0,y=90.0}, points={} },{ head={id=&quot;Const.trigger&quot;,x=420.0,y=90.0}, tail={id=&quot;relation7.vertex1&quot;,x=295.0,y=90.0}, points={} },{ head={id=&quot;Const2.trigger&quot;,x=420.0,y=190.0}, tail={id=&quot;relation7.vertex1&quot;,x=295.0,y=90.0}, points={295.0,190.0} },{ head={id=&quot;ListeningPort.input&quot;,x=70.0,y=55.0}, tail={id=&quot;relation7.vertex1&quot;,x=295.0,y=90.0}, points={155.0,105.0} },{ head={id=&quot;DownSample.output&quot;,x=185.0,y=90.0}, tail={id=&quot;relation7.vertex1&quot;,x=295.0,y=90.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -263,7 +263,7 @@
         </property>
         <vertex name="vertex1" value="{130.0, 210.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=190.0,y=210.0}, tail={id=&quot;relation3.vertex1&quot;,x=130.0,y=210.0}, points={} },{ head={id=&quot;Server.received&quot;,x=-85.0,y=65.0}, tail={id=&quot;relation3.vertex1&quot;,x=130.0,y=210.0}, points={5.0,75.0,5.0,210.0} },{ head={id=&quot;ServerReceived.input&quot;,x=180.0,y=275.0}, tail={id=&quot;relation3.vertex1&quot;,x=130.0,y=210.0}, points={130.0,275.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=190.0,y=270.0}, tail={id=&quot;relation3.vertex1&quot;,x=130.0,y=210.0}, points={130.0,270.0} },{ head={id=&quot;ServerReceived.input&quot;,x=180.0,y=210.0}, tail={id=&quot;relation3.vertex1&quot;,x=130.0,y=210.0}, points={} },{ head={id=&quot;Server.received&quot;,x=-85.0,y=65.0}, tail={id=&quot;relation3.vertex1&quot;,x=130.0,y=210.0}, points={5.0,75.0,5.0,210.0} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -291,7 +291,7 @@
         </property>
         <vertex name="vertex1" value="{130.0, 90.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=130.0,y=90.0}, tail={id=&quot;DownSample.input&quot;,x=185.0,y=90.0}, points={} },{ head={id=&quot;Server.connected&quot;,x=-85.0,y=65.0}, tail={id=&quot;relation2.vertex1&quot;,x=130.0,y=90.0}, points={20.0,65.0,20.0,90.0} },{ head={id=&quot;ServerConnected.input&quot;,x=180.0,y=150.0}, tail={id=&quot;relation2.vertex1&quot;,x=130.0,y=90.0}, points={130.0,150.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DownSample.input&quot;,x=185.0,y=90.0}, tail={id=&quot;relation2.vertex1&quot;,x=130.0,y=90.0}, points={} },{ head={id=&quot;ServerConnected.input&quot;,x=180.0,y=150.0}, tail={id=&quot;relation2.vertex1&quot;,x=130.0,y=90.0}, points={130.0,150.0} },{ head={id=&quot;Server.connected&quot;,x=-85.0,y=65.0}, tail={id=&quot;relation2.vertex1&quot;,x=130.0,y=90.0}, points={20.0,65.0,20.0,90.0} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">

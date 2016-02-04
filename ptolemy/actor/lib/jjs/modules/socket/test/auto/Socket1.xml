@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.112943707422015">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{206.03205541237145, 188.10077722293815}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{206.03205541237156, 188.10077722293815}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="2.0">
@@ -29,7 +29,7 @@
         </property>
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;var client = null;&#10;exports.initialize = function() {&#10;    client = new socket.SocketClient(4001, 'localhost',&#10;    		{'reconnectAttempts': 0}&#10;    );&#10;	client.on('open', function() {&#10;		client.send('hello world');&#10;	});&#10;}&#10;&#10;exports.wrapup = function() {&#10;	client.close();&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;var client = null;&#10;exports.initialize = function() {&#10;    client = new socket.SocketClient(4001, 'localhost',&#10;    		{'reconnectAttempts': 0}&#10;    );&#10;	client.on('open', function() {&#10;		client.send('hello world');&#10;	});&#10;	client.open();&#10;}&#10;&#10;exports.wrapup = function() {&#10;	client.close();&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>

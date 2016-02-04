@@ -203,11 +203,9 @@ public class SocketHelper extends VertxHelperBase {
                     // Socket has been opened.
                     NetSocket socket = response.result();
 
-                    _issueResponse(() -> {
-                        // This should be called in the director thread because it
-                        // emits an event that may be handled by the user.
-                        socketClient.callMember("_opened", socket, client);
-                    });
+                    // This needs to be called immediately, not deferred to the director thread,
+                    // because it issues an "open" event that may be used to set up listeners.
+                    socketClient.callMember("_opened", socket, client);
                 } else {
                     Throwable cause = response.cause();
                     String errorMessage = "Failed to connect: " + cause.getMessage();
@@ -252,7 +250,7 @@ public class SocketHelper extends VertxHelperBase {
      *  @param socketServer The JavaScript SocketServer instance.
      *  @param options The options (see the socket.js JavaScript module).
      */
-    public void openServer(
+    public void startServer(
             final ScriptObjectMirror socketServer,
             final Map<String,Object> options) {
 
@@ -332,24 +330,24 @@ public class SocketHelper extends VertxHelperBase {
             final NetServer server = _vertx.createNetServer(serverOptions);
 
             // Notify the JavaScript SocketServer object of the server.
-            _issueResponse(() -> {
-                socketServer.callMember("_serverCreated", server);
-            });
+            // This should not deferred to the director thread because it will set
+            // up event listeners.
+            socketServer.callMember("_serverCreated", server);
 
             server.connectHandler(socket -> {
                 // Connection is established with a client.
+                // This must be called in the verticle (inside submit()).
                 socketServer.callMember("_socketCreated", socket);
             });
 
             try {
                 server.listen(result -> {
-                    _issueResponse(() -> {
-                        if (result.succeeded()) {
-                            socketServer.callMember("emit", "listening", server.actualPort());
-                        } else {
-                            _error("Failed to start server listening: " + result);
-                        }
-                    });
+                    if (result.succeeded()) {
+                        // Do not defer to the director thread.
+                        socketServer.callMember("emit", "listening", server.actualPort());
+                    } else {
+                        _error("Failed to start server listening: " + result);
+                    }
                 });
             } catch (Throwable ex) {
                 _error(socketServer, "Failed to start server listening: " + ex);
@@ -536,6 +534,8 @@ public class SocketHelper extends VertxHelperBase {
     public class SocketWrapper {
 
         /** Construct a handler for connections established.
+         *  This constructor must be called in the verticle thread, not in the director
+         *  thread.
          *  @param eventEmitter The JavaScript object that will emit socket
          *   events.
          *  @param socket The Vertx socket object.
@@ -577,26 +577,23 @@ public class SocketHelper extends VertxHelperBase {
 
             // System.out.println("registering _socket.handler");
             // Set up handlers for data, errors, etc.
-            // Do this in the verticle.
-            submit(() -> {
-                _socket.closeHandler((Void) -> {
-                    _issueResponse(() -> {
-                        _eventEmitter.callMember("emit", "close");
-                    });
-                });
-                _socket.drainHandler((Void) -> {
-                    synchronized(SocketWrapper.this) {
-                        // This should unblock send(),
-                        SocketWrapper.this.notifyAll();
-                    }
-                });
-                _socket.exceptionHandler(throwable -> {
-                    _error(_eventEmitter, throwable.toString());
-                });
-                // Handler for received data.
-                _socket.handler(buffer -> {
-                    _processBuffer(buffer);
-                });
+            // Here we are assuming we are in the verticle thread, so we don't call submit().
+            // FIXME: Check this somehow?
+            _socket.closeHandler((Void) -> {
+                _eventEmitter.callMember("emit", "close");
+            });
+            _socket.drainHandler((Void) -> {
+                synchronized(SocketWrapper.this) {
+                    // This should unblock send(), if it is blocked.
+                    SocketWrapper.this.notifyAll();
+                }
+            });
+            _socket.exceptionHandler(throwable -> {
+                _error(_eventEmitter, throwable.toString());
+            });
+            // Handler for received data.
+            _socket.handler(buffer -> {
+                _processBuffer(buffer);
             });
         }
         /** Close the socket.
@@ -613,25 +610,46 @@ public class SocketHelper extends VertxHelperBase {
          *  @param data The data to send.
          */
         public void send(final Object data) {
+            // FIXME: This might be called in a vert.x thread, which can cause a deadlock.
+            // In particular, the wait() below will block draining the socket.
             synchronized(SocketWrapper.this) {
                 if (_closed) {
                     _error(_eventEmitter, "Socket is closed. Cannot send data.");
                     return;
                 }
-                // Block if the send buffer is full.
-                // Note that this should be called in the director thread, not
-                // in the Vert.x thread, so blocking is OK. We need to stall
-                // execution of the model to not get ahead of the capability.
-                while(_socket.writeQueueFull()) {
-                    try {
-                        _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
-                        SocketWrapper.this.wait();
-                    } catch (InterruptedException e) {
-                        _error(_eventEmitter, "Buffer is full, and wait for draining was interrupted");
-                    }
+                if (_socket.writeQueueFull()) {
+                    // Block if the send buffer is full.
+                    // Note that this blocking _must_ be done in the director thread, not
+                    // in the Vert.x thread, so . We need to stall
+                    // execution of the model to not get ahead of the capability.
+                    _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
+                    // The following will execute in the current thread if this send() is called
+                    // in the director thread and will stall. Otherwise, it will defer it to the
+                    // next firing.
+                    _issueResponse(() -> {
+                        synchronized(SocketWrapper.this) {
+                            // Check whether it is still full. Don't want to wait if it is not.
+                            if (_socket.writeQueueFull()) {
+                                try {
+                                    SocketWrapper.this.wait();
+                                } catch (InterruptedException e) {
+                                    _error(_eventEmitter,
+                                            "Buffer is full, and wait for draining was interrupted");
+                                }
+                            }
+                            send(data);
+                        }
+                    });
+                    // The send has been either completed or deferred, depending on which 
+                    // thread calls this.
+                    return;
                 }
             }
 
+            // Defer the actually writing to the socket to the verticle.
+            // Note that we could perhaps be smarter and execute immediately
+            // if this is called from an event loop thread. See comments in the
+            // submit() function invoked here.
             submit(() -> {
                 Buffer buffer = Buffer.buffer();
                 // Handle the case where data is an array.
@@ -809,6 +827,10 @@ public class SocketHelper extends VertxHelperBase {
             }
             // We have a complete message. Issue a response.
             final Buffer finalBuffer = buffer;
+            // Defer this to the director thread.
+            // This ensures that if the handler responds to a "data" event by
+            // producing multiple outputs, then all those outputs appear simultaneously
+            // (with the same time stamp) on the accessor output.
             _issueResponse(() -> {
                 if(_receiveType == DATA_TYPE.STRING) {
                     _eventEmitter.callMember("emit", "data", finalBuffer.getString(0, finalBuffer.length()));

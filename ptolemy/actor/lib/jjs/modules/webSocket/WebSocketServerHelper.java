@@ -143,7 +143,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
      */
     private WebSocketServerHelper(ScriptObjectMirror currentObj,
             String hostInterface, int port, String receiveType, String sendType) {
-    	// FIXME: Really should have only one of these per actor,
+    	// NOTE: Really should have only one of these per actor,
     	// and the argument below should be the actor.
         super(currentObj);
         _hostInterface = hostInterface;
