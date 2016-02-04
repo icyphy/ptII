@@ -401,7 +401,8 @@ ClientRequest.prototype._response = function(response, body) {
  *  @constructor
  *  @param response An instance of the Java class org.vertx.java.core.http.HttpClientResponse.
  */
-IncomingMessage = function(response, body) {
+// IncomingMessage = function(response, body) {
+function IncomingMessage(response, body) {
     this.body = body;
     this.cookies = response.cookies();
     this.statusCode = response.statusCode();

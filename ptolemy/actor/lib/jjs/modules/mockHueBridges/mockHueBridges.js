@@ -190,7 +190,9 @@ exports.MockHueBridge = (function(){
          * whether the command was successful or not (for POST and PUT). 
          */
         this.command = function(method, URIpath, body) {
-        	
+          var prop;  // loop counter
+          var lightID, json;
+         
       	  // Match most-specific first
       	  // GET, PUT /api/<username>/lights/<id>/state/
       	  var expression1 = new RegExp('/api/.+/lights/.+/state/');
@@ -216,7 +218,7 @@ exports.MockHueBridge = (function(){
       	  if ((method == "POST" || method == "PUT") &&
                 URIpath.match(expression1)){
       		// POST or PUT /api/<username>/lights/<id>/state/
-      		  var lightID = findLightID(URIpath);
+      		  lightID = findLightID(URIpath);
       		  
       		  // Parse body.  Contains {on, bri, hue, sat, transitiontime}
       		  // Future enhancement:  Generate event when transition is complete?		  
@@ -225,7 +227,7 @@ exports.MockHueBridge = (function(){
       		  
       		  if (typeof state.lights[lightID] !== 'undefined') {
       			  if (typeof body !== 'undefined') {
-      				  for (var prop in body) {
+      				  for (prop in body) {
       					  if (prop != 'transitiontime') {
       						  state.lights[lightID].state[prop] = body[prop];
       					  }
@@ -252,7 +254,7 @@ exports.MockHueBridge = (function(){
       		  var changeList;
       		  changeList = "{\"success\" : {" ;
       		  
-      		  for (var prop in body) {
+      		  for (prop in body) {
       			  changeList = changeList + "\"/lights/" + lightID + "/" + prop + 
       			  "\":\"" + body[prop] + "\",";
       		  }
@@ -264,11 +266,10 @@ exports.MockHueBridge = (function(){
       		  
       	  } else if (method == "GET" && URIpath.match(expression2)) {
       		// GET /api/<username>/lights/<id>/
-      		  var lightID = findLightID(URIpath);
-      		  return helper.getState(bridgeID).lights[lightID];
+      		  lightID = findLightID(URIpath);
       		  
       		if (authorized(URIpath)) {
-      			var json = JSON.parse(helper.getState(bridgeID));
+      			json = JSON.parse(helper.getState(bridgeID));
       			return JSON.stringify(json.lights[lightID]);
       		} else {
       			authorizationError[0].error.address = URIpath;
@@ -278,7 +279,7 @@ exports.MockHueBridge = (function(){
       	  } else if (method == "GET" && URIpath.match(expression3)) {
       		// GET /api/<username>/lights/
       		if (authorized(URIpath)) {
-      			var json = JSON.parse(helper.getState(bridgeID));
+      			json = JSON.parse(helper.getState(bridgeID));
       			return JSON.stringify(json.lights);
       		} else {
       			authorizationError[0].error.address = URIpath;
@@ -300,7 +301,7 @@ exports.MockHueBridge = (function(){
       		  var username;
       		  var usernames = helper.getUsernames(bridgeID);
       		  
-      		  for (var prop in body) {
+      		  for (prop in body) {
       			  if (prop === "username") {
       				  username = body[prop];
       				  for (var i = 0; i < usernames.length; i++) {
