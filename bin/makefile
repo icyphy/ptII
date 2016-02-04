@@ -96,6 +96,7 @@ EXTRA_EXECUTABLE_SRCS = \
 	mkptlivelinkdemo \
 	mkpttest \
 	ptjunit \
+	reloadAllAccessors \
 	updateFmu \
 	viptos
 
