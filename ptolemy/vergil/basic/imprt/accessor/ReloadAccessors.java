@@ -43,14 +43,14 @@ import ptolemy.vergil.basic.BasicGraphFrame;
 //// ReloadAccessors
 
 /**
-   Reload all the Acessors in a model and save the new updated model.
-
-   @author  Christopher Brooks
-   @version $Id$
-   @since Ptolemy II 11.0
-   @Pt.ProposedRating Red (cxh)
-   @Pt.AcceptedRating Red (cxh)
-*/
+ *  Reload all the Acessors in a model and save the new updated model.
+ *
+ *  @author  Christopher Brooks
+ *  @version $Id$
+ *  @since Ptolemy II 11.0
+ *  @Pt.ProposedRating Red (cxh)
+ *  @Pt.AcceptedRating Red (cxh)
+ */
 @SuppressWarnings("serial")
 public class ReloadAccessors {
     /** Reload the accessors in the command line arguments and save
@@ -62,6 +62,9 @@ public class ReloadAccessors {
      *  <pre>
      *  $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors $PTII/org/terraswarm/accessor/demo/Audio/Audio.xml
      *  </pre>
+     * 
+     *  <p>To reload all the accessors, use
+     *  <code>$PTII/bin/reloadAllAccessors</code>.  </p>
      *
      *  @param args The file names of the Ptolemy models.
      */
