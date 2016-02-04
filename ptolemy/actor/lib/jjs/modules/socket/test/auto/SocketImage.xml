@@ -29,7 +29,7 @@
         </property>
     </property>
     <entity name="Client" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType'),&#10;		 'rawBytes': false}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.input('toSend');&#10;	this.output('reply');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string', 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;exports.initialize = function() {&#10;	var client = new socket.SocketClient(&#10;		4000,&#10;		'localhost',&#10;		{'receiveType': this.getParameter('receiveType'),&#10;		 'sendType': this.getParameter('sendType'),&#10;		 'rawBytes': false}&#10;	);&#10;	var self = this;&#10;	this.addInputHandler('toSend', function() {&#10;		var data = self.get('toSend');&#10;		client.send(data);&#10;	});&#10;	client.on('data', function(data) {&#10;		self.send('reply', data);&#10;	});&#10;	client.open();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -59,7 +59,7 @@
         </port>
     </entity>
     <entity name="Server" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.output('listening');&#10;	this.output('connected');&#10;	this.output('received');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':4000,&#10;		'hostInterface':'localhost',&#10;		'receiveType': this.getParameter('receiveType'),&#10;		'sendType': this.getParameter('sendType'),&#10;		'rawBytes': false&#10;	});&#10;	var self = this;&#10;	server.on('listening', function(port) {&#10;		self.send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		self.send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			self.send('received', data);&#10;			serverSocket.send(data);&#10;		});&#10;	});&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.close();&#10;	}&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var socket = require('socket');&#10;&#10;exports.setup = function() {&#10;	this.output('listening');&#10;	this.output('connected');&#10;	this.output('received');&#10;	this.parameter(&#10;		'receiveType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedReceiveTypes()}&#10;	);&#10;	this.parameter(&#10;		'sendType',&#10;		{'value':'string',&#10;		 'type':'string',&#10;		 'options':socket.supportedSendTypes()}&#10;	);&#10;}&#10;&#10;var server = null;&#10;var connectionCount = 0;&#10;&#10;exports.initialize = function() {&#10;	server = new socket.SocketServer({&#10;		'port':4000,&#10;		'hostInterface':'localhost',&#10;		'receiveType': this.getParameter('receiveType'),&#10;		'sendType': this.getParameter('sendType'),&#10;		'rawBytes': false&#10;	});&#10;	var self = this;&#10;	server.on('listening', function(port) {&#10;		self.send('listening', port);&#10;	});&#10;	server.on('connection', function(serverSocket) {&#10;		connectionCount++;&#10;		self.send('connected', connectionCount);&#10;		serverSocket.on('data', function(data) {&#10;			self.send('received', data);&#10;			serverSocket.send(data);&#10;		});&#10;	});&#10;	server.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (server) {&#10;		server.stop();&#10;	}&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -114,7 +114,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 335.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 260.0}">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -122,7 +122,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{765.0, 290.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{765.0, 230.0}">
         </property>
     </entity>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
@@ -184,7 +184,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[176, 144]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 230.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{580.0, 290.0}">
         </property>
     </entity>
     <entity name="ImageDisplay2" class="ptolemy.actor.lib.image.ImageDisplay">
@@ -194,7 +194,7 @@
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[176, 144]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 270.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 320.0}">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -208,7 +208,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 335.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 260.0}">
         </property>
         <port name="image" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -227,7 +227,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{625.0, 290.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{625.0, 230.0}">
         </property>
         <port name="image" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -250,15 +250,15 @@
         </property>
         <vertex name="vertex1" value="{35.0, 50.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.listening&quot;,x=-85.0,y=60.0}, tail={id=&quot;relation7.vertex1&quot;,x=35.0,y=50.0}, points={} },{ head={id=&quot;ListeningPort.input&quot;,x=100.0,y=50.0}, tail={id=&quot;relation7.vertex1&quot;,x=35.0,y=50.0}, points={} },{ head={id=&quot;Camera.trigger&quot;,x=250.0,y=110.0}, tail={id=&quot;relation7.vertex1&quot;,x=155.0,y=50.0}, points={155.0,110.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ListeningPort.input&quot;,x=100.0,y=50.0}, tail={id=&quot;relation7.vertex1&quot;,x=35.0,y=50.0}, points={} },{ head={id=&quot;Camera.trigger&quot;,x=145.0,y=165.0}, tail={id=&quot;relation7.vertex1&quot;,x=35.0,y=50.0}, points={155.0,110.0} },{ head={id=&quot;Server.listening&quot;,x=-85.0,y=60.0}, tail={id=&quot;relation7.vertex1&quot;,x=35.0,y=50.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{50.0, 270.0}">
+        <vertex name="vertex1" value="{50.0, 260.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Server.received&quot;,x=-85.0,y=60.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=270.0}, points={5.0,70.0,5.0,270.0} },{ head={id=&quot;ImageDisplay2.input&quot;,x=105.0,y=270.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=270.0}, points={} },{ head={id=&quot;Expression.image&quot;,x=150.0,y=335.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=270.0}, points={50.0,335.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageDisplay2.input&quot;,x=105.0,y=320.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=260.0}, points={50.0,320.0} },{ head={id=&quot;Server.received&quot;,x=-85.0,y=60.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=260.0}, points={5.0,70.0,5.0,260.0} },{ head={id=&quot;Expression.image&quot;,x=150.0,y=260.0}, tail={id=&quot;relation3.vertex1&quot;,x=50.0,y=260.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -266,15 +266,15 @@
         </property>
         <vertex name="vertex1" value="{520.0, 230.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Client.reply&quot;,x=425.0,y=230.0}, tail={id=&quot;relation4.vertex1&quot;,x=520.0,y=230.0}, points={} },{ head={id=&quot;Test2.input&quot;,x=745.0,y=170.0}, tail={id=&quot;relation4.vertex1&quot;,x=505.0,y=110.0}, points={} },{ head={id=&quot;ImageDisplay.input&quot;,x=580.0,y=230.0}, tail={id=&quot;relation4.vertex1&quot;,x=520.0,y=230.0}, points={} },{ head={id=&quot;Expression2.image&quot;,x=625.0,y=290.0}, tail={id=&quot;relation4.vertex1&quot;,x=520.0,y=230.0}, points={520.0,290.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Client.reply&quot;,x=425.0,y=230.0}, tail={id=&quot;relation4.vertex1&quot;,x=520.0,y=230.0}, points={} },{ head={id=&quot;Test2.input&quot;,x=765.0,y=290.0}, tail={id=&quot;relation4.vertex1&quot;,x=520.0,y=230.0}, points={} },{ head={id=&quot;ImageDisplay.input&quot;,x=580.0,y=290.0}, tail={id=&quot;relation4.vertex1&quot;,x=520.0,y=230.0}, points={520.0,290.0} },{ head={id=&quot;Expression2.image&quot;,x=625.0,y=230.0}, tail={id=&quot;relation4.vertex1&quot;,x=520.0,y=230.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=290.0,y=335.0}, tail={id=&quot;Expression.output&quot;,x=150.0,y=335.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Test.input&quot;,x=290.0,y=260.0}, tail={id=&quot;Expression.output&quot;,x=150.0,y=260.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Test2.input&quot;,x=765.0,y=290.0}, tail={id=&quot;Expression2.output&quot;,x=625.0,y=290.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Test2.input&quot;,x=765.0,y=230.0}, tail={id=&quot;Expression2.output&quot;,x=625.0,y=230.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
@@ -290,7 +290,7 @@
         </property>
         <vertex name="vertex1" value="{50.0, 105.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Camera.trigger&quot;,x=145.0,y=165.0}, tail={id=&quot;relation2.vertex1&quot;,x=50.0,y=105.0}, points={50.0,165.0} },{ head={id=&quot;Server.connected&quot;,x=-85.0,y=60.0}, tail={id=&quot;relation2.vertex1&quot;,x=50.0,y=105.0}, points={20.0,60.0,20.0,105.0} },{ head={id=&quot;ServerConnected.input&quot;,x=100.0,y=105.0}, tail={id=&quot;relation2.vertex1&quot;,x=50.0,y=105.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Camera.trigger&quot;,x=145.0,y=165.0}, tail={id=&quot;relation2.vertex1&quot;,x=50.0,y=105.0}, points={50.0,165.0} },{ head={id=&quot;ServerConnected.input&quot;,x=100.0,y=105.0}, tail={id=&quot;relation2.vertex1&quot;,x=50.0,y=105.0}, points={} },{ head={id=&quot;Server.connected&quot;,x=-85.0,y=60.0}, tail={id=&quot;relation2.vertex1&quot;,x=50.0,y=105.0}, points={20.0,60.0,20.0,105.0} } }">
         </property>
     </relation>
     <link port="Client.toSend" relation="relation5"/>

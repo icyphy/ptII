@@ -1021,6 +1021,8 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
+        
+        _directorThread = Thread.currentThread();
 
         // Create proxy for ports that don't already have one.
         for (TypedIOPort port : portList()) {
@@ -1279,26 +1281,19 @@ public class JavaScript extends TypedAtomicActor {
     }
     
     /** Invoke the specified function in the fire() method as soon as possible.
+     *  If this is called within the director thread and we are currently inside the
+     *  fire() function, then invoke the function immediately. Otherwise, defer it using
+     *  the director's fireAtCurrentTime() function.
      *  @param function The function to invoke.
      *  @throws IllegalActionException If the director cannot respect the request.
      */
     public void invokeCallback(final Runnable function) throws IllegalActionException {
-        // Coverity Scan warned: "CID 1346508 (#1 of 1): Unguarded
-        // read (GUARDED_BY_VIOLATION)1. missing_lock: Accessing
-        // _pendingCallbacks without holding lock
-        // JavaScript.this. Elsewhere,
-        // "ptolemy.actor.lib.jjs.JavaScript._pendingCallbacks" is
-        // accessed with JavaScript.this held 3 out of 4 times."
-
-        // However, if we synchronize on this, then
-        // $PTII/ptolemy/actor/lib/jjs/modules/webSocket/test/auto/FullDuplex.xml
-        // hangs.  See
-        // https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/WebSocketDeadlock
-
-        // synchronized (this) {
+        if (Thread.currentThread().equals(_directorThread)) {
+            function.run();
+        } else {
             _pendingCallbacks.offer(function);
             getDirector().fireAtCurrentTime(this);
-        // }
+        }
     }
 
     /** Return true if the model is executing (between initialize() and
@@ -1771,6 +1766,7 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
         super.wrapup();
+        _directorThread = null;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2512,6 +2508,9 @@ public class JavaScript extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                        Private Variables                  ////
+    
+    /** The director thread. This is set in initialize() and unset in wrapup. */
+    private Thread _directorThread;
 
     /** True while the actor is firing, false otherwise. */
     private boolean _inFire;

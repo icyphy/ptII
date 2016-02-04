@@ -153,6 +153,7 @@ var defaultClientOptions = {
  *          print('Received from socket: ' + data);
  *          client.close();
  *      });
+ *      socket.open();
  *  
  *  The options argument is a JSON object that can include:
  *  * connectTimeout: The time to wait (in milliseconds) before declaring
@@ -239,21 +240,25 @@ var defaultClientOptions = {
 exports.SocketClient = function(port, host, options) {
     // Set default values of arguments.
     // Careful: port == 0 means to find an available port, I think.
+	this.port = port;
     if (port === null) {
-        port = 4000;
+        this.port = 4000;
     }
-    host = host || 'localhost';
+    this.host = host || 'localhost';
 
     // Fill in default values.
     this.options = options || {};
     this.options = util._extend(defaultClientOptions, this.options);
     
-    this.helper = SocketHelper.getOrCreateHelper(actor);
-    this.helper.openClientSocket(this, port, host, this.options);
-    
+    this.helper = SocketHelper.getOrCreateHelper(actor);    
     this.pendingSends = [];
 };
 util.inherits(exports.SocketClient, EventEmitter);
+
+/** Open the client. Call this after setting up listeners. */
+exports.SocketClient.prototype.open = function() {
+    this.helper.openClientSocket(this, this.port, this.host, this.options);
+}
 
 /** This method will be called by the helper when a client's request to
  *  open a socket has been granted and the socket is open.
@@ -382,6 +387,7 @@ var defaultServerOptions = {
  *                     + connectionNumber);
  *         });
  *     });
+ *     server.start();
  * 
  *  When the 'connection' event is emitted, it will be passed a Socket object,
  *  which has a this.send() function. For example, to send a reply to each incoming
@@ -472,12 +478,16 @@ exports.SocketServer = function(options) {
     this.options = util._extend(defaultServerOptions, this.options);
 
     this.helper = SocketHelper.getOrCreateHelper(actor);
-    this.helper.openServer(this, this.options);
 };
 util.inherits(exports.SocketServer, EventEmitter);
 
-/** Stop the server. */
-exports.SocketServer.prototype.close = function() {
+/** Start the server. */
+exports.SocketServer.prototype.start = function() {
+    this.helper.startServer(this, this.options);
+}
+
+/** Stop the server and close all sockets. */
+exports.SocketServer.prototype.stop = function() {
     if (this.server) {
         this.server.close();
         this.server = null;

@@ -174,93 +174,102 @@ public class WebSocketHelper extends VertxHelperBase {
             // Note that this should be called in the director thread, not
             // in the Vert.x thread, so blocking is OK. We need to stall
             // execution of the model to not get ahead of the capability.
-            while(isOpen() && _webSocket.writeQueueFull()) {
-                synchronized(this) {
-                    try {
-                        // Coverity Scan warned:
-                        // "wait_cond_improperly_checked: The wait
-                        // condition prompting the wait upon
-                        // WebSocketHelper.this is not checked
-                        // correctly. This code can wait for a
-                        // condition that has already been satisfied,
-                        // which can cause a never-ending wait."
-
-                        // The suggested fix: "Refactor the code to
-                        // protect the call to wait with a loop that
-                        // rechecks the wait condition inside the
-                        // locked region."
-                        if (isOpen() && _webSocket.writeQueueFull()) {
-                            _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
-                            wait();
+            if (isOpen() && _webSocket.writeQueueFull()) {
+                // Blocking _must not_ be done in the verticle.
+                // If this is called outside the director thread, then defer to the
+                // director thread.
+                _issueResponse(() -> {
+                    synchronized(this) {
+                        try {
+                            if (isOpen() && _webSocket.writeQueueFull()) {
+                                _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
+                                wait();
+                            }
+                        } catch (InterruptedException e) {
+                            _error("Buffer is full, and wait for draining was interrupted");
                         }
-                    } catch (InterruptedException e) {
-                        _error("Buffer is full, and wait for draining was interrupted");
                     }
-                }
+                    try {
+                        send(msg);
+                    } catch (Exception e) {
+                        _error("Exception occurred sending to the socket.", e);
+                    }
+                });
+                // The send has been either completed or deferred, depending on which 
+                // thread calls this.
+                return;
             }
         } else {
             // Socket is not open.
             // If there are already pending outputs, we stall before submitting.
             // Note that this is not the same as stalling when the send buffer
             // is full. That happens after the socket is open, whereas this happens before it is open.
-            // FIXME: Maybe it would just be better to bound the queue?
+            // Notice that the stall occurs in the calling thread only if the calling thread is
+            // the director thread.  Otherwise, the stall is deferred to the director thread
+            // and then the send is retried from there.
             if (_pendingOutputs != null && !_pendingOutputs.isEmpty() && _throttleFactor > 0) {
-                try {
-                    Thread.sleep(_throttleFactor * _pendingOutputs.size());
-                } catch (InterruptedException e) {
-                    // Ignore.
-                }
+                _issueResponse(() -> {
+                    try {
+                        Thread.sleep(_throttleFactor * _pendingOutputs.size());
+                    } catch (InterruptedException e) {
+                        // Ignore.
+                    }
+                    try {
+                        send(msg);
+                    } catch (Exception e) {
+                        _error("Exception occurred sending to the socket.", e);
+                    }
+                });
+                // The send has been either completed or deferred, depending on which 
+                // thread calls this.
+                return;
             }
         }
 
         // Ready to send.
-        
         // Defer this action to be executed in the associated verticle.
-        final Runnable action = new Runnable() {
-            public void run() {
-                if (_wsFailed != null) {
-                    _error("Failed to establish connection: "
-                            + _wsFailed.toString());
-                }
-                // If the message is not a string, attempt to create a Buffer object.
-                Object message = msg;
-                if (!(msg instanceof String)) {
-                    if (msg instanceof ImageToken) {
-                        Image image = ((ImageToken)msg).asAWTImage();
-                        if (!(image instanceof BufferedImage)) {
-                            _error("Unsupported image token type: " + image.getClass());
-                        }
-                        if (!_sendType.startsWith("image/")) {
-                            _error("Trying to send an image, but sendType is " + _sendType);
-                        }
-                        String imageType = _sendType.substring(6);
-                        ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                        try {
-                            ImageIO.write((BufferedImage)image, imageType, stream);
-                        } catch (IOException e) {
-                            _error("Failed to convert image to byte array for sending: " + e.toString());
-                        }
-                        message = Buffer.buffer(stream.toByteArray());
+        submit(() -> {
+            if (_wsFailed != null) {
+                _error("Failed to establish connection: "
+                        + _wsFailed.toString());
+            }
+            // If the message is not a string, attempt to create a Buffer object.
+            Object message = msg;
+            if (!(msg instanceof String)) {
+                if (msg instanceof ImageToken) {
+                    Image image = ((ImageToken)msg).asAWTImage();
+                    if (!(image instanceof BufferedImage)) {
+                        _error("Unsupported image token type: " + image.getClass());
                     }
-                }
-                if (isOpen()) {
-                    _sendMessageOverSocket(message);
-                } else if (_discardMessagesBeforeOpen) {
-                    _actor.log("WARNING: Data discarded because socket is not open: "
-                            + message);
-                } else {
-                    // Add the message to the queue of messages to be sent.
-                    // It is important that this be done in the verticle thread
-                    // to ensure that each message is sent exactly once, because the
-                    // queue is drained in this thread.
-                    if (_pendingOutputs == null) {
-                        _pendingOutputs = new ConcurrentLinkedQueue<Object>();
+                    if (!_sendType.startsWith("image/")) {
+                        _error("Trying to send an image, but sendType is " + _sendType);
                     }
-                    _pendingOutputs.add(message);
+                    String imageType = _sendType.substring(6);
+                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                    try {
+                        ImageIO.write((BufferedImage)image, imageType, stream);
+                    } catch (IOException e) {
+                        _error("Failed to convert image to byte array for sending: " + e.toString());
+                    }
+                    message = Buffer.buffer(stream.toByteArray());
                 }
             }
-        };
-        submit(action);
+            if (isOpen()) {
+                _sendMessageOverSocket(message);
+            } else if (_discardMessagesBeforeOpen) {
+                _actor.log("WARNING: Data discarded because socket is not open: "
+                        + message);
+            } else {
+                // Add the message to the queue of messages to be sent.
+                // It is important that this be done in the verticle thread
+                // to ensure that each message is sent exactly once, because the
+                // queue is drained in this thread.
+                if (_pendingOutputs == null) {
+                    _pendingOutputs = new ConcurrentLinkedQueue<Object>();
+                }
+                _pendingOutputs.add(message);
+            }
+        });
     }
 
     /** Return an array of the types supported by the current host for
@@ -354,10 +363,10 @@ public class WebSocketHelper extends VertxHelperBase {
         submit(new Runnable() {
             public void run() {
                 _client = _vertx.createHttpClient(new HttpClientOptions()
-                .setDefaultHost(host)
-                .setDefaultPort(port)
-                .setKeepAlive(true)
-                .setConnectTimeout(_connectTimeout));
+                        .setDefaultHost(host)
+                        .setDefaultPort(port)
+                        .setKeepAlive(true)
+                        .setConnectTimeout(_connectTimeout));
                 
                 _wsFailed = null;
 
@@ -437,10 +446,9 @@ public class WebSocketHelper extends VertxHelperBase {
 
                 // Socket.io uses the name "connect" for this event, but WS uses "open".
                 // We choose "open".
-                // Issue the response in the director thread, not in the verticle.
-                _issueResponse(() -> {
-                    _currentObj.callMember("emit", "open");
-                });
+                // Issue the response in the verticle, not in the director thread,
+                // because the response may involve setting up listeners.
+                _currentObj.callMember("emit", "open");
 
                 // Send any pending messages.
                 if (_pendingOutputs != null && !_pendingOutputs.isEmpty()) {
@@ -522,6 +530,9 @@ public class WebSocketHelper extends VertxHelperBase {
                 final Buffer buffer = _receivedBuffer;
                 _receivedBuffer = null;
                 // Issue the response in the director thread, not in the verticle.
+                // This ensures that if the handler responds to a "data" event by
+                // producing multiple outputs, then all those outputs appear simultaneously
+                // (with the same time stamp) on the accessor output.
                 _issueResponse(() -> {
                     if (_receiveType.equals("application/json")
                             || _receiveType.startsWith("text/")) {
@@ -548,14 +559,11 @@ public class WebSocketHelper extends VertxHelperBase {
     private class EndHandler extends VoidHandler {
         @Override
         protected void handle() {
-            // Issue the response in the director thread, not in the verticle.
-            _issueResponse(() -> {
-                _currentObj.callMember("emit", "close", "Stream has ended.");
-                _wsIsOpen = false;
-                if (_pendingOutputs != null && !_pendingOutputs.isEmpty()) {
-                    _error("Unsent data remains in the queue.");
-                }
-            });
+            _currentObj.callMember("emit", "close", "Stream has ended.");
+            _wsIsOpen = false;
+            if (_pendingOutputs != null && !_pendingOutputs.isEmpty()) {
+                _error("Unsent data remains in the queue.");
+            }
         }
     }
 
@@ -575,10 +583,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private class WebSocketCloseHandler implements Handler<Void> {
         @Override
         public void handle(Void ignored) {
-            // Issue the response in the director thread, not in the verticle.
-            _issueResponse(() -> {
-                _currentObj.callMember("emit", "close");
-            });
+            _currentObj.callMember("emit", "close");
             _wsIsOpen = false;
         }
     }
