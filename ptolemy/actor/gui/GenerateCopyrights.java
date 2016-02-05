@@ -250,7 +250,6 @@ public class GenerateCopyrights {
                 "ptolemy/actor/lib/jai/jai-copyright.htm");
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.jjs.JavaScript",
                 "ptolemy/actor/lib/jjs/jjs-license.htm");
-
         _addIfFilePresent(copyrightsMap,
                 "$CLASSPATH/ptolemy/actor/lib/jjs/external/require.js",
                 "ptolemy/actor/lib/jjs/external/require.js-license.htm");
@@ -1013,6 +1012,7 @@ public class GenerateCopyrights {
             { "fmipp", " ", " ", "Y", " ", "FMUSDK: Qtronic: Similar to BSD" },
             { "fmusdk", " ", " ", "Y", " ", " QTronic: Similar to BSD" },
             { "g4ltl", " ", " ", "Y", "Y", "Apache License" },
+            { "gdp", " ", " ", "Y", " ", "LGPL and BSD" }, // Backtracking.
             { "gcj", " ", " ", "Y", " ", "GPL with libgcc Exception" }, // Backtracking.
             { "graph", "Y", " ", "Y", "Y", "BSD" },
             { "guava", " ", " ", "Y", "Y", "Apache License" },
@@ -1051,6 +1051,7 @@ public class GenerateCopyrights {
             { "mysql", " ", " ", "Y", " ", "GPL + exceptions or Commercial" },
             { "netbeans", " ", " ", "Y", "Y", "CDDL + Oracle" },
             { "netty", " ", " ", " ", "Y ", "Apache + MIT + BSD + PD" },
+            { "nrjavaserial", " ", " ", "Y", " ", "LGPL 2.1 + Apache" },
             { "opencv", " ", " ", "Y", " ", "" },
             { "org.apache.oltu.oauth2", " ", " ", " ", "Y ", "Apache" },
             { "org.eclipse.paho.client.mqttv3", " ", " ", " ", "Y", "Eclipse" },
