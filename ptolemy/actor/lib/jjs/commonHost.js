@@ -1,6 +1,6 @@
 // JavaScript functions to be shared among accessor hosts.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 
 // Permission is hereby granted, without written agreement and without
@@ -181,8 +181,13 @@
  *
  *  @module commonHost
  *  @authors: Edward A. Lee and Chris Shaver
+ *  @version: $$Id$$
  */
 
+// Stop extra messages from jslint and jshint.  Note that there should be no
+// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */
+/*global console, exports, instance, setTimeout*/
+/*jshint globalstrict: true*/
 'use strict';
 
 
@@ -353,7 +358,7 @@ function Accessor(
     // as top-level functions in the accessor specification.
     // FIXME: Probably need to include setInterval, clearInterval,
     // setTimeout, clearTimeout, because these will need to overridden.
-    var wrapper = new Function('\
+    var wrapper = new Function('
             error, \
             exports, \
             getResource, \
@@ -451,7 +456,7 @@ function Accessor(
                 // property.
                 this.exports.fire.call(this);
             }
-        }
+        };
 
         this.wrapup = function() {
             // Mark that this accessor has not been initialized.
@@ -554,7 +559,7 @@ Accessor.prototype.addInputHandler = function(name, func) {
     // removed if it throws an exception.
     callback.handle = result;
     return result;
-}
+};
 
 /** Assign priorities to contained accessors based on a topological sort of the
  *  connectivity graph. Priorities are integers (positive or negative), where a lower
@@ -580,9 +585,9 @@ Accessor.prototype.assignPriorities = function() {
     // Next, assign the first accessor an arbitrary priority and follow its
     // connections to assign priorities implied by those connections.
     var startingPriority = 0;
-    for (var i = 0; i < accessors.length; i++) {
+    for (i = 0; i < accessors.length; i++) {
         // If the instance already has a priority, skip it.
-        if (accessors[i].priority != null) {
+        if (accessors[i].priority !== null) {
             continue;
         }
         accessors[i].priority = startingPriority;
@@ -596,7 +601,7 @@ Accessor.prototype.assignPriorities = function() {
         // overlap those already assigned, we start with a sufficiently higher number.
         startingPriority = 2*(accessors.length - i);
     }
-}
+};
 
 /** Assuming that the specified accessor has an assigned priority, follow its
  *  connections downstream and assign priorities to connected accessors.
@@ -604,8 +609,7 @@ Accessor.prototype.assignPriorities = function() {
  *  @param cyclePriority If we encounter an accessor with this priority, then
  *   there is a causality loop.
  */
-Accessor.prototype.assignImpliedPrioritiesDownstream
-        = function(accessor, cyclePriority) {
+Accessor.prototype.assignImpliedPrioritiesDownstream = function(accessor, cyclePriority) {
     var myPriority = accessor.priority;
     // To get repeatable priorities, iterate over outputs in order.
     for (var i = 0; i < accessor.outputList.length; i++) {
@@ -627,8 +631,8 @@ Accessor.prototype.assignImpliedPrioritiesDownstream
                 var destinationInput = destinationAccessor.inputs[destination.inputName];
                 var theirPriority = destinationAccessor.priority;
                 if (theirPriority === cyclePriority) {
-                    throw('Causality loop found including at least: '
-                            + destinationAccessor.accessorName);
+                    throw('Causality loop found including at least: ' +
+                            destinationAccessor.accessorName);
                 }
                 if (theirPriority === null) {
                     // Destination has no previously assigned priority. Give it one,
@@ -651,7 +655,7 @@ Accessor.prototype.assignImpliedPrioritiesDownstream
             }
         }
     }        
-}
+};
 
 /** Assuming that the specified accessor has an assigned priority, follow its
  *  connections upstream and assign priorities to connected accessors.
@@ -674,8 +678,8 @@ Accessor.prototype.assignImpliedPrioritiesUpstream = function(accessor, cyclePri
             }
             var theirPriority = source.priority;
             if (theirPriority === cyclePriority) {
-                    throw('Causality loop found including at least: '
-                            + accessor.accessorName);
+                    throw('Causality loop found including at least: ' +
+                            accessor.accessorName);
             }
             if (theirPriority === null) {
                 // Source has no previously assigned priority. Give it one,
@@ -695,7 +699,7 @@ Accessor.prototype.assignImpliedPrioritiesUpstream = function(accessor, cyclePri
             }
         }
     }        
-}
+};
 
 /** Connect the specified inputs and outputs.
  *  There are four forms of this function:
@@ -779,7 +783,7 @@ Accessor.prototype.connect = function(a, b, c, d) {
             c.inputs[d].source = {'accessor': a, 'outputName': b};
         }
     }
-}
+};
     
 /** Convert the specified type to the type expected by the specified input,
  *  or throw an exception if no such conversion is possible.
@@ -797,10 +801,10 @@ function convertType(value, destination, name) {
             try {
                 value = JSON.stringify(value);
             } catch (error) {
-                throw('Object provided to '
-                        + name
-                        + ' does not have a string representation: '
-                        + error);
+                throw('Object provided to ' +
+                        name +
+                        ' does not have a string representation: ' +
+                        error);
             }
         }
     } else if (typeof value === 'string') {
@@ -809,19 +813,19 @@ function convertType(value, destination, name) {
         if (value === '') {
             // If the value is an empty string, then convert
             // to null, unless the destination type is JSON.
-            if (!(destination.type === 'JSON')) {
+            if (destination.type !== 'JSON') {
                 value = null;
             }
         } else {
             try {
                 value = JSON.parse(value);
             } catch (error) {
-                throw('Failed to convert value to destination type: '
-                        + name
-                        + ' expected a '
-                        + destination.type
-                        + ' but received: '
-                        + value);
+                throw('Failed to convert value to destination type: ' +
+                        name +
+                        ' expected a ' +
+                        destination.type +
+                        ' but received: ' +
+                        value);
             }
         }
     } else if (destination.type === 'boolean' && typeof value !== 'boolean') {
@@ -834,10 +838,10 @@ function convertType(value, destination, name) {
     } else if (destination.type === 'int' || destination.type === 'number') {
         // value is not a string. Needs to be a number.
         if (typeof value !== 'number') {
-            throw(name + ' expected an int, but got a '
-                    + (typeof value)
-                    + ': '
-                    + value);
+            throw(name + ' expected an int, but got a ' +
+                    (typeof value) +
+                    ': ' +
+                    value);
         }
         // If type is int, need the value to be an integer.
         if (destination.type === 'int' && value % 1 !== 0) {
@@ -850,10 +854,10 @@ function convertType(value, destination, name) {
         try {
             JSON.stringify(value);
         } catch(err) {
-            throw('Object provided to '
-                    + name
-                    + ' does not have a JSON representation: '
-                    + err);
+            throw('Object provided to ' +
+                    name +
+                    ' does not have a JSON representation: ' +
+                    err);
         }
     }
     return value;
@@ -873,7 +877,7 @@ Accessor.prototype.error = function(message) {
             .split('\n');
     console.error(stack);
     console.error('-------------------------');
-}
+};
 
 /** Extend the specified accessor, inheriting its interface as defined
  *  in its setup() function and making its exports object the prototype
@@ -893,7 +897,7 @@ Accessor.prototype.extend = function(accessorClass) {
     // Create an instance of the accessor this is extending.
     var extendedInstance = instantiateAccessor(
             baseName, accessorClass, this.getAccessorCode, this.bindings, this, null);
-}
+};
 
 /** Default implementation of this.get(), which reads the current value of the input
  *  provided by provideInput(), or the default value if none has been provided,
@@ -917,14 +921,14 @@ Accessor.prototype.get = function(name) {
         }
     }
     var value;
-    var currentValue = input['currentValue'];
+    var currentValue = input.currentValue;
     if (typeof currentValue !== 'undefined' && currentValue !== null) {
         // If provideInput() has been called, return that value.
-        value = input['currentValue'];
+        value = input.currentValue;
     } else {
         // Note that if both currentValue and value are null or undefined,
         // then the correct response is null.
-        value = input['value'];
+        value = input.value;
         if (typeof value === 'undefined') {
             value = null;
         }
@@ -932,7 +936,7 @@ Accessor.prototype.get = function(name) {
     // If necessary, convert the value to the match the type.
     value = convertType(value, input, name);
     return value;
-}
+};
 
 /** Default implementation of this.getParameter(), which reads the current value of the
  *  parameter provided by this.setParameter(), or the default value if none has been provided,
@@ -945,21 +949,21 @@ Accessor.prototype.getParameter = function(name) {
         throw('getParameter(name): No parameter named ' + name);
     }
     // If this.setParameter() has been called, return that value.
-    if (parameter['currentValue']) {
-        return parameter['currentValue'];
+    if (parameter.currentValue) {
+        return parameter.currentValue;
     }
     // If necessary, convert the value to the match the type.
-    var value = parameter['value'];
+    var value = parameter.value;
     value = convertType(value, parameter, name);
     return value;
-}
+};
 
 /** Default implement of the this.getResource() function, which throws an exception stating
  *  that getResource is not supported.
  */    
 Accessor.prototype.getResource = function() {
     throw 'This swarmlet host does not support this.getResource().';
-}
+};
 
 /** Default implement of the httpRequest() function, which throws an exception stating
  *  that httpRequest is not supported.
@@ -968,7 +972,7 @@ Accessor.prototype.getResource = function() {
  */    
 Accessor.prototype.httpRequest = function() {
     throw 'This swarmlet host does not support httpRequest().';
-}
+};
 
 /** Implement the specified accessor interface, inheriting its inputs, outputs,
  *  and parameters as defined in its setup() function.
@@ -987,7 +991,7 @@ Accessor.prototype.implement = function(accessorClass) {
     // Create an instance of the accessor this is implementing.
     var extendedInstance = instantiateAccessor(
             interfaceName, accessorClass, this.getAccessorCode, this.bindings, null, this);
-}
+};
 
 /** Default implementation of the function to define an accessor input.
  *  Accessors that override this should probably invoke this default explicitly
@@ -999,7 +1003,7 @@ Accessor.prototype.input = function(name, options) {
     // The input may have been previously defined in a base accessor.
     pushIfNotPresent(name, this.inputList);
     this.inputs[name] = mergeObjects(this.inputs[name], options);
-}
+};
 
 /** Instantiate the specified accessor as a contained accessor.
  *  This will throw an exception if no getAccessorCode() function
@@ -1024,13 +1028,13 @@ Accessor.prototype.instantiate = function(instanceName, accessorClass) {
         'setInterval': this.setInterval,
         'setTimeout': this.setTimeout,
     };
-    var instanceName = this.accessorName + '.' + instanceName;
+    instanceName = this.accessorName + '.' + instanceName;
     var containedInstance = instantiateAccessor(
             instanceName, accessorClass, this.getAccessorCode, insideBindings);
     containedInstance.container = this;
     this.containedAccessors.push(containedInstance);
     return containedInstance;
-}
+};
 
 /** Instantiate an accessor given its fully qualified name, a function to retrieve
  *  the code, and a require function to retrieve modules.
@@ -1071,7 +1075,7 @@ Accessor.prototype.latestOutput = function(name) {
         throw('lastestOutput(): No output named ' + name);
     }
     return this.outputs[name].latestOutput;
-}
+};
 
 /** Merge the specified objects. If the two have common properties, the merged object
  *  will have the properties of the second argument. If the first argument is null,
@@ -1089,8 +1093,8 @@ function mergeObjects(first, second) {
                 result[property] = first[property];
             }
             // Override with the second.
-            for (var property in second) {
-                result[property] = second[property];
+            for (var property2 in second) {
+                result[property2] = second[property2];
             }
             return result;
         } else {
@@ -1128,7 +1132,7 @@ Accessor.prototype.output = function(name, options) {
     // The output may have been previously defined in a base accessor.
     pushIfNotPresent(name, this.outputList);
     this.outputs[name] = mergeObjects(this.outputs[name], options);
-}
+};
 
 /** Define an accessor parameter.
  *  @param name The name of the parameter.
@@ -1138,7 +1142,7 @@ Accessor.prototype.parameter = function(name, options) {
     // The parameter may have been previously defined in a base accessor.
     pushIfNotPresent(name, this.parameterList);
     this.parameters[name] = mergeObjects(this.parameters[name], options);
-}
+};
     
 /** Set an input of this accessor to the specified value.
  *  This function will perform conversions to the destination port type, if possible.
@@ -1184,7 +1188,7 @@ Accessor.prototype.provideInput = function(name, value) {
             }
         }
     }
-}
+};
 
 /** Push the specified item onto the specified list if it is not already there.
  *  @param item Item to push.
@@ -1227,9 +1231,9 @@ Accessor.prototype.react = function(name) {
                         // Remove the input handler.
                         thiz.removeInputHandler(
                                 thiz.inputHandlers[name][i].handle);
-                        thiz.error('Exception occurred in input handler.'
-                                + ' Handler has been removed: '
-                                + exception);
+                        thiz.error('Exception occurred in input handler.' +
+                                ' Handler has been removed: ' +
+                                exception);
                     }
                 }
             }
@@ -1258,18 +1262,18 @@ Accessor.prototype.react = function(name) {
     }
     // Next, invoke handlers registered to handle any input.
     if (thiz.anyInputHandlers.length > 0) {
-        for (var i = 0; i < thiz.anyInputHandlers.length; i++) {
-            if (typeof thiz.anyInputHandlers[i] === 'function') {
+        for (var j = 0; j < thiz.anyInputHandlers.length; j++) {
+            if (typeof thiz.anyInputHandlers[j] === 'function') {
                 // Call input handlers in the context of the exports object.
                 try {
-                    thiz.anyInputHandlers[i]();
+                    thiz.anyInputHandlers[j]();
                 } catch (exception) {
                     // Remove the input handler.
                     thiz.removeInputHandler(
-                            thiz.anyInputHandlers[i].handle);
-                    thiz.error('Exception occurred in input handler.'
-                            + ' Handler has been removed: '
-                            + exception);
+                            thiz.anyInputHandlers[j].handle);
+                    thiz.error('Exception occurred in input handler.' +
+                            ' Handler has been removed: ' +
+                            exception);
                 }
             }
         }
@@ -1291,7 +1295,7 @@ Accessor.prototype.react = function(name) {
     if (typeof this.exports.fire === 'function') {
         this.exports.fire.call(this);
     }
-}
+};
 
 /** Default implement of the readURL function, which throws an exception stating
  *  that readURL is not supported.
@@ -1300,7 +1304,7 @@ Accessor.prototype.react = function(name) {
  */    
 Accessor.prototype.readURL = function() {
     throw 'This swarmlet host does not support readURL().';
-}
+};
 
 /** Remove the input handler with the specified handle, if it exists.
  *  @param handle The handle.
@@ -1311,8 +1315,8 @@ Accessor.prototype.removeInputHandler = function(handle) {
     var handler = thiz.inputHandlersIndex[handle];
     if (handler) {
         if (handler.name) {
-            if (thiz.inputHandlers[handler.name]
-                    && thiz.inputHandlers[handler.name][handler.index]) {
+            if (thiz.inputHandlers[handler.name] &&
+                    thiz.inputHandlers[handler.name][handler.index]) {
                 thiz.inputHandlers[handler.name][handler.index] = null;
             }
         } else {
@@ -1323,7 +1327,7 @@ Accessor.prototype.removeInputHandler = function(handle) {
         }
         thiz.inputHandlersIndex[handle] = null;
     }
-}
+};
 
 /** Default implement of the require function, which throws an exception stating
  *  that require is not supported.
@@ -1337,7 +1341,7 @@ Accessor.prototype.require = function() {
             .split('\n');
     console.log(stack);
     throw e;
-}
+};
 
 /** Schedule a reaction of the specified contained accessor.
  *  This puts the accessor onto the event queue in priority order.
@@ -1367,9 +1371,9 @@ Accessor.prototype.scheduleEvent = function(accessor) {
     // There are already items in the event queue.
     var myPriority = accessor.priority;
     if (typeof myPriority !== 'number') {
-        throw('Accessor does not have a priority: '
-                + accessor.accessorName
-                + '. Perhaps initialize() is overridden?');
+        throw('Accessor does not have a priority: ' +
+                accessor.accessorName +
+                '. Perhaps initialize() is overridden?');
     }
     // Recall that a higher priority number means a lower priority.
     var theirPriority = queue[queue.length - 1].priority;
@@ -1401,7 +1405,7 @@ Accessor.prototype.scheduleEvent = function(accessor) {
     }
     // Final case: My priority is less than all in the queue.
     queue.splice(0, 0, accessor);
-}
+};
 
 /** Send via an output. This default implementation invokes provideInput() on any
  *  connected inputs if there are any. It also records the output for retrieval
@@ -1457,7 +1461,7 @@ Accessor.prototype.send = function(name, value) {
         // a lot of noise on the console.
         // console.log('Output named "' + name + '" produced: ' + value);
     }
-}
+};
 
 /** Set the default value of an input. Note that unlike
  *  using this.send(), no input handler will be triggered.
@@ -1476,7 +1480,7 @@ Accessor.prototype.setDefault = function(name, value) {
     }
     value = convertType(value, input, name);
     input.value = value;
-}
+};
 
 /** Set a parameter of the specified accessor to the specified value.
  *  @param name The name of the parameter to set.
@@ -1491,7 +1495,7 @@ Accessor.prototype.setParameter = function(name, value) {
     value = convertType(value, parameter, name);
 
     parameter.currentValue = value;
-}
+};
 
 ////////////////////////////////////////////////////////////////////
 //// Module variables.
