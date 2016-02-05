@@ -407,7 +407,7 @@ function IncomingMessage(response, body) {
     this.cookies = response.cookies();
     this.statusCode = response.statusCode();
     this.statusMessage = response.statusMessage();
-};
+}
 
 // Each time this file is reloaded, reset the helper for this actor.
 // This will start the sequence numbers at zero and discard any corrupted state
