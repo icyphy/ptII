@@ -358,7 +358,7 @@ function Accessor(
     // as top-level functions in the accessor specification.
     // FIXME: Probably need to include setInterval, clearInterval,
     // setTimeout, clearTimeout, because these will need to overridden.
-    var wrapper = new Function('
+    var wrapper = new Function('\
             error, \
             exports, \
             getResource, \
