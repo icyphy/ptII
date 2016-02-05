@@ -322,6 +322,7 @@ public class ExportModelJUnitTest {
                 "HierarchyFlattening.xml", // gt
                 "IMUSensor.xml", // Uses the serial port.
                 "actor/lib/io", // Don't run the demos in actor/lib/io, some read from stdin and never exit.
+                "ImageFilters.xml", // Has links to other demos.                          
                 "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
                 "JMFJAI.xml", // Requires a video camera
                 "KarplusStrong.xml", // "Audio Device Unavailable"
