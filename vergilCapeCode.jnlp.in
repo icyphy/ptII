@@ -10,7 +10,7 @@
 <jnlp codebase="@PTII_LOCALURL@"
       href="@PTII_LOCALURL@/vergilCapeCode.jnlp"> 
   <information>
-	  <title>Ptolemy II @PTVERSION@ CyPhySim </title>
+	  <title>Ptolemy II @PTVERSION@ CapeCode </title>
 	  <vendor>Ptolemy Project, UC Berkeley</vendor>
 	  <description kind="tooltip">CapeCode - Accessors Environment</description>
 	  <icon href="ptolemy/configs/capecode/CapeCode.png"/>
