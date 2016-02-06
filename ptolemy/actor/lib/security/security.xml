@@ -56,7 +56,11 @@
 	  <doc>Creates and sends a key to a SymmetricDecryption and
 	  encrypts incoming data based on a given symmetric
 	  algorithm.</doc>
-        </entity>
+	</entity>
+	<entity name="SymmetricCrypto"
+                class="ptolemy.actor.lib.security.SymmetricCrypto">
+	  <doc>Perform symmetric encryption or decryption using the given key.</doc>
+	</entity>
 
       </group>
     ?>
