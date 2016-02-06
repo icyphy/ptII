@@ -30,9 +30,12 @@ package ptolemy.actor.gui;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
 
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
@@ -134,6 +137,110 @@ public class JNLPUtilities {
         }
 
         return possibleJarURL;
+    }
+
+    /** Get the resource, if it is in a jar URL, then
+     *  copy the resource to a temporary file first.
+     *
+     *  If the file is copied to a temporary location, then
+     *  it is deleted when the process exits.
+     *
+     *  This method is used when jar URLs are not
+     *  able to be read in by a function call.
+     *
+     *  If the spec refers to a URL that is a directory,
+     *  then the possibly shortened spec is returned
+     *  with a trailing /.  No temporary directory
+     *  is created.
+     *
+     *  @param spec The string to be found as a resource.
+     *  @return The File.
+     *  @exception IOException If the jar URL cannot be saved as a temporary file.
+     */
+    public static File getResourceSaveJarURLAsTempFile(String spec) throws IOException {
+        // If the spec is not a jar URL, then check in file system.
+        int jarSeparatorIndex = spec.indexOf("!/");
+        File results = null;
+        if (jarSeparatorIndex == -1) {
+            results = new File(spec);
+            if (results.exists()) {
+                return results;
+            }
+        } else {
+            // Strip off the text leading up to !/.
+            spec = spec.substring(jarSeparatorIndex + 2);
+        }
+
+        // If the resources is not found at all, return null.
+        URL url = ClassUtilities.getResource(spec);
+        if (url == null) {
+            return null;
+        }
+
+        results = null;
+
+        // For jar urls, copy the file to a temporary
+        // location that is removed when the process exits.
+        if (url.toExternalForm().startsWith("jar:")) {
+            // If we have already seen the url, then return
+            // what was returned last time
+            if (_jarURLTemporaryFiles != null
+                    && _jarURLTemporaryFiles.containsKey(url)) {
+                return _jarURLTemporaryFiles.get(url);
+            }
+            String prefix = "";
+            String suffix = "";
+            int lastIndexOfSlash = spec.lastIndexOf("/");
+            int lastIndexOfDot = spec.lastIndexOf(".");
+            if (lastIndexOfSlash == -1) {
+                if (lastIndexOfDot == -1) {
+                    prefix = spec;
+                } else {
+                    prefix = spec.substring(0, lastIndexOfDot);
+                    suffix = "." + spec.substring(lastIndexOfDot + 1);
+                }
+            } else {
+                if (lastIndexOfDot == -1) {
+                    prefix = spec.substring(lastIndexOfSlash + 1);
+                } else {
+                    prefix = spec.substring(lastIndexOfSlash + 1, lastIndexOfDot);
+                    suffix = "." + spec.substring(lastIndexOfDot + 1);
+                }
+            } 
+            try {
+                String temporaryFileName = saveJarURLAsTempFile(url.toString(), 
+                        prefix, suffix, null /*directory*/);
+                results =  new File(temporaryFileName);
+            } catch (IOException ex) {
+                // If the spec exists with a trailing /, then just
+                // return that so that we can detect that it is a
+                // directory.  FIXME: the directory is not actually
+                // created here, which could be confusing.
+                if (spec.length() > 0 && spec.charAt(spec.length()-1) != '/') {
+                    URL urlDirectory = ClassUtilities.getResource(spec + "/");
+                    if (urlDirectory != null) {
+                        results = new File(spec + "/");
+                    }
+                }
+                results = null;
+            }
+            if (_jarURLTemporaryFiles == null) {
+                _jarURLTemporaryFiles = new HashMap<URL, File>();
+            }
+            _jarURLTemporaryFiles.put(url, results);
+            return results;
+        } else {
+            // If the resource is not a jar URL, try
+            // creating a file.
+            try {
+                results = new File(url.toURI());
+            } catch(URISyntaxException e) {
+                results = new File(url.getPath());
+            } catch(IllegalArgumentException e) {
+                results = new File(url.getPath());
+            }
+            return results;
+        }
     }
 
     /** Return true if we are running under WebStart.
@@ -306,4 +413,12 @@ public class JNLPUtilities {
 
         return jarURL;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+
+    /** The map of URLs to Files used by
+     * getResourceSaveJarURLAsTempFile().
+     */
+    private static Map<URL,File> _jarURLTemporaryFiles;
 }
