@@ -105,11 +105,15 @@ exports.supportedSendTypes = function() {
  *  
  *      var WebSocket = require('webSocket');
  *      var client = new WebSocket.Client({'host': 'localhost', 'port': 8080});
+ *      client.open();
  *      client.send({'foo': 'bar'});
  *      client.on('message', onMessage);
  *      function onMessage(message) {
  *          print('Received from web socket: ' + message);
  *      }
+ *  
+ *  The above code may send a message even before the socket is opened. This module
+ *  implementation will queue that message to be sent later when the socket is opened.
  *  
  *  The options argument is a JSON object that can contain the following fields:
  *  * host: The IP address or host name for the host. Defaults to 'localhost'.
@@ -117,7 +121,7 @@ exports.supportedSendTypes = function() {
  *  * receiveType: The MIME type for incoming messages, which defaults to 'application/json'.
  *  * sendType: The MIME type for outgoing messages, which defaults to 'application/json'.
  *  * connectTimeout: The time to wait before giving up on a connection, in milliseconds (defaults to 5000).
- *  * numberOfRetries: The number of times to retry connecting. Defaults to 1.
+ *  * numberOfRetries: The number of times to retry connecting. Defaults to 10.
  *  * timeBetweenRetries: The time between retries, in milliseconds. Defaults to 100.
  *  * discardMessagesBeforeOpen: If true, discard messages before the socket is open. Defaults to false.
  *  * throttleFactor: The number milliseconds to stall for each item that is queued waiting to be sent. Defaults to 0.
@@ -131,7 +135,7 @@ exports.Client = function(options) {
     this.receiveType = options.receiveType || 'application/json';
     this.sendType = options.sendType || 'application/json';
     this.connectTimeout = options.connectTimeout || 5000;
-    this.numberOfRetries = options.numberOfRetries || 1;
+    this.numberOfRetries = options.numberOfRetries || 10;
     this.timeBetweenRetries = options.timeBetweenRetries || 100;
     this.discardMessagesBeforeOpen = options.discardMessagesBeforeOpen || false;
     this.throttleFactor = options.throttleFactor || 0;
@@ -148,6 +152,11 @@ exports.Client = function(options) {
         this.throttleFactor);
 };
 util.inherits(exports.Client, EventEmitter);
+
+/** Open the socket connection. Call this after setting up event handlers. */
+exports.Client.prototype.open = function() {
+	this.helper.open();
+}
 
 /** Send data over the web socket.
  *  If the socket has not yet been successfully opened, then queue
@@ -253,7 +262,7 @@ exports.Server = function(options) {
     this.sendType = options.sendType || 'application/json';
     this.helper = WebSocketServerHelper.createServer(
             this, this.hostInterface, this.port, this.receiveType, this.sendType
-            );
+    );
 };
 util.inherits(exports.Server, EventEmitter);
 
@@ -263,7 +272,7 @@ exports.Server.prototype.start = function() {
 };
 
 /** Stop the server. */
-exports.Server.prototype.close = function() {
+exports.Server.prototype.stop = function() {
     this.helper.closeServer();
 };
 
