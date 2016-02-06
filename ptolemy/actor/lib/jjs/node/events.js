@@ -169,14 +169,14 @@ EventEmitter.prototype.addListener = function addListener(type, listener) {
 
   // Check for listener leak
   if (util.isObject(this._events[type]) && !this._events[type].warned) {
-    var m;
+    var m2;
     if (!util.isUndefined(this._maxListeners)) {
-      m = this._maxListeners;
+      m2 = this._maxListeners;
     } else {
-      m = EventEmitter.defaultMaxListeners;
+      m2 = EventEmitter.defaultMaxListeners;
     }
 
-    if (m && m > 0 && this._events[type].length > m) {
+    if (m2 && m2 > 0 && this._events[type].length > m) {
       this._events[type].warned = true;
       console.error('(node) warning: possible EventEmitter memory ' +
                     'leak detected. %d %s listeners added. ' +

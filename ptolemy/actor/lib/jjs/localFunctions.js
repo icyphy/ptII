@@ -31,7 +31,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, actor, channel, error, java, requireAccessor */
+/*globals Java, actor, channel, clearInterval, clearTimeout, error, httpRequest, java, readURL, require, requireAccessor, setInterval, setAccessor, setTimeout, _accessorPath */
 /*jshint globalstrict: true*/
 "use strict";
 
@@ -157,7 +157,7 @@ function input(name, options) {
     // regardless of what the options state.
     var previousValue = actor.input(name, options);
     if (previousValue) {
-        this.inputs[name]['value'] = convertFromToken(previousValue);
+        this.inputs[name].value = convertFromToken(previousValue);
     }
 }
 
@@ -214,7 +214,7 @@ function parameter(name, options) {
     }
     var previousValue = actor.parameter(name, options);
     if (previousValue) {
-        this.parameters[name]['value'] = convertFromToken(previousValue);
+        this.parameters[name].value = convertFromToken(previousValue);
     }
 }
 

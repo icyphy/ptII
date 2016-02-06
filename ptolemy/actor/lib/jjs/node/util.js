@@ -40,26 +40,27 @@ exports.format = function(f) {
     return objects.join(' ');
   }
 
-  var i = 1;
+  var j = 1;
   var args = arguments;
   var len = args.length;
   var str = String(f).replace(formatRegExp, function(x) {
     if (x === '%%') return '%';
-    if (i >= len) return x;
+    if (j >= len) return x;
     switch (x) {
-      case '%s': return String(args[i++]);
-      case '%d': return Number(args[i++]);
+      case '%s': return String(args[j++]);
+      case '%d': return Number(args[j++]);
       case '%j':
         try {
-          return JSON.stringify(args[i++]);
+          return JSON.stringify(args[j++]);
         } catch (_) {
           return '[Circular]';
         }
+        break;
       default:
         return x;
     }
   });
-  for (var x = args[i]; i < len; x = args[++i]) {
+  for (var x = args[j]; j < len; x = args[++j]) {
     if (isNull(x) || !isObject(x)) {
       str += ' ' + x;
     } else {
@@ -511,6 +512,7 @@ function isString(arg) {
 exports.isString = isString;
 
 function isSymbol(arg) {
+  // In JS5, typeof cannot be a symbol
   return typeof arg === 'symbol';
 }
 exports.isSymbol = isSymbol;
@@ -551,6 +553,7 @@ function isPrimitive(arg) {
          typeof arg === 'boolean' ||
          typeof arg === 'number' ||
          typeof arg === 'string' ||
+        // In JS5, typeof cannot be a symbol
          typeof arg === 'symbol' ||  // ES6 symbol
          typeof arg === 'undefined';
 }
