@@ -61,6 +61,7 @@ JSRCS = \
 	SignatureActor.java \
 	SignatureSigner.java \
 	SignatureVerifier.java \
+	SymmetricCrypto.java \
 	SymmetricDecryption.java \
 	SymmetricEncryption.java
 
