@@ -46,9 +46,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 	\
-	MockHueBridges.xml \
-	MockHueBridgesMultiple.xml
+OTHER_FILES_TO_BE_JARED = \
+	MockHueBridges.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
