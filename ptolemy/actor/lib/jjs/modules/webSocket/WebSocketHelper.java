@@ -92,16 +92,19 @@ public class WebSocketHelper extends VertxHelperBase {
         // Defer the rest of the close to the associated verticle.
         submit(new Runnable() {
             public void run() {
-                if (_webSocket != null) {
-                    if (_wsIsOpen) {
-                        _webSocket.close();
+                synchronized(WebSocketHelper.this) {
+                    if (_webSocket != null) {
+                        if (_wsIsOpen) {
+                            _webSocket.close();
+                            _wsIsOpen = false;
+                        }
+                        _webSocket = null;
                     }
-                    _webSocket = null;
-                }
 
-                if (_pendingOutputs != null && !_pendingOutputs.isEmpty()) {
-                    _error("Unsent messages remain that were queued before the socket opened: "
-                            + _pendingOutputs.toString());
+                    if (_pendingOutputs != null && !_pendingOutputs.isEmpty()) {
+                        _error("Unsent messages remain that were queued before the socket opened: "
+                                + _pendingOutputs.toString());
+                    }
                 }
             }
         });
@@ -158,6 +161,18 @@ public class WebSocketHelper extends VertxHelperBase {
         }
         return _wsIsOpen;
     }
+    
+    /** Open the web socket. This will be deferred to a vertx event loop.
+     */
+    public void open() {
+        submit(() -> {
+            _numberOfTries = 1;
+            if (_DEBUG) {
+                _actor.log("*** Requesting connection to server.");
+            }
+            _connectWebsocket(_host, _port, _client);
+        });
+    }
 
     /** Send data through the web socket.
      *  Note that if throttleFactor is not zero, then this method could
@@ -169,107 +184,138 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     public void send(final Object msg) throws IllegalActionException {
 
-        if (isOpen()) {
-            // Block if the send buffer is full.
-            // Note that this should be called in the director thread, not
-            // in the Vert.x thread, so blocking is OK. We need to stall
-            // execution of the model to not get ahead of the capability.
-            if (isOpen() && _webSocket.writeQueueFull()) {
-                // Blocking _must not_ be done in the verticle.
-                // If this is called outside the director thread, then defer to the
-                // director thread.
-                _issueResponse(() -> {
-                    synchronized(this) {
-                        try {
-                            if (isOpen() && _webSocket.writeQueueFull()) {
-                                _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
-                                wait();
-                            }
-                        } catch (InterruptedException e) {
-                            _error("Buffer is full, and wait for draining was interrupted");
-                        }
-                    }
-                    try {
-                        send(msg);
-                    } catch (Exception e) {
-                        _error("Exception occurred sending to the socket.", e);
-                    }
-                });
-                // The send has been either completed or deferred, depending on which 
-                // thread calls this.
-                return;
+        // If the message is not a string, attempt to create a Buffer object.
+        Object message = msg;
+        if (!(msg instanceof String)) {
+            if (msg instanceof ImageToken) {
+                Image image = ((ImageToken)msg).asAWTImage();
+                if (!(image instanceof BufferedImage)) {
+                    _error("Unsupported image token type: " + image.getClass());
+                }
+                if (!_sendType.startsWith("image/")) {
+                    _error("Trying to send an image, but sendType is " + _sendType);
+                }
+                String imageType = _sendType.substring(6);
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                try {
+                    ImageIO.write((BufferedImage)image, imageType, stream);
+                } catch (IOException e) {
+                    _error("Failed to convert image to byte array for sending: " + e.toString());
+                }
+                message = Buffer.buffer(stream.toByteArray());
             }
-        } else {
-            // Socket is not open.
-            // If there are already pending outputs, we stall before submitting.
+        }
+
+        boolean queuedMessage = false;
+        synchronized(WebSocketHelper.this) {
+            if (!isOpen()) {
+                // Socket is not open.
+                if (_discardMessagesBeforeOpen) {
+                    _actor.log("WARNING: Data discarded because socket is not open.");
+                    return;
+                } else {
+                    // Add the message to the queue of messages to be sent.
+                    // Synchronize to ensure that we are not in the middle of draining
+                    // the _pendingOutputs queue.
+                    if (_DEBUG) {
+                        _actor.log("Adding message to pending messages queue.");
+                    }
+                    _pendingOutputs.add(message);
+                    queuedMessage = true;
+                }
+            }
+        }
+        if (queuedMessage) {
+            // Message was queued. May want to throttle message production.
+            // Do not do this while holding the synchronization lock.
+            // If there are already pending outputs, stall the director thread.
             // Note that this is not the same as stalling when the send buffer
             // is full. That happens after the socket is open, whereas this happens before it is open.
             // Notice that the stall occurs in the calling thread only if the calling thread is
-            // the director thread.  Otherwise, the stall is deferred to the director thread
-            // and then the send is retried from there.
-            if (_pendingOutputs != null && !_pendingOutputs.isEmpty() && _throttleFactor > 0) {
+            // the director thread.  Otherwise, the stall is deferred to the director thread.
+            if (_throttleFactor > 0) {
                 _issueResponse(() -> {
                     try {
-                        Thread.sleep(_throttleFactor * _pendingOutputs.size());
+                        long sleepTime;
+                        synchronized(WebSocketHelper.this) {
+                            sleepTime = _throttleFactor * (_pendingOutputs.size() - 1);
+                        }
+                        if (_DEBUG) {
+                            _actor.log("Sleeping for " + sleepTime + " ms in thread " + Thread.currentThread());
+                        }
+                        Thread.sleep(sleepTime);
                     } catch (InterruptedException e) {
                         // Ignore.
                     }
-                    try {
-                        send(msg);
-                    } catch (Exception e) {
-                        _error("Exception occurred sending to the socket.", e);
-                    }
                 });
-                // The send has been either completed or deferred, depending on which 
-                // thread calls this.
-                return;
             }
+            return;
+        }
+        
+        // Socket is open. Ready to send.
+        final Object finalMessage = message;
+        
+        // First, create the task that will perform the send.
+        final Runnable sendTask = new Runnable() {
+            public void run() {
+                if (_wsFailed != null) {
+                    _error("Failed to establish connection: "
+                            + _wsFailed.toString());
+                }
+                if (isOpen()) {
+                    if (_DEBUG) {
+                        _actor.log("Sending message over socket.");
+                    }
+                    _sendMessageOverSocket(finalMessage);
+                } else if (_discardMessagesBeforeOpen) {
+                    _actor.log("WARNING: Data discarded because socket is not open: "
+                            + finalMessage);
+                } else {
+                    // Add the message to the queue of messages to be sent.
+                    // It is important that this be done in the verticle thread
+                    // to ensure that each message is sent exactly once, because the
+                    // queue is drained in this thread.
+                    // Synchronize to make sure we are not in the middle of draining
+                    // the queue.
+                    synchronized(WebSocketHelper.this) {
+                        if (_DEBUG) {
+                            _actor.log("Adding message to pending messages queue (2).");
+                        }
+                        _pendingOutputs.add(finalMessage);
+                    }
+                }
+            }
+        };
+        
+        // Block if the send buffer is full.
+        // Note that this should be called in the director thread, not
+        // in the Vert.x thread, so blocking is OK. We need to stall
+        // execution of the model to not get ahead of the capability.
+        if (_webSocket.writeQueueFull()) {
+            // Blocking _must not_ be done in the verticle.
+            // If this is called outside the director thread, then defer to the
+            // director thread.
+            _issueResponse(() -> {
+                synchronized(this) {
+                    try {
+                        if (isOpen() && _webSocket.writeQueueFull()) {
+                            _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
+                            wait();
+                        }
+                    } catch (InterruptedException e) {
+                        _error("Buffer is full, and wait for draining was interrupted");
+                    }
+                }
+                submit(sendTask);
+            });
+            // The send has been either completed or deferred, depending on which 
+            // thread calls this.
+            return;
         }
 
         // Ready to send.
         // Defer this action to be executed in the associated verticle.
-        submit(() -> {
-            if (_wsFailed != null) {
-                _error("Failed to establish connection: "
-                        + _wsFailed.toString());
-            }
-            // If the message is not a string, attempt to create a Buffer object.
-            Object message = msg;
-            if (!(msg instanceof String)) {
-                if (msg instanceof ImageToken) {
-                    Image image = ((ImageToken)msg).asAWTImage();
-                    if (!(image instanceof BufferedImage)) {
-                        _error("Unsupported image token type: " + image.getClass());
-                    }
-                    if (!_sendType.startsWith("image/")) {
-                        _error("Trying to send an image, but sendType is " + _sendType);
-                    }
-                    String imageType = _sendType.substring(6);
-                    ByteArrayOutputStream stream = new ByteArrayOutputStream();
-                    try {
-                        ImageIO.write((BufferedImage)image, imageType, stream);
-                    } catch (IOException e) {
-                        _error("Failed to convert image to byte array for sending: " + e.toString());
-                    }
-                    message = Buffer.buffer(stream.toByteArray());
-                }
-            }
-            if (isOpen()) {
-                _sendMessageOverSocket(message);
-            } else if (_discardMessagesBeforeOpen) {
-                _actor.log("WARNING: Data discarded because socket is not open: "
-                        + message);
-            } else {
-                // Add the message to the queue of messages to be sent.
-                // It is important that this be done in the verticle thread
-                // to ensure that each message is sent exactly once, because the
-                // queue is drained in this thread.
-                if (_pendingOutputs == null) {
-                    _pendingOutputs = new ConcurrentLinkedQueue<Object>();
-                }
-                _pendingOutputs.add(message);
-            }
-        });
+        submit(sendTask);
     }
 
     /** Return an array of the types supported by the current host for
@@ -326,7 +372,8 @@ public class WebSocketHelper extends VertxHelperBase {
     ////                     private constructors                   ////
 
     /** Private constructor for WebSocketHelper to open a client-side web socket.
-     *  Open an internal web socket using Vert.x.
+     *  This does not open the socket. You must call open on this helper to open it.
+     *  Do this after setting up event handlers.
      *  @param currentObj The JavaScript instance of Socket that this helps.
      *  @param host The IP address or host name of the host.
      *  @param port The port number of the host.
@@ -367,12 +414,7 @@ public class WebSocketHelper extends VertxHelperBase {
                         .setDefaultPort(port)
                         .setKeepAlive(true)
                         .setConnectTimeout(_connectTimeout));
-                
                 _wsFailed = null;
-
-                // Make the connection. This might eventually be a wrapped in a public method.
-                _numberOfTries = 1;
-                _connectWebsocket(host, port, _client);
             }
         });
     }
@@ -402,7 +444,7 @@ public class WebSocketHelper extends VertxHelperBase {
         // However, the headers don't seem to available.
         // MultiMap headers = serverWebSocket.headers();
 
-        // Note that his is already called in a vert.x thread, so we do not
+        // Note that this is already called in a vert.x thread, so we do not
         // (and should not) defer this using submit().
         _webSocket.frameHandler(new DataHandler());
         _webSocket.endHandler(new EndHandler());
@@ -424,18 +466,25 @@ public class WebSocketHelper extends VertxHelperBase {
         client.websocket(port, host, "", new Handler<WebSocket>() {
             @Override
             public void handle(WebSocket websocket) {
+                if (_DEBUG) {
+                    _actor.log("Response to request for websocket received from server.");
+                }
                 if (_numberOfTries < 0) {
                     // close() has been called. Abort the connection.
+                    if (_DEBUG) {
+                        _actor.log("close() has been called. Abort the connection.");
+                    }
                     websocket.close();
                     return;
                 }
                 if (!_actor.isExecuting()) {
-                    // Either wrapup() has been called, or wrapup() is blocked waiting
-                    // for the _actor lock we now hold.
+                    // Actor is not executing.
+                    if (_DEBUG) {
+                        _actor.log("Actor is not executing. Abort the connection.");
+                    }
                     websocket.close();
                     return;
                 }
-                _wsIsOpen = true;
                 _webSocket = websocket;
 
                 _webSocket.frameHandler(new DataHandler());
@@ -451,11 +500,22 @@ public class WebSocketHelper extends VertxHelperBase {
                 _currentObj.callMember("emit", "open");
 
                 // Send any pending messages.
-                if (_pendingOutputs != null && !_pendingOutputs.isEmpty()) {
-                    for (Object message : _pendingOutputs) {
-                        _sendMessageOverSocket(message);
+                // Synchronize to make sure no pending outputs are added while
+                // we are iterating through the queue.
+                synchronized(WebSocketHelper.this) {
+                    // Set this inside the synchronized block to ensure that
+                    // after this block is executed, messages are not put
+                    // on the pending queue.
+                    _wsIsOpen = true;
+                    if (_pendingOutputs != null && !_pendingOutputs.isEmpty()) {
+                        if (_DEBUG) {
+                            _actor.log("Sending " + _pendingOutputs.size() + " pending messages.");
+                        }
+                        for (Object message : _pendingOutputs) {
+                            _sendMessageOverSocket(message);
+                        }
+                        _pendingOutputs.clear();
                     }
-                    _pendingOutputs.clear();
                 }
             }
         }, new HttpClientExceptionHandler());
@@ -469,6 +529,9 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** The time to wait before giving up on a connection. */
     private int _connectTimeout = 5000;
+    
+    /** Verbose debug flag. */
+    private final static boolean _DEBUG = false;
 
     /** True to discard messages before the socket is open. False to discard them. */
     private boolean _discardMessagesBeforeOpen;
@@ -483,7 +546,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private int _numberOfTries = 1;
 
     /** Pending outputs received before the socket is opened. */
-    private ConcurrentLinkedQueue<Object> _pendingOutputs;
+    private ConcurrentLinkedQueue<Object> _pendingOutputs = new ConcurrentLinkedQueue<Object>();
 
     /** The host port. */
     private int _port;
@@ -560,9 +623,11 @@ public class WebSocketHelper extends VertxHelperBase {
         @Override
         protected void handle() {
             _currentObj.callMember("emit", "close", "Stream has ended.");
-            _wsIsOpen = false;
-            if (_pendingOutputs != null && !_pendingOutputs.isEmpty()) {
-                _error("Unsent data remains in the queue.");
+            synchronized(WebSocketHelper.this) {
+                _wsIsOpen = false;
+                if (_pendingOutputs != null && !_pendingOutputs.isEmpty()) {
+                    _error("Unsent data remains in the queue.");
+                }
             }
         }
     }

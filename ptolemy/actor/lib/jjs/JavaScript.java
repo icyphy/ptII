@@ -1370,7 +1370,7 @@ public class JavaScript extends TypedAtomicActor {
         if (_debugging) {
             _debug(message);
         } else {
-            System.out.println(getName() + ": " + message);
+            System.out.println(getName() + ": " + message + " (" + Thread.currentThread() + ")");
         }
     }
 
