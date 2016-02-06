@@ -240,30 +240,48 @@ PTXBEE_JARS = \
 # doc/design/usingVergil/usingVergil.jar is used in dsp, ptiny and full,
 # but not hyvisual.
 
-CAPECODE_NONGUI_JARS = \
-	$(CORE_NONGUI_JARS) \
-	edu/umich/eecs/april/april.jar \
+CAPECODE_ONLY_JNLP_JARS = \
 	com/cureos/cureos.jar \
+	com/jhlabs/jhlabs.jar \
+	edu/umich/eecs/april/april.jar \
 	org/json/json.jar \
+	org/terraswarm/accessor/accessor.jar \
+	org/terraswarm/accessor/demo/demo.jar \
+	org/terraswarm/ros/demo/demo.jar \
+	org/ptolemy/ssm/ssm.jar \
 	$(PTJAVASCRIPT_JARS) \
 	ptolemy/actor/lib/mail/mail.jar \
 	$(PTJAVAMAIL_JARS) \
-	org/terraswarm/accessor/accessor.jar \
-	org/ptolemy/ssm/ssm.jar \
-	ptolemy/actor/lib/colt/colt.jar \
-	lib/ptcolt.jar \
 	ptolemy/actor/lib/conversions/json/json.jar \
-	ptolemy/actor/lib/io/comm/comm.jar \
 	$(PTNRJAVASERIAL_JAR) \
 	ptolemy/actor/lib/jjs/jjs.jar \
+	ptolemy/actor/lib/jjs/demo/demo.jar \
+	ptolemy/actor/lib/jjs/modules/demo.jar \
 	ptolemy/actor/lib/jjs/modules/modules.jar \
 	ptolemy/actor/lib/js/js.jar \
-	org/ptolemy/ptango/ptango.jar \
-	$(PTANGO_JAR_FILES) \
+	ptolemy/actor/lib/js/demo/demo.jar \
 	$(PTDATABASE_JNLP_JARS) \
 	org/ptolemy/machineLearning/machineLearning.jar \
 	org/ptolemy/optimization/optimization.jar \
+	$(PTPAHO_MQTT_JAR) \
+	$(PTSLF4J_API_JAR) \
+	$(PTSLF4J_NOP_JAR) \
+	$(PTVERTX_JARS) \
+	$(PTWEBCAMCAPTURE_JARS) \
 	$(PTXBEE_JARS)
+
+CAPECODE_NONGUI_JARS = \
+	$(CORE_NONGUI_JARS) \
+	$(CAPECODE_ONLY_JNLP_JARS) \
+	ptolemy/actor/lib/colt/colt.jar \
+	lib/ptcolt.jar \
+	ptolemy/actor/lib/io/comm/comm.jar \
+	$(JSOUP_JARS)
+
+#	org/ptolemy/ptango/ptango.jar \
+#	$(PTANGO_JAR_FILES) \
+
+
 
 CAPECODE_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/CapeCodeApplication.jar
@@ -277,9 +295,7 @@ CAPECODE_JNLP_JARS = \
 	$(PDFRENDERER_JARS) \
 	ptolemy/actor/gui/syntax/syntax.jar \
 	$(PTRSYNTAXTEXTAREA_JAR) \
-	org/terraswarm/accessor/demo/demo.jar \
-	ptolemy/actor/lib/jjs/modules/demo.jar \
-	ptolemy/vergil/basic/export/html/jsoup/jsoup.jar
+	$(JSOUP_JARS)
 
 # As per Edward, exclude these from CapeCode
 #	ptolemy/actor/gt/gt.jar
@@ -313,11 +329,11 @@ PTJAVASCRIPT_JARS = \
 	$(PTJAVASCRIPT_JAR) \
 
 CYPHYSIM_JNLP_JARS =	\
+	com/cureos/cureos.jar \
 	org/json/json.jar \
 	org/ptolemy/qss/qss.jar \
 	org/ptolemy/machineLearning/machineLearning.jar \
 	org/ptolemy/optimization/optimization.jar \
-	com/cureos/cureos.jar \
 	ptolemy/actor/lib/aspect/aspect.jar \
 	ptolemy/actor/lib/colt/colt.jar \
 	lib/ptcolt.jar \
@@ -325,7 +341,9 @@ CYPHYSIM_JNLP_JARS =	\
 	ptolemy/actor/lib/io/comm/comm.jar \
 	$(PTNRJAVASERIAL_JAR) \
 	ptolemy/actor/lib/jai/jai.jar \
+	ptolemy/actor/lib/jai/demo/demo.jar \
 	ptolemy/actor/lib/jjs/jjs.jar \
+	ptolemy/actor/lib/jjs/demo/demo.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
 	ptolemy/actor/lib/js/js.jar \
 	ptolemy/actor/lib/mail/mail.jar \
@@ -621,16 +639,13 @@ METROII_JARS = \
 	ptolemy/domains/metroII/metroII.jar \
 	ptolemy/domains/metroII/demo/demo.jar
 
+
 FULL_10_0_JARS = \
-	com/cureos/cureos.jar \
 	org/ptolemy/faultModels/faultModels.jar \
 	org/ptolemy/machineImprovisation/machineImprovisation.jar \
 	org/ptolemy/machineImprovisation/demo/demo.jar \
-	org/ptolemy/machineLearning/machineLearning.jar \
-	org/ptolemy/optimization/optimization.jar \
 	org/ptolemy/osc/osc.jar \
 	$(PTOSCP5_JAR) \
-	org/ptolemy/ssm/ssm.jar \
 	$(METROII_JARS) \
 	ptolemy/domains/atc/atc.jar \
 	ptolemy/domains/atc/demo/demo.jar \
@@ -639,33 +654,38 @@ FULL_10_0_JARS = \
 	ptolemy/domains/scr/scr.jar \
 	ptolemy/domains/scr/demo/demo.jar \
 	ptolemy/vergil/scr/scr.jar \
-	ptolemy/vergil/basic/imprt/accessor/accessor.jar \
 	$(PTG4LTL_JAR) \
 	ptolemy/vergil/basic/imprt/g4ltl/g4ltl.jar \
 	ptolemy/vergil/basic/imprt/g4ltl/demo/demo.jar
 
+# 	com/cureos/cureos.jar
+#	org/ptolemy/ssm/ssm.jar
+#	org/ptolemy/machineLearning/machineLearning.jar
+#	org/ptolemy/optimization/optimization.jar
+#	ptolemy/vergil/basic/imprt/accessor/accessor.jar
+
 FULL_11_0_JARS = \
-	edu/umich/eecs/april/april.jar \
 	org/ptolemy/classloading/classloading.jar \
 	org/ptolemy/commons/commons.jar \
 	org/ptolemy/qss/qss.jar \
 	org/ptolemy/qss/demo/demo.jar \
 	ptolemy/actor/gui/syntax/syntax.jar \
-	ptolemy/actor/lib/jjs/modules/demo.jar \
-	ptolemy/actor/lib/jjs/modules/modules.jar \
 	ptolemy/domains/qss/qss.jar \
 	ptolemy/domains/qss/demo/demo.jar \
-	$(PTPAHO_MQTT_JAR) \
 	$(PTRSYNTAXTEXTAREA_JAR) \
-	$(PTVERTX_JARS) \
-	$(PTXBEE_JARS)
+
+#       $(PTPAHO_MQTT_JAR)
+#	$(PTXBEE_JARS)
+#	$(PTVERTX_JARS)
+#	edu/umich/eecs/april/april.jar
+#	ptolemy/actor/lib/jjs/modules/demo.jar
+#	ptolemy/actor/lib/jjs/modules/modules.jar
 
 
 # Jar files that will appear in a full JNLP Ptolemy II Runtime
 # ptolemy/domains/sdf/lib/vq/data/data.jar contains images for HTVQ demo
 FULL_ONLY_JNLP_JARS = \
 	$(COPERNICUS_JARS) \
-	com/jhlabs/jhlabs.jar \
 	contrib/contrib.jar \
 	doc/books/systems/vergil/vergil.jar \
 	doc/design/design.jar \
@@ -675,9 +695,6 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTANGO_JAR_FILES) \
 	lib/jcerti.jar \
 	org/hlacerti/hlacerti.jar \
-	org/terraswarm/accessor/accessor.jar \
-	org/terraswarm/accessor/demo/demo.jar \
-	org/terraswarm/ros/demo/demo.jar \
 	org/ptolemy/ptango/ptango.jar \
 	org/ptolemy/ptango/demo/demo.jar \
 	org/ptolemy/qss/qss.jar \
@@ -686,28 +703,17 @@ FULL_ONLY_JNLP_JARS = \
 	$(PTJACL_JARS) \
 	ptolemy/actor/gt/gt.jar \
 	ptolemy/actor/gt/demo/demo.jar \
-	org/json/json.jar \
 	ptolemy/actor/lib/aspect/aspect.jar \
 	ptolemy/actor/lib/aspect/demo/demo.jar \
-	ptolemy/actor/lib/conversions/json/json.jar \
 	ptolemy/actor/lib/fmi/demo/demo.jar \
-	ptolemy/actor/lib/io/comm/comm.jar \
-	ptolemy/actor/lib/io/comm/demo/demo.jar \
-	$(PTNRJAVASERIAL_JAR) \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jai/demo/demo.jar \
-	ptolemy/actor/lib/jjs/jjs.jar \
-	ptolemy/actor/lib/jjs/demo/demo.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
 	ptolemy/actor/lib/jmf/demo/demo.jar \
 	ptolemy/actor/lib/joystick/joystick.jar \
 	vendors/misc/joystick/Joystick.jar \
 	ptolemy/actor/lib/mail/mail.jar \
 	ptolemy/actor/lib/mail/demo/demo.jar \
-	$(PTJAVAMAIL_JARS) \
-	ptolemy/actor/lib/js/js.jar \
-	ptolemy/actor/lib/js/demo/demo.jar \
-	$(PTJAVASCRIPT_JARS) \
 	ptolemy/actor/ptalon/gt/gt.jar \
 	ptolemy/actor/ptalon/gt/demo/demo.jar \
 	lib/ptCal.jar \
@@ -780,12 +786,28 @@ FULL_ONLY_JNLP_JARS = \
 	$(RUN_JARS) \
 	$(WIRELESS_JARS)
 
+#	com/jhlabs/jhlabs.jar
+#	org/json/json.jar
+#	$(PTJAVASCRIPT_JARS)
+#	$(PTJAVAMAIL_JARS)
+#	$(PTNRJAVASERIAL_JAR)
+#	ptolemy/actor/lib/conversions/json/json.jar
+#	ptolemy/actor/lib/io/comm/comm.jar
+#	ptolemy/actor/lib/io/comm/demo/demo.jar
+#	ptolemy/actor/lib/js/js.jar
+#	ptolemy/actor/lib/js/demo/demo.jar
+
+
+
+
+
 FULL_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/FullApplication.jar
 
 FULL_JNLP_JARS = \
 	$(FULL_MAIN_JAR) \
 	$(PTLBNL_JARS) \
+	$(CAPECODE_ONLY_JNLP_JARS) \
 	$(CORE_JNLP_JARS) \
 	$(DOC_CODEDOC_JAR) \
 	$(DSP_ONLY_JNLP_JARS) \
