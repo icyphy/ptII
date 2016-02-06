@@ -48,6 +48,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	MockHueBridges/MockHueBridges.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
