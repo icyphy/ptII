@@ -271,7 +271,9 @@ exports.Server.prototype.start = function() {
     this.helper.startServer();
 };
 
-/** Stop the server. */
+/** Stop the server. Note that this closing happens
+ *  asynchronously. The server may not be closed when this returns.
+ */
 exports.Server.prototype.stop = function() {
     this.helper.closeServer();
 };
