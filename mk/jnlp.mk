@@ -905,6 +905,7 @@ VISUAL_SENSE_JNLP_JARS =	\
 ALL_NON_APPLICATION_JNLP_JARS = \
 	$(NATIVE_SIGNED_LIB_JARS) \
 	$(BCVTB_ONLY_JNLP_JARS) \
+	$(CAPECODE_ONLY_JNLP_JARS) \
 	$(CORE_JNLP_JARS) \
 	$(DOC_CODEDOC_JAR) \
 	$(EXPORT_HTML_JARS) \
@@ -1463,7 +1464,7 @@ jnlp_sign: jnlp_sign1 $(JNLPS) $(KEYSTORE)
 jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS) $(JNLP_MANIFEST)
 	# Remove $(PTII)/ for files like /var/lib/hudson/jobs/ptII/workspace/vendors/oracle/javamail/mail.jar
 	# Replace the CLASSPATHSEPARATOR with a space.
-	@set `echo $(ALL_NON_APPLICATION_JNLP_JARS) | sed 's/$(CLASSPATHSEPARATOR)/ /g' | sed 's/C:/c:/g' | sed "s@$(PTII)/@@g"`; \
+	@set `echo $(ALL_NON_APPLICATION_JNLP_JARS) | sed 's/$(CLASSPATHSEPARATOR)/ /g' | sed 's/C:/c:/g' | sed "s@$(PTII)/@@g" | sort | uniq`; \
 	for x do \
 		if [ ! -f $$x ]; then \
 			echo "Warning: $$x does not exist, skipping."; \
