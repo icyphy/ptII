@@ -58,16 +58,15 @@ public class WebSocketServerHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Close the web socket server.
+    /** Close the web socket server. Note that this closing happens
+     *  asynchronously. The server may not be closed when this returns.
      */
     public void closeServer() {
     	// Ask the verticle to perform the close.
-    	submit(new Runnable() {
-    	    public void run() {
-    	        if (_server != null) {
-    	            _server.close();
-    	            _server = null;
-    	        }
+    	submit(() -> {
+    	    if (_server != null) {
+    	        _server.close();
+    	        _server = null;
     	    }
     	});
     }
