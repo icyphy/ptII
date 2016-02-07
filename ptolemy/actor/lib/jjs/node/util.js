@@ -26,7 +26,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals console, exports, process */
+/*globals Buffer, console, exports, process */
 /*jshint globalstrict: true */
 "use strict";
 
@@ -559,6 +559,7 @@ function isPrimitive(arg) {
 }
 exports.isPrimitive = isPrimitive;
 
+// Buffer is probably from Node.js.
 function isBuffer(arg) {
   return arg instanceof Buffer;
 }

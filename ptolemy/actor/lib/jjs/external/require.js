@@ -183,18 +183,18 @@
       }
     } else {
       // it's of the form ./path
-      var classPathFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(parentDir + "/" + moduleName.substr(2));
-      if (classPathFile !== null && classPathFile.isFile() ) {
-        return classPathFile;
+      var classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(parentDir + "/" + moduleName.substr(2));
+      if (classPathFile2 !== null && classPathFile2.isFile() ) {
+        return classPathFile2;
       } else {
         // try appending a .js to the end
-          classPathFile = JNLPUtilities.getResourceSaveJarURLAsTempFile( parentDir + "/" + moduleName + ".js");
-        if (classPathFile !== null && classPathFile.isFile() ) {
-         return classPathFile;
+          classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile( parentDir + "/" + moduleName + ".js");
+        if (classPathFile2 !== null && classPathFile2.isFile() ) {
+         return classPathFile2;
         } else {
-          classPathFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(moduleName + ".js");
-          if (classPathFile !== null && classPathFile.isFile() ) {
-            return classPathFile;
+          classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(moduleName + ".js");
+          if (classPathFile2 !== null && classPathFile2.isFile() ) {
+            return classPathFile2;
           }
         }
       }
