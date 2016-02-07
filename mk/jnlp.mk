@@ -251,14 +251,15 @@ CAPECODE_ONLY_JNLP_JARS = \
 	org/ptolemy/ssm/ssm.jar \
 	org/ptolemy/machineLearning/machineLearning.jar \
 	org/ptolemy/optimization/optimization.jar \
-	ptolemy/actor/lib/mail/mail.jar \
 	ptolemy/actor/lib/conversions/json/json.jar \
+	ptolemy/actor/lib/io/comm/comm.jar \
 	ptolemy/actor/lib/jjs/jjs.jar \
 	ptolemy/actor/lib/jjs/demo/demo.jar \
 	ptolemy/actor/lib/jjs/modules/demo.jar \
 	ptolemy/actor/lib/jjs/modules/modules.jar \
 	ptolemy/actor/lib/js/js.jar \
 	ptolemy/actor/lib/js/demo/demo.jar \
+	ptolemy/actor/lib/mail/mail.jar \
 	ptolemy/vergil/basic/imprt/accessor/accessor.jar \
 	$(PTDATABASE_JNLP_JARS) \
 	$(PTJAVAMAIL_JARS) \
@@ -276,7 +277,6 @@ CAPECODE_NONGUI_JARS = \
 	$(CAPECODE_ONLY_JNLP_JARS) \
 	ptolemy/actor/lib/colt/colt.jar \
 	lib/ptcolt.jar \
-	ptolemy/actor/lib/io/comm/comm.jar \
 	$(JSOUP_JARS)
 
 #	org/ptolemy/ptango/ptango.jar \
