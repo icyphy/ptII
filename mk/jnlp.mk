@@ -253,6 +253,7 @@ CAPECODE_ONLY_JNLP_JARS = \
 	org/ptolemy/optimization/optimization.jar \
 	ptolemy/actor/lib/conversions/json/json.jar \
 	ptolemy/actor/lib/io/comm/comm.jar \
+	ptolemy/actor/lib/io/comm/demo/demo.jar \
 	ptolemy/actor/lib/jjs/jjs.jar \
 	ptolemy/actor/lib/jjs/demo/demo.jar \
 	ptolemy/actor/lib/jjs/modules/demo.jar \
