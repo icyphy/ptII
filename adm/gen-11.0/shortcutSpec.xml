@@ -8,6 +8,24 @@
                 location="applications"/>
 
   <shortcut
+    name="Vergil -capecode"
+    programGroup="yes"
+    desktop="no"
+    applications="no"
+    startMenu="no"
+    startup="no"
+    target="$INSTALL_PATH\capecode.exe"
+    commandLine=""
+    workingDirectory="$INSTALL_PATH"
+    description="CapeCode 1.0.devel, the subset of Ptolemy II GUI"
+    iconFile="$INSTALL_PATH\doc\img\capecode.ico"
+    iconIndex="0"
+    initialState="normal">
+
+    <createForPack name="CapeCode"/>
+  </shortcut>
+  
+  <shortcut
     name="Vergil -ptiny"
     programGroup="yes"
     desktop="no"

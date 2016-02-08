@@ -249,6 +249,9 @@ release_mac_setup:
 release_mac2_setup:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
 
+release_mac2_capecodesetup:
+	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar $(CAPECODE_SETUP_MAC).dmg
+
 ####
 release_nightly:
 	$(MAKE) -k REMOTE1HOME=/home/bldmastr \
@@ -288,6 +291,7 @@ clean:	full_clean_setup
 	rm -rf $(VIPTOS_SRC_JAR)
 	rm -rf $(PTZIPRELEASE)
 	rm -rf $(PTSETUP)_64.xml $(PTSETUP).jar $(PTSETUP).exe test/installerTest test/ptII$(VERSION)
+	rm -rf $(CAPECODE_SETUP)_64.xml $(CAPECODE_SETUP).jar $(CAPECODE_SETUP)_64.exe
 	rm -rf $(PTSETUP_MAC).xml $(PTSETUP_MAC).jar $(PTSETUP_MAC).app $(PTSETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz
 	rm -rf dmg
 
@@ -1108,6 +1112,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 ##########
 
 PTSETUP_MAC = ptII$(VERSION).setup.mac
+CAPECODE_SETUP_MAC = capeCode$(CAPECODE_VERSION).setup.mac
 
 update_ftp: update_ptii_ftp untar update_ftp_book update_ftp_index
 update_ptii_ftp:
@@ -2796,6 +2801,30 @@ $(PTIIDIST)/bin/vergil:
 
 #	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
 
+CAPECODE_VERSION=1.0.devel
+CAPECODE_WINDOWS_VERSION=1_0_devel
+
+CAPECODE_SETUP=capecode$(CAPECODE_WINDOWS_VERSION)_setup_windows
+# Build a 64 bit installer.  See http://jira.codehaus.org/browse/IZPACK-506
+$(CAPECODE_SETUP)_64.xml: $(CAPECODE_SETUP).xml
+	sed 's/ShellLink.dll/ShellLink_x64.dll/' \
+	     $^ > $@
+
+capecode_setup64_jar: $(CAPECODE_SETUP).jar
+$(CAPECODE_SETUP)_64.jar: $(CAPECODE_SETUP)_64.xml $(PTIIDIST)/jar_dist $(PTIIDIST)/capecode.exe cleanSrc jre64
+	@echo "#"
+	@echo "# Building $(CAPECODE_SETUP)_64.jar"
+	@echo "# `date`"
+	rm -rf jre; mkdir jre
+	(cd jre64; tar -cf - .) | (cd jre; tar -xpf -)
+	sh "$(IZPACK_COMPILE)" $<
+	rm -rf jre
+	if [ ! -f $@ ];  then \
+		error "$@ does not exist?"; \
+	else \
+		ls -l $@; \
+	fi
+
 
 CLASSPATHSEPARATOR=;
 IZPACK_CLASSDIR=${IZPACKDIR}/lib/compiler.jar${CLASSPATHSEPARATOR}${IZPACKDIR}/lib/installer.jar${CLASSPATHSEPARATOR}
@@ -2879,11 +2908,42 @@ $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
 		ls -l $@; \
 	fi
 
+CAPECODE_SETUP_DEPENDENCIES = \
+	$(PTIIDIST)/capecode.exe \
+	$(PTIIDIST)/ptbook.exe \
+	$(PTIIDIST)/jar_dist \
+	$(PTIIDIST)/ptolemy/matlab/ptmatlab.dll
+
+
+$(CAPECODE_SETUP)_64_l4j.xml: $(CAPECODE_SETUP)_l4j.xml
+	sed 's/setup_windows/setup_windows_64/' $^ > $@
+
+capecodesetup_64: $(CAPECODE_SETUP)_64.exe
+$(CAPECODE_SETUP)_64.exe: $(CAPECODE_SETUP_DEPENDENCIES) \
+			$(PTIIDIST)/lib/matlabWindows.jar \
+			$(CAPECODE_SETUP)_64_l4j.xml \
+			$(CAPECODE_SETUP)_64.jar #ExtractJarFile.class
+
+	@echo "#"
+	@echo "# Building $(CAPECODE_SETUP).exe"
+	@echo "# `date`"
+	"$(L4JC)" "`$(GENDIR)/ptcygpwd`/$(CAPECODE_SETUP)_64_l4j.xml"
+	sleep 5
+	ls -l $@
+	if [ ! -f $@ ];  then \
+		error "$@ does not exist?"; \
+	else \
+		ls -l $@; \
+	fi
+
 ptiny.exe: $(PTIIDIST)/ptiny.exe
 $(PTIIDIST)/ptiny.exe:
 	 $(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
 
 $(PTIIDIST)/ptbook.exe:
+	 $(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
+
+$(PTIIDIST)/capecode.exe:
 	 $(MAKE) -C $(PTIIDIST) PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` exes
 
 book_pdf: $(PTIIDIST)/doc/books/systems/$(BOOK_PDF)
@@ -2923,7 +2983,7 @@ jre64:
 		echo "64-bit JRE Directory" > jre64/README.txt; \
 	fi
 
-setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg #$(PTSETUP_MAC).app.tar.gz
+setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg $(CAPECODE_SETUP)_64.exe $(CAPECODE_SETUP).dmg #$(PTSETUP_MAC).app.tar.gz
 
 clean_setup: 
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
@@ -3023,11 +3083,26 @@ $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
 
+capecodesetup_mac: $(CAPECODE_SETUP_MAC).xml
+$(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk #makefile
+	awk -f macOSInclude.awk $(CAPECODE_SETUP).xml | \
+	    sed -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII11.0.devel/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
+	    -e 's@os="windows"@os="mac"@' \
+	    > $@
+
 PTINY_APP = $(PTIIDIST)/bin/Ptiny.app
 Ptiny.app: $(PTINY_APP)
 $(PTINY_APP): 
 	if [ ! -f $@ ]; then \
 		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  make Ptiny.app Vergil.app); \
+        fi
+
+CAPECODE_APP = $(PTIIDIST)/bin/CapeCode.app
+CapeCode.app: $(CAPECODE_APP)
+$(CAPECODE_APP): 
+	if [ ! -f $@ ]; then \
+		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  make CapeCode.app); \
         fi
 
 setup_mac_jar: $(PTSETUP_MAC).jar
@@ -3043,6 +3118,18 @@ $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIID
 		ls -l $@; \
 	fi
 
+setup_mac_jar: $(CAPECODE_SETUP_MAC).jar
+$(CAPECODE_SETUP_MAC).jar: $(CAPECODE_SETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) cleanSrc
+	@echo "#"
+	@echo "# Building $@"
+	@echo "# `date`"
+	ls -ldg $(PTINY_APP)
+	sh "$(IZPACK_COMPILE)" $<
+	if [ ! -f $@ ];  then \
+		error "$@ does not exist?"; \
+	else \
+		ls -l $@; \
+	fi
 
 
 
@@ -3052,6 +3139,10 @@ $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 	python $(IZPACK2APP) $^ $@ 
 	find $@ -type f -exec touch {} \; 
 	#cp $(PTIIHOME)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
+
+$(CAPECODE_SETUP_MAC).app: $(CAPECODE_SETUP_MAC).jar
+	python $(IZPACK2APP) $^ $@ 
+	find $@ -type f -exec touch {} \; 
 
 # https://stackoverflow.com/questions/286419/how-to-build-a-dmg-mac-os-x-file-on-a-non-mac-platform 
 #"mkdir -p dmgdir/progname.app/Contents/{MacOS,Resources}"
@@ -3081,14 +3172,30 @@ $(PTSETUP_MAC).dmg: $(PTSETUP_MAC).app
 	mv dmg/$(PTSETUP_MAC).app .
 	rm -rf dmg
 
+$(CAPECODE_SETUP_MAC).dmg: $(CAPECODE_SETUP_MAC).app
+	rm -rf dmg
+	if [ -d dmg ]; then \
+	    echo "$0: dmg/ exists?  Error!"; \
+	    error; \
+	fi
+	mkdir dmg
+	mv $(CAPECODE_SETUP_MAC).app dmg
+	echo "See http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
+	genisoimage -V $(CAPECODE_SETUP_MAC) -D -R -apple -no-pad -o $@ dmg
+	mv dmg/$(CAPECODE_SETUP_MAC).app .
+	rm -rf dmg
 
-update_mac: $(PTSETUP_MAC).dmg
-	scp -p $(PTSETUP_MAC).dmg moog:$(PTII_FTP)
+update_mac: $(PTSETUP_MAC).dmg $(CAPECODE_SETUP_MAC).dmg
+	scp -p $(PTSETUP_MAC).dmg $(CAPECODE_SETUP_MAC).dmg moog:$(PTII_FTP)
 
 
 # Use dmg above instead. 
 setup_mac_app_tar: $(PTSETUP_MAC).app.tar.gz
 $(PTSETUP_MAC).app.tar.gz: $(PTSETUP_MAC).app
+	tar -zcf $@ $<
+
+capecodesetup_mac_app_tar: $(CAPECODE_SETUP_MAC).app.tar.gz
+$(CAPECODE_SETUP_MAC).app.tar.gz: $(CAPECODE_SETUP_MAC).app
 	tar -zcf $@ $<
 
 ######################################################################
