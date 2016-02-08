@@ -7,7 +7,14 @@
 		set="true"/>
 	</field>
     </panel>
-    <panel order="1">
+    <panel order="0">
+	<field type="check" variable="startCapeCode">
+	  <spec txt="Would you like to start Ptolemy next?" true="true" false="false"
+		id="startCapeCodeCheck"
+		set="true"/>
+	</field>
+    </panel>
+    <panel order="2">
 	<field type="check" variable="startVergil">
           <createForPack name="Full" />
 	  <spec txt="Would you like to start Ptolemy next?" true="true" false="false"

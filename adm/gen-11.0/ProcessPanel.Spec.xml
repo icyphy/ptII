@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
 
 <processing>
+  <job name="Execute CapeCode.app" condition="startCapeCode">
+    <os family="mac" />
+      <executefile name="/usr/bin/open">
+	<arg>$INSTALL_PATH/bin/CapeCode.app</arg>
+      </executefile>
+  </job>
   <job name="Execute Ptiny.app" condition="startPtiny">
     <os family="mac" />
       <executefile name="/usr/bin/open">
@@ -16,6 +22,11 @@
   </job>
 
 
+  <job name="Execute capecode.exe"  condition="startCapeCode">
+    <os family="windows" />
+    <executefile name="$INSTALL_PATH/capecode.exe">
+    </executefile>
+  </job>
   <job name="Execute ptiny.exe"  condition="startPtiny">
     <os family="windows" />
     <executefile name="$INSTALL_PATH/ptiny.exe">

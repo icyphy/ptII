@@ -1721,12 +1721,13 @@ PTCYGPATH=$(ROOT)/bin/ptcygpath
 L4JC=$(L4J_DIR)/launch4j
 
 # .exe files to be created by Launch4J
+L4J_CAPECODE_EXES =	capecode.exe
 L4J_DOC_EXES = 		ptbook.exe
 L4J_PTOLEMY_EXES = 	hyvisual.exe ptiny.exe vergil.exe \
 				visualsense.exe
 L4J_PTPLOT_EXES = 	histogram.exe ptplot.exe
 
-L4J_EXES =		$(L4J_DOC_EXES) $(L4J_PTOLEMY_EXES) $(L4J_PTPLOT_EXES)
+L4J_EXES =		$(L4J_CAPECODE_EXES) $(L4J_DOC_EXES) $(L4J_PTOLEMY_EXES) $(L4J_PTPLOT_EXES)
 
 # .xml files used to create .exe files.  
 # These files are created by $(MKL4J)
@@ -1770,6 +1771,15 @@ doc/books/systems/$(PTBOOK_PDF):
 	fi; \
 	mv $(PTBOOK_PDF) $@
 	chmod a+x doc/books/systems/$(PTBOOK_PDF)
+
+capecode_l4j.xml: $(MKL4J)
+	$(MKL4J) capecode ptolemy.vergil.VergilApplication \
+		doc/img/capecode.ico \
+		-capecode \
+		`echo $(CAPECODE_JNLP_JARS) | sed "s@$(PTII)/@@g" | sed 's/$(CLASSPATHSEPARATOR)/ /g'` > $@
+
+capecode.exe: capecode_l4j.xml
+	"$(L4JC)" `$(PTCYGPATH) capecode_l4j.xml`
 
 DOPCenterModel=ptolemy/domains/space/demo/DOPCenter/DOPCenter.xml
 dopseating_l4j.xml:

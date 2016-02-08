@@ -27,6 +27,10 @@
         The conditions section
     -->
     <conditions>
+      <condition type="variable" id="startCapeCode">
+	<name>startCapeCode</name>
+	<value>true</value>
+      </condition>
       <condition type="variable" id="startPtiny">
 	<name>startPtiny</name>
 	<value>true</value>
