@@ -141,6 +141,7 @@ OTHER_FILES_TO_BE_JARED = \
 
 
 ICONS = \
+	capecode.ico \
 	histogram.ico \
 	hyvisual.ico \
 	pdf.ico \
