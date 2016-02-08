@@ -287,6 +287,7 @@ clean:	full_clean_setup
 	rm -f $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_DEVEL_SRC) $(PTII_SRC)
 	rm -rf $(PTII_SRC_JAR) src_jar
 	rm -rf $(PTIIDIST) src installshield/*
+	rm -rf $(CAPECODE_SRC_JAR)
 	rm -rf $(HYVISUAL_SRC_JAR)
 	rm -rf $(VIPTOS_SRC_JAR)
 	rm -rf $(PTZIPRELEASE)
@@ -816,6 +817,10 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/plot/plotml/build.xml \
 		thales
 
+# Files to be removed from CapeCode source distributions
+CAPECODE_SRC_TO_BE_REMOVED = \
+		$(BASE_SRC_TO_BE_REMOVED) \
+
 # Files to be removed from HyVisual source distributions
 HYVISUAL_SRC_TO_BE_REMOVED = \
 		$(BASE_SRC_TO_BE_REMOVED) \
@@ -871,6 +876,100 @@ src_jar: #$(PTII_SRC)
 	(cd src_jar/ptII$(VERSION); rm -rf `cat ../../src.ex`)
 	echo "About to remove unneeded sources from `pwd`"; \
 	(cd src_jar/ptII$(VERSION); rm -rf $(PTII_SRC_TO_BE_REMOVED))
+
+############################################
+# CapeCode
+
+CAPECODE_SRC_JAR = capecode$(VERSION).src.jar
+
+# The Jar file that we create.
+capecode.jar: $(CAPECODE_SRC_JAR)
+$(CAPECODE_SRC_JAR): src_jar/capecode$(VERSION)
+	(cd src_jar/capecode$(VERSION); "$(JAR)" -cf ../../capecode$(VERSION).src.jar .)
+
+CAPECODE_SRC_TAR = capecode$(VERSION).src.tar.gz
+# The Jar file that we create.
+capecode.tar: $(CAPECODE_SRC_TAR)
+$(CAPECODE_SRC_TAR): src_jar/capecode$(VERSION)
+	(cd src_jar; \
+		cp $(PTIIHOME)/doc/design/capecode.pdf \
+			capecode$(VERSION)/doc/design/capecode.pdf; \
+		$(TAR) -czf ../capecode$(VERSION).src.tar.gz \
+		capecode$(VERSION) \
+	)
+
+# The directory we jar up.
+# We include DE because some of the kernel/util tests use it.  CT demos also.
+capecode_src_jar: src_jar/capecode$(VERSION)
+src_jar/capecode$(VERSION): ptII$(VERSION).src.jar
+	if [ ! -d src_jar/capecode$(VERSION) ]; then \
+		 mkdir -p src_jar/capecode$(VERSION); \
+	fi
+	(cd src_jar/capecode$(VERSION); \
+		"$(JAR)" -xf ../../ptII$(VERSION).src.jar)
+
+	(cd src_jar/capecode$(VERSION); \
+		echo "About to remove unneeded sources from `pwd`"; \
+		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
+		rm -rf $(CAPECODE_SRC_TO_BE_REMOVED) thales; \
+	   touch configure; \
+	   chmod a+rx configure util/testsuite/chkextra; \
+	)
+	egrep -v "copernicus|decompile|emachine|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/capecode$(VERSION)/bin/makefile \
+		> src_jar/capecode$(VERSION)/bin/makefile.tmp
+	mv src_jar/capecode$(VERSION)/bin/makefile.tmp \
+		src_jar/capecode$(VERSION)/bin/makefile
+	# Fix up actor/lib/makefile
+	egrep -v "comm.jar|javasound.jar|security.jar|xslt.jar" \
+		src_jar/capecode$(VERSION)/ptolemy/actor/lib/makefile \
+		> src_jar/capecode$(VERSION)/ptolemy/actor/lib/makefile.tmp
+	mv src_jar/capecode$(VERSION)/ptolemy/actor/lib/makefile.tmp \
+		src_jar/capecode$(VERSION)/ptolemy/actor/lib/makefile
+	# Fix up domains/makefile
+	egrep -v "csp.jar|ddf.jar|pn.jar|domains.xml|ptinyDomains.xml|ci.jar|dde.jar|dt/dt.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar|wireless.jar"	\
+		src_jar/capecode$(VERSION)/ptolemy/domains/makefile \
+		> src_jar/capecode$(VERSION)/ptolemy/domains/makefile.tmp
+	mv src_jar/capecode$(VERSION)/ptolemy/domains/makefile.tmp \
+		src_jar/capecode$(VERSION)/ptolemy/domains/makefile
+	# Fix up configs/makefile
+	egrep -v "dsp.jar|full.jar|jxta.jar|ptiny.jar|visualsense.jar" \
+		src_jar/capecode$(VERSION)/ptolemy/configs/makefile \
+		> src_jar/capecode$(VERSION)/ptolemy/configs/makefile.tmp
+	mv src_jar/capecode$(VERSION)/ptolemy/configs/makefile.tmp \
+		src_jar/capecode$(VERSION)/ptolemy/configs/makefile
+	# Fix up doc/design/makefile
+	egrep -v "ptIIdesign1-intro.pdf|ptIIdesign2-software.pdf|ptIIdesign3-domains.pdf|visualsense.pdf|visualsense.jar|usingVergil" \
+		src_jar/capecode$(VERSION)/doc/design/makefile \
+		> src_jar/capecode$(VERSION)/doc/design/makefile.tmp
+	mv src_jar/capecode$(VERSION)/doc/design/makefile.tmp \
+		src_jar/capecode$(VERSION)/doc/design/makefile
+	# Fix up doc/makefile
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
+		src_jar/capecode$(VERSION)/doc/makefile \
+		> src_jar/capecode$(VERSION)/doc/makefile.tmp
+	mv src_jar/capecode$(VERSION)/doc/makefile.tmp \
+		src_jar/capecode$(VERSION)/doc/makefile
+	# Fix up actor/lib/test/makefile
+	egrep -v OrderedMerge.tcl \
+		src_jar/capecode$(VERSION)/ptolemy/actor/lib/test/makefile \
+		> src_jar/capecode$(VERSION)/ptolemy/actor/lib/test/makefile.tmp
+	mv src_jar/capecode$(VERSION)/ptolemy/actor/lib/test/makefile.tmp \
+		src_jar/capecode$(VERSION)/ptolemy/actor/lib/test/makefile
+	# Fix up ptolemy/makefile
+	sed -e 's/\$$(PTCALTROP_DIR)//' \
+	    -e 's/\$$(PTCOPERNICUS_DIR)//' \
+		< src_jar/capecode$(VERSION)/ptolemy/makefile \
+		> src_jar/capecode$(VERSION)/ptolemy/makefile.tmp
+	mv src_jar/capecode$(VERSION)/ptolemy/makefile.tmp \
+		src_jar/capecode$(VERSION)/ptolemy/makefile
+	# Fix up makefile
+	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|thales" \
+		src_jar/capecode$(VERSION)/makefile \
+		> src_jar/capecode$(VERSION)/makefile.tmp
+	mv src_jar/capecode$(VERSION)/makefile.tmp \
+		src_jar/capecode$(VERSION)/makefile \
+	#cd src_jar/capecode$(VERSION); $(FINDCLEAN))
+	(cd src_jar/capecode$(VERSION); rm -rf `cat ../../src.ex`)
 
 ############################################
 # HyVisual
@@ -3272,10 +3371,12 @@ update_moog:
 	#
 	# Link to codeDoc*
 	ssh -l $(USER) moog rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDoc 
+	ssh -l $(USER) moog rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDocCapeCode
 	ssh -l $(USER) moog rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDocHyVisual 
 	ssh -l $(USER) moog rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDocViptos
 	ssh -l $(USER) moog rm -rf $(PTEXTERNAL_NIGHTLY)/doc/codeDocVisualSense
 	ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDoc $(PTEXTERNAL_NIGHTLY)/doc
+	ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDocCapeCode $(PTEXTERNAL_NIGHTLY)/doc
 	ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDocHyVisual $(PTEXTERNAL_NIGHTLY)/doc
 	ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDocVisualSense $(PTEXTERNAL_NIGHTLY)/doc
 	ssh -l $(USER) moog ln -s $(MOOG_HOME_PTII)/doc/codeDocViptos $(PTEXTERNAL_NIGHTLY)/doc
