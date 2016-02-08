@@ -108,10 +108,6 @@ public abstract class PtolemyFrame extends TableauFrame {
         extensions.add("moml");
         // We use a constructor that takes a list because
         // _fileFilter is declared in Top to be a javax.swing.filechooser.FileFilter.
-        // Thus, we can't call diva.gui.ExtensionFileFilter.addExtension();
-        // Note that as of Java 1.6, there is a FileNameExtensionFilter which
-        // replaces diva.gui.ExtensionFileFilter, see
-        //http://download.oracle.com/javase/6/docs/api/javax/swing/filechooser/FileNameExtensionFilter.html
         _fileFilter = new ExtensionFilenameFilter(extensions);
 
         setModel(model);

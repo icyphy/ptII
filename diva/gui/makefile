@@ -71,7 +71,6 @@ JSRCS = \
 	DesktopContext.java \
 	Document.java \
 	DocumentFactory.java \
-	ExtensionFileFilter.java \
 	GUIUtilities.java \
 	MDIContext.java \
 	MultipageDocument.java \
@@ -85,8 +84,7 @@ JSRCS = \
 	ViewEvent.java \
 	ViewListener.java
 
-OTHER_FILES_TO_BE_JARED = \
-	ExtensionFileFilter-license.htm
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) \
 	package.html

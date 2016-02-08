@@ -1577,36 +1577,6 @@ public class TableauFrame extends Top {
         private Configuration _configuration;
     }
 
-    /** File filter that filters out files that do not have one of a
-     *  pre-specified list of extensions.
-     *  Note that as of Java 1.6, there is a FileNameExtensionFilter which
-     *  replaces diva.gui.ExtensionFileFilter, see
-     *  http://download.oracle.com/javase/6/docs/api/javax/swing/filechooser/FileNameExtensionFilter.html
-     *
-     *  @deprecated Use diva.gui.ExtensionFileFilter or javax.swing.filechooser.FileNameExtensionFilter
-     */
-    @Deprecated
-    protected static class ExtensionFileFilter extends
-    diva.gui.ExtensionFileFilter {
-        // NetBeans wants this protected.  If it is package visibility,
-        // then there are problems accessing it from the same package
-        // but a different jar.
-
-        // FindBugs suggests making this class static so as to decrease
-        // the size of instances and avoid dangling references.
-
-        /** Construct a file filter that filters out all files that do
-         *  not have one of the extensions in the given list.
-         *  @param extensions A list of extensions, each of which is
-         *   a String.
-         *  @deprecated Use diva.gui.ExtensionFileFilter.addExtension().
-         */
-        @Deprecated
-        public ExtensionFileFilter(List extensions) {
-            super(extensions);
-        }
-    }
-
     /** Listener for view menu commands. */
     class ViewMenuListener implements ActionListener {
         @Override

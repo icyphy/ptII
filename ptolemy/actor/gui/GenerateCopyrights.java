@@ -138,9 +138,6 @@ public class GenerateCopyrights {
                 "$CLASSPATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub",
                 "bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.html");
         
-        _addIfClassPresent(copyrightsMap, "diva.gui.ExtensionFileFilter",
-                "diva/gui/ExtensionFileFilter-license.htm");
-
         _addIfClassPresent(copyrightsMap, "edu.umich.eecs.april.image.AprilTagFilter",
                 "edu/umich/eecs/april/april-license.htm");
 
@@ -994,8 +991,6 @@ public class GenerateCopyrights {
             { "BrowserLauncher", "Y", " ", "Y", "Y",
                     "Include the BrowserLauncher copyright" },
             { "DoubleUtilities", "Y", " ", "Y", "Y", "Apache License"},
-            { "ExtensionFileFilter", "Y", " ", "Y", "Y",
-                    "Include Oracle's copyright" },
             { "ExtensionFilenameFilter", "Y", " ", "Y", "Y", "Oracle" },
             { "JUnitParams", " ", " ", "Y", "Y", "Apache License" },
             { "javamail", " ", " ", "Y", " ",
