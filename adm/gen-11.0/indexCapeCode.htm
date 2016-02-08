@@ -1,0 +1,56 @@
+<html>
+<head>
+<title>CapeCode 1.0.devel</title>
+<link href="StyleSheet" rel="stylesheet" type="text/css">
+</head>
+<body>
+<center><h2>CapeCode 1.0.devel</h2></center>
+<table>
+  <tr>
+    <td width="200">
+      <img vspace="6" align="left" src="Installer.image"
+       alt="Cape Cod">
+    </td>
+    <td>
+
+<h3>CapeCode - IoT Modeling environment</h3>
+
+<p>Accessors, described in the paper, "A Vision of Swarmlets", are
+actors that provide access to a (typically remote) service, sensor, or
+actuator. An accessor is instantiated by an accessor host or swarmlet
+host, which is a program or browser script. The host uses the accessor
+as if it were a local source and/or sink for data and/or commands. An
+accessor host is to the Internet of Things what a browser is to the
+Internet. It renders a remote service by locally executing a proxy for
+that service.</p>
+
+<p>We are using the Ptolemy II modeling environment for its CapeCode
+subset. Ptolemy II provides a mechanism for importing accessors from a
+library and connecting them to each other and to library actors. The
+default library of actors is at http://terraswarm.org/accessors, but
+any directory or website that includes an index.json file that lists
+available accessors is a library. Ptolemy II has a graphical
+block-diagram editor called Vergil for composing accessors and
+building swarmlets. Swarmlets in this host can mix accessors with
+ordinary Ptolemy II actors.</p>
+
+<p>The CapeCode subset can be invoked by passing the command-line
+argument -capecode to vergil. This subset has the convenient feature
+that it automatically imports all the accessors at
+http://terraswarm.org/accessors and makes them available in an actor
+library to drag and drop into models.</p>
+
+    </td>
+  </tr>
+</table>
+
+
+<p>
+The work is conducted in the Department of Electrical Engineering and
+Computer Sciences of the University of California at Berkeley.  The
+project is directed by Prof. Edward A. Lee.  The project is named
+after Claudius Ptolemaeus the second century Greek astronomer,
+mathematician, and geographer.
+
+</body>
+</html>

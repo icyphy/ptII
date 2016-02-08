@@ -15,6 +15,7 @@
     <include name="doc/books/systems/vergil/vergil.jar" />
     <include name="doc/codeDoc.jar" />
     <include name="doc/codeDocBcvtb.jar" />
+    <include name="doc/codeDocCapeCode.jar" />
     <include name="doc/codeDocHyVisual.jar" />
     <include name="doc/codeDocViptos.jar" />
     <include name="doc/codeDocVisualSense.jar" />
@@ -4389,6 +4390,15 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="doc/codeDocBcvtb/**"/>
+      </fileset>
+    </jar>
+
+    <!-- doc/codeDocCapeCode.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/doc/codeDocCapeCode.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="doc/codeDocCapeCode/**"/>
       </fileset>
     </jar>
 

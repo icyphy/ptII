@@ -442,21 +442,31 @@ BCVTB_DOCS = \
 	codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
 	codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
 
-
-# Packages used by HyVisual
-HYVISUALPACKAGES = \
-	$(BCVTBPACKAGES) \
+# Packages used by CapeCode
+CAPECODEPACKAGES = \
+	$(APRILPACKAGES) \
+	$(COMPACKAGES) \
+	$(COREPACKAGES) \
 	$(PTCOLT_PACKAGES) \
-	ptolemy.domains.de.kernel \
-	ptolemy.domains.de.lib \
-	ptolemy.domains.sdf.optimize \
-	ptolemy.domains.sdf.optimize.lib
+	$(PTDATABASE_PACKAGES) \
+	$(PTGDP_PACKAGES) \
+	$(PTJAVA18_PACKAGES) \
+	$(PTJAVAMAIL_PACKAGES) \
+	$(PTJSON_PACKAGES) \
+	$(PTJSOUP_PACKAGE) \
+	$(PTMACHINE_LEARNING_PACKAGES) \
+	$(PTPAHO_MQTT_PACKAGES) \
+	$(PTRXTX_PACKAGES) \
+	$(PTVERTX_PACKAGES) \
+	$(PTWEBCAMCAPTURE_PACKAGES) \
+	$(PTXBJLIB_PACKAGES) \
+	$(TERRASWARMPACKAGES)
 
-# All the HyVisual generated documentation
-HYVISUAL_DOCS = \
-	codeDocHyVisual/doc/codeDoc/tree.html \
-	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
-	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
+# All the CapeCode generated documentation
+CAPECODE_DOCS = \
+	codeDocCapeCode/doc/codeDoc/tree.html \
+	codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
+	codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
 
 PTMACHINE_LEARNING_PACKAGES = \
 	com.cureos.numerics \
@@ -704,6 +714,7 @@ FULL_DOCS = \
 KRUFT = \
 	codeDoc \
 	codeDocBcvtb \
+	codeDocCapeCode \
 	codeDocHyVisual \
 	codeDocVisualSense \
 	codeDocViptos \
@@ -1043,6 +1054,55 @@ codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocBcvtb/doc/codeDoc
 		$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
 		../ptolemy/configs/bcvtb/intro.htm
 	(cd ../ptolemy/configs/bcvtb; make bcvtbModels.txt)
+
+#############################################################################
+# CapeCode
+
+capecode_docs: $(CAPECODE_DOCS)
+
+# Note that we change into the codeDocCapeCode directory
+# so that the jar file is created with a subset of the full set of docs
+# so that we can use this smaller jar file instead of the full codeDoc.jar
+codeDocCapeCode.jar: $(CAPECODE_DOCS)
+	"$(JAR)" -cvf $@ -C $(ROOT)/doc/codeDocCapeCode doc/codeDoc
+
+# We do something crafty here and create a tree of html files
+# that we can substitute in for the usual doc/codeDoc tree in the
+# CapeCode webstart
+codeDocCapeCode/doc/codeDoc/tree.html:
+	if [ ! -d codeDocCapeCode ]; then mkdir -p codeDocCapeCode; fi
+	@echo "If this fails because of memory problems, try"
+	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m"'
+	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocCapeCode/doc/codeDoc $(CAPECODEPACKAGES) $(COREPACKAGES) )
+
+# Rules to build for CapeCode
+codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
+	-(cd ..; CLASSPATH="$(CLASSPATH)" \
+		"$(JAVADOC)" -J-Xmx1500m \
+			-d doc/codeDocCapeCode/doc/codeDoc \
+			$(PTDOCLET) \
+			$(CAPECODEPACKAGES) )
+
+# All the namedObjs for which we have documentation.
+codeDocCapeCode/doc/codeDoc/allNamedObjs.txt: \
+		codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/Ramp.xml
+
+# Build the index of actors 
+codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocCapeCode/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/capecode/capecodeModels.txt
+	@echo "# Create the actor index."  
+	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
+	"$(JAVA)" -Xmx1500m \
+	        -Dptolemy.ptII.batchMode=true \
+		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
+		ptolemy.moml.filter.ActorIndex \
+		codeDocCapeCode/doc/codeDoc/allNamedObjs.txt \
+		"../ptolemy/configs/capecode/capecodeModels.txt" \
+		codeDocCapeCode/doc/codeDoc
+
+../ptolemy/configs/capecode/capecodeModels.txt: \
+		$(ROOT)/ptolemy/actor/gui/HTMLAbout.class \
+		../ptolemy/configs/capecode/intro.htm
+	(cd ../ptolemy/configs/capecode; make capecodeModels.txt)
 
 #############################################################################
 # HyVisual
