@@ -40,8 +40,6 @@ import javax.crypto.Cipher;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 
-import org.python.google.common.primitives.Bytes;
-
 import ptolemy.actor.TypedAtomicActor;
 
 import ptolemy.actor.TypedIOPort;
@@ -251,11 +249,12 @@ public class SymmetricCrypto extends TypedAtomicActor {
                     
                     if (_messageDigest != null) {
                         byte[] digestedBytes = _messageDigest.digest(dataBytes);
-                        dataBytes = Bytes.concat(dataBytes, digestedBytes);
+                        
+                        dataBytes = _concatByteArrays(dataBytes, digestedBytes);
                     }
                     
                     dataBytes = _process(dataBytes);
-                    byte[] outputBytes = Bytes.concat(initVector, dataBytes);
+                    byte[] outputBytes = _concatByteArrays(initVector, dataBytes);
                     output.send(0,
                             ArrayToken.unsignedByteArrayToArrayToken(outputBytes));
                 }
@@ -403,5 +402,11 @@ public class SymmetricCrypto extends TypedAtomicActor {
             throw new IllegalActionException(this, e,
                     "Failed to initialize crypto");
         }
+    }
+    
+    private byte[] _concatByteArrays(byte[] firstArray, byte[] secondArray) {
+        byte[] resultArray = Arrays.copyOf(firstArray, firstArray.length + secondArray.length);
+        System.arraycopy(secondArray, 0, resultArray, firstArray.length, secondArray.length);
+        return resultArray;
     }
 }
