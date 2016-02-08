@@ -30,6 +30,7 @@ package ptolemy.actor.lib.security;
 import java.io.ByteArrayOutputStream;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import javax.crypto.spec.SecretKeySpec;
@@ -63,7 +64,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  @author Hokeun Kim
  @version $Id$
- @since Ptolemy II 4.0
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Green (hokeunkim)
  @Pt.AcceptedRating Yellow (hokeunkim)
  */
@@ -86,6 +87,9 @@ public class SymmetricCrypto extends TypedAtomicActor {
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
+        error = new TypedIOPort(this, "error", false, true);
+        error.setTypeEquals(BaseType.STRING);
+
         operationMode = new StringParameter(this, "operationMode");
         operationMode.addChoice("encrypt");
         operationMode.addChoice("decrypt");
@@ -105,8 +109,15 @@ public class SymmetricCrypto extends TypedAtomicActor {
         padding.addChoice("NoPadding");
         padding.addChoice("PKCS5Padding");
         padding.setExpression("PKCS5Padding");
-        key = new PortParameter(this, "key");
+
+        macAlgorithm = new StringParameter(this, "macAlgorithm");
+        macAlgorithm.addChoice("None");
+        macAlgorithm.addChoice("MD5");
+        macAlgorithm.addChoice("SHA-1");
+        macAlgorithm.addChoice("SHA-256");
+        macAlgorithm.setExpression("SHA-256");
         
+        key = new PortParameter(this, "key");
         key.setExpression("{0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub}");
         key.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
     }
@@ -134,6 +145,11 @@ public class SymmetricCrypto extends TypedAtomicActor {
      */
     public StringParameter padding;
     
+    /** The secure hash algorithm for message authentication code (MAC)
+     *  to be used for this actor.
+     */
+    public StringParameter macAlgorithm;
+    
     /** The input data (for encrypt mode) or encrypted data (for decrypt mode)
      */
     public TypedIOPort input;
@@ -141,9 +157,48 @@ public class SymmetricCrypto extends TypedAtomicActor {
     /** The encrypted data (for encrypt mode) or decrypted data (for decrypt mode)
      */
     public TypedIOPort output;
+    
+    /** The error (e.g. integrity check error for MAC)
+     */
+    public TypedIOPort error;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Override the base class to reinitialize the state if
+     *  the <i>operationMode</i>, <i>algorithm</i>, <i>cipherMode</i>, or <i>padding</i>
+     *  parameter is changed.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    @Override
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == operationMode) {
+            String modeString = ((StringToken) operationMode.getToken()).stringValue();
+            if (modeString.equals("encrypt")) {
+                _isEncryption = true;
+            }
+            else {
+                _isEncryption = false;
+            }
+        }
+        else if (attribute == algorithm) {
+            _algorithm = ((StringToken) algorithm.getToken()).stringValue();
+        }
+        else if (attribute == cipherMode) {
+            _cipherMode = ((StringToken) cipherMode.getToken()).stringValue();
+        }
+        else if (attribute == padding) {
+            _padding = ((StringToken) padding.getToken()).stringValue();
+        }
+        else if (attribute == macAlgorithm) {
+            _macAlgorithm = ((StringToken) macAlgorithm.getToken()).stringValue();
+        }
+        else {
+            super.attributeChanged(attribute);
+        }
+    }
 
     /** If there is a token on the <i>input</i> port, this method takes the
      *  data from the <i>input</i> and encrypts the data based on the
@@ -193,6 +248,12 @@ public class SymmetricCrypto extends TypedAtomicActor {
                 if (input.hasToken(0)) {
                     byte[] dataBytes = ArrayToken
                             .arrayTokenToUnsignedByteArray((ArrayToken) input.get(0));
+                    
+                    if (_messageDigest != null) {
+                        byte[] digestedBytes = _messageDigest.digest(dataBytes);
+                        dataBytes = Bytes.concat(dataBytes, digestedBytes);
+                    }
+                    
                     dataBytes = _process(dataBytes);
                     byte[] outputBytes = Bytes.concat(initVector, dataBytes);
                     output.send(0,
@@ -222,41 +283,56 @@ public class SymmetricCrypto extends TypedAtomicActor {
                 super.fire(); // super.fire() will print out debugging messages.
                 
                 byte[] decryptedBytes = _process(encryptedBytes);
-                output.send(0,
-                        ArrayToken.unsignedByteArrayToArrayToken(decryptedBytes));
+
+                if (_messageDigest == null) {
+                    output.send(0,
+                            ArrayToken.unsignedByteArrayToArrayToken(decryptedBytes));
+                }
+                else {
+                    if (decryptedBytes.length < _messageDigest.getDigestLength()) {
+                        error.send(0, new StringToken("Decrypted message is shorter than MAC"));
+                    }
+                    else {
+                        byte[] dataBytes = Arrays.copyOfRange(decryptedBytes, 0,
+                                decryptedBytes.length - _messageDigest.getDigestLength());
+                        byte[] receivedDigestBytes = Arrays.copyOfRange(decryptedBytes,
+                                decryptedBytes.length - _messageDigest.getDigestLength(),
+                                decryptedBytes.length);
+                        byte[] digestedBytes = _messageDigest.digest(dataBytes);
+                        if (Arrays.equals(receivedDigestBytes, digestedBytes)) {
+                            output.send(0,
+                                    ArrayToken.unsignedByteArrayToArrayToken(dataBytes));
+                        }
+                        else {
+                            error.send(0, new StringToken("Data integrity error, MAC doesn't match"));
+                        }
+                    }
+                }
+                
             }
         }
     }
-
-    /** Override the base class to reinitialize the state if
-     *  the <i>operationMode</i>, <i>algorithm</i>, <i>cipherMode</i>, or <i>padding</i>
-     *  parameter is changed.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException Not thrown in this base class.
+    
+    /** Override the base class to initialize the index.
+     *  @exception IllegalActionException If the parent class throws it,
+     *   or if the <i>values</i> parameter is not a row vector, or if the
+     *   fireAt() method of the director throws it, or if the director does not
+     *   agree to fire the actor at the specified time.
      */
     @Override
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == operationMode) {
-            String modeString = ((StringToken) operationMode.getToken()).stringValue();
-            if (modeString.equals("encrypt")) {
-                _isEncryption = true;
-            }
-            else {
-                _isEncryption = false;
-            }
-        }
-        else if (attribute == algorithm) {
-            _algorithm = ((StringToken) algorithm.getToken()).stringValue();
-        }
-        else if (attribute == cipherMode) {
-            _cipherMode = ((StringToken) cipherMode.getToken()).stringValue();
-        }
-        else if (attribute == padding) {
-            _padding = ((StringToken) padding.getToken()).stringValue();
+    public synchronized void initialize() throws IllegalActionException {
+        super.initialize();
+        if (_macAlgorithm.equals("None")) {
+            _messageDigest = null;
         }
         else {
-            super.attributeChanged(attribute);
+            try {
+                _messageDigest = MessageDigest.getInstance(_macAlgorithm);
+            }
+            catch (NoSuchAlgorithmException e) {
+                throw new IllegalActionException(this, e,
+                        "Failed to initialize messageDigest");
+            }
         }
     }
 
@@ -272,6 +348,11 @@ public class SymmetricCrypto extends TypedAtomicActor {
     private String _cipherMode;
     /** The name of the padding to be used. */
     private String _padding;
+    /** The name of the MAC algorithm to be used. */
+    private String _macAlgorithm;
+    /** The message authentication code (MAC) object that will be used to process the data.
+     */
+    private MessageDigest _messageDigest;
     /** Whether encrypt or decrypt the input data. */
     private boolean _isEncryption;
     

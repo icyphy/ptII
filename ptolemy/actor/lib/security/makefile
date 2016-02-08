@@ -58,6 +58,7 @@ JSRCS = \
 	PublicKeyReader.java \
 	SecretKey.java \
 	SecretKeyReader.java \
+	SecureHash.java \
 	SignatureActor.java \
 	SignatureSigner.java \
 	SignatureVerifier.java \
@@ -66,7 +67,9 @@ JSRCS = \
 	SymmetricEncryption.java
 
 OTHER_FILES_TO_BE_JARED = \
-	security.xml
+	SecureHashIcon.xml \
+	security.xml \
+	SymmetricCryptoIcon.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
