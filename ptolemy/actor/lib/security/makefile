@@ -36,7 +36,8 @@ DIRS =		demo doc test
 # Root of the Java directory
 ROOT =          ../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
+# SymmetricCrypto uses org.python.google.common.primitives.Bytes, which is in $PTII/lib/jython.jar
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JYTHON_DIR)/jython.jar
 
 # Get configuration info
 CONFIG =        $(ROOT)/mk/ptII.mk
@@ -58,7 +59,6 @@ JSRCS = \
 	PublicKeyReader.java \
 	SecretKey.java \
 	SecretKeyReader.java \
-	SecureHash.java \
 	SignatureActor.java \
 	SignatureSigner.java \
 	SignatureVerifier.java \
@@ -67,9 +67,7 @@ JSRCS = \
 	SymmetricEncryption.java
 
 OTHER_FILES_TO_BE_JARED = \
-	SecureHashIcon.xml \
-	security.xml \
-	SymmetricCryptoIcon.xml
+	security.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
