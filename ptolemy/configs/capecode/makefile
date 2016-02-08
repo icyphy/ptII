@@ -96,5 +96,13 @@ all: jclass $(DERIVED_FILES)
 install: all jars
 	@echo "nothing need be done for make install in this directory"
 
+# capecodeModels.txt contains a list of model file names
+capecodeModels.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class demonstrations.htm makefile
+	"$(JAVA)" "-Dptolemy.ptII.dir=$(PTII)" \
+		-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(COMPLETE_CLASSPATH)" \
+		ptolemy.actor.gui.HTMLAbout demonstrations.htm $@
+	LC_ALL=C sort -f $@  > $@.sorted
+	mv $@.sorted $@
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
