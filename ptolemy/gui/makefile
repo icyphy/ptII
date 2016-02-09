@@ -76,7 +76,7 @@ JSRCS = \
 	UndeferredGraphicalMessageHandler.java \
 	UndoListener.java
 
-OTHER_FILES_TO_BE_JARED = ExtensionFilenameFilter-license.htm
+OTHER_FILES_TO_BE_JARED =
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
