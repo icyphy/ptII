@@ -28,7 +28,7 @@
  * Module to access audio hardware on the host.
  * NOTE: This is very incomplete! Just a placeholder for now.
  * @module audio
- * @authors Edward A. Lee
+ * @author Edward A. Lee
  */
  
 // Stop extra messages from jslint.  Note that there should be no

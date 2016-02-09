@@ -138,7 +138,7 @@
  * lightGray, magenta, orange, pink, red, white, and yellow.
  * 
  * @module imageFilters
- * @authors Edward A. Lee
+ * @author Edward A. Lee
  * @version $$Id$$
  */
 
@@ -186,11 +186,11 @@ exports.filter = function(image, filterName, options) {
         var Filter = null;
         try {
             Filter = Java.type(root + filterName + 'Filter');
-        } catch(ex) {
+        } catch (ex) {
             // Try alternative location.
             try {
                 Filter = Java.type(root + 'svg.' + filterName + 'Filter');
-            } catch(ex2) {
+            } catch (ex2) {
                 throw new Error('Cannot find filter: ' + filterName);
                 return image;
             }

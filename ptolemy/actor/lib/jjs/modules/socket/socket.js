@@ -57,7 +57,7 @@
  * bytes will represent the length of the message. The message then follows these bytes.
  *
  * @module socket
- * @authors Edward A. Lee
+ * @author Edward A. Lee
  * @version $$Id$$
  */
 

@@ -477,7 +477,7 @@ function Entity(name) {
      * @function
      * @returns {object} Hash mapping placement keys to placements.
      */
-    this.getPlacements = function(){
+    this.getPlacements = function() {
     	return this.placements;
     };
 
@@ -486,7 +486,7 @@ function Entity(name) {
      * @function
      * @returns {string} Name of this entity.
      */
-    this.getName = function(){
+    this.getName = function() {
     	return this.name;
     };
 
@@ -771,8 +771,8 @@ function Map(mapName, spaceType, coordinateSystem) {
      * @param {number} width - The pixel height of the image.
      * @returns {string} An SVG image displaying the contents of the map.
      */
-    this.mapEntitiesToSVG = function(width, height){
-        if(  ! ((typeof width === "number") && (typeof height === "number") ) ){
+    this.mapEntitiesToSVG = function(width, height) {
+        if ( ! ((typeof width === "number") && (typeof height === "number") ) ) {
     	    throw "Incorrect arguments to mapEntitiesToSVG";
         }
 
@@ -797,7 +797,7 @@ function Map(mapName, spaceType, coordinateSystem) {
         console.log(this.mapEntities);
 
         //SVG content
-        for( var eKey in this.mapEntities){
+        for ( var eKey in this.mapEntities) {
     	    var e = entities[eKey];
     	    var placements = e.getPlacements();
 
@@ -805,13 +805,13 @@ function Map(mapName, spaceType, coordinateSystem) {
     	    console.log("e is:" + e);
     	    console.log("placements is:" + placements);
     	    console.log("placement properties:" + Object.getOwnPropertyNames(e.getPlacements));
-    	    for( var pKey in placements){
+    	    for ( var pKey in placements) {
     		var p = placements[pKey];
     		console.log("P is:" + p);
     		var center = p.getCenter();
     		//Only consider 2D coordinates
     		console.log("center is" + center);
-    		if(center.length == 2 ){
+    		if (center.length == 2 ) {
 
     		    //TODO fix this! This is wildly incorrect because of different coord systems for svg
     		    //I'm just doing it now for testing.
@@ -954,7 +954,7 @@ function Placement(metadata, center, pose, shape ) {
      * @function
      * @returns {array} The coordinate position describing the center of this entity.
      */
-    this.getCenter = function(){
+    this.getCenter = function() {
     	return this.center;
     };
 }

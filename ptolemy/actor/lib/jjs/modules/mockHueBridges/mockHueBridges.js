@@ -76,7 +76,7 @@ var MockHueBridgeHelper = Java.type('ptolemy.actor.lib.jjs.modules.mockHueBridge
  *  </ul>
  */
 
-exports.MockHueBridge = (function(){
+exports.MockHueBridge = (function() {
 	var helper = MockHueBridgeHelper.getInstance();
 
 	// Error message for unauthorized user.  Address will be updated.
@@ -216,7 +216,7 @@ exports.MockHueBridge = (function(){
       	  console.log("Executing method " + method + ", command " + URIpath);
       	  
       	  if ((method == "POST" || method == "PUT") &&
-                URIpath.match(expression1)){
+                URIpath.match(expression1)) {
       		// POST or PUT /api/<username>/lights/<id>/state/
       		  lightID = findLightID(URIpath);
       		  
@@ -356,10 +356,10 @@ exports.MockHueBridge = (function(){
      		// Check if a username is present.  If URI does not have a username, this
      		// operation is valid for all users, so return true.
      		var expression = new RegExp('/api/.+');
-     		if (URIpath.match(expression)){
+     		if (URIpath.match(expression)) {
      			URIpath = URIpath.substring(5, URIpath.length);
      			var slash = URIpath.indexOf('/');
-     			if (slash === -1){
+     			if (slash === -1) {
      				slash = URIpath.length;
      			}
      			var username = URIpath.substring(0, slash);

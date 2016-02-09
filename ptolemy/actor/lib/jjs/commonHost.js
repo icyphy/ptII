@@ -180,8 +180,8 @@
  *
  *
  *  @module commonHost
- *  @authors: Edward A. Lee and Chris Shaver
- *  @version: $$Id$$
+ *  @author Edward A. Lee and Chris Shaver
+ *  @version $$Id$$
  */
 
 // Stop extra messages from jslint and jshint.  Note that there should be no
@@ -275,7 +275,7 @@ function Accessor(
     
     this.bindings = bindings;
 
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// Override using specified bindings.
 
     // Any property defined in the bindings argument overrides prototype functions
@@ -347,7 +347,7 @@ function Accessor(
     this.ssuper = null;
     this.exports.ssuper = null;
     
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// Evaluate the accessor code.
 
     // In strict mode, eval() cannot modify the scope of this function.
@@ -380,7 +380,7 @@ function Accessor(
     // Record the instance indexed by its exports property.
     _accessorInstanceTable[this.exports] = this;
 
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// Set up the prototype chain and ssuper properties.
     
     // By default, the root property is this instance.
@@ -417,14 +417,14 @@ function Accessor(
         implementedBy.implementedInterfaces.push(this);
     }
 
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// Evaluate the setup() function to populate the data structures.
         
     if (typeof this.exports.setup === 'function') {
         this.exports.setup.call(this);
     }
         
-    ////////////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// Provide wrapper functions for initialize(), fire(), and wrapup().
 
     if (!extendedBy && !implementedBy) {
@@ -853,7 +853,7 @@ function convertType(value, destination, name) {
         // JSON representation.
         try {
             JSON.stringify(value);
-        } catch(err) {
+        } catch (err) {
             throw('Object provided to ' +
                     name +
                     ' does not have a JSON representation: ' +
@@ -1497,7 +1497,7 @@ Accessor.prototype.setParameter = function(name, value) {
     parameter.currentValue = value;
 };
 
-////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Module variables.
 
 /** Table of accessor instances indexed by their exports property.
@@ -1508,7 +1508,7 @@ Accessor.prototype.setParameter = function(name, value) {
  */
 var _accessorInstanceTable = {};
 
-////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Exports
 
 exports.Accessor = Accessor;
