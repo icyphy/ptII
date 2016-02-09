@@ -704,10 +704,7 @@ public class JavaScript extends TypedAtomicActor {
      *  had a new token on any channel and for which there is a
      *  handler function bound to that port via the addInputHandler()
      *  method, invoke that function.  Such a function will be invoked
-     *  in the following order: First, invoke the functions for each
-     *  PortParameter, in the order in which the PortParameters were
-     *  created.  Then invoke the functions for the ordinary input
-     *  ports.</li>
+     *  in the order that the inputs are defined in the accessor.</li>
      *
      *  <li> Next, if the current script has a fire() function, then
      *  invoke it.</li>
@@ -2762,9 +2759,6 @@ public class JavaScript extends TypedAtomicActor {
 
         /////////////////////////////////////////////////////////////////
         ////           Protected variables
-
-        /** A list of input handlers, in the order in which they are invoked. */
-        protected List<Runnable> _inputHandlers;
 
         /** A list of tokens that this JavaScript actor has sent to its own input. */
         protected List<Token> _localInputTokens;

@@ -205,7 +205,13 @@ public class SocketHelper extends VertxHelperBase {
 
                     // This needs to be called immediately, not deferred to the director thread,
                     // because it issues an "open" event that may be used to set up listeners.
-                    socketClient.callMember("_opened", socket, client);
+                    // However, we have to hold a lock on the actor when we call it because
+                    // it may drain pending messages that have been queued in an input handler,
+                    // and we have to ensure that the input handler doesn't get invoked while
+                    // we are halfway through draining it.
+                    synchronized(_actor) {
+                        socketClient.callMember("_opened", socket, client);
+                    }
                 } else {
                     Throwable cause = response.cause();
                     String errorMessage = "Failed to connect: " + cause.getMessage();
@@ -576,11 +582,19 @@ public class SocketHelper extends VertxHelperBase {
             }
 
             // System.out.println("registering _socket.handler");
+            
             // Set up handlers for data, errors, etc.
             // Here we are assuming we are in the verticle thread, so we don't call submit().
-            // FIXME: Check this somehow?
             _socket.closeHandler((Void) -> {
-                _eventEmitter.callMember("emit", "close");
+                synchronized(SocketWrapper.this) {
+                    if (_closed) {
+                        // Nothing to do. Socket is already closed.
+                        return;
+                    }
+                    _eventEmitter.callMember("emit", "close");
+                    _eventEmitter.callMember("removeAllListeners");
+                    _closed = true;
+                }
             });
             _socket.drainHandler((Void) -> {
                 synchronized(SocketWrapper.this) {
@@ -596,15 +610,22 @@ public class SocketHelper extends VertxHelperBase {
                 _processBuffer(buffer);
             });
         }
-        /** Close the socket.
+        /** Close the socket and remove all event listeners on the associated
+         *  event emitter. This will be done asynchronously in the vertx thread.
          */
         public void close() {
             submit(() -> {
-                _socket.close();
+                synchronized(SocketWrapper.this) {
+                    if (_closed) {
+                        // Nothing to do. Socket is already closed.
+                        return;
+                    }
+                    _socket.close();
+                    _eventEmitter.callMember("emit", "close");
+                    _eventEmitter.callMember("removeAllListeners");
+                    _closed = true;
+                }
             });
-            synchronized(SocketWrapper.this) {
-                _closed = true;
-            }
         }
         /** Send data over the socket.
          *  @param data The data to send.
