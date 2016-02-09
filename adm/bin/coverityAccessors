@@ -3,6 +3,9 @@
 
 cd $PTII
 
+rm -rf reports/accessors/cov-int
+mkdir reports/accessors/cov-int
+
 # Use --fs-capture-search so that we get JavaScript and Java.  See https://scan.coverity.com/download?tab=other
 /home/hudson/src/cov-analysis-linux64/bin/cov-build --dir reports/accessors/cov-int --no-command --fs-capture-search org/terraswarm/accessor/accessors/web
 
