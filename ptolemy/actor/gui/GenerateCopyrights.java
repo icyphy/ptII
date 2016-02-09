@@ -318,9 +318,6 @@ public class GenerateCopyrights {
         _addIfClassPresent(copyrightsMap, "ptolemy.graph.Element",
                 "ptolemy/graph/graph-license.htm");
 
-        _addIfClassPresent(copyrightsMap, "ptolemy.gui.ExtensionFilenameFilter",
-                "ptolemy/gui/ExtensionFilenameFilter-license.htm");
-
         _addIfClassPresent(copyrightsMap,
                 "ptolemy.homer.widgets.ResizableImageWidget",
                 "ptolemy/homer/widgets/ResizableImageWidget-license.htm");
@@ -991,7 +988,6 @@ public class GenerateCopyrights {
             { "BrowserLauncher", "Y", " ", "Y", "Y",
                     "Include the BrowserLauncher copyright" },
             { "DoubleUtilities", "Y", " ", "Y", "Y", "Apache License"},
-            { "ExtensionFilenameFilter", "Y", " ", "Y", "Y", "Oracle" },
             { "JUnitParams", " ", " ", "Y", "Y", "Apache License" },
             { "javamail", " ", " ", "Y", " ",
                     "CDDL + GPLv2 with Classpath exception" },
