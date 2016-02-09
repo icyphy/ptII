@@ -33,7 +33,7 @@
  * of MIME types supported for sending or receiving messages.
  *
  * @module webSocket
- * @authors Hokeun Kim and Edward A. Lee
+ * @author Hokeun Kim and Edward A. Lee
  */
 
 // Stop extra messages from jslint.  Note that there should be no
@@ -195,7 +195,7 @@ exports.Client.prototype._notifyIncoming = function(message) {
     if (this.receiveType == 'application/json') {
         try {
             message = JSON.parse(message);
-        } catch(error) {
+        } catch (error) {
             this.emit('error', error);
             return;
         }
@@ -339,7 +339,7 @@ exports.Socket.prototype._notifyIncoming = function(message) {
     if (this.receiveType == 'application/json') {
         try {
             message = JSON.parse(message);
-        } catch(error) {
+        } catch (error) {
             this.emit('error', error);
             return;
         }

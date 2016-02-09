@@ -28,7 +28,7 @@
 /**
  * Module supporting shell commands.
  * @module shell
- * @authors Armin Wasicek
+ * @author Armin Wasicek
  * @version $$Id$$
  */
 

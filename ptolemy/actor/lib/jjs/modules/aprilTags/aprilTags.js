@@ -43,7 +43,7 @@ For details about the C version, see
 https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 
 @module aprilTags
-@authors Edward A. Lee
+@author Edward A. Lee
  */
  
 // Stop extra messages from jslint.  Note that there should be no

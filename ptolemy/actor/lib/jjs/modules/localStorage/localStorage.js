@@ -29,7 +29,7 @@
  * Has the same interface as the node-persist (https://github.com/simonlast/node-persist),
  * except for values(callback) and fine-grained control functions (e.g. persist()).
  * @module localStorage
- * @authors Hokeun Kim
+ * @author Hokeun Kim
  * @version $$Id$$
  */
 

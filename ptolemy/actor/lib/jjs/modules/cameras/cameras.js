@@ -32,7 +32,7 @@
  *    https://github.com/sarxos/webcam-capture
  *
  * @module camera
- * @authors Edward A. Lee
+ * @author Edward A. Lee
  */
  
 // Stop extra messages from jslint.  Note that there should be no

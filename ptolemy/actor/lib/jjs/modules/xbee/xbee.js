@@ -132,7 +132,7 @@ exports.supportedSendTypes = function() {
  *  @param portName The name of the port to open.
  *  @param options The options.
  *  @return An XBee interface.
- *  @throws If the port is in use or initializing the port fails.
+ *  @exception If the port is in use or initializing the port fails.
  */
 exports.XBee = function(portName, options) {
     // Fill in default values.

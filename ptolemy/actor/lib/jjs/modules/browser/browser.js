@@ -28,7 +28,7 @@
  * Module to use the default browser as a display and a GUI.
  * NOTE: This is very incomplete! Just a placeholder for now.
  * @module browser
- * @authors Edward A. Lee
+ * @author Edward A. Lee
  * @version $$Id$$
  */
 
