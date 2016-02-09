@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2014-2015 The Regents of the University of California.
+// Copyright (c) 2014-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -38,23 +38,24 @@
 "use strict";
 
 
-module.exports.createClient = function(port, host, opts) {
+module.exports.createClient = function (port, host, opts) {
     return new Client(port, host, opts);
 };
 
 ////////////////////
 // Convert data fromat from binary array to string.
-module.exports.binToStr = function(data) {
-   var result = "";
-  for (var i = 0; i < data.length; i++) {
-    result += String.fromCharCode(data[i]);
-  }
-  return result;
+module.exports.binToStr = function (data) {
+    var result = "";
+    for (var i = 0; i < data.length; i++) {
+        result += String.fromCharCode(data[i]);
+    }
+    return result;
 };
 
 ////////////////////
 // Construct an instance of an MQTT client.
 var events = require('events');
+
 function Client(port, host, opts) {
     if (typeof port != 'number') {
         opts = host;
@@ -66,7 +67,7 @@ function Client(port, host, opts) {
         host = 'localhost';
     }
     if (!opts) {
-        opts ={};
+        opts = {};
     }
 
     var MqtttHelper = Java.type('ptolemy.actor.lib.jjs.modules.mqtt.MqttHelper');
@@ -94,22 +95,25 @@ util.inherits(Client, events.EventEmitter);
 // A property for whether the client is connected to a broker server.
 Object.defineProperties(Client.prototype, {
     connected: {
-        get: function() { return this.javaClient.isConnected(); }
+        get: function () {
+            return this.javaClient.isConnected();
+        }
     }
 });
 
 ////////////////////
 // Subscribe a topic using the given maximum QoS level. Start getting messages on the topic.
-Client.prototype.subscribe = function(topic, opts) {
+Client.prototype.subscribe = function (topic, opts) {
     if (!opts) {
-        opts = {qos: 0};
+        opts = {
+            qos: 0
+        };
     }
 
     var qos;
     if (opts.qos) {
         qos = opts.qos;
-    }
-    else {
+    } else {
         qos = 0;
     }
 
@@ -117,34 +121,35 @@ Client.prototype.subscribe = function(topic, opts) {
 };
 
 /** Start connection between the client and the broker server. */
-Client.prototype.start = function() {
+Client.prototype.start = function () {
     this.javaClient.start();
 };
 
 /** Unsubscribe a topic. Stop getting messages on the topic. */
-Client.prototype.unsubscribe = function(topic) {
+Client.prototype.unsubscribe = function (topic) {
     this.javaClient.unsubscribe(topic);
 };
 
 /** Publish an MQTT message to subscribers listening to the topic. */
-Client.prototype.publish = function(topic, message, opts, callback) {
+Client.prototype.publish = function (topic, message, opts, callback) {
     if (!opts) {
-        opts = {qos: 0, retain: false};
+        opts = {
+            qos: 0,
+            retain: false
+        };
     }
 
     var qos;
     if (opts.qos) {
         qos = opts.qos;
-    }
-    else {
+    } else {
         qos = 0;
     }
 
     var retain;
     if (opts.retain) {
         retain = opts.retain;
-    }
-    else {
+    } else {
         retain = false;
     }
 
@@ -152,7 +157,6 @@ Client.prototype.publish = function(topic, message, opts, callback) {
 };
 
 /** Disconnect from the broker server and close (i.e. return all allocated resources of) the client. */
-Client.prototype.end = function() {
+Client.prototype.end = function () {
     this.javaClient.end();
 };
-

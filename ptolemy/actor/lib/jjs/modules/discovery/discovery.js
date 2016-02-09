@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -64,8 +64,7 @@
 var EventEmitter = require("events").EventEmitter;
 
 // Use a helper classs to execute the ping and arp commands on the host
-var DiscoveryHelper = Java.type
-    ('ptolemy.actor.lib.jjs.modules.discovery.DiscoveryHelper');
+var DiscoveryHelper = Java.type('ptolemy.actor.lib.jjs.modules.discovery.DiscoveryHelper');
 
 exports.DiscoveryService = DiscoveryService;
 
@@ -74,37 +73,35 @@ exports.DiscoveryService = DiscoveryService;
  *  request.  Emits an event once device polling is complete.
  */
 function DiscoveryService() {
-	EventEmitter.call(this);
-	var self = this;
-	var helper = new DiscoveryHelper();
-	
-	/** Discover devices on the local area network.
-	 * 
-	 * @param IPAddress The IP address of the host machine.
-	 * @param discoveryMethod  Optional. The discovery method to use, e.g. nmap.
-	 */
-	this.discoverDevices = function(IPAddress, discoveryMethod) {
-		
-		var devices;
-		if (typeof discoveryMethod !== 'undefined') {
-			devices = helper.discoverDevices(IPAddress, discoveryMethod);
-		} else {
-			devices = helper.discoverDevices(IPAddress, "ping");
-		}
-		
-		// Use JSON.parse() here, since discoverDevices() returns a string
-		// representation of a JSON array.  Problems occurred if a JSONArray 
-		// object was directly returned instead of a string.
-		self.emit('discovered', JSON.parse(devices));
-	};
-	
-	this.getHostAddress = function() {
-		return helper.getHostAddress();
-	};
+    EventEmitter.call(this);
+    var self = this;
+    var helper = new DiscoveryHelper();
+
+    /** Discover devices on the local area network.
+     * 
+     * @param IPAddress The IP address of the host machine.
+     * @param discoveryMethod  Optional. The discovery method to use, e.g. nmap.
+     */
+    this.discoverDevices = function (IPAddress, discoveryMethod) {
+
+        var devices;
+        if (typeof discoveryMethod !== 'undefined') {
+            devices = helper.discoverDevices(IPAddress, discoveryMethod);
+        } else {
+            devices = helper.discoverDevices(IPAddress, "ping");
+        }
+
+        // Use JSON.parse() here, since discoverDevices() returns a string
+        // representation of a JSON array.  Problems occurred if a JSONArray 
+        // object was directly returned instead of a string.
+        self.emit('discovered', JSON.parse(devices));
+    };
+
+    this.getHostAddress = function () {
+        return helper.getHostAddress();
+    };
 }
 //DiscoveryService emits events.  See:
 //http://smalljs.org/object/events/event-emitter/
 //http://www.sitepoint.com/nodejs-events-and-eventemitter/
 DiscoveryService.prototype = new EventEmitter();
-
-

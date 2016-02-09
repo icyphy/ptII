@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -48,8 +48,8 @@ var helper = null;
  *  event <i>'message'</i>.
  *  @param options A javascript object specifying the options for the invocation.
  */
-exports.Shell = function(options) {
-	helper = ShellHelper.createShell(this, options.cmd);
+exports.Shell = function (options) {
+    helper = ShellHelper.createShell(this, options.cmd);
 };
 util.inherits(exports.Shell, EventEmitter);
 
@@ -57,24 +57,22 @@ util.inherits(exports.Shell, EventEmitter);
 /** Wraps the write function to send input to the process' stdin.
  *  @param data The input data to be sent to stdin.
  */
-exports.Shell.prototype.write = function(data) {
-	if (helper)  {
-		helper.write(data);
-	}
+exports.Shell.prototype.write = function (data) {
+    if (helper) {
+        helper.write(data);
+    }
 };
 
 /** Starts up the process to execute the command. Call after all callbacks have 
  *  been registered.
  */
 exports.Shell.prototype.start = function () {
-	helper.start();
+    helper.start();
 };
 
 /** Wrap up the execution. Terminate the process and the reader thread and clean 
  *  up.
  */
-exports.Shell.prototype.wrapup = function()  {
-	helper.wrapup();
+exports.Shell.prototype.wrapup = function () {
+    helper.wrapup();
 };
-
-

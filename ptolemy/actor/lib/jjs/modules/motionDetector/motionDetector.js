@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -46,7 +46,7 @@
 /*globals exports, Java */
 /*jshint globalstrict: true */
 "use strict";
- 
+
 ////////////////////////////////////////////////////////////
 //// Private variables.
 
@@ -68,7 +68,7 @@ var filter = new Filter();
  *  @param options An object whose fields specify filter options.
  *  @return The filtered image.
  */
-exports.filter = function(image, options) {
+exports.filter = function (image, options) {
     image = image.asAWTImage();
     if (options) {
         for (var optionName in options) {
@@ -88,7 +88,7 @@ exports.filter = function(image, options) {
  *  image, where 0 means no motion and 100 means full image motion.
  *  @return The percentage of area covered by motion.
  */
-exports.area = function() {
+exports.area = function () {
     return filter.getMotionArea();
 };
 
@@ -97,7 +97,7 @@ exports.area = function() {
  *  motion has been detected.
  *  @return The center of gravity of motion.
  */
-exports.cog = function() {
+exports.cog = function () {
     var cog = filter.getCOG();
     if (cog) {
         return [cog.x, cog.y];

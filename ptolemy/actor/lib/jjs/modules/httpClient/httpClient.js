@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -40,7 +40,7 @@
  * @author Marten Lohstroh and Edward A. Lee
  * @version $$Id$$
  */
- 
+
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
 /*globals Java, actor, error, exports, IncomingMessage, require, util */
@@ -107,8 +107,8 @@ var EventEmitter = require('events').EventEmitter;
  *   or with a null argument to signal an error.
  *  @return An instance of ClientRequest.
  */
-exports.request = function(options, responseCallback) {
-  return new ClientRequest(options, responseCallback);
+exports.request = function (options, responseCallback) {
+    return new ClientRequest(options, responseCallback);
 };
 
 // NOTE: Perhaps options should include a localAddress: A string giving a name or 
@@ -155,10 +155,10 @@ exports.request = function(options, responseCallback) {
  *  @param responseCallback The callback function to call with an instance of IncomingMessage,
  *   or with a null argument to signal an error.
  */
-exports.get = function(options, responseCallback) {
-  var request = exports.request(options, responseCallback);
-  request.end();
-  return request;
+exports.get = function (options, responseCallback) {
+    var request = exports.request(options, responseCallback);
+    request.end();
+    return request;
 };
 
 /** Convenience method to issue an HTTP POST.  This just calls request() and then
@@ -178,11 +178,11 @@ exports.get = function(options, responseCallback) {
  *  @param responseCallback The callback function to call with an instance of IncomingMessage,
  *   or with a null argument to signal an error.
  */
-exports.post = function(options, responseCallback) {
-  options.method = "POST";
-  var request = exports.request(options, responseCallback);
-  request.end();
-  return request;
+exports.post = function (options, responseCallback) {
+    options.method = "POST";
+    var request = exports.request(options, responseCallback);
+    request.end();
+    return request;
 };
 
 /** Convenience method to issue an HTTP PUT.  This just calls request() and then
@@ -202,11 +202,11 @@ exports.post = function(options, responseCallback) {
  *  @param responseCallback The callback function to call with an instance of IncomingMessage,
  *   or with a null argument to signal an error.
  */
-exports.put = function(options, responseCallback) {
-  options.method = "PUT";
-  var request = exports.request(options, responseCallback);
-  request.end();
-  return request;
+exports.put = function (options, responseCallback) {
+    options.method = "PUT";
+    var request = exports.request(options, responseCallback);
+    request.end();
+    return request;
 };
 
 // NOTE: The following events are produced by ClientRequest in Node.js
@@ -242,94 +242,94 @@ exports.put = function(options, responseCallback) {
  *   or with a null argument to signal an error.
  */
 function ClientRequest(options, responseCallback) {
-  var self = this;
+    var self = this;
 
-  var defaultOptions = {
-    'headers':{},
-    'keepAlive':false,
-    'method':'GET',
-    'outputCompleteResponseOnly':true,
-    'timeout':5000,
-    'trustAll':false,
-  };
-  var defaultURL = {
-    'host':'localhost',
-    'path':'/',
-    'port':80,
-    'protocol':'http',
-    'query':''
-  };
+    var defaultOptions = {
+        'headers': {},
+        'keepAlive': false,
+        'method': 'GET',
+        'outputCompleteResponseOnly': true,
+        'timeout': 5000,
+        'trustAll': false,
+    };
+    var defaultURL = {
+        'host': 'localhost',
+        'path': '/',
+        'port': 80,
+        'protocol': 'http',
+        'query': ''
+    };
 
-  var urlSpec;
-  if (util.isString(options)) {
-    urlSpec = options;
-    options = {};  // If only URL is passed in, create new options object 
-  } else if (util.isString(options.url)) {
-    urlSpec = options.url;
-  }
-  if (urlSpec) {
-    var url = new URL(urlSpec);
-    var port = url.getPort();
-    if (port < 0) {
-        port = url.getDefaultPort();
+    var urlSpec;
+    if (util.isString(options)) {
+        urlSpec = options;
+        options = {}; // If only URL is passed in, create new options object 
+    } else if (util.isString(options.url)) {
+        urlSpec = options.url;
+    }
+    if (urlSpec) {
+        var url = new URL(urlSpec);
+        var port = url.getPort();
         if (port < 0) {
-            port = 80;
+            port = url.getDefaultPort();
+            if (port < 0) {
+                port = 80;
+            }
+        }
+
+        options.url = {
+            'host': url.getHost(),
+            'path': url.getPath(),
+            'port': port,
+            'protocol': url.getProtocol(),
+            'query': url.getQuery()
+        };
+    } else {
+        options.url = util._extend(defaultURL, options.url);
+    }
+    // Fill in default values.
+    options = util._extend(defaultOptions, options);
+
+    // Attach the callback to be invoked when this object issues
+    // a 'response' event.  
+    if (responseCallback) {
+        if (options.outputCompleteResponseOnly) {
+            self.once('response', responseCallback);
+        } else {
+            self.on('response', responseCallback);
         }
     }
-    
-    options.url = {
-                'host':url.getHost(),
-                'path':url.getPath(),
-                'port':port,
-                'protocol':url.getProtocol(),
-                'query':url.getQuery()
-    };    	
-  } else {
-    options.url = util._extend(defaultURL, options.url);
-  }
-  // Fill in default values.
-  options = util._extend(defaultOptions, options);
 
-  // Attach the callback to be invoked when this object issues
-  // a 'response' event.  
-  if (responseCallback) {
-    if (options.outputCompleteResponseOnly) {
-      self.once('response', responseCallback);
-    } else {
-      self.on('response', responseCallback);
+    // Set the Content-Length header
+    if (options.body !== null && options.body !== undefined) {
+        var headers;
+        if (typeof options.headers == "undefined") {
+            headers = {};
+        } else {
+            headers = options.headers;
+        }
+
+        headers['Content-Length'] = options.body.length;
+        options.headers = headers;
     }
-  }
-  
-  // Set the Content-Length header
-  if (options.body !== null && options.body !== undefined) {
-	  var headers;
-	  if (typeof options.headers == "undefined") {
-		  headers = {};
-	  } else {
-		  headers = options.headers;
-	  }
 
-	  headers['Content-Length'] = options.body.length;
-	  options.headers = headers;
-  }
-  
-  // console.log("Making an HTTP request: " + JSON.stringify(options));
-  
-  this.helper = HttpClientHelper.getOrCreateHelper(actor);
-  this.options = options;
+    // console.log("Making an HTTP request: " + JSON.stringify(options));
+
+    this.helper = HttpClientHelper.getOrCreateHelper(actor);
+    this.options = options;
 }
 util.inherits(ClientRequest, EventEmitter);
 exports.ClientRequest = ClientRequest;
 
 /** Issue the request. */
-ClientRequest.prototype.end = function() {
-  this.helper.request(this, this.options);
+ClientRequest.prototype.end = function () {
+    this.helper.request(this, this.options);
 };
 
 /** Stop a response, if there is one active. This is useful if a streaming response
  *  needs to be stopped. The closes the socket connection.
  */
-ClientRequest.prototype.stop = function() {
+ClientRequest.prototype.stop = function () {
     if (this.helper) {
         this.helper.stop();
     }
@@ -340,18 +340,18 @@ ClientRequest.prototype.stop = function() {
 // ClientRequest() both creates and sends the request; the request object is not 
 // returned to httpClient.js.
 // We may need something different for multi-part requests? 
-ClientRequest.prototype.write = function(data, encoding) {
-   throw("Write is implemented as part of ClientRequest()");
+ClientRequest.prototype.write = function (data, encoding) {
+    throw ("Write is implemented as part of ClientRequest()");
 };
 
 /** Internal function used to handle an error.
  *  @param message The error message.
  */
-ClientRequest.prototype._handleError = function(message) {
+ClientRequest.prototype._handleError = function (message) {
     // There may be no registered error event handler.
     try {
         this.emit('error', message);
-    } catch(err) {
+    } catch (err) {
         error(message);
     }
 };
@@ -364,7 +364,7 @@ ClientRequest.prototype._handleError = function(message) {
  *  @param response The response from the server, or null to signal an error.
  *  @param body The body of the response, or an error message for an error.
  */
-ClientRequest.prototype._response = function(response, body) {
+ClientRequest.prototype._response = function (response, body) {
     if (response === null) {
         this.emit('response', null);
         this._handleError(body);

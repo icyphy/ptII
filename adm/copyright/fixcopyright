@@ -112,29 +112,29 @@ cd $topdir
 }
 
 doit() {
-    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2015\2/' \
+    sed 's/Copyright \(\&[^ ]*\) 1998\([ ,]\)/Copyright \1 1998-2016\2/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright &[^ ]* 1998[ ,]"
-LOGMESSAGE="Changed copyright to 2015"
+LOGMESSAGE="Changed copyright to 2016"
 
 search $@
 
 doit() {
-    sed 's/\(199[0-8]\)-199[0-9]/\1-2015/' \
+    sed 's/\(199[0-8]\)-199[0-9]/\1-2016/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="199[0-8]-199[0-9]"
-LOGMESSAGE="Changed copyright to 2015"
+LOGMESSAGE="Changed copyright to 2016"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\)-20[01][0-9]/Copyright (c) \1-2015/' \
+    sed 's/Copyright (c) \(199[0-9]\)-20[01][0-9]/Copyright (c) \1-2016/' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -142,14 +142,14 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH='Copyright \(c\) 199[0-9]-20[01][0-9]'
-LOGMESSAGE="Changed copyright to 2015"
+LOGMESSAGE="Changed copyright to 2016"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(20[01][0-9]\)-20[01][0-9] /Copyright (c) \1-2015 /' \
+    sed 's/Copyright (c) \(20[01][0-9]\)-20[01][0-9] /Copyright (c) \1-2016 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -157,24 +157,24 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH='Copyright \(c\) 20[01][0-9]-20[01][0-9]'
-LOGMESSAGE="Changed copyright to 2015"
+LOGMESSAGE="Changed copyright to 2016"
 
 search $@
 
 doit() {
-    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2015 /' \
+    sed 's/Copyright (c) \(199[0-9]\) /Copyright (c) \1-2016 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 EGREPMATCH="Copyright \(c\) 199[0-9] "
-LOGMESSAGE="Changed copyright to 2015"
+LOGMESSAGE="Changed copyright to 2016"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(200[0-9]\) /Copyright (c) \1-2015 /' \
+    sed 's/Copyright (c) \(200[0-9]\) /Copyright (c) \1-2016 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
@@ -182,22 +182,22 @@ doit() {
 # EVERY_YEAR: update the regex to get last-year's changes
 
 EGREPMATCH="Copyright \(c\) 200[0-9] "
-LOGMESSAGE="Changed copyright to 2015"
+LOGMESSAGE="Changed copyright to 2016"
 
 search $@
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
 doit() {
-    sed 's/Copyright (c) \(201[01234]\) /Copyright (c) \1-2015 /' \
+    sed 's/Copyright (c) \(201[012345]\) /Copyright (c) \1-2016 /' \
 	    $file > /tmp/fixcopyright.tmp	
     diff $file /tmp/fixcopyright.tmp	
 }
 
 # EVERY_YEAR: update the regex to get last-year's changes
 
-EGREPMATCH="Copyright \(c\) 201[01234] "
-LOGMESSAGE="Changed copyright to 2015"
+EGREPMATCH="Copyright \(c\) 201[012345] "
+LOGMESSAGE="Changed copyright to 2016"
 
 search $@
 

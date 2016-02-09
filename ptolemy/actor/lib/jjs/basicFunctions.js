@@ -1,5 +1,5 @@
 // JavaScript functions for a Ptolemy II (Nashorn) accessor host.
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 
 // Permission is hereby granted, without written agreement and without
@@ -128,18 +128,19 @@ function getResource(uri, timeout) {
 function httpRequest(url, method, properties, body, timeout) {
     if (_debug) {
         console.log("httpRequest(" + (function (obj) {
-            var result = [], p;
+            var result = [],
+                p;
             for (p in obj) {
                 result.push(JSON.stringify(obj[p]));
             }
             return result;
         })(arguments) + ")");
     }
-    var theURL = new (Java.type('java.net.URL'))(url);
+    var theURL = new(Java.type('java.net.URL'))(url);
     var protocol = theURL.getProtocol().toLowerCase();
     if (actor.isRestricted &&
         !(protocol.equals("http") ||
-          protocol.equals("https"))) {
+            protocol.equals("https"))) {
         throw "Actor is restricted. Only HTTP(S) requests will be honored by httpRequest().";
     }
     var connection = theURL.openConnection();
@@ -159,8 +160,8 @@ function httpRequest(url, method, properties, body, timeout) {
     // Send body if applicable.
     if (body && !body.equals('')) {
         connection.setDoOutput(true);
-        var writer = new (Java.type('java.io.OutputStreamWriter'))(connection
-                .getOutputStream());
+        var writer = new(Java.type('java.io.OutputStreamWriter'))(connection
+            .getOutputStream());
         writer.write(body);
         writer.flush();
         writer.close();
@@ -168,7 +169,7 @@ function httpRequest(url, method, properties, body, timeout) {
 
     // Wait for response.
     return Java.type('ptolemy.actor.lib.jjs.JavaScript').readFromInputStream(
-            connection.getInputStream());
+        connection.getInputStream());
 }
 
 // Print a message to the console.
@@ -188,13 +189,13 @@ function readURL(url, timeout) {
     if (_debug) {
         console.log("readURL('" + url + "')");
     }
-    var theURL = new (Java.type('java.net.URL'))(url);
+    var theURL = new(Java.type('java.net.URL'))(url);
     if (actor.isRestricted &&
         !theURL.getProtocol().toLowerCase().equals("http") &&
         !theURL.getProtocol().toLowerCase().equals("https")) {
         throw "Actor is restricted. Only HTTP and HTTPS requests will be honored by readURL().";
     }
-    var request = new (Java.type('org.ptolemy.ptango.lib.HttpRequest'))();
+    var request = new(Java.type('org.ptolemy.ptango.lib.HttpRequest'))();
     request.setUrl(theURL);
     request.setTimeout(timeout); // In milliseconds.
     var response = request.execute();
@@ -214,20 +215,20 @@ var _moduleRoot = __moduleFile.getAbsolutePath();
 
 // Check to see if _moduleFile is a Jar URL like
 // 
-if ( _moduleRoot.indexOf("!/") != -1) {
+if (_moduleRoot.indexOf("!/") != -1) {
     _moduleRoot = "jar:" + __moduleFile.toString();
 }
 
 /** An array that gives the search path for modules to be required. */
-var _modulePath = [ _moduleRoot + '/', _moduleRoot + '/modules/', _moduleRoot + '/node/', _moduleRoot + '/node_modules/' ];
+var _modulePath = [_moduleRoot + '/', _moduleRoot + '/modules/', _moduleRoot + '/node/', _moduleRoot + '/node_modules/'];
 
 /** A string giving the full path to the root directory for installed accessors. */
 var _accessorRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
-        '$CLASSPATH/org/terraswarm/accessor/accessors/web/', null).getAbsolutePath();
+    '$CLASSPATH/org/terraswarm/accessor/accessors/web/', null).getAbsolutePath();
 
 /** A string giving the full path to the root directory for test accessors. */
 var _testAccessors = Java.type('ptolemy.util.FileUtilities').nameToFile(
-        '$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/', null).getAbsolutePath();
+    '$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/', null).getAbsolutePath();
 
 /** An array that gives the search path for accessors to be extended. */
 var _accessorPath = [_accessorRoot + '/', _testAccessors + '/'].concat(_modulePath);
@@ -334,7 +335,7 @@ function setInterval(func, milliseconds) {
     // Get an array of arguments excluding the first two.
     var tail = Array.prototype.slice.call(arguments, 2);
     if (tail.length !== 0) {
-        callback = function() {
+        callback = function () {
             func.apply(this, tail);
         };
     }
@@ -370,7 +371,7 @@ function setTimeout(func, milliseconds) {
     // Get an array of arguments excluding the first two.
     var tail = Array.prototype.slice.call(arguments, 2);
     if (tail.length !== 0) {
-        callback = function() {
+        callback = function () {
             func.apply(this, tail);
         };
     }

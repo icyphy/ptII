@@ -1,4 +1,4 @@
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 
 // Permission is hereby granted, without written agreement and without
@@ -55,7 +55,7 @@ var defaultXBeeOptions = {
 /** Return an array of serial port names or null if none are found.
  *  @return An array of port names.
  */
-exports.hostSerialPorts = function() {
+exports.hostSerialPorts = function () {
     var enumeration = CommPortIdentifier.getPortIdentifiers();
     var result = [];
     while (enumeration.hasMoreElements()) {
@@ -74,7 +74,7 @@ exports.hostSerialPorts = function() {
 /** Return an array of the types supported by the current host for
  *  the receiveType option.
  */
-exports.supportedReceiveTypes = function() {
+exports.supportedReceiveTypes = function () {
     return XBeeHelper.supportedReceiveTypes();
 };
 
@@ -84,7 +84,7 @@ exports.supportedReceiveTypes = function() {
 /** Return an array of the types supported by the current host for
  *  the sendType option.
  */
-exports.supportedSendTypes = function() {
+exports.supportedSendTypes = function () {
     return XBeeHelper.supportedSendTypes();
 };
 
@@ -134,7 +134,7 @@ exports.supportedSendTypes = function() {
  *  @return An XBee interface.
  *  @exception If the port is in use or initializing the port fails.
  */
-exports.XBee = function(portName, options) {
+exports.XBee = function (portName, options) {
     // Fill in default values.
     this.options = options || {};
     this.options = util._extend(defaultXBeeOptions, this.options);
@@ -146,17 +146,16 @@ util.inherits(exports.XBee, EventEmitter);
 
 /** Close the port.
  */
-exports.XBee.prototype.close = function() {
+exports.XBee.prototype.close = function () {
     this.helper.close();
 };
 
 /** Send data over the radio.
  *  @param data The data to send.
  */
-exports.XBee.prototype.send = function(data) {
+exports.XBee.prototype.send = function (data) {
     if (Array.isArray(data)) {
         data = Java.to(data);
     }
     this.helper.send(data);
 };
-

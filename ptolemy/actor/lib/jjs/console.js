@@ -1,6 +1,6 @@
 // JavaScript module for outputting messages.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 
 // Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
  *  @author Edward A. Lee
  *  @version $$Id$$
  */
- 
+
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
 /*globals actor, console, exports, require */
@@ -48,7 +48,7 @@ var util = require('util');
  *   the assertion is false, where the
  *   first argument is optionally a formatting specification string.
  */
-exports.assert = function(assertion, message) {
+exports.assert = function (assertion, message) {
     if (!assertion) {
         // Get an array of arguments excluding the first.
         var tail = Array.prototype.slice.call(arguments, 1);
@@ -71,7 +71,7 @@ exports.assert = function(assertion, message) {
  *  @param object Object to send to the log.
  *  @param options Options governing how the object is described.
  */
-exports.dir = function(object, options) {
+exports.dir = function (object, options) {
     var result = util.inspect(object, options);
     actor.log(result);
 };
@@ -80,7 +80,7 @@ exports.dir = function(object, options) {
  *  @param arguments One or more arguments to display in the log, where the
  *   first argument is optionally a formatting specification string.
  */
-exports.error = function() {
+exports.error = function () {
     var formatted = util.format.apply(this, arguments);
     console.log('ERROR: ' + formatted);
 };
@@ -102,7 +102,7 @@ exports.info = exports.log;
  *  @param arguments One or more arguments to display in the log, where the
  *   first argument is optionally a formatting specification string.
  */
-exports.log = function() {
+exports.log = function () {
     var formatted = util.format.apply(this, arguments);
     actor.log(formatted);
 };
@@ -112,7 +112,7 @@ exports.log = function() {
  *  @param arguments One or more arguments to display in the log, where the
  *   first argument is optionally a formatting specification string.
  */
-exports.warn = function() {
+exports.warn = function () {
     var formatted = util.format.apply(this, arguments);
     actor.error('WARNING: ' + formatted);
 };
@@ -123,7 +123,7 @@ var _times = {};
 /** Record the current time using the specified label for use by a later call to timeEnd().
  *  @param label The label for the time point.
  */
-exports.time = function(label) {
+exports.time = function (label) {
     _times[label] = Date.now();
 };
 
@@ -131,7 +131,7 @@ exports.time = function(label) {
  *  gave the same label (using the log() function).
  *  @param label The label for the starting time point.
  */
-exports.timeEnd = function(label) {
+exports.timeEnd = function (label) {
     var start = _times[label];
     if (!start) {
         throw 'No time found for label: ' + label;
@@ -145,7 +145,7 @@ exports.timeEnd = function(label) {
  *  @param arguments One or more arguments to display in the log, where the
  *   first argument is optionally a formatting specification string.
  */
-exports.trace = function() {
+exports.trace = function () {
     var formatted = util.format.apply(this, arguments);
     actor.error('TRACE: ' + (new Error(formatted)).stack);
 };

@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -40,7 +40,7 @@
 
 function ToObject(val) {
     if (val === null) {
-	throw new TypeError('Object.assign cannot be called with null or undefined');
+        throw new TypeError('Object.assign cannot be called with null or undefined');
     }
 
     return Object(val);
@@ -52,12 +52,12 @@ module.exports = Object.assign || function (target, source) {
     var to = ToObject(target);
 
     for (var s = 1; s < arguments.length; s++) {
-	from = arguments[s];
-	keys = Object.keys(Object(from));
+        from = arguments[s];
+        keys = Object.keys(Object(from));
 
-	for (var i = 0; i < keys.length; i++) {
-	    to[keys[i]] = from[keys[i]];
-	}
+        for (var i = 0; i < keys.length; i++) {
+            to[keys[i]] = from[keys[i]];
+        }
     }
 
     return to;

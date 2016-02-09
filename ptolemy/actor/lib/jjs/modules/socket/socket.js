@@ -1,4 +1,4 @@
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -76,7 +76,7 @@ var EventEmitter = require('events').EventEmitter;
 /** Return an array of the types supported by the current host for
  *  receiveType arguments.
  */
-exports.supportedReceiveTypes = function() {
+exports.supportedReceiveTypes = function () {
     return SocketHelper.supportedReceiveTypes();
 };
 
@@ -86,7 +86,7 @@ exports.supportedReceiveTypes = function() {
 /** Return an array of the types supported by the current host for
  *  sendType arguments.
  */
-exports.supportedSendTypes = function() {
+exports.supportedSendTypes = function () {
     return SocketHelper.supportedSendTypes();
 };
 
@@ -240,10 +240,10 @@ var defaultClientOptions = {
  *  @param host The remote host to connect to.
  *  @param options The options.
  */
-exports.SocketClient = function(port, host, options) {
+exports.SocketClient = function (port, host, options) {
     // Set default values of arguments.
     // Careful: port == 0 means to find an available port, I think.
-	this.port = port;
+    this.port = port;
     if (port === null) {
         this.port = 4000;
     }
@@ -252,14 +252,14 @@ exports.SocketClient = function(port, host, options) {
     // Fill in default values.
     this.options = options || {};
     this.options = util._extend(defaultClientOptions, this.options);
-    
-    this.helper = SocketHelper.getOrCreateHelper(actor);    
+
+    this.helper = SocketHelper.getOrCreateHelper(actor);
     this.pendingSends = [];
 };
 util.inherits(exports.SocketClient, EventEmitter);
 
 /** Open the client. Call this after setting up listeners. */
-exports.SocketClient.prototype.open = function() {
+exports.SocketClient.prototype.open = function () {
     this.helper.openClientSocket(this, this.port, this.host, this.options);
 }
 
@@ -270,17 +270,17 @@ exports.SocketClient.prototype.open = function() {
  *  @param netSocket The Vert.x NetSocket object.
  *  @param client The Vert.x NetClient object that opened the socket.
  */
-exports.SocketClient.prototype._opened = function(netSocket, client) {
+exports.SocketClient.prototype._opened = function (netSocket, client) {
     // For a client, this instance of SocketClient will be the event emitter.
 
     // Because we are creating an inner class, the first argument needs to be
     // the instance of the enclosing socketHelper class.
     this.wrapper = new SocketHelper.SocketWrapper(
-            this.helper, this, netSocket,
-            this.options.sendType, this.options.receiveType,
-            this.options.rawBytes);
+        this.helper, this, netSocket,
+        this.options.sendType, this.options.receiveType,
+        this.options.rawBytes);
     this.emit('open');
-    
+
     // Send any pending data.
     for (var i = 0; i < this.pendingSends.length; i++) {
         this.send(this.pendingSends[i]);
@@ -294,7 +294,7 @@ exports.SocketClient.prototype._opened = function(netSocket, client) {
  *  discardMessagesBeforeOpen is true.
  *  @param data The data to send.
  */
-exports.SocketClient.prototype.send = function(data) {
+exports.SocketClient.prototype.send = function (data) {
     if (this.wrapper) {
         if (Array.isArray(data)) {
             data = Java.to(data);
@@ -312,19 +312,19 @@ exports.SocketClient.prototype.send = function(data) {
         } else {
             console.log('Discarding because socket is not open.');
         }
-    }      
+    }
 };
 
 /** Close the current connection with the server.
  *  This will indicate to the server that no more data
  *  will be sent, but data may still be received from the server.
  */
-exports.SocketClient.prototype.close = function() {
+exports.SocketClient.prototype.close = function () {
     if (this.wrapper) {
         this.wrapper.close();
     } else {
         // FIXME: Set a flag to close immediately upon opening.
-    }      
+    }
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -475,7 +475,7 @@ var defaultServerOptions = {
  *
  *  @param options The options.
  */
-exports.SocketServer = function(options) {
+exports.SocketServer = function (options) {
     // Fill in default values.
     this.options = options || {};
     this.options = util._extend(defaultServerOptions, this.options);
@@ -485,12 +485,12 @@ exports.SocketServer = function(options) {
 util.inherits(exports.SocketServer, EventEmitter);
 
 /** Start the server. */
-exports.SocketServer.prototype.start = function() {
+exports.SocketServer.prototype.start = function () {
     this.helper.startServer(this, this.options);
 }
 
 /** Stop the server and close all sockets. */
-exports.SocketServer.prototype.stop = function() {
+exports.SocketServer.prototype.stop = function () {
     if (this.server) {
         this.server.close();
         this.server = null;
@@ -501,7 +501,7 @@ exports.SocketServer.prototype.stop = function() {
  *  This is called by the helper, and should not be called by the user of this module.
  *  @param netServer The Vert.x NetServer object.
  */
-exports.SocketServer.prototype._serverCreated = function(netServer) {
+exports.SocketServer.prototype._serverCreated = function (netServer) {
     this.server = netServer;
 };
 
@@ -515,11 +515,11 @@ exports.SocketServer.prototype._serverCreated = function(netServer) {
  *  @param netSocket The Vert.x NetSocket object.
  *  @param server The Vert.x NetServer object.
  */
-exports.SocketServer.prototype._socketCreated = function(netSocket) {
+exports.SocketServer.prototype._socketCreated = function (netSocket) {
     var socket = new exports.Socket(
-            this.helper, netSocket,
-            this.options.sendType, this.options.receiveType,
-            this.options.rawBytes);
+        this.helper, netSocket,
+        this.options.sendType, this.options.receiveType,
+        this.options.rawBytes);
     this.emit('connection', socket);
 };
 
@@ -546,13 +546,13 @@ exports.SocketServer.prototype._socketCreated = function(netSocket) {
  *  @param rawBytes If false, prepend messages with length information and emit
  *   only complete messages.
  */
-exports.Socket = function(helper, netSocket, sendType, receiveType, rawBytes) {
+exports.Socket = function (helper, netSocket, sendType, receiveType, rawBytes) {
     // For a server side socket, this instance of Socket will be the event emitter.
 
     // Because we are creating an inner class, the first argument needs to be
     // the instance of the enclosing socketHelper class.
     this.wrapper = new SocketHelper.SocketWrapper(
-            helper, this, netSocket, sendType, receiveType, rawBytes);
+        helper, this, netSocket, sendType, receiveType, rawBytes);
     this.netSocket = netSocket;
 };
 util.inherits(exports.Socket, EventEmitter);
@@ -561,14 +561,14 @@ util.inherits(exports.Socket, EventEmitter);
  *  not on the server side. But the server can also close the connection.
  *  This will indicate to the client that the server will be sending no more data.
  */
-exports.Socket.prototype.close = function() {
+exports.Socket.prototype.close = function () {
     this.wrapper.close();
 };
 
 /** Return the remote host (an IP address) for this socket.
  *  @return The remote host, a string.
  */
-exports.Socket.prototype.remoteHost = function() {
+exports.Socket.prototype.remoteHost = function () {
     var remoteAddress = this.netSocket.remoteAddress();
     return remoteAddress.host();
 };
@@ -576,7 +576,7 @@ exports.Socket.prototype.remoteHost = function() {
 /** Return the remote port for this socket.
  *  @return The remote port, a number.
  */
-exports.Socket.prototype.remotePort = function() {
+exports.Socket.prototype.remotePort = function () {
     var remoteAddress = this.netSocket.remoteAddress();
     return remoteAddress.port();
 };
@@ -584,7 +584,7 @@ exports.Socket.prototype.remotePort = function() {
 /** Send data over the socket.
  *  @param data The data to send.
  */
-exports.Socket.prototype.send = function(data) {
+exports.Socket.prototype.send = function (data) {
     if (Array.isArray(data)) {
         data = Java.to(data);
     }

@@ -1,4 +1,4 @@
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -58,13 +58,13 @@ var EventEmitter = require('events').EventEmitter;
  *   IP address or host name for the host and the port on which the host is listening.
  *   If the host is omitted, 'localhost' is used. If the port is omitted, 80 is used.
  */
-exports.Socket = function() {
+exports.Socket = function () {
     this.helper = UDPSocketHelper.createSocket(this);
 };
 
 util.inherits(exports.Socket, EventEmitter);
 
-exports.createSocket = function() {
+exports.createSocket = function () {
     return new exports.Socket();
 };
 
@@ -74,14 +74,14 @@ exports.createSocket = function() {
  *  data to be sent later, when the socket is opened.
  *  @param data The data to send.
  */
-exports.Socket.prototype.send = function(data) {
+exports.Socket.prototype.send = function (data) {
     if (typeof data != 'string') {
         data = JSON.stringify(data);
     }
     this.helper.sendText(data);
 };
 
-exports.Socket.prototype.bind = function(port) {
+exports.Socket.prototype.bind = function (port) {
     this.helper.bind(port);
 };
 
@@ -90,7 +90,7 @@ exports.Socket.prototype.bind = function(port) {
  *  been successfully sent (because the socket was not open),
  *  then throw an exception.
  */
-exports.Socket.prototype.close = function() {
+exports.Socket.prototype.close = function () {
     this.helper.close();
 };
 
@@ -102,7 +102,7 @@ exports.Socket.prototype.close = function() {
  *  FIXME: Any way to hide it?
  *  @param message The incoming message.
  */
-exports.Socket.prototype.notifyIncoming = function(message) {
+exports.Socket.prototype.notifyIncoming = function (message) {
     try {
         message = JSON.parse(message);
     } catch (exception) {

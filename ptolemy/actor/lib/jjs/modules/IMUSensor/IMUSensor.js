@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -64,28 +64,28 @@ var SensorStream = null;
  *  		this.send('stream', sample);
  *  	}
  */
-exports.Stream = function(sensorPort) {
-	// Does not take options!
-	// Default is set by java code
-	// Baud rate: 115200
-	// Buffer window: 60 samples - @ 20HZ, this is 3 seconds
-	SensorStream = new Controller();
+exports.Stream = function (sensorPort) {
+    // Does not take options!
+    // Default is set by java code
+    // Baud rate: 115200
+    // Buffer window: 60 samples - @ 20HZ, this is 3 seconds
+    SensorStream = new Controller();
 };
 
 /** Initializes connection and collection of data from sensor. */
-exports.Stream.prototype.start = function(sensorPort) {
-	SensorStream.start(sensorPort);
+exports.Stream.prototype.start = function (sensorPort) {
+    SensorStream.start(sensorPort);
 };
 
 /** Return the sample buffer - the sample buffer size should be
  * modifiable in the future.
  */
-exports.Stream.prototype.getSample = function(){	
-	var sample = Java.from(SensorStream.getSample());
-	return [sample, []];
+exports.Stream.prototype.getSample = function () {
+    var sample = Java.from(SensorStream.getSample());
+    return [sample, []];
 };
 
 /** Stop the sensor stream from continuing to collect data. */
-exports.Stream.prototype.stop = function() {
-	SensorStream.stop();
+exports.Stream.prototype.stop = function () {
+    SensorStream.stop();
 };

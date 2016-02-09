@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -150,7 +150,7 @@ util.inherits(VertxBus, events.EventEmitter);
  *  @param address The address.
  *  @param body The message body
  */
-VertxBus.prototype.notify = function(address, body) {
+VertxBus.prototype.notify = function (address, body) {
     try {
         body = JSON.parse(body);
     } catch (exception) {
@@ -167,7 +167,7 @@ VertxBus.prototype.notify = function(address, body) {
  *  @param handler The callback function to invoke.
  *  @param message The message to send to the callback function.
  */
-VertxBus.prototype.notifyReply = function(handler, message) {
+VertxBus.prototype.notifyReply = function (handler, message) {
     try {
         message = JSON.parse(message);
     } catch (exception) {
@@ -186,8 +186,8 @@ VertxBus.prototype.notifyReply = function(handler, message) {
  *   that has a JSON representation using JSON.stringify().
  *  @see this.send()
  */
-VertxBus.prototype.publish = function(address, data) {
-    if (typeof(data) != 'string') {
+VertxBus.prototype.publish = function (address, data) {
+    if (typeof (data) != 'string') {
         data = JSON.stringify(data);
     }
     this.helper.publish(address, data);
@@ -206,8 +206,8 @@ VertxBus.prototype.publish = function(address, data) {
  *   when the recipient has received the message, or null to not provide a reply handler.
  *  @see publish()
  */
-VertxBus.prototype.send = function(address, data, handler) {
-    if (typeof(data) != 'string') {
+VertxBus.prototype.send = function (address, data, handler) {
+    if (typeof (data) != 'string') {
         data = JSON.stringify(data);
     }
     if (handler === null) {
@@ -224,8 +224,8 @@ VertxBus.prototype.send = function(address, data, handler) {
  *   JSON string.
  *  @see this.send(address, data)
  */
-VertxBus.prototype.setReply = function(reply) {
-    if (typeof(reply) != 'string') {
+VertxBus.prototype.setReply = function (reply) {
+    if (typeof (reply) != 'string') {
         reply = JSON.stringify(reply);
     }
     this.helper.setReply(reply);
@@ -234,13 +234,13 @@ VertxBus.prototype.setReply = function(reply) {
 /** Subscribe to events with the specified address.
  *  To react to those events, use on() or once() as explained above.
  */
-VertxBus.prototype.subscribe = function(address) {
+VertxBus.prototype.subscribe = function (address) {
     this.helper.subscribe(address);
 };
 
 /** Unsubscribe to events with the specified address.
  */
-VertxBus.prototype.unsubscribe = function(address) {
+VertxBus.prototype.unsubscribe = function (address) {
     if (address) {
         this.helper.unsubscribe(address);
         this.removeAllListeners(address);

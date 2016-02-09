@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -45,7 +45,7 @@ https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 @module aprilTags
 @author Edward A. Lee
  */
- 
+
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
 /*globals exports, Java */
@@ -69,7 +69,7 @@ var filter = new Filter();
  *  @param options An object whose fields specify filter options.
  *  @return The filtered image.
  */
-exports.filter = function(image, options) {
+exports.filter = function (image, options) {
     image = image.asAWTImage();
     if (options) {
         for (var optionName in options) {
@@ -96,6 +96,6 @@ exports.filter = function(image, options) {
  *  </ul>
  *  @return The detected tags.
  */
-exports.tags = function() {
+exports.tags = function () {
     return filter.tags();
 };

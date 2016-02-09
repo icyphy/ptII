@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -47,8 +47,8 @@ var bodyParser = require('body-parser');
 
 var app = express();
 // Use the body-parser package to parse JSON-encoded bodies of incoming HTTP requests
-app.use(bodyParser.json());     
- 
+app.use(bodyParser.json());
+
 var port = 8088;
 
 app.listen(port);
@@ -59,21 +59,21 @@ var hostMap = {};
 // GET /hosts/:hostname/devices  Print a list of devices connected to swarmbox 
 // ":hostname"
 app.get('/hosts/:hostname/devices', function (req, res) {
-	// console.log("Looking up devices for " + req.params.hostname);
-	var hostname = req.params.hostname;
-	if (hostname in hostMap) {
-	    res.send(hostMap[hostname]);
-	} else {
-		res.send([]);
-	}
+    // console.log("Looking up devices for " + req.params.hostname);
+    var hostname = req.params.hostname;
+    if (hostname in hostMap) {
+        res.send(hostMap[hostname]);
+    } else {
+        res.send([]);
+    }
 });
 
 // POST /hosts/(hostname)/devices  Submit a list of devices 
 // {IPAddress, MAC address, name}} connected to swarmbox ":hostname"
 app.post('/hosts/:hostname/devices', function (req, res) {
-	// The Express body-parser will automatically parse the JSON into a Javascript object
-	hostMap[req.params.hostname] = req.body;
-	res.send('Received device list for ' + req.params.hostname + ' \n');
+    // The Express body-parser will automatically parse the JSON into a Javascript object
+    hostMap[req.params.hostname] = req.body;
+    res.send('Received device list for ' + req.params.hostname + ' \n');
 });
 
 // To test locally, uncomment the section below, and do the following:
