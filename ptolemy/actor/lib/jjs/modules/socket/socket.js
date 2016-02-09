@@ -232,6 +232,9 @@ var defaultClientOptions = {
  *  
  *  The meaning of the options is (partially) defined here:
  *     http://vertx.io/docs/vertx-core/java/
+ *     
+ *  After this SocketClient is constructed, it will have properties 'port'
+ *  and 'host' equal to the port and host options passed to the constructor.
  *
  *  @param port The remote port to connect to.
  *  @param host The remote host to connect to.
