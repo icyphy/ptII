@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -34,7 +34,7 @@
  * @module camera
  * @author Edward A. Lee
  */
- 
+
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
 /*globals Java, exports, require, util */
@@ -52,7 +52,7 @@ var EventEmitter = require('events').EventEmitter;
  *  which represents the system default camera, if there is one.
  *  @return An array of names, or null if there are no cameras.
  */
-exports.cameras = function() {
+exports.cameras = function () {
     // The Java.from() Nashorn extension converts a Java array into a JavaScript array.
     return Java.from(CameraHelper.cameras());
 };
@@ -61,7 +61,7 @@ exports.cameras = function() {
  *  if there is none.
  *  @return A camera name.
  */
-exports.defaultCamera = function() {
+exports.defaultCamera = function () {
     return CameraHelper.defaultCamera();
 };
 
@@ -106,14 +106,14 @@ exports.defaultCamera = function() {
  *  </ul>
  *  @param name The camera name, or null to use the default camera.
  */
-exports.Camera = function(name) {
+exports.Camera = function (name) {
     this.helper = new CameraHelper(this, name);
 };
 util.inherits(exports.Camera, EventEmitter);
 
 /** Close the camera, stopping any image acquisition.
  */
-exports.Camera.prototype.close = function() {
+exports.Camera.prototype.close = function () {
     this.helper.close();
 };
 
@@ -121,7 +121,7 @@ exports.Camera.prototype.close = function() {
  *  as in {"width":176, "height":144}.
  *  @return A JSON string representing the current view size.
  */
-exports.Camera.prototype.getViewSize = function() {
+exports.Camera.prototype.getViewSize = function () {
     var spec = this.helper.getViewSize();
     return spec;
 };
@@ -129,7 +129,7 @@ exports.Camera.prototype.getViewSize = function() {
 /** Open the camera, initiating emission of the 'image' event each
  *  time the camera obtains a new image.
  */
-exports.Camera.prototype.open = function() {
+exports.Camera.prototype.open = function () {
     this.helper.open();
 };
 
@@ -138,14 +138,14 @@ exports.Camera.prototype.open = function() {
  *  height field, as in for example {"width":176, "height":144}.
  *  @param size A view size.
  */
-exports.Camera.prototype.setViewSize = function(size) {
+exports.Camera.prototype.setViewSize = function (size) {
     if (typeof size === 'string') {
         size = JSON.parse(size);
     }
     this.helper.setViewSize(size);
 };
 
-exports.Camera.prototype.snapshot = function() {
+exports.Camera.prototype.snapshot = function () {
     return this.helper.snapshot();
 };
 
@@ -153,7 +153,7 @@ exports.Camera.prototype.snapshot = function() {
  *  each given as a JSON string of the form '{"width":176, "height":144}', for example.
  *  @return An array of strings representing available view sizes.
  */
-exports.Camera.prototype.viewSizes = function() {
+exports.Camera.prototype.viewSizes = function () {
     // The Java.from() Nashorn extension converts a Java array into a JavaScript array.
     return Java.from(this.helper.viewSizes());
 };

@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2014-2015 The Regents of the University of California.
+// Copyright (c) 2014-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -24,16 +24,17 @@
 //
 // Ptolemy II includes the work of others, to see those copyrights, follow
 // the copyright link on the splash page or see copyright.htm.
-var WebSocketServer = require('ws').Server
-  , wss = new WebSocketServer({port: 8080});
+var WebSocketServer = require('ws').Server,
+    wss = new WebSocketServer({
+        port: 8080
+    });
 
 var replyCnt = 0;
 
-wss.on('connection', function(ws) {
-    ws.on('message', function(message) {
+wss.on('connection', function (ws) {
+    ws.on('message', function (message) {
         console.log('received: %s', message);
-        replyCnt ++;
+        replyCnt++;
         ws.send('port: 8080, reply count: ' + replyCnt);
     });
 });
-

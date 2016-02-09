@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -41,11 +41,11 @@
 /** Display the specified HTML text.
  *  @param html The HTML to display.
  */
-module.exports.display = function(html) {
+module.exports.display = function (html) {
     // FIXME: Probably should provide an initialize() function to start the
     // server.
     var helper = Java
-            .type('ptolemy.actor.lib.jjs.modules.browser.VertxBrowserHelper');
+        .type('ptolemy.actor.lib.jjs.modules.browser.VertxBrowserHelper');
     // FIXME: Use a port selection algorithm here to avoid port conflicts.
     var port = 8080;
     var server = helper.createServer(port);

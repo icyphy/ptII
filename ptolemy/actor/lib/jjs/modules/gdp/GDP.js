@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -42,24 +42,24 @@
 
 var GDPHelper = Java.type('ptolemy.actor.lib.jjs.modules.gdp.GDPHelper');
 
-exports.GDP = function(name, iomode) {
+exports.GDP = function (name, iomode) {
     this.helper = new GDPHelper(name, iomode);
     return this.helper;
 };
 
-exports.GDP.prototype.read = function(recno) {
+exports.GDP.prototype.read = function (recno) {
     var data = this.helper.read(recno);
     return data;
 };
 
-exports.GDP.prototype.append = function(data) {
+exports.GDP.prototype.append = function (data) {
     this.helper.append(data);
 };
 
-exports.GDP.prototype.subscribe = function(startrec, numrecs) {
+exports.GDP.prototype.subscribe = function (startrec, numrecs) {
     this.helper.subscribe(this, startrec, numrecs);
 };
 
-exports.GDP.prototype.get_next_data = function(timeout_msec) {
+exports.GDP.prototype.get_next_data = function (timeout_msec) {
     return this.helper.get_next_data(timeout_msec);
 };

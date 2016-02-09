@@ -1,4 +1,4 @@
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 
 // Permission is hereby granted, without written agreement and without
@@ -44,7 +44,7 @@ var EventEmitter = require('events').EventEmitter;
 /** Return an array of serial port names or null if none are found.
  *  @return An array of port names.
  */
-exports.hostSerialPorts = function() {
+exports.hostSerialPorts = function () {
     var enumeration = CommPortIdentifier.getPortIdentifiers();
     var result = [];
     while (enumeration.hasMoreElements()) {
@@ -71,7 +71,7 @@ exports.hostSerialPorts = function() {
  *  @return A serial port interface.
  *  @exception If the port is in use or initializing the port fails.
  */
-exports.SerialPort = function(portName, ownerName, timeout, options) {
+exports.SerialPort = function (portName, ownerName, timeout, options) {
     this.helper = new SerialHelper(this, portName, ownerName, timeout, options);
 };
 
@@ -79,13 +79,13 @@ util.inherits(exports.SerialPort, EventEmitter);
 
 /** Close the port.
  */
-exports.SerialPort.prototype.close = function() {
+exports.SerialPort.prototype.close = function () {
     this.removeAllListeners();
     this.helper.close();
 };
 
 /** Open the port.
  */
-exports.SerialPort.prototype.open = function() {
+exports.SerialPort.prototype.open = function () {
     this.helper.open();
 };

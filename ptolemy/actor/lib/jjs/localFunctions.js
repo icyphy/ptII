@@ -1,5 +1,5 @@
 // JavaScript functions for a Ptolemy II (Nashorn) accessor host.
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 
 // Permission is hereby granted, without written agreement and without
@@ -43,10 +43,18 @@ var commonHost = require('commonHost.js');
 // Set a prototype for the exports object with default functions.
 var exports = {};
 Object.setPrototypeOf(exports, {
-    fire: function () {return undefined; },
-    initialize: function () {return undefined; },
-    setup: function () {return undefined; },
-    wrapup: function () {return undefined; }
+    fire: function () {
+        return undefined;
+    },
+    initialize: function () {
+        return undefined;
+    },
+    setup: function () {
+        return undefined;
+    },
+    wrapup: function () {
+        return undefined;
+    }
 });
 
 /** Evaluate the specified code in the current context.
@@ -93,12 +101,12 @@ function getAccessorCode(name) {
         var location = _accessorPath[i].concat(name);
         try {
             code = js.getFileAsString(location);
-        } catch(err) {
+        } catch (err) {
             continue;
         }
     }
     if (!code) {
-        throw('Accessor ' + name + ' not found on path: ' + _accessorPath);
+        throw ('Accessor ' + name + ' not found on path: ' + _accessorPath);
     }
     return code;
 }
@@ -119,7 +127,7 @@ function getParameter(name) {
     //if (typeof channel === 'undefined') {
     //    channel = 0;
     //}
-    var result = proxy.get(0 /*channel*/);
+    var result = proxy.get(0 /*channel*/ );
     return convertFromToken(result);
 }
 
@@ -142,7 +150,7 @@ function input(name, options) {
     // Invoke the basic input() functionality of commonHost.
     // Make sure the context is this, not the prototype.
     commonHost.Accessor.prototype.input.call(this, name, options);
-    
+
     // Then invoke the Ptolemy functionality, which will create the input if it doesn't
     // already exist.
     // Nashorn bug if options is undefined, where it says:
@@ -172,7 +180,7 @@ function output(name, options) {
     // Invoke the basic output() functionality of commonHost.
     // Make sure the context is this, not the prototype.
     commonHost.Accessor.prototype.output.call(this, name, options);
-    
+
     // Then invoke the Ptolemy functionality, which will create the input if it doesn't
     // already exist. 
     // Nashorn bug if options is undefined, where it says:
@@ -203,7 +211,7 @@ function parameter(name, options) {
     // Invoke the basic parameter() functionality of commonHost.
     // Make sure the context is this, not the prototype.
     commonHost.Accessor.prototype.parameter.call(this, name, options);
-    
+
     // Then invoke the Ptolemy functionality, which will create the input if it doesn't
     // already exist.
     // Avoid this error:
@@ -233,7 +241,8 @@ function send(name, value, channel) {
     if (typeof name !== 'string') {
         throw ('name argument is required to be a string. Got: ' + (typeof name));
     }
-    var proxy = actor.getPortOrParameterProxy(name), token;
+    var proxy = actor.getPortOrParameterProxy(name),
+        token;
     if (!proxy) {
         error('No such port: ' + name);
     } else {
@@ -294,14 +303,15 @@ function setParameter(parameter, value) {
     if (typeof parameter !== 'string') {
         throw ('parameter argument is required to be a string. Got: ' + (typeof parameter));
     }
-    var proxy = actor.getPortOrParameterProxy(parameter), token;
+    var proxy = actor.getPortOrParameterProxy(parameter),
+        token;
     if (!proxy) {
         error('No such parameter: ' + parameter);
     } else {
         // Invoke the basic parameter() functionality of commonHost.
         // Make sure the context is this, not the prototype.
         commonHost.Accessor.prototype.setParameter.call(this, parameter, value);
-    
+
         token = convertToToken(value, proxy.isJSON());
         proxy.set(token);
     }
@@ -318,7 +328,7 @@ function setParameter(parameter, value) {
 function superSend(name, value, channel) {
     if (!this.outputs) {
         throw new Error(
-                "No outputs property. Perhaps 'this' is not bound to the accessor?");
+            "No outputs property. Perhaps 'this' is not bound to the accessor?");
     }
     var output = this.outputs[name];
     if (output) {
@@ -332,25 +342,33 @@ function superSend(name, value, channel) {
 // Note that if the script simply defines a top-level fire() function instead
 // of exports.fire(), that function will overwrite this one and will still work
 // as expected.
-function fire() {exports.fire(); }
+function fire() {
+    exports.fire();
+}
 
 // Default initialize function, which invokes exports.initialize().
 // Note that if the script simply defines a top-level initialize() function instead
 // of exports.initialize(), that function will overwrite this one and will still work
 // as expected.
-function initialize() {exports.initialize(); }
+function initialize() {
+    exports.initialize();
+}
 
 // Default setup function, which invokes exports.setup().
 // Note that if the script simply defines a top-level setup() function instead
 // of exports.setup(), that function will overwrite this one and will still work
 // as expected.
-function setup() {exports.setup(); }
+function setup() {
+    exports.setup();
+}
 
 // Default wrapup function, which invokes exports.wrapup().
 // Note that if the script simply defines a top-level wrapup() function instead
 // of exports.wrapup(), that function will overwrite this one and will still work
 // as expected.
-function wrapup() {exports.wrapup(); }
+function wrapup() {
+    exports.wrapup();
+}
 
 //--------------------------- Exposed Java Types -----------------------------
 // FIXME: Attempting to debug ClassNotFoundException after loading 350 models.
@@ -416,7 +434,8 @@ function convertFromToken(value) {
         return value.booleanValue();
     }
     if (value instanceof ArrayToken) {
-        var result = [], i;
+        var result = [],
+            i;
         for (i = 0; i < value.length(); i++) {
             result[i] = convertFromToken(value.getElement(i), false);
         }
@@ -458,7 +477,7 @@ function convertFromToken(value) {
 function convertToJSArray(array) {
     return Java.from(array);
 }
- 
+
 /** Convert the specified argument to a Ptolemy II Token.
  *  This is a utility function, not intended for script writers to use.
  *  @param value The JavaScript value to convert.
@@ -473,11 +492,11 @@ function convertToToken(value, isJSON) {
     // Supposedly, ScriptObjectMirror will solve this problem, but it's
     // API is currently poorly documented, and what documentation there is
     // disagrees with the implementation in Java 8.
-    
+
     if (isJSON) {
-         return new StringToken(JSON.stringify(value));
+        return new StringToken(JSON.stringify(value));
     }
-    
+
     // If the value is already a Token, just return it.
     if (value instanceof Token) {
         return value;
@@ -528,7 +547,7 @@ function convertToToken(value, isJSON) {
         }
         if (value instanceof Image) {
             return new AWTImageToken(value);
-        } 
+        }
         // Create a RecordToken with the fields of the object.
         // Using Nashorn-specific extension here to create Java array.
         var StringArray = Java.type('java.lang.String[]');

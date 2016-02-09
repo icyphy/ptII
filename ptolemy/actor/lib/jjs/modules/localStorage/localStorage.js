@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2014-2015 The Regents of the University of California.
+// Copyright (c) 2014-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -48,12 +48,11 @@ var storage;
 /** Set up a new persistent storage in the file system.
  * This must be called before calling any other functions in localStorage.
  */
-module.exports.initSync = function(opts) {
+module.exports.initSync = function (opts) {
     var persistenceDir;
     if (!opts || !opts.dir) {
         persistenceDir = 'persist';
-    }
-    else {
+    } else {
         persistenceDir = opts.dir;
     }
     storage = new LocalStorageHelper(persistenceDir, actor.getContainer().getName() + '-' + actor.getName());
@@ -65,32 +64,32 @@ module.exports.initSync = function(opts) {
 /**  Take a key and return its value from the local storage if the key exists,
  * otherwise, return null.
  */
-module.exports.getItem = function(key) {
+module.exports.getItem = function (key) {
     return storage.getItem(key);
 };
 
 
 /** Take a key-value pair and store the pair into the local storage. */
-module.exports.setItem = function(key, value) {
+module.exports.setItem = function (key, value) {
     storage.setItem(key, value);
 };
 
 /** Take a key and remove it from the local storage. */
-module.exports.removeItem = function(key) {
+module.exports.removeItem = function (key) {
     storage.removeItem(key);
 };
 
 /** Remove all keys in the local storage. */
-module.exports.clear = function() {
+module.exports.clear = function () {
     storage.clear();
 };
 
 /** Return a key with index n, or null if it is not present. */
-module.exports.key = function(n) {
+module.exports.key = function (n) {
     return storage.key(n);
 };
 
 /** Return the number of keys stored in the local storage. */
-module.exports.length = function() {
+module.exports.length = function () {
     return storage.length();
 };

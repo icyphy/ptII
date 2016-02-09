@@ -1,4 +1,4 @@
-// Copyright (c) 2014-2015 The Regents of the University of California.
+// Copyright (c) 2014-2016 The Regents of the University of California.
 // All rights reserved.
 
 // Permission is hereby granted, without written agreement and without
@@ -32,25 +32,30 @@
  *  @version $$Id$$
  */
 
-exports.setup = function() {
-    this.input("suppress", {'value':false, 'type': "boolean"});
+exports.setup = function () {
+    this.input("suppress", {
+        'value': false,
+        'type': "boolean"
+    });
     this.input("produce");
-    this.output("output", {'type':"number"});
+    this.output("output", {
+        'type': "number"
+    });
 }
 var count;
-var handleTimeout = function() {
+var handleTimeout = function () {
     this.send('produce', true);
 };
 
-var inputHandler = function() {
+var inputHandler = function () {
     count = count + 1;
     if (!this.get('suppress')) {
         this.send('output', count);
     }
 };
 
-exports.initialize = function() {
-	this.addInputHandler('produce', inputHandler.bind(this));
+exports.initialize = function () {
+    this.addInputHandler('produce', inputHandler.bind(this));
     count = 0;
     setInterval(handleTimeout.bind(this), 1000);
 }

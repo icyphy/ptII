@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -56,35 +56,35 @@ var helper = new ContextAwareHelper();
 /** 
  * Use a helper class to return the list of data to be extracted from the GSN service.
  */
-exports.gsnServices=function() {
+exports.gsnServices = function () {
     return Java.from(helper.getGsnOutput());
 };
 
 /** 
  * Use a helper class to return the list of data to be extracted from  the Firebase service.
  */
-exports.firebaseServices = function() {
+exports.firebaseServices = function () {
     return Java.from(helper.getFirebaseOutput());
 };
 
 /** 
  * Use a helper class to return the list of data to be extracted from  the Paraimpu service
  */
-exports.paraimpuServices = function() {
+exports.paraimpuServices = function () {
     return Java.from(helper.getParaimpuOutput());
 };
 
 /**
  * Use a helper class to return a list of known REST services
  */
-exports.services = function() {
+exports.services = function () {
     return Java.from(helper.availableServices());
 };
 
 /**
  * Use a helper class to convert xml data format to json data format.
  */
-exports.xmlToJson= function(response) {
+exports.xmlToJson = function (response) {
     return Java.from(helper.convertXMLtoJSON(response));
 };
 
@@ -98,7 +98,7 @@ function DiscoveryOfRESTService() {
     var self = this;
     var serviceParam;
     /** Discover IoT services */
-    this.discoverServices = function() {
+    this.discoverServices = function () {
         var currentService;
         currentService = helper.getSelectedService();
         serviceParam = helper.getSelectedServiceParameter(currentService);

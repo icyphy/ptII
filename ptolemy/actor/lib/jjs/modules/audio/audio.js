@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -30,7 +30,7 @@
  * @module audio
  * @author Edward A. Lee
  */
- 
+
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
 /*globals Java, exports */
@@ -57,11 +57,11 @@ var LiveSound = Java.type('ptolemy.media.javasound.LiveSound');
  *   FIXME properties of the audio such as sample rate, etc. Provide reasonable
  *   defaults.
  */
-exports.Player = function(options) {
+exports.Player = function (options) {
     // Provide default values for options using the following common JavaScript idiom.
     options = options || {};
     this.foo = options.foo || 80;
-    
+
     LiveSound.setSampleRate(8000);
     // Start playback.
     LiveSound.startPlayback(this);
@@ -70,13 +70,13 @@ exports.Player = function(options) {
 /** Play audio data.
  *  @param data An array of numbers in the range -1 to 1 to be played.
  */
-exports.Player.prototype.play = function(data) {
+exports.Player.prototype.play = function (data) {
     // NOTE: Convert array into 2-D array required by LiveSound.
     LiveSound.putSamples(this, [data]);
 };
 
 /** Stop the player and free audio resources. */
-exports.Player.prototype.stop = function() {
+exports.Player.prototype.stop = function () {
     LiveSound.stopPlayback(this);
 };
 
@@ -98,7 +98,7 @@ exports.Player.prototype.stop = function() {
  *   FIXME properties of the audio such as sample rate, etc. Provide reasonable
  *   defaults.
  */
-exports.Capture = function(options) {
+exports.Capture = function (options) {
     LiveSound.setSampleRate(8000);
     // Start playback.
     LiveSound.startCapture(this);
@@ -107,7 +107,7 @@ exports.Capture = function(options) {
 /** Capture audio data.
  *  @return An array of numbers in the range -1 to 1 captured from the audio.
  */
-exports.Capture.prototype.get = function(data) {
+exports.Capture.prototype.get = function (data) {
     // NOTE: 2-D double[][] array returned by LiveSound.
     var inputData = LiveSound.getSamples(this);
     // Could use Nashorn-specific conversion to convert to a JavaScript array,
@@ -120,10 +120,10 @@ exports.Capture.prototype.get = function(data) {
         var channels = inputData[0];
         return channels;
     }
-    throw("No audio data returned.");
+    throw ("No audio data returned.");
 };
 
 /** Stop the capture and free audio resources. */
-exports.Capture.prototype.stop = function() {
+exports.Capture.prototype.stop = function () {
     LiveSound.stopCapture(this);
 };

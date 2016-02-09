@@ -41,315 +41,315 @@
 // loaded.  Evaluating this returned function returns a new function that
 // implements the requires(module) capability.
 //
-(function ( rootDir, modulePaths, hooks ) {
+(function (rootDir, modulePaths, hooks) {
 
 
-  var File = java.io.File,
-    FileReader = java.io.FileReader,
-    BufferedReader = java.io.BufferedReader;
-    
-  // var readModuleFromDirectoryOLD = function( dir ) {
+    var File = java.io.File,
+        FileReader = java.io.FileReader,
+        BufferedReader = java.io.BufferedReader;
 
-  //   // look for a package.json file
-  //   var pkgJsonFile = new File( dir, './package.json' );
-  //   if ( pkgJsonFile.exists() ) {
-    
-  //     // --- Modified from original by eal@berkeley.edu because scload is not defined.
-  //     // var pkg = scload( pkgJsonFile );
-  //     var json = '';
-  //     buffered = new BufferedReader(new FileReader(pkgJsonFile));
-  //     while (( line = buffered.readLine()) !== null ) {
-  //       json += line + '\n';
-  //     }
-  //     buffered.close(); // close the stream so there's no file locks
-  //     var pkg = JSON.parse(json);
-  //     // --- End of modified portion.
-      
-  //     var mainFile = new File( dir, pkg.main );
-  //     if ( mainFile.exists() ) {
-  //       return mainFile;
-  //     } else {
-  //       // --- Modified from original by eal@berkeley.edu to look for index.js.
-  //       mainFile = new File( dir, 'index.js');
-  //       if ( mainFile.exists() ) {
-  //           return mainFile;
-  //       } else {
-  //           return null;
-  //       }
-  //     }
-  //   } else {
-  //     // look for an index.js file
-  //     var indexJsFile = new File( dir, './index.js' );
-  //     if ( indexJsFile.exists() ) {
-  //       return indexJsFile;
-  //     } else { 
-  //       return null;
-  //     }
-  //   }
-  // };
+    // var readModuleFromDirectoryOLD = function( dir ) {
+
+    //   // look for a package.json file
+    //   var pkgJsonFile = new File( dir, './package.json' );
+    //   if ( pkgJsonFile.exists() ) {
+
+    //     // --- Modified from original by eal@berkeley.edu because scload is not defined.
+    //     // var pkg = scload( pkgJsonFile );
+    //     var json = '';
+    //     buffered = new BufferedReader(new FileReader(pkgJsonFile));
+    //     while (( line = buffered.readLine()) !== null ) {
+    //       json += line + '\n';
+    //     }
+    //     buffered.close(); // close the stream so there's no file locks
+    //     var pkg = JSON.parse(json);
+    //     // --- End of modified portion.
+
+    //     var mainFile = new File( dir, pkg.main );
+    //     if ( mainFile.exists() ) {
+    //       return mainFile;
+    //     } else {
+    //       // --- Modified from original by eal@berkeley.edu to look for index.js.
+    //       mainFile = new File( dir, 'index.js');
+    //       if ( mainFile.exists() ) {
+    //           return mainFile;
+    //       } else {
+    //           return null;
+    //       }
+    //     }
+    //   } else {
+    //     // look for an index.js file
+    //     var indexJsFile = new File( dir, './index.js' );
+    //     if ( indexJsFile.exists() ) {
+    //       return indexJsFile;
+    //     } else { 
+    //       return null;
+    //     }
+    //   }
+    // };
 
 
-  var readModuleFromDirectory = function( dir ) {
-    // --- Modified from original by cxh@eecs.berkeley.edu to look in the classpath. */
-    var JNLPUtilities = Java.type('ptolemy.actor.gui.JNLPUtilities');
+    var readModuleFromDirectory = function (dir) {
+        // --- Modified from original by cxh@eecs.berkeley.edu to look in the classpath. */
+        var JNLPUtilities = Java.type('ptolemy.actor.gui.JNLPUtilities');
 
-    // look for a package.json file
-    // --- Modified from original by cxh@eecs.berkeley.edu to look in the classpath. */
-    //var pkgJsonFile = new File( dir, './package.json' );
-    var pkgJsonFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(dir + '/package.json' );
-    if ( pkgJsonFile !== null && pkgJsonFile.exists() ) {
-    
-      // --- Modified from original by eal@berkeley.edu because scload is not defined.
-      // var pkg = scload( pkgJsonFile );
-      var json = '';
-      buffered = new BufferedReader(new FileReader(pkgJsonFile));
-      while (( line = buffered.readLine()) !== null ) {
-        json += line + '\n';
-      }
-      buffered.close(); // close the stream so there's no file locks
-      var pkg = JSON.parse(json);
-      // --- End of modified portion.
-      
-      var mainFile = new File( dir, pkg.main );
-      if ( mainFile.exists() ) {
-        return mainFile;
-      } else {
-        // --- Modified from original by eal@berkeley.edu to look for index.js.
-        mainFile = new File( dir, 'index.js');
-        if ( mainFile.exists() ) {
-            return mainFile;
-        } else {
-            return null;
-        }
-      }
-    } else {
-      // look for an index.js file
-      // --- Modified from original by cxh@eecs.berkeley.edu to look in the classpath. */
-      //var indexJsFile = new File( dir, './index.js' );
-      var indexJsFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(dir + '/index.json' );
-      if ( indexJsFile !== null && indexJsFile.exists() ) {
-        return indexJsFile;
-      } else { 
-        return null;
-      }
-    }
-  };
-    
-  var fileExists = function( file ) {
-    if ( file.isDirectory() ) {
-      return readModuleFromDirectory( file );
-    } else {
-      return file;
-    }
-  };
+        // look for a package.json file
+        // --- Modified from original by cxh@eecs.berkeley.edu to look in the classpath. */
+        //var pkgJsonFile = new File( dir, './package.json' );
+        var pkgJsonFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(dir + '/package.json');
+        if (pkgJsonFile !== null && pkgJsonFile.exists()) {
 
-  var _canonize = function(file){ 
-    return "" + file.canonicalPath.replaceAll("\\\\","/"); 
-  };
-
-  var resolveModuleToFile = function ( moduleName, parentDir, modulePaths ) {
-  
-    // --- Modified from original by cxh@eecs.berkeley.edu to search in the classpath.
-    var JNLPUtilities = Java.type('ptolemy.actor.gui.JNLPUtilities');
-    var moduleFilePath = Java.type('ptolemy.util.FileUtilities').nameToFile(
-        '$CLASSPATH/ptolemy/actor/lib/jjs/', null).getAbsolutePath();
-    if ( moduleName.match( /^[^\.\/]/ ) ) {
-      // it's a module named like so ... 'events' , 'net/http'
-      for ( var i = 0; i < modulePaths.length; i++ ) {
-        // Remove the value of __moduleFile from the start of modulePaths.
-        var shortModulePath = modulePaths[i].replace(moduleFilePath, 'ptolemy/actor/lib/jjs');
-        var classPathFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(shortModulePath + moduleName);
-        if (classPathFile !== null) {
-          if (classPathFile.isFile()) {
-            return classPathFile;
-          } else {
-            // FIXME: check to see if it has a trailing /
-            var resourceDirectory = classPathFile.toString();
-            return readModuleFromDirectory(resourceDirectory.substr(0, resourceDirectory.length()));
-          }
-        } else {
-          // try appending a .js to the end.
-          classPathFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(shortModulePath + moduleName + '.js');
-          if (classPathFile !== null && classPathFile.isFile() ) {
-            return classPathFile;
-          } else {
-            // Search for moduleName/moduleName.js.
-            classPathFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(shortModulePath + moduleName + "/" + moduleName + '.js');
-            if (classPathFile !== null && classPathFile.isFile() ) {
-              return classPathFile;
+            // --- Modified from original by eal@berkeley.edu because scload is not defined.
+            // var pkg = scload( pkgJsonFile );
+            var json = '';
+            buffered = new BufferedReader(new FileReader(pkgJsonFile));
+            while ((line = buffered.readLine()) !== null) {
+                json += line + '\n';
             }
-          }
-        }
-      }
-    } else {
-      // it's of the form ./path
-      var classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(parentDir + "/" + moduleName.substr(2));
-      if (classPathFile2 !== null && classPathFile2.isFile() ) {
-        return classPathFile2;
-      } else {
-        // try appending a .js to the end
-          classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile( parentDir + "/" + moduleName + ".js");
-        if (classPathFile2 !== null && classPathFile2.isFile() ) {
-         return classPathFile2;
+            buffered.close(); // close the stream so there's no file locks
+            var pkg = JSON.parse(json);
+            // --- End of modified portion.
+
+            var mainFile = new File(dir, pkg.main);
+            if (mainFile.exists()) {
+                return mainFile;
+            } else {
+                // --- Modified from original by eal@berkeley.edu to look for index.js.
+                mainFile = new File(dir, 'index.js');
+                if (mainFile.exists()) {
+                    return mainFile;
+                } else {
+                    return null;
+                }
+            }
         } else {
-          classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(moduleName + ".js");
-          if (classPathFile2 !== null && classPathFile2.isFile() ) {
-            return classPathFile2;
-          }
+            // look for an index.js file
+            // --- Modified from original by cxh@eecs.berkeley.edu to look in the classpath. */
+            //var indexJsFile = new File( dir, './index.js' );
+            var indexJsFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(dir + '/index.json');
+            if (indexJsFile !== null && indexJsFile.exists()) {
+                return indexJsFile;
+            } else {
+                return null;
+            }
         }
-      }
-    }
-    // --- End of modified section.      
-
-    // --- Modified from original by eal@berkeley.edu to search cwd last rather than first.
-    // var file = new File(moduleName);
-    // if ( file.exists() ) {
-    //   return fileExists(file);
-    // }
-    // --- End of modified section.
-    // if (typeof moduleName !== 'string') {
-    //     throw 'Invalid module name: ' + JSON.stringify(moduleName);
-    // }
-    // if ( moduleName.match( /^[^\.\/]/ ) ) {
-    //   // it's a module named like so ... 'events' , 'net/http'
-    //   //
-    //   var resolvedFile;
-    //   for ( var i = 0; i < modulePaths.length; i++ ) {
-    //     resolvedFile = new File( modulePaths[i] + moduleName );
-    //     if ( resolvedFile.exists() ) {
-    //       return fileExists( resolvedFile );
-    //     } else {
-    //       // try appending a .js to the end
-    //       resolvedFile = new File( modulePaths[i] + moduleName + '.js' );
-    //       if ( resolvedFile.exists() ) {
-    //         return resolvedFile;
-    //       }
-    //     }
-    //   }
-    // } else {
-    //   // it's of the form ./path
-    //   file = new File( parentDir, moduleName );
-    //   if ( file.exists() ) {
-    //     return fileExists(file);
-    //   } else { 
-    //     // try appending a .js to the end
-    //     var pathWithJSExt = file.canonicalPath + '.js';
-    //     file = new File( parentDir, pathWithJSExt);
-    //     if ( file.exists() ) {
-    //       return file;
-    //     } else {
-    //       file = new File( pathWithJSExt );
-    //       if ( file.exists() ) {
-    //         return file;
-    //       }
-    //     }
-    //   }
-    // }
-    // // --- Modified from original by eal@berkeley.edu to search cwd last rather than first.
-    // var file = new File(moduleName);
-    // if ( file.exists() ) {
-    //   return fileExists(file);
-    // }
-    // // --- End of modified section.
-
-    return null;
-  };
-
-  var _loadedModules = {};
-  var fmt = java.lang.String.format;
-  /*
-   require() function implementation
-   */
-  var _require = function( parentFile, path, modulePaths ) {
-    var file,
-	canonizedFilename,
-	moduleInfo,
-	buffered,
-        head = '(function(exports,module,require,__filename,__dirname){ ',
-	code = '',
-	tail = '})',
-	line = null;
-    
-    file = resolveModuleToFile(path, parentFile, modulePaths);
-    if ( !file ) {
-      var errMsg = '' + fmt("require() failed to find matching file for module '%s' " + 
-                            "in working directory '%s' ", [path, parentFile.canonicalPath]);
-      if ( ! ( (''+path).match( /^\./ ) ) ) {
-        errMsg = errMsg + ' and not found in paths ' + JSON.stringify(modulePaths);
-      }
-      throw errMsg;
-    }
-    canonizedFilename = _canonize(file);
-    
-    moduleInfo = _loadedModules[canonizedFilename];
-    if ( moduleInfo ) {
-      return moduleInfo;
-    }
-    if ( hooks ) {
-      hooks.loading( canonizedFilename );
-    }
-    buffered = new BufferedReader(new FileReader(file));
-    while ( ( line = buffered.readLine()) !== null ) {
-      code += line + '\n';
-    }
-    buffered.close(); // close the stream so there's no file locks
-
-    moduleInfo = {
-      loaded: false,
-      id: canonizedFilename,
-      exports: {},
-      require: _requireClosure(file.parentFile)
     };
-    code = head + code + tail;
 
-    _loadedModules[canonizedFilename] = moduleInfo;
-    var compiledWrapper = null;
-    try {
-        compiledWrapper = eval(code);
-    } catch (e) {
-      var message = e.message;
-      if (!message) {
-        message = e.toString();
-      }
-      throw new Error( "Error evaluating module " + path +
-                       " line #" + e.lineNumber +
-                       " : " + message + "\nIn file: " + canonizedFilename);
-    }
-    var __dirname = '' + file.parentFile.canonicalPath;
-    var parameters = [
-      moduleInfo.exports, /* exports */
-      moduleInfo,         /* module */
-      moduleInfo.require, /* require */
-      canonizedFilename,  /* __filename */
-      __dirname           /* __dirname */
-    ];
-    // alert(JSON.stringify(parameters));
-    try {
-      compiledWrapper
-        .apply(moduleInfo.exports,  /* this */
-               parameters);   
-    } catch (e) {
-      var exceptionMessage = e.message;
-      if (!exceptionMessage) {
-        exceptionMessage = e.toString();
-      }
-      throw new Error( "Error executing module " + path +
-                       " line #" + e.lineNumber +
-                       " : " + exceptionMessage + "\nIn file: " + canonizedFilename);
-    }
-    if ( hooks ) { 
-      hooks.loaded( canonizedFilename );
-    }
-    moduleInfo.loaded = true;
-    return moduleInfo;
-  };
-
-  var _requireClosure = function( parent ) {
-    return function( path ) {
-      var module = _require( parent, path, modulePaths );
-      return module.exports;
+    var fileExists = function (file) {
+        if (file.isDirectory()) {
+            return readModuleFromDirectory(file);
+        } else {
+            return file;
+        }
     };
-  };
-  return _requireClosure( new java.io.File(rootDir) );
-  // last line deliberately has no semicolon!
+
+    var _canonize = function (file) {
+        return "" + file.canonicalPath.replaceAll("\\\\", "/");
+    };
+
+    var resolveModuleToFile = function (moduleName, parentDir, modulePaths) {
+
+        // --- Modified from original by cxh@eecs.berkeley.edu to search in the classpath.
+        var JNLPUtilities = Java.type('ptolemy.actor.gui.JNLPUtilities');
+        var moduleFilePath = Java.type('ptolemy.util.FileUtilities').nameToFile(
+            '$CLASSPATH/ptolemy/actor/lib/jjs/', null).getAbsolutePath();
+        if (moduleName.match(/^[^\.\/]/)) {
+            // it's a module named like so ... 'events' , 'net/http'
+            for (var i = 0; i < modulePaths.length; i++) {
+                // Remove the value of __moduleFile from the start of modulePaths.
+                var shortModulePath = modulePaths[i].replace(moduleFilePath, 'ptolemy/actor/lib/jjs');
+                var classPathFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(shortModulePath + moduleName);
+                if (classPathFile !== null) {
+                    if (classPathFile.isFile()) {
+                        return classPathFile;
+                    } else {
+                        // FIXME: check to see if it has a trailing /
+                        var resourceDirectory = classPathFile.toString();
+                        return readModuleFromDirectory(resourceDirectory.substr(0, resourceDirectory.length()));
+                    }
+                } else {
+                    // try appending a .js to the end.
+                    classPathFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(shortModulePath + moduleName + '.js');
+                    if (classPathFile !== null && classPathFile.isFile()) {
+                        return classPathFile;
+                    } else {
+                        // Search for moduleName/moduleName.js.
+                        classPathFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(shortModulePath + moduleName + "/" + moduleName + '.js');
+                        if (classPathFile !== null && classPathFile.isFile()) {
+                            return classPathFile;
+                        }
+                    }
+                }
+            }
+        } else {
+            // it's of the form ./path
+            var classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(parentDir + "/" + moduleName.substr(2));
+            if (classPathFile2 !== null && classPathFile2.isFile()) {
+                return classPathFile2;
+            } else {
+                // try appending a .js to the end
+                classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(parentDir + "/" + moduleName + ".js");
+                if (classPathFile2 !== null && classPathFile2.isFile()) {
+                    return classPathFile2;
+                } else {
+                    classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(moduleName + ".js");
+                    if (classPathFile2 !== null && classPathFile2.isFile()) {
+                        return classPathFile2;
+                    }
+                }
+            }
+        }
+        // --- End of modified section.      
+
+        // --- Modified from original by eal@berkeley.edu to search cwd last rather than first.
+        // var file = new File(moduleName);
+        // if ( file.exists() ) {
+        //   return fileExists(file);
+        // }
+        // --- End of modified section.
+        // if (typeof moduleName !== 'string') {
+        //     throw 'Invalid module name: ' + JSON.stringify(moduleName);
+        // }
+        // if ( moduleName.match( /^[^\.\/]/ ) ) {
+        //   // it's a module named like so ... 'events' , 'net/http'
+        //   //
+        //   var resolvedFile;
+        //   for ( var i = 0; i < modulePaths.length; i++ ) {
+        //     resolvedFile = new File( modulePaths[i] + moduleName );
+        //     if ( resolvedFile.exists() ) {
+        //       return fileExists( resolvedFile );
+        //     } else {
+        //       // try appending a .js to the end
+        //       resolvedFile = new File( modulePaths[i] + moduleName + '.js' );
+        //       if ( resolvedFile.exists() ) {
+        //         return resolvedFile;
+        //       }
+        //     }
+        //   }
+        // } else {
+        //   // it's of the form ./path
+        //   file = new File( parentDir, moduleName );
+        //   if ( file.exists() ) {
+        //     return fileExists(file);
+        //   } else { 
+        //     // try appending a .js to the end
+        //     var pathWithJSExt = file.canonicalPath + '.js';
+        //     file = new File( parentDir, pathWithJSExt);
+        //     if ( file.exists() ) {
+        //       return file;
+        //     } else {
+        //       file = new File( pathWithJSExt );
+        //       if ( file.exists() ) {
+        //         return file;
+        //       }
+        //     }
+        //   }
+        // }
+        // // --- Modified from original by eal@berkeley.edu to search cwd last rather than first.
+        // var file = new File(moduleName);
+        // if ( file.exists() ) {
+        //   return fileExists(file);
+        // }
+        // // --- End of modified section.
+
+        return null;
+    };
+
+    var _loadedModules = {};
+    var fmt = java.lang.String.format;
+    /*
+     require() function implementation
+     */
+    var _require = function (parentFile, path, modulePaths) {
+        var file,
+            canonizedFilename,
+            moduleInfo,
+            buffered,
+            head = '(function(exports,module,require,__filename,__dirname){ ',
+            code = '',
+            tail = '})',
+            line = null;
+
+        file = resolveModuleToFile(path, parentFile, modulePaths);
+        if (!file) {
+            var errMsg = '' + fmt("require() failed to find matching file for module '%s' " +
+                "in working directory '%s' ", [path, parentFile.canonicalPath]);
+            if (!(('' + path).match(/^\./))) {
+                errMsg = errMsg + ' and not found in paths ' + JSON.stringify(modulePaths);
+            }
+            throw errMsg;
+        }
+        canonizedFilename = _canonize(file);
+
+        moduleInfo = _loadedModules[canonizedFilename];
+        if (moduleInfo) {
+            return moduleInfo;
+        }
+        if (hooks) {
+            hooks.loading(canonizedFilename);
+        }
+        buffered = new BufferedReader(new FileReader(file));
+        while ((line = buffered.readLine()) !== null) {
+            code += line + '\n';
+        }
+        buffered.close(); // close the stream so there's no file locks
+
+        moduleInfo = {
+            loaded: false,
+            id: canonizedFilename,
+            exports: {},
+            require: _requireClosure(file.parentFile)
+        };
+        code = head + code + tail;
+
+        _loadedModules[canonizedFilename] = moduleInfo;
+        var compiledWrapper = null;
+        try {
+            compiledWrapper = eval(code);
+        } catch (e) {
+            var message = e.message;
+            if (!message) {
+                message = e.toString();
+            }
+            throw new Error("Error evaluating module " + path +
+                " line #" + e.lineNumber +
+                " : " + message + "\nIn file: " + canonizedFilename);
+        }
+        var __dirname = '' + file.parentFile.canonicalPath;
+        var parameters = [
+            moduleInfo.exports, /* exports */
+            moduleInfo, /* module */
+            moduleInfo.require, /* require */
+            canonizedFilename, /* __filename */
+            __dirname /* __dirname */
+        ];
+        // alert(JSON.stringify(parameters));
+        try {
+            compiledWrapper
+                .apply(moduleInfo.exports, /* this */
+                    parameters);
+        } catch (e) {
+            var exceptionMessage = e.message;
+            if (!exceptionMessage) {
+                exceptionMessage = e.toString();
+            }
+            throw new Error("Error executing module " + path +
+                " line #" + e.lineNumber +
+                " : " + exceptionMessage + "\nIn file: " + canonizedFilename);
+        }
+        if (hooks) {
+            hooks.loaded(canonizedFilename);
+        }
+        moduleInfo.loaded = true;
+        return moduleInfo;
+    };
+
+    var _requireClosure = function (parent) {
+        return function (path) {
+            var module = _require(parent, path, modulePaths);
+            return module.exports;
+        };
+    };
+    return _requireClosure(new java.io.File(rootDir));
+    // last line deliberately has no semicolon!
 })

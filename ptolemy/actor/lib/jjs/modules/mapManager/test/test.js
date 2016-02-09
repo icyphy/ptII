@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -33,14 +33,14 @@
 
 
 mapManager = require('mapManager');
- 
- 
+
+
 //Test of maps
 
 console.log("****** Test of Maps ******");
 myCoords = new mapManager.CoordinateSystem("Joey");
 yourCoords = new mapManager.CoordinateSystem("Sally");
-myMap = new mapManager.Map("myMapName" , mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);
+myMap = new mapManager.Map("myMapName", mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);
 yourMap = new mapManager.Map("yourMapName", mapManager.SpaceTypeEnum.TOPOLOGICAL, yourCoords);
 badMap = new mapManager.Map("badMapName", mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);
 
@@ -66,5 +66,3 @@ console.log(cat.toString());
 //Big TODO!! Decide if an entity must be attached to a map when it is created.
 //If so, does that it get associated in the entity constructor,
 //in a mapManager function, or as a method of the map?
-
-

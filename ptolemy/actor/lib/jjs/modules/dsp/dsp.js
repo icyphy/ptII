@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -32,7 +32,7 @@
  * @module dsp
  * @author Ilge Akkaya
  */
- 
+
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
 /*globals Java, exports */
@@ -55,23 +55,23 @@
  *   defaults.
  */
 var SignalProcessing = Java.type('ptolemy.math.SignalProcessing');
- 
-exports.Signal = function(options) {
+
+exports.Signal = function (options) {
     // Provide default values for options using the following common JavaScript idiom.
 };
- 
+
 /** Return an FFT.
  *  @param data An array of numbers. 
  */
-exports.Signal.prototype.fft = function(data) {  
+exports.Signal.prototype.fft = function (data) {
     var outputReal = [];
     outputReal = Java.type('ptolemy.math.SignalProcessing')["FFTRealOut(double[])"](data);
     var outputImag = [];
     outputImag = Java.type('ptolemy.math.SignalProcessing')["FFTImagOut(double[])"](data);
-    
+
     var output = {};
     output.real = outputReal;
     output.imag = outputImag;
- 
-    return output; 
+
+    return output;
 };

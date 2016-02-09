@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -60,7 +60,7 @@ var maps = {};
 
 //Hash mapping (domainName, codomainName) pairs as keys to functions
 //This is a keyed hash
-var coordinateTransformations= {};
+var coordinateTransformations = {};
 
 //Hash mapping entity names to its entity
 //this is a simple hash
@@ -77,19 +77,19 @@ function _simpleHashToString(hash) {
 
     //This closure exists to protect the scope of "text" and i and hashNames when there is a recursive call
     //from the toString method below.
-    return function() {
+    return function () {
 
-	var hashNames = Object.keys(hash);
-	var text = "{ ";
-	for (var i = 0; i < hashNames.length; i++  ) {
-	    text += hashNames[i] +=": " + hash[hashNames[i]].toString();
-	    if (i != (hashNames.length -1)) {
-		text += ", ";
-	    }
-	}
-	text += " }";
+        var hashNames = Object.keys(hash);
+        var text = "{ ";
+        for (var i = 0; i < hashNames.length; i++) {
+            text += hashNames[i] += ": " + hash[hashNames[i]].toString();
+            if (i != (hashNames.length - 1)) {
+                text += ", ";
+            }
+        }
+        text += " }";
 
-	return text;
+        return text;
     }();
 }
 
@@ -98,37 +98,37 @@ function _keyedHashToString(hash) {
 
     //This closure exists to protect the scope of "text" and i and hashNames when there is a recursive call
     //from the toString method below.
-    return function() {
-	var text = "{ ";
-	var hashNames = Object.keys(hash);
+    return function () {
+        var text = "{ ";
+        var hashNames = Object.keys(hash);
 
-	for (var i = 0; i < hashNames.length; i++  ) {
-	    text += _keyToStrings(hashNames[i]) + ": " + hash[hashNames[i]].toString();
-	    if (i != hashNames.length -1) {
-		text += ", ";
-	    }
-	}
+        for (var i = 0; i < hashNames.length; i++) {
+            text += _keyToStrings(hashNames[i]) + ": " + hash[hashNames[i]].toString();
+            if (i != hashNames.length - 1) {
+                text += ", ";
+            }
+        }
 
-	text += " }";
-	return text;
+        text += " }";
+        return text;
     }();
 }
 
 
 //argument must be an array of at least two strings
 //returns a string formatted with "x_" for arguments and "  " as a delimiter
-function _stringsToKey( stringArray) {
+function _stringsToKey(stringArray) {
     var x;
-    if (!  (stringArray instanceof Array)  ) {
-	throw "Incorrect arguments to _stringsToKey. Input is not an array";
+    if (!(stringArray instanceof Array)) {
+        throw "Incorrect arguments to _stringsToKey. Input is not an array";
     }
-    for ( x in stringArray) {
-	if ( typeof x !== "string") {
-	    throw "Incorrect arguments to _stringsToKey. Input is not an array of strings.";
-	}
+    for (x in stringArray) {
+        if (typeof x !== "string") {
+            throw "Incorrect arguments to _stringsToKey. Input is not an array of strings.";
+        }
     }
-    if ( stringArray.length < 2) {
-	throw "Incorrect arguments to _stringsToKey.";
+    if (stringArray.length < 2) {
+        throw "Incorrect arguments to _stringsToKey.";
     }
 
     var key = "";
@@ -137,13 +137,13 @@ function _stringsToKey( stringArray) {
 
     for (arg = 0; arg < stringArray.length; arg++) {
 
-	var word = stringArray[arg];
-	for (c = 0; c < word.length; c++) {
-	    key += ('_' + word.charAt(c)  );
-	}
-	if (arg != stringArray.length -1) {
-	    key += "  ";
-	}
+        var word = stringArray[arg];
+        for (c = 0; c < word.length; c++) {
+            key += ('_' + word.charAt(c));
+        }
+        if (arg != stringArray.length - 1) {
+            key += "  ";
+        }
     }
 
     return key;
@@ -151,13 +151,13 @@ function _stringsToKey( stringArray) {
 
 //argument is a string formatted with "x_" for arguments and "  " as a delimiter
 //returns an array of strings
-function _keyToStrings( key) {
-    if ( typeof key !== "string") {
-	throw "Incorrect arguments to _keyToStrings.";
+function _keyToStrings(key) {
+    if (typeof key !== "string") {
+        throw "Incorrect arguments to _keyToStrings.";
     }
 
-    if ( key.indexOf("  ") == -1) {
-	throw "key in _keyToStrings does not have a delimiter.";
+    if (key.indexOf("  ") == -1) {
+        throw "key in _keyToStrings does not have a delimiter.";
     }
 
     var c;
@@ -169,27 +169,27 @@ function _keyToStrings( key) {
     var state = "parse";
     var nextState;
 
-    for ( var i =0; i < key.length; i++) {
-	c = key.charAt(i);
-	if (state === "parse") {
-	    if (c === "_") {
-		nextState = "append";
-	    } else if (c === " ") {
-		nextState = "push";
-	    }
-	}
+    for (var i = 0; i < key.length; i++) {
+        c = key.charAt(i);
+        if (state === "parse") {
+            if (c === "_") {
+                nextState = "append";
+            } else if (c === " ") {
+                nextState = "push";
+            }
+        }
 
-	if (state === "append") {
-	    arg += c;
-	    nextState = "parse";
-	}
+        if (state === "append") {
+            arg += c;
+            nextState = "parse";
+        }
 
-	if (state === "push") {
-	    args.push(arg);
-	    arg = "";
-	    nextState = "parse";
-	    //Note that the current value of c is ignored.
-	}
+        if (state === "push") {
+            args.push(arg);
+            arg = "";
+            nextState = "parse";
+            //Note that the current value of c is ignored.
+        }
     }
     args.push(arg);
     return args;
@@ -207,12 +207,12 @@ function _keyToStrings( key) {
 //  	return _stringsToKey([sourceString, destinationString ]);
 // }
 
-function __coordinateTransformationKey( domainName, codomainName ) {
-    if (! ( typeof domainName === "string" && typeof codomainName === "string" )) {
-	throw "Incorrect arguments to _coordinateTransformationKey";
+function __coordinateTransformationKey(domainName, codomainName) {
+    if (!(typeof domainName === "string" && typeof codomainName === "string")) {
+        throw "Incorrect arguments to _coordinateTransformationKey";
     }
 
-    return _stringsToKey([domainName, codomainName ]);
+    return _stringsToKey([domainName, codomainName]);
 
 }
 
@@ -226,10 +226,10 @@ function __coordinateTransformationKey( domainName, codomainName ) {
  */
 
 exports.SpaceTypeEnum = {
-    EUCLIDEAN : "Euclidean",
-    METRIC : "Metric",
-    TOPOLOGICAL : "Topological",
-    SET : "Set"
+    EUCLIDEAN: "Euclidean",
+    METRIC: "Metric",
+    TOPOLOGICAL: "Topological",
+    SET: "Set"
 };
 
 
@@ -245,11 +245,11 @@ exports.SpaceTypeEnum = {
  * @function
  * @returns {string}
  */
-exports.localRepoToJSONString = function() {
+exports.localRepoToJSONString = function () {
     var data = {
-	"maps": maps,
-	"coordinateTransformations": coordinateTransformations,
-	"entities": entities
+        "maps": maps,
+        "coordinateTransformations": coordinateTransformations,
+        "entities": entities
     };
 
     return JSON.stringify(data);
@@ -261,7 +261,7 @@ exports.localRepoToJSONString = function() {
  * @function
  * @returns {string}
  */
-exports.mapsToJSONString = function() {
+exports.mapsToJSONString = function () {
     return JSON.stringify(maps);
 };
 
@@ -270,7 +270,7 @@ exports.mapsToJSONString = function() {
  * @function
  * @returns {string}
  */
-exports.coordinateTransformationsToJSONString = function() {
+exports.coordinateTransformationsToJSONString = function () {
     return JSON.stringify(coordinateTransformations);
 };
 
@@ -280,7 +280,7 @@ exports.coordinateTransformationsToJSONString = function() {
  * @function
  * @returns {string}
  */
-exports.entitiesToJSONString = function() {
+exports.entitiesToJSONString = function () {
     return JSON.stringify(entities);
 };
 
@@ -293,7 +293,7 @@ exports.entitiesToJSONString = function() {
  * @function
  * @returns {string}
  */
-exports.mapsToString = function() {
+exports.mapsToString = function () {
     return _simpleHashToString(maps);
 };
 
@@ -302,7 +302,7 @@ exports.mapsToString = function() {
  * @function
  * @returns {string}
  */
-exports.coordinateTransformationsToString = function() {
+exports.coordinateTransformationsToString = function () {
     return _keyedHashToString(coordinateTransformations);
 };
 
@@ -312,7 +312,7 @@ exports.coordinateTransformationsToString = function() {
  * @function
  * @returns {string}
  */
-exports.entitiesToString = function() {
+exports.entitiesToString = function () {
     return _simpleHashToString(entities);
 };
 
@@ -326,9 +326,9 @@ exports.entitiesToString = function() {
  * @function
  * @returns {void} - Clearing the repo always works.
  */
-exports.clearRepo = function() {
+exports.clearRepo = function () {
     maps = {};
-    coordinateTransformations= {};
+    coordinateTransformations = {};
     entities = {};
     return;
 };
@@ -345,30 +345,30 @@ exports.clearRepo = function() {
  * localRepoToJSONString()
  * @returns {boolean} if the input was an acceptably formatted repo.
  */
-exports.replaceRepo = function(repo) {
+exports.replaceRepo = function (repo) {
     if (typeof name !== "string") {
-	throw "Incorrect arguments to replaceRepo.";
+        throw "Incorrect arguments to replaceRepo.";
     }
 
     var receivedRepo;
     try {
-	receivedRepo = JSON.parse(repo);
+        receivedRepo = JSON.parse(repo);
     } catch (e) {
-	if (e instanceof SyntaxError) {
-	    return false;
-	} else {
-	    throw "JSON.parse threw a non-SyntaxError exception";
-	}
+        if (e instanceof SyntaxError) {
+            return false;
+        } else {
+            throw "JSON.parse threw a non-SyntaxError exception";
+        }
 
     }
 
-    if (! (receivedRepo.hasOwnProperty("maps") && receivedRepo.hasOwnProperty("coordinateTransformations") && receivedRepo.hasOwnProperty("entities") ) ) {
-	return false;
+    if (!(receivedRepo.hasOwnProperty("maps") && receivedRepo.hasOwnProperty("coordinateTransformations") && receivedRepo.hasOwnProperty("entities"))) {
+        return false;
     } else {
-	maps = receivedRepo.maps;
-	coordinateTransformations= receivedRepo.coordinateTransformations;
-	entities = receivedRepo.entities;
-	return true;
+        maps = receivedRepo.maps;
+        coordinateTransformations = receivedRepo.coordinateTransformations;
+        entities = receivedRepo.entities;
+        return true;
     }
 };
 
@@ -384,7 +384,7 @@ exports.replaceRepo = function(repo) {
 
 function Entity(name) {
     if (typeof name !== "string") {
-	throw "Incorrect arguments to Entity constructor.";
+        throw "Incorrect arguments to Entity constructor.";
     }
 
     this.name = name;
@@ -393,24 +393,24 @@ function Entity(name) {
     this.placements = {};
     this.occupancies = {};
 
-    this._key = function() {
-	return this.name;
+    this._key = function () {
+        return this.name;
     };
 
     /**
      * @function
      * @returns {string} string representation of this object.
      */
-    this.toString = function() {
-	return "{ " + "name: " + this.name + " }";
+    this.toString = function () {
+        return "{ " + "name: " + this.name + " }";
     };
 
     /**
      * @function
      * @returns {string} string representation of this entity's aliases.
      */
-    this.aliasesToString = function() {
-	return _simpleHashToString(this.aliases);
+    this.aliasesToString = function () {
+        return _simpleHashToString(this.aliases);
     };
 
     //Todo should this be registerAlias instead? What counts as registering or adding?
@@ -420,28 +420,28 @@ function Entity(name) {
      * @param {Entity} alias - The Entity on the different map
      * @returns {boolean} if the entity alias was successfully added returns true, false otherwise.
      */
-    this.addAlias = function( alias ) {
-	if (! ( alias instanceof Entity )) {
-	    throw "Incorrect arguments to addAlias.";
-	}
+    this.addAlias = function (alias) {
+        if (!(alias instanceof Entity)) {
+            throw "Incorrect arguments to addAlias.";
+        }
 
-	//Check to see if this entity has been registered.
-	if (! entities.hasOwnProperty(alias._key()) ) {
-	    throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity an alias.";
-	}
+        //Check to see if this entity has been registered.
+        if (!entities.hasOwnProperty(alias._key())) {
+            throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity an alias.";
+        }
 
-	//Check to see if alias for this entity has been registered. If not, throw exception.
-	if (! entities.hasOwnProperty(alias._key()) ) {
-	    throw "Attempt to add an unregistered entity as an alias to " + this.toString();
-	}
+        //Check to see if alias for this entity has been registered. If not, throw exception.
+        if (!entities.hasOwnProperty(alias._key())) {
+            throw "Attempt to add an unregistered entity as an alias to " + this.toString();
+        }
 
-	//Todo, check to make sure this logic is correct, I realize aliases can exist in code too
-	if ((alias === this) || this.aliases.hasOwnProperty(alias._key())) {
-	    return false;
-	} else {
-	    this.aliases[alias._key()] = true;
-	    return true;
-	}
+        //Todo, check to make sure this logic is correct, I realize aliases can exist in code too
+        if ((alias === this) || this.aliases.hasOwnProperty(alias._key())) {
+            return false;
+        } else {
+            this.aliases[alias._key()] = true;
+            return true;
+        }
     };
 
     /**
@@ -450,26 +450,26 @@ function Entity(name) {
      * @param {Placement} placement - The location of the entity with respect to its map
      * @returns {boolean} true if the location was successfully set, false otherwise.
      */
-    this.setPlacement = function(placement) {
-	if (! (placement instanceof Placement)) {
-	    throw "Incorrect arguments to setPosition.";
-	}
+    this.setPlacement = function (placement) {
+        if (!(placement instanceof Placement)) {
+            throw "Incorrect arguments to setPosition.";
+        }
 
-	//Check to see if this entity has been registered.
-	if (! entities.hasOwnProperty(this._key()) ) {
-	    throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity a position.";
-	}
+        //Check to see if this entity has been registered.
+        if (!entities.hasOwnProperty(this._key())) {
+            throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity a position.";
+        }
 
-	if (this.containingMap === null) {
-	    throw "This entity has not been placed on a map." + this.toString();
-	}
+        if (this.containingMap === null) {
+            throw "This entity has not been placed on a map." + this.toString();
+        }
 
-	if (this.placements.hasOwnProperty(placement._key())) {
-	    return false;
-	} else {
-	    this.placements[placement._key()] = placement;
-	    return true;
-	}
+        if (this.placements.hasOwnProperty(placement._key())) {
+            return false;
+        } else {
+            this.placements[placement._key()] = placement;
+            return true;
+        }
     };
 
     /**
@@ -477,8 +477,8 @@ function Entity(name) {
      * @function
      * @returns {object} Hash mapping placement keys to placements.
      */
-    this.getPlacements = function() {
-    	return this.placements;
+    this.getPlacements = function () {
+        return this.placements;
     };
 
     /**
@@ -486,8 +486,8 @@ function Entity(name) {
      * @function
      * @returns {string} Name of this entity.
      */
-    this.getName = function() {
-    	return this.name;
+    this.getName = function () {
+        return this.name;
     };
 
     /**
@@ -496,26 +496,26 @@ function Entity(name) {
      * @param {Occupancy} occupancy - The location of the entity with respect to its map
      * @returns {boolean} true if the location was successfully set, false otherwise.
      */
-    this.setOccupancy = function(occupancy) {
-	if (! (occupancy instanceof Occupancy)) {
-	    throw "Incorrect arguments to setPosition.";
-	}
+    this.setOccupancy = function (occupancy) {
+        if (!(occupancy instanceof Occupancy)) {
+            throw "Incorrect arguments to setPosition.";
+        }
 
-	//Check to see if this entity has been registered.
-	if (! entities.hasOwnProperty(this._key()) ) {
-	    throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity a position.";
-	}
+        //Check to see if this entity has been registered.
+        if (!entities.hasOwnProperty(this._key())) {
+            throw "This entity is unregistered." + this.toString() + " Cannot give an unregistered entity a position.";
+        }
 
-	if (this.containingMap === null) {
-	    throw "This entity has not been placed on a map." + this.toString();
-	}
+        if (this.containingMap === null) {
+            throw "This entity has not been placed on a map." + this.toString();
+        }
 
-	if (this.occupancies.hasOwnProperty(occupancy._key())) {
-	    return false;
-	} else {
-	    this.occupancies[occupancy._key()] = occupancy;
-	    return true;
-	}
+        if (this.occupancies.hasOwnProperty(occupancy._key())) {
+            return false;
+        } else {
+            this.occupancies[occupancy._key()] = occupancy;
+            return true;
+        }
     };
 }
 
@@ -528,16 +528,16 @@ exports.Entity = Entity;
  * @param {Entity} entity - The entity object to be registered by the map manager.
  * @returns {boolean} if the entity was successfully registered returns true, false otherwise.
  */
-exports.registerEntity = function(entity) {
-    if (! ( entity instanceof Entity) ) {
-	throw "Incorrect arguments to registerEntity.";
+exports.registerEntity = function (entity) {
+    if (!(entity instanceof Entity)) {
+        throw "Incorrect arguments to registerEntity.";
     }
 
-    if (entities.hasOwnProperty(entity._key()) ) {
-	return false;
+    if (entities.hasOwnProperty(entity._key())) {
+        return false;
     } else {
-	entities[entity._key()] = entity;
-	return true;
+        entities[entity._key()] = entity;
+        return true;
     }
 };
 
@@ -587,9 +587,9 @@ exports.registerEntity = function(entity) {
  * @constructor
  * @param {name} name - The name of the coordinate system.
  */
-function CoordinateSystem(name ) {
+function CoordinateSystem(name) {
     if (typeof name !== "string") {
-	throw "Incorrect arguments to CoordinateSystem constructor.";
+        throw "Incorrect arguments to CoordinateSystem constructor.";
     }
 
     this.name = name;
@@ -598,12 +598,12 @@ function CoordinateSystem(name ) {
      * @function
      * @returns {string} string representation of this object.
      */
-    this.toString = function() {
-	return name;
+    this.toString = function () {
+        return name;
     };
 }
 
-exports.CoordinateSystem =  CoordinateSystem;
+exports.CoordinateSystem = CoordinateSystem;
 
 //Todo should the domainName and codomainName be strings or actual coordinate system objects?
 //Todo break the assumption that there only has to be one transformation from a particular domain to codomain.
@@ -619,19 +619,19 @@ exports.CoordinateSystem =  CoordinateSystem;
  */
 
 
-exports.registerCoordinateTransformation = function registerCoordinateTransformation( domainName, codomainName, transformation ) {
-    if (! ( typeof domainName === "string" && typeof codomainName === "string" &&
-            typeof transformation === "function" )  ) {
-	throw "Incorrect arguments to addCoordinateTransformation constructor.";
+exports.registerCoordinateTransformation = function registerCoordinateTransformation(domainName, codomainName, transformation) {
+    if (!(typeof domainName === "string" && typeof codomainName === "string" &&
+            typeof transformation === "function")) {
+        throw "Incorrect arguments to addCoordinateTransformation constructor.";
     }
 
-    var key = __coordinateTransformationKey( domainName, codomainName );
+    var key = __coordinateTransformationKey(domainName, codomainName);
 
     if (coordinateTransformations.hasOwnProperty(key)) {
-	return false;
+        return false;
     } else {
-	coordinateTransformations[key] = transformation;
-	return true;
+        coordinateTransformations[key] = transformation;
+        return true;
     }
 };
 
@@ -643,14 +643,14 @@ exports.registerCoordinateTransformation = function registerCoordinateTransforma
  * @returns {boolean} A function that takes one argument,
  * a point in the domain, and returns a point in the codomain
  */
-exports.getCoordinateTransformation = function getCoordinateTransformation( domainName, codomainName) {
-    if (! ( typeof domainName === "string" && typeof codomainName === "string" )) {
-	throw "Incorrect arguments to getCoordinateTransformation constructor.";
+exports.getCoordinateTransformation = function getCoordinateTransformation(domainName, codomainName) {
+    if (!(typeof domainName === "string" && typeof codomainName === "string")) {
+        throw "Incorrect arguments to getCoordinateTransformation constructor.";
     }
 
-    var key = __coordinateTransformationKey( domainName, codomainName );
+    var key = __coordinateTransformationKey(domainName, codomainName);
 
-    return coordinateTransformations[ key ];
+    return coordinateTransformations[key];
 };
 
 //Todo, think through the possible messy complications of unregistering a coordinate transformation.
@@ -674,28 +674,28 @@ exports.getCoordinateTransformation = function getCoordinateTransformation( doma
 function Map(mapName, spaceType, coordinateSystem) {
 
     //Todo find a way to type check spaceType against SpaceTypeEnum
-    if (! ((coordinateSystem instanceof CoordinateSystem) &&( typeof mapName === "string" )) ) {
-	throw "Incorrect arguments to map constructor";
+    if (!((coordinateSystem instanceof CoordinateSystem) && (typeof mapName === "string"))) {
+        throw "Incorrect arguments to map constructor";
     }
     this.spaceType = spaceType;
     this.coordinateSystem = coordinateSystem;
     this.mapName = mapName;
     this.mapEntities = {}; //set of keys for entities this map contains
 
-    this._key = function() {
-	return mapName;
+    this._key = function () {
+        return mapName;
     };
 
-    this.mapEntitiesToString = function() {
-	return _simpleHashToString(this.mapEntities);
+    this.mapEntitiesToString = function () {
+        return _simpleHashToString(this.mapEntities);
     };
 
     /**
      * @function
      * @returns {string} string representation of this object.
      */
-    this.toString = function() {
-	return "{ mapName: " + mapName + ", spaceType: " + this.spaceType + ", coordinateSystem: " + this.coordinateSystem + " }";
+    this.toString = function () {
+        return "{ mapName: " + mapName + ", spaceType: " + this.spaceType + ", coordinateSystem: " + this.coordinateSystem + " }";
     };
 
     /**
@@ -704,28 +704,28 @@ function Map(mapName, spaceType, coordinateSystem) {
      * @param {Entity} entity - The entity to be attached to this map
      * @returns {boolean} if successful returns true, false otherwise.
      */
-    this.addEntity = function(entity) {
-	if ( ! (entity instanceof Entity )  ) {
-	    throw "Incorrect arguments to Map.addEntity.";
-	}
+    this.addEntity = function (entity) {
+        if (!(entity instanceof Entity)) {
+            throw "Incorrect arguments to Map.addEntity.";
+        }
 
-	if (! entities.hasOwnProperty(entity._key()) ) {
-	    throw "Cannot add unregistered entity to map" + entity.toString();
-	}
+        if (!entities.hasOwnProperty(entity._key())) {
+            throw "Cannot add unregistered entity to map" + entity.toString();
+        }
 
-	if (! maps.hasOwnProperty(this._key()) ) {
-	    throw "Cannot add an entity to an unregistred map" + this.toString();
-	}
+        if (!maps.hasOwnProperty(this._key())) {
+            throw "Cannot add an entity to an unregistred map" + this.toString();
+        }
 
-	if (this.mapEntities.hasOwnProperty(entity._key()) || entity.containingMap !== null ) {
-	    //The entity is already on this map or has already been assigned to a different map.
-	    return false;
+        if (this.mapEntities.hasOwnProperty(entity._key()) || entity.containingMap !== null) {
+            //The entity is already on this map or has already been assigned to a different map.
+            return false;
 
-	} else {
-	    this.mapEntities[entity._key()] = true;
-	    entity.containingMap = this._key();
-	    return true;
-	}
+        } else {
+            this.mapEntities[entity._key()] = true;
+            entity.containingMap = this._key();
+            return true;
+        }
     };
 
 
@@ -738,28 +738,28 @@ function Map(mapName, spaceType, coordinateSystem) {
      * @param {Entity} entity - The entity to be unattached from this map
      * @returns {boolean} if successful returns true, false otherwise.
      */
-    this.removeEntity = function(entity) {
-	if ( ! (entity instanceof Entity )  ) {
-	    throw "Incorrect arguments to Map.addEntity.";
-	}
+    this.removeEntity = function (entity) {
+        if (!(entity instanceof Entity)) {
+            throw "Incorrect arguments to Map.addEntity.";
+        }
 
-	if (! entities.hasOwnProperty(entity._key()) ) {
-	    throw "Cannot remove an unregistered entity from the map" + entity.toString();
-	}
+        if (!entities.hasOwnProperty(entity._key())) {
+            throw "Cannot remove an unregistered entity from the map" + entity.toString();
+        }
 
-	if (! maps.hasOwnProperty(this._key()) ) {
-	    throw "Cannot remove an entity from an unregistred map" + this.toString();
-	}
+        if (!maps.hasOwnProperty(this._key())) {
+            throw "Cannot remove an entity from an unregistred map" + this.toString();
+        }
 
-	if ((! this.mapEntities.hasOwnProperty(entity._key())) || (entity.containingMap !== this._key()) ) {
-	    //Entity had not been previously assigned to this map.
-	    return false;
+        if ((!this.mapEntities.hasOwnProperty(entity._key())) || (entity.containingMap !== this._key())) {
+            //Entity had not been previously assigned to this map.
+            return false;
 
-	} else {
-	    delete this.mapEntities[entity._key()];
-	    entity.containingMap = null;
-	    return true;
-	}
+        } else {
+            delete this.mapEntities[entity._key()];
+            entity.containingMap = null;
+            return true;
+        }
     };
 
 
@@ -771,9 +771,9 @@ function Map(mapName, spaceType, coordinateSystem) {
      * @param {number} width - The pixel height of the image.
      * @returns {string} An SVG image displaying the contents of the map.
      */
-    this.mapEntitiesToSVG = function(width, height) {
-        if ( ! ((typeof width === "number") && (typeof height === "number") ) ) {
-    	    throw "Incorrect arguments to mapEntitiesToSVG";
+    this.mapEntitiesToSVG = function (width, height) {
+        if (!((typeof width === "number") && (typeof height === "number"))) {
+            throw "Incorrect arguments to mapEntitiesToSVG";
         }
 
         console.log("function is called");
@@ -787,8 +787,8 @@ function Map(mapName, spaceType, coordinateSystem) {
         svgString += '<!-- Created by mapManager -->\n';
 
         //Set width and height
-        svgString +='<svg viewbox="0 0 100 100" preserveAspectRatio="xMidYMid meet" ';
-        svgString += 'width="' + width.toString() +  '" height="' + height.toString() + '">\n';
+        svgString += '<svg viewbox="0 0 100 100" preserveAspectRatio="xMidYMid meet" ';
+        svgString += 'width="' + width.toString() + '" height="' + height.toString() + '">\n';
 
         //Map boarder
         svgString += '<rect width="100" height="100" x="0" y="0" ';
@@ -797,39 +797,39 @@ function Map(mapName, spaceType, coordinateSystem) {
         console.log(this.mapEntities);
 
         //SVG content
-        for ( var eKey in this.mapEntities) {
-    	    var e = entities[eKey];
-    	    var placements = e.getPlacements();
+        for (var eKey in this.mapEntities) {
+            var e = entities[eKey];
+            var placements = e.getPlacements();
 
-    	    console.log("eKey is:" + eKey);
-    	    console.log("e is:" + e);
-    	    console.log("placements is:" + placements);
-    	    console.log("placement properties:" + Object.getOwnPropertyNames(e.getPlacements));
-    	    for ( var pKey in placements) {
-    		var p = placements[pKey];
-    		console.log("P is:" + p);
-    		var center = p.getCenter();
-    		//Only consider 2D coordinates
-    		console.log("center is" + center);
-    		if (center.length == 2 ) {
+            console.log("eKey is:" + eKey);
+            console.log("e is:" + e);
+            console.log("placements is:" + placements);
+            console.log("placement properties:" + Object.getOwnPropertyNames(e.getPlacements));
+            for (var pKey in placements) {
+                var p = placements[pKey];
+                console.log("P is:" + p);
+                var center = p.getCenter();
+                //Only consider 2D coordinates
+                console.log("center is" + center);
+                if (center.length == 2) {
 
-    		    //TODO fix this! This is wildly incorrect because of different coord systems for svg
-    		    //I'm just doing it now for testing.
-    		    var cx = center[0];
-    		    var cy = center[1];
-   		    svgString += '<circle cx="' + cx.toString() +'" cy="' + cy.toString() + '" r=".5"/>\n';
-   		    svgString += '<text x="' + cx.toString() +'" y="' + (cy-1).toString() +
-   			'" font-family="Verdana" font-size="2">\n'; //note the -1 y
-   			
-   		    svgString += e.getName() + '\n';
-    		    svgString += '</text>\n';
-    		}
-    	    }
+                    //TODO fix this! This is wildly incorrect because of different coord systems for svg
+                    //I'm just doing it now for testing.
+                    var cx = center[0];
+                    var cy = center[1];
+                    svgString += '<circle cx="' + cx.toString() + '" cy="' + cy.toString() + '" r=".5"/>\n';
+                    svgString += '<text x="' + cx.toString() + '" y="' + (cy - 1).toString() +
+                        '" font-family="Verdana" font-size="2">\n'; //note the -1 y
+
+                    svgString += e.getName() + '\n';
+                    svgString += '</text>\n';
+                }
+            }
         }
-        
+
         //close SVG
-        svgString +='</svg>';
-        
+        svgString += '</svg>';
+
         return svgString;
     };
 }
@@ -843,20 +843,20 @@ exports.Map = Map;
  * @param {Map} map - The map object to be registered by the map manager.
  * @returns {boolean} if the map was successfully registered returns true, false otherwise.
  */
-exports.registerMap = function(map) {
-    if (! (map instanceof Map) ) {
-	throw "Incorrect arguments to registerMap.";
+exports.registerMap = function (map) {
+    if (!(map instanceof Map)) {
+        throw "Incorrect arguments to registerMap.";
     }
 
     if (map === undefined) {
-	throw "undefined argument to registerMap.";
+        throw "undefined argument to registerMap.";
     }
 
-    if (maps.hasOwnProperty( map._key()) ) {
-	return false;
+    if (maps.hasOwnProperty(map._key())) {
+        return false;
     } else {
-	maps[map._key()] = map;
-	return true;
+        maps[map._key()] = map;
+        return true;
     }
 };
 
@@ -874,13 +874,13 @@ exports.registerMap = function(map) {
 function MapSource(source) {
 
     if (typeof source !== "string") {
-	throw "Incorrect arguments to MapSource constructor";
+        throw "Incorrect arguments to MapSource constructor";
     }
 
     this.name = source;
 
-    this._key = function() {
-	return this.name;
+    this._key = function () {
+        return this.name;
     };
 }
 
@@ -897,17 +897,17 @@ exports.MapSource = MapSource;
  * @param {provenance} MapSource - The name of the source for this observation.
  * @param {timestamp} Date - The UTC timestamp for this observation (the time it happened, not when it was recorded).
  */
-function ObservationMetadata(provenance, timestamp ) {
+function ObservationMetadata(provenance, timestamp) {
 
-    if (! ( ( provenance instanceof MapSource ) && (typeof timestamp === "number")) ) {
-	throw "Incorrect arguments to ObservationMetadata constructor";
+    if (!((provenance instanceof MapSource) && (typeof timestamp === "number"))) {
+        throw "Incorrect arguments to ObservationMetadata constructor";
     }
 
     this.provenance = provenance;
     this.timestamp = timestamp;
 
-    this._key = function() {
-	return _stringsToKey( [ provenance._key(), this.timestamp.toString() ]);
+    this._key = function () {
+        return _stringsToKey([provenance._key(), this.timestamp.toString()]);
     };
 }
 
@@ -932,11 +932,11 @@ var _globalPlacementID = 0;
  * of the positive y-axis and flat on the x-y plane.
  * This is done so uncertainty in the location of the center doesn't contaminate the shape of the entity.
  */
-function Placement(metadata, center, pose, shape ) {
+function Placement(metadata, center, pose, shape) {
 
-    if (! ( ( metadata instanceof ObservationMetadata ) && (center instanceof Array) &&
-	    (pose instanceof Quaternion ) && (shape instanceof Array)) ) {
-	throw "Incorrect arguments to Placment constructor";
+    if (!((metadata instanceof ObservationMetadata) && (center instanceof Array) &&
+            (pose instanceof Quaternion) && (shape instanceof Array))) {
+        throw "Incorrect arguments to Placment constructor";
     }
 
     this.metadata = metadata;
@@ -945,8 +945,8 @@ function Placement(metadata, center, pose, shape ) {
     this.shape = shape;
     this._placementID = _globalPlacementID++;
 
-    this._key = function() {
-	return _stringsToKey( [ this._placementID.toString(), this.metadata._key() ] );
+    this._key = function () {
+        return _stringsToKey([this._placementID.toString(), this.metadata._key()]);
     };
 
     /**
@@ -954,8 +954,8 @@ function Placement(metadata, center, pose, shape ) {
      * @function
      * @returns {array} The coordinate position describing the center of this entity.
      */
-    this.getCenter = function() {
-    	return this.center;
+    this.getCenter = function () {
+        return this.center;
     };
 }
 
@@ -972,9 +972,9 @@ exports.Placement = Placement;
  */
 function Quaternion(w, x, y, z) {
 
-    if (! ( ( typeof w === "number") && ( typeof x === "number") &&( typeof y === "number") &&
-	    ( typeof z === "number") )) {
-	throw "Incorrect arguments to Quaternion constructor";
+    if (!((typeof w === "number") && (typeof x === "number") && (typeof y === "number") &&
+            (typeof z === "number"))) {
+        throw "Incorrect arguments to Quaternion constructor";
     }
 
     this.w = w;
@@ -994,10 +994,10 @@ var _globalOccupancyID = 0;
  * @param {metadata} ObservationMetadata - Observation data for this map.
  * @param {grid} array - An occupancy grid of 1 to 3 dimensions. Values must be integers between 0 to 100.
  */
-function Occupancy(metadata, grid ) {
+function Occupancy(metadata, grid) {
 
-    if (! ( ( metadata instanceof ObservationMetadata ) && (grid instanceof Array) ) ) {
-	throw "Incorrect arguments to Occupancy constructor";
+    if (!((metadata instanceof ObservationMetadata) && (grid instanceof Array))) {
+        throw "Incorrect arguments to Occupancy constructor";
     }
 
     this.metadata = metadata;
@@ -1007,12 +1007,12 @@ function Occupancy(metadata, grid ) {
 
     var dataTemp = grid;
     while (dataTemp instanceof Array) {
-	this.dimensions.push( dataTemp.length );
-	dataTemp = dataTemp[0];
+        this.dimensions.push(dataTemp.length);
+        dataTemp = dataTemp[0];
     }
 
-    this._key = function() {
-	return _stringsToKey( [ this._occupancyID.toString(), this.metadata._key() ] );
+    this._key = function () {
+        return _stringsToKey([this._occupancyID.toString(), this.metadata._key()]);
     };
 
 }
@@ -1022,4 +1022,3 @@ exports.Occupancy = Occupancy;
 //******************************************************************************************
 //Relation Specific Functions
 //******************************************************************************************
-

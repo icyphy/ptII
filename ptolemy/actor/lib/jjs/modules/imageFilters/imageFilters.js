@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -161,12 +161,13 @@ var filters = {};
  *  on the current host.
  *  @return An array of filter names.
  */
-exports.filters = function() {
+exports.filters = function () {
     return ['Annotate', 'Average', 'BicubicScale', 'Block', 'Border', 'BoxBlur',
-            'Bump', 'ChannelMix', 'Chrome', 'Circle',
-            'ColorHalftone', 'Contour', 'Contrast', 'Crop',
-            'Crystallize',
-            'Gray', 'Invert', 'LensBlur', 'MotionDetector', 'Solarize', 'Threshold'];
+        'Bump', 'ChannelMix', 'Chrome', 'Circle',
+        'ColorHalftone', 'Contour', 'Contrast', 'Crop',
+        'Crystallize',
+        'Gray', 'Invert', 'LensBlur', 'MotionDetector', 'Solarize', 'Threshold'
+    ];
 };
 
 /** Invoke the named filter on the specified image with the specified
@@ -178,10 +179,10 @@ exports.filters = function() {
  *  @param options An object whose fields specify filter options.
  *  @return The filtered image.
  */
-exports.filter = function(image, filterName, options) {
+exports.filter = function (image, filterName, options) {
     image = image.asAWTImage();
     var filter = filters[filterName];
-    if (! filter) {
+    if (!filter) {
         var root = 'com.jhlabs.image.';
         var Filter = null;
         try {

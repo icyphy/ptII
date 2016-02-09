@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@ mapManager = require('mapManager');
 var outMessage = "";
 
 var myCoords = new CoordinateSystem("myCoordsName");
-var myMap = new mapManager.Map("myMapName" , mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);
+var myMap = new mapManager.Map("myMapName", mapManager.SpaceTypeEnum.EUCLIDEAN, myCoords);
 
 
 var cat = new mapManager.Entity("cat");
@@ -43,4 +43,3 @@ outMessage += dog.toString() + "\n";
 
 myMap.addEntity(cat);
 myMap.addEntity(dog);
-
