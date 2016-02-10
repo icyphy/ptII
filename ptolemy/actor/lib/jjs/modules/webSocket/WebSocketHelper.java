@@ -235,17 +235,22 @@ public class WebSocketHelper extends VertxHelperBase {
             // the director thread.  Otherwise, the stall is deferred to the director thread.
             if (_throttleFactor > 0) {
                 _issueResponse(() -> {
-                    try {
-                        long sleepTime;
-                        synchronized(WebSocketHelper.this) {
+                    long sleepTime = 0L;
+                    synchronized(WebSocketHelper.this) {
+                        // NOTE that _pendingOutputs may have already been drained.
+                        if (_pendingOutputs.size() > 0) {
                             sleepTime = _throttleFactor * (_pendingOutputs.size() - 1);
                         }
+                    }
+                    if (sleepTime > 0L) {
                         if (_DEBUG) {
                             _actor.log("Sleeping for " + sleepTime + " ms in thread " + Thread.currentThread());
                         }
-                        Thread.sleep(sleepTime);
-                    } catch (InterruptedException e) {
-                        // Ignore.
+                        try {
+                            Thread.sleep(sleepTime);
+                        } catch (InterruptedException e) {
+                            // Ignore.
+                        }
                     }
                 });
             }
@@ -497,7 +502,14 @@ public class WebSocketHelper extends VertxHelperBase {
                 // We choose "open".
                 // Issue the response in the verticle, not in the director thread,
                 // because the response may involve setting up listeners.
-                _currentObj.callMember("emit", "open");
+                // Grab a synchronization lock on the actor because JavaScript
+                // uses such a synchronization lock when invoking input handlers,
+                // and we need to make sure that the "open" handler and a "toSend"
+                // input handler are not executed simultaneously (to preserve the
+                // integrity of the pendingSends queue).
+                synchronized(_actor) {
+                    _currentObj.callMember("emit", "open");
+                }
 
                 // Send any pending messages.
                 // Synchronize to make sure no pending outputs are added while

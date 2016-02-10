@@ -122,7 +122,7 @@ exports.supportedSendTypes = function () {
  *  * sendType: The MIME type for outgoing messages, which defaults to 'application/json'.
  *  * connectTimeout: The time to wait before giving up on a connection, in milliseconds (defaults to 5000).
  *  * numberOfRetries: The number of times to retry connecting. Defaults to 10.
- *  * timeBetweenRetries: The time between retries, in milliseconds. Defaults to 100.
+ *  * timeBetweenRetries: The time between retries, in milliseconds. Defaults to 500.
  *  * discardMessagesBeforeOpen: If true, discard messages before the socket is open. Defaults to false.
  *  * throttleFactor: The number milliseconds to stall for each item that is queued waiting to be sent. Defaults to 0.
  *
@@ -136,7 +136,7 @@ exports.Client = function (options) {
     this.sendType = options.sendType || 'application/json';
     this.connectTimeout = options.connectTimeout || 5000;
     this.numberOfRetries = options.numberOfRetries || 10;
-    this.timeBetweenRetries = options.timeBetweenRetries || 100;
+    this.timeBetweenRetries = options.timeBetweenRetries || 500;
     this.discardMessagesBeforeOpen = options.discardMessagesBeforeOpen || false;
     this.throttleFactor = options.throttleFactor || 0;
     this.helper = WebSocketHelper.createClientSocket(
@@ -256,7 +256,11 @@ exports.Client.prototype._notifyIncoming = function (message) {
  *  @param options The options.
  */
 exports.Server = function (options) {
-    this.port = options.port || 80;
+	if (typeof options.port === 'undefined' || options.port === null) {
+		this.port = 80;
+	} else {
+		this.port = options.port;
+	}
     this.hostInterface = options.hostInterface || 'localhost';
     this.receiveType = options.receiveType || 'application/json';
     this.sendType = options.sendType || 'application/json';

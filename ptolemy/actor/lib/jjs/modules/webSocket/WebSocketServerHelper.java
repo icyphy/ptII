@@ -116,7 +116,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
     	    _server.listen(_port, _hostInterface,
     	            new Handler<AsyncResult<HttpServer>>() {
     	        @Override
-    	        public void handle(AsyncResult<HttpServer> arg0) {
+    	        public void handle(AsyncResult<HttpServer> result) {
     	            // Do this in the vertx thread, not the director thread, so that the
     	            // listening event is assured of occurring before the 'connection'
     	            // event, which is emitted above by _socketCreated().
