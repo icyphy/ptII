@@ -61,10 +61,12 @@
                 class="ptolemy.actor.lib.security.SymmetricCrypto">
 	  <doc>Perform symmetric encryption or decryption using a given key.</doc>
 	</entity>
+	<!--
 	<entity name="SecureHash"
                 class="ptolemy.actor.lib.security.SecureHash">
 	  <doc>Perform secure hash function on a given data.</doc>
 	</entity>
+	-->
 
       </group>
     ?>
