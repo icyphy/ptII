@@ -904,6 +904,8 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 VIPTOS_SRC_TO_BE_REMOVED = \
 		$(BASE_SRC_TO_BE_REMOVED) \
 		bin/hyvisual \
+		doc/codeDocCapeCode \
+		doc/codeDocCapeCode.jar \
 		doc/codeDocHyVisual \
 		doc/codeDocHyVisual.jar \
 		doc/codeDocVisualSense \
@@ -1242,7 +1244,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 	# Fix up doc/makefile
 	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
 		src_jar/viptos$(VIPTOS_VERSION)/doc/makefile \
-		| sed 's/codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar//' \
+		| sed 's/codeDocBcvtb.jar codeDocCapeCode.jar codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar/codeDocViptos.jar/' \
 	        | sed 's@^all:.*$$@all: suball whatsnew.htm whatsnewVergil.htm codeDoc/tree.html@' \
 		| sed 's@^codeDoc/tree.html:@codeDocFull/tree.html:@' \
 		> src_jar/viptos$(VIPTOS_VERSION)/doc/makefile.tmp
