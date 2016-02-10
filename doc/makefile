@@ -748,7 +748,7 @@ all: suball whatsnew.htm whatsnewVergil.htm
 
 # Building the jar files also builds javadoc, PtDoclet and actor indices
 install: all codeDoc/js/index.html jars codeDoc.jar codeDocBcvtb.jar \
-		codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar 
+		codeDocBcvtb.jar codeDocCapeCode.jar codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar 
 
 # Build with all common packages
 all_packages:
