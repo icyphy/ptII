@@ -4,13 +4,13 @@
 <entity name="TCPSocketTwoClients" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 23, 1203, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 23, 1204, 661}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[969, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[970, 551]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1886601041237">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{252.39538471638656, 123.39147143232293}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{252.81602641056423, 134.74879717512005}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -42,12 +42,32 @@
             </property>
         </property>
     </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Server is set to find an available&#10;port (port == 0). It informs the&#10;clients of the port. Only then do&#10;they open a connection.">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[95.0, -135.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="TCPSocketServer">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This MicrostepDelay ensures that&#10;TCPSocketClient2 gets ID == 2.">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[25.0, 5.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="MicrostepDelay2">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
     <entity name="ServerConnected" class="ptolemy.actor.lib.gui.TimedDisplay">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={917, 23, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 180.0]">
         </property>
     </entity>
     <entity name="Client1Received" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -163,7 +183,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="4000">
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>
         <property name="connectTimeout" class="ptolemy.data.expr.Parameter" value="500">
         </property>
@@ -226,7 +246,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 190.0]">
         </property>
         <property name="toSendID" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
@@ -293,6 +313,8 @@
         <property name="trustedCACertPath" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="0">
         </property>
         <port name="toSendID" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -428,7 +450,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="4000">
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>
         <property name="connectTimeout" class="ptolemy.data.expr.Parameter" value="500">
         </property>
@@ -454,7 +476,7 @@
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 235.0]">
         </property>
     </entity>
     <entity name="ServerErrors" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -462,21 +484,15 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 235.0]">
-        </property>
-    </entity>
-    <entity name="TriggeredDiscreteClock" class="ptolemy.actor.lib.TriggeredClock">
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 280.0]">
         </property>
     </entity>
     <entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 240.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{185.0, 280.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 325.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -490,7 +506,23 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 325.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
+        </property>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0, 1.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 180.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 95.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -502,7 +534,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{35.0, 135.0}">
+        <vertex name="vertex1" value="[35.0, 180.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -512,33 +544,46 @@
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[365.0, 135.0]">
+        <vertex name="vertex1" value="[365.0, 180.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[170.0, 95.0]">
+        </vertex>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ServerConnected.input" relation="relation7"/>
     <link port="Client1Received.input" relation="relation"/>
+    <link port="TCPSocketClient1.port" relation="relation9"/>
     <link port="TCPSocketClient1.received" relation="relation"/>
     <link port="TCPSocketServer.error" relation="relation6"/>
     <link port="TCPSocketServer.toSendID" relation="relation4"/>
     <link port="TCPSocketServer.toSend" relation="relation2"/>
+    <link port="TCPSocketServer.listening" relation="relation9"/>
     <link port="TCPSocketServer.connection" relation="relation7"/>
     <link port="Client2Received.input" relation="relation5"/>
+    <link port="TCPSocketClient2.port" relation="relation11"/>
     <link port="TCPSocketClient2.received" relation="relation5"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp.trigger" relation="relation4"/>
     <link port="ServerErrors.input" relation="relation6"/>
-    <link port="TriggeredDiscreteClock.output" relation="relation4"/>
-    <link port="TriggeredDiscreteClock.start" relation="relation9"/>
     <link port="DownSample.input" relation="relation7"/>
     <link port="DownSample.output" relation="relation3"/>
     <link port="MicrostepDelay.input" relation="relation3"/>
     <link port="MicrostepDelay.output" relation="relation8"/>
-    <link port="Const.output" relation="relation9"/>
+    <link port="Const.output" relation="relation10"/>
     <link port="Const.trigger" relation="relation8"/>
+    <link port="DiscreteClock.output" relation="relation4"/>
+    <link port="DiscreteClock.start" relation="relation10"/>
+    <link port="MicrostepDelay2.input" relation="relation9"/>
+    <link port="MicrostepDelay2.output" relation="relation11"/>
 </entity>
