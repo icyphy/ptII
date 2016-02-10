@@ -70,17 +70,13 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="started" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="WSClient" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;exports.setup = function() {&#10;	this.input('trigger');&#10;}&#10;&#10;function onOpen() {&#10;  console.log('Connection to socket is open.');&#10;}&#10;&#10;var ws = null;&#10;var count = 0;&#10;&#10;exports.initialize = function() {&#10;   ws = new WebSocket.Client({'host':'localhost', 'port':8082});&#10;   ws.on('open', onOpen);&#10;   ws.open();&#10;}&#10;&#10;exports.fire = function() {&#10;  count ++;&#10;  ws.send('Hi, I\'m a web socket client! Count: ' + count);&#10;}&#10;&#10;exports.wrapup = function() {&#10;  ws.close();&#10;  ws = null;&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var WebSocket = require('webSocket');&#10;&#10;exports.setup = function() {&#10;	this.input('trigger');&#10;}&#10;&#10;function onOpen() {&#10;  console.log('Connection to socket is open.');&#10;}&#10;&#10;var ws = null;&#10;var count = 0;&#10;&#10;exports.initialize = function() {&#10;   ws = new WebSocket.Client({'host':'localhost', 'port':8082});&#10;   ws.on('open', onOpen.bind(this));&#10;   ws.open();&#10;}&#10;&#10;exports.fire = function() {&#10;  count ++;&#10;  ws.send('Hi, I\'m a web socket client! Count: ' + count);&#10;}&#10;&#10;exports.wrapup = function() {&#10;  ws.close();&#10;  ws = null;&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -96,8 +92,6 @@
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
