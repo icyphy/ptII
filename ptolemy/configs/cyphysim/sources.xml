@@ -8,7 +8,7 @@
 
       <entity name="Spontaneous Sources" class="ptolemy.moml.EntityLibrary">
 
-        <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock"/>
+        <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock"/>
         <entity name="PoissonClock" class="ptolemy.actor.lib.PoissonClock"/>
         <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent"/>
 
@@ -57,8 +57,6 @@
             <property name="displayHeight" value="10"/>
           </property>
         </entity>
-
-        <entity name="TriggeredDiscreteClock" class="ptolemy.actor.lib.TriggeredClock"/>
         
         <entity name="TriggeredSinewave" class="ptolemy.actor.lib.TriggeredSinewave"/>
 

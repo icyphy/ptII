@@ -137,6 +137,7 @@ import ptolemy.kernel.util.Workspace;
  @author Edward A. Lee, Haiyang Zheng
  @version $Id$
  @since Ptolemy II 0.3
+ @deprecated Use DiscreteClock.
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Yellow (yuhong)
  */
