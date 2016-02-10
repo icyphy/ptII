@@ -631,8 +631,9 @@ public class SocketHelper extends VertxHelperBase {
          *  @param data The data to send.
          */
         public void send(final Object data) {
-            // FIXME: This might be called in a vert.x thread, which can cause a deadlock.
-            // In particular, the wait() below will block draining the socket.
+            // NOTE: This might be called in a vert.x thread, which can cause a deadlock.
+            // In particular, the wait() below will block draining the socket if it is
+            // called in the same thread. Hence, the wait is deferred to the director thread.
             synchronized(SocketWrapper.this) {
                 if (_closed) {
                     _error(_eventEmitter, "Socket is closed. Cannot send data.");
@@ -643,7 +644,6 @@ public class SocketHelper extends VertxHelperBase {
                     // Note that this blocking _must_ be done in the director thread, not
                     // in the Vert.x thread, so . We need to stall
                     // execution of the model to not get ahead of the capability.
-                    _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
                     // The following will execute in the current thread if this send() is called
                     // in the director thread and will stall. Otherwise, it will defer it to the
                     // next firing.
@@ -651,6 +651,7 @@ public class SocketHelper extends VertxHelperBase {
                         synchronized(SocketWrapper.this) {
                             // Check whether it is still full. Don't want to wait if it is not.
                             if (_socket.writeQueueFull()) {
+                                _actor.log("WARNING: Send buffer is full. Stalling to allow it to drain.");
                                 try {
                                     SocketWrapper.this.wait();
                                 } catch (InterruptedException e) {

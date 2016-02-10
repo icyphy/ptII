@@ -31,12 +31,6 @@
 
 <entity name="TriggeredSinewave" class="ptolemy.actor.lib.TriggeredSinewave"/>
 
-<!-- entity name="TriggeredClock"
-class="ptolemy.actor.lib.TriggeredClock">
-<doc>Create a generalized square wave, with start and stop ports</doc>
-</entity-->
-
-
       </group>
     ?>
   </configure>
