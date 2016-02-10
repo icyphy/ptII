@@ -8,9 +8,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[843, 526]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1886601041237">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.080924360379025">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{199.39453125000006, 124.23275482067828}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{242.3183583113574, 145.86624193191528}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -35,7 +35,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Server is set to find an&#10;available port. It informs&#10;the clients of the port.&#10;Only then do they open&#10;a connection.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[40.0, 50.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[100.0, 30.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="TCPSocketServer">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -43,9 +43,23 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The MicrostepDelay ensures that&#10;TCPSocketClient2 gets ID == 2.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This MicrostepDelay ensures that&#10;TCPSocketClient2 gets ID == 2.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, 250.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[25.0, 10.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="MicrostepDelay">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Upon receiving two connections, start sending them messages.">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-190.0, 40.0]">
+            <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="DownSample">
+            </property>
+            <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
+            </property>
         </property>
     </property>
     <entity name="ServerConnected" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -460,14 +474,6 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="DiscreteClock" class="ptolemy.actor.lib.Clock">
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0}">
-        </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 170.0]">
-        </property>
-    </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 220.0]">
@@ -490,15 +496,33 @@
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-75.0, 110.0}">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ServerConnected.input&quot;,x=415.0,y=125.0}, tail={id=&quot;TCPSocketServer.connection&quot;,x=270.0,y=135.0}, points={} } }">
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="2.0">
         </property>
-    </relation>
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{1.0, 2.0}">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{1, 2}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 195.0]">
+        </property>
+    </entity>
+    <entity name="DownSample" class="ptolemy.domains.sdf.lib.DownSample">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 295.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-40.0, 295.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -527,22 +551,37 @@
         <vertex name="vertex1" value="[55.0, 170.0]">
         </vertex>
     </relation>
-    <link port="ServerConnected.input" relation="relation3"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[365.0, 170.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ServerConnected.input" relation="relation4"/>
     <link port="Client1Received.input" relation="relation5"/>
     <link port="TCPSocketClient1.port" relation="relation7"/>
     <link port="TCPSocketClient1.received" relation="relation5"/>
     <link port="TCPSocketServer.toSendID" relation="relation8"/>
     <link port="TCPSocketServer.toSend" relation="relation2"/>
     <link port="TCPSocketServer.listening" relation="relation7"/>
-    <link port="TCPSocketServer.connection" relation="relation3"/>
+    <link port="TCPSocketServer.connection" relation="relation4"/>
     <link port="Client2Received.input" relation="relation6"/>
     <link port="TCPSocketClient2.port" relation="relation"/>
     <link port="TCPSocketClient2.received" relation="relation6"/>
-    <link port="DiscreteClock.output" relation="relation8"/>
     <link port="Ramp.output" relation="relation2"/>
     <link port="Ramp.trigger" relation="relation8"/>
     <link port="Test.input" relation="relation6"/>
     <link port="Test2.input" relation="relation5"/>
     <link port="MicrostepDelay.input" relation="relation7"/>
     <link port="MicrostepDelay.output" relation="relation"/>
+    <link port="DiscreteClock.output" relation="relation8"/>
+    <link port="DiscreteClock.start" relation="relation9"/>
+    <link port="DownSample.input" relation="relation4"/>
+    <link port="DownSample.output" relation="relation3"/>
+    <link port="MicrostepDelay2.input" relation="relation3"/>
+    <link port="MicrostepDelay2.output" relation="relation9"/>
 </entity>
