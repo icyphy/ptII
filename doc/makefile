@@ -447,6 +447,7 @@ CAPECODEPACKAGES = \
 	$(APRILPACKAGES) \
 	$(COMPACKAGES) \
 	$(COREPACKAGES) \
+	$(HYVISUALPACKAGES) \
 	$(PTCOLT_PACKAGES) \
 	$(PTDATABASE_PACKAGES) \
 	$(PTGDP_PACKAGES) \
@@ -487,6 +488,10 @@ PTIDES_PACKAGES = \
 	ptolemy.domains.ptides.lib \
 	ptolemy.domains.ptides.lib.luminary \
 	ptolemy.domains.ptides.lib.qm
+
+HYVISUALPACKAGES = \
+	ptolemy.domains.de.kernel \
+	ptolemy.domains.de.lib
 
 # Packages used by Ptiny.  
 PTINYPACKAGES = \
@@ -565,6 +570,7 @@ USER_PACKAGES =
 # All the packages
 ALLPACKAGES = \
 	$(APRILPACKAGES) \
+	$(BCVTBPACKAGES) \
 	$(CGPACKAGES) \
 	$(COREPACKAGES) \
 	$(COMPACKAGES) \
@@ -573,8 +579,10 @@ ALLPACKAGES = \
 	$(DIVAPACKAGES) \
 	$(EXPERIMENTALPACKAGES) \
 	$(GRAPHTRANSFORMATIONPACKAGES) \
+	$(PTANGO_PACKAGES) \
 	$(PTBACKTRACK_PACKAGES) \
 	$(PTBSH_PACKAGES) \
+	$(PTCOLT_PACKAGES) \
 	$(PTDATABASE_PACKAGES) \
 	$(PTDB_PACKAGES) \
 	$(PTDISTRIBUTED_PACKAGES) \
@@ -585,7 +593,6 @@ ALLPACKAGES = \
 	$(PTGR_PACKAGES) \
 	$(PTHLACERTI_PACKAGES) \
 	$(PTHOMER_PACKAGES) \
-	$(PTANGO_PACKAGES) \
 	$(PTIDES_PACKAGES) \
 	$(PTITEXTPDF_PACKAGES) \
 	$(PTINYPACKAGES) \
@@ -676,6 +683,8 @@ ALLPACKAGES = \
 	ptolemy.domains.sequence.kernel \
 	ptolemy.domains.sequence.gui \
 	ptolemy.domains.sequence.lib \
+	ptolemy.domains.sdf.optimize \
+	ptolemy.domains.sdf.optimize.lib \
 	ptolemy.domains.sr.kernel \
 	ptolemy.domains.sr.lib \
 	ptolemy.domains.sr.lib.gui \
