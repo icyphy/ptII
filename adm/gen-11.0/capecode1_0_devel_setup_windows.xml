@@ -119,7 +119,7 @@
 
 <!--/MacOSInclude-->
             <file src="../dists/ptII11.0.devel/capecode.exe" targetdir="$INSTALL_PATH"/>
-            <file src="../dists/ptII11.0.devel/doc/img/capeCode.ico"
+            <file src="../dists/ptII11.0.devel/doc/img/capecode.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
 <!--MacOSInclude-->
 
