@@ -436,7 +436,7 @@ BCVTBPACKAGES = \
 	ptolemy.util \
 	ptolemy.vergil.modal.modal
 
-# All the BCVTB generated documentation
+# Target files produced by running javadoc for bcvtb.
 BCVTB_DOCS = \
 	codeDocBcvtb/doc/codeDoc/tree.html \
 	codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
@@ -463,11 +463,17 @@ CAPECODEPACKAGES = \
 	$(PTXBJLIB_PACKAGES) \
 	$(TERRASWARMPACKAGES)
 
-# All the CapeCode generated documentation
+# Target files produced by running javadoc for capecode.
 CAPECODE_DOCS = \
 	codeDocCapeCode/doc/codeDoc/tree.html \
 	codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
 	codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
+
+# Target files produced by running javadoc for hyvisual.
+HYVISUAL_DOCS = \
+	codeDocHyVisual/doc/codeDoc/tree.html \
+	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
+	codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
 
 PTMACHINE_LEARNING_PACKAGES = \
 	com.cureos.numerics \
@@ -523,7 +529,7 @@ VIPTOS_DOCS = \
 	codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml \
 	codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml
 
-# Packages used by Viptsos
+# Packages used by Viptos
 VIPTOSPACKAGES = \
 	ptolemy.domains.ptinyos.gui \
 	ptolemy.domains.ptinyos.kernel \
@@ -728,6 +734,7 @@ KRUFT = \
 	codeDocVisualSense \
 	codeDocViptos \
 	codeDoc.jar \
+	codeDocCapeCode.jar \
 	codeDocBcvtb.jar \
 	codeDocHyVisual.jar \
 	codeDocVisualSense.jar \
