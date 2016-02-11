@@ -516,8 +516,9 @@ $(PTIIDIST):
 	@echo "Rebuild jar_dist so that the Windows installer gets the new jars"
 	rm -rf $(PTIIDIST)/jar_dist
 	$(MAKE) $(PTIIDIST)/jar_dist
+	# The $(PTIIDIST)/jar_dist rule updates the docs, so we need not do it here.
 	#@echo "Regenerate the documentation with comm, gr, JAI, JMF etc."
-	#(cd $(PTIIDIST)/doc; make JAVADOC=$(JAVADOC) all_packages)
+	#(cd $(PTIIDIST)/doc; make JAVADOC=$(JAVADOC) install)
 
 
 dist_jar_dist: $(PTIIDIST)/jar_dist
@@ -529,7 +530,7 @@ $(PTIIDIST)/jar_dist:
 	if [ ! -d "$@" ] ; then \
 	    echo "Running $(MAKE) -k  jar_dist and other commands in $(PTIIDIST)"; \
 	    (cd $(PTIIDIST); PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` JAVADOC=$(JAVADOC) ./configure; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)`; ant; \
-		(cd $(PTIIDIST)/doc; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` make JAVADOC=$(JAVADOC) all_packages install); \
+		(cd $(PTIIDIST)/doc; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` make JAVADOC=$(JAVADOC) clean all_packages install); \
 		echo "About to run ant jars"; \
 		ant jars; \
 		echo "Rebuild ptiny.exe so that vergil_l4j.jar gets built so that $(PTIIDIST)/jar_dist can use vergil_l4j.jar"; \
