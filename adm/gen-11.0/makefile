@@ -27,6 +27,13 @@
 #
 # Programmer:  Christopher Hylands
 
+# This makefile is a mess, in part because it tries to do a lot.
+# The two main targets are "all" and "setup"
+# "make all" should be executed before "make setup".
+# "make all" creates the $PTII/adm/dist/ptIIxxx and tars it up.
+# "make setup" uses the tar files to create installers.
+# The rules to build WebStart files are in $PTII/mk/jnlp.mk
+
 # Variables
 #  If you change the version number, then edit 
 #  ptII/adm/bin/ptIInightly-mail
@@ -587,7 +594,11 @@ $(PTZIPRELEASE):
 src.zip: $(PTII_FULL_ZIP)
 ptii.src.zip: $(PTII_FULL_ZIP)
 $(PTII_FULL_ZIP): $(PTIIDIST) $(PTZIPRELEASE)
-	@echo "Creating $@"
+	@echo "#"
+	@echo "# Now creating PTII_FULL_ZIP: $@"
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd $(PTZIPRELEASE); \
 	$(ZIP) -r -q `$(GENDIR)/ptcygpath $(PTII_FULL_ZIP)` \
 	ptII$(VERSION) \
@@ -955,7 +966,12 @@ CAPECODE_SRC_TAR = capecode$(CAPECODE_VERSION).src.tar.gz
 # The Jar file that we create.
 capecode.tar: $(CAPECODE_SRC_TAR)
 $(CAPECODE_SRC_TAR): src_jar/capecode$(CAPECODE_VERSION)
-	# cp $(PTIIHOME)/doc/design/capecode.pdf src_jar/capecode$(CAPECODE_VERSION)/doc/design/capecode.pdf; \
+	@echo "#"
+	@echo "# Now creating CAPECODE_SRC_TAR: $@"
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
+	# cp $(PTIIHOME)/doc/design/capecode.pdf src_jar/capecode$(CAPECODE_VERSION)/doc/design/capecode.pdf;
 	(cd src_jar; \
 		$(TAR) -czf ../capecode$(CAPECODE_VERSION).src.tar.gz \
 		capecode$(CAPECODE_VERSION) \
@@ -2933,7 +2949,7 @@ PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 setup_jar: $(PTSETUP).jar
 $(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF) jre32
 	@echo "#"
-	@echo "# Building $(PTSETUP).jar"
+	@echo "# Building PTSETUP.jar: $@"
 	@echo "# `date`"
 	-ls -l $(PTIIDIST)/bin/vergil
 	rm -rf jre; mkdir jre
@@ -2954,7 +2970,7 @@ $(PTSETUP)_64.xml: $(PTSETUP).xml
 setup64_jar: $(PTSETUP)_64.jar
 $(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe $(PTIIDIST)/bin/vergil cleanSrc jre64
 	@echo "#"
-	@echo "# Building $(PTSETUP)_64.jar"
+	@echo "# Building \$(PTSETUP)_64.jar: $@"
 	@echo "# `date`"
 	ls -l $(PTIIDIST)/bin/vergil
 	rm -rf jre; mkdir jre
@@ -2984,7 +3000,7 @@ $(CAPECODE_SETUP)_64.xml: $(CAPECODE_SETUP).xml
 capecode_setup64_jar: $(CAPECODE_SETUP).jar
 $(CAPECODE_SETUP)_64.jar: $(CAPECODE_SETUP)_64.xml $(PTIIDIST)/jar_dist $(PTIIDIST)/capecode.exe cleanSrc jre64
 	@echo "#"
-	@echo "# Building $(CAPECODE_SETUP)_64.jar"
+	@echo "# Building \$(CAPECODE_SETUP)_64.jar: $@"
 	@echo "# `date`"
 	rm -rf jre; mkdir jre
 	(cd jre64; tar -cf - .) | (cd jre; tar -xpf -)
@@ -3047,7 +3063,7 @@ $(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) \
 			$(PTSETUP).jar #ExtractJarFile.class
 
 	@echo "#"
-	@echo "# Building $(PTSETUP).exe"
+	@echo "# Building \$(PTSETUP).exe: $@"
 	@echo "# `date`"
 	"$(L4JC)" "`$(GENDIR)/ptcygpwd`/$(PTSETUP)_l4j.xml"
 	sleep 5
@@ -3066,9 +3082,8 @@ $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
 			$(PTIIDIST)/lib/matlabWindows.jar \
 			$(PTSETUP)_64_l4j.xml \
 			$(PTSETUP)_64.jar #ExtractJarFile.class
-
 	@echo "#"
-	@echo "# Building $(PTSETUP).exe"
+	@echo "# Building \$(PTSETUP).exe: $@"
 	@echo "# `date`"
 	"$(L4JC)" "`$(GENDIR)/ptcygpwd`/$(PTSETUP)_64_l4j.xml"
 	sleep 5
@@ -3096,7 +3111,7 @@ $(CAPECODE_SETUP)_64.exe: $(CAPECODE_SETUP_DEPENDENCIES) \
 			$(CAPECODE_SETUP)_64.jar #ExtractJarFile.class
 
 	@echo "#"
-	@echo "# Building $(CAPECODE_SETUP).exe"
+	@echo "# Building \$(CAPECODE_SETUP).exe: $@"
 	@echo "# `date`"
 	"$(L4JC)" "`$(GENDIR)/ptcygpwd`/$(CAPECODE_SETUP)_64_l4j.xml"
 	sleep 5
@@ -3155,7 +3170,7 @@ jre64:
 	fi
 
 # This is the main target for creating installers.
-setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg $(CAPECODE_SETUP)_64.exe $(CAPECODE_SETUP_MAC).dmg #$(PTSETUP_MAC).app.tar.gz
+setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg $(CAPECODE_SETUP)_64.exe $(CAPECODE_SETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz $(CAPECODE_SETUP_MAC).app.tar.gz
 
 clean_setup: 
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
@@ -3280,7 +3295,7 @@ $(CAPECODE_APP):
 setup_mac_jar: $(PTSETUP_MAC).jar
 $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIIDIST)/bin/vergil cleanSrc
 	@echo "#"
-	@echo "# Building $@"
+	@echo "# Building \$(PTSETUP_MAC).jar: $@"
 	@echo "# `date`"
 	ls -ldg $(PTINY_APP)
 	sh "$(IZPACK_COMPILE)" $<
@@ -3293,7 +3308,7 @@ $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIID
 setup_mac_jar: $(CAPECODE_SETUP_MAC).jar
 $(CAPECODE_SETUP_MAC).jar: $(CAPECODE_SETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) cleanSrc
 	@echo "#"
-	@echo "# Building $@"
+	@echo "# Building CAPECODE_SETUP_MAC: $@"
 	@echo "# `date`"
 	ls -ldg $(PTINY_APP)
 	sh "$(IZPACK_COMPILE)" $<
