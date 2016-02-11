@@ -76,26 +76,43 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * @param extensions the file extensions to use
      */
     public ExtensionFilenameFilter(String [] extensions) {
-        for (int i = 0; i < extensions.length; i++) {
-            registerExtension(extensions[i]);
-        }
+        // This method is used by Kepler in gui/src/org/kepler/gui/kar/OpenArchiveAction.java
+        // See https://kepler-project.org/developers.  To build: "ant change-to -Dsuite=nightly; ant compile" 
+       this(extensions, null);
     }
 
     /**
      * Creates a filter that accepts the given file type, specified by a number
      * of extensions and a meaningful description of the file types involved.
      *
-     * @param description
-     *            a description of the types of files with one of the given
-     *            extensions
-     * @param extensions
-     *            the file extensions to use
+     * @param description  a description of the types of files with one of the given
+     * extensions.
+     * @param extensions the file extensions to use
      */
     public ExtensionFilenameFilter(String description, String... extensions) {
         for (String ext : extensions) {
             registerExtension(ext);
         }
         setDescription(description);
+    }
+
+    /**
+     * Creates a filter that accepts the given file type, specified by a number
+     * of extensions and a meaningful description of the file types involved.
+     *
+     * @param extensions the file extensions to use
+     * @param description a description of the types of files with one of the given
+     * extensions
+     */
+    public ExtensionFilenameFilter(String [] extensions, String description) {
+        // This method is used by Kepler in reporting/src/org/kepler/reporting/gui/ReportDesignerPanel.java
+        // See https://kepler-project.org/developers.  To build: "ant change-to -Dsuite=nightly; ant compile" 
+        for (int i = 0; i < extensions.length; i++) {
+            registerExtension(extensions[i]);
+        }
+        if (description != null) {
+            setDescription(description);
+        }
     }
 
     /**
