@@ -243,6 +243,7 @@ PTXBEE_JARS = \
 CAPECODE_ONLY_JNLP_JARS = \
 	com/cureos/cureos.jar \
 	com/jhlabs/jhlabs.jar \
+	doc/codeDocCapeCode.jar \
 	edu/umich/eecs/april/april.jar \
 	org/json/json.jar \
 	org/terraswarm/accessor/accessor.jar \
