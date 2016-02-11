@@ -44,7 +44,6 @@ $CLASSPATH/org/ptolemy/ptango/demo/UCBPower/UCBPower.xml
 $CLASSPATH/org/ptolemy/ptango/demo/UCBPower/UCBPowerAnalyzerServer.xml
 $CLASSPATH/org/ptolemy/ptango/demo/UCBPowerPtera/UCBPowerPtera.xml
 $CLASSPATH/org/ptolemy/ptango/demo/WebServerDE/WebServerDE.xml
-$CLASSPATH/org/ptolemy/ptulip/demo/robot/robot.xml
 $CLASSPATH/org/ptolemy/qss/demo/RLC/RLC.xml
 $CLASSPATH/org/ptolemy/ssm/demo/RangeLocalizationOnMap/RangeLocalizationOnMap.xml
 $CLASSPATH/org/ptolemy/ssm/demo/SingleRobotTargetLocalization/SingleRobotTargetLocalization.xml
