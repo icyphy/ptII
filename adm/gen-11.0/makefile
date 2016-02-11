@@ -3155,7 +3155,7 @@ jre64:
 	fi
 
 # This is the main target for creating installers.
-setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg $(CAPECODE_SETUP)_64.exe $(CAPECODE_SETUP).dmg #$(PTSETUP_MAC).app.tar.gz
+setup: $(PTSETUP).exe $(PTSETUP)_64.exe $(PTSETUP_MAC).dmg $(CAPECODE_SETUP)_64.exe $(CAPECODE_SETUP_MAC).dmg #$(PTSETUP_MAC).app.tar.gz
 
 clean_setup: 
 	rm -f $(PTSETUP).jar $(PTSETUP).exe
