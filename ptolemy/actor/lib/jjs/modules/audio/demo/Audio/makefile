@@ -29,12 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/audio
+ME =		ptolemy/actor/lib/jjs/modules/audio/demo/Audio
 
-DIRS = 		demo test
+DIRS = 		
 
 # Root of the Java directory
-ROOT =		../../../../../..
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)$(CLASSPATHSEPARATOR)$(PTPAHO_MQTT_JAR)
 
@@ -50,8 +50,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-	audio.js \
-	package.json
+	Audio.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
@@ -62,7 +61,6 @@ MISC_FILES =	#doc test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo \
 	doc \
 	$(PTCLASSJAR)
 
