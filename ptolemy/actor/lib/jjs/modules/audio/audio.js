@@ -40,6 +40,8 @@
 // Reference to the Java class documented at:
 //    http://terra.eecs.berkeley.edu:8080/job/ptII/javadoc/ptolemy/media/javasound/LiveSound.html
 var LiveSound = Java.type('ptolemy.media.javasound.LiveSound');
+// Clip playback uses javafx instead of Ptolemy SoundReader since javafx supports mp3 
+var AudioClip = Java.type('javafx.scene.media.AudioClip');
 
 /** Construct an instance of an Player object type. This should be instantiated in your
  *  JavaScript code as
@@ -79,6 +81,57 @@ exports.Player.prototype.play = function (data) {
 exports.Player.prototype.stop = function () {
     LiveSound.stopPlayback(this);
 };
+
+
+/** Construct an instance of an ClipPlayer object type.  A ClipPlayer plays
+ * audio from a URL source. This should be instantiated in your JavaScript code as:
+ *  <pre>
+ *     var audio = require("audio");
+ *     var player = new audio.ClipPlayer();
+ *  </pre>
+ *  An instance of this object type implements the following functions:
+ *  <ul>
+ *  <li> load(url) : Load audio from the specified url.
+ *  <li> play(): Play the specified array.
+ *  <li> stop(): Stop playback and free the audio resources.
+ *  </ul>
+ */
+
+/** Create a ClipPlayer.
+ */
+exports.ClipPlayer = function() {
+	this.clip = null;
+};
+
+/** Load audio from the specified URL.
+ * @param url  The URL to load audio from.
+ */
+exports.ClipPlayer.prototype.load = function(url) {
+	try {
+		this.clip = new AudioClip(url);
+
+	} catch(err) {
+		error("Error connecting to audio URL " + url);
+	} 
+};
+
+/** Play currently loaded audio clip.
+ */
+exports.ClipPlayer.prototype.play = function() {
+    if (this.clip !== null) {
+    	this.clip.play();
+    } else {
+    	error("No audio clip to play.  Please load a url first.");
+    }
+};
+
+/** Stop playback. */
+exports.ClipPlayer.prototype.stop = function() {
+    if (this.clip !== null) {
+    	this.clip.stop();
+    }
+};
+
 
 // Below is code to be added by students.
 
