@@ -46,7 +46,7 @@ VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
 WINDOWS_VERSION =	11_0_devel
 
-CAPECODES_VERSION =	1.0.devel
+CAPECODE_VERSION =	1.0.devel
 CAPECODE_WINDOWS_VERSION =	1_0_devel
 
 # Even if you are building tar files from ptdesign, this should probably
@@ -983,12 +983,17 @@ $(CAPECODE_SRC_TAR): src_jar/capecode$(CAPECODE_VERSION)
 
 # The directory we jar up.
 capecode_src_jar: src_jar/capecode$(CAPECODE_VERSION)
-src_jar/capecode$(CAPECODE_VERSION): ptII$(VERSION).src.jar
+src_jar/capecode$(CAPECODE_VERSION): $(PTII_SRC_JAR)
+	@echo "#"
+	@echo "# Now creating src_jar/capecode: $@"
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
 	if [ ! -d src_jar/capecode$(CAPECODE_VERSION) ]; then \
 		 mkdir -p src_jar/capecode$(CAPECODE_VERSION); \
 	fi
 	(cd src_jar/capecode$(CAPECODE_VERSION); \
-		"$(JAR)" -xf ../../ptII$(VERSION).src.jar)
+		"$(JAR)" -xf $(PTII_SRC_JAR))
 
 	(cd src_jar/capecode$(CAPECODE_VERSION); \
 		echo "About to remove unneeded sources from `pwd`"; \
@@ -1089,12 +1094,12 @@ $(HYVISUAL_SRC_TAR): src_jar/hyvisual$(VERSION)
 # The directory we jar up.
 # We include DE because some of the kernel/util tests use it.  CT demos also.
 hyvisual_src_jar: src_jar/hyvisual$(VERSION)
-src_jar/hyvisual$(VERSION): ptII$(VERSION).src.jar
+src_jar/hyvisual$(VERSION): $(PTII_SRC_JAR)
 	if [ ! -d src_jar/hyvisual$(VERSION) ]; then \
 		 mkdir -p src_jar/hyvisual$(VERSION); \
 	fi
 	(cd src_jar/hyvisual$(VERSION); \
-		"$(JAR)" -xf ../../ptII$(VERSION).src.jar)
+		"$(JAR)" -xf $(PTII_SRC_JAR))
 
 	(cd src_jar/hyvisual$(VERSION); \
 		echo "About to remove unneeded sources from `pwd`"; \
@@ -1190,7 +1195,7 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 		 mkdir -p src_jar/viptos$(VIPTOS_VERSION); \
 	fi
 	(cd src_jar/viptos$(VIPTOS_VERSION); \
-		"$(JAR)" -xf ../../ptII$(VERSION).src.jar)
+		"$(JAR)" -xf $(PTII_SRC_JAR))
 	(cd src_jar/viptos$(VIPTOS_VERSION); \
 		echo "About to remove unneeded sources from `pwd`"; \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
@@ -3760,7 +3765,7 @@ capeCodeNonGUI.tar.gz:
 	(cd $(PTII); $(MAKE) package_run CONFIGURATION_JARS=CAPECODE_NONGUI_JARS MAIN_CLASS=ptolemy.moml.MoMLSimpleApplication PACKAGE_RUN=capeCodeNonGUI)
 	rm -rf $(CAPECODE_TMPDIR)
 	mkdir -p $(CAPECODE_TMPDIR)/capeCodeNonGUI
-	(cd $(PTII); tar -cf - `$(MAKE) echo_plist_jars JARS=CAPECODE_NONGUI_JARS`) | (cd $(CAPECODE_TMPDIR)/capeCodeNonGUI; tar -xpf -)
+	(cd $(PTII); tar -cf - `$(MAKE) --no-print-directory echo_plist_jars JARS=CAPECODE_NONGUI_JARS`) | (cd $(CAPECODE_TMPDIR)/capeCodeNonGUI; tar -xpf -)
 	# Avoid absolute path to capeCodeNonGUI and copy it.
 	cp $(PTII)/capeCodeNonGUI $(CAPECODE_TMPDIR)/capeCodeNonGUI
 	# Need to unjar files that have .js files in them because our
