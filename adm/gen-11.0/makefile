@@ -46,7 +46,7 @@ VERSION=	$(MAJOR_VERSION).$(MINOR_VERSION)
 # Version string for lame filesystems that don't like more than one .
 WINDOWS_VERSION =	11_0_devel
 
-CAPECODE_VERSION =	1.0.devel
+CAPECODES_VERSION =	1.0.devel
 CAPECODE_WINDOWS_VERSION =	1_0_devel
 
 # Even if you are building tar files from ptdesign, this should probably
@@ -188,6 +188,13 @@ VERGIL = 	  $(GENDIR)/vergil$(VERSION).src.tar$(SUFFIX)
 PTII_SRCS = 	$(PTII_FULL) $(basename $(PTII_FULL)) $(PTII_FULL_ZIP)
 
 PTII_DEVEL_SRC = $(GENDIR)/ptolemy.devel$(VERSION).src.tar$(SUFFIX)
+
+PTSETUP_MAC = ptII$(VERSION).setup.mac
+
+CAPECODE_SETUP = capecode$(CAPECODE_WINDOWS_VERSION)_setup_windows
+CAPECODE_SETUP_MAC = capeCode$(CAPECODE_VERSION).setup.mac
+CAPECODE_SRC_JAR = capecode$(CAPECODE_VERSION).src.jar
+CAPECODE_SRC_TAR = capecode$(CAPECODE_VERSION).src.tar.gz
 
 ##############################################################################
 # Targets
@@ -955,14 +962,11 @@ src_jar: #$(PTII_SRC)
 ############################################
 # CapeCode
 
-CAPECODE_SRC_JAR = capecode$(CAPECODE_VERSION).src.jar
-
 # The Jar file that we create.
 capecode.jar: $(CAPECODE_SRC_JAR)
 $(CAPECODE_SRC_JAR): src_jar/capecode$(CAPECODE_VERSION)
 	(cd src_jar/capecode$(CAPECODE_VERSION); "$(JAR)" -cf ../../capecode$(CAPECODE_VERSION).src.jar .)
 
-CAPECODE_SRC_TAR = capecode$(CAPECODE_VERSION).src.tar.gz
 # The Jar file that we create.
 capecode.tar: $(CAPECODE_SRC_TAR)
 $(CAPECODE_SRC_TAR): src_jar/capecode$(CAPECODE_VERSION)
@@ -1299,9 +1303,6 @@ src_jar/viptos$(VIPTOS_VERSION): $(PTII_SRC_JAR)
 	(cd src_jar/viptos$(VIPTOS_VERSION); rm -rf `cat ../../src.ex`)
 
 ##########
-
-PTSETUP_MAC = ptII$(VERSION).setup.mac
-CAPECODE_SETUP_MAC = capeCode$(CAPECODE_VERSION).setup.mac
 
 update_ftp: update_ptii_ftp untar update_ftp_book update_ftp_index
 update_ptii_ftp:
@@ -2991,7 +2992,6 @@ $(PTIIDIST)/bin/vergil:
 
 #	c:/cxh/src/izpack/izpack3.9.0/bin/compile $<
 
-CAPECODE_SETUP=capecode$(CAPECODE_WINDOWS_VERSION)_setup_windows
 # Build a 64 bit installer.  See http://jira.codehaus.org/browse/IZPACK-506
 $(CAPECODE_SETUP)_64.xml: $(CAPECODE_SETUP).xml
 	sed 's/ShellLink.dll/ShellLink_x64.dll/' \
