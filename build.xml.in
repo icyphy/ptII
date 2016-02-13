@@ -207,6 +207,12 @@
 	      excludes="**/vendors/**/*.js,**/node_modules/**/*.js,**/node/**/*.js,**/node/*.js"
 	      />
 
+  <!-- Path of JavaScript tests for Mocha -->
+  <fileset id="test.mocha.files" dir="${basedir}">
+    <include name="**/mocha/test*.js"/>
+    <patternset refid="ptII.excludes" />
+  </fileset>
+
   <!-- Ant targets. Alphabetize and add a description, please.  -->
 
   <target name="-check-jshint-executable" unless="jshint.executable.exists">
@@ -1291,11 +1297,9 @@ For example:
       See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSMocha
     </echo>
 
-    <fileset id="test.mocha.files" dir="${basedir}">
-      <include name="**/mocha/test*.js"/>
-    </fileset>
-
-    <pathconvert refid="test.mocha.files" property="converted"/>
+    <pathconvert refid="test.mocha.files"
+		 pathsep=" "
+		 property="converted"/>
 
     <exec executable="mocha">
       <arg line="${converted}"/>
@@ -1314,11 +1318,9 @@ For example:
       The output will appear in reports/junit/mochaJUnit.xml
     </echo>
 
-    <fileset id="test.mocha.files" dir="${basedir}">
-      <include name="**/mocha/test*.js"/>
-    </fileset>
-
-    <pathconvert refid="test.mocha.files" property="converted"/>
+    <pathconvert refid="test.mocha.files"
+		 pathsep=" "
+		 property="converted"/>
 
     <exec executable="mocha">
       <arg value="--reporter"/>
