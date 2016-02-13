@@ -1280,6 +1280,55 @@ For example:
     </junit>
   </target>
 
+  <target name="test.mocha"
+          description="Use mocha to test node.js and generate output on stdout.">
+    <echo>
+      ==test.mocha==
+      This target uses mocha to test Node.js tests in **/mocha/test*.js files.
+      This target requires setup:
+        sudo npm install -g mocha
+        sudo npm install -g mocha-junit-reporter
+      See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSMocha
+    </echo>
+
+    <fileset id="test.mocha.files" dir="${basedir}">
+      <include name="**/mocha/test*.js"/>
+    </fileset>
+
+    <pathconvert refid="test.mocha.files" property="converted"/>
+
+    <exec executable="mocha">
+      <arg line="${converted}"/>
+    </exec>
+  </target>
+  
+  <target name="test.mocha.xml"
+          description="Use mocha to test node.js and generate JUnit compatible xml output.">
+    <echo>
+      ==test.mocha.xml==
+      This target uses mocha to test Node.js tests in **/mocha/test*.js files.
+      This target requires setup:
+        sudo npm install -g mocha
+        sudo npm install -g mocha-junit-reporter
+      See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSMocha
+      The output will appear in reports/junit/mochaJUnit.xml
+    </echo>
+
+    <fileset id="test.mocha.files" dir="${basedir}">
+      <include name="**/mocha/test*.js"/>
+    </fileset>
+
+    <pathconvert refid="test.mocha.files" property="converted"/>
+
+    <exec executable="mocha">
+      <arg value="--reporter"/>
+      <arg value="mocha-junit-reporter"/>
+      <arg value="--reporter-options"/>
+      <arg value="mochaFile=reports/junit/mochaJUnit.xml"/>
+      <arg line="${converted}"/>
+    </exec>
+  </target>
+
   <target name="test.report" depends="build, initReports"
 	  description="Run the all the junit tests by path (**/junit/*.java), results in $PTII/reports.">
     <echo>
