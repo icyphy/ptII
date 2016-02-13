@@ -83,7 +83,7 @@ exports.Player.prototype.stop = function () {
 };
 
 
-/** Construct an instance of an ClipPlayer object type.  A ClipPlayer plays
+/** Construct an instance of a ClipPlayer object type.  A ClipPlayer plays
  * audio from a URL source. This should be instantiated in your JavaScript code as:
  *  <pre>
  *     var audio = require("audio");
@@ -92,8 +92,8 @@ exports.Player.prototype.stop = function () {
  *  An instance of this object type implements the following functions:
  *  <ul>
  *  <li> load(url) : Load audio from the specified url.
- *  <li> play(): Play the specified array.
- *  <li> stop(): Stop playback and free the audio resources.
+ *  <li> play(): Play the audio from the previously loaded url.
+ *  <li> stop(): Stop playback.
  *  </ul>
  */
 
@@ -115,7 +115,7 @@ exports.ClipPlayer.prototype.load = function(url) {
 	} 
 };
 
-/** Play currently loaded audio clip.
+/** Play the currently loaded audio clip.
  */
 exports.ClipPlayer.prototype.play = function() {
     if (this.clip !== null) {
@@ -125,7 +125,8 @@ exports.ClipPlayer.prototype.play = function() {
     }
 };
 
-/** Stop playback. */
+/** Stop playback. 
+ */
 exports.ClipPlayer.prototype.stop = function() {
     if (this.clip !== null) {
     	this.clip.stop();
