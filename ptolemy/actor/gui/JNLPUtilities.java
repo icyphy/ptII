@@ -30,6 +30,7 @@ package ptolemy.actor.gui;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.ArrayList;
@@ -159,6 +160,7 @@ public class JNLPUtilities {
      */
     public static File getResourceSaveJarURLAsTempFile(String spec) throws IOException {
         // If the spec is not a jar URL, then check in file system.
+        // This method is used by CapeCode to find .js file resources with require().
         int jarSeparatorIndex = spec.indexOf("!/");
         File results = null;
         if (jarSeparatorIndex == -1) {
@@ -184,9 +186,18 @@ public class JNLPUtilities {
         if (url.toExternalForm().startsWith("jar:")) {
             // If we have already seen the url, then return
             // what was returned last time
-            if (_jarURLTemporaryFiles != null
-                    && _jarURLTemporaryFiles.containsKey(url)) {
-                return _jarURLTemporaryFiles.get(url);
+            try {
+                // We use a map of URIs because FindBugs reports:
+                // "Dm: Maps and sets of URLs can be performance hogs (DMI_COLLECTION_OF_URLS)"
+                // See http://michaelscharf.blogspot.com/2006/11/javaneturlequals-and-hashcode-make.html
+                if (_jarURITemporaryFiles != null
+                        && _jarURITemporaryFiles.containsKey(url.toURI())) {
+                    return _jarURITemporaryFiles.get(url.toURI());
+                }
+            } catch (URISyntaxException ex) {
+                IOException ioException = new IOException("Failed to look up " + url + " in the cache.");
+                ioException.initCause(ex);
+                throw ioException;
             }
             String prefix = "";
             String suffix = "";
@@ -221,13 +232,20 @@ public class JNLPUtilities {
                     if (urlDirectory != null) {
                         results = new File(spec + "/");
                     }
+                } else {
+                    results = null;
                 }
-                results = null;
+            } 
+            if (_jarURITemporaryFiles == null) {
+                _jarURITemporaryFiles = new HashMap<URI, File>();
             }
-            if (_jarURLTemporaryFiles == null) {
-                _jarURLTemporaryFiles = new HashMap<URL, File>();
+            try {
+                _jarURITemporaryFiles.put(url.toURI(), results);
+            } catch (URISyntaxException ex) {
+                IOException ioException = new IOException("Failed to add " + url + " in the cache.");
+                ioException.initCause(ex);
+                throw ioException;
             }
-            _jarURLTemporaryFiles.put(url, results);
             return results;
         } else {
             // If the resource is not a jar URL, try
@@ -417,8 +435,8 @@ public class JNLPUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    /** The map of URLs to Files used by
-     * getResourceSaveJarURLAsTempFile().
+    /** The map of URIs to Files used by
+     * getResourceSaveJarURIAsTempFile().
      */
-    private static Map<URL,File> _jarURLTemporaryFiles;
+    private static Map<URI,File> _jarURITemporaryFiles;
 }
