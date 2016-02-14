@@ -135,7 +135,12 @@ public class MoMLSimpleApplication implements ChangeListener, ExecutionListener 
         _toplevel.addChangeListener(this);
 
         _manager.addExecutionListener(this);
-        _activeCount++;
+        // Coverity Scan stated: "Volatile not atomically updated (VOLATILE_ATOMICITY)"
+        // ". stale_update: Updating _activeCount based on a stale value. Any intervening update in another thread is overwritten."
+        // So, we synchronize the update on this.
+        synchronized (this) {
+            _activeCount++;
+        }
 
         _manager.startRun();
 
