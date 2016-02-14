@@ -72,12 +72,11 @@ proc tryToLoadNonQSSFMU {fmu} {
     set fmuFileParameter [java::new ptolemy.data.expr.FileParameter $e1 fmuFileParameter]
     $fmuFileParameter setExpression [$fmuFile getCanonicalPath]
     catch {java::call ptolemy.actor.lib.fmi.FMUQSS importFMU $e1 $fmuFileParameter $e1 100.0 100.0} err
-    regsub {The fmu ".*ptII/ptolemy} $err {The fmu "xxx/ptII/ptolemy} err2
+    regsub {The fmu ".*/ptolemy/actor/lib/fmi} $err {The fmu "xxx/ptolemy/actor/lib/fmi} err2
 
     # Windows... why?
-    regsub {The fmu ".*ptII\\ptolemy} $err2 {The fmu "xxx/ptII/ptolemy} err3
+    regsub {The fmu ".*\\ptolemy\\actor\\lib\\fmi} $err2 {The fmu "xxx/ptII/ptolemy/actor/lib/fmi} err3
     regsub {\\} $err3 {/} err4
-
     return $err4
 }
 
@@ -87,10 +86,11 @@ proc tryToLoadNonQSSFMU {fmu} {
 test FMUQSS-1.1 {Test out importFMU on an fmu that is FMI-1.0, not FMI-2.0 and should be rejected} {
     set err [tryToLoadNonQSSFMU {$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/helloWorld.fmu}]
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: The fmu "xxx/ptII/ptolemy/actor/lib/fmi/test/auto/helloWorld.fmu" is not acceptable.
+} {{ptolemy.kernel.util.IllegalActionException: The fmu "xxx/ptolemy/actor/lib/fmi/test/auto/helloWorld.fmu" is not acceptable.
   in .top
 Because:
 The FMI version of this FMU is: 1.0 which is not supported.  QSS currently only supports FMI version 2.0.}}
+
 
 ######################################################################
 ####
@@ -98,7 +98,7 @@ The FMI version of this FMU is: 1.0 which is not supported.  QSS currently only 
 test FMUQSS-1.2 {Test out importFMU on an Co-Simulation FMU that should be rejected} {
     set err [tryToLoadNonQSSFMU {$CLASSPATH/ptolemy/actor/lib/fmi/test/auto/bouncingBall20.fmu}]
     list $err
-} {{ptolemy.kernel.util.IllegalActionException: The fmu "xxx/ptII/ptolemy/actor/lib/fmi/test/auto/bouncingBall20.fmu" is not acceptable.
+} {{ptolemy.kernel.util.IllegalActionException: The fmu "xxx/ptolemy/actor/lib/fmi/test/auto/bouncingBall20.fmu" is not acceptable.
   in .top
 Because:
 There is no ModelExchange attribute in the model description file of This FMU to indicate whether it is for model exchange or not.  QSS currently only supports FMU for model exchange.}}
