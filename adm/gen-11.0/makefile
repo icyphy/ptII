@@ -624,7 +624,8 @@ $(PTII_FULL_ZIP): $(PTIIDIST) $(PTZIPRELEASE)
 
 VERSION_FILES = \
 	src/ptII$(VERSION)/ptolemy/configs/*/* \
-	src/ptII$(VERSION)/ptolemy/kernel/attributes/VersionAttribute.java
+	src/ptII$(VERSION)/ptolemy/kernel/attributes/VersionAttribute.java \
+	src/ptII$(VERSION)/ptolemy/kernel/attributes/test/VersionAttribute.tcl
 
 updateversions_test:
 	./updateversions $(VERSION) $(VERSION)_`date +"%Y%m%d"` $(VERSION_FILES) 
@@ -3456,6 +3457,8 @@ PTII_WINDOWS_VERSION=$(WINDOWS_VERSION)
 # The complete version number, used to name tar files
 PTII_VERSION=$(PTII_MAJOR_VERSION).devel
 
+PTII_PTII_VERSION=ptII$(PTII_VERSION)
+
 PTEXTERNAL_NIGHTLY=/home/www/cvswww/chess.eecs.berkeley.edu/ptexternal/nightly
 update_moog:
 	# Create ChangeLog.txt. We do each year separately.
@@ -3517,15 +3520,15 @@ update_moog:
 	rm -rf $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/src
 	rm -rf $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/src_jar
 	rm -rf $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/test
-	if [ -f $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).tar ]; then \
-		rm -f $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).tar.gz; \
-		echo "gzipping ptII$(PTII_VERSION).tar"; \
-		gzip $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).tar; \
+	if [ -f $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/$(PTII_PTII_VERSION).tar ]; then \
+		rm -f $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/$(PTII_PTII_VERSION).tar.gz; \
+		echo "gzipping $(PTII_PTII_VERSION).tar"; \
+		gzip $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/$(PTII_PTII_VERSION).tar; \
 	fi
-	if [ -f $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).src.tar ]; then \
-		rm -f $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).src.tar.gz; \
-		echo "gzipping ptII$(PTII_VERSION).src.tar"; \
-		gzip $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).src.tar; \
+	if [ -f $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/$(PTII_PTII_VERSION).src.tar ]; then \
+		rm -f $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/$(PTII_PTII_VERSION).src.tar.gz; \
+		echo "gzipping $(PTII_PTII_VERSION).src.tar"; \
+		gzip $(HUDSON_PTII)/adm/gen-$(PTII_MAJOR_VERSION)/$(PTII_PTII_VERSION).src.tar; \
 	fi
 	# 
 	@echo "Cleaning up in $(HUDSON_HOME)";
@@ -3553,24 +3556,24 @@ update_moog:
 	@echo "Remove old tar files and logs"
 	ssh -l $(USER) moog "find $(MOOG_HUDSON_HOME3)/builds -mtime +10 -ls -exec rm {} \;"
 	ssh -l $(USER) moog rm -f \
-	   $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
-	   $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
+	   $(MOOG_HUDSON_HOME3)/builds/$(PTII_PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
+	   $(MOOG_HUDSON_HOME3)/builds/$(PTII_PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
 	   $(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_CAPECODE_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
 	   $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
 	   $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe \
 	   $(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_SETUP_64)-`date +%Y-%m-%d`.exe \
-	   $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
+	   $(MOOG_HUDSON_HOME3)/builds/$(PTII_PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 	   $(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_SETUP_MAC)-`date +%Y-%m-%d`.app.tar.gz \
 	   $(MOOG_HUDSON_HOME3)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt \
 	   $(MOOG_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.htm \
 	   $(MOOG_HUDSON_HOME3)/builds/ptIInightly-`date +%Y-%m-%d`.txt \
-	   $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
-	   $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
+	   $(PTEXTERNAL_NIGHTLY)/builds/$(PTII_PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
+	   $(PTEXTERNAL_NIGHTLY)/builds/$(PTII_PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/$(CAPECODE_CAPECODE_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe \
 	   $(PTEXTERNAL_NIGHTLY)/builds/$(CAPECODE_SETUP_64)-`date +%Y-%m-%d`.exe \
-	   $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
+	   $(PTEXTERNAL_NIGHTLY)/builds/$(PTII_PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/$(CAPECODE_SETUP_MAC)-`date +%Y-%m-%d`.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly_mail-`date +%Y-%m-%d`.txt \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptIInightly-`date +%Y-%m-%d`.htm \
@@ -3593,10 +3596,10 @@ update_moog:
 	ssh -l $(USER) moog rm -rf $(PTEXTERNAL_NIGHTLY)/builds
 	ssh -l $(USER) moog mkdir $(PTEXTERNAL_NIGHTLY)/builds
 	@echo "Create links to tar files and logs"
-	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).tar.gz \
-		$(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz
-	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).src.tar.gz \
-		$(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz
+	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/$(PTII_PTII_VERSION).tar.gz \
+		$(MOOG_HUDSON_HOME3)/builds/$(PTII_PTII_VERSION)-`date +%Y-%m-%d`.tar.gz
+	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/$(PTII_PTII_VERSION).src.tar.gz \
+		$(MOOG_HUDSON_HOME3)/builds/$(PTII_PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz
 	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/$(CAPECODE_SRC_TAR) \
 		$(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_CAPECODE_VERSION)-`date +%Y-%m-%d`.src.tar.gz
 	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_WINDOWS_VERSION)_setup_windows.exe \
@@ -3605,8 +3608,8 @@ update_moog:
 		$(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows_64-`date +%Y-%m-%d`.exe
 	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/$(CAPECODE_SETUP_64).exe \
 		$(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_SETUP_64)-`date +%Y-%m-%d`.exe
-	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/ptII$(PTII_VERSION).setup.mac.app.tar.gz \
-		$(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz
+	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/$(PTII_PTII_VERSION).setup.mac.app.tar.gz \
+		$(MOOG_HUDSON_HOME3)/builds/$(PTII_PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz
 	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/gen-$(PTII_MAJOR_VERSION)/$(CAPECODE_SETUP_MAC).app.tar.gz \
 		$(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_SETUP_MAC)-`date +%Y-%m-%d`.app.tar.gz
 	-ssh -l $(USER) moog ln $(MOOG_HUDSON_HOME3)/ptII/adm/logs/ptIInightly_mail.txt \
@@ -3619,9 +3622,11 @@ update_moog:
 		$(MOOG_HUDSON_HOME3)/builds/capeCodeNonGUI.tar.gz
 	#
 	@echo "Create links for tars and logs"
-	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
+	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/$(PTII_PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
-	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
+	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/$(PTII_PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
+		$(PTEXTERNAL_NIGHTLY)/builds
+	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_CAPECODE_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
 	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_WINDOWS_VERSION)_setup_windows-`date +%Y-%m-%d`.exe \
 		$(PTEXTERNAL_NIGHTLY)/builds
@@ -3629,19 +3634,19 @@ update_moog:
 		$(PTEXTERNAL_NIGHTLY)/builds
 	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_SETUP_64)-`date +%Y-%m-%d`.exe \
 		$(PTEXTERNAL_NIGHTLY)/builds
-	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
+	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/$(PTII_PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
 	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/$(CAPECODE_SETUP_MAC)-`date +%Y-%m-%d`.app.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
 	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/ \
 		$(PTEXTERNAL_NIGHTLY)/builds
-	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/capeCodeNonGUI.tar.gz \
+	-ssh -l $(USER) moog ln -s $(MOOG_HUDSON_HOME3)/builds/capeCodeNonGUI.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds
 	# 
 	@echo "Create links for latest tars and logs"
-	-ssh -l $(USER) moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
+	-ssh -l $(USER) moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/$(PTII_PTII_VERSION)-`date +%Y-%m-%d`.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.tar.gz
-	-ssh -l $(USER) moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
+	-ssh -l $(USER) moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/$(PTII_PTII_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.src.tar.gz
 	-ssh -l $(USER) moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/$(CAPECODE_CAPECODE_VERSION)-`date +%Y-%m-%d`.src.tar.gz \
 		$(PTEXTERNAL_NIGHTLY)/builds/capecode-latest.src.tar.gz
@@ -3651,7 +3656,7 @@ update_moog:
 		$(PTEXTERNAL_NIGHTLY)/builds/ptII-latest_setup_windows_64.exe
 	-ssh -l $(USER) moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/$(CAPECODE_SETUP_64)-`date +%Y-%m-%d`.exe \
 		$(PTEXTERNAL_NIGHTLY)/builds/capecode-latest_setup_windows_64.exe
-	-ssh -l $(USER) moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/ptII$(PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
+	-ssh -l $(USER) moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/$(PTII_PTII_VERSION).setup.mac-`date +%Y-%m-%d`.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/ptII-latest.setup.mac.app.tar.gz
 	-ssh -l $(USER) moog ln -s $(PTEXTERNAL_NIGHTLY)/builds/$(CAPECODE_SETUP_MAC)-`date +%Y-%m-%d`.app.tar.gz \
 	   $(PTEXTERNAL_NIGHTLY)/builds/capecode-latest.setup.mac.app.tar.gz
