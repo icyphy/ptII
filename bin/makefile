@@ -112,6 +112,7 @@ EXTRA_SRCS = \
 # Mac OS X applications, created by running ./makeapp
 # We don't include Ptiny.app because we end up copying the jre into the *.app directory, which is very large.
 MAC_APPS = \
+	CapeCode.app \
 	Vergil.app
 
 
@@ -159,6 +160,10 @@ makeapp: ptinvoke
 macapps: $(MAC_APPS)
 
 # We touch the .app directory so that running make again does not rerun makeapp
+CapeCode.app: makeapp
+	./makeapp $@ CAPECODE -capecode
+	touch $@
+
 Ptiny.app: makeapp
 	./makeapp $@ PTINY -ptiny
 	touch $@
