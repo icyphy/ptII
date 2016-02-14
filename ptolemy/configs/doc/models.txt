@@ -84,6 +84,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/MoC/MoC.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MockHueBridge/MockHueBridge.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MotionDetector/MotionDetector.xml
 $CLASSPATH/org/terraswarm/accessor/demo/REST/REST.xml
+$CLASSPATH/org/terraswarm/accessor/demo/Scarab/Scarab.xml
 $CLASSPATH/org/terraswarm/accessor/demo/SecureSocket/SecureSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/StockTick/StockTick.xml
 $CLASSPATH/org/terraswarm/accessor/demo/SwarmAcousticService/SwarmAcousticService.xml
@@ -172,6 +173,7 @@ $CLASSPATH/ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/ModelBuilder/ModelBuilder.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/Audio.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/browser/demo/HelloBrowser/HelloBrowser.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Capture/Capture.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Capture/CaptureOpenLoop.xml
