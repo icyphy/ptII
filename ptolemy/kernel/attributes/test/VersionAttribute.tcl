@@ -54,7 +54,7 @@ test VersionAttribute-1.0 {Constructor} {
 
     set result2 [$v toString]
     # When we build an installer, the version number is 10.0_YYYYMMDD, so we get rid of that.
-    regsub -all {_201[0-9][0-9][0-9][0-9]} [$v getExpression] {} result3
+    regsub -all {_201[0-9][0-9][0-9][0-9][0-9]} [$v getExpression] {} result3
     list $result1 $result2 $result3
 } {{ptolemy.kernel.attributes.VersionAttribute {.my NamedObj.my Version}} {ptolemy.kernel.attributes.VersionAttribute {.my NamedObj.my Version}} 11.0.devel}
 
@@ -98,7 +98,7 @@ test VersionAttribute-2.0 {compareTo} {
 		[$CURRENT_VERSION compareTo $v]]
     }
     # When we build an installer, the version number is 10.0_YYYYMMDD, so we get rid of that.
-    regsub -all {_201[0-9][0-9][0-9][0-9]} $results {} results2
+    regsub -all {_201[0-9][0-9][0-9][0-9][0-9]} $results {} results2
     list $results2
 } {{{1.0 11.0.devel -1 1} {1.0.0 11.0.devel -1 1} {1.0-beta 11.0.devel -1 1} {2.0 11.0.devel -1 1} {2.0-devel 11.0.devel -1 1} {2.0.alpha 11.0.devel -1 1} {2.0_beta 11.0.devel -1 1} {2.0-build003 11.0.devel -1 1} {2.0-release-1 11.0.devel -1 1} {3.0 11.0.devel -1 1} {3.0-devel 11.0.devel -1 1} {3.0-alpha 11.0.devel -1 1} {3.1 11.0.devel -1 1} {4 11.0.devel -1 1} {4.1 11.0.devel -1 1} {5.0 11.0.devel -1 1} {5.1 11.0.devel -1 1} {5.1-alpha 11.0.devel -1 1} {5.1-beta 11.0.devel -1 1} {5.2 11.0.devel -1 1} {5.2-alpha 11.0.devel -1 1} {5.2-beta 11.0.devel -1 1} {6.0-devel 11.0.devel -1 1} {6.0-alpha 11.0.devel -1 1} {6.0.beta 11.0.devel -1 1} {6.0.1 11.0.devel -1 1} {7.0-devel 11.0.devel -1 1} {7.0-alpha 11.0.devel -1 1} {7.0.beta 11.0.devel -1 1} {7.0.1 11.0.devel -1 1} {8.0-devel 11.0.devel -1 1} {8.0-alpha 11.0.devel -1 1} {8.0.beta 11.0.devel -1 1} {8.0.1 11.0.devel -1 1} {8.1-devel 11.0.devel -1 1} {8.1-alpha 11.0.devel -1 1} {8.1.beta 11.0.devel -1 1} {8.1.1 11.0.devel -1 1} {9.0-devel 11.0.devel -1 1} {9.0-alpha 11.0.devel -1 1} {9.0.beta 11.0.devel -1 1} {9.0.1 11.0.devel -1 1} {9.1-devel 11.0.devel -1 1} {9.1-alpha 11.0.devel -1 1} {9.1.beta 11.0.devel -1 1} {9.1.1 11.0.devel -1 1} {9.2-devel 11.0.devel -1 1} {9.2-alpha 11.0.devel -1 1} {9.2.beta 11.0.devel -1 1} {9.2.1 11.0.devel -1 1} {10.0-devel 11.0.devel -1 1} {10.0-alpha 11.0.devel -1 1} {10.0.beta 11.0.devel -1 1} {10.0.1 11.0.devel -1 1} {11.0.devel 11.0.devel 0 0}}}
 
@@ -132,7 +132,7 @@ test VersionAttribute-4.0 {Delete a RequireVersion when we have a VersionAttribu
     $requireVersion setExpression [$CURRENT_VERSION getExpression]
     $requireVersion setContainer [java::null]
     set results [$n exportMoML]
-    regsub -all {_201[0-9][0-9][0-9][0-9]} $results {} results2
+    regsub -all {_201[0-9][0-9][0-9][0-9][0-9]} $results {} results2
     list $results2
 } {{<?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
