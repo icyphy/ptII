@@ -271,7 +271,7 @@ release_mac_setup:
 release_mac2_setup:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
 
-release_mac2_capecodesetup:
+release_mac2_capecode_setup:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar $(CAPECODE_SETUP_MAC).dmg
 
 ####
@@ -903,6 +903,17 @@ BASE_SRC_TO_BE_REMOVED = \
 # Files to be removed from CapeCode source distributions
 CAPECODE_SRC_TO_BE_REMOVED = \
 		$(BASE_SRC_TO_BE_REMOVED) \
+		vergilBCVTB.jnlp.in \
+		vergilCyPhySim.jnlp.in \
+		vergilDSP.jnlp.in \
+		vergilHyVisual.jnlp.in \
+		vergilPtiny.jnlp.in \
+		vergilPtinyKepler.jnlp.in \
+		vergilPtinySandbox.jnlp.in \
+		vergilSpace.jnlp.in \
+		vergilVisualSense.jnlp.in
+
+
 
 # Files to be removed from HyVisual source distributions
 HYVISUAL_SRC_TO_BE_REMOVED = \
@@ -1539,7 +1550,7 @@ JSOUTDIR=/users/ptII/public_html/nightly/js
 remote1: remote1coverage
 remote1coverage: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
-	@echo "# Now building on $(REMOTE1HOST) for code coverage"
+	@echo "# Now building target remote1coverage on $(REMOTE1HOST) for code coverage"
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
@@ -1551,7 +1562,7 @@ remote1coverage: $(PTII_FULL) $(GENLOGDIR)
 
 remote1local: $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
-	@echo "# Now building on $(REMOTE1HOST) for code coverage"
+	@echo "# Now building target remote1local on $(REMOTE1HOST) for code coverage"
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
@@ -2293,7 +2304,7 @@ REMOTE2LOG = $(GENLOGDIR)/remote2.out
 remote2: remote2jdk1.4
 remote2jdk1.4:  $(PTII_FULL) $(GENLOGDIR)
 	@echo "#"
-	@echo "# Now building on $(REMOTE2HOST) with JDK1.4 "
+	@echo "# Now building target remote2jdk1.4 on $(REMOTE2HOST) with JDK1.4 "
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
@@ -2342,7 +2353,7 @@ remote2distclean:
 # Compile with JDK1.4
 remote2distjdk1.4:
 	@echo "#"
-	@echo "# Now building with JDK1.4"
+	@echo "# Now building target remote2distjdk1.4 with JDK1.4"
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
@@ -2962,7 +2973,7 @@ PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 setup_jar: $(PTSETUP).jar
 $(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF) jre32
 	@echo "#"
-	@echo "# Building PTSETUP.jar: $@"
+	@echo "# Now building target setup_jar (PTSETUP).jar: $@"
 	@echo "# `date`"
 	-ls -l $(PTIIDIST)/bin/vergil
 	rm -rf jre; mkdir jre
@@ -2983,7 +2994,7 @@ $(PTSETUP)_64.xml: $(PTSETUP).xml
 setup64_jar: $(PTSETUP)_64.jar
 $(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe $(PTIIDIST)/bin/vergil cleanSrc jre64
 	@echo "#"
-	@echo "# Building \$(PTSETUP)_64.jar: $@"
+	@echo "# Now building target setup64_jar: PTSETUP_64.jar: $@"
 	@echo "# `date`"
 	ls -l $(PTIIDIST)/bin/vergil
 	rm -rf jre; mkdir jre
@@ -3009,10 +3020,10 @@ $(CAPECODE_SETUP_64).xml: $(CAPECODE_SETUP).xml
 	sed 's/ShellLink.dll/ShellLink_x64.dll/' \
 	     $^ > $@
 
-capecode_setup64_jar: $(CAPECODE_SETUP).jar
+capecode_setup_64_jar: $(CAPECODE_SETUP_64).jar
 $(CAPECODE_SETUP_64).jar: $(CAPECODE_SETUP_64).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/capecode.exe cleanSrc jre64
 	@echo "#"
-	@echo "# Building \$(CAPECODE_SETUP_64).jar: $@"
+	@echo "# Now building target capecode_setup_64_jar: (CAPECODE_SETUP_64).jar: $@"
 	@echo "# `date`"
 	rm -rf jre; mkdir jre
 	(cd jre64; tar -cf - .) | (cd jre; tar -xpf -)
@@ -3075,7 +3086,7 @@ $(PTSETUP).exe: $(PTSETUP_DEPENDENCIES) \
 			$(PTSETUP).jar #ExtractJarFile.class
 
 	@echo "#"
-	@echo "# Building \$(PTSETUP).exe: $@"
+	@echo "# Now building $(PTSETUP).exe: (PTSETUP).exe: $@"
 	@echo "# `date`"
 	"$(L4JC)" "`$(GENDIR)/ptcygpwd`/$(PTSETUP)_l4j.xml"
 	sleep 5
@@ -3095,7 +3106,7 @@ $(PTSETUP)_64.exe: $(PTSETUP_DEPENDENCIES) \
 			$(PTSETUP)_64_l4j.xml \
 			$(PTSETUP)_64.jar #ExtractJarFile.class
 	@echo "#"
-	@echo "# Building \$(PTSETUP).exe: $@"
+	@echo "# Now building rule $(PTSETUP)_64.exe: PTSETUP_64.exe: $@"
 	@echo "# `date`"
 	"$(L4JC)" "`$(GENDIR)/ptcygpwd`/$(PTSETUP)_64_l4j.xml"
 	sleep 5
@@ -3116,14 +3127,14 @@ CAPECODE_SETUP_DEPENDENCIES = \
 $(CAPECODE_SETUP_64)_l4j.xml: $(CAPECODE_SETUP)_l4j.xml
 	sed 's/setup_windows/setup_windows_64/' $^ > $@
 
-capecodesetup_64: $(CAPECODE_SETUP_64).exe
+capecode_setup_64: $(CAPECODE_SETUP_64).exe
 $(CAPECODE_SETUP_64).exe: $(CAPECODE_SETUP_DEPENDENCIES) \
 			$(PTIIDIST)/lib/matlabWindows.jar \
 			$(CAPECODE_SETUP_64)_l4j.xml \
 			$(CAPECODE_SETUP_64).jar #ExtractJarFile.class
 
 	@echo "#"
-	@echo "# Building \$(CAPECODE_SETUP).exe: $@"
+	@echo "# Now building rule capecode_setup_64: (CAPECODE_SETUP_64).exe: $@"
 	@echo "# `date`"
 	"$(L4JC)" "`$(GENDIR)/ptcygpwd`/$(CAPECODE_SETUP_64)_l4j.xml"
 	sleep 5
@@ -3254,6 +3265,73 @@ test_setup_XvfbStop:
 	-pkill Xvfb
 	-pkill -9 Xvfb
 	rm -f /tmp/.X8-lock
+########################################################################
+# Test the Cape Code installer
+test_capecode_setup:  test_capecode_setup_start test_capecode_setup_make_fast_install test_capecode_setup_test test_capecode_setup_ant
+
+test_capecode_setup_start: test_capecode_setup_announce capecode_setup64_jar capecode_setup_64 capecode_setup_mac_app_tar test_capecode_setup_installerTest 
+
+test_capecode_setup_test: test_capecode_setup_XvfbStart test_capecode_setup_make_tests test_capecode_setup_end
+
+
+test_capecode_setup_announce:
+	@echo "#"
+	@echo "# Now testing the capecode_setup file" 
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
+
+test_capecode_setup_installerTest: _test_capecode_setup_installerTest_clean test/capeCodeTest
+
+_test_capecode_setup_installerTest_clean:
+	rm -rf test/capeCodeTest
+
+test/capeCodeTest:
+	if [ ! -f test/capeCodeTest ]; then \
+		echo "Invoking java -jar $(CAPECODE_SETUP).jar capecodeInstallerTest.xml to create test/capeCodeTest"; \
+		java -jar $(CAPECODE_SETUP).jar capecodeInstallerTest.xml; \
+	fi
+
+test_capecode_setup_XvfbStart:
+	-pkill Xvfb
+	-pkill -9 Xvfb
+	# Ignore errors 
+	-ls -l /tmp/.X8-lock
+	-rm -rf /tmp/.X8-lock
+	Xvfb :8 -screen 0 1024x768x24 &
+
+test_capecode_setup_make_fast_install:
+	@echo "#"
+	@echo "# Now configuring and running make fast install" 
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
+	(cd test/capeCodeTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` sources fast install)
+
+test_capecode_setup_make_tests:
+	@echo "#"
+	@echo "# Now configuring and running make tests" 
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
+	(cd test/capeCodeTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` tests)
+
+
+test_capecode_setup_ant: test/capeCodeTest
+	(cd test/capeCodeTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant clean; PTII=`pwd` ant; PTII=`pwd` ant jars; PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest; PTII=`pwd` ant clean; cp build.default.xml build.xml; PTII=`pwd` ant) 
+
+test_capecode_setup_end: test_capecode_setup_XvfbStop
+
+test_capecode_setup_XvfbStop:
+	@echo "#"
+	@echo "# Now stopping Xvfb"
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
+	-pkill Xvfb
+	-pkill -9 Xvfb
+	rm -f /tmp/.X8-lock
+
 
 updateDOPCenterImage:
 	$(GENDIR)/updateDOPCenterImageX11
@@ -3282,7 +3360,7 @@ $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
 
-capecodesetup_mac: $(CAPECODE_SETUP_MAC).xml
+capecode_setup_mac: $(CAPECODE_SETUP_MAC).xml
 $(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(CAPECODE_SETUP).xml | \
 	    sed -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII11.0.devel/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
@@ -3307,7 +3385,7 @@ $(CAPECODE_APP):
 setup_mac_jar: $(PTSETUP_MAC).jar
 $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIIDIST)/bin/vergil cleanSrc
 	@echo "#"
-	@echo "# Building \$(PTSETUP_MAC).jar: $@"
+	@echo "# Now building target setup_mac_jar: (PTSETUP_MAC).jar: $@"
 	@echo "# `date`"
 	ls -ldg $(PTINY_APP)
 	sh "$(IZPACK_COMPILE)" $<
@@ -3320,7 +3398,7 @@ $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIID
 setup_mac_jar: $(CAPECODE_SETUP_MAC).jar
 $(CAPECODE_SETUP_MAC).jar: $(CAPECODE_SETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) cleanSrc
 	@echo "#"
-	@echo "# Building CAPECODE_SETUP_MAC: $@"
+	@echo "# Now building target setup_mac_jar: (CAPECODE_SETUP_MAC): $@"
 	@echo "# `date`"
 	ls -ldg $(PTINY_APP)
 	sh "$(IZPACK_COMPILE)" $<
@@ -3339,6 +3417,7 @@ $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 	find $@ -type f -exec touch {} \; 
 	#cp $(PTIIHOME)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
 
+capecode_setup_mac_app: $(CAPECODE_SETUP_MAC).app
 $(CAPECODE_SETUP_MAC).app: $(CAPECODE_SETUP_MAC).jar
 	python $(IZPACK2APP) $^ $@ 
 	find $@ -type f -exec touch {} \; 
@@ -3393,7 +3472,7 @@ setup_mac_app_tar: $(PTSETUP_MAC).app.tar.gz
 $(PTSETUP_MAC).app.tar.gz: $(PTSETUP_MAC).app
 	tar -zcf $@ $<
 
-capecodesetup_mac_app_tar: $(CAPECODE_SETUP_MAC).app.tar.gz
+capecode_setup_mac_app_tar: $(CAPECODE_SETUP_MAC).app.tar.gz
 $(CAPECODE_SETUP_MAC).app.tar.gz: $(CAPECODE_SETUP_MAC).app
 	tar -zcf $@ $<
 
@@ -3695,14 +3774,14 @@ $(PTBUILDRELEASE):
 
 $(PTBUILDRELEASE)/ptolemy/ptsupport.jar:
 	@echo "#"
-	@echo "# Building in the $(PTBUILDRELEASE) directory so that we can update the website"
+	@echo "# Now building in the $(PTBUILDRELEASE) directory so that we can update the website"
 	@echo "#"
 	@echo "$@ `date`"
 	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc; ./configure; ant; (cd bin; make); (cd doc; make codeDoc/tree.html); ant jars)
 
 $(PTBUILDRELEASE)/signed:
 	@echo "#"
-	@echo "# Creating the $(PTBUILDRELEASE)/signed directory so that we can update the website"
+	@echo "# Now creating the $(PTBUILDRELEASE)/signed directory so that we can update the website"
 	@echo "#"
 	@echo "$@ `date`"
 	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; make jnlp_dist USER=`whoami` STOREPASSWORD="-storepass `cat ~/.certpw`" KEYPASSWORD="-keypass `cat ~/.certpw`")
