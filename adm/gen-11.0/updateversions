@@ -12,6 +12,7 @@ for file in $@
 do
     if [ -f $file ]; then
 	sed "s/$oldVersion/$newVersion/g" $file > $tmpfile
+	echo "$0: $file"
 	diff $file $tmpfile
 	mv $tmpfile $file
     else
