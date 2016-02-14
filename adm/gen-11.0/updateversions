@@ -10,8 +10,12 @@ tmpfile=/tmp/updateversions.$$
 
 for file in $@
 do
+    if [ -f $file ]; then
 	sed "s/$oldVersion/$newVersion/g" $file > $tmpfile
 	diff $file $tmpfile
 	mv $tmpfile $file
+    else
+	echo "$0: $file is not a file, perhaps it is a directory."
+    fi
 done
 rm -f $tmpfile
