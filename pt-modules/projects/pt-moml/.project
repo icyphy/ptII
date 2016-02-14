@@ -41,11 +41,6 @@
 			<locationURI>PT_LOC/com/microstar/xml/XmlParser.java</locationURI>
 		</link>
 		<link>
-			<name>linked-src/com/microstar/xml/driver/SAXDriver.java</name>
-			<type>1</type>
-			<locationURI>PT_LOC/com/microstar/xml/driver/SAXDriver.java</locationURI>
-		</link>
-		<link>
 			<name>linked-src/com/microstar/xml/package.html</name>
 			<type>1</type>
 			<locationURI>PT_LOC/com/microstar/xml/package.html</locationURI>

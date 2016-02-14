@@ -1,0 +1,61 @@
+#!/bin/sh
+# Determine the authors of a particular OSGi module
+
+osgiDirectory=~/src/osgi-2-0
+
+authors=/tmp/svnAuthors.authors
+files=/tmp/svnAuthors.files
+summary=/tmp/svnAuthors.summary
+uniqFiles=/tmp/svnAuthors.uniqFiles
+
+rm -f $authors $files $summary $uniqFiles
+
+modules=`cd $osgiDirectory; ls -1 | grep -v ChangeLog | sort -r`
+for module in $modules
+do
+    echo $module
+    rm -f $files
+    if [ -d $osgiDirectory/${module}/src ]; then
+        (cd $osgiDirectory/${module}/src; find . -name "*.java" > $files)
+    fi
+    if [ -d $osgiDirectory/${module}/original-src ]; then
+        (cd $osgiDirectory/${module}/original-src; find . -name "*.java" >> $files)
+    fi
+    sort $files | uniq > $uniqFiles        
+
+    rm -f $authors
+    for file in `cat $uniqFiles`
+    do
+        echo $file
+        repoRoot=$PTII
+        # if [ $module == "diva" ]; then
+        #     repoRoot=/Users/cxh/src/diva/trunk
+        #     if [ -f $repoRoot/$file ]; then            
+        #         svn log -q -g $repoRoot/$file | egrep -v '^----' | awk '{print $3}' >> $authors
+        #     fi
+        # fi           
+        if [ -f $PTII/$file ]; then
+            grep $file ~/src/Eclipse/cl.out >> $authors
+        else
+            echo "$module: $repoRoot/$file not found?"
+        fi
+    done        
+    echo ""
+    echo "Summary: $module"
+    awk -v module=$module '
+{
+    authors[$2] += $1
+}
+END {
+        for(author in authors) {
+            print authors[author], author, module
+        }
+    }
+' $authors | sort -nr >> $summary
+done
+
+echo "Your output is in $summary:"
+
+cat $summary
+
+#rm -f $files $uniqFiles
