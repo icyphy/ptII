@@ -811,7 +811,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		org/mlc \
 		org/ptolemy/fmi \
 		org/ptolemy/qss \
-		pt-modules \
 		ptdb \
 		ptolemy/actor/designs \
 		ptolemy/actor/gt \
@@ -903,6 +902,8 @@ BASE_SRC_TO_BE_REMOVED = \
 # Files to be removed from CapeCode source distributions
 CAPECODE_SRC_TO_BE_REMOVED = \
 		$(BASE_SRC_TO_BE_REMOVED) \
+		doc/design/hyvisual.jar \
+		doc/design/visualsense.jar \
 		vergilBCVTB.jnlp.in \
 		vergilCyPhySim.jnlp.in \
 		vergilDSP.jnlp.in \
@@ -960,7 +961,11 @@ JAR=c:/Program\ Files/Java/jdk1.5.0_14/bin/jar
 # Create a jar file that contains the sources.  This is the main target for creating a jar that contains the release.
 src.jar: $(PTII_SRC_JAR)
 $(PTII_SRC_JAR): src_jar
-	# Creating PTII_SRC_JAR: $(PTII_SRC_JAR)
+	@echo "#"
+	@echo "# Now creating PTII_SRC_JAR: $@"
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
 	(cd src_jar/ptII$(VERSION); "$(JAR)" -cf ../../ptII$(VERSION).src.jar .)
 
 # The directory we jar up.
@@ -1331,9 +1336,10 @@ update_ftp: update_ptii_ftp untar update_ftp_book update_ftp_index
 update_ptii_ftp:
 	@echo "Copying ptII files to website"
 	scp -p $(PTII_FULL) $(PTII_SRC) \
-		$(PTSETUP_MAC).dmg \
 		$(CAPECODE_SRC_TAR) \
 		$(USER)@moog:$(PTII_FTP)
+	#$(PTSETUP_MAC).dmg
+
 untar:
 	ssh moog rm -rf $(PTII_FTP)/ptII$(VERSION)
 	ssh moog "cd $(PTII_FTP); tar -xf ptII$(VERSION).tar$(SUFFIX)"
@@ -3446,7 +3452,13 @@ $(PTSETUP_MAC).dmg: $(PTSETUP_MAC).app
 	mkdir dmg
 	mv $(PTSETUP_MAC).app dmg
 	echo "See http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
-	genisoimage -V $(PTSETUP_MAC) -D -R -apple -no-pad -o $@ dmg
+	if [ `uname -s` = "Darwin" ]; then \
+		echo "Running Darwin, using hdiutil"; \
+                hdiutil create -fs -volname $(PTSETUP_MAC) -srcfolder dmg -ov -format UDZO $@; \
+        else ; \
+		echo "Not running Darwin, using genisoimage"; \
+		genisoimage -V $(PTSETUP_MAC) -D -R -apple -no-pad -o $@ dmg; \
+        fi
 	mv dmg/$(PTSETUP_MAC).app .
 	rm -rf dmg
 
@@ -3459,7 +3471,13 @@ $(CAPECODE_SETUP_MAC).dmg: $(CAPECODE_SETUP_MAC).app
 	mkdir dmg
 	mv $(CAPECODE_SETUP_MAC).app dmg
 	echo "See http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
-	genisoimage -V $(CAPECODE_SETUP_MAC) -D -R -apple -no-pad -o $@ dmg
+	if [ `uname -s` = "Darwin" ]; then \
+		echo "Running Darwin, using hdiutil"; \
+                hdiutil create -fs -volname $(CAPECODE_PTSETUP_MAC) -srcfolder dmg -ov -format UDZO $@; \
+        else ; \
+		echo "Not running Darwin, using genisoimage"; \
+		genisoimage -V $(CAPECODE_SETUP_MAC) -D -R -apple -no-pad -o $@ dmg; \
+        fi
 	mv dmg/$(CAPECODE_SETUP_MAC).app .
 	rm -rf dmg
 

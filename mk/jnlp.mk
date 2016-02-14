@@ -1724,8 +1724,8 @@ L4JC=$(L4J_DIR)/launch4j
 # .exe files to be created by Launch4J
 L4J_CAPECODE_EXES =	capecode.exe
 L4J_DOC_EXES = 		ptbook.exe
-L4J_PTOLEMY_EXES = 	hyvisual.exe ptiny.exe vergil.exe \
-				visualsense.exe
+L4J_PTOLEMY_EXES = 	hyvisual.exe ptiny.exe vergil.exe
+# visualsense.exe
 L4J_PTPLOT_EXES = 	histogram.exe ptplot.exe
 
 L4J_EXES =		$(L4J_CAPECODE_EXES) $(L4J_DOC_EXES) $(L4J_PTOLEMY_EXES) $(L4J_PTPLOT_EXES)
