@@ -269,7 +269,7 @@ release_mac_setup:
 	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
 
 release_mac2_setup:
-	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
+	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar src.jar setup
 
 release_mac2_capecode_setup:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar $(CAPECODE_SETUP_MAC).dmg
@@ -2967,7 +2967,7 @@ cleanSrc:
 	@echo "# cleanSrc: removing files created by configure"
 	@echo "# `date`"
 	if [ -f src/ptII$(VERSION)/mk/ptII.mk ]; then \
-		(cd src/ptII$(VERSION)/bin; mv Vergil.app Ptiny.app ..; $(MAKE) clean; mv ../Vergil.app ../Ptiny.app .); \
+		(cd src/ptII$(VERSION)/bin; mv CapeCode.app Ptiny.app Vergil.app ..; $(MAKE) clean; mv ../CapeCode.app ../Ptiny.app ../Vergil.app ../Ptiny.app .); \
 	fi
 	rm -f src/ptII$(VERSION)/mk/ptII.mk
 	rm -f src/ptII$(VERSION)/.classpath
@@ -3362,14 +3362,15 @@ $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	awk -f macOSInclude.awk $(PTSETUP).xml | \
 	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII11.0.devel/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
 	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII11.0.devel/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
 
 capecode_setup_mac: $(CAPECODE_SETUP_MAC).xml
-$(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk #makefile
+$(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk $(CAPECODE_APP) #makefile
 	awk -f macOSInclude.awk $(CAPECODE_SETUP).xml | \
-	    sed -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII11.0.devel/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
+	    sed -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
@@ -3378,7 +3379,7 @@ PTINY_APP = $(PTIIDIST)/bin/Ptiny.app
 Ptiny.app: $(PTINY_APP)
 $(PTINY_APP): 
 	if [ ! -f $@ ]; then \
-		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  make Ptiny.app Vergil.app); \
+		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  make CapeCode.app Ptiny.app Vergil.app); \
         fi
 
 CAPECODE_APP = $(PTIIDIST)/bin/CapeCode.app
@@ -3454,8 +3455,8 @@ $(PTSETUP_MAC).dmg: $(PTSETUP_MAC).app
 	echo "See http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
 	if [ `uname -s` = "Darwin" ]; then \
 		echo "Running Darwin, using hdiutil"; \
-                hdiutil create -fs -volname $(PTSETUP_MAC) -srcfolder dmg -ov -format UDZO $@; \
-        else ; \
+                hdiutil create -volname $(PTSETUP_MAC) -srcfolder dmg -ov -format UDZO $@; \
+        else \
 		echo "Not running Darwin, using genisoimage"; \
 		genisoimage -V $(PTSETUP_MAC) -D -R -apple -no-pad -o $@ dmg; \
         fi
@@ -3473,8 +3474,8 @@ $(CAPECODE_SETUP_MAC).dmg: $(CAPECODE_SETUP_MAC).app
 	echo "See http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII10.0/mac.htm" > dmg/README_IfYouGetAMessageAboutTheSetupProgramBeingDamaged.txt
 	if [ `uname -s` = "Darwin" ]; then \
 		echo "Running Darwin, using hdiutil"; \
-                hdiutil create -fs -volname $(CAPECODE_PTSETUP_MAC) -srcfolder dmg -ov -format UDZO $@; \
-        else ; \
+                hdiutil create -volname $(CAPECODE_SETUP_MAC) -srcfolder dmg -ov -format UDZO $@; \
+        else \
 		echo "Not running Darwin, using genisoimage"; \
 		genisoimage -V $(CAPECODE_SETUP_MAC) -D -R -apple -no-pad -o $@ dmg; \
         fi
