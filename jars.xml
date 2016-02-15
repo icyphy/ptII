@@ -3991,6 +3991,7 @@
 	<include name="org/hlacerti/demo/*/*.xml"/>
 	<include name="org/hlacerti/demo/*/*.fed"/>
 	<include name="org/hlacerti/lib/*.class"/>
+	<include name="org/hlacerti/lib/*.xml"/>
       </fileset>
     </jar>
 
