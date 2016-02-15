@@ -277,6 +277,7 @@ CAPECODE_ONLY_JNLP_JARS = \
 CAPECODE_NONGUI_JARS = \
 	$(CORE_NONGUI_JARS) \
 	$(CAPECODE_ONLY_JNLP_JARS) \
+	ptolemy/actor/lib/conversions/json/json.jar \
 	ptolemy/actor/lib/colt/colt.jar \
 	lib/ptcolt.jar \
 	$(JSOUP_JARS)
@@ -523,8 +524,6 @@ JYTHON_JARS = \
 #
 # Jar files that will appear in a smaller (Ptiny) JNLP Ptolemy II Runtime.
 PTINY_ONLY_JNLP_JARS = \
-	lib/ptcolt.jar \
-	ptolemy/actor/lib/colt/colt.jar \
 	ptolemy/actor/lib/colt/demo/demo.jar \
         ptolemy/actor/lib/security/demo/demo.jar \
 	$(SDF_DEMO_JARS) \
@@ -552,7 +551,10 @@ PTINY_JNLP_JARS = \
 	$(CORE_JNLP_JARS) \
 	$(DOC_CODEDOC_JAR) \
 	$(DSP_ONLY_JNLP_JARS) \
-	$(PTINY_ONLY_JNLP_JARS)
+	$(PTINY_ONLY_JNLP_JARS) \
+	ptolemy/actor/lib/conversions/json/json.jar \
+	ptolemy/actor/lib/colt/colt.jar \
+	lib/ptcolt.jar
 
 PTINY_KEPLER_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/PtinyKeplerApplication.jar
@@ -708,6 +710,8 @@ FULL_ONLY_JNLP_JARS = \
 	ptolemy/actor/gt/demo/demo.jar \
 	ptolemy/actor/lib/aspect/aspect.jar \
 	ptolemy/actor/lib/aspect/demo/demo.jar \
+	ptolemy/actor/lib/colt/colt.jar \
+	lib/ptcolt.jar \
 	ptolemy/actor/lib/fmi/demo/demo.jar \
 	ptolemy/actor/lib/jai/jai.jar \
 	ptolemy/actor/lib/jai/demo/demo.jar \
