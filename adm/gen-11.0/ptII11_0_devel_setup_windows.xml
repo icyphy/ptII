@@ -300,9 +300,9 @@ The Ptiny pack is required.
             <file src="../dists/ptII11.0.devel/doc/img/vergil.ico"
 	          targetdir="$INSTALL_PATH/doc/img/"/>
 
-            <file src="../dists/ptII11.0.devel/visualsense.exe" targetdir="$INSTALL_PATH"/>
-            <file src="../dists/ptII11.0.devel/doc/img/visualsense.ico"
-	          targetdir="$INSTALL_PATH/doc/img/"/>
+            <!-- file src="../dists/ptII11.0.devel/visualsense.exe" targetdir="$INSTALL_PATH"/ -->
+            <!-- file src="../dists/ptII11.0.devel/doc/img/visualsense.ico"
+	          targetdir="$INSTALL_PATH/doc/img/"/-->
 
             <!-- No Viptos, it does not work, it requires ptinyos -->
             <!-- file src="../dists/ptII11.0.devel/viptos.exe" targetdir="$INSTALL_PATH"/ -->

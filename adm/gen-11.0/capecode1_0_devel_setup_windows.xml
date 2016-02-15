@@ -20,7 +20,7 @@
         <appversion>1.0.devel</appversion>
 	<appsubpath>Ptolemy/capeCode1.0.devel</appsubpath>
         <url>http://capecode.org</url>
-	<javaversion>1.8</javaversion>
+	<javaversion>1.6</javaversion>
     </info>
     
     <!-- 
@@ -124,7 +124,7 @@
 <!--MacOSInclude-->
 
 	    <!-- The next line gets substituted for the mac by the makefile. -->
-	    <!-- Ptiny.app -->
+	    <!-- CapeCode.app -->
 
 	    <!-- The classpath for vergil is more than 8192 chars, so
 		 creating vergil.exe fails with this message:
@@ -132,8 +132,8 @@
 		 The workaround is to create a jar file that has a Class-Path:
 		 manifest.  See $PTII/bin/mkl4j
 	      -->
-            <file src="../dists/ptII11.0.devel/jar_dist/vergil_l4j.jar"
-                  targetdir="$INSTALL_PATH"/>
+            <!-- file src="../dists/ptII11.0.devel/jar_dist/vergil_l4j.jar"
+                  targetdir="$INSTALL_PATH"/-->
 
 	    <!-- Run (cd $PTII; make echo_jars JARS=CAPECODE_JNLP_JARS)
 		 and then copy the section below and use diff:
@@ -392,8 +392,8 @@
 	    <file src="src_jar/capecode1.0.devel/README.txt" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode1.0.devel/util" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode1.0.devel/vergilCapeCode.jnlp.in" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode1.0.devel/vergil_l4j.jar" targetdir="$INSTALL_PATH"/>
-	    <file src="src_jar/capecode1.0.devel/vergil_l4j.mf" targetdir="$INSTALL_PATH"/>
+	    <!-- file src="src_jar/capecode1.0.devel/vergil_l4j.jar" targetdir="$INSTALL_PATH"/-->
+	    <!-- file src="src_jar/capecode1.0.devel/vergil_l4j.mf" targetdir="$INSTALL_PATH"/-->
             <!-- file src="ptII11.0.devel.src.jar" targetdir="$INSTALL_PATH"/ -->
             <!-- file src="ExtractJarFile.class" targetdir="$INSTALL_PATH"/ -->
 
