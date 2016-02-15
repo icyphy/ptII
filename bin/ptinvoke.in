@@ -1708,12 +1708,13 @@ EOF4
         <key>user.region</key>
         <string>US</string>
       </dict>
+      <key>Arguments</key>
+      <string>$MACAPP_ARGUMENT</string>
    </dict>
    </dict>
 </plist>
 EOF6
       #	cat >>$MACAPP_PLIST <<EOF6
-      # <string>$MACAPP_ARGUMENT</string>
       # </array>
       # <key>Properties</key>
       # <dict>
