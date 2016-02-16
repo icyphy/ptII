@@ -1523,7 +1523,10 @@ if [ "$error" = "none" ]; then
 		mkdir $MACAPP_APP
 		(cd $MACAPP_APP; cp -r ../macContents/Contents .; find . -name ".svn" -exec rm -rf {} \;)
 	    fi
-	    if [ "$MACAPP_APP" = "Vergil.app" ]; then
+            if [ ! -d $MACAPP_APP/Contents/Resources/Java ]; then 
+		mkdir -p $MACAPP_APP/Contents/Resources/Java
+            fi		    
+            if [ "$MACAPP_APP" = "Vergil.app" ]; then
 		# See
 		# http://developer.apple.com/java/faq/development.html
 		# "The naming convention for JNI libraries is
@@ -1533,9 +1536,6 @@ if [ "$error" = "none" ]; then
 		# Contents/Resources/Java subdirectory of an
 		# application bundle or in one of the extension
 		# directories recommended in Technical Q&A QA1170.
-	        if [ ! -d $MACAPP_APP/Contents/Resources/Java ]; then 
-		    mkdir -p $MACAPP_APP/Contents/Resources/Java
-                fi		    
 		cp $PTII/lib/*.jnilib $MACAPP_APP/Contents/Resources/Java
 		if [ -f "$PTII/vendors/misc/rxtx/Mac_OS_X/librxtxSerial.jnilib" ]; then
 		    cp $PTII/vendors/misc/rxtx/Mac_OS_X/librxtxSerial.jnilib $MACAPP_APP/Contents/Resources/Java
