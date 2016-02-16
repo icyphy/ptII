@@ -4107,6 +4107,7 @@
       <fileset dir="${basedir}">
 	<include name="org/ptolemy/machineLearning/*.class"/>
 	<include name="org/ptolemy/machineLearning/clustering/*.class"/>
+	<include name="org/ptolemy/machineLearning/clustering/*.xml"/>
 	<include name="org/ptolemy/machineLearning/clustering/demo/*/*.xml"/>
 	<include name="org/ptolemy/machineLearning/machineLearning.xml"/>
 	<include name="org/ptolemy/machineLearning/hmm/*.class"/>
