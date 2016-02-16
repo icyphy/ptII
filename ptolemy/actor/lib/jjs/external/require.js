@@ -114,12 +114,29 @@
             if (mainFile.exists()) {
                 return mainFile;
             } else {
+                // // --- Modified from original by eal@berkeley.edu to look for index.js.
+                // mainFile = new File(dir, 'index.js');
+                // if (mainFile.exists()) {
+                //     return mainFile;
+                // } else {
+                //     return null;
+                // }
                 // --- Modified from original by eal@berkeley.edu to look for index.js.
-                mainFile = new File(dir, 'index.js');
-                if (mainFile.exists()) {
-                    return mainFile;
+                var pkgMainFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(dir + '/' + pkg.main);
+                if (pkgMainFile !== null && pkgMainFile.exists()) {
+                    return pkgMainFile;
                 } else {
-                    return null;
+                    mainFile = new File(dir, 'index.js');
+                    if (mainFile.exists()) {
+                        return mainFile;
+                    } else {
+                        var indexJSFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(dir + '/index.js');
+                        if (indexJSFile !== null && indexJSFile.exists()) {
+                            return indexJSFile;
+                        } else {
+                            return null;
+                        }
+                    }
                 }
             }
         } else {
