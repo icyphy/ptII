@@ -1,25 +1,31 @@
 <userInput>
-  <!-- Install -->
-    <panel order="0">
-	<field type="check" variable="startPtiny">
-	  <spec txt="Would you like to start Ptolemy next?" true="true" false="false"
-		id="startPtinyCheck"
-		set="true"/>
-	</field>
-    </panel>
-    <panel order="0">
-	<field type="check" variable="startCapeCode">
-	  <spec txt="Would you like to start Ptolemy next?" true="true" false="false"
-		id="startCapeCodeCheck"
-		set="true"/>
-	</field>
-    </panel>
-    <panel order="2">
-	<field type="check" variable="startVergil">
-          <createForPack name="Full" />
-	  <spec txt="Would you like to start Ptolemy next?" true="true" false="false"
-		id="startVergilCheck"
-		set="true"/>
-	</field>
-    </panel>
+
+  <panel id="startApplicationPanelCapeCode">
+    <field type="check" variable="startCapeCode">
+      <createForUnselectedPack name="Full" />
+      <createForUnselectedPack name="Ptiny" />
+      <spec txt="Would you like to start CapeCode next?" true="true" false="false"
+	    id="startCapeCodeCheck"
+	    set="true"/>
+    </field>
+  </panel>
+
+  <panel id="startApplicationPanelFull">
+    <field type="check" variable="startVergil">
+      <createForPack name="Full" />
+      <spec txt="Would you like to start Ptolemy next?" true="true" false="false"
+	    id="startVergilCheck"
+	    set="true"/>
+    </field>
+  </panel>
+
+  <panel id="startApplicationPanelPtiny">
+    <createForUnselectedPack name="Full" />
+    <field type="check" variable="startPtiny">
+      <spec txt="Would you like to start Ptiny Ptolemy next?" true="true" false="false"
+	    id="startPtinyCheck"
+	    set="true"/>
+    </field>
+  </panel>
+
 </userInput>
