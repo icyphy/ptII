@@ -159,6 +159,7 @@ public class JNLPUtilities {
      *  @exception IOException If the jar URL cannot be saved as a temporary file.
      */
     public static File getResourceSaveJarURLAsTempFile(String spec) throws IOException {
+        // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec);
         // If the spec is not a jar URL, then check in file system.
         // This method is used by CapeCode to find .js file resources with require().
         int jarSeparatorIndex = spec.indexOf("!/");
@@ -166,6 +167,7 @@ public class JNLPUtilities {
         if (jarSeparatorIndex == -1) {
             results = new File(spec);
             if (results.exists()) {
+                // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 0 return: " + results);
                 return results;
             }
         } else {
@@ -176,6 +178,12 @@ public class JNLPUtilities {
         // If the resources is not found at all, return null.
         URL url = ClassUtilities.getResource(spec);
         if (url == null) {
+            // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 0.5");
+            // If we are trying to read something with a path like ./decode.js, then check the _lastSpec
+            if (spec.startsWith("./") && _lastSpec != null) {
+                String parentLastSpec = _lastSpec.substring(0, _lastSpec.lastIndexOf("/") + 1);
+                return getResourceSaveJarURLAsTempFile(parentLastSpec + spec.substring(2));
+            }
             return null;
         }
 
@@ -192,7 +200,10 @@ public class JNLPUtilities {
                 // See http://michaelscharf.blogspot.com/2006/11/javaneturlequals-and-hashcode-make.html
                 if (_jarURITemporaryFiles != null
                         && _jarURITemporaryFiles.containsKey(url.toURI())) {
-                    return _jarURITemporaryFiles.get(url.toURI());
+                    results = _jarURITemporaryFiles.get(url.toURI());
+                    _lastSpec = spec;
+                    //System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 1 return: " + results);
+                    return results;
                 }
             } catch (URISyntaxException ex) {
                 IOException ioException = new IOException("Failed to look up " + url + " in the cache.");
@@ -222,6 +233,7 @@ public class JNLPUtilities {
                 String temporaryFileName = saveJarURLAsTempFile(url.toString(), 
                         prefix, suffix, null /*directory*/);
                 results =  new File(temporaryFileName);
+                // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 1.5 reslts: " + results + " exists: " + results.exists());
             } catch (IOException ex) {
                 // If the spec exists with a trailing /, then just
                 // return that so that we can detect that it is a
@@ -246,6 +258,8 @@ public class JNLPUtilities {
                 ioException.initCause(ex);
                 throw ioException;
             }
+            _lastSpec = spec;
+            // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 2 return: " + results);
             return results;
         } else {
             // If the resource is not a jar URL, try
@@ -257,6 +271,7 @@ public class JNLPUtilities {
             } catch(IllegalArgumentException e) {
                 results = new File(url.getPath());
             }
+            // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 3 return: " + results);
             return results;
         }
     }
@@ -439,4 +454,6 @@ public class JNLPUtilities {
      * getResourceSaveJarURIAsTempFile().
      */
     private static Map<URI,File> _jarURITemporaryFiles;
+
+    private static String _lastSpec = null;
 }
