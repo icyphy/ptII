@@ -1,15 +1,15 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
 
 <!-- 
-    A sample installation file.
-    Use it as a base for your own installers :-)
-    
-    To compile it :
-    - go in the bin directory where you installed IzPack
-    - call "compile ../sample/install.xml -b ../sample"
+    To compile
+    export IZPACK_OPTS=-Djava.util.logging.config.file=`pwd`/izpackLogging.txt
+    $PTII/vendors/izpack/bin/compile -o test.jar izpack.xml
 -->
 
-<installation version="1.0">
+<izpack:installation version="5.0"
+                     xmlns:izpack="http://izpack.org/schema/installation"
+                     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                     xsi:schemaLocation="http://izpack.org/schema/installation http://izpack.org/schema/5.0/izpack-installation-5.0.xsd">
 
     <!-- 
         The info section.
@@ -20,7 +20,7 @@
         <appversion>1.0.devel</appversion>
 	<appsubpath>Ptolemy/capeCode1.0.devel</appsubpath>
         <url>http://capecode.org</url>
-	<javaversion>1.6</javaversion>
+	<javaversion>1.8</javaversion>
     </info>
     
     <!-- 
@@ -39,9 +39,20 @@
 	<name>startVergil</name>
 	<value>true</value>
       </condition>
-      <condition type="packselection" id="fullPackSelected">
-        <packid>Full</packid>
+      <condition type="packselection" id="capeCodePackSelected">
+        <name>CapeCode</name>
       </condition> 
+      <condition type="packselection" id="fullPackSelected">
+        <name>Full</name>
+      </condition> 
+      <condition type="java" id="showShortCutPanel">
+        <java>
+          <class>com.izforge.izpack.util.OsVersion</class>
+          <field>IS_OSX</field>
+        </java>
+        <returnvalue type="boolean">false</returnvalue>
+      </condition>
+
     </conditions>
 
     <!-- 
@@ -63,13 +74,15 @@
         The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
     -->
     <resources>
+        <res id="packsLang.xml_eng" src="packsLang.xml_eng"/>
         <res id="HTMLInfoPanel.info" src="indexCapeCode.htm"/> 
         <res id="HTMLLicencePanel.licence" src="licenseCapeCode.htm"/>
         <res id="InfoPanel.info" src="../dists/ptII11.0.devel/README.txt"/>
         <res id="TargetPanel.dir.windows" src="TargetPanel.dir.windows"/>
-	<res id="Installer.image" src="../dists/ptII11.0.devel/ptolemy/configs/capecode/CapeCode.png" />
+	<res id="Installer.image" src="../dists/ptII11.0.devel/ptolemy/configs/capecode/CapeCodeSmall.png" />
+	<res id="InstallerLarger.image" src="../dists/ptII11.0.devel/ptolemy/configs/capecode/CapeCode.png" />
 	<res id="StyleSheet" src="../dists/ptII11.0.devel/doc/default.css" />
-	<res id="shortcutSpec.xml" src="shortcutSpec.xml" /> 
+	<res id="shortcutSpec.xml" src="Win_shortcutSpec.xml" /> 
  	<res id="userInputSpec.xml" src="userInputSpec.xml" />
         <res src="border1.png" id="Installer.image.0"/>
         <res src="border2.png" id="Installer.image.1"/>
@@ -97,9 +110,8 @@
         <panel classname="PacksPanel"/>
         <panel classname="SummaryPanel"/>
         <panel classname="InstallPanel"/>
-        <panel classname="ShortcutPanel"/>
- 	<panel classname="UserInputPanel" condition="!fullPackSelected"/>
- 	<panel classname="UserInputPanel" condition="fullPackSelected"/>
+        <panel classname="ShortcutPanel" condition="showShortCutPanel"/>
+ 	<panel classname="UserInputPanel" condition="capeCodePackSelected" id="startApplicationPanelCapeCode"/>
         <panel classname="ProcessPanel" condition="startCapeCode|startPtiny|startVergil"/>
         <!-- panel classname="SimpleFinishPanel"/ -->
         <panel classname="FinishPanel"/>
@@ -331,6 +343,10 @@
 		  os="windows"/>
 <!--MacOSInclude-->
 
+            <!-- We can't get these files from jar files -->
+	    <file src="src_jar/capecode1.0.devel/ptolemy/actor/lib/jjs" targetdir="$INSTALL_PATH/ptolemy/actor/lib"/>
+	    <file src="src_jar/capecode1.0.devel/org/terraswarm/accessor/accessors/web" targetdir="$INSTALL_PATH/org/terraswarm/accessor/accessors"/>
+
             <!-- file src="script.bat" targetdir="$INSTALL_PATH"/ -->
             <!-- parsable targetfile="$INSTALL_PATH/script.bat"/ --> <!-- The file will be parsed -->
 
@@ -392,6 +408,7 @@
 	    <file src="src_jar/capecode1.0.devel/README.txt" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode1.0.devel/util" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode1.0.devel/vergilCapeCode.jnlp.in" targetdir="$INSTALL_PATH"/>
+
 	    <!-- file src="src_jar/capecode1.0.devel/vergil_l4j.jar" targetdir="$INSTALL_PATH"/-->
 	    <!-- file src="src_jar/capecode1.0.devel/vergil_l4j.mf" targetdir="$INSTALL_PATH"/-->
             <!-- file src="ptII11.0.devel.src.jar" targetdir="$INSTALL_PATH"/ -->
@@ -403,4 +420,4 @@
     <!-- Include ExtractJarFile.class for the Process Panel -->
     <!-- jar src="ExtractJarFile.jar" stage="install"/-->
     
-</installation>
+</izpack:installation>

@@ -453,7 +453,7 @@ $(PTIIDIST):
 	mv $(PTIIDIST)/ptolemy/configs/cosimulation.xml_tmp \
 		$(PTIIDIST)/ptolemy/configs/cosimulation.xml
 	# Remove apps.xml, corba.xml and mail.xml from the configuration
-	egrep -v "apps.xml|corba.xml|mail.xml|metroII.xml|openmodelica|scrEffigy|scrTableau|scr.xml" \
+	egrep -v "apps.xml|corba.xml|mail.xml|mbed.xml|metroII.xml|openmodelica|scrEffigy|scrTableau|scr.xml" \
 		< $(PTIIDIST)/ptolemy/configs/defaultFullConfiguration.xml \
 		> $(PTIIDIST)/ptolemy/configs/defaultFullConfiguration.xml_tmp
 	sed 's/, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAsJavaFMUAction&quot;//' \
@@ -2941,7 +2941,8 @@ indent_all:
 #IZPACKDIR=c:/Program Files/IzPack
 IZPACKDIR=$(PTIIHOME)/vendors/izpack
 IZPACK_COMPILE=$(IZPACKDIR)/bin/compile
-IZPACK_TAR=IzPack.src.4.3.5.tar.gz
+IZPACK_COMMAND=IZPACK_OPTS=-Djava.util.logging.config.file=$(GENDIR)/izpackLogging.txt sh "$(IZPACK_COMPILE)" -o
+IZPACK_JAR=izpack-dist-5.0.6.jar
 
 # If you get "makefile:2660: *** target pattern contains no `%'.
 # Stop.", then the problem is that $PTII has a semicolon in it and you
@@ -2958,8 +2959,8 @@ $(IZPACK_COMPILE): $(PTIIHOME)/vendors/izpack
 $(PTIIHOME)/vendors/izpack:
 	mkdir $(PTIIHOME)/vendors/izpack
 	cd $(PTIIHOME)/vendors/izpack; \
-		wget http://download.berlios.de/izpack/$(IZPACK_TAR); \
-		$(TAR) -zxf $(IZPACK_TAR)
+		wget https://oss.sonatype.org/content/repositories/releases/org/codehaus/izpack/izpack-dist/5.0.6/$(IZPACK_JAR); \
+		$(JAVA) -jar $(IZPACK_TAR)
 
 # It is necessary to this before create the Windows and Mac setup jar files.
 cleanSrc:
@@ -2984,7 +2985,7 @@ $(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanS
 	-ls -l $(PTIIDIST)/bin/vergil
 	rm -rf jre; mkdir jre
 	(cd jre32; tar -cf - .) | (cd jre; tar -xpf -)
-	sh "$(IZPACK_COMPILE)" $<
+	$(IZPACK_COMMAND) $@ $<
 	rm -rf jre
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
@@ -3005,7 +3006,7 @@ $(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe $(PTIIDIST)/bin/vergi
 	ls -l $(PTIIDIST)/bin/vergil
 	rm -rf jre; mkdir jre
 	(cd jre64; tar -cf - .) | (cd jre; tar -xpf -)
-	sh "$(IZPACK_COMPILE)" $<
+	$(IZPACK_COMMAND) $@ $<
 	rm -rf jre
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
@@ -3033,7 +3034,7 @@ $(CAPECODE_SETUP_64).jar: $(CAPECODE_SETUP_64).xml $(PTIIDIST)/jar_dist $(PTIIDI
 	@echo "# `date`"
 	rm -rf jre; mkdir jre
 	(cd jre64; tar -cf - .) | (cd jre; tar -xpf -)
-	sh "$(IZPACK_COMPILE)" $<
+	$(IZPACK_COMMAND) $@ $<
 	rm -rf jre
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
@@ -3395,7 +3396,7 @@ $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIID
 	@echo "# Now building target setup_mac_jar: (PTSETUP_MAC).jar: $@"
 	@echo "# `date`"
 	ls -ldg $(PTINY_APP)
-	sh "$(IZPACK_COMPILE)" $<
+	$(IZPACK_COMMAND) $@ $<
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
 	else \
@@ -3408,7 +3409,8 @@ $(CAPECODE_SETUP_MAC).jar: $(CAPECODE_SETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTIN
 	@echo "# Now building target setup_mac_jar: (CAPECODE_SETUP_MAC): $@"
 	@echo "# `date`"
 	ls -ldg $(PTINY_APP)
-	sh "$(IZPACK_COMPILE)" $<
+	# Disable logging, see https://groups.google.com/forum/#!topic/izpack-user/87fwTxSz3jA
+	$(IZPACK_COMMAND) $@ $<
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
 	else \
