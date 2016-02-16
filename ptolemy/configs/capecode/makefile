@@ -64,6 +64,7 @@ OTHER_FILES_TO_BE_JARED = \
 	capecodeEffigies.xml \
 	capecodeRefinements.xml \
 	CapeCode.png \
+	CapeCodeSmall.png \
 	de.xml \
 	demonstrations.htm \
 	docs.htm \
