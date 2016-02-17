@@ -1,4 +1,4 @@
-/* AnExecute a script in JavaScript.
+/* A helper for a web socket server.
 
 @Copyright (c) 2015 The Regents of the University of California.
 All rights reserved.

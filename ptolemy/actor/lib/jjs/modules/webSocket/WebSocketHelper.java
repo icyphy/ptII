@@ -168,7 +168,7 @@ public class WebSocketHelper extends VertxHelperBase {
         submit(() -> {
             _numberOfTries = 1;
             if (_DEBUG) {
-                _actor.log("*** Requesting connection to server.");
+                _actor.log("*** Requesting connection to server: " + _host + " at port " + _port);
             }
             _connectWebsocket(_host, _port, _client);
         });
