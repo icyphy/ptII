@@ -1,0 +1,13 @@
+{
+  "name": "httpServer",
+  "version": "0.1.0",
+  "main": "httpServer.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Elizabeth Osyk"
+    , "email" : "beth@berkeley.edu"},
+    {"name" : "Edward A. Lee"
+    , "email" : "eal@eecs.berkeley.edu"}
+  ],
+  "description": "A module for a web server."
+}
