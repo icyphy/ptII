@@ -76,7 +76,7 @@ exports.supportedSendTypes = function () {
  *  The event 'open' will be emitted when the socket has been successfully opened.
  *  The event 'message' will be emitted with the body of the message as an
  *  argument when an incoming message arrives on the socket.
- *  You can invoke the this.send() function to send data to the server.
+ *  You can invoke the send() function to send data to the server.
  *
  *  The type of data sent and received can be specified with the 'sendType'
  *  and 'receiveType' options.
@@ -105,12 +105,12 @@ exports.supportedSendTypes = function () {
  *  
  *      var WebSocket = require('webSocket');
  *      var client = new WebSocket.Client({'host': 'localhost', 'port': 8080});
- *      client.open();
  *      client.send({'foo': 'bar'});
  *      client.on('message', onMessage);
  *      function onMessage(message) {
  *          print('Received from web socket: ' + message);
  *      }
+ *      client.open();
  *  
  *  The above code may send a message even before the socket is opened. This module
  *  implementation will queue that message to be sent later when the socket is opened.
@@ -120,7 +120,8 @@ exports.supportedSendTypes = function () {
  *  * port: The port on which the host is listening. Defaults to 80.
  *  * receiveType: The MIME type for incoming messages, which defaults to 'application/json'.
  *  * sendType: The MIME type for outgoing messages, which defaults to 'application/json'.
- *  * connectTimeout: The time to wait before giving up on a connection, in milliseconds (defaults to 5000).
+ *  * connectTimeout: The time to wait before giving up on a connection, in milliseconds
+ *    (defaults to 1000).
  *  * numberOfRetries: The number of times to retry connecting. Defaults to 10.
  *  * timeBetweenRetries: The time between retries, in milliseconds. Defaults to 500.
  *  * discardMessagesBeforeOpen: If true, discard messages before the socket is open. Defaults to false.
@@ -134,7 +135,7 @@ exports.Client = function (options) {
     this.host = options.host || 'localhost';
     this.receiveType = options.receiveType || 'application/json';
     this.sendType = options.sendType || 'application/json';
-    this.connectTimeout = options.connectTimeout || 5000;
+    this.connectTimeout = options.connectTimeout || 1000;
     this.numberOfRetries = options.numberOfRetries || 10;
     this.timeBetweenRetries = options.timeBetweenRetries || 500;
     this.discardMessagesBeforeOpen = options.discardMessagesBeforeOpen || false;
