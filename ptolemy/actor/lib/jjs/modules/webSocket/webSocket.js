@@ -34,6 +34,7 @@
  *
  * @module webSocket
  * @author Hokeun Kim and Edward A. Lee
+ * @version $$Id$$
  */
 
 // Stop extra messages from jslint.  Note that there should be no
@@ -157,7 +158,7 @@ util.inherits(exports.Client, EventEmitter);
 /** Open the socket connection. Call this after setting up event handlers. */
 exports.Client.prototype.open = function () {
     this.helper.open();
-}
+};
 
 /** Send data over the web socket.
  *  If the socket has not yet been successfully opened, then queue
