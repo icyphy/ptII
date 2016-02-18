@@ -104,6 +104,7 @@ exports.supportedSendTypes = function () {
  *  an error occurs (with an error message as an argument).
  *  For example,
  *  
+ *  <pre>
  *      var WebSocket = require('webSocket');
  *      var client = new WebSocket.Client({'host': 'localhost', 'port': 8080});
  *      client.send({'foo': 'bar'});
@@ -112,6 +113,7 @@ exports.supportedSendTypes = function () {
  *          print('Received from web socket: ' + message);
  *      }
  *      client.open();
+ *  </pre>
  *  
  *  The above code may send a message even before the socket is opened. This module
  *  implementation will queue that message to be sent later when the socket is opened.
@@ -228,10 +230,12 @@ exports.Client.prototype._notifyIncoming = function (message) {
  *  This subclasses EventEmitter, emitting events 'listening' and 'connection'.
  *  A typical usage pattern looks like this:
  * 
+ *  <pre>
  *     var server = new WebSocket.Server({'port':8082});
  *     server.on('listening', onListening);
  *     server.on('connection', onConnection);
  *     server.start();
+ *  </pre>
  * 
  *  where onListening is a handler for an event that this Server emits
  *  when it is listening for connections, and onConnection is a handler
@@ -241,12 +245,14 @@ exports.Client.prototype._notifyIncoming = function (message) {
  *  and the onConnection handler can register a listener for 'message' events
  *  on that Socket object, as follows:
  * 
- *     server.on('connection', function(socket) {
+ *  <pre>
+ *    server.on('connection', function(socket) {
  *        socket.on('message', function(message) {
  *            console.log(message);
  *            socket.send('Reply message');
  *        });
  *     });
+ *  </pre>
  * 
  *  The Socket object also has a close() function that allows the server to close
  *  the connection.
