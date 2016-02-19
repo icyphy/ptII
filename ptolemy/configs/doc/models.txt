@@ -171,6 +171,7 @@ $CLASSPATH/ptolemy/actor/lib/jai/demo/ImageReconstruction/ImageReconstruction.xm
 $CLASSPATH/ptolemy/actor/lib/jai/demo/VQSequenceDisplay/VQSequenceDisplay.xml
 $CLASSPATH/ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/demo/HttpServer/HttpServer.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/ModelBuilder/ModelBuilder.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/Audio.xml
