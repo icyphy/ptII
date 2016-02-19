@@ -773,6 +773,7 @@ PTITEXTPDF_PACKAGES
 PTITEXTPDF_JAR
 PTITEXTPDF_DIR
 PTII
+PTHTTPSERVER_DIR
 PTHTTPCLIENT_DIR
 PTHOMER_PACKAGES
 PTHOMER_JARS
@@ -13470,6 +13471,7 @@ fi
             PTBROWSER_DIR=browser
 	    PTEVENTBUS_DIR=eventbus
             PTHTTPCLIENT_DIR=httpClient
+            PTHTTPSERVER_DIR=httpServer
             PTUDPSOCKET_DIR=udpSocket
             PTVERTX_SOCKET_DIR=socket
     	    PTVERTX_DIR=vertx
@@ -13501,6 +13503,7 @@ $as_echo "$as_me: WARNING: Failed to the Vertx file $jar in $PTVERTX_JAR_DIR." >
                     PTBROWSER_DIR=
 	            PTEVENTBUS_DIR=
                     PTHTTPCLIENT_DIR=
+                    PTHTTPSERVER_DIR=
                     PTUDPSOCKET_DIR=
                     PTVERTX_SOCKET_DIR=
     	            PTVERTX_DIR=
@@ -13516,7 +13519,7 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTV
 $as_echo "$PTVERTX_JARS" >&6; }; fi
             # org.terraswarm.accessor depends on jjs/JavaScript.java so we
             # list org.terraswarm.accessor with jjs/JavaScript
-	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.socket ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.httpServer ptolemy.actor.lib.jjs.modules.socket ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
@@ -13525,18 +13528,19 @@ if test -z "$PTVERTX_DIR"; then
     updateExcludes "ptolemy/actor/lib/jjs/modules/browser/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/eventbus/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/httpClient/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/httpServer/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/udpSocket/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/socket/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/webSocket/"
     if test -d "$PTVERTX_USER_DIR" -o -d "$PTWEBSOCKET_USER_DIR"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the the Vertx application platform interface jar files,
     or a version of Java before 1.8 was found
-    so ptolemy.actor.lib.jjs.modules.{browser,eventbus,httpclient,socket,udpSocket,webSocket}
+    so ptolemy.actor.lib.jjs.modules.{browser,eventbus,httpClient,httpServersocket,udpSocket,webSocket}
     will not be compiled.
     Vertx consists of a number of jar files that are typically in $PTII/lib." >&5
 $as_echo "$as_me: WARNING: Failed to find the the Vertx application platform interface jar files,
     or a version of Java before 1.8 was found
-    so ptolemy.actor.lib.jjs.modules.{browser,eventbus,httpclient,socket,udpSocket,webSocket}
+    so ptolemy.actor.lib.jjs.modules.{browser,eventbus,httpClient,httpServersocket,udpSocket,webSocket}
     will not be compiled.
     Vertx consists of a number of jar files that are typically in $PTII/lib." >&2;}
     fi
@@ -14555,6 +14559,9 @@ fi
 
 
 # Set to httpClient if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+
+
+# Set to httpServer if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 
 
 # Location of the the PTII directory
