@@ -33,7 +33,9 @@ ME =		ptolemy/actor/lib/jjs/modules
 
 # PTBROWSER_DIR is set to browser if the Vertx jars are found by configure.
 # PTCAMERAS_DIR is set to cameras if the webcam-capture*.jar and other jars are found by configure.
-# PTHTTPCLIENT_DIR is set to eventbus if the Vertx jars are found by configure.
+# PTEVENTBUS_DIR is set to eventbus if the Vertx jars are found by configure.
+# PTHTTPCLIENT_DIR is set to httpClient if the Vertx jars are found by configure.
+# PTHTTPCLIENT_DIR is set to httpServer if the Vertx jars are found by configure.
 # PTIMUSENSOR_DIR is set to IMUSensor if the Java Communications API (RXTX) jars are found by configure.
 # PTPAHO_MQTT_DIR is set to localStorage if the $PTII/lib/org.eclipse.paho.client.mqttv3.jar is found by configure.
 # PTSERIAL_DIR is set to serial if the Java Communication API is found by configure.
@@ -41,7 +43,7 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTVERTX_SOCKET_DIR is set to socket if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
 # PTXBEE_DIR is set to xbee if the XBee Java Interface was found
-DIRS = 		audio $(PTBROWSER_DIR) $(PTCAMERAS_DIR) contextAware contextAwareTest discovery dsp $(PTEVENTBUS_DIR) $(PTHTTPCLIENT_DIR) $(PTIMUSENSOR_DIR) localStorage mapManager mockHueBridges motionDetector $(PTPAHO_MQTT_DIRS) objectAssign $(PTSERIAL_DIR) shell $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) $(PTXBEE_DIR)
+DIRS = 		audio $(PTBROWSER_DIR) $(PTCAMERAS_DIR) contextAware contextAwareTest discovery dsp $(PTEVENTBUS_DIR) $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) $(PTIMUSENSOR_DIR) localStorage mapManager mockHueBridges motionDetector $(PTPAHO_MQTT_DIRS) objectAssign $(PTSERIAL_DIR) shell $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) $(PTXBEE_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..
