@@ -627,6 +627,9 @@ PTHOMER_PACKAGES =	@PTHOMER_PACKAGES@
 # Set to httpClient if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTHTTPCLIENT_DIR=	@PTHTTPCLIENT_DIR@
 
+# Set to httpServer if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTHTTPSERVER_DIR=	@PTHTTPSERVER_DIR@
+
 # Set to itextpdf and used in
 # $PTII/ptolemy/vergil/basic/makefile if iText.jar was found
 PTITEXTPDF_DIR = 	@PTITEXTPDF_DIR@
