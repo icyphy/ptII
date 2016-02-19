@@ -1,30 +1,28 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <AutomatedInstallation langpack="eng">
-<com.izforge.izpack.panels.HelloPanel id="UNKNOWN (com.izforge.izpack.panels.HelloPanel)"/>
-<com.izforge.izpack.panels.HTMLInfoPanel id="UNKNOWN (com.izforge.izpack.panels.HTMLInfoPanel)"/>
-<com.izforge.izpack.panels.HTMLLicencePanel id="UNKNOWN (com.izforge.izpack.panels.HTMLLicencePanel)"/>
-<com.izforge.izpack.panels.TargetPanel id="UNKNOWN (com.izforge.izpack.panels.TargetPanel)">
+<com.izforge.izpack.panels.hello.HelloPanel id="HelloPanel_0"/>
+<com.izforge.izpack.panels.htmlinfo.HTMLInfoPanel id="HTMLInfoPanel_1"/>
+<com.izforge.izpack.panels.htmllicence.HTMLLicencePanel id="HTMLLicencePanel_2"/>
+<com.izforge.izpack.panels.target.TargetPanel id="TargetPanel_3">
 <installpath>test/capeCodeTest</installpath>
-</com.izforge.izpack.panels.TargetPanel>
-<com.izforge.izpack.panels.PacksPanel id="UNKNOWN (com.izforge.izpack.panels.PacksPanel)">
-<pack index="0" name="Ptiny" selected="true"/>
-<pack index="1" name="Full" selected="true"/>
-<pack index="2" name="Docs" selected="true"/>
-<pack index="3" name="FullDocs" selected="true"/>
-<pack index="4" name="JRE" selected="true"/>
-<pack index="5" name="Sources" selected="true"/>
-</com.izforge.izpack.panels.PacksPanel>
-<com.izforge.izpack.panels.SummaryPanel id="UNKNOWN (com.izforge.izpack.panels.SummaryPanel)"/>
-<com.izforge.izpack.panels.InstallPanel id="UNKNOWN (com.izforge.izpack.panels.InstallPanel)"/>
-<com.izforge.izpack.panels.ShortcutPanel id="UNKNOWN (com.izforge.izpack.panels.ShortcutPanel)"/>
-<com.izforge.izpack.panels.UserInputPanel id="UNKNOWN (com.izforge.izpack.panels.UserInputPanel)">
-<userInput/>
-</com.izforge.izpack.panels.UserInputPanel>
-<com.izforge.izpack.panels.UserInputPanel id="UNKNOWN (com.izforge.izpack.panels.UserInputPanel)">
-<userInput>
-<entry key="startVergil" value="false"/>
-</userInput>
-</com.izforge.izpack.panels.UserInputPanel>
-<com.izforge.izpack.panels.ProcessPanel id="UNKNOWN (com.izforge.izpack.panels.ProcessPanel)"/>
-<com.izforge.izpack.panels.FinishPanel id="UNKNOWN (com.izforge.izpack.panels.FinishPanel)"/>
+</com.izforge.izpack.panels.target.TargetPanel>
+<com.izforge.izpack.panels.packs.PacksPanel id="PacksPanel_4">
+<pack index="0" name="CapeCode" selected="true"/>
+<pack index="1" name="Docs" selected="true"/>
+<pack index="2" name="Sources" selected="true"/>
+</com.izforge.izpack.panels.packs.PacksPanel>
+<com.izforge.izpack.panels.summary.SummaryPanel id="SummaryPanel_5"/>
+<com.izforge.izpack.panels.install.InstallPanel id="InstallPanel_6"/>
+<com.izforge.izpack.panels.shortcut.ShortcutPanel id="ShortcutPanel_7">
+<createMenuShortcuts>false</createMenuShortcuts>
+<programGroup>Ptolemy\ptII11.0.devel</programGroup>
+<createDesktopShortcuts>false</createDesktopShortcuts>
+<createStartupShortcuts>false</createStartupShortcuts>
+<shortcutType>user</shortcutType>
+</com.izforge.izpack.panels.shortcut.ShortcutPanel>
+<com.izforge.izpack.panels.userinput.UserInputPanel id="startApplicationPanelCapeCode">
+<entry key="startCapeCode" value="false"/>
+</com.izforge.izpack.panels.userinput.UserInputPanel>
+<com.izforge.izpack.panels.process.ProcessPanel id="ProcessPanel_9"/>
+<com.izforge.izpack.panels.finish.FinishPanel id="FinishPanel_10"/>
 </AutomatedInstallation>
