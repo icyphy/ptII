@@ -407,8 +407,8 @@ public class VertxHelperBase extends HelperBase {
      *  with the swarmlet execution.
      *
      *  Specifically,
-     *  if specified request number matches the next expected response,
-     *  the execute the specified response. Otherwise, if there is an
+     *  if the specified request number matches the next expected response,
+     *  then execute the specified response. Otherwise, if there is an
      *  earlier expected response, then defer this one, and if a response
      *  has already been issued for this request, then discard this response.
      *  This must be called in a vert.x event loop; i.e., it should be called
