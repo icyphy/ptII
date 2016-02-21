@@ -64,6 +64,7 @@ JSRCS = \
 	ExceptionManagerGUIFactory.java \
 	EventButton.java \
 	HistogramPlotter.java \
+	InteractiveDialog.java \
 	InteractiveShell.java \
 	MatrixViewer.java \
 	MonitorValue.java \

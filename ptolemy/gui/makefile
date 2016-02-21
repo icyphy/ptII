@@ -74,7 +74,8 @@ JSRCS = \
 	StatusBar.java \
 	Top.java \
 	UndeferredGraphicalMessageHandler.java \
-	UndoListener.java
+	UndoListener.java \
+	UserDialog.java
 
 OTHER_FILES_TO_BE_JARED =
 

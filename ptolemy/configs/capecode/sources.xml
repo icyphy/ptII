@@ -36,8 +36,8 @@
 
         <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader"/>
 
-        <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
-          <doc>Produce strings from an interactive shell on the screen</doc>
+        <entity name="InteractiveDialog" class="ptolemy.actor.lib.gui.InteractiveDialog">
+          <doc>Produce strings from an interactive dialog on the screen</doc>
         </entity>
 
         <entity name="Pulse" class="ptolemy.actor.lib.Pulse">
