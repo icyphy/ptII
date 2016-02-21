@@ -21,16 +21,27 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 /**
- * Module supporting web sockets.
+ * Module supporting web sockets. Web sockets differ from HTTP
+ * interactions by including a notion of a bidirectional connection
+ * called a "socket". It differs from a TCP socket in that the connection
+ * carries not just a byte stream, but a sequence of "messages," where
+ * each message can have an arbitrary number of bytes. It also differs
+ * from a TCP socket in that the connection is established through HTTP
+ * and is supported by most web browsers.
+ * 
  * This module defines three classes, Client, Server, and Socket.
- * To make a connection, create an instance of Server, set up listeners,
+ * To make a connection, create an instance of Server, set up event listeners,
  * and start the server. On another machine (or the same machine), create
- * an instance of Client and set up listeners and/or invoke this.send() to send
- * a message. When a client connects to the Server, the Server will create
- * an instance of the Socket object.
+ * an instance of Client and set up listeners and/or invoke the send() function
+ * of the client to send a message. When a client connects to the Server,
+ * the Server will create an instance of the Socket object. This object
+ * can be used to send and receive messages to and from the client.
  *
  * This module also provides two utility functions that return arrays
  * of MIME types supported for sending or receiving messages.
+ * Specifying a message type facilitates conversion between the byte
+ * streams transported over the socket and JavaScript objects that
+ * are passed to send() or emitted as a 'message' event.
  *
  * @module webSocket
  * @author Hokeun Kim and Edward A. Lee
@@ -108,17 +119,16 @@ exports.supportedSendTypes = function () {
  *      var WebSocket = require('webSocket');
  *      var client = new WebSocket.Client({'host': 'localhost', 'port': 8080});
  *      client.send({'foo': 'bar'});
- *      client.on('message', onMessage);
- *      function onMessage(message) {
- *          print('Received from web socket: ' + message);
- *      }
+ *      client.on('message', function(message) {
+ *          console.log('Received from web socket: ' + message);
+ *      });
  *      client.open();
  *  </pre>
  *  
  *  The above code may send a message even before the socket is opened. This module
  *  implementation will queue that message to be sent later when the socket is opened.
  *  
- *  The options argument is a JSON object that can contain the following fields:
+ *  The options argument is a JSON object that can contain the following properties:
  *  * host: The IP address or host name for the host. Defaults to 'localhost'.
  *  * port: The port on which the host is listening. Defaults to 80.
  *  * receiveType: The MIME type for incoming messages, which defaults to 'application/json'.
@@ -180,7 +190,7 @@ exports.Client.prototype.send = function (data) {
 /** Close the current connection with the server.
  *  If there is data that was passed to this.send() but has not yet
  *  been successfully sent (because the socket was not open),
- *  then throw an exception.
+ *  then those messages will be lost and reported in an error message.
  */
 exports.Client.prototype.close = function () {
     this.helper.close();
