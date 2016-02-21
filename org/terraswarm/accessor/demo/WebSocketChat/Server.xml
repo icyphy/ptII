@@ -1,0 +1,80 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="Server" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 30.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={667, 262, 747, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[513, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.276133455081842">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{214.07970118522644, 203.5712358719312}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Chat server.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This application illustrates the design of a custom&#10;accessor that uses the webSocket module to implement&#10;a chat server. Look inside the JavaScript actor to see&#10;its design.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 175.0]">
+        </property>
+    </property>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={934, 25, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Server Log">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var webSocket = require('webSocket');&#10;var server = null;&#10;var clients = {};&#10;&#10;exports.setup = function() {&#10;	this.output('log');&#10;	&#10;	this.parameter('hostInterface', {&#10;        value: &quot;localhost&quot;,&#10;        type: &quot;string&quot;&#10;    });&#10;    this.parameter('port', {&#10;        value: 8080,&#10;        type: &quot;int&quot;&#10;    });&#10;}&#10;&#10;exports.initialize = function() {&#10;	clients = {};&#10;	server = new webSocket.Server({&#10;        'port': this.getParameter('port'),&#10;        'hostInterface': this.getParameter('hostInterface')&#10;    });&#10;	var self = this;&#10;	server.on('connection', function(socket) {&#10;    	send('log', 'New connection.');&#10;    	var name = null;&#10;    	socket.on('message', function(message) {&#10;    		if (name === null) {&#10;    			if (clients[message]) {&#10;					send('log', 'Client requested duplicate name: ' + message);&#10;					socket.send('Name is taken. Please choose another.');&#10;    			} else {&#10;    				name = message;&#10;    				socket.send('Hello ' + name);&#10;    				self.exports.sendToAll.call(this,&#10;    						'Server', name + ' has joined');&#10;    				clients[name] = socket;&#10;    				send('log', 'New client joined: ' + name);&#10;    			}&#10;    		} else {&#10;    			self.exports.sendToAll.call(self, name, message);&#10;    		}&#10;    	});&#10;    	socket.send('What is your name?');&#10;    });&#10;    server.on('error', function (message) {&#10;        self.send('log', 'ERROR: ' + message);&#10;    });&#10;    server.start();&#10;}&#10;&#10;exports.sendToAll = function(name, message) {&#10;	for (var client in clients) {&#10;		clients[client].send(name + ' says: ' + message);&#10;		send('log', 'Sending message to ' + client + ': ' + message);&#10;	}&#10;}&#10;&#10;exports.wrapup = function(){&#10;    if (server) {&#10;        server.stop();&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 125.0]">
+        </property>
+        <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="log" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Display.input" relation="relation"/>
+    <link port="JavaScript.log" relation="relation"/>
+</entity>
