@@ -267,6 +267,7 @@ ShellInterpreter, UsesInvokeAndWait {
         } else {
             shell.returnResult(value);
         }
+        // Enable user input, now that we have a response from the previous command.
         Runnable doSetEditable = new Runnable() {
             @Override
             public void run() {
