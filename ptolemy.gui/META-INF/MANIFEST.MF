@@ -7,7 +7,15 @@ Bundle-Vendor: CHESS
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Eclipse-BuddyPolicy: registered
 Import-Package: com.microstar.xml;version="11.0.0",
+ diva.canvas;version="11.0.0",
+ diva.canvas.event;version="11.0.0",
+ diva.canvas.toolbox;version="11.0.0",
  diva.gui;version="11.0.0",
+ diva.gui.toolbox;version="11.0.0",
+ org.osgi.framework;version="1.8.0",
+ org.ptolemy.classloading;version="11.0.0",
+ org.ptolemy.classloading.osgi;version="11.0.0",
+ org.ptolemy.commons;version="11.0.0",
  ptolemy.actor;version="11.0.0",
  ptolemy.actor.gui;version="11.0.0",
  ptolemy.actor.parameters;version="11.0.0",
@@ -27,4 +35,7 @@ Import-Package: com.microstar.xml;version="11.0.0",
 Export-Package: ptolemy.actor.gui;version="11.0.0",
  ptolemy.actor.gui.style;version="11.0.0",
  ptolemy.actor.injection;version="11.0.0",
- ptolemy.gui;version="11.0.0"
+ ptolemy.gui;version="11.0.0",
+ ptolemy.vergil.basic;version="11.0.0",
+ ptolemy.vergil.kernel.attributes;version="11.0.0"
+Bundle-Activator: ptolemy.gui.activator.Activator
