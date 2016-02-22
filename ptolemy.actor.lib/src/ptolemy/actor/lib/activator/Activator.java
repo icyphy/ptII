@@ -37,7 +37,7 @@ import org.ptolemy.commons.ThreeDigitVersionSpecification;
 import org.ptolemy.commons.VersionSpecification;
 
 /**
- * This activator registers an actor provider for the MyConst custom actor implementation.
+ * This activator registers an actor provider for the ptolemy actors and other model elements.
  *
  * @author erwinDL
  * @version $Id$
