@@ -37,7 +37,7 @@ DIRS = AprilTags Audio Camera HappySadStock HueToggle \
 	MoC MotionDetector StockTick \
 	SwarmAcousticService TCPSocket \
 	UDPSocket VertxBus \
-	Weather WebSocketClient WebSocketImage
+	Weather WebSocketChat WebSocketClient WebSocketImage
 
 # $(ME) is used in ptdir.mk
 ME =  org/terraswarm/accessor/demo
@@ -75,6 +75,7 @@ PTCLASSALLJARS = \
 	UDPSocket/UDPSocket.jar \
 	VertxBus/VertxBus.jar \
 	Weather/Weather.jar \
+	WebSocketChat/WebSocketChat.jar \
 	WebSocketClient/WebSocketClient.jar \
 	WebSocketImage/WebSocketImage.jar
 
