@@ -383,6 +383,7 @@ public class ExportModelJUnitTest {
                 "UnitSystemExample.xml", // Has links to other models.
                 "VideoCapture.xml", // Requires a video camera.
                 "Weather.xml", // Skip because it requires a key          
+                "WebSocketChat.xml", // Has links to other models.
                 "WebSocketClient.xml", // Times out unless the server is running.
                 "MatlabWirelessSoundDetection.xml", // If it takes more than 30 seconds to start up, then killing it causes an infinite loop because killing this is difficult when inside a native call.
                 "demo/XBee", // Needs XBee hardware.
