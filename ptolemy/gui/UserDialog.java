@@ -121,7 +121,6 @@ public class UserDialog extends JPanel {
             @Override
             public void run() {
                 _responseTextArea.append(text + "\n");
-                System.out.println("FIXME -------" + Thread.currentThread() + "====="+ _responseTextArea.getText());
                 // Scroll down as we generate text.
                 _responseTextArea.setCaretPosition(_responseTextArea.getText().length());                    
             }
@@ -156,7 +155,6 @@ public class UserDialog extends JPanel {
                     } else {
                         _responseTextArea.setText("");
                     }
-                    System.out.println("FIXME INIT -------" + Thread.currentThread() + "====="+ _responseTextArea.getText());
                 }
             };
             SwingUtilities.invokeLater(doInitialize);
