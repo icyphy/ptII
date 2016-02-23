@@ -21,9 +21,7 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 /**
- * DEPRECATED: Use webSocketServer or webSocketClient module.
- *
- * Module supporting web sockets. Web sockets differ from HTTP
+ * Module supporting web socket servers. Web sockets differ from HTTP
  * interactions by including a notion of a bidirectional connection
  * called a "socket". It differs from a TCP socket in that the connection
  * carries not just a byte stream, but a sequence of "messages," where
@@ -31,10 +29,11 @@
  * from a TCP socket in that the connection is established through HTTP
  * and is supported by most web browsers.
  * 
- * This module defines three classes, Client, Server, and Socket.
+ * This module defines twp classes, Server, and Socket.
  * To make a connection, create an instance of Server, set up event listeners,
  * and start the server. On another machine (or the same machine), create
- * an instance of Client and set up listeners and/or invoke the send() function
+ * an instance of Client (defined in the webSocketClient module)
+ * and set up listeners and/or invoke the send() function
  * of the client to send a message. When a client connects to the Server,
  * the Server will create an instance of the Socket object. This object
  * can be used to send and receive messages to and from the client.
@@ -45,8 +44,7 @@
  * streams transported over the socket and JavaScript objects that
  * are passed to send() or emitted as a 'message' event.
  *
- * @deprecated
- * @module webSocket
+ * @module webSocketServer
  * @author Hokeun Kim and Edward A. Lee
  * @version $$Id$$
  */
@@ -82,146 +80,6 @@ exports.supportedSendTypes = function () {
 };
 
 ///////////////////////////////////////////////////////////////////////////////
-//// Client
-
-/** Construct an instance of a socket client that can send or receive messages
- *  to a server at the specified host and port.
- *  The returned object subclasses EventEmitter.
- *  You can register handlers for events 'open', 'message', 'close', or 'error'.
- *  The event 'open' will be emitted when the socket has been successfully opened.
- *  The event 'message' will be emitted with the body of the message as an
- *  argument when an incoming message arrives on the socket.
- *  You can invoke the send() function to send data to the server.
- *
- *  The type of data sent and received can be specified with the 'sendType'
- *  and 'receiveType' options.
- *  In principle, any MIME type can be specified, but the host may support only
- *  a subset of MIME types.  The client and the server have to agree on the type,
- *  or the data will not get through correctly.
- *
- *  The default type for both sending and receiving
- *  is 'application/json'. The types supported by this implementation
- *  include at least:
- *  * __application/json__: The this.send() function uses JSON.stringify() and sends the
- *    result with a UTF-8 encoding. An incoming byte stream will be parsed as JSON,
- *    and if the parsing fails, will be provided as a string interpretation of the byte
- *    stream.
- *  * __text/\*__: Any text type is sent as a string encoded in UTF-8.
- *  * __image/x__: Where __x__ is one of __json__, __png__, __gif__,
- *    and more (FIXME: which, exactly?).
- *    In this case, the data passed to this.send() is assumed to be an image, as encoded
- *    on the host, and the image will be encoded as a byte stream in the specified
- *    format before sending.  A received byte stream will be decoded as an image,
- *    if possible. FIXME: What happens if decoding fails?
- *  
- *  The event 'close' will be emitted when the socket is closed, and 'error' if an
- *  an error occurs (with an error message as an argument).
- *  For example,
- *  
- *  <pre>
- *      var WebSocket = require('webSocket');
- *      var client = new WebSocket.Client({'host': 'localhost', 'port': 8080});
- *      client.send({'foo': 'bar'});
- *      client.on('message', function(message) {
- *          console.log('Received from web socket: ' + message);
- *      });
- *      client.open();
- *  </pre>
- *  
- *  The above code may send a message even before the socket is opened. This module
- *  implementation will queue that message to be sent later when the socket is opened.
- *  
- *  The options argument is a JSON object that can contain the following properties:
- *  * host: The IP address or host name for the host. Defaults to 'localhost'.
- *  * port: The port on which the host is listening. Defaults to 80.
- *  * receiveType: The MIME type for incoming messages, which defaults to 'application/json'.
- *  * sendType: The MIME type for outgoing messages, which defaults to 'application/json'.
- *  * connectTimeout: The time to wait before giving up on a connection, in milliseconds
- *    (defaults to 1000).
- *  * numberOfRetries: The number of times to retry connecting. Defaults to 10.
- *  * timeBetweenRetries: The time between retries, in milliseconds. Defaults to 500.
- *  * discardMessagesBeforeOpen: If true, discard messages before the socket is open. Defaults to false.
- *  * throttleFactor: The number milliseconds to stall for each item that is queued waiting to be sent. Defaults to 0.
- *
- *  @param options The options.
- */
-exports.Client = function (options) {
-    options = options || {};
-    this.port = options.port || 80;
-    this.host = options.host || 'localhost';
-    this.receiveType = options.receiveType || 'application/json';
-    this.sendType = options.sendType || 'application/json';
-    this.connectTimeout = options.connectTimeout || 1000;
-    this.numberOfRetries = options.numberOfRetries || 10;
-    this.timeBetweenRetries = options.timeBetweenRetries || 500;
-    this.discardMessagesBeforeOpen = options.discardMessagesBeforeOpen || false;
-    this.throttleFactor = options.throttleFactor || 0;
-    this.helper = WebSocketHelper.createClientSocket(
-        this,
-        this.host,
-        this.port,
-        this.receiveType,
-        this.sendType,
-        this.connectTimeout,
-        this.numberOfRetries,
-        this.timeBetweenRetries,
-        this.discardMessagesBeforeOpen,
-        this.throttleFactor);
-};
-util.inherits(exports.Client, EventEmitter);
-
-/** Open the socket connection. Call this after setting up event handlers. */
-exports.Client.prototype.open = function () {
-    this.helper.open();
-};
-
-/** Send data over the web socket.
- *  If the socket has not yet been successfully opened, then queue
- *  data to be sent later, when the socket is opened.
- *  @param data The data to send.
- */
-exports.Client.prototype.send = function (data) {
-    if (this.sendType == 'application/json') {
-        this.helper.send(JSON.stringify(data));
-    } else if (this.sendType.search(/text\//) === 0) {
-        this.helper.send(data.toString());
-    } else {
-        this.helper.send(data);
-    }
-};
-
-/** Close the current connection with the server.
- *  If there is data that was passed to this.send() but has not yet
- *  been successfully sent (because the socket was not open),
- *  then those messages will be lost and reported in an error message.
- */
-exports.Client.prototype.close = function () {
-    this.helper.close();
-};
-
-/** Notify this object of a received message from the socket.
- *  This function attempts to interpret the message according to the
- *  receiveType, and emits a "message" event with the message as an argument.
- *  For example, with the default receiveType of 'application/json', it will
- *  use JSON.parse() to parse the message and emit the result of the parse.
- *  This function is called by the Java helper used by this particular
- *  implementation and should not be normally called by the user.
- *  @param message The incoming message.
- */
-exports.Client.prototype._notifyIncoming = function (message) {
-    if (this.receiveType == 'application/json') {
-        try {
-            message = JSON.parse(message);
-        } catch (error) {
-            this.emit('error', error);
-            return;
-        }
-    }
-    // Assume the helper has already provided the correct type.
-    this.emit("message", message);
-};
-
-///////////////////////////////////////////////////////////////////////////////
 //// Server
 
 /** Construct an instance of WebSocket Server.
@@ -244,7 +102,8 @@ exports.Client.prototype._notifyIncoming = function (message) {
  *  A typical usage pattern looks like this:
  * 
  *  <pre>
- *     var server = new WebSocket.Server({'port':8082});
+ *     var webSocket = require('webSocketServer');
+ *     var server = new webSocket.Server({'port':8082});
  *     server.on('listening', onListening);
  *     server.on('connection', onConnection);
  *     server.start();

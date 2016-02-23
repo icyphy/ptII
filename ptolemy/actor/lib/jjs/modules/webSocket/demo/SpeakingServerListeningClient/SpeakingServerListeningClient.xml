@@ -61,7 +61,7 @@
         </property>
     </entity>
     <entity name="WSServer" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.output('output');&#10;	this.output('started');&#10;}&#10;&#10;var WebSocket = require('webSocket');&#10;&#10;var server = null;&#10;&#10;exports.initialize = function() {&#10;  // Start an HTTP server and begin listening for connection requests.&#10;    server = new WebSocket.Server({port:8081});&#10;    server.on('listening', onListening.bind(this));&#10;    server.on('connection', onConnection.bind(this));&#10;    server.start();&#10;    console.log('*** server initialized.');&#10;}&#10;&#10;// When the server is listening for connections, print a message.&#10;function onListening() {&#10;  console.log('*** server is listenting.');&#10;  this.send('started', 'Server is listening for connections.');&#10;}&#10;&#10;// Count clients.&#10;var clientCount = 0;&#10;&#10;function onConnection(socket) {&#10;  console.log('*** server received connection ' + clientCount);&#10;  clientCount++;&#10;  var self = this;&#10;  socket.on('message', function(message) {&#10;    console.log('*** server received message: ' + message);&#10;    self.send('output', message);&#10;  });&#10;  socket.send('Hello to client number ' + clientCount);&#10;}&#10;&#10;exports.wrapup = function() {&#10;   console.log('*** server wrapping up.');&#10;   server.stop();&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.output('output');&#10;	this.output('started');&#10;}&#10;&#10;var WebSocket = require('webSocketServer');&#10;&#10;var server = null;&#10;&#10;exports.initialize = function() {&#10;  // Start an HTTP server and begin listening for connection requests.&#10;    server = new WebSocket.Server({port:8081});&#10;    server.on('listening', onListening.bind(this));&#10;    server.on('connection', onConnection.bind(this));&#10;    server.start();&#10;    console.log('*** server initialized.');&#10;}&#10;&#10;// When the server is listening for connections, print a message.&#10;function onListening() {&#10;  console.log('*** server is listenting.');&#10;  this.send('started', 'Server is listening for connections.');&#10;}&#10;&#10;// Count clients.&#10;var clientCount = 0;&#10;&#10;function onConnection(socket) {&#10;  console.log('*** server received connection ' + clientCount);&#10;  clientCount++;&#10;  var self = this;&#10;  socket.on('message', function(message) {&#10;    console.log('*** server received message: ' + message);&#10;    self.send('output', message);&#10;  });&#10;  socket.send('Hello to client number ' + clientCount);&#10;}&#10;&#10;exports.wrapup = function() {&#10;   console.log('*** server wrapping up.');&#10;   server.stop();&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -77,17 +77,13 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="started" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="WSClient1" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.output('output');&#10;}&#10;&#10;var WebSocket = require('webSocket');&#10;var client = null;&#10;&#10;function onMessage(data, flags) {&#10;  console.log('--- client 1 received message: ' + data);&#10;  this.send('output', 'Client received a message: ' + data);&#10;}&#10;&#10;function onOpen() {&#10;  console.log('--- client 1 connection open. Sending message to server.');&#10;  client.send('Hello from the client');&#10;}&#10;&#10;exports.initialize = function() {&#10;  if (client == null) {&#10;    client = new WebSocket.Client({'host':'localhost', 'port':8081});&#10;    client.on('open', onOpen.bind(this));&#10;    client.on('message', onMessage.bind(this));&#10;    client.open();&#10;  }&#10;  console.log('--- client 1 initialized.');&#10;}&#10;&#10;exports.wrapup = function() {&#10;  console.log('--- client 1 wrapping up.');&#10;  if (client != null) {&#10;    client.close();&#10;    client = null;&#10;  }&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.output('output');&#10;}&#10;&#10;var WebSocket = require('webSocketClient');&#10;var client = null;&#10;&#10;function onMessage(data, flags) {&#10;  console.log('--- client 1 received message: ' + data);&#10;  this.send('output', 'Client received a message: ' + data);&#10;}&#10;&#10;function onOpen() {&#10;  console.log('--- client 1 connection open. Sending message to server.');&#10;  client.send('Hello from the client');&#10;}&#10;&#10;exports.initialize = function() {&#10;  if (client == null) {&#10;    client = new WebSocket.Client({'host':'localhost', 'port':8081});&#10;    client.on('open', onOpen.bind(this));&#10;    client.on('message', onMessage.bind(this));&#10;    client.open();&#10;  }&#10;  console.log('--- client 1 initialized.');&#10;}&#10;&#10;exports.wrapup = function() {&#10;  console.log('--- client 1 wrapping up.');&#10;  if (client != null) {&#10;    client.close();&#10;    client = null;&#10;  }&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -103,12 +99,10 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="WSClient2" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.output('output');&#10;}&#10;&#10;var WebSocket = require('webSocket');&#10;var client = null;&#10;&#10;function onMessage(data, flags) {&#10;  console.log('+++ client 2 received message: ' + data);&#10;  this.send('output', 'Client received a message: ' + data);&#10;}&#10;&#10;function onOpen() {&#10;  console.log('+++ connection established. Sending message to server.');&#10;  client.send('Hello from the client');&#10;}&#10;&#10;exports.initialize = function() {&#10;  if (client == null) {&#10;    client = new WebSocket.Client({'host':'localhost', 'port':8081});&#10;    client.on('open', onOpen.bind(this));&#10;    client.on('message', onMessage.bind(this));&#10;    client.open();&#10;  }&#10;  console.log('+++ client 2 initialized.');&#10;}&#10;&#10;exports.wrapup = function() {&#10;  console.log('+++ client 2 wrapping up.');&#10;  if (client != null) {&#10;    client.close();&#10;    client = null;&#10;  }&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.output('output');&#10;}&#10;&#10;var WebSocket = require('webSocketClient');&#10;var client = null;&#10;&#10;function onMessage(data, flags) {&#10;  console.log('+++ client 2 received message: ' + data);&#10;  this.send('output', 'Client received a message: ' + data);&#10;}&#10;&#10;function onOpen() {&#10;  console.log('+++ connection established. Sending message to server.');&#10;  client.send('Hello from the client');&#10;}&#10;&#10;exports.initialize = function() {&#10;  if (client == null) {&#10;    client = new WebSocket.Client({'host':'localhost', 'port':8081});&#10;    client.on('open', onOpen.bind(this));&#10;    client.on('message', onMessage.bind(this));&#10;    client.open();&#10;  }&#10;  console.log('+++ client 2 initialized.');&#10;}&#10;&#10;exports.wrapup = function() {&#10;  console.log('+++ client 2 wrapping up.');&#10;  if (client != null) {&#10;    client.close();&#10;    client = null;&#10;  }&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -124,8 +118,6 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
