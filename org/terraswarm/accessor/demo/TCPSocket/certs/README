@@ -8,11 +8,11 @@
 # (5) Create PKCS #12 file using the certificate and private key
 # (6) Check inside of PKCS #12 file
 
-# self-signed certificate for CA
+# self-signed certificate for CA (to specify validity period, use -days option, default is 30 days)
 
 openssl genrsa -out CAKey.pem 2048
 openssl req -new -key CAKey.pem -sha256 -out CAReq.pem
-openssl x509 -req -in CAReq.pem -sha256 -extensions v3_ca -signkey CAKey.pem -out CACert.pem
+openssl x509 -req -in CAReq.pem -sha256 -extensions v3_ca -signkey CAKey.pem -out CACert.pem // -days 3650
 
 openssl x509 -subject -issuer -noout -in CACert.pem
 
@@ -37,3 +37,8 @@ openssl x509 -subject -issuer -noout -in ClientCert.pem
 
 openssl pkcs12 -export -out Client.pfx -inkey ClientKey.pem -in ClientCert.pem -password pass:asdf
 openssl pkcs12 -in Client.pfx
+
+# To extract certificate from pfx & check validity period
+
+openssl pkcs12 -in Server.pfx -out ServerCert.pem
+openssl x509 -in ServerCert.pem -noout -enddate
