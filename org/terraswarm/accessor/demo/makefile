@@ -61,6 +61,7 @@ PTCLASSALLJARS = \
 	AprilTags/AprilTags.jar \
 	Audio/Audio.jar \
 	Camera/Camera.jar \
+	Foscam/Foscam.jar \
 	HappySadStock/HappySadStock.jar \
 	HueToggle/HueToggle.jar \
 	IMUSensor/IMUSensor.jar \
