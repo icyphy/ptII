@@ -4,18 +4,18 @@
 <entity name="Weather" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 23, 1058, 615}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 23, 1108, 641}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[830, 498]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[874, 531]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2752721617418352">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2033426183844012">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{182.49999999999994, 143.51334794207312}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{219.99999999999994, 208.95708636884336}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-80.0, -20.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-80.0, 25.0]">
         </property>
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
@@ -31,7 +31,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model opens a shell into which you type a city name or address.&#10;It then invokes a GeoCoder (a Google service) to convert the address into&#10;a location (latitude and longitude). It then invokes a weather service&#10;(http://openweathermap.org) to retrieve the current weather information&#10;for the specified location.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -5.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -43,13 +43,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: You need to obtain &quot;keys&quot; for the Google Geocoding API and&#10;for openweathermap.org. You can  obtain them for free at:&#10; - https://developers.google.com/maps/documentation/geocoding/intro&#10; - http://openweathermap.org/appid&#10;Then enter the keys into the 'key' parameters of the GeoCoder and&#10;Weather accessors.&#10;&#10;Keys for Terraswarm members are available at:&#10;https://www.terraswarm.org/testbeds/wiki/Main/AccessControlAndKeyDistribution&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-20.0, -50.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 90.0]">
         </property>
     </property>
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Enter a city name or address&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 216.83486938476562]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, 155.0]">
         </property>
     </entity>
     <entity name="Weather" class="org.terraswarm.accessor.JSAccessor">
@@ -77,7 +77,7 @@
         </property>
         <property name="location" class="ptolemy.actor.parameters.PortParameter" value="{latitude = 37.85, longitude = -122.26}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 306.8348693847656]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{360.0, 275.0}">
         </property>
         <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://api.openweathermap.org&quot;">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -175,7 +175,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 296.8348693847656]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 265.0}">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -250,34 +250,38 @@
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 100, 664, 492}, maximized=false}">
         </property>
         <doc>Produce strings from an interactive shell on the screen</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 296.8348693847656]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 265.0}">
         </property>
     </entity>
     <entity name="Merge" class="ptolemy.domains.de.lib.Merge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 210.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-95.0, 255.0}">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 316.8348693847656]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{480.0, 285.0}">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Weather.location&quot;,x=285.0,y=245.0}, tail={id=&quot;GeoCoder.location&quot;,x=115.0,y=235.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Weather.location&quot;,x=360.0,y=275.0}, tail={id=&quot;GeoCoder.location&quot;,x=190.0,y=265.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=20.0,y=265.0}, tail={id=&quot;Merge.output&quot;,x=-95.0,y=255.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;GeoCoder.address&quot;,x=115.0,y=235.0}, tail={id=&quot;InteractiveShell.output&quot;,x=-55.0,y=235.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;GeoCoder.address&quot;,x=190.0,y=265.0}, tail={id=&quot;InteractiveShell.output&quot;,x=20.0,y=265.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Weather.weather&quot;,x=285.0,y=245.0}, tail={id=&quot;MicrostepDelay.input&quot;,x=405.0,y=255.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Weather.weather&quot;,x=360.0,y=275.0}, tail={id=&quot;MicrostepDelay.input&quot;,x=480.0,y=285.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Merge.input&quot;,x=-95.0,y=255.0,index=2}, tail={id=&quot;MicrostepDelay.output&quot;,x=480.0,y=285.0}, points={-135.0,255.0,-135.0,350.0,575.0,350.0,575.0,285.0} } }">
+        </property>
     </relation>
     <link port="SingleEvent.output" relation="relation2"/>
     <link port="Weather.location" relation="relation4"/>
