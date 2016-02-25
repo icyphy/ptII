@@ -30,12 +30,18 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.webSocket;
 
+import java.io.File;
+import java.io.IOException;
+
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerOptions;
 import io.vertx.core.http.ServerWebSocket;
+import io.vertx.core.net.PfxOptions;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
+import ptolemy.util.FileUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// WebSocketServerHelper
@@ -82,10 +88,12 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  @return A new WebSocketServerHelper instance.
      */
     public static WebSocketServerHelper createServer(
-            ScriptObjectMirror currentObj, String hostInterface, int port,
-            String receiveType, String sendType) {
+            ScriptObjectMirror currentObj, String hostInterface, boolean isSsl,
+            String pfxKeyCertPassword, String pfxKeyCertPath,
+            int port, String receiveType, String sendType) {
         return new WebSocketServerHelper(
-                currentObj, hostInterface, port, receiveType, sendType);
+                currentObj, hostInterface, isSsl, pfxKeyCertPassword, pfxKeyCertPath,
+                port, receiveType, sendType);
     }
 
     /** Create and start the server and beginning listening for
@@ -96,7 +104,25 @@ public class WebSocketServerHelper extends VertxHelperBase {
     public void startServer() {
     	// Ask the verticle to start the server.
     	submit(() -> {
-    	    _server = _vertx.createHttpServer();
+    	    HttpServerOptions serverOptions = new HttpServerOptions();
+    	    serverOptions.setSsl(_isSsl);
+    	    if (serverOptions.isSsl()) {
+                PfxOptions pfxOptions = new PfxOptions();
+                File pfxKeyCertFile = FileUtilities.nameToFile(_pfxKeyCertPath, null);
+                if (pfxKeyCertFile == null) {
+                    _error(_currentObj, "Empty pemCertPath option. Can't find the server key-certificate.");
+                    return;
+                }
+                try {
+                    pfxOptions.setPath(pfxKeyCertFile.getCanonicalPath());
+                } catch (IOException e) {
+                    _error(_currentObj, "Failed to find the server key-certificate at " + pfxKeyCertFile);
+                    return;
+                }
+                pfxOptions.setPassword(_pfxKeyCertPassword);
+                serverOptions.setPfxKeyCertOptions(pfxOptions);
+    	    }
+    	    _server = _vertx.createHttpServer(serverOptions);
     	    _server.websocketHandler(new Handler<ServerWebSocket>() {
     	        @Override
     	        public void handle(ServerWebSocket serverWebSocket) {
@@ -139,7 +165,10 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  @param sendType The type for outgoing messages.
      */
     private WebSocketServerHelper(ScriptObjectMirror currentObj,
-            String hostInterface, int port, String receiveType, String sendType) {
+            String hostInterface, boolean isSsl,
+            String pfxKeyCertPassword, String pfxKeyCertPath,
+            int port, String receiveType,
+            String sendType) {
     	// NOTE: Really should have only one of these per actor,
     	// and the argument below should be the actor.
         super(currentObj);
@@ -147,6 +176,9 @@ public class WebSocketServerHelper extends VertxHelperBase {
         if (hostInterface == null) {
             _hostInterface = "localhost";
         }
+        _isSsl = isSsl;
+        _pfxKeyCertPassword = pfxKeyCertPassword;
+        _pfxKeyCertPath = pfxKeyCertPath;
         _port = port;
     }
 
@@ -155,6 +187,15 @@ public class WebSocketServerHelper extends VertxHelperBase {
 
     /** The host interface. */
     private String _hostInterface;
+    
+    /** Whether the server runs on SSL/TLS. */
+    private boolean _isSsl;
+
+    /** The password for pfx key-cert file. */
+    private String _pfxKeyCertPassword;
+    
+    /** The path for pfx key-cert file. */
+    private String _pfxKeyCertPath;
 
     /** The port on which the server listens. */
     private int _port;

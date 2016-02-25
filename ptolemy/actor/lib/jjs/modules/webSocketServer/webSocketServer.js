@@ -142,10 +142,14 @@ exports.Server = function (options) {
 		this.port = options.port;
 	}
     this.hostInterface = options.hostInterface || 'localhost';
+    this.isSsl = options.isSsl || false;
+    this.pfxKeyCertPassword = options.pfxKeyCertPassword || '';
+    this.pfxKeyCertPath = options.pfxKeyCertPath || '';
     this.receiveType = options.receiveType || 'application/json';
     this.sendType = options.sendType || 'application/json';
     this.helper = WebSocketServerHelper.createServer(
-        this, this.hostInterface, this.port, this.receiveType, this.sendType
+        this, this.hostInterface, this.isSsl, this.pfxKeyCertPassword, this.pfxKeyCertPath,
+        this.port, this.receiveType, this.sendType
     );
 };
 util.inherits(exports.Server, EventEmitter);
