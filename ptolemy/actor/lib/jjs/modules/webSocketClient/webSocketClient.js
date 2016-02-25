@@ -142,22 +142,26 @@ exports.Client = function (options) {
     options = options || {};
     this.port = options.port || 80;
     this.host = options.host || 'localhost';
+    this.isSsl = options.isSsl || false;
     this.receiveType = options.receiveType || 'application/json';
     this.sendType = options.sendType || 'application/json';
     this.connectTimeout = options.connectTimeout || 1000;
     this.numberOfRetries = options.numberOfRetries || 10;
     this.timeBetweenRetries = options.timeBetweenRetries || 500;
+    this.trustAll = options.trustAll || false;
     this.discardMessagesBeforeOpen = options.discardMessagesBeforeOpen || false;
     this.throttleFactor = options.throttleFactor || 0;
     this.helper = WebSocketHelper.createClientSocket(
         this,
         this.host,
+        this.isSsl,
         this.port,
         this.receiveType,
         this.sendType,
         this.connectTimeout,
         this.numberOfRetries,
         this.timeBetweenRetries,
+        this.trustAll,
         this.discardMessagesBeforeOpen,
         this.throttleFactor);
 };

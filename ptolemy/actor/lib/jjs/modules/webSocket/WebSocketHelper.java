@@ -52,6 +52,7 @@ import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.ImageToken;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// WebSocketHelper
@@ -125,14 +126,24 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @return A new WebSocketHelper instance.
      */
     public static WebSocketHelper createClientSocket(
-            ScriptObjectMirror currentObj, String host, int port,
+            ScriptObjectMirror currentObj, String host, boolean isSsl, int port,
             String receiveType, String sendType,
             int connectTimeout,
-            int numberOfRetries, int timeBetweenRetries,
+            int numberOfRetries, int timeBetweenRetries, boolean trustAll,
             boolean discardMessagesBeforeOpen, int throttleFactor) {
-        return new WebSocketHelper(currentObj, host, port, receiveType, sendType,
-                connectTimeout, numberOfRetries,
-                timeBetweenRetries, discardMessagesBeforeOpen, throttleFactor);
+
+        if (trustAll) {
+            if (!MessageHandler.yesNoQuestion(
+                    "The client is set to trust all certificates ('trustAll' option is true). "
+                    + "This means that the client can connect to any server with no "
+                    + "verification of the identity of the server. "
+                    + "Are you sure?")) {
+                return null;
+            }
+        }
+        return new WebSocketHelper(currentObj, host, isSsl, port, receiveType, sendType,
+                connectTimeout, numberOfRetries, timeBetweenRetries, trustAll,
+                discardMessagesBeforeOpen, throttleFactor);
     }
 
     /** Create a WebSocketHelper instance for the specified JavaScript
@@ -392,20 +403,22 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param throttleFactor The number of milliseconds to stall for each queued item
      *   waiting to be sent.
      */
-    private WebSocketHelper(ScriptObjectMirror currentObj, String host,
+    private WebSocketHelper(ScriptObjectMirror currentObj, String host, boolean isSsl,
             int port, String receiveType, String sendType,
             int connectTimeout,
-            int numberOfRetries, int timeBetweenRetries,
+            int numberOfRetries, int timeBetweenRetries, boolean trustAll,
             boolean discardMessagesBeforeOpen, int throttleFactor) {
         super(currentObj);
 
         _host = host;
+        _isSsl = isSsl;
         _port = port;
         _receiveType = receiveType;
         _sendType = sendType;
         _connectTimeout = connectTimeout;
         _numberOfRetries = numberOfRetries;
         _timeBetweenRetries = timeBetweenRetries;
+        _trustAll = trustAll;
         _discardMessagesBeforeOpen = discardMessagesBeforeOpen;
         _throttleFactor = throttleFactor;
         // Ask the verticle to set up the web socket.
@@ -414,11 +427,14 @@ public class WebSocketHelper extends VertxHelperBase {
         // execute in that thread.
         submit(new Runnable() {
             public void run() {
-                _client = _vertx.createHttpClient(new HttpClientOptions()
+                HttpClientOptions clientOptions = new HttpClientOptions()
                         .setDefaultHost(host)
                         .setDefaultPort(port)
                         .setKeepAlive(true)
-                        .setConnectTimeout(_connectTimeout));
+                        .setConnectTimeout(_connectTimeout)
+                        .setSsl(_isSsl)
+                        .setTrustAll(_trustAll);
+                _client = _vertx.createHttpClient(clientOptions);
                 _wsFailed = null;
             }
         });
@@ -550,6 +566,9 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** The host IP or name. */
     private String _host;
+    
+    /** Whether the client connects to secure web server through SSL/TLS. */
+    private boolean _isSsl;
 
     /** Maximum number of attempts to reconnect to the web socket if the first try fails. */
     private int _numberOfRetries = 0;
@@ -577,6 +596,9 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** The time between retries, in milliseconds. */
     private int _timeBetweenRetries;
+
+    /** Whether the client trust all certificates. */
+    private boolean _trustAll;
 
     /** The internal web socket created by Vert.x */
     private WebSocketBase _webSocket = null;
@@ -684,20 +706,26 @@ public class WebSocketHelper extends VertxHelperBase {
     private class HttpClientExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable arg0) {
+            String message = arg0.getMessage();
+            Throwable cause = arg0.getCause();
+            while (cause != null) {
+                message = message + "/n" + cause.getMessage();
+                cause = cause.getCause();
+            }
             if (_numberOfTries >= _numberOfRetries + 1) {
                 _error("Connection failed after "
                         + _numberOfTries
                         + " tries: "
-                        + arg0.getMessage());
+                        + message);
                 _wsIsOpen = false;
                 _wsFailed = arg0;
             } else if (_numberOfTries < 0) {
                 _error("Connection closed while trying to connect: "
-                        + arg0.getMessage());
+                        + message);
                 _wsIsOpen = false;
             } else {
                 _actor.log("Connection failed. Will try again: "
-                        + arg0.getMessage());
+                        + message);
                 // Retry after some time.
                 _vertx.setTimer(_timeBetweenRetries, id -> {
                     // Check again the status of the number of tries.
