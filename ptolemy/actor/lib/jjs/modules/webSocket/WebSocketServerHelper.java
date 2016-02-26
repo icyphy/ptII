@@ -88,11 +88,11 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  @return A new WebSocketServerHelper instance.
      */
     public static WebSocketServerHelper createServer(
-            ScriptObjectMirror currentObj, String hostInterface, boolean isSsl,
+            ScriptObjectMirror currentObj, String hostInterface, boolean sslTls,
             String pfxKeyCertPassword, String pfxKeyCertPath,
             int port, String receiveType, String sendType) {
         return new WebSocketServerHelper(
-                currentObj, hostInterface, isSsl, pfxKeyCertPassword, pfxKeyCertPath,
+                currentObj, hostInterface, sslTls, pfxKeyCertPassword, pfxKeyCertPath,
                 port, receiveType, sendType);
     }
 
@@ -105,7 +105,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
     	// Ask the verticle to start the server.
     	submit(() -> {
     	    HttpServerOptions serverOptions = new HttpServerOptions();
-    	    serverOptions.setSsl(_isSsl);
+    	    serverOptions.setSsl(_sslTls);
     	    if (serverOptions.isSsl()) {
                 PfxOptions pfxOptions = new PfxOptions();
                 File pfxKeyCertFile = FileUtilities.nameToFile(_pfxKeyCertPath, null);
@@ -165,7 +165,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  @param sendType The type for outgoing messages.
      */
     private WebSocketServerHelper(ScriptObjectMirror currentObj,
-            String hostInterface, boolean isSsl,
+            String hostInterface, boolean sslTls,
             String pfxKeyCertPassword, String pfxKeyCertPath,
             int port, String receiveType,
             String sendType) {
@@ -176,7 +176,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
         if (hostInterface == null) {
             _hostInterface = "localhost";
         }
-        _isSsl = isSsl;
+        _sslTls = sslTls;
         _pfxKeyCertPassword = pfxKeyCertPassword;
         _pfxKeyCertPath = pfxKeyCertPath;
         _port = port;
@@ -189,7 +189,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
     private String _hostInterface;
     
     /** Whether the server runs on SSL/TLS. */
-    private boolean _isSsl;
+    private boolean _sslTls;
 
     /** The password for pfx key-cert file. */
     private String _pfxKeyCertPassword;
