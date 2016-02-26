@@ -34,6 +34,7 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -47,11 +48,13 @@ import io.vertx.core.http.HttpClientOptions;
 import io.vertx.core.http.WebSocket;
 import io.vertx.core.http.WebSocketBase;
 import io.vertx.core.http.WebSocketFrame;
+import io.vertx.core.net.PemTrustOptions;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
 import ptolemy.data.ImageToken;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 
 ///////////////////////////////////////////////////////////////////
@@ -126,10 +129,11 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @return A new WebSocketHelper instance.
      */
     public static WebSocketHelper createClientSocket(
-            ScriptObjectMirror currentObj, String host, boolean isSsl, int port,
+            ScriptObjectMirror currentObj, String host, boolean sslTls, int port,
             String receiveType, String sendType,
             int connectTimeout,
-            int numberOfRetries, int timeBetweenRetries, boolean trustAll,
+            int numberOfRetries, int timeBetweenRetries,
+            boolean trustAll, String trustedCACertPath,
             boolean discardMessagesBeforeOpen, int throttleFactor) {
 
         if (trustAll) {
@@ -141,8 +145,8 @@ public class WebSocketHelper extends VertxHelperBase {
                 return null;
             }
         }
-        return new WebSocketHelper(currentObj, host, isSsl, port, receiveType, sendType,
-                connectTimeout, numberOfRetries, timeBetweenRetries, trustAll,
+        return new WebSocketHelper(currentObj, host, sslTls, port, receiveType, sendType,
+                connectTimeout, numberOfRetries, timeBetweenRetries, trustAll, trustedCACertPath,
                 discardMessagesBeforeOpen, throttleFactor);
     }
 
@@ -403,15 +407,16 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param throttleFactor The number of milliseconds to stall for each queued item
      *   waiting to be sent.
      */
-    private WebSocketHelper(ScriptObjectMirror currentObj, String host, boolean isSsl,
+    private WebSocketHelper(ScriptObjectMirror currentObj, String host, boolean sslTls,
             int port, String receiveType, String sendType,
             int connectTimeout,
-            int numberOfRetries, int timeBetweenRetries, boolean trustAll,
+            int numberOfRetries, int timeBetweenRetries,
+            boolean trustAll, String trustedCACertPath,
             boolean discardMessagesBeforeOpen, int throttleFactor) {
         super(currentObj);
 
         _host = host;
-        _isSsl = isSsl;
+        _sslTls = sslTls;
         _port = port;
         _receiveType = receiveType;
         _sendType = sendType;
@@ -419,6 +424,7 @@ public class WebSocketHelper extends VertxHelperBase {
         _numberOfRetries = numberOfRetries;
         _timeBetweenRetries = timeBetweenRetries;
         _trustAll = trustAll;
+        _trustedCACertPath = trustedCACertPath;
         _discardMessagesBeforeOpen = discardMessagesBeforeOpen;
         _throttleFactor = throttleFactor;
         // Ask the verticle to set up the web socket.
@@ -432,8 +438,29 @@ public class WebSocketHelper extends VertxHelperBase {
                         .setDefaultPort(port)
                         .setKeepAlive(true)
                         .setConnectTimeout(_connectTimeout)
-                        .setSsl(_isSsl)
+                        .setSsl(_sslTls)
                         .setTrustAll(_trustAll);
+
+                // If SSL/TLS is enabled and trustAll is false, it has to be configured.
+                if (clientOptions.isSsl() && !clientOptions.isTrustAll()) {
+                    PemTrustOptions pemTrustOptions = new PemTrustOptions();
+
+                    String caCertPath = _trustedCACertPath;
+                    File caCertFile = FileUtilities.nameToFile(caCertPath, null);
+
+                    if (caCertFile == null) {
+                        _error(currentObj, "Empty trustedCACertPath option. Can't find the trusted CA certificate.");
+                        return;
+                    }
+                    try {
+                        pemTrustOptions.addCertPath(caCertFile.getCanonicalPath());
+
+                        clientOptions.setPemTrustOptions(pemTrustOptions);
+                    } catch (IOException e) {
+                        _error(currentObj, "Failed to find the trusted CA certificate at " + caCertFile);
+                        return;
+                    }
+                }
                 _client = _vertx.createHttpClient(clientOptions);
                 _wsFailed = null;
             }
@@ -568,7 +595,7 @@ public class WebSocketHelper extends VertxHelperBase {
     private String _host;
     
     /** Whether the client connects to secure web server through SSL/TLS. */
-    private boolean _isSsl;
+    private boolean _sslTls;
 
     /** Maximum number of attempts to reconnect to the web socket if the first try fails. */
     private int _numberOfRetries = 0;
@@ -599,6 +626,9 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** Whether the client trust all certificates. */
     private boolean _trustAll;
+
+    /** The path for a certificate of the trusted certificate authority (CA). */
+    private String _trustedCACertPath;
 
     /** The internal web socket created by Vert.x */
     private WebSocketBase _webSocket = null;
