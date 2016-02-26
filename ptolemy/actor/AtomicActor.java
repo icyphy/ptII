@@ -173,6 +173,7 @@ Actor, FiringsRecordable {
         AtomicActor<T> newObject = (AtomicActor<T>) super.clone(workspace);
 
         // Reset to force reinitialization of cache.
+        newObject._actorFiringListeners = null;
         newObject._initializables = null;
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;
