@@ -4,6 +4,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
@@ -58,8 +59,8 @@ public class CryptoHelper extends HelperBase {
      *  @return A list of camera names, or null if there none.
      *  @throws IllegalActionException 
      */
-    public Object symmetricEncrypt(Object input, Object key, String cipherAlgorithm,
-            String messageDigestAlgorithm) throws IllegalActionException {
+    public Object symmetricEncrypt(Object input, Object key, String cipherAlgorithm)
+            throws IllegalActionException {
         System.out.println(input);
         System.out.println(input.getClass());
         Cipher cipher = _getCipher(Cipher.ENCRYPT_MODE, cipherAlgorithm, _toJavaBytes(key), null);
@@ -80,8 +81,8 @@ public class CryptoHelper extends HelperBase {
         return _toJSArray(byteArrayOutputStream.toByteArray());
     }
     
-    public Object symmetricDecrypt(Object input, Object key, String cipherAlgorithm,
-            String messageDigestAlgorithm) throws IllegalActionException {
+    public Object symmetricDecrypt(Object input, Object key, String cipherAlgorithm)
+            throws IllegalActionException {
         byte[] cipherText = _toJavaBytes(input);
         Cipher cipher = _getCipher(Cipher.DECRYPT_MODE, cipherAlgorithm, _toJavaBytes(key), cipherText);
 
@@ -99,7 +100,43 @@ public class CryptoHelper extends HelperBase {
         }
         return _toJSArray(byteArrayOutputStream.toByteArray());
     }
+    
+    public Object hash(Object input, String hashAlgorithm) throws IllegalActionException {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm);
+            return _toJSArray(messageDigest.digest(_toJavaBytes(input)));
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalActionException("Failed to initialize messageDigest.\n" + e.getMessage());
+        }
+    }
+    
+    public boolean verifyHash(Object input, String hashAlgorithm) throws IllegalActionException {
+        MessageDigest messageDigest = null;
+        try {
+            messageDigest = MessageDigest.getInstance(hashAlgorithm);
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalActionException("Failed to initialize messageDigest.\n" + e.getMessage());
+        }
+        byte[] bytes = _toJavaBytes(input);
+        if (bytes.length < messageDigest.getDigestLength()) {
+            throw new IllegalActionException("Input is shorter than expected hash");
+        }
+        byte[] givenHash = Arrays.copyOfRange(bytes, bytes.length - messageDigest.getDigestLength(), bytes.length);
+        
+        messageDigest.update(bytes, 0, bytes.length - messageDigest.getDigestLength());
+        byte[] computedHash = messageDigest.digest();
+        
+        return Arrays.equals(givenHash, computedHash);
+    }
 
+    public int getHashLength(String hashAlgorithm) throws IllegalActionException {
+        try {
+            MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm);
+            return messageDigest.getDigestLength();
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalActionException("Failed to initialize messageDigest.\n" + e.getMessage());
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////

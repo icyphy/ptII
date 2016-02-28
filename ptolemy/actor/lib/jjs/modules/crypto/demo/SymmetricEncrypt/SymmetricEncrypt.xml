@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 265.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={970, 302, 1341, 686}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 214, 1341, 686}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1107, 576]">
     </property>
@@ -48,7 +48,7 @@
         </property>
     </entity>
     <entity name="InputData" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={735, 846, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={735, 692, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -85,7 +85,7 @@
         </property>
     </entity>
     <entity name="SymmetricEncrypt" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('cipherAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('key', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('input', function() {&#10;		var cipherAlgorithm = self.getParameter('cipherAlgorithm');&#10;		var input = self.get('input');&#10;		//var bytes = crypto.symmetricEncrypt(input, '0x16611efd3f469b2d', 'DES-ECB', 'SHA256');&#10;		//var bytes = crypto.symmetricEncrypt(input, '0x16611efd3f469b2d4b14e0a55926cece', 'AES-128-CBC', 'SHA256');&#10;		var bytes = crypto.symmetricEncrypt(input, self.getParameter('key'), self.getParameter('cipherAlgorithm'), 'SHA256');&#10;		//var x = new Uint8Array(bytes);&#10;		//console.log(bytes);&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('cipherAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('key', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('input', function() {&#10;		var cipherAlgorithm = self.getParameter('cipherAlgorithm');&#10;		var input = self.get('input');&#10;		//var bytes = crypto.symmetricEncrypt(input, '0x16611efd3f469b2d', 'DES-ECB', 'SHA256');&#10;		//var bytes = crypto.symmetricEncrypt(input, '0x16611efd3f469b2d4b14e0a55926cece', 'AES-128-CBC', 'SHA256');&#10;		var bytes = crypto.symmetricEncrypt(input, self.getParameter('key'), self.getParameter('cipherAlgorithm'));&#10;		//var x = new Uint8Array(bytes);&#10;		//console.log(bytes);&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -147,7 +147,7 @@
         </property>
     </entity>
     <entity name="SymmetricDecrypt" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('cipherAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('key', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		//var bytes = crypto.symmetricDecrypt(input, '0x16611efd3f469b2d', 'DES-ECB', 'SHA256');&#10;		//var bytes = crypto.symmetricDecrypt(input, '0x16611efd3f469b2d4b14e0a55926cece', 'AES-128-CBC', 'SHA256');&#10;		var bytes = crypto.symmetricDecrypt(input, self.getParameter('key'), self.getParameter('cipherAlgorithm'), 'SHA256');&#10;&#10;		//var x = new Uint8Array(bytes);&#10;		//console.log(bytes);&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('cipherAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('key', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		//var bytes = crypto.symmetricDecrypt(input, '0x16611efd3f469b2d', 'DES-ECB', 'SHA256');&#10;		//var bytes = crypto.symmetricDecrypt(input, '0x16611efd3f469b2d4b14e0a55926cece', 'AES-128-CBC', 'SHA256');&#10;		var bytes = crypto.symmetricDecrypt(input, self.getParameter('key'), self.getParameter('cipherAlgorithm'));&#10;&#10;		//var x = new Uint8Array(bytes);&#10;		//console.log(bytes);&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
