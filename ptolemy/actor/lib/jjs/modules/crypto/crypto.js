@@ -51,12 +51,29 @@ exports.randomBytes = function (size) {
 
 /** Return a symmetric encrypted bytes.
  */
-exports.symmetricEncrypt = function(input, key, cipherAlgorithm, messageDigestAlgorithm) {
-    return this.helper.symmetricEncrypt(input, key, cipherAlgorithm, messageDigestAlgorithm);
+exports.symmetricEncrypt = function(input, key, cipherAlgorithm) {
+    return this.helper.symmetricEncrypt(input, key, cipherAlgorithm);
 };
 
 /** Return a symmetric decrypted bytes.
  */
-exports.symmetricDecrypt = function(input, key, cipherAlgorithm, messageDigestAlgorithm) {
-    return this.helper.symmetricDecrypt(input, key, cipherAlgorithm, messageDigestAlgorithm);
+exports.symmetricDecrypt = function(input, key, cipherAlgorithm) {
+    return this.helper.symmetricDecrypt(input, key, cipherAlgorithm);
 };
+
+/** Calculate hash value using secure hash.
+ */
+exports.hash = function(input, hashAlgorithm) {
+    return this.helper.hash(input, hashAlgorithm);
+};
+
+/** verify hash value using secure hash.
+ *  hash value should be the suffix of input.
+ */
+exports.verifyHash = function(input, hashAlgorithm) {
+    return this.helper.verifyHash(input, hashAlgorithm);
+};
+
+exports.getHashLength = function(hashAlgorithm) {
+    return this.helper.getHashLength(hashAlgorithm);
+}
