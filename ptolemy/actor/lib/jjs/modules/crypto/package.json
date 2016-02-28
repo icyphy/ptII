@@ -1,0 +1,11 @@
+{
+  "name": "crypto",
+  "version": "0.1.0",
+  "main": "crypto.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Hokeun Kim"
+    , "email" : "hokeunkim@eecs.berkeley.edu"}
+  ],
+  "description": "A module for cryptographic operations."
+}
