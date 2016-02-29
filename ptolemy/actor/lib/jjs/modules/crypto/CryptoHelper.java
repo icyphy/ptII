@@ -1,12 +1,25 @@
 package ptolemy.actor.lib.jjs.modules.crypto;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.DataInputStream;
 import java.io.IOException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
+import java.security.Key;
+import java.security.KeyFactory;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.SecureRandom;
+import java.security.cert.CertificateException;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
 
 import javax.crypto.BadPaddingException;
@@ -23,6 +36,7 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.FileUtilities;
 
 /** Helper for the crypto JavaScript module. 
 
@@ -136,6 +150,38 @@ public class CryptoHelper extends HelperBase {
         } catch (NoSuchAlgorithmException e) {
             throw new IllegalActionException("Failed to initialize messageDigest.\n" + e.getMessage());
         }
+    }
+    
+    public PublicKey loadPublicKey(String filePath) throws IllegalActionException {
+        try {
+            CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
+            File file = FileUtilities.nameToFile(filePath, null);
+            FileInputStream inStream = new FileInputStream (file);
+            X509Certificate cert = (X509Certificate) certFactory.generateCertificate(inStream);
+            return cert.getPublicKey();
+        } catch (CertificateException | FileNotFoundException e) {
+            throw new IllegalArgumentException("Problem loading public key " + filePath + "\n" + e.getMessage());
+        }
+    }
+    
+    public Object publicEncrypt(Object input, PublicKey publicKey, String cipherAlgorithm) throws IllegalActionException {
+        return _performAsymmetricCrypto(Cipher.ENCRYPT_MODE, input, publicKey, cipherAlgorithm);
+    }
+    
+    public PrivateKey loadPrivateKey(String filePath) throws IllegalActionException {
+        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(_readBinaryFile(filePath));
+
+        KeyFactory keyFactory;
+        try {
+            keyFactory = KeyFactory.getInstance("RSA");
+            return keyFactory.generatePrivate(keySpec);
+        } catch (NoSuchAlgorithmException | InvalidKeySpecException e) {
+            throw new IllegalArgumentException("Problem loading private key " + filePath + "\n" + e.getMessage());
+        }
+    }
+    
+    public Object privateDecrypt(Object input, PrivateKey privateKey, String cipherAlgorithm) throws IllegalActionException {
+        return _performAsymmetricCrypto(Cipher.DECRYPT_MODE, input, privateKey, cipherAlgorithm);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -298,6 +344,7 @@ public class CryptoHelper extends HelperBase {
         return cipher;
     }
     
+    
     private byte[] _getRandomBytes(int size) {
         SecureRandom random = new SecureRandom();
         byte seed[] = random.generateSeed(size);
@@ -305,6 +352,52 @@ public class CryptoHelper extends HelperBase {
         random.setSeed(seed);
         random.nextBytes(randomBytes);
         return randomBytes;
+    }
+    
+    private byte[] _readBinaryFile(String filePath) throws IllegalActionException {
+        File file = FileUtilities.nameToFile(filePath, null);
+        FileInputStream fileInStream = null;
+        try {
+            fileInStream = new FileInputStream(file);
+        } catch (FileNotFoundException e) {
+            throw new IllegalActionException("File not found.\n" + e.getMessage());
+        }
+        DataInputStream dataInStream = new DataInputStream(fileInStream);
+        byte[] bytes = new byte[(int)file.length()];
+        try {
+            dataInStream.readFully(bytes);
+            dataInStream.close();
+        } catch (IOException e) {
+            throw new IllegalActionException("Exception while reading file.\n" + e.getMessage());
+        }
+        return bytes;
+    }
+    
+    private Object _performAsymmetricCrypto(int operationMode, Object input, Key key, String cipherAlgorithm)
+            throws IllegalActionException {
+        Cipher cipher = null;
+        try {
+            // RSA/NONE/OAEPPadding =? Cipher.RSA_PKCS1_OAEP_PADDING
+            //cipher = Cipher.getInstance("RSA/NONE/OAEPPadding");
+            cipher = Cipher.getInstance(cipherAlgorithm);
+        } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
+            throw new IllegalArgumentException("Problem processing " + input + "\n" + e.getMessage());
+        }
+        
+        try {
+            cipher.init(operationMode, key);
+        } catch (InvalidKeyException e) {
+            throw new IllegalArgumentException("Problem processing " + input + "\n" + e.getMessage());
+        }
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        try {
+            byteArrayOutputStream.write(
+                    cipher.doFinal(_toJavaBytes(input)));
+        } catch (IllegalBlockSizeException | BadPaddingException | IOException e) {
+            throw new IllegalArgumentException("Problem processing " + input + "\n" + e.getMessage());
+        }
+        return _toJSArray(byteArrayOutputStream.toByteArray());
     }
 
     ///////////////////////////////////////////////////////////////////

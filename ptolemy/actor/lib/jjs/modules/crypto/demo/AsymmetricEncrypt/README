@@ -1,0 +1,18 @@
+# add -aes128 option after genrsa command for certificates with passwords
+
+# steps:
+# (1) Create RSA keys
+# (2) Generate CSR (certificate signing request)
+# (3) Create certificate by signing with its own private key
+# (4) Check subject and issuer (Demo)
+$ (5) Convert PEM private key into DER format so that java can read it
+
+# self-signed certificate (to specify validity period, use -days option, default is 30 days)
+
+openssl genrsa -out DemoKey.pem 2048
+openssl req -new -key DemoKey.pem -sha256 -out DemoReq.pem
+openssl x509 -req -in DemoReq.pem -sha256 -extensions v3_ca -signkey DemoKey.pem -out DemoCert.pem // -days 3650
+
+openssl x509 -subject -issuer -noout -in DemoCert.pem
+
+openssl pkcs8 -topk8 -inform PEM -outform DER -in DemoKey.pem -out DemoKey.der -nocrypt

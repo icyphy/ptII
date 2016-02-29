@@ -1,0 +1,424 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="AsymmetricEncrypt" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 265.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={399, 64, 1553, 1014}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1319, 904]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.3466358731766708">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{505.025965175022, 569.1199239454504}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A simple demo for asymmetric encryption and decryption of data.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 535.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 565.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Current asymmetric cipher&#10;&#10;RSA/ECB/PKCS1PADDING - must be &lt;= 245 byte&#10;RSA/ECB/NOPADDING - must be = 256 byte">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 680.0]">
+        </property>
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 325.0]">
+        </property>
+    </entity>
+    <entity name="InputData" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={223, 152, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 345.0]">
+        </property>
+    </entity>
+    <entity name="RandomBytes" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('size');&#10;	this.output('output');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('size', function() {&#10;		var size = self.get('size');&#10;		var bytes = crypto.randomBytes(size);&#10;		var x = new Uint8Array(bytes);&#10;		console.log(bytes);&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{325, 335}">
+        </property>
+        <port name="size" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 335.0]">
+        </property>
+    </entity>
+    <entity name="Digest" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={107, 23, 1034, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1034, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 485.0]">
+        </property>
+    </entity>
+    <entity name="Sequence" class="ptolemy.actor.lib.Sequence">
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{&quot;hello world!&quot;, &quot;bye world!&quot;}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 410.0]">
+        </property>
+    </entity>
+    <entity name="Hash" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('hashAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		var bytes = crypto.hash(input, self.getParameter('hashAlgorithm'));&#10;		//var x = new Uint8Array(bytes);&#10;		//console.log(bytes);&#10;		//var buf = [0,1,2,3,4];&#10;		//console.log(bytes.concat(buf));&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 495.0}">
+        </property>
+        <property name="hashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;hello world!&quot;">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 490.0]">
+        </property>
+    </entity>
+    <entity name="EncryptWithHash" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('key', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('cipherAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('hashAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		var mac = crypto.hash(input, self.getParameter('hashAlgorithm'));&#10;		&#10;		if (typeof input == 'string') {&#10;			console.log('### it is a string: ' + input);&#10;			var bytes = [];&#10;			for (var i = 0; i &lt; input.length; ++i) {&#10;    			bytes.push(input.charCodeAt(i));&#10;			}&#10;			input = bytes;&#10;		}&#10;		var buf = [0,1,2,3,4];&#10;		//console.log(input.concat(mac));&#10;		//console.log(input.concat(buf));&#10;		&#10;		var bytes = crypto.symmetricEncrypt(input.concat(mac), self.getParameter('key'), self.getParameter('cipherAlgorithm'));&#10;		//var x = new Uint8Array(bytes);&#10;		//console.log(bytes);&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[485.0, 620.0]">
+        </property>
+        <property name="hashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="key" class="ptolemy.data.expr.Parameter" value="0x16611efd3f469b2d4b14e0a55926cece">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="cipherAlgorithm" class="ptolemy.data.expr.Parameter" value="AES-128-CBC">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="InputData2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={548, 152, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="EncryptedData" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 152, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[760.0, 685.0]">
+        </property>
+    </entity>
+    <entity name="DecryptWithHash" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.output('hashOk');&#10;	this.parameter('key', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('cipherAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('hashAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;function arrayEquals(a, b) {&#10;	if (a.length != b.length) {&#10;		return false;&#10;	}&#10;	for (var i = 0; i &lt; a.length; i++) {&#10;		if (a[i] != b[i]) {&#10;			return false;&#10;		}&#10;	}&#10;	return true;&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		var bytes = crypto.symmetricDecrypt(input, self.getParameter('key'), self.getParameter('cipherAlgorithm'));&#10;		var hashAlgorithm = self.getParameter('hashAlgorithm');&#10;		var hashLength = crypto.getHashLength(hashAlgorithm);&#10;		&#10;		var data = bytes.slice(0, bytes.length - hashLength);&#10;		var givenHash = bytes.slice(bytes.length - hashLength);&#10;		//console.log(data);&#10;		//console.log(givenHash);&#10;		var computedHash = crypto.hash(data, hashAlgorithm);&#10;		//console.log(computedHash);&#10;		self.send('hashOk', arrayEquals(givenHash, computedHash));&#10;		//var mac = crypto.hash(input, self.getParameter('hashAlgorithm'));&#10;		&#10;		//var buf = [0,1,2,3,4];&#10;		//console.log(input.concat(mac));&#10;		//console.log(input.concat(buf));&#10;		&#10;		//var bytes = crypto.symmetricEncrypt(input.concat(mac), self.getParameter('key'), self.getParameter('cipherAlgorithm'));&#10;		//var x = new Uint8Array(bytes);&#10;		//console.log(bytes);&#10;		//console.log(bytes.split(10));&#10;		self.send('output', data);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[790.0, 565.0]">
+        </property>
+        <property name="hashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="key" class="ptolemy.data.expr.Parameter" value="0x16611efd3f469b2d4b14e0a55926cece">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="cipherAlgorithm" class="ptolemy.data.expr.Parameter" value="AES-128-CBC">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="hashOk" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="DecryptedData" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 74, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 565.0]">
+        </property>
+    </entity>
+    <entity name="HashOK" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 522, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[905.0, 630.0]">
+        </property>
+    </entity>
+    <entity name="ArrayUpdate" class="ptolemy.actor.lib.ArrayUpdate">
+        <property name="index" class="ptolemy.actor.parameters.PortParameter" value="25">
+        </property>
+        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="100">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[695.0, 600.0]">
+        </property>
+    </entity>
+    <entity name="PublicEncrypt" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('certFilePath', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('cipherAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;function getNewInitArray(size, val) {&#10;	var arr = new Array(size);&#10;	for (var i = 0; i &lt; arr.length; i++) {&#10;		arr[i] = val;&#10;	}&#10;	return arr;&#10;}&#10;var publicKey;&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	publicKey = crypto.loadPublicKey(self.getParameter('certFilePath'));&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		/*&#10;		if (typeof input == 'string') {&#10;			console.log('### it is a string: ' + input);&#10;			var bytes = [];&#10;			for (var i = 0; i &lt; input.length; ++i) {&#10;    			bytes.push(input.charCodeAt(i));&#10;			}&#10;			input = bytes;&#10;		}&#10;		*/&#10;		//var pad = getNewInitArray(245 - input.length, 1);&#10;		//console.log(pad);&#10;		//var bytes = crypto.publicEncrypt(input.concat(pad), publicKey, self.getParameter('cipherAlgorithm'));&#10;		var bytes = crypto.publicEncrypt(input, publicKey, self.getParameter('cipherAlgorithm'));&#10;&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 740.0]">
+        </property>
+        <property name="certFilePath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/crypto/demo/AsymmetricEncrypt/DemoCert.pem">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="cipherAlgorithm" class="ptolemy.data.expr.Parameter" value="RSA/ECB/PKCS1PADDING">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="EncryptedData2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 500, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 845.0]">
+        </property>
+    </entity>
+    <entity name="PrivateDecrypt" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('privateKeyFilePath', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('cipherAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;var privateKey;&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	publicKey = crypto.loadPrivateKey(self.getParameter('privateKeyFilePath'));&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		/*&#10;		if (typeof input == 'string') {&#10;			console.log('### it is a string: ' + input);&#10;			var bytes = [];&#10;			for (var i = 0; i &lt; input.length; ++i) {&#10;    			bytes.push(input.charCodeAt(i));&#10;			}&#10;			input = bytes;&#10;		}&#10;		*/&#10;		//var pad = getNewInitArray(245 - input.length, 1);&#10;		//console.log(pad);&#10;		//var bytes = crypto.publicEncrypt(input.concat(pad), publicKey, self.getParameter('cipherAlgorithm'));&#10;		var bytes = crypto.privateDecrypt(input, privateKey, self.getParameter('cipherAlgorithm'));&#10;&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 735.0]">
+        </property>
+        <property name="privateKeyFilePath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/crypto/demo/AsymmetricEncrypt/DemoKey.pem">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="cipherAlgorithm" class="ptolemy.data.expr.Parameter" value="RSA/ECB/PKCS1PADDING">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="DecryptedData2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 74, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[840.0, 800.0]">
+        </property>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[400.0, 420.0]">
+        </vertex>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[120.0, 325.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[120.0, 410.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[530.0, 500.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{345.0, 420.0}">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{390.0, 340.0}">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[530.0, 650.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[735.0, 540.0]">
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[550.0, 740.0]">
+        </vertex>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation2"/>
+    <link port="InputData.input" relation="relation5"/>
+    <link port="RandomBytes.size" relation="relation4"/>
+    <link port="RandomBytes.output" relation="relation8"/>
+    <link port="Ramp.output" relation="relation4"/>
+    <link port="Ramp.trigger" relation="relation2"/>
+    <link port="Digest.input" relation="relation3"/>
+    <link port="Sequence.enable" relation="relation"/>
+    <link port="Sequence.output" relation="relation6"/>
+    <link port="Hash.input" relation="relation5"/>
+    <link port="Hash.output" relation="relation3"/>
+    <link port="EncryptWithHash.input" relation="relation6"/>
+    <link port="EncryptWithHash.output" relation="relation9"/>
+    <link port="InputData2.input" relation="relation8"/>
+    <link port="EncryptedData.input" relation="relation9"/>
+    <link port="DecryptWithHash.input" relation="relation11"/>
+    <link port="DecryptWithHash.output" relation="relation7"/>
+    <link port="DecryptWithHash.hashOk" relation="relation10"/>
+    <link port="DecryptedData.input" relation="relation7"/>
+    <link port="HashOK.input" relation="relation10"/>
+    <link port="ArrayUpdate.input" relation="relation9"/>
+    <link port="PublicEncrypt.input" relation="relation6"/>
+    <link port="PublicEncrypt.output" relation="relation13"/>
+    <link port="EncryptedData2.input" relation="relation13"/>
+    <link port="PrivateDecrypt.input" relation="relation13"/>
+    <link port="PrivateDecrypt.output" relation="relation12"/>
+    <link port="DecryptedData2.input" relation="relation12"/>
+    <link relation1="relation5" relation2="relation6"/>
+    <link relation1="relation2" relation2="relation"/>
+    <link relation1="relation9" relation2="relation11"/>
+</entity>

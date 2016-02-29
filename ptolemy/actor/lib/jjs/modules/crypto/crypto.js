@@ -77,3 +77,20 @@ exports.verifyHash = function(input, hashAlgorithm) {
 exports.getHashLength = function(hashAlgorithm) {
     return this.helper.getHashLength(hashAlgorithm);
 }
+
+exports.loadPublicKey = function(filePath) {
+    return this.helper.loadPublicKey(filePath);
+}
+
+exports.loadPrivateKey = function(filePath) {
+    return this.helper.loadPrivateKey(filePath);
+}
+
+exports.publicEncrypt = function(input, publicKey, cipherAlgorithm) {
+    return this.helper.publicEncrypt(input, publicKey, cipherAlgorithm);
+}
+
+exports.privateDecrypt = function(input, privateKey, cipherAlgorithm) {
+    return this.helper.privateDecrypt(input, privateKey, cipherAlgorithm);
+}
+
