@@ -65,6 +65,7 @@
 /ptolemy/gui/Top.java
 /ptolemy/gui/UndeferredGraphicalMessageHandler.java
 /ptolemy/gui/UndoListener.java
+/ptolemy/vergil/actor/lib/ShowTypes.java
 /ptolemy/vergil/basic/RelativeLocatable.java
 /ptolemy/vergil/basic/RelativeLocation.java
 /ptolemy/vergil/kernel/attributes/VisibleAttribute.java
