@@ -18,10 +18,19 @@ Click “OK”
 
 * The new certificate will appear as "TerraSwarm > CA for SSL/TLS demos" in the list of certificates.
 
-* Run SecureServer.xml in the Ptolemy host
+* Run SecureServer.xml in the Ptolemy host:
 
-* To run secure WebSocketChat client demo on the browser host
+  cd $PTII/org/terraswarm/accessor/demo/WebSocketChat
+  vergil SecureServer.xml &
 
-Open WebSocketClient accessor on web browser, set parameter “sslTls” true.
-Check if server address and port number is correct, then hit “react to inputs”.
+* To run secure WebSocketChat client demo on the browser host:
+
+Navigate your browser to http://accessors.org and find the browser host, or
+go directly to:
+
+  https://www.terraswarm.org/accessors/hosts/browser/index.html
+  
+Select the WebSocketClient accessor within the net directory.
+Set parameter “sslTls” true, set the server address to localhost,
+and the port to 8080. Then click “react to inputs”.
 
