@@ -1,3 +1,6 @@
+# Commands for creating certificates for CA, Server, and Client
+# Author: Hokeun Kim (hokeunkim@eecs.berkeley.edu)
+
 # add -aes128 option after genrsa command for certificates with passwords
 
 # steps:
