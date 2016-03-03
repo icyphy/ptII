@@ -10,11 +10,13 @@ Click “View Certificates”
 
 Click “Import”
 
-Navigate and select “accessor/demo/TCPSocket/certs/CACert.pem”
+Navigate and select “$PTII/org/terraswarm/accessor/demo/TCPSocket/certs/CACert.pem”
 
 check “Trust this CA to identify websites.”
 
 Click “OK”
+
+* The new certificate will appear as "TerraSwarm > CA for SSL/TLS demos" in the list of certificates.
 
 * Run SecureServer.xml in the Ptolemy host
 
