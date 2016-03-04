@@ -184,6 +184,10 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/browser/demo/HelloBrowser/HelloBrowser.
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Capture/Capture.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Capture/CaptureOpenLoop.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/contextAware/demo/ContextAware/ContextAware.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/crypto/demo/AsymmetricEncrypt/AsymmetricEncrypt.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/crypto/demo/MessageDigest/MessageDigest.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/crypto/demo/RandomBytes/RandomBytes.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/crypto/demo/SymmetricEncrypt/SymmetricEncrypt.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/Discovery.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/DiscoveryJS.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/AudioFFT.xml
