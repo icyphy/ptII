@@ -134,12 +134,16 @@ exports.supportedSendTypes = function () {
  *  The options argument is a JSON object that can contain the following properties:
  *  * host: The IP address or host name for the host. Defaults to 'localhost'.
  *  * port: The port on which the host is listening. Defaults to 80.
+ *  * sslTls: Whether SSL/TLS is enabled. This defaults to false.
  *  * receiveType: The MIME type for incoming messages, which defaults to 'application/json'.
  *  * sendType: The MIME type for outgoing messages, which defaults to 'application/json'.
  *  * connectTimeout: The time to wait before giving up on a connection, in milliseconds
  *    (defaults to 1000).
  *  * numberOfRetries: The number of times to retry connecting. Defaults to 10.
  *  * timeBetweenRetries: The time between retries, in milliseconds. Defaults to 500.
+ *  * trustAll: Whether to trust any server certificate. This defaults to false.
+ *  * trustedCACertPath: The filename for the file that stores the certificate of a certificate authority (CA) that
+ *     this client will use to verify server certificates.
  *  * discardMessagesBeforeOpen: If true, discard messages before the socket is open. Defaults to false.
  *  * throttleFactor: The number milliseconds to stall for each item that is queued waiting to be sent. Defaults to 0.
  *
