@@ -119,11 +119,14 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param currentObj The JavaScript instance of the Socket.
      *  @param host IP address or host name of the host.
      *  @param port The port number that the host listens on.
+     *  @param sslTls Whether SSL/TLS is enabled. This defaults to false.
      *  @param receiveType The type to assume for incoming messages.
      *  @param sendType The type for outgoing messages.
      *  @param connectTimeout The time to wait before giving up on a connection.
      *  @param numberOfRetries The number of retries.
      *  @param timeBetweenRetries The time between retries, in milliseconds.
+     *  @param trustAll Whether to trust any server certificate. This defaults to false.
+     *  @param trustedCACertPath The filename for the file that stores the certificate of a certificate authority (CA).
      *  @param discardMessagesBeforeOpen True to discard messages before the socket is open. False to queue them.
      *  @param throttleFactor The number of milliseconds to stall for each queued item waiting to be sent.
      *  @return A new WebSocketHelper instance.
