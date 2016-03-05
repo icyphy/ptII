@@ -52,6 +52,7 @@ import ptolemy.actor.gui.WindowPropertiesAttribute;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.SingletonParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.TypeConstant;
@@ -98,6 +99,10 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
     public InteractiveDialog(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+        
+        terminateWithNewline = new Parameter(this, "terminateWithNewline");
+        terminateWithNewline.setTypeEquals(BaseType.BOOLEAN);
+        terminateWithNewline.setExpression("false");
 
         input = new TypedIOPort(this, "input", true, false);
         // Parameter to get Vergil to label the fileOrURL port.
@@ -136,7 +141,12 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
      *  quotes before displaying the value.
      */
     public TypedIOPort input;
-
+    
+    /** If true, append a newline to each output string.
+     *  This is a boolean that defaults to false.
+     */
+    public Parameter terminateWithNewline;
+    
     /** The output port. */
     public TypedIOPort output;
 
@@ -237,8 +247,13 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
         }
         
         synchronized(this) {
+            // For some reason, getExpression() returns an escaped string, "\\n",
+            // so I need to fix that here.
+            boolean terminate = ((BooleanToken)terminateWithNewline.getToken()).booleanValue();
+            String format = "%s" + (terminate? "\n" : "");
             for (String command: _outputValues) {
-                output.broadcast(new StringToken(command));
+                String formatted = String.format(format, command);
+                output.broadcast(new StringToken(formatted));
             }
             _outputValues.clear();
         }
@@ -294,7 +309,8 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
                     _windowProperties.setProperties(_frame);
                     _frame.pack();
                 } else {
-                    userDialog.initialize("FIXME");
+                    // Clear the display.
+                    userDialog.initialize("");
                 }
 
                 if (_frame != null) {
