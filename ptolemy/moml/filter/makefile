@@ -72,6 +72,7 @@ JSRCS = \
 	RelationWidthChanges.java \
 	RemoveClasses.java \
 	RemoveGraphicalClasses.java \
+	RemoveGraphicalClassesApplication.java \
 	RemoveNonPtinyClasses.java \
 	RemoveProperties.java
 
