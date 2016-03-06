@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2012 The Regents of the University of California.
+# @Copyright (c) 1997-2016 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -61,7 +61,8 @@ JSIMPLE_TESTS = \
 	PropertyClassChanges.tcl \
 	RelationWidthChanges.tcl \
 	RemoveClasses.tcl \
-	RemoveGraphicalClasses.tcl
+	RemoveGraphicalClasses.tcl \
+	RemoveGraphicalClassesApplication.tcl
 
 # Graphical Java tests that use Tcl.
 # If there are no tests, we use a dummy file so that the script that builds
