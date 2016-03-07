@@ -1,6 +1,6 @@
 /* Support for the websocket accessor.
 
-@Copyright (c) 2015 The Regents of the University of California.
+@Copyright (c) 2015-2016 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -343,6 +343,8 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** Return an array of the types supported by the current host for
      *  receiveType arguments.
+     *  @return an array of the types supported by the current host for
+     *  receiveType arguments.
      */
     public static String[] supportedReceiveTypes() {
         String[] imageTypes = ImageIO.getReaderFormatNames();
@@ -354,6 +356,8 @@ public class WebSocketHelper extends VertxHelperBase {
     }
 
     /** Return an array of the types supported by the current host for
+     *  sendType arguments.
+     *  @return an array of the types supported by the current host for
      *  sendType arguments.
      */
     public static String[] supportedSendTypes() {
@@ -739,10 +743,10 @@ public class WebSocketHelper extends VertxHelperBase {
     private class HttpClientExceptionHandler implements Handler<Throwable> {
         @Override
         public void handle(Throwable arg0) {
-            String message = arg0.getMessage();
+            StringBuffer message = new StringBuffer(arg0.getMessage());
             Throwable cause = arg0.getCause();
             while (cause != null) {
-                message = message + "/n" + cause.getMessage();
+                message.append("/n" + cause.getMessage());
                 cause = cause.getCause();
             }
             if (_numberOfTries >= _numberOfRetries + 1) {
