@@ -1,6 +1,6 @@
 // Set up the parameters with the details of the specific REST service (Test version).
 
-/* Copyright (c) 2015 The Regents of the University of California.
+/* Copyright (c) 2015-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -137,7 +137,7 @@ public class ContextAwareHelperTest {
      * @return The list of data type to be extracted from Firebase.
      */
     public String[] getFirebaseOutput(){
-        return _firebaseOutputPort;
+        return firebaseOutputPort;
     }
 
     /** Return the list of output choices of Paraimpu
@@ -220,23 +220,21 @@ public class ContextAwareHelperTest {
     /** The search button. */
     public JButton searchButton;
 
+    /** The default parameters. */
+    public String[] defaultParamList =  {"username", "password","ipAddress", "port"};
+        
     /** The output choices of the FireBase service. */
-    public String[] _firebaseOutputPort = {"microwave", "microwaveStatus", "pastValues"};
+    public String[] firebaseOutputPort = {"microwave", "microwaveStatus", "pastValues"};
 
     /** The output choices of the GSN service. */
-    public String[] _gsnOutputPort = {"sound", "sensorName"};
+    public String[] gsnOutputPort = {"sound", "sensorName"};
+
+    /** The choices of the IoT service. */
+    public String[] iotServiceList = {"GSN", "Paraimpu", "Firebase"};
 
     /** The output choices of the Paraimpu service. */
-    public String[] _paraimpuOutputPort = {"payload","producer", "sensorId"};
-
-    // FIXME:Need comments
-
     public String[] paraimpuOutputPort = {"payload","producer", "thingId"};
-    public String [] defaultParamList =  {"username", "password","ipAddress", "port"};
-        
-    public String[] iotServiceList = {"GSN", "Paraimpu", "Firebase"};
-    public String[] gsnOutputPort = {"sound", "sensorName"};
-    public String[] firebaseOutputPort = {"microwave", "microwaveStatus", "pastValues"};
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -263,7 +261,7 @@ public class ContextAwareHelperTest {
         GUI.servicesList.addListSelectionListener(new ListSelectionListener() {
                 @Override        
                 public void valueChanged(ListSelectionEvent e) {
-                    _selectedServiceParam = new String((String) GUI.servicesList.getSelectedValue());               
+                    _selectedServiceParam = GUI.servicesList.getSelectedValue();               
                     try {
                         System.out.println("getParameters" + _selectedServiceParam);
                         setParameters(defaultParamList);

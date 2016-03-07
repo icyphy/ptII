@@ -1,6 +1,6 @@
 /* Support for the websocket accessor.
 
-@Copyright (c) 2015 The Regents of the University of California.
+@Copyright (c) 2015-2016 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -232,6 +232,7 @@ public class SocketHelper extends VertxHelperBase {
      *  If one has been created before and has not been garbage collected, return
      *  that one. Otherwise, create a new one.
      *  @param actor Either a JavaScript actor or a RestrictedJavaScriptInterface.
+     *  @return The SocketHelper.
      */
     public static SocketHelper getOrCreateHelper(Object actor) {
         VertxHelperBase helper = VertxHelperBase.getHelper(actor);
@@ -447,18 +448,25 @@ public class SocketHelper extends VertxHelperBase {
 
     /** Input stream backed by a list of byte arrays. */
     public static class ByteArrayBackedInputStream extends InputStream {
-        private LinkedList<byte[]> _list = new LinkedList<byte[]>();
-        private int _position, _array;
+
+        /** Consruct a SocketHelper$ByteArrayBackedInputStream object.
+         * @param buffer an array of bytes
+         */
         public ByteArrayBackedInputStream(byte[] buffer) {
             _list.add(buffer);
             _array = 0;
             _position = 0;
         }
+
+        /** Append to the input stream.
+         *  @param buffer the buffer to be appended.
+         */
         public void append(byte[] buffer) {
             _list.add(buffer);
             // Reset the stream so the next read starts at the top.
             reset();
         }
+
         @Override
         public int read() throws IOException {
             byte[] current = _list.get(_array);
@@ -473,6 +481,7 @@ public class SocketHelper extends VertxHelperBase {
             }
             return current[_position++];
         }
+
         @Override
         public int read(byte[] bytes, int offset, int length) throws IOException {
             if (_array >= _list.size()) {
@@ -516,11 +525,15 @@ public class SocketHelper extends VertxHelperBase {
                 return firstCopyLength;
             }
         }
+
         @Override
         public void reset() {
             _array = 0;
             _position = 0;
         }
+
+        private LinkedList<byte[]> _list = new LinkedList<byte[]>();
+        private int _position, _array;
     }
 
     /** Wrapper for connected TCP sockets.
