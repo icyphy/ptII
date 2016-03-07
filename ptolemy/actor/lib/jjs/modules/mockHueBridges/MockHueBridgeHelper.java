@@ -1,6 +1,6 @@
 /* Helper for the mockHueBridges JavaScript module.
 
-   Copyright (c) 2014-2015 The Regents of the University of California.
+   Copyright (c) 2014-2016 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -120,6 +120,7 @@ public class MockHueBridgeHelper {
       * @param bridgeID  The bridge identifier.
       * @return  The state of the specified bridge, as a string, or an empty 
       * string if the bridge is not present.
+      * @see #setState(String, String)
       */
      public String getState(String bridgeID) {
          if (_bridges.containsKey(bridgeID)) {
@@ -137,6 +138,7 @@ public class MockHueBridgeHelper {
       * bridge.  All requests take effect immediately.
       * @param bridgeID  The bridge identifier.
       * @return  The transition time.
+      * @see @setTransitionTime(String, int)
       */
      public int getTransitionTime(String bridgeID) {
          if (_bridges.containsKey(bridgeID)) {
@@ -192,6 +194,7 @@ public class MockHueBridgeHelper {
       * http://www.developers.meethue.com/philips-hue-api
       * @param bridgeID  The bridge identifier.
       * @param state  The new state of the bridge.
+      * @see #getState(String)
       */
      public void setState(String bridgeID, String state) {
          if (!_bridges.containsKey(bridgeID)){
@@ -208,6 +211,7 @@ public class MockHueBridgeHelper {
       * @param bridgeID  The bridge identifier.
       * @param transitionTime  The transition time between receipt of a request 
       * and completion of request execution.
+      * @see #getTransitionTime(String)
       */
      public void setTransitionTime(String bridgeID, int transitionTime) {
          if (_bridges.containsKey(bridgeID)) {
@@ -230,11 +234,9 @@ public class MockHueBridgeHelper {
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////
     
-    /** An inner class to hold information for a bridge.
-     * 
-     * @author Elizabeth Osyk
-     */
-    private class BridgeInfo {
+    /** An inner class to hold information for a bridge. */
+    private static class BridgeInfo {
+        // FindBugs says this can be static.
         
         /** Construct a new BridgeInfo object, holding the bridge state and
          * set of authorized usernames.
