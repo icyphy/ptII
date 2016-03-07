@@ -82,7 +82,10 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  @param hostInterface The host interface to use, in case there the host has more
      *   than one interface (e.g. Ethernet and WiFi). This is IP address or name, and if
      *   the argument is null, then "localhost" will be used.
+     *  @param sslTls Whether SSL/TLS is enabled. This defaults to false.
      *  @param port The port number that the server will use.
+     *  @param pfxKeyCertPassword The password to open the file specified in pfxKeyCertPath.
+     *  @param pfxKeyCertPath The path of the file that stores the private key and certificate in PFX (PKCS#12) format for the server.
      *  @param receiveType The type to assume for incoming messages.
      *  @param sendType The type for outgoing messages.
      *  @return A new WebSocketServerHelper instance.
