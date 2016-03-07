@@ -1,6 +1,6 @@
 /* Execute a script in JavaScript using Nashorn.
 
-   Copyright (c) 2014-2015 The Regents of the University of California.
+   Copyright (c) 2014-2016 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -656,6 +656,7 @@ public class JavaScript extends TypedAtomicActor {
      *  In addition, if debugging is turned on, then send the specified message to the
      *  _debug() method, and otherwise send it out to stderr.
      *  @param message The message
+     *  @param throwable The throwable
      */
     public void error(String message, Throwable throwable) {
         if (_debugging) {
@@ -2306,12 +2307,14 @@ public class JavaScript extends TypedAtomicActor {
                 } else if (possibilities instanceof int[]) {
                     choices = new LinkedList<Object>();
                     for (int i = 0; i < ((int[])possibilities).length; i++) {
-                        ((LinkedList<Object>)choices).add(new Integer(((int[])possibilities)[i]));
+                        // FindBugs says to use Integer.valueOf() instead of new Integer().
+                        ((LinkedList<Object>)choices).add(Integer.valueOf(((int[])possibilities)[i]));
                     }
                 } else if (possibilities instanceof double[]) {
                     choices = new LinkedList<Object>();
                     for (int i = 0; i < ((double[])possibilities).length; i++) {
-                        ((LinkedList<Object>)choices).add(new Double(((double[])possibilities)[i]));
+                        // FindBugs says to use Double.valueOf() instead of new Double().
+                        ((LinkedList<Object>)choices).add(Double.valueOf(((double[])possibilities)[i]));
                     }
                 }
                 if (choices != null) {
