@@ -1,7 +1,7 @@
 /*
 Below is the copyright agreement for the Ptolemy II system.
 
-Copyright (c) 2015 The Regents of the University of California.
+Copyright (c) 2015-2016 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -357,14 +357,14 @@ HSMMTimeAwareMultinomialEstimator {
                 public double Compute(int n, int m, double[] x, double[] con,
                         boolean[] terminate) throws IllegalActionException {
                     System.out.print(".");
-                    String paramValues = "hTest="+hour+",";
+                    StringBuffer paramValues = new StringBuffer("hTest="+hour+",");
                     boolean safeToCall = true;
                     // assign probabilities to transition probs
                     if (_optimizeOverAll) {
                         double consSum=0.0;
                         int k=0;
                         for (int i =0; i < x.length; i++) {
-                            paramValues += "p"+i+"="+x[i]+",";
+                            paramValues.append("p"+i+"="+x[i]+",");
                             con[k++] = x[i];
                             con[k++] = 1.0-x[i];
                             consSum +=x[i];
@@ -385,7 +385,7 @@ HSMMTimeAwareMultinomialEstimator {
                     } else {
                         int k=0;
                         for (int i =0; i < x.length; i++) {
-                            paramValues += "p"+indices.get(i)+"="+x[i]+",";
+                            paramValues.append("p"+indices.get(i)+"="+x[i]+",");
                             con[k++] = x[i];
                             con[k++] = 1.0-x[i];
                         }
@@ -401,9 +401,10 @@ HSMMTimeAwareMultinomialEstimator {
                         //                            System.out.print(x[i]+" ");
                         //                        }
 
-                        paramValues = paramValues.substring(0,paramValues.length()-1); //omit last comma
+                        paramValues = new StringBuffer(paramValues.toString().substring(0,paramValues.length()-1)); //omit last comma
                         ProcessBuilder pb = new ProcessBuilder("prism",filename.getExpression(),
-                                propertyFile.getExpression(),"-const",paramValues,"-prop",""+(hour+1),"-exportresults","stdout:csv");
+                                propertyFile.getExpression(), "-const", paramValues.toString(),
+                                "-prop", ""+(hour+1), "-exportresults", "stdout:csv");
                         pb.directory(new File(_uri));
                         try {
                             Process pr = pb.start();
@@ -428,8 +429,8 @@ HSMMTimeAwareMultinomialEstimator {
                                     return -d;
                                 }
                             }
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                        } catch (IOException ex) {
+                            throw new IllegalActionException(null, ex, "Failed to run prism");
                         }
                     }
                     return 0;
@@ -446,7 +447,7 @@ HSMMTimeAwareMultinomialEstimator {
                     }
                 }
             } else {
-                start = Arrays.copyOf(prevOpt,prevOpt.length);
+                start = Arrays.copyOf(prevOpt, prevOpt.length);
             }
             Cobyla.FindMinimum(calcfc, nVariables,
                     numConstraints, start, 1.0, 1E-2, 0,
@@ -467,19 +468,25 @@ HSMMTimeAwareMultinomialEstimator {
                         propertyFile.getExpression(),"-const", "hTest="+hour,"-prop",""+(hour+1),"-exportresults","resultNoOpt"+hour+".txt:csv");
                 pb.directory(new File(_uri));
                 Process pr = pb.start();
-                BufferedReader in = new BufferedReader(
+                BufferedReader in = null;
+                try {
+                    in = new BufferedReader(
                         new InputStreamReader(pr.getInputStream()));
-                String line = null;
-                while ((line = in.readLine()) != null) {
-                    System.out.println(line);
-                    if (line.equals("Result")) {
-                        double[] d = {Double.parseDouble(in.readLine())};
-                        return d;
+                    String line = null;
+                    while ((line = in.readLine()) != null) {
+                        System.out.println(line);
+                        if (line.equals("Result")) {
+                            double[] d = {Double.parseDouble(in.readLine())};
+                            return d;
+                        }
                     }
-
+                } finally {
+                    if (in != null) {
+                        in.close();
+                    }
                 }
             } catch (IOException e) {
-                e.printStackTrace();
+                throw new IllegalActionException(null, e, "Failed to run prism.");
             }
         }
         return null;
@@ -505,14 +512,21 @@ HSMMTimeAwareMultinomialEstimator {
                         "-exportresults","allResults"+method+thre+".txt:matrix");
                 pb.directory(new File(_uri));
                 Process pr = pb.start();
-                BufferedReader in = new BufferedReader(
+                BufferedReader in = null;
+                try {
+                    in = new BufferedReader(
                         new InputStreamReader(pr.getInputStream()));
-                String line = null;
-                while ((line = in.readLine()) != null) {
-                    System.out.println(line);
+                    String line = null;
+                    while ((line = in.readLine()) != null) {
+                        System.out.println(line);
+                    }
+                } finally {
+                    if (in != null) {
+                        in.close();
+                    }
                 }
-            } catch (IOException e) {
-                e.printStackTrace();
+            } catch (IOException ex) {
+                throw new IllegalActionException(null, ex, "Failed to run prism.");
             }
         }
     }
@@ -524,26 +538,24 @@ HSMMTimeAwareMultinomialEstimator {
         java.io.Writer writer;
 
 
-        String properties = "";
+        StringBuffer properties = new StringBuffer();
         // check some properties
         for (int i = 0 ; i< NUM_CATEGORIES; i++) {
             if (powerSpecs[i]==0) {
-                properties += "P=?[G pow <= "+
+                properties.append("P=?[G pow <= "+
                         (powerSpecs[i]+_pThreshold)+
-                        "]" + _eol;
+                        "]" + _eol);
             } else {
-                properties += "P=?[G pow <= "+powerSpecs[i]+"]" + _eol;
+                properties.append("P=?[G pow <= "+powerSpecs[i]+"]" + _eol);
             }
-
         }
 
         try {
             writer = propertyFile.openForWriting();
-            writer.write(properties);
+            writer.write(properties.toString());
             writer.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (IOException ex) {
+            throw new IllegalActionException(null, ex, "Failed to write the properties file.");
         }
     }
 
@@ -554,9 +566,8 @@ HSMMTimeAwareMultinomialEstimator {
         try {
             writer.write(_code.toString());
             writer.close();
-        } catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
+        } catch (IOException ex) {
+            throw new IllegalActionException(null, ex, "Failed to write the model file \"" + filename + "\".");
         }
     }
     /**
@@ -618,57 +629,55 @@ HSMMTimeAwareMultinomialEstimator {
     }
 
     private String _getDurationAutomaton() {
-        String code = INDENT1 + "module durationAutomaton" + _eol +
-                INDENT2 + "d : [0..DMAX] init 0;" + _eol ;
+        StringBuffer code = new StringBuffer(INDENT1 + "module durationAutomaton" + _eol +
+                INDENT2 + "d : [0..DMAX] init 0;" + _eol);
 
-        code+=(" " + _eol);
-        String ins = "";
+        code.append(" " + _eol);
+        StringBuffer ins = null;
         for (int i = 0; i < D_new.length; i++) {
             // initDist=false &
-            ins = INDENT2 +  "[tr] d=0 & s=" + i + " -> ";
+            ins = new StringBuffer(INDENT2 +  "[tr] d=0 & s=" + i + " -> ");
             D_new[i] = _cleanAndTruncate(D_new[i], threshold, precision);
 
             for (int j=0; j < D_new[0].length; j++) {
                 if (D_new[i][j] > 0.0) {
-                    ins += D_new[i][j] + " : (d'=" + j + ") + ";
+                    ins.append(D_new[i][j] + " : (d'=" + j + ") + ");
                 }
             }
-            ins = ins.substring(0,ins.length()-3) + ";" + _eol;
-            code+=(ins);
+            code.append(ins.toString().substring(0,ins.length()-3) + ";" + _eol);
         }
 
-        code+=(INDENT2 + "[step] d > 0 -> (d'=d-1);" + _eol);
+        code.append(INDENT2 + "[step] d > 0 -> (d'=d-1);" + _eol);
 
-        code+=(INDENT1 +"endmodule" + _eol+ " " + _eol);
-        return code;
+        code.append(INDENT1 +"endmodule" + _eol+ " " + _eol);
+        return code.toString();
     }
 
     private String _getStateSpaceAutomaton(List stateEmissions, int validHour) {
-        String code = INDENT1 + "module stateSpace" + _eol +
+        StringBuffer code = new StringBuffer(INDENT1 + "module stateSpace" + _eol +
                 INDENT2 + "s : [0.. " + (_nStates-1) + "] init 0;" + _eol +
                 INDENT2 + "pow : [0..PMAX] init 0; " + _eol +
-                INDENT2 + "initState : bool init true;"+_eol;
+                INDENT2 + "initState : bool init true;"+_eol);
 
-        code += _getPriors();
+        code.append(_getPriors());
 
         // write emissions
         for (int s = 0; s <_nStates; s++) {
-            String emissions = INDENT2 +  "[step] s=";
-            emissions += s + "& d>0 & initState = false & testThisHour = true -> ";
+            StringBuffer emissions = new StringBuffer(INDENT2 +  "[step] s=");
+            emissions.append(s + "& d>0 & initState = false & testThisHour = true -> ");
             //       + "initDist=false -> ";
             double[] p = (double[])stateEmissions.get(s);
             p = _cleanAndTruncate(p, threshold, precision);
             for (int d=0; d< p.length; d++) {
                 if (p[d] > 0.0) {
-                    emissions += p[d] + ": (pow' =" + d + ") + ";
+                    emissions.append(p[d] + ": (pow' =" + d + ") + ");
                 }
             }
             // remove the extra plus
-            emissions = emissions.substring(0,emissions.length()-3) + ";" + _eol;
-            code+=(emissions);
+            code.append(emissions.toString().substring(0,emissions.length()-3) + ";" + _eol);
         }
 
-        code += INDENT2 + "[step] testThisHour = false & initState = false -> (pow' = 0);" +_eol;
+        code.append(INDENT2 + "[step] testThisHour = false & initState = false -> (pow' = 0);" +_eol);
 
 
 
@@ -686,9 +695,9 @@ HSMMTimeAwareMultinomialEstimator {
                         }
                     }
                     guard = guard.substring(0,guard.length()-3) + ";" + _eol;
-                    code+=(guard);
+                    code.append(guard);
                 }
-                code+=(" " + _eol);
+                code.append(" " + _eol);
             }
         } else {
             for (int hour = 0; hour < NUM_CATEGORIES; hour ++) {
@@ -704,7 +713,7 @@ HSMMTimeAwareMultinomialEstimator {
                             }
                         }
                         guard = guard.substring(0,guard.length()-3) + ";" + _eol;
-                        code+=(guard);
+                        code.append(guard);
                     }
                 } else {
                     if (_optimizeOverAll) {
@@ -729,7 +738,7 @@ HSMMTimeAwareMultinomialEstimator {
 
 
                                 //guard += "1-p"+i+" : (s'=" + 0 + ") + p"+i+" : (s'=" + i + ");" + _eol;
-                                code+=(guard);
+                                code.append(guard);
                             }
                         }
                         for ( int i = 0 ; i < _nStates; i++) {
@@ -742,7 +751,7 @@ HSMMTimeAwareMultinomialEstimator {
                                     }
                                 }
                                 guard = guard.substring(0,guard.length()-3) + ";" + _eol;
-                                code+=(guard);
+                                code.append(guard);
                             }
                         }
                     } else {
@@ -759,7 +768,7 @@ HSMMTimeAwareMultinomialEstimator {
                                     tranStates = learningPattern.get(i);
                                     guard += "1-p"+i+": (s'=" + tranStates[0] + ") + p"+i+" : (s'="+ tranStates[1] +");"+_eol;
                                 }
-                                code+=(guard);
+                                code.append(guard);
                             }
                         }
                         for ( int i = 0 ; i < _nStates; i++) {
@@ -772,31 +781,32 @@ HSMMTimeAwareMultinomialEstimator {
                                     }
                                 }
                                 guard = guard.substring(0,guard.length()-3) + ";" + _eol;
-                                code+=(guard);
+                                code.append(guard);
                             }
                         }
                     }
 
 
                 }
-                code+=(" " + _eol);
+                code.append(" " + _eol);
             }
         }
-        code+=(" " + _eol);
-        code+=(INDENT1 +"endmodule" + _eol+ " " + _eol);
-        return code;
+        code.append(" " + _eol);
+        code.append(INDENT1 +"endmodule" + _eol+ " " + _eol);
+        return code.toString();
     }
+
     private String _getPriors() {
-        String priors = INDENT2 +  "[step] initState = true  -> ";
+        StringBuffer priors = new StringBuffer(INDENT2 +  "[step] initState = true  -> ");
         double[] pr =_cleanAndTruncate(prior_new, threshold, precision);
         for (int i =0; i < pr.length; i++) {
             if (pr[i]>0) {
-                priors += pr[i] + ":(s'=" + i +")&(initState'=false) + ";
+                priors.append(pr[i] + ":(s'=" + i +")&(initState'=false) + ");
             }
         }
-        priors = priors.substring(0,priors.length()-3) + ";" + _eol;
-        return priors;
+        return priors.toString().substring(0,priors.length()-3) + ";" + _eol;
     }
+
     //    private String _getStateSpaceAutomaton(List stateEmissions) {
     //        String code = INDENT1 + "module stateSpace" + _eol +
     //                INDENT2 + "s : [0.. " + (_nStates-1) + "] init 0;" + _eol +
@@ -856,20 +866,20 @@ HSMMTimeAwareMultinomialEstimator {
 
         double[] powerSpecs = _computeHourlyPowerSpecs(SPEC_TYPE.MAXIMUM);
 
-        String str =  "dtmc" + _eol +
+        StringBuffer str =  new StringBuffer("dtmc" + _eol +
                 "const int MAX_STEP = " + 288 + "; // 288 time steps per improvisation" + _eol +
                 "const int PMAX = " + PMAXi + "; // maximum power consumption" + _eol+
                 "const int DMAX = " + _maxDuration + ";// maximum duration consumption" + _eol+
                 "const int T = 5; // sampling period is 5 minutes." + _eol +
                 "const int samplesPerHour = floor(60/T);" + _eol  +
-                "const int hTest;" + _eol;
+                "const int hTest;" + _eol);
 
         if ( _optimizeOverAll) {
             int pCount =0;
             for (int[] z :incompleteCategories) {
                 if (z[0] == validHour) {
                     for (int j = 0 ; j < _nStates-1; j++) {
-                        str += "const double p"+(pCount++)+";"+_eol;
+                        str.append("const double p"+(pCount++)+";"+_eol);
                     }
                 }
             }
@@ -878,7 +888,7 @@ HSMMTimeAwareMultinomialEstimator {
             for (int[] z :incompleteCategories) {
                 if (z[0] == validHour) {
                     if (z[1] != 0) {
-                        str += "const double p"+z[1]+";"+_eol;
+                        str.append("const double p"+z[1]+";"+_eol);
                     }
                 }
             }
@@ -887,27 +897,28 @@ HSMMTimeAwareMultinomialEstimator {
         //str +="const double probz;"+_eol;
 
         for (int i =0; i < powerSpecs.length; i++) {
-            str += "const int Plimit_" + i + " = floor(" + powerSpecs[i] + ");" + _eol;
+            str.append("const int Plimit_" + i + " = floor(" + powerSpecs[i] + ");" + _eol);
         }
-        return str;
+        return str.toString();
     }
 
     private String _getHeader() {
         double[] powerSpecs = _computeHourlyPowerSpecs(SPEC_TYPE.MAXIMUM);
-        String str =  "dtmc" + _eol +
+        StringBuffer str =  new StringBuffer("dtmc" + _eol +
                 "const int MAX_STEP = " + 288 + "; // 288 time steps per improvisation" + _eol +
                 "const int PMAX = " + PMAXi + "; // maximum power consumption" + _eol+
                 "const int DMAX = " + _maxDuration + ";// maximum duration consumption" + _eol+
                 "const int T = 5; // sampling period is 5 minutes." + _eol +
                 "const int samplesPerHour = floor(60/T);" + _eol  +
                 "const int Pthreshold;" +_eol +
-                "const int hTest;" + _eol;
+                "const int hTest;" + _eol);
 
         for (int i =0; i < powerSpecs.length; i++) {
-            str += "const int Plimit_" + i + " = floor(" + powerSpecs[i] + ");" + _eol;
+            str.append("const int Plimit_" + i + " = floor(" + powerSpecs[i] + ");" + _eol);
         }
-        return str;
+        return str.toString();
     }
+    
     private String _getStepCountAutomaton() {
         return INDENT1 + "module nMod " + _eol +
                 // number of outputs produced;

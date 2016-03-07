@@ -1,6 +1,6 @@
 /* A State space particle filter implementation
  
- Copyright (c) 2008-2015 The Regents of the University of California.
+ Copyright (c) 2008-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,14 +45,14 @@ import ptolemy.kernel.util.Workspace;
 ////UnscentedKalmanFilterSSM
 
 /**
-An Unscented Kalman filter implementation that expects a state-space model
-and several measurements to be tied with itself via decorators.  
-
-@author Shuhei Emoto
-@version $Id$
-@since Ptolemy II 10.1
-@Pt.ProposedRating Red (shuhei)
-@Pt.AcceptedRating
+ * An Unscented Kalman filter implementation that expects a state-space model
+ * and several measurements to be tied with itself via decorators.  
+ *
+ * @author Shuhei Emoto
+ * @version $Id$
+ * @since Ptolemy II 10.1
+ * @Pt.ProposedRating Red (shuhei)
+ * @Pt.AcceptedRating
 */
 public class UnscentedKalmanFilterSSM extends AbstractUnscentedKalmanFilter 
 implements InferenceActor {
@@ -171,9 +171,9 @@ implements InferenceActor {
 
         String[] completeName = fullName.split("_");  
         String decoratorName = completeName[0];
-        String portName = "";
+        StringBuffer portName = new StringBuffer();
         for (int i = 1; i < completeName.length; i++) {
-            portName += completeName[i];
+            portName.append(completeName[i]);
         }
         GaussianMeasurementModel m = _measurementDecorators.get(decoratorName);
         if (m != null) {
