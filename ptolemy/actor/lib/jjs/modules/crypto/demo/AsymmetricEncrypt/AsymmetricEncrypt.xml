@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 265.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={399, 64, 1553, 1014}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1553, 1014}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1319, 904]">
     </property>
@@ -280,7 +280,7 @@
         </port>
     </entity>
     <entity name="EncryptedData2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 500, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={729, 1128, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -288,7 +288,7 @@
         </property>
     </entity>
     <entity name="PrivateDecrypt" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('privateKeyFilePath', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('cipherAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;var privateKey;&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	publicKey = crypto.loadPrivateKey(self.getParameter('privateKeyFilePath'));&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		/*&#10;		if (typeof input == 'string') {&#10;			console.log('### it is a string: ' + input);&#10;			var bytes = [];&#10;			for (var i = 0; i &lt; input.length; ++i) {&#10;    			bytes.push(input.charCodeAt(i));&#10;			}&#10;			input = bytes;&#10;		}&#10;		*/&#10;		//var pad = getNewInitArray(245 - input.length, 1);&#10;		//console.log(pad);&#10;		//var bytes = crypto.publicEncrypt(input.concat(pad), publicKey, self.getParameter('cipherAlgorithm'));&#10;		var bytes = crypto.privateDecrypt(input, privateKey, self.getParameter('cipherAlgorithm'));&#10;&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('privateKeyFilePath', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('cipherAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;var privateKey;&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	privateKey = crypto.loadPrivateKey(self.getParameter('privateKeyFilePath'));&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		/*&#10;		if (typeof input == 'string') {&#10;			console.log('### it is a string: ' + input);&#10;			var bytes = [];&#10;			for (var i = 0; i &lt; input.length; ++i) {&#10;    			bytes.push(input.charCodeAt(i));&#10;			}&#10;			input = bytes;&#10;		}&#10;		*/&#10;		//var pad = getNewInitArray(245 - input.length, 1);&#10;		//console.log(pad);&#10;		//var bytes = crypto.publicEncrypt(input.concat(pad), publicKey, self.getParameter('cipherAlgorithm'));&#10;		var bytes = crypto.privateDecrypt(input, privateKey, self.getParameter('cipherAlgorithm'));&#10;&#10;		self.send('output', bytes);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -300,9 +300,9 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 735.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{630.0, 735.0}">
         </property>
-        <property name="privateKeyFilePath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/crypto/demo/AsymmetricEncrypt/DemoKey.pem">
+        <property name="privateKeyFilePath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/crypto/demo/AsymmetricEncrypt/DemoKey.der">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -312,17 +312,13 @@
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="DecryptedData2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 74, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1707, 1026, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
