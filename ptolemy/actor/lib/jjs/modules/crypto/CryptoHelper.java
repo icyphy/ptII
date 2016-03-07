@@ -381,13 +381,13 @@ public class CryptoHelper extends HelperBase {
             //cipher = Cipher.getInstance("RSA/NONE/OAEPPadding");
             cipher = Cipher.getInstance(cipherAlgorithm);
         } catch (NoSuchAlgorithmException | NoSuchPaddingException e) {
-            throw new IllegalArgumentException("Problem processing " + input + "\n" + e.getMessage());
+            throw new IllegalArgumentException("Problem getting instance " + input + "\n" + e.getMessage());
         }
         
         try {
             cipher.init(operationMode, key);
         } catch (InvalidKeyException e) {
-            throw new IllegalArgumentException("Problem processing " + input + "\n" + e.getMessage());
+            throw new IllegalArgumentException("Problem with key " + input + "\n" + e.getMessage());
         }
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
@@ -395,7 +395,7 @@ public class CryptoHelper extends HelperBase {
             byteArrayOutputStream.write(
                     cipher.doFinal(_toJavaBytes(input)));
         } catch (IllegalBlockSizeException | BadPaddingException | IOException e) {
-            throw new IllegalArgumentException("Problem processing " + input + "\n" + e.getMessage());
+            throw new IllegalArgumentException("Problem processing crypto " + input + "\n" + e.getMessage());
         }
         return _toJSArray(byteArrayOutputStream.toByteArray());
     }

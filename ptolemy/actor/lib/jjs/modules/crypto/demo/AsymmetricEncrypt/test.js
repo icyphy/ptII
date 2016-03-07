@@ -23,3 +23,9 @@ console.log(enc);
 
 var dec = crypto.privateDecrypt(privateKey, enc);
 console.log(dec);
+
+var sign = crypto.createSign('RSA-SHA256');
+sign.update(new Buffer('hello world!'));
+var signature = sign.sign(privateKey);
+console.log(signature.length);
+
