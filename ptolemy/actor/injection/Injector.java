@@ -99,8 +99,7 @@ public class Injector {
   /**
    * Load the interface to implementation mappings into the injector.
    *
-   * @param interfaceToImplementationMap The interface to
-   * implementation mapping.
+   * @param module The interface to implementation mapping.
    */
   public void loadMappings(PtolemyModule module) {
     for (String interfaceType : module.getBindings().keySet()) {

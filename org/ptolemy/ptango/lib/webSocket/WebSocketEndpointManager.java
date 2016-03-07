@@ -107,6 +107,7 @@ public class WebSocketEndpointManager {
     *  creating and deleting a servlet.
     * @param path  The URI the servlet should be mapped to.
     * @return The servlet mapped to this path.
+    * @exception IllegalActionException Not thrown in this base class.
     */
    public synchronized PtolemyWebSocketServlet getServlet(String path)
        throws IllegalActionException {

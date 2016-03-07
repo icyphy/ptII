@@ -133,7 +133,7 @@ public class WebServerUtilities {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return true if dynamic port selection is permitted; false otherwise
+    /** Return true if dynamic port selection is permitted; false otherwise.
      *
      * @return True if dynamic port selection is permitted; false otherwise
      * @see #setDynamicPortSelection(boolean)

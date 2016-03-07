@@ -38,9 +38,23 @@ import ptolemy.kernel.util.NameDuplicationException;
 /** This actor models a Station. It extends AbstractStation.
  * Input is in west side and output is in east side of the actor.
  *  @author Maryam Bagheri
+ *  @version $Id$
+ *  @since Ptolemy II 11.0
  */
 public class Station extends AbstractStation {
 
+    /** Create a new actor in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If this actor cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
     public Station(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

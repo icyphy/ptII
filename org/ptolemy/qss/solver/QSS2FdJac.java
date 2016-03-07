@@ -48,7 +48,7 @@ import ptolemy.actor.util.Time;
  * standard finite-difference perturbation procedure.</p>
  *
  * @author Thierry S. Nouidui based on QSSFd
- * @version $id$
+ * @version $Id$
  * @since Ptolemy II 10.2  // FIXME: Check version number.
  * @Pt.ProposedRating red (dmlorenzetti)
  * @Pt.AcceptedRating red (reviewmoderator)  // FIXME: Fill in.
@@ -97,6 +97,7 @@ public final class QSS2FdJac
      *
      *  @param stateIdx The state index.
      *  @param quantEvtTimeMax The maximum quantization event time.
+     *  @return the predicted quantization-event time for a state (QSS-specific).
      */
     protected final Time _predictQuantizationEventTimeWorker(
         final int stateIdx, final Time quantEvtTimeMax) {

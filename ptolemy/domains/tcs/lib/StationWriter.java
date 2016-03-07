@@ -128,6 +128,7 @@ public class StationWriter extends TypedAtomicActor {
       newObject._writer = null;
       return newObject;
   }
+
     /** Read the value of alwaysFlush parameter.
      *  @exception IllegalActionException If there is an error reading the
      *  alwaysFlush parameter.
@@ -167,7 +168,6 @@ public class StationWriter extends TypedAtomicActor {
      *  @param token The token to write.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    
     protected void _writeToken(Token token) throws IllegalActionException {
         RecordToken record = (RecordToken) token;
         String eol = "\n";
@@ -208,6 +208,12 @@ public class StationWriter extends TypedAtomicActor {
         }
     }
 
+    /** Write a token to a file.
+     *  @param The token
+     *  @exception IllegalActionException If throw while getting the
+     *  file name, while getting the file, while opening the file or
+     *  while writing the token.
+     */
     protected void _writingToFile(Token param) throws IllegalActionException{
         if (_writer == null) {
             // File has not been opened.

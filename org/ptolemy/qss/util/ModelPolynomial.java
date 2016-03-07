@@ -1,6 +1,6 @@
 /* Model how a variable changes with time, using a polynomial.
 
-Copyright (c) 2014-2015 The Regents of the University of California.
+Copyright (c) 2014-2016 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -413,10 +413,10 @@ public final class ModelPolynomial {
     ////                         public variables
 
 
-    // Simulation time at which model was formed, such that xMdl{tMdl} = c0.
+    /** Simulation time at which model was formed, such that xMdl{tMdl} = c0. */
     public Time tMdl;
 
-    // Polynomial coefficients, in order: [c0, c1, c2, ...].
+    /** Polynomial coefficients, in order: [c0, c1, c2, ...]. */
     public final double[] coeffs;
 
     // TODO: Consider hard-coding c0..c3 directly in the type, and only

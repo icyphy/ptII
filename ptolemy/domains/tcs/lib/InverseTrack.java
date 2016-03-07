@@ -37,11 +37,25 @@ import ptolemy.kernel.util.StringAttribute;
 ////InverseTrack
 
 /** This actor extends AbstractTrack with input in east side and output in west side.
-* Shape of the train in this actor is reverse of the shape of the train in track.
-*  @author Maryam Bagheri
-*/
-public class InverseTrack extends AbstractTrack{
+ * Shape of the train in this actor is reverse of the shape of the train in track.
+ *  @author Maryam Bagheri
+ *  @version $Id$
+ *  @since Ptolemy II 11.0
+ */
+public class InverseTrack extends AbstractTrack {
 
+    /** Create a new actor in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If this actor cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
     public InverseTrack(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);

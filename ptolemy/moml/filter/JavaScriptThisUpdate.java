@@ -190,5 +190,6 @@ public class JavaScriptThisUpdate extends MoMLFilterSimple {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
+    /** The ptolemy.util.test.Diff.diff(String, String) method. */
     protected static Method _diff = null;
 }

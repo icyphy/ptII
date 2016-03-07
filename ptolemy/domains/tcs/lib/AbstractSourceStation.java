@@ -61,9 +61,23 @@ import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
  * Therefore, this actor just sends the train out. At each (take off) time, just one train can move. 
  * If the destination track  is unavailable, then station try to send it after a period of time. 
  *  @author Maryam Bagheri
-*/
+ *  @version $Id$
+ *  @since Ptolemy II 11.0
+ */
 public class AbstractSourceStation extends TypedAtomicActor{ 
 
+    /** Create a new actor in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If this actor cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
    public AbstractSourceStation(CompositeEntity container, String name)
            throws IllegalActionException, NameDuplicationException {
        super(container, name);
@@ -123,19 +137,34 @@ public class AbstractSourceStation extends TypedAtomicActor{
        
    }
    
-   ///////////////////////////////////////////////////////////////////
+   //////////////////////////////////////////////////////////////////
    ////                       ports and parameters                ////
    
+    /** The input port. */
    public TypedIOPort input;
+
+    /** The output port.  The type is a that of a Record.
+     */
    public TypedIOPort output;
-   public Parameter delay,stationId,takeOff,lineSymbol;
-   
+
+    /** The delay.  The initial default is 1.0. */
+    public Parameter delay;
+
+    /** The station id.  The initial value is -1. */
+    public Parameter stationId;
+
+    /** The takeoff.  The initial value is 1.*/
+    public Parameter takeOff;
+
+    /** The line symbol.  The default type is that of String. */
+    public Parameter lineSymbol;
    
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
    
-   /** This method handles changing in the symbol parameter of the source station.
-    * Symbol parameter shows the symbol of the line.
+   /** This method handles changing in the symbol parameter of the
+    * source station.  Symbol parameter shows the symbol of the line.
+    * @param attribute The attribute that is changing.
     */
    @Override
    public void attributeChanged(Attribute attribute) throws IllegalActionException {

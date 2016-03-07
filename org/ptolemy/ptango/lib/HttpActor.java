@@ -1453,7 +1453,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  HTTP request.
      */
     protected static class HttpRequestItems {
-        /** The body of the request **/
+        /** The body of the request. **/
         public Token body;
         
         /** Cookies associated with the request. */

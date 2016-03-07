@@ -65,26 +65,40 @@ import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
  *  This track can have no more than one Train in transit.
  *  If there is one in transit, then it rejects all inputs.
  *  @author Maryam Bagheri
+ *  @versionr $Id$
+ *  @since Ptolemy II 11.0
  */
-public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
+public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
 
+    /** Create a new actor in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If this actor cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
     public AbstractTrack(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         
         input = new TypedIOPort(this, "input", true, false);
                 
-        output=new TypedIOPort(this, "output", false, true); 
-        output.setTypeEquals(new RecordType(_lables, _types));
+        output =new TypedIOPort(this, "output", false, true); 
+        output.setTypeEquals(new RecordType(_labels, _types));
         
-        trackId= new Parameter(this, "trackId");
+        trackId = new Parameter(this, "trackId");
         trackId.setTypeEquals(BaseType.INT);
         trackId.setExpression("-1");
         
-        lineSymbol= new Parameter(this, "lineSymbol");
+        lineSymbol = new Parameter(this, "lineSymbol");
         lineSymbol.setTypeEquals(BaseType.STRING);
        
-        broken=new Parameter(this, "broken");
+        broken = new Parameter(this, "broken");
         broken.setTypeEquals(BaseType.BOOLEAN);
 
         // Create an icon for this Track node.
@@ -118,9 +132,24 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
     ///////////////////////////////////////////////////////////////////
     ////                       ports and parameters                ////
     
+    /** The input port. */
     public TypedIOPort input;
+
+    /** The output port.  The type is a that of a Record of String
+     *  labels and Types.
+     */
     public TypedIOPort output;
-    public Parameter trackId, lineSymbol, broken;
+
+    /** The id of the track.  The default value is an int with
+     *  the value of -1, indicating that the id has not been set.
+     */
+    public Parameter trackId;
+
+    /** The line symbol.  The default type is that of String. */
+    public Parameter lineSymbol;
+
+    /** True if the track is broken.  The default is false. */
+    public Parameter broken;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -283,7 +312,14 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
     }
     
     ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The shape. */
+    protected ResizablePolygonAttribute _shape;
+
+    ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+
     
     private EllipseAttribute _circle;
     private ArrayToken _color;
@@ -291,13 +327,12 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting{
     private Token _id;
     private Token _isBroken;
     private Token _inTransit;
-    private String[] _lables={"trainId","trainSymbol","movingMap","trainSpeed","fuel","arrivalTimeToStation","dipartureTimeFromStation"};
+    private String[] _labels={"trainId","trainSymbol","movingMap","trainSpeed","fuel","arrivalTimeToStation","dipartureTimeFromStation"};
     private DoubleToken _one = new DoubleToken(1.0);
     private Token[] _white = {_one, _one, _one, _one};
     private ArrayToken _noTrainColor = new ArrayToken(_white);
     private RectangleAttribute _rectangle;
     private String _symbol;
-    protected ResizablePolygonAttribute _shape;
     private Time _transitExpires;
     private Type[] _types={BaseType.INT,BaseType.STRING,new ArrayType(BaseType.STRING), BaseType.INT,BaseType.DOUBLE,BaseType.DOUBLE,BaseType.DOUBLE};
     

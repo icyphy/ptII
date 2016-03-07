@@ -133,6 +133,9 @@ public class ReloadAccessors {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
-    protected static final Method _accessorReloader;
-}
+    /** The
+     * org.terraswarm.accessor.JSAccessor.reloadAllAccesors(CompositeEntity)
+     * method.
+     */
+    protected static final Method _accessorReloader; }
 

@@ -54,7 +54,9 @@ public interface WebSocketService {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Get the URI associated with this service.*/
+    /** Get the URI associated with this service.
+     *  @return the URI associated with this service.
+     */
     public URI getRelativePath();
 
     /** Return true if the service is acting as a client; false if the service

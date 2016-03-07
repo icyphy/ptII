@@ -1,6 +1,6 @@
 /* An interactive shell that reads and writes strings.
 
- @Copyright (c) 1998-2014 The Regents of the University of California.
+ @Copyright (c) 1998-2016 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -542,8 +542,6 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
      *  the display when it is closed.
      */
     public class DialogTableau extends Tableau {
-        public DialogFrame frame;
-        public UserDialog dialog;
         /** Construct a new tableau for the model represented by the
          *  given effigy.
          *  @param container The container.
@@ -562,6 +560,12 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
             frame.setTableau(this);
             setFrame(frame);
         }
+
+        /** The frame */
+        public DialogFrame frame;
+
+        /** The UserDialog. */
+        public UserDialog dialog;
     }
 
     /** The frame that is created by an instance of ShellTableau.
