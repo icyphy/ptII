@@ -1,6 +1,6 @@
 /* Embedding of a Vert.x core.
 
-   Copyright (c) 2014-2015 The Regents of the University of California.
+   Copyright (c) 2014-2016 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -190,17 +190,29 @@ public class VertxHelperBase extends HelperBase {
 
     /** Support data types for reading and writing to buffers. */
     public static enum DATA_TYPE {
+        /** The size of a byte. */
         BYTE,
+        /** The size of a double. */
         DOUBLE,
+        /** The size of a float. */
         FLOAT,
+        /** The size of an image. */
         IMAGE,
+        /** The size of an integer. */
         INT,
+        /** The size of a long. */
         LONG,
+        /** The size of a number. */
         NUMBER,
+        /** The size of a short. */
         SHORT,
+        /** The size of a string. */
         STRING,
+        /** The size of an unsigned byte. */
         UNSIGNEDBYTE,
+        /** The size of an unsigned int. */
         UNSIGNEDINT,
+        /** The size of an unsigned short. */
         UNSIGNEDSHORT
     };
 
@@ -528,6 +540,10 @@ public class VertxHelperBase extends HelperBase {
         }
     }
 
+    /** Return the size of a data type.
+     *  @param type The object
+     *  @return The size
+     */
     protected int _sizeOfType(DATA_TYPE type) {
         switch(type) {
         case BYTE:

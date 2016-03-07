@@ -48,23 +48,21 @@ import ptolemy.actor.lib.jjs.VertxHelperBase;
 //// XBeeHelper
 
 /**
-Helper for XBee radio modules.
-See the xbee module for documentation.
-
-@author Edward A. Lee
-@version $Id$
-@since Ptolemy II 11.0
-@Pt.ProposedRating red (winthrop)
-@Pt.AcceptedRating red (winthrop)
-*/
+ * Helper for XBee radio modules.
+ * See the xbee module for documentation.
+ *
+ * @author Edward A. Lee
+ * @version $Id$
+ * @since Ptolemy II 11.0
+ * @Pt.ProposedRating red (cxh)
+ * @Pt.AcceptedRating red (cxh)
+ */
 public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener {
     
     /** Create an XBee device.
      *  The first argument is an instance of the JavaScript XBee object.
      *  @param helping The object that this is helping (XBee).
      *  @param portName The name of the port to open.
-     *  @param ownerName The name of the owner assigned to this port, if opening is successful.
-     *  @param timeout Time in milliseconds before failing.
      *  @param options Serial port options.
      *  @throws NoSuchPortException If there is no such port.
      *  @throws PortInUseException If the port is in use.
@@ -202,6 +200,8 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
     
     /** Return an array of the types supported by the current host for
      *  receiveType arguments.
+     *  @return an array of the types supported by the current host for
+     *  receiveType arguments.
      */
     public static String[] supportedReceiveTypes() {
         // Formerly, we checked to see if _types was null outside of the syncronized block
@@ -236,6 +236,8 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
     }
 
     /** Return an array of the types supported by the current host for
+     *  sendType arguments.
+     *  @return an array of the types supported by the current host for
      *  sendType arguments.
      */
     public static String[] supportedSendTypes() {

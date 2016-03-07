@@ -1,4 +1,4 @@
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 
 // Permission is hereby granted, without written agreement and without
@@ -33,10 +33,12 @@ import org.json.XML;
 //// ContextAwareHelper
 
 /**
- * Helper for the contextAware.js. This class in its full implementation should perform discovery of 
- * IoT services and create the appropriate dialog to obtain the needed context
- * for invoking a specific REST service. The context includes the required input to the service and the
- * expected response from the service. No dialog is implemented yet!!
+ * Helper for the contextAware.js. This class in its full
+ * implementation should perform discovery of IoT services and create
+ * the appropriate dialog to obtain the needed context for invoking a
+ * specific REST service. The context includes the required input to
+ * the service and the expected response from the service. No dialog
+ * is implemented yet!!
  * @author Anne H. Ngu (angu@txstate.edu) 
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)

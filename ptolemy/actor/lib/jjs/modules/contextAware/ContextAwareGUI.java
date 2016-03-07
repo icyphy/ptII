@@ -1,6 +1,6 @@
 /* A GUI for the Context Aware accessor. */
 
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 
 // Permission is hereby granted, without written agreement and without
@@ -155,7 +155,7 @@ public class ContextAwareGUI  {
     /** The list of text fields. */
     public List<JTextField> textFields;
 
-    /** The list of labels */
+    /** The list of labels. */
     public List<JLabel> labels;
 
     /** The list model. */

@@ -1,6 +1,6 @@
 /* Send and receive bytes via the serial port.
 
- Copyright (c) 2001-2014 The Regents of the University of California.
+ Copyright (c) 2001-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -134,11 +134,10 @@ public class SerialHelper extends HelperBase {
      *  it possible to have models that will open the first N serial
      *  ports.  </p>
      *
-     *  @throws NoSuchPortException If the port does not exist.
-     *  @throws PortInUseException If the port is in use (should not be thrown; error invoked instead).
-     *  @throws IOException If opening the input or output stream fails.
-     *  @throws TooManyListenersException If there are already too many listeners to the port.
-     *  @throws UnsupportedCommOperationException If the specified parameters cannot be set on the port.
+     *  @throws IllegalActionException If there is no such port, if
+     *  the port is owned by another user, if the port does not
+     *  support the specified paramters or if the input or output
+     *  fails.
      */
     public synchronized void open() throws IllegalActionException {
         if(_serialPort != null) {

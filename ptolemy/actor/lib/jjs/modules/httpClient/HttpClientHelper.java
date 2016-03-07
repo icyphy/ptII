@@ -1,6 +1,6 @@
 /* A JavaScript helper for HttpClient.
 
-@Copyright (c) 2015 The Regents of the University of California.
+@Copyright (c) 2015-2016 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -121,10 +121,8 @@ public class HttpClientHelper extends VertxHelperBase {
      *  pending requests.
      *  @param currentObj The JavaScript instance using this helper (a ClientRequest).
      *  @param options The options.
-     *  @return A new HttpClientHelper instance.
      */
-    public void request(
-            ScriptObjectMirror currentObj, Map<String, Object> options) {
+    public void request(ScriptObjectMirror currentObj, Map<String, Object> options) {
         // System.err.println("****** Initiating request " + _sequenceNumber);
         StartHttpRequest request = new StartHttpRequest(currentObj, options, _sequenceNumber++);
         submit(request);
@@ -134,6 +132,7 @@ public class HttpClientHelper extends VertxHelperBase {
      *  If one has been created before and has not been garbage collected, return
      *  that one. Otherwise, create a new one.
      *  @param actor Either a JavaScript actor or a RestrictedJavaScriptInterface.
+     *  @return A new HttpClientHelper instance.
      */
     public static HttpClientHelper getOrCreateHelper(Object actor) {
         VertxHelperBase helper = VertxHelperBase.getHelper(actor);

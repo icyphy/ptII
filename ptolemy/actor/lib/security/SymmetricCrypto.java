@@ -148,11 +148,11 @@ public class SymmetricCrypto extends TypedAtomicActor {
      */
     public StringParameter macAlgorithm;
     
-    /** The input data (for encrypt mode) or encrypted data (for decrypt mode)
+    /** The input data (for encrypt mode) or encrypted data (for decrypt mode).
      */
     public TypedIOPort input;
     
-    /** The encrypted data (for encrypt mode) or decrypted data (for decrypt mode)
+    /** The encrypted data (for encrypt mode) or decrypted data (for decrypt mode).
      */
     public TypedIOPort output;
     

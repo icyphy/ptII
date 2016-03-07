@@ -1,6 +1,6 @@
 /* Embedding of a Vert.x core.
 
-   Copyright (c) 2014-2015 The Regents of the University of California.
+   Copyright (c) 2014-2016 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -190,6 +190,8 @@ public class HelperBase {
     /** Given an array of strings, return an array where everything is
      *  converted to lower case, duplicates are removed, and the order
      *  is alphabetical.
+     *  @param original The array of strings
+     *  @return the sorted, lower case, deduped array of Strings.
      */
     protected static TreeSet<String> _removeDuplicates(String[] original) {
         TreeSet<String> result = new TreeSet<String>();
