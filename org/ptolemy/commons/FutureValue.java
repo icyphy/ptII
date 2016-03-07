@@ -125,7 +125,8 @@ public class FutureValue<V> implements Future<V>, Serializable {
         if (!isDone()) {
             return "waiting";
         } else {
-            return _result != null ? _result.toString() : null;
+            // FindBugs reports "toString method may return null".  So we return the empty string instead.
+            return _result != null ? _result.toString() : "" /*null*/;
         }
     }
 
