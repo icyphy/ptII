@@ -1,6 +1,6 @@
 /* A helper class for the device discovery accessor.
 
-   Copyright (c) 2015 The Regents of the University of California.
+   Copyright (c) 2015-2016 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -392,8 +392,7 @@ public class DiscoveryHelper {
             Process process = Runtime.getRuntime().exec(
                     _nmapCommand + baseIP + ".1/24");
 
-            BufferedReader stdOut = new BufferedReader(new InputStreamReader(
-                    process.getInputStream()));
+            BufferedReader stdOut = null;
 
             try {
                 stdOut = new BufferedReader(new InputStreamReader(
@@ -527,8 +526,9 @@ public class DiscoveryHelper {
     private void readPingWindows(Process process, String testIP) {
         JSONObject device = null;
 
+        BufferedReader stdOut = null;
         try {
-            BufferedReader stdOut = new BufferedReader(new InputStreamReader(
+            stdOut = new BufferedReader(new InputStreamReader(
                     process.getInputStream()));
 
             StringBuffer data = new StringBuffer();
@@ -569,8 +569,16 @@ public class DiscoveryHelper {
                 }
             }
             process.destroy();
-        } catch (IOException e) {
-            System.err.println("Error executing ping for " + testIP);
+        } catch (IOException ex) {
+            System.err.println("Error executing ping for " + testIP + ": " + ex);
+        } finally {
+            if (stdOut != null) {
+                try {
+                    stdOut.close();
+                } catch (IOException ex2) {
+                    System.err.println("Error closing stdout for " + testIP + ": " + ex2);
+                }
+            }
         }
         
         // Lock _ipMap?  No two devices will have same IP address, so no
