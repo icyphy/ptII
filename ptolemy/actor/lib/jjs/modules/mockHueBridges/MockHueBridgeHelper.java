@@ -138,7 +138,7 @@ public class MockHueBridgeHelper {
       * bridge.  All requests take effect immediately.
       * @param bridgeID  The bridge identifier.
       * @return  The transition time.
-      * @see @setTransitionTime(String, int)
+      * @see #setTransitionTime(String, int)
       */
      public int getTransitionTime(String bridgeID) {
          if (_bridges.containsKey(bridgeID)) {
