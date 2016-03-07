@@ -1,6 +1,6 @@
 /* A parser for MoML (modeling markup language)
 
- Copyright (c) 1998-2015 The Regents of the University of California.
+ Copyright (c) 1998-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -257,9 +257,20 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         }
     }
 
-    public MoMLParser(Workspace workspace, VersionSpecification defaultVersionSpec, ClassLoader loader) {
+    /** Construct a parser that creates entities in the specified workspace
+     *  with a default verisoin specification.   
+     *  If the workspace argument is null, then
+     *  create a new workspace with an empty name. Classes will be
+     *  created using the classloader that created this class.
+     *  @param workspace The workspace into which to place entities.
+     *  @param defaultVersionSpecification The default version specification
+     *  @param loader The class loader that will be used to create classes,
+     *  or null if the the bootstrap class loader is to be used.
+     */
+
+    public MoMLParser(Workspace workspace, VersionSpecification defaultVersionSpecification, ClassLoader loader) {
       this(workspace, loader);
-      this._defaultVersionSpec = defaultVersionSpec;
+      this._defaultVersionSpecification = defaultVersionSpecification;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -2090,14 +2101,16 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     /**
      * Set the static default class loading strategy that will be used by all instances of this class.
      * @param classLoadingStrategy
+     * @see #getDefaultClassLoadingStrategy()
      */
     public static void setDefaultClassLoadingStrategy(ClassLoadingStrategy classLoadingStrategy) {
       _defaultClassLoadingStrategy = classLoadingStrategy;
     }
 
-    /**
-     *
-     * @return the current static _defaultClassLoadingStrategy instance
+    /** Get the the current static _defaultClassLoadingStrategy instance.
+     * 
+     * @return the current static _defaultClassLoadingStrategy instance.
+     * @see #setDefaultClassLoadingStrategy(ClassLoadingStrategy)
      */
     public static ClassLoadingStrategy getDefaultClassLoadingStrategy() {
       return _defaultClassLoadingStrategy;
@@ -3968,7 +3981,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         // From Triquetrum : also consider loading actor classes via the pluggable _classLoadingStrategy,
         // to allow OSGi-based dynamic loading strategies.
         try {
-          VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpec;
+          VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpecification;
           reference = _defaultClassLoadingStrategy.loadActorOrientedClass(className, _vSpec);
         } catch (Exception e) {
           // ignore here, just means we need to look further to find the moml class
@@ -6341,7 +6354,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
       // If no specific version info was in the model's MOML, and a default version spec was set, we need to use that one.
       // This is especially important for submodels based on actor-oriented-classes, where we want to maintain some consistency
       // between a related "group" of MOMLs (the parent models and their submodels).
-      VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpec;
+      VersionSpecification _vSpec = versionSpec != null ? versionSpec : _defaultVersionSpecification;
       try {
         return _defaultClassLoadingStrategy.loadJavaClass(className, _vSpec);
       } catch (ClassNotFoundException e) {
@@ -7560,7 +7573,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // The optional default version specification to be used for loading java & actor-oriented classes,
     // in cases where this concept is supported by the class loading strategy.
-    private VersionSpecification _defaultVersionSpec;
+    private VersionSpecification _defaultVersionSpecification;
 
     // Count of configure tags so that they can nest.
     private int _configureNesting = 0;

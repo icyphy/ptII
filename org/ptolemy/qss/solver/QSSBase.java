@@ -329,7 +329,7 @@ import ptolemy.actor.util.Time;
  * </ol>
  *
  * @author David M. Lorenzetti, Contributor: Thierry S. Nouidui, Edward A. Lee
- * @version $id$
+ * @version $Id$
  * @since Ptolemy II 10.2  // FIXME: Check version number.
  * @Pt.ProposedRating red (dmlorenzetti)
  * @Pt.AcceptedRating red (reviewmoderator)  // FIXME: Fill in.
@@ -421,6 +421,7 @@ public abstract class QSSBase {
      * </ul>
      *
      * @return Current simulation time for the QSS integrator.
+     * @see #setCurrentSimulationTime(Time)
      */
     public final Time getCurrentSimulationTime() {
         return( _currSimTime );
@@ -431,6 +432,7 @@ public abstract class QSSBase {
      *  then this will return true. A true value
      *  asserts that all non-zero derivatives of the input model are provided.
      *  @return True to indicate that inputs are assumed exact, or false otherwise.
+     *  @see #setExactInputs(boolean)
      */
     public final boolean getExactInputs() {
         return _exactInputs;
@@ -455,6 +457,7 @@ public abstract class QSSBase {
     /** Return the input variable model for the specified index.
      *  @param input The index of the input variable.
      *  @see #setInputVariableModel(int, ModelPolynomial)
+     *  @return the input variable model for the specified index.
      */
     public final ModelPolynomial getInputVariableModel(int input) {
         assert(input < _ivCt);
@@ -548,6 +551,7 @@ public abstract class QSSBase {
      *
      * @param stateIdx The state index, 0 &le; stateIdx &lt; this.getStateCt().
      * @param qStateMdl The model to use.
+     * @return the external, quantized state model for a state predicted by the integrator.
      */
     public final ModelPolynomial getStateModel(final int stateIdx) {
         return( _qStateMdls[stateIdx] );
@@ -825,6 +829,8 @@ public abstract class QSSBase {
      *
      * TODO: Statement above will change if provide ability to install listeners
      * on input variables.
+     *
+     * @return true if the integrator needs a rate event.
      */
     public final boolean needRateEvent() {
         return(_need_rateEvt);
@@ -917,6 +923,7 @@ public abstract class QSSBase {
      *  This method sets flags indicating that a rate event is needed
      *  and that quantization events are needed for all states.
      *  @param newSimTime New time for the QSS integrator.
+     *  @see #getCurrentSimulationTime()
      */
     public final void setCurrentSimulationTime(final Time newSimTime) {
         // Set status to note future needs.
@@ -933,6 +940,7 @@ public abstract class QSSBase {
      *  By default, this solver will assume that a zero value for derivatives
      *  may simply mean that the derivatives are unknown.
      *  @param exact True to indicate that inputs are exact.
+     *  @see #getExactInputs()
      */
     public final void setExactInputs(boolean exact) {
         _exactInputs = exact;
@@ -1184,6 +1192,8 @@ public abstract class QSSBase {
      *
      * @param nextSimTime Global simulation time to which to step,
      *   nextSimTime > this.getCurrSimTime().
+     * @exception Exception If the simulation time must advance or if
+     * there are state models waiting to be quantized,
      */
     public final void stepToTime(final Time nextSimTime)
             throws Exception {
@@ -1230,6 +1240,7 @@ public abstract class QSSBase {
      * external, quantized state model.</p>
      *
      * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @return a string representation of the model for a state.
      */
     public final String stringifyStateModel(final int stateIdx) {
         return( _qStateMdls[stateIdx].toString() );
@@ -1242,6 +1253,7 @@ public abstract class QSSBase {
      * internal, continuous state model.</p>
      *
      * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @return a string representation of the internal model for a state.
      */
     public final String stringifyStateModelContinuous(final int stateIdx) {
         return( _cStateMdls[stateIdx].toString() );
@@ -1316,7 +1328,7 @@ public abstract class QSSBase {
      * an integrator state needs to have a quantization-event.
      * Following this list.
      * Then just cross-reference that discussion here, and in places like
-     * description of method {@link #triggerRateEvent()}.</p>
+     * description of method {@link #triggerRateEvent()}.</li>
      * </ul>
      *
      * <p>To determine state(s) that need to be requantized, use either
@@ -1407,6 +1419,8 @@ public abstract class QSSBase {
      * rid of the exception.
      *
      * TODO: Add a "force" flag so only triggers if needed.
+     * @exception Exception If thrown while performing the work defined by
+     * a specific member of the QSS family.
      */
     public final void triggerRateEvent()
             throws Exception {
@@ -1529,6 +1543,8 @@ public abstract class QSSBase {
      * @param qStateMdl The model of external, quantized state.
      * @param dq The quantum, i.e., the critical difference between the models, at
      *   which the external state model must be re-formed.
+     * @param exactInputs If true, then the inputs are known to be exact.
+     * If true, then do not fall back to QSS1.
      * @return dt The delta-time at which, in the absence of other events, the
      *   external state model must be re-formed.
      *   Note 0 <= dt <= Double.POSITIVE_INFINITY.
@@ -1833,23 +1849,31 @@ public abstract class QSSBase {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables
 
-    // Flag indicating that the solver should assume that inputs are exact,
-    // meaning that if derivatives are zero, then they are genuinely zero,
-    // not just unknown.
+    /** Flag indicating that the solver should assume that inputs are exact,
+     * meaning that if derivatives are zero, then they are genuinely zero,
+     * not just unknown.
+     */
     protected boolean _exactInputs = false;
 
-    // Derivative function.
+    /** Derivative function. */
     protected DerivativeFunction _derivFcn;
-    protected int _stateCt, _ivCt;
 
-    // States.
-    protected ModelPolynomial[] _cStateMdls;  // Internal, continuous state models.
-    protected ModelPolynomial[] _qStateMdls;  // External, quantized state models.
+    /** The state count. */
+    protected int _stateCt;
 
-    // Input variables.
+    /** The count of input variables. */
+    protected int _ivCt;
+
+    /** Internal continuous state models. */
+    protected ModelPolynomial[] _cStateMdls; 
+
+    /** External, quantized state models. */
+    protected ModelPolynomial[] _qStateMdls; 
+
+    /** Input variables. */
     protected ModelPolynomial[] _ivMdls;
 
-    // Quanta.
+    /** Quanta. */
     protected double[] _dqs;  // Quantum for each state.
     // Policy:
     // (-) Invariant: consistent with the constant coefficient of the
@@ -1859,8 +1883,8 @@ public abstract class QSSBase {
     //   {_dqRelTols}.
     // (-) Set only to values returned by method findDq().
 
-    // Times.
-    protected Time _currSimTime;  // Simulation time of last call.
+    /** The simulation time of the last call. */
+    protected Time _currSimTime;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods

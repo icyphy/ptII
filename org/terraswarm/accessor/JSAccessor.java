@@ -1,6 +1,6 @@
 /* An component accessor that consists of an interface and a script.
 
- Copyright (c) 2015 The Regents of the University of California.
+ Copyright (c) 2015-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -101,7 +101,7 @@ import ptolemy.util.StringUtilities;
 
  <h2>References</h2>
 
- <p><name="VisionOfSwarmLets">Elizabeth Latronico, Edward A. Lee, Marten Lohstroh, Chris Shaver, Armin Wasicek, Matt Weber.</a>
+ <p><a name="VisionOfSwarmLets">Elizabeth Latronico, Edward A. Lee, Marten Lohstroh, Chris Shaver, Armin Wasicek, Matt Weber.</a>
  <a href="https://www.terraswarm.org/pubs/332.html">A Vision of Swarmlets</a>,
  <i>IEEE Internet Computing, Special Issue on Building Internet of Things Software</i>,
  19(2):20-29, March 2015.</p>
@@ -315,7 +315,7 @@ public class JSAccessor extends JavaScript {
      *  accessors/web directory to update the documentation.
      *  If the checkout or update fails once, the it will not be tried
      *  again until the JVM is restarted.
-     *  @exception IOExeption If the repository cannot be checked out.
+     *  @exception IOException If the repository cannot be checked out.
      */
     public static void getAccessorsRepository() throws IOException {
         boolean updateNeeded = 

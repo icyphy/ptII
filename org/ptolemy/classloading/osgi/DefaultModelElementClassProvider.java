@@ -1,6 +1,6 @@
 /* A simple provider that gets a list of classes to be provided in its constructor.
 
-Copyright (c) 2015 The Regents of the University of California; iSencia Belgium NV.
+Copyright (c) 2015-2016 The Regents of the University of California; iSencia Belgium NV.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -64,7 +64,7 @@ public class DefaultModelElementClassProvider implements ModelElementClassProvid
      * can provide a requested class.
      *
      * @param version if null, the provider will not care about versions
-     * @param knownClasses
+     * @param knownClasses The known classes
      */
     @SafeVarargs
     public DefaultModelElementClassProvider(VersionSpecification version, Class<? extends NamedObj>... knownClasses) {

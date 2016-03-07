@@ -1,6 +1,6 @@
 /* A servlet that manages locally hosted websockets.
 
- Copyright (c) 1997-2015 The Regents of the University of California.
+ Copyright (c) 1997-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -55,7 +55,10 @@ import org.eclipse.jetty.websocket.WebSocketServlet;
 @SuppressWarnings("serial")
 public class PtolemyWebSocketServlet extends WebSocketServlet {
 
-    /** Create a new servlet associated with the given endpoint. */
+    /** Create a new servlet associated with the given endpoint.
+     *  @param endpoint The endpoint (WebSocket implementer)
+     *  associated with this servlet.
+     */
     public PtolemyWebSocketServlet(WebSocketEndpoint endpoint) {
         _endpoint = endpoint;
     }

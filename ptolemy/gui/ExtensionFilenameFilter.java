@@ -58,8 +58,8 @@ import java.util.Set;
 public class ExtensionFilenameFilter extends PtFilenameFilter {
 
     /**
-     * Construct a file filter that filters out all files that do not have one
-     * of the extensions in the given list.
+     * Construct a file filter that filters out all files that do not
+     * have one of the extensions in the given list.
      *
      * @param extensions the file extensions to use
      */
@@ -70,8 +70,8 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
     }
 
     /**
-     * Construct a file filter that filters out all files that do not have one
-     * of the extensions in the given list.
+     * Construct a file filter that filters out all files that do not
+     * have one of the extensions in the given list.
      *
      * @param extensions the file extensions to use
      */
@@ -82,11 +82,12 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
     }
 
     /**
-     * Creates a filter that accepts the given file type, specified by a number
-     * of extensions and a meaningful description of the file types involved.
+     * Creates a filter that accepts the given file type, specified by
+     * a number of extensions and a meaningful description of the file
+     * types involved.
      *
-     * @param description  a description of the types of files with one of the given
-     * extensions.
+     * @param description a description of the types of files with one
+     * of the given extensions.
      * @param extensions the file extensions to use
      */
     public ExtensionFilenameFilter(String description, String... extensions) {
@@ -97,12 +98,13 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
     }
 
     /**
-     * Creates a filter that accepts the given file type, specified by a number
-     * of extensions and a meaningful description of the file types involved.
+     * Creates a filter that accepts the given file type, specified by
+     * a number of extensions and a meaningful description of the file
+     * types involved.
      *
      * @param extensions the file extensions to use
-     * @param description a description of the types of files with one of the given
-     * extensions
+     * @param description a description of the types of files with one
+     * of the given extensions
      */
     public ExtensionFilenameFilter(String [] extensions, String description) {
         // This method is used by Kepler in reporting/src/org/kepler/reporting/gui/ReportDesignerPanel.java
@@ -116,16 +118,15 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
     }
 
     /**
-     * Return true if the given file has one of the registered extensions, or is
-     * a directory. Otherwise, or if the file is null, return false.
-     * <p>
-     * Files whose name begins with "." are not accepted.
-     * </p>
+     * Return true if the given file has one of the registered
+     * extensions, or is a directory. Otherwise, or if the file is
+     * null, return false.
      *
-     * @param file
-     *            The file to be checked.
-     * @return true if the given file has one of the registered extensions, or
-     *         is a directory.
+     * <p>Files whose name begins with "." are not accepted.</p>
+     *
+     * @param file The file to be checked.
+     * @return true if the given file has one of the registered
+     * extensions, or is a directory.
      */
     @Override
     public boolean accept(File file) {
@@ -134,25 +135,22 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
         } else if (file.isDirectory()) {
             return true;
         } else {
-            String ext = getExtension(file);
+            String ext = _getExtension(file);
             return (ext != null && _registeredExtensions.contains(ext));
         }
     }
 
     /**
-     * Return true if the given file name has one of the registered extensions,
-     * or is a directory. Otherwise, or if the directory or name is null, return
-     * false.
-     * <p>
-     * Files whose name begins with "." are not accepted.
-     * </p>
+     * Return true if the given file name has one of the registered
+     * extensions, or is a directory. Otherwise, or if the directory
+     * or name is null, return false.
      *
-     * @param directory
-     *            the parent directory of the file
-     * @param name
-     *            the name of the file.
-     * @return true if the given file has one of the registered extensions, or
-     *         is a directory.
+     * <p>Files whose name begins with "." are not accepted.</p>
+     *
+     * @param directory the parent directory of the file
+     * @param name the name of the file.
+     * @return true if the given file has one of the registered
+     * extensions, or is a directory.
      */
     @Override
     public boolean accept(File directory, String name) {
@@ -164,8 +162,9 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
     }
 
     /**
-     * @return The human readable description of the types of files accepted by
-     *         this filter.
+     * @return The human readable description of the types of files
+     * accepted by this filter.
+     * @see #setDescription(String)
      */
     @Override
     public String getDescription() {
@@ -176,15 +175,15 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * Set the human readable description of the types of files accepted by this
      * filter.
      *
-     * @param description
-     *            the human readable description of the types of files accepted
-     *            by this filter.
+     * @param description the human readable description of the types
+     * of files accepted by this filter.
+     * @see #getDescription()
      */
     public void setDescription(String description) {
         _description = description;
     }
 
-    /**
+    /** Get the description and the registered extensions.
      * @return description + registered extensions
      */
     @Override
@@ -217,11 +216,11 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * in a '.', this method returns null.
      * </p>
      * 
-     * @param file
-     * @return the extension of the file or null if the file is null, or if it
-     *         has no extension.
+     * @param file The file
+     * @return the extension of the file or null if the file is null,
+     * or if it has no extension.
      */
-    private String getExtension(File file) {
+    private String _getExtension(File file) {
         if (file == null) {
             return null;
         } else {
