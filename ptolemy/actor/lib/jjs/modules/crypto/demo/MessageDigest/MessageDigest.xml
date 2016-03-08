@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 265.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={433, 95, 1553, 1014}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1553, 1014}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1319, 904]">
     </property>
@@ -42,6 +42,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 565.0]">
         </property>
     </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Current HMAC  algorithms&#10;HmacSHA1&#10;HmacSHA256">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{60.0, 690.0}">
+        </property>
+    </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
@@ -50,7 +58,7 @@
         </property>
     </entity>
     <entity name="InputData" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={223, 692, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={951, 1051, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -173,7 +181,7 @@
         </port>
     </entity>
     <entity name="InputData2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={548, 1093, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1493, 846, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -181,11 +189,11 @@
         </property>
     </entity>
     <entity name="EncryptedData" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={9, 809, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1779, 943, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 780.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{600.0, 780.0}">
         </property>
     </entity>
     <entity name="DecryptWithHash" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -226,7 +234,7 @@
         </port>
     </entity>
     <entity name="DecryptedData" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1934, 614, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 614, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -234,7 +242,7 @@
         </property>
     </entity>
     <entity name="HashOK" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={322, 1027, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1101, 824, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -247,6 +255,52 @@
         <property name="value" class="ptolemy.actor.parameters.PortParameter" value="100">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 715.0]">
+        </property>
+    </entity>
+    <entity name="Hmac" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;&#10;&#10;var crypto = require('crypto');&#10;&#10;exports.setup = function() {&#10;	this.input('input');&#10;	this.output('output');&#10;	this.parameter('key', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;	this.parameter('hmacAlgorithm', {&#10;		type : 'string',&#10;		value : ''&#10;	});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('input', function() {&#10;		var input = self.get('input');&#10;		var result = crypto.hmac(input, self.getParameter('key'), self.getParameter('hmacAlgorithm'));&#10;&#10;		self.send('output', result);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 815.0}">
+        </property>
+        <property name="hashAlgorithm" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="key" class="ptolemy.data.expr.Parameter" value="0x16611efd3f469b2d4b14e0a55926cece">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="cipherAlgorithm" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="hmacAlgorithm" class="ptolemy.data.expr.Parameter" value="HmacSHA256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="HmacDigest" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={876, 1067, 1280, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[524.8392944335938, 843.806396484375]">
         </property>
     </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -278,7 +332,7 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{345.0, 420.0}">
+        <vertex name="vertex1" value="[345.0, 420.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
@@ -303,6 +357,8 @@
         <vertex name="vertex1" value="[655.0, 655.0]">
         </vertex>
     </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="DiscreteClock.output" relation="relation2"/>
     <link port="InputData.input" relation="relation5"/>
     <link port="RandomBytes.size" relation="relation4"/>
@@ -324,6 +380,9 @@
     <link port="DecryptedData.input" relation="relation7"/>
     <link port="HashOK.input" relation="relation10"/>
     <link port="ArrayUpdate.input" relation="relation9"/>
+    <link port="Hmac.input" relation="relation6"/>
+    <link port="Hmac.output" relation="relation12"/>
+    <link port="HmacDigest.input" relation="relation12"/>
     <link relation1="relation5" relation2="relation6"/>
     <link relation1="relation2" relation2="relation"/>
     <link relation1="relation9" relation2="relation11"/>
