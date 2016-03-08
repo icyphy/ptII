@@ -43,10 +43,50 @@ this.helper = new CryptoHelper(this);
 ///////////////////////////////////////////////////////////////////////////////
 //// supportedReceiveTypes
 
+exports.getHashLength = function(hashAlgorithm) {
+    return this.helper.getHashLength(hashAlgorithm);
+}
+
+/** Calculate hash value using a secure hash function.
+ */
+exports.hash = function(input, hashAlgorithm) {
+    return this.helper.hash(input, hashAlgorithm);
+};
+
+exports.hmac = function(input, key, hashAlgorithm) {
+    return this.helper.hmac(input, key, hashAlgorithm);
+};
+
+exports.loadPrivateKey = function(filePath) {
+    return this.helper.loadPrivateKey(filePath);
+}
+
+exports.loadPublicKey = function(filePath) {
+    return this.helper.loadPublicKey(filePath);
+}
+
+exports.privateDecrypt = function(input, privateKey, cipherAlgorithm) {
+    return this.helper.privateDecrypt(input, privateKey, cipherAlgorithm);
+}
+
+exports.publicEncrypt = function(input, publicKey, cipherAlgorithm) {
+    return this.helper.publicEncrypt(input, publicKey, cipherAlgorithm);
+}
+
 /** Return a random byte array.
  */
 exports.randomBytes = function (size) {
     return this.helper.randomBytes(size);
+};
+
+exports.signWithPrivateKey = function(input, privateKey, signAlgorithm) {
+    return this.helper.signWithPrivateKey(input, privateKey, signAlgorithm);
+}
+
+/** Return a symmetric decrypted bytes.
+ */
+exports.symmetricDecrypt = function(input, key, cipherAlgorithm) {
+    return this.helper.symmetricDecrypt(input, key, cipherAlgorithm);
 };
 
 /** Return a symmetric encrypted bytes.
@@ -55,42 +95,6 @@ exports.symmetricEncrypt = function(input, key, cipherAlgorithm) {
     return this.helper.symmetricEncrypt(input, key, cipherAlgorithm);
 };
 
-/** Return a symmetric decrypted bytes.
- */
-exports.symmetricDecrypt = function(input, key, cipherAlgorithm) {
-    return this.helper.symmetricDecrypt(input, key, cipherAlgorithm);
-};
-
-/** Calculate hash value using secure hash.
- */
-exports.hash = function(input, hashAlgorithm) {
-    return this.helper.hash(input, hashAlgorithm);
-};
-
-/** verify hash value using secure hash.
- *  hash value should be the suffix of input.
- */
-exports.verifyHash = function(input, hashAlgorithm) {
-    return this.helper.verifyHash(input, hashAlgorithm);
-};
-
-exports.getHashLength = function(hashAlgorithm) {
-    return this.helper.getHashLength(hashAlgorithm);
+exports.verifySignature = function(data, signature, publicKey, signAlgorithm) {
+    return this.helper.verifySignature(data, signature, publicKey, signAlgorithm);
 }
-
-exports.loadPublicKey = function(filePath) {
-    return this.helper.loadPublicKey(filePath);
-}
-
-exports.loadPrivateKey = function(filePath) {
-    return this.helper.loadPrivateKey(filePath);
-}
-
-exports.publicEncrypt = function(input, publicKey, cipherAlgorithm) {
-    return this.helper.publicEncrypt(input, publicKey, cipherAlgorithm);
-}
-
-exports.privateDecrypt = function(input, privateKey, cipherAlgorithm) {
-    return this.helper.privateDecrypt(input, privateKey, cipherAlgorithm);
-}
-

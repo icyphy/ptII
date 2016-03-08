@@ -1,3 +1,5 @@
+"use strict"
+
 var crypto = require('crypto');
 var fs = require('fs');
 var constants = require('constants');
@@ -25,7 +27,14 @@ var dec = crypto.privateDecrypt(privateKey, enc);
 console.log(dec);
 
 var sign = crypto.createSign('RSA-SHA256');
-sign.update(new Buffer('hello world!'));
+sign.update(new Buffer('bye world!'));
 var signature = sign.sign(privateKey);
 console.log(signature.length);
+console.log(signature);
 
+var hmacKey = new Buffer('16611efd3f469b2d4b14e0a55926cece', 'hex');
+var hmac = crypto.createHmac('sha1', hmacKey);
+hmac.update('hello world!');
+var hmacHash = hmac.digest();
+console.log('hmacHash');
+console.log(hmacHash);
