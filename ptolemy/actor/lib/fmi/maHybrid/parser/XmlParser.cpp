@@ -53,7 +53,7 @@ const char *XmlParser::attNames[SIZEOF_ATT] = {
     "reinit", "index", "dependencies", "dependenciesKind", "modelIdentifier",
     "needsExecutionTool", "completedIntegratorStepNotNeeded", "canBeInstantiatedOnlyOncePerProcess", "canNotUseMemoryManagementFunctions", "canGetAndSetFMUstate",
     "canSerializeFMUstate", "providesDirectionalDerivative", "canHandleVariableCommunicationStepSize", "canInterpolateInputs", "maxOutputDerivativeOrder",
-    "canRunAsynchronuously", "canGetMaxStepSize", "handleIntegerTime", "canSetResolution", "canGetPreferredResolution",
+    "canRunAsynchronuously", "canGetMaxStepSize", "canSetResolution", "canGetPreferredResolution", "handleIntegerTime", 
     // not conform with the FMI 2.0 doc. // Todo : remove then used models become mature.
     // FIXME: Watch out! These values are not added to the attribute enums in the header files. Values have to be added BEFORE this block!
     "xmlns:xsi",                       // Dymola examples from 2014 FD01
