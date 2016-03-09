@@ -32,6 +32,7 @@ typedef struct {
     fmi2CallbackFunctions callbacks;
     fmi2Component component;
     fmi2FMUstate lastFMUstate;
+    fmi2FMUstate validFMUstate;
     fmi2Boolean canGetAndSetFMUstate;
     fmi2Boolean canGetMaxStepSize;
     fmi2Boolean canHandleIntegerTime;
