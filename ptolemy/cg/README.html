@@ -159,9 +159,52 @@
 
       <p>To generate code for a target, use the <code>-generatorPackageList</code> command line argument to 
 	<code>$PTII/bin/cg</code>.  The value of the <code>-generatorPackageList</code> parameter i
-	a semicolon or * separated list of Java packages to be searched for adapters.  For example
-	<pre>
+	a semicolon or * separated list of Java packages to be searched for adapters.  For example:</p>
+      <pre>
 	  $PTII/bin/ptcg -generatorPackageList generic.program.procedural.c.arduino ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/actor/lib/gui/test/auto/Display.xml
-	</pre>
+      </pre>
+
+      <h3>Adding a new target</h3>
+
+      <h4>Creating the adapter directory</h4>
+      <p>Adapters for C are in <code>$PTII/ptolemy/cg/adapter/generic/program/procedural/c/</code>, so create
+        your C target adapter there.  Other languages are in <code>$PTII/ptolemy/cg/adapter/generic/program/procedural/</code>.</p>
+      <pre>
+        mkdir $PTII/ptolemy/cg/adapter/generic/program/procedural/c/duktape
+      </pre>
+      <p>Then create some actor stubs.  It is probably easiest to copy an existing target and remove the .class files and .jar files
+      <pre>
+        cd $PTII/ptolemy/cg/adapter/generic/program/procedural/c/duktape
+        (cd ../arduino; tar -cf - .) | tar -xvf -
+        find . -name "*.class" -exec rm {} \;
+        find . -name "*.jar" -exec rm {} \;
+      </pre>
+
+      <p>It is easiest to use a script to change from <code>arduino</code to <code>duktape</code>.  Create <code>/tmp/rename</code> and make it executable.  Below is a simple rename script. </p>
+      <pre>
+#!/bin/sh
+for file in $@
+do
+        sed 's/arduino/duktape/g' $file &amp; /tmp/rename.tmp
+        diff $file /tmp/rename.tmp
+        cp /tmp/rename.tmp $file 
+done
+      </pre>        
+      <p>Then run the script</p>
+      <pre>
+          chmod a+x /tmp/rename
+          find . -type f | xargs /tmp/rename
+      </pre>
+        
+      <h4>Updating the files</h4>
+      Update the <code>README.htm</code>.
+
+      <h4>Run make, then ptcg</h4>
+      <p>Try running <code>make</code> and then generate code.</p>
+      <pre>
+        make
+       $PTII/bin/ptcg -generatorPackageList generic.program.procedural.c.duktape $PTII/ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib/gui/test/auto/Display.xml
+      </pre>
+      
   </body>
 </html>

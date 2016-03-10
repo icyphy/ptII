@@ -33,7 +33,8 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib
 
-DIRS =		conversions fmi gui hoc logic string
+# PTJJS_DIR is set to jjs if we Nashorn, which is a part of Java 1.8, is present.
+DIRS =		conversions fmi gui hoc $(PTJJS_DIR) logic string
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../..
