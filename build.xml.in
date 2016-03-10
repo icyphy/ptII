@@ -101,7 +101,7 @@
 
   <!-- The timeout in seconds for longest running junit tests.
        See also the timeout= values in ptolemy/util/test/junit/*.java. -->
-  <property name="timeout.longest" value="18000000" />
+  <property name="timeout.longest" value="19000000" />
 
   <!-- Ant paths to optional jar files set by the configure script. -->
   <path id="ptII.classpath.optional">
