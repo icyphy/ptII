@@ -6,7 +6,7 @@
 	 >
   <path id="fmi.classpath">
     <pathelement location="${basedir}"/>
-    <pathelement location="${basedir}/lib/jna-4.0.0-custom.jar"/>
+    <pathelement location="${basedir}/lib/jna.jar"/>
     <pathelement location="${basedir}/lib/junit-4.8.2.jar"/>
   </path>
   <property name="debuglevel" value="source,lines,vars" />

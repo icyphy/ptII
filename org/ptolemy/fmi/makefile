@@ -44,7 +44,7 @@ include $(CONFIG)
 
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	fmi
-PTVERSION =	1.0.2
+PTVERSION =	2.0.0
 PTDIST =	jfmi$(PTVERSION)
 PTCLASSJAR =
 
@@ -314,6 +314,7 @@ fixtmpdist:
 		$(PTTMPDIR)/$(PTDIST)/lib
 	@echo "Remove files we don't want to ship"
 	rm -rf $(PTTMPDIR)/$(PTDIST)/autom4te.cache \
+		$(PTTMPDIR)/$(PTDIST)/build.xml.in \
 		$(PTTMPDIR)/$(PTDIST)/config \
 		$(PTTMPDIR)/$(PTDIST)/configure* \
 		$(PTTMPDIR)/$(PTDIST)/mk \
@@ -323,6 +324,11 @@ fixtmpdist:
 	find $(PTTMPDIR)/$(PTDIST) -name "#*" -exec rm {} \; 
 	find $(PTTMPDIR)/$(PTDIST) -name ".#*" -exec rm {} \; 
 	find $(PTTMPDIR)/$(PTDIST) -name "*~" -exec rm {} \; 
+	# Comment out ptolemy.* dependencies
+	sed 's@^\(import ptolemy.*;\)@//\1@' $(PTTMPME)/FMIModelDescription.java > /tmp/dfile
+	mv /tmp/dfile $(PTTMPME)/FMIModelDescription.java
+	sed 's@^\(import ptolemy.*;\)@//\1@' $(PTTMPME)/FMIScalarVariable.java > /tmp/dfile
+	mv /tmp/dfile $(PTTMPME)/FMIScalarVariable.java
 	#
 	# Setting up doc/codeDoc directory
 	#
@@ -347,6 +353,15 @@ fixtmpdist:
 	echo "</html>" >> $(PTTMPME)/doc/download/index.htm
 	chmod -R a+r $(PTTMPDIR)/$(PTDIST)
 	$(FIND) $(PTTMPDIR)/$(PTDIST) -name "*.class" -exec rm {} \;
+
+# Test the distribution with ant
+diststestant:
+	rm -rf $(PTTMPDIR)/$(PTDIST)
+	gzcat < $(PTDIST).tar.gz > $(PTTMPDIR)/$(PTDIST).tar
+	cd $(PTTMPDIR);	tar -xvf $(PTDIST).tar
+	(cd $(PTTMPDIR)/$(PTDIST)/org/ptolemy/fmi; \
+		PATH=$(TESTPATH):/opt/local/bin PTII=`pwd` ant; \
+	)
 
 # Update the ftp site
 # Update a location with the files necessary to download
