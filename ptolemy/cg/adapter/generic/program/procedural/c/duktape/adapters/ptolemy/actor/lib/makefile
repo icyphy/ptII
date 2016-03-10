@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2015 The Regents of the University of California
+# @Copyright (c) 2014 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,15 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/program/procedural/c
+ME =		ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib
 
-# PTMBED_DIR is set to mbed and used in
-# $PTII/ptolemy/cg/adapter/generic/program/procedural/c/makefile
-# if vendors/mbed/gcc-arm/bin/arm-none-eabi-gcc was found by configure
-DIRS =		adapters arduino duktape $(PTMBED_DIR) luminary #renesas xmos
+DIRS =		gui	
 
 # Root of the Java directory
-ROOT =		../../../../../../..
+ROOT =		../../../../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -48,39 +45,27 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	c
-PTCLASSJAR =
-
-PTCLASSALLJAR = $(PTPACKAGE).jar
-
-# Include the .class files from these jars in PTCLASSALLJAR
-# If you change this, change DIRS above
-PTCLASSALLJARS = \
-	adapters/adapters.jar \
-	arduino/arduino.jar \
-	duktape/duktape.jar \
-	luminary/luminary.jar
-
-#	mbed/mbed.jar
-#	renesas/renesas.jar
-#	xmos/xmos.jar
+PTPACKAGE = 	lib
+PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 
+
+OTHER_FILES_TO_BE_JARED = \
+	$(JSRCS:%.java=%.c) 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	adapters luminary mbed renesas xmos
+MISC_FILES = gui
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	$(DIRS)
+	demo 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
