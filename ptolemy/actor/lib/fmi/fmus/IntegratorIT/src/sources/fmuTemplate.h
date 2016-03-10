@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <string.h>
 #include <assert.h>
+#include <math.h>
 
 #include "fmi2Functions.h"
 
@@ -156,12 +157,10 @@ typedef struct {
 
     fmi2Real time;
     fmi2Integer microstep;
+    fmi2Real    timeResolution;
+    fmi2Integer timeResolutionExponent;
 
-    #ifdef FMI_HYBRID_COSIMULATION
-    fmi2IntegerTime resMagnitude;
-    fmi2Integer requestedResolution;
-    #endif
-
+    fmi2IntegerTime stepSize;
     fmi2String  instanceName;
     fmi2Type    type;
     fmi2String  GUID;

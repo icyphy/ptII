@@ -30,8 +30,6 @@
 #define absent_ 1
 #define unknown_ 2
 
-#define RESOLUTION 6
-
 #define output_ 0
 #define value_ 1
 
@@ -75,14 +73,14 @@ fmi2Real getEventIndicator(ModelInstance* comp, int z) {
 }
 
 void doStep(ModelInstance* comp, fmi2IntegerTime hLocal, int inBetween) {
-
     if (inBetween == 0) {
-        comp->time += hLocal;
-        if (hLocal > 0) comp->microstep = 0;
-        else comp->microstep++;
+
     } else {
 
     }
+    comp->time += hLocal;
+    if (hLocal > 0) comp->microstep = 0;
+    else comp->microstep++;    
 }
 
 // Used to set the next time event, if any.

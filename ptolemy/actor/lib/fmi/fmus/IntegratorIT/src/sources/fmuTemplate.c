@@ -42,17 +42,17 @@ fmi2ValueReference vrStates[NUMBER_OF_STATES] = STATES;
 #define max(a,b) ((a)>(b) ? (a) : (b))
 #endif
 
-#ifndef pow10
-fmi2IntegerTime pow10(fmi2IntegerTime a) {
-    if (a > 0) {
-        return 10 * pow10(a-1);
-    } else if (a == 0) {
-        return 1;
-    } else {
-        return 0.1 * pow10(a+1);
-    }
-}
-#endif
+// #ifndef pow10
+// fmi2Real pow10(fmi2Integer a) {
+//     if (a > 0) {
+//         return 10 * pow10(a-1);
+//     } else if (a == 0) {
+//         return 1;
+//     } else {
+//         return 0.1 * pow10(a+1);
+//     }
+// }
+// #endif
 // ---------------------------------------------------------------------------
 // Private helpers used below to validate function arguments
 // ---------------------------------------------------------------------------
@@ -188,9 +188,8 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
     }
     comp->time = 0; // overwrite in fmi2SetupExperiment, fmi2SetTime
     comp->microstep = 0;
-    #ifdef YBRID_COSIMULATION
-    comp->requestedResolution = RESOLUTION;
-    #endif
+    comp->stepSize = 0;
+
     strcpy((char *)comp->instanceName, (char *)instanceName);
     comp->type = fmuType;
     strcpy((char *)comp->GUID, (char *)fmuGUID);
@@ -224,6 +223,7 @@ fmi2Status fmi2SetupExperiment(fmi2Component c, fmi2Boolean toleranceDefined, fm
         toleranceDefined, tolerance)
     comp->time = startTime;
     comp->microstep = 0;
+    comp->stepSize = 0;
     return fmi2OK;
 }
 fmi2Status fmi2HybridSetupExperiment(fmi2Component c, fmi2Boolean toleranceDefined, fmi2IntegerTime tolerance,
@@ -238,6 +238,7 @@ fmi2Status fmi2HybridSetupExperiment(fmi2Component c, fmi2Boolean toleranceDefin
 
     comp->time = startTime;
     comp->microstep = 0;
+    comp->stepSize = 0;
     return fmi2OK;
 }
 
@@ -801,6 +802,7 @@ fmi2Status fmi2SetHybridString (fmi2Component c, const fmi2ValueReference vr[], 
     if (nvr > 0) comp->isDirtyValues = 1;
     return fmi2OK;
 }
+
 fmi2Status fmi2GetFMUstate (fmi2Component c, fmi2FMUstate* FMUstate) {
     ModelInstance *source = (ModelInstance*)c;
     int i;
@@ -863,6 +865,35 @@ fmi2Status fmi2GetFMUstate (fmi2Component c, fmi2FMUstate* FMUstate) {
         }
     }
 
+    dest->time = source->time;
+    dest->microstep = source->microstep;
+
+    #ifdef FMI_HYBRID_COSIMULATION
+    dest->timeResolution = source->timeResolution;
+    dest->timeResolutionExponent = source->timeResolutionExponent;
+    #endif
+
+    // dest->timeResolution = source->timeResolution;
+    // dest->timeResolutionExponent = source->timeResolutionExponent;
+    // dest->instanceName = source->instanceName;
+    // dest->type = source->type;
+    // dest->GUID = source->GUID;
+    // dest->loggingOn = source->loggingOn;
+    // for(i = 0; i < NUMBER_OF_CATEGORIES; i++) {
+    //     dest->logCategories[i] = source->logCategories[i];
+    // }
+    // dest->componentEnvironment = source->componentEnvironment;
+    // dest->state = source->state;
+
+    // dest->eventInfo.nextEventTimeDefined = source->eventInfo.nextEventTimeDefined;
+    // dest->eventInfo.nextEventTime = source->eventInfo.nextEventTime;
+    // dest->isDirtyValues = source->isDirtyValues;
+
+
+    FILTERED_LOG(source, fmi2OK, LOG_FMI_CALL, "fmi2GetFMUState: "
+        "currentCommunicationPoint = (%g, %d), ",
+        source->time, source->microstep)
+
     *FMUstate = (fmi2FMUstate)dest;
 
     return fmi2OK;
@@ -901,6 +932,21 @@ fmi2Status fmi2SetFMUstate (fmi2Component c, fmi2FMUstate FMUstate) {
             dest->r[i] = source->r[i];
         }
     }
+
+    dest->time = source->time;
+    dest->microstep = source->microstep;
+    dest->eventInfo.nextEventTimeDefined = source->eventInfo.nextEventTimeDefined;
+    dest->eventInfo.nextEventTime = source->eventInfo.nextEventTime;
+    dest->isDirtyValues = source->isDirtyValues;
+
+    #ifdef FMI_HYBRID_COSIMULATION
+    dest->timeResolution = source->timeResolution;
+    dest->timeResolutionExponent = source->timeResolutionExponent;
+    #endif
+
+    FILTERED_LOG(dest, fmi2OK, LOG_FMI_CALL, "fmi2SetFMUState: "
+        "currentCommunicationPoint = (%g, %d), ",
+        source->time, source->microstep)
 
     return fmi2OK;
 }
@@ -1005,7 +1051,9 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2IntegerTime currentCommunicatio
     int stateEvent = 0;
     int timeEvent  = 0;
 
-    fmi2Real hLocal = ((currentCommunicationPoint + communicationStepSize) / 1.0 / comp->resMagnitude - comp->time);
+    // fmi2Real hLocal = ((currentCommunicationPoint + communicationStepSize) / 1.0 / comp->timeResolution - comp->time);
+    fmi2Real hLocal = (((fmi2Real)(currentCommunicationPoint + communicationStepSize))
+                       * comp->timeResolution - comp->time);
 
     if (invalidState(comp, "fmi2HybridDoStep", MASK_fmi2DoStep))
         return fmi2Error;
@@ -1034,7 +1082,10 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2IntegerTime currentCommunicatio
     if (success) {
         *computedStepSize = communicationStepSize;
     } else {
-        *computedStepSize = ((fmi2IntegerTime) (comp->time * comp->resMagnitude)) - currentCommunicationPoint;
+        // *computedStepSize = ((fmi2IntegerTime) (comp->time * comp->timeResolution)) - currentCommunicationPoint;
+        *computedStepSize =
+          ((fmi2IntegerTime) ceil((prevTime + localStepPerformed) / comp->timeResolution))
+            - currentCommunicationPoint;
     }
 
 
@@ -1042,23 +1093,27 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2IntegerTime currentCommunicatio
 }
 #ifdef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2GetPreferredResolution (fmi2Component c, fmi2Integer *value) {
+    printf("This shold not be called!\n");
+    ModelInstance *comp = (ModelInstance *)c;
+    *value = comp->timeResolutionExponent;
     return fmi2OK;
 }
 
 fmi2Status fmi2SetResolution (fmi2Component c, fmi2Integer value) {
     ModelInstance *comp = (ModelInstance *)c;
 
-    comp->resMagnitude = pow10((value));
+    comp->timeResolution = pow(10, (value));
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetResolution: "
-        "resMagnitude = %ld",
-        comp->resMagnitude)
+        "timeResolution = %ld",
+        comp->timeResolution)
     return fmi2OK;
 }
 
 fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2IntegerTime currentCommunicationPoint, fmi2IntegerTime *value) {
     ModelInstance *comp = (ModelInstance *)c;
     fmi2Real localCommunicationStepSize = getMaxStepSize(comp);
-    *value = ((fmi2IntegerTime) ((localCommunicationStepSize + comp->time) * comp->resMagnitude)) - currentCommunicationPoint;
+    // *value = ((fmi2IntegerTime) ((localCommunicationStepSize + comp->time) * comp->timeResolution)) - currentCommunicationPoint;
+    *value = (fmi2IntegerTime) (ceil((localCommunicationStepSize + comp->time) / comp->timeResolution)) - currentCommunicationPoint;
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2HybridGetMaxStepSize: "
         "currentCommunicationPoint = (%g, %u), "
         "communicationStepSize = %g, converted communicationStepSize = %llu",

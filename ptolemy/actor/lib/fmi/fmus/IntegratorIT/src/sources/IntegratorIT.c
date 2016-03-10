@@ -30,8 +30,6 @@
 #define absent_ 1
 #define unknown_ 2
 
-#define RESOLUTION 6
-
 #define output_ 0
 #define der_ 1
 #define start_value_ 2

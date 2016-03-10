@@ -10,7 +10,7 @@
   canHandleVariableCommunicationStepSize="true"
   canGetAndSetFMUstate="true"
   canGetMaxStepSize="true"
-  canGetPreferredResolution="true"
+  canGetPreferredResolution="false"
   canSetResolution="true"
   maxOutputDerivativeOrder="1"
   canInterpolateInputs="true"

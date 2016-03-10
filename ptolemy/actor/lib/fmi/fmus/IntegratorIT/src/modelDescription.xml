@@ -12,8 +12,8 @@
   canGetMaxStepSize="true"
   canGetPreferredResolution="false"
   canSetResolution="true"
-  maxOutputDerivativeOrder="1"
   handleIntegerTime="true"/>
+    <!-- maxOutputDerivativeOrder="1" -->
 
 <LogCategories>
   <Category name="logAll"/>

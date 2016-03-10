@@ -12,8 +12,8 @@
   canGetMaxStepSize="true"
   canGetPreferredResolution="false"
   canSetResolution="true"
-  canInterpolateInputs="true"
   handleIntegerTime="true"/>
+    <!-- canInterpolateInputs="true" -->
 
 <LogCategories>
   <Category name="logAll"/>
@@ -29,6 +29,11 @@
 
     <ScalarVariable name="u0" valueReference="1" description="input" causality="input">
        <Real />
+    </ScalarVariable>
+
+   <ScalarVariable name="errorTolerance" valueReference="3" description="The error tolerance that identifies the zero-crossing"
+                   causality="parameter" variability="fixed" initial="exact">
+   <Real start="1e-6"/>
     </ScalarVariable>
 </ModelVariables>
 

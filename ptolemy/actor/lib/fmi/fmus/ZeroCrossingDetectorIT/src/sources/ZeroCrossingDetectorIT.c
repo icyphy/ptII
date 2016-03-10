@@ -8,7 +8,7 @@
 #define MODEL_GUID "{fa372ac2-41d5-4e81-a4d4-526b68fed7b0}"
 
 // Define model size.
-#define NUMBER_OF_REALS 3
+#define NUMBER_OF_REALS 4
 #define NUMBER_OF_INTEGERS 0
 #define NUMBER_OF_BOOLEANS 6
 #define NUMBER_OF_STRINGS 0
@@ -27,6 +27,7 @@
 #define output_ 0
 #define input_ 1
 #define input_der_ 2
+#define errorTolerance_ 3
 
 #define was_zero_t_e_ 0
 #define was_pos_t_e_ 1
@@ -41,9 +42,7 @@
 #define absent_ 1
 #define unknown_ 2
 
-#define epsilon 0.000000000001
-
-#define RESOLUTION 6
+// #define comp->epsilon 1E-4
 
 // Ccalled by fmi2Instantiate.
 // Set values for all variables that define a start value.
@@ -62,9 +61,15 @@ void setStartValues(ModelInstance *comp) {
 }
 
 fmi2Boolean _isTime(ModelInstance *comp) {
-    return comp->eventInfo.nextEventTimeDefined; &&
-        (comp->eventInfo.nextEventTime - comp->time < epsilon);// &&
-        // (comp->eventInfo.nextEventTime - comp->time > - epsilon);
+
+    fmi2Boolean isTime = comp->eventInfo.nextEventTimeDefined &&
+        ((comp->eventInfo.nextEventTime - comp->time < (1.0/comp->timeResolution)) &&
+        (comp->eventInfo.nextEventTime - comp->time > - (1.0/comp->timeResolution)));
+
+    // printf("[ZDC] - nextEventTime= %g, comp->time=%g\n", comp->eventInfo.nextEventTime, comp->time);
+    // if (isTime) printf ("[ZCD : is time], %g, %g\n", (comp->eventInfo.nextEventTime - comp->time), (1.0/comp->timeResolution));
+    // else printf ("[ZCD : is not time], %g, %g\n", (comp->eventInfo.nextEventTime - comp->time), (1.0/comp->timeResolution));
+    return isTime;
 }
 
 // called by fmi2GetReal, fmi2GetInteger, fmi2GetBoolean, fmi2GetString, fmi2ExitInitialization
@@ -73,9 +78,10 @@ fmi2Boolean _isTime(ModelInstance *comp) {
 void calculateValues(ModelInstance *comp) {
     if (comp->state == modelInitializationMode || (comp->microstep == 0 && comp->time == 0)) {
         comp->eventInfo.nextEventTimeDefined = fmi2False;
-        fmi2Integer is_zero     = (r(input_) - epsilon) < 0 && (r(input_) + epsilon) > 0;
-        fmi2Integer is_pos      = (r(input_) + epsilon) > 0 && !is_zero;
-        fmi2Integer is_neg      = (r(input_) - epsilon) < 0 && !is_zero;
+
+        fmi2Integer is_zero     = (r(input_) - r(errorTolerance_)) < 0 && (r(input_) + r(errorTolerance_)) > 0;
+        fmi2Integer is_pos      = (r(input_) - r(errorTolerance_)) > 0 && !is_zero;
+        fmi2Integer is_neg      = (r(input_) + r(errorTolerance_)) < 0 && !is_zero;
         b(was_zero_t_e_)    = is_zero;
         b(was_pos_t_e_)     = is_pos;
         b(was_neg_t_e_)     = is_neg;
@@ -107,9 +113,9 @@ fmi2Real getReal(ModelInstance* comp, fmi2ValueReference vr){
 
 // used to check if there is any state event
 fmi2Real getEventIndicator(ModelInstance* comp) {
-        fmi2Boolean is_zero     = (r(input_) - epsilon) < 0 && (r(input_) + epsilon) > 0;
-        fmi2Boolean is_pos      = (r(input_) + epsilon) > 0 && !is_zero;
-        fmi2Boolean is_neg      = (r(input_) - epsilon) < 0 && !is_zero;
+        fmi2Boolean is_zero     = (r(input_) - r(errorTolerance_)) < 0 && (r(input_) + r(errorTolerance_)) > 0;
+        fmi2Boolean is_pos      = (r(input_) - r(errorTolerance_)) > 0 && !is_zero;
+        fmi2Boolean is_neg      = (r(input_) + r(errorTolerance_)) < 0 && !is_zero;
         fmi2Boolean event = fmi2False;
         // condition 1
         if (is_zero && comp->microstep == 0 && !b(was_zero_t_e_)) {
@@ -124,9 +130,15 @@ fmi2Real getEventIndicator(ModelInstance* comp) {
         else if (comp->microstep > 0 && (is_zero) && !b(was_zero_n_1_)) {
             event = fmi2True;
         }
+        // condition 4: negative and then positive
+        else if (comp->microstep == 0 && is_pos && b(was_neg_t_e_)) {
+            event = fmi2True;
+        }
         else {
             event = fmi2False;
         }
+        // printf("ZDC - r(input_): %g, r(errorTolerance_): %g\n", r(input_), r(errorTolerance_));
+        // printf("ZCD - event: %d, is_zero: %d, was_neg_t_e_: %d\n", event, is_zero, b(was_zero_t_e_));
         return event ? -1 : 1;
 }
 
@@ -140,9 +152,9 @@ fmi2Boolean doStep(ModelInstance* comp, fmi2Real hLocal) {
             comp->eventInfo.nextEventTimeDefined = fmi2True;
         }
     }
-    fmi2Integer is_zero     = (r(input_) - epsilon) < 0 && (r(input_) + epsilon) > 0;
-    fmi2Integer is_pos      = (r(input_) + epsilon) > 0 && !is_zero;
-    fmi2Integer is_neg      = (r(input_) - epsilon) < 0 && !is_zero;
+    fmi2Integer is_zero     = (r(input_) - r(errorTolerance_)) < 0 && (r(input_) + r(errorTolerance_)) > 0;
+    fmi2Integer is_pos      = (r(input_) - r(errorTolerance_)) > 0 && !is_zero;
+    fmi2Integer is_neg      = (r(input_) + r(errorTolerance_)) < 0 && !is_zero;
 
     if (hLocal > 0) {
         b(was_zero_t_e_)    = is_zero;
@@ -164,21 +176,36 @@ void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int timeEvent,
         fmi2Integer localStepSize, int inBetween) {
 }
 
-fmi2Real getMaxStepSize(ModelInstance *comp) {
+typedef struct {
     fmi2Real communicationStepSize;
+    fmi2Real communicationStepSizePlusEpsilon;
+    fmi2Real communicationStepSizeMinusEpsilon;
+} stepSize;
+
+stepSize getMaxStepSize(ModelInstance *comp) {
+    stepSize communicationStepSize;
     if (comp->eventInfo.nextEventTimeDefined || (getEventIndicator(comp) < 0)) {
-        communicationStepSize = 0;
-    } else if (!((r(input_der_) - epsilon < 0) && (r(input_der_) + epsilon > 0))) {
-        // r(input_) + r(input_der_) * h = 0
-        fmi2Real h = -r(input_) / r(input_der_);
-        if (h > 0) {
-            communicationStepSize = h;
-        } else {
-            communicationStepSize = 1000.0;
-        }
+        communicationStepSize.communicationStepSize = 0;
     }
+    // else if (!((r(input_der_) - r(errorTolerance_) < 0) && (r(input_der_) + r(errorTolerance_) > 0))) {
+    //     // r(input_) + r(input_der_) * h = 0
+    //     fmi2Real h = -r(input_) / r(input_der_);
+    //     fmi2Real hTmpPlus = -(r(input_) /*+ r(errorTolerance_)*/) / r(input_der_);// + 1.0/comp->timeResolution;
+    //     fmi2Real hTmpMinus = -(r(input_) /*- r(errorTolerance_)*/) / r(input_der_);// - 1.0/comp->timeResolution;
+    //     if (h > 0) {
+    //         communicationStepSize.communicationStepSize = h;
+    //         communicationStepSize.communicationStepSizePlusEpsilon = hTmpPlus;
+    //         communicationStepSize.communicationStepSizeMinusEpsilon = hTmpMinus;
+    //     } else {
+    //         communicationStepSize.communicationStepSize = 1000.0;
+    //         communicationStepSize.communicationStepSizePlusEpsilon = 1000.0;
+    //         communicationStepSize.communicationStepSizeMinusEpsilon = 1000.0;
+    //     }
+    // }
     else {
-        communicationStepSize = 1000.0;
+        communicationStepSize.communicationStepSize = 1000.0;
+        communicationStepSize.communicationStepSizePlusEpsilon = 1000.0;
+        communicationStepSize.communicationStepSizeMinusEpsilon = 1000.0;
     }
     return communicationStepSize;
 }
