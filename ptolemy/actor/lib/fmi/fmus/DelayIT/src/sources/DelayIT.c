@@ -35,7 +35,7 @@
 #define absent_ 1
 #define unknown_ 2
 
-#define RESOLUTION 6
+#define RESOLUTION 0
 
 void _addEvent(ModelInstance *comp, fmi2Real event, fmi2Integer t) {
     Event * current = comp->eventQueue;
@@ -154,7 +154,6 @@ fmi2Real getEventIndicator(ModelInstance* comp) {
 }
 
 void doStep(ModelInstance* comp, fmi2IntegerTime hLocal, int inBetween) {
-
     if (inBetween == 0) {
         if ((comp->eventInfo.nextEventTimeDefined && (comp->time  == comp->eventInfo.nextEventTime)) ||
                 getEventIndicator(comp) < 0) {
@@ -174,14 +173,12 @@ void doStep(ModelInstance* comp, fmi2IntegerTime hLocal, int inBetween) {
                 comp->eventInfo.nextEventTime = _getTime(comp);
             }
         }
-        comp->time += hLocal;
-        if (hLocal > 0) comp->microstep = 0;
-        else comp->microstep++;
-
     } else {
 
     }
-
+    comp->time += hLocal;
+    if (hLocal > 0) comp->microstep = 0;
+    else comp->microstep++;
 }
 
 // Used to set the next time event, if any.

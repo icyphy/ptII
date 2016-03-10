@@ -157,11 +157,8 @@ typedef struct {
 
     fmi2Real time;
     fmi2Integer microstep;
-
-    #ifdef FMI_HYBRID_COSIMULATION
-    fmi2IntegerTime resMagnitude;
-    fmi2Integer requestedResolution;
-    #endif
+    fmi2Real    timeResolution;
+    fmi2Integer timeResolutionExponent;
 
     fmi2String  instanceName;
     fmi2Type    type;

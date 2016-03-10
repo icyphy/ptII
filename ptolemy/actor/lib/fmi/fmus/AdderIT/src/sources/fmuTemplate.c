@@ -188,9 +188,7 @@ fmi2Component fmi2Instantiate(fmi2String instanceName, fmi2Type fmuType, fmi2Str
     }
     comp->time = 0; // overwrite in fmi2SetupExperiment, fmi2SetTime
     comp->microstep = 0;
-    #ifdef FMI_HYBRID_COSIMULATION
-    comp->requestedResolution = RESOLUTION;
-    #endif
+
     strcpy((char *)comp->instanceName, (char *)instanceName);
     comp->type = fmuType;
     strcpy((char *)comp->GUID, (char *)fmuGUID);
@@ -864,6 +862,15 @@ fmi2Status fmi2GetFMUstate (fmi2Component c, fmi2FMUstate* FMUstate) {
         }
     }
 
+    dest->time = source->time;
+    dest->microstep = source->microstep;
+    dest->eventInfo.nextEventTimeDefined = source->eventInfo.nextEventTimeDefined;
+    dest->eventInfo.nextEventTime = source->eventInfo.nextEventTime;
+    dest->isDirtyValues = source->isDirtyValues;
+
+    dest->timeResolution = source->timeResolution;
+    dest->timeResolutionExponent = source->timeResolutionExponent;
+
     *FMUstate = (fmi2FMUstate)dest;
 
     return fmi2OK;
@@ -903,6 +910,15 @@ fmi2Status fmi2SetFMUstate (fmi2Component c, fmi2FMUstate FMUstate) {
         }
     }
 
+    dest->time = source->time;
+    dest->microstep = source->microstep;
+    dest->eventInfo.nextEventTimeDefined = source->eventInfo.nextEventTimeDefined;
+    dest->eventInfo.nextEventTime = source->eventInfo.nextEventTime;
+    dest->isDirtyValues = source->isDirtyValues;
+
+    dest->timeResolution = source->timeResolution;
+    dest->timeResolutionExponent = source->timeResolutionExponent;
+    
     return fmi2OK;
 }
 
@@ -1012,8 +1028,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2IntegerTime currentCommunicatio
     int timeEvent  = 0;
     int inBetween  = 0;
 
-    fmi2IntegerTime hLocal = ((currentCommunicationPoint + communicationStepSize) -
-                     (comp->time * comp->resMagnitude)) / comp->resMagnitude;
+    fmi2IntegerTime hLocal = communicationStepSize;
 
     inBetween = ((hLocal == 0) && (communicationStepSize != 0));
 
@@ -1040,39 +1055,23 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2IntegerTime currentCommunicatio
         return fmi2Discard; // enforce termination of the simulation loop
     }
 
-    fmi2IntegerTime localStepPerformed = (comp->time - prevTime);
-    if (localStepPerformed == hLocal) {
-        *computedStepSize = communicationStepSize;
-    } else {
-        *computedStepSize = comp->time * comp->resMagnitude - currentCommunicationPoint;
-    }
-
+    *computedStepSize = communicationStepSize;
 
     return fmi2OK;
 }
 #ifdef FMI_HYBRID_COSIMULATION
 fmi2Status fmi2GetPreferredResolution (fmi2Component c, fmi2Integer *resolution) {
-    ModelInstance *comp = (ModelInstance *)c;
-    *resolution = comp->requestedResolution;
-    FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2GetPreferredResolution: "
-        "preferred time resolution = %u",
-        comp->requestedResolution)
+    printf("Error Adder, this method should not be called\n");
     return fmi2OK;
 }
 
 fmi2Status fmi2SetResolution (fmi2Component c, fmi2Integer value) {
     ModelInstance *comp = (ModelInstance *)c;
-    if (value < comp->requestedResolution) {
-        FILTERED_LOG(comp, fmi2Error, LOG_FMI_CALL, "fmi2SetResolution: "
-            "finalResolution = %ld, "
-            "requestedResolution = %ld",
-            value, comp->requestedResolution)
-        return fmi2Error;
-    }
-    comp->resMagnitude = pow10((value - comp->requestedResolution));
+
+    comp->timeResolution = pow(10, (value));
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2SetResolution: "
-        "resMagnitude = %ld",
-        comp->resMagnitude)
+        "timeResolution = %g",
+        comp->timeResolution)
     return fmi2OK;
 }
 
@@ -1081,11 +1080,11 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2IntegerTime currentCom
     fmi2IntegerTime localCommunicationStepSize = getMaxStepSize(comp);
 
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2HybridGetMaxStepSize: "
-        "currentCommunicationPoint = (%u, %u), "
-        "communicationStepSize = %u, ",
+        "currentCommunicationPoint = (%llu, %d), "
+        "communicationStepSize = %llu, ",
         comp->time, comp->microstep, localCommunicationStepSize)
 
-    *value = (localCommunicationStepSize + comp->time) * comp->resMagnitude - currentCommunicationPoint;
+    *value = localCommunicationStepSize;
     return fmi2OK;
 }
 #endif

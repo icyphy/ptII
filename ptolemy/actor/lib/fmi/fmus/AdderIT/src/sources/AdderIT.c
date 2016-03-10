@@ -97,17 +97,13 @@ fmi2Real getEventIndicator(ModelInstance* comp, int z) {
 void doStep(ModelInstance* comp, fmi2IntegerTime hLocal, int inBetween) {
 
     if (inBetween == 0) {
-        comp->time += hLocal;
-
-
-
-        if (hLocal > 0) comp->microstep = 0;
-        else comp->microstep++;
 
     } else {
 
     }
-
+    comp->time += hLocal;
+    if (hLocal > 0) comp->microstep = 0;
+    else comp->microstep++;
 }
 
 // Used to set the next time event, if any.
