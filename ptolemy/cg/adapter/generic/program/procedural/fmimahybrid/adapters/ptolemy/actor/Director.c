@@ -8,7 +8,7 @@ int i;
 
 // parse command line arguments and load the FMU
 // default arguments value
-fmi2Integer requiredResolution = 9;
+fmi2Integer requiredResolution = 0;
 fmi2IntegerTime h = DEFAULT_COMM_STEP_SIZE;
 int loggingOn = 0;
 char csv_separator = ',';

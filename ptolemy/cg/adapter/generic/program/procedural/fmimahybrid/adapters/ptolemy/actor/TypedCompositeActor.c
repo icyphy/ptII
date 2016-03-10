@@ -30,19 +30,19 @@
 #define max(a,b) ((a)>(b) ? (a) : (b))
 #endif
 
-#ifndef pow10
-fmi2Real pow10(fmi2Integer a) {
-    if (a > 0) {
-        return 10 * pow10(a-1);
-    } else if (a == 0) {
-        return 1;
-    } else {
-        return 0.1 * pow10(a+1);
-    }
-}
-#endif
+// #ifndef pow10
+// fmi2Real pow10(fmi2Integer a) {
+//     if (a > 0) {
+//         return 10 * pow10(a-1);
+//     } else if (a == 0) {
+//         return 1;
+//     } else {
+//         return 0.1 * pow10(a+1);
+//     }
+// }
+// #endif
 
-fmi2IntegerTime tEnd   = 1000000;
+fmi2IntegerTime tEnd   = 14000;
 fmi2IntegerTime tStart = 0;
 #define DEFAULT_COMM_STEP_SIZE 1000
 #define ERROR 0
@@ -102,6 +102,8 @@ static fmi2Component initializeFMU(FMU *fmu, fmi2Boolean visible, fmi2Boolean lo
         error("could not initialize model; failed FMI setup experiment");
         return NULL;
     }
+    fmu->lastFMUstate = NULL;
+    fmu->validFMUstate = NULL;
     return comp;
 }
 
@@ -212,6 +214,10 @@ void terminateSimulation(FMU *fmus, int returnValue, FILE* file, fmi2IntegerTime
             fmi2Status status = fmus[i].freeFMUstate(fmus[i].component, &fmus[i].lastFMUstate);
             printf("Terminating with status: %s\n", STATUS[status]);
         }
+        if (fmus[i].validFMUstate != NULL) {
+            fmi2Status status = fmus[i].freeFMUstate(fmus[i].component, &fmus[i].validFMUstate);
+            printf("Terminating with status: %s\n", STATUS[status]);
+        }
         fmus[i].freeInstance(fmus[i].component);
     }
     // print simulation summary
@@ -235,11 +241,13 @@ fmi2Status setTimeResolutions(FMU *fmus, fmi2Integer *resolution) {
     for (int i = 0; i < NUMBER_OF_FMUS; i++) {
         FMU fmu = fmus[i];
         fmi2Integer fmuResolution;
-        currentStatus = fmu.getPreferredResolution(fmu.component, &fmuResolution);
-        if (currentStatus > fmi2OK) {
-        	printf("FMU (%s): Error while retrieving the time resolution\n", NAMES_OF_FMUS[i]);
+        if (fmu.canGetPreferredResolution) {
+            currentStatus = fmu.getPreferredResolution(fmu.component, &fmuResolution);
+            if (currentStatus > fmi2OK) {
+            	printf("FMU (%s): Error while retrieving the time resolution\n", NAMES_OF_FMUS[i]);
+            }
+            maResolution = min(maResolution, fmuResolution);
         }
-        maResolution = max(maResolution, fmuResolution);
     }
     *resolution = maResolution;
    // Notify the FMU with the resolution to adopt
@@ -258,14 +266,15 @@ fmi2Status setTimeResolutions(FMU *fmus, fmi2Integer *resolution) {
 // simulate the given FMUs from tStart = 0 to tEnd.
 static int simulate(FMU *fmus, portConnection* connections, fmi2Integer requiredResolution, fmi2Boolean loggingOn, char separator) {
     // Simulation variables
-    fmi2IntegerTime time           = 0;
-    fmi2Integer     nSteps         = 0;
-    fmi2IntegerTime stepSize       = DEFAULT_COMM_STEP_SIZE;
-    fmi2Integer     resolution     = requiredResolution;
-    fmi2Integer     timeMagnitude  = 1;
-    FILE*           file           = NULL;
-    int             legacyFmuIndex = 0;
-    bool            isLegacyFmu    = false;
+    fmi2IntegerTime time               = 0;
+    fmi2Integer     nSteps             = 0;
+    fmi2IntegerTime stepSize           = DEFAULT_COMM_STEP_SIZE;
+    fmi2IntegerTime prevStepSize       = DEFAULT_COMM_STEP_SIZE;
+    fmi2Integer     resolutionExponent = requiredResolution;
+    fmi2Real        timeResoution      = 1;
+    FILE*           file               = NULL;
+    int             legacyFmuIndex     = 0;
+    bool            isLegacyFmu        = false;
     // Open result file
     if (!(file = fopen(RESULT_FILE, "w"))) {
         printf("could not write %s because:\n", RESULT_FILE);
@@ -283,71 +292,140 @@ static int simulate(FMU *fmus, portConnection* connections, fmi2Integer required
         setupParameters(&fmus[i]);
     }
     // Determine the simulation resolution
-    fmi2Status timeResolutionStatus = setTimeResolutions(fmus, &resolution);
+    fmi2Status timeResolutionStatus = setTimeResolutions(fmus, &resolutionExponent);
     if (timeResolutionStatus == fmi2Error) {
         terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+        return ERROR;
     }
-    timeMagnitude = pow10(resolution);
+    timeResoution = pow(10, resolutionExponent);
+    printf("[Master Info] Time resolution: %g\n", timeResoution);
     // output solution for time t0
-    outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time/timeMagnitude, 0, file, separator, TRUE);
+    outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time/timeResoution, 0, file, separator, TRUE);
     // Simulation loop
+    fmi2Boolean errorState = fmi2False;
     while (time <= tEnd) {
         // Set connection values
         for (int i = 0; i < NUMBER_OF_EDGES; i++) {
             setValue(&connections[i]);
             setDerivatives(&connections[i]);
         }
-        outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time/1.0/timeMagnitude, 0, file, separator, FALSE);
         // Compute the maximum step size
         // (I) Predictable FMUs
         for (int i = 0; i < NUMBER_OF_FMUS; i++) {
             if (fmus[i].canGetMaxStepSize) {
                 fmi2IntegerTime fmuMaxStepSize;
                 fmi2Status currentStatus = fmus[i].getHybridMaxStepSize(fmus[i].component, time, &fmuMaxStepSize);
-                if (currentStatus > fmi2Warning) {
+                if (currentStatus == fmi2OK) {
+                    stepSize = min(stepSize, fmuMaxStepSize);
+                }
+                else if (currentStatus == fmi2Error) {
+                    if (nSteps == 0) {
+                        printf("[Master Error] Wrong state from FMU (%s) at first simulation step!\n", NAMES_OF_FMUS[i]);
+                        terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+                        return ERROR;
+                    }
+                    errorState = fmi2True;
+                    break;
+                }
+                else if (currentStatus > fmi2Error) {
+                    printf("[Master Error] Fatal error from (%s).getHybridMaxStepSize while computing the step size\n", NAMES_OF_FMUS[i]);
                     terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
                     return ERROR;
                 }
-                stepSize = min(stepSize, fmuMaxStepSize);
             }
         }
         // Compute the maximum step size
         // (II) Rollback FMUs
         for (int i = 0; i < NUMBER_OF_FMUS; i++) {
             if (fmus[i].canGetAndSetFMUstate && !fmus[i].canGetMaxStepSize) {
+                printf("[ERROR] non predictable FMU - (II): %s\n", NAMES_OF_FMUS[i]);
                 fmi2Status currentStatus = fmus[i].getFMUstate(fmus[i].component, &fmus[i].lastFMUstate);
                 if (currentStatus > fmi2Warning) {
                     terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+                    printf("[Master Error] Failed saving the state of FMU (%s)\n", NAMES_OF_FMUS[i]);
                     return ERROR;
                 }
                 fmi2IntegerTime lastSuccessfulTime;
                 currentStatus = fmus[i].doHybridStep(fmus[i].component, time, stepSize, fmi2False, &lastSuccessfulTime);
-                if (currentStatus > fmi2Discard) {
+                if (currentStatus < fmi2Error) {
+                    stepSize = min(stepSize, lastSuccessfulTime);
+                }
+                else if (currentStatus == fmi2Error) {
+                    if (nSteps == 0) {
+                        printf("[Master Error] Wrong state from FMU (%s) at first simulation step!\n", NAMES_OF_FMUS[i]);
+                        terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+                        return ERROR;
+                    }
+                    errorState = fmi2True;
+                    break;
+                }
+                else if (currentStatus > fmi2Error){
+                    printf("[Master Error] Fatal error from (%s).doHybridStep while computing the step size\n", NAMES_OF_FMUS[i]);
                     terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
                     return ERROR;
                 }
-                stepSize = min(stepSize, lastSuccessfulTime);
             }
         }
         // Compute the maximum step size
         // (III) Legacy FMUs
         if (isLegacyFmu) {
+            if (errorState == fmi2True) {
+                terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+                printf("[Master Error] Non predictable FMU (%s) - (III) not supported for rollback\n", NAMES_OF_FMUS[i]);
+                return ERROR;
+            }
             fmi2IntegerTime lastSuccessfulTime;
             fmi2Status currentStatus = fmus[i].doHybridStep(fmus[i].component, time, stepSize, fmi2True, &lastSuccessfulTime);
             if (currentStatus > fmi2Warning) {
-               printf("Could not step FMU (%s) [Legacy FMU]. Terminating simulation.\n", NAMES_OF_FMUS[legacyFmuIndex]);
+               printf("[Master Error] Could not step legacy FMU (%s). Terminating simulation.\n", NAMES_OF_FMUS[legacyFmuIndex]);
                terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
                return ERROR;
             }
             stepSize = min(stepSize, lastSuccessfulTime);
         }
+
+        // errorState?
+        if (errorState == fmi2True) {
+            // Rollback to a previous valid state and select a smaller step size
+            for (int i = 0; i < NUMBER_OF_FMUS; i++) {
+                // printf("[Master Info] Restoring the state (%s)\n", NAMES_OF_FMUS[i]);
+                fmus[i].setFMUstate(fmus[i].component, fmus[i].validFMUstate);
+                if (i == 0) {
+                    fmi2Real value;
+                    fmi2Integer tmpAbsent;
+                    const fmi2ValueReference vr = 1;
+                    fmus[0].getHybridReal(fmus[0].component, &vr, 1, &value, &tmpAbsent);
+                }
+            }
+            // select a smaller step size
+            stepSize = ceil(prevStepSize / 2.0);
+            time = time - prevStepSize;
+            // printf("[Master Info] Iteration = %ld, Step size = %llu, prevStepSize = %llu\n", nSteps, stepSize, prevStepSize);
+            if (stepSize == prevStepSize) {
+                printf("[Master Error] Reached minimum allowable step size! Step size = %llu\n", stepSize);
+                terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+                return ERROR;
+            }
+            prevStepSize = stepSize;
+            errorState   = fmi2False;
+            continue;
+        }
+        else {
+            // This is a valid state, save it!
+            outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time/1.0/timeResoution, 0, file, separator, FALSE);
+            for (int i = 0; i < NUMBER_OF_FMUS; i++) {
+                // printf("[Master Info] saving the state (%s)\n", NAMES_OF_FMUS[i]);
+                fmus[i].getFMUstate(fmus[i].component, &fmus[i].validFMUstate);
+            }
+        }
+
         // Rolling back FMUs of type (II)
         fmi2Status currentStatus;
         for (int i = 0; i < NUMBER_OF_FMUS; i++) {
             if (fmus[i].canGetAndSetFMUstate && !fmus[i].canGetMaxStepSize) {
                 currentStatus = fmus[i].setFMUstate(fmus[i].component, fmus[i].lastFMUstate);
                 if (currentStatus > fmi2Warning) {
-                    printf("Rolling back FMU (%s) failed!\n", NAMES_OF_FMUS[i]);
+                    printf("[Master Error] Rolling back type II FMU (%s) failed!\n", NAMES_OF_FMUS[i]);
                     terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
                     return ERROR;
                 }
@@ -359,7 +437,7 @@ static int simulate(FMU *fmus, portConnection* connections, fmi2Integer required
                 fmi2IntegerTime lastSuccessfulTime;
                 fmi2Status currentStatus = fmus[i].doHybridStep(fmus[i].component, time, stepSize, fmi2True, &lastSuccessfulTime);
                 if (currentStatus > fmi2Warning) {
-                    printf("Error while performing final doStep() on FMU (%s)\n", NAMES_OF_FMUS[i]);
+                    printf("[Master Error] Error code while performing final (%s).doHybridStep\n", NAMES_OF_FMUS[i]);
                     terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
                     return ERROR;
                 }
@@ -367,6 +445,7 @@ static int simulate(FMU *fmus, portConnection* connections, fmi2Integer required
         }
         nSteps++;
         time += stepSize;
+        prevStepSize = stepSize;
         stepSize = DEFAULT_COMM_STEP_SIZE;
     }
     terminateSimulation(fmus, OK, file, stepSize, nSteps);
