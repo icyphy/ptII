@@ -99,6 +99,7 @@ var defaultClientOptions = {
     'connectTimeout': 6000, // in milliseconds.
     'idleTimeout': 0, // In seconds. 0 means don't timeout.
     'discardMessagesBeforeOpen': false,
+    'emitBatchDataAsAvailable': false,
     'keepAlive': true,
     'maxUnsentMessages': 100,
     'noDelay': true,
@@ -165,6 +166,10 @@ var defaultClientOptions = {
  *    passed to SocketClient.send() before the socket is opened. If false,
  *    then queue the messages to be sent when the socket opens. This
  *    defaults to false.
+ *  * emitBatchDataAsAvailable: Whether to emit all data available when the TCP stream
+ *    is received and when rawBytes is true. This parameter is intended for socket.js module,
+ *    and will not be exposed to TCP socket accessors. Set this true only when
+ *    the TCP stream is going to be handled by upper layer protocols.
  *  * keepAlive: Whether to keep a connection alive and reuse it. This
  *    defaults to true.
  *  * maxUnsentMessages: The maximum number of unsent messages to queue before
@@ -278,7 +283,8 @@ exports.SocketClient.prototype._opened = function (netSocket, client) {
     this.wrapper = new SocketHelper.SocketWrapper(
         this.helper, this, netSocket,
         this.options.sendType, this.options.receiveType,
-        this.options.rawBytes);
+        this.options.rawBytes,
+        this.options.emitBatchDataAsAvailable);
     this.emit('open');
 
     // Send any pending data.
@@ -334,6 +340,7 @@ exports.SocketClient.prototype.close = function () {
  */
 var defaultServerOptions = {
     'clientAuth': 'none', // No SSL/TSL will be used.
+    'emitBatchDataAsAvailable': false,
     'hostInterface': '0.0.0.0', // Means listen on all available interfaces.
     'idleTimeout': 0, // In seconds. 0 means don't timeout.
     'keepAlive': true,
@@ -409,6 +416,10 @@ var defaultServerOptions = {
  *
  *  * clientAuth: One of 'none', 'request', or 'required', meaning whether it
  *    requires that a certificate be presented.
+ *  * emitBatchDataAsAvailable: Whether to emit all data available when the TCP stream
+ *    is received and when rawBytes is true. This parameter is intended for socket.js module,
+ *    and will not be exposed to TCP socket accessors. Set this true only when
+ *    the TCP stream is going to be handled by upper layer protocols.
  *  * hostInterface: The name of the network interface to use for listening,
  *    e.g. 'localhost'. The default is '0.0.0.0', which means to
  *    listen on all available interfaces.
@@ -519,7 +530,8 @@ exports.SocketServer.prototype._socketCreated = function (netSocket) {
     var socket = new exports.Socket(
         this.helper, netSocket,
         this.options.sendType, this.options.receiveType,
-        this.options.rawBytes);
+        this.options.rawBytes,
+        this.options.emitBatchDataAsAvailable);
     this.emit('connection', socket);
 };
 
@@ -545,14 +557,16 @@ exports.SocketServer.prototype._socketCreated = function (netSocket) {
  *  @param receiveType The type expected to be received over the socket.
  *  @param rawBytes If false, prepend messages with length information and emit
  *   only complete messages.
+ *  @param emitBatchDataAsAvailable If this is true and rawBytes is also true,
+ *   all available TCP stream data will be emitted in a single data event.
  */
-exports.Socket = function (helper, netSocket, sendType, receiveType, rawBytes) {
+exports.Socket = function (helper, netSocket, sendType, receiveType, rawBytes, emitBatchDataAsAvailable) {
     // For a server side socket, this instance of Socket will be the event emitter.
 
     // Because we are creating an inner class, the first argument needs to be
     // the instance of the enclosing socketHelper class.
     this.wrapper = new SocketHelper.SocketWrapper(
-        helper, this, netSocket, sendType, receiveType, rawBytes);
+        helper, this, netSocket, sendType, receiveType, rawBytes, emitBatchDataAsAvailable);
     this.netSocket = netSocket;
 };
 util.inherits(exports.Socket, EventEmitter);
