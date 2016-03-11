@@ -1516,9 +1516,8 @@ public class JavaScript extends TypedAtomicActor {
             }
             if (ptType != null) {
                 ((Parameter) parameter).setTypeEquals(ptType);
-                _setOptionsForSelect(parameter, options);
-
             }
+            _setOptionsForSelect(parameter, options);
             // Check for value option.
             Object value = options.get("value");
             if (value != null && !parameter.isOverridden()) {
