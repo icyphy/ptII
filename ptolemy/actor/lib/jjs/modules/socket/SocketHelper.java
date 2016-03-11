@@ -572,15 +572,22 @@ public class SocketHelper extends VertxHelperBase {
          *   length, and for received items, assume received data is prepended
          *   with a length and emit received data only when a complete message
          *   has arrived.
+         *  @param emitBatchDataAsAvailable Whether to emit all data available when the TCP stream
+         *    is received and when rawBytes is true. This parameter is intended for socket.js module
+         *    and this SocketHelper. Thus, this parameter will not be exposed to TCP socket accessors.
+         *    Set this true only when the TCP stream is going to be handled by upper layer protocols
+         *    to avoid non-deterministic behavior.
          */
         public SocketWrapper(
                 ScriptObjectMirror eventEmitter,
                 Object socket,
                 String sendType,
                 String receiveType,
-                boolean rawBytes) {
+                boolean rawBytes,
+                boolean emitBatchDataAsAvailable) {
             _eventEmitter = eventEmitter;
             _rawBytes = rawBytes;
+            _emitBatchDataAsAvailable = emitBatchDataAsAvailable;
             _socket = (NetSocket)socket;
             
             try {
@@ -919,7 +926,7 @@ public class SocketHelper extends VertxHelperBase {
                     if (numberOfElements == 1) {
                         _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, _receiveType, 0));
                     } else if (numberOfElements > 1) {
-                        if (_rawBytes) {
+                        if (_rawBytes && !_emitBatchDataAsAvailable) {
                             int position = 0;
                             for (int i = 0; i < numberOfElements; i++) {
                                 _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, _receiveType, position));
@@ -964,6 +971,7 @@ public class SocketHelper extends VertxHelperBase {
         }
         private int _bufferCount = 0;
         private boolean _closed = false;
+        private boolean _emitBatchDataAsAvailable;
         private int _expectedLength;
         private Buffer _partialBuffer;
         private boolean _rawBytes;
