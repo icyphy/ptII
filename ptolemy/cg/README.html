@@ -17,8 +17,9 @@
 	<li><a href="#Simple Demo">Simple Demo</a>
 	<li><a href="#Java Command Line Demo">Java Command Line Demo</a>
 	<li><a href="#Package Overview">Package Overview</a>
-	<li><a href="#Limitations">Limitations</a>
-	<li><a href="#FAQ">FAQ</a>
+        <li><a href="#Hints">Hints about working with the tree</a>
+        <li><a href="#AddActor">How to add an actor</a>
+        <li><a href="#Targets">Supporting different targets</a>
       </ul>
       <p><i>See <a href="../configs/doc/completeDemos.htm#cg">Code Generation section of the Complete Demos page</a> for more demos.</i></p>
 
@@ -97,7 +98,7 @@
 	  work</dd>
       </dl>
 
-      <h2>Hints about working with the tree</h2>
+      <h2><a name="Hints">Hints about working with the tree</a></h2>
 
       Because the tree is so deep, you may find it easier to use a few tools to quickly search files from the command line.
 
@@ -113,7 +114,7 @@
 	find . -type f | xargs grep MyString
       </pre>
 
-      <h2>How to add an actor</h2>
+      <h2><a name="AddActor">How to add an actor</a></h2>
 
       <p>Adding code generation support for an actor is fairly complex, but
 	follows a pattern.</p>
@@ -150,8 +151,55 @@
 
       </ol>
 
+      <h3>Code Blocks</h3>
+        <p>The C or Java-specific template files have sections th at
+          are used to generate the output.  Each execution phase (preinitialize,
+          initialize, fire, wrapup etc.) have blocks.  For
+          example,
+          <code>$PTII/ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/Const.c</code>
+          has:</p>
 
-      <h2>Supporting different targets</h2>
+      <pre>
+      /***fireBlock***/
+      $put(output, $val(($cgType(output)) value));
+      /**/
+      </pre>
+      <p>This defines a block that puts the value of the value parameter on the output port.  The type will be that of the output port.</p>
+      
+      <p>The default block names are defined in <code>ptolemy/cg/kernel/generic/program/ProgramCodeGeneratorAdapter.java</code>.  The default blocks appear in the .c template file as follows:
+      <ul>
+        <li><code>/*** preinitBlock ***/</code></li>
+        <li><code>/*** initBlock ***/</code></li>
+        <li><code>/*** fireBlock ***/</code></li>
+        <li><code>/*** postfireBlock ***/</code></li>
+        <li><code>/*** wrapupBlock ***/</code></li>
+      </ul>
+
+      <p>To see what blocks have been used, try</p>
+      <pre>
+      cd $PTII/ptolemy/cg
+      find . -name "*.c" | xargs grep -h '/\*\*\*' | sort | uniq -c | sort -nr | head -30
+      </pre>
+
+      <p>For code that is to be shared, define a block with <code>shared</code> in the name, for example
+        <code>ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/Expression.c</code>
+        defines <code>min</code> and <code>max</code>:</p>
+        <pre>
+/*** sharedBlock ***/
+/* max and min may be used by the Expression actor. */
+#ifndef max
+#define max(a,b) ((a)&gt;(b)?(a):(b))
+#endif
+#ifndef min
+#define min(a,b) ((a)&lt;(b)?(a):(b))
+#endif
+/**/
+        </pre>                        
+        <p>The shared block is a good place define functions that need only appear once.</p>
+
+        <p>The shared code appears in <code>~/ptII/cg/commons/_ptTypes.c</code>.</p>
+
+      <h2><a name="Targets">Supporting different targets</a></h2>
 
       <p>A target is typically an architecture-specific platform.  For
 	example, the <code>arduino</code> target generates C-code meant to run
