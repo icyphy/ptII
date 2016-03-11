@@ -40,11 +40,27 @@ var EventEmitter = require('events').EventEmitter;
 
 this.helper = new CryptoHelper(this);
 
+function arrayEquals(a, b) {
+    if (a.length != b.length) {
+        return false;
+    }
+    for (var i = 0; i < a.length; i++) {
+        if (a[i] != b[i]) {
+            return false;
+        }
+    }
+    return true;
+}
+
 ///////////////////////////////////////////////////////////////////////////////
 //// supportedReceiveTypes
 
 exports.getHashLength = function(hashAlgorithm) {
     return this.helper.getHashLength(hashAlgorithm);
+}
+
+exports.getKeySize = function(key) {
+    return this.helper.getKeySize(key);
 }
 
 /** Calculate hash value using a secure hash function.
@@ -73,6 +89,12 @@ exports.publicEncrypt = function(input, publicKey, cipherAlgorithm) {
     return this.helper.publicEncrypt(input, publicKey, cipherAlgorithm);
 }
 
+exports.publicEncryptAndSign = function(input, publicKey, privateKey, cipherAlgorithm, signAlgorithm) {
+    var encryptedData = exports.publicEncrypt(input, publicKey, cipherAlgorithm);
+    var signature = exports.signWithPrivateKey(encryptedData, privateKey, signAlgorithm);
+    return encryptedData.concat(signature);
+};
+
 /** Return a random byte array.
  */
 exports.randomBytes = function (size) {
@@ -89,10 +111,28 @@ exports.symmetricDecrypt = function(input, key, cipherAlgorithm) {
     return this.helper.symmetricDecrypt(input, key, cipherAlgorithm);
 };
 
+exports.symmetricDecryptWithHash = function(input, key, cipherAlgorithm, hashAlgorithm) {
+    var decryptedInput = this.helper.symmetricDecrypt(input, key, cipherAlgorithm);
+    var hashLength = this.helper.getHashLength(hashAlgorithm);
+    if (decryptedInput.length < hashLength) {
+        return {data: null, hashOk: false};
+    }
+    var data = decryptedInput.slice(0, decryptedInput.length - hashLength);
+    var hash = decryptedInput.slice(decryptedInput.length - hashLength);
+    var computedHash = this.helper.hash(data, hashAlgorithm);
+    var hashOk = arrayEquals(hash, computedHash);
+    return {data: data, hashOk: hashOk};
+};
+
 /** Return a symmetric encrypted bytes.
  */
 exports.symmetricEncrypt = function(input, key, cipherAlgorithm) {
     return this.helper.symmetricEncrypt(input, key, cipherAlgorithm);
+};
+
+exports.symmetricEncryptWithHash = function(input, key, cipherAlgorithm, hashAlgorithm) {
+    var hash = this.helper.hash(input, hashAlgorithm);
+    return this.helper.symmetricEncrypt(input.concat(hash), key, cipherAlgorithm);
 };
 
 exports.verifySignature = function(data, signature, publicKey, signAlgorithm) {
