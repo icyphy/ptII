@@ -1009,7 +1009,7 @@ Decorator {
                 return adapterObject;
             }
 
-            if (!className.contains("ptolemy")) {
+            if (!className.contains("ptolemy") && !className.contains("terraswarm")) {
                 componentClass = object.getClass();
                 className = componentClass.getName();
                 for (int i = 0; i < packages.size(); ++i) {
