@@ -10,6 +10,24 @@
       <h1>Code generation for Duktape</h1>
       <p>This is a prototype of a code generator for duktape, which is a lightweight JavaScript runtime.</p>
 
+      <p>This will be used to generate
+      a <a href="https://www.terraswarm.org/accessors/wiki/Main/DuktapeHost">Duktape Accessor Host</a> so that we can read in a model and generate Duktape C code.</p>
+        
+      <p>Ideas:</p>
+      <ul>
+        <li>The idea is to use the Discrete Event (DE) C Code generator.</li>
+        <li>Make an adapter for the JavaScript actor</li>
+        <li>Implement the
+          <a href="https://www.terraswarm.org/accessors/wiki/Version1/Input#GettingInputs#in_browser" target="_top">get()</a>
+          and
+          <a href="https://www.terraswarm.org/accessors/wiki/Version1/Output#SendingToOutputs#in_browser" target="_top">end()</a>
+          as C Macros.
+        </li>
+        </li>
+        <li>Define a JavaScript Function that can be called from Duktape, then invoke fire().</li>
+        <li>Generate the code once as a standalone program</li>
+      </ul>
+
       <p>Eventually, the command to run will be:</p>
       <pre>
         $PTII/bin/ptcg -generatorPackageList generic.program.procedural.c.duktape $PTII/ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib/gui/test/auto/Display.xml
