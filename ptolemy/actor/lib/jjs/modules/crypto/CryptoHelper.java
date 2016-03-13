@@ -229,8 +229,6 @@ public class CryptoHelper extends HelperBase {
      *  @throws IllegalActionException If the encryption fails.
      */
     public Object symmetricEncrypt(Object input, Object key, String cipherAlgorithm) throws IllegalActionException {
-        System.out.println(input);
-        System.out.println(input.getClass());
         Cipher cipher = _getCipher(Cipher.ENCRYPT_MODE, cipherAlgorithm, _toJavaBytes(key), null);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();

@@ -48,8 +48,14 @@ exports.Buffer = function(param) {
 	else if (Array.isArray(param)) {
 		this.array = new Array(param.length);
 		for (var i = 0; i < this.array.length; i++) {
+			if (typeof param[i] !== 'number') {
+				throw 'Unsupported type of array for initializing Buffer!';
+			}
 			this.array[i] = (param[i] & 255);
 		}
+	}
+	else {
+		throw 'Unsupported type for initializing Buffer!';
 	}
 	Object.defineProperty(this, 'length', {
 		get: function() { return this.array.length; }
