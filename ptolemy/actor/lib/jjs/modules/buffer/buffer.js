@@ -124,8 +124,8 @@ exports.Buffer.prototype.writeUInt8 = function(value, offset) {
 exports.Buffer.prototype.readUInt32BE = function(offset) {
 	var value = 0;
 	for (var i = offset; i < offset + 4; i++) {
-		value <<= 8;
-		value |= (this.array[i] & 255);
+		value *= 256;
+		value += (this.array[i] & 255);
 	}
 	return value;
 };
@@ -144,8 +144,8 @@ exports.Buffer.prototype.writeUInt32BE = function(value, offset) {
 exports.Buffer.prototype.readUIntBE = function(offset, size) {
 	var value = 0;
 	for (var i = offset; i < offset + size; i++) {
-		value <<= 8;
-		value |= (this.array[i] & 255);
+		value *= 256;
+		value += (this.array[i] & 255);
 	}
 	return value;
 };
