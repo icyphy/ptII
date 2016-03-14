@@ -131,8 +131,23 @@ exports.symmetricEncrypt = function(input, key, cipherAlgorithm) {
 };
 
 exports.symmetricEncryptWithHash = function(input, key, cipherAlgorithm, hashAlgorithm) {
+    if (typeof input === 'string') {
+        var temp = [];
+        if (input.startsWith('0x')) {
+            for (var i = 2; i < (input.length - 1); i += 2) {
+                temp.push(parseInt(input.substring(i, i + 2), 16));
+            }
+        }
+        else {
+            for (var i = 0; i < input.length; i++) {
+                temp.push(input.charCodeAt(i));
+            }
+        }
+        input = temp;
+    }
     var hash = this.helper.hash(input, hashAlgorithm);
-    return this.helper.symmetricEncrypt(input.concat(hash), key, cipherAlgorithm);
+    var ret = this.helper.symmetricEncrypt(input.concat(hash), key, cipherAlgorithm);
+    return ret;
 };
 
 exports.verifySignature = function(data, signature, publicKey, signAlgorithm) {

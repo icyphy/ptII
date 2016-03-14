@@ -232,7 +232,7 @@ public class CryptoHelper extends HelperBase {
         Cipher cipher = _getCipher(Cipher.ENCRYPT_MODE, cipherAlgorithm, _toJavaBytes(key), null);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-
+        System.out.println("SOMETHING IS WRONG HERE!!! " + input.toString() + "\nEND\n");
         try {
             // write initialization vector first
             byte[] initVector = cipher.getIV();
@@ -476,9 +476,24 @@ public class CryptoHelper extends HelperBase {
             for (Object value : objectMirror.values()) {
                 if (value instanceof UnsignedByteToken) {
                     result[i] = ((UnsignedByteToken) value).byteValue();
-                } else if (value instanceof Integer) {
+                }
+                else if (value instanceof Integer) {
                     result[i] = ((Integer) value).byteValue();
                 }
+                else if (value instanceof Long) {
+                    result[i] = ((Long) value).byteValue();
+                }
+                else if (value instanceof Short) {
+                    result[i] = ((Short) value).byteValue();
+                }
+                else if (value instanceof Double) {
+                    result[i] = ((Double) value).byteValue();
+                }
+                else {
+                    throw new IllegalActionException("Cannot interpret the input array element type: " 
+                            + value.getClass().getName());
+                }
+                
                 i++;
             }
             return result;
