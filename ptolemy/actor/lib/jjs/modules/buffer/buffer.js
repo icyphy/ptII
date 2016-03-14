@@ -62,7 +62,7 @@ exports.Buffer = function(param) {
 	});
 };
 
-exports.Buffer.prototype.toString = function() {
+exports.Buffer.prototype.inspect = function() {
 	var ret = '[';
 	for (var i = 0; i < this.array.length; i++) {
 		if (i != 0) {
@@ -71,6 +71,14 @@ exports.Buffer.prototype.toString = function() {
 		ret += this.array[i];
 	}
 	ret += ']';
+	return ret;
+};
+
+exports.Buffer.prototype.toString = function() {
+	var ret = '';
+	for (var i = 0; i < this.array.length; i++) {
+		ret += String.fromCharCode(this.array[i]);
+	}
 	return ret;
 };
 
