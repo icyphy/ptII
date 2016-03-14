@@ -28,14 +28,14 @@
 
 package ptolemy.cg.adapter.generic.program.procedural.c.duktape.adapters.ptolemy.actor.lib.gui.test.junit;
 
-import ptolemy.util.test.junit.JUnitCGCArduinoTestBase;
+import ptolemy.util.test.junit.JUnitCGCDuktapeTestBase;
 
 ///////////////////////////////////////////////////////////////////
 //// JUnitCGCTest
 /**
  *  Run the auto/ tests using c cg.
  * <pre>
- * (cd $PTII/ptolemy/cg/adapter/generic/program/procedural/c/duktape.adapters/ptolemy/actor/lib/gui/test/junit; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.cg.adapter.generic.program.procedural.c.duktape.adapters.ptolemy.actor.lib.gui.test.junit.JUnitCCGArduinoTest)
+ * (cd $PTII/ptolemy/cg/adapter/generic/program/procedural/c/duktape.adapters/ptolemy/actor/lib/gui/test/junit; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/lib/JUnitParams-0.3.0.jar org.junit.runner.JUnitCore ptolemy.cg.adapter.generic.program.procedural.c.duktape.adapters.ptolemy.actor.lib.gui.test.junit.JUnitCCGDuktapeTest)
  * </pre>
  *
  * <p> A copy of this file appears in each test/junit c cg subdirectory
@@ -47,6 +47,6 @@ import ptolemy.util.test.junit.JUnitCGCArduinoTestBase;
  * @Pt.ProposedRating Green (cxh)
  * @Pt.AcceptedRating Green (cxh)
  */
-public class JUnitCGCArduinoTest extends JUnitCGCArduinoTestBase {
+public class JUnitCGCDuktapeTest extends JUnitCGCDuktapeTestBase {
     // This class is empty, all the action occurs in the parent.
 }

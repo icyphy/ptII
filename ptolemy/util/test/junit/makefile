@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2010-2015 The Regents of the University of California.
+# @Copyright (c) 2010-2016 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -50,6 +50,7 @@ JSRCS = \
 	AutoCGCInlineTests.java \
 	AutoCGCNoInlineTests.java \
 	AutoCGCNoInlineArduinoTests.java \
+	AutoCGCNoInlineDuktapeTests.java \
 	AutoCGCTests.java \
 	AutoCGFMIMANoInlineTests.java \
 	AutoCGFMIMAKnownFailedTests.java \
@@ -62,6 +63,7 @@ JSRCS = \
 	AutoTests.java \
 	JUnitAuto32Base.java \
 	JUnitCGCArduinoTestBase.java \
+	JUnitCGCDuktapeTestBase.java \
 	JUnitCGCTestBase.java \
 	JUnitCGCNoInlineTestBase.java \
 	JUnitCGFMIMATestBase.java \
