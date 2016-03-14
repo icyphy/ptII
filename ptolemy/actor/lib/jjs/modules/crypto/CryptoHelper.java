@@ -232,7 +232,6 @@ public class CryptoHelper extends HelperBase {
         Cipher cipher = _getCipher(Cipher.ENCRYPT_MODE, cipherAlgorithm, _toJavaBytes(key), null);
 
         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        System.out.println("SOMETHING IS WRONG HERE!!! " + input.toString() + "\nEND\n");
         try {
             // write initialization vector first
             byte[] initVector = cipher.getIV();
