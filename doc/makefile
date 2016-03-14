@@ -245,12 +245,14 @@ APRILPACKAGES = \
 CGPACKAGES = \
 	ptolemy.cg.adapter.generic.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.html.adapters.ptolemy.actor \
+        ptolemy.cg.adapter.generic.program.procedural.adapters.org.terraswarm.accessor \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.conversions \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.fmi \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.gui \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.hoc \
+	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.jjs \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.logic \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.string \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched \
@@ -262,6 +264,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.domains.sdf.lib \
 	ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.vergil.actor.lib \
+        ptolemy.cg.adapter.generic.program.procedural.c.adapters.org.terraswarm.accessor \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.actor.lib.conversions \
@@ -279,6 +282,9 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.c.adapters.ptolemy.domains.sdf.lib \
 	ptolemy.cg.adapter.generic.program.procedural.c.arduino.adapters.ptolemy.actor.lib.gui \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.actor.lib \
+        ptolemy.cg.adapter.generic.program.procedural.c.duktape.adapters.org.terraswarm.accessor \
+        ptolemy.cg.adapter.generic.program.procedural.c.duktape.adapters.ptolemy.actor.lib.gui \
+        ptolemy.cg.adapter.generic.program.procedural.c.duktape.adapters.ptolemy.actor.lib.jjs \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.kernel \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.ptides.lib.luminary \
 	ptolemy.cg.adapter.generic.program.procedural.c.luminary.adapters.ptolemy.domains.sdf.kernel \
