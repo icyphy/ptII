@@ -33,7 +33,7 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib/jjs
 
-DIRS =	test
+DIRS =	#test
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../../..
@@ -67,7 +67,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES = test
+MISC_FILES = #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
