@@ -71,6 +71,18 @@
  *  registered to handle any input.  Finally, it invokes the fire() function of the
  *  accessor, if one is defined.
  *
+ *  Events Emitted
+ *  --------------
+ *  
+ *  An instantiated accessor is an event emitter that emits the following events:
+ * 
+ *  * **initialize**: Emitted when the accessor has been initialized.
+ *  * **output**(*name*, *value*): Emitted when an output with the specified name
+ *    and value are sent.
+ *  * **react**: Emitted when the accessor has reacted.
+ *  * **wrapup**: Emitted when the accessor has wrapped up.
+ *
+ *
  *  Extend and Implement
  *  --------------------
  *
@@ -189,6 +201,9 @@
 /*global console, exports, instance, setTimeout*/
 /*jshint globalstrict: true, multistr: true */
 'use strict';
+
+var util = require('util');
+var EventEmitter = require('events').EventEmitter;
 
 
 /** Create (using new) an accessor instance whose interface and functionality is given by
@@ -448,6 +463,7 @@ function Accessor(
                 this.exports.initialize.call(this);
             }
             this.initialized = true;
+            this.emit('initialize');
         };
         
         this.fire = function() {
@@ -482,9 +498,11 @@ function Accessor(
                 // property.
                 this.exports.wrapup.call(this);
             }
+            this.emit('wrapup');
         };
     }
 }
+util.inherits(Accessor, EventEmitter);
 
 /** Add an input handler for the specified input and return a handle that
  *  can be used to remove the input handler.
@@ -1295,6 +1313,8 @@ Accessor.prototype.react = function(name) {
     if (typeof this.exports.fire === 'function') {
         this.exports.fire.call(this);
     }
+    
+    this.emit('react');
 };
 
 /** Default implement of the readURL function, which throws an exception stating
@@ -1432,6 +1452,7 @@ Accessor.prototype.send = function(name, value) {
     value = convertType(value, output, name);
 
     output.latestOutput = value;
+    this.emit('output', name, value);
     // console.log('Sending output through ' + name + ': ' + value);
     if (output.destinations && output.destinations.length > 0) {
         for (var i = 0; i < output.destinations.length; i++) {
