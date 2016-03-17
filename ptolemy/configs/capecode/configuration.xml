@@ -161,6 +161,7 @@
           <group>
             <!--input source="ptolemy/actor/lib/aspect/aspect.xml"/-->
             <!--input source="ptolemy/configs/cosimulation.xml"/-->
+            <input source="ptolemy/configs/capecode/cg.xml"/>
             <input source="ptolemy/actor/lib/database/database.xml"/>
 
             <!-- Shipping Java-3D is a nightmare -->

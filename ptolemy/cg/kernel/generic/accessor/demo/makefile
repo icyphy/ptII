@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Classic style Codegen for Accessor files
+# Makefile for Ptolemy Classic style Codegen
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/kernel/generic/accessor
+ME =		ptolemy/cg/kernel/generic/accessor/demo
 
-DIRS =		demo test
+DIRS =		TestComposite
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,33 +45,38 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	accessor
-PTCLASSJAR = $(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =
 
-# Keep this list alphabetized.
-JSRCS = \
-	AccessorCodeGenerator.java \
-	AccessorCodeGeneratorAdapter.java
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED = 
+# Include the .class files from these jars in PTCLASSALLJAR
+# If you change this, change DIRS above
+PTCLASSALLJARS = \
+	TestComposite/TestComposite.jar
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+EXTRA_SRCS =
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	test
+MISC_FILES = 	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	doc 
 
 JCLASS = $(JSRCS:%.java=%.class)
 
 all: jclass
+	@echo "To run all the demos, run 'make demo'"
 
-install: all jars $(PTPACKAGE).jar $(PTPACKAGE_NATIVE_JAR)
+install: jclass jars
+
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
