@@ -251,6 +251,7 @@ $CLASSPATH/ptolemy/cg/adapter/generic/html/demo/HierarchicalModel/HierarchicalMo
 $CLASSPATH/ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Blink/Blink.xml
 $CLASSPATH/ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Life/Life.xml
 $CLASSPATH/ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Ultrasonic/Ultrasonic.xml
+$CLASSPATH/ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml
 $CLASSPATH/ptolemy/cg/lib/demo/CompiledCompositeActor/CompiledCompositeActor.xml
 $CLASSPATH/ptolemy/cg/lib/demo/DECG/DECG.xml
 $CLASSPATH/ptolemy/cg/lib/demo/DECG/DECGClockRamp.xml
