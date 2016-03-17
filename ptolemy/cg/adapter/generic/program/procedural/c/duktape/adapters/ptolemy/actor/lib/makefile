@@ -33,7 +33,8 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib
 
-DIRS =		gui jjs	
+# PTJJS_DIR is set to jjs if we Nashorn, which is a part of Java 1.8, is present.
+DIRS =		gui $(PTJJS_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../../../..
@@ -65,7 +66,8 @@ MISC_FILES = gui
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	demo \
+	jjs
 
 JCLASS = $(JSRCS:%.java=%.class)
 
