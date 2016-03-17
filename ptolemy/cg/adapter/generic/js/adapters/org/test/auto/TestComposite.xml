@@ -12,31 +12,25 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
-    <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator">
-        <property name="generatorPackageList" class="ptolemy.data.expr.StringParameter" value="generic.program.procedural.js">
-        </property>
-        <property name="generateComment" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="inline" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{180.0, 115.0}">
-        </property>
-    </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 50}">
-        </property>
-        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
-            </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 55.0]">
         </property>
     </property>
-    <port name="out" class="ptolemy.actor.TypedIOPort">
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The input port as a defaultValue of 0.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 245.0]">
+        </property>
+    </property>
+    <port name="output" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{390.0, 180.0}">
         </property>
     </port>
-    <port name="in" class="ptolemy.actor.TypedIOPort">
+    <port name="input" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 190.0}">
         </property>
     </port>
@@ -58,10 +52,6 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, 190.0}">
-        </property>
-        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
-            </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -107,10 +97,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 180.0}">
         </property>
-        <property name="DecoratorAttributesFor_CCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="CCodeGenerator">
-            </property>
-        </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
             </property>
@@ -151,8 +137,8 @@
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation4.vertex1&quot;,x=75.0,y=190.0}, tail={id=&quot;TestAdder.inputLeft&quot;,x=300.0,y=180.0}, points={75.0,155.0,215.0,155.0,215.0,170.0} },{ head={id=&quot;in._location&quot;,x=20.0,y=190.0}, tail={id=&quot;relation4.vertex1&quot;,x=75.0,y=190.0}, points={} },{ head={id=&quot;TestGain.input&quot;,x=140.0,y=190.0}, tail={id=&quot;relation4.vertex1&quot;,x=75.0,y=190.0}, points={} } }">
         </property>
     </relation>
-    <link port="out" relation="relation2"/>
-    <link port="in" relation="relation4"/>
+    <link port="output" relation="relation2"/>
+    <link port="input" relation="relation4"/>
     <link port="TestGain.input" relation="relation4"/>
     <link port="TestGain.scaled" relation="relation"/>
     <link port="TestAdder.inputLeft" relation="relation4"/>
