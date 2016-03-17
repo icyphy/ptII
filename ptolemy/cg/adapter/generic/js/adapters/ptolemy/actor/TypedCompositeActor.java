@@ -71,7 +71,7 @@ public class TypedCompositeActor extends JSCodeGeneratorAdapter {
     @Override
     public String generateJS() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
-        code.append(_eol + _INDENT1 + "// Start: " + getComponent().getName()
+        code.append(_eol + _INDENT1 + "// Ports: " + getComponent().getName()
                 + ": ptolemy/cg/adapter/generic/js/adapters/ptolemy/actor/TypedCompositeActor.java" + _eol);
 
         // Generate JS for the ports.
@@ -101,6 +101,9 @@ public class TypedCompositeActor extends JSCodeGeneratorAdapter {
             code.append(adapter.generateJS());
         }
 
+        code.append(_eol + _INDENT1 + "// Connections: " + getComponent().getName()
+                + ": ptolemy/cg/adapter/generic/js/adapters/ptolemy/actor/TypedCompositeActor.java" + _eol);
+        
         // Generate JS for the toplevel input ports to actors or other ports.
         List<Port> inputPorts = ((CompositeActor) getComponent()).inputPortList();
         for (Port port : inputPorts) {

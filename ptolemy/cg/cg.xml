@@ -17,6 +17,7 @@
         </entity>
         <property name="HTMLCodeGenerator" class="ptolemy.cg.kernel.generic.html.HTMLCodeGenerator"/>
         <property name="JavaCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator"/>
+        <property name="JSCodeGenerator" class="ptolemy.cg.kernel.generic.js.JSCodeGenerator"/>
         <property name="ModularCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator"/>
         <property name="ModularSDFCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularSDFCodeGenerator"/>
         <entity name="ModularCodeGenTypedCompositeActor" class="ptolemy.cg.lib.ModularCodeGenTypedCompositeActor"/>
