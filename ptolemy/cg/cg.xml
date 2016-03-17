@@ -6,6 +6,7 @@
     <?moml
       <group>
         <doc>Template based code generator for C and Java.  Under active development</doc>
+        <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator"/>
         <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator"/>
         <entity name="CompiledCompositeActor" class="ptolemy.cg.lib.CompiledCompositeActor"/>
         <entity name="EmbeddedCodeActor" class="ptolemy.cg.lib.EmbeddedCodeActor">
@@ -15,7 +16,6 @@
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="embeddedCode"/>
             </property>
         </entity>
-        <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator"/>
         <property name="HTMLCodeGenerator" class="ptolemy.cg.kernel.generic.html.HTMLCodeGenerator"/>
         <property name="JavaCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.JavaCodeGenerator"/>
         <property name="ModularCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.java.modular.ModularCodeGenerator"/>
