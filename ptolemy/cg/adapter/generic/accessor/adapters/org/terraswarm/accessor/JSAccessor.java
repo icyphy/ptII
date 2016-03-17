@@ -31,6 +31,7 @@ import java.util.List;
 
 import ptolemy.cg.kernel.generic.accessor.AccessorCodeGeneratorAdapter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.actor.parameters.PortParameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
 
@@ -83,7 +84,11 @@ AccessorCodeGeneratorAdapter {
             if (!parameter.getName().equals("accessorSource")
                     && !parameter.getName().equals("checkoutOrUpdateAccessorsRepository")
                     && !parameter.getName().equals("script")) {
-                code.append(_INDENT1 + actor.getName() + ".setParameter('" + parameter.getName() + "', "
+                code.append(_INDENT1);
+                if (parameter instanceof PortParameter) {
+                    code.append("// ");
+                }
+                code.append(actor.getName() + ".setParameter('" + parameter.getName() + "', "
                         + targetExpression(parameter.getExpression(), parameter.getType()) + ");" + _eol);
             }
         }

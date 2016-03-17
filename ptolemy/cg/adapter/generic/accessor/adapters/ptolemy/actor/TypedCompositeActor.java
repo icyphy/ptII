@@ -37,6 +37,7 @@ import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator;
 import ptolemy.cg.kernel.generic.accessor.AccessorCodeGeneratorAdapter;
+import ptolemy.data.Token;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -179,8 +180,10 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
     /** Generate the JavaScript initialize for the ports.
      *  @param ports The ports.   
      *  @return The JavaScript initialization code for the ports.
+     *  @exception IllegalActionException If thrown while reading the
+     *  value of the defaultValue parameter.
      */   
-    private StringBuffer _generatePorts(List<TypedIOPort> ports) {
+    private StringBuffer _generatePorts(List<TypedIOPort> ports) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         for (TypedIOPort port : ports) {
             String inputOrOutput = port.isInput() ? "input" :
@@ -192,6 +195,13 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
                 if (port instanceof ParameterPort) {
                     code.append(", 'value':"
                             + targetExpression(((ParameterPort)port).getParameter().getExpression(), port.getType()));
+                } else if (port instanceof IOPort) {
+                    IOPort ioPort = (IOPort)port;
+                    Token value = ioPort.defaultValue.getToken();
+                    if (value != null) {
+                        code.append(", 'value':"
+                                + targetExpression(ioPort.defaultValue.getExpression(), ioPort.defaultValue.getType()));
+                    }
                 }
                 code.append("}");
             }
