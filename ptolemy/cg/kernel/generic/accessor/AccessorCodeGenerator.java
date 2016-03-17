@@ -28,7 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.kernel.generic.accessor;
 
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.RunnableCodeGenerator;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -44,13 +44,16 @@ import ptolemy.kernel.util.NamedObj;
  *  <p>Accessors are a technology, developed by the
  *  <a href="http://www.terraswarm.org#in_browser" target="_top">TerraSwarm Research Center</a>,
  *  for composing heterogeneous devices and services in the
- *  Internet of Things (IoT).
- *  For more information, see
+ *  Internet of Things (IoT).  For more information, see
  *  <a href="http://accessors.org#in_browser" target="_top">http://accessors.org</a>.</p>
  *
  *  <p>The model can only contain JSAccessor actors.</p>
  *
  *  <p>To generate an Accessor version of a model, use:</p>
+ *  <pre>
+ *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js 
+ *  </pre>
+ *  which is shorthand for:
  *  <pre>
  *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js 
  * </pre>
@@ -60,7 +63,7 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating red (cxh)
  *  @Pt.AcceptedRating red (cxh)
  */
-public class AccessorCodeGenerator extends GenericCodeGenerator {
+public class AccessorCodeGenerator extends RunnableCodeGenerator {
 
     /** Create a new instance of the AccessorCodeGenerator.
      *  The value of the <i>generatorPackageList</i> parameter of the
@@ -76,6 +79,13 @@ public class AccessorCodeGenerator extends GenericCodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         // The output file extension is .js.
         super(container, name, "js");
+
+        codeDirectory.setExpression("$PTII/org/terraswarm/accessor/accessors/web/hosts/node");
+
+        // @codeDirectory@ and @modelName@ are set in
+        // RunnableCodeGenerator._executeCommands().
+        runCommand.setExpression("node nodeHostInvoke.js ./@modelName@.js");
+
         generatorPackageList.setExpression("generic.accessor");
     }
 
@@ -119,7 +129,8 @@ public class AccessorCodeGenerator extends GenericCodeGenerator {
         code.append(((AccessorCodeGeneratorAdapter) getAdapter(toplevel()))
                 .generateAccessor());
         code.append("}" + _eol);
-        return super._generateCode(code);
+        super._generateCode(code);
+        return _executeCommands();
     }
 
     /** Return the filter class to find adapters. All

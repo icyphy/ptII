@@ -63,7 +63,8 @@ JSRCS = \
 	CodeGeneratorUtilities.java \
 	GenericCodeGenerator.java \
 	ParseTreeCodeGenerator.java \
-	PortCodeGenerator.java
+	PortCodeGenerator.java \
+	RunnableCodeGenerator.java \
 
 OTHER_FILES_TO_BE_JARED = 
 

@@ -1,6 +1,6 @@
-/* Code generator for the Programming languages.
+/* Code generator for the Programming languages that require compilation.
 
-Copyright (c) 2009-2015 The Regents of the University of California.
+Copyright (c) 2009-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -47,7 +47,7 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.cg.kernel.generic.RunnableCodeGenerator;
 import ptolemy.cg.lib.PointerToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.IntToken;
@@ -75,10 +75,10 @@ import ptolemy.util.StringUtilities;
 ///////////////////////////////////////////////////////////////////
 //// ProgramCodeGenerator
 
-/** Generate a programming language version of a model.
+/** Generate a compiled programming language version of a model.
  *
  *  <p>This base class contains parameters and methods common to
- *   all programming languages.</p>
+ *   all compiled programming languages.</p>
  *
  *  @author Bert Rodiers
  *  @version $Id$
@@ -86,7 +86,7 @@ import ptolemy.util.StringUtilities;
  *  @Pt.ProposedRating red (rodiers)
  *  @Pt.AcceptedRating red (rodiers)
  */
-public class ProgramCodeGenerator extends GenericCodeGenerator {
+public class ProgramCodeGenerator extends RunnableCodeGenerator {
 
     /** Create a new instance of the ProgramCodeGenerator.
      *  @param container The container.
@@ -122,14 +122,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
         measureTime = new Parameter(this, "measureTime");
         measureTime.setTypeEquals(BaseType.BOOLEAN);
         measureTime.setExpression("false");
-
-        run = new Parameter(this, "run");
-        run.setTypeEquals(BaseType.BOOLEAN);
-        run.setExpression("true");
-
-        runCommand = new StringParameter(this, "runCommand");
-        // Set it to a default so that derived classes may override it.
-        runCommand.setExpression(_runCommandDefault);
 
         useMake = new Parameter(this, "useMake");
         useMake.setTypeEquals(BaseType.BOOLEAN);
@@ -178,27 +170,6 @@ public class ProgramCodeGenerator extends GenericCodeGenerator {
      *  The default value is a parameter with the value false.
      */
     public Parameter measureTime;
-
-    /** If true, then run the generated code. The default
-     *  value is a parameter with the value true.
-     */
-    public Parameter run;
-
-    /** The command to use to run the generated code if the
-     *  <i>useMake</i> parameter is false.  The initial default value
-     *  is "make -f @modelName@.mk run".  Various '@' delimited
-     *  key/value pairs will be automatically substituted.  In the
-     *  default case @modelName@ will be replaced with a sanitized
-     *  (Java-safe) version of the model name.
-     *
-     *  <p>If the string "@help:all@" appears, then all the key/value
-     *  pairs are echoed at run time, though this may not result in a
-     *  syntactically correct command.</p>
-     *
-     *  <p>If <i>useMake</i> is true, then the value of this parameter
-     *  is ignored.</p>
-     */
-    public StringParameter runCommand;
 
     /** If true, then use the 'make' command to compile and run
      *  the generated code.  The default is true;
