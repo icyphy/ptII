@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.js.adapters.ptolemy.actor;
+package ptolemy.cg.adapter.generic.accessor.adapters.ptolemy.actor;
 
 import java.util.List;
 import java.util.Iterator;
@@ -35,8 +35,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.cg.kernel.generic.js.JSCodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.js.JSCodeGenerator;
+import ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator;
+import ptolemy.cg.kernel.generic.accessor.AccessorCodeGeneratorAdapter;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -53,7 +53,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class TypedCompositeActor extends JSCodeGeneratorAdapter {
+public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated
      *  with the given TypedCompositeActor.
@@ -63,22 +63,22 @@ public class TypedCompositeActor extends JSCodeGeneratorAdapter {
         super(component);
     }
 
-    /** Generate JS code.
-     *  @return The generated JS.
+    /** Generate Accessor code.
+     *  @return The generated Accessor.
      *  @exception IllegalActionException If there is a problem getting the adapter, getting
-     *  the director or generating JS for the director.
+     *  the director or generating Accessor for the director.
      */
     @Override
-    public String generateJS() throws IllegalActionException {
+    public String generateAccessor() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         code.append(_eol + _INDENT1 + "// Ports: " + getComponent().getName()
-                + ": ptolemy/cg/adapter/generic/js/adapters/ptolemy/actor/TypedCompositeActor.java" + _eol);
+                + ": ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/TypedCompositeActor.java" + _eol);
 
-        // Generate JS for the ports.
+        // Generate Accessor for the ports.
         code.append(_generatePorts(((CompositeActor) getComponent()).inputPortList()));
         code.append(_generatePorts(((CompositeActor) getComponent()).outputPortList()));
 
-        // Generate JS for the JSAccessor actor.
+        // Generate Accessor for the JSAccessor actor.
         Iterator<?> actors = ((CompositeActor) getComponent()).entityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
@@ -86,25 +86,25 @@ public class TypedCompositeActor extends JSCodeGeneratorAdapter {
                 throw new IllegalActionException(actor, "The JavaScript code generator only works on JAccessor actors and TypedCompositeActors, the name of the class was:" + actor.getClass().getName() + ".");
             }
 
-            JSCodeGeneratorAdapter adapter = null;
+            AccessorCodeGeneratorAdapter adapter = null;
             Object object = getCodeGenerator().getAdapter(actor);
             try {
-                adapter = (JSCodeGeneratorAdapter) object;
+                adapter = (AccessorCodeGeneratorAdapter) object;
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(getComponent(), ex,
                         "Failed to cast " + object + " of class "
                                 + object.getClass().getName() + " to "
-                                + JSCodeGeneratorAdapter.class.getName()
+                                + AccessorCodeGeneratorAdapter.class.getName()
                                 + ".");
 
             }
-            code.append(adapter.generateJS());
+            code.append(adapter.generateAccessor());
         }
 
         code.append(_eol + _INDENT1 + "// Connections: " + getComponent().getName()
-                + ": ptolemy/cg/adapter/generic/js/adapters/ptolemy/actor/TypedCompositeActor.java" + _eol);
+                + ": ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/TypedCompositeActor.java" + _eol);
         
-        // Generate JS for the toplevel input ports to actors or other ports.
+        // Generate Accessor for the toplevel input ports to actors or other ports.
         List<Port> inputPorts = ((CompositeActor) getComponent()).inputPortList();
         for (Port port : inputPorts) {
             if (port instanceof IOPort) {
@@ -129,7 +129,7 @@ public class TypedCompositeActor extends JSCodeGeneratorAdapter {
             }
         }
 
-        // Generate JS for the toplevel output ports to actors or other ports.
+        // Generate Accessor for the toplevel output ports to actors or other ports.
         List<Port> outputPorts = ((CompositeActor) getComponent()).outputPortList();
         for (Port port : outputPorts) {
             if (port instanceof IOPort) {
@@ -152,7 +152,7 @@ public class TypedCompositeActor extends JSCodeGeneratorAdapter {
             }
         }
         
-        // Generate JS for the toplevel actor to actor connections.
+        // Generate Accessor for the toplevel actor to actor connections.
         actors = ((CompositeActor) getComponent()).entityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();

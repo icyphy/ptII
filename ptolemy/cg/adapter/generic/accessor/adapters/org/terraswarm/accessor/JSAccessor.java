@@ -25,10 +25,11 @@
  COPYRIGHTENDKEY
 
 */
-package ptolemy.cg.adapter.generic.js.adapters.org.terraswarm.accessor;
+package ptolemy.cg.adapter.generic.accessor.adapters.org.terraswarm.accessor;
 
 import java.util.List;
-import ptolemy.cg.kernel.generic.js.JSCodeGeneratorAdapter;
+
+import ptolemy.cg.kernel.generic.accessor.AccessorCodeGeneratorAdapter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.StringUtilities;
@@ -47,7 +48,7 @@ import ptolemy.util.StringUtilities;
  */
 public class JSAccessor
 extends
-JSCodeGeneratorAdapter {
+AccessorCodeGeneratorAdapter {
     /**
      *  Construct the JSAccessor adapter.
      *  @param actor the associated actor
@@ -56,13 +57,13 @@ JSCodeGeneratorAdapter {
         super(actor);
     }
 
-    /** Generate JS code.
-     *  @return The generated JS.
+    /** Generate Accessor code.
+     *  @return The generated Accessor.
      *  @exception IllegalActionException If there is a problem getting the adapter, getting
-     *  the director or generating JS for the director.
+     *  the director or generating Accessor for the director.
      */
     @Override
-    public String generateJS() throws IllegalActionException {
+    public String generateAccessor() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         org.terraswarm.accessor.JSAccessor actor = (org.terraswarm.accessor.JSAccessor) getComponent();
@@ -70,7 +71,7 @@ JSCodeGeneratorAdapter {
         String name = StringUtilities.sanitizeName(actor.getName());
 
         code.append(_eol + _INDENT1 + "// Start: " + getComponent().getName()
-                + ": ptolemy/cg/adapter/generic/js/adapters/org/terraswarm/accessor/JSAccessor.java" + _eol);
+                + ": ptolemy/cg/adapter/generic/accessor/adapters/org/terraswarm/accessor/JSAccessor.java" + _eol);
 
 
         code.append(_INDENT1 + "var " + actor.getName() + " = this.instantiate('" + name
@@ -78,7 +79,7 @@ JSCodeGeneratorAdapter {
 
         List<Parameter> parameters = actor.attributeList(Parameter.class);
         for (Parameter parameter : parameters) {
-            // Skip the default parameters in JSAccess and emit code for the other parameters.
+            // Skip the default parameters in JSAccessor and emit code for the other parameters.
             if (!parameter.getName().equals("accessorSource")
                     && !parameter.getName().equals("checkoutOrUpdateAccessorsRepository")
                     && !parameter.getName().equals("script")) {

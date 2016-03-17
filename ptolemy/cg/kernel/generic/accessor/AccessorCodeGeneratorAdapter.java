@@ -1,4 +1,4 @@
-/* Base class for a js generator adapter.
+/* Base class for an Accessor generator adapter.
 
  Copyright (c) 2009-2016 The Regents of the University of California.
  All rights reserved.
@@ -25,7 +25,7 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.kernel.generic.js;
+package ptolemy.cg.kernel.generic.accessor;
 
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
@@ -36,12 +36,12 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
-//// JSCodeGeneratorAdapter
+//// AccessorCodeGeneratorAdapter
 
 /**
- * Base class for a js code generator adapter.
+ * Base class for an Accessor code generator adapter.
  *
- * <p>Subclasses should override generateJS().
+ * <p>Subclasses should override generateAccessor().
  *
  * <p>Subclasses should be sure to properly indent the code by
  * either using the code block functionality in methods like
@@ -55,28 +55,28 @@ import ptolemy.util.StringUtilities;
  *     return processCode(CodeStream.indent(code.toString()));
  * </pre>
  *
- * @author Christopher Brooks.  Based on JSCodeGeneratorAdapter by Bert Rodiers
+ * @author Christopher Brooks.  Based on AccessorCodeGeneratorAdapter by Bert Rodiers
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Yellow (rodiers)
  * @Pt.AcceptedRating Yellow (rodiers)
  */
-public abstract class JSCodeGeneratorAdapter extends CodeGeneratorAdapter {
+public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated
      *  with the given component.
      *  @param component The associated component.
      */
-    public JSCodeGeneratorAdapter(NamedObj component) {
+    public AccessorCodeGeneratorAdapter(NamedObj component) {
         _component = component;
     }
 
-    /** Generate JS code.
-     *  @return The generated JS.
+    /** Generate Accessor code.
+     *  @return The generated Accessor
      *  @exception IllegalActionException If there is a problem
-     *  reading data from the model while generating JS.
+     *  reading data from the model while generating Accessor code.
      */
-    abstract public String generateJS() throws IllegalActionException;
+    abstract public String generateAccessor() throws IllegalActionException;
 
     /** Get the code generator associated with this adapter class.
      *  @return The code generator associated with this adapter class.
@@ -94,7 +94,7 @@ public abstract class JSCodeGeneratorAdapter extends CodeGeneratorAdapter {
         return _component;
     }
 
-    /** Given a Ptolemy expression, return a JavaScript-compatibile
+    /** Given a Ptolemy expression, return an Accessor-compatibile
      *  expression.  For example, strings are quoted, ints and doubles
      *  are not.
      *  @param expression the Ptolemy expression.

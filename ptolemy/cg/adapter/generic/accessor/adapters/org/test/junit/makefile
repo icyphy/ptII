@@ -31,10 +31,10 @@
 # 						COPYRIGHTENDKEY
 
 # Location of this directory, relative to the Ptolemy II directory
-ME =		ptolemy/cg/kernel/generic/js/test/junit
+ME =		ptolemy/cg/adapter/generic/js/adapters/org/test/junit
 
 # Root of the Ptolemy II directory
-ROOT =		../../../../../../..
+ROOT =		../../../../../../../../..
 
 # JUNIT_JAR is searched for by /Users/cxh/ptII/configure and set in /Users/cxh/ptII/mk/ptII.mk
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)
@@ -75,7 +75,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 
 # JUNIT_JAVA_ARGS is set in /Users/cxh/ptII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.cg.kernel.generic.js.test.junit.JUnitTclTest)
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.cg.adapter.generic.accessor.adapters.org.test.junit.JUnitTclTest)
 
 test_java: jclass
 

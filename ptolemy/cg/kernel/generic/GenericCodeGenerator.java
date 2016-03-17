@@ -1756,7 +1756,7 @@ Decorator {
     private static String[][] _languages = {
         { "c", "ptolemy.cg.kernel.generic.program.procedural.c" },
         { "fmima", "ptolemy.cg.kernel.generic.program.procedural.fmima" },
-        { "js", "ptolemy.cg.kernel.generic.js" },
+        { "accessor", "ptolemy.cg.kernel.generic.accessor" },
         { "html", "ptolemy.cg.kernel.generic.html" },
         { "java", "ptolemy.cg.kernel.generic.program.procedural.java" } };
     private GeneratorPackageListParser _generatorPackageListParser = new GeneratorPackageListParser();
