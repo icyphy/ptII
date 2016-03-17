@@ -109,7 +109,8 @@ MISC_FILES =	gui conversions fmi hoc logic string
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	demo 
+	demo \
+	jjs
 
 JCLASS = $(JSRCS:%.java=%.class)
 
