@@ -26,7 +26,7 @@ COPYRIGHTENDKEY
 
  */
 
-package ptolemy.cg.kernel.generic.js;
+package ptolemy.cg.kernel.generic.accessor;
 
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.data.type.BaseType;
@@ -37,13 +37,22 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 ///////////////////////////////////////////////////////////////////
-////JSCodeGenerator
+////AccessorCodeGenerator
 
 /** Generate a JavaScript Accessor for a  model.
- *  <p>The model can only contain JSAccessor actors.
- *  <p>To generate an JS version of a model, use:</p>
+ *
+ *  <p>Accessors are a technology, developed by the
+ *  <a href="http://www.terraswarm.org#in_browser" target="_top">TerraSwarm Research Center</a>,
+ *  for composing heterogeneous devices and services in the
+ *  Internet of Things (IoT).
+ *  For more information, see
+ *  <a href="http://accessors.org#in_browser" target="_top">http://accessors.org</a>.</p>
+ *
+ *  <p>The model can only contain JSAccessor actors.</p>
+ *
+ *  <p>To generate an Accessor version of a model, use:</p>
  *  <pre>
- java -classpath $PTII ptolemy.cg.kernel.generic.js.JSCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.js -generatorPackageList generic.js $PTII/ptolemy/cg/adapter/generic/js/adapters/org/test/auto/TestComposite.xml
+ *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js 
  * </pre>
  *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
  *  @version $Id$
@@ -51,26 +60,27 @@ import ptolemy.kernel.util.NamedObj;
  *  @Pt.ProposedRating red (cxh)
  *  @Pt.AcceptedRating red (cxh)
  */
-public class JSCodeGenerator extends GenericCodeGenerator {
+public class AccessorCodeGenerator extends GenericCodeGenerator {
 
-    /** Create a new instance of the JSCodeGenerator.
+    /** Create a new instance of the AccessorCodeGenerator.
      *  The value of the <i>generatorPackageList</i> parameter of the
-     *  base class is set to <code>generic.js</code>
+     *  base class is set to <code>generic.accessor</code>
      *  @param container The container.
-     *  @param name The name of the JSCodeGenerator.
+     *  @param name The name of the AccessorCodeGenerator.
      *  @exception IllegalActionException If the super class throws the
      *   exception or error occurs when setting the file path.
      *  @exception NameDuplicationException If the super class throws the
      *   exception or an error occurs when setting the file path.
      */
-    public JSCodeGenerator(NamedObj container, String name)
+    public AccessorCodeGenerator(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
+        // The output file extension is .js.
         super(container, name, "js");
-        generatorPackageList.setExpression("generic.js");
+        generatorPackageList.setExpression("generic.accessor");
     }
 
     /** Return a formatted comment containing the specified string. In
-     *  this base class, the comments is a JS-style comment, which
+     *  this base class, the comments is a Accessor-style comment, which
      *  begins with "<!--" and ends with "-->" followed by the platform
      *  dependent end of line character(s): under Unix: "\n", under
      *  Windows: "\n\r". Subclasses may override this produce comments
@@ -86,15 +96,15 @@ public class JSCodeGenerator extends GenericCodeGenerator {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Generate JS and append it to the given string buffer.
+    /** Generate Accessor code and append it to the given string buffer.
      *  Write the code to the directory specified by the <i>codeDirectory</i>
      *  parameter.  The file name is a sanitized version of the model
      *  name with a suffix that is based on last package name of the
      *  <i>generatorPackage</i> parameter.  Thus if the
-     *  <i>codeDirectory</i> is <code>$HOME</code>, the name of the
+     *  <i>codeDirectory</i> is <code>$HOME/cg</code>, the name of the
      *  model is <code>Foo</code> and the <i>generatorPackage</i>
-     *  is <code>ptolemy.cg.kernel.generic.js</code>, then the file that is
-     *  written will be <code>$HOME/Foo.js</code>
+     *  is <code>ptolemy.cg.kernel.generic.accessor</code>, then the file that is
+     *  written will be <code>$HOME/cg/Foo.js</code>
      *  This method is the main entry point to generate js.
      *
      *  @param code The given string buffer.
@@ -106,8 +116,8 @@ public class JSCodeGenerator extends GenericCodeGenerator {
     @Override
     protected int _generateCode(StringBuffer code) throws KernelException {
         code.append("export.setup = function() {" + _eol);
-        code.append(((JSCodeGeneratorAdapter) getAdapter(toplevel()))
-                .generateJS());
+        code.append(((AccessorCodeGeneratorAdapter) getAdapter(toplevel()))
+                .generateAccessor());
         code.append("}" + _eol);
         return super._generateCode(code);
     }
@@ -118,6 +128,6 @@ public class JSCodeGenerator extends GenericCodeGenerator {
      */
     @Override
     protected Class<?> _getAdapterClassFilter() {
-        return JSCodeGeneratorAdapter.class;
+        return AccessorCodeGeneratorAdapter.class;
     }
 }

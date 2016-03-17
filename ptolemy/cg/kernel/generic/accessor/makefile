@@ -1,9 +1,9 @@
-# Makefile for Ptolemy Classic style Codegen for JS files
+# Makefile for Ptolemy Classic style Codegen for Accessor files
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2009 The Regents of the University of California
+# @Copyright (c) 2016 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/kernel/generic/js
+ME =		ptolemy/cg/kernel/generic/accessor
 
 DIRS =		test
 
@@ -45,13 +45,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	js
+PTPACKAGE = 	accessor
 PTCLASSJAR = $(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	JSCodeGenerator.java \
-	JSCodeGeneratorAdapter.java
+	AccessorCodeGenerator.java \
+	AccessorCodeGeneratorAdapter.java
 
 OTHER_FILES_TO_BE_JARED = 
 

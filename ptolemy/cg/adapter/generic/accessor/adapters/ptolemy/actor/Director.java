@@ -1,4 +1,4 @@
-/* Code generator adapter for generating JS code for Director.
+/* Code generator adapter for generating Accessor code for Director.
 
  Copyright (c) 2005-2016 The Regents of the University of California.
  All rights reserved.
@@ -25,21 +25,21 @@
  COPYRIGHTENDKEY
 
  */
-package ptolemy.cg.adapter.generic.js.adapters.ptolemy.actor;
+package ptolemy.cg.adapter.generic.accessor.adapters.ptolemy.actor;
 
 import java.util.Iterator;
 
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
-import ptolemy.cg.kernel.generic.js.JSCodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.accessor.AccessorCodeGeneratorAdapter;
 import ptolemy.kernel.util.IllegalActionException;
 
 //////////////////////////////////////////////////////
 //// Director
 
 /**
- Code generator adapter for generating JS code for Director.
+ Code generator adapter for generating Accessor code for Director.
 
  @see GenericCodeGenerator
  @author Christopher Brooks, base on the html Director by Man-Kit Leung, Bert Rodiers
@@ -48,7 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.ProposedRating Red (cxh)
  @Pt.AcceptedRating Red (cxh)
  */
-public class Director extends JSCodeGeneratorAdapter {
+public class Director extends AccessorCodeGeneratorAdapter {
 
     /** Construct the code generator adapter associated with the given director.
      *  Note before calling the generate*() methods, you must also call
@@ -73,31 +73,31 @@ public class Director extends JSCodeGeneratorAdapter {
      *   an actor throws it while generating fire code for the actor.
      */
     @Override
-    public String generateJS() throws IllegalActionException {
+    public String generateAccessor() throws IllegalActionException {
         StringBuffer code = new StringBuffer();
 
         Iterator<?> actors = ((CompositeActor) getComponent().getContainer())
                 .deepEntityList().iterator();
 
-        code.append("// Start: " + getComponent().getName() + "ptolemy/cg/adapter/generic/js/adapters/ptolemy/actor/Director.java" + _eol);
+        code.append("// Start: " + getComponent().getName() + "ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/Director.java" + _eol);
 
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            JSCodeGeneratorAdapter adapter = null;
+            AccessorCodeGeneratorAdapter adapter = null;
             Object object = getCodeGenerator().getAdapter(actor);
             try {
-                adapter = (JSCodeGeneratorAdapter) object;
+                adapter = (AccessorCodeGeneratorAdapter) object;
             } catch (ClassCastException ex) {
                 throw new IllegalActionException(getComponent(), ex,
                         "Failed to cast " + object + " of class "
                                 + object.getClass().getName() + " to "
-                                + JSCodeGeneratorAdapter.class.getName()
+                                + AccessorCodeGeneratorAdapter.class.getName()
                                 + ".");
 
             }
-            code.append(adapter.generateJS());
+            code.append(adapter.generateAccessor());
         }
-        code.append("// End: " + getComponent().getName() + "ptolemy/cg/adapter/generic/js/adapters/ptolemy/actor/Director.java" + _eol);
+        code.append("// End: " + getComponent().getName() + "ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/Director.java" + _eol);
 
         return code.toString();
     }
