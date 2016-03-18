@@ -75,6 +75,7 @@ import ptolemy.moml.filter.RemoveClasses;
 import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StreamExec;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -939,6 +940,9 @@ Decorator {
      */
     protected int _generateCode(StringBuffer code) throws KernelException {
         _codeFileName = _writeCode(code);
+        if (_executeCommands == null) {
+            _executeCommands = new StreamExec();
+        }
         return 0;
     }
 

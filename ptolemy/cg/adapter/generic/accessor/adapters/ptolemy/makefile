@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/js/adapters/ptolemy
+ME =		ptolemy/cg/adapter/generic/accessor/adapters/ptolemy
 
 DIRS =		actor 
 

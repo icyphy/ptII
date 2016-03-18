@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/js/adapters/ptolemy/actor
+ME =		ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor
 
 DIRS =		
 
@@ -55,8 +55,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = 
 
 # Keep this list alphabetized.
-JSRCS = Director.java \
-	TypedCompositeActor.java
+JSRCS = TypedCompositeActor.java
 
 OTHER_FILES_TO_BE_JARED = 
 

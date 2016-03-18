@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/js/adapters/org/terraswarm/accessor
+ME =		ptolemy/cg/adapter/generic/accessor/adapters/org/terraswarm/accessor
 
 DIRS =
 
