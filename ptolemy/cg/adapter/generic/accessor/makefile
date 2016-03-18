@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Classic style Codegen for JavaScript
+# Makefile for Ptolemy Classic style Codegen for Accessors
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/js
+ME =		ptolemy/cg/adapter/generic/accessor
 
 DIRS =		adapters test #demo
 
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	js
+PTPACKAGE = 	accessor
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar

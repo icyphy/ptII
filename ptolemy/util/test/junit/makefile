@@ -46,6 +46,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
+	AutoCGNoInlineAccessorTests.java \
 	AutoCGCKnownFailedTests.java \
 	AutoCGCInlineTests.java \
 	AutoCGCNoInlineTests.java \
@@ -62,6 +63,7 @@ JSRCS = \
 	Auto32Tests.java \
 	AutoTests.java \
 	JUnitAuto32Base.java \
+	JUnitCGAccessorTestBase.java \
 	JUnitCGCArduinoTestBase.java \
 	JUnitCGCDuktapeTestBase.java \
 	JUnitCGCTestBase.java \

@@ -32,7 +32,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Suite;
 
 ///////////////////////////////////////////////////////////////////
-//// JUnitCGCTestBase
+//// JUnitCGCDuktapeTestBase
 /**
  *  Run the auto/ tests using c cg for the Duktape JavaScript target.
  *

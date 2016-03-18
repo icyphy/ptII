@@ -1,4 +1,4 @@
-# Makefile for Ptolemy Classic style Codegen
+# Makefile for Ptolemy Classic style Codegen for Accessors
 #
 # @Version: $Id$
 # @Author: Christopher Brooks
@@ -31,7 +31,7 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/js/adapters
+ME =		ptolemy/cg/adapter/generic/accessor/adapters
 
 DIRS =		org ptolemy
 
