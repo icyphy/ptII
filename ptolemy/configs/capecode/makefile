@@ -59,12 +59,13 @@ OTHER_FILES_TO_BE_JARED = \
 	$(DERIVED_FILES) \
 	about.htm \
 	authors.htm \
-	configuration.xml \
-	copyright.htm \
 	capecodeEffigies.xml \
 	capecodeRefinements.xml \
 	CapeCode.png \
 	CapeCodeSmall.png \
+	cg.xml \
+	configuration.xml \
+	copyright.htm \
 	de.xml \
 	demonstrations.htm \
 	docs.htm \
