@@ -51,12 +51,15 @@ import ptolemy.kernel.util.NamedObj;
  *
  *  <p>To generate an Accessor version of a model, use:</p>
  *  <pre>
- *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js 
+ *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $PTII/ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml; cat $PTII/org/terraswarm/accessor/accessors/web/hosts/node/TestComposite.js 
  *  </pre>
  *  which is shorthand for:
  *  <pre>
  *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js 
- * </pre>
+ *  </pre>
+ *
+ *  <p>For more information, see <a href="https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#CodeGeneration#in_browser">https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
+ * 
  *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
  *  @version $Id$
  *  @since Ptolemy II 11.0
@@ -84,7 +87,8 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
 
         // @codeDirectory@ and @modelName@ are set in
         // RunnableCodeGenerator._executeCommands().
-        runCommand.setExpression("node nodeHostInvoke.js ./@modelName@.js");
+        // Run the accessors for 2000 ms.
+        runCommand.setExpression("node nodeHostInvoke.js -timeout 2000 ./@modelName@.js");
 
         generatorPackageList.setExpression("generic.accessor");
     }
