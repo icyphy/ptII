@@ -88,7 +88,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
         // @codeDirectory@ and @modelName@ are set in
         // RunnableCodeGenerator._executeCommands().
         // Run the accessors for 2000 ms.
-        runCommand.setExpression("node nodeHostInvoke.js -timeout 2000 ./@modelName@.js");
+        runCommand.setExpression("node nodeHostInvoke.js -timeout 2000 hosts/node/@modelName@");
 
         generatorPackageList.setExpression("generic.accessor");
     }
@@ -129,7 +129,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
      */
     @Override
     protected int _generateCode(StringBuffer code) throws KernelException {
-        code.append("export.setup = function() {" + _eol);
+        code.append("exports.setup = function() {" + _eol);
         code.append(((AccessorCodeGeneratorAdapter) getAdapter(toplevel()))
                 .generateAccessor());
         code.append("}" + _eol);
