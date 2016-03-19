@@ -243,6 +243,8 @@ APRILPACKAGES = \
 # CG Codegen packages
 # cd $PTII/ptolemy/cg; find . -name "*.java" | xargs -n 1 dirname | sort | uniq | awk '{dir=substr($0, 2, length($0)-1) ; print "ptolemy/cg" dir}' | sed 's@/@.@g' | grep -v test
 CGPACKAGES = \
+	ptolemy.cg.adapter.generic.accessor.adapters.org.terraswarm.accessor \
+	ptolemy.cg.adapter.generic.accessor.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.html.adapters.ptolemy.actor \
         ptolemy.cg.adapter.generic.program.procedural.adapters.org.terraswarm.accessor \
@@ -318,6 +320,7 @@ CGPACKAGES = \
 	ptolemy.cg.adapter.generic.program.procedural.java.modular.adapters.ptolemy.domains.sdf.kernel \
 	ptolemy.cg.gui \
 	ptolemy.cg.kernel.generic \
+	ptolemy.cg.kernel.generic.accessor \
 	ptolemy.cg.kernel.generic.html \
 	ptolemy.cg.kernel.generic.program \
 	ptolemy.cg.kernel.generic.program.procedural \
