@@ -27,15 +27,24 @@
  */
 package ptolemy.vergil.kernel.attributes;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.GraphicsEnvironment;
 
+import javax.swing.SwingConstants;
+
 import ptolemy.actor.gui.ColorAttribute;
+import ptolemy.data.BooleanToken;
+import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
+import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Workspace;
+import ptolemy.vergil.icon.TextIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// AbstractTextAttribute
@@ -66,6 +75,9 @@ public class AbstractTextAttribute extends VisibleAttribute {
     public AbstractTextAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
+
+        _icon = new TextIcon(this, "_icon");
+        _icon.setPersistent(false);
 
         textSize = new Parameter(this, "textSize");
         textSize.setExpression("14");
@@ -151,4 +163,95 @@ public class AbstractTextAttribute extends VisibleAttribute {
      */
     public Parameter textSize;
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+
+    /** React to a changes in the attributes by changing the icon.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the change is not acceptable
+     *   to this container (should not be thrown).
+     */
+    @Override
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == anchor) {
+            String anchorValue = anchor.stringValue();
+            if (anchorValue.equals("center")) {
+                _icon.setAnchor(SwingConstants.CENTER);
+            } else if (anchorValue.equals("east")) {
+                _icon.setAnchor(SwingConstants.EAST);
+            } else if (anchorValue.equals("north")) {
+                _icon.setAnchor(SwingConstants.NORTH);
+            } else if (anchorValue.equals("northeast")) {
+                _icon.setAnchor(SwingConstants.NORTH_EAST);
+            } else if (anchorValue.equals("south")) {
+                _icon.setAnchor(SwingConstants.SOUTH);
+            } else if (anchorValue.equals("southeast")) {
+                _icon.setAnchor(SwingConstants.SOUTH_EAST);
+            } else if (anchorValue.equals("southwest")) {
+                _icon.setAnchor(SwingConstants.SOUTH_WEST);
+            } else if (anchorValue.equals("west")) {
+                _icon.setAnchor(SwingConstants.WEST);
+            } else {
+                _icon.setAnchor(SwingConstants.NORTH_WEST);
+            }
+        } else if ((attribute == fontFamily || attribute == textSize
+                || attribute == bold || attribute == italic)
+                && !_inAttributeChanged) {
+            try {
+                // Prevent redundant actions here... When we evaluate the
+                // _other_ attribute here (whichever one did _not_ trigger
+                // this call, it will likely trigger another call to
+                // attributeChanged(), which will result in this action
+                // being performed twice.
+                _inAttributeChanged = true;
+
+                int sizeValue = ((IntToken) textSize.getToken()).intValue();
+                String familyValue = fontFamily.stringValue();
+                int styleValue = Font.PLAIN;
+
+                if (((BooleanToken) bold.getToken()).booleanValue()) {
+                    styleValue = styleValue | Font.BOLD;
+                }
+
+                if (((BooleanToken) italic.getToken()).booleanValue()) {
+                    styleValue = styleValue | Font.ITALIC;
+                }
+
+                Font fontValue = new Font(familyValue, styleValue, sizeValue);
+                _icon.setFont(fontValue);
+            } finally {
+                _inAttributeChanged = false;
+            }
+        } else if (attribute == textColor) {
+            Color colorValue = textColor.asColor();
+            _icon.setTextColor(colorValue);
+        } else {
+            super.attributeChanged(attribute);
+        }
+    }
+
+    /** Clone the object into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new AbstractTextAttribute.
+     *  @exception CloneNotSupportedException If any of the attributes
+     *   cannot be cloned.
+     */
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        AbstractTextAttribute result = (AbstractTextAttribute) super
+                .clone(workspace);
+        result._icon = (TextIcon) result.getAttribute("_icon");
+        return result;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                       protected members                   ////
+
+    /** The text icon. */
+    protected TextIcon _icon;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
+    private boolean _inAttributeChanged = false;
 }

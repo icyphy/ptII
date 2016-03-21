@@ -45,6 +45,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.util.StringUtilities;
+import ptolemy.vergil.icon.BoxedValuesIcon;
 
 ///////////////////////////////////////////////////////////////////
 //// IDAttribute
@@ -178,6 +179,9 @@ public class IDAttribute extends SingletonAttribute {
         SingletonParameter hide = new SingletonParameter(this, "_hideName");
         hide.setToken(BooleanToken.TRUE);
         hide.setVisibility(Settable.EXPERT);
+
+        BoxedValuesIcon icon = new BoxedValuesIcon(this, "_icon");
+        icon.setPersistent(false);
 
         // No need to display any parameters when the "_showParameters"
         // preference asks for such display because presumably all the

@@ -1,6 +1,6 @@
-/* An attribute for a visible text annotation.
+/* An attribute with a reference to an ellipse.
 
- Copyright (c) 2004-2014 The Regents of the University of California.
+ Copyright (c) 2003-2014 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -27,36 +27,28 @@
  */
 package ptolemy.vergil.kernel.attributes;
 
-import ptolemy.actor.gui.style.TextStyle;
-import ptolemy.kernel.util.Attribute;
+import java.awt.Shape;
+import java.awt.geom.Ellipse2D;
+
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.vergil.basic.RelativeLocatable;
+import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-//// TextAttribute
+//// EllipseAttribute
 
 /**
- <p>
- This is an attribute that is rendered as text annotation.
- </p>
+ <p>This is an attribute that is rendered as an ellipse.
+ Unlike the base class, by default, an ellipse is centered on its origin.</p>
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 4.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (cxh)
  */
-public class TextAttribute extends AbstractTextAttribute implements
-RelativeLocatable {
-
-    // FIXME: It may be possible to make a base class implement
-    // RelativeLocatable, but right now, if we do that, ShapeAttribute
-    // gets messed up because it includes in its bounding box the line
-    // that gets drawn to the relative object. So for now, we restrict
-    // the relative locatable capability to text attributes.
-
+public class EllipseAttribute extends FilledShapeAttribute {
     /** Construct an attribute with the given name contained by the
      *  specified container. The container argument must not be null, or a
      *  NullPointerException will be thrown.  This attribute will use the
@@ -70,25 +62,55 @@ RelativeLocatable {
      *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
-    public TextAttribute(NamedObj container, String name)
+    public EllipseAttribute(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        // Don't use StringParameter here because variable
-        // substitution would be strange.
-        text = new StringAttribute(this, "text");
-        text.setExpression("Double click to edit text.");
-
-        TextStyle style = new TextStyle(text, "_style");
-        style.height.setExpression("15");
-        style.width.setExpression("40");
+        // NOTE: This used to be calling setExpression(), but the change
+        // does not take effect when the icon is created.
+        centered.setToken("true");
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         parameters                        ////
+    ////                         public methods                    ////
 
-    /** The text.  This is a string that defaults to
-     *  "Double click to edit text."
+    /** Clone the object into the specified workspace. The new object is
+     *  <i>not</i> added to the directory of that workspace (you must do this
+     *  yourself if you want it there).
+     *  The result is an object with no container.
+     *  @param workspace The workspace for the cloned object.
+     *  @exception CloneNotSupportedException Not thrown in this base class
+     *  @return The new Attribute.
      */
-    public StringAttribute text;
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        EllipseAttribute newObject = (EllipseAttribute) super.clone(workspace);
+
+        // The cloned icon ends up referring to the clonee's shape.
+        // We need to fix that here. Do not use the _newShape() method
+        // of the clone, however, because it may refer to parameters that
+        // have not been created yet. Instead, use this object to generate
+        // the new shape for the clone.
+        newObject._icon.setShape(_newShape());
+        return newObject;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return a circle.
+     *  @return A Circle.
+     */
+    @Override
+    protected Shape _getDefaultShape() {
+        return new Ellipse2D.Double(0.0, 0.0, 20.0, 20.0);
+    }
+
+    /** Return the a new ellipse given a new width and height.
+     *  @return A new shape.
+     */
+    @Override
+    protected Shape _newShape() {
+        return new Ellipse2D.Double(0.0, 0.0, _widthValue, _heightValue);
+    }
 }
