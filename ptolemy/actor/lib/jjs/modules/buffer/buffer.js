@@ -74,9 +74,15 @@ exports.Buffer.prototype.inspect = function() {
 	return ret;
 };
 
-exports.Buffer.prototype.toString = function() {
+exports.Buffer.prototype.toString = function(begin, end) {
+	if (begin == undefined) {
+		begin = 0;
+	}
+	if (end == undefined) {
+		end = this.array.length;
+	}
 	var ret = '';
-	for (var i = 0; i < this.array.length; i++) {
+	for (var i = begin; i < end; i++) {
 		ret += String.fromCharCode(this.array[i]);
 	}
 	return ret;
