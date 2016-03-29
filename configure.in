@@ -3666,17 +3666,11 @@ else
     # under NT and cygwin works properly
     startdir=$PTII
     cd "$srcdir/config"
-    case "`uname -s`" in
-        Darwin) 
-            # Under Mac OS X, look for /opt/local/share/OpenCV/java/lib/*.jar, which
-            # can be installed with  "sudo port install opencv +python27 +java"
-            TMP_OPENCV_JAR=`find /opt/local/share/OpenCV/java -name "opencv-*.jar" | head -1`
-            if test -e "$TMP_OPENCV_JAR"; then
-               OPENCV_JAR=$TMP_OPENCV_JAR
-               OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."               
-            fi
-            ;;
-    esac
+    TMP_OPENCV_JAR=`find $PTII/lib -name "opencv-*.jar" | head -1`
+    if test -e "$TMP_OPENCV_JAR"; then
+        OPENCV_JAR=$TMP_OPENCV_JAR
+        OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."               
+    fi
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
     if "$JAVAC" $OPENCV_CLASSPATH OpenCVTest.java ; then
         if "$JAVA" $OPENCV_CLASSPATH OpenCVTest; then
@@ -3718,6 +3712,8 @@ else
     You need not download OpenCV unless you plan on using the video
     actors in $OPENCV_USER_DIR
     The OpenCV API can be downloaded from http://opencv.org.
+    Under Mac OS X, try:
+       sudo port install opencv +python27 +java
     See org/ptolemy/opencv/package.html for installation help.])
         fi
     else
@@ -3726,6 +3722,8 @@ else
     You need not download OpenCV unless you plan on using the video
     actors in $OPENCV_USER_DIR
     The OpenCV API can be downloaded from http://opencv.org.
+    Under Mac OS X, try:
+       sudo port install opencv +python27 +java
     See org/ptolemy/opencv/package.html for installation help.])
     fi
     cd "$startdir"
