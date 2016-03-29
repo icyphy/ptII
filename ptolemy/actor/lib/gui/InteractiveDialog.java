@@ -561,7 +561,7 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
             setFrame(frame);
         }
 
-        /** The frame */
+        /** The frame. */
         public DialogFrame frame;
 
         /** The UserDialog. */
