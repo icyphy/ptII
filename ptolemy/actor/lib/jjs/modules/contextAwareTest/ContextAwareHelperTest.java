@@ -191,7 +191,7 @@ public class ContextAwareHelperTest {
      */
 
     public void setSelectedService(String[] list) {
-        GUI = new ContextAwareGUI(list);
+        _GUI = new ContextAwareGUI(list);
         addListeners();
     }
 
@@ -202,17 +202,17 @@ public class ContextAwareHelperTest {
             
         int length = Array.getLength(parameters);
             
-        for(int i = 0; i < GUI.labels.size(); i++) {
+        for(int i = 0; i < _GUI.labels.size(); i++) {
             if(i < length) {
-                GUI.labels.get(i).setText(parameters[i]);
-                GUI.labels.get(i).setVisible(true);
-                GUI.textFields.get(i).setVisible(true);
+                _GUI.labels.get(i).setText(parameters[i]);
+                _GUI.labels.get(i).setVisible(true);
+                _GUI.textFields.get(i).setVisible(true);
             }
             else {
-                GUI.labels.get(i).setVisible(false);
-                GUI.textFields.get(i).setVisible(false);
+                _GUI.labels.get(i).setVisible(false);
+                _GUI.textFields.get(i).setVisible(false);
             }
-            GUI.textFields.get(i).setText(null);
+            _GUI.textFields.get(i).setText(null);
         }
     }
  
@@ -235,6 +235,17 @@ public class ContextAwareHelperTest {
     /** The output choices of the Paraimpu service. */
     public String[] paraimpuOutputPort = {"payload","producer", "thingId"};
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** The GUI. */
+    protected ContextAwareGUI _GUI;
+        
+    /** The service that was selected. */
+    protected String _selectedServiceParam;
+
+    /** The sensor that was selected. */
+    protected String _sensorService;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
@@ -244,7 +255,7 @@ public class ContextAwareHelperTest {
     private void addListeners() {
         // FIXME: use a complete sentence below.
         //when button is pressed, call getSensors from accessor
-        GUI.searchButton.addActionListener(new ActionListener() {
+        _GUI.searchButton.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     try {
@@ -258,15 +269,15 @@ public class ContextAwareHelperTest {
             });
         // FIXME: use a complete sentence below.
         //when ever the type of REST service changes, get the parameters required
-        GUI.servicesList.addListSelectionListener(new ListSelectionListener() {
+        _GUI.servicesList.addListSelectionListener(new ListSelectionListener() {
                 @Override        
                 public void valueChanged(ListSelectionEvent e) {
-                    _selectedServiceParam = GUI.servicesList.getSelectedValue();               
+                    _selectedServiceParam = _GUI.servicesList.getSelectedValue();               
                     try {
                         System.out.println("getParameters" + _selectedServiceParam);
                         setParameters(defaultParamList);
                         for (int i = 0; i< defaultParamList.length; i++) {
-                            System.out.println( GUI.textFields.get(i).getText());
+                            System.out.println( _GUI.textFields.get(i).getText());
                     
                         }
                         // ((Invocable)_engine).invokeFunction("getParameters", MW);
@@ -278,13 +289,4 @@ public class ContextAwareHelperTest {
                 }
             });
     }
-      
-    ///////////////////////////////////////////////////////////////////
-    ////                         protected variables               ////
-
-    // FIXME: Protected fields go above private methods.  Add Javadoc for each of these.
-    protected ContextAwareGUI GUI;
-        
-    protected String _selectedServiceParam;
-    protected String _sensorService;
 }

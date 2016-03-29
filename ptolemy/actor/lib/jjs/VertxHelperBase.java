@@ -264,7 +264,11 @@ public class VertxHelperBase extends HelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
-    /** Append a numeric instance of the specified type to a buffer. */
+    /** Append a numeric instance of the specified type to a buffer.
+     *  @param buffer The buffer to which to append
+     *  @param data The data to be appended
+     *  @param type The type of data.
+     */
     protected void _appendNumericToBuffer(Buffer buffer, Object data, DATA_TYPE type) {
         if (data instanceof Number) {
             switch(type) {
@@ -319,8 +323,6 @@ public class VertxHelperBase extends HelperBase {
      *  @param imageType If the type is IMAGE, then then the image encoding to use, or
      *   null to use the default (JPG).
      *  @param buffer The buffer.
-     *  @param errorEmitter The JavaScript event emitter to which to emit
-     *   "error" events if errors occur.
      */
     protected void _appendToBuffer(
             final Object data, DATA_TYPE type, String imageType, Buffer buffer) {
@@ -371,6 +373,7 @@ public class VertxHelperBase extends HelperBase {
      *  @param buffer The buffer containing the data.
      *  @param type The type to extract.
      *  @param position The position in the buffer from which to extract it.
+     *  @return The numeric instance.
      */
     protected Object _extractFromBuffer(Buffer buffer, DATA_TYPE type, int position) {
         try {
@@ -580,6 +583,9 @@ public class VertxHelperBase extends HelperBase {
 
     /** Global (unclustered) instance of Vert.x core. */
     protected static Vertx _vertx = null;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     private fields                        ////
 
     /** Event bus address for notifications. */
     private String _address;
