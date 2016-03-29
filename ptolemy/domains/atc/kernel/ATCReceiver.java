@@ -38,18 +38,32 @@ import ptolemy.kernel.util.NamedObj;
  *  This receiver checks the containing actor, and if it can reject inputs,
  *  then uses it to determine whether to accept a token.
  *  @author Marjan Sirjani and Edward A. Lee
+ *  @version $Id$
+ *  @since Ptolemy II 11.0
  */
 public class ATCReceiver extends DEReceiver {
 
+    /** Create a new receiver.
+     */
     public ATCReceiver() {
-        // TODO Auto-generated constructor stub
+        super();
     }
 
+    /** Create a new receiver in the specified container with the specified
+     *  name. 
+     *  @param container The container.
+     *  @exception IllegalActionException If this actor cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     */
     public ATCReceiver(IOPort container) throws IllegalActionException {
         super(container);
-        // TODO Auto-generated constructor stub
     }
     
+    /** Put the token.
+     *  @param token The token
+     *  @exception IllegalActionException If the token cannot be put
+     *  @exception NoRoomException If there is no room.
+     */
     @Override
     public void put(Token token) throws IllegalActionException, NoRoomException {
         IOPort port = getContainer();

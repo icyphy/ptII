@@ -2100,7 +2100,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     /**
      * Set the static default class loading strategy that will be used by all instances of this class.
-     * @param classLoadingStrategy
+     * @param classLoadingStrategy The class loading strategy.
      * @see #getDefaultClassLoadingStrategy()
      */
     public static void setDefaultClassLoadingStrategy(ClassLoadingStrategy classLoadingStrategy) {

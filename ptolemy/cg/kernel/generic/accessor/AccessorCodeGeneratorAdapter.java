@@ -154,6 +154,7 @@ public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter 
         _eol = StringUtilities.getProperty("line.separator");
     }
 
+    /** Level one indent string. */
     protected final static String _INDENT1 = "    ";
 
     ///////////////////////////////////////////////////////////////////

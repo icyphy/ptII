@@ -209,7 +209,7 @@ public class StationWriter extends TypedAtomicActor {
     }
 
     /** Write a token to a file.
-     *  @param The token
+     *  @param param The token
      *  @exception IllegalActionException If throw while getting the
      *  file name, while getting the file, while opening the file or
      *  while writing the token.

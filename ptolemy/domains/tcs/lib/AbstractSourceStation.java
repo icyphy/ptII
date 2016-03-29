@@ -1,4 +1,3 @@
-
 /* A model of a source station in train control system.
 
 Copyright (c) 2015 The Regents of the University of California.
@@ -57,9 +56,11 @@ import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
 ///////////////////////////////////////////////////////////////////
 ////AbstractSourceStation
 
-/** This abstract actor models a source staton which receives a record token. This token is a train decides to move.
- * Therefore, this actor just sends the train out. At each (take off) time, just one train can move. 
- * If the destination track  is unavailable, then station try to send it after a period of time. 
+/** This abstract actor models a source staton which receives a record
+ *  token. This token is a train decides to move.  Therefore, this
+ *  actor just sends the train out. At each (take off) time, just one
+ *  train can move.  If the destination track is unavailable, then
+ *  station try to send it after a period of time.
  *  @author Maryam Bagheri
  *  @version $Id$
  *  @since Ptolemy II 11.0
@@ -165,6 +166,8 @@ public class AbstractSourceStation extends TypedAtomicActor{
    /** This method handles changing in the symbol parameter of the
     * source station.  Symbol parameter shows the symbol of the line.
     * @param attribute The attribute that is changing.
+    * @exception IllegalActionException If thrown while geting the value of
+    * various tokens or by the super class.
     */
    @Override
    public void attributeChanged(Attribute attribute) throws IllegalActionException {
@@ -175,8 +178,7 @@ public class AbstractSourceStation extends TypedAtomicActor{
                throw new IllegalActionException("Inappropriate line symbol");
            ArrayToken color=((TCSDirector)director).getColor(_symbol);
            _sourceStationBorder.fillColor.setToken(color); 
-       }
-       else {
+       } else {
            super.attributeChanged(attribute);
        }
    }
