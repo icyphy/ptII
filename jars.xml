@@ -42,6 +42,7 @@
     <include name="org/ptolemy/machineImprovisation/demo/demo.jar" />
     <include name="org/ptolemy/machineLearning/machineLearning.jar" />
     <include name="org/ptolemy/machineLearning/particleFilter/particleFilter.jar" />
+    <include name="org/ptolemy/opencv.jar" />
     <include name="org/ptolemy/optimization.jar" />
     <include name="org/ptolemy/osc.jar" />
     <include name="org/ptolemy/ptango/ptango.jar" />
@@ -4134,6 +4135,17 @@
       </fileset>
     </jar>
 
+    <!-- org/ptolemy/opencv/opencv.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/ptolemy/opencv/opencv.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="org/ptolemy/opencv/*.class"/>
+	<include name="org/ptolemy/opencv/*.xml"/>
+	<include name="org/ptolemy/opencv/demo/*/*.xml"/>
+      </fileset>
+    </jar>
+    
     <!-- org/ptolemy/optimization/optimization.jar -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/org/ptolemy/optimization/optimization.jar"
