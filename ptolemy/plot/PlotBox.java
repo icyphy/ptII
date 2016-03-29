@@ -1,6 +1,6 @@
 /* A labeled box for signal plots.
 
- @Copyright (c) 1997-2015 The Regents of the University of California.
+ @Copyright (c) 1997-2016 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -46,6 +46,8 @@ import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.image.BufferedImage;
 import java.awt.print.PageFormat;
 import java.awt.print.Printable;
@@ -242,7 +244,7 @@ import ptolemy.util.StringUtilities;
  This class uses features of JDK 1.2, and hence if used in an applet,
  it can only be viewed by a browser that supports JDK 1.2, or a plugin.
 
- @author Edward A. Lee, Christopher Brooks, Contributors: Jun Wu (jwu@inin.com.au), William Wu, Robert Kroeger, Tom Peachey, Bert Rodiers
+ @author Edward A. Lee, Christopher Brooks, Contributors: Jun Wu (jwu@inin.com.au), William Wu, Robert Kroeger, Tom Peachey, Bert Rodiers, Dirk Bueche
 
  @version $Id$
  @since Ptolemy II 0.2
@@ -265,6 +267,9 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
         // Create a right-justified layout with spacing of 2 pixels.
         setLayout(new FlowLayout(FlowLayout.RIGHT, 2, 2));
         addMouseListener(new ZoomListener());
+        addMouseWheelListener(new ZoomListener2()); // Dirk: zooming with the mouse wheel
+        addMouseListener(new MoveListener());       // Dirk: move plotted objects with 3rd mouse button
+        addMouseMotionListener(new MoveMotionListener());  // Dirk
         addKeyListener(new CommandListener());
         addMouseMotionListener(new DragListener());
 
@@ -1657,6 +1662,34 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
         }
 
         _fillButton.setVisible(visible);
+
+        // Dirk: a button for equal axis plotting (similar to MATLAB "axis equal")
+        if (_eqAxButton == null) {
+            // Load the image by using the absolute path to the gif.
+            URL img = null;
+            try {
+                // FindBugs: Usage of GetResource may be unsafe if
+                // class is extended
+                img = FileUtilities.nameToURL(
+                        "$CLASSPATH/ptolemy/plot/img/equal.gif", null, null);
+            } catch (IOException ex) {
+                ex.printStackTrace();
+            }
+            if (img != null) {
+                ImageIcon fillIcon = new ImageIcon(img);
+                _eqAxButton = new JButton(fillIcon);
+                _eqAxButton.setBorderPainted(false);
+            } else {
+                // Backup in case something goes wrong with the
+                // class loader.
+                _eqAxButton = new JButton("E");
+            }
+            _eqAxButton.setPreferredSize(new Dimension(20, 20));
+            _eqAxButton.setToolTipText("Rescale to equal axis intervals per pixel");
+            _eqAxButton.addActionListener(new ButtonListener());
+            add(_eqAxButton);
+        }
+        _eqAxButton.setVisible(visible);
 
         // Request the focus so that key events are heard.
         // NOTE: no longer needed?
@@ -3174,6 +3207,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
 
         _printButton.setVisible(visibility);
         _fillButton.setVisible(visibility);
+        _eqAxButton.setVisible(visibility);   // Dirk: equal axis button
         _formatButton.setVisible(visibility);
         _resetButton.setVisible(visibility);
     }
@@ -4245,6 +4279,27 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
         _zoomxn = _zoomyn = _zoomx = _zoomy = -1;
     }
 
+    /** 
+     * Zoom to that equal interval widths are on x and y axis.
+     * For example, a miss-scaled circle will look circular afterwords. 
+     * @author Dirk Bueche
+     */
+    public synchronized void zoomEqual(){
+      
+      double temp = _padding;
+      _padding = 0;
+      double rx = (1.0*_xMax-_xMin)/(_lrx-_ulx);   // delta x per pixel
+      double ry = (1.0*_yMax-_yMin)/(_lry-_uly);   // delta y per pixel
+      
+      if (ry > rx)
+        _xMax = _xMin + ry/rx*(_xMax - _xMin);
+      if (rx > ry)
+        _yMax = _yMin + rx/ry*(_yMax - _yMin);
+      zoom(_xMin, _yMin, _xMax, _yMax);
+      _padding = temp;
+    }  
+    
+    
     /*
      *  Draw a box for an interactive zoom box.  The starting point (the
      *  upper left corner of the box) is taken
@@ -4522,6 +4577,9 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
 
     // A button for filling the plot
     private transient JButton _fillButton = null;
+    
+    // Dirk: a button for equal axis scaling
+    private transient JButton _eqAxButton = null;
 
     // A button for formatting the plot
     private transient JButton _formatButton = null;
@@ -4550,6 +4608,11 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
     // A button for filling the plot
     private transient JButton _resetButton = null;
 
+    // Dirk: Variables keeping track of the interactive moving.
+    // Initialize to impossible values.
+    private transient int _movex = -1;
+    private transient int _movey = -1;
+
     // True when repainting should be performed by a timed thread.
     private boolean _timedRepaint = false;
 
@@ -4576,6 +4639,8 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
     private transient boolean _drawn = false;
 
     private transient boolean _zooming = false;
+    
+    private transient boolean _moving = false;
 
     // NOTE: It is unfortunate to have to include the DTD here, but there
     // seems to be no other way to ensure that the generated data exactly
@@ -4647,6 +4712,8 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
         public void actionPerformed(ActionEvent event) {
             if (event.getSource() == _fillButton) {
                 fillPlot();
+            } else if (event.getSource() == _eqAxButton) { // Dirk: equal axis zooming
+                zoomEqual();
             } else if (event.getSource() == _printButton) {
                 // If you are using $PTII/bin/vergil, under bash,
                 // set this property:
@@ -4800,6 +4867,146 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
                     || event.getModifiers() == 0) {
                 PlotBox.this._zoom(event.getX(), event.getY());
             }
+        }
+    }
+    /** Move the items in the plot */
+    public class MoveListener implements MouseListener {
+        // Author: Dirk Bueche.
+
+        /** Ignored.
+         *  @param event Ignored.
+         */
+        public void mouseClicked(MouseEvent event) {
+        }
+
+        /** Ignored.
+         *  @param event Ignored.
+         */
+        public void mouseEntered(MouseEvent event) {
+        }
+
+        /** Ignored.
+         *  @param event Ignored.
+         */
+        public void mouseExited(MouseEvent event) {
+        }
+
+        /** If the third button is pressed, then
+         *  save the X and Y values.   
+         *  @param event The event
+         */
+        public void mousePressed(MouseEvent event) {
+            if (event.getButton() == event.BUTTON3){
+                _movex = event.getX();  // starting point for moving
+                _movey = event.getY();
+                _moving = true;         // flag for moving is on
+            }
+        }
+
+        /** Note that the moving has stopped.
+         *  @param event Ignored.
+         */
+        public void mouseReleased(MouseEvent event) {
+          _moving = false;            // flag for moving is off
+        }
+    }
+    
+    /** Track how the mouse with button 3 pressed is moved. */
+    public class MoveMotionListener implements MouseMotionListener {
+        // Author: Dirk Bueche.
+
+        /** If the mouse is dragged after clicking the third
+         *  button, then shift what is displayed.   
+         *  @param event Ignored.
+         */
+        public void mouseDragged(MouseEvent event) {
+          
+            if (_moving == false) {
+                return;
+            }            
+
+            double dx = _xMax - _xMin;  // actual x range shown in plot
+            double dy = _yMax - _yMin;  // actual y range shown in plot
+            
+            // pixel
+            int px = event.getX();   // current position
+            int py = event.getY();
+            double mpx = px - _movex; // movement
+            double mpy = py - _movey;
+
+            // do moving
+            _xMin = _xMin - dx * mpx/(_lrx-_ulx);
+            _xMax = _xMax - dx * mpx/(_lrx-_ulx);
+            _yMin = _yMin - dy * mpy/(_uly-_lry);
+            _yMax = _yMax - dy * mpy/(_uly-_lry);
+
+            _movex = px;
+            _movey = py;
+            
+            // plot new condition
+            double temp = _padding;  // no padding for this zooming
+            _padding = 0;
+            zoom(_xMin, _yMin, _xMax, _yMax);
+            _padding = temp;
+
+        }
+
+        /** Ignored.
+         *  @param event Ignored.
+         */
+        public void mouseMoved(MouseEvent event){
+        }
+
+    }
+
+    
+    /** Zoom with the mouse wheel. */
+    public class ZoomListener2 implements MouseWheelListener {
+        // Author: Dirk Bueche.
+
+        /** If the mouse wheel is moved, then zoom accordingly.
+         *  @param event The mouse wheel event.
+         */
+        public void mouseWheelMoved(MouseWheelEvent e) {
+            String message;
+            int notches = e.getWheelRotation();
+            double factor;
+            if (notches < 0) {
+                message = "Mouse wheel moved UP by " + -notches + " notch(es)";
+                factor = 0.02;  // zoom in
+            } else {
+                message = "Mouse wheel moved DOWN by " + notches + " notch(es)";
+                factor = -0.02; // zoom out
+            }
+            if (e.getScrollType() == MouseWheelEvent.WHEEL_UNIT_SCROLL) {
+                message += "    Scroll type: WHEEL_UNIT_SCROLL\n";
+                message += "    Scroll amount: " + e.getScrollAmount()
+                + " unit increments per notch\n";
+                message += "    Units to scroll: " + e.getUnitsToScroll()
+                + " unit increments\n";
+            } else { //scroll type == MouseWheelEvent.WHEEL_BLOCK_SCROLL
+                message += "    Scroll type: WHEEL_BLOCK_SCROLL\n";
+            }
+            // output for debugging
+            //System.out.println(message);
+
+            // Mouse position - this is the center for zooming
+            double cx = Math.max(Math.min(e.getX(), _lrx),_ulx);
+            double cy = Math.max(Math.min(e.getY(), _lry),_uly);
+
+            double dx = _xMax - _xMin;  // actual x range shown in plot
+            double dy = _yMax - _yMin;  // actual y range shown in plot
+            
+            // do zooming around center for zooming
+            _xMin = _xMin + dx * (cx-_ulx)/(_lrx-_ulx)*factor;
+            _xMax = _xMax - dx * (_lrx-cx)/(_lrx-_ulx)*factor;
+            _yMin = _yMin + dy * (cy-_lry)/(_uly-_lry)*factor;
+            _yMax = _yMax - dy * (_uly-cy)/(_uly-_lry)*factor;
+            
+            double temp = _padding;  // no padding for this zooming
+            _padding = 0;
+            zoom(_xMin, _yMin, _xMax, _yMax);
+            _padding = temp;
         }
     }
 
