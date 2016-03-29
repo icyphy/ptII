@@ -9824,7 +9824,7 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: Open
 $as_echo "OpenCV found in the default classpath." >&6; }; fi
        PTOPENCV_DIR=opencv
        # PTOPENCV_PACKAGES is used in ptII/doc/makefile
-       PTOPENCV_PACKAGES="ptolemy.actor.lib.opencv ptolemy.actor.lib.opencv.optimize"
+       PTOPENCV_PACKAGES="ptolemy.actor.lib.opencv ptolemy.actor.lib.opencv.optimize org.ptolemy.opencv"
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for the OpenCV jar files" >&5
 $as_echo_n "checking for the OpenCV jar files... " >&6; }
 	if "$JAVAC" FindClass.java ; then
@@ -10022,6 +10022,7 @@ fi
 
 if test -z "$PTOPENCV_DIR"; then
    updateExcludes "ptolemy/actor/lib/opencv/"
+   updateExcludes "org/ptolemy/opencv/"
 fi
 
 
