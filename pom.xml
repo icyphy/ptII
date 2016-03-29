@@ -724,6 +724,7 @@ See $PTII/doc/coding/maven.htm
            <exclude>**/ptolemy/backtrack/eclipse/**</exclude>
            <exclude>**/ptolemy/backtrack/test/**</exclude>
 	   <exclude>**/com/jhlabs/**</exclude>
+	   <exclude>org/ptolemy/opencv/**</exclude>
 	   <exclude>org/ptolemy/ssm/**</exclude>
 	   <exclude>org/hlacerti/**</exclude>
            <exclude>doc/coding/templates/**</exclude>
