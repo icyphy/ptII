@@ -63,10 +63,6 @@ ME =		ptolemy/actor/lib
 # $PTII/configure looks for Jython and sets PTJYTHON_DIR in
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTJYTHON_DIR is empty.
 #
-# $PTII/configure looks for Open Computer Vision and sets PTOPENCV_DIR in
-# $PTII/mk/ptII.mk if it was found.  Otherwise, PTOPENCV_DIR is empty.
-#
-#
 DIRS = 		aspect conversions gui logic hoc image test \
 		javasound jjs jopio mbed net io xslt \
 		test comm security string tutorial vhdl video \
@@ -74,7 +70,7 @@ DIRS = 		aspect conversions gui logic hoc image test \
 		$(PTEXCEL_DIR) $(PTJAI_DIR) $(PTJAVAMAIL_DIR) \
 		$(PTJAVASCRIPT_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
-		$(PTJYTHON_DIR) $(PTOPENCV_DIR)
+		$(PTJYTHON_DIR)
 
 # Root of the Java directory
 ROOT =		../../..
@@ -409,7 +405,6 @@ OPTIONAL_FILES = \
 	jjs \
 	js \
 	mail \
-	opencv \
 	reactable \
 	'AbsoluteValue$$1.class' \
 	'AbsoluteValue$$FunctionTerm.class' \
