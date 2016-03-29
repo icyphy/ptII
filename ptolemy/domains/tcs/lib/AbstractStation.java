@@ -64,13 +64,29 @@ import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
 ///////////////////////////////////////////////////////////////////
 ////AbstractStation
 
-/** This abstract actor models a Station. It  receives a train and send it out. 
-* If this station is in junction, it should have address of the next stations in form of "symbolId".
-* If it has more than one output channel, then routes the train based on  moving map of the train. 
-*  @author Maryam Bagheri
-*/
+/** This abstract actor models a Station. It receives a train and send
+ * it out.  If this station is in junction, it should have address of
+ * the next stations in form of "symbolId".  If it has more than one
+ * output channel, then routes the train based on moving map of the
+ * train.
+ *  @author Maryam Bagheri
+ *  @version $Id$
+ *  @since Ptolemy II 11.0
+ */
 public class AbstractStation extends StationWriter implements Rejecting{
 
+    /** Create a new actor in the specified container with the specified
+     *  name.  The name must be unique within the container or an exception
+     *  is thrown. The container argument must not be null, or a
+     *  NullPointerException will be thrown.
+     *
+     *  @param container The container.
+     *  @param name The name of this actor within the container.
+     *  @exception IllegalActionException If this actor cannot be contained
+     *   by the proposed container (see the setContainer() method).
+     *  @exception NameDuplicationException If the name coincides with
+     *   an entity already in the container.
+     */
     public AbstractStation(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -79,28 +95,29 @@ public class AbstractStation extends StationWriter implements Rejecting{
         input.setMultiport(true);
         
         output=new TypedIOPort(this, "output", false, true); 
-        output.setTypeEquals(new RecordType(_lables, _types));
+        output.setTypeEquals(new RecordType(_labels, _types));
         output.setMultiport(true);
         
-        stationId= new Parameter(this, "stationId");
+        stationId = new Parameter(this, "stationId");
         stationId.setTypeEquals(BaseType.INT);
         stationId.setExpression("-1");
         
-        settlingTime= new Parameter(this, "settlingTime");
+        settlingTime = new Parameter(this, "settlingTime");
         settlingTime.setTypeEquals(BaseType.DOUBLE);
         settlingTime.setExpression("1");
         
-        lineSymbol= new Parameter(this, "lineSymbol");
+        lineSymbol = new Parameter(this, "lineSymbol");
         lineSymbol.setTypeEquals(BaseType.STRING);
         
-        inJunction=new Parameter(this,"inJunction");
+        inJunction = new Parameter(this,"inJunction");
         inJunction.setTypeEquals(BaseType.BOOLEAN);
         
-        neighbors=new Parameter(this,"idOfNeighborStationOrJunction");
+        neighbors = new Parameter(this,"neighbors");
+        neighbors.setDisplayName("idOfNeighborStationOrJunction");
         neighbors.setExpression("{}");
         neighbors.setTypeEquals(new ArrayType(BaseType.STRING));
         
-        broken=new Parameter(this, "broken");
+        broken =new Parameter(this, "broken");
         broken.setTypeEquals(BaseType.BOOLEAN);
         
         EditorIcon node_icon = new EditorIcon(this, "_icon");
@@ -157,8 +174,38 @@ public class AbstractStation extends StationWriter implements Rejecting{
     ///////////////////////////////////////////////////////////////////
     ////                       ports and parameters                ////
     
-    public TypedIOPort input, output;
-    public Parameter stationId,settlingTime,lineSymbol,inJunction,broken,neighbors;
+    /** The input port, which is a multiport */
+    public TypedIOPort input;
+
+    /** The output port, which is a multiport consisting of RecordTokens */
+    public TypedIOPort output;
+
+    /** The station ID.  The initial value is an integer with value
+     * -1.
+     */
+    public Parameter stationId;
+
+
+    /** The settling time.  The initial value is an integer with 
+     *  the value 1.
+     */
+    public Parameter settlingTime;
+
+    /** The line symbol, which is a string. */
+    public Parameter lineSymbol;
+
+    /** True if this is an input junction. */
+    public Parameter inJunction;
+
+    /** True if this station is broken. */
+    public Parameter broken;
+
+    /** The neighbors of this station.  The display name is
+     *  "idOfNeighborStationOrJunction".  The initial value of this
+     *  parameter is a string consisting of the open curly bracket
+     *  followed by the close curly bracket: "{}"
+     */
+    public Parameter neighbors;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -320,7 +367,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
     private Token _inTransit;
     private Token _isBroken;
     private Token _id;
-    private String[] _lables={"trainId","trainSymbol","movingMap","trainSpeed","fuel","arrivalTimeToStation","dipartureTimeFromStation"};
+    private String[] _labels={"trainId","trainSymbol","movingMap","trainSpeed","fuel","arrivalTimeToStation","dipartureTimeFromStation"};
     private ArrayToken _noTrainColor = new ArrayToken("{0.0, 0.0, 0.0, 0.0}");
     private ArrayToken _neighbors;
     private int _outRoute;

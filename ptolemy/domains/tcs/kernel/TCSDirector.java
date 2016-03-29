@@ -66,6 +66,8 @@ public class TCSDirector extends DEDirector {
     /** Construct a director in the default workspace with an empty string
      *  as its name. The director is added to the list of objects in
      *  the workspace. Increment the version number of the workspace.
+     *  @param container The container
+     *  @param name The name of the director
      *  @exception NameDuplicationException If construction of Time objects fails.
      *  @exception IllegalActionException If construction of Time objects fails.
      */
@@ -237,29 +239,32 @@ public class TCSDirector extends DEDirector {
     
     
     /** Handle initializing of a SourceStation.
-     *  @param SourceStation
-     *  @throws IllegalActionException 
+     *  @param abstractSourceStation
+     *  @throws IllegalActionException If the line symbol cannot be obtained or if the stationID is -1.
      */
     public void handleInitializedSourceStation(AbstractSourceStation abstractSourceStation) throws IllegalActionException{
        
-        int stationId=((IntToken)abstractSourceStation.stationId.getToken()).intValue();
-        if (abstractSourceStation.lineSymbol.getToken()==null)
+        int stationId = ((IntToken)abstractSourceStation.stationId.getToken()).intValue();
+        if (abstractSourceStation.lineSymbol.getToken()==null) {
             throw new IllegalActionException("Fill Symbol of sourceStation " + stationId);
-        String symbol=((StringToken)(abstractSourceStation.lineSymbol.getToken())).stringValue();
-        symbol=symbol + stationId;
+        }
+        String symbol = ((StringToken)(abstractSourceStation.lineSymbol.getToken())).stringValue();
+        symbol = symbol + stationId;
 
-        if (stationId==-1)
+        if (stationId==-1) {
             throw new IllegalActionException("Invalid id for source station");
-        
-        if (_brokenStations.containsKey(symbol))
+        }
+        if (_brokenStations.containsKey(symbol)) {
             throw new IllegalActionException("Duplication in station id");
+        }
         
-         _brokenStations.put(symbol,(Token)(new BooleanToken(false)));  
+        _brokenStations.put(symbol,(Token)(new BooleanToken(false)));  
     }
     
      /** Retrun color of the train.
      *  @param id Id of the train.
-     *  @throws IllegalActionException 
+     *  @throws IllegalActionException If thrown while creating an ArrayToken
+     *  from the color specification.
      */
     public ArrayToken handleTrainColor(int id) throws IllegalActionException{
         ArrayToken color = _trainsColor.get(id);

@@ -45,27 +45,29 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-//// CSVWriter
+//// TrackWriter
 
-/**
- <p>This actor  writes records,
- one line at a time, to a specified file, as tab-separated list.
- The first line contains the names of the fields of the input
- record, separated by the same delimiter.
- <p>
- The file is specified by the <i>fileName</i> attribute
- using any form acceptable to {@link FileParameter}.</p>
- <p>
-
-
- @see FileParameter
- @see ExpressionWriter
- @version $Id$
- @since Ptolemy II 10.0
- @Pt.ProposedRating Yellow (eal)
- @Pt.AcceptedRating Red (cxh)
+/** Write track records, one line at a time.
+ *  <p> This actor writes track records,
+ * one line at a time, to a specified file, as tab-separated list.
+ * The first line contains the names of the fields of the input
+ * record, separated by the same delimiter.</p>
+ *
+ * <p>The file is specified by the <i>fileName</i> attribute
+ * using any form acceptable to {@link FileParameter}.</p>
+ * 
+ * @see FileParameter
+ * @see ExpressionWriter
+ * @author Maryam Bagheri
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Yellow (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class TrackWriter extends TypedAtomicActor {
+    // FIXME: TrackWriter seems to be a copy of CSVWriter. Can we
+    // avoid code duplication here?
+    
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -208,7 +210,13 @@ public class TrackWriter extends TypedAtomicActor {
         }
     }
 
+    /** Write a token to the file.
+     *  @param param The token
+     *  @exception IllegalActionException If thrown while opening the file or
+     *  writing to it.
+     */   
     protected void _writingToFile(Token param) throws IllegalActionException{
+        // FIXME: Is "writing" the best name for the method?  How about _writeToFile()?
         if (_writer == null) {
             // File has not been opened.
             String fileNameValue = fileName.stringValue();

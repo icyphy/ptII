@@ -298,15 +298,17 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
     
     /** Determine the color of the track/train .
      *  @param id The train ID or -1 to indicate no train.
-     *  @throws IllegalActionException
+     *  @throws IllegalActionException If thrown while getting the director.
+     *  @return The color.
      */
     protected ArrayToken _setIcon(int id) throws IllegalActionException {
         ArrayToken color = _noTrainColor;
             if (id > -1) {
-                Director _director=getDirector();
+                Director _director = getDirector();
                 color = ((TCSDirector)_director).handleTrainColor(id);
-                if(color==null)
-                    throw new IllegalActionException("Color for the train "+id+" has not been set");
+                if (color == null) {
+                    throw new IllegalActionException("Color for the train " + id + " has not been set");
+                }
             } 
         return color;
     }
