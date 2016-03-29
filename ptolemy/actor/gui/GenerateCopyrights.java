@@ -260,11 +260,8 @@ public class GenerateCopyrights {
                 "ptolemy/actor/lib/logic/fuzzy/FuzzyEngine-copyright.htm");
         _addIfClassPresent(copyrightsMap, "javax.mail.Address",
                 "lib/javamail-license.htm");
-        _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.opencv.OpenCVReader",
-                "ptolemy/actor/lib/opencv/opencv-copyright.htm");
-        _addIfClassPresent(copyrightsMap,
-                "ptolemy.actor.lib.opencv.javacv.CameraReader",
-                "ptolemy/actor/lib/opencv/javacv/javacv-copyright.htm");
+        _addIfClassPresent(copyrightsMap, "org.ptolemy.opencv.FaceRecognizer",
+                "lib/opencv-license.htm");
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.python.PythonScript",
                 "ptolemy/actor/lib/python/jython-license.htm");
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.x10.X10Interface",
@@ -1043,7 +1040,7 @@ public class GenerateCopyrights {
             { "netbeans", " ", " ", "Y", "Y", "CDDL + Oracle" },
             { "netty", " ", " ", " ", "Y ", "Apache + MIT + BSD + PD" },
             { "nrjavaserial", " ", " ", "Y", " ", "LGPL 2.1 + Apache" },
-            { "opencv", " ", " ", "Y", " ", "" },
+            { "opencv", " ", " ", "Y", " ", "BSD" },
             { "org.apache.oltu.oauth2", " ", " ", " ", "Y ", "Apache" },
             { "org.eclipse.paho.client.mqttv3", " ", " ", " ", "Y", "Eclipse" },
             { "oscP5", " ", " ", " ", "Y ",
