@@ -3642,25 +3642,22 @@ fi
 
 #--------------------------------------------------------------------
 #       OpenCV is the Computer Vision platform
-#	For more information, 
-#       http://ubaa.net/shared/processing/opencv
-#       See if there was a command-line option for where OpenVision is.
+#	For more information, see http://opencv.org
+#       There used to be actors in ptolemy/actor/lib/opencv,
+#       but they used an older version of the Java interface to OpenCV
+#       and were removed in March, 2016.        
 #--------------------------------------------------------------------
 
-# PTOPENCV_DIR is set to opencv and used in
-# $PTII/ptolemy/actor/lib/makefile if opencv was found
+# PTOPENCV_DIR is set to opencv.
 PTOPENCV_DIR=
 
-# Used in ptolemy/actor/lib/opencv/makefile
+# The OpenCV Jar file.
 OPENCV_JAR=
 
-# We only need to look for OpenCVif the actor/lib/opencv directory is present
-OPENCV_USER_DIR="$PTII/ptolemy/actor/lib/opencv"
+# We only need to look for OpenCVif the org/ptolemy/opencv directory is present
+OPENCV_USER_DIR="$PTII/org/ptolemy/opencv"
 
-# Java Native Access jar file (jna.jar).  See https://jna.dev.java.net/
-# JNA_JAR may be set above
-#JNA_JAR=
-if test ! -d "$OPENCV_USER_DIR"; then
+if test ! -d "$OPENCV_USER_DIR" ; then
     PT_MSG_STATUS([$OPENCV_USER_DIR is not present,
     so we need not find OpenCV - The Open Computer Vision API.])
 else
@@ -3669,33 +3666,35 @@ else
     # under NT and cygwin works properly
     startdir=$PTII
     cd "$srcdir/config"
+    case "`uname -s`" in
+        Darwin) 
+            # Under Mac OS X, look for /opt/local/share/OpenCV/java/lib/*.jar, which
+            # can be installed with  "sudo port install opencv +python27 +java"
+            TMP_OPENCV_JAR=`find /opt/local/share/OpenCV/java -name "opencv-*.jar" | head -1`
+            if test -e "$TMP_OPENCV_JAR"; then
+               OPENCV_JAR=$TMP_OPENCV_JAR
+               OPENCV_CLASSPATH="-classpath $OPENCV_JAR${CLASSPATHSEPARATOR}."               
+            fi
+            ;;
+    esac
     # Don't use 'env $JAVAC . . .' here, it will not work under Cygwin
-    if "$JAVAC" OpenCVTest.java ; then
-       PT_MSG_RESULT(OpenCV found in the default classpath.)
-       PTOPENCV_DIR=opencv
-       # PTOPENCV_PACKAGES is used in ptII/doc/makefile
-       PTOPENCV_PACKAGES="ptolemy.actor.lib.opencv ptolemy.actor.lib.opencv.optimize org.ptolemy.opencv"
-	AC_MSG_CHECKING([for the OpenCV jar files])
-	if "$JAVAC" FindClass.java ; then
-	    # Usually opencv.jar will be in the CLASSPATH
-	    OPENCV_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass hypermedia.video.OpenCV`
-	    if test -f "$OPENCV_JAR" ; then
-	       PT_MSG_RESULT($OPENCV_JAR)
-	       # Here, we should not be adding OPENCV_JAR to Eclipse
-	       # if OpenCV.jar was in the jre
-               #case "`uname -s`" in
-	       #Darwin) 
-  	       #     AC_MSG_WARN([Not including
-   #$OPENCV_JAR
-   #to the Eclipse classpath under Darwin because it is already present.])
-      	  	   #;;
-               #*)
-	           updateClasspath "$OPENCV_JAR"
-		   #;;
-               #esac
-	    else 
-       	       AC_MSG_WARN([Either we could not find 
-    hypermedia.video.OpenCV or else it was already in the JRE.
+    if "$JAVAC" $OPENCV_CLASSPATH OpenCVTest.java ; then
+        if "$JAVA" $OPENCV_CLASSPATH OpenCVTest; then
+            PT_MSG_RESULT(OpenCV found in the default classpath.)
+            PTOPENCV_DIR=opencv
+            # PTOPENCV_PACKAGES is used in ptII/doc/makefile
+            PTOPENCV_PACKAGES="ptolemy.actor.lib.opencv ptolemy.actor.lib.opencv.optimize org.ptolemy.opencv"
+            if test -z "$OPENCV_JAR"; then
+                AC_MSG_CHECKING([for the OpenCV jar files])
+                if "$JAVAC" FindClass.java ; then
+	            # Usually opencv.jar will be in the CLASSPATH
+	            OPENCV_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass org.opencv.core.Core`
+	            if test -f "$OPENCV_JAR" ; then
+	                PT_MSG_RESULT($OPENCV_JAR)
+  	                updateClasspath "$OPENCV_JAR"
+	            else 
+       	                AC_MSG_WARN([Either we could not find 
+    org.opencv.core.Core or else it was already in the JRE.
     Searching for OpenCV.jar returned:
       $OPENCV_JAR
     If the class cannot be found, then Eclipse might not be able to find
@@ -3703,115 +3702,36 @@ else
     This is only a problem if you are using Eclipse.
     If the class was in the JRE, then Eclipse should compile the OpenCV files
     without problems.
-    For details, see $PTII/ptolemy/actor/lib/opencv/package.html])
-	       OPENCV_JAR= 
-               PTOPENCV_DIR=
-	       PTOPENCV_PACKAGES=
-               updateExcludes "ptolemy/actor/lib/opencv/javacv/"
-            fi
-
-
-            AC_MSG_CHECKING([for Processing Library])
-	    if "$JAVAC" FindClass.java ; then
-	        # Usually opencv.jar will be in the CLASSPATH
-	        PROCESSING_CORE_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass processing.core.PImage`
-		if test -f "$PROCESSING_CORE_JAR"; then
-		    PT_MSG_RESULT($PROCESSING_CORE_JAR)
-   		    PTPROCESSING_JARS=$PROCESSING_CORE_JAR
-                    #case "`uname -s`" in
-	       	    #Darwin) 
-  	            #    AC_MSG_WARN([Not including
-   #$PROCESSING_CORE_JAR
-   #in the Eclipse classpath under Darwin because it is already present.])
-      	  	        #;;
-               	    #*)
-			updateClasspath "$PROCESSING_CORE_JAR"
-		        #;;
-                    #esac
-                else
-       	       AC_MSG_WARN([Either we could not find 
-    processing.core.PImage or else it was already in the JRE.
-    Searching for PImage returned:
-      $PROCESSING_CORE_JAR
-    If the class cannot be found, then Eclipse might not be able to find
-    the Processing files.  
-    This is only a problem if you are using Eclipse.
-    If the class was in the JRE, then Eclipse should compile the OpenCV files
-    without problems
-    Processing is the image source processing library from
-    http://processing.org.  It is used by the 
-    vision actors in ptolemy/actor/lib/opencv/.
-    These actors are optional, but require Processing.
-    For details, see $PTII/ptolemy/actor/lib/opencv/package.html])
-    		    PROCESSING_CORE_JAR= 
-	            PTOPENCV_DIR=
-		    PTOPENCV_PACKAGES=
-    	            updateExcludes "ptolemy/actor/lib/opencv/javacv/"
-                 fi
-    	    fi
-
-
-	    # Look for JavaCV, which is GPL'd
-	    JAVACV_JAR=
-	    PTJAVACV_DIR=
-            AC_MSG_CHECKING([for JavaCV jar file])
-            AC_ARG_WITH(javacv, [  --with-javacv=JAR       use the javaCV JAR,
-                          defaults to \$PTII/vendors/misc/javacv-bin/javacv.jar],
-			  JAVACV_JAR=$withval,
-			  JAVACV_JAR=$PTII/vendors/misc/javacv-bin/javacv.jar)
-            if test -f "$JAVACV_JAR"; then
-	    	PT_MSG_RESULT([$JAVACV_JAR])
-		# Set to javacv and used in
-		# $PTII/ptolemy/actor/lib/opencv/makefile if JavaCV was found
-		PTJAVACV_DIR=javacv
-	        updateClasspath "$JAVACV_JAR"
-	    else	   
-	         AC_MSG_WARN([Failed to find PTII/vendors/misc/javacv-bin/javacv.jar
-    perhaps JavaCV is not installed?
-    You need only download JavaCV if you plan on using the actors in
-    in ptolemy/actor/lib/opencv/JavaCV
-    JavaCV may be downloaded from http://code.google.com/p/javacv/])
-    	         updateExcludes "ptolemy/actor/lib/opencv/javacv/"
-  	         # Note that we don't substitute in the ${PTII} here
-   	         JAVACV_JAR='${PTII}/vendors/misc/javacv-bin/javacv.jar'
-            fi
-
-	    if test -z "$JNA_JAR"; then
-	        AC_MSG_CHECKING([for Java Native Access (JNA) jar])
-                if test -f "$PTII/lib/jna.jar"; then
-	            PT_MSG_RESULT($PTII/lib/jna.jar)
-		    JNA_JAR="$PTII/lib/jna.jar"
-	            updateClasspath "$JNA_JAR"
+    For details, see $PTII/org/ptolemy/opencv/package.html])
+                    fi # -f "$OPENCV_JAR"
 	        else
-	            AC_MSG_WARN([Failed to find $PTII/lib/jna.jar,
-    JNA is the Java Native Access interfaced, used by the OpenCV
-    vision actors in ptolemy/actor/lib/opencv/javacv.
-    These actors are optional, but require JNA.
-    For more information about JNA, see https://jna.dev.java.net/])	
-    	            updateExcludes "ptolemy/actor/lib/opencv/javacv/"
-                fi
-    	    fi
-
-	    
-	else
-	    AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
+	            AC_MSG_WARN(['"$JAVAC" FindClass.java' failed.
     This means that Eclipse might not be able to find the OpenCV files.
     This is only a problem if you are using Eclipse])
+                fi # "$JAVAC" FindClass.java
+            else
+                updateClasspath "$OPENCV_JAR"
+            fi # -z "$OPENCV_JAR"
+        else
+            AC_MSG_WARN(['"$JAVA" $OPENCV_CLASSPATH OpenCVTest' failed.
+    perhaps the OpenCV Computer Vision API is not installed?
+    You need not download OpenCV unless you plan on using the video
+    actors in $OPENCV_USER_DIR
+    The OpenCV API can be downloaded from http://opencv.org.
+    See org/ptolemy/opencv/package.html for installation help.])
         fi
     else
-       AC_MSG_WARN(['"$JAVAC" OpenTest.java' failed.
+       AC_MSG_WARN(['"$JAVAC" OpenCVTest.java' failed.
     perhaps the OpenCV Computer Vision API is not installed?
-    You need not download Jai unless you plan on using the video
+    You need not download OpenCV unless you plan on using the video
     actors in $OPENCV_USER_DIR
-    The OpenCV API can be downloaded from 
-    http://ubaa.net/shared/processing/opencv.
-    See ptolemy/actor/lib/opencv/package.html for installing help.])
+    The OpenCV API can be downloaded from http://opencv.org.
+    See org/ptolemy/opencv/package.html for installation help.])
     fi
     cd "$startdir"
 fi
 
 if test -z "$PTOPENCV_DIR"; then
-   updateExcludes "ptolemy/actor/lib/opencv/"
    updateExcludes "org/ptolemy/opencv/"
 fi
 

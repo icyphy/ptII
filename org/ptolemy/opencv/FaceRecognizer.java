@@ -1,77 +1,77 @@
 /* A face detector that uses OpenCV.
 
-@Copyright (c) 2015 The Regents of the University of California.
-All rights reserved.
+   @Copyright (c) 2015 The Regents of the University of California.
+   All rights reserved.
 
-Permission is hereby granted, without written agreement and without
-license or royalty fees, to use, copy, modify, and distribute this
-software and its documentation for any purpose, provided that the
-above copyright notice and the following two paragraphs appear in all
-copies of this software.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the
+   above copyright notice and the following two paragraphs appear in all
+   copies of this software.
 
-IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
-FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
-ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
-THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
-THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
-INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
-MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
-PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
-CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
-ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
-                                                PT_COPYRIGHT_VERSION_2
-                                                COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
-and
+   and
 
-The BSD License 
-By downloading, copying, installing or using the software you agree to this license.
-If you do not agree to this license, do not download, install,
-copy or use the software.
-
-
-                          License Agreement
-               For Open Source Computer Vision Library
-                       (3-clause BSD License)
-
-Copyright (C) 2000-2015, Intel Corporation, all rights reserved.
-Copyright (C) 2009-2011, Willow Garage Inc., all rights reserved.
-Copyright (C) 2009-2015, NVIDIA Corporation, all rights reserved.
-Copyright (C) 2010-2013, Advanced Micro Devices, Inc., all rights reserved.
-Copyright (C) 2015, OpenCV Foundation, all rights reserved.
-Copyright (C) 2015, Itseez Inc., all rights reserved.
-Third party copyrights are property of their respective owners.
-
-Redistribution and use in source and binary forms, with or without modification,
-are permitted provided that the following conditions are met:
-
- * Redistributions of source code must retain the above copyright notice,
-    this list of conditions and the following disclaimer.
-
- * Redistributions in binary form must reproduce the above copyright notice,
-    this list of conditions and the following disclaimer in the documentation
-    and/or other materials provided with the distribution.
-
- * Neither the names of the copyright holders nor the names of the contributors
-    may be used to endorse or promote products derived from this software
-    without specific prior written permission.
-
-This software is provided by the copyright holders and contributors "as is" and
-any express or implied warranties, including, but not limited to, the implied
-warranties of merchantability and fitness for a particular purpose are disclaimed.
-In no event shall copyright holders or contributors be liable for any direct,
-indirect, incidental, special, exemplary, or consequential damages
-(including, but not limited to, procurement of substitute goods or services;
-loss of use, data, or profits; or business interruption) however caused
-and on any theory of liability, whether in contract, strict liability,
-or tort (including negligence or otherwise) arising in any way out of
-the use of this software, even if advised of the possibility of such damage.
+   The BSD License 
+   By downloading, copying, installing or using the software you agree to this license.
+   If you do not agree to this license, do not download, install,
+   copy or use the software.
 
 
- */
+   License Agreement
+   For Open Source Computer Vision Library
+   (3-clause BSD License)
+
+   Copyright (C) 2000-2015, Intel Corporation, all rights reserved.
+   Copyright (C) 2009-2011, Willow Garage Inc., all rights reserved.
+   Copyright (C) 2009-2015, NVIDIA Corporation, all rights reserved.
+   Copyright (C) 2010-2013, Advanced Micro Devices, Inc., all rights reserved.
+   Copyright (C) 2015, OpenCV Foundation, all rights reserved.
+   Copyright (C) 2015, Itseez Inc., all rights reserved.
+   Third party copyrights are property of their respective owners.
+
+   Redistribution and use in source and binary forms, with or without modification,
+   are permitted provided that the following conditions are met:
+
+   * Redistributions of source code must retain the above copyright notice,
+   this list of conditions and the following disclaimer.
+
+   * Redistributions in binary form must reproduce the above copyright notice,
+   this list of conditions and the following disclaimer in the documentation
+   and/or other materials provided with the distribution.
+
+   * Neither the names of the copyright holders nor the names of the contributors
+   may be used to endorse or promote products derived from this software
+   without specific prior written permission.
+
+   This software is provided by the copyright holders and contributors "as is" and
+   any express or implied warranties, including, but not limited to, the implied
+   warranties of merchantability and fitness for a particular purpose are disclaimed.
+   In no event shall copyright holders or contributors be liable for any direct,
+   indirect, incidental, special, exemplary, or consequential damages
+   (including, but not limited to, procurement of substitute goods or services;
+   loss of use, data, or profits; or business interruption) however caused
+   and on any theory of liability, whether in contract, strict liability,
+   or tort (including negligence or otherwise) arising in any way out of
+   the use of this software, even if advised of the possibility of such damage.
+
+
+*/
 package org.ptolemy.opencv;
 
 import java.awt.Color; 
@@ -97,22 +97,27 @@ import ptolemy.kernel.util.IllegalActionException;
 
 import com.jhlabs.image.AbstractBufferedImageOp;
 
+///////////////////////////////////////////////////////////////////
+//// FaceRecognizer
+
 /** A face recognition image filter.
  *  This filter detects faces in the given frame that lie in a square of 
  *  dimensions [x,x], where _minFaceSize <= x <= _maxFaceSize.
  *
  *  The parameters of the filter are:
  *  <ul>
- *  <li> <i>MinFaceSize</i>: Minimum face size to be considered ( one side of a bounding square)
- *  <li> <i>MaxFaceSize</i>: Maximum face size to be considered ( one side of a bounding square) 
+ *  <li> <i>MinFaceSize</i>: Minimum face size to be considered ( one side of a bounding square)</li>
+ *  <li> <i>MaxFaceSize</i>: Maximum face size to be considered ( one side of a bounding square)</li>
  *  </ul>
- *  The class uses Haar Cascade classifier based object detection, as well as
- *  the classifiers for frontal face recognition are based on implementations provided by OpenCV 3.1.0.
+ *
+ *  The class uses Haar Cascade classifier based object detection, as
+ *  well as the classifiers for frontal face recognition are based on
+ *  implementations provided by OpenCV 3.1.0.
  *
  *  @author Ilge Akkaya
  *  @version $Id$
  *  @since Ptolemy II 11.0
- *  @Pt.ProposedRating Yellow (eal)
+ *  @Pt.ProposedRating Yellow (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */
 public class FaceRecognizer extends AbstractBufferedImageOp {
@@ -133,25 +138,27 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
     public BufferedImage filter(BufferedImage source, BufferedImage destination) {
 
         /** Load Native C Library for OpenCV */
-        System.loadLibrary(Core.NATIVE_LIBRARY_NAME);  
+        //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+        // Use a better loader that looks for the shared library for the Mac.
+        OpenCVLoader.loadOpenCV(Core.NATIVE_LIBRARY_NAME);
 
         // Get OpenCV image
-        Mat inputImg = bufferedImage2Mat(source); 
+        Mat inputImage = bufferedImage2Mat(source); 
 
         // Detect faces in image
-        Rect[] faceRectangles = detectFaces(inputImg);
+        Rect[] faceRectangles = detectFaces(inputImage);
         // Draw rectangles around each detected face
         
         for (int i= 0; i < faceRectangles.length; i++) {
             Rect rect = faceRectangles[i];
             // draw bounding rectangle around face
-            Imgproc.rectangle(inputImg, new Point(rect.x,rect.y), 
+            Imgproc.rectangle(inputImage, new Point(rect.x,rect.y), 
                     new Point(rect.x+rect.width,rect.y+rect.height),new Scalar(0,0,255));
         }
  
         setFaceCount(faceRectangles.length);
 
-        return mat2BufferedImage(inputImg); 
+        return mat2BufferedImage(inputImage); 
 
     }
 

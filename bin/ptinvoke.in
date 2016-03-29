@@ -461,7 +461,7 @@ fi
 
 #### Open Computer Vision
 # OPENCV_DIR is set to opencv if Open Computer Vision was found
-PTOPENCV_DIR=@OPENCV_DIR@
+PTOPENCV_DIR=@PTOPENCV_DIR@
 OPENCV_JAR=@OPENCV_JAR@
 if [ "$PTOPENCV_DIR" = "opencv" ]; then 
     OPENCV_JARS="${CLASSPATHSEPARATOR}${OPENCV_JAR}"

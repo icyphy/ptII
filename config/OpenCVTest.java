@@ -25,23 +25,48 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 
 */
-import hypermedia.video.OpenCV;
-
+import org.opencv.core.Core;
+import java.io.File;
 
 /** Simple class used by configure to test whether the OpenCV
-    is present.
-    If this file will not compile because the import statement fails,
-    then try installing OpenCV and the OpenCV Processing Library from
-    http://ubaa.net/shared/processing/opencv/.
-
-    @author Christopher Brooks
-    @version $Id$
-    @since Ptolemy II 10.0
-    @Pt.ProposedRating Green (cxh)
-    @Pt.AcceptedRating Red (cxh)
-*/
+ *  is present by compiling and loading the shared library.
+ *
+ *  <p>To compile and run:</p>
+ *  <pre>
+ *   javac -classpath /opt/local/share/OpenCV/java/opencv-310.jar OpenCVTest.java 
+ *   java -classpath /opt/local/share/OpenCV/java/opencv-310.jar:. OpenCVTest
+ *  </pre>
+ *  <p>See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/OpenCV</p>
+ *
+ *  @author Christopher Brooks
+ *  @version $Id$
+ *  @since Ptolemy II 10.0
+ *  @Pt.ProposedRating Green (cxh)
+ *  @Pt.AcceptedRating Red (cxh)
+ */
 public class OpenCVTest {
     public static void main(String[] args) {
-        System.out.print(System.getProperty("java.version"));
+        try {
+            System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
+            System.out.println("Loaded " + Core.NATIVE_LIBRARY_NAME);
+        } catch (Throwable throwable) {
+            String osName = System.getProperty("os.name");
+            if (osName.startsWith("Mac OS X")) {
+                String portPath = "/opt/local/share/OpenCV/java/lib";
+                String [] paths = {
+                    // FIXME: OpenCV-3.1.0 creates a .so file under Mac OS X.
+                    portPath +  Core.NATIVE_LIBRARY_NAME + ".so",
+                    portPath +  Core.NATIVE_LIBRARY_NAME + ".dylib"
+                };
+                for (int i = 0; i < paths.length; i++) {
+                    if (new File(paths[i]).exists()) {
+                        System.load(paths[i]);
+                        System.out.println("Loaded " + paths[i]);
+                        return;
+                    }
+                }
+            }
+            throw new RuntimeException("Could not load " + Core.NATIVE_LIBRARY_NAME);
+        }
     }
 }
