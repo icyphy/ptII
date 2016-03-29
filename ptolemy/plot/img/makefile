@@ -44,6 +44,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
+	equal.gif \
 	fill.gif \
 	format.gif \
 	print.gif \
