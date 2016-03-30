@@ -1,3 +1,31 @@
+/* Helper for the crypto JavaScript module. 
+
+ Copyright (c) 2016 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
+
+ */
+
 package ptolemy.actor.lib.jjs.modules.crypto;
 
 import java.io.ByteArrayOutputStream;
@@ -6,6 +34,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.DataInputStream;
 import java.io.IOException;
+import java.nio.charset.Charset;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.InvalidKeyException;
 import java.security.Key;
@@ -40,13 +69,11 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
 /** Helper for the crypto JavaScript module. 
-
  *  @author Hokeun Kim
  *  @version $Id$
  *  @since Ptolemy II 11.0
  *  @Pt.ProposedRating Yellow (eal)
  *  @Pt.AcceptedRating Red (cxh)
- *
  */
 public class CryptoHelper extends HelperBase {
 
@@ -502,13 +529,11 @@ public class CryptoHelper extends HelperBase {
                 // hex encoded string
                 return DatatypeConverter.parseHexBinary(stringObject.substring(2));
             } else {
-                return ((String) object).getBytes();
+                // String.getBytes() causes Dm: Dubious method used (FB.DM_DEFAULT_ENCODING)
+                return ((String) object).getBytes(Charset.forName("UTF-8"));
             }
         }
         throw new IllegalActionException("Cannot interpret the input, the input should be either"
                 + "JavaScript int array or string.");
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private variables                 ////
 }
