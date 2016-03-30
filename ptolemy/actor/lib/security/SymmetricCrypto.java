@@ -191,7 +191,10 @@ public class SymmetricCrypto extends TypedAtomicActor {
             _padding = ((StringToken) padding.getToken()).stringValue();
         }
         else if (attribute == macAlgorithm) {
-            _macAlgorithm = ((StringToken) macAlgorithm.getToken()).stringValue();
+            // initialize() is synchronized, so accessing _macAlgorithm better be synchronized.
+            synchronized (this) {
+                _macAlgorithm = ((StringToken) macAlgorithm.getToken()).stringValue();
+            }
         }
         else {
             super.attributeChanged(attribute);
@@ -320,6 +323,7 @@ public class SymmetricCrypto extends TypedAtomicActor {
      */
     @Override
     public synchronized void initialize() throws IllegalActionException {
+        // FIXME: Why is initialize() synchronized here?
         super.initialize();
         if (_macAlgorithm.equals("None")) {
             _messageDigest = null;
