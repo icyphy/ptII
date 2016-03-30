@@ -641,6 +641,9 @@ public class JSAccessor extends JavaScript {
     public static boolean reloadAllAccessors(CompositeEntity composite)
             throws IllegalActionException, IOException, TransformerConfigurationException {
         // This method is use by the test harness.
+        if (composite == null) {
+            return;
+        }
         System.out.println("reloadAllAccessors: " + composite.getFullName());
         boolean containsJSAccessors = false;
         List entities = composite.allAtomicEntityList();
