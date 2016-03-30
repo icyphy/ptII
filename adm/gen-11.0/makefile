@@ -1092,6 +1092,8 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile \
 	#cd src_jar/$(CAPECODE_CAPECODE_VERSION); $(FINDCLEAN))
 	(cd src_jar/$(CAPECODE_CAPECODE_VERSION); rm -rf `cat ../../src.ex`)
+	# Update the CapeCode copyright (really, the license).
+	cp licenseCapeCode.htm src_jar/$(CAPECODE_CAPECODE_VERSION)/copyright.htm
 
 ############################################
 # HyVisual
