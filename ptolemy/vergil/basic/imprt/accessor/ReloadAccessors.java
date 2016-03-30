@@ -101,7 +101,11 @@ public class ReloadAccessors {
 
                         // Save the model.
                         BasicGraphFrame basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(model);
-                        ((PtolemyEffigy) basicGraphFrame.getTableau()
+                        // Coverity Scan suggests that getBasicGraphFrame() could return null.
+                        if (basicGraphFrame == null) {
+                            throw new NullPointerException("The BasicGraphFrame for " + model + " is null?");
+                        }
+                            ((PtolemyEffigy) basicGraphFrame.getTableau()
                                 .getContainer()).writeFile(new File(
                                                 modelFileName));
 
