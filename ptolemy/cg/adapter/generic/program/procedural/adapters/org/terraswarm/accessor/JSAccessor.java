@@ -68,7 +68,7 @@ public class JSAccessor extends NamedProgramCodeGeneratorAdapter {
     public String generateInitializeCode() throws IllegalActionException {
         super.generateInitializeCode();
 
-        org.terraswarm.accessor.JSAccessor actor = (org.terraswarm.accessor.JSAccessor) getComponent();
+        //org.terraswarm.accessor.JSAccessor actor = (org.terraswarm.accessor.JSAccessor) getComponent();
 
         System.out.println("###### generateInitializeCode: ptolemy/cg/adapter/generic/program/procedural/adapters/org/terraswarm/accessor/JSAccessor.java");
         CodeStream codeStream = _templateParser.getCodeStream();

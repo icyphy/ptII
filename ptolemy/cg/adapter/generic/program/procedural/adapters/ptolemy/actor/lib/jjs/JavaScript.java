@@ -65,7 +65,7 @@ public class JavaScript extends NamedProgramCodeGeneratorAdapter {
         StringBuffer code = new StringBuffer();
         code.append(super._generateFireCode());
 
-        ptolemy.actor.lib.jjs.JavaScript actor = (ptolemy.actor.lib.jjs.JavaScript) getComponent();
+        //ptolemy.actor.lib.jjs.JavaScript actor = (ptolemy.actor.lib.jjs.JavaScript) getComponent();
 
         return code.toString();
     }
