@@ -516,6 +516,13 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
             }
             _resetButton = null;
         }
+        if (_eqAxButton != null) {
+            ActionListener[] listeners = _formatButton.getActionListeners();
+            for (ActionListener listener : listeners) {
+                _formatButton.removeActionListener(listener);
+            }
+            _eqAxButton = null;
+        }
         if (_formatButton != null) {
             ActionListener[] listeners = _formatButton.getActionListeners();
             for (ActionListener listener : listeners) {
@@ -4935,10 +4942,12 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
             double mpy = py - _movey;
 
             // do moving
-            _xMin = _xMin - dx * mpx/(_lrx-_ulx);
-            _xMax = _xMax - dx * mpx/(_lrx-_ulx);
-            _yMin = _yMin - dy * mpy/(_uly-_lry);
-            _yMax = _yMax - dy * mpy/(_uly-_lry);
+            synchronized (this) {
+                _xMin = _xMin - dx * mpx/(_lrx-_ulx);
+                _xMax = _xMax - dx * mpx/(_lrx-_ulx);
+                _yMin = _yMin - dy * mpy/(_uly-_lry);
+                _yMax = _yMax - dy * mpy/(_uly-_lry);
+            }
 
             _movex = px;
             _movey = py;
@@ -4990,19 +4999,21 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
             // output for debugging
             //System.out.println(message);
 
-            // Mouse position - this is the center for zooming
-            double cx = Math.max(Math.min(e.getX(), _lrx),_ulx);
-            double cy = Math.max(Math.min(e.getY(), _lry),_uly);
+            synchronized (this) {
+                // Mouse position - this is the center for zooming
+                double cx = Math.max(Math.min(e.getX(), _lrx),_ulx);
+                double cy = Math.max(Math.min(e.getY(), _lry),_uly);
 
-            double dx = _xMax - _xMin;  // actual x range shown in plot
-            double dy = _yMax - _yMin;  // actual y range shown in plot
+                double dx = _xMax - _xMin;  // actual x range shown in plot
+                double dy = _yMax - _yMin;  // actual y range shown in plot
             
-            // do zooming around center for zooming
-            _xMin = _xMin + dx * (cx-_ulx)/(_lrx-_ulx)*factor;
-            _xMax = _xMax - dx * (_lrx-cx)/(_lrx-_ulx)*factor;
-            _yMin = _yMin + dy * (cy-_lry)/(_uly-_lry)*factor;
-            _yMax = _yMax - dy * (_uly-cy)/(_uly-_lry)*factor;
-            
+                // do zooming around center for zooming
+                _xMin = _xMin + dx * (cx-_ulx)/(_lrx-_ulx)*factor;
+                _xMax = _xMax - dx * (_lrx-cx)/(_lrx-_ulx)*factor;
+                _yMin = _yMin + dy * (cy-_lry)/(_uly-_lry)*factor;
+                _yMax = _yMax - dy * (_uly-cy)/(_uly-_lry)*factor;
+            }
+
             double temp = _padding;  // no padding for this zooming
             _padding = 0;
             zoom(_xMin, _yMin, _xMax, _yMax);
