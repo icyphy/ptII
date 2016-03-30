@@ -750,7 +750,11 @@ ApplicationConfigurer, InstanceOpener {
                 // avoid popping up two MessageHandlers.
                 boolean calledMessageHandler = false;
                 try {
-                    if (effigy.getContainer() instanceof ModelDirectory) {
+                    if (effigy == null) {
+                        // Coverity Scan 1352685 warned that effigy can be null.
+                        throw new InternalErrorException("createPrimaryTableau() "
+                                + "called with a null Effigy?");
+                    } else if (effigy.getContainer() instanceof ModelDirectory) {
                         // This is the master.
                         // Calling setContainer() = null will exit, so
                         // we display the error message here.
