@@ -456,21 +456,25 @@ public class CryptoHelper extends HelperBase {
      */
     private byte[] _readBinaryFile(String filePath) throws IllegalActionException {
         File file = FileUtilities.nameToFile(filePath, null);
-        FileInputStream fileInStream = null;
+        DataInputStream dataInStream = null;
         try {
-            fileInStream = new FileInputStream(file);
-        } catch (FileNotFoundException e) {
-            throw new IllegalActionException("File not found.\n" + e.getMessage());
-        }
-        DataInputStream dataInStream = new DataInputStream(fileInStream);
-        byte[] bytes = new byte[(int) file.length()];
-        try {
+            dataInStream = new DataInputStream(new FileInputStream(file));
+            byte[] bytes = new byte[(int) file.length()];
             dataInStream.readFully(bytes);
-            dataInStream.close();
-        } catch (IOException e) {
-            throw new IllegalActionException("Exception while reading file.\n" + e.getMessage());
+            return bytes;
+        } catch (IOException ex) {
+            throw new IllegalActionException(null, ex, "Exception while reading "
+                    + filePath);
+        } finally {
+            if (dataInStream != null) {
+                try {
+                    dataInStream.close();
+                } catch (IOException ex2) {
+                    throw new IllegalActionException(null, ex2, "Failed to close "
+                            + filePath);
+                }
+            }
         }
-        return bytes;
     }
 
     /** Convert a Java byte array into the JavaScript integer array.
