@@ -519,7 +519,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
         if (_eqAxButton != null) {
             ActionListener[] listeners = _formatButton.getActionListeners();
             for (ActionListener listener : listeners) {
-                _formatButton.removeActionListener(listener);
+                _eqAxButton.removeActionListener(listener);
             }
             _eqAxButton = null;
         }
