@@ -642,7 +642,7 @@ public class JSAccessor extends JavaScript {
             throws IllegalActionException, IOException, TransformerConfigurationException {
         // This method is use by the test harness.
         if (composite == null) {
-            return;
+            return false;
         }
         System.out.println("reloadAllAccessors: " + composite.getFullName());
         boolean containsJSAccessors = false;
