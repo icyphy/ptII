@@ -50,7 +50,7 @@
 ////////////////////////////////////////////////////////////
 //// Private variables.
 
-var Filter = Java.type('com.opencv.image.FaceRecognizer');
+var Filter = Java.type('org.ptolemy.opencv.FaceRecognizer');
 var filter = new Filter();
 
 ////////////////////////////////////////////////////////////
