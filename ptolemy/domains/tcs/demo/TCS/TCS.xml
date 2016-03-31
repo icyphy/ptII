@@ -1943,7 +1943,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;I16&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;I16&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -1967,7 +1967,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;I14&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;I14&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2023,7 +2023,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;F3&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;F3&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2047,7 +2047,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;Y3&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;Y3&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2071,7 +2071,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;F4&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;F4&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2095,7 +2095,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;Y4&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;Y4&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2119,7 +2119,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;F5&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;F5&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2143,7 +2143,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;Y5&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;Y5&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2167,7 +2167,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;Y6&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;Y6&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2191,7 +2191,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;F6&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;F6&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2215,7 +2215,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;F7&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;F7&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2239,7 +2239,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;Y7&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;Y7&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2263,7 +2263,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;Y8&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;Y8&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2287,7 +2287,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;F8&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;F8&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2311,7 +2311,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;F9&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;F9&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2335,7 +2335,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;Y9&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;Y9&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2359,7 +2359,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;F10&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;F10&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2383,7 +2383,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;Y10&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;Y10&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2449,7 +2449,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M21&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M21&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2495,7 +2495,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;I11&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;I11&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2519,7 +2519,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;N10&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;N10&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2581,7 +2581,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;N15&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;N15&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2603,7 +2603,7 @@
         </property>
         <property name="lineSymbol" class="ptolemy.data.expr.Parameter" value="&quot;N&quot;">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;N13&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;N13&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2673,7 +2673,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M20&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M20&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2697,7 +2697,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M19&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M19&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2721,7 +2721,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M18&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M18&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2745,7 +2745,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M17&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M17&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2769,7 +2769,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M16&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M16&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2793,7 +2793,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M15&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M15&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2817,7 +2817,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M14&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M14&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2841,7 +2841,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M13&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M13&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2865,7 +2865,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M12&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M12&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2889,7 +2889,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M11&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M11&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2975,7 +2975,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M8&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M8&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -2999,7 +2999,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M7&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M7&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -3023,7 +3023,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="{&quot;M5&quot;,&quot;m5&quot;}">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="{&quot;M5&quot;,&quot;m5&quot;}">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
@@ -3067,7 +3067,7 @@
         </property>
         <property name="inJunction" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="idOfNeighborStationOrJunction" class="ptolemy.data.expr.Parameter" value="">
+        <property name="neighbors" class="ptolemy.data.expr.Parameter" value="">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="_borderShape" class="ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute">
