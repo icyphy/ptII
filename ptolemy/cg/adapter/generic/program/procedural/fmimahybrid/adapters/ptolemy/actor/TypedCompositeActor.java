@@ -37,11 +37,13 @@ import org.ptolemy.fmi.type.FMIIntegerType;
 import org.ptolemy.fmi.type.FMIRealType;
 import org.ptolemy.fmi.type.FMIStringType;
 
+import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.domains.continuous.kernel.ContinuousDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.util.StringUtilities;
@@ -146,6 +148,43 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
 
         codeStream.appendCodeBlock("variableDeclareBlock");
 
+        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent());
+        Object director = getCodeGenerator().getAdapter(
+                ((ptolemy.actor.CompositeActor) getComponent()).getDirector());
+        Director directorAdapter = null;
+        try {
+            directorAdapter = (Director) director;
+        } catch (ClassCastException ex) {
+            throw new IllegalActionException(
+                    adapter.getComponent(),
+                    ex, "Failed to cast " + director + " of class "
+                            + director.getClass().getName() + " to "
+                            + Director.class.getName() + ".");
+        }
+        ContinuousDirector ctdirector = null;
+        long startTime = 0;
+        long endTime = 1000;
+        double timeRes = 0;
+        String stepSize = "1";
+        try {
+            ctdirector = (ContinuousDirector) directorAdapter.getComponent();
+            startTime = ctdirector.getModelStartTime().getLongValue();
+            endTime = ctdirector.getModelStopTime().getLongValue();
+            timeRes = ctdirector.getTimeResolution();
+            stepSize = ctdirector.initStepSize.getValueAsString();
+        } catch (ClassCastException ex) {
+            throw new IllegalActionException(
+                    adapter.getComponent(),
+                    ex, "Failed to cast " + director + " of class "
+                            + director.getClass().getName() + " to "
+                            + ContinuousDirector.class.getName() + ".");
+        }
+        codeStream.append("fmi2IntegerTime tStart   = " + startTime + ";\n");
+        codeStream.append("fmi2IntegerTime tEnd   = " + endTime + ";\n");
+        codeStream.append("#define DEFAULT_COMM_STEP_SIZE " + (long) (Double.parseDouble(stepSize) / timeRes) + "\n");
+        codeStream.append("#define DEFAULT_RESOLUTION " + (long) (1/timeRes) + "\n");
+        
+        
         int fmuCount = 0;
         int connectionsCount = 0;
 
@@ -190,7 +229,7 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         }
         codeStream.append("};\n" + _eol);
 
-        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent());
+//        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent());
         actors =  topActor.deepEntityList().iterator();
         codeStream.append("int static i = 0;\n");
                 codeStream.append("static void setupParameters(FMU *fmu) {\n");
