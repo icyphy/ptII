@@ -39,8 +39,13 @@ import org.ptolemy.fmi.type.FMIIntegerType;
 import org.ptolemy.fmi.type.FMIRealType;
 import org.ptolemy.fmi.type.FMIStringType;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.fmi.FMUImport;
+import ptolemy.actor.lib.fmi.FMUImportHybrid;
+import ptolemy.actor.lib.gui.TimedDisplay;
+import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -98,12 +103,11 @@ public class Director extends FMIMACodeGeneratorAdapter {
                 Iterator<?> actors = ((CompositeActor) adapter.getComponent()
                                 .getContainer()).deepEntityList().iterator();
 
-                code.append(getCodeGenerator()
-                                .comment(
-                                                "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java start"
-                                                                + _eol
-                                                                + "   "
-                                                                + adapter.getComponent().getName()));
+                code.append(getCodeGenerator().comment(
+                        "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java start"
+                                + _eol
+                                + "   "
+                                + adapter.getComponent().getName()));
 
                 // Generate the start of the main() method.
                 // FIXME: we should generate the start of the main() method from some
@@ -113,27 +117,28 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
                 codeStream.appendCodeBlock("mainStartBlock");
                 code.append(processCode(codeStream.toString()));
-
+                
                 actors = ((CompositeActor) adapter.getComponent().getContainer())
                                 .deepEntityList().iterator();
 
                 while (actors.hasNext()) {
-
-                        ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
-                                        .next();
+                    Actor actorIter = (Actor) actors.next();
+                    if (actorIter instanceof FMUImportHybrid) {
+                        ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
                         // Add code for loading and initialize FMUs
                         code.append("printf(\"Loading FMU " + actor.getName()
-                                        + "...\\n\");\n");
+                        + "...\\n\");\n");
                         // Replace \ with /.
                         code.append("loadFMU(&fmus[" + actor.getName() + "], \""
                                 + actor.fmuFile.asFile().toString().replace("\\","/") + "\");\n");
                         code.append("fmuFileNames[" + actor.getName() + "] = strdup(\""
                                 + actor.fmuFile.asFile().toString().replace("\\","/") + "\");\n");
                         code.append("printf(\"Initializing FMU " + actor.getName()
-                                        + "...\\n\");\n");
+                        + "...\\n\");\n");
                         code.append("fmus[" + actor.getName()
-                                        + "].component = initializeFMU(&fmus[" + actor.getName()
-                                        + "], visible, loggingOn, nCategories, &categories, NAMES_OF_FMUS[" + actor.getName() + "]);\n");
+                        + "].component = initializeFMU(&fmus[" + actor.getName()
+                        + "], visible, loggingOn, nCategories, &categories, NAMES_OF_FMUS[" + actor.getName() + "]);\n");
+                    }
                 }
 
                 HashMap<Node, FMIScalarVariable> node2Scalar = new HashMap<Node, FMIScalarVariable>();
@@ -148,24 +153,25 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
                 // Add all the nodes to the graph
                 while (actors.hasNext()) {
-
-                        ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
-                                        .next();
+                    Actor actorIter = (Actor) actors.next();
+                    if (actorIter instanceof FMUImportHybrid) {
+                        ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
                         for (TypedIOPort port : actor.portList()) {
-                                for (FMIScalarVariable scalar : actor.getScalarVariables()) {
-                                        if ((scalar.causality == Causality.input ||  scalar.causality == Causality.output)
-                                                        && scalar.name.equals(port.getName())) {
-                                                Node node = new Node(port);
-                                                port2Scalar.put(port, scalar);
-                                                node2Scalar.put(node, scalar);
-                                                port2Node.put(port, node);
-                                                node2Port.put(node, port);
-                                                graph.addNode(node);
-                                        }
+                            for (FMIScalarVariable scalar : actor.getScalarVariables()) {
+                                if ((scalar.causality == Causality.input ||  scalar.causality == Causality.output)
+                                        && scalar.name.equals(port.getName())) {
+                                    Node node = new Node(port);
+                                    port2Scalar.put(port, scalar);
+                                    node2Scalar.put(node, scalar);
+                                    port2Node.put(port, node);
+                                    node2Port.put(node, port);
+                                    graph.addNode(node);
                                 }
+                            }
                         }
+                    }
                 }
-
+                
                 actors = ((CompositeActor) adapter.getComponent().getContainer())
                                 .deepEntityList().iterator();
 
@@ -174,49 +180,49 @@ public class Director extends FMIMACodeGeneratorAdapter {
                 // Iterate through the actors and generate connection list.
                 while (actors.hasNext()) {
 
-                        // FIXME: Check to see if the actor is something other than a
-                        // FMUImport.
-
-                        ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
-                                        .next();
-
+                    // FIXME: Check to see if the actor is something other than a
+                    // FMUImport.
+                    Actor actorIter = (Actor) actors.next();
+                    if (actorIter instanceof FMUImportHybrid) {
+                        ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
                         for (TypedIOPort output : actor.outputPortList()) {
-                                FMIScalarVariable scalar = port2Scalar.get(output);
-                                List<FMIScalarVariable> inputDependencies = actor.getInputDependencyList(scalar);
-                                if (inputDependencies != null) {
-                                        for (FMIScalarVariable inputScalar : inputDependencies) {
-                                                Node source = null;
-                                                Node sink = port2Node.get(output);
-                                                for (TypedIOPort port : actor.inputPortList()) {
-                                                        if (port.getName().equals(inputScalar.name))
-                                                                source = port2Node.get(port);
-                                                }
-                                                graph.addEdge(source, sink);
-                                        }
+                            FMIScalarVariable scalar = port2Scalar.get(output);
+                            List<FMIScalarVariable> inputDependencies = actor.getInputDependencyList(scalar);
+                            if (inputDependencies != null) {
+                                for (FMIScalarVariable inputScalar : inputDependencies) {
+                                    Node source = null;
+                                    Node sink = port2Node.get(output);
+                                    for (TypedIOPort port : actor.inputPortList()) {
+                                        if (port.getName().equals(inputScalar.name))
+                                            source = port2Node.get(port);
+                                    }
+                                    graph.addEdge(source, sink);
                                 }
+                            }
                         }
 
                         // Add all the edges due to topological dependencies
                         for (TypedIOPort input : actor.inputPortList()) {
-                                Node sink = port2Node.get(input);
-                                List<TypedIOPort> connected_ports = input.connectedPortList();
-                                for (TypedIOPort output : connected_ports) {
-                                        if (output.isOutput()) {
-                                                Node source = port2Node.get(output);
-                                                graph.addEdge(source, sink);
-                                        }
+                            Node sink = port2Node.get(input);
+                            List<TypedIOPort> connected_ports = input.connectedPortList();
+                            for (TypedIOPort output : connected_ports) {
+                                if (output.isOutput()) {
+                                    Node source = port2Node.get(output);
+                                    graph.addEdge(source, sink);
                                 }
+                            }
                         }
+                    }
                 }
 
                 actors = ((CompositeActor) adapter.getComponent().getContainer())
-                                .deepEntityList().iterator();
+                        .deepEntityList().iterator();
 
                 Collection<Node> nodeCollection = graph.nodes();
 
-        // It is ok to have an empty graph for testing purposes, try
-        //   cd ptolemy/cg/kernel/generic/program/procedural/fmima/test
-        //   $PTII/bin/ptjacl FMIMACodeGenerator.tcl
+                // It is ok to have an empty graph for testing purposes, try
+                //   cd ptolemy/cg/kernel/generic/program/procedural/fmima/test
+                //   $PTII/bin/ptjacl FMIMACodeGenerator.tcl
                 //if (nodeCollection.size() == 0) {
                 //        throw new IllegalActionException(adapter.getComponent(), "The GRAPH is empty");
                 //}
@@ -225,7 +231,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
                 // If diagram contains cycles, throw an exception
                 if (graph.isAcyclic() == false) {
                     throw new IllegalActionException(adapter.getComponent(),
-                                        "The model contains cycles. Unable to determine a port updates order.");
+                            "The model contains cycles. Unable to determine a port updates order.");
                 }
 
                 // Sort the graph in order to determine the correct get()/set() sequence
@@ -235,70 +241,67 @@ public class Director extends FMIMACodeGeneratorAdapter {
                 int connectionIndex = 0;
 
                 for (Node sourceNode : sortedGraph) {
-                        if (node2Port.get(sourceNode).isOutput()) {
-                                Collection<Node> successors = graph.successors(sourceNode);
-                                for (Node sinkNode : successors) {
+                    if (node2Port.get(sourceNode).isOutput()) {
+                        Collection<Node> successors = graph.successors(sourceNode);
+                        for (Node sinkNode : successors) {
 
-                                        FMIScalarVariable sourceScalar = node2Scalar.get(sourceNode);
-                                        FMIScalarVariable sinkScalar = node2Scalar.get(sinkNode);
+                            FMIScalarVariable sourceScalar = node2Scalar.get(sourceNode);
+                            FMIScalarVariable sinkScalar = node2Scalar.get(sinkNode);
 
-                                        ptolemy.actor.lib.fmi.FMUImport sourceActor = (ptolemy.actor.lib.fmi.FMUImport)
-                                                        node2Port.get(sourceNode).getContainer();
-                                        ptolemy.actor.lib.fmi.FMUImport sinkActor = (ptolemy.actor.lib.fmi.FMUImport)
-                                                        node2Port.get(sinkNode).getContainer();
+                            ptolemy.actor.lib.fmi.FMUImport sourceActor = (ptolemy.actor.lib.fmi.FMUImport)
+                                    node2Port.get(sourceNode).getContainer();
+                            ptolemy.actor.lib.fmi.FMUImport sinkActor = (ptolemy.actor.lib.fmi.FMUImport)
+                                    node2Port.get(sinkNode).getContainer();
 
-                                        String fmuSourceName = sourceActor.getName();
-                                        String fmuSinkName = sinkActor.getName();
+                            String fmuSourceName = sourceActor.getName();
+                            String fmuSinkName = sinkActor.getName();
 
-                                        String sourceType = "";
-                                        String sinkType = "";
+                            String sourceType = "";
+                            String sinkType = "";
 
-                                        if (sourceScalar.type instanceof FMIBooleanType) {
-                                                sourceType = "fmi2_Boolean";
-                                        } else if (sourceScalar.type instanceof FMIIntegerType) {
-                                                sourceType = "fmi2_Integer";
-                                        } else if (sourceScalar.type instanceof FMIRealType) {
-                                                sourceType = "fmi2_Real";
-                                        } else if (sourceScalar.type instanceof FMIStringType) {
-                                                sourceType = "fmi2_String";
-                                        }
+                            if (sourceScalar.type instanceof FMIBooleanType) {
+                                sourceType = "fmi2_Boolean";
+                            } else if (sourceScalar.type instanceof FMIIntegerType) {
+                                sourceType = "fmi2_Integer";
+                            } else if (sourceScalar.type instanceof FMIRealType) {
+                                sourceType = "fmi2_Real";
+                            } else if (sourceScalar.type instanceof FMIStringType) {
+                                sourceType = "fmi2_String";
+                            }
 
-                                        if (sinkScalar.type instanceof FMIBooleanType) {
-                                                sinkType = "fmi2_Boolean";
-                                        } else if (sinkScalar.type instanceof FMIIntegerType) {
-                                                sinkType = "fmi2_Integer";
-                                        } else if (sinkScalar.type instanceof FMIRealType) {
-                                                sinkType = "fmi2_Real";
-                                        } else if (sinkScalar.type instanceof FMIStringType) {
-                                                sinkType = "fmi2_String";
-                                        }
+                            if (sinkScalar.type instanceof FMIBooleanType) {
+                                sinkType = "fmi2_Boolean";
+                            } else if (sinkScalar.type instanceof FMIIntegerType) {
+                                sinkType = "fmi2_Integer";
+                            } else if (sinkScalar.type instanceof FMIRealType) {
+                                sinkType = "fmi2_Real";
+                            } else if (sinkScalar.type instanceof FMIStringType) {
+                                sinkType = "fmi2_String";
+                            }
 
-                                        code.append("connections["
-                                                        + connectionIndex
-                                                        + "].sourceFMU = &fmus["
-                                                        + fmuSourceName
-                                                        + "];\n"
-                                                        + "connections["
-                                                        + connectionIndex
-                                                        + "].sourcePort = " + sourceScalar.valueReference + ";\n"
-                                                        + "connections[" + connectionIndex
-                                                        + "].sourceType = " + sourceType + ";\n"
-                                                        + "connections[" + connectionIndex
-                                                        + "].sinkFMU = &fmus[" + fmuSinkName + "];\n");
+                            code.append("connections["
+                                    + connectionIndex
+                                    + "].sourceFMU = &fmus["
+                                    + fmuSourceName
+                                    + "];\n"
+                                    + "connections["
+                                    + connectionIndex
+                                    + "].sourcePort = " + sourceScalar.valueReference + ";\n"
+                                    + "connections[" + connectionIndex
+                                    + "].sourceType = " + sourceType + ";\n"
+                                    + "connections[" + connectionIndex
+                                    + "].sinkFMU = &fmus[" + fmuSinkName + "];\n");
 
-                                        code.append("connections["
-                                                        + connectionIndex
-                                                        + "].sinkPort = " + sinkScalar.valueReference + ";\n");
+                            code.append("connections["
+                                    + connectionIndex
+                                    + "].sinkPort = " + sinkScalar.valueReference + ";\n");
 
-                                        code.append("connections[" + connectionIndex
-                                                        + "].sinkType = " + sinkType + ";\n");
-                                        connectionIndex++;
-                                }
+                            code.append("connections[" + connectionIndex
+                                    + "].sinkType = " + sinkType + ";\n");
+                            connectionIndex++;
                         }
+                    }
                 }
-
-
-
 
                 // Generate the end of the main() method.
                 // FIXME: we should generate the start of the main() method from some
@@ -308,10 +311,61 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
                 codeStream.appendCodeBlock("mainEndBlock");
                 code.append(processCode(codeStream.toString()));
-
+                
+             // Generate gnuplot code
+                codeStream.clear();
+                codeStream.appendCodeBlock("mainGnuplot");
+                code.append(processCode(codeStream.toString()));
+                code.append("fprintf(plotfile, \"set datafile separator \','" + "\");\n");
+                code.append("fprintf(plotfile, \"\\n\");\n");
+                actors = ((CompositeActor) adapter.getComponent().getContainer())
+                        .deepEntityList().iterator();
+                while (actors.hasNext()) {
+                    Actor actorIter = (Actor) actors.next();
+                    if (actorIter instanceof TimedPlotter) {
+                        TimedPlotter actor = (TimedPlotter) actorIter;
+                        for (TypedIOPort input : actor.inputPortList()) {
+                            List<TypedIOPort> connected_ports = input.connectedPortList();
+                            for (TypedIOPort output : connected_ports) {
+                                if (output.isOutput()) {
+                                    FMUImport fmu = (FMUImport) output.getContainer();
+                                    Node outputNode = port2Node.get(output);
+                                    FMIScalarVariable outputScalar = node2Scalar.get(outputNode);
+                                    
+                                    Iterator<?> subactors = ((CompositeActor) adapter.getComponent().getContainer())
+                                            .deepEntityList().iterator();
+                                    
+                                    int varIndex = 1;
+                                    while (subactors.hasNext()) {
+                                        Actor subactorIter = (Actor) subactors.next();
+                                        if (subactorIter instanceof FMUImportHybrid) {
+                                            FMUImport subFmu = (FMUImport) subactorIter;
+                                            List<FMIScalarVariable> subScalars = subFmu.getScalarVariables();
+                                            boolean isIt = false;
+                                            for (FMIScalarVariable subScalar : subScalars) {
+                                                varIndex++;
+                                                if (fmu == subFmu && outputScalar == subScalar) {
+                                                    isIt = true;
+                                                    break;
+                                                }
+                                            }
+                                            if (isIt) {
+                                                break;
+                                            }
+                                        }
+                                    }
+                                    code.append("fprintf(plotfile, \"plot 'result.csv' using 1:" + varIndex +
+                                            " title '" + actor.getName() + "' with lines\");\n");
+                                }
+                            }
+                        }
+                    }
+                }
+                code.append("fclose(plotfile);\n");
+                code.append("system(\"gnuplot graph.sh\");\n");
                 code.append(getCodeGenerator()
-                                .comment(
-                                                "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java end"));
+                        .comment(
+                                "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java end"));
                 return code.toString();
         }
 
