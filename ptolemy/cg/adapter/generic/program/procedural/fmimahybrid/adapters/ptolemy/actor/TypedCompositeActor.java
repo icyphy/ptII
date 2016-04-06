@@ -37,8 +37,10 @@ import org.ptolemy.fmi.type.FMIIntegerType;
 import org.ptolemy.fmi.type.FMIRealType;
 import org.ptolemy.fmi.type.FMIStringType;
 
+import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.fmi.FMUImportHybrid;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.procedural.fmima.FMIMACodeGeneratorAdapter;
@@ -190,68 +192,71 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
 
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
-            ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
-                    .next();
-
-            codeStream.append("#define " + actor.getName() + " " + fmuCount++
-                    + "\n");
+            Actor actorIter = (Actor) actors.next();
+            if (actorIter instanceof FMUImportHybrid) {
+                ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
+                codeStream.append("#define " + actor.getName() + " " + fmuCount++
+                        + "\n");
+            }
         }
 
         actors = actorList.iterator();
         while (actors.hasNext()) {
-            ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
-                    .next();
-
-            for (TypedIOPort input : actor.inputPortList()) {
+            Actor actorIter = (Actor) actors.next();
+            if (actorIter instanceof FMUImportHybrid) {
+                ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
+                for (TypedIOPort input : actor.inputPortList()) {
                     List<TypedIOPort> connected_ports = input.connectedPortList();
                     for (TypedIOPort output : connected_ports) {
-                            if (output.isOutput()) {
-                                    connectionsCount++;
-                            }
+                        if (output.isOutput()) {
+                            connectionsCount++;
+                        }
                     }
+                }
             }
         }
 
 
-        codeStream.append("#define NUMBER_OF_FMUS " + actorList.size() + "\n");
+        codeStream.append("#define NUMBER_OF_FMUS " + fmuCount + "\n");
         codeStream.append("#define NUMBER_OF_EDGES " + connectionsCount + "\n");
-        codeStream
-                .append("#define MODEL_NAME \"" + topActor.getName() + "\"\n");
+        codeStream.append("#define MODEL_NAME \"" + topActor.getName() + "\"\n");
 
         actors = actorList.iterator();
         codeStream.append("const char* NAMES_OF_FMUS[] = {");
-        while (actors.hasNext()) {
-            ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
-                    .next();
-            codeStream.append("\"" + actor.getName() + "\"");
-            if (actors.hasNext())
-                codeStream.append(",");
+        while (actors.hasNext()) {            
+            Actor actorIter = (Actor) actors.next();
+            if (actorIter instanceof FMUImportHybrid) {
+                ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
+                codeStream.append("\"" + actor.getName() + "\"");
+                if (actors.hasNext())
+                    codeStream.append(",");
+            }
         }
         codeStream.append("};\n" + _eol);
 
 //        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent());
         actors =  topActor.deepEntityList().iterator();
         codeStream.append("int static i = 0;\n");
-                codeStream.append("static void setupParameters(FMU *fmu) {\n");
+        codeStream.append("static void setupParameters(FMU *fmu) {\n");
 
-                codeStream.append("fmi2Status fmi2Flag = fmu->enterInitializationMode(fmu->component);\n");
-                codeStream.append("if (fmi2Flag > fmi2Warning) {\n");
-                codeStream.append("error(\"could not initialize model; failed FMI enter initialization mode\");\n");
-                codeStream.append("}\n");
-                codeStream.append("printf(\"initialization mode entered\\n\");\n");
+        codeStream.append("fmi2Status fmi2Flag = fmu->enterInitializationMode(fmu->component);\n");
+        codeStream.append("if (fmi2Flag > fmi2Warning) {\n");
+        codeStream.append("error(\"could not initialize model; failed FMI enter initialization mode\");\n");
+        codeStream.append("}\n");
+        codeStream.append("printf(\"initialization mode entered\\n\");\n");
 
-                codeStream.append("switch(i) {\n");
-                int i = 0;
-                while (actors.hasNext()) {
-                        ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actors
-                                        .next();
+        codeStream.append("switch(i) {\n");
+        int i = 0;
+        while (actors.hasNext()) {
+            Actor actorIter = (Actor) actors.next();
+            if (actorIter instanceof FMUImportHybrid) {
+                ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
+                codeStream.append("case(" + i + "): {\n");
+                int j = 0;
+                for ( FMIScalarVariable scalar : actor.getScalarVariables()) {
 
-                        codeStream.append("case(" + i + "): {\n");
-                        int j = 0;
-                        for ( FMIScalarVariable scalar : actor.getScalarVariables()) {
-
-                                if (scalar.causality.equals(Causality.parameter)) {
-                                        String sanitizedName = StringUtilities
+                    if (scalar.causality.equals(Causality.parameter)) {
+                        String sanitizedName = StringUtilities
                                 .sanitizeName(scalar.name);
                         Parameter parameter = (Parameter) actor.getAttribute(sanitizedName,
                                 Parameter.class);
@@ -266,36 +271,37 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
                             codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
                             codeStream.append("fmi2Boolean tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
                             codeStream.append("fmu->setBoolean(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
-                    } else if (scalar.type instanceof FMIIntegerType) {
-                    		codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
+                        } else if (scalar.type instanceof FMIIntegerType) {
+                            codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
                             codeStream.append("fmi2Integer tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
                             codeStream.append("fmu->setInteger(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
-                    } else if (scalar.type instanceof FMIRealType) {
-                    		codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
+                        } else if (scalar.type instanceof FMIRealType) {
+                            codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
                             codeStream.append("fmi2Real tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
                             codeStream.append("fmu->setReal(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
-                    } else if (scalar.type instanceof FMIStringType) {
-                    		codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
+                        } else if (scalar.type instanceof FMIStringType) {
+                            codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
                             codeStream.append("fmi2String tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
                             codeStream.append("fmu->setString(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
-                    }
-                                }
-                                j++;
                         }
-                        i++;
-                        codeStream.append("break;\n}\n");
+                    }
+                    j++;
                 }
+                i++;
+                codeStream.append("break;\n}\n");
+            }
+        }
 
-                codeStream.append("}\n");
-                codeStream.append("i++;\n");
+        codeStream.append("}\n");
+        codeStream.append("i++;\n");
 
-                codeStream.append("fmi2Flag = fmu->exitInitializationMode(fmu->component);\n");
-                codeStream.append("printf(\"successfully initialized.\\n\");\n");
-                codeStream.append("if (fmi2Flag > fmi2Warning) {\n");
-                codeStream.append("error(\"could not initialize model; failed FMI exit initialization mode\");\n");
-                codeStream.append("}\n");
+        codeStream.append("fmi2Flag = fmu->exitInitializationMode(fmu->component);\n");
+        codeStream.append("printf(\"successfully initialized.\\n\");\n");
+        codeStream.append("if (fmi2Flag > fmi2Warning) {\n");
+        codeStream.append("error(\"could not initialize model; failed FMI exit initialization mode\");\n");
+        codeStream.append("}\n");
 
-                codeStream.append("}\n");
+        codeStream.append("}\n");
 
         codeStream.appendCodeBlock("staticDeclareBlock");
 
