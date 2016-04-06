@@ -8,7 +8,7 @@ int i;
 
 // parse command line arguments and load the FMU
 // default arguments value
-fmi2Integer requiredResolution = 0;
+fmi2Integer requiredResolution = DEFAULT_RESOLUTION;
 fmi2IntegerTime h = DEFAULT_COMM_STEP_SIZE;
 int loggingOn = 0;
 char csv_separator = ',';
@@ -34,7 +34,7 @@ parseArguments(argc, argv, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, 
     }
     printf("}\n");
 
-    simulate( fmus, connections, requiredResolution, loggingOn, csv_separator);
+    simulate(fmus, connections, requiredResolution, loggingOn, csv_separator);
     printf("CSV file '%s' written\n", RESULT_FILE);
     // release FMUs
     #ifdef _MSC_VER
@@ -57,3 +57,13 @@ parseArguments(argc, argv, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, 
     }
     free(fmus);
 /**/
+
+/***mainGnuplot***/
+// Generate GnuPlot graph
+FILE* plotfile = NULL;
+    if (!(plotfile = fopen("graph.sh", "w"))) {
+        printf("could not write graph.sh because:\n");
+        printf("    %s\n", strerror(errno));
+        return ERROR;
+    }
+/**/ 
