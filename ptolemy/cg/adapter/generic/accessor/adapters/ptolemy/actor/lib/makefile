@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks
 #
-# @Copyright (c) 2005-2016 The Regents of the University of California
+# @Copyright (c) 2016 The Regents of the University of California
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,12 +31,12 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-ME =		ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor
+ME =		ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib
 
-DIRS =		lib
+DIRS =		jjs
 
 # Root of the Java directory
-ROOT =		../../../../../../../..
+ROOT =		../../../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -45,7 +45,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	actor
+PTPACKAGE = 	lib
 PTCLASSJAR =
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
@@ -53,10 +53,10 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 # Include the .class files from these jars in PTCLASSALLJAR
 # If you change this, change DIRS above
 PTCLASSALLJARS = \
-	lib/lib.jar
+	jjs/jjs.jar
 
 # Keep this list alphabetized.
-JSRCS = TypedCompositeActor.java
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = 
 
@@ -65,7 +65,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
 # Don't include demo or DIRS here, or else 'make sources' will run 'make demo'
-MISC_FILES =	lib
+MISC_FILES =	jjs
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
