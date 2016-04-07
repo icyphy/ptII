@@ -1,6 +1,6 @@
 /* Code generator adapter for typed composite actor.
 
- Copyright (c) 2005-2014 The Regents of the University of California.
+ Copyright (c) 2005-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -83,8 +83,11 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
         Iterator<?> actors = ((CompositeActor) getComponent()).entityList().iterator();
         while (actors.hasNext()) {
             Actor actor = (Actor) actors.next();
-            if (!actor.getClass().getName().equals("org.terraswarm.accessor.JSAccessor")) {
-                throw new IllegalActionException(actor, "The JavaScript code generator only works on JAccessor actors and TypedCompositeActors, the name of the class was:" + actor.getClass().getName() + ".");
+            String actorClassName = actor.getClass().getName();
+            // We could check to see if the class is a JavaScript actor here.
+            if (!actorClassName.equals("org.terraswarm.accessor.JSAccessor")
+                && !actorClassName.equals("ptolemy.actor.lib.jjs.JavaScript")) {
+                throw new IllegalActionException(actor, "The Accessor code generator only works on JavaScript actors, JSAccessor actors and TypedCompositeActors, the name of the class was:" + actorClassName);
             }
 
             AccessorCodeGeneratorAdapter adapter = null;
