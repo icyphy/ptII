@@ -437,6 +437,7 @@ BCVTB_JNLP_JARS =	\
 	ptolemy/domains/algebraic/demo/demo.jar \
 	ptolemy/domains/continuous/continuous.jar \
 	ptolemy/domains/continuous/demo/demo.jar \
+        ptolemy/domains/qss/qss.jar \
 	ptolemy/domains/sdf/sdf.jar \
 	ptolemy/domains/sdf/demo/demo.jar \
 	ptolemy/domains/modal/modal.jar \
