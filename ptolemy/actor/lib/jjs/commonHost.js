@@ -689,7 +689,13 @@ Accessor.prototype.assignImpliedPrioritiesUpstream = function(accessor, cyclePri
         if (input.source && typeof input.source !== 'string') {
             // There is a source accessor.
             var source = input.source.accessor;
-            var output = source.outputs[source.outputName];
+            // There was a bug here where $PTII/ptolemy/actor/lib/jjs/test/auto/RampDisplay.xml
+            // would fail because output was undefined.
+            //var output = source.outputs[source.outputName];
+            var output = source.outputs[input.source.outputName];
+            if (typeof output === 'undefined') {
+                throw('In "' + source.accessorName + ', source.outputName was: "' + source.outputName + '", and source.outputs[source.outputName] is of type undefined? outputs:' + source.outputs.toString() + ' source:\n' + util.inspect(source));
+            }
             // If the output is marked 'spontaneous' then we can ignore it.
             if (output.spontaneous) {
                 continue;
@@ -1249,9 +1255,10 @@ Accessor.prototype.react = function(name) {
                         // Remove the input handler.
                         thiz.removeInputHandler(
                                 thiz.inputHandlers[name][i].handle);
-                        thiz.error('Exception occurred in input handler.' +
-                                ' Handler has been removed: ' +
-                                exception);
+                        thiz.error('commonHost.js, react(), invoking a specific handler for \"' +
+                                   name + '\": Exception occurred in input handler,' +
+                                   ' which has now has been removed.  Exception was: ' +
+                                   exception);
                     }
                 }
             }
@@ -1289,9 +1296,9 @@ Accessor.prototype.react = function(name) {
                     // Remove the input handler.
                     thiz.removeInputHandler(
                             thiz.anyInputHandlers[j].handle);
-                    thiz.error('Exception occurred in input handler.' +
-                            ' Handler has been removed: ' +
-                            exception);
+                    thiz.error('commonHost.js, react() invoking handlers registered to handle any input: Exception occurred in input handler,' +
+                               ' which has now has been removed.  Exception was: ' +
+                               exception);
                 }
             }
         }
