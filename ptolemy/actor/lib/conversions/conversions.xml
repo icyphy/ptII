@@ -80,6 +80,10 @@
      </property>
   </entity>
 
+  <entity name="ImageToBase64"
+ 		  class="ptolemy.actor.lib.conversions.ImageToBase64">
+  </entity>
+
   <entity name="IntArrayToString"
           class="ptolemy.actor.lib.conversions.IntArrayToString">
   </entity>
