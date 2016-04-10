@@ -66,7 +66,8 @@ public class Activator implements BundleActivator {
         new PackageBasedModelElementClassProvider(this.getClass().getClassLoader(),
             "ptolemy.actor",
             "ptolemy.data",
-            "ptolemy.kernel"
+            "ptolemy.kernel",
+            "ptolemy.moml"
             ),
         null);
 
