@@ -74,6 +74,7 @@ void loadFMU(FMU *fmu, const char *fmuFileName);
 typedef int boolean;
 #endif
 void outputRow(FMU fmus[], int numberOfFMUs, const char* NAMES_OF_FMUS[], double time, int resolution, FILE* file, char separator, boolean header);
+void outputPtplot(FILE* fileSource, FILE* fileDest, char separator, const int indexes[], int size);
 int error(const char *message);
 void printHelp(const char *fmusim);
 char *getTempResourcesLocation(); // caller has to free the result
