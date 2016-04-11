@@ -63,7 +63,7 @@ JSRCS = \
 	ExpressionToToken.java \
 	FixToDouble.java \
 	FixToFix.java \
-	ImageToBase64.java \
+	ImageToString.java \
 	IntArrayToString.java \
 	InUnitsOf.java \
 	LongToDate.java \
