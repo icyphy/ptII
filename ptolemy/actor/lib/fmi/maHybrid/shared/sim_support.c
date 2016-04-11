@@ -660,6 +660,48 @@ void parseArguments(int argc, char *argv[], fmi2IntegerTime *tEnd, fmi2IntegerTi
     }
 }
 
+const char* getfield(char* line, int num)
+{
+    const char* tok;
+    for (tok = strtok(line, ","); tok && *tok; tok = strtok(NULL, ",\n")) {
+        if (!--num)
+            return tok;
+    }
+    return NULL;
+}
+
+void outputPtplot(FILE* fileSource, FILE* fileDest, char separator, const int indexes[], int size) {
+    int row = 0;
+    char line[1024];
+    fprintf(fileDest, "<plot>\n");
+    fprintf(fileDest, "<default marks=\"bigdots\"/>\n");
+    fprintf(fileDest, "<dataset>\n");
+    while (fgets(line, 1024, fileSource)) {
+        char* tmp0 = strdup(line);
+        char* tmp1 = strdup(line);
+        if (row == 0) {
+            row++;
+            continue;
+        }
+        for (int i = 0; i < size; i++) {
+            char* time = getfield(tmp0, 1);
+            char* value = getfield(tmp1, indexes[i]);
+            if (strcmp (value,"absent") != 0) {
+                if (row == 1)
+                fprintf(fileDest, "<m x=\"%s\" ", time);
+                else
+                    fprintf(fileDest, "<p x=\"%s\" ", time);
+                fprintf(fileDest, "y=\"%s\"/>\n", value);
+            }
+        }
+        free(tmp0);
+        free(tmp1);
+        row++;
+    }
+    fprintf(fileDest, "</dataset>\n");
+    fprintf(fileDest, "</plot>\n");
+}
+
 void printHelp(const char *fmusim) {
     printf("command syntax: %s <model1.fmu> [<modelX.fmu> ...] -t<tEnd> -h<h> -s<csvSeparator> -l <logCategories>\n", fmusim);
     printf("   <model.fmu> .... path to FMU, relative to current dir or absolute, required\n");
