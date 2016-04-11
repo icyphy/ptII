@@ -27,6 +27,7 @@
  */
 package ptolemy.cg.adapter.generic.program.procedural.fmimahybrid.adapters.ptolemy.actor;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -44,7 +45,6 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.actor.lib.fmi.FMUImport;
 import ptolemy.actor.lib.fmi.FMUImportHybrid;
-import ptolemy.actor.lib.gui.TimedDisplay;
 import ptolemy.actor.lib.gui.TimedPlotter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.cg.kernel.generic.program.CodeStream;
@@ -312,17 +312,19 @@ public class Director extends FMIMACodeGeneratorAdapter {
                 codeStream.appendCodeBlock("mainEndBlock");
                 code.append(processCode(codeStream.toString()));
                 
-             // Generate gnuplot code
-                codeStream.clear();
-                codeStream.appendCodeBlock("mainGnuplot");
-                code.append(processCode(codeStream.toString()));
-                code.append("fprintf(plotfile, \"set datafile separator \','" + "\");\n");
-                code.append("fprintf(plotfile, \"\\n\");\n");
+                // Generate ptplot
                 actors = ((CompositeActor) adapter.getComponent().getContainer())
                         .deepEntityList().iterator();
+                Integer plotterIndex = 0;
+                
+                codeStream.clear();
+                codeStream.appendCodeBlock("mainPtplot");
+                code.append(processCode(codeStream.toString()));
+                
                 while (actors.hasNext()) {
                     Actor actorIter = (Actor) actors.next();
                     if (actorIter instanceof TimedPlotter) {
+                        List<Integer> singlePlotterSignals = new ArrayList<Integer>();
                         TimedPlotter actor = (TimedPlotter) actorIter;
                         for (TypedIOPort input : actor.inputPortList()) {
                             List<TypedIOPort> connected_ports = input.connectedPortList();
@@ -336,6 +338,8 @@ public class Director extends FMIMACodeGeneratorAdapter {
                                             .deepEntityList().iterator();
                                     
                                     int varIndex = 1;
+                                    
+                                    // Scan all the attached ports
                                     while (subactors.hasNext()) {
                                         Actor subactorIter = (Actor) subactors.next();
                                         if (subactorIter instanceof FMUImportHybrid) {
@@ -354,15 +358,34 @@ public class Director extends FMIMACodeGeneratorAdapter {
                                             }
                                         }
                                     }
-                                    code.append("fprintf(plotfile, \"plot 'result.csv' using 1:" + varIndex +
-                                            " title '" + actor.getName() + "' with lines\");\n");
+                                    singlePlotterSignals.add(varIndex);
                                 }
                             }
                         }
+                        Integer i = 1;
+                        code.append("const int indexes" + plotterIndex + "[] = {");
+                        for (Integer signal : singlePlotterSignals) {
+                            code.append(signal);
+                            if (i == singlePlotterSignals.size()) {
+                                code.append("};\n");
+                            } else {
+                                code.append(",");
+                            }
+                        }
+                        code.append("if (!(sink = fopen(\"plot" + plotterIndex + ".xml\", \"w\"))) {\n");
+                        codeStream.clear();
+                        codeStream.appendCodeBlock("endPtplot");
+                        code.append(processCode(codeStream.toString()));
+                        code.append("outputPtplot(source, sink, ',', indexes"+ plotterIndex + ", 1);\n");
+                        code.append("fclose(sink);\n");
+                        code.append("rewind(source);\n");
+                        code.append("system(\"ptplot plot" + plotterIndex + ".xml &\");\n");
+                        plotterIndex++;
                     }
                 }
-                code.append("fclose(plotfile);\n");
-                code.append("system(\"gnuplot graph.sh\");\n");
+                
+                code.append("fclose(source);\n");
+                
                 code.append(getCodeGenerator()
                         .comment(
                                 "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java end"));
