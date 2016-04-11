@@ -66,4 +66,25 @@ FILE* plotfile = NULL;
         printf("    %s\n", strerror(errno));
         return ERROR;
     }
-/**/ 
+/**/
+
+/***mainPtplot***/
+// Generate PtPlot graph
+FILE* source = NULL;
+FILE* sink = NULL;
+if (!(source = fopen("result.csv", "r"))) {
+    printf("could not write result.csv because:\n");
+    printf("    %s\n", strerror(errno));
+    return ERROR;
+}
+/**/
+
+/***endPtplot***/
+    printf("could not write plot.xml because:\n");
+    printf("    %s\n", strerror(errno));
+    return ERROR;
+}
+fprintf(sink, "<?xml version=\"1.0\" standalone=\"yes\"?>\n");
+fprintf(sink, "<!DOCTYPE plot PUBLIC \"-//UC Berkeley//DTD PlotML 1//EN\"\n");
+fprintf(sink, "\t\"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd\">\n");
+/**/

@@ -216,7 +216,6 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
             }
         }
 
-
         codeStream.append("#define NUMBER_OF_FMUS " + fmuCount + "\n");
         codeStream.append("#define NUMBER_OF_EDGES " + connectionsCount + "\n");
         codeStream.append("#define MODEL_NAME \"" + topActor.getName() + "\"\n");
@@ -234,7 +233,6 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         }
         codeStream.append("};\n" + _eol);
 
-//        NamedProgramCodeGeneratorAdapter adapter = (NamedProgramCodeGeneratorAdapter) getAdapter(getComponent());
         actors =  topActor.deepEntityList().iterator();
         codeStream.append("int static i = 0;\n");
         codeStream.append("static void setupParameters(FMU *fmu) {\n");
