@@ -80,8 +80,18 @@
      </property>
   </entity>
 
-  <entity name="ImageToBase64"
- 		  class="ptolemy.actor.lib.conversions.ImageToBase64">
+  <entity name="ImageToString"
+ 		  class="ptolemy.actor.lib.conversions.ImageToString">
+ 	  <property name="compression">
+          <property name="style" class="ptolemy.actor.gui.style.ChoiceStyle">
+             <property name="gif" value="gif"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+              <property name="png" value="png"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+              <property name="jpg" value="jpg"
+	              class="ptolemy.kernel.util.StringAttribute"/>
+          </property>
+      </property>	  
   </entity>
 
   <entity name="IntArrayToString"

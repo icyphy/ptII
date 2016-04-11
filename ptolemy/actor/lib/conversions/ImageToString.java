@@ -33,6 +33,7 @@ import java.awt.image.BufferedImage;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Base64;
 
@@ -45,6 +46,7 @@ import ptolemy.data.type.BaseType;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.StringAttribute;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageToBase64
@@ -58,7 +60,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  @Pt.ProposedRating Red (liuj)
  @Pt.AcceptedRating Red (liuj)
  */
-public class ImageToBase64 extends Converter {
+public class ImageToString extends Converter {
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -68,7 +70,7 @@ public class ImageToBase64 extends Converter {
      *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
-    public ImageToBase64(CompositeEntity container, String name)
+    public ImageToString(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
@@ -79,7 +81,9 @@ public class ImageToBase64 extends Converter {
         // Set the type of the output port.
         output.setTypeEquals(BaseType.STRING);
         output.setMultiport(false);
-
+        
+        compression = new StringParameter(this, "compression");
+        compression.setExpression("png");
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -88,7 +92,7 @@ public class ImageToBase64 extends Converter {
     /** Parameter that determines the encoding of the image ('gif',
      * 'png', 'jpg').
      */
-    public StringParameter imageCodec; // FIXME: turn into drop down instead
+    public StringParameter compression;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -102,12 +106,12 @@ public class ImageToBase64 extends Converter {
         final ByteArrayOutputStream os = new ByteArrayOutputStream();
         final RenderedImage im = getRenderedImage(
                 ((AWTImageToken) input.get(0)).getValue());
-        System.out.println("Infire!");
         try {
-            ImageIO.write(im, "png", Base64.getEncoder().wrap(os)); // FIXME: Use parameter instead.
-            StringToken tk = new StringToken(os.toString(StandardCharsets.ISO_8859_1.name()));
+        	OutputStream enc = Base64.getUrlEncoder().wrap(os);
+            ImageIO.write(im, "png", enc); // FIXME: Use parameter instead.
+            enc.close(); // Important, flushes the output buffer.
+            StringToken tk = new StringToken(os.toString(StandardCharsets.US_ASCII.name()));
             output.send(0, tk);
-            System.out.println(tk);
         } catch (final IOException ioe) {
             throw new IllegalActionException(
                     "Unable to convert image to base-64 string.");
