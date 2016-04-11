@@ -245,6 +245,7 @@ APRILPACKAGES = \
 CGPACKAGES = \
 	ptolemy.cg.adapter.generic.accessor.adapters.org.terraswarm.accessor \
 	ptolemy.cg.adapter.generic.accessor.adapters.ptolemy.actor \
+        ptolemy.cg.adapter.generic.accessor.adapters.ptolemy.actor.lib.jjs \
 	ptolemy.cg.adapter.generic.adapters.ptolemy.actor \
 	ptolemy.cg.adapter.generic.html.adapters.ptolemy.actor \
         ptolemy.cg.adapter.generic.program.procedural.adapters.org.terraswarm.accessor \
