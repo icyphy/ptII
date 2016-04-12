@@ -27,11 +27,13 @@
  */
 package ptolemy.cg.kernel.generic.accessor;
 
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
@@ -96,17 +98,43 @@ public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter 
 
     /** Given a Ptolemy expression, return an Accessor-compatibile
      *  expression.  For example, strings are quoted, ints and doubles
-     *  are not.
+     *  and JSON are not.  Note that this method incorrectly double
+     *  quotes JSON expressions.  To avoid this, use {@link
+     *  #targetExpression(parameter)}.
+     * 
      *  @param expression the Ptolemy expression.
      *  @param ptType The Ptolemy Type.
      *  @return A JavaScript-compatible expression
      */
     public String targetExpression(String expression, Type ptType) {
-        return 
-            ptType == BaseType.BOOLEAN ? expression
-            : ptType == BaseType.DOUBLE ? expression
-            : ptType == BaseType.INT ? expression
-            : '"' + expression + '"';
+        throw new InternalErrorException(_component, null, "Do not invoke "
+                + "AccessorCodeGeneratorAdapter.targetExpression(String expression, Typ;e ptType) "
+                + "with accessors because it will incorrectly double quote JSON parameters. "
+                + "Instead, use "
+                + "AccessorCodeGeneratorAdapter.targetExpression(Parameter parameter)");
+    }
+
+    /** Given a Ptolemy Parameter, return an Accessor-compatibile
+     *  expression.  For example, strings are quoted, ints and doubles
+     *  and JSON are not.
+     *  @param parameter the Ptolemy expression.
+     *  @return A JavaScript-compatible expression
+     *  @exception IllegalActionException If thrown will getting the
+     *  type or expression of the parameter.
+     */
+    public String targetExpression(Parameter parameter) throws IllegalActionException{
+        Type ptType = parameter.getType();
+        String expression = parameter.getExpression();
+        if (ptType == BaseType.STRING
+                && parameter.getAttribute("_JSON") != null) {
+            return expression;
+        } else {
+            return
+                ptType == BaseType.BOOLEAN ? expression
+                : ptType == BaseType.DOUBLE ? expression
+                : ptType == BaseType.INT ? expression
+                : '"' + expression + '"';
+        }
     }
 
     /** Set the code generator associated with this adapter class.
