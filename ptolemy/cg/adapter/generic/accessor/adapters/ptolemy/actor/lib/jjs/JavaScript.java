@@ -98,7 +98,8 @@ public class JavaScript extends AccessorCodeGeneratorAdapter {
                     code.append("// ");
                 }
                 code.append(actor.getName() + ".setParameter('" + parameter.getName() + "', "
-                        + targetExpression(parameter.getExpression(), parameter.getType()) + ");" + _eol);
+                        + targetExpression(parameter)
+                        + ");" + _eol);
             }
         }
         return code.toString();
