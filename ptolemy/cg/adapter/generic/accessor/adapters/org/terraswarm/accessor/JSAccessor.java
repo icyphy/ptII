@@ -75,7 +75,7 @@ AccessorCodeGeneratorAdapter {
                 + ": ptolemy/cg/adapter/generic/accessor/adapters/org/terraswarm/accessor/JSAccessor.java" + _eol);
 
 
-        code.append(_INDENT1 + "var " + actor.getName() + " = this.instantiate('" + name
+        code.append(_INDENT1 + "var " + name + " = this.instantiate('" + name
                 + "', '" + actor.accessorSource.getExpression().replace("https://www.terraswarm.org/accessors/", "") + "');" + _eol);
 
         List<Parameter> parameters = actor.attributeList(Parameter.class);

@@ -1005,9 +1005,9 @@ Decorator {
                                     + "codegen adaptor for "
                                     + object.getClass()
                                     + ".  Searched the contents of the generatorPackageList parameter, "
-                                    + "which was: "
+                                    + " which was: "
                                     + generatorPackageList.stringValue()
-                                    + "Search list was: \n" + errorMessage);
+                                    + ". Search list was: \n" + errorMessage);
                 }
                 _adapterStore.put(object, adapterObject);
                 return adapterObject;

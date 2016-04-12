@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NamedObj;
  *  Internet of Things (IoT).  For more information, see
  *  <a href="http://accessors.org#in_browser" target="_top">http://accessors.org</a>.</p>
  *
- *  <p>The model can only contain JSAccessor actors.</p>
+ *  <p>The model can only contain JavaScript and JSAccessor actors.</p>
  *
  *  <p>To generate an Accessor version of a model, use:</p>
  *  <pre>

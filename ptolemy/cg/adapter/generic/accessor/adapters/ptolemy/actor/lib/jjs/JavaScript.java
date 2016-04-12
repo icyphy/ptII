@@ -27,6 +27,14 @@
  */
 package ptolemy.cg.adapter.generic.accessor.adapters.ptolemy.actor.lib.jjs;
 
+import java.util.List;
+
+import ptolemy.cg.kernel.generic.accessor.AccessorCodeGeneratorAdapter;
+import ptolemy.data.expr.Parameter;
+import ptolemy.actor.parameters.PortParameter;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.StringUtilities;
+
 //////////////////////////////////////////////////////////////////////////
 //// JavaScript
 
@@ -39,9 +47,7 @@ package ptolemy.cg.adapter.generic.accessor.adapters.ptolemy.actor.lib.jjs;
  @Pt.ProposedRating Red (eal)
  @Pt.AcceptedRating Red (eal)
  */
-public class JavaScript
-extends
-ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.jjs.JavaScript {
+public class JavaScript extends AccessorCodeGeneratorAdapter {
 
     /**
      *  Construct the JavaScript adapter.
@@ -50,4 +56,52 @@ ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.lib.jjs.Jav
     public JavaScript(ptolemy.actor.lib.jjs.JavaScript actor) {
         super(actor);
     }
+
+        /** Generate Accessor code.
+     *  @return The generated Accessor.
+     *  @exception IllegalActionException If there is a problem getting the adapter, getting
+     *  the director or generating Accessor for the director.
+     */
+    @Override
+    public String generateAccessor() throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+
+        ptolemy.actor.lib.jjs.JavaScript actor = (ptolemy.actor.lib.jjs.JavaScript) getComponent();
+
+        String name = StringUtilities.sanitizeName(actor.getName());
+
+        code.append(_eol + _INDENT1 + "// Start: " + getComponent().getName()
+                + ": ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java" + _eol);
+
+
+        // See org/terraswarm/accessor/accessors/web/hosts/common/commonHost.js
+        code.append(_INDENT1 + "var " + name + " = new Accessor('"+ name
+                + "', '"
+                // FIXME: Need a way to escape the JavaScript code.
+                + actor.script.getExpression().replace("\"", "\\\"").replace("'", "\\\'").replace("\n", "\\n")
+                + "', null, " // getAccessorCode is null, which means we can't extend this accessor.
+                + "null, " // bindings is null
+                + "null, " // extendedBy
+                + "null);" // implementedBy
+                + _eol
+                + _INDENT1 + name + ".container = this;" + _eol);
+
+
+        List<Parameter> parameters = actor.attributeList(Parameter.class);
+        for (Parameter parameter : parameters) {
+            // Skip the default parameters in JSAccessor and emit code for the other parameters.
+            if (!parameter.getName().equals("accessorSource")
+                    && !parameter.getName().equals("checkoutOrUpdateAccessorsRepository")
+                    && !parameter.getName().equals("script")) {
+                code.append(_INDENT1);
+                if (parameter instanceof PortParameter) {
+                    code.append("// ");
+                }
+                code.append(actor.getName() + ".setParameter('" + parameter.getName() + "', "
+                        + targetExpression(parameter.getExpression(), parameter.getType()) + ");" + _eol);
+            }
+        }
+        return code.toString();
+    }
 }
+

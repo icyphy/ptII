@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="RampDisplay" class="ptolemy.actor.TypedCompositeActor">
+<entity name="RampJSDisplay" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 30.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={201, 130, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={551, 270, 934, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
     </property>
@@ -23,6 +23,8 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 261.0}">
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
+        <property name="run" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node nodeHostInvoke.js -timeout 10000 hosts/node/@modelName@">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 35.0}">
@@ -93,25 +95,11 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="TestRamp" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// An acccessor that outputs a sequence with a given step in values.&#10;//&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Output a sequence with a given step in values.&#10; *&#10; *  @accessor test/TestRamp&#10; *  @param init The value produced on its first iteration.  The&#10; *  initial default is 0.&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @param step The amount by which the output is incremented. The&#10; *  default is 1.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;exports.setup = function() {&#10;    // FIXME: this only supports numbers, unlike the Cape Code Ramp&#10;    // actor, which supports many types.&#10;    this.parameter('init', {'type':'number', 'value':0});&#10;    this.input('trigger');&#10;    this.output('output', {'type':'number'});&#10;    this.parameter('step', {'type':'number', 'value':1});&#10;    // FIXME: need to keep track of the last value.&#10;    this.parameter('_lastValue', {'type':'number', 'value':0});&#10;};&#10;&#10;exports.initialize = function() {&#10;    this.setParameter('_lastValue', this.getParameter('init'));&#10;}&#10;exports.fire = function() {&#10;    this.setParameter('_lastValue', this.getParameter('_lastValue') + this.getParameter('step'));&#10;    this.send('output', this.getParameter('_lastValue'));&#10;};&#10;&#10;// exports.initialize = function() {&#10;//     var self = this;&#10;//     this.addInputHandler('trigger', function() {&#10;//         self.setParameter('_lastValue', self.getParameter('_lastValue') + self.getParameter('step'));&#10;//         console.log(&quot;trigger input handler: &quot; + self.getParameter('_lastValue'));&#10;//         self.send('output', (self.geParametert('_lastValue')));&#10;//     });&#10;// };&#10;&#10;&#10;">
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Output a sequence with a given step in values.&#10; *&#10; *  @accessor test/TestRamp&#10; *  @param init The value produced on its first iteration.  The&#10; *  initial default is 0.&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @param step The amount by which the output is incremented. The&#10; *  default is 1.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;exports.setup = function() {&#10;    // FIXME: this only supports numbers, unlike the Cape Code Ramp&#10;    // actor, which supports many types.&#10;    this.parameter('init', {'type':'number', 'value':0});&#10;    this.input('trigger');&#10;    this.output('output', {'type':'number'});&#10;    this.parameter('step', {'type':'number', 'value':1});&#10;    // FIXME: need to keep track of the last value.&#10;    this.parameter('_lastValue', {'type':'number', 'value':0});&#10;};&#10;&#10;exports.initialize = function() {&#10;    this.setParameter('_lastValue', this.getParameter('init'));&#10;}&#10;exports.fire = function() {&#10;    this.setParameter('_lastValue', this.getParameter('_lastValue') + this.getParameter('step'));&#10;    this.send('output', this.getParameter('_lastValue'));&#10;};&#10;&#10;//exports.fire = function() {&#10;//    this.setParameter('_lastValue', this.getParameter('_lastValue') + this.getParameter('step'));&#10;//    console.log(&quot;fire: &quot; + this.getParameter('_lastValue'));&#10;//    this.send('output', this.getParameter('_lastValue'));&#10;//};&#10;&#10;//exports.initialize = function() {&#10;//    var self = this;&#10;//    this.setParameter('_lastValue', this.getParameter('init'));&#10;//    this.addInputHandler('trigger', function() {&#10;//    	console.log('trigger input handler: self: ' + self)&#10;//        self.setParameter('_lastValue', self.getParameter('_lastValue') + self.getParameter('step'));&#10;//        console.log(&quot;trigger input handler: &quot; + self.getParameter('_lastValue'));&#10;//        self.send('output', (self.getParameter('_lastValue')));&#10;//    });&#10;//};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TestRamp.js">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Output a sequence with a given step in values.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
-            </property>
-            <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="The trigger">
-            </property>
-            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The output">
             </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
@@ -120,7 +108,9 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 105.0}">
+        </property>
+        <property name="_lastValue" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -133,12 +123,16 @@
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.trigger&quot;,x=210.0,y=105.0}, tail={id=&quot;TestSpontaneous.output&quot;,x=40.0,y=105.0}, points={} } }">
+        </property>
     </relation>
-    <link port="TestDisplay.input" relation="relation"/>
-    <link port="TestSpontaneous.output" relation="relation3"/>
-    <link port="TestRamp.trigger" relation="relation3"/>
-    <link port="TestRamp.output" relation="relation"/>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TestDisplay.input&quot;,x=350.0,y=105.0}, tail={id=&quot;JavaScript.output&quot;,x=210.0,y=105.0}, points={} } }">
+        </property>
+    </relation>
+    <link port="TestDisplay.input" relation="relation2"/>
+    <link port="TestSpontaneous.output" relation="relation"/>
+    <link port="JavaScript.trigger" relation="relation"/>
+    <link port="JavaScript.output" relation="relation2"/>
 </entity>
