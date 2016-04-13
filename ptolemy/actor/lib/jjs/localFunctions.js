@@ -128,7 +128,7 @@ function getParameter(name) {
     //    channel = 0;
     //}
     var result = proxy.get(0 /*channel*/ );
-    return convertFromToken(result);
+    return convertFromToken(result, proxy.isJSON());
 }
 
 /** Specify an input for the accessor.
@@ -411,8 +411,11 @@ var JSONToToken = Java.type('ptolemy.actor.lib.conversions.json.JSONToToken');
  *  A nil token results in returning null.
  *  This is a utility function, not intended for script writers to use.
  *  @param value The token to convert.
+ *  @param isJSON True if the token being converted comes from a source with
+ *   type JSON, in which case, if the value is a string, the string will be
+ *   parsed.
  */
-function convertFromToken(value) {
+function convertFromToken(value, isJSON) {
     // If the value is not a Token, just return it.
     if (!(value instanceof Token)) {
         return value;
@@ -424,7 +427,17 @@ function convertFromToken(value) {
         return value.doubleValue();
     }
     if (value instanceof StringToken) {
-        // NOTE: Used to parse JSON here, but that is now handled in the common host.
+        // NOTE: Used to always parse JSON here, but that is now handled in the common host
+    	// for most cases.
+    	if (isJSON) {
+    		// Attempt to parse the JSON.
+    		try {
+    			return JSON.parse(value.stringValue());
+    		} catch (err) {
+    			// Just return the string.
+    			return value.stringValue();
+    		}
+    	}
         return value.stringValue();
     }
     if (value instanceof IntToken) {
