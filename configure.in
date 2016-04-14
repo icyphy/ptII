@@ -4913,8 +4913,8 @@ changequote([, ])dnl
 		    fi
                 else 
 		    if test $PTJNI_ARCHITECTURE = "darwin"; then
-		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab32.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
-		        PTMATLAB_64LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab64.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_64LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
+		        PTMATLAB_LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab32.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" \"-Wl,-rpath,${MATLAB_64LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
+		        PTMATLAB_64LD_ARGS="ptmatlab.cc -fno-exceptions -dynamiclib -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab64.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_64LIBDIR}\" \"-Wl,-rpath,${MATLAB_64LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} -leng -lmx -lmex"
 		    else
 		        PTMATLAB_LD_ARGS="-shared ptmatlab.cc -fno-exceptions -o ${PTJNI_SHAREDLIBRARY_PREFIX}ptmatlab.${PTJNI_SHAREDLIBRARY_SUFFIX}	-L\"${MATLAB_LIBDIR}\" ${PTJNI_SHAREDLIBRARY_LDFLAG} ${PTJNI_LIBC} -leng -lmx -lmex"
 		        if test "`uname -m`" = "x86_64"; then
