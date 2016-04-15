@@ -202,8 +202,40 @@
 /*jshint globalstrict: true, multistr: true */
 'use strict';
 
-var util = require('util');
-var EventEmitter = require('events').EventEmitter;
+// Determine which accessor host is in use.
+// See https://www.terraswarm.org/accessors/wiki/Main/ResourcesForHostAuthors#Differentiating
+// See https://stijndewitt.com/2014/01/26/enums-in-javascript/
+var accessorHostsEnum = {
+    BROWSER: 1,
+    CAPECODE: 2,
+    DEFAULT: 3,
+    DUKTAPE: 4,
+    NODE: 5
+};
+exports.accessorHostsEnum = accessorHostsEnum;
+
+var accessorHost = accessorHostsEnum.DEFAULT;
+exports.accessorHost = accessorHost;
+
+// In alphabetical order
+if (typeof window !== 'undefined' && window.hasOwnProperty('browserJSLoaded')) {
+    accessorHost = accessorHostsEnum.BROWSER;
+} else if (typeof Packages !== 'undefined' && typeof Packages.java.util.Vector !== undefined) {
+    accessorHost = accessorHostsEnum.CAPECODE;
+} else if (typeof Duktape === 'object') {
+    accessorHost = accessorHostsEnum.DUKTAPE;
+} else if (typeof process !== 'undefined' && typeof process.version !== undefined) {
+    accessorHost = accessorHostsEnum.NODE;
+}
+
+if (accessorHost === accessorHostsEnum.DUKTAPE) {
+    var util = require('../common/modules/util.js');
+    var EventEmitter = require('../common/modules/events.js').EventEmitter;
+} else {
+    // The node host will load the core util module here and not access the file system.
+    var util = require('util');
+    var EventEmitter = require('events').EventEmitter;
+}
 
 
 /** Create (using new) an accessor instance whose interface and functionality is given by
