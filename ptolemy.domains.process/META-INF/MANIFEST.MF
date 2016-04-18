@@ -19,3 +19,4 @@ Import-Package: org.osgi.framework;version="1.7.0",
 Export-Package: ptolemy.actor.process;version="11.0.0",
  ptolemy.domains.pn.kernel;version="11.0.0",
  ptolemy.domains.pn.kernel.event;version="11.0.0"
+Bundle-Activator: ptolemy.domains.process.activator.Activator
