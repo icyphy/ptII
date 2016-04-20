@@ -197,13 +197,13 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
                 code.append(", {'type':'" + targetType + "'");
                 if (port instanceof ParameterPort) {
                     code.append(", 'value':"
-                            + targetExpression(((ParameterPort)port).getParameter().getExpression(), port.getType()));
+                            + targetExpression(((ParameterPort)port).getParameter()));
                 } else if (port instanceof IOPort) {
                     IOPort ioPort = (IOPort)port;
                     Token value = ioPort.defaultValue.getToken();
                     if (value != null) {
                         code.append(", 'value':"
-                                + targetExpression(ioPort.defaultValue.getExpression(), ioPort.defaultValue.getType()));
+                                + targetExpression(ioPort.defaultValue));
                     }
                 }
                 code.append("}");
