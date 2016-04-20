@@ -84,6 +84,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreServer.
 $CLASSPATH/org/terraswarm/accessor/demo/MoC/MoC.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MockHueBridge/MockHueBridge.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MotionDetector/MotionDetector.xml
+$CLASSPATH/org/terraswarm/accessor/demo/MotionLights/MotionLights.xml
 $CLASSPATH/org/terraswarm/accessor/demo/REST/REST.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Scarab/Scarab.xml
 $CLASSPATH/org/terraswarm/accessor/demo/SecureSocket/SecureSocket.xml
