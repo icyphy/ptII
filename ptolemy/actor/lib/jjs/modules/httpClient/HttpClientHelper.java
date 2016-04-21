@@ -30,15 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.httpClient;
 
-import io.vertx.core.Handler;
-import io.vertx.core.MultiMap;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.http.HttpClient;
-import io.vertx.core.http.HttpClientOptions;
-import io.vertx.core.http.HttpClientRequest;
-import io.vertx.core.http.HttpClientResponse;
-import io.vertx.core.http.HttpMethod;
-
 import java.awt.Graphics2D;
 import java.awt.Image;
 import java.awt.image.BufferedImage;
@@ -52,6 +43,14 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import io.vertx.core.Handler;
+import io.vertx.core.MultiMap;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.http.HttpClient;
+import io.vertx.core.http.HttpClientOptions;
+import io.vertx.core.http.HttpClientRequest;
+import io.vertx.core.http.HttpClientResponse;
+import io.vertx.core.http.HttpMethod;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
@@ -266,6 +265,13 @@ public class HttpClientHelper extends VertxHelperBase {
             if (status >= 400) {
                 _pendingRequests--;
                 // An error occurred.
+                response.bodyHandler(new Handler() {
+                    public void handle(Object body) {
+                      // The entire response body has been received
+                      System.out.println("The total body: " + body.toString());
+                    }
+                  });
+                
                 // True argument indicates that this request is done.
                 // System.err.println("****** Received an error code for request " + _requestNumber + ", " + status);
                 _issueOrDeferResponse(_requestNumber, true, new Runnable() {
