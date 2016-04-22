@@ -303,6 +303,7 @@ public class LifeCycleManager extends TypedCompositeActor {
             // contain actors like Matlab Expression, which open up
             // the connection to the Matlab Engine in preinitialize().
             // See ptolemy/matlab/test/MatlabRunComposite.xml.
+            // See ptolemy/actor/lib/hoc/test/auto/PreinitializeMustBeInvokedRunComposite.xml
             preinitialize();
 
             _readInputs();

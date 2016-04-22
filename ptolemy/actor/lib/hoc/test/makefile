@@ -45,8 +45,9 @@ include $(CONFIG)
 TCL_SRCS = \
 	testDefs.tcl
 
-JSRCS = IterateOverArrayCloneTest.java
-
+JSRCS = \
+	IterateOverArrayCloneTest.java \
+	PreinitializeMustBeInvoked.java
 # Non-graphical Java tests written in Tcl.
 JSIMPLE_TESTS = \
 	IterateOverArray.tcl
