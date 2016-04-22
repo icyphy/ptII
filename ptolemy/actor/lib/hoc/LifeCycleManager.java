@@ -295,14 +295,22 @@ public class LifeCycleManager extends TypedCompositeActor {
                 throw new IllegalActionException(this,
                         "An inside director is required to execute the inside model.");
             }
+
             // Force the inside director to behave as if it were at the top level.
             insideDirector.setEmbedded(false);
+
+            // Call preinitialize() so that RunComposite actors can
+            // contain actors like Matlab Expression, which open up
+            // the connection to the Matlab Engine in preinitialize().
+            // See ptolemy/matlab/test/MatlabRunComposite.xml.
+            preinitialize();
 
             _readInputs();
 
             if (_stopRequested) {
                 return COMPLETED;
             }
+
 
             // FIXME: Reset time to zero. How?
             // NOTE: Use the superclass initialize() because this method overrides
