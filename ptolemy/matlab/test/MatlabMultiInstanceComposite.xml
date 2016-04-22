@@ -1,0 +1,152 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="MatlabMultiInstanceComposite" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={363, 50, 934, 632}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 251.0}">
+    </property>
+    <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+        <property name="iterations" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 20.0}">
+        </property>
+    </property>
+    <entity name="MultiInstanceComposite" class="ptolemy.actor.lib.hoc.MultiInstanceComposite">
+        <property name="nInstances" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="showClones" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <doc>Creates multiple instances of itself</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, 95.0}">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 109, 934, 632}, maximized=false}">
+        </property>
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+        </property>
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+        </property>
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 265.2060546875}">
+        </property>
+        <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
+            <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{383.0, 188.412109375}">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{330.0, 265.0}">
+            </property>
+            <property name="DocAttribute" class="ptolemy.vergil.basic.DocAttribute">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{115.0, 220.0}">
+            </property>
+        </port>
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="instance">
+            </property>
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{100, 280}">
+            </property>
+        </entity>
+        <entity name="MatlabExpression" class="ptolemy.matlab.Expression">
+            <property name="expression" class="ptolemy.data.expr.StringParameter" value="output = x + y">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 245.0]">
+            </property>
+            <port name="output" class="ptolemy.actor.TypedIOPort">
+                <property name="output"/>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="[int]">
+                </property>
+            </port>
+            <port name="x" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="y" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+        </entity>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        </relation>
+        <link port="output" relation="relation3"/>
+        <link port="input" relation="relation"/>
+        <link port="Const.output" relation="relation2"/>
+        <link port="MatlabExpression.output" relation="relation3"/>
+        <link port="MatlabExpression.x" relation="relation"/>
+        <link port="MatlabExpression.y" relation="relation2"/>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={579, 423, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 85.0}">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="[42]">
+        </property>
+        <doc>Create a constant sequence.</doc>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 165.0}">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{[42], [43], [44]}, {[42], [43], [44]}}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{440.0, 145.0}">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex" value="{135.0, 165.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=55.0,y=165.0}, tail={id=&quot;relation2.vertex&quot;,x=135.0,y=165.0}, points={} },{ head={id=&quot;MultiInstanceComposite.input&quot;,x=195.0,y=95.0}, tail={id=&quot;relation2.vertex&quot;,x=135.0,y=165.0}, points={135.0,100.0} },{ head={id=&quot;relation2.vertex&quot;,x=135.0,y=165.0}, tail={id=&quot;MultiInstanceComposite_1.input&quot;,x=225.0,y=135.0}, points={135.0,140.0} },{ head={id=&quot;relation2.vertex&quot;,x=135.0,y=165.0}, tail={id=&quot;MultiInstanceComposite_2.input&quot;,x=225.0,y=165.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{350.0, 100.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MultiInstanceComposite.output&quot;,x=195.0,y=95.0}, tail={id=&quot;relation3.vertex1&quot;,x=350.0,y=100.0}, points={} },{ head={id=&quot;Test.input&quot;,x=440.0,y=145.0,index=3}, tail={id=&quot;relation3.vertex1&quot;,x=350.0,y=100.0}, points={350.0,135.0} },{ head={id=&quot;Display.input&quot;,x=430.0,y=85.0,index=3}, tail={id=&quot;relation3.vertex1&quot;,x=350.0,y=100.0}, points={350.0,75.0} } }">
+        </property>
+    </relation>
+    <link port="MultiInstanceComposite.output" relation="relation3"/>
+    <link port="MultiInstanceComposite.input" relation="relation2"/>
+    <link port="Display.input" relation="relation3"/>
+    <link port="Const.output" relation="relation2"/>
+    <link port="Test.input" relation="relation3"/>
+</entity>
