@@ -432,7 +432,17 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor im
             _currentState[i] = ((DoubleToken)s0.getElement(i)).doubleValue();
         }
         if (!satisfiesMapConstraints(_currentState)) {
-            throw new IllegalActionException("Initial state does not satisfy map constraints!");
+            String currentStateString = "(";
+            
+            for (int i = 0; i < _stateSpaceSize; i++) {
+                currentStateString += _currentState[i] + " , ";
+            }
+            
+            currentStateString = currentStateString.substring(0,currentStateString.length()-3) + ")";
+            
+            throw new IllegalActionException(this.getName() 
+                    + ": Initial state "+ currentStateString 
+                    + " does not satisfy map constraints!");
         }
     }
 
@@ -500,7 +510,7 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor im
         } while (! satisfiesMapConstraints(newState) && trials < MAX_TRIALS);
         
         if (! satisfiesMapConstraints(newState)) {
-            throw new IllegalActionException("Could not find a feasible state propagation that satisfies"
+            throw new IllegalActionException( this.getName() + ": Could not find a feasible state propagation that satisfies"
                     + " current map constraints.");
         }
         _currentState = newState;
