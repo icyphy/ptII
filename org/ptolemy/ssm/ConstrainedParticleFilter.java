@@ -29,8 +29,7 @@ package org.ptolemy.ssm;
 
 import java.util.Set;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
+import ptolemy.data.BooleanToken; 
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Decorator;
@@ -86,33 +85,11 @@ public class ConstrainedParticleFilter extends ParticleFilter {
         }
         return found;
     }
-    
-    @Override
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-        
-        //get map decorator, update map
-        Parameter resolution = (Parameter) getDecoratorAttribute(_mapDecorator, "resolution");
-        _resolution = ((DoubleToken)resolution.getToken()).doubleValue();
-        _occupancyGrid = _mapDecorator.getOccupancyGrid(); 
-        
-        
-    }
+
     
     @Override
     public boolean satisfiesMapConstraints(double[] coordinates) {
-        double xCoord = coordinates[0];
-        double yCoord = coordinates[1];
-        int gridX = (int) Math.floor(xCoord/_resolution);
-        int gridY = (int) Math.floor(yCoord/_resolution);
-        
-        if (gridX >= 0 && gridY >=0 && gridY < _occupancyGrid.length && gridX < _occupancyGrid[0].length) {
-            return _occupancyGrid[gridY][gridX] == 255;
-        } 
-        
-        return false;
+        return _mapDecorator.withinValidMapArea(coordinates[0], coordinates[1]);
     }
-    private Map _mapDecorator;
-    private int[][] _occupancyGrid;
-    private double _resolution; 
+    private Map _mapDecorator; 
 }

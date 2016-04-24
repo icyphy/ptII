@@ -28,8 +28,11 @@ the copyright link on the splash page or see copyright.htm.
  */
 package org.ptolemy.ssm;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
+import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.data.ArrayToken;
 import ptolemy.data.DoubleToken;
@@ -43,8 +46,13 @@ import ptolemy.data.type.RecordType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.Decorator;
+import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
+import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
@@ -57,7 +65,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class Map extends MirrorDecorator {
+public class Map extends TypedAtomicActor implements Decorator {
 
     /** Construct a StateSpaceModel with a name and a container.
      *  The container argument must not be null, or a
@@ -220,4 +228,55 @@ public class Map extends MirrorDecorator {
     
     private static final int VALID_MAP_INTENSITY = 255;
 
+    @Override
+    public String description() throws IllegalActionException {
+        // TODO Auto-generated method stub
+        return "A Map aspect that decorates actors, which implement the MapConstrained interface";
+    }
+
+    @Override
+    public DecoratorAttributes createDecoratorAttributes(NamedObj target)
+            throws IllegalActionException {
+        if (target instanceof MapConstrained) {
+            try {
+                return new MapAttributes(target, this);
+            } catch (KernelException ex) {
+                // This should not occur.
+                throw new InternalErrorException(ex);
+            }
+        }  else {
+            return null;
+        }
+    }
+
+    @Override
+    public List<NamedObj> decoratedObjects() throws IllegalActionException {
+        if (workspace().getVersion() == _decoratedObjectsVersion) {
+            return _decoratedObjects;
+        }
+        _decoratedObjectsVersion = workspace().getVersion();
+        List<NamedObj> list = new ArrayList();
+        CompositeEntity container = (CompositeEntity) getContainer();
+        if (container != null) {
+            for (Object object : container.deepEntityList()) {
+                if (object instanceof MapConstrained) {
+                    list.add((NamedObj)object);
+                }
+            }
+            _decoratedObjects = list;
+        }
+        return list;
+    }
+
+    @Override
+    public boolean isGlobalDecorator() throws IllegalActionException { 
+        return false;
+    } 
+    
+    /** Cached list of decorated objects. */
+    protected List<NamedObj> _decoratedObjects;
+
+    /** Version for _decoratedObjects. */
+    protected long _decoratedObjectsVersion = -1L;
+ 
 }
