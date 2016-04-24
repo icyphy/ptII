@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 Ptolemy II includes the work of others, to see those copyrights, follow
 the copyright link on the splash page or see copyright.htm.
-*/
+ */
 package org.ptolemy.ssm;
 
 import java.util.Arrays;
@@ -45,6 +45,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
 /** 
@@ -57,7 +58,7 @@ import ptolemy.kernel.util.Workspace;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class Map extends MirrorDecorator {
- 
+
     /** Construct a StateSpaceModel with a name and a container.
      *  The container argument must not be null, or a
      *  NullPointerException will be thrown.  This actor will use the
@@ -91,7 +92,7 @@ public class Map extends MirrorDecorator {
     /** Map resolution in meters/pixel.
      */
     public Parameter resolution;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -127,7 +128,7 @@ public class Map extends MirrorDecorator {
             super.attributeChanged(attribute);
         }
     }
-    
+
     /** Clone the actor into the specified workspace.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
@@ -148,7 +149,7 @@ public class Map extends MirrorDecorator {
         super.fire();
         map.update();
     }
- 
+
     public int[][] getOccupancyGrid() {
         int [][] copyOccupancy = new int[_occupancyGrid.length][_occupancyGrid[0].length];
         for (int i = 0; i < copyOccupancy.length; i++) {
@@ -156,9 +157,29 @@ public class Map extends MirrorDecorator {
         }
         return copyOccupancy;
     }
-    
+
     public double[] getOrigin() {
         return Arrays.copyOf(_origin, _origin.length);
+    }
+
+    /**
+     * Check if queried (x,y) position is within the valid map area. 
+     * @param xCoord
+     * @param yCoord
+     * @return
+     */
+    public boolean withinValidMapArea(double xCoord, double yCoord) {
+        
+        int gridX = (int) Math.floor(xCoord/_resolution);
+        int gridY = (int) Math.floor(yCoord/_resolution);
+
+        if (gridX >= 0 && gridY >=0 
+                && gridY < _occupancyGrid.length 
+                && gridX < _occupancyGrid[0].length) {
+            return ( _occupancyGrid[gridY][gridX] == VALID_MAP_INTENSITY );
+        } 
+        
+        return false;
     }
 
 
@@ -168,7 +189,7 @@ public class Map extends MirrorDecorator {
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
     NameDuplicationException {
-        
+
         resolution = new Parameter(this, "resolution");
         resolution.setExpression("0.05");
         resolution.setTypeEquals(BaseType.DOUBLE); 
@@ -176,17 +197,18 @@ public class Map extends MirrorDecorator {
         origin = new Parameter(this, "origin");
         origin.setExpression("{0.0,0.0}");
         origin.setTypeEquals(new ArrayType(BaseType.DOUBLE));  
-        
+
         map = new PortParameter(this,"map");
         map.setExpression("{width = 2, height=1, grid={0,0}}");
         String[] mapLabels = {"width","height","grid"};
         Type[] types = {BaseType.INT, BaseType.INT, new ArrayType(BaseType.INT)};
         map.setTypeEquals(new RecordType(mapLabels, types));
-        
+        map.setVisibility(Settable.EXPERT);
+
         _origin = new double[2];
-        
+
     } 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
@@ -196,4 +218,6 @@ public class Map extends MirrorDecorator {
     private double[] _origin;
     private double _resolution;
     
+    private static final int VALID_MAP_INTENSITY = 255;
+
 }

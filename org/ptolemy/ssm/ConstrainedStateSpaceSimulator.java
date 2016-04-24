@@ -29,8 +29,7 @@ package org.ptolemy.ssm;
 
 import java.util.Set;
 
-import ptolemy.data.BooleanToken;
-import ptolemy.data.DoubleToken;
+import ptolemy.data.BooleanToken; 
 import ptolemy.data.IntToken;
 import ptolemy.data.expr.Parameter;
 import ptolemy.kernel.CompositeEntity;
@@ -93,18 +92,7 @@ public class ConstrainedStateSpaceSimulator extends StateSpaceSimulator {
         newObject._mapDecorator = null; 
         return newObject;
     }
-
-    @Override
-    public void initialize() throws IllegalActionException {
-        super.initialize();
-
-        //get map decorator, update map
-        Parameter resolution = (Parameter) getDecoratorAttribute(_mapDecorator, "resolution");
-        _resolution = ((DoubleToken)resolution.getToken()).doubleValue();
-        _occupancyGrid = _mapDecorator.getOccupancyGrid(); 
-
-
-    }
+ 
 
     /**
      * Check if the Actor is associated with a unique enabled StateSpaceModel. Ideally,
@@ -142,17 +130,9 @@ public class ConstrainedStateSpaceSimulator extends StateSpaceSimulator {
     public boolean satisfiesMapConstraints(double[] coordinates) {
         double xCoord = coordinates[0];
         double yCoord = coordinates[1];
-        int gridX = (int) Math.floor(xCoord/_resolution);
-        int gridY = (int) Math.floor(yCoord/_resolution);
 
-        if (gridX >= 0 && gridY >=0 && gridY < _occupancyGrid.length && gridX < _occupancyGrid[0].length) {
-            return _occupancyGrid[gridY][gridX] == 255;
-        } 
-
-        return false;
+        return _mapDecorator.withinValidMapArea(xCoord, yCoord);
     }
 
-    private Map _mapDecorator; 
-    private int[][] _occupancyGrid;
-    private double _resolution; 
+    private Map _mapDecorator;   
 }
