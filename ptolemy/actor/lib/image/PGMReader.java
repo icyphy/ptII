@@ -27,8 +27,8 @@
  */
 package ptolemy.actor.lib.image;
 
+import java.io.DataInputStream;
 import java.io.FileInputStream;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.Scanner;
 
@@ -121,28 +121,32 @@ public class PGMReader extends Source {
             return false;
         }
         try { 
-            Scanner scan = new Scanner(new FileInputStream(fileOrURL.asFile()));
+            Scanner scan  = new Scanner(new FileInputStream(fileOrURL.asFile()));
+            FileInputStream fileInputStream = new FileInputStream(fileOrURL.asFile());
+            DataInputStream dis = new DataInputStream(fileInputStream);
             scan.next(); // the magic number: used to determine the PGM format.
             _width = scan.nextInt();
             _height = scan.nextInt();
-            scan.nextInt();  // max value
-            scan.close();
+             
+            
+             
+            try { 
 
-            FileReader stream = null;
-            try {
-                stream = new FileReader(fileOrURL.asFile()); 
-
-                // Skip header.
-                for ( int i = 0 ; i < 4; i++) { 
-                    if (stream.read() == -1) {
-                        return false;
-                    }
+                // Skip header. 
+                int lines = 0;
+                while (lines < 4) {
+                    char c;
+                    do {
+                        c = (char) dis.readUnsignedByte();
+                    } while (c != '\n');
+                    lines ++;
                 }
+                
                 _grid = new int[_height*_width];
 
                 for (int col = 0; col < _width; col++) { 
                     for (int row = 0; row < _height; row++) {
-                        int intVal = stream.read();
+                        int intVal = dis.readUnsignedByte();
                         if (!_quantize) {
                             _grid[row*_width + col] = intVal; 
                         } else {
@@ -166,8 +170,14 @@ public class PGMReader extends Source {
                     }
                 } 
             } finally {
-                if (stream != null) {
-                    stream.close();
+                if (dis != null) {
+                    dis.close();
+                }
+                if (fileInputStream != null) {
+                    fileInputStream.close();
+                }
+                if (scan!=null) {
+                    scan.close();
                 }
             }
         } catch (IOException e) {
