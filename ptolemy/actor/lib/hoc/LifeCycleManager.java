@@ -275,6 +275,14 @@ public class LifeCycleManager extends TypedCompositeActor {
      *  and postfire() are repeated until either the model indicates it
      *  is not ready to execute (prefire() returns false), or it requests
      *  a stop (postfire() returns false or stop() is called).
+     *
+     *  <p>Note that we do not call preinitialize() here because if we
+     *  do, then PortParameter.preinitialize() will set the value of
+     *  the PortParameter to the value of the persistent expression.
+     *  Instead, initialize() should check that things like the Matlab
+     *  engine have been started and if necessary start them because
+     *  wrapup() might have closed the engine.</p>
+     *
      *  @exception IllegalActionException If there is no director, or if
      *   the director's action methods throw it.
      *  @return One of COMPLETED, STOP_ITERATING, or NOT_READY to
@@ -299,12 +307,10 @@ public class LifeCycleManager extends TypedCompositeActor {
             // Force the inside director to behave as if it were at the top level.
             insideDirector.setEmbedded(false);
 
-            // Call preinitialize() so that RunComposite actors can
-            // contain actors like Matlab Expression, which open up
-            // the connection to the Matlab Engine in preinitialize().
+            // See method comment about why we don't call preinitialize here.
             // See ptolemy/matlab/test/MatlabRunComposite.xml.
-            // See ptolemy/actor/lib/hoc/test/auto/PreinitializeMustBeInvokedRunComposite.xml
-            preinitialize();
+            // See ptolemy/actor/lib/hoc/test/auto/knownFailedTests/PreinitializeMustBeInvokedRunComposite.xml
+            // preinitialize();
 
             _readInputs();
 
