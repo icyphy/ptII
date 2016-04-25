@@ -34,7 +34,7 @@ ROOT = ../../../..
 
 DIRS = AprilTags Audio Camera Foscam HappySadStock HueToggle \
 	IMUSensor ImageAnnotate ImageFilters KeyValueStoreClient \
-	MoC MotionDetector StockTick \
+	MoC MotionDetector MotionLights StockTick \
 	SwarmAcousticService TCPSocket \
 	UDPSocket VertxBus \
 	Weather WebSocketChat WebSocketClient WebSocketImage
