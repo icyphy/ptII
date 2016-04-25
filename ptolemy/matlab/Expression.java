@@ -254,52 +254,7 @@ public class Expression extends TypedAtomicActor {
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
-
-        try {
-            matlabEngine = new Engine();
-        } catch (Throwable throwable) {
-            // LinkageError is and Error, not an exceptoin
-            throw new IllegalActionException(
-                    this,
-                    throwable,
-                    "There was a problem invoking the Ptolemy II Matlab "
-                            + "interface.\nThe interface has been tested under "
-                            + "Linux, Mac OS X, and Windows.\n"
-                            + "The interface requires that Matlab be installed "
-                            + "on the local machine and that the ptmatlab "
-                            + "shared library available.\n"
-                            + "* Under Linux, you must have the LD_LIBRARY_PATH "
-                            + "environment variable set to include the directories "
-                            + "that contain libmx.so and libptmatlab.so.\n"
-                            + "* Under Mac OS X, you must have the DYLD_LIBRARY_PATH "
-                            + "environment variable set to include the directories "
-                            + "that contain libmx.dylib and libptmatlab.jnilib.\n"
-                            + "* Under Windows, you must have your PATH set to include "
-                            + "the Matlab bin/win32 or equivalent directory so that "
-                            + "libmex.dll is found and the directory that contains "
-                            + "libptmatlab.dll. "
-                            + "In addition, if you are running under Windows from "
-                            + "the Cygwin bash prompt, then you must start Vergil with "
-                            + "the -jni argument: $PTII/bin/vergil -jni. For details, "
-                            + "see $PTII/jni/package.html.\n"
-                            + "Refer to $PTII/ptolemy/matlab/makefile for more "
-                            + "information.");
-        }
-
-        // First set default debugging level, then check for more
-        matlabEngine.setDebugging((byte) 0);
-
-        Parameter debugging = (Parameter) getAttribute("_debugging");
-
-        if (debugging != null) {
-            Token t = debugging.getToken();
-
-            if (t instanceof IntToken) {
-                matlabEngine.setDebugging((byte) ((IntToken) t).intValue());
-            }
-        }
-
-        engine = matlabEngine.open();
+        _initializeEngine();
     }
 
     /** Initialize the iteration count to 1.
@@ -308,6 +263,11 @@ public class Expression extends TypedAtomicActor {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
+
+        // Check to make sure that the engine has been initialized.
+        if (engine == null) {
+            _initializeEngine();
+        }
         _iterationCount = 1;
         _iteration.setToken(new IntToken(_iterationCount));
 
@@ -502,6 +462,67 @@ public class Expression extends TypedAtomicActor {
     @Override
     protected Set<Inequality> _defaultTypeConstraints() {
         return null;
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Initialize the Matlab Engine.
+     *  @exception IllegalActionException If the connection to the
+     *  Matlab engine cannot be intialized.
+     */
+    private void _initializeEngine() throws IllegalActionException {
+        // The intialization used to occur in preinitialize(), but this
+        // meant that the Matlab Expression actor could not be used
+        // in a RunComposite because RunComposite invokes _executeInsideModel()
+        // which does not invoke preinitialize().  If _executeInsideModel()
+        // invokes preinitialize(), then the PortParameters of the RunComposite
+        // are constantly reset to the value of the _persistentExpression.
+        try {
+            matlabEngine = new Engine();
+        } catch (Throwable throwable) {
+            // LinkageError is and Error, not an exceptoin
+            throw new IllegalActionException(
+                    this,
+                    throwable,
+                    "There was a problem invoking the Ptolemy II Matlab "
+                            + "interface.\nThe interface has been tested under "
+                            + "Linux, Mac OS X, and Windows.\n"
+                            + "The interface requires that Matlab be installed "
+                            + "on the local machine and that the ptmatlab "
+                            + "shared library available.\n"
+                            + "* Under Linux, you must have the LD_LIBRARY_PATH "
+                            + "environment variable set to include the directories "
+                            + "that contain libmx.so and libptmatlab.so.\n"
+                            + "* Under Mac OS X, you must have the DYLD_LIBRARY_PATH "
+                            + "environment variable set to include the directories "
+                            + "that contain libmx.dylib and libptmatlab.jnilib.\n"
+                            + "* Under Windows, you must have your PATH set to include "
+                            + "the Matlab bin/win32 or equivalent directory so that "
+                            + "libmex.dll is found and the directory that contains "
+                            + "libptmatlab.dll. "
+                            + "In addition, if you are running under Windows from "
+                            + "the Cygwin bash prompt, then you must start Vergil with "
+                            + "the -jni argument: $PTII/bin/vergil -jni. For details, "
+                            + "see $PTII/jni/package.html.\n"
+                            + "Refer to $PTII/ptolemy/matlab/makefile for more "
+                            + "information.");
+        }
+
+        // First set default debugging level, then check for more
+        matlabEngine.setDebugging((byte) 0);
+
+        Parameter debugging = (Parameter) getAttribute("_debugging");
+
+        if (debugging != null) {
+            Token t = debugging.getToken();
+
+            if (t instanceof IntToken) {
+                matlabEngine.setDebugging((byte) ((IntToken) t).intValue());
+            }
+        }
+
+        engine = matlabEngine.open();
     }
 
     private transient Engine matlabEngine = null;
