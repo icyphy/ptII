@@ -46,9 +46,13 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 	WebSocketChat.xml
-	./Client.xml\
-	./Server.xml\
+OTHER_FILES_TO_BE_JARED = \
+	Client.xml \
+	SecureClient.xml \
+	SecureServer.xml \
+	Server.xml \
+	WebSocketChat.xml
+
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't

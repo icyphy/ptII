@@ -34,10 +34,12 @@ ROOT = ../../../..
 
 DIRS = AprilTags Audio Camera Foscam HappySadStock HueToggle \
 	IMUSensor ImageAnnotate ImageFilters KeyValueStoreClient \
-	MoC MotionDetector MotionLights StockTick \
+	MoC MockHueBridge MoodLights MotionDetector MotionLights \
+	OccupancyLights Scarab SecureSocket StockTick \
 	SwarmAcousticService TCPSocket \
 	UDPSocket VertxBus \
-	Weather WebSocketChat WebSocketClient WebSocketImage
+	Weather WebSocketChat WebSocketClient WebSocketImage \
+	XBeeHelloWorld
 
 # $(ME) is used in ptdir.mk
 ME =  org/terraswarm/accessor/demo
