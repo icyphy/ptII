@@ -4274,6 +4274,10 @@
         <include name="org/terraswarm/accessor/demo/*/*.js"/>
         <include name="org/terraswarm/accessor/demo/*/*.svg"/>
         <include name="org/terraswarm/accessor/demo/*/*.xml"/>
+        <include name="org/terraswarm/accessor/demo/SecureSocket/Server.pfx"/>
+        <include name="org/terraswarm/accessor/demo/SecureSocket/keystore.jks"/>
+        <include name="org/terraswarm/accessor/demo/TCPSocket/certs/*.pem"/>
+        <include name="org/terraswarm/accessor/demo/TCPSocket/certs/*.pfx"/>
       </fileset>
     </jar>
 
