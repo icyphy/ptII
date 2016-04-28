@@ -51,8 +51,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
-	ConstrainedParticleFilter.java \
-	ConstrainedStateSpaceSimulator.java \
 	CovarianceStatePredictor.java \
 	GaussianMeasurementModel.java \
 	InferenceActor.java \

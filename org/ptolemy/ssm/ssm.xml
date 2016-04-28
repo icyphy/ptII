@@ -6,10 +6,6 @@
     <?moml
       <group>
   <doc>State Space Model Actors</doc>  
-  <entity name="ConstrainedParticleFilter" class="org.ptolemy.ssm.ConstrainedParticleFilter">
-  </entity> 
-   <entity name="ConstrainedStateSpaceSimulator" class="org.ptolemy.ssm.ConstrainedStateSpaceSimulator">
-  </entity> 
   <entity name="GaussianMeasurementModel" class="org.ptolemy.ssm.GaussianMeasurementModel">
   </entity> 
   <entity name="Map" class="org.ptolemy.ssm.Map">

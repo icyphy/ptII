@@ -53,7 +53,7 @@ Defines an initial value for the state and simulates the model from there.
 @since Ptolemy II 10.1
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
-*/
+ */
 public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements StateSpaceActor {
 
     public StateSpaceSimulator(CompositeEntity container, String name)
@@ -134,6 +134,7 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
     @Override
     public boolean validDecoratorAssociationExists() throws IllegalActionException {
         boolean found = false;
+        boolean mapExists = false;
         Set<Decorator> decoratorSet =decorators();
         for (Decorator d : decoratorSet) {
             if (d instanceof StateSpaceModel) {
@@ -148,7 +149,17 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
                                 + "at a time.");
                     }
                 }
+            } 
+            if (d instanceof Map) {
+                Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
+                if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) { 
+                    _mapDecorator = (Map) d; 
+                    mapExists = true;
+                }
             }
+        }
+        if (!mapExists) {
+            _mapDecorator = null;
         }
         return found;
     }
@@ -167,9 +178,23 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
 
     private StateSpaceModel _decorator;
 
+    /**
+     * Return true if the actor is decorated by a Map aspect.
+     * @return
+     */
+    private boolean _decoratedByMap() {
+        return (_mapDecorator != null);
+    }
+
+
     @Override
     public boolean satisfiesMapConstraints(double[] coordinates) {
-        // No map constraints for the base class
-        return true;
+        if (this._decoratedByMap()) {
+            return _mapDecorator.withinValidMapArea(coordinates[0], coordinates[1]);
+        } else {
+            return true;
+        }
     }
+
+    private Map _mapDecorator;   
 }

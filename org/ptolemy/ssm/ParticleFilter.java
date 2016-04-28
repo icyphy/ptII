@@ -56,7 +56,7 @@ and several measurements to be tied with itself via decorators.
 @Pt.AcceptedRating
  */
 public class ParticleFilter extends AbstractParticleFilter implements
-        InferenceActor {
+InferenceActor {
 
     public ParticleFilter(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -72,6 +72,7 @@ public class ParticleFilter extends AbstractParticleFilter implements
         _decorator = null;
         _measurementDecorators = new HashMap<>();
     }
+      
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
@@ -125,6 +126,7 @@ public class ParticleFilter extends AbstractParticleFilter implements
     public boolean validDecoratorAssociationExists()
             throws IllegalActionException {
         boolean found = false;
+        boolean mapExists = false;
         Set<Decorator> decoratorSet =decorators();
         for (Decorator d : decoratorSet) {
             if (d instanceof StateSpaceModel) {
@@ -149,7 +151,17 @@ public class ParticleFilter extends AbstractParticleFilter implements
                     _measurementDecorators.put(d.getName(),
                             (GaussianMeasurementModel) d);
                 }
-            }
+            } else if (d instanceof Map) {
+                Parameter isEnabled = (Parameter) getDecoratorAttribute(d,
+                        "enable");
+                if (((BooleanToken) isEnabled.getToken()).booleanValue()) {
+                    _mapDecorator = (Map) d;
+                    mapExists = true;
+                }
+            } 
+        }
+        if (!mapExists) {
+            _mapDecorator = null;
         }
         return found;
     }
@@ -204,7 +216,7 @@ public class ParticleFilter extends AbstractParticleFilter implements
     /** The state space model of the target 
      * being tracked by this particle filter. */
     private StateSpaceModel _decorator;
-    
+
     private HashMap<String, GaussianMeasurementModel> _measurementDecorators;
 
     @Override
@@ -240,9 +252,16 @@ public class ParticleFilter extends AbstractParticleFilter implements
         }
     }
 
+    private boolean _decoratedByMap() {
+        return (_mapDecorator != null);
+    }
     @Override
     public boolean satisfiesMapConstraints(double[] coordinates) {
-        // No map constraints for this base class.
-        return true;
+        if (this._decoratedByMap()) {
+            return _mapDecorator.withinValidMapArea(coordinates[0], coordinates[1]);
+        } else {
+            return true;
+        }
     }
+    private Map _mapDecorator; 
 }
