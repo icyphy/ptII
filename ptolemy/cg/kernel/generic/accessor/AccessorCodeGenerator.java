@@ -28,13 +28,17 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.kernel.generic.accessor;
 
+import java.net.URI;
+
 import ptolemy.cg.kernel.generic.RunnableCodeGenerator;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
 ////AccessorCodeGenerator
@@ -129,10 +133,28 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
      */
     @Override
     protected int _generateCode(StringBuffer code) throws KernelException {
-        code.append("exports.setup = function() {" + _eol);
-        code.append(((AccessorCodeGeneratorAdapter) getAdapter(toplevel()))
-                .generateAccessor());
-        code.append("}" + _eol);
+        URI uri = URIAttribute.getModelURI(toplevel());
+        String modelURI = "";
+        if (uri != null) {
+            modelURI = uri.toString();
+            String PTII = StringUtilities.getProperty("ptolemy.ptII.dir");
+            System.out.println("AccessorCodeGenerator: PTII: " + PTII + " "
+                    + modelURI.startsWith("file:/") + " " + modelURI.contains(PTII));
+            if (modelURI.startsWith("file:/")
+                    && modelURI.contains(PTII)) {
+                modelURI = modelURI.substring(5).replace(PTII, "$PTII");
+            }
+        }
+                                       
+        code.append("exports.setup = function() {" + _eol
+                + INDENT1 + comment(" This composite accessor was created by Cape Code.")
+                + INDENT1 + comment(" To regenerate this composite accessor, run:")
+                + INDENT1 + comment(" java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor " + modelURI)
+                + INDENT1 + comment(" to edit the model, run:")
+                + INDENT1 + comment(" $PTII/bin/vergil -capecode " + modelURI)
+                + ((AccessorCodeGeneratorAdapter) getAdapter(toplevel()))
+                .generateAccessor()
+                + "}" + _eol);
         super._generateCode(code);
         return _executeCommands();
     }
