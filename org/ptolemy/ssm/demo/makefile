@@ -30,7 +30,8 @@
 ##########################################################################
 
 DIRS = SingleRobotTargetLocalization \
-StatePrediction
+StatePrediction \
+RangeLocalizationOnMap
 
 # Root of Ptolemy II directory
 ROOT =		../../../..
