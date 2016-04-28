@@ -72,8 +72,6 @@ JSRCS = \
 
 
 OTHER_FILES_TO_BE_JARED = \
-	ConstrainedParticleFilterIcon.xml \
-	ConstrainedStateSpaceSimulatorIcon.xml \
 	GaussianMeasurementModelIcon.xml \
 	MapIcon.xml \
 	ssm.xml \
