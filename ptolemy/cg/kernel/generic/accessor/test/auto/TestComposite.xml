@@ -4,7 +4,7 @@
 <entity name="TestComposite" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 136, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={192, 23, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -21,13 +21,27 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The input port as a defaultValue of 0.">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 245.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The input port has&#10;a defaultValue of 0.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 110.0]">
         </property>
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{425, 85}">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/test/auto">
+        </property>
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../hosts/node/nodeHostInvoke.js -timeout 2000 test/auto/@modelName@">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 60.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model generates a composite accessor&#10;that is the canonical composite example.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 240.0]">
         </property>
     </property>
     <port name="output" class="ptolemy.actor.TypedIOPort">

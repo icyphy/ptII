@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 30.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={506, 264, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={97, 78, 934, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
     </property>
@@ -23,11 +23,21 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 261.0}">
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/test/auto">
+        </property>
         <property name="run" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node nodeHostInvoke.js -timeout 10000 hosts/node/@modelName@">
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../hosts/node/nodeHostInvoke.js -timeout 6000 test/auto/@modelName@">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{190.0, 35.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model generates the Hello, World&#10;composite accessor.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 160.0]">
         </property>
     </property>
     <entity name="TestDisplay" class="org.terraswarm.accessor.JSAccessor">
