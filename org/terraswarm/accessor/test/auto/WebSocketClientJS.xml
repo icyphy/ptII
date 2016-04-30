@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0305146405453987">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{220.673877954482, 320.59229513234044}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{220.67387795448184, 320.59229513234044}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15.0">
@@ -26,6 +26,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test the maximum data size that can be transmitted in a single send() function&#10;by the Web Socket. &#10;&#10;The JavaScript accessor builds  a long string using a for loop. Change the &#10;loop's end point to modify the string length. ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 15.0]">
+        </property>
+    </property>
+    <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/net/test/auto">
+        </property>
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node hosts/node/nodeHostInvoke.js -timeout 2000 net/test/auto/@modelName@">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, -10.0}">
         </property>
     </property>
     <entity name="WebSocketClient" class="org.terraswarm.accessor.JSAccessor">
@@ -101,6 +109,10 @@
         </property>
         <property name="port" class="ptolemy.actor.parameters.PortParameter" value="8087">
         </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
         <port name="server" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -168,6 +180,10 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -192,6 +208,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 255.0]">
         </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
         <port name="connectionReady" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -214,6 +234,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 415.0]">
         </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -228,7 +252,7 @@
         </property>
     </entity>
     <entity name="TrainableTest" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Compare the input with a known good input.&#10; *&#10; *  This actor is based on the NonStrictTest actor, but currently only&#10; *  handles numeric and string input.&#10; *  &#10; *  @accessor test/TrainableTest&#10; *  @input input The input value&#10; *  @output output False as long as there is data to compare against the input&#10; *  @param correctValues a JSON array of the correct values.&#10; *  @param trainingMode true if the input is being trained.&#10; *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals */&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;exports.setup = function () {&#10;    // FIXME: this only supports numbers and strings, unlike the Cape Code Test&#10;    // actor, which supports many types.&#10;    this.parameter('correctValues', {'type': 'JSON', 'value': '{0}'});&#10;    this.input('input');&#10;    this.output('output', {'type': 'boolean'});&#10;    this.parameter('tolerance', {'type': 'number', 'value': 0.000000001});&#10;    this.parameter('trainingMode', {'type': 'boolean', 'value': false});&#10;};&#10;&#10;// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java&#10;&#10;// Set to true if fire is called once.  If fire() is not called at all,&#10;// then throw an exception in wrapup().&#10;var firedOnce = false;&#10;&#10;// The number of input tokens that have been read in.&#10;var numberOfInputTokensSeen = 0;&#10;&#10;// If trainingMode is true, then inputs that have been seen so far.&#10;var trainingTokens = [];&#10;&#10;exports.initialize = function () {&#10;    //console.log(&quot;Test initialize(): typeof correctValues: &quot; + typeof this.getParameter('correctValues'))&#10;    firedOnce = false;&#10;    numberOfInputTokensSeen = 0;&#10;    trainingTokens = [];&#10;};&#10;&#10;/** Get the input and compare it with the appropriate element from &#10; *  correctValues.&#10; */&#10;exports.fire = function () {&#10;    var inputValue = this.get('input');&#10;    firedOnce = true;&#10;    // If the input is not connected, then inputValue will be null.&#10;    if (this.getParameter('trainingMode')) {&#10;        trainingTokens.push(inputValue);&#10;        this.send('output', false);&#10;        return;&#10;    }&#10;    var correctValuesValues = this.getParameter('correctValues');&#10;    if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;        var referenceToken = correctValuesValues[numberOfInputTokensSeen];&#10;        //console.log(&quot;Test: &quot; + numberOfInputTokensSeen + &quot;, input: &quot; + inputValue&#10;        //+ &quot;, referenceToken: &quot; + referenceToken);&#10;        if (typeof inputValue !== 'number' &amp;&amp; typeof inputValue !== 'string') {&#10;            if (inputValue === null) {&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the value of the input was null?  ' +&#10;                                'Perhaps the input is not connected?'&#10;                               );&#10;            }&#10;            throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                            ' tokens, the input &quot;' + inputValue +&#10;                            '&quot; is neither a number nor a string, it is a ' +&#10;                            typeof inputValue);&#10;        }&#10;        if (typeof referenceToken === 'number') {&#10;            if (Math.abs(inputValue - referenceToken) &gt; this.getParameter('tolerance')) {&#10;                throw new Error('The input &quot;' + inputValue + '&quot; is not within &quot;' +&#10;                                this.getParameter('tolerance') +&#10;                                '&quot; of the expected value &quot;' +&#10;                                referenceToken + '&quot;');&#10;            }&#10;        } else if (typeof referenceToken === 'string') {&#10;            if (inputValue !== referenceToken) {&#10;                throw new Error('The input &quot;' + inputValue + '&quot; is !== &quot;' +&#10;                                '&quot; to the expected value &quot;' +&#10;                                referenceToken + '&quot;');&#10;            }&#10;        } else {&#10;            throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                            ' tokens, the referenceToken &quot;' + referenceToken +&#10;                            '&quot; is not a number, it is a ' +&#10;                            typeof referenceToken);&#10;        }&#10;        numberOfInputTokensSeen++;&#10;        this.send('output', false);&#10;    } else {&#10;        this.send('output', true);&#10;    }&#10;};&#10;&#10;/** If trainingMode is true, then updated the correctValues. */&#10;exports.wrapup = function () {&#10;    if (this.getParameter('trainingMode')) {&#10;        this.setParameter('correctValues', trainingTokens);&#10;    } else {&#10;        if (!firedOnce) {&#10;            throw new Error('The fire() function of this accessor was never called. ' +&#10;                            'Usually, this is an error indicating that ' +&#10;                            'starvation is occurring.');&#10;        }&#10;    }&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Compare the input with a known good input.&#10; *&#10; *  This actor is based on the NonStrictTest actor, but currently only&#10; *  handles numeric and string input.&#10; *  &#10; *  @accessor test/TrainableTest&#10; *  @input input The input value&#10; *  @output output False as long as there is data to compare against the input&#10; *  @param correctValues a JSON array of the correct values.&#10; *  @param trainingMode true if the input is being trained.&#10; *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals */&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;exports.setup = function () {&#10;    // FIXME: this only supports numbers and strings, unlike the Cape Code Test&#10;    // actor, which supports many types.&#10;    this.parameter('correctValues', {'type': 'JSON', 'value': '{0}'});&#10;    this.input('input');&#10;    this.output('output', {'type': 'boolean'});&#10;    this.parameter('tolerance', {'type': 'number', 'value': 0.000000001});&#10;    this.parameter('trainingMode', {'type': 'boolean', 'value': false});&#10;};&#10;&#10;// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java&#10;&#10;// Set to true if fire is called once.  If fire() is not called at all,&#10;// then throw an exception in wrapup().&#10;var firedOnce = false;&#10;&#10;// Set to true when initialized() is called.&#10;var initialized = false;&#10;&#10;// The number of input tokens that have been read in.&#10;var numberOfInputTokensSeen = 0;&#10;&#10;// If trainingMode is true, then inputs that have been seen so far.&#10;var trainingTokens = [];&#10;&#10;exports.initialize = function () {&#10;    //console.log(&quot;Test initialize(): typeof correctValues: &quot; + typeof this.getParameter('correctValues'))&#10;    firedOnce = false;&#10;    initialized = true;&#10;    numberOfInputTokensSeen = 0;&#10;    trainingTokens = [];&#10;};&#10;&#10;/** Get the input and compare it with the appropriate element from &#10; *  correctValues.&#10; */&#10;exports.fire = function () {&#10;    var inputValue = this.get('input');&#10;    firedOnce = true;&#10;    // If the input is not connected, then inputValue will be null.&#10;    if (this.getParameter('trainingMode')) {&#10;        trainingTokens.push(inputValue);&#10;        this.send('output', false);&#10;        return;&#10;    }&#10;    var correctValuesValues = this.getParameter('correctValues');&#10;    if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;        var referenceToken = correctValuesValues[numberOfInputTokensSeen];&#10;        //console.log(&quot;Test: &quot; + numberOfInputTokensSeen + &quot;, input: &quot; + inputValue&#10;        //+ &quot;, referenceToken: &quot; + referenceToken);&#10;        if (typeof inputValue !== 'number' &amp;&amp; typeof inputValue !== 'string') {&#10;            if (inputValue === null) {&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the value of the input was null?  ' +&#10;                                'Perhaps the input is not connected?'&#10;                               );&#10;            }&#10;            throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                            ' tokens, the input &quot;' + inputValue +&#10;                            '&quot; is neither a number nor a string, it is a ' +&#10;                            typeof inputValue);&#10;        }&#10;        if (typeof referenceToken === 'number') {&#10;            if (Math.abs(inputValue - referenceToken) &gt; this.getParameter('tolerance')) {&#10;                throw new Error('The input &quot;' + inputValue + '&quot; is not within &quot;' +&#10;                                this.getParameter('tolerance') +&#10;                                '&quot; of the expected value &quot;' +&#10;                                referenceToken + '&quot;');&#10;            }&#10;        } else if (typeof referenceToken === 'string') {&#10;            if (inputValue !== referenceToken) {&#10;                throw new Error('The input &quot;' + inputValue + '&quot; is !== &quot;' +&#10;                                '&quot; to the expected value &quot;' +&#10;                                referenceToken + '&quot;');&#10;            }&#10;        } else {&#10;            throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                            ' tokens, the referenceToken &quot;' + referenceToken +&#10;                            '&quot; is not a number, it is a ' +&#10;                            typeof referenceToken);&#10;        }&#10;        numberOfInputTokensSeen++;&#10;        this.send('output', false);&#10;    } else {&#10;        this.send('output', true);&#10;    }&#10;};&#10;&#10;/** If trainingMode is true, then updated the correctValues. */&#10;exports.wrapup = function () {&#10;    if (this.getParameter('trainingMode')) {&#10;        this.setParameter('correctValues', trainingTokens);&#10;    } else {&#10;        if (initialized) {&#10;            if (!firedOnce) {&#10;                initialized = false;&#10;                throw new Error('The fire() function of this accessor was never called. ' +&#10;                                'Usually, this is an error indicating that ' +&#10;                                'starvation is occurring.');&#10;            }&#10;            var correctValuesValues = this.getParameter('correctValues');&#10;            if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;                throw new Error('The test produced only ' +&#10;                                numberOfInputTokensSeen +&#10;                                ' tokens, yet the correctValues parameter was ' +&#10;                                'expecting ' +&#10;                                correctValuesValues.length +&#10;                                ' tokens');&#10;            }&#10;        }&#10;        initialized = false;&#10;    }&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -261,6 +285,10 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{325, 160}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
