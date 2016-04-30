@@ -265,9 +265,12 @@ public class Expression extends TypedAtomicActor {
         super.initialize();
 
         // Check to make sure that the engine has been initialized.
-        if (engine == null) {
-            _initializeEngine();
+        synchronized (Engine.semaphore) {
+            if (engine == null) {
+                _initializeEngine();
+            }
         }
+
         _iterationCount = 1;
         _iteration.setToken(new IntToken(_iterationCount));
 
