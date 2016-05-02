@@ -12,7 +12,7 @@ Here a receipe for installing certi:
    mv CERTI-3.5.1-Source certi # (or create a symbolic link: ln -s CERTI-3.5.1-Source certi)
    mkdir $HOME/pthla/certi-tools
    cd $HOME/pthla/certi
-   mkdir $HOME/pthla/certi/build-certi’
+   mkdir $HOME/pthla/certi/build-certi
    cd $HOME/pthla/certi/build-certi
    cmake -DCMAKE_INSTALL_PREFIX=$HOME/pthla/certi-tools  ../
    make
@@ -36,12 +36,12 @@ To test the installation:
    DO NOT HIT ENTER YET.
 5. go back to second terminal (of step 3) and press "ENTER"
 
-The billard demo that has been run is in $HOME/pthla/certi/test/Billard/
+The billard demo that has been run is in $HOME/pthla/certi/test/Billard/.
 
 
-To run the Ptolemy demos:
+To run the Ptolemy demos, see $PTII/org/hlacerti/demo
 
-cd $PTII/org/hlacerti/demo/Billard
+See $PTII/org/hlacerti/demo/Billard/README.txt
 
 
 ################################### FIXME: Old instructions below
