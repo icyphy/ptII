@@ -196,10 +196,10 @@
  *  @version: $$Id$$
  */
 
-// Stop extra messages from jslint and jshint.  Note that there should be no
-// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */
-/*global console, exports, instance, setTimeout*/
-/*jshint globalstrict: true, multistr: true */
+// Stop extra messages from jslint and jshint.
+// See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint
+/* globals console, exports, instance, setInterval, setTimeout */
+/* jshint globalstrict: true, multistr: true */
 'use strict';
 
 // Determine which accessor host is in use.
@@ -220,11 +220,11 @@ exports.accessorHost = accessorHost;
 // In alphabetical order
 if (typeof window !== 'undefined' && window.hasOwnProperty('browserJSLoaded')) {
     accessorHost = accessorHostsEnum.BROWSER;
-} else if (typeof Packages !== 'undefined' && typeof Packages.java.util.Vector !== undefined) {
+} else if (typeof Packages !== 'undefined' && typeof Packages.java.util.Vector === 'function') {
     accessorHost = accessorHostsEnum.CAPECODE;
 } else if (typeof Duktape === 'object') {
     accessorHost = accessorHostsEnum.DUKTAPE;
-} else if (typeof process !== 'undefined' && typeof process.version !== undefined) {
+} else if (typeof process !== 'undefined' && typeof process.version === 'string') {
     accessorHost = accessorHostsEnum.NODE;
 }
 
@@ -333,6 +333,7 @@ function Accessor(
         this[binding] = bindings[binding];
     }
 
+
     // If no extendedBy or implementedBy is given, then initialize the data structures
     // to be used by this accessor instance.  These data structures will be in the
     // prototype chain for any instance that this accessor implements or extends,
@@ -405,13 +406,30 @@ function Accessor(
     // as top-level functions in the accessor specification.
     // FIXME: Probably need to include setInterval, clearInterval,
     // setTimeout, clearTimeout, because these will need to overridden.
+    if (bindings && bindings.setInterval) {
+        this.setInterval = bindings.setInterval;
+    } else if (typeof setInterval !== 'undefined') {
+        this.setInterval = setInterval;
+    } else {
+        throw new Error('Host does not define required setInterval function.');
+    }
+    if (bindings && bindings.setTimeout) {
+        this.setTimeout = bindings.setTimeout;
+    } else if (typeof setTimeout !== 'undefined') {
+        this.setTimeout = setTimeout;
+    } else {
+        throw new Error('Host does not define required setTimeout function.');
+    }
+
     var wrapper = new Function('\
             error, \
             exports, \
             getResource, \
             httpRequest, \
             readURL, \
-            require',
+            require, \
+            setInterval, \
+            setTimeout',
             code);
     wrapper.call(this,
             this.error,
@@ -419,7 +437,9 @@ function Accessor(
             this.getResource,
             this.httpRequest,
             this.readURL,
-            this.require);
+            this.require,
+            this.setInterval,
+            this.setTimeout);
     
     // Mark that the accessor has not been initialized
     this.initialized = false;
