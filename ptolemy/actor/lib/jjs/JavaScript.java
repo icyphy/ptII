@@ -594,6 +594,30 @@ public class JavaScript extends TypedAtomicActor {
         return newObject;
     }
 
+    /** Declare that any output that is marked as spontanous does does
+     *  not depend on the input in a firing.
+     *  @exception IllegalActionException If the causality interface
+     *  cannot be computed.
+     */
+    @Override
+    public void declareDelayDependency() throws IllegalActionException {
+        System.out.println("JavaScript: declareDelayDependency()");
+        for (IOPort output : outputPortList()) {
+            SingletonParameter spontaneity = (SingletonParameter)output.getAttribute(_SPONTANEOUS);
+            if (spontaneity != null) {
+                Token token = spontaneity.getToken();
+                if (token instanceof BooleanToken) {
+                    if (((BooleanToken)token).booleanValue()) {
+                        for (IOPort input : inputPortList()) {
+                            System.out.println("JavaScript: declareDelayDependency()" + input + " " + output);
+                            _declareDelayDependency(input, output, 0.0);
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     /** Specify a description to appear in the documentation for this actor.
      *  The assume format for documentation is HTML.
      *  @param description A description to appear in documentation.
@@ -1434,6 +1458,7 @@ public class JavaScript extends TypedAtomicActor {
             if (description != null) {
                 _setPortDescription(port, description.toString());
             }
+            _setPortSpontaneity(options, port);
             _setPortVisibility(options, port, null);
         } else {
             if (port.attributeList(TypeAttribute.class).isEmpty()) {
@@ -2333,8 +2358,34 @@ public class JavaScript extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         protected fields                  ////
+    ////                         private methods                   ////
     
+    /** Set the port spontaneity if the options argument includes a
+     *  "spontaneous" field with one of the values "true" or "false".
+     *  @param options The options map.
+     *  @param port The port of which to set the spontaneity.
+     *  @throws IllegalActionException If port is an input port or if
+     *  the setting fails.
+     *  @throws NameDuplicationException Should not be thrown.
+     */
+    private void _setPortSpontaneity(Map<String,Object> options, TypedIOPort port)
+            throws IllegalActionException, NameDuplicationException {
+        if (!port.isOutput()) {
+            throw new IllegalActionException(port, "Only output ports can be spontaneous.");
+        }
+
+        Object spontaneity = ((Map<String,Object>) options).get("spontaneous");
+        if (spontaneity instanceof Boolean) {
+            BooleanToken spontaneityToken = null;
+            if ((Boolean)spontaneity) {
+                spontaneityToken = BooleanToken.TRUE;
+            } else {
+                spontaneityToken = BooleanToken.FALSE;
+            }
+            new SingletonParameter(port, _SPONTANEOUS, spontaneityToken);
+        }
+    }
+
     /** Set the port visibility if the options argument includes a
      *  "visibility" field with one of the values "none", "expert",
      *  "noteditable" or "full" (the default).
@@ -2533,6 +2584,11 @@ public class JavaScript extends TypedAtomicActor {
     
     /** Flag indicating that timeoutID should be removed. */
     private boolean _removePendingIntervalFunction = true;
+
+    /** Used to indicate that an output port was created with a
+     * spontaneous argument of true or false.
+     */
+    private static String _SPONTANEOUS = "_spontaneous";
 
     /** Count to give a unique handle to pending timeouts. */
     private int _timeoutCount = 0;
