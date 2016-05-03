@@ -601,7 +601,6 @@ public class JavaScript extends TypedAtomicActor {
      */
     @Override
     public void declareDelayDependency() throws IllegalActionException {
-        System.out.println("JavaScript: declareDelayDependency()");
         for (IOPort output : outputPortList()) {
             SingletonParameter spontaneity = (SingletonParameter)output.getAttribute(_SPONTANEOUS);
             if (spontaneity != null) {
@@ -609,7 +608,6 @@ public class JavaScript extends TypedAtomicActor {
                 if (token instanceof BooleanToken) {
                     if (((BooleanToken)token).booleanValue()) {
                         for (IOPort input : inputPortList()) {
-                            System.out.println("JavaScript: declareDelayDependency()" + input + " " + output);
                             _declareDelayDependency(input, output, 0.0);
                         }
                     }
