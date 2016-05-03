@@ -76,7 +76,13 @@ AccessorCodeGeneratorAdapter {
 
 
         code.append(_INDENT1 + "var " + name + " = this.instantiate('" + name
-                + "', '" + actor.accessorSource.getExpression().replace("https://www.terraswarm.org/accessors/", "") + "');" + _eol);
+                + "', '"
+                + actor.accessorSource.getExpression()
+                // Replace both https and http.  http is used in older accessors.
+                .replace("https://www.terraswarm.org/accessors/", "")
+                .replace("http://www.terraswarm.org/accessors/", "")
+                + "');"
+                + _eol);
 
         List<Parameter> parameters = actor.attributeList(Parameter.class);
         for (Parameter parameter : parameters) {
