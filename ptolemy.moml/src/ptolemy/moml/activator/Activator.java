@@ -1,4 +1,4 @@
-package ptolemy.gui.activator;
+package ptolemy.moml.activator;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -28,9 +28,7 @@ public class Activator implements BundleActivator {
 
     _apSvcReg = context.registerService(ModelElementClassProvider.class.getName(),
         new PackageBasedModelElementClassProvider(this.getClass().getClassLoader(),
-            "ptolemy.actor.gui",
-            "ptolemy.gui",
-            "ptolemy.vergil"
+            "ptolemy.moml"
             ),
         null);
 

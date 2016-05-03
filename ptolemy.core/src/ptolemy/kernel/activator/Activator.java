@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
-package ptolemy.actor.lib.activator;
+package ptolemy.kernel.activator;
 
 import org.osgi.framework.BundleActivator;
 import org.osgi.framework.BundleContext;
@@ -64,7 +64,11 @@ public class Activator implements BundleActivator {
 
     _apSvcReg = context.registerService(ModelElementClassProvider.class.getName(),
         new PackageBasedModelElementClassProvider(this.getClass().getClassLoader(),
-            "ptolemy.actor.lib"
+            "ptolemy.actor",
+            "ptolemy.data",
+            "ptolemy.kernel",
+            "ptolemy.math",
+            "ptolemy.util"
             ),
         null);
 
