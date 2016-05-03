@@ -2362,16 +2362,12 @@ public class JavaScript extends TypedAtomicActor {
      *  "spontaneous" field with one of the values "true" or "false".
      *  @param options The options map.
      *  @param port The port of which to set the spontaneity.
-     *  @throws IllegalActionException If port is an input port or if
-     *  the setting fails.
+     *  @throws IllegalActionException If there is a problem accessing
+     *  the spontaneous argument or setting the SingletonParameter.
      *  @throws NameDuplicationException Should not be thrown.
      */
     private void _setPortSpontaneity(Map<String,Object> options, TypedIOPort port)
             throws IllegalActionException, NameDuplicationException {
-        if (!port.isOutput()) {
-            throw new IllegalActionException(port, "Only output ports can be spontaneous.");
-        }
-
         Object spontaneity = ((Map<String,Object>) options).get("spontaneous");
         if (spontaneity instanceof Boolean) {
             BooleanToken spontaneityToken = null;
