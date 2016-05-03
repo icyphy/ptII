@@ -366,10 +366,12 @@ if [ "$PTJAVA3D_DIR" = "gr" ]; then
     JAVA3D_JARS="${CLASSPATHSEPARATOR}${JAVA3D_JARS}"
     # Mac needs Jogl with Java 3D.
     PTJOGL_DIR=@PTJOGL_DIR@
-    if [ "$DYLD_LIBRARY_PATH" != "" ]; then
-        export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/macosx-universal:${DYLD_LIBRARY_PATH}"
-    else
-        export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/macosx-universal"
+    if [ ! -z "$PTJOGL_DIR" ]; then
+        if [ "$DYLD_LIBRARY_PATH" != "" ]; then
+            export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/macosx-universal:${DYLD_LIBRARY_PATH}"
+        else
+            export DYLD_LIBRARY_PATH="${PTJOGL_DIR}/lib/macosx-universal"
+        fi
     fi
 fi
 
@@ -405,6 +407,24 @@ if [ "$PTHLACERTI_DIR" = "hlacerti" ]; then
     JCERTI_JARS="${CLASSPATHSEPARATOR}${PTJCERTI_JAR}"
 fi
 
+# Mac OS X 10.11 (El Capitan) ignores DYLD_LIBRARY_PATH unless sip is disabled.
+if [ ! -z "$CERTI_HOME" ]; then
+    if [ -d "$CERTI_HOME/lib" ]; then
+        if [ ! -z "$DYLD_LIBRARY_PATH" ]; then
+            export DYLD_LIBRARY_PATH=${CERTI_HOME}/lib:${DYLD_LIBRARY_PATH}
+         else
+            export LD_LIBRARY_PATH=${CERTI_HOME}/lib
+        fi
+        if [ ! -z "$LD_LIBRARY_PATH" ]; then
+            export LD_LIBRARY_PATH=${CERTI_HOME}/lib:${LD_LIBRARY_PATH}
+         else
+            export LD_LIBRARY_PATH=${CERTI_HOME}/lib
+        fi
+    fi
+fi
+
+
+    
 #### JNA - Java Native Access jar file (jna.jar).  See
 # https://jna.dev.java.net/.  Used in ptolemy/actor/lib/opencv
 JNA_JAR=@JNA_JAR@
