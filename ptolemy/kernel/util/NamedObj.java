@@ -493,6 +493,10 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
             // See 8.1.0 in NamedObj.tcl. Credit: Colin Endicott
             newObject._debugListeners = null;
 
+            // Since _debugListeners is null, _debugging should be
+            // false to avoid error message in _debug()
+            newObject._debugging = false;
+            
             // During the cloning process, change requests might
             // be issued (e.g. in an actor's _addEntity() method).
             // Execution of these change requests need to be deferred
