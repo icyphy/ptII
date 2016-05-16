@@ -1,7 +1,7 @@
 /* A trivial example of how to test a model definition.
 
  Copyright (c) 2014 The Regents of the University of California; iSencia Belgium NV.
- 
+
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,7 +45,7 @@ import ptolemy.moml.MoMLParser;
 
 /**
  * A trivial example of a Junit {@link TestCase} to assert the contents of a defined model.
- * 
+ *
  * @author ErwinDL
  * @version $Id$
  * @since Ptolemy II 11.0
@@ -55,7 +55,7 @@ import ptolemy.moml.MoMLParser;
 public class ModelDefinitionTest extends TestCase {
 
   /**
-   * 
+   *
    * @throws NameDuplicationException when the model definition fails because elements are added with duplicate names
    * @throws IllegalActionException when the model definition fails for some other reason
    */
@@ -89,6 +89,14 @@ public class ModelDefinitionTest extends TestCase {
     NamedObj model = parser.parse(null, momlURL);
     new ModelDefinitionAssertion().expectActor("const").assertModel((CompositeActor) model);
   }
+
+  public void testMultiVertexModelDefinitionFromMOML() throws Exception {
+    MoMLParser parser = new MoMLParser();
+    URL momlURL = getClass().getResource("/MultiVertexModel.xml");
+    CompositeActor model = (CompositeActor) parser.parse(null, momlURL);
+    new ModelDefinitionAssertion().expectLink("Const.output", "relation").assertModel( model);
+  }
+
 
   public void testModelDefinitionFromMOMLWithInvalidVersion() throws Exception {
     MoMLParser parser = new MoMLParser();

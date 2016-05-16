@@ -8,7 +8,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Require-Bundle: org.ptolemy.testsupport;bundle-version="11.0.0",
  ptolemy.core;bundle-version="11.0.0",
  ptolemy.actor.lib;bundle-version="11.0.0",
- ptolemy.domains.sdf;bundle-version="11.0.0"
+ ptolemy.domains.sdf;bundle-version="11.0.0",
+ ptolemy.domains.process;bundle-version="11.0.0"
 Import-Package: com.microstar.xml;version="11.0.0",
  junit.framework;version="4.0.0",
  junit.textui;version="4.0.0",

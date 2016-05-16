@@ -45,7 +45,7 @@ public class AllTests {
     TestSuite suite = new TestSuite(AllTests.class.getName());
     //$JUnit-BEGIN$
     suite.addTestSuite(ModelDefinitionTest.class);
-//    suite.addTestSuite(ModelExecutionTest.class);
+    suite.addTestSuite(ModelExecutionTest.class);
     //$JUnit-END$
     return suite;
   }

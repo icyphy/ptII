@@ -1,7 +1,7 @@
 /* A trivial example of how to test a model execution.
 
  Copyright (c) 2014 The Regents of the University of California; iSencia Belgium NV.
- 
+
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -37,6 +37,7 @@ import ptolemy.actor.Manager;
 import ptolemy.actor.TypedCompositeActor;
 import ptolemy.actor.lib.Const;
 import ptolemy.actor.lib.Recorder;
+import ptolemy.domains.pn.kernel.PNDirector;
 import ptolemy.domains.sdf.kernel.SDFDirector;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -44,10 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  * A trivial example of a Junit {@link TestCase} to assert the execution of a model.
- * 
- * Interesting remark ;-) : doesn't work yet in standard Ptolemy, as the required consistency of generating DebugEvents seems to be missing.
- * FIXME : add consistent event generation in actors and ports similarly to Passerelle.
- * 
+ *
  * @author ErwinDL
  * @version $Id$
  * @since Ptolemy II 11.0
@@ -57,29 +55,62 @@ import ptolemy.kernel.util.NameDuplicationException;
 public class ModelExecutionTest extends TestCase {
 
   /**
-   * 
+   *
    * @throws NameDuplicationException when the model definition fails because elements are added with duplicate names
    * @throws IllegalActionException when the model definition fails for some other reason
    * @throws KernelException when the manager fails to execute the model
    */
-  public void testModelExecution1() throws IllegalActionException, NameDuplicationException, KernelException {
+  public void testModelExecutionSDF() throws IllegalActionException, NameDuplicationException, KernelException {
     TypedCompositeActor model = new TypedCompositeActor();
     new SDFDirector(model, "director");
     Const c = new Const(model, "const");
     Recorder r = new Recorder(model,"sink");
     model.connect(c.output, r.input);
     c.value.setToken("\"hello\"");
-    
-    // TODO : find the way to activate debug eventing on all model elements in ptolemy
-    // it seems to be operational only for SDF directors?
+    c.firingCountLimit.setToken("1");
+
     TestUtilities.enableStatistics(model);
-    
+
     Manager m = new Manager();
     model.setManager(m);
     m.execute();
-    
+
     new ModelExecutionAssertion()
       .expectActorIterationCount(c, 1L)
+      .expectActorIterationCount(r, 1L)
+      .expectMsgReceiptCount(r.input, 1L)
+      .expectMsgSentCount(c.output, 1L)
+      .assertModel(model);
+  }
+
+  /**
+  *
+  * @throws NameDuplicationException when the model definition fails because elements are added with duplicate names
+  * @throws IllegalActionException when the model definition fails for some other reason
+  * @throws KernelException when the manager fails to execute the model
+  */
+  public void testModelExecutionPN() throws IllegalActionException, NameDuplicationException, KernelException {
+    TypedCompositeActor model = new TypedCompositeActor();
+    new PNDirector(model, "director");
+    Const c = new Const(model, "const");
+    Recorder r = new Recorder(model,"sink");
+    model.connect(c.output, r.input);
+    c.value.setToken("\"hello\"");
+    c.firingCountLimit.setToken("1");
+
+    TestUtilities.enableStatistics(model);
+
+    Manager m = new Manager();
+    model.setManager(m);
+    m.execute();
+
+    new ModelExecutionAssertion()
+      .expectActorIterationCount(c, 1L)
+      .expectMsgSentCount(c.output, 1L)
+      .expectMsgReceiptCount(r.input, 1L)
+      // FIXME for some reason for PN the Recorder sink actor iterates 2 times?
+      // even when it only receives 1 message?
+//      .expectActorIterationCount(r, 1L)
       .assertModel(model);
   }
 }

@@ -1,6 +1,6 @@
 /* A builder class to specify expected elements of a defined model.
  Copyright (c) 2014 The Regents of the University of California; iSencia Belgium NV.
- 
+
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -31,10 +31,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.junit.Assert;
+
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.Receiver;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.TypedIORelation;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 
@@ -45,7 +47,7 @@ import ptolemy.kernel.util.IllegalActionException;
  * <li>parameters : define expected value</li>
  * <li>relations : define expected presence between ports</li>
  * </ul>
- * 
+ *
  * @author ErwinDL
  * @version $Id$
  * @since Ptolemy II 11.0
@@ -59,13 +61,13 @@ public class ModelDefinitionAssertion {
    * <p>
    * New expectations can be defined again by repeatedly invoking the methods <code>expectActor...</code> etc.
    * </p>
-   * 
+   *
    * @return this ModelDefinitionAssertion instance to allow fluent method chaining
    */
   public ModelDefinitionAssertion clear() {
     _expectedActorNames.clear();
     _expectedParameterNames.clear();
-    _expectedRelations.clear();
+    _expectedLinks.clear();
     return this;
   }
 
@@ -76,7 +78,7 @@ public class ModelDefinitionAssertion {
    * If all expectations are ok, further tests can be chained through the returned reference to this
    * <code>ModelDefinitionAssertion</code> instance.
    * </p>
-   * 
+   *
    * @param model
    *          the model for which expected contents must be asserted.
    * @return this ModelDefinitionAssertion instance to allow fluent method chaining
@@ -84,12 +86,12 @@ public class ModelDefinitionAssertion {
   public ModelDefinitionAssertion assertModel(CompositeActor model) {
     _assertActorNames(model, _expectedActorNames);
     _assertParameterNames(model, _expectedParameterNames);
-    _assertRelations(model, _expectedRelations);
+    _assertLinks(model, _expectedLinks);
     return this;
   }
 
   /**
-   * 
+   *
    * @param actorName
    *          the NamedObj.getFullName() of the actor
    * @return this ModelDefinitionAssertion instance to allow fluent method chaining
@@ -100,7 +102,7 @@ public class ModelDefinitionAssertion {
   }
 
   /**
-   * 
+   *
    * @param parameterName
    *          the NamedObj.getFullName() of the parameter
    * @return this ModelDefinitionAssertion instance to allow fluent method chaining
@@ -111,26 +113,26 @@ public class ModelDefinitionAssertion {
   }
 
   /**
-   * 
+   *
    * @param from
-   *          the NamedObj.getFullName() of the output port that must be connected to the <b>to</b> port
+   *          the NamedObj.getFullName() of the relation or output port that must be connected to the <b>to</b> port or relation
    * @param to
-   *          the NamedObj.getFullName() of the input port that must be connected to the <b>from</b> port
+   *          the NamedObj.getFullName() of the relation or input port that must be connected to the <b>from</b> port or relation
    * @return this ModelDefinitionAssertion instance to allow fluent method chaining
    */
-  public ModelDefinitionAssertion expectRelation(String from, String to) {
-    _expectedRelations.add(new Relation(from, to));
+  public ModelDefinitionAssertion expectLink(String from, String to) {
+    _expectedLinks.add(new Link(from, to));
     return this;
   }
 
   // protected methods
-  
+
   /**
-   * Asserts whether all expected actors are present in the given model, 
+   * Asserts whether all expected actors are present in the given model,
    * based on the given actor names.
    * <p>
    * The implementation is based on JUnit's {@link Assert} methods.
-   * </p> 
+   * </p>
    * @param model
    * @param expectedActorNames
    */
@@ -143,11 +145,11 @@ public class ModelDefinitionAssertion {
   }
 
   /**
-   * Asserts whether all expected parameters are present in the given model, 
+   * Asserts whether all expected parameters are present in the given model,
    * based on the given parameter names.
    * <p>
    * The implementation is based on JUnit's {@link Assert} methods.
-   * </p> 
+   * </p>
    * @param model
    * @param expectedParameterNames
    */
@@ -160,57 +162,87 @@ public class ModelDefinitionAssertion {
   }
 
   /**
-   * Asserts whether all expected relations are present in the given model, 
-   * based on the given {@link Relation}s, which are simple pairs of from- & to- port names.
-   * <p>
-   * The method checks for the presence of the from&to ports for a given Relation,
-   * whether the ports are connected (i.e. the to-port is in the <code>sinkPortList()</code> of the from-port)
-   * and that a matching <code>Receiver</code> is present in the from-port's <code>getRemoteReceivers()</code>.
-   * </p> 
+   * Asserts whether all expected links are present in the given model,
+   * based on the given {@link Link}s, which are simple pairs of from- & to- port or relation names.
    * <p>
    * The implementation is based on JUnit's {@link Assert} methods.<br/>
-   * </p> 
+   * </p>
    * @param model
-   * @param expectedRelations
+   * @param expectedLinks
    */
-  protected void _assertRelations(CompositeActor model, Collection<Relation> expectedRelations) {
-    for (Relation relation : expectedRelations) {
-      TypedIOPort outputPort = (TypedIOPort) model.getPort(TestUtilities.getFullNameButWithoutModelName(model, relation.from));
-      TypedIOPort inputPort = (TypedIOPort) model.getPort(TestUtilities.getFullNameButWithoutModelName(model, relation.to));
-      Assert.assertNotNull("No port " + relation.from + " found in model " + model.getFullName(), outputPort);
-      Assert.assertNotNull("No port " + relation.to + " found in model " + model.getFullName(), inputPort);
-      Assert.assertTrue(relation.from + " not connected to " + relation.to + " in model " + model.getFullName(), outputPort.sinkPortList().contains(inputPort));
-      boolean linkedViaReceiver = false;
-      try {
-        Receiver[][] remoteReceivers = outputPort.getRemoteReceivers();
-        for (Receiver[] receivers : remoteReceivers) {
-          for (Receiver receiver : receivers) {
-            linkedViaReceiver = inputPort.equals(receiver.getContainer());
-            if (linkedViaReceiver) {
-              break;
-            }
-          }
-          if (linkedViaReceiver) {
-            break;
-          }
+  protected void _assertLinks(CompositeActor model, Collection<Link> expectedLinks) {
+    for (Link link : expectedLinks) {
+      String fromName = TestUtilities.getFullNameButWithoutModelName(model, link.from);
+      TypedIOPort fromPort = (TypedIOPort) model.getPort(fromName);
+      TypedIORelation fromRelation = (TypedIORelation) model.getRelation(fromName);
+
+      String toName = TestUtilities.getFullNameButWithoutModelName(model, link.to);
+      TypedIOPort toPort = (TypedIOPort) model.getPort(toName);
+      TypedIORelation toRelation = (TypedIORelation) model.getRelation(toName);
+
+      Assert.assertFalse("No port or relation " + link.from + " found in model " + model.getFullName(), fromPort == null && fromRelation == null);
+      Assert.assertFalse("No port or relation " + link.to + " found in model " + model.getFullName(), toPort == null && toRelation == null);
+
+      if (fromPort != null) {
+        if (toPort != null) {
+          _assertPortToPortLink(model, link, fromPort, toPort);
+        } else {
+          _assertPortToRelationLink(model, link, fromPort, toRelation);
         }
-        Assert.assertTrue(relation.from + " not connected via a Receiver to " + relation.to + " in model " + model.getFullName(), linkedViaReceiver);
-      } catch (IllegalActionException e) {
-        Assert.fail("Error obtaining remote receivers " + e.getMessage());
+      } else {
+        if (toPort != null) {
+          _assertRelationToPortLink(model, link, fromRelation, toPort);
+        } else {
+          _assertRelationToRelationLink(model, link, fromRelation, toRelation);
+        }
       }
     }
   }
 
   // private things
 
+  private void _assertPortToPortLink(CompositeActor model, Link link, TypedIOPort fromPort, TypedIOPort toPort) {
+    Assert.assertTrue(link.from + " not connected to " + link.to + " in model " + model.getFullName(), fromPort.sinkPortList().contains(toPort));
+    boolean linkedViaReceiver = false;
+    try {
+      Receiver[][] remoteReceivers = fromPort.getRemoteReceivers();
+      for (Receiver[] receivers : remoteReceivers) {
+        for (Receiver receiver : receivers) {
+          linkedViaReceiver = toPort.equals(receiver.getContainer());
+          if (linkedViaReceiver) {
+            break;
+          }
+        }
+        if (linkedViaReceiver) {
+          break;
+        }
+      }
+      Assert.assertTrue(link.from + " not connected via a Receiver to " + link.to + " in model " + model.getFullName(), linkedViaReceiver);
+    } catch (IllegalActionException e) {
+      Assert.fail("Error obtaining remote receivers " + e.getMessage());
+    }
+  }
+
+  private void _assertPortToRelationLink(CompositeActor model, Link link, TypedIOPort fromPort, TypedIORelation toRelation) {
+    Assert.assertTrue(link.from + " not connected to " + link.to + " in model " + model.getFullName(), toRelation.linkedSourcePortList().contains(fromPort));
+  }
+
+  private void _assertRelationToPortLink(CompositeActor model, Link link, TypedIORelation fromRelation, TypedIOPort toPort) {
+    Assert.assertTrue(link.from + " not connected to " + link.to + " in model " + model.getFullName(), fromRelation.linkedDestinationPortList().contains(toPort));
+  }
+
+  private void _assertRelationToRelationLink(CompositeActor model, Link link, TypedIORelation fromRelation, TypedIORelation toRelation) {
+    Assert.assertTrue(link.from + " not connected to " + link.to + " in model " + model.getFullName(), toRelation.linkedObjectsList().contains(fromRelation));
+  }
+
   /**
-   * simple container for storing named from-to relations
+   * simple container for storing named from-to links
    */
-  private static class Relation {
+  private static class Link {
     String from;
     String to;
 
-    public Relation(String from, String to) {
+    public Link(String from, String to) {
       this.from = from;
       this.to = to;
     }
@@ -218,5 +250,5 @@ public class ModelDefinitionAssertion {
 
   private Collection<String> _expectedActorNames = new ArrayList<String>();
   private Collection<String> _expectedParameterNames = new ArrayList<String>();
-  private Collection<Relation> _expectedRelations = new ArrayList<Relation>();
+  private Collection<Link> _expectedLinks = new ArrayList<Link>();
 }
