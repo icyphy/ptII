@@ -27,10 +27,9 @@ COPYRIGHTENDKEY
 */
 package org.ptolemy.testsupport.statistics;
 
+import ptolemy.actor.ActorFiringListener;
 import ptolemy.actor.FiringEvent;
 import ptolemy.kernel.ComponentEntity;
-import ptolemy.kernel.util.DebugEvent;
-import ptolemy.kernel.util.DebugListener;
 
 /**
  * Statistics implementation for maintaining counts and timings of actor iterations.
@@ -41,11 +40,11 @@ import ptolemy.kernel.util.DebugListener;
  * @Pt.ProposedRating Yellow (ErwinDL)
  * @Pt.AcceptedRating Red (ErwinDL)
  */
-public class ActorStatistics implements NamedStatistics, DebugListener {
+public class ActorStatistics implements NamedStatistics, ActorFiringListener {
 
   /**
    * Create a statistics instance associated with the given actor.
-   * 
+   *
    * @param actor
    */
   public ActorStatistics(ComponentEntity<?> actor) {
@@ -53,8 +52,8 @@ public class ActorStatistics implements NamedStatistics, DebugListener {
   }
 
   @Override
-  public void event(DebugEvent event) {
-    if (_actor.equals(event.getSource()) && (event instanceof FiringEvent)) {
+  public void firingEvent(FiringEvent event) {
+    if (_actor.equals(event.getActor())) {
       FiringEvent fe = (FiringEvent) event;
       if (FiringEvent.BEFORE_FIRE.equals(fe.getType())) {
         beginCycle();
@@ -62,11 +61,6 @@ public class ActorStatistics implements NamedStatistics, DebugListener {
         endCycle();
       }
     }
-  }
-
-  @Override
-  public void message(String message) {
-    // nothing needed here
   }
 
   @Override

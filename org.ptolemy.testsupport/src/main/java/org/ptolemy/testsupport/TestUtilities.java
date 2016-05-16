@@ -33,6 +33,7 @@ import org.ptolemy.testsupport.statistics.ActorStatistics;
 import org.ptolemy.testsupport.statistics.NamedStatistics;
 import org.ptolemy.testsupport.statistics.PortStatistics;
 
+import ptolemy.actor.AtomicActor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.kernel.ComponentEntity;
@@ -44,7 +45,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
 /**
- * This class contains a set of utility methods for using execution statistics 
+ * This class contains a set of utility methods for using execution statistics
  * that can be asserted in unit tests.
  *
  * @author ErwinDL
@@ -113,10 +114,10 @@ public class TestUtilities {
    *
    * @param model the model
    * @return the (enriched) model
-   * @throws NameDuplicationException 
-   * @throws IllegalActionException 
+   * @throws NameDuplicationException
+   * @throws IllegalActionException
    */
-  public static CompositeEntity enableStatistics(CompositeEntity model) throws IllegalActionException, NameDuplicationException  {
+  public static CompositeEntity enableStatistics(CompositeEntity model) throws IllegalActionException, NameDuplicationException {
     for (Object entity : model.entityList()) {
       if (entity instanceof ComponentEntity) {
         _enableStatistics((ComponentEntity<?>) entity);
@@ -130,7 +131,7 @@ public class TestUtilities {
   /**
    * Enable gathering execution statistics on the given model entity and its sub-components.
    * <p>
-   * This is implemented by registering an {@link Attribute} that binds a {@link NamedStatistics} instance 
+   * This is implemented by registering an {@link Attribute} that binds a {@link NamedStatistics} instance
    * to each relevant contained model element.
    * </p>
    *
@@ -139,15 +140,17 @@ public class TestUtilities {
    * @throws IllegalActionException i.c.o. some other error while enabling statistics gathering
    */
   private static void _enableStatistics(ComponentEntity<?> entity) throws IllegalActionException, NameDuplicationException {
-    ActorStatistics actorStats = new ActorStatistics(entity);
-    entity.addDebugListener(actorStats);
-    new StatisticsAttribute(entity, actorStats);
-    for (Object p : entity.portList()) {
-      if (p instanceof IOPort) {
-        IOPort ioP = (IOPort) p;
-        PortStatistics portStats = new PortStatistics(ioP);
-        ioP.addDebugListener(portStats);
-        new StatisticsAttribute(ioP, portStats);
+    if (entity instanceof AtomicActor<?>) {
+      ActorStatistics actorStats = new ActorStatistics(entity);
+      ((AtomicActor<?>)entity).addActorFiringListener(actorStats);
+      new StatisticsAttribute(entity, actorStats);
+      for (Object p : entity.portList()) {
+        if (p instanceof IOPort) {
+          IOPort ioP = (IOPort) p;
+          PortStatistics portStats = new PortStatistics(ioP);
+          ioP.addIOPortEventListener(portStats);
+          new StatisticsAttribute(ioP, portStats);
+        }
       }
     }
     if (entity instanceof CompositeEntity) {

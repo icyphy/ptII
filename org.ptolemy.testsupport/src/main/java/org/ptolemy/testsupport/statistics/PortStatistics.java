@@ -29,8 +29,8 @@ package org.ptolemy.testsupport.statistics;
 
 import ptolemy.actor.IOPort;
 import ptolemy.actor.IOPortEvent;
-import ptolemy.kernel.util.DebugEvent;
-import ptolemy.kernel.util.DebugListener;
+import ptolemy.actor.IOPortEventListener;
+import ptolemy.kernel.util.IllegalActionException;
 
 /**
  * Statistics implementation for maintaining counts of received and sent messages.
@@ -41,7 +41,7 @@ import ptolemy.kernel.util.DebugListener;
  * @Pt.ProposedRating Yellow (ErwinDL)
  * @Pt.AcceptedRating Red (ErwinDL)
  */
-public class PortStatistics implements NamedStatistics, DebugListener {
+public class PortStatistics implements NamedStatistics, IOPortEventListener {
 
   public PortStatistics(IOPort port) {
     this._port = port;
@@ -50,17 +50,17 @@ public class PortStatistics implements NamedStatistics, DebugListener {
   }
 
   @Override
-  public void event(DebugEvent event) {
-    if (_port.equals(event.getSource()) && (event instanceof IOPortEvent)) {
+  public void portEvent(IOPortEvent event) throws IllegalActionException {
+    if (_port.equals(event.getPort())) {
       IOPortEvent pe = (IOPortEvent) event;
       if (_port.isInput() && IOPortEvent.GET_END == pe.getEventType()) {
-        // TODO check if we need to handle token-arrays here? 
+        // TODO check if we need to handle token-arrays here?
         // probably not as we're basically only interested in counting msgs,
         // not really in looking at the content...
         acceptReceivedMessage(pe.getToken());
       }
       if (_port.isOutput() && IOPortEvent.SEND_END == pe.getEventType()) {
-        // TODO check if we need to handle token-arrays here? 
+        // TODO check if we need to handle token-arrays here?
         // probably not as we're basically only interested in counting msgs,
         // not really in looking at the content...
         acceptSentMessage(pe.getToken());
@@ -68,14 +68,9 @@ public class PortStatistics implements NamedStatistics, DebugListener {
     }
   }
 
-  @Override
-  public void message(String message) {
-    // nothing needed here
-  }
-
   /**
    * Log the count and timing of a new received message.
-   * 
+   *
    * @param msg
    */
   public void acceptReceivedMessage(Object msg) {
@@ -84,7 +79,7 @@ public class PortStatistics implements NamedStatistics, DebugListener {
 
   /**
    * Log the count and timing of a new sent message.
-   * 
+   *
    * @param msg
    */
   public void acceptSentMessage(Object msg) {
@@ -92,7 +87,7 @@ public class PortStatistics implements NamedStatistics, DebugListener {
   }
 
   /**
-   * 
+   *
    * @return the statistics of received messages
    */
   public EventStatistics getReceiptStatistics() {
@@ -100,7 +95,7 @@ public class PortStatistics implements NamedStatistics, DebugListener {
   }
 
   /**
-   * 
+   *
    * @return the statistics of sent messages
    */
   public EventStatistics getSendingStatistics() {
@@ -108,7 +103,7 @@ public class PortStatistics implements NamedStatistics, DebugListener {
   }
 
   /**
-   * 
+   *
    * @return the count of sent messages
    */
   public long getNrSentMessages() {
@@ -123,7 +118,7 @@ public class PortStatistics implements NamedStatistics, DebugListener {
   }
 
   /**
-   * 
+   *
    * @return the count of received messages
    */
   public long getNrReceivedMessages() {
