@@ -16,3 +16,4 @@ Export-Package: com.microstar.xml;version="11.0.0",
 Service-Component: OSGI-INF/MomlParserClassLoadingStrategy.xml,
  OSGI-INF/MomlParserClassLoadingStrategyBinding.xml
 Require-Bundle: ptolemy.core;bundle-version="11.0.0"
+Bundle-Activator: ptolemy.moml.activator.Activator
