@@ -33,6 +33,7 @@ import ptolemy.cg.kernel.generic.accessor.AccessorCodeGeneratorAdapter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.actor.parameters.PortParameter;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.StringUtilities;
 
 //////////////////////////////////////////////////////////////////////////
@@ -85,24 +86,41 @@ public class JavaScript extends AccessorCodeGeneratorAdapter {
                 + "null);" // implementedBy
                 + _eol
                 + _INDENT1 + name + ".container = this;" + _eol);
+        code.append(_generateJavaScriptParameters(actor));
+        return code.toString();
+    }
 
-
-        List<Parameter> parameters = actor.attributeList(Parameter.class);
+    /** Given a NamedObj, generate JavaScript for any parameters.
+     *  @param namedObj The object
+     *  @return The JavaScript definitions for the parameters.
+     *  @exception IllegalActionException If there is a problem getting the parameters.
+     */   
+    protected StringBuffer _generateJavaScriptParameters(NamedObj namedObj)
+            throws IllegalActionException {
+        StringBuffer code = new StringBuffer();
+        List<Parameter> parameters = namedObj.attributeList(Parameter.class);
         for (Parameter parameter : parameters) {
             // Skip the default parameters in JSAccessor and emit code for the other parameters.
             if (!parameter.getName().equals("accessorSource")
                     && !parameter.getName().equals("checkoutOrUpdateAccessorsRepository")
                     && !parameter.getName().equals("script")) {
                 code.append(_INDENT1);
+                String setter = "setParameter";
+
+                // For PortParameters, use setDefault(), not setParameter().  See
+                // https://www.terraswarm.org/accessors/wiki/VersionCurrent/Input#SettingDefaultInput
                 if (parameter instanceof PortParameter) {
-                    code.append("// ");
+                    setter = "setDefault";
                 }
-                code.append(actor.getName() + ".setParameter('" + parameter.getName() + "', "
+
+                code.append(namedObj.getName() + "." + setter + "('" + parameter.getName() + "', "
                         + targetExpression(parameter)
                         + ");" + _eol);
             }
         }
-        return code.toString();
+        return code;
     }
+
 }
+
 

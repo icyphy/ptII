@@ -48,8 +48,8 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating Red (eal)
  */
 public class JSAccessor
-extends
-AccessorCodeGeneratorAdapter {
+    extends ptolemy.cg.adapter.generic.accessor.adapters.ptolemy.actor.lib.jjs.JavaScript {
+
     /**
      *  Construct the JSAccessor adapter.
      *  @param actor the associated actor
@@ -84,22 +84,10 @@ AccessorCodeGeneratorAdapter {
                 + "');"
                 + _eol);
 
-        List<Parameter> parameters = actor.attributeList(Parameter.class);
-        for (Parameter parameter : parameters) {
-            // Skip the default parameters in JSAccessor and emit code for the other parameters.
-            if (!parameter.getName().equals("accessorSource")
-                    && !parameter.getName().equals("checkoutOrUpdateAccessorsRepository")
-                    && !parameter.getName().equals("script")) {
-                code.append(_INDENT1);
-                if (parameter instanceof PortParameter) {
-                    code.append("// ");
-                }
+        // _generateJavaScriptParameters() is defined in
+        // ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java
+        code.append(_generateJavaScriptParameters(actor));
 
-                code.append(actor.getName() + ".setParameter('" + parameter.getName() + "', "
-                        + targetExpression(parameter)
-                        + ");" + _eol);
-            }
-        }
         return code.toString();
     }
 }
