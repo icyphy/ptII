@@ -1,0 +1,11 @@
+{
+  "name": "testing",
+  "version": "0.1.0",
+  "main": "testing.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Elizabeth Osyk"
+    , "email" : "beth@berkeley.edu"}
+  ],
+  "description": "A module for loading and running tests."
+}
