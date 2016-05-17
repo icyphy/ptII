@@ -1,0 +1,42 @@
+May, 9, 2016.
+The models of this folder come from 
+They can be used with a real Joystick.
+Do not use lookahead= 0
+The models are set with TAR time management, but you can use NEER also.
+
+------
+README of the F14 HLA PRISE demo
+
+-- Author: Gilles Lasnier - ISAE SUPAERO - gilles.lasnier@gmail.com
+           Janette Cadoso - ISAE SUPAERO - cardoso@isae.fr
+
+-- $Id$
+
+
+DOCUMENTATION:
+ 
+ - This folder contains the F14 HLA PRISE demo. This demo is based on the one 
+   provided by MATLAB. This demo shows how we can execute distributed and
+   hardware-in-the-loop simulation using PtolemyII and the PRISE platform based
+   on HLA/CERTI. The co-simulation framework PtolemyII - HLA/CERTI is used for
+   this demo.
+
+ - This demo may be executed using a Ptolemy federate as stick, or the PRISE
+   stick C++ federate that is connected to a the PRO FLIGHT YOKE SYSTEM
+   (hardware material from the PRISE platform).
+
+REQUIREMENTS:
+
+ - CERTI environment installed on your computer
+ - PtolemyII framework installed on your computer
+ - CMAKE build system tool, to compile the PRISE-Stick C++ federate
+ - C++ compiler, to compile the PRISE-Stick C++ federate
+
+EXECUTION:
+
+1. Make sure you had sourced the script myCERTI_env.sh provided by CERTI
+2. Run the command
+   $PTII/bin/vergil $PTII/org/certi/demo/f14HLAr74766/f14HLAr74766.xml
+3. Open each one of the three modes and run them in the order they appear.
+
+NOTE: You need to have the PRO FLIGHT YOKE SYSTEM (real stick) for running with the real joystick.
