@@ -191,8 +191,9 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
                 String command = CodeGeneratorUtilities
                     .substitute(((StringToken) runCommand.getToken())
                             .stringValue(), substituteMap);
-                System.out.println("JavaCodeGenerator: run command: "
-                        + command);
+                System.out.println("RunnableCodeGenerator: run command: (cd "
+                        + codeDirectory.asFile() + "; "
+                        + command + ")");
                 commands.add(command);
             }
         }
