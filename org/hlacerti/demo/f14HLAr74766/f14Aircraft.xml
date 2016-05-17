@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="f14_IMA04_Aircraft" class="ptolemy.actor.TypedCompositeActor">
+<entity name="f14Aircraft" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={303, 22, 711, 634}, maximized=false}">
@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7645521811544396">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{224.40753889083848, 252.5771032472238}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{224.40753889083842, 252.5771032472238}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -135,7 +135,7 @@
         <property name="federationName" class="ptolemy.data.expr.Parameter" value="&quot;PRISE_V2&quot;">
             <display name="Federation's name"/>
         </property>
-        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="PRISE_V2.fed">
+        <property name="fedFile" class="ptolemy.data.expr.FileParameter" value="priseV2.fed">
             <display name="Path for .fed file"/>
         </property>
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">

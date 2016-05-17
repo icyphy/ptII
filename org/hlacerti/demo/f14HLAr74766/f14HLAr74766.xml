@@ -1,8 +1,8 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="f14_HLA_PRISE" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+<entity name="f14HLAr74766" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -19,7 +19,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 135.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14_IMA04_Aircraft.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14Aircraft.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -39,13 +39,13 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={782, 473, 688, 649}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={782, 473, 695, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[461, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.895703524141813">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8415237019287712">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{255.75741070802974, 295.92529734795403}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{271.96630859375, 314.3984093507483}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.13725491,0.0,1.0}">
@@ -54,7 +54,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 165.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14_IMA04_AutoPilot.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14AutoPilot.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -81,7 +81,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 195.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14_IMA04_PilotStick.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14PilotStick.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
