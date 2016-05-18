@@ -41,6 +41,7 @@ import java.util.NoSuchElementException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+
 import certi.rti.impl.CertiLogicalTime;
 import certi.rti.impl.CertiLogicalTimeInterval;
 import certi.rti.impl.CertiRtiAmbassador;
@@ -117,6 +118,9 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
+
+import tools.TxtFile;
+
 
 ///////////////////////////////////////////////////////////////////
 //// HlaManager
@@ -235,10 +239,139 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  @exception NameDuplicationException If the name coincides with
      *  an actor already in the container.
      */
+    
+	
+    //Edition Tarciana starts here
+    
+    private int _totalNbCalls;
+    private int _tag;
+    private int _ner;
+    private int _tar;
+    private TxtFile file;
+    private String stopTime;
+    
+    /**
+     * @return the totalNbCalls
+     */
+    public int getTotalNbCalls() {
+        return _totalNbCalls;
+    }
+
+    /**
+     * @param totalNbCalls the totalNbCalls to set
+     */
+    public void setTotalNbCalls(int totalNbCalls) {
+        this._totalNbCalls = totalNbCalls;
+    }
+
+    /**
+     * @return the tag
+     */
+    public int getTag() {
+        return _tag;
+    }
+
+    /**
+     * @param tag the tag to set
+     */
+    public void setTag(int tag) {
+        this._tag = tag;
+    }
+
+    /**
+     * @return the ner
+     */
+    public int getNer() {
+        return _ner;
+    }
+
+    /**
+     * @param ner the ner to set
+     */
+    public void setNer(int ner) {
+        this._ner = ner;
+    }
+
+    /**
+     * @return the tar
+     */
+    public int getTar() {
+        return _tar;
+    }
+
+    /**
+     * @param tar the tar to set
+     */
+    public void setTar(int tar) {
+        this._tar = tar;
+    }
+    
+    public void writeNbCalls(){
+	try{
+	    
+	    String stopTime = _director.getModelStopTime().toString();
+	    String info = this.getFullName() + "\n" +"stopTime: " +stopTime+ "\n" + "Number of TARs: " +
+		    _tar +"\n" + "Number of NERs: " +_ner +"\n" + "Number of TAGs: " +_tag +"\n";
+	    file.write(info);
+	}catch(Exception e){
+	    e.printStackTrace();
+	}
+	
+    }
+    public void getStopTimeFromXML(){
+	/*Path configLocation = Paths.get("f14_IMA04_AutoPilot.xml");
+	int localError=1;
+	try(InputStream stream = Files.newInputStream(configLocation)){
+	localError=2;
+	Properties config = new Properties();
+	localError=3;
+        config.loadFromXML(stream);
+        localError=4;
+        String stopTime =config.getProperty("stopTime");
+        localError=5;
+        this.setStopTime(stopTime);
+        System.out.println(stopTime);
+	}catch(Exception e){
+	    System.out.println("Failed to get stopTime " + localError);
+	    e.printStackTrace();
+	    this.setStopTime("0");
+	}
+	try{
+    	    DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+    	    DocumentBuilder builder = factory.newDocumentBuilder();
+    	    org.w3c.dom.Document document = builder.parse(new File("f14_IMA04_AutoPilot.xml"));
+    	    org.w3c.dom.Element rootElement = document.getDocumentElement();
+    	    rootElement.getAttribute("stopTime");
+    	    System.out.println(stopTime);
+	}catch(Exception e){
+	    System.out.println("Failed to get stopTime ");
+	}
+	*/
+    }
+  
+    //End of edition
+    
+    
+    
+    public String getStopTime() {
+        return stopTime;
+    }
+
+    public void setStopTime(String stopTime) {
+        this.stopTime = stopTime;
+    }
+
     public HlaManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
         //        _lastProposedTime = null;
+        //Edition Tarciana starts here
+        _totalNbCalls=0;
+        _ner=0;
+        _tar=0;
+        _tag=0;
+        file = new TxtFile("data.txt");
+        //End of edition
         _noObjectDicovered = true;
         _rtia = null;
         _federateAmbassador = null;
@@ -332,6 +465,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
+    
 
     /** Name of the Ptolemy Federate. This parameter must contain an
      *  StringToken. */
@@ -692,6 +827,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
     public Time proposeTime(Time proposedTime) throws IllegalActionException {
 
         Time currentTime = _director.getModelTime();
+	//Edition Tarciana starts here
+        _totalNbCalls++;
+	//End of edition
 
         // This test is used to avoid exception when the RTIG subprocess is
         // shutdown before the last call of this method.
@@ -884,6 +1022,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
         super.wrapup();
         _strucuralInformation.clear();
         _registeredObject.clear();
+        _debug("Data" + 
+            	"\n number of TARs: " + _tar +
+            	"\n number of NERs: " + _ner +
+            	"\n number of TAGs: " + _tag);
 
         if (_debugging) {
             _debug(this.getDisplayName() + " wrapup() - ... so termination");
@@ -1044,7 +1186,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
             SpecifiedSaveLabelDoesNotExist {
 
         CertiLogicalTime certiProposedTime = _convertToCertiLogicalTime(proposedTime);
-
+        
+        //Edition Tarciana starts here
+        _ner++;
+        //End of edition
+        
         if (_hlaLookAHead > 0) {
             // Event-based + lookahead > 0 => NER.
             if (_debugging) {
@@ -1144,6 +1290,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
             RestoreInProgress, RTIinternalError, ConcurrentAccessAttempted {
 
         Time currentTime = _director.getModelTime();
+        //Edition Tarciana starts here
+        _tar++;
+        //Edition ends here
 
         if (_hlaTimeStep > 0) {
             // Calculate the next point in time for making a TAR(hlaNextPointInTime)
@@ -1193,6 +1342,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 + certiNextPointInTime.getTime() + ")");
                     }
                     _rtia.timeAdvanceRequest(certiNextPointInTime);
+                    
 
                     // Wait the time grant from the HLA/CERTI Federation (from the RTI).
                     _federateAmbassador.timeAdvanceGrant = false;
@@ -1638,6 +1788,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
 
+    
+
     /** This class extends the {@link NullFederateAmbassador} class which
      *  implements the basics HLA services provided by the JCERTI bindings.
      *  @author Gilles Lasnier
@@ -1712,6 +1864,13 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 ObjectClassNotDefined, FederateNotExecutionMember,
                 RTIinternalError, AttributeNotDefined, SaveInProgress,
                 RestoreInProgress, ConcurrentAccessAttempted {
+            //Edition Tarciana starts here
+            _totalNbCalls=0;
+            _ner=0;
+            _tar=0;
+            _tag=0;
+            //End of edition
+            
             this.timeAdvanceGrant = false;
             this.timeConstrained = false;
             this.timeRegulator = false;
@@ -2019,7 +2178,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
         public void timeAdvanceGrant(LogicalTime theTime)
                 throws InvalidFederationTime, TimeAdvanceWasNotInProgress,
                 FederateInternalError {
-
+            //Edition Tarciana starts here
+            _tag++;
+            //End of edition
             logicalTimeHLA = new CertiLogicalTime(_hlaTimeUnitValue
                     * ((CertiLogicalTime) theTime).getTime());
             timeAdvanceGrant = true;
