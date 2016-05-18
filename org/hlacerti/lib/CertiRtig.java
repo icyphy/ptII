@@ -174,7 +174,7 @@ public class CertiRtig extends NamedObj {
 
         File fedFileName = new File(directory);
 
-        // The list of command and argumentss to execute in the shell. */
+        // The list of command and arguments to execute in the shell. */
         List<String> commandList = null;
 
         // Execute command as shell interpret.
@@ -257,9 +257,20 @@ public class CertiRtig extends NamedObj {
     public void terminateProcess() throws IllegalActionException {
         if (_process != null) {
             System.out.println("CertiRtig: " + _hlaManager.getFullName() + ": About to terminate rtig.");
+            System.out.println("Data -> Total number of calls: " + _hlaManager.getTotalNbCalls() + 
+            	"\n number of TARs: " + _hlaManager.getTar() +
+            	"\n number of NERs: " + _hlaManager.getNer() +
+            	"\n number of TAGs: " + _hlaManager.getTag());
+            
             try {
                 // Close the stdin of the subprocess.
                 _process.getOutputStream().close();
+                _hlaManager.writeNbCalls();
+                _hlaManager.setNer(0);
+                _hlaManager.setTar(0);
+                _hlaManager.setTotalNbCalls(0);
+                _hlaManager.setTag(0);
+                
             } catch (IOException io) {
                 throw new IllegalActionException(
                         _hlaManager,
