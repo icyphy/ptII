@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.hlacerti.lib;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -119,7 +120,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-import tools.TxtFile;
+import org.hlacerti.lib.tools.TxtFile;
 
 
 ///////////////////////////////////////////////////////////////////
@@ -248,7 +249,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
     private int _ner;
     private int _tar;
     private TxtFile file;
-    private String stopTime;
+    private String _stopTime;
+    //private static double duration;
+    private static double _startTime;
     
     /**
      * @return the totalNbCalls
@@ -265,7 +268,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     }
 
     /**
-     * @return the tag
+     * @return the number of time advance grants that this federate has received
      */
     public int getTag() {
         return _tag;
@@ -279,7 +282,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     }
 
     /**
-     * @return the ner
+     * @return the number of next event requests that this federate has made
      */
     public int getNer() {
         return _ner;
@@ -293,7 +296,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     }
 
     /**
-     * @return the tar
+     * @return the number of time advance requests that this federate has made
      */
     public int getTar() {
         return _tar;
@@ -306,12 +309,36 @@ public class HlaManager extends AbstractInitializableAttribute implements
         this._tar = tar;
     }
     
+    /**
+     * @return the startTime
+     */
+    public static double getStartTime() {
+	return _startTime;
+    }
+
+    /**
+     * @param startTime the startTime to set
+     */
+    public static void setStartTime() {
+	Date date = new Date();
+	double startTime  = date.getTime();
+	HlaManager._startTime = startTime;
+    }
+    
+    public static double calculateRuntime(){
+	Date date = new Date();
+	double duration  = date.getTime() - _startTime;
+	duration = duration/1000;
+	return duration;
+    }
+
     public void writeNbCalls(){
 	try{
 	    
 	    String stopTime = _director.getModelStopTime().toString();
 	    String info = this.getFullName() + "\n" +"stopTime: " +stopTime+ "\n" + "Number of TARs: " +
-		    _tar +"\n" + "Number of NERs: " +_ner +"\n" + "Number of TAGs: " +_tag +"\n";
+		    _tar +"\n" + "Number of NERs: " +_ner +"\n" + "Number of TAGs: " +_tag +"\n" 
+		    +"Runtime: " +calculateRuntime()+"\n";
 	    file.write(info);
 	}catch(Exception e){
 	    e.printStackTrace();
@@ -349,17 +376,18 @@ public class HlaManager extends AbstractInitializableAttribute implements
 	*/
     }
   
-    //End of edition
+    
     
     
     
     public String getStopTime() {
-        return stopTime;
+        return _stopTime;
     }
 
     public void setStopTime(String stopTime) {
-        this.stopTime = stopTime;
+        this._stopTime = stopTime;
     }
+  //End of edition
 
     public HlaManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -370,7 +398,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         _ner=0;
         _tar=0;
         _tag=0;
-        file = new TxtFile("data.txt");
+        file = new TxtFile("org/hlacerti/lib/tools/data.txt");
         //End of edition
         _noObjectDicovered = true;
         _rtia = null;
@@ -1026,6 +1054,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
             	"\n number of TARs: " + _tar +
             	"\n number of NERs: " + _ner +
             	"\n number of TAGs: " + _tag);
+        
+        writeNbCalls();
+        
 
         if (_debugging) {
             _debug(this.getDisplayName() + " wrapup() - ... so termination");
