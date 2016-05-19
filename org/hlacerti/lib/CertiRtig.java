@@ -110,6 +110,7 @@ public class CertiRtig extends NamedObj {
      *  failed or if the RTIG subprocess it not running.
      */
     public void exec() throws IllegalActionException {
+	HlaManager.setStartTime();
         System.out.println("CertiRtig: " + _hlaManager.getFullName() +  ": About to invoke rtig: "
                 + "\ncommand: " + java.util.Arrays.toString(_commandArray)
                 + "\nenvironment: " + java.util.Arrays.toString(_environmentArray)
@@ -174,7 +175,7 @@ public class CertiRtig extends NamedObj {
 
         File fedFileName = new File(directory);
 
-        // The list of command and arguments to execute in the shell. */
+        // The list of command and arguments to execute in the shell.
         List<String> commandList = null;
 
         // Execute command as shell interpret.
@@ -260,12 +261,13 @@ public class CertiRtig extends NamedObj {
             System.out.println("Data -> Total number of calls: " + _hlaManager.getTotalNbCalls() + 
             	"\n number of TARs: " + _hlaManager.getTar() +
             	"\n number of NERs: " + _hlaManager.getNer() +
-            	"\n number of TAGs: " + _hlaManager.getTag());
+            	"\n number of TAGs: " + _hlaManager.getTag() +
+            	"\n runtime " + HlaManager.calculateRuntime());
             
             try {
                 // Close the stdin of the subprocess.
                 _process.getOutputStream().close();
-                _hlaManager.writeNbCalls();
+                //_hlaManager.writeNbCalls();
                 _hlaManager.setNer(0);
                 _hlaManager.setTar(0);
                 _hlaManager.setTotalNbCalls(0);
