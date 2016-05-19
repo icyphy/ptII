@@ -76,7 +76,10 @@ public class JavaScript extends AccessorCodeGeneratorAdapter {
 
 
         // See org/terraswarm/accessor/accessors/web/hosts/common/commonHost.js
-        code.append(_INDENT1 + "var " + name + " = new Accessor('"+ name
+        code.append(
+                _INDENT1 + "// FIXME: See instantiate() in accessors/web/hosts/common/commonHost.js" + _eol
+                + _INDENT1 + "// We probably need to do something with the bindings." + _eol
+                + _INDENT1 + "var " + name + " = new Accessor('"+ name
                 + "', '"
                 // FIXME: Need a way to escape the JavaScript code.
                 + actor.script.getExpression().replace("\"", "\\\"").replace("'", "\\\'").replace("\n", "\\n")
@@ -85,7 +88,9 @@ public class JavaScript extends AccessorCodeGeneratorAdapter {
                 + "null, " // extendedBy
                 + "null);" // implementedBy
                 + _eol
-                + _INDENT1 + name + ".container = this;" + _eol);
+                + _INDENT1 + name + ".container = this;" + _eol
+                + _INDENT1 + "this.containedAccessors.push("+ name + ");" + _eol);
+
         code.append(_generateJavaScriptParameters(actor));
         return code.toString();
     }
