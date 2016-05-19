@@ -1831,11 +1831,7 @@ Mocha.prototype.delay = function delay() {
  * @api public
  */
 Mocha.prototype.run = function(fn){
-	console.log("1826");
-	console.log('typeof this.loadFiles ' + typeof this.loadFiles);
-	console.log('typeof this.files.length ' + typeof this.files.length);
   if (this.files.length) this.loadFiles();
-  console.log("1827");
   var suite = this.suite;
   var options = this.options;
   options.files = this.files;
@@ -3124,6 +3120,8 @@ function clean(test) {
 
 }); // module: reporters/json-cov.js
 
+
+
 require.register("reporters/json-stream.js", function(module, exports, require){
 /**
  * Module dependencies.
@@ -4143,6 +4141,50 @@ function title(test) {
 }
 
 }); // module: reporters/tap.js
+
+require.register("reporters/text.js", function(module, exports, require) {
+	var result = "";
+	var self = this;
+	
+	/**
+	 * Module dependencies.
+	 */
+
+	var Base = require('./base');
+	
+	/**
+	 * Expose `Text`.
+	 */
+
+	exports = module.exports = Text;
+
+	function Text(runner) {
+		Base.call(this, runner);
+		
+		runner.on('test', function(test) {
+			result = result + '\nTest started: '+ test.title;
+		    console.log('Test started: '+ test.title);
+		})
+		.on('test end', function(test) {
+			result = result + '\nTest done: '+ test.title;
+		    console.log('Test done: '+ test.title);
+		})
+		.on('pass', function(test) {
+			result = result + '\nTest passed: '+ test.title;
+		    console.log('Test passed: ' + test.title);
+		})
+		.on('fail', function(test, err) {
+			result = result + '\nTest failed: ' + test.title;
+		    console.log('Test failed: ' + test.title);
+		    console.log(err);
+		})
+		.on('end', function() {
+			result = result + "\nAll done.";
+		    console.log('All done.');
+		    runner.emit('done', result);
+		});
+	}
+});	// module: reporters/text.js
 
 require.register("reporters/xunit.js", function(module, exports, require){
 /**
@@ -6567,15 +6609,12 @@ mocha.run = function(fn){
   if (query.grep) mocha.grep(new RegExp(query.grep));
   if (query.fgrep) mocha.grep(query.fgrep);
   if (query.invert) mocha.invert();
-  console.log('typeof Mocha ' + typeof Mocha.prototype.run);
-  console.log('typeof mocha ' + typeof mocha);
   
   return Mocha.prototype.run.call(mocha, function() {
-	  console.log('done!');
+	 
   });
   /*
   return Mocha.prototype.run.call(mocha, function(err){
-	  console.log('6560');
     // The DOM Document is not available in Web Workers.
     // var document = global.document;
 	//var document = window.document;

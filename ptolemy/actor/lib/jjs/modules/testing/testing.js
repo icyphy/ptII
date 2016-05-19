@@ -54,6 +54,7 @@ exports.Testing = function() {
     // Requiring mocha.js creates a variable named mocha and loads content into it.
 	require('testing/mocha/mocha.js');
 	mocha.setup('bdd');
+	mocha.reporter('text');
 	
 	// TODO:  Data structures to store the results
 };
@@ -71,33 +72,10 @@ exports.Testing.prototype.loadTestFile = function(filename) {
  */
 exports.Testing.prototype.run = function() {
 	var self = this;
-	var results = "";
 	
-	// Register for mocha events and report test outcomes to the console.
-	// TODO:  Refactor this into a separate reporter.  Report in JUnit format.
-	// http://stackoverflow.com/questions/29050720/run-mocha-programatically-and-pass-results-to-variable-or-function
+	// Forward the done event from mocha on to listeners of this module.
 	mocha.run()
-		.on('test', function(test) {
-			results = results + '\nTest started: '+ test.title;
-		    console.log('Test started: '+ test.title);
-		})
-		.on('test end', function(test) {
-			results = results + '\nTest done: '+ test.title;
-		    console.log('Test done: '+ test.title);
-		})
-		.on('pass', function(test) {
-			results = results + '\nTest passed: '+ test.title;
-		    console.log('Test passed: ' + test.title);
-		})
-		.on('fail', function(test, err) {
-			results = results + '\nTest failed: ' + test.title;
-		    console.log('Test failed: ' + test.title);
-		    console.log(err);
-		})
-		.on('end', function() {
-			results = results + "\nAll done.";
-		    console.log('All done.');
-		    self.emit('end', results);
-		    // TODO:  Create a reporter to format results in Junit format.
+		.on('done', function(result) {
+			self.emit('end', result);
 		});
 };
