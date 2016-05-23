@@ -217,6 +217,9 @@ import org.hlacerti.lib.tools.TxtFile;
  * <p>[4] E. Noulard, J.-Y. Rousselot, and P. Siron, "CERTI, an open source RTI,
  *     why and how ?", Spring Simulation Interoperability Workshop, pp. 23-27,
  *     Mar 2009.</p>
+ * <p>[5] Y. Li, J. Cardoso, and P. Siron, "A distributed Simulation Environment for
+ *     Cyber-Physical Systems", Sept 2015.</p>
+ *     
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, Edward A. Lee, David Come, Yanxuan LI
  *  @version $Id$
@@ -241,147 +244,15 @@ TimeRegulator {
 	 *  an actor already in the container.
 	 */
 
-
-	//Edition Tarciana starts here
-	
-	/* The following variables were created to mesure the performance of the 
-	 * TAR means "time advance request" and it's the HLA call made by time stepped 
-	 * federates when they want to advance in time.
-	 * NER means "next event request" 
-	 */
-
-	private int _totalNumberOfHLACalls;
-	private int _tag;
-	private int _ner;
-	private int _tar;
-	private TxtFile file;
-	private String _stopTime;
-	//private static double duration;
-	private static double _startTime;
-
-	/** Return the total number of HLA Calls
-	 * @return the total number of HLA Calls
-	 */
-	public int getTotalNumberOfHLACalls() {
-		return _totalNumberOfHLACalls;
-	}
-
-	/** Set the total number of HLA Calls 
-	 * @param totalNbCalls the total number of HLA Calls
-	 */
-	public void setTotalNumberOfHLACalls(int _totalNumberOfHLACalls) {
-		this._totalNumberOfHLACalls = _totalNumberOfHLACalls;
-	}
-
-	/** Return the total number of time advance grants that this federate has received 
-	 * @return the number of time advance grants that this federate has received
-	 */
-	public int getTag() {
-		return _tag;
-	}
-
-	/** Set the total number of time advance grants that this federate has received
-	 * @param _tag the number of time advance grants that this federate has received
-	 */
-	public void setTag(int _tag) {
-		this._tag = _tag;
-	}
-
-	/** Return the number of next event requests that this federate has made
-	 * @return the number of next event requests that this federate has made
-	 */
-	public int getNer() {
-		return _ner;
-	}
-
-	/** Set the number of next event requests that this federate has made
-	 * @param ner the number of next event requests that this federate has made
-	 */
-	public void setNer(int ner) {
-		this._ner = ner;
-	}
-
-	/** Return the number of time advance requests that this federate has made
-	 * @return the number of time advance requests that this federate has made
-	 */
-	public int getTar() {
-		return _tar;
-	}
-
-	/** Set the number of time advance requests that this federate has made
-	 * @param tar the number of time advance requests that this federate has made
-	 */
-	public void setTar(int _tar) {
-		this._tar = _tar;
-	}
-
-	/** Return the start Time of the execution of the federation
-	 * @return the start Time of the execution of the federation
-	 */
-	public static double getStartTime() {
-		return _startTime;
-	}
-
-	/** Set the start Time of the execution of the federation
-	 * @param startTime the startTime to set
-	 */
-	public static void setStartTime() {
-		Date date = new Date();
-		double startTime  = date.getTime();
-		HlaManager._startTime = startTime;
-	}
-	
-	/** Calculate the duration of the execution of the federation
-	 * Uses the value of the startTime of the execution
-	 */
-	public static double calculateRuntime(){
-		Date date = new Date();
-		double duration  = date.getTime() - _startTime;
-		duration = duration/1000;
-		return duration;
-	}
-
-	public void writeNumberOfHLACalls(){
-		try{
-			Date date = new Date();
-			String stopTime = _director.getModelStopTime().toString();
-			String nameOfTheFederate = federateName.toString();
-			nameOfTheFederate = nameOfTheFederate.substring(nameOfTheFederate.indexOf('"') +1, nameOfTheFederate.length() -1);
-			String info =  nameOfTheFederate + "\n" +"stopTime: " +stopTime+ "\n";
-			if(_tar>0){
-					info = info +"Time Step: "  + _hlaTimeStep + "\n" 
-							+ "Number of TARs: " +_tar;
-			}else if (_ner>0){
-				info = info + "Number of NERs: " +_ner ;
-			}
-			info = info + "\n"+ "Number of TAGs: " + _tag +"\n" 
-					+"Runtime: " +calculateRuntime()+"\n";
-			info = date.toString() + "\n"  + info;
-			file.write(info);
-		}catch(Exception e){
-			e.printStackTrace();
-		}
-
-	} 
-
-	public String getStopTime() {
-		return _stopTime;
-	}
-
-	public void setStopTime(String stopTime) {
-		this._stopTime = stopTime;
-	}
-	//End of edition
-
 	public HlaManager(CompositeEntity container, String name)
 			throws IllegalActionException, NameDuplicationException {
 		super(container, name);
 		//        _lastProposedTime = null;
 		//Edition Tarciana starts here
 		_totalNumberOfHLACalls=0;
-		_ner=0;
-		_tar=0;
-		_tag=0;
+		_numberOfNERs=0;
+		_numberOfTARs=0;
+		_numberOfTAGs=0;
 		file = new TxtFile("org/hlacerti/lib/tools/data.txt");
 		//End of edition
 		_noObjectDicovered = true;
@@ -393,7 +264,6 @@ TimeRegulator {
 		_fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
 		_objectIdToClassHandle = new HashMap<Integer, Integer>();
 		_strucuralInformation = new HashMap<Integer, StructuralInformation>();
-
 		_hlaTimeStep = null;
 		_hlaLookAHead = null;
 
@@ -1035,9 +905,9 @@ TimeRegulator {
 		_strucuralInformation.clear();
 		_registeredObject.clear();
 		_debug("Data" + 
-				"\n number of TARs: " + _tar +
-				"\n number of NERs: " + _ner +
-				"\n number of TAGs: " + _tag);
+				"\n number of TARs: " + _numberOfTAGs +
+				"\n number of NERs: " + _numberOfNERs +
+				"\n number of TAGs: " + _numberOfTAGs);
 
 		writeNumberOfHLACalls();
 
@@ -1137,6 +1007,130 @@ TimeRegulator {
 			_debug("-----------------------");
 		}
 	}
+	
+	/** Return the total number of HLA Calls
+	 * @return the total number of HLA Calls
+	 */
+	public int getTotalNumberOfHLACalls() {
+		return _totalNumberOfHLACalls;
+	}
+
+	/** Set the total number of HLA Calls 
+	 * @param totalNbCalls the total number of HLA Calls
+	 */
+	public void setTotalNumberOfHLACalls(int _totalNumberOfHLACalls) {
+		this._totalNumberOfHLACalls = _totalNumberOfHLACalls;
+	}
+
+	/** Return the total number of time advance grants that this federate has received 
+	 * @return the number of time advance grants that this federate has received
+	 * @see _tag
+	 */
+	public int getNumberOfTAGs() {
+		return _numberOfTAGs;
+	}
+
+	/** Set the total number of time advance grants that this federate has received
+	 * @param _numberOfTAGs; the number of time advance grants that this federate has received
+	 * @see _numberOfTAGs;
+	 */
+	public void setNumberOfTAGs(int _numberOfTAGs) {
+		this._numberOfTAGs = _numberOfTAGs;
+	}
+
+	/** Return the number of next event requests that this federate has made
+	 * @return the number of next event requests that this federate has made
+	 * @see _numberOfNERs
+	 */
+	public int getNumberOfNERs() {
+		return _numberOfNERs;
+	}
+
+	/** Set the number of next event requests that this federate has made
+	 * @param ner the number of next event requests that this federate has made
+	 * @see _numberOfNERs
+	 */
+	public void setNumberOfNERs(int _numberOfNERs) {
+		this._numberOfNERs = _numberOfNERs;
+	}
+
+	/** Return the number of time advance requests that this federate has made
+	 * @return the number of time advance requests that this federate has made
+	 * @see _numberOfTARs
+	 */
+	public int getNumberOfTARs() {
+		return _numberOfTARs;
+	}
+
+	/** Set the number of time advance requests that this federate has made
+	 * @param tar the number of time advance requests that this federate has made
+	 * @see _numberOfTARs
+	 */
+	public void setNumberOfTARs(int _numberOfTARs) {
+		this._numberOfTAGs = _numberOfTARs;
+	}
+
+	/** Return the start Time of the execution of the federation
+	 * @return the start Time of the execution of the federation
+	 */
+	public static double getStartTime() {
+		return _startTime;
+	}
+
+	/** Set the start Time of the execution of the federation
+	 * @param startTime the startTime to set
+	 */
+	public static void setStartTime() {
+		Date date = new Date();
+		double startTime  = date.getTime();
+		HlaManager._startTime = startTime;
+	}
+	
+	/** Calculate the duration of the execution of the federation
+	 * Uses the static value of the startTime of the execution
+	 */
+	public static double calculateRuntime(){
+		Date date = new Date();
+		double duration  = date.getTime() - _startTime;
+		duration = duration/1000;
+		return duration;
+	}
+	
+	/** Write the number of HLA calls of each federate, along with informations about the
+	 * time step and the runtime, in a file.
+	 * The name and location of this file are specified in the initialization of the 
+	 * variable file.
+	 */
+	public void writeNumberOfHLACalls(){
+		try{
+			Date date = new Date();
+			String stopTime = _director.getModelStopTime().toString();
+			String nameOfTheFederate = federateName.toString();
+			nameOfTheFederate = nameOfTheFederate.substring(nameOfTheFederate.indexOf('"') +1, nameOfTheFederate.length() -1);
+			String info =  nameOfTheFederate + "\n" +"stopTime: " +stopTime+ "\n";
+			if(_timeStepped){
+					info = info +"Time Step: "  + _hlaTimeStep + "\n" 
+							+ "Number of TARs: " +_numberOfTAGs;
+			}else if (_eventBased){
+				info = info + "Number of NERs: " +_numberOfNERs ;
+			}
+			info = info + "\n"+ "Number of TAGs: " + _numberOfTAGs +"\n" 
+					+"Runtime: " +calculateRuntime()+"\n";
+			info = date.toString() + "\n"  + info;
+			file.write(info);
+		}catch(Exception e){
+			e.printStackTrace();
+		}
+
+	} 
+
+	public String getStopTime() {
+		return _stopTime;
+	}
+
+	public void setStopTime(String stopTime) {
+		this._stopTime = stopTime;
+	}
 
 	///////////////////////////////////////////////////////////////////
 	////                         protected variables               ////
@@ -1215,7 +1209,7 @@ TimeRegulator {
 						+ proposedTime.getDoubleValue());
 			}
 			_rtia.nextEventRequest(certiProposedTime);
-			_ner++;
+			_numberOfNERs++;
 		} else {
 			// Event-based + lookahead = 0 => NERA + NER.
 			// Start the time advancement loop with one NERA call.
@@ -1226,6 +1220,7 @@ TimeRegulator {
 						+ certiProposedTime.getTime() + ")");
 			}
 			_rtia.nextEventRequestAvailable(certiProposedTime);
+			_numberOfNERs++;
 
 			// Wait the time grant from the HLA/CERTI Federation (from the RTI).
 			_federateAmbassador.timeAdvanceGrant = false;
@@ -1247,7 +1242,7 @@ TimeRegulator {
 						+ ")");
 			}
 			_rtia.nextEventRequest(certiProposedTime);
-			_ner++;
+			_numberOfNERs++;
 		}
 
 		// Wait the time grant from the HLA/CERTI Federation (from the RTI).
@@ -1353,7 +1348,7 @@ TimeRegulator {
 								+ certiNextPointInTime.getTime() + ")");
 					}
 					_rtia.timeAdvanceRequest(certiNextPointInTime);
-					_tar++;
+					_numberOfTAGs++;
 
 
 					// Wait the time grant from the HLA/CERTI Federation (from the RTI).
@@ -1411,7 +1406,7 @@ TimeRegulator {
 							+ ") by calling tick2()");
 				}
 				_rtia.timeAdvanceRequest(certiNextPointInTime);
-				_tar++;
+				_numberOfTAGs++;
 
 				try {
 					_rtia.tick2();
@@ -1434,7 +1429,7 @@ TimeRegulator {
 							+ certiNextPointInTime.getTime() + ")");
 				}
 				_rtia.timeAdvanceRequest(certiNextPointInTime);
-				_tar++;
+				_numberOfTAGs++;
 			}
 		}
 		return null;
@@ -1592,6 +1587,42 @@ TimeRegulator {
 	 *  point.
 	 */
 	private Boolean _isCreator;
+	
+    private int _totalNumberOfHLACalls;
+	
+	/** Represents the number of next event request this federate has made.
+	 * 
+	 * Event driven federates advance to the time-stamp of the next event. In order to complete the
+	 * advancement, they have to ask the federation's permission to do so using a NER call.
+	 */
+	private int _numberOfNERs;
+	
+	/** Represents the number of time advance grants this federate has received.
+	 * 
+	 * Federates have to ask permission to the federation in order to advance in time.
+	 * If there is no events happening in an inferior time to the proposed one, the 
+	 * federation sends a TAG to the federate and this last one advances in time.
+	 */
+	private int _numberOfTAGs;
+	
+	/** Represents the number of time advance requests(TAR) this federate has made.
+	 * 
+	 * Time-stepped federates advance with a fixed step in time. In order to complete the
+	 * advancement, they have to ask the federation's permission to do so using a TAR call.
+	 */
+	private int _numberOfTARs;	
+	
+	private TxtFile file;
+	
+	/** Represents the value of the execution stopTime that was defined by the user 
+	 * in the xml interface.
+	 */
+	private String _stopTime;
+	
+	/** Represents the instant when the simulation is fully started 
+	 * (when the last federate starts running).
+	 */
+	private static double _startTime;
 
 	/** Records the last proposed time to avoid multiple HLA time advancement
 	 *  requests at the same time.
@@ -1626,6 +1657,8 @@ TimeRegulator {
     Set to false once in discoverObjectInstance and resert to true in noNewActors
 	 */
 	private boolean _noObjectDicovered;
+	
+	
 
 	///////////////////////////////////////////////////////////////////
 	////                    private  methods                 ////
@@ -1880,9 +1913,9 @@ TimeRegulator {
 		RestoreInProgress, ConcurrentAccessAttempted {
 			//Edition Tarciana starts here
 			_totalNumberOfHLACalls=0;
-			_ner=0;
-			_tar=0;
-			_tag=0;
+			_numberOfNERs=0;
+			_numberOfTAGs=0;
+			_numberOfTAGs=0;
 			//End of edition
 
 			this.timeAdvanceGrant = false;
@@ -2192,7 +2225,7 @@ TimeRegulator {
 		public void timeAdvanceGrant(LogicalTime theTime)
 				throws InvalidFederationTime, TimeAdvanceWasNotInProgress,
 				FederateInternalError {
-			_tag++;
+			_numberOfTAGs++;
 			logicalTimeHLA = new CertiLogicalTime(_hlaTimeUnitValue
 					* ((CertiLogicalTime) theTime).getTime());
 			timeAdvanceGrant = true;
