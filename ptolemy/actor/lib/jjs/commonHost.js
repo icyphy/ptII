@@ -198,7 +198,7 @@
 
 // Stop extra messages from jslint and jshint.
 // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint
-/* globals console, exports, instance, setInterval, setTimeout */
+/* globals console, exports, instance, Packages, process, require, setInterval, setTimeout, window */
 /* jshint globalstrict: true, multistr: true */
 'use strict';
 
@@ -215,9 +215,8 @@ var accessorHostsEnum = {
 exports.accessorHostsEnum = accessorHostsEnum;
 
 var accessorHost = accessorHostsEnum.DEFAULT;
-exports.accessorHost = accessorHost;
 
-// In alphabetical order
+// In alphabetical order.
 if (typeof window !== 'undefined' && window.hasOwnProperty('browserJSLoaded')) {
     accessorHost = accessorHostsEnum.BROWSER;
 } else if (typeof Packages !== 'undefined' && typeof Packages.java.util.Vector === 'function') {
@@ -227,6 +226,8 @@ if (typeof window !== 'undefined' && window.hasOwnProperty('browserJSLoaded')) {
 } else if (typeof process !== 'undefined' && typeof process.version === 'string') {
     accessorHost = accessorHostsEnum.NODE;
 }
+
+exports.accessorHost = accessorHost;
 
 if (accessorHost === accessorHostsEnum.DUKTAPE) {
     var util = require('../common/modules/util.js');
@@ -278,7 +279,8 @@ if (accessorHost === accessorHostsEnum.DUKTAPE) {
  *
  *  * **accessorClass**: The class name of the accessor, if not anonymous.
  *  * **container**: A reference to the containing accessor, if this instance is
- *    instantiated by such a container.
+ *    instantiated by such a container.  The Cape Code host does not set container,
+ *    see [https://www.terraswarm.org/accessors/wiki/Version1/Container](https://www.terraswarm.org/accessors/wiki/Version1/Container)
  *  * **extendedBy**: A reference to the accessor that this is extended by, if there is
  *    one.
  *  * **extending**: A reference to the accessor that this extends, if it extends one.
@@ -1310,7 +1312,8 @@ Accessor.prototype.react = function(name) {
                         thiz.error('commonHost.js, react(), invoking a specific handler for \"' +
                                    name + '\": Exception occurred in input handler,' +
                                    ' which has now has been removed.  Exception was: ' +
-                                   exception);
+                                   exception +
+                                   ' Stacktrace was: ' + exception.stack);
                     }
                 }
             }
