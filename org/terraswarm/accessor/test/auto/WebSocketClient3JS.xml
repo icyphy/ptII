@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="WebSocketClientJS" class="ptolemy.actor.TypedCompositeActor">
+<entity name="WebSocketClient3JS" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={599, 23, 810, 869}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[576, 759]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0305146405453987">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{220.91099654796508, 290.7795694040698}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{220.6738779544819, 320.59229513234044}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15.0">
@@ -33,7 +33,7 @@
         </property>
         <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../hosts/node/nodeHostInvoke.js -timeout 16000 net/test/auto/@modelName@">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, -10.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, -10.0]">
         </property>
     </property>
     <entity name="WebSocketClient" class="org.terraswarm.accessor.JSAccessor">
@@ -62,11 +62,11 @@
             </property>
             <property name="timeBetweenRetries (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The time between retries in milliseconds.&#10;  Defaults to 500.">
             </property>
+            <property name="reconnectOnClose (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The option of whether or not to reconnect when disconnected.">
+            </property>
             <property name="discardMessagesBeforeOpen (parameter)" class="ptolemy.kernel.util.StringAttribute" value="If true,&#10;  then any messages received on `toSend` before the socket&#10;  is open will be discarded. This defaults to false.">
             </property>
             <property name="throttleFactor (parameter)" class="ptolemy.kernel.util.StringAttribute" value="If non-zero, specifies a&#10;  time (in milliseconds) to stall when a message is queued&#10;  because the socket is not yet open. The time of the stall&#10;  will be the queue size (after adding the message) times&#10;  the throttleFactor. This defaults to 100. Making it non-zero&#10;  causes the input handler to take time if there are pending unsent messages.">
-            </property>
-            <property name="reconnectOnClose (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The option of whether or not to reconnect when disconnected.">
             </property>
             <property name="server (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The IP address or domain name of server. Defaults to 'localhost'.">
             </property>
@@ -111,14 +111,14 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="8087">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>
         <property name="trustedCACertPath" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
         <port name="server" class="ptolemy.actor.parameters.ParameterPort">
@@ -152,7 +152,7 @@
         </property>
         <property name="port" class="ptolemy.data.expr.Parameter" value="8087">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 255.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor starts a server that listens for web socket&#10; connection requests on the specified hostInterface and port.  The&#10; hostInterface is needed only if the host machine has more than one&#10; network interface (e.g. Ethernet and WiFi) and 'localhost' does&#10; not resolve to the desired interface.&lt;/p&gt;&#10;&lt;p&gt; The output &lt;code&gt;connection&lt;/code&gt; reports the when a&#10; connection is opened or closed.&lt;/p&gt;&#10;&lt;p&gt; When a message arrives on a connection, a &lt;code&gt;received&lt;/code&gt;&#10; output is produced with that message. Note that the message may arrive in&#10; multiple frames, but it will be produced as a single message.&lt;/p&gt;&#10;&lt;p&gt; When an input arrives on &lt;code&gt;toSend&lt;/code&gt;, then a message is&#10; sent to one or all of the open socket connections.&lt;/p&gt;&#10;&lt;p&gt; When &lt;code&gt;wrapup()&lt;/code&gt; is invoked, this accessor closes the&#10; server and all connections.&lt;/p&gt;&#10;&lt;p&gt; The default type for both sending and receiving&#10; is 'application/json', which allows sending and receiving anything that has&#10; a string representation in JSON. The types supported by this implementation&#10; include at least:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;strong&gt;application/json&lt;/strong&gt;: The this.send() function uses JSON.stringify() and sends the&#10;result with a UTF-8 encoding. An incoming byte stream will be parsed as JSON,&#10;and if the parsing fails, will be provided as a string interpretation of the byte&#10;stream.&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;text/*&lt;/strong&gt;: Any text type is sent as a string encoded in UTF-8.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;strong&gt;image/x&lt;/strong&gt;: Where &lt;strong&gt;x&lt;/strong&gt; is one of &lt;strong&gt;json&lt;/strong&gt;, &lt;strong&gt;png&lt;/strong&gt;, &lt;strong&gt;gif&lt;/strong&gt;,&#10;and more.&#10;In this case, the data passed to this.send() is assumed to be an image, as encoded&#10;on the host, and the image will be encoded as a byte stream in the specified&#10;format before sending.  A received byte stream will be decoded as an image,&#10;if possible.&lt;/p&gt;&#10;&lt;p&gt;This accessor requires the module webSocket.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
@@ -194,16 +194,16 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
         <property name="pfxKeyCertPassword" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
         <property name="pfxKeyCertPath" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
@@ -230,7 +230,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 325.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -276,7 +276,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 140.0]">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -300,7 +300,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 155.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -312,16 +312,20 @@
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <link port="WebSocketClient.port" relation="relation6"/>
     <link port="WebSocketClient.received" relation="relation5"/>
     <link port="WebSocketServer.toSend" relation="relation"/>
-    <link port="WebSocketServer.connection" relation="relation3"/>
-    <link port="JavaScript2.connectionReady" relation="relation3"/>
+    <link port="WebSocketServer.connection" relation="relation4"/>
+    <link port="WebSocketServer.listening" relation="relation6"/>
+    <link port="JavaScript2.connectionReady" relation="relation4"/>
     <link port="JavaScript2.toSend" relation="relation"/>
     <link port="TrainableTest.input" relation="relation5"/>
     <link port="TrainableTest.output" relation="relation2"/>
