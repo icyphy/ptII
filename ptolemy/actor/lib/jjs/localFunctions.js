@@ -362,6 +362,12 @@ function setup() {
     exports.setup();
 }
 
+// Stop execution of the model.  See ptolemy/actor/lib/Stop.java.
+function stop() {
+    actor.getDirector().finish();
+    actor.getDirector().stopFire();
+}
+
 // Default wrapup function, which invokes exports.wrapup().
 // Note that if the script simply defines a top-level wrapup() function instead
 // of exports.wrapup(), that function will overwrite this one and will still work
