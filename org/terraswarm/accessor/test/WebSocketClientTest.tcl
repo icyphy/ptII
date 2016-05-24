@@ -59,8 +59,8 @@ if {[string compare test [info procs test]] == 1} then {
 #} {true}
 
 
-test WebSocketClientTest-3.1 {Run WebSocketClient.xml and then WebSocketClient2.xml with reloading of the accessor} {
-    set application [java::new ptolemy.moml.MoMLSimpleApplication $PTII/org/terraswarm/accessor/test/auto/WebSocketClient.xml]
+test WebSocketClientTest-3.1 {Run WebSocketClientJS.xml and then WebSocketClient2JS.xml with reloading of the accessor} {
+    set application [java::new ptolemy.moml.MoMLSimpleApplication $PTII/org/terraswarm/accessor/test/auto/WebSocketClientJS.xml]
     $application rerun
     set toplevel [$application toplevel]
     java::call org.terraswarm.accessor.JSAccessor reloadAllAccessors $toplevel
@@ -69,7 +69,7 @@ test WebSocketClientTest-3.1 {Run WebSocketClient.xml and then WebSocketClient2.
     set $application [java::null]
     java::call System gc
 
-    set application2 [java::new ptolemy.moml.MoMLSimpleApplication $PTII/org/terraswarm/accessor/test/auto/WebSocketClient2.xml]
+    set application2 [java::new ptolemy.moml.MoMLSimpleApplication $PTII/org/terraswarm/accessor/test/auto/WebSocketClient2JS.xml]
     $application2 rerun
     set toplevel2 [$application2 toplevel]
     java::call org.terraswarm.accessor.JSAccessor reloadAllAccessors $toplevel2
