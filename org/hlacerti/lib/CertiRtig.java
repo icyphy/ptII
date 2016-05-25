@@ -258,21 +258,10 @@ public class CertiRtig extends NamedObj {
     public void terminateProcess() throws IllegalActionException {
         if (_process != null) {
             System.out.println("CertiRtig: " + _hlaManager.getFullName() + ": About to terminate rtig.");
-            System.out.println("Statistics of the execution -> Total number of calls: " + _hlaManager.getTotalNumberOfHLACalls() + 
-            	"\n number of TARs: " + _hlaManager.getNumberOfTARs() +
-            	"\n number of NERs: " + _hlaManager.getNumberOfNERs() +
-            	"\n number of TAGs: " + _hlaManager.getNumberOfTAGs() +
-            	"\n runtime " + HlaManager.calculateRuntime());
             
             try {
                 // Close the stdin of the subprocess.
-                _process.getOutputStream().close();
-                //_hlaManager.writeNbCalls();
-                _hlaManager.setNumberOfNERs(0);
-                _hlaManager.setNumberOfTARs(0);
-                _hlaManager.setTotalNumberOfHLACalls(0);
-                _hlaManager.setNumberOfTAGs(0);
-                
+                _process.getOutputStream().close();                
                 
             } catch (IOException io) {
                 throw new IllegalActionException(

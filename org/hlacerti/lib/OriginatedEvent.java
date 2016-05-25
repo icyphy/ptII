@@ -25,7 +25,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
                                                 COPYRIGHTENDKEY
 
 
-*/
+ */
 package org.hlacerti.lib;
 
 import ptolemy.actor.util.Time;
@@ -33,32 +33,40 @@ import ptolemy.actor.util.TimedEvent;
 
 /**
  * Extension to add to an TimedEvent in oder to give to the HLASubscriber the
- * object's id which is reponsible for the update
+ * object's id which is reponsible for the update.
  * @author David C&#244;me
  */
 public class OriginatedEvent extends TimedEvent{
 
-    public OriginatedEvent(Time time, Object obj,int federate) {
-        super(time, obj);
-        objectID = federate;
-    }
 
-    // the object id which is responsible for the UAV
-    public int objectID;
+	/**
+	 * Constructs an OriginatedEvent object.
+	 *
+	 * @param time      a Time object
+	 * @param obj       an Object ...
+	 * @param federate  an int specifying ...
+	 */
+	public OriginatedEvent(Time time, Object obj,int federate) {
+		super(time, obj);
+		objectID = federate;
+	}
 
-    @Override
-    public boolean equals(Object originatedEvent) {
-        if (!super.equals(originatedEvent)) {
-            return false;
-        } else {
-            //at this point this and originatedEvent are the same class
-            // and originatedEvent is not null (checks done in super.equals)
-            OriginatedEvent event = (OriginatedEvent) originatedEvent;
-            if (objectID == event.objectID) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-    }
+	/** The object id which is responsible for the UAV. */
+	public int objectID;
+
+	@Override
+	public boolean equals(Object originatedEvent) {
+		if (!super.equals(originatedEvent)) {
+			return false;
+		} else {
+			//at this point this and originatedEvent are the same class
+			// and originatedEvent is not null (checks done in super.equals)
+			OriginatedEvent event = (OriginatedEvent) originatedEvent;
+			if (objectID == event.objectID) {
+				return true;
+			} else {
+				return false;
+			}
+		}
+	}
 }
