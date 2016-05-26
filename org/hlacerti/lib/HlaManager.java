@@ -30,6 +30,9 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.hlacerti.lib;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -119,14 +122,13 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-import org.hlacerti.lib.tools.TxtFile;
 
 
 ///////////////////////////////////////////////////////////////////
 //// HlaManager
 
 /**
- * This attribute implements a HLA Manager which allows a Ptolemy model to
+ * This class implements a HLA Manager which allows a Ptolemy model to
  * cooperate with a HLA/CERTI Federation. The main goal is to allow a Ptolemy
  * simulation as Federate of a Federation.
  * 
@@ -249,7 +251,7 @@ TimeRegulator {
 		_numberOfNERs=0;
 		_numberOfTARs=0;
 		_numberOfTAGs=0;
-		file = new TxtFile("org/hlacerti/lib/tools/data.txt");
+		_file = _createTextFile("org/hlacerti/lib/data.txt");
 		_noObjectDicovered = true;
 		_rtia = null;
 		_federateAmbassador = null;
@@ -399,9 +401,14 @@ TimeRegulator {
 
 	/** The two options for time advancement service (NER or TAR).*/
 	public enum ETimeManagementService {
-		NextEventRequest, TimeAdvancementRequest;
+		/** The federate uses next event request calls to advance in time.
+		 */
+		NextEventRequest, 
+		/** The federate uses time advance request calls to advance in time.
+		 */
+		TimeAdvancementRequest;
 		/**Override the toString of enum class.
-		 * @return string associated for every enumerate
+		 * @return The string associated for every enumerate.
 		 */
 		@Override
 		public String toString() {
@@ -997,6 +1004,7 @@ TimeRegulator {
 			_debug("-----------------------");
 		}
 	}
+	
 
 	/** Return the total number of time advance grants that this federate has received. 
 	 * @return The number of time advance grants that this federate has received.
@@ -1090,9 +1098,10 @@ TimeRegulator {
 			Date date = new Date();
 			String fullName=federateName.toString();
 			String stopTime =_director.getModelStopTime().toString();
-			String nameOfTheFederate = fullName.substring(fullName.indexOf('"') , fullName.length());
-			String nameOfTheFile= fullName.substring(fullName.indexOf('{')+1,  fullName.lastIndexOf('.')-1);
-			nameOfTheFile = nameOfTheFile.substring(1, nameOfTheFile.lastIndexOf('.')-1) + ".xml";
+			String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
+			String nameOfTheFile= fullName.substring(fullName.indexOf('{')+1,  fullName.lastIndexOf('.'));
+			
+			nameOfTheFile = nameOfTheFile.substring(1, nameOfTheFile.lastIndexOf('.')) + ".xml";
 
 			String info = "Federate: "+ nameOfTheFederate +" in the model "+nameOfTheFile+ "\n" +"stopTime: " +stopTime+ "\n";
 			if(_timeStepped){
@@ -1104,7 +1113,8 @@ TimeRegulator {
 			info = info + "\n"+ "Number of TAGs: " + _numberOfTAGs +"\n" 
 					+"Runtime: " +calculateRuntime()+"\n";
 			info = date.toString() + "\n"  + info;
-			file.write(info);
+			_writeInTextFile(info);
+			System.out.println(info);
 		}catch(Exception e){
 			System.out.println("Couldn't write in the file.");
 		}
@@ -1523,6 +1533,53 @@ TimeRegulator {
 		CertiLogicalTime certiCurrentTime = (CertiLogicalTime) _federateAmbassador.logicalTimeHLA;
 		return _convertToPtolemyTime(certiCurrentTime);
 	}
+	
+	/** Associate the object file with a file in the computer, creating it, if it doesn't 
+	 * already exist. 
+	 * @param name the name to of the file
+	 */
+	private File _createTextFile(String name){
+		if(name.equals(null) || name.length()<3){
+			System.out.println("Choose a valid name for the txt file.");
+			return null;
+		}else{
+			if(!name.endsWith(".txt")){
+				name = name.concat(".txt");
+			}
+			try{
+				File file = new File(name);
+				boolean verify = false;
+				if(!file.exists()){
+					verify = file.createNewFile();
+				}else {
+					verify = true;
+				}if (!verify){
+					throw new Exception();
+				}System.out.println(name);
+				return file;	
+			}catch(Exception e){
+				System.out.println("Couldn't create the file.");
+				return null;
+			}
+		}
+	}
+	
+	/** Write information in a txt file.
+	 * @param data The information you want to write
+	 */
+	private boolean _writeInTextFile(String data){
+		try{
+			BufferedWriter writer = new BufferedWriter(new FileWriter(this._file, true));
+			writer.newLine();
+			writer.write(data);
+			writer.newLine();
+			writer.flush();
+			writer.close();
+			return true;
+		}catch(Exception e){
+			return false;
+		}
+	}
 
 	///////////////////////////////////////////////////////////////////
 	////                         private variables                 ////
@@ -1590,7 +1647,10 @@ TimeRegulator {
 	 */
 	private int _numberOfTARs;	
 
-	private TxtFile file;
+	/** Represents a file that is going to keep track of the number of HLA calls of the
+	 * federate.
+	 */
+	private File _file;
 
 	/** Represents the instant when the simulation is fully started 
 	 * (when the last federate starts running).
@@ -1689,7 +1749,7 @@ TimeRegulator {
 						+ " initialize() - Synchronisation point "
 						+ _synchronizationPointName + " satisfied !");
 			}
-		} catch (RTIexception e) {
+		} catch(RTIexception e) {
 			throw new IllegalActionException(this, e, e.getMessage());
 		}
 
