@@ -26,18 +26,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
 
-
 package org.ptolemy.qss.solver;
-
 
 import org.ptolemy.qss.util.ModelPolynomial;
 
 import ptolemy.actor.util.Time;
 
-
 ///////////////////////////////////////////////////////////////////
 //// QSS1
-
 
 /** Implement the QSS1 method for solving ordinary differential equations.
  *
@@ -47,9 +43,7 @@ import ptolemy.actor.util.Time;
  * @Pt.ProposedRating red (dmlorenzetti)
  * @Pt.AcceptedRating red (reviewmoderator)  // FIXME: Fill in.
  */
-public final class QSS1
-    extends QSSBase {
-
+public final class QSS1 extends QSSBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
@@ -58,7 +52,7 @@ public final class QSS1
      * Get the order of the external, quantized state models exposed by the integrator.
      */
     public final int getStateModelOrder() {
-        return( 0 );
+        return (0);
     }
 
     /**
@@ -67,22 +61,23 @@ public final class QSS1
     public final void _initializeWorker() {
 
         // Check internal consistency.
-        assert( _stateVals_xx == null );
-        assert( _stateCt > 0 );
-        assert( _ivCt >= 0 );
+        assert (_stateVals_xx == null);
+        assert (_stateCt > 0);
+        assert (_ivCt >= 0);
 
         // Allocate scratch memory.
         _stateVals_xx = new double[_stateCt];
         _stateDerivs_xx = new double[_stateCt];
-        if (_ivCt > 0 ) {
+        _stateValsSample_xx = new double[_stateCt];
+        if (_ivCt > 0) {
             _ivVals_xx = new double[_ivCt];
+            _ivValsSample_xx = new double[_ivCt];
         }
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods
-
 
     /**
      *  Get the predicted quantization-event time for a state (QSS-specific).
@@ -91,8 +86,8 @@ public final class QSS1
      *  @param quantEvtTimeMax The maximum quantization event time.
      *  @return the predicted quantization-event time for a state (QSS-specific).
      */
-    protected final Time _predictQuantizationEventTimeWorker(
-        final int stateIdx, final Time quantEvtTimeMax) {
+    protected final Time _predictQuantizationStateEventTimeWorker(
+            final int stateIdx, final Time quantEvtTimeMax) {
 
         // Note the superclass takes care of updating status variables and
         // storing the returned result.
@@ -104,20 +99,20 @@ public final class QSS1
         final double cStateDeriv = cStateMdl.coeffs[1];
 
         // Check internal consistency.
-        assert( dq > 0 );
-        assert( quantEvtTimeMax.getDoubleValue() > 0 );
-        assert( quantEvtTimeMax.compareTo(qStateMdl.tMdl) > 0 );
-        assert( quantEvtTimeMax.compareTo(cStateMdl.tMdl) > 0 );
+        assert (dq > 0);
+        assert (quantEvtTimeMax.getDoubleValue() > 0);
+        assert (quantEvtTimeMax.compareTo(qStateMdl.tMdl) > 0);
+        assert (quantEvtTimeMax.compareTo(cStateMdl.tMdl) > 0);
 
         // Early return.
-        if (cStateDeriv == 0 ) {
-            return( quantEvtTimeMax );
+        if (cStateDeriv == 0) {
+            return (quantEvtTimeMax);
         }
 
         // Find predicted quantization-event time, as change from {tMostRecent}.
         Time tMostRecent;
         double dt;
-        if (qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0 ) {
+        if (qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0) {
             // Here, most recent event was a quantization-event.
             tMostRecent = qStateMdl.tMdl;
             dt = dq / Math.abs(cStateDeriv);
@@ -125,7 +120,7 @@ public final class QSS1
             // Here, most recent event was a rate-event.
             tMostRecent = cStateMdl.tMdl;
             final double constDiff = qStateMdl.coeffs[0] - cStateMdl.coeffs[0];
-            if (cStateDeriv > 0 ) {
+            if (cStateDeriv > 0) {
                 dt = (constDiff + dq) / cStateDeriv;
             } else {
                 dt = (constDiff - dq) / cStateDeriv;
@@ -133,7 +128,7 @@ public final class QSS1
         }
 
         // Require {dt} > 0.
-        if (dt <= 0 ) {
+        if (dt <= 0) {
             // In exact arithmetic, and if the integrator is being stepped properly,
             // this should never happen.  However, if the integrator stepped to a
             // time very close to the previous predicted quantization-event time,
@@ -155,8 +150,8 @@ public final class QSS1
         // produces a distinct time.
         //   At upper end, can't be larger than {quantEvtTimeMax}.
         Time predQuantEvtTime;
-        while ( true ) {
-            if (quantEvtTimeMax.subtractToDouble(tMostRecent) <= dt ) {
+        while (true) {
+            if (quantEvtTimeMax.subtractToDouble(tMostRecent) <= dt) {
                 // Here, tMostRecent + dt >= quantEvtTimeMax.
                 //   Note determined this case in a slightly roundabout way, since
                 // simply adding {dt} to {tMostRecent} may cause problems if {quantEvtTimeMax}
@@ -166,7 +161,7 @@ public final class QSS1
             }
             // Here, tMostRecent + dt < quantEvtTimeMax.
             predQuantEvtTime = tMostRecent.addUnchecked(dt);
-            if (predQuantEvtTime.compareTo(tMostRecent) > 0 ) {
+            if (predQuantEvtTime.compareTo(tMostRecent) > 0) {
                 // Here, added {dt} and got a distinct, greater, time.
                 break;
             }
@@ -174,7 +169,7 @@ public final class QSS1
             dt *= 2;
         }
 
-        return( predQuantEvtTime );
+        return (predQuantEvtTime);
 
     }
 
@@ -197,12 +192,10 @@ public final class QSS1
 
     }
 
-
     /**
      * Form new internal, continuous state models (QSS-specific).
      */
-    protected final void _triggerRateEventWorker()
-        throws Exception {
+    protected final void _triggerRateEventWorker() throws Exception {
 
         // Note the superclass takes care of updating status variables and so on.
 
@@ -219,37 +212,118 @@ public final class QSS1
         // continuous state model if know none of its arguments changed.
         Time tStateMdl = null;
         double dtStateMdl = 0;
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
             final ModelPolynomial cStateMdl = _cStateMdls[ii];
             // Check for different model time.  Note testing object identity OK.
-            if (cStateMdl.tMdl != tStateMdl ) {
+            if (cStateMdl.tMdl != tStateMdl) {
                 tStateMdl = cStateMdl.tMdl;
                 dtStateMdl = _currSimTime.subtractToDouble(tStateMdl);
             }
             _stateVals_xx[ii] = cStateMdl.evaluate(dtStateMdl);
         }
         // In general, don't expect input variable models to have same times.
-        for ( int ii=0; ii<_ivCt; ++ii ) {
+        for (int ii = 0; ii < _ivCt; ++ii) {
             _ivVals_xx[ii] = _ivMdls[ii].evaluate(_currSimTime);
         }
 
         // Evaluate derivative function at {_currSimTime}.
-        final int retVal = _derivFcn.evaluateDerivatives(_currSimTime, _stateVals_xx, _ivVals_xx,
-            _stateDerivs_xx);
-        if (0 != retVal ) {
-            throw new Exception("_derivFcn.evalDerivs() returned " +retVal);
+        int retVal = _derivFcn.evaluateDerivatives(_currSimTime, _stateVals_xx,
+                _ivVals_xx, _stateDerivs_xx);
+        if (0 != retVal) {
+            throw new Exception("_derivFcn.evalDerivs() returned " + retVal);
         }
 
         // Update the internal, continuous state models.
         //   This also updates the rate model, which is just the derivative of
         // the state model.
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
             final ModelPolynomial cStateMdl = _cStateMdls[ii];
             cStateMdl.tMdl = _currSimTime;
             cStateMdl.coeffs[0] = _stateVals_xx[ii];
             cStateMdl.coeffs[1] = _stateDerivs_xx[ii];
         }
 
+        // Execute the code block below if we have event indicators.
+        if (_evtIndCt > 0) {
+
+            // For state event detection, we need to approximation 
+            // the time rate of change of the event indicators.
+            // This is achieved by computing the event indicators at two
+            // different time instant and using finite difference 
+            // the time rate of changes of the event indicator.
+            final double dtSample = 1e-8
+                    * Math.max(1, Math.abs(_currSimTime.getDoubleValue()));
+            final Time tSample = minimumTime(
+                    _currSimTime.addUnchecked(dtSample), _quantEvtTimeMax);
+
+            // Get values, at {tSample}, of arguments to derivative function.
+            // Note that here, know all continuous state models have same time.
+            // Therefore can use same delta-time for all evals.
+            for (int ii = 0; ii < _stateCt; ++ii) {
+                _stateValsSample_xx[ii] = _cStateMdls[ii].evaluate(dtSample);
+            }
+            for (int ii = 0; ii < _ivCt; ++ii) {
+                _ivValsSample_xx[ii] = _ivMdls[ii].evaluate(tSample);
+            }
+
+            // Provide inputs to evaluate derivative function at {_currSimTime}.
+            retVal = _derivFcn.eventIndicatorDerivativeInputs(_currSimTime,
+                    _stateVals_xx, _ivVals_xx, tSample, _stateValsSample_xx,
+                    _ivValsSample_xx, dtSample, null, null, null, 0.0, null,
+                    null, null, 0.0, getStateModelOrder());
+        }
+    }
+
+    /**
+     * Form new internal, continuous state models (QSS-specific) for event detection.
+     */
+    protected final void _triggerRateEventWorkerEventDetection()
+            throws Exception {
+
+        // Note the superclass takes care of updating status variables and so on.
+
+        // Get values, at {_currSimTime}, of arguments to derivative function.
+        //   In general, expect the integrator formed all of its
+        // continuous state models at the same time.  If so, can find a
+        // single delta-time, rather than having to find multiple differences
+        // from {_currSimTime}.  Know that finding time differences is
+        // expensive in Ptolemy, so want to avoid doing that if possible.
+        // However, there is a chance that the continuous state models were
+        // formed at different times.  For example:
+        // (1) User can reset a single state at any simulation time.
+        // (2) In future, might be possible to avoid updating a
+        // continuous state model if know none of its arguments changed.
+        Time tStateMdl = null;
+        double dtStateMdl = 0;
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
+            // Check for different model time.  Note testing object identity OK.
+            if (cStateMdl.tMdl != tStateMdl) {
+                tStateMdl = cStateMdl.tMdl;
+                dtStateMdl = _currSimTime.subtractToDouble(tStateMdl);
+            }
+            _stateVals_xx[ii] = cStateMdl.evaluate(dtStateMdl);
+        }
+
+        // Initialize dtSample
+        double dtSample[] = { 0.0 };
+
+        // Evaluate derivative function at {_currSimTime}.
+        int retVal = _derivFcn.evaluateDerivatives(_currSimTime, dtSample,
+                _stateDerivs_xx, _stateDerivs2_xx, getStateModelOrder());
+        if (0 != retVal) {
+            throw new Exception("_derivFcn.evalDerivs() returned " + retVal);
+        }
+
+        // Update the internal, continuous state models.
+        // This also updates the rate model, which is just 
+        // the derivative of the state model.
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
+            cStateMdl.tMdl = _currSimTime;
+            cStateMdl.coeffs[0] = _stateVals_xx[ii];
+            cStateMdl.coeffs[1] = _stateDerivs_xx[ii];
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -263,7 +337,9 @@ public final class QSS1
     // memory could be ignored.
     private double[] _stateVals_xx;
     private double[] _stateDerivs_xx;
+    private double[] _stateDerivs2_xx;
     private double[] _ivVals_xx;
-
+    private double[] _stateValsSample_xx;
+    private double[] _ivValsSample_xx;
 
 }
