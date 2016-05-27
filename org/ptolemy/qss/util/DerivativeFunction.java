@@ -73,6 +73,24 @@ public interface DerivativeFunction {
     ////                         public methods
 
     /**
+    * Evaluate the derivative function for event indicator. 
+    * An implementation of this function is expected to fill 
+    * in the xdot and xdotSample array with derivatives values. 
+    * 
+    * @param time The time.
+    * @param dtSample The delta time used to approximate first derivative.
+    * @param xdot The vector of time rates of change of the state variables at <code>time</code>.
+    * @param xdotSample The vector of time rates of change of the state variables 
+    * at <code>time + dtSample</code>.
+    * @param stOrd The state model order.
+    * @return Success (0 for success, else user-defined error code).
+    * @exception IllegalActionException If derivatives cannot be evaluated.
+    */
+    public int evaluateDerivatives(final Time time, final double [] dtSample, 
+            final double[] xdot, final double[] xdotSample, 
+            final int stOrd) throws IllegalActionException;
+
+    /**
     * Evaluate the derivative function. An implementation of this function
     * is expected to fill in the xdot array with values calculated using the
     * time, xx, and uu input arrays. A caller of this function is expected
@@ -115,6 +133,47 @@ public interface DerivativeFunction {
      */
     public double evaluateDirectionalDerivatives(int idx, double[] xx_dot,
             double[] uu_dot) throws IllegalActionException;
+
+    /**
+    * Provide inputs to evaluate the derivative 
+    * function using finite difference methods. 
+    * An implementation of this function is expected 
+    * to use the input parameters time, xx, 
+    * uu input, timeSample, xxSample, and uuSample arrays 
+    * to compute the derivatives for event indicators.
+    *
+    * @param time Simulation time.
+    * @param xx The vector of state variables at <code>time</code>.
+    * @param uu The vector of input variables at <code>time</code>.
+    * @param timeSample Simulation time.
+    * @param xxSample The vector of state variables at <code>timeSample</code>.
+    * @param uuSample The vector of input variables at <code>timeSample</code>.
+    * @param dtSample The delta between <timeSample> and  <code>time</code>.
+    * @param timeSample2 Simulation time.
+    * @param xxSample2 The vector of state variables at <code>timeSample2</code>.
+    * @param uuSample2 The vector of input variables at <code>timeSample2</code>.
+    * @param dtSample2 The delta between <timeSample2> and  <code>time</code>.
+    * @param timeSample3 Simulation time.
+    * @param xxSample3 The vector of state variables at <code>timeSample3</code>.
+    * @param uuSample3 The vector of input variables at <code>timeSample3</code>.
+    * @param dtSample3 The delta between <timeSample3> and  <code>time</code>.
+    * variables at <code>time</code>.
+    * @return Success (0 for success, else user-defined error code).
+    * @exception IllegalActionException If derivatives cannot be evaluated.
+    */
+    public int eventIndicatorDerivativeInputs(final Time time, double[] xx,
+            double[] uu, Time timeSample, double[] xxSample, double[] uuSample,
+            double dtSample, Time timeSample2, double[] xxSample2, double[] uuSample2,
+            double dtSample2,Time timeSample3, double[] xxSample3, double[] uuSample3,
+            double dtSample3, int stateModelOrder)
+            throws IllegalActionException;
+
+    /**
+     * Return the number of event indicators.
+     *
+     * @return Count of event indicators.
+    */
+    public int getEventIndicatorCount();
 
     /** Return the count of input variables.
      *
