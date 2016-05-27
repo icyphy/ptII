@@ -26,18 +26,14 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
 */
 
-
 package org.ptolemy.qss.solver;
-
 
 import org.ptolemy.qss.util.ModelPolynomial;
 
 import ptolemy.actor.util.Time;
 
-
 ///////////////////////////////////////////////////////////////////
 //// LIQSS2Fd
-
 
 /** Implement the LIQSS2 method for solving ordinary differential equations.
  *
@@ -52,9 +48,7 @@ import ptolemy.actor.util.Time;
  * @Pt.ProposedRating red (dmlorenzetti)
  * @Pt.AcceptedRating red (reviewmoderator)  // FIXME: Fill in.
  */
-public final class LIQSS2Fd
-    extends QSSBase {
-
+public final class LIQSS2Fd extends QSSBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
@@ -63,7 +57,7 @@ public final class LIQSS2Fd
      * Get the order of the external, quantized state models exposed by the integrator.
      */
     public final int getStateModelOrder() {
-        return( 1 );
+        return (1);
     }
 
     /**
@@ -72,14 +66,14 @@ public final class LIQSS2Fd
     public final void _initializeWorker() {
 
         // Check internal consistency.
-        assert( _stateVals_xx == null );
-        assert( _stateCt > 0 );
-        assert( _ivCt >= 0 );
+        assert (_stateVals_xx == null);
+        assert (_stateCt > 0);
+        assert (_ivCt >= 0);
 
         // Allocate memory for diagonalized state model.
         _jacDiags = new double[_stateCt];
         _inputTermMdls = new ModelPolynomial[_stateCt];
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
             final ModelPolynomial inputTermMdl = new ModelPolynomial(1);
             inputTermMdl.claimWriteAccess();
             _inputTermMdls[ii] = inputTermMdl;
@@ -91,10 +85,17 @@ public final class LIQSS2Fd
 
         // Allocate scratch memory.
         _stateVals_xx = new double[_stateCt];
+        _stateValsSample_xx = new double[_stateCt];
+        _stateValsSample2_xx = new double[_stateCt];
+        _stateValsSample3_xx = new double[_stateCt];
         _stateDerivs_xx = new double[_stateCt];
+        _stateDerivs2_xx = new double[_stateCt];
         _stateDerivsSample_xx = new double[_stateCt];
-        if (_ivCt > 0 ) {
+        if (_ivCt > 0) {
             _ivVals_xx = new double[_ivCt];
+            _ivValsSample_xx = new double[_ivCt];
+            _ivValsSample2_xx = new double[_ivCt];
+            _ivValsSample3_xx = new double[_ivCt];
         }
 
     }
@@ -109,8 +110,8 @@ public final class LIQSS2Fd
      *  @param quantEvtTimeMax The maximum quantization event time.
      *  @return the predicted quantization-event time for a state (QSS-specific).
      */
-    protected final Time _predictQuantizationEventTimeWorker(
-        final int stateIdx, final Time quantEvtTimeMax) {
+    protected final Time _predictQuantizationStateEventTimeWorker(
+            final int stateIdx, final Time quantEvtTimeMax) {
 
         // Note the superclass takes care of updating status variables and
         // storing the returned result.
@@ -121,20 +122,21 @@ public final class LIQSS2Fd
         final double dq = _dqs[stateIdx];
 
         // Check internal consistency.
-        assert( dq > 0 );
-        assert( quantEvtTimeMax.getDoubleValue() > 0 );
-        assert( quantEvtTimeMax.compareTo(qStateMdl.tMdl) > 0 );
-        assert( quantEvtTimeMax.compareTo(cStateMdl.tMdl) > 0 );
+        assert (dq > 0);
+        assert (quantEvtTimeMax.getDoubleValue() > 0);
+        assert (quantEvtTimeMax.compareTo(qStateMdl.tMdl) > 0);
+        assert (quantEvtTimeMax.compareTo(cStateMdl.tMdl) > 0);
 
         // Find predicted quantization-event time, as change from {tMostRecent}.
         Time tMostRecent;
         double dt;
-        if (qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0 ) {
+        if (qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0) {
             // Here, most recent event was a quantization-event.
             tMostRecent = qStateMdl.tMdl;
             // Note the math never refers to {qStateMdl.coeffs[0]}, so no need
             // to force it to use {_cStatesLastQevt[stateIdx]}.
-            dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateMdl, cStateMdl, dq, _exactInputs);
+            dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateMdl,
+                    cStateMdl, dq, _exactInputs);
         } else {
             // Here, most recent event was a rate-event.
             tMostRecent = cStateMdl.tMdl;
@@ -145,12 +147,13 @@ public final class LIQSS2Fd
             // to handle this as an added input argument.
             final double qHold = qStateMdl.coeffs[0];
             qStateMdl.coeffs[0] = _cStatesLastQevt[stateIdx];
-            dt = _predictQuantizationEventDeltaTimeQSS2General(qStateMdl, cStateMdl, dq, _exactInputs);
+            dt = _predictQuantizationEventDeltaTimeQSS2General(qStateMdl,
+                    cStateMdl, dq, _exactInputs);
             qStateMdl.coeffs[0] = qHold;
         }
 
         // Require {dt} > 0.
-        if (dt <= 0 ) {
+        if (dt <= 0) {
             // In exact arithmetic, and if the integrator is being stepped properly,
             // this should never happen.  However, if the integrator stepped to a
             // time very close to the previous predicted quantization-event time,
@@ -172,8 +175,8 @@ public final class LIQSS2Fd
         // produces a distinct time.
         //   At upper end, can't be larger than {quantEvtTimeMax}.
         Time predQuantEvtTime;
-        while ( true ) {
-            if (quantEvtTimeMax.subtractToDouble(tMostRecent) <= dt ) {
+        while (true) {
+            if (quantEvtTimeMax.subtractToDouble(tMostRecent) <= dt) {
                 // Here, tMostRecent + dt >= quantEvtTimeMax.
                 //   Note determined this case in a slightly roundabout way, since
                 // simply adding {dt} to {tMostRecent} may cause problems if {quantEvtTimeMax}
@@ -183,7 +186,7 @@ public final class LIQSS2Fd
             }
             // Here, tMostRecent + dt < quantEvtTimeMax.
             predQuantEvtTime = tMostRecent.addUnchecked(dt);
-            if (predQuantEvtTime.compareTo(tMostRecent) > 0 ) {
+            if (predQuantEvtTime.compareTo(tMostRecent) > 0) {
                 // Here, added {dt} and got a distinct, greater, time.
                 break;
             }
@@ -191,7 +194,7 @@ public final class LIQSS2Fd
             dt *= 2;
         }
 
-        return( predQuantEvtTime );
+        return (predQuantEvtTime);
 
     }
 
@@ -220,20 +223,23 @@ public final class LIQSS2Fd
 
         // Determine new quantized state.
         double qTest, qTestDeriv;
-        if (cStateDeriv > 0 ) {
+        if (cStateDeriv > 0) {
             qTest = cState + _dqs[stateIdx];
         } else {
             qTest = cState - _dqs[stateIdx];
         }
         qTestDeriv = cStateDeriv;
-        if (jacDiag != 0 ) {
+        if (jacDiag != 0) {
             // Check whether {qTest} gives consistent diagonalized state model.
             final ModelPolynomial inputTermMdl = _inputTermMdls[stateIdx];
-            final double inputTermAtCurrSimTime = inputTermMdl.evaluate(dtStateMdl);
-            final double diagStateMdlSlope2 = jacDiag*jacDiag*qTest
-                + jacDiag*inputTermAtCurrSimTime + inputTermMdl.evaluateDerivative(dtStateMdl);
-            final double cStateDeriv2 = cStateMdl.evaluateDerivative2(dtStateMdl);
-            if (diagStateMdlSlope2*cStateDeriv2 <= 0 ) {
+            final double inputTermAtCurrSimTime = inputTermMdl
+                    .evaluate(dtStateMdl);
+            final double diagStateMdlSlope2 = jacDiag * jacDiag * qTest
+                    + jacDiag * inputTermAtCurrSimTime
+                    + inputTermMdl.evaluateDerivative(dtStateMdl);
+            final double cStateDeriv2 = cStateMdl
+                    .evaluateDerivative2(dtStateMdl);
+            if (diagStateMdlSlope2 * cStateDeriv2 <= 0) {
                 // Here, slopes of the state and diagonalized state models do
                 // not have the same sign.
                 //   Choose quantized state using diagonalized state model.
@@ -252,12 +258,10 @@ public final class LIQSS2Fd
 
     }
 
-
     /**
      * Form new internal, continuous state models (QSS-specific).
      */
-    protected final void _triggerRateEventWorker()
-        throws Exception {
+    protected final void _triggerRateEventWorker() throws Exception {
 
         // Note the superclass takes care of updating status variables and so on.
 
@@ -274,31 +278,31 @@ public final class LIQSS2Fd
         // continuous state model if know none of its arguments changed.
         Time tStateMdl = null;
         double dtStateMdl = 0;
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
             final ModelPolynomial cStateMdl = _cStateMdls[ii];
             // Check for different model time.  Note testing object identity OK.
-            if (cStateMdl.tMdl != tStateMdl ) {
+            if (cStateMdl.tMdl != tStateMdl) {
                 tStateMdl = cStateMdl.tMdl;
                 dtStateMdl = _currSimTime.subtractToDouble(tStateMdl);
             }
             _stateVals_xx[ii] = cStateMdl.evaluate(dtStateMdl);
         }
         // In general, don't expect input variable models to have same times.
-        for ( int ii=0; ii<_ivCt; ++ii ) {
+        for (int ii = 0; ii < _ivCt; ++ii) {
             _ivVals_xx[ii] = _ivMdls[ii].evaluate(_currSimTime);
         }
 
         // Evaluate derivative function at {_currSimTime}.
-        int retVal = _derivFcn.evaluateDerivatives(_currSimTime, _stateVals_xx, _ivVals_xx,
-            _stateDerivs_xx);
-        if (0 != retVal ) {
-            throw new Exception("_derivFcn.evalDerivs() returned " +retVal);
+        int retVal = _derivFcn.evaluateDerivatives(_currSimTime, _stateVals_xx,
+                _ivVals_xx, _stateDerivs_xx);
+        if (0 != retVal) {
+            throw new Exception("_derivFcn.evalDerivs() returned " + retVal);
         }
 
         // Update the diagonalized state models.
         //   Note have to do this before update the internal, continuous state models,
         // since need the rate of the old one.
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
             final ModelPolynomial qStateMdl = _qStateMdls[ii];
             final ModelPolynomial cStateMdl = _cStateMdls[ii];
             // Estimate the diagonal element of the Jacobian.
@@ -306,9 +310,8 @@ public final class LIQSS2Fd
             // estimate to zero.
             // TODO: Test whether better to simply retain last estimate.
             double jacDiag = 0;
-            if (qStateMdl.tMdl.compareTo(_currSimTime)==0
-                    &&
-                    cStateMdl.tMdl.compareTo(_currSimTime)!=0 ) {
+            if (qStateMdl.tMdl.compareTo(_currSimTime) == 0
+                    && cStateMdl.tMdl.compareTo(_currSimTime) != 0) {
                 // Here:
                 // (1) Component {ii} just had a quantization-event.
                 // (2) Did not just start simulation, or reset value of
@@ -316,18 +319,21 @@ public final class LIQSS2Fd
                 // a "nearby" old one.
                 // Therefore have information need to estimate Jacobian diagonal.
                 final double qStateMdlDiff = _qStateMdlDiffs[ii];
-                if (qStateMdlDiff != 0 ) {
-                    jacDiag =
-                        (_stateDerivs_xx[ii] - cStateMdl.evaluateDerivative(_currSimTime))
-                        / qStateMdlDiff;
+                if (qStateMdlDiff != 0) {
+                    jacDiag = (_stateDerivs_xx[ii]
+                            - cStateMdl.evaluateDerivative(_currSimTime))
+                            / qStateMdlDiff;
                 }
             }
             _jacDiags[ii] = jacDiag;
             // Update the input terms.
             final ModelPolynomial inputTermMdl = _inputTermMdls[ii];
-            final double dtQStateMdl = _currSimTime.subtractToDouble(qStateMdl.tMdl);
-            inputTermMdl.coeffs[0] = _stateDerivs_xx[ii] - jacDiag*qStateMdl.evaluate(dtQStateMdl);
-            inputTermMdl.coeffs[1] = 2*cStateMdl.coeffs[2] - jacDiag*qStateMdl.evaluateDerivative(dtQStateMdl);
+            final double dtQStateMdl = _currSimTime
+                    .subtractToDouble(qStateMdl.tMdl);
+            inputTermMdl.coeffs[0] = _stateDerivs_xx[ii]
+                    - jacDiag * qStateMdl.evaluate(dtQStateMdl);
+            inputTermMdl.coeffs[1] = 2 * cStateMdl.coeffs[2]
+                    - jacDiag * qStateMdl.evaluateDerivative(dtQStateMdl);
         }
 
         // Update the internal, continuous state models.
@@ -337,7 +343,7 @@ public final class LIQSS2Fd
         // current information about the continuous state as possible.
         //   This also updates the rate model, which is just the derivative of
         // the state model.
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
             final ModelPolynomial cStateMdl = _cStateMdls[ii];
             cStateMdl.tMdl = _currSimTime;
             cStateMdl.coeffs[0] = _stateVals_xx[ii];
@@ -347,30 +353,138 @@ public final class LIQSS2Fd
 
         // Choose a sample time, different from {_currSimTime}.
         //   For estimating second derivatives.
-        final double dtSample = 1e-8 * Math.max(1, Math.abs(_currSimTime.getDoubleValue()));
-        final Time tSample = _currSimTime.addUnchecked(dtSample);
+        final double dtSample = 1e-8
+                * Math.max(1, Math.abs(_currSimTime.getDoubleValue()));
+        final Time tSample = minimumTime(_currSimTime.addUnchecked(dtSample),
+                _quantEvtTimeMax);
 
         // Get values, at {tSample}, of arguments to derivative function.
         //   Note that here, know all continous state models have same time.
         // Therefore can use same delta-time for all evals.
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
             _stateVals_xx[ii] = _cStateMdls[ii].evaluate(dtSample);
         }
-        for ( int ii=0; ii<_ivCt; ++ii ) {
+        for (int ii = 0; ii < _ivCt; ++ii) {
             _ivVals_xx[ii] = _ivMdls[ii].evaluate(tSample);
         }
 
         // Evaluate derivative function at {tSample}.
-        retVal = _derivFcn.evaluateDerivatives(tSample, _stateVals_xx, _ivVals_xx,
-            _stateDerivsSample_xx);
-        if (0 != retVal ) {
-            throw new Exception("_derivFcn.evalDerivs() returned " +retVal);
+        retVal = _derivFcn.evaluateDerivatives(tSample, _stateVals_xx,
+                _ivVals_xx, _stateDerivsSample_xx);
+        if (0 != retVal) {
+            throw new Exception("_derivFcn.evalDerivs() returned " + retVal);
         }
 
         // Update the internal, continuous state models.
         final double oneOverTwoDtSample = 0.5 / dtSample;
-        for ( int ii=0; ii<_stateCt; ++ii ) {
-            _cStateMdls[ii].coeffs[2] = oneOverTwoDtSample * (_stateDerivsSample_xx[ii] - _stateDerivs_xx[ii]);
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            _cStateMdls[ii].coeffs[2] = oneOverTwoDtSample
+                    * (_stateDerivsSample_xx[ii] - _stateDerivs_xx[ii]);
+        }
+
+        if (_evtIndCt > 0) {
+            // Choose a sample time, different from {_currSimTime} and different from {tSample}.
+            //   For estimating third derivatives.
+            final double dtSample2 = Math.sqrt(dtSample);
+            final Time tSample2 = minimumTime(
+                    _currSimTime.addUnchecked(dtSample2), _quantEvtTimeMax);
+
+            // Get values, at {tSample2}, of arguments to derivative function.
+            //   Note that here, know all continuous state models have same time.
+            // Therefore can use same delta-time for all evals.
+            for (int ii = 0; ii < _stateCt; ++ii) {
+                _stateValsSample2_xx[ii] = _cStateMdls[ii].evaluate(dtSample2);
+            }
+            for (int ii = 0; ii < _ivCt; ++ii) {
+                _ivValsSample2_xx[ii] = _ivMdls[ii].evaluate(tSample2);
+            }
+            // Choose a sample time, different from {_currSimTime} and different from {tSample2}.
+            //   For estimating third derivatives.
+            final double dtSample3 = dtSample + dtSample2;
+            final Time tSample3 = minimumTime(
+                    _currSimTime.addUnchecked(dtSample3), _quantEvtTimeMax);
+
+            // Get values, at {tSample3}, of arguments to derivative function.
+            //   Note that here, know all continuous state models have same time.
+            // Therefore can use same delta-time for all evals.
+            for (int ii = 0; ii < _stateCt; ++ii) {
+                _stateValsSample3_xx[ii] = _cStateMdls[ii].evaluate(dtSample3);
+            }
+            for (int ii = 0; ii < _ivCt; ++ii) {
+                _ivValsSample3_xx[ii] = _ivMdls[ii].evaluate(dtSample3);
+            }
+
+            // Provide inputs to evaluate derivative function at {_currSimTime}.
+            retVal = _derivFcn.eventIndicatorDerivativeInputs(_currSimTime,
+                    _stateVals_xx, _ivVals_xx, tSample, _stateValsSample_xx,
+                    _ivValsSample_xx, dtSample, tSample2, _stateValsSample2_xx,
+                    _ivValsSample2_xx, dtSample2, tSample3,
+                    _stateValsSample3_xx, _ivValsSample3_xx, dtSample3,
+                    getStateModelOrder());
+        }
+    }
+
+    /**
+     * Form new internal, continuous state models (QSS-specific).
+     */
+    protected final void _triggerRateEventWorkerEventDetection()
+            throws Exception {
+
+        // Note the superclass takes care of updating status variables and so on.
+
+        // Get values, at {_currSimTime}, of arguments to derivative function.
+        //   In general, expect the integrator formed all of its
+        // continuous state models at the same time.  If so, can find a
+        // single delta-time, rather than having to find multiple differences
+        // from {_currSimTime}.  Know that finding time differences is
+        // expensive in Ptolemy, so want to avoid doing that if possible.
+        //   However, there is a chance that the continuous state models were
+        // formed at different times.  For example:
+        // (1) User can reset a single state at any simulation time.
+        // (2) In future, might be possible to avoid updating a
+        // continuous state model if know none of its arguments changed.
+        Time tStateMdl = null;
+        double dtStateMdl = 0;
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
+            // Check for different model time.  Note testing object identity OK.
+            if (cStateMdl.tMdl != tStateMdl) {
+                tStateMdl = cStateMdl.tMdl;
+                dtStateMdl = _currSimTime.subtractToDouble(tStateMdl);
+            }
+            _stateVals_xx[ii] = cStateMdl.evaluate(dtStateMdl);
+        }
+        // Initialize dtSample
+        double dtSample[] = { 0.0 };
+
+        // Evaluate derivative function at {_currSimTime}.
+        int retVal = _derivFcn.evaluateDerivatives(_currSimTime, dtSample,
+                _stateDerivs_xx, _stateDerivs2_xx, getStateModelOrder());
+
+        if (0 != retVal) {
+            throw new Exception("_derivFcn.evalDerivs() returned " + retVal);
+        }
+
+        // Update the internal, continuous state models.
+        //   Note this is a partial update, since don't yet know the second
+        // derivatives.  Do the update now so that, when find the sample point
+        // needed to estimate second derivatives, will be able to use as much
+        // current information about the continuous state as possible.
+        //   This also updates the rate model, which is just the derivative of
+        // the state model.
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
+            cStateMdl.tMdl = _currSimTime;
+            cStateMdl.coeffs[0] = _stateVals_xx[ii];
+            cStateMdl.coeffs[1] = _stateDerivs_xx[ii];
+            cStateMdl.coeffs[2] = 0;
+        }
+
+        // Update the internal, continuous state models.
+        final double oneOverTwoDtSample = 0.5 / dtSample[0];
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            _cStateMdls[ii].coeffs[2] = oneOverTwoDtSample
+                    * (_stateDerivs2_xx[ii] - _stateDerivs_xx[ii]);
         }
 
     }
@@ -381,11 +495,11 @@ public final class LIQSS2Fd
     // Memory for diagonalized state model.
     private double[] _jacDiags;
     private ModelPolynomial[] _inputTermMdls;
-    private double[] _qStateMdlDiffs;  // Difference between previous and current
-        // quantized state models, at the time current one was formed.
+    private double[] _qStateMdlDiffs; // Difference between previous and current
+    // quantized state models, at the time current one was formed.
 
     // Memory for finding predicted quantization-event time.
-    private double[] _cStatesLastQevt;  // Value of continuous state when last formed quantized state model.
+    private double[] _cStatesLastQevt; // Value of continuous state when last formed quantized state model.
 
     // Scratch memory.
     //   For local (per-method) calculations, not inter-method communication.
@@ -395,8 +509,14 @@ public final class LIQSS2Fd
     // memory could be ignored.
     private double[] _stateVals_xx;
     private double[] _stateDerivs_xx;
+    private double[] _stateDerivs2_xx;
     private double[] _stateDerivsSample_xx;
     private double[] _ivVals_xx;
-
+    private double[] _stateValsSample_xx;
+    private double[] _ivValsSample_xx;
+    private double[] _stateValsSample2_xx;
+    private double[] _ivValsSample2_xx;
+    private double[] _stateValsSample3_xx;
+    private double[] _ivValsSample3_xx;
 
 }

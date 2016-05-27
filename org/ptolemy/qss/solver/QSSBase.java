@@ -26,9 +26,7 @@ PT_COPYRIGHT_VERSION_2
 COPYRIGHTENDKEY
  */
 
-
 package org.ptolemy.qss.solver;
-
 
 import java.util.LinkedList;
 import java.util.List;
@@ -39,10 +37,8 @@ import org.ptolemy.qss.util.PolynomialRoot;
 
 import ptolemy.actor.util.Time;
 
-
 ///////////////////////////////////////////////////////////////////
 //// QSSBase
-
 
 /** Provide a base class for QSS methods for solving ordinary differential equations.
  *
@@ -336,7 +332,6 @@ import ptolemy.actor.util.Time;
  */
 public abstract class QSSBase {
 
-
     ///////////////////////////////////////////////////////////////////
     ////                         public methods
 
@@ -358,12 +353,10 @@ public abstract class QSSBase {
             throws Exception {
 
         Time predictedEventTime = predictQuantizationEventTimeEarliest();
-        if (nextSimTime.compareTo(predictedEventTime) > 1 ) {
-            throw new IllegalArgumentException(
-                    "Proposed simulation time of "
-                            + nextSimTime
-                            + " is past the next event time of "
-                            + predictedEventTime);
+        if (nextSimTime.compareTo(predictedEventTime) > 1) {
+            throw new IllegalArgumentException("Proposed simulation time of "
+                    + nextSimTime + " is past the next event time of "
+                    + predictedEventTime);
         }
         // The following checks other possible error conditions,
         // triggers a rate event if needed, marks states that
@@ -393,10 +386,10 @@ public abstract class QSSBase {
      * @param simTime Global simulation time.
      * @return Value of the state model at <code>simTime</code>.
      */
-    public final double evaluateStateModel(final int stateIdx, final Time simTime) {
-        return( _qStateMdls[stateIdx].evaluate(simTime) );
+    public final double evaluateStateModel(final int stateIdx,
+            final Time simTime) {
+        return (_qStateMdls[stateIdx].evaluate(simTime));
     }
-
 
     /** Get the internal value of a state variable.
      *
@@ -406,25 +399,91 @@ public abstract class QSSBase {
      * @param simTime Global simulation time.
      * @return Value of the state model at <code>simTime</code>.
      */
-    public final double evaluateStateModelContinuous(final int stateIdx, final Time simTime) {
-        return( _cStateMdls[stateIdx].evaluate(simTime) );
+    public final double evaluateStateModelContinuous(final int stateIdx,
+            final Time simTime) {
+        return (_cStateMdls[stateIdx].evaluate(simTime));
+    }
+
+    // Note would really like this to be a static method, since it should
+    // not access any instance variables.  However, can't have an
+    // "abstract static" method signature.
+
+    /** Find the quantum for a state.
+     *
+     * <p>Finds the quantum, i.e., the maximum allowable difference between
+     * the external, quantized state model shared with the user, and the
+     * internal, continuous state model used by the integrator.</p>
+     *
+     * <p>To change the parameters used to find the quantum, use
+     * method {@link #setQuantizationTolerance(int, double, double)}
+     * or method {@link #setQuantizationTolerances(double, double)}.</p>
+     *
+     * <p>The user should never have to call this method directly.
+     * The QSS integrator invokes it as needed.</p>
+     *
+     *
+     * <h2>Implementation notes</h2>
+     *
+     * <p>This method does not store the quantum calculated.
+     * The QSS integrator is expected to take care of this.</p>
+     *
+     * <p>The nominal policy is to find the quantum whenever the
+     * external, quantized state model gets updated.
+     * This is because, as calculated here, the quantum depends on the constant
+     * coefficient of the external, quantized state model.</p>
+     *
+     * <p>In principle, the quantum could be based on the current value of the
+     * one of the state models, calculated at the time the quantum is needed.
+     * This differs from the policy outlined above, in that the current value
+     * of a state generally differs from its constant coefficient.</p>
+     *
+     * <p>However, this more complicated policy would induce a lot of mostly
+     * needless calculations.
+     * If the external, quantized state changes by a large amount, but still
+     * tracks the internal, continuous state model well, then the quantum for
+     * this element doesn't matter much.
+     * If, on the other hand, the two models don't agree, then there will be a
+     * quantization-event, which will trigger a new call of this method.</p>
+     *
+     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @return Quantum for the state variable.
+     */
+    public final double findQuantum(final int stateIdx) {
+
+        final double stateVal = _qStateMdls[stateIdx].coeffs[0];
+        double dq = _dqRelTols[stateIdx] * Math.abs(stateVal);
+        final double dqAbs = _dqAbsTols[stateIdx];
+        if (dq < dqAbs) {
+            dq = dqAbs;
+        }
+        assert (dq > 0);
+
+        return (dq);
     }
 
     /** Get the current simulation time for the QSS integrator.
-     *
-     * <p>This is generally the last global simulation time for which
-     * method {@link #stepToTime(Time)} was called.
-     * Exceptions:</p>
-     * <ul>
-     * <li>When the integrator is first instantiated, it is set to 0.</li>
-     * <li>Method {@link #setCurrentSimulationTime(Time)} changes the value outright.</li>
-     * </ul>
-     *
-     * @return Current simulation time for the QSS integrator.
-     * @see #setCurrentSimulationTime(Time)
-     */
+    *
+    * <p>This is generally the last global simulation time for which
+    * method {@link #stepToTime(Time)} was called.
+    * Exceptions:</p>
+    * <ul>
+    * <li>When the integrator is first instantiated, it is set to 0.</li>
+    * <li>Method {@link #setCurrentSimulationTime(Time)} changes the value outright.</li>
+    * </ul>
+    *
+    * @return Current simulation time for the QSS integrator.
+    * @see #setCurrentSimulationTime(Time)
+    */
     public final Time getCurrentSimulationTime() {
-        return( _currSimTime );
+        return (_currSimTime);
+    }
+
+    /** Return the count of event indicators.
+    *
+    * @return Count of event indicators.
+    */
+    public final int getEventIndicatorCount() {
+        return (_evtIndCt);
     }
 
     /** Return whether inputs are assumed to be exact. By default, they are not,
@@ -438,20 +497,12 @@ public abstract class QSSBase {
         return _exactInputs;
     }
 
-    /** Return the count of states predicted by the integrator.
-     *
-     * @return Count of states.
-     */
-    public final int getStateCount() {
-        return(_stateCt);
-    }
-
     /** Return the count of input variables to the integrator.
      *
      * @return Count of input variables.
      */
     public final int getInputVariableCount() {
-        return(_ivCt);
+        return (_ivCt);
     }
 
     /** Return the input variable model for the specified index.
@@ -460,34 +511,21 @@ public abstract class QSSBase {
      *  @return the input variable model for the specified index.
      */
     public final ModelPolynomial getInputVariableModel(int input) {
-        assert(input < _ivCt);
+        assert (input < _ivCt);
         return _ivMdls[input];
     }
 
-    /** Get the order of the external, quantized state models exposed by the integrator.
+    /** Return the count of states predicted by the integrator.
      *
-     * <p>This method returns the order of the {@link ModelPolynomial} objects
-     * that the integrator exposes to the user.</p>
-     *
-     * <p>These states are the quantized state predictions (as opposed to the
-     * continuous state predictions the integrator uses internally).
-     * Therefore the order is <em>one less</em> than the nominal order of the
-     * QSS method.</p>
-     *
-     * <p>For example, QSS1 uses a first-order (linear) polynomial to model each
-     * state variable.
-     * However, it does not expose that internal representation to the user.
-     * The external, quantized, representation of the state is a constant (i.e.,
-     * a 0th-order polynomial).
-     * Therefore QSS1 should return <code>0</code> for this method.</p>
-     *
-     * @return Order of the external, quantized state models.
+     * @return Count of states.
      */
-    public abstract int getStateModelOrder();
+    public final int getStateCount() {
+        return (_stateCt);
+    }
+
     // Note would really like this to be a static method, since it should
     // not access any instance variables.  However, can't have an
     // "abstract static" method signature.
-
 
     /** Get the external, quantized state model for a state predicted by the integrator.
      *
@@ -554,61 +592,32 @@ public abstract class QSSBase {
      * @return the external, quantized state model for a state predicted by the integrator.
      */
     public final ModelPolynomial getStateModel(final int stateIdx) {
-        return( _qStateMdls[stateIdx] );
+        return (_qStateMdls[stateIdx]);
     }
 
-    /** Find the quantum for a state.
-     *
-     * <p>Finds the quantum, i.e., the maximum allowable difference between
-     * the external, quantized state model shared with the user, and the
-     * internal, continuous state model used by the integrator.</p>
-     *
-     * <p>To change the parameters used to find the quantum, use
-     * method {@link #setQuantizationTolerance(int, double, double)}
-     * or method {@link #setQuantizationTolerances(double, double)}.</p>
-     *
-     * <p>The user should never have to call this method directly.
-     * The QSS integrator invokes it as needed.</p>
-     *
-     *
-     * <h2>Implementation notes</h2>
-     *
-     * <p>This method does not store the quantum calculated.
-     * The QSS integrator is expected to take care of this.</p>
-     *
-     * <p>The nominal policy is to find the quantum whenever the
-     * external, quantized state model gets updated.
-     * This is because, as calculated here, the quantum depends on the constant
-     * coefficient of the external, quantized state model.</p>
-     *
-     * <p>In principle, the quantum could be based on the current value of the
-     * one of the state models, calculated at the time the quantum is needed.
-     * This differs from the policy outlined above, in that the current value
-     * of a state generally differs from its constant coefficient.</p>
-     *
-     * <p>However, this more complicated policy would induce a lot of mostly
-     * needless calculations.
-     * If the external, quantized state changes by a large amount, but still
-     * tracks the internal, continuous state model well, then the quantum for
-     * this element doesn't matter much.
-     * If, on the other hand, the two models don't agree, then there will be a
-     * quantization-event, which will trigger a new call of this method.</p>
-     *
-     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
-     * @return Quantum for the state variable.
-     */
-    public final double findQuantum(final int stateIdx) {
-
-        final double stateVal = _qStateMdls[stateIdx].coeffs[0];
-        double dq = _dqRelTols[stateIdx]*Math.abs(stateVal);
-        final double dqAbs = _dqAbsTols[stateIdx];
-        if (dq < dqAbs ) {
-            dq = dqAbs;
-        }
-        assert( dq > 0 );
-
-        return( dq );
-    }
+    /** Get the order of the external, quantized state models exposed by the integrator.
+    *
+    * <p>This method returns the order of the {@link ModelPolynomial} objects
+    * that the integrator exposes to the user.</p>
+    *
+    * <p>These states are the quantized state predictions (as opposed to the
+    * continuous state predictions the integrator uses internally).
+    * Therefore the order is <em>one less</em> than the nominal order of the
+    * QSS method.</p>
+    *
+    * <p>For example, QSS1 uses a first-order (linear) polynomial to model each
+    * state variable.
+    * However, it does not expose that internal representation to the user.
+    * The external, quantized, representation of the state is a constant (i.e.,
+    * a 0th-order polynomial).
+    * Therefore QSS1 should return <code>0</code> for this method.</p>
+    *
+    * @return Order of the external, quantized state models.
+    */
+    public abstract int getStateModelOrder();
+    // Note would really like this to be a static method, since it should
+    // not access any instance variables.  However, can't have an
+    // "abstract static" method signature.
 
     /** Initialize this solver, associating it with the specified
      *  derivativeFunction object, which determines the number of state
@@ -644,19 +653,15 @@ public abstract class QSSBase {
      *   caller may later modify the input variable models by calling
      *   {@link QSSBase#setInputVariableModel(int, ModelPolynomial)}.
      */
-    public final void initialize(
-            DerivativeFunction derivativeFunction,
-            Time startTime,
-            Time maximumTime,
-            double absoluteTolerance,
-            double relativeTolerance,
-            int inputVariableOrder) {
+    public final void initialize(DerivativeFunction derivativeFunction,
+            Time startTime, Time maximumTime, double absoluteTolerance,
+            double relativeTolerance, int inputVariableOrder) {
         initializeDerivativeFunction(derivativeFunction);
         initializeSimulationTime(startTime);
         setQuantizationEventTimeMaximum(maximumTime);
 
         // Initialize states.
-        for (int i=0; i<_stateCt; i++) {
+        for (int i = 0; i < _stateCt; i++) {
             setStateValue(i, 0.0);
             setQuantizationTolerance(i, absoluteTolerance, relativeTolerance);
         }
@@ -676,7 +681,7 @@ public abstract class QSSBase {
 
         // Validate the integrator, checking the above setup.
         final String failMsg = validate();
-        assert(failMsg == null);
+        assert (failMsg == null);
     }
 
     /** Initialize a QSS integrator to use a {@link DerivativeFunction} object.
@@ -696,19 +701,63 @@ public abstract class QSSBase {
      *
      * @param derivFcn Object that implements the DerivativeFcn interface.
      */
-    public final void initializeDerivativeFunction(final DerivativeFunction derivFcn) {
+    public final void initializeDerivativeFunction(
+            final DerivativeFunction derivFcn) {
 
         // Check inputs.
-        if (null == derivFcn ) {
+        if (null == derivFcn) {
             throw new IllegalArgumentException("Require a valid derivFcn");
         }
 
         // Check status.
-        if (_derivFcn != null ) {
-            throw new IllegalStateException("Method init_derivFcn() can be called only once");
+        if (_derivFcn != null) {
+            throw new IllegalStateException(
+                    "Method init_derivFcn() can be called only once");
         }
 
         _initializeDerivativeFunction(derivFcn);
+        _initializeStates();
+        _initializeInputVariables();
+        _initializeQuanta();
+        _initializeTimes();
+        _initializeWorker();
+
+    }
+
+    /** Initialize a QSS integrator to use a {@link DerivativeFunction} object.
+    *
+    * <p>This method must be called before doing any work with the integrator.
+    * Furthermore, it can be called only once. This methods is used to determine
+    * when zero crossing happen.</p>
+    *
+    *
+    * <h2>Design intent</h2>
+    *
+    * <p>The derivative function is central to the integrator, and could very
+    * well be passed to the constructor.
+    * However, to accommodate a wide range of downstream users, a zero-argument
+    * constructor was desired.
+    * Of course, a constructor that takes the derivative function as an
+    * argument could be provided; it would simply call this method.</p>
+    *
+    * @param derivFcn Object that implements the DerivativeFcn interface.
+    * @param numEvtInds Number of event indicators.
+    */
+    public final void initializeDerivativeFunction(
+            final DerivativeFunction derivFcn, int numEvtInds) {
+
+        // Check inputs.
+        if (null == derivFcn) {
+            throw new IllegalArgumentException("Require a valid derivFcn");
+        }
+
+        // Check status.
+        if (_derivFcn != null) {
+            throw new IllegalStateException(
+                    "Method init_derivFcn() can be called only once");
+        }
+
+        _initializeDerivativeFunction(derivFcn, numEvtInds);
         _initializeStates();
         _initializeInputVariables();
         _initializeQuanta();
@@ -739,17 +788,32 @@ public abstract class QSSBase {
         // FIXME: Remove the underscore.  Rename to initializeSimulationTime.
 
         // Check inputs.
-        if (null == initSimTime ) {
+        if (null == initSimTime) {
             throw new IllegalArgumentException("Require a valid initSimTime");
         }
 
         // Check status.
-        if (_currSimTime != null ) {
-            throw new IllegalStateException("Method init_simTime() can be called only once");
+        if (_currSimTime != null) {
+            throw new IllegalStateException(
+                    "Method init_simTime() can be called only once");
         }
 
         _currSimTime = initSimTime;
 
+    }
+
+    /** Compare and return the smalltest time between two time objects.
+        *
+        * TODO: Get this method under unit test.
+        *
+        * @param time1 Time object.
+        * @param time2 Time object.
+        * @return The smallest time.
+        */
+    public final Time minimumTime(Time time1, Time time2) {
+        if (time1.compareTo(time2) > 0)
+            time1 = time2;
+        return (time1);
     }
 
     /** Return the index of an input variable for which the user has yet to add a model.
@@ -767,14 +831,14 @@ public abstract class QSSBase {
         // Initialize.
         int missingIdx = -1;
 
-        for ( int ii=0; ii<_ivCt; ++ii ) {
-            if (_ivMdls[ii] == null ) {
+        for (int ii = 0; ii < _ivCt; ++ii) {
+            if (_ivMdls[ii] == null) {
                 missingIdx = ii;
                 break;
             }
         }
 
-        return( missingIdx );
+        return (missingIdx);
 
     }
 
@@ -798,12 +862,12 @@ public abstract class QSSBase {
      *   state models are valid.
      */
     public final int needQuantizationEventIndex() {
-        for ( int ii=0; ii<_stateCt; ++ii ) {
-            if (_need_quantEvts[ii] ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            if (_need_quantEvts[ii]) {
                 return ii;
             }
         }
-        return( -1 );
+        return (-1);
     }
 
     /** Return array of booleans indicating all states that need a quantization-event.
@@ -815,7 +879,8 @@ public abstract class QSSBase {
      * @param needQuantEvtIdxs (output) Vector showing <code>true</code> for
      *   each integrator state that needs a quantization-event.
      */
-    public final void needQuantizationEventIndexes(final boolean[] needQuantEvtIdxs) {
+    public final void needQuantizationEventIndexes(
+            final boolean[] needQuantEvtIdxs) {
         System.arraycopy(_need_quantEvts, 0, needQuantEvtIdxs, 0, _stateCt);
     }
 
@@ -833,7 +898,7 @@ public abstract class QSSBase {
      * @return true if the integrator needs a rate event.
      */
     public final boolean needRateEvent() {
-        return(_need_rateEvt);
+        return (_need_rateEvt);
     }
 
     /** Get the predicted quantization-event time for a state.
@@ -849,21 +914,19 @@ public abstract class QSSBase {
 
         Time predQuantEvtTime;
 
-        if (_need_predQuantEvtTimes[stateIdx] ) {
+        if (_need_predQuantEvtTimes[stateIdx]) {
             // Perform work defined by specific member of the QSS family.
-            predQuantEvtTime = _predictQuantizationEventTimeWorker(stateIdx, _quantEvtTimeMax);
-            assert(
-                    predQuantEvtTime.compareTo(_cStateMdls[stateIdx].tMdl) > 0
-                    ||
-                    predQuantEvtTime.compareTo(_quantEvtTimeMax)==0
-                    );
+            predQuantEvtTime = _predictQuantizationStateEventTimeWorker(
+                    stateIdx, _quantEvtTimeMax);
+            assert (predQuantEvtTime.compareTo(_cStateMdls[stateIdx].tMdl) > 0
+                    || predQuantEvtTime.compareTo(_quantEvtTimeMax) == 0);
             _predQuantEvtTimes[stateIdx] = predQuantEvtTime;
             _need_predQuantEvtTimes[stateIdx] = false;
         } else {
             predQuantEvtTime = _predQuantEvtTimes[stateIdx];
         }
 
-        return( predQuantEvtTime );
+        return (predQuantEvtTime);
     }
 
     /** Get the earliest predicted quantization-event time for all states.
@@ -879,16 +942,15 @@ public abstract class QSSBase {
         Time predQuantEvtTime = predictQuantizationEventTime(0);
 
         // Run through remaining elements.
-        for ( int ii=1; ii<_stateCt; ++ii ) {
+        for (int ii = 1; ii < _stateCt; ++ii) {
             final Time newTime = predictQuantizationEventTime(ii);
-            if (newTime.compareTo(predQuantEvtTime) < 0 ) {
+            if (newTime.compareTo(predQuantEvtTime) < 0) {
                 predQuantEvtTime = newTime;
             }
         }
 
-        return( predQuantEvtTime );
+        return (predQuantEvtTime);
     }
-
 
     /** Get the earliest predicted quantization-event time for all states.
      *
@@ -900,22 +962,23 @@ public abstract class QSSBase {
      * @return Earliest predicted quantization-event time from among all states
      *   predicted by the integrator.
      */
-    public final Time predictQuantizationEventTimeEarliest(final boolean[] quantEvtElts) {
+    public final Time predictQuantizationEventTimeEarliest(
+            final boolean[] quantEvtElts) {
 
         // Initialize.
         final Time predQuantEvtTime = predictQuantizationEventTimeEarliest();
 
         // Mark matching elements.
-        for ( int ii=0; ii<_stateCt; ++ii ) {
-            assert(_need_predQuantEvtTimes[ii] == false);
-            if (predQuantEvtTime.compareTo(_predQuantEvtTimes[ii]) == 0 ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            assert (_need_predQuantEvtTimes[ii] == false);
+            if (predQuantEvtTime.compareTo(_predQuantEvtTimes[ii]) == 0) {
                 quantEvtElts[ii] = true;
             } else {
                 quantEvtElts[ii] = false;
             }
         }
 
-        return( predQuantEvtTime );
+        return (predQuantEvtTime);
 
     }
 
@@ -928,7 +991,7 @@ public abstract class QSSBase {
     public final void setCurrentSimulationTime(final Time newSimTime) {
         // Set status to note future needs.
         _need_rateEvt = true;
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
             _need_quantEvts[ii] = true;
         }
 
@@ -1011,10 +1074,11 @@ public abstract class QSSBase {
      * @exception IllegalArgumentException If the argument is null.
      * @see #getInputVariableModel(int)
      */
-    public final void setInputVariableModel(final int ivIdx, final ModelPolynomial ivMdl) {
+    public final void setInputVariableModel(final int ivIdx,
+            final ModelPolynomial ivMdl) {
 
         // Check inputs.
-        if (ivMdl == null ) {
+        if (ivMdl == null) {
             // Remove any model already at index {ivIdx}.
             //   Purpose-- leave the integrator unable to run until the root
             // cause of this problem has been fixed.
@@ -1026,12 +1090,17 @@ public abstract class QSSBase {
         _ivMdls[ivIdx] = ivMdl;
     }
 
+    /** Set the number of event indicators.
+     *  @param numberEventIndicators Number of event indicators.
+     */
+    public final void setNumberOfEventIndicators(int numberEventIndicators) {
+        _evtIndCt = numberEventIndicators;
+    }
 
     // TODO: Add method that allows user to indicate when a state variable is not
     // actually used by the derivative function.
     // This will allow efficiency when experience a quantization-event for that
     // state (because won't then have to trigger a rate-event for the same component).
-
 
     /** Set the parameters used to determine the quantum for a state.
      * <p>
@@ -1057,17 +1126,17 @@ public abstract class QSSBase {
      * @exception IllegalArgumentException If the absolute tolerance is not strictly positive, or
      *  if the relative tolerance is negative.
      */
-    public final void setQuantizationTolerance(
-            final int stateIndex, final double absoluteTolerance, final double relativeTolerance) {
+    public final void setQuantizationTolerance(final int stateIndex,
+            final double absoluteTolerance, final double relativeTolerance) {
 
         // Check inputs.
-        if (absoluteTolerance <= 0 ) {
-            throw new IllegalArgumentException("Require absoluteTolerance > 0; got "
-                    + absoluteTolerance);
+        if (absoluteTolerance <= 0) {
+            throw new IllegalArgumentException(
+                    "Require absoluteTolerance > 0; got " + absoluteTolerance);
         }
-        if (relativeTolerance < 0 ) {
-            throw new IllegalArgumentException("Require relativeTolerance >= 0; got "
-                    + relativeTolerance);
+        if (relativeTolerance < 0) {
+            throw new IllegalArgumentException(
+                    "Require relativeTolerance >= 0; got " + relativeTolerance);
         }
 
         // Set status to note future needs.
@@ -1080,7 +1149,6 @@ public abstract class QSSBase {
 
     }
 
-
     /** Set the parameters used to determine the quantum for all states.
      *
      * <p>Apply the same tolerances to all the states the integrator predicts.
@@ -1089,13 +1157,12 @@ public abstract class QSSBase {
      * @param absoluteTolerance The absolute tolerance, which is required to be &gt; 0 [units of <i>x[j]</i>].
      * @param relativeTolerance The relative tolerance, which is required to be &ge; 0 [1].
      */
-    public final void setQuantizationTolerances(
-            final double absoluteTolerance, final double relativeTolerance) {
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+    public final void setQuantizationTolerances(final double absoluteTolerance,
+            final double relativeTolerance) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
             setQuantizationTolerance(ii, absoluteTolerance, relativeTolerance);
         }
     }
-
 
     // TODO: Add method to install "listeners" that help check whether had
     // rate-event.  A listener can be one of three levels:
@@ -1150,7 +1217,8 @@ public abstract class QSSBase {
         _makeModelConstant(qStateMdl, newValue, _qStateMdlOrder);
 
         // Make the continuous state model constant at {newValue}.
-        _makeModelConstant(_cStateMdls[stateIdx], newValue, _qStateMdlOrder+1);
+        _makeModelConstant(_cStateMdls[stateIdx], newValue,
+                _qStateMdlOrder + 1);
 
         // Update quantum.
         //   To keep consistent with the constant coefficient of the
@@ -1160,7 +1228,6 @@ public abstract class QSSBase {
 
     // TODO: Consider adding a method that sets all the state variables from a vector.
 
-
     /** Reset the maximum time for predicted quantization-events.
      *
      * <p>The integrator will not predict quantization-event times past this
@@ -1169,15 +1236,16 @@ public abstract class QSSBase {
      *
      * @param quantEvtTimeMax The maximum time for predicted quantization-events.
      */
-    public final void setQuantizationEventTimeMaximum(final Time quantEvtTimeMax) {
+    public final void setQuantizationEventTimeMaximum(
+            final Time quantEvtTimeMax) {
 
         // Check inputs.
-        if (quantEvtTimeMax.getDoubleValue() <= 0 ) {
+        if (quantEvtTimeMax.getDoubleValue() <= 0) {
             throw new IllegalArgumentException("Require quantEvtTimeMax>0");
         }
 
         // Set status to note future needs.
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
             _need_quantEvts[ii] = true;
         }
 
@@ -1195,31 +1263,82 @@ public abstract class QSSBase {
      * @exception Exception If the simulation time must advance or if
      * there are state models waiting to be quantized,
      */
-    public final void stepToTime(final Time nextSimTime)
-            throws Exception {
+    public final void stepToTime(final Time nextSimTime) throws Exception {
 
         // Check inputs.
-        if (nextSimTime.compareTo(_currSimTime) < 1 ) {
+        if (nextSimTime.compareTo(_currSimTime) < 1) {
             throw new IllegalArgumentException("Simulation time must advance");
         }
 
         // Check status.
-        if (needQuantizationEventIndex() != -1 ) {
-            throw new IllegalStateException("State models waiting to be quantized");
+        if (needQuantizationEventIndex() != -1) {
+            throw new IllegalStateException(
+                    "State models waiting to be quantized");
         }
 
         // Update state models if necessary.
-        if (_need_rateEvt ) {
+        if (_need_rateEvt) {
             triggerRateEvent();
-            assert( _need_rateEvt == false );
+            assert (_need_rateEvt == false);
         }
 
         // Determine which, if any, state models will require requantization at
         // the end of this step.
-        for ( int ii=0; ii<_stateCt; ++ii ) {
-            assert( _need_quantEvts[ii] == false );
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            assert (_need_quantEvts[ii] == false);
             final Time predQuantEvtTime = predictQuantizationEventTime(ii);
-            if (predQuantEvtTime.compareTo(nextSimTime) <= 0 ) {
+            if (predQuantEvtTime.compareTo(nextSimTime) <= 0) {
+                _need_quantEvts[ii] = true;
+            }
+        }
+
+        // Take step.
+        _currSimTime = nextSimTime;
+
+        // Note there is no need to update the internal, continuous state models
+        // to reflect the step just took.  Those models only need to be updated
+        // when there's a rate-event.  If the step induces a rate-event, will
+        // expect user to call method triggerRateEvt().
+
+    }
+
+    /** Step to the next knot in the global simulation for event detection.
+    *
+    * <p>Don't complain if stepping past a predicted quantization-event time.
+    * Just report need to trigger a quantization-event before the next step.</p>
+    *
+    * @param nextSimTime Global simulation time to which to step,
+    *   nextSimTime > this.getCurrSimTime().
+    * @param numberEventIndicators The number of event indicators.
+    * @exception Exception If the simulation time must advance or if
+    * there are state models waiting to be quantized,
+    */
+    public final void stepToTime(final Time nextSimTime,
+            final int numberEventIndicators) throws Exception {
+
+        // Check inputs.
+        if (nextSimTime.compareTo(_currSimTime) < 1) {
+            throw new IllegalArgumentException("Simulation time must advance");
+        }
+
+        // Check status.
+        if (needQuantizationEventIndex() != -1) {
+            throw new IllegalStateException(
+                    "State models waiting to be quantized");
+        }
+
+        // Update state models if necessary.
+        if (_need_rateEvt) {
+            triggerRateEvent(numberEventIndicators);
+            assert (_need_rateEvt == false);
+        }
+
+        // Determine which, if any, state models will require requantization at
+        // the end of this step.
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            assert (_need_quantEvts[ii] == false);
+            final Time predQuantEvtTime = predictQuantizationEventTime(ii);
+            if (predQuantEvtTime.compareTo(nextSimTime) <= 0) {
                 _need_quantEvts[ii] = true;
             }
         }
@@ -1243,9 +1362,8 @@ public abstract class QSSBase {
      * @return a string representation of the model for a state.
      */
     public final String stringifyStateModel(final int stateIdx) {
-        return( _qStateMdls[stateIdx].toString() );
+        return (_qStateMdls[stateIdx].toString());
     }
-
 
     /** Get a string representation of the internal model for a state.
      *
@@ -1256,7 +1374,7 @@ public abstract class QSSBase {
      * @return a string representation of the internal model for a state.
      */
     public final String stringifyStateModelContinuous(final int stateIdx) {
-        return( _cStateMdls[stateIdx].toString() );
+        return (_cStateMdls[stateIdx].toString());
     }
 
     /** Form a new external, quantized state model.
@@ -1309,7 +1427,6 @@ public abstract class QSSBase {
         _need_quantEvts[stateIdx] = false;
     }
 
-
     /** Form new external, quantized state models.
      *
      * <p>Convenience method to call method {@link #triggerQuantizationEvent(int)} on
@@ -1339,11 +1456,11 @@ public abstract class QSSBase {
      */
     public final void triggerQuantizationEvents(final boolean forceAll) {
 
-        for ( int ii=0; ii<_stateCt; ++ii ) {
-            if (forceAll || _need_quantEvts[ii] ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            if (forceAll || _need_quantEvts[ii]) {
                 triggerQuantizationEvent(ii);
             }
-            assert( _need_quantEvts[ii] == false );
+            assert (_need_quantEvts[ii] == false);
         }
     }
 
@@ -1422,11 +1539,10 @@ public abstract class QSSBase {
      * @exception Exception If thrown while performing the work defined by
      * a specific member of the QSS family.
      */
-    public final void triggerRateEvent()
-            throws Exception {
+    public final void triggerRateEvent() throws Exception {
 
         // Set status to note future needs.
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
             _need_predQuantEvtTimes[ii] = true;
         }
 
@@ -1435,6 +1551,36 @@ public abstract class QSSBase {
 
         // Set status to note satisfied needs.
         _need_rateEvt = false;
+    }
+
+    /** Form new internal, continuous state models.
+    *
+    * <p>Force the QSS integrator to form new internal, continuous state models
+    * (i.e., to experience a rate-event).
+    * The rate models also get updated.</p>
+    * This method is similar to method {@link #triggerRateEvent()}.
+    * Th only difference is that it calls 
+    * method {@link #triggerRateEventWorkerEventDetection() 
+    * to detect and handle state events.</p>
+    * 
+    * @param eventDetection The event detection flag.
+    *
+    */
+    public final void triggerRateEvent(final int numberEventIndicators)
+            throws Exception {
+
+        if (numberEventIndicators > 0) {
+            // Set status to note future needs.
+            for (int ii = 0; ii < _stateCt; ++ii) {
+                _need_predQuantEvtTimes[ii] = true;
+            }
+
+            // Perform work defined by specific member of the QSS family.
+            _triggerRateEventWorkerEventDetection();
+
+            // Set status to note satisfied needs.
+            _need_rateEvt = false;
+        }
     }
 
     /** Validate the QSS integrator has been properly set up.
@@ -1450,7 +1596,7 @@ public abstract class QSSBase {
      *   an error message diagnosing the problem.
      */
     public final String validate() {
-        return( _validate() );
+        return (_validate());
     }
 
     // TODO: Add method to allow user to "mark for handling a rate-event".  This
@@ -1489,7 +1635,6 @@ public abstract class QSSBase {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods
 
-
     /** Initialize object fields (QSS-specific).
      *
      * <p>Perform one-time initializations at the beginning of the object
@@ -1499,7 +1644,6 @@ public abstract class QSSBase {
      * specific member of the QSS family.</p>
      */
     protected abstract void _initializeWorker();
-
 
     /** Get the predicted quantization-event time for a state (QSS-specific).
      *
@@ -1519,9 +1663,8 @@ public abstract class QSSBase {
      * @return Next time at which, in the absence of other events, the
      *   external state model must be re-formed, time <= quantEvtTimeMax.
      */
-    protected abstract Time _predictQuantizationEventTimeWorker(
+    protected abstract Time _predictQuantizationStateEventTimeWorker(
             final int stateIdx, final Time quantEvtTimeMax);
-
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS2.
      *
@@ -1558,19 +1701,19 @@ public abstract class QSSBase {
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
-        assert( qStateMdl.getMaximumOrder() >= 1 );
-        assert( cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder()+1 );
-        assert( qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0 );  // Require {qStateMdl} more recent.
-        assert( dq > 0 );
+        assert (qStateMdl.getMaximumOrder() >= 1);
+        assert (cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder() + 1);
+        assert (qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0); // Require {qStateMdl} more recent.
+        assert (dq > 0);
 
         double dt;
 
         // Initialize.
-        final double qea = cStateMdl.coeffs[2];  // Note this is 1/2 the slope of the rate model.
+        final double qea = cStateMdl.coeffs[2]; // Note this is 1/2 the slope of the rate model.
 
-        if (qea != 0 ) {
+        if (qea != 0) {
             // Here, the internal, continuous state model has curvature.
-            dt = Math.sqrt( dq / Math.abs(qea) );
+            dt = Math.sqrt(dq / Math.abs(qea));
         } else {
             // Here, the continuous state model may be a line or a constant.
             //   For a line, fall back on method from QSS1.
@@ -1579,7 +1722,7 @@ public abstract class QSSBase {
                 dt = Double.POSITIVE_INFINITY;
             } else {
                 final double cStateDeriv = cStateMdl.coeffs[1];
-                if (cStateDeriv != 0 ) {
+                if (cStateDeriv != 0) {
                     dt = dq / Math.abs(cStateDeriv);
                 } else {
                     // Here, the continuous state model is a constant.
@@ -1590,10 +1733,9 @@ public abstract class QSSBase {
             }
         }
 
-        return( dt );
+        return (dt);
 
     }
-
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS2.
      *
@@ -1627,25 +1769,23 @@ public abstract class QSSBase {
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
-        assert( qStateMdl.getMaximumOrder() >= 1 );
-        assert( cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder()+1 );
-        assert( dq > 0 );
+        assert (qStateMdl.getMaximumOrder() >= 1);
+        assert (cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder() + 1);
+        assert (dq > 0);
 
         double dt;
 
         // Get coefficients of the quadratic equation that defines the step.
         final double hStar = qStateMdl.tMdl.subtractToDouble(cStateMdl.tMdl);
-        final double qecConst =
-                cStateMdl.coeffs[0] - qStateMdl.coeffs[0] + hStar*qStateMdl.coeffs[1];
-        final double qeb =
-                cStateMdl.coeffs[1] - qStateMdl.coeffs[1];
-        final double qea =
-                cStateMdl.coeffs[2];  // Note this is 1/2 the slope of the rate model.
-        if (Math.abs(qecConst) >= dq ) {
+        final double qecConst = cStateMdl.coeffs[0] - qStateMdl.coeffs[0]
+                + hStar * qStateMdl.coeffs[1];
+        final double qeb = cStateMdl.coeffs[1] - qStateMdl.coeffs[1];
+        final double qea = cStateMdl.coeffs[2]; // Note this is 1/2 the slope of the rate model.
+        if (Math.abs(qecConst) >= dq) {
             // Here, last step had a numerical problem that let it violate the quantum.
             //   Initiate a quantization-event as early as possible.
             dt = 0;
-        } else if (qea==0 && (qeb==0 || exactInputs)) {
+        } else if (qea == 0 && (qeb == 0 || exactInputs)) {
             // EAL: There is a tension here. When qea and qeb are 0, this could
             // mean one of two things: (a) They are unknown, or (b) they are known
             // to be 0.  In case (b), then we want to return POSITIVE_INFINITY whenever
@@ -1665,14 +1805,13 @@ public abstract class QSSBase {
             // They don't seem to give the right answer for a simple test case.
             // Namely, with a quantum of 0.1, an input smoothToken(1.0, {1.0})
             // should have its first quantization event at time sqrt(0.2) = 0.447.
-            final double dtAddDq = PolynomialRoot.findMinimumPositiveRoot2(qea, qeb, qecConst+dq);
-            assert( dtAddDq >= 0 );
-            final double dtSubDq = PolynomialRoot.findMinimumPositiveRoot2(qea, qeb, qecConst-dq);
-            assert( dtSubDq >= 0 );
-            if (dtAddDq>0
-                    &&
-                    (dtSubDq<=0 || dtAddDq<dtSubDq)
-                    ) {
+            final double dtAddDq = PolynomialRoot.findMinimumPositiveRoot2(qea,
+                    qeb, qecConst + dq);
+            assert (dtAddDq >= 0);
+            final double dtSubDq = PolynomialRoot.findMinimumPositiveRoot2(qea,
+                    qeb, qecConst - dq);
+            assert (dtSubDq >= 0);
+            if (dtAddDq > 0 && (dtSubDq <= 0 || dtAddDq < dtSubDq)) {
                 // Here, {dtAddDq} is positive and a better choice than {dtSubDq}.
                 dt = dtAddDq;
             } else if (dtSubDq > 0) {
@@ -1682,13 +1821,12 @@ public abstract class QSSBase {
                 // Both are zero, so there are no positive roots.
                 dt = Double.POSITIVE_INFINITY;
             }
-            assert( dt >= 0 );
+            assert (dt >= 0);
         }
 
-        return( dt );
+        return (dt);
 
     }
-
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS3.
      *
@@ -1723,27 +1861,27 @@ public abstract class QSSBase {
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
-        assert( qStateMdl.getMaximumOrder() >= 2 );
-        assert( cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder()+1 );
-        assert( qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0 );  // Require {qStateMdl} more recent.
-        assert( dq > 0 );
+        assert (qStateMdl.getMaximumOrder() >= 2);
+        assert (cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder() + 1);
+        assert (qStateMdl.tMdl.compareTo(cStateMdl.tMdl) > 0); // Require {qStateMdl} more recent.
+        assert (dq > 0);
 
         double dt;
 
         // Initialize.
-        final double cea = cStateMdl.coeffs[3];  // Note this is 1/6 the second derivative component of the rate model.
+        final double cea = cStateMdl.coeffs[3]; // Note this is 1/6 the second derivative component of the rate model.
 
-        if (cea != 0 ) {
+        if (cea != 0) {
             // Here, the internal, continuous state model has a third derivative.
-            dt = Math.pow( dq / Math.abs(cea), 1.0/3.0 );
+            dt = Math.pow(dq / Math.abs(cea), 1.0 / 3.0);
         } else {
-            dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateMdl, cStateMdl, dq, exactInputs);
+            dt = _predictQuantizationEventDeltaTimeQSS2QFromC(qStateMdl,
+                    cStateMdl, dq, exactInputs);
         }
 
-        return( dt );
+        return (dt);
 
     }
-
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS3.
      *
@@ -1770,34 +1908,33 @@ public abstract class QSSBase {
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS3General(
-            final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl, final double dq) {
+            final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl,
+            final double dq) {
 
         // Check internal consistency.
         //   QSS2 uses linear quantized state model, and quadratic
         // continuous state model.  Allow higher-order solvers to call this
         // method also.
-        assert( qStateMdl.getMaximumOrder() >= 2 );
-        assert( cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder()+1 );
-        assert( dq > 0 );
+        assert (qStateMdl.getMaximumOrder() >= 2);
+        assert (cStateMdl.getMaximumOrder() == qStateMdl.getMaximumOrder() + 1);
+        assert (dq > 0);
 
         double dt;
 
         // Get coefficients of the cubic equation that defines the step.
         final double hStar = qStateMdl.tMdl.subtractToDouble(cStateMdl.tMdl);
-        final double cedConst =
-                cStateMdl.coeffs[0] - qStateMdl.coeffs[0] + hStar*(qStateMdl.coeffs[1] - hStar*qStateMdl.coeffs[2]);
-        final double cec =
-                cStateMdl.coeffs[1] - qStateMdl.coeffs[1] + 2*hStar*qStateMdl.coeffs[2];
-        final double ceb =
-                cStateMdl.coeffs[2] - qStateMdl.coeffs[2];
-        final double cea =
-                cStateMdl.coeffs[3];  // Note this is 1/6 the second derivative component of the rate model.
-        if (Math.abs(cedConst) >= dq ) {
+        final double cedConst = cStateMdl.coeffs[0] - qStateMdl.coeffs[0]
+                + hStar * (qStateMdl.coeffs[1] - hStar * qStateMdl.coeffs[2]);
+        final double cec = cStateMdl.coeffs[1] - qStateMdl.coeffs[1]
+                + 2 * hStar * qStateMdl.coeffs[2];
+        final double ceb = cStateMdl.coeffs[2] - qStateMdl.coeffs[2];
+        final double cea = cStateMdl.coeffs[3]; // Note this is 1/6 the second derivative component of the rate model.
+        if (Math.abs(cedConst) >= dq) {
             // Here, last step had a slight numerical problem such that it
             // violated the quantum.
             //   Initiate a quantization-event as early as possible.
             dt = 0;
-        } else if (cea==0 && ceb==0 && cec==0 ) {
+        } else if (cea == 0 && ceb == 0 && cec == 0) {
             // Note that an alternate approach when {cea==0} would be to use
             // the QSS2 solution.  However, leave that decision up to caller.
             // TODO: Need to run through math, make sure this special case
@@ -1806,24 +1943,25 @@ public abstract class QSSBase {
         } else {
             final double absoluteTolerance = 1e-15;
             final double relativeTolerance = 1e-9;
-            final double dtAddDq = PolynomialRoot.findMinimumPositiveRoot3(cea, ceb, cec, cedConst+dq, absoluteTolerance, relativeTolerance);
-            assert( dtAddDq >= 0 );
-            final double dtSubDq = PolynomialRoot.findMinimumPositiveRoot3(cea, ceb, cec, cedConst-dq, absoluteTolerance, relativeTolerance);
-            assert( dtSubDq >= 0 );
-            if (dtAddDq>0
-                    &&
-                    (dtSubDq<=0 || dtAddDq<dtSubDq)
-                    ) {
+            final double dtAddDq = PolynomialRoot.findMinimumPositiveRoot3(cea,
+                    ceb, cec, cedConst + dq, absoluteTolerance,
+                    relativeTolerance);
+            assert (dtAddDq >= 0);
+            final double dtSubDq = PolynomialRoot.findMinimumPositiveRoot3(cea,
+                    ceb, cec, cedConst - dq, absoluteTolerance,
+                    relativeTolerance);
+            assert (dtSubDq >= 0);
+            if (dtAddDq > 0 && (dtSubDq <= 0 || dtAddDq < dtSubDq)) {
                 // Here, {dtAddDq} is positive and a better choice than {dtSubDq}.
                 dt = dtAddDq;
             } else {
                 // Here, either {dtSubDq} a better choice than {dtAddDq}, or both are zero.
                 dt = dtSubDq;
             }
-            assert( dt >= 0 );
+            assert (dt >= 0);
         }
 
-        return( dt );
+        return (dt);
     }
 
     /** Form a new external, quantized state model (QSS-specific).
@@ -1846,6 +1984,16 @@ public abstract class QSSBase {
      */
     protected abstract void _triggerRateEventWorker() throws Exception;
 
+    /** Form new internal, continuous state models (QSS-specific).
+    *
+    * <p>See comments to method {@link #triggerRateEvent()}.</p>
+    *
+    * <p>The implementation of this "worker" method depends on the
+    * specific member of the QSS family.</p>
+    */
+    protected abstract void _triggerRateEventWorkerEventDetection()
+            throws Exception;
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables
 
@@ -1861,20 +2009,23 @@ public abstract class QSSBase {
     /** The state count. */
     protected int _stateCt;
 
+    /** The event indicator count. */
+    protected int _evtIndCt;
+
     /** The count of input variables. */
     protected int _ivCt;
 
     /** Internal continuous state models. */
-    protected ModelPolynomial[] _cStateMdls; 
+    protected ModelPolynomial[] _cStateMdls;
 
     /** External, quantized state models. */
-    protected ModelPolynomial[] _qStateMdls; 
+    protected ModelPolynomial[] _qStateMdls;
 
     /** Input variables. */
     protected ModelPolynomial[] _ivMdls;
 
     /** Quanta. */
-    protected double[] _dqs;  // Quantum for each state.
+    protected double[] _dqs; // Quantum for each state.
     // Policy:
     // (-) Invariant: consistent with the constant coefficient of the
     //   external, quantized state model.  This means whenever the
@@ -1893,29 +2044,50 @@ public abstract class QSSBase {
      *
      * @param derivFcn Object that implements the DerivativeFcn interface.
      */
-    private final void _initializeDerivativeFunction(final DerivativeFunction derivFcn) {
+    private final void _initializeDerivativeFunction(
+            final DerivativeFunction derivFcn) {
 
         // Check internal consistency.
-        assert( _derivFcn == null );
+        assert (_derivFcn == null);
 
         // Derivative function.
         _derivFcn = derivFcn;
         _stateCt = derivFcn.getStateCount();
         _ivCt = derivFcn.getInputVariableCount();
 
-        assert( _stateCt > 0 );
-        assert( _ivCt >= 0 );
+        assert (_stateCt > 0);
+        assert (_ivCt >= 0);
 
     }
 
+    /** Initialize fields related to the derivative function for event detection.
+    *
+    * @param derivFcn Object that implements the DerivativeFcn interface.
+    * @param numEvtInds Number of event indicators.
+    */
+    private final void _initializeDerivativeFunction(
+            final DerivativeFunction derivFcn, int numEvtInds) {
+
+        // Check internal consistency.
+        assert (_derivFcn == null);
+
+        // Derivative function.
+        _derivFcn = derivFcn;
+        _stateCt = numEvtInds;
+        _ivCt = 0;
+
+        assert (_stateCt > 0);
+        assert (_ivCt >= 0);
+
+    }
 
     /** Initialize fields related to tracking the state.
      */
     private final void _initializeStates() {
 
         // Check internal consistency.
-        assert( _cStateMdls == null );
-        assert( _stateCt > 0 );
+        assert (_cStateMdls == null);
+        assert (_stateCt > 0);
 
         // Internal, continuous state models.
         //   Note these are owned by the integrator.  Therefore allocate
@@ -1924,15 +2096,15 @@ public abstract class QSSBase {
         // {Time} objects here.
         _cStateMdls = new ModelPolynomial[_stateCt];
         final int cStateOrder = _qStateMdlOrder + 1;
-        assert( cStateOrder >= 1 );
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+        assert (cStateOrder >= 1);
+        for (int ii = 0; ii < _stateCt; ++ii) {
             final ModelPolynomial cStateMdl = new ModelPolynomial(cStateOrder);
             cStateMdl.claimWriteAccess();
             _cStateMdls[ii] = cStateMdl;
         }
 
         // Force rate-event for integrator.
-        _need_rateEvt = true;  // This is redundant, since also forcing a
+        _need_rateEvt = true; // This is redundant, since also forcing a
         // quantization-event, which in turn will force a rate-event.
 
         // External, quantized state models.
@@ -1941,47 +2113,46 @@ public abstract class QSSBase {
         // until the initial value is set.  Therefore no need to allocate
         // {Time} objects here.
         _qStateMdls = new ModelPolynomial[_stateCt];
-        assert( _qStateMdlOrder >= 0 );
-        for ( int ii=0; ii<_stateCt; ++ii ) {
-            final ModelPolynomial qStateMdl = new ModelPolynomial(_qStateMdlOrder);
+        assert (_qStateMdlOrder >= 0);
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            final ModelPolynomial qStateMdl = new ModelPolynomial(
+                    _qStateMdlOrder);
             qStateMdl.claimWriteAccess();
             _qStateMdls[ii] = qStateMdl;
         }
 
         // Force quantization-event in all state models.
         _need_quantEvts = new boolean[_stateCt];
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
             _need_quantEvts[ii] = true;
         }
 
     }
-
 
     /** Initialize fields related to the input variables.
      */
     private final void _initializeInputVariables() {
 
         // Check internal consistency.
-        assert( _ivMdls == null );
-        assert( _ivCt >= 0 );
+        assert (_ivMdls == null);
+        assert (_ivCt >= 0);
 
         // Input variable models.
         //   Note these are references to user-supplied models.  Therefore no
         // need to allocate the actual models.
-        if (_ivCt > 0 ) {
+        if (_ivCt > 0) {
             _ivMdls = new ModelPolynomial[_ivCt];
         }
 
     }
-
 
     /** Initialize fields related to quantization.
      */
     private final void _initializeQuanta() {
 
         // Check internal consistency.
-        assert( _dqs == null );
-        assert( _stateCt > 0 );
+        assert (_dqs == null);
+        assert (_stateCt > 0);
 
         // Quanta.
         _dqs = new double[_stateCt];
@@ -2011,15 +2182,14 @@ public abstract class QSSBase {
 
     }
 
-
     /** Initialize fields related to tracking time.
      */
     private final void _initializeTimes() {
 
         // Check internal consistency.
-        assert( _currSimTime == null );
-        assert( _predQuantEvtTimes == null );
-        assert( _stateCt > 0 );
+        assert (_currSimTime == null);
+        assert (_predQuantEvtTimes == null);
+        assert (_stateCt > 0);
 
         // Simulation time of last call.
         //   Note in order to avoid directly calling a constructor here,
@@ -2033,7 +2203,7 @@ public abstract class QSSBase {
 
         // Force recalculation of quantization-event times.
         _need_predQuantEvtTimes = new boolean[_stateCt];
-        for ( int ii=0; ii<_stateCt; ++ii ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
             _need_predQuantEvtTimes[ii] = true;
         }
     }
@@ -2044,11 +2214,11 @@ public abstract class QSSBase {
      * @param constValue The new value for model.
      * @param maxOrd The maximum order of the model, maxOrd==constMdl.getMaxOrder().
      */
-    private final void _makeModelConstant(final ModelPolynomial constMdl, final double constValue,
-            final int maxOrd) {
+    private final void _makeModelConstant(final ModelPolynomial constMdl,
+            final double constValue, final int maxOrd) {
 
         // Check assumptions.
-        assert( maxOrd == constMdl.getMaximumOrder() );
+        assert (maxOrd == constMdl.getMaximumOrder());
 
         // Initialize.
         final double[] coeffs = constMdl.coeffs;
@@ -2057,7 +2227,7 @@ public abstract class QSSBase {
         coeffs[0] = constValue;
 
         // Set derivatives to zero.
-        for ( int ii=1; ii<=maxOrd; ++ii ) {
+        for (int ii = 1; ii <= maxOrd; ++ii) {
             coeffs[ii] = 0;
         }
 
@@ -2072,7 +2242,6 @@ public abstract class QSSBase {
 
     }
 
-
     /** Validate the QSS integrator has been properly set up.
      *
      * <p>See comments to method {@link #validate()}.</p>
@@ -2084,65 +2253,70 @@ public abstract class QSSBase {
 
         // Require integrator has a derivative function.
         //   I.e., require called method init_derivFcn().
-        if (null == _derivFcn ) {
-            return( "Must call init_derivFcn()" );
+        if (null == _derivFcn) {
+            return ("Must call init_derivFcn()");
         }
 
         // Check assumptions about method init_derivFcn().
-        assert( _derivFcn != null );
-        assert( _stateCt == _derivFcn.getStateCount() );
-        assert( _ivCt == _derivFcn.getInputVariableCount() );
-        assert( _cStateMdls!=null && _cStateMdls.length==_stateCt );
-        assert( _qStateMdls!=null && _qStateMdls.length==_stateCt );
-        assert( _need_quantEvts!=null && _need_quantEvts.length==_stateCt );
-        assert(
-                (_ivMdls==null && _ivCt==0)
-                ||
-                (_ivMdls!=null && _ivMdls.length==_ivCt)
-                );
-        assert( _dqs!=null && _dqs.length==_stateCt );
-        assert( _dqAbsTols!=null && _dqAbsTols.length==_stateCt );
-        assert( _dqRelTols!=null && _dqRelTols.length==_stateCt );
-        assert( _predQuantEvtTimes!=null && _predQuantEvtTimes.length==_stateCt );
-        assert( _need_predQuantEvtTimes!=null && _need_predQuantEvtTimes.length==_stateCt );
+        assert (_derivFcn != null);
+        assert (_stateCt == _derivFcn.getStateCount());
+        assert (_ivCt == _derivFcn.getInputVariableCount());
+        assert (_cStateMdls != null && _cStateMdls.length == _stateCt);
+        assert (_qStateMdls != null && _qStateMdls.length == _stateCt);
+        assert (_need_quantEvts != null && _need_quantEvts.length == _stateCt);
+        assert ((_ivMdls == null && _ivCt == 0)
+                || (_ivMdls != null && _ivMdls.length == _ivCt));
+        assert (_dqs != null && _dqs.length == _stateCt);
+        assert (_dqAbsTols != null && _dqAbsTols.length == _stateCt);
+        assert (_dqRelTols != null && _dqRelTols.length == _stateCt);
+        assert (_predQuantEvtTimes != null
+                && _predQuantEvtTimes.length == _stateCt);
+        assert (_need_predQuantEvtTimes != null
+                && _need_predQuantEvtTimes.length == _stateCt);
 
         // Require integrator has a valid simulation time.
         //   I.e., require called method init_simTime().
-        if (null == _currSimTime ) {
-            return( "Must call init_simTime()" );
+        if (null == _currSimTime) {
+            return ("Must call init_simTime()");
         }
 
         // Require state models have valid times.
         //   I.e., require called method setStateValue() on each state, because
         // the model time gets set to {_currSimTime} when set the state.
-        for ( int ii=0; ii<_stateCt; ++ii ) {
-            if (null==_cStateMdls[ii].tMdl || null==_qStateMdls[ii].tMdl ) {
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            if (null == _cStateMdls[ii].tMdl || null == _qStateMdls[ii].tMdl) {
                 // Note test above should be redundant.  Both models should get
                 // the same initial time at the same point in the worflow, and
                 // after that the model time should never return to {null}.
-                return( String.format("Need initial value for state %d", ii) );
+                return (String.format("Need initial value for state %d", ii));
             }
         }
 
         // Require have valid models for all input variables.
-        for ( int ii=0; ii<_ivCt; ++ii ) {
+        for (int ii = 0; ii < _ivCt; ++ii) {
             final ModelPolynomial currMdl = _ivMdls[ii];
-            if (null == currMdl ) {
-                return( String.format("Need model for input variable %d", ii) );
+            if (null == currMdl) {
+                return (String.format("Need model for input variable %d", ii));
             }
-            if (currMdl.getWriterCount() != 1 ) {
-                return( String.format("Need 1 writer for input variable %d; got %d",
-                        ii, currMdl.getWriterCount()
-                        ) );
+            if (currMdl.getWriterCount() != 1) {
+                return (String.format(
+                        "Need 1 writer for input variable %d; got %d", ii,
+                        currMdl.getWriterCount()));
             }
-            if (null == currMdl.tMdl ) {
-                return( String.format("Need initialization for input variable %d", ii) );
+            if (null == currMdl.tMdl) {
+                return (String.format(
+                        "Need initialization for input variable %d", ii));
             }
         }
 
         // Report valid.
-        return( null );
+        return (null);
     }
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables 
+
+    // Maximum Time for predicted quantization-event times.
+    protected Time _quantEvtTimeMax = Time.POSITIVE_INFINITY;
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables
@@ -2150,22 +2324,20 @@ public abstract class QSSBase {
     // Identify specific member of the QSS family.
     private final int _qStateMdlOrder = getStateModelOrder();
 
-    private boolean _need_rateEvt;  // True if, in order to step forward
+    private boolean _need_rateEvt; // True if, in order to step forward
     // from {_currSimTime}, need to trigger a rate-event (i.e., need to
     // (form new internal, continuous state models).
-    private boolean[] _need_quantEvts;  // True if, in order to step forward
+    private boolean[] _need_quantEvts; // True if, in order to step forward
     // from {_currSimTime}, need to trigger a quantization-event (i.e.,
     // need to form a new external, quantized state model).
 
     // Quanta.
-    private double[] _dqAbsTols, _dqRelTols;  // Tolerances for finding the quantum of each state.
+    private double[] _dqAbsTols, _dqRelTols; // Tolerances for finding the quantum of each state.
     // Policy:
     // (-) Can be set only by method setDqTol().
 
-    // Times.
-    private Time _quantEvtTimeMax = Time.POSITIVE_INFINITY;  // Maximum
-    // time for predicted quantization-event times.
-    private Time[] _predQuantEvtTimes;  // Predicted quantization-event time for each state.
-    private boolean[] _need_predQuantEvtTimes;  // True if need to recalculate the
+    // Time for predicted quantization-event times.
+    private Time[] _predQuantEvtTimes; // Predicted quantization-event time for each state.
+    private boolean[] _need_predQuantEvtTimes; // True if need to recalculate the
     // predicted quantization-event time for the state.
 }
