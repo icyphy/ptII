@@ -1,0 +1,52 @@
+<html>
+<head>
+    <title>Documentation for bouncingBall.fmu</title>
+<style type="text/css">
+  html { font-family: Verdana, Arial, Helvetica, sans-serif; }
+  h1   { color: #000066; }
+</style>
+</head>
+<body>
+<h1>bouncingBall.fmu</h1>
+The bouncingBall implements the following equation: 
+<ul>
+<li> der(h) = v;
+<li> der(v) = -g;
+<li> when h<0 then v := -e* v
+</ul>
+with start values h=1, e=0.7, g = 9.81 and
+<ul>
+<li> h: height [m], used as state
+<li> v: velocity of ball [m/s], used as state
+<li> der(h): velocity of ball [m/s]
+<li> der(v): acceleration of ball [m/s2]
+<li> g: acceleration of gravity [m/s2], a parameter
+<li> e: a dimensionless parameter
+</ul>
+
+<br>
+<img src="plot_h.png">
+<br>
+The figure shows the solution computed with Silver 
+for height h of the ball for the start values given above.
+
+<p>
+The chain of events during simulation is as follows
+<ol>
+<li> initially h>0 and pos(0)=true </li>
+<li> continuous integration until a state event is detected, i.e.
+     until h + EPS_INDICATORS = 0.
+     At this time h < 0, the EPS_INDICATORS adds hysteresis.</li>
+<li> the simulator calls eventUpdate once which reverses the speed direction
+     v of the ball: v = -e * v, and sets pos(0)=false</li>
+<li> continuous integration until state event is detected, i.e.
+     until h - EPS_INDICATORS = 0.
+     At this time h > 0, the EPS_INDICATORS adds hysteresis.</li>
+<li> the simulator calls  eventUpdate once more which sets pos(0)=true.</li>
+<li> goto 2</li>
+</ol>
+The above description refers to the variables used 
+in file <code>bouncingBall.c</code>.
+
+</body>
+</html>
