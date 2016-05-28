@@ -874,12 +874,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 if (_checkStateEvents(possibleNextStateEventTime)) {
                     _forceStateQuantization = true;
                     _numberOfStateEvents++;
-                    //if (_debugging) {
-                    _debugToStdOut(String.format(
-                            "-- Id{%d} predicts a state event at time %s",
-                            System.identityHashCode(this),
-                            possibleFireAtTime.toString()));
-                    //}
+                    if (_debugging) {
+                        _debugToStdOut(String.format(
+                                "-- Id{%d} predicts a state event at time %s",
+                                System.identityHashCode(this),
+                                possibleFireAtTime.toString()));
+                    }
                 }
             }
         }
