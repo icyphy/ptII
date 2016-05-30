@@ -110,7 +110,7 @@ public class CertiRtig extends NamedObj {
      *  failed or if the RTIG subprocess it not running.
      */
     public void exec() throws IllegalActionException {
-	HlaManager.setStartTime();
+	//HlaManager.setStartTime();
         System.out.println("CertiRtig: " + _hlaManager.getFullName() +  ": About to invoke rtig: "
                 + "\ncommand: " + java.util.Arrays.toString(_commandArray)
                 + "\nenvironment: " + java.util.Arrays.toString(_environmentArray)

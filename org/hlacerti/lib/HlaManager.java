@@ -34,7 +34,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -662,6 +661,7 @@ TimeRegulator {
     @Override
     public void preinitialize() throws IllegalActionException {
 	super.preinitialize();
+	_startTime= System.nanoTime();
 
 	// Try to launch the HLA/CERTI RTIG subprocess.
 	_certiRtig = new CertiRtig(this, _debugging);
@@ -1074,17 +1074,15 @@ TimeRegulator {
      * @return The start Time of the execution of the federation.
      * @see #setStartTime
      */
-    public static double getStartTime() {
+    public double getStartTime() {
 	return _startTime;
     }
 
     /** Set the start Time of the execution of the federation.
      * @see #getStartTime
      */
-    public static void setStartTime() {
-	Date date = new Date();
-	double startTime  = date.getTime();
-	HlaManager._startTime = startTime;
+    public void setStartTime() {
+	_startTime = System.nanoTime();
     }
 
     /** Calculate the duration of the execution of the federation.
@@ -1092,9 +1090,8 @@ TimeRegulator {
      * @return The duration of the execution of the federation.
      */
     public static double calculateRuntime(){
-	Date date = new Date();
-	double duration  = date.getTime() - _startTime;
-	duration = duration/1000;
+	double duration  = System.nanoTime() - _startTime;
+	duration = duration/(Math.pow(10, 9));
 	return duration;
     }
 
@@ -1155,16 +1152,25 @@ TimeRegulator {
 		header = header +  (i+1) + ";";
 		numberOfTicks=numberOfTicks+_numberOfTicks.get(i) +";";
 		delay = delay + _TAGDelay.get(i) +  ";";
-		delayPerTick= delayPerTick + (_TAGDelay.get(i)/_numberOfTicks.get(i)) + ";";
+		if(_numberOfTicks.get(i)>0){
+		    delayPerTick= delayPerTick + (_TAGDelay.get(i)/_numberOfTicks.get(i)) + ";";
+		}else{
+		    delayPerTick= delayPerTick + "0;";
+		}
 		averageNumberOfTicks=averageNumberOfTicks+_numberOfTicks.get(i);
 		averageDelay = averageDelay + _TAGDelay.get(i);
 	    }
+	    header = header +"Sum;";
+	    numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
+	    delay = delay + averageDelay + ";";
+	    delayPerTick = delayPerTick + ";";
+	    header = header +"Average;";
 	    averageNumberOfTicks=averageNumberOfTicks/_numberOfTAGs;
 	    averageDelay=averageDelay/_numberOfTAGs;
 	    delayPerTick = delayPerTick + (averageDelay/averageNumberOfTicks) + ";";
 	    numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
 	    delay = delay + averageDelay + ";";
-	    header = header +"Average;";
+	    
 	    _writeInTextFile(_csvFile,info + header +delay + numberOfTicks+ delayPerTick);
 	}catch(Exception e){
 	    System.out.println("Couldn't write in the csv file.");
@@ -1236,7 +1242,6 @@ TimeRegulator {
 	    SpecifiedSaveLabelDoesNotExist {
 
 	CertiLogicalTime certiProposedTime = _convertToCertiLogicalTime(proposedTime);
-	Date date = new Date();
 
 
 	if (_hlaLookAHead > 0) {
@@ -1252,7 +1257,7 @@ TimeRegulator {
 	    }
 	    _rtia.nextEventRequest(certiProposedTime);
 	    _numberOfNERs++;
-	    _timeOfTheLastAdvanceRequest=date.getTime();
+	    _timeOfTheLastAdvanceRequest=System.nanoTime();
 
 	} else {
 	    // Event-based + lookahead = 0 => NERA + NER.
@@ -1265,7 +1270,7 @@ TimeRegulator {
 	    }
 	    _rtia.nextEventRequestAvailable(certiProposedTime);
 	    _numberOfNERs++;
-	    _timeOfTheLastAdvanceRequest=date.getTime();
+	    _timeOfTheLastAdvanceRequest=System.nanoTime();
 
 	    // Wait the time grant from the HLA/CERTI Federation (from the RTI).
 	    _federateAmbassador.timeAdvanceGrant = false;
@@ -1289,7 +1294,7 @@ TimeRegulator {
 	    }
 	    _rtia.nextEventRequest(certiProposedTime);
 	    _numberOfNERs++;
-	    _timeOfTheLastAdvanceRequest=date.getTime();
+	    _timeOfTheLastAdvanceRequest=System.nanoTime();
 	}
 
 	// Wait the time grant from the HLA/CERTI Federation (from the RTI).
@@ -1353,7 +1358,6 @@ TimeRegulator {
 	    // or TARA(hlaNextPointInTime)
 	    Time hlaNextPointInTime = _getHlaNextPointInTime();
 	    CertiLogicalTime certiNextPointInTime = _convertToCertiLogicalTime(hlaNextPointInTime);
-	    Date date = new Date();
 
 	    // There are two types of events in a federate model:
 	    // - rav et uav events via RTI
@@ -1398,7 +1402,7 @@ TimeRegulator {
 		    }
 		    _rtia.timeAdvanceRequest(certiNextPointInTime);
 		    _numberOfTARs++;
-		    _timeOfTheLastAdvanceRequest=date.getTime();
+		    _timeOfTheLastAdvanceRequest=System.nanoTime();
 
 
 		    // Wait the time grant from the HLA/CERTI Federation (from the RTI).
@@ -1458,7 +1462,7 @@ TimeRegulator {
 		}
 		_rtia.timeAdvanceRequest(certiNextPointInTime);
 		_numberOfTARs++;
-		_timeOfTheLastAdvanceRequest=date.getTime();
+		_timeOfTheLastAdvanceRequest=System.nanoTime();
 
 		try {
 		    _rtia.tick2();
@@ -1483,7 +1487,7 @@ TimeRegulator {
 		}
 		_rtia.timeAdvanceRequest(certiNextPointInTime);
 		_numberOfTARs++;
-		_timeOfTheLastAdvanceRequest=date.getTime();
+		_timeOfTheLastAdvanceRequest=System.nanoTime();
 	    }
 	}
 	return null;
@@ -1636,6 +1640,7 @@ TimeRegulator {
 	try{
 	    BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
 	    writer.write(data);
+	    writer.newLine();
 	    writer.newLine();
 	    writer.flush();
 	    writer.close();
@@ -2368,12 +2373,12 @@ TimeRegulator {
 		throws InvalidFederationTime, TimeAdvanceWasNotInProgress,
 		FederateInternalError {
 	    
-	    Date date = new Date();
-            //Time spent between the last TAR or NER and the TAG
-	    _TAGDelay.add((date.getTime() - _timeOfTheLastAdvanceRequest)/1000);
-	    _timeOfTheLastAdvanceRequest=0;	    
+	    
 	    logicalTimeHLA = new CertiLogicalTime(_hlaTimeUnitValue
 		    * ((CertiLogicalTime) theTime).getTime());
+            //Time spent between the last TAR or NER and the TAG
+	    _TAGDelay.add((System.nanoTime() - _timeOfTheLastAdvanceRequest)/Math.pow(10, 9));
+	    _timeOfTheLastAdvanceRequest=0;
 	    timeAdvanceGrant = true;
 	    _numberOfTAGs++;
 	    _numberOfTicks.add(0);
