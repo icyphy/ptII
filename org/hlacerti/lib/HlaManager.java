@@ -33,6 +33,8 @@ package org.hlacerti.lib;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -248,13 +250,10 @@ TimeRegulator {
     public HlaManager(CompositeEntity container, String name)
 	    throws IllegalActionException, NameDuplicationException {
 	super(container, name);
-	_numberOfNERs=0;
-	_numberOfTARs=0;
-	_numberOfTAGs=0;
-	_timeOfTheLastAdvanceRequest=0;
+	
 	_file = _createTextFile("org/hlacerti/lib/data.txt");
 	_csvFile = _createTextFile("org/hlacerti/lib/data.csv");
-	_TAGDelay="";
+	
 	_noObjectDicovered = true;
 	_rtia = null;
 	_federateAmbassador = null;
@@ -738,6 +737,9 @@ TimeRegulator {
 	    }
 	    try {
 		_rtia.tick();
+		if(_timeOfTheLastAdvanceRequest>0){
+		    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+	        }
 	    } catch (ConcurrentAccessAttempted e) {
 		throw new IllegalActionException(this, e,
 			"ConcurrentAccessAttempted ");
@@ -913,7 +915,8 @@ TimeRegulator {
 	_numberOfNERs=0;
 	_numberOfTAGs=0;
 	_timeOfTheLastAdvanceRequest=0;
-	_TAGDelay="";
+	_TAGDelay=new ArrayList<Double>();
+	_numberOfTicks=new ArrayList<Integer>();
 	
 
 	if (_debugging) {
@@ -1111,7 +1114,7 @@ TimeRegulator {
 
 	    nameOfTheFile = nameOfTheFile.substring(1, nameOfTheFile.lastIndexOf('.')) + ".xml";
 
-	    String info = "Federate: "+ nameOfTheFederate +" in the model "+nameOfTheFile+ "\n" +"stopTime: " +stopTime+ "\n";
+	    String info = "Federate: "+ nameOfTheFederate +" in the model: "+nameOfTheFile+ "\n" +"stopTime: " +stopTime+ "\n";
 	    if(_timeStepped){
 		info = info +"Time Step: "  + _hlaTimeStep + "\n" 
 			+ "Number of TARs: " +_numberOfTARs;
@@ -1131,14 +1134,38 @@ TimeRegulator {
 	try{
 	    Date date = new Date();
 	    String fullName=federateName.toString();
+	    String nameOfTheFile= fullName.substring(fullName.indexOf('{')+1,  fullName.lastIndexOf('.'));
 	    String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
-	    String info= date.toString() + ";"+ nameOfTheFederate  + ";";
+	    String info= date.toString() + "\nFederate: "+ nameOfTheFederate + ";in the model:;"+ nameOfTheFile
+		    + "\nApproach: ;";
 	    if(_timeStepped){
-		info = info + "TAR;"+ _hlaTimeStep +";";
+		info = info + "TAR;Time step:;"+ _hlaTimeStep +"\n";
 	    }else if(_eventBased){
-		info = info + "NER; - ;";
+		info = info + "NER\n";
 	    }
-	    _writeInTextFile(_csvFile,info +_TAGDelay);
+	    info= info + "runtime: ;"+ calculateRuntime();
+	    
+	    String numberOfTicks="\nNumber of ticks:;";
+	    String delay="\nDelay :;";
+	    double averageNumberOfTicks=0;
+	    double averageDelay=0;
+	    String header="\nInformation :;";
+	    String delayPerTick="\nDelay per tick;";
+	    for (int i = 0; i < _numberOfTAGs; i++) {
+		header = header +  (i+1) + ";";
+		numberOfTicks=numberOfTicks+_numberOfTicks.get(i) +";";
+		delay = delay + _TAGDelay.get(i) +  ";";
+		delayPerTick= delayPerTick + (_TAGDelay.get(i)/_numberOfTicks.get(i)) + ";";
+		averageNumberOfTicks=averageNumberOfTicks+_numberOfTicks.get(i);
+		averageDelay = averageDelay + _TAGDelay.get(i);
+	    }
+	    averageNumberOfTicks=averageNumberOfTicks/_numberOfTAGs;
+	    averageDelay=averageDelay/_numberOfTAGs;
+	    delayPerTick = delayPerTick + (averageDelay/averageNumberOfTicks) + ";";
+	    numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
+	    delay = delay + averageDelay + ";";
+	    header = header +"Average;";
+	    _writeInTextFile(_csvFile,info + header +delay + numberOfTicks+ delayPerTick);
 	}catch(Exception e){
 	    System.out.println("Couldn't write in the csv file.");
 	}
@@ -1250,6 +1277,7 @@ TimeRegulator {
 			    + ") by calling tick2()");
 		}
 		_rtia.tick2();
+		_numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);;
 	    }
 
 	    // End the loop with one NER call.
@@ -1276,6 +1304,7 @@ TimeRegulator {
 	    _rtia.tick2();
 	    cntTick++;
 	}
+	_numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+cntTick);
 
 	// If we get any rav-event
 	if (cntTick != 1) {
@@ -1392,6 +1421,7 @@ TimeRegulator {
 				    e.getMessage());
 			}
 		    }
+		    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+cntTick);
 
 		    // If we get any rav-event
 		    if (cntTick != 1) {
@@ -1432,6 +1462,7 @@ TimeRegulator {
 
 		try {
 		    _rtia.tick2();
+		    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
 		} catch (SpecifiedSaveLabelDoesNotExist e) {
 		    throw new IllegalActionException(this, e,
 			    "SpecifiedSaveLabelDoesNotExist ");
@@ -1584,10 +1615,6 @@ TimeRegulator {
 		boolean verify = false;
 		if(!file.exists()){
 		    verify = file.createNewFile();
-		    if(name.endsWith(".csv")){
-			_writeInTextFile(file,"Date;Federate;Time advancing approach;Time Step;Delay 1;Delay 2;Delay 3;Delay 4;"
-				+ "Delay 5;Delay 6;Delay 7;Delay 8;Delay 9;Delay 10;");
-		    }
 		}else {
 		    verify = true;
 		}if (!verify){
@@ -1739,9 +1766,14 @@ TimeRegulator {
     private double _timeOfTheLastAdvanceRequest;
     
     /**
-     * String that contains the delays between a NER or TAR and its respective TAG..
+     * Array that contains the delays between a NER or TAR and its respective TAG..
      */
-    private String _TAGDelay;
+    private ArrayList<Double> _TAGDelay;
+    
+    /**
+     * Array that contains the number of ticks between a NER or TAR and its respective TAG.
+     */
+    private ArrayList<Integer> _numberOfTicks;
 
 
 
@@ -1774,6 +1806,9 @@ TimeRegulator {
 		    && !(_federateAmbassador.synchronizationFailed)) {
 		try {
 		    _rtia.tick2();
+		    if(_timeOfTheLastAdvanceRequest>0){
+			_numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);;
+		    }
 		} catch (RTIexception e) {
 		    throw new IllegalActionException(this, e, e.getMessage());
 		}
@@ -1789,6 +1824,9 @@ TimeRegulator {
 	while (!(_federateAmbassador.inPause)) {
 	    try {
 		_rtia.tick2();
+		if(_timeOfTheLastAdvanceRequest>0){
+		    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+		}
 	    } catch (RTIexception e) {
 		throw new IllegalActionException(this, e, e.getMessage());
 	    }
@@ -1815,6 +1853,9 @@ TimeRegulator {
 
 	    try {
 		_rtia.tick2();
+		if(_timeOfTheLastAdvanceRequest >0 ){
+		    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+		}
 	    } catch (RTIexception e) {
 		throw new IllegalActionException(this, e, e.getMessage());
 	    }
@@ -1859,6 +1900,9 @@ TimeRegulator {
 	    while (!(_federateAmbassador.timeConstrained)) {
 		try {
 		    _rtia.tick2();
+		    if(_timeOfTheLastAdvanceRequest>0){
+			_numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+		    }
 		} catch (RTIexception e) {
 		    throw new IllegalActionException(this, e, e.getMessage());
 		}
@@ -1867,6 +1911,9 @@ TimeRegulator {
 	    while (!(_federateAmbassador.timeRegulator)) {
 		try {
 		    _rtia.tick2();
+		    if(_timeOfTheLastAdvanceRequest>0){
+			_numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+		    }
 		} catch (RTIexception e) {
 		    throw new IllegalActionException(this, e, e.getMessage());
 		}
@@ -1999,9 +2046,11 @@ TimeRegulator {
 	RTIinternalError, AttributeNotDefined, SaveInProgress,
 	RestoreInProgress, ConcurrentAccessAttempted {
 	    _numberOfNERs=0;
+	    _numberOfTARs=0;
 	    _numberOfTAGs=0;
-	    _numberOfTAGs=0;
-	    _TAGDelay="";
+	    _TAGDelay=new ArrayList<Double>();
+	    _numberOfTicks=new ArrayList<Integer>();
+	    _numberOfTicks.add(0);
 
 	    this.timeAdvanceGrant = false;
 	    this.timeConstrained = false;
@@ -2318,19 +2367,17 @@ TimeRegulator {
 	public void timeAdvanceGrant(LogicalTime theTime)
 		throws InvalidFederationTime, TimeAdvanceWasNotInProgress,
 		FederateInternalError {
-	    _numberOfTAGs++;
-	    if(_numberOfTAGs<=10){
-		Date date = new Date();
-		//Time spent between the last TAR or NER and the TAG
-		double delay = (date.getTime() - _timeOfTheLastAdvanceRequest)/1000;
-		_TAGDelay= _TAGDelay + delay+ ";";
-		System.out.println("timeBetweenRequestAndTAG :" + delay + " seconds.");
-	    }
-
 	    
+	    Date date = new Date();
+            //Time spent between the last TAR or NER and the TAG
+	    _TAGDelay.add((date.getTime() - _timeOfTheLastAdvanceRequest)/1000);
+	    _timeOfTheLastAdvanceRequest=0;	    
 	    logicalTimeHLA = new CertiLogicalTime(_hlaTimeUnitValue
 		    * ((CertiLogicalTime) theTime).getTime());
 	    timeAdvanceGrant = true;
+	    _numberOfTAGs++;
+	    _numberOfTicks.add(0);
+
 	    if (_debugging) {
 		_debug(HlaManager.this.getDisplayName() + " INNER"
 			+ " timeAdvanceGrant() - TAG("
