@@ -105,10 +105,6 @@ import ptolemy.util.StringUtilities;
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-/**
- * @author thierry
- *
- */
 public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /**
