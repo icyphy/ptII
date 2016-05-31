@@ -4,7 +4,7 @@ The FMUImport actor looks for the FMUImport shared library in $PTII/lib.
 
 After editing jniToFMU, to update the shared library in $PTII/lib, run
 
-  make update
+  make install
 
 Then, when you are satisfied with your changes, commit the shared library.
 
