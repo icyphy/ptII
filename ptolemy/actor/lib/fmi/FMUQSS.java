@@ -768,12 +768,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     terminateSimulation, nominalsOfContinuousStatesChanged,
                     valuesOfContinuousStatesChanged, nextEventTimeDefined,
                     nextEventTime);
+            
+            // Get the first time event and initialize last event.
+            // Note that getNextEventTime invoke fmiEnterEventMode,
+            // fmiNewDiscreteStates and fmiEneterContinuousTimeMode
+            _lastEventTime = _getNextEventTime(currentTime);
 
-            // Enter discrete states in FMU.
-            _fmiNewDiscreteStatesJNI();
-
-            // Enter continuous states in FMU.
-            _fmiEnterContinuousTimeModeJNI();
         }
 
         // Get and configure the QSS integrator.
@@ -855,7 +855,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 .predictQuantizationEventTimeEarliest();
 
         // Handle time events and return minimum between predicted and next event time. 
-        possibleFireAtTime = _getNextEventTime(possibleFireAtTime);
+        if ((_lastEventTime != null) && currentTime.compareTo(_lastEventTime) == 0){
+        	possibleFireAtTime = _getNextEventTime(possibleFireAtTime);
+        	_lastEventTime  = possibleFireAtTime;
+        }
 
         if (getEventIndicatorCount() > 0) {
             // Handle state events      
@@ -1756,10 +1759,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     /**
      * Get the next time event if define.
      *
-     * @param possibleFireAtTime The predicted quantization time.
+     * @param currentTime The current time.
      * @exception IllegalActionException If an error occurs when handling events.
      */
-    private Time _getNextEventTime(Time possibleFireAtTime)
+    private Time _getNextEventTime(Time currentTime)
             throws IllegalActionException {
 
         // Enter event mode 
@@ -1787,11 +1790,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Check if predicted time is bigger than next event time in which case
             // reset the predicted time to the next event time.
             final boolean timeEventOccurred = fmi20EventInfo.nextEventTimeDefined == 1
-                    && fmi20EventInfo.nextEventTime < possibleFireAtTime
+                    && fmi20EventInfo.nextEventTime < currentTime
                             .getDoubleValue();
-            if (timeEventOccurred && (possibleFireAtTime
+            if (timeEventOccurred && (currentTime
                     .compareTo(fmi20EventInfo.nextEventTime) > 0)) {
-                possibleFireAtTime = new Time(_director,
+            	currentTime = new Time(_director,
                         fmi20EventInfo.nextEventTime);
                 _numberOfTimeEvents++;
                 _forceStateQuantization = true;
@@ -1799,7 +1802,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     _debugToStdOut(String.format(
                             "-- Id{%d} predicts a time event at time %s",
                             System.identityHashCode(this),
-                            possibleFireAtTime.toString()));
+                            currentTime.toString()));
+                }
+                else{
+                	return null;
                 }
             }
 
@@ -1809,6 +1815,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             _eventInfoJNI.nextEventTimeDefined = 0;
             _eventInfoJNI.nextEventTime = -1.0;
 
+            
             // Check event indicator for time event
             _fmiNewDiscreteStatesJNI();
 
@@ -1818,18 +1825,21 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Check if predicted time is bigger than next event time in which case
             // reset the predicted time to the next event time.
             final boolean timeEventOccurred = _eventInfoJNI.nextEventTimeDefined == 1
-                    && _eventInfoJNI.nextEventTime < possibleFireAtTime
+                    && _eventInfoJNI.nextEventTime < currentTime
                             .getDoubleValue();
-            if (timeEventOccurred && (possibleFireAtTime
+            if (timeEventOccurred && (currentTime
                     .compareTo(_eventInfoJNI.nextEventTime) > 0)) {
-                possibleFireAtTime = new Time(_director,
+            	currentTime = new Time(_director,
                         _eventInfoJNI.nextEventTime);
                 _numberOfTimeEvents++;
                 _forceStateQuantization = true;
             }
+            else{
+            	return null;
+            }
 
         }
-        return possibleFireAtTime;
+        return currentTime;
     }
 
     /**
@@ -2872,6 +2882,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /** Track requests for firing. */
     private Time _lastFireAtTime;
+    
+    /** Track last event time. */
+    private Time _lastEventTime;
 
     /** Record of model variable index of continuous states. */
     private Map<String, Integer> _modelVariableIndexesOfInputsAndContinuousStates;
