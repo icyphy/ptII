@@ -370,6 +370,19 @@
       <a href="#CheckingKnownFailedTests">Checking Known Failed Test Results</a>
       below).</p>
 
+    <p>Platform specific tests may be put in to directories like
+      <code>auto/macosx-x86_64/</code>
+      or <code>auto/linux-amd64/</code>.  The name of the directory is
+      based on the value of the os.name Java property with the spaces
+      removed and the results converted to lower case followed by a
+      dash, followed by the value of the os.arch Java property.</p>
+
+    <p>The <code>auto32/</code> directory contains 32-bit tests that
+      should run on any 32-bit platform.</p>
+
+    <p>The <code>auto/nonTerminatingTests/</code> directory contains
+      tests that are not expected to terminate.</p>
+    
     <p>Using Vergil to write tests is quite a bit easier than writing Tcl
       code, but it is much more difficult to handle corner cases and test
       for erroneous conditions by writing models.  Tcl tests are unit tests,
