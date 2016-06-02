@@ -11,6 +11,7 @@
 /ptolemy/util/test/junit/AutoCGKnownFailedTests.java
 /ptolemy/util/test/junit/AutoCGTests.java
 /ptolemy/util/test/junit/AutoKnownFailedTests.java
+/ptolemy/util/test/junit/AutoNameArchTests.java
 /ptolemy/util/test/junit/AutoTests.java
 /ptolemy/util/test/junit/JUnitCGCNoInlineTestBase.java
 /ptolemy/util/test/junit/JUnitCGCTestBase.java
