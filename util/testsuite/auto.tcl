@@ -61,6 +61,56 @@ if [ file isdirectory auto/knownFailedTests ] {
 # Just in case the test fails before returning and setting the application.
 set application [java::null]
 
+# Run os.name and os.arch specific tests
+regsub -all { } [string tolower [java::call System getProperty os.name]] "" osName
+set osArch [java::call System getProperty os.arch]
+set autoNameArch $osName-$osArch
+
+# Names are macosx-x86_64, linux-amd64 etc.
+
+if [ file isdirectory auto/$autoNameArch ] {
+    foreach file [glob -nocomplain auto/$autoNameArch/*.xml] {
+    set relativeFilename \
+	    [java::call ptolemy.util.StringUtilities substituteFilePrefix \
+	    $PTII $file {$PTII}]
+
+    puts "------------------ testing $relativeFilename ($autoNameArch)"
+    test "Auto" "Automatic test in file $relativeFilename ($autoNameArch)" {
+	    # FIXME: we should use $relativeFilename here, but it
+	    # might have backslashes under Windows, which causes no end
+	    # of trouble.
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
+                  seconds at [clock format [clock seconds]]"
+	set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
+        if [catch {set application [createAndExecute $file]} errMsg] {
+	    $watchDog cancel
+            error $errMsg
+        } else {
+	    $watchDog cancel
+   	}
+        list {}
+    } {{}}
+    test "Auto-rerun" "Automatic test rerun in file $file" {
+    	set timeout 200000
+        puts "auto.tcl: Setting watchdog for [expr {$timeout / 1000}]\
+                  seconds at [clock format [clock seconds]]"
+        if {[java::isnull $application]} {
+            error "application was null, there was a problem with the previous run."
+        } else {
+            set watchDog [java::new ptolemy.util.test.WatchDog $timeout]
+            if [catch {$application rerun} errMsg] {
+                $watchDog cancel
+                error $errMsg
+            } else {
+                $watchDog cancel
+            }
+        }
+	list {}
+    } {{}}
+    }
+}
+
 if [ file isdirectory auto/nonTerminatingTests ] {
     foreach file [glob -nocomplain auto/nonTerminatingTests/*.xml] {
 	# Get the name of the current directory relative to $PTII
