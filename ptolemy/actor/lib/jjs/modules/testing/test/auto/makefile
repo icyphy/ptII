@@ -50,6 +50,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
+	Testing.xml \ 
+	testNestedSuites.js \
+	TestNestedSuites.xml
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

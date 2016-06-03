@@ -54,7 +54,7 @@ exports.Testing = function() {
     // Requiring mocha.js creates a variable named mocha and loads content into it.
 	require('testing/mocha/mocha.js');
 	mocha.setup('bdd');
-	mocha.reporter('text');
+	mocha.reporter('junit');
 	
 	// TODO:  Data structures to store the results
 };

@@ -3284,6 +3284,243 @@ function errorJSON(err) {
 
 }); // module: reporters/json.js
 
+/** A reporter that emits a JSON representation of the test results.
+// Portions of the code are copied and modified from mocha-junit-reporter.
+// https://github.com/michaelleeallen/mocha-junit-reporter
+/* 
+ * MIT License
+Copyright (c) 2015 Michael Allen
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+ */
+
+require.register("reporters/junit.js", function(module, exports, require) {
+	var self = this;
+
+	/**
+	 * Module dependencies.
+	 */
+
+	var Base = require('./base');
+	
+	/**
+	 * Expose `JUnit`.
+	 */
+	
+	exports = module.exports = JUnit;
+
+	function JUnit(runner) {
+		this.runner = runner;
+		var self = this;
+		this.xmlOutput = [];		
+		
+		// Track the current root suite, and therefore any sub-suites, to 
+		// properly handle nested tags in the XML output.
+		this.currentSuite = {};
+		  
+		// Get functionality from the Base reporter.
+		Base.call(this, runner);
+		  
+		// Clear results
+		runner.on('start', function() {
+			self.xmlOutput = [];
+			self.xmlOutput.push("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
+			self.xmlOutput.push("<testsuites>\n");
+			self.nestCount = 0;
+			this.currentSuite = {};
+		});
+		
+		runner.on('suite', function(suite) {
+		    if (suite.root) {
+		    	suite.title = 'Root Suite';
+			}
+		    
+		    // If this suite is at the top level of the hierarchy, remember it.
+		    if (Object.keys(self.currentSuite).length === 0) {
+		    	self.currentSuite = suite;
+		    }
+		    
+		    // Print opening tag for this suite.
+			self.xmlOutput.push("<testsuite " + 
+					"name=\"" + suite.title + "\" tests=\"" + 
+					suite.tests.length + "\"" + ">\n");
+		    
+			// If suite has no tests or suites, print closing tag.
+			// NOTE: A "suite" event does not seem to be generated in this case.
+			// Check just in case.
+			if ( (!suite.hasOwnProperty("tests") || suite.tests.length < 1) &&
+				 (!suite.hasOwnProperty("suites") || suite.suites.length < 1)) {
+				suite.complete = true;
+				self.xmlOutput.push("</testsuite>\n");
+			}
+		});
+		
+		runner.on('pass', function(test) {
+			self.xmlOutput.push("<testcase");
+			
+			// For now, do not print elapsed time, as this may cause exact-match
+			// regression testing to fail (e.g. Ptolemy Test actor).
+			/*
+			self.xmlOutput.push("name=\"" + test.title + "\" time=\"" + 
+					( typeof test.duration === 'undefined' ? 0 : (test.duration / 1000)) + 
+					"\" >");
+			*/
+			self.xmlOutput.push("name=\"" + test.title + "\" >");
+			
+			self.xmlOutput.push("</testcase>\n");
+			
+			// Remove this test case from the current suite.  If there are no
+			// more test cases, print a closing tag for the suite, recursively.
+			self.removeTest(self.currentSuite, test.fullTitle());
+			
+		});
+
+		runner.on('fail', function(test, err) {
+			self.xmlOutput.push("<testcase");
+			
+			// For now, do not print elapsed time, as this may cause exact-match
+			// regression testing to fail (e.g. Ptolemy Test actor).
+			/*
+			self.xmlOutput.push("name=\"" + test.title + "\" time=\"" + 
+					( typeof test.duration === 'undefined' ? 0 : (test.duration / 1000)) + 
+					"\" >");
+			*/
+			self.xmlOutput.push("name=\"" + test.title + "\" >");
+			
+			self.xmlOutput.push("<failure message=\"" + 
+					self.removeInvalidCharacters(err.stack) +
+					"\"/>");
+			
+			self.xmlOutput.push("</testcase>\n");
+			
+			// Remove this test case from the current suite.  If there are no
+			// more test cases, print a closing tag for the suite, recursively.
+			self.removeTest(self.currentSuite, test.fullTitle());
+		});
+
+		runner.on('pending', function(test) {
+			// TODO:  Handle pending; do example.
+		});
+
+		runner.on('end', function(){			
+			self.xmlOutput.push("</testsuites>\n");
+			var xmlString = self.xmlOutput.join(' ');
+			console.log(xmlString);
+			runner.emit('done', xmlString);
+		});
+	}
+	
+	/** Mark completed suites.  A suite is completed if it has no more test 
+	 * cases and no sub-suites.  If a suite is completed, check if parent is 
+	 * also now completed.  
+	 * @param suite The suite to check for completion.
+	*/
+	JUnit.prototype.completeSuite = function(suite) {
+		var incomplete = false;
+		
+		// If suite has no sub-suites, mark it completed and print closing tag.	
+		if (!suite.hasOwnProperty("suites") || suite.suites.length < 1) {
+			suite.completed = true;
+			this.xmlOutput.push("</testsuite>\n");
+			
+			// Check if parent is now completed.
+			this.completeSuite(suite.parent);
+		} else {
+			for (var i = 0; i < suite.suites.length; i++) {
+				// If suite has subsuites, check if they are completed.
+				
+				// First, check for empty suites (no tests and no sub-suites).
+				// Empty suites do not generate a "suite" event, but do exist
+				// as sub-suites of some parent suite.  These need to be marked 
+				// as completed.
+				var childSuite = suite.suites[i];
+				if ( (!childSuite.hasOwnProperty("completed") || childSuite.completed === false) &&
+					  (!childSuite.hasOwnProperty("tests") || childSuite.tests.length === 0 ) && 
+					  (!childSuite.hasOwnProperty("suites") || childSuite.suites.length === 0)) {
+					childSuite.completed = true;
+				} else if (!childSuite.hasOwnProperty("completed") || !childSuite.completed) {
+					incomplete = true;
+					break;
+				}
+			}
+			
+			if(!incomplete) {
+				suite.completed = true;
+				this.xmlOutput.push("</testsuite>\n");
+				
+				// Check if parent is now completed.
+				if (suite.hasOwnProperty("parent")) {
+					this.completeSuite(suite.parent);
+				}
+			}
+		}
+
+	};
+	
+	/** Remove characters that are not valid in XML from text.
+	 * @param {string} Original text.
+	 * @returns {string} Text without invalid XML characters.
+	 */
+	JUnit.prototype.removeInvalidCharacters = function(input){
+	  // A subset of invalid characters as defined in http://www.w3.org/TR/xml/#charsets that can occur in e.g. stacktraces
+	  var INVALID_CHARACTERS = ['\u001b'];
+		
+	  return INVALID_CHARACTERS.reduce(function (text, invalidCharacter) {
+	    return text.replace(new RegExp(invalidCharacter, 'g'), '');
+	  }, input);
+	};
+	
+	/** Remove the test case with the given full title, since it is completed.
+	 * This function assumes that test cases have unique full names.
+	 * This function should initially be called on the root suite.  
+	 * The function will recursively call itself until the test case is found.
+	 * @suite The suite that might contain the test case.  Initially, the 
+	 * root suite.
+	 * @fullTitle The full title of the test case, which includes the titles of
+	 * all ancestor suites.
+	 */
+	JUnit.prototype.removeTest = function(suite, fullTitle){
+		var found = false;
+		
+		// Check this suite for test case.  If found, remove it.
+		if (suite.hasOwnProperty("tests")) {
+			for (var i = 0; i < suite.tests.length; i++) {
+				if (suite.tests[i].fullTitle() === fullTitle) {
+					suite.tests.splice(i, 1);
+					found = true;
+					break;
+				}
+			}
+		}
+		
+		if (found) {
+			// If all test cases are completed, check if the suite is completed.
+			// I.e., all sub-suites are also completed.
+			if (suite.tests.length === 0){
+				this.completeSuite(suite);
+			}
+		} else {
+			// Otherwise, keep looking for the test case.
+			if (suite.hasOwnProperty("suites")) {
+				for (var i = 0; i < suite.suites.length; i++){
+					this.removeTest(suite.suites[i], fullTitle);
+				}
+			} 
+		}
+	};
+	
+});	// module: reporters/junit.js
+
 require.register("reporters/landing.js", function(module, exports, require){
 /**
  * Module dependencies.
