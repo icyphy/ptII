@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0710200097183211">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{529.3382334391267, 349.9199615478512}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{529.3382334391266, 349.9199615478511}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
@@ -31,7 +31,7 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="1e-6">
+        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="1e-7">
         </property>
         <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
         </property>
@@ -39,7 +39,7 @@
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {0.0}), smoothToken(0.999999, {-1.0}), smoothToken(0.9987427343, {-1.0}), smoothToken(0.9982227886, {-1.0}), smoothToken(0.9967085178, {-1.0}), smoothToken(0.7354485323, {-1.0}), smoothToken(0.7342857296, {-1.0}), smoothToken(0.7337108683, {-1.0}), smoothToken(0.7325548278, {-1.0}), smoothToken(0.7319772523, {-1.0}), smoothToken(0.4921493183, {-1.0}), smoothToken(0.3499958122, {-1.0}), smoothToken(-5.551115123125783E-17, {-1.0}), smoothToken(-0.7518379134, {-1.0}), smoothToken(-9.0, {-1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {0.0}), smoothToken(0.9999999, {-1.0}), smoothToken(0.0, {-1.0}), smoothToken(-0.7508520847, {-1.0}), smoothToken(-9.0, {-1.0})}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -47,13 +47,13 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(-2.5, {0.0}), smoothToken(-2.4999975, {1.0}), smoothToken(-2.4987427343, {1.0}), smoothToken(-2.4982227886, {1.0}), smoothToken(-2.4967085178, {1.0}), smoothToken(-2.2354485323, {1.0}), smoothToken(-2.2342857296, {1.0}), smoothToken(-2.2337108683, {1.0}), smoothToken(-2.2325548278, {1.0}), smoothToken(-2.2319772523, {1.0}), smoothToken(-1.9921493183, {1.0}), smoothToken(-1.8499958122, {1.0}), smoothToken(-1.5, {1.0}), smoothToken(-0.7481620866, {1.0}), smoothToken(7.5, {1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(-2.5, {0.0}), smoothToken(-2.49999975, {1.0}), smoothToken(-1.5, {1.0}), smoothToken(-0.7491479153, {1.0}), smoothToken(7.5, {1.0})}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 90.0}">
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(4.0, {0.0}), smoothToken(3.999996, {-2.0}), smoothToken(3.9974854686, {-2.0}), smoothToken(3.9964455772, {-2.0}), smoothToken(3.9934170356, {-2.0}), smoothToken(3.4708970646, {-2.0}), smoothToken(3.4685714592, {-2.0}), smoothToken(3.4674217366, {-2.0}), smoothToken(3.4651096556, {-2.0}), smoothToken(3.4639545046, {-2.0}), smoothToken(2.9842986366, {-2.0}), smoothToken(2.6999916244, {-2.0}), smoothToken(2.0, {-2.0}), smoothToken(0.4963241732, {-2.0}), smoothToken(-16.0, {-2.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(4.0, {0.0}), smoothToken(3.9999996, {-2.0}), smoothToken(2.0, {-2.0}), smoothToken(0.4982958306, {-2.0}), smoothToken(-16.0, {-2.0})}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 220.0}">
         </property>
@@ -73,7 +73,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="10.0"/>
-<yRange min="-16.0" max="7.500000000000002"/>
+<yRange min="-16.0" max="7.5"/>
 <default connected="no"/>
 </plot>?>
         </configure>
