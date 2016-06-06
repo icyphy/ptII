@@ -892,22 +892,25 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         if (getEventIndicatorCount() > 0) {
             // Handle state events      
-            // Compute the possible next state event time
-            final Time possibleNextStateEventTime = _zcSolver
-                    .predictQuantizationEventTimeEarliest();
-
             // Check if the predicted time is bigger than a state event time in which case 
             // reset the predicted time to the state event time.
-            if (possibleFireAtTime.compareTo(possibleNextStateEventTime) > 0) {
-                possibleFireAtTime = possibleNextStateEventTime;
-                if (_checkStateEvents(possibleNextStateEventTime)) {      
-                    _forceQuantizationStateEvents = true;
-                    _numberOfStateEvents++;
-                    if (_debugging) {
-                        _debugToStdOut(String.format(
-                                "-- Id{%d} predicts a state event at time %s",
-                                System.identityHashCode(this),
-                                possibleFireAtTime.toString()));
+            // Needs to see how this should be implemented on Monday.....
+            if (_checkStateEvents(possibleFireAtTime)) {
+                // Compute the possible next state event time
+                final Time possibleNextStateEventTime = _zcSolver
+                        .predictQuantizationEventTimeEarliest();
+                if (possibleFireAtTime.compareTo(possibleNextStateEventTime) > 0) {
+                    possibleFireAtTime = possibleNextStateEventTime;
+                    // Check if we have a real state event and if yes broadcast the states.
+                    if (_checkStateEvents(possibleFireAtTime)) {
+                        _forceQuantizationStateEvents = true;
+                        _numberOfStateEvents++;
+                        if (_debugging) {
+                            _debugToStdOut(String
+                                    .format("-- Id{%d} predicts a state event at time %s",
+                                            System.identityHashCode(this),
+                                            possibleFireAtTime.toString()));
+                        }
                     }
                 }
             }
