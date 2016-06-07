@@ -110,7 +110,6 @@ public class CertiRtig extends NamedObj {
      *  failed or if the RTIG subprocess it not running.
      */
     public void exec() throws IllegalActionException {
-	//HlaManager.setStartTime();
         System.out.println("CertiRtig: " + _hlaManager.getFullName() +  ": About to invoke rtig: "
                 + "\ncommand: " + java.util.Arrays.toString(_commandArray)
                 + "\nenvironment: " + java.util.Arrays.toString(_environmentArray)
@@ -258,7 +257,6 @@ public class CertiRtig extends NamedObj {
     public void terminateProcess() throws IllegalActionException {
         if (_process != null) {
             System.out.println("CertiRtig: " + _hlaManager.getFullName() + ": About to terminate rtig.");
-            
             try {
                 // Close the stdin of the subprocess.
                 _process.getOutputStream().close();                

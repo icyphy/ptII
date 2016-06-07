@@ -249,10 +249,10 @@ TimeRegulator {
     public HlaManager(CompositeEntity container, String name)
 	    throws IllegalActionException, NameDuplicationException {
 	super(container, name);
-	
+
 	_file = _createTextFile("org/hlacerti/lib/data.txt");
 	_csvFile = _createTextFile("org/hlacerti/lib/data.csv");
-	
+
 	_noObjectDicovered = true;
 	_rtia = null;
 	_federateAmbassador = null;
@@ -739,7 +739,9 @@ TimeRegulator {
 		_rtia.tick();
 		if(_timeOfTheLastAdvanceRequest>0){
 		    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
-	        }
+		}else{
+		    _numberOfOtherTicks++;
+		}
 	    } catch (ConcurrentAccessAttempted e) {
 		throw new IllegalActionException(this, e,
 			"ConcurrentAccessAttempted ");
@@ -887,6 +889,8 @@ TimeRegulator {
 	try {
 	    int id = _registeredObject.get(_federateName + " " + senderName);
 	    _rtia.updateAttributeValues(id, suppAttributes, tag, ct);
+	    _numberOfUAVs++;
+	    
 	} catch (Exception e) {
 	    throw new IllegalActionException(this, e, e.getMessage());
 	}
@@ -911,13 +915,8 @@ TimeRegulator {
 
 	writeNumberOfHLACalls();
 	writeDelays();
-	_numberOfTARs=0;
-	_numberOfNERs=0;
-	_numberOfTAGs=0;
-	_timeOfTheLastAdvanceRequest=0;
-	_TAGDelay=new ArrayList<Double>();
-	_numberOfTicks=new ArrayList<Integer>();
-	
+	initializeReportVariables();
+
 
 	if (_debugging) {
 	    _debug(this.getDisplayName() + " wrapup() - ... so termination");
@@ -1085,6 +1084,22 @@ TimeRegulator {
 	_startTime = System.nanoTime();
     }
 
+    /**Return the file .csv that is used to register the reports of this federate.
+     * @return the _csvFile that is used to register the reports of this federate.
+     * @see #setCsvFile
+     */
+    public File getCsvFile() {
+        return _csvFile;
+    }
+
+    /**Set the file .csv that is used to register the repports of this federate.
+     * @param _csvFile The _csvFile that is going to be used to register the repports of this federate.
+     * @see #getCsvFile
+     */
+    public void setCsvFile(File _csvFile) {
+        this._csvFile = _csvFile;
+    }
+
     /** Calculate the duration of the execution of the federation.
      * Uses the static value of the startTime of the execution.
      * @return The duration of the execution of the federation.
@@ -1099,7 +1114,6 @@ TimeRegulator {
      * time step and the runtime, in a file.
      * The name and location of this file are specified in the initialization of the 
      * variable file.
-     * @param fileExtension The extension of the file that is going to be written.
      */
     public void writeNumberOfHLACalls(){
 	try{
@@ -1111,7 +1125,8 @@ TimeRegulator {
 
 	    nameOfTheFile = nameOfTheFile.substring(1, nameOfTheFile.lastIndexOf('.')) + ".xml";
 
-	    String info = "Federate: "+ nameOfTheFederate +" in the model: "+nameOfTheFile+ "\n" +"stopTime: " +stopTime+ "\n";
+	    String info = "Federate: "+ nameOfTheFederate +" in the model: "+nameOfTheFile+ "\n" +"stopTime: " +stopTime+ "\n"
+		    + "hlaTimeUnit: "+_hlaTimeUnitValue + "\n";
 	    if(_timeStepped){
 		info = info +"Time Step: "  + _hlaTimeStep + "\n" 
 			+ "Number of TARs: " +_numberOfTARs;
@@ -1121,27 +1136,32 @@ TimeRegulator {
 	    info = info + "\n"+ "Number of TAGs: " + _numberOfTAGs +"\n" 
 		    +"Runtime: " +calculateRuntime()+"\n";
 	    info = date.toString() + "\n"  + info;
-	    _writeInTextFile(_file,info);
-	    System.out.println(info);
+	    writeInTextFile(_file,info);
 	}catch(Exception e){
 	    System.out.println("Couldn't write in the txt file.");
 	}
 
-    }public void writeDelays(){
+    }
+    /** Write a report containing(in a .csv file {@link #_csvFile}), among other informations, 
+     * the number of ticks, the delay between a NER or a TAR and its respective TAG, the number of UAVs and RAVs.
+    */
+    public void writeDelays(){
 	try{
 	    Date date = new Date();
 	    String fullName=federateName.toString();
 	    String nameOfTheFile= fullName.substring(fullName.indexOf('{')+1,  fullName.lastIndexOf('.'));
 	    String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
 	    String info= date.toString() + "\nFederate: "+ nameOfTheFederate + ";in the model:;"+ nameOfTheFile
-		    + "\nApproach: ;";
+		    +"\nhlaTimeUnit: ;"+ _hlaTimeUnitValue + ";Approach: ;";
 	    if(_timeStepped){
-		info = info + "TAR;Time step:;"+ _hlaTimeStep +"\n";
+		info = info + "TAR;Time step:;"+ _hlaTimeStep +";Number of TARs:;"+ _numberOfTARs+"\n";
 	    }else if(_eventBased){
-		info = info + "NER\n";
+		info = info + "NER;Number of NERs:;" + _numberOfNERs +"\n";
 	    }
-	    info= info + "runtime: ;"+ calculateRuntime();
+	    info = info + "Number of UAVs:;"+_numberOfUAVs+ ";Number of RAVs:;" + _numberOfUAVs +"\n";
 	    
+	    info= info + "runtime: ;"+ calculateRuntime();
+
 	    String numberOfTicks="\nNumber of ticks:;";
 	    String delay="\nDelay :;";
 	    double averageNumberOfTicks=0;
@@ -1149,33 +1169,60 @@ TimeRegulator {
 	    String header="\nInformation :;";
 	    String delayPerTick="\nDelay per tick;";
 	    for (int i = 0; i < _numberOfTAGs; i++) {
-		header = header +  (i+1) + ";";
-		numberOfTicks=numberOfTicks+_numberOfTicks.get(i) +";";
-		delay = delay + _TAGDelay.get(i) +  ";";
-		if(_numberOfTicks.get(i)>0){
-		    delayPerTick= delayPerTick + (_TAGDelay.get(i)/_numberOfTicks.get(i)) + ";";
-		}else{
-		    delayPerTick= delayPerTick + "0;";
+		if(i<10){
+		    header = header +  (i+1) + ";";
+		    numberOfTicks=numberOfTicks+_numberOfTicks.get(i) +";";
+		    delay = delay + _TAGDelay.get(i) +  ";";
+		    if(_numberOfTicks.get(i)>0){
+			delayPerTick= delayPerTick + (_TAGDelay.get(i)/_numberOfTicks.get(i)) + ";";
+		    }else{
+			delayPerTick= delayPerTick + "0;";
+		    }
 		}
 		averageNumberOfTicks=averageNumberOfTicks+_numberOfTicks.get(i);
 		averageDelay = averageDelay + _TAGDelay.get(i);
 	    }
 	    header = header +"Sum;";
+	    int totalNumberOfHLACalls=_numberOfOtherTicks +(int)averageNumberOfTicks
+		    +_numberOfTARs +_numberOfNERs+_numberOfRAVs + _numberOfUAVs + _numberOfTAGs;
 	    numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
 	    delay = delay + averageDelay + ";";
 	    delayPerTick = delayPerTick + ";";
 	    header = header +"Average;";
+	    
+	    _reportFile=_createTextFile("org/hlacerti/lib/"+ nameOfTheFederate.substring(1, nameOfTheFederate.length())+".csv");
+	    writeInTextFile(_reportFile,_hlaTimeStep + ";"+_hlaLookAHead + ";" + 
+	    calculateRuntime() +";" + totalNumberOfHLACalls+";"+averageDelay );
+	    
 	    averageNumberOfTicks=averageNumberOfTicks/_numberOfTAGs;
 	    averageDelay=averageDelay/_numberOfTAGs;
 	    delayPerTick = delayPerTick + (averageDelay/averageNumberOfTicks) + ";";
 	    numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
 	    delay = delay + averageDelay + ";";
 	    
-	    _writeInTextFile(_csvFile,info + header +delay + numberOfTicks+ delayPerTick);
+	    writeInTextFile(_csvFile,info + header +delay + numberOfTicks+ delayPerTick+"\nOther ticks:;"+_numberOfOtherTicks +"\nTotal number of HLA Calls:;"+ totalNumberOfHLACalls);
 	}catch(Exception e){
 	    System.out.println("Couldn't write in the csv file.");
 	}
 
+    }
+    
+    /** Write information in a txt file.
+     * @param data The information you want to write.
+     * @param file The file in which you want to write.
+     * @return Return true if the information was successfully written in the file.
+     */
+    public boolean writeInTextFile(File file,String data){
+	try{
+	    BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+	    writer.write(data);
+	    writer.newLine();
+	    writer.flush();
+	    writer.close();
+	    return true;
+	}catch(Exception e){
+	    return false;
+	}
     }
 
 
@@ -1217,14 +1264,14 @@ TimeRegulator {
     }
 
     /**
-     * make a conversion from certi logical time to ptolemy time
+     * Make a conversion from certi logical time to ptolemy time
      * @param ct certi logical time
      * @return ptolemy time
      * @throws IllegalActionException
      */
     private Time _convertToPtolemyTime(CertiLogicalTime ct)
 	    throws IllegalActionException {
-	return new Time(_director, ct.getTime() / _hlaTimeUnitValue);
+	return new Time(_director, ct.getTime()/_hlaTimeUnitValue);
     }
 
     /**
@@ -1632,22 +1679,20 @@ TimeRegulator {
 	}
     }
 
-    /** Write information in a txt file.
-     * @param data The information you want to write.
-     * @param file The file in which you want to write.
+    /**
+     * Initialize the variables that are going to be used to create the reports 
+     * in the files {@link #_file} and {@link #_csvFile} 
      */
-    private boolean _writeInTextFile(File file,String data){
-	try{
-	    BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
-	    writer.write(data);
-	    writer.newLine();
-	    writer.newLine();
-	    writer.flush();
-	    writer.close();
-	    return true;
-	}catch(Exception e){
-	    return false;
-	}
+    private void initializeReportVariables(){
+	_numberOfTARs=0;
+	_numberOfNERs=0;
+	_numberOfTAGs=0;
+	_timeOfTheLastAdvanceRequest=0;
+	_numberOfOtherTicks=0;
+	_TAGDelay=new ArrayList<Double>();
+	_numberOfTicks=new ArrayList<Integer>();
+	_numberOfRAVs=0;
+	_numberOfUAVs=0;
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -1725,6 +1770,11 @@ TimeRegulator {
      * federate.
      */
     private File _csvFile;
+    
+    /** Represents a ".csv" file that is going to keep track of the number of HLA calls of the
+     * federate.
+     */
+    private File _reportFile;
 
     /** Represents the instant when the simulation is fully started 
      * (when the last federate starts running).
@@ -1760,7 +1810,7 @@ TimeRegulator {
      */
     private double _hlaTimeUnitValue;
 
-    /*
+    /**
     Set to false once in discoverObjectInstance and resert to true in noNewActors
      */
     private boolean _noObjectDicovered;
@@ -1769,16 +1819,26 @@ TimeRegulator {
      * The time of the last TAR or last NER.
      */
     private double _timeOfTheLastAdvanceRequest;
-    
+
     /**
      * Array that contains the delays between a NER or TAR and its respective TAG..
      */
     private ArrayList<Double> _TAGDelay;
-    
+
     /**
      * Array that contains the number of ticks between a NER or TAR and its respective TAG.
      */
     private ArrayList<Integer> _numberOfTicks;
+
+    /**
+     * Represents the number of the ticks that were not considered in the variable {@link #_numberOfTicks}
+     */
+    private int _numberOfOtherTicks;
+    
+    private int _numberOfRAVs;
+    
+    private int _numberOfUAVs;
+    
 
 
 
@@ -1802,6 +1862,7 @@ TimeRegulator {
 			.encodeString(_synchronizationPointName);
 		_rtia.registerFederationSynchronizationPoint(
 			_synchronizationPointName, rfspTag);
+		writeInTextFile(_csvFile, "\nSTART");
 	    } catch (RTIexception e) {
 		throw new IllegalActionException(this, e, e.getMessage());
 	    }
@@ -1813,6 +1874,8 @@ TimeRegulator {
 		    _rtia.tick2();
 		    if(_timeOfTheLastAdvanceRequest>0){
 			_numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);;
+		    }else{
+			_numberOfOtherTicks++;
 		    }
 		} catch (RTIexception e) {
 		    throw new IllegalActionException(this, e, e.getMessage());
@@ -1831,6 +1894,8 @@ TimeRegulator {
 		_rtia.tick2();
 		if(_timeOfTheLastAdvanceRequest>0){
 		    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+		}else{
+		    _numberOfOtherTicks++;
 		}
 	    } catch (RTIexception e) {
 		throw new IllegalActionException(this, e, e.getMessage());
@@ -1860,6 +1925,8 @@ TimeRegulator {
 		_rtia.tick2();
 		if(_timeOfTheLastAdvanceRequest >0 ){
 		    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+		}else{
+		    _numberOfOtherTicks++;
 		}
 	    } catch (RTIexception e) {
 		throw new IllegalActionException(this, e, e.getMessage());
@@ -1907,6 +1974,8 @@ TimeRegulator {
 		    _rtia.tick2();
 		    if(_timeOfTheLastAdvanceRequest>0){
 			_numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+		    }else{
+			_numberOfOtherTicks++;
 		    }
 		} catch (RTIexception e) {
 		    throw new IllegalActionException(this, e, e.getMessage());
@@ -1918,6 +1987,8 @@ TimeRegulator {
 		    _rtia.tick2();
 		    if(_timeOfTheLastAdvanceRequest>0){
 			_numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+		    }else{
+			_numberOfOtherTicks++;
 		    }
 		} catch (RTIexception e) {
 		    throw new IllegalActionException(this, e, e.getMessage());
@@ -2050,12 +2121,9 @@ TimeRegulator {
 	ObjectClassNotDefined, FederateNotExecutionMember,
 	RTIinternalError, AttributeNotDefined, SaveInProgress,
 	RestoreInProgress, ConcurrentAccessAttempted {
-	    _numberOfNERs=0;
-	    _numberOfTARs=0;
-	    _numberOfTAGs=0;
-	    _TAGDelay=new ArrayList<Double>();
-	    _numberOfTicks=new ArrayList<Integer>();
+	    initializeReportVariables();
 	    _numberOfTicks.add(0);
+		
 
 	    this.timeAdvanceGrant = false;
 	    this.timeConstrained = false;
@@ -2179,6 +2247,8 @@ TimeRegulator {
 		throw new FederateInternalError(
 			"Received a RAV but could not put in "
 				+ "anyobject. Means the ChangeRequest has not been processed yet");
+	    }else{
+		_numberOfRAVs++;
 	    }
 	}
 
@@ -2372,11 +2442,11 @@ TimeRegulator {
 	public void timeAdvanceGrant(LogicalTime theTime)
 		throws InvalidFederationTime, TimeAdvanceWasNotInProgress,
 		FederateInternalError {
-	    
-	    
+
+
 	    logicalTimeHLA = new CertiLogicalTime(_hlaTimeUnitValue
 		    * ((CertiLogicalTime) theTime).getTime());
-            //Time spent between the last TAR or NER and the TAG
+	    //Time spent between the last TAR or NER and the TAG
 	    _TAGDelay.add((System.nanoTime() - _timeOfTheLastAdvanceRequest)/Math.pow(10, 9));
 	    _timeOfTheLastAdvanceRequest=0;
 	    timeAdvanceGrant = true;
