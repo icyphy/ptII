@@ -1,6 +1,6 @@
 /* Helper for the Global Data Plane (GDP) JavaScript module.
 
-   Copyright (c) 2015 The Regents of the University of California.
+   Copyright (c) 2015-2016 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -28,8 +28,13 @@
 
 package ptolemy.actor.lib.jjs.modules.gdp;
 
+import org.terraswarm.gdp.EP_TIME_SPEC;
 import org.terraswarm.gdp.GDP_GCL;
+import org.terraswarm.gdp.GDP_NAME;
 
+
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
 /** Helper for the GDP JavaScript module for use by accessors.
@@ -44,18 +49,19 @@ public class GDPHelper {
 
     /** Create a GDP Helper.
      *  @param logName FIXME: What is the format?
-     *  @param ioMode FIXME: What is the format?
+     *  @param ioMode The i/o mode for the log, one of GDP_GCL.GDP_MODE.ANY (for internal use only), GDP_GCL.GDP_MODE.RO (Read only), GDP_GCL.GDP_MODE.AO (Append Only) or GDP_GCL.GDP_MODE.RA (Read + append).
      */
-    public GDPHelper(String logName, int ioMode) {
-        _gcl = new GDP_GCL(logName, ioMode);
+    public GDPHelper(String logName, GDP_GCL.GDP_MODE ioMode) {
+        _gcl = new GDP_GCL(new GDP_NAME(logName), ioMode);
         _logName = logName;    
     }
 
     /** Append a string to the log.
-     *  @param data The string to be appended.
+     *  @param data The string to be appended, which assumed to be UTF-8.
      */   
     public void append(String data) {
-        _gcl.append(data);
+        byte [] bytes = data.getBytes(StandardCharsets.UTF_8);
+        _gcl.append(bytes);
     }
 
     /** Get the next data.
@@ -63,7 +69,8 @@ public class GDPHelper {
      *  @return The next data.
      */
     public String getNextData(int timeout) {
-        return _gcl.get_next_data(timeout);
+        HashMap<String, Object> gdp_event = GDP_GCL.get_next_event(_gcl, timeout);
+        return gdp_event.toString();
     }
     
     /** Read the indicated number of records.
@@ -71,24 +78,29 @@ public class GDPHelper {
      *  @return A string representing the records that were read.
      */
     public String read(long numberOfRecords) {
-        return _gcl.read(numberOfRecords);
+        HashMap<String,Object> data = _gcl.read(numberOfRecords);
+        return data.toString();
     }
 
     /** Subscribe to a log.
      *  @param currentObj The handle   
      *  @param startRecord The index of the starting record.
      *  @param numberOfRecords The number of records to read.
+     *  @param timeout The timeout in milliseconds.
      */
     public void subscribe(final ScriptObjectMirror currentObj, long startRecord,
-            int numberOfRecords) {
-        _gcl.subscribe(startRecord, numberOfRecords);
+            int numberOfRecords, int timeout) {
+        EP_TIME_SPEC timeoutSpec = new EP_TIME_SPEC(timeout/1000,
+                0, /* nanoseconds */
+                0.001f /* accuracy in seconds */);
+        _gcl.subscribe(startRecord, numberOfRecords, timeoutSpec);
         Runnable blocking = new Runnable() {
             public void run() {
                 while (_subscribed) {
                     // Zero arg means no timeout. Wait forever.
-                    String result = _gcl.get_next_data(0);
+                    HashMap<String, Object> result = GDP_GCL.get_next_event(_gcl, 0);
                     if (result != null) {
-                        currentObj.callMember("handleResponse", result);
+                        currentObj.callMember("handleResponse", result.toString());
                     } else {
                         _subscribed = false;
                     }
