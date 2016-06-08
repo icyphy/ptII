@@ -4,13 +4,13 @@
 <entity name="FMUQSSStateEvent4_QSS2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={65, 24, 1375, 876}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -4, 1920, 1204}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1161, 787]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1706, 1087]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0710200097183211">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{529.3382334391266, 349.9199615478511}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{783.7685872395822, 489.9733673095698}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
@@ -21,7 +21,7 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="model StateEvent4&#10;  // This model has one time event at t=1s &#10;  // and one state event at t = 1.75s &#10;  // when simulated from 0 to 10s.&#10;  Real x1(start=1);&#10;  Real x2(start=-2.5);&#10;  Real x3(start=4);&#10;  Real y;&#10;  Real y1;&#10;equation &#10;  der(x1) = -1;&#10;  der(x2) = 1;&#10;  der(x3) = -2;&#10;  if ((x1 &gt; x2)) then&#10;    y = 1;&#10;  else&#10;    y = -1;&#10;  end if;&#10;&#10;  if (time &gt;= 1) then&#10;    y1 = 10;&#10;  else&#10;    y1 = 3;&#10;  end if;&#10;&#10;  annotation (uses(Modelica(version=&quot;3.2.1&quot;)));&#10;end StateEvent4;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="package StateEvents&#10;  model StateEvent4&#10;    // This model has one time event at t=1s &#10;    // and one state event at t = 1.75s &#10;    // when simulated from 0 to 10s.&#10;    Real x1(start=1);&#10;    Real x2(start=-2.5);&#10;    Real x3(start=4);&#10;    Real y;&#10;    Real y1;&#10;  equation &#10;    der(x1) = -1;&#10;    der(x2) = 1;&#10;    der(x3) = -2;&#10;    if ((x1 &gt; x2)) then&#10;      y = 1;&#10;    else&#10;      y = -1;&#10;    end if;&#10;&#10;    if (time &gt;= 1) then&#10;      y1 = 10;&#10;    else&#10;      y1 = 3;&#10;    end if;&#10;&#10;    annotation (uses(Modelica(version=&quot;3.2.1&quot;)));&#10;  end StateEvent4;&#10;end StateEvents;&#10;">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[0.0, 90.0]">
         </property>
@@ -31,7 +31,9 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="1e-7">
+        <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="1e-8">
+        </property>
+        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="1e-5">
         </property>
         <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
         </property>
@@ -39,7 +41,7 @@
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {0.0}), smoothToken(0.9999999, {-1.0}), smoothToken(0.0, {-1.0}), smoothToken(-0.7508520847, {-1.0}), smoothToken(-9.0, {-1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {0.0}), smoothToken(0.99999, {-1.0}), smoothToken(0.0, {-1.0}), smoothToken(-0.7508520871, {-1.0}), smoothToken(-9.0, {-1.0})}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -47,13 +49,13 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(-2.5, {0.0}), smoothToken(-2.49999975, {1.0}), smoothToken(-1.5, {1.0}), smoothToken(-0.7491479153, {1.0}), smoothToken(7.5, {1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(-2.5, {0.0}), smoothToken(-2.499975, {1.0}), smoothToken(-1.5, {1.0}), smoothToken(-0.7491479129, {1.0}), smoothToken(7.5, {1.0})}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 90.0}">
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(4.0, {0.0}), smoothToken(3.9999996, {-2.0}), smoothToken(2.0, {-2.0}), smoothToken(0.4982958306, {-2.0}), smoothToken(-16.0, {-2.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(4.0, {0.0}), smoothToken(3.99996, {-2.0}), smoothToken(2.0, {-2.0}), smoothToken(0.4982958258, {-2.0}), smoothToken(-16.0, {-2.0})}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 220.0}">
         </property>
