@@ -484,17 +484,21 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         if (!_firstRound) {
             // Signalize that the time event is reached and get a new one. 
             if (_lastEventTime !=null && currentTime.compareTo(_lastEventTime) == 0) {
-                if (_debugging) {
-                    _numberOfTimeEvents++;
+                _numberOfTimeEvents++;
+                //if (_debugging) {   
                     _debugToStdOut(String.format(
                             "-- Id{%d} has a time event at time %s",
                             System.identityHashCode(this),
                             currentTime.toString()));
-                }
+                //}
                 _lastEventTime = _getNextEventTime();
             }
-        }
-        
+            // Get the new event time if we have a step event
+            else if (_enterEventModeSE){
+                _lastEventTime = _getNextEventTime();
+                _enterEventModeSE = false ;
+            }
+        }          
         _numberOfSteps++;
     }
 
@@ -597,9 +601,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Initialize report variables
         _numberOfStateEvents = 0;
         _numberOfTimeEvents = 0;
+        _numberOfStepEvents = 0;
         _numberOfSteps = 0;
         
         _lastEventTime = null;
+        _enterEventModeSE = false;
 
         if (_debugging) {
             _debug("Called initialize()");
@@ -777,20 +783,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
             // Initialize FMU.
             _fmiInitializeJNI();
-
-            // Time event indicator
-            int newDiscreteStatesNeeded = 1;
-            int terminateSimulation = 0;
-            int nominalsOfContinuousStatesChanged = 0;
-            int valuesOfContinuousStatesChanged = 0;
-            int nextEventTimeDefined = 0;
-            double nextEventTime = -1.0;
-
-            // Define the event info
-            _eventInfoJNI = new FMI20EventInfo(newDiscreteStatesNeeded,
-                    terminateSimulation, nominalsOfContinuousStatesChanged,
-                    valuesOfContinuousStatesChanged, nextEventTimeDefined,
-                    nextEventTime);
             
             // Check event indicator for time event
             _fmiNewDiscreteStatesJNI();
@@ -905,16 +897,31 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     if (_checkStateEvents(possibleFireAtTime)) {
                         _forceQuantizationStateEvents = true;
                         _numberOfStateEvents++;
-                        if (_debugging) {
+                        //if (_debugging) {
                             _debugToStdOut(String
                                     .format("-- Id{%d} predicts a state event at time %s",
                                             System.identityHashCode(this),
                                             possibleFireAtTime.toString()));
-                        }
+                        //}
                     }
                 }
             }
         }
+
+		// Handle step events
+		if (_checkStepEvents(possibleFireAtTime)) {
+			_numberOfStepEvents++;
+			_enterEventModeSE = true;
+			if (_debugging) {
+				_debugToStdOut(String.format(
+						"-- Id{%d} predicts a step event at time %s",
+						System.identityHashCode(this),
+						possibleFireAtTime.toString()));
+			}
+			new Exception("Warning: FIXME: Need to do a step event "
+					+ "detection which is not supported.").printStackTrace();
+		}
+        
         if (_debugging) {
             _debugToStdOut(String.format("-- Id{%d} want to fire by time %s",
                     System.identityHashCode(this),
@@ -1164,12 +1171,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      */
     @Override
     public void wrapup() throws IllegalActionException {
-        if (_debugging) {
-            _debugToStdOut("Number of events in " + this.getDisplayName()
-                    + ": \n  steps: " + _numberOfSteps + "\n  stateEvents: "
-                    + _numberOfStateEvents + "\n  timeEvents: "
+        //if (_debugging) {
+            _debugToStdOut(" Number of steps: " + _numberOfSteps + "\n  stateEvents: "
+                    + _numberOfStateEvents + "\n  stepEvents: "
+                    + _numberOfStepEvents + "\n  timeEvents: "
                     + _numberOfTimeEvents);
-        }
+        //}
         if (!_useRawJNI()) {
             // Allow eventInfo to be garbaged collected.
             _eventInfo = null;
@@ -1357,6 +1364,56 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
         return false;
     }
+    
+    /**
+     * Return true if a step event occurred.
+     *
+     * @param nextFiringTime The next firing event time.
+     * @return True if a step event has occurred.
+     * @exception IllegalActionException If the fmiGetEventIndicators
+     * function is missing, or if calling it does not return fmiOK.
+     */
+    private boolean _checkStepEvents(Time nextFiringTime)
+            throws IllegalActionException {
+        if (!_completedIntegratorStepNotNeeded()) {
+            double stateVariables [] = new double [getStateCount()];
+            
+            double timeValue = nextFiringTime.getDoubleValue();
+            
+            // Set the states and the inputs and re-evaluate the event indicators.
+            for (int i = 0; i < getStateCount(); i++) {
+                stateVariables[i] = _qssSolver.evaluateStateModelContinuous(i,
+                		nextFiringTime);
+            }
+            
+            if (!_useRawJNI()) {
+                // Set the time in the FMU
+                _fmiSetTime(timeValue);
+
+                // Give {stateVariable} to the FMU.
+                _fmiSetContinuousStates(stateVariables);
+            } else {
+                // Set the time in the FMU
+                _fmiSetTimeJNI(timeValue);
+
+                // Set the continuous states.
+                _fmiSetContinuousStatesJNI(stateVariables);
+            }
+
+            // Update the FMUs inputs if needed.
+            _setFMUInputsAtCurrentTime(nextFiringTime, null, true);
+
+       
+            // Get step event indicator
+            boolean noSetFMUStatePriorToCurrentPoint = true;
+            boolean stepEvent = _fmiCompletedIntegratorStep(noSetFMUStatePriorToCurrentPoint);
+            if (stepEvent){
+                return true;
+            }
+            return false;
+        }
+        return false;
+    }
 
     /** Create a new QSS solver and initialize it for use by this actor.
      *  @exception IllegalActionException If the solver cannot be created or initialized.
@@ -1402,7 +1459,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Set quantization tolerances.
             // Set initial state values and quantization tolerances.
             final double absoluteQuantumMinimumEventDetection = 1e-20;
-            double modifiedInternalAbsoluteQuantumEventDetection = _internalRelativeQuantum;
+            double modifiedInternalAbsoluteQuantumEventDetection = _internalRelativeQuantum/100;
+            double relativeQuantumEventDetection = _internalRelativeQuantum/100;
             //final double relativeQuantumMinimumEventDetection = 1;
             for (int ii = 0; ii < evtInCt; ++ii) {
                 if (modifiedInternalAbsoluteQuantumEventDetection < absoluteQuantumMinimumEventDetection) {
@@ -1410,8 +1468,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 }
                 _zcSolver.setStateValue(ii, eventIndicators[ii]);
                 _zcSolver.setQuantizationTolerance(ii,
-                        absoluteQuantumMinimumEventDetection,
-                        _internalRelativeQuantum);
+                		modifiedInternalAbsoluteQuantumEventDetection,
+                		relativeQuantumEventDetection);
             }
 
         }
@@ -1838,12 +1896,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             }
 
         } else {
-            
-            // Reinitialize the event info.
-            _eventInfoJNI.newDiscreteStatesNeeded = 1;
-            _eventInfoJNI.nextEventTimeDefined = 0;
-            _eventInfoJNI.nextEventTime = -1.0;
-         
+                     
             // Check event indicator for time event
             _fmiNewDiscreteStatesJNI();
             
@@ -2699,7 +2752,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // A quantization-event implies other FMU outputs change.
         // Produce outputs to all outputs that do not depend on the states.
         _produceOutputs(currentTime);
-
+        
         // Reset hasChanged to false for next quantization events.
         // for (int i = 0; i < _indexesOfUpdatedModelVariables.size(); i++) {
         //    _fmiModelDescription.modelVariables
@@ -2872,6 +2925,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     /** QSS director. */
     private QSSDirector _director;
 
+    /** Enter event mode for step event. */
+    private boolean _enterEventModeSE;
+    
     /** Buffer for event indicators. */
     private double[] _eventIndicators;
 
@@ -2937,6 +2993,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /** The number of time events in this FMU. */
     private int _numberOfTimeEvents;
+    
+    /** The number of step evens. */
+    private int _numberOfStepEvents;
 
     /** The number of steps. */
     private int _numberOfSteps;
