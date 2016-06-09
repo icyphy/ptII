@@ -3331,13 +3331,12 @@ require.register("reporters/junit.js", function(module, exports, require) {
 		// Get functionality from the Base reporter.
 		Base.call(this, runner);
 		  
-		// Clear results
+		// Clear results.
 		runner.on('start', function() {
 			self.xmlOutput = [];
 			self.xmlOutput.push("<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n");
 			self.xmlOutput.push("<testsuites>\n");
-			self.nestCount = 0;
-			this.currentSuite = {};
+			self.currentSuite = {};
 		});
 		
 		runner.on('suite', function(suite) {

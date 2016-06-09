@@ -11,6 +11,17 @@ var should = chai.should();
 
 
 describe('Outer suite', function () {
+	before(function() {
+		// Read the accessor source code.
+		code = getAccessorCode('test/TestAccessor');
+		
+		instance = new commonHost.Accessor('TestAccessor', code);
+		
+		// Invoke the initialize function.
+		instance.initialize();
+	
+	});
+	
 	describe('Inner suite 1', function () {
 		before(function() {
 			// Read the accessor source code.
