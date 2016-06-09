@@ -162,7 +162,7 @@ static void addfmuInstances(fmu_t* s) {
 	if (fmuLocCoun == arrsize) {
 		temp = (fmu_t**)malloc(sizeof(fmu_t*) * (DELTA + arrsize));
 		arrsize += DELTA;
-		memcpy(temp, fmuInstances, fmuLocCoun);
+		memcpy(temp, fmuInstances, sizeof(fmu_t*) * fmuLocCoun);
 		free(fmuInstances);
 		fmuInstances = temp;
 	}
@@ -215,6 +215,7 @@ static void freeLib(int idx) {
 static void wrapup(int idx) {
 	// Free the FMU
 	if (fmuInstances[idx]->wrapup == fmi2True) {
+		printf ("Terminate simulation of FMU.\n");
 		/*
 
 		printf(
@@ -516,6 +517,32 @@ static fmi2Status jgetDerivatives(int idx, jdoubleArray x_get) {
 		fmuInstances[idx]->env, x_get, tmp_x_get, 0);
 
 	return fmuInstances[idx]->fmiFlag;
+}
+
+////////////////////////////////////////////////////////////////////////////////////
+/// Get FMU enter event mode
+///
+///\param instance The FMU instance index.
+///\param x_get The FMU enter event mode.
+////////////////////////////////////////////////////////////////////////////////////
+static void jgetStepEvent(int idx, jdoubleArray x_get) {
+
+	// get the time event
+	jdouble *tmp_x_get = (*fmuInstances[idx]->env)->GetDoubleArrayElements(
+		fmuInstances[idx]->env, x_get, 0);
+
+	// set the values back to caller
+	if (fmuInstances[idx]->stepEvent){
+		tmp_x_get[0] = 1.0;
+	}
+	else{
+		tmp_x_get[0] = -1.0;
+	}
+
+	// release the array for next use
+	(*fmuInstances[idx]->env)->ReleaseDoubleArrayElements(
+		fmuInstances[idx]->env, x_get, tmp_x_get, 0);
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////
@@ -888,7 +915,8 @@ int runNativeFMU(JNIEnv * env,
 	jdoubleArray outvals, jlongArray outvalrefs, jlong x_dot_get_ref,
 	jdoubleArray xx_xdot_get, jlongArray xx_xdot_get_refs,
 	jdoubleArray uu_xdot_get, jlongArray uu_xdot_get_refs,
-	jdoubleArray xdot_dot_get, jdoubleArray z_get, jdoubleArray timEv_get)
+	jdoubleArray xdot_dot_get, jdoubleArray z_get,
+	jdoubleArray timEv_get, jdoubleArray stepEv_get)
 
 {
 	if (flag == 0) {
@@ -1326,6 +1354,9 @@ int runNativeFMU(JNIEnv * env,
 				fmuInstances[idx]->instanceName);
 		}
 
+		// get the step event indicator
+		jgetStepEvent(idx, stepEv_get);
+
 		if (fmuInstances[idx]->terminateSimulation) {
 			wrapup(idx);
 		}
@@ -1335,7 +1366,7 @@ int runNativeFMU(JNIEnv * env,
 
 	// enter event mode.
 	else if (flag == 10) {
-		// enter continuous mode
+		// enter event mode
 		fmuInstances[idx]->enterEventMode(fmuInstances[idx]->c);
 		return 0;
 	}
@@ -1460,7 +1491,8 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImport_runNativeFMU(JNIEnv * env,
 	jdoubleArray outvals, jlongArray outvalrefs, jlong x_dot_get_ref,
 	jdoubleArray xx_xdot_get, jlongArray xx_xdot_get_refs,
 	jdoubleArray uu_xdot_get, jlongArray uu_xdot_get_refs,
-	jdoubleArray xdot_dot_get, jdoubleArray z_get, jdoubleArray timEv_get){
+	jdoubleArray xdot_dot_get, jdoubleArray z_get,
+	jdoubleArray timEv_get, jdoubleArray stepEv_get){
 	return runNativeFMU(env,
 		obj, idx, flag, instance, pathlib,
 		pathres, tStart, tEnd, time,
@@ -1470,7 +1502,8 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUImport_runNativeFMU(JNIEnv * env,
 		outvals, outvalrefs, x_dot_get_ref,
 		xx_xdot_get, xx_xdot_get_refs,
 		uu_xdot_get, uu_xdot_get_refs,
-		xdot_dot_get, z_get, timEv_get);
+		xdot_dot_get, z_get, timEv_get,
+		stepEv_get);
 }
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -1527,7 +1560,8 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUQSS_runNativeFMU(JNIEnv * env,
 	jdoubleArray outvals, jlongArray outvalrefs, jlong x_dot_get_ref,
 	jdoubleArray xx_xdot_get, jlongArray xx_xdot_get_refs,
 	jdoubleArray uu_xdot_get, jlongArray uu_xdot_get_refs,
-	jdoubleArray xdot_dot_get, jdoubleArray z_get, jdoubleArray timEv_get){
+	jdoubleArray xdot_dot_get, jdoubleArray z_get,
+	jdoubleArray timEv_get, jdoubleArray stepEv_get){
 	return runNativeFMU(env,
 		obj, idx, flag, instance, pathlib,
 		pathres, tStart, tEnd, time,
@@ -1537,5 +1571,6 @@ JNIEXPORT int Java_ptolemy_actor_lib_fmi_FMUQSS_runNativeFMU(JNIEnv * env,
 		outvals, outvalrefs, x_dot_get_ref,
 		xx_xdot_get, xx_xdot_get_refs,
 		uu_xdot_get, uu_xdot_get_refs,
-		xdot_dot_get, z_get, timEv_get);
+		xdot_dot_get, z_get, timEv_get,
+		stepEv_get);
 }
