@@ -4,13 +4,13 @@
 <entity name="FMUQSSStateEvent4_QSS2" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, -4, 1920, 1204}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2004, 198, 1920, 1176}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1706, 1087]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1706, 1059]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0710200097183211">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{783.7685872395822, 489.9733673095698}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{783.7685872395822, 476.9017161051428}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
@@ -33,7 +33,7 @@
         </property>
         <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="1e-8">
         </property>
-        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="1e-5">
+        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="1e-7">
         </property>
         <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
         </property>
@@ -41,7 +41,7 @@
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {0.0}), smoothToken(0.99999, {-1.0}), smoothToken(0.0, {-1.0}), smoothToken(-0.7508520871, {-1.0}), smoothToken(-9.0, {-1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {0.0}), smoothToken(0.9999999, {-1.0}), smoothToken(0.0, {-1.0}), smoothToken(-0.75082251, {-1.0}), smoothToken(-9.0, {-1.0})}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -49,19 +49,19 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(-2.5, {0.0}), smoothToken(-2.499975, {1.0}), smoothToken(-1.5, {1.0}), smoothToken(-0.7491479129, {1.0}), smoothToken(7.5, {1.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(-2.5, {0.0}), smoothToken(-2.49999975, {1.0}), smoothToken(-1.5, {1.0}), smoothToken(-0.74917749, {1.0}), smoothToken(7.5, {1.0})}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 90.0}">
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(4.0, {0.0}), smoothToken(3.99996, {-2.0}), smoothToken(2.0, {-2.0}), smoothToken(0.4982958258, {-2.0}), smoothToken(-16.0, {-2.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(4.0, {0.0}), smoothToken(3.9999996, {-2.0}), smoothToken(2.0, {-2.0}), smoothToken(0.49835498, {-2.0}), smoothToken(-16.0, {-2.0})}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 220.0}">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 442, 500, 349}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 526, 500, 321}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -75,7 +75,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="10.0"/>
-<yRange min="-16.0" max="7.5"/>
+<yRange min="-16.000000000000004" max="7.500000000000001"/>
 <default connected="no"/>
 </plot>?>
         </configure>
