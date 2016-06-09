@@ -49,10 +49,10 @@ public class GDPHelper {
 
     /** Create a GDP Helper.
      *  @param logName FIXME: What is the format?
-     *  @param ioMode The i/o mode for the log, one of GDP_GCL.GDP_MODE.ANY (for internal use only), GDP_GCL.GDP_MODE.RO (Read only), GDP_GCL.GDP_MODE.AO (Append Only) or GDP_GCL.GDP_MODE.RA (Read + append).
+     *  @param ioMode The i/o mode for the log (0: for internal use only, 1: read-only, 2: read-append, 3: append-only).
      */
-    public GDPHelper(String logName, GDP_GCL.GDP_MODE ioMode) {
-        _gcl = new GDP_GCL(new GDP_NAME(logName), ioMode);
+    public GDPHelper(String logName, int ioMode) {
+        _gcl = GDP_GCL.newGCL(new GDP_NAME(logName), ioMode);
         _logName = logName;    
     }
 
@@ -75,11 +75,16 @@ public class GDPHelper {
     
     /** Read the indicated number of records.
      *  @param numberOfRecords The number of records to read.
-     *  @return A string representing the records that were read.
+     *  @return A string representing the records that were read or the empty
+     *  string if no records were read.
      */
     public String read(long numberOfRecords) {
         HashMap<String,Object> data = _gcl.read(numberOfRecords);
-        return data.toString();
+        if (data != null) {
+            return data.toString();
+        } else {
+            return "";
+        }
     }
 
     /** Subscribe to a log.
@@ -88,12 +93,15 @@ public class GDPHelper {
      *  @param numberOfRecords The number of records to read.
      *  @param timeout The timeout in milliseconds.
      */
-    public void subscribe(final ScriptObjectMirror currentObj, long startRecord,
+    public void subscribe(final ScriptObjectMirror currentObj, int startRecord,
             int numberOfRecords, int timeout) {
+        
         EP_TIME_SPEC timeoutSpec = new EP_TIME_SPEC(timeout/1000,
                 0, /* nanoseconds */
                 0.001f /* accuracy in seconds */);
-        _gcl.subscribe(startRecord, numberOfRecords, timeoutSpec);
+        // FIXME: We need to cast to a long here because it seems
+        // like passing longs from JavaScript does not work for us.
+        _gcl.subscribe((long)startRecord, numberOfRecords, timeoutSpec);
         Runnable blocking = new Runnable() {
             public void run() {
                 while (_subscribed) {
