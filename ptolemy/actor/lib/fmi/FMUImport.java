@@ -2164,6 +2164,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      * @param continuousSecondDerivatives The FMU second derivatives.
      * @param eventIndicators The FMU event indicators.
      * @param nextTimeEvent The next FMU time event.
+     * @param stepEvent The step event indicator.
      * @return FMU instance The index when fla is zero.
      */
     public static native int runNativeFMU(int idx, int fla, String instance,
@@ -2180,7 +2181,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             double[] directionalInputDerivatives,
             long[] directionalInputDerivativesValueReferences,
             double[] continuousSecondDerivatives, double[] eventIndicators,
-            double[] nextTimeEvent);
+            double[] nextTimeEvent, double[] stepEvent);
 
     /**
     * Return the suggested next step size. This method returns 0.0 if the
@@ -2226,7 +2227,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             if (_fmiJNIComponent != -1) {
                 runNativeFMU(_fmiJNIComponent, -1, null, null, null, 0.0, 0.0, 0.0,
                         0, 0.0, 0, 0, null, null, null, null, null, null, null,
-                        null, 0, null, null, null, null, null, null, null);
+                        null, 0, null, null, null, null, null, null, null, null);
             }
         } else {
             _checkFmiCommon();
@@ -2424,37 +2425,60 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
                 // Pass stepEventInt in by reference. See
                 // https://github.com/twall/jna/blob/master/www/ByRefArguments.md
-                int stepEventInt = 0;
-                IntByReference stepEventIntReference = new IntByReference(
-                        stepEventInt);
-                int terminateSimulation = 0;
-                IntByReference terminateSimulationReference = new IntByReference(
-                        terminateSimulation);
+                if (!_useRawJNI()) {
+                    int stepEventInt = 0;
+                    IntByReference stepEventIntReference = new IntByReference(
+                            stepEventInt);
+                    int terminateSimulation = 0;
+                    IntByReference terminateSimulationReference = new IntByReference(
+                            terminateSimulation);
 
-                int fmiFlag = ((Integer) _fmiCompletedIntegratorStepFunction
-                        .invoke(Integer.class, new Object[] { _fmiComponent,
-                            noSetFMUStatePriorToCurrentPointByte,
-                            /* enterEventMode, terminateSimulation*/
-                            stepEventIntReference,
-                            terminateSimulationReference })).intValue();
+                    int fmiFlag = ((Integer) _fmiCompletedIntegratorStepFunction
+                            .invoke(Integer.class, new Object[] {
+                                    _fmiComponent,
+                                    noSetFMUStatePriorToCurrentPointByte,
+                                    /* enterEventMode, terminateSimulation*/
+                                    stepEventIntReference,
+                                    terminateSimulationReference })).intValue();
 
-                if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                    throw new IllegalActionException(this,
-                            "Failed to complete integrator step: "
-                                    + _fmiStatusDescription(fmiFlag));
-                }
+                    if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
+                        throw new IllegalActionException(this,
+                                "Failed to complete integrator step: "
+                                        + _fmiStatusDescription(fmiFlag));
+                    }
 
-                if (terminateSimulation != 0 /*terminateSimulation.get(0) != (byte) 0*/) {
-                    getDirector().finish();
-                }
-                if (stepEventInt != 0 /* enterEventMode.get(0) != (byte) 0*/) {
-                    return true;
+                    if (terminateSimulation != 0 /*terminateSimulation.get(0) != (byte) 0*/) {
+                        getDirector().finish();
+                    }
+                    if (stepEventInt != 0 /* enterEventMode.get(0) != (byte) 0*/) {
+                        return true;
+                    }
+                } else {
+                    // Get the step event indicator.
+                    _fmiCompletedIntegratorStepJNI();
+                    if (_enterEventModeJNI)
+                        return true;
                 }
             }
         }
         return false;
     }
 
+    /**
+     * For model exchange, complete the integrator step.
+     *
+     */
+    protected void _fmiCompletedIntegratorStepJNI() {
+        _enterEventModeJNI = false;
+        double[] nextStepEvent = { -1.0 };
+        runNativeFMU(_fmiJNIComponent, 9, null, null, null, 0.0, 0.0, 0.0,
+                0, 0.0, 0, 0, null, null, null, null, null, null, null, null, 0,
+                null, null, null, null, null, null, null, nextStepEvent);
+        if (nextStepEvent[0] > 0.0) {
+            _enterEventModeJNI = true;
+        }
+    }
+    
     /**
      * Advance from the last firing time or last commit time to the specified
      * time and microstep by calling fmiDoStep(), if necessary. This method is
@@ -2736,7 +2760,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected void _fmiEnterContinuousTimeModeJNI() {
         runNativeFMU(_fmiJNIComponent, 3, null, null, null, 0.0, 0.0, 0.0,
                 0, 0.0, 0, 0, null, null, null, null, null, null, null, null, 0,
-                null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null);
     }
     
     /**
@@ -2746,7 +2770,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected void _fmiEnterEventModeJNI() {
         runNativeFMU(_fmiJNIComponent, 10, null, null, null, 0.0, 0.0, 0.0, 0,
                 0.0, 0, 0, null, null, null, null, null, null, null, null, 0,
-                null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null);
     }
     
     /**
@@ -2783,7 +2807,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected void _fmiGetContinuousStatesJNI(double values[]) {
         runNativeFMU(_fmiJNIComponent, 4, null, null, null, 0.0, 0.0, 0.0,
                 0, 0.0, 0, 0, null, null, values, null, null, null, null, null,
-                0, null, null, null, null, null, null, null);
+                0, null, null, null, null, null, null, null, null);
     }
 
     /**
@@ -2823,7 +2847,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected void _fmiGetDerivativesJNI(double[] values) {
         runNativeFMU(_fmiJNIComponent, 5, null, null, null, 0.0, 0.0, 0.0,
                 0, 0.0, 0, 0, null, values, null, null, null, null, null, null,
-                0, null, null, null, null, null, null, null);
+                0, null, null, null, null, null, null, null, null);
     }
     
     /**
@@ -2834,7 +2858,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected void _fmiGetEventIndicatorsJNI(double[] values) {
         runNativeFMU(_fmiJNIComponent, 11, null, null, null, 0.0, 0.0, 0.0, 0,
                 0.0, 0, 0, null, null, null, null, null, null, null, null, 0,
-                null, null, null, null, null, values, null);
+                null, null, null, null, null, values, null, null);
     }
 
     /**
@@ -2847,7 +2871,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected void _fmiGetRealJNI(double values[], long valueReferences[]) {
         runNativeFMU(_fmiJNIComponent, 8, null, null, null, 0.0, 0.0, 0.0,
                 0, 0.0, 0, 1, null, null, null, null, null, null, values,
-                valueReferences, 0, null, null, null, null, null, null, null);
+                valueReferences, 0, null, null, null, null, null, null, null, null);
     }
     
     /**
@@ -3056,7 +3080,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected void _fmiInitializeJNI() {
         runNativeFMU(_fmiJNIComponent, 1, null, null, null, 0.0, 0.0, 0.0,
                 0, 0.0, 0, 0, null, null, null, null, null, null, null, null, 0,
-                null, null, null, null, null, null, null);
+                null, null, null, null, null, null, null, null);
     }
     
     /**
@@ -3088,7 +3112,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 fmuResourceLocation, startime, stoptime,
                 currentime, 0, quantum, visible, logging, guid, derivatives,
                 null, null, null, null, null, null, 0, null, null, null, null,
-                null, eventIndicators, null);
+                null, eventIndicators, null, null);
     }
     
     /**
@@ -3098,14 +3122,28 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      * @param timeValue The current time.
      */
     protected void _fmiNewDiscreteStatesJNI() {
-        double[] nextEventTime = { -1.0 };
+        // Time event indicator
+        int newDiscreteStatesNeeded = 1;
+        int terminateSimulation = 0;
+        int nominalsOfContinuousStatesChanged = 0;
+        int valuesOfContinuousStatesChanged = 0;
+        int nextEventTimeDefined = 0;
+        double nextEventTime = -1.0;
+        double[] nextEventTimeArr = { -1.0 };
+
+        // Define the event info
+        _eventInfoJNI = new FMI20EventInfo(newDiscreteStatesNeeded,
+                terminateSimulation, nominalsOfContinuousStatesChanged,
+                valuesOfContinuousStatesChanged, nextEventTimeDefined,
+                nextEventTime);
+        
         runNativeFMU(_fmiJNIComponent, 2, null, null, null, 0.0, 0.0, 0.0, 0,
                 0.0, 0, 0, null, null, null, null, null, null, null, null, 0,
-                null, null, null, null, null, null, nextEventTime);
-        if (nextEventTime[0] > 0.0) {
+                null, null, null, null, null, null, nextEventTimeArr, null);
+        if (nextEventTimeArr[0] > 0.0) {
             _eventInfoJNI.newDiscreteStatesNeeded = 0;
             _eventInfoJNI.nextEventTimeDefined = 1;
-            _eventInfoJNI.nextEventTime = nextEventTime[0];
+            _eventInfoJNI.nextEventTime = nextEventTimeArr[0];
         }
     }
 
@@ -3151,7 +3189,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected void _fmiSetContinuousStatesJNI(double values[]) {
         runNativeFMU(_fmiJNIComponent, 6, null, null, null, 0.0, 0.0, 0.0,
                 0, 0.0, 0, 0, null, null, null, values, null, null, null, null,
-                0, null, null, null, null, null, null, null);
+                0, null, null, null, null, null, null, null, null);
     }
 
     /**
@@ -3165,7 +3203,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected void _fmiSetRealJNI(double values[], long valueReferences[]) {
         runNativeFMU(_fmiJNIComponent, 7, null, null, null, 0.0, 0.0, 0.0,
                 0, 0.0, 0, 0, null, null, null, null, values, valueReferences,
-                null, null, 0, null, null, null, null, null, null, null);
+                null, null, 0, null, null, null, null, null, null, null, null);
     }
     
     /**
@@ -3196,7 +3234,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     protected void _fmiSetTimeJNI(double timeValue) {
         runNativeFMU(_fmiJNIComponent, 12, null, null, null, 0.0, 0.0,
                 timeValue, 0, 0.0, 0, 0, null, null, null, null, null, null,
-                null, null, 0, null, null, null, null, null, null, null);
+                null, null, 0, null, null, null, null, null, null, null, null);
     }
 
     /**
@@ -4534,7 +4572,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     
     /** The eventInfo. */
     protected FMI20EventInfo _eventInfoJNI;
-
+    
     /**
      * The FMI component created by the modelIdentifier_fmiInstantiateSlave()
      * method.
@@ -4948,6 +4986,9 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** The workspace version at which the _inputs variable was last updated. */
     private long _inputsVersion = -1;
+    
+    /** Flag to enter event mode. */
+    private boolean _enterEventModeJNI = false;
 
     /** The library of native binaries for the FMU C functions. */
     private NativeLibrary _nativeLibrary;
