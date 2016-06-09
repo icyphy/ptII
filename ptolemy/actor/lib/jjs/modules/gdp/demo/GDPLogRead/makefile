@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II GDPLogWriter demo
+# Makefile for Ptolemy II GDPLogRead demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
 # @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2016 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogWriter
+ME =		ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogRead
 
 # Root of the Java directory
 ROOT =		../../../../../../../../
@@ -41,13 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	GDPLogWriter
+PTPACKAGE = 	GDPLogRead
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 	GDPLogWriter.xml
-
+OTHER_FILES_TO_BE_JARED = 	GDPLogRead.xml
+	./GDPLogRead.xml\
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -70,16 +70,16 @@ install: all $(PTCLASSJAR)
 demo: demo_ptolemy demo_vergil
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer GDPLogWriter.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer GDPLogRead.htm
 
 #demo_applet_vergil:
 #	CLASSPATH="$(CLASSPATH)" appletviewer .htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" GDPLogWriter.xml
+	"$(PTII)/bin/ptolemy" GDPLogRead.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" GDPLogWriter.xml
+	"$(PTII)/bin/vergil" GDPLogRead.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
