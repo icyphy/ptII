@@ -56,10 +56,10 @@ exports.GDP.prototype.append = function (data) {
     this.helper.append(data);
 };
 
-exports.GDP.prototype.subscribe = function (startrec, numrecs) {
-    this.helper.subscribe(this, startrec, numrecs);
+exports.GDP.prototype.subscribe = function (startrec, numrecs, timeout) {
+    this.helper.subscribe(this, startrec, numrecs, timeout);
 };
 
 exports.GDP.prototype.get_next_data = function (timeout_msec) {
-    return this.helper.get_next_data(timeout_msec);
+    return this.helper.getNextData(timeout_msec);
 };
