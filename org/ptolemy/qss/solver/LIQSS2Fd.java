@@ -420,6 +420,7 @@ public final class LIQSS2Fd extends QSSBase {
                     _ivValsSample_xx, dtSample, tSample2, _stateValsSample2_xx,
                     _ivValsSample2_xx, dtSample2, tSample3,
                     _stateValsSample3_xx, _ivValsSample3_xx, dtSample3,
+                    null, null, null, 0.0, null, null, null, 0.0,
                     getStateModelOrder());
         }
     }
@@ -455,11 +456,11 @@ public final class LIQSS2Fd extends QSSBase {
             _stateVals_xx[ii] = cStateMdl.evaluate(dtStateMdl);
         }
         // Initialize dtSample
-        double dtSample[] = { 0.0 };
+        double dtSample[] = { 0.0, 0.0, 0.0 };
 
         // Evaluate derivative function at {_currSimTime}.
         int retVal = _derivFcn.evaluateDerivatives(_currSimTime, dtSample,
-                _stateDerivs_xx, _stateDerivs2_xx, getStateModelOrder());
+                _stateDerivs_xx, _stateDerivs2_xx, null, getStateModelOrder());
 
         if (0 != retVal) {
             throw new Exception("_derivFcn.evalDerivs() returned " + retVal);
@@ -481,7 +482,7 @@ public final class LIQSS2Fd extends QSSBase {
         }
 
         // Update the internal, continuous state models.
-        final double oneOverTwoDtSample = 0.5 / dtSample[0];
+        final double oneOverTwoDtSample = 0.5 / dtSample[1];
         for (int ii = 0; ii < _stateCt; ++ii) {
             _cStateMdls[ii].coeffs[2] = oneOverTwoDtSample
                     * (_stateDerivs2_xx[ii] - _stateDerivs_xx[ii]);
