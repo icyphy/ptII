@@ -169,8 +169,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * time rates of change of the event indicators variables
      * at <code>time</code>.
      * @param eventIndicatorDerivatives2 The (output) vector of 
-     * time rates of change of the event indicators variables
-     * at time <code>time + dtSample</code>.
+     * time rates of change of the event indicators variables.
+     * @param eventIndicatorDerivatives3 The (output) vector of 
+     * time rates of change of the event indicators variables.
      * @return Success (0 for success, else user-defined error code).
      * @exception IllegalActionException If an error occurred.
      */
@@ -178,13 +179,17 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     public final int evaluateDerivatives(final Time time,
             final double[] dtSample,
             final double[] eventIndicatorVariableDerivatives,
-            final double[] eventIndicatorVariableDerivatives2, final int order)
+            final double[] eventIndicatorVariableDerivatives2, 
+            final double[] eventIndicatorVariableDerivatives3,
+            final int order)
             throws IllegalActionException {
 
         // Check assumptions.
         assert (eventIndicatorVariableDerivatives.length == getEventIndicatorCount());
         // Return the values computed when calling evaluateDerivatives()
-        dtSample[0] = _deltaSample;
+        for (int ii = 0; ii < 3; ++ii) {
+          dtSample[ii] = _deltaSample [ii];
+        }
         if (order >= 0) {
             for (int ii = 0; ii < getEventIndicatorCount(); ++ii) {
                 eventIndicatorVariableDerivatives[ii] = _eventIndicatorsDerivatives[ii];
@@ -193,6 +198,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         if (order >= 1) {
             for (int ii = 0; ii < getEventIndicatorCount(); ++ii) {
                 eventIndicatorVariableDerivatives2[ii] = _eventIndicatorsDerivatives2[ii];
+            }
+        }
+        if (order >= 2) {
+            for (int ii = 0; ii < getEventIndicatorCount(); ++ii) {
+                eventIndicatorVariableDerivatives3[ii] = _eventIndicatorsDerivatives3[ii];
             }
         }
         return 0;
@@ -345,6 +355,14 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     * @param stateVariablesSample3 The vector of state variables at <code>timeSample3</code>.
     * @param inputVariablesSample3 The vector of input variables at <code>timeSample3</code>.
     * @param dtSample3 The delta between <timeSample3> and  <code>time</code>.
+    * @param timeSample4 Simulation time.
+    * @param stateVariablesSample4 The vector of state variables at <code>timeSample4</code>.
+    * @param inputVariablesSample4 The vector of input variables at <code>timeSample4</code>.
+    * @param dtSample4 The delta between <timeSample4> and  <code>time</code>.
+    * @param timeSample5 Simulation time.
+    * @param stateVariablesSample5 The vector of state variables at <code>timeSample5</code>.
+    * @param inputVariablesSample5 The vector of input variables at <code>timeSample5</code>.
+    * @param dtSample5 The delta between <timeSample4> and  <code>time</code>.
     * @return Success (0 for success, else user-defined error code).
     * @exception IllegalActionException If an error occurred.
     */
@@ -355,7 +373,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             double dtSample, Time timeSample2, double[] stateVariablesSample2,
             double[] inputVariablesSample2, double dtSample2, Time timeSample3,
             double[] stateVariablesSample3, double[] inputVariablesSample3,
-            double dtSample3, int stateModelOrder)
+            double dtSample3, Time timeSample4, double[] stateVariablesSample4, 
+            double[] inputVariablesSample4, double dtSample4, Time timeSample5,
+            double[] stateVariablesSample5, double[] inputVariablesSample5,
+            double dtSample5, int stateModelOrder)
             throws IllegalActionException {
         // Check assumptions.
         assert (getStateCount() > 0);
@@ -364,8 +385,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         final int numEvtInd = getEventIndicatorCount();
         // get current event indicators
         if (numEvtInd > 0) {
-            _deltaSample = dtSample;
+            
             if (stateModelOrder >= 0) {
+            	_deltaSample [0] = dtSample;
+            	_deltaSample [1] = 0.0;
+            	_deltaSample [2] = 0.0;
                 // Approximate first derivative using two sample times
                 double[] eventIndicator = new double[numEvtInd];
                 double[] eventIndicatorSample = new double[numEvtInd];
@@ -379,6 +403,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 }
             }
             if (stateModelOrder >= 1) {
+            	_deltaSample [1] = dtSample2;
                 // Approximate first derivative using two sample times.
                 double[] eventIndicatorSample2 = new double[numEvtInd];
                 double[] eventIndicatorSample3 = new double[numEvtInd];
@@ -392,6 +417,24 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     _eventIndicatorsDerivatives2[i] = (eventIndicatorSample3[i]
                             - eventIndicatorSample2[i])
                             / (dtSample3 - dtSample2);
+                }
+            }
+            
+            if (stateModelOrder >= 2) {
+            	_deltaSample [2] = dtSample4 ;
+                // Approximate first derivative using two sample times.
+                double[] eventIndicatorSample4 = new double[numEvtInd];
+                double[] eventIndicatorSample5 = new double[numEvtInd];
+                _getEventIndicators(eventIndicatorSample4, numEvtInd,
+                        timeSample4, stateVariablesSample4,
+                        inputVariablesSample4);
+                _getEventIndicators(eventIndicatorSample5, numEvtInd,
+                        timeSample5, stateVariablesSample5,
+                        inputVariablesSample5);
+                for (int i = 0; i < numEvtInd; ++i) {
+                    _eventIndicatorsDerivatives3[i] = (eventIndicatorSample5[i]
+                            - eventIndicatorSample4[i])
+                            / (dtSample5 - dtSample4);
                 }
             }
         }
@@ -485,12 +528,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Signalize that the time event is reached and get a new one. 
             if (_lastEventTime !=null && currentTime.compareTo(_lastEventTime) == 0) {
                 _numberOfTimeEvents++;
-                if (_debugging) {   
+                //if (_debugging) {   
                     _debugToStdOut(String.format(
                             "-- Id{%d} has a time event at time %s",
                             System.identityHashCode(this),
                             currentTime.toString()));
-                }
+                //}
                 _lastEventTime = _getNextEventTime();
             }
             // Get the new event time if we have a step event
@@ -603,6 +646,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         _numberOfTimeEvents = 0;
         _numberOfStepEvents = 0;
         _numberOfSteps = 0;
+        _deltaSample = new double [3];
         
         _lastEventTime = null;
         _enterEventModeSE = false;
@@ -897,12 +941,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     if (_checkStateEvents(possibleFireAtTime)) {
                         _forceQuantizationStateEvents = true;
                         _numberOfStateEvents++;
-                        if (_debugging) {
+                        //if (_debugging) {
                             _debugToStdOut(String
                                     .format("-- Id{%d} predicts a state event at time %s",
                                             System.identityHashCode(this),
                                             possibleFireAtTime.toString()));
-                        }
+                        //}
                     }
                 }
             }
@@ -1171,12 +1215,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      */
     @Override
     public void wrapup() throws IllegalActionException {
-        if (_debugging) {
+        //if (_debugging) {
             _debugToStdOut(" Number of steps: " + _numberOfSteps + "\n  stateEvents: "
                     + _numberOfStateEvents + "\n  stepEvents: "
                     + _numberOfStepEvents + "\n  timeEvents: "
                     + _numberOfTimeEvents);
-        }
+        //}
         if (!_useRawJNI()) {
             // Allow eventInfo to be garbaged collected.
             _eventInfo = null;
@@ -1447,6 +1491,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             double[] eventIndicators = new double[evtInCt];
             _eventIndicatorsDerivatives = new double[evtInCt];
             _eventIndicatorsDerivatives2 = new double[evtInCt];
+            _eventIndicatorsDerivatives3 = new double[evtInCt];
             _zcSolver.initializeDerivativeFunction(this, evtInCt);
             _zcSolver.setNumberOfEventIndicators(evtInCt);
             _zcSolver.initializeSimulationTime(currentTime);
@@ -2191,13 +2236,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                                 final long tmp_uuRef[] = {
                                         scalar.valueReference };
                                 // Set the inputs which have changed.
-                                runNativeFMU(_fmiJNIComponent, 7, null, null,
-                                        null, 0.0, 0.0,
-                                        getDirector().getModelTime()
-                                                .getDoubleValue(),
-                                        0, 0.0, 0, 0, null, null, null, null,
-                                        tmp_uu, tmp_uuRef, null, null, 0, null,
-                                        null, null, null, null, null, null);
+                                _fmiSetRealJNI(tmp_uu, tmp_uuRef);
+                                
                             } else {
                                 throw new IllegalActionException(this,
                                         "useRawJNI is true, "
@@ -2936,6 +2976,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
     /** Buffer for event indicators. */
     private double[] _eventIndicatorsDerivatives2;
+    
+    /** Buffer for event indicators. */
+    private double[] _eventIndicatorsDerivatives3;
 
     /** Buffer for previous event indicators. */
     private double[] _eventIndicatorsPrevious;
@@ -2977,7 +3020,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     private double _internalRelativeQuantum;
 
     /** The delta between sample and current time. */
-    private double _deltaSample;
+    private double [] _deltaSample;
 
     /** Track requests for firing. */
     private Time _lastFireAtTime;
