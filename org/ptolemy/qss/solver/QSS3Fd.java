@@ -72,11 +72,25 @@ public final class QSS3Fd extends QSSBase {
 
         // Allocate scratch memory.
         _stateVals_xx = new double[_stateCt];
+        _stateValsSample_xx = new double[_stateCt];
+        _stateValsSample2_xx = new double[_stateCt];
+        _stateValsSample3_xx = new double[_stateCt];
+        _stateValsSample4_xx = new double[_stateCt];
+        _stateValsSample5_xx = new double[_stateCt];
         _stateDerivs_xx = new double[_stateCt];
+        _stateDerivs2_xx = new double[_stateCt];
+        _stateDerivs3_xx = new double[_stateCt];
         _stateDerivsSample_xx = new double[_stateCt];
+        _stateDerivsSample2_xx = new double[_stateCt];
         _rtDerivs_xx = new double[_stateCt];
         if (_ivCt > 0) {
             _ivVals_xx = new double[_ivCt];
+            _ivValsSample_xx = new double[_ivCt];
+            _ivValsSample2_xx = new double[_ivCt];
+            _ivValsSample3_xx = new double[_ivCt];
+            _ivValsSample4_xx = new double[_ivCt];
+            _ivValsSample5_xx = new double[_ivCt];
+            
         }
 
     }
@@ -259,15 +273,15 @@ public final class QSS3Fd extends QSSBase {
         //   Note that here, know all continuous state models have same time.
         // Therefore can use same delta-time for all evals.
         for (int ii = 0; ii < _stateCt; ++ii) {
-            _stateVals_xx[ii] = _cStateMdls[ii].evaluate(dtSample);
+            _stateValsSample_xx[ii] = _cStateMdls[ii].evaluate(dtSample);
         }
         for (int ii = 0; ii < _ivCt; ++ii) {
-            _ivVals_xx[ii] = _ivMdls[ii].evaluate(tSample);
+            _ivValsSample_xx[ii] = _ivMdls[ii].evaluate(tSample);
         }
 
         // Evaluate derivative function at {tSample}.
-        retVal = _derivFcn.evaluateDerivatives(tSample, _stateVals_xx,
-                _ivVals_xx, _stateDerivsSample_xx);
+        retVal = _derivFcn.evaluateDerivatives(tSample, _stateValsSample_xx,
+                _ivValsSample_xx, _stateDerivsSample_xx);
         if (0 != retVal) {
             throw new Exception("_derivFcn.evalDerivs() returned " + retVal);
         }
@@ -291,15 +305,15 @@ public final class QSS3Fd extends QSSBase {
         //   Note that here, know all continous state models have same time.
         // Therefore can use same delta-time for all evals.
         for (int ii = 0; ii < _stateCt; ++ii) {
-            _stateVals_xx[ii] = _cStateMdls[ii].evaluate(dtSample2);
+            _stateValsSample2_xx[ii] = _cStateMdls[ii].evaluate(dtSample2);
         }
         for (int ii = 0; ii < _ivCt; ++ii) {
-            _ivVals_xx[ii] = _ivMdls[ii].evaluate(tSample2);
+            _ivValsSample2_xx[ii] = _ivMdls[ii].evaluate(tSample2);
         }
 
         // Evaluate derivative function at {tSample2}.
-        retVal = _derivFcn.evaluateDerivatives(tSample2, _stateVals_xx,
-                _ivVals_xx, _stateDerivsSample_xx);
+        retVal = _derivFcn.evaluateDerivatives(tSample2, _stateValsSample2_xx,
+                _ivValsSample2_xx, _stateDerivsSample2_xx);
         if (0 != retVal) {
             throw new Exception("_derivFcn.evalDerivs() returned " + retVal);
         }
@@ -308,14 +322,70 @@ public final class QSS3Fd extends QSSBase {
         final double oneOverThreeDtSampleSq = 1.0 / (3 * dtSample2 * dtSample2);
         for (int ii = 0; ii < _stateCt; ++ii) {
             _cStateMdls[ii].coeffs[3] = oneOverThreeDtSampleSq
-                    * (_stateDerivsSample_xx[ii] - _stateDerivs_xx[ii]
+                    * (_stateDerivsSample2_xx[ii] - _stateDerivs_xx[ii]
                             - _rtDerivs_xx[ii] * dtSample2);
         }
         // State event detection not implemented for QSS3.
         if (_evtIndCt > 0) {
-            new Exception(
-                    "FIXME: Warning: State event detection not implemented for QSS3.")
-                            .printStackTrace();
+            // Choose a sample time, different from {_currSimTime} and different from {tSample2}.
+            //   For estimating third derivatives.
+            final double dtSample3 = dtSample + dtSample2;
+            final Time tSample3 = minimumTime(
+                    _currSimTime.addUnchecked(dtSample3), _quantEvtTimeMax);
+
+            // Get values, at {tSample3}, of arguments to derivative function.
+            //   Note that here, know all continuous state models have same time.
+            // Therefore can use same delta-time for all evals.
+            for (int ii = 0; ii < _stateCt; ++ii) {
+                _stateValsSample3_xx[ii] = _cStateMdls[ii].evaluate(dtSample3);
+            }
+            for (int ii = 0; ii < _ivCt; ++ii) {
+                _ivValsSample3_xx[ii] = _ivMdls[ii].evaluate(dtSample3);
+            }
+            
+            
+            // Choose a sample time, different from {_currSimTime} and different from {tSample3}.
+            //   For estimating third derivatives.
+            final double dtSample4 = dtSample + dtSample2 + Math.sqrt(dtSample);
+            final Time tSample4 = minimumTime(
+                    _currSimTime.addUnchecked(dtSample4), _quantEvtTimeMax);
+
+            // Get values, at {tSample3}, of arguments to derivative function.
+            //   Note that here, know all continuous state models have same time.
+            // Therefore can use same delta-time for all evals.
+            for (int ii = 0; ii < _stateCt; ++ii) {
+                _stateValsSample4_xx[ii] = _cStateMdls[ii].evaluate(dtSample4);
+            }
+            for (int ii = 0; ii < _ivCt; ++ii) {
+                _ivValsSample4_xx[ii] = _ivMdls[ii].evaluate(dtSample4);
+            }
+                 
+            // Choose a sample time, different from {_currSimTime} and different from {tSample2}.
+            //   For estimating third derivatives.
+            final double dtSample5 = dtSample + dtSample4;
+            final Time tSample5 = minimumTime(
+                    _currSimTime.addUnchecked(dtSample5), _quantEvtTimeMax);
+
+            // Get values, at {tSample3}, of arguments to derivative function.
+            //   Note that here, know all continuous state models have same time.
+            // Therefore can use same delta-time for all evals.
+            for (int ii = 0; ii < _stateCt; ++ii) {
+                _stateValsSample5_xx[ii] = _cStateMdls[ii].evaluate(dtSample5);
+            }
+            for (int ii = 0; ii < _ivCt; ++ii) {
+                _ivValsSample5_xx[ii] = _ivMdls[ii].evaluate(dtSample5);
+            }
+            
+
+            // Provide inputs to evaluate derivative function at {_currSimTime}.
+            retVal = _derivFcn.eventIndicatorDerivativeInputs(_currSimTime,
+                    _stateVals_xx, _ivVals_xx, tSample, _stateValsSample_xx,
+                    _ivValsSample_xx, dtSample, tSample2, _stateValsSample2_xx,
+                    _ivValsSample2_xx, dtSample2, tSample3,
+                    _stateValsSample3_xx, _ivValsSample3_xx, dtSample3,
+                    tSample4, _stateValsSample4_xx, _ivValsSample4_xx, dtSample4,
+                    tSample5, _stateValsSample5_xx, _ivValsSample5_xx, dtSample5,
+                    getStateModelOrder());
         }
     }
 
@@ -324,9 +394,76 @@ public final class QSS3Fd extends QSSBase {
      */
     protected final void _triggerRateEventWorkerEventDetection()
             throws Exception {
-        new Exception(
-                "FIXME: Warning: State event detection not implemented for QSS3.")
-                        .printStackTrace();
+
+        // Note the superclass takes care of updating status variables and so on.
+
+        // Get values, at {_currSimTime}, of arguments to derivative function.
+        //   In general, expect the integrator formed all of its
+        // continuous state models at the same time.  If so, can find a
+        // single delta-time, rather than having to find multiple differences
+        // from {_currSimTime}.  Know that finding time differences is
+        // expensive in Ptolemy, so want to avoid doing that if possible.
+        //   However, there is a chance that the continuous state models were
+        // formed at different times.  For example:
+        // (1) User can reset a single state at any simulation time.
+        // (2) In future, might be possible to avoid updating a
+        // continuous state model if know none of its arguments changed.
+        Time tStateMdl = null;
+        double dtStateMdl = 0;
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
+            // Check for different model time.  Note testing object identity OK.
+            if (cStateMdl.tMdl != tStateMdl) {
+                tStateMdl = cStateMdl.tMdl;
+                dtStateMdl = _currSimTime.subtractToDouble(tStateMdl);
+            }
+            _stateVals_xx[ii] = cStateMdl.evaluate(dtStateMdl);
+        }
+
+        // Initialize dtSample
+        double dtSample[] = { 0.0, 0.0, 0.0 };
+
+        // Evaluate derivative function at {_currSimTime}.
+        int retVal = _derivFcn.evaluateDerivatives(_currSimTime, dtSample,
+                _stateDerivs_xx, _stateDerivs2_xx, _stateDerivs3_xx, 
+                getStateModelOrder());
+
+        if (0 != retVal) {
+            throw new Exception("_derivFcn.evalDerivs() returned " + retVal);
+        }
+
+        // Update the internal, continuous state models.
+        //   Note this is a partial update, since don't yet know the second
+        // derivatives.  Do the update now so that, when find the sample point
+        // needed to estimate second derivatives, will be able to use as much
+        // current information about the continuous state as possible.
+        //   This also updates the rate model, which is just the derivative of
+        // the state model.
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            final ModelPolynomial cStateMdl = _cStateMdls[ii];
+            cStateMdl.tMdl = _currSimTime;
+            cStateMdl.coeffs[0] = _stateVals_xx[ii];
+            cStateMdl.coeffs[1] = _stateDerivs_xx[ii];
+            cStateMdl.coeffs[2] = 0;
+        }
+
+        // Update the internal, continuous state models.
+        final double oneOverDtSample = 1 / dtSample[1];
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            final double rtDeriv = oneOverDtSample
+                    * (_stateDerivs2_xx[ii] - _stateDerivs_xx[ii]);
+            _rtDerivs_xx[ii] = rtDeriv;
+            _cStateMdls[ii].coeffs[2] = 0.5 * rtDeriv;
+        }
+        
+        // Update the internal, continuous state models.
+        final double oneOverThreeDtSampleSq = 1.0 / (3 * dtSample[2] * dtSample[2]);
+        for (int ii = 0; ii < _stateCt; ++ii) {
+            _cStateMdls[ii].coeffs[3] = oneOverThreeDtSampleSq
+                    * (_stateDerivs3_xx[ii] - _stateDerivs_xx[ii]
+                            - _rtDerivs_xx[ii] * dtSample[2]);
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -340,8 +477,22 @@ public final class QSS3Fd extends QSSBase {
     // memory could be ignored.
     private double[] _stateVals_xx;
     private double[] _stateDerivs_xx;
+    private double[] _stateDerivs2_xx;
+    private double[] _stateDerivs3_xx;
     private double[] _stateDerivsSample_xx;
-    private double[] _rtDerivs_xx;
+    private double[] _stateDerivsSample2_xx;
     private double[] _ivVals_xx;
+    private double[] _stateValsSample_xx;
+    private double[] _ivValsSample_xx;
+    private double[] _stateValsSample2_xx;
+    private double[] _ivValsSample2_xx;
+    private double[] _stateValsSample3_xx;
+    private double[] _ivValsSample3_xx;
+    private double[] _stateValsSample4_xx;
+    private double[] _ivValsSample4_xx;
+    private double[] _stateValsSample5_xx;
+    private double[] _ivValsSample5_xx;
+    private double[] _rtDerivs_xx;
+
 
 }

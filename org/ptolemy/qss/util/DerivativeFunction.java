@@ -81,13 +81,15 @@ public interface DerivativeFunction {
     * @param dtSample The delta time used to approximate first derivative.
     * @param xdot The vector of time rates of change of the state variables at <code>time</code>.
     * @param xdotSample The vector of time rates of change of the state variables 
-    * at <code>time + dtSample</code>.
+    * at a sample time.
+    * @param xdotSample2 The vector of time rates of change of the state variables 
+    * at a sample time.
     * @param stOrd The state model order.
     * @return Success (0 for success, else user-defined error code).
     * @exception IllegalActionException If derivatives cannot be evaluated.
     */
     public int evaluateDerivatives(final Time time, final double [] dtSample, 
-            final double[] xdot, final double[] xdotSample, 
+            final double[] xdot, final double[] xdotSample, final double[] xdotSample2, 
             final int stOrd) throws IllegalActionException;
 
     /**
@@ -157,6 +159,15 @@ public interface DerivativeFunction {
     * @param xxSample3 The vector of state variables at <code>timeSample3</code>.
     * @param uuSample3 The vector of input variables at <code>timeSample3</code>.
     * @param dtSample3 The delta between <timeSample3> and  <code>time</code>.
+    * @param timeSample4 Simulation time.
+    * @param xxSample4 The vector of state variables at <code>timeSample4</code>.
+    * @param uuSample4 The vector of input variables at <code>timeSample4</code>.
+    * @param dtSample4 The delta between <timeSample4> and  <code>time</code>.
+    * variables at <code>time</code>.
+    * @param timeSample5 Simulation time.
+    * @param xxSample5 The vector of state variables at <code>timeSample5</code>.
+    * @param uuSample5 The vector of input variables at <code>timeSample5</code>.
+    * @param dtSample5 The delta between <timeSample5> and  <code>time</code>.
     * variables at <code>time</code>.
     * @return Success (0 for success, else user-defined error code).
     * @exception IllegalActionException If derivatives cannot be evaluated.
@@ -165,7 +176,9 @@ public interface DerivativeFunction {
             double[] uu, Time timeSample, double[] xxSample, double[] uuSample,
             double dtSample, Time timeSample2, double[] xxSample2, double[] uuSample2,
             double dtSample2,Time timeSample3, double[] xxSample3, double[] uuSample3,
-            double dtSample3, int stateModelOrder)
+            double dtSample3, Time timeSample4, double[] xxSample4, double[] uuSample4,
+            double dtSample4, Time timeSample5, double[] xxSample5, double[] uuSample5,
+            double dtSample5, int stateModelOrder)
             throws IllegalActionException;
 
     /**

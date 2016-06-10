@@ -77,7 +77,6 @@ public final class LIQSS1 extends QSSBase {
         _stateVals_xx = new double[_stateCt];
         _stateValsSample_xx = new double[_stateCt];
         _stateDerivs_xx = new double[_stateCt];
-        _stateDerivs2_xx = new double[_stateCt];
         if (_ivCt > 0) {
             _ivVals_xx = new double[_ivCt];
             _ivValsSample_xx = new double[_ivCt];
@@ -344,6 +343,7 @@ public final class LIQSS1 extends QSSBase {
             retVal = _derivFcn.eventIndicatorDerivativeInputs(_currSimTime,
                     _stateVals_xx, _ivVals_xx, tSample, _stateValsSample_xx,
                     _ivValsSample_xx, dtSample, null, null, null, 0.0, null,
+                    null, null, 0.0, null, null, null, 0.0, null,
                     null, null, 0.0, getStateModelOrder());
         }
 
@@ -380,11 +380,11 @@ public final class LIQSS1 extends QSSBase {
         }
 
         // Initialize dtSample
-        double dtSample[] = { 0.0 };
+        double dtSample[] = { 0.0, 0.0, 0.0 };
 
         // Evaluate derivative function at {_currSimTime}.
         int retVal = _derivFcn.evaluateDerivatives(_currSimTime, dtSample,
-                _stateDerivs_xx, _stateDerivs2_xx, getStateModelOrder());
+                _stateDerivs_xx, null, null, getStateModelOrder());
         if (0 != retVal) {
             throw new Exception("_derivFcn.evalDerivs() returned " + retVal);
         }
@@ -420,7 +420,6 @@ public final class LIQSS1 extends QSSBase {
     // memory could be ignored.
     private double[] _stateVals_xx;
     private double[] _stateDerivs_xx;
-    private double[] _stateDerivs2_xx;
     private double[] _ivVals_xx;
     private double[] _stateValsSample_xx;
     private double[] _ivValsSample_xx;
