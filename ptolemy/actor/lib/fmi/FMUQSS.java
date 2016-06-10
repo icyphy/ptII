@@ -485,12 +485,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Signalize that the time event is reached and get a new one. 
             if (_lastEventTime !=null && currentTime.compareTo(_lastEventTime) == 0) {
                 _numberOfTimeEvents++;
-                //if (_debugging) {   
+                if (_debugging) {   
                     _debugToStdOut(String.format(
                             "-- Id{%d} has a time event at time %s",
                             System.identityHashCode(this),
                             currentTime.toString()));
-                //}
+                }
                 _lastEventTime = _getNextEventTime();
             }
             // Get the new event time if we have a step event
@@ -897,12 +897,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     if (_checkStateEvents(possibleFireAtTime)) {
                         _forceQuantizationStateEvents = true;
                         _numberOfStateEvents++;
-                        //if (_debugging) {
+                        if (_debugging) {
                             _debugToStdOut(String
                                     .format("-- Id{%d} predicts a state event at time %s",
                                             System.identityHashCode(this),
                                             possibleFireAtTime.toString()));
-                        //}
+                        }
                     }
                 }
             }
@@ -1171,12 +1171,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      */
     @Override
     public void wrapup() throws IllegalActionException {
-        //if (_debugging) {
+        if (_debugging) {
             _debugToStdOut(" Number of steps: " + _numberOfSteps + "\n  stateEvents: "
                     + _numberOfStateEvents + "\n  stepEvents: "
                     + _numberOfStepEvents + "\n  timeEvents: "
                     + _numberOfTimeEvents);
-        //}
+        }
         if (!_useRawJNI()) {
             // Allow eventInfo to be garbaged collected.
             _eventInfo = null;
