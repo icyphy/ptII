@@ -337,12 +337,14 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     * @param xx The vector of state variables at <code>time</code>.
     * @param uu The vector of input variables at <code>time</code>.
     * @param xdot The vector of time rates of change of the state variables at <code>time</code>.
+    * @param xdotSample The vector of time rates of change of the state variables at a sample time.
+    * @param xdotSample2 The vector of time rates of change of the state variables at a sample time.
     * @return Success (0 for success, else user-defined error code).
     * @exception IllegalActionException If derivatives cannot be evaluated.
     */
     @Override
     public int evaluateDerivatives(Time time, double[] dtSample, double[] xdot,
-            double[] xdotSample, int stOrd) throws IllegalActionException {
+            double[] xdotSample, double[] xdotSample2, int stOrd) throws IllegalActionException {
         return 0;
     }    
     
@@ -398,6 +400,14 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     * @param xxSample3 The vector of state variables at <code>timeSample3</code>.
     * @param uuSample3 The vector of input variables at <code>timeSample3</code>.
     * @param dtSample3 The delta between <timeSample3> and  <code>time</code>.
+    * @param timeSample4 Simulation time.
+    * @param xxSample4 The vector of state variables at <code>timeSample4</code>.
+    * @param uuSample4 The vector of input variables at <code>timeSample4</code>.
+    * @param dtSample4 The delta between <timeSample4> and  <code>time</code>.
+    * @param timeSample5 Simulation time.
+    * @param xxSample5 The vector of state variables at <code>timeSample5</code>.
+    * @param uuSample5 The vector of input variables at <code>timeSample5</code>.
+    * @param dtSample5 The delta between <timeSample5> and  <code>time</code>.
     * variables at <code>time</code>.
     * @return Success (0 for success, else user-defined error code).
     * @exception IllegalActionException If derivatives cannot be evaluated.
@@ -408,7 +418,9 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             double dtSample, Time timeSample2, double[] xxSample2,
             double[] uuSample2, double dtSample2, Time timeSample3,
             double[] xxSample3, double[] uuSample3, double dtSample3,
-            int stateModelOrder) throws IllegalActionException {
+            Time timeSample4,double[] xxSample4, double[] uuSample4, 
+            double dtSample4,  Time timeSample5,double[] xxSample5, double[] uuSample5, 
+            double dtSample5, int stateModelOrder) throws IllegalActionException {
         return 0;
     }
 
