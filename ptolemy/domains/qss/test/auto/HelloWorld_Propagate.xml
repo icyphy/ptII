@@ -260,7 +260,7 @@
         </property>
     </entity>
     <entity name="QSSIntegrator2" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2FdJac">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
         </property>
         <property name="QSSIntegrator_Icon" class="ptolemy.vergil.icon.EditorIcon">
             <property name="rectangle" class="ptolemy.vergil.kernel.attributes.RectangleAttribute">
@@ -466,7 +466,7 @@
         </property>
     </entity>
     <entity name="QSSIntegrator4" class="ptolemy.domains.qss.kernel.QSSIntegrator">
-        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2FdJac">
+        <property name="solver" class="ptolemy.data.expr.StringParameter" value="QSS2Fd">
         </property>
         <property name="propagateInputDerivatives" class="ptolemy.data.expr.Parameter" value="false">
         </property>

@@ -587,9 +587,9 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         switch(_solverOrder) {
         case 1: _qssSolver = ((QSSDirector) director).newQSSSolver("QSS1");
                 break;
-        case 2: _qssSolver = ((QSSDirector) director).newQSSSolver("QSS2FdJac");
+        case 2: _qssSolver = ((QSSDirector) director).newQSSSolver("QSS2Fd");
                 break;
-        case 3: _qssSolver = ((QSSDirector) director).newQSSSolver("QSS3Pts");
+        case 3: _qssSolver = ((QSSDirector) director).newQSSSolver("QSS3Fd");
                 break;
         default: throw new IllegalActionException(this, "Unsupported solver order: " + _solverOrder);
         }

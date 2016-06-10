@@ -11,7 +11,7 @@
         </property>
         <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="0.01">
         </property>
-        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS3Pts">
+        <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS3Fd">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 45.0]">
         </property>
