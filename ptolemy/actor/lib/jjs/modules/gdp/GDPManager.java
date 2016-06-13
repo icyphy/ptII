@@ -63,6 +63,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.ChoiceParameter;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.domains.de.kernel.DEDirector;
@@ -76,6 +77,7 @@ import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
@@ -125,6 +127,14 @@ public class GDPManager extends AbstractInitializableAttribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        cleanGDP = new Parameter(this, "cleanGDP");
+        cleanGDP.setTypeEquals(BaseType.BOOLEAN);
+        cleanGDP.setExpression("false");
+        
+        deleteLogInWrapup = new Parameter(this, "deleteLogInWrapup");
+        deleteLogInWrapup.setTypeEquals(BaseType.BOOLEAN);
+        deleteLogInWrapup.setExpression("true");
+        
         gdpSourceDirectory = new FileParameter(this, "gdpSourceDirectory");
         new Parameter(gdpSourceDirectory, "allowFiles", BooleanToken.FALSE);
         new Parameter(gdpSourceDirectory, "allowDirectories", BooleanToken.TRUE);
@@ -133,10 +143,27 @@ public class GDPManager extends AbstractInitializableAttribute {
         isLocalGDP = new Parameter(this, "isLocalGDP");
         isLocalGDP.setTypeEquals(BaseType.BOOLEAN);
         isLocalGDP.setExpression("true");
+
+        logName = new StringParameter(this, "logName");
+        logName.setTypeEquals(BaseType.STRING);
+        logName.setExpression("");
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
+    /** If true then remove the contents of the <i>gdpSourceDirectory</i>
+     *  at the start of initialization.  
+     *  The default value is the value false.
+     */
+    public Parameter cleanGDP;
+    
+    /** If true, the deleteo the log named by the <i>logName</i>
+     *  parameter in wrapup().
+     *  The default value is false, meaning that the log is not deleted. 
+     */ 
+    public Parameter deleteLogInWrapup;
 
     /** The path to the GDP sources.  The default value is
      * "$PTII/vendors/gdp".
@@ -148,6 +175,15 @@ public class GDPManager extends AbstractInitializableAttribute {
      */
     public Parameter isLocalGDP;
     
+    /** The name of the GDP log to create, if any. The default value
+     *  is the empty string, meaning that no log is created.
+     *  Models typically have the logName as a parameter that is used
+     *  in this attribute and in the GDP accessors.
+     *  The default value is the empty string, meaning that no logs
+     *  are created.
+     */
+    public StringParameter logName;
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
  
@@ -156,10 +192,20 @@ public class GDPManager extends AbstractInitializableAttribute {
      *  @exception IllegalActionException If there are problems accessing the parameter.
      *  @exception IOException If there are problems accessing or build the repositories.
      */   
-    public static void downloadAndBuild(FileParameter gdpSourceDirectoryParameter)
+    public static void downloadAndBuild(FileParameter gdpSourceDirectoryParameter,
+                                        boolean cleanGDP)
             throws IllegalActionException, IOException {
         // This method is static to make it easier to test.
         File gdpSourceDirectory = gdpSourceDirectoryParameter.asFile();
+
+        // if cleanGDP is true, the remove the gdp source directory.
+        if (cleanGDP) {
+            if (gdpSourceDirectory.exists()) {
+                System.out.println("cleanGDP was true, deleting " + gdpSourceDirectory);
+                FileUtilities.deleteDirectory(gdpSourceDirectory.toString());
+            }
+        }
+
         if (gdpSourceDirectory.isFile()) {
             throw new IOException(gdpSourceDirectory + _badFileMessage);
         }
@@ -222,6 +268,9 @@ public class GDPManager extends AbstractInitializableAttribute {
         }    
         File jarFile = new File(_gdp + File.separator + "lang/java" + File.separator + jarFileName);
         System.out.println("Checking for jar file " + jarFile);
+
+        // FIXME: Copying a new jar file is not likely to cause the new class definitions to
+        // be loaded in to the current JVM.
         if (jarFile.exists() && jarFile.isFile()) {
             File destination = new File(StringUtilities.getProperty("ptolemy.ptII.dir") + File.separator + "lib",  jarFileName);
             if (!destination.exists()) {
@@ -318,6 +367,30 @@ public class GDPManager extends AbstractInitializableAttribute {
         _gdpLogdExec.updateEnvironment("EP_PARAM_PATH", _epAdmParamsDirectory.toString());
         _gdpLogdExec.setWaitForLastSubprocess(false);
         _gdpLogdExec.start();
+
+        String log = ((StringToken) logName.getToken()).stringValue();
+        if (log.length() > 0) {
+            // FIXME: instead of spawning a separate process, we should use the
+            // Java interface to the GDP
+            StringBufferExec gclCreateExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+            gclCreateExec.setWorkingDirectory(_gdp);
+            LinkedList<String> gclCreateCommands = new LinkedList<String>();
+            // FIXME: -k none means we are not setting keys
+            String gclCreateCommand = "./apps/gcl-create -k none -s " + _hostName + " -q " + log;
+            gclCreateCommands.add(gclCreateCommand);
+            gclCreateExec.setCommands(gclCreateCommands);
+            gclCreateExec.setWaitForLastSubprocess(false);
+            gclCreateExec.start();
+            int returnCode = gclCreateExec.getLastSubprocessReturnCode();
+            if (returnCode == 0) {
+                MessageHandler.status("Created " + log);
+            } else {
+                throw new IllegalActionException(this, "Failed to create the " + log + "."
+                        + "  The command was:\n cd " + _gdp
+                        + gclCreateCommands + "\n"
+                        + gclCreateExec.buffer);
+            }
+        }
     }
 
     /** Preinitialze the GDPManager attribute.
@@ -332,7 +405,8 @@ public class GDPManager extends AbstractInitializableAttribute {
         super.preinitialize();
         if (((BooleanToken) isLocalGDP.getToken()).booleanValue()) {
             try {
-                GDPManager.downloadAndBuild(gdpSourceDirectory);
+                GDPManager.downloadAndBuild(gdpSourceDirectory,
+                        ((BooleanToken) cleanGDP.getToken()).booleanValue());
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex, "Failed to build the gdp.");
             }
@@ -346,6 +420,9 @@ public class GDPManager extends AbstractInitializableAttribute {
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
+        if (((BooleanToken) deleteLogInWrapup.getToken()).booleanValue()) {
+            System.out.println("deleteLogInWrapup is not yet supported.");
+        }
         try {
             _gdpRouterExec.cancel();
         } finally {

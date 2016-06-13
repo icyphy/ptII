@@ -21,13 +21,17 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A GDP Log writer accessor example, that &#10;writes the current date every second to a &#10;log. The name of the log is a configuration &#10;parameter; make sure that the log exists &#10;before running this model.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A GDP Log append accessor example, that &#10;writes the current date every second to a &#10;log. The name of the log is a configuration &#10;parameter, it is created by the GDPManager.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[289.5, 40.0]">
         </property>
     </property>
     <property name="GDPManager" class="ptolemy.actor.lib.jjs.modules.gdp.GDPManager">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 380.0]">
+        <property name="cleanGDP" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="logName" class="ptolemy.data.expr.StringParameter" value="log3">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 115.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
