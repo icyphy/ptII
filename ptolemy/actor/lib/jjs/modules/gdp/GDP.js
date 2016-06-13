@@ -28,9 +28,8 @@
 /**
  * Module to access the Global Data Plane.
  * 
- *
  * @module GDP
- * @author Edward A. Lee
+ * @author Edward A. Lee, Christopher Brooks
  * @version $$Id$$
  */
 
@@ -60,6 +59,6 @@ exports.GDP.prototype.subscribe = function (startrec, numrecs, timeout) {
     this.helper.subscribe(this, startrec, numrecs, timeout);
 };
 
-exports.GDP.prototype.get_next_data = function (timeout_msec) {
+exports.GDP.prototype.getNextData = function (timeout_msec) {
     return this.helper.getNextData(timeout_msec);
 };
