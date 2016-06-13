@@ -108,6 +108,7 @@ public class GDPHelper {
                     // Zero arg means no timeout. Wait forever.
                     HashMap<String, Object> result = GDP_GCL.get_next_event(_gcl, 0);
                     if (result != null) {
+                        System.out.println("GDPHelper.subscribe(): about to call handleResponse " + result.toString());
                         currentObj.callMember("handleResponse", result.toString());
                     } else {
                         _subscribed = false;

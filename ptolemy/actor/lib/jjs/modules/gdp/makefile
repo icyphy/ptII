@@ -48,7 +48,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-	GDPHelper.java
+	GDPHelper.java \
+	GDPManager.java
 
 OTHER_FILES_TO_BE_JARED = \
 	GDP.js \

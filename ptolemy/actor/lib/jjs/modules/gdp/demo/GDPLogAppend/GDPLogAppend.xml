@@ -5,8 +5,6 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="localClock" class="ptolemy.actor.LocalClock">
-        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[69.5, 70.0]">
         </property>
     </property>
@@ -26,6 +24,10 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A GDP Log writer accessor example, that &#10;writes the current date every second to a &#10;log. The name of the log is a configuration &#10;parameter; make sure that the log exists &#10;before running this model.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[289.5, 40.0]">
+        </property>
+    </property>
+    <property name="GDPManager" class="ptolemy.actor.lib.jjs.modules.gdp.GDPManager">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 380.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
