@@ -349,6 +349,15 @@ public class GDPManager extends AbstractInitializableAttribute {
         _gdpRouterExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
         _gdpRouterExec.setWorkingDirectory(_gdpRouter);
         LinkedList<String> gdpRouterCommands = new LinkedList<String>();
+
+        // Kill any router processes.
+        gdpRouterCommands.add("pkill -f 'python ./src/gdp_router.py'");
+        _gdpRouterExec.setCommands(gdpRouterCommands);
+        _gdpRouterExec.setWaitForLastSubprocess(true);
+        _gdpRouterExec.start();
+
+        // Start the router process.
+        gdpRouterCommands = new LinkedList<String>();
         gdpRouterCommands.add("./src/gdp_router.py -l" + _gdpRouter + File.separator + "routerLog.txt");
         _gdpRouterExec.setCommands(gdpRouterCommands);
         _gdpRouterExec.updateEnvironment("EP_PARAM_PATH", _epAdmParamsDirectory.toString());
@@ -365,10 +374,17 @@ public class GDPManager extends AbstractInitializableAttribute {
             System.err.println("GDPManager: sleep interrupted? " + ex);
         }
 
-        // Start the gdp.
+        // Kill any previously running gdplogd processes
         _gdpLogdExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
         _gdpLogdExec.setWorkingDirectory(_gdp);
         LinkedList<String> gdpCommands = new LinkedList<String>();
+        gdpCommands.add("pkill gdplogd");
+        _gdpLogdExec.setCommands(gdpCommands);
+        _gdpLogdExec.setWaitForLastSubprocess(true);
+        _gdpLogdExec.start();
+
+        // Start up the gdplogd process.
+        gdpCommands = new LinkedList<String>();
         try {
             _hostName = InetAddress.getLocalHost().getHostName();
         } catch (Throwable throwable) {

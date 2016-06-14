@@ -75,7 +75,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 
 # JUNIT_JAVA_ARGS is set in /Users/cxh/ptII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
-	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.actor.lib.jjs.modules.gdp.test.junit.JUnitTclTest)
+	(cd ..; LD_LIBRARY_PATH=$(PTII)/lib:/usr/local/lib CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.actor.lib.jjs.modules.gdp.test.junit.JUnitTclTest)
 
 test_java: jclass
 
