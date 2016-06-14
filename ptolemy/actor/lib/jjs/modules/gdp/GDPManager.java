@@ -89,19 +89,22 @@ import ptolemy.kernel.util.Workspace;
 /**
  * Download, build, start and stop the Global Data Plane (GDP).
  * 
- * This class requires read access to the GDP.  As of June, 2016,
- * the GDP repos are not publicly available.
+ * <p>This class requires read access to the GDP.  As of June, 2016,
+ * the GDP repos are not publicly available.</p>
  *
- * The GDP "provides a data-centric glue for swarm applications."
- * For more information, see <a href="https://swarmlab.eecs.berkeley.edu/projects/4814/global-data-plane">https://swarmlab.eecs.berkeley.edu/projects/4814/global-data-plane</a>.
+ * <p>The GDP "provides a data-centric glue for swarm applications."
+ * For more information, see <a href="https://swarmlab.eecs.berkeley.edu/projects/4814/global-data-plane">https://swarmlab.eecs.berkeley.edu/projects/4814/global-data-plane</a>.</p>
  *
- * The primary purpose of this class is to make it easy to download,
+ * <p>The primary purpose of this class is to make it easy to download,
  * build and start the GDP on a local machine.  This is primarily useful
- * for testing. 
+ * for testing. </p>
  *
- * If the <i>isLocalGDP</i> parameter is false, the the local GDP
- * is <b>not</b> used.
-
+ * <p>If the <i>isLocalGDP</i> parameter is false, the the local GDP
+ * is <b>not</b> used.</p>
+ *
+ * <p>See org/terraswarm/accessor/accessors/web/gdp/gdpSetup for a shell
+ * script that does something similar.</p>
+ *
  * @author Christopher Brooks, based on HlaManager by Gilles Lasnier, Contributors: Patricia Derler, Edward A. Lee, David Come, Yanxuan LI
  * @version $Id$
  * @since Ptolemy II 11.0
@@ -131,9 +134,9 @@ public class GDPManager extends AbstractInitializableAttribute {
         cleanGDP.setTypeEquals(BaseType.BOOLEAN);
         cleanGDP.setExpression("false");
         
-        deleteLogInWrapup = new Parameter(this, "deleteLogInWrapup");
-        deleteLogInWrapup.setTypeEquals(BaseType.BOOLEAN);
-        deleteLogInWrapup.setExpression("true");
+        deleteAllGCLsInWrapup = new Parameter(this, "deleteAllGCLsInWrapup");
+        deleteAllGCLsInWrapup.setTypeEquals(BaseType.BOOLEAN);
+        deleteAllGCLsInWrapup.setExpression("true");
         
         gdpSourceDirectory = new FileParameter(this, "gdpSourceDirectory");
         new Parameter(gdpSourceDirectory, "allowFiles", BooleanToken.FALSE);
@@ -159,11 +162,11 @@ public class GDPManager extends AbstractInitializableAttribute {
      */
     public Parameter cleanGDP;
     
-    /** If true, the deleteo the log named by the <i>logName</i>
-     *  parameter in wrapup().
-     *  The default value is false, meaning that the log is not deleted. 
+    /** If true, the delete all the GCLs parameter in wrapup().  The
+     *  default value is false, meaning that all the logs are not
+     *  delted.
      */ 
-    public Parameter deleteLogInWrapup;
+    public Parameter deleteAllGCLsInWrapup;
 
     /** The path to the GDP sources.  The default value is
      * "$PTII/vendors/gdp".
@@ -343,6 +346,9 @@ public class GDPManager extends AbstractInitializableAttribute {
         gdpRouterCommands.add("./src/gdp_router.py -l" + _gdpRouter + File.separator + "routerLog.txt");
         _gdpRouterExec.setCommands(gdpRouterCommands);
         _gdpRouterExec.updateEnvironment("EP_PARAM_PATH", _epAdmParamsDirectory.toString());
+        System.out.println("GDPManager: Using a local copy of the GDP.  To use this copy, do:\n"
+                + "export EP_PARAM_PATH=" + _epAdmParamsDirectory + "\n"
+                + "and then run commands in " + _gdp + "/");
         _gdpRouterExec.setWaitForLastSubprocess(false);
         _gdpRouterExec.start();
 
@@ -420,8 +426,12 @@ public class GDPManager extends AbstractInitializableAttribute {
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if (((BooleanToken) deleteLogInWrapup.getToken()).booleanValue()) {
-            System.out.println("deleteLogInWrapup is not yet supported.");
+        if (((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue()) {
+            File gclsDirectory = new File(gdpSourceDirectory.asFile(), "gcls");
+            String message = "GDPManager: Deleting " + gclsDirectory;
+            System.out.println(message);
+            MessageHandler.status(message);
+            FileUtilities.deleteDirectory(gclsDirectory);
         }
         try {
             _gdpRouterExec.cancel();

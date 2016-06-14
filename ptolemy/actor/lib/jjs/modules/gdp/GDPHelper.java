@@ -34,6 +34,7 @@ import org.terraswarm.gdp.GDP_NAME;
 
 
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashMap;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 
@@ -61,6 +62,7 @@ public class GDPHelper {
      */   
     public void append(String data) {
         byte [] bytes = data.getBytes(StandardCharsets.UTF_8);
+        System.out.println("GDPHelper.append(" + data + ")");
         _gcl.append(bytes);
     }
 
@@ -79,11 +81,24 @@ public class GDPHelper {
      *  string if no records were read.
      */
     public String read(long numberOfRecords) {
-        HashMap<String,Object> data = _gcl.read(numberOfRecords);
-        if (data != null) {
-            return data.toString();
+        HashMap<String,Object> datum = _gcl.read(numberOfRecords);
+        if (datum != null) {
+            Object data = datum.get("data");
+            if (data != null) {
+                if (data instanceof byte []) {
+                    try {
+                        return new String((byte[]) data, "UTF-8");
+                    } catch (Throwable throwable) {
+                        return throwable.toString();
+                    }
+                } else {
+                    return "Object: " + data;
+                }
+            } else {
+                return "data was null?";
+            }
         } else {
-            return "";
+            return "datum was null?";
         }
     }
 
