@@ -413,7 +413,7 @@ if [ ! -z "$CERTI_HOME" ]; then
         if [ ! -z "$DYLD_LIBRARY_PATH" ]; then
             export DYLD_LIBRARY_PATH=${CERTI_HOME}/lib:${DYLD_LIBRARY_PATH}
          else
-            export LD_LIBRARY_PATH=${CERTI_HOME}/lib
+            export DYLD_LIBRARY_PATH=${CERTI_HOME}/lib
         fi
         if [ ! -z "$LD_LIBRARY_PATH" ]; then
             export LD_LIBRARY_PATH=${CERTI_HOME}/lib:${LD_LIBRARY_PATH}
