@@ -168,7 +168,9 @@ public class GDPManager extends AbstractInitializableAttribute {
     
     /** If true, the delete all the GCLs parameter in wrapup().  The
      *  default value is true, meaning that all the logs are.
-     *  deleted.  If true, then the daemons are stopped in wrapup.
+     *  deleted.  If true, then the daemons are stopped in wrapup.  If
+     *  ~/.ep_adm_params/ cannot be created, then the gcls are stored
+     *  in /var/swarm/gdp/gcls and this parameter has no effect.
      */ 
     public Parameter deleteAllGCLsInWrapup;
 
@@ -269,7 +271,9 @@ public class GDPManager extends AbstractInitializableAttribute {
         } else {
             throw new IOException("Failed to build the gdp."
                     + "cd " + _gdp + "; " + makeCommand + "\n"
-                    + exec.buffer);
+                    + exec.buffer
+                    + "See " + _gdp + "/README.md and run " + _gdp + "/adm/gdp-setup.sh"
+                    + "Also, see " + _gdpRouter + "/README.md."); 
         }
 
         // Copy the gdp jar file to $PTII/lib
@@ -335,53 +339,80 @@ public class GDPManager extends AbstractInitializableAttribute {
                 newSharedLibraryFileName = "libgdp." + version + ".so";
             }
             File destination = new File(StringUtilities.getProperty("ptolemy.ptII.dir") + File.separator + "lib",  newSharedLibraryFileName);
-            String message = "Renaming " + sharedLibraryFile + " to " + destination;
-            MessageHandler.status(message);
-            sharedLibraryFile.renameTo(destination);
+            //String message = "Renaming " + sharedLibraryFile + " to " + destination;
+            //MessageHandler.status(message);
+            //sharedLibraryFile.renameTo(destination);
         }
 
-        // Create configuration files for the gdp
-        _epAdmParamsDirectory = new File(gdpSourceDirectory, "ep_adm_params");
-        if (!_epAdmParamsDirectory.exists()) {
-            if (!_epAdmParamsDirectory.mkdirs()) {
-                throw new IOException("Failed to create " + _epAdmParamsDirectory);
+        // Create configuration files for the gdp.
+
+        // This is the default location where the gdp searches for its configuration.
+        // Under RHEL, we tried setting EP_PARAM_PATH and calling updateEnvironment(),
+        // but it did not work.
+        // FIXME: get EP_PARAM_PATH working properly.
+
+        String userHome = StringUtilities.getProperty("user.home");
+        if (userHome.length() == 0) {
+            System.err.println("Could not get the value of the user.home Java property.  "
+                    + "This can happen under applets.  This means that the gdp will expect "
+                    + "to be able to write to /var/swarm/gdp/gcls/.");
+
+            _gclsDirectory = new File("/var/swarm/gdp/gcls");
+
+            if (! _gclsDirectory.isDirectory()) {
+                if (!_gclsDirectory.mkdirs()) {
+                    System.err.println("/var/swarm/gdp/gcls does not exist.  "
+                            + "To create this directory, do: " 
+                            + "sudo mkdir /var/swarm/gdp/gcls; sudo chown $USER /var/swarm/gdp/gcls");
+                }
             }
-        }
-        File gdpConfigurationFile = new File(_epAdmParamsDirectory, "gdp");
-
-        BufferedWriter writer = null;
-        try {
-            writer = new BufferedWriter(new OutputStreamWriter(
-                            new FileOutputStream(gdpConfigurationFile), "utf-8"));
-            writer.write("swarm.gdp.routers=localhost");
-            writer.newLine();
-        } finally {
-            if (writer != null) {
-                writer.close();
+        } else {
+            // Create ~/.ep_adm_params/ 
+            _epAdmParamsDirectory = new File(userHome, ".ep_adm_params");
+            if (!_epAdmParamsDirectory.exists()) {
+                if (!_epAdmParamsDirectory.mkdirs()) {
+                    throw new IOException("Failed to create " + _epAdmParamsDirectory);
+                }
             }
-        }
 
-        // Create the directory where the logs are stored.
-        _gclsDirectory = new File(gdpSourceDirectory, "gcls");
-        if (!_gclsDirectory.exists()) {
-            if (!_gclsDirectory.mkdirs()) {
-                throw new IOException("Failed to create " + _gclsDirectory);
+            System.out.println("Using configuration files in " + _epAdmParamsDirectory);
+
+            // Create ~/.ep_adm_params/gdp
+            File gdpConfigurationFile = new File(_epAdmParamsDirectory, "gdp");
+            BufferedWriter writer = null;
+            try {
+                writer = new BufferedWriter(new OutputStreamWriter(
+                                new FileOutputStream(gdpConfigurationFile), "utf-8"));
+                writer.write("swarm.gdp.routers=localhost");
+                writer.newLine();
+            } finally {
+                if (writer != null) {
+                    writer.close();
+                }
             }
-        }
 
-        File gdplogdConfigurationFile = new File(_epAdmParamsDirectory, "gdplogd");
-
-        writer = null;
-        try {
-            writer = new BufferedWriter(new OutputStreamWriter(
-                            new FileOutputStream(gdplogdConfigurationFile), "utf-8"));
-            writer.write("swarm.gdplogd.gcl.dir=" + _gclsDirectory);
-            writer.newLine();
-        } finally {
-            if (writer != null) {
-                writer.close();
+            // Create the directory where the logs are stored.
+            _gclsDirectory = new File(gdpSourceDirectory, "gcls");
+            if (!_gclsDirectory.exists()) {
+                if (!_gclsDirectory.mkdirs()) {
+                    throw new IOException("Failed to create " + _gclsDirectory);
+                }
             }
-        }
+
+            // Create ~/.ep_adm_params/gdplogd
+            File gdplogdConfigurationFile = new File(_epAdmParamsDirectory, "gdplogd");
+            writer = null;
+            try {
+                writer = new BufferedWriter(new OutputStreamWriter(
+                                new FileOutputStream(gdplogdConfigurationFile), "utf-8"));
+                writer.write("swarm.gdplogd.gcl.dir=" + _gclsDirectory);
+                writer.newLine();
+            } finally {
+                if (writer != null) {
+                    writer.close();
+                }
+            }
+        } // Read user.home property
 
     }
 
@@ -414,13 +445,10 @@ public class GDPManager extends AbstractInitializableAttribute {
         String gdpRouterCommand = "src/gdp_router.py -l" + _gdpRouter + File.separator + "routerLog.txt";
         gdpRouterCommands.add("./" + gdpRouterCommand);
         System.out.println("The command to run the gdp router:\n  "
-                + "EP_PARAM_PATH=" + _epAdmParamsDirectory.toString()
                 + " " + _gdpRouter + "/" + gdpRouterCommand);
 
         _gdpRouterExec.setCommands(gdpRouterCommands);
-        _gdpRouterExec.updateEnvironment("EP_PARAM_PATH", _epAdmParamsDirectory.toString());
         System.out.println("GDPManager: Using a local copy of the GDP.  To use this copy, do:\n"
-                + "export EP_PARAM_PATH=" + _epAdmParamsDirectory + "\n"
                 + "and then run commands in " + _gdp + "/");
         _gdpRouterExec.setWaitForLastSubprocess(false);
         _gdpRouterExec.start();
@@ -448,13 +476,11 @@ public class GDPManager extends AbstractInitializableAttribute {
         } catch (Throwable throwable) {
             throw new IllegalActionException(this, throwable, "Could not get the hostname?");
         }
-        String gdplogdCommand = "gdplogd/gdplogd -F -N " + _hostName;
+        String gdplogdCommand = "gdplogd/gdplogd -F -Dgdplogd.physlog=39 -N " + _hostName;
         System.out.println("The command to run gdplogd:\n  "
-                + "EP_PARAM_PATH=" + _epAdmParamsDirectory.toString()
                 + " " + _gdp + "/" + gdplogdCommand);
         gdpCommands.add("./" + gdplogdCommand);
         _gdpLogdExec.setCommands(gdpCommands);
-        _gdpLogdExec.updateEnvironment("EP_PARAM_PATH", _epAdmParamsDirectory.toString());
         _gdpLogdExec.setWaitForLastSubprocess(false);
         _gdpLogdExec.start();
 
@@ -481,7 +507,6 @@ public class GDPManager extends AbstractInitializableAttribute {
             // FIXME: -k none means we are not setting keys
             String gclCreateCommand = "./apps/gcl-create -k none -s " + _hostName + " -q " + log;
             System.out.println("The command to create the log is:\n  "
-                + "EP_PARAM_PATH=" + _epAdmParamsDirectory.toString()
                 + " " + _gdp + "/" + gclCreateCommand);
             gclCreateCommands.add(gclCreateCommand);
             gclCreateExec.setCommands(gclCreateCommands);
@@ -490,6 +515,8 @@ public class GDPManager extends AbstractInitializableAttribute {
             int returnCode = gclCreateExec.getLastSubprocessReturnCode();
             if (returnCode == 0) {
                 MessageHandler.status("Created " + log);
+            } else if (returnCode == 73) {
+                MessageHandler.status("Log " + log + " was previously created.");
             } else {
                 throw new IllegalActionException(this, "Failed to create the " + log + "."
                         + "  The command was:\n cd " + _gdp + "; "
@@ -520,7 +547,8 @@ public class GDPManager extends AbstractInitializableAttribute {
         }
     }
 
-    /** Terminate the gdp_router and the gdp processes.
+    /** Optionally delete the gcls log directory and terminate the
+     *  gdp_router and the gdp processes.
      *  @exception IllegalActionException If the parent class throws it
      *  of if there are problems terminating the processes
      */
@@ -528,9 +556,12 @@ public class GDPManager extends AbstractInitializableAttribute {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
         if (((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue()) {
-            String message = "GDPManager: Deleting " + _gclsDirectory;
-            MessageHandler.status(message);
-            FileUtilities.deleteDirectory(_gclsDirectory);
+            if (_gclsDirectory.toString(). equals("/var/swarm/gdp/gcls")) {
+                MessageHandler.status("GDPManager: Not removing /var/swarm/gdp/gcls");
+            } else {
+                MessageHandler.status("GDPManager: Deleting " + _gclsDirectory);
+                FileUtilities.deleteDirectory(_gclsDirectory);
+            }
         }
         if (((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue() 
                 || ((BooleanToken) stopGDPDaemonsInWrapup.getToken()).booleanValue()) {
