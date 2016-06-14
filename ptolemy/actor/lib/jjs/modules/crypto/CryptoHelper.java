@@ -52,6 +52,7 @@ import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.Arrays;
+import java.util.Collection;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
@@ -63,6 +64,7 @@ import javax.crypto.spec.SecretKeySpec;
 import javax.xml.bind.DatatypeConverter;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import jdk.nashorn.internal.objects.NativeArray;
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.kernel.util.IllegalActionException;
@@ -498,14 +500,24 @@ public class CryptoHelper extends HelperBase {
      *  @throws IllegalActionException If the conversion fails.
      */
     private byte[] _toJavaBytes(Object object) throws IllegalActionException {
-        if (object instanceof ScriptObjectMirror) {
-            ScriptObjectMirror objectMirror = ((ScriptObjectMirror) object);
+        if (object instanceof ScriptObjectMirror || object instanceof NativeArray) {
+            Collection<Object> values = null;
+            if (object instanceof ScriptObjectMirror) {
+                ScriptObjectMirror objectMirror = ((ScriptObjectMirror) object);
+                values = objectMirror.values();
+            } else if (object instanceof NativeArray) {
+                NativeArray nativeArray = (NativeArray)object;
+                values = nativeArray.values();
+            }
 
-            byte[] result = new byte[objectMirror.size()];
+            byte[] result = new byte[values.size()];
             int i = 0;
-            for (Object value : objectMirror.values()) {
+            for (Object value : values) {
                 if (value instanceof UnsignedByteToken) {
                     result[i] = ((UnsignedByteToken) value).byteValue();
+                }
+                else if (value instanceof Byte) {
+                    result[i] = ((Byte) value).byteValue();
                 }
                 else if (value instanceof Integer) {
                     result[i] = ((Integer) value).byteValue();
