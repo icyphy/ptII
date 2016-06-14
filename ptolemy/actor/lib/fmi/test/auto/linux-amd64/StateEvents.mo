@@ -97,7 +97,7 @@ when simulated from 0 to 10s.
   annotation (Documentation(revisions="<html>
 <ul>
 <li>
-June 1 2015, by Thierry S. Nouidui:<br/>
+June 1 2016, by Thierry S. Nouidui:<br/>
 First implementation.
 </li>
 </ul>
