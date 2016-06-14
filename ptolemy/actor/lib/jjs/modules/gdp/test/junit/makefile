@@ -37,7 +37,7 @@ ME =		ptolemy/actor/lib/jjs/modules/gdp/test/junit
 ROOT =		../../../../../../../..
 
 # JUNIT_JAR is searched for by /Users/cxh/ptII/configure and set in /Users/cxh/ptII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(PTGDP_JAR)$(CLASSPATHSEPARATOR)$(JNA_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk

@@ -299,11 +299,12 @@ public class GDPManager extends AbstractInitializableAttribute {
         }
         File gdpConfigurationFile = new File(_epAdmParamsDirectory, "gdp");
 
-        Writer writer = null;
+        BufferedWriter writer = null;
         try {
             writer = new BufferedWriter(new OutputStreamWriter(
                             new FileOutputStream(gdpConfigurationFile), "utf-8"));
             writer.write("swarm.gdp.routers=localhost");
+            writer.newLine();
         } finally {
             if (writer != null) {
                 writer.close();
@@ -325,6 +326,7 @@ public class GDPManager extends AbstractInitializableAttribute {
             writer = new BufferedWriter(new OutputStreamWriter(
                             new FileOutputStream(gdplogdConfigurationFile), "utf-8"));
             writer.write("swarm.gdplogd.gcl.dir=" + gclsDirectory);
+            writer.newLine();
         } finally {
             if (writer != null) {
                 writer.close();
