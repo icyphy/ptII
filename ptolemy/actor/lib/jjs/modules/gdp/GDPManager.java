@@ -251,97 +251,107 @@ public class GDPManager extends AbstractInitializableAttribute {
         _gdpRouter = new File(gdpSourceDirectory, "gdp_router");
 
 
-        // Build the gdp.
-        _gdp = new File(gdpSourceDirectory, "gdp");
-        System.out.println("Building the gdp typically requires installing some packages. "
-                + "see " + _gdp + "/README.md");
+        if ((_lastGDPMakeTime < 0
+                            || (System.currentTimeMillis() - _lastGDPMakeTime > 43200000L))) {
+            // Build the gdp.
+            _gdp = new File(gdpSourceDirectory, "gdp");
+            System.out.println("Building the gdp typically requires installing some packages. "
+                    + "see " + _gdp + "/README.md");
 
-        MessageHandler.status("Building the gdp.");
-        final StringBufferExec exec = new StringBufferExec(true /*appendToStderrAndStdout*/);
-        exec.setWorkingDirectory(_gdp);
-        List execCommands = new LinkedList<String>();
-        String makeCommand = "make all install_Java";
-        execCommands.add(makeCommand);
-        exec.setCommands(execCommands);
-        exec.setWaitForLastSubprocess(true);
-        exec.start();
-        int returnCode = exec.getLastSubprocessReturnCode();
-        if (returnCode == 0) {
-            MessageHandler.status("Built the gdp.");
-        } else {
-            throw new IOException("Failed to build the gdp."
-                    + "cd " + _gdp + "; " + makeCommand + "\n"
-                    + exec.buffer
-                    + "See " + _gdp + "/README.md and run " + _gdp + "/adm/gdp-setup.sh"
-                    + "Also, see " + _gdpRouter + "/README.md."); 
-        }
+            MessageHandler.status("Building the gdp.");
+            final StringBufferExec exec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+            exec.setWorkingDirectory(_gdp);
+            List execCommands = new LinkedList<String>();
+            String makeCommand = "make all install_Java";
+            execCommands.add(makeCommand);
+            exec.setCommands(execCommands);
+            exec.setWaitForLastSubprocess(true);
+            exec.start();
+            int returnCode = exec.getLastSubprocessReturnCode();
+            if (returnCode == 0) {
+                MessageHandler.status("Built the gdp.");
+            } else {
+                throw new IOException("Failed to build the gdp."
+                        + "cd " + _gdp + "; " + makeCommand + "\n"
+                        + exec.buffer
+                        + "See " + _gdp + "/README.md and run " + _gdp + "/adm/gdp-setup.sh"
+                        + "Also, see " + _gdpRouter + "/README.md."); 
+            }
 
-        // Copy the gdp jar file to $PTII/lib
-        String jarFileName = "";
+            // Copy the gdp jar file to $PTII/lib
+            String jarFileName = "";
 
-        File[] files = new File(_gdp, "lang/java").listFiles();
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isFile()) {
-                jarFileName = files[i].getName();
-                if (jarFileName.matches("gdp-.*.jar")) {
-                    break;
+            File[] files = new File(_gdp, "lang/java").listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isFile()) {
+                    jarFileName = files[i].getName();
+                    if (jarFileName.matches("gdp-.*.jar")) {
+                        break;
+                    }
+                    jarFileName = "";
                 }
-                jarFileName = "";
-            }
-        }    
-        File jarFile = new File(_gdp + File.separator + "lang/java" + File.separator + jarFileName);
-        System.out.println("Checking for jar file " + jarFile);
+            }    
+            File jarFile = new File(_gdp + File.separator + "lang/java" + File.separator + jarFileName);
+            System.out.println("Checking for jar file " + jarFile);
 
-        // FIXME: Copying a new jar file is not likely to cause the new class definitions to
-        // be loaded in to the current JVM.
-        if (jarFile.exists() && jarFile.isFile()) {
-            File destination = new File(StringUtilities.getProperty("ptolemy.ptII.dir") + File.separator + "lib",  jarFileName);
-            if (!destination.exists()) {
-                throw new IOException("Building the GDP Java interface created "
-                        + destination + ", which does not exist and therefore is "
-                        + "not in the path.  Thus you may be running an old version "
-                        + "of the GDP Java interface.  To fix this, edit $PTII/configure.in, "
-                        + "then run (cd $PTII; autoconf;./configure; ant) "
-                        + "and then restart Ptolemy.");
+            // FIXME: Copying a new jar file is not likely to cause the new class definitions to
+            // be loaded in to the current JVM.
+            if (jarFile.exists() && jarFile.isFile()) {
+                File destination = new File(StringUtilities.getProperty("ptolemy.ptII.dir") + File.separator + "lib",  jarFileName);
+                if (!destination.exists()) {
+                    throw new IOException("Building the GDP Java interface created "
+                            + destination + ", which does not exist and therefore is "
+                            + "not in the path.  Thus you may be running an old version "
+                            + "of the GDP Java interface.  To fix this, edit $PTII/configure.in, "
+                            + "then run (cd $PTII; autoconf;./configure; ant) "
+                            + "and then restart Ptolemy.");
+                }
+                String message = "Renaming " + jarFile + " to " + destination;
+                MessageHandler.status(message);
+                jarFile.renameTo(destination);
             }
-            String message = "Renaming " + jarFile + " to " + destination;
-            MessageHandler.status(message);
-            jarFile.renameTo(destination);
-        }
 
-        // Copy the shared library file to $PTII/lib.
+            // Copy the shared library file to $PTII/lib.
    
-        // FIXME: Ideally all the shared libraries would be in the jar
-        // file where JNA can find them.
-        String sharedLibraryFileName = "";
+            // FIXME: Ideally all the shared libraries would be in the jar
+            // file where JNA can find them.
+            String sharedLibraryFileName = "";
 
-        files = new File(_gdp, "gdp").listFiles();
-        for (int i = 0; i < files.length; i++) {
-            if (files[i].isFile()) {
-                sharedLibraryFileName = files[i].getName();
-                // Match lib*.dylib* and lib*.so*, but not lib*.a
-                if (sharedLibraryFileName.matches("lib.*") && !sharedLibraryFileName.matches("lib.*a")) {
-                    break;
+            files = new File(_gdp, "gdp").listFiles();
+            for (int i = 0; i < files.length; i++) {
+                if (files[i].isFile()) {
+                    sharedLibraryFileName = files[i].getName();
+                    // Match lib*.dylib* and lib*.so*, but not lib*.a
+                    if (sharedLibraryFileName.matches("lib.*") && !sharedLibraryFileName.matches("lib.*a")) {
+                        break;
+                    }
+                    sharedLibraryFileName = "";
                 }
-                sharedLibraryFileName = "";
-            }
-        }    
-        File sharedLibraryFile = new File(_gdp + File.separator + "gdp" + File.separator + sharedLibraryFileName);
-        System.out.println("Checking for shared library file " + sharedLibraryFile);
+            }    
+            File sharedLibraryFile = new File(_gdp + File.separator + "gdp" + File.separator + sharedLibraryFileName);
+            System.out.println("Checking for shared library file " + sharedLibraryFile);
 
-        // FIXME: If the shared library has already been loaded by JNA, then updating
-        // the shared library is not likely to change much.
-        if (sharedLibraryFile.exists() && sharedLibraryFile.isFile()) {
-            String newSharedLibraryFileName = sharedLibraryFileName;
-            // Under Linux, JNA wants the name to be libgdp.N.M.so, but the name is libgdp.so.N.M
-            if (StringUtilities.getProperty("os.name").equals("Linux")) {
+            // FIXME: If the shared library has already been loaded by JNA, then updating
+            // the shared library is not likely to change much.
+            if (sharedLibraryFile.exists() && sharedLibraryFile.isFile()) {
+                // Under Linux, JNA wants the name to be libgdp.N.M.so, but the name is libgdp.so.N.M
+
+                String osName = StringUtilities.getProperty("os.name");
                 String version = sharedLibraryFileName.substring("libgdp.so.".length());
-                newSharedLibraryFileName = "libgdp." + version + ".so";
+                String newSharedLibraryFileName = sharedLibraryFileName;
+                if (osName.equals("Linux")) {
+                    newSharedLibraryFileName = "libgdp." + version + ".so";
+                } else if (osName.equals("Mac OS X")) {
+                    // Sadly, the gdp creates .so files under Mac OS X.
+                    newSharedLibraryFileName = "libgdp." + version + ".dylib";
+                }
+
+                File destination = new File(StringUtilities.getProperty("ptolemy.ptII.dir") + File.separator + "lib",  newSharedLibraryFileName);
+                String message = "Renaming " + sharedLibraryFile + " to " + destination;
+                MessageHandler.status(message);
+                sharedLibraryFile.renameTo(destination);
             }
-            File destination = new File(StringUtilities.getProperty("ptolemy.ptII.dir") + File.separator + "lib",  newSharedLibraryFileName);
-            //String message = "Renaming " + sharedLibraryFile + " to " + destination;
-            //MessageHandler.status(message);
-            //sharedLibraryFile.renameTo(destination);
+            _lastGDPMakeTime = System.currentTimeMillis();
         }
 
         // Create configuration files for the gdp.
@@ -422,70 +432,93 @@ public class GDPManager extends AbstractInitializableAttribute {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        // Start the gdp_router.
-        _gdpRouterExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
-        _gdpRouterExec.setWorkingDirectory(_gdpRouter);
-        LinkedList<String> gdpRouterCommands = new LinkedList<String>();
 
-        // Kill any router processes.
-        String userName = StringUtilities.getProperty("user.name");
-        String pkillUserFlag = userName.length() > 0
-            ? "-U " + userName
-            : "";
+        // Add $PTII/lib to the jna.library.path System property.
 
-        // FIXME: We should use pkill -f 'python ./src/gdp_router.py', but 
-        // passing arguments with spaces does not work here.
-        gdpRouterCommands.add("pkill " + pkillUserFlag + " python");
-        _gdpRouterExec.setCommands(gdpRouterCommands);
-        _gdpRouterExec.setWaitForLastSubprocess(true);
-        _gdpRouterExec.start();
-
-        // Start the router process.
-        gdpRouterCommands = new LinkedList<String>();
-        String gdpRouterCommand = "src/gdp_router.py -l" + _gdpRouter + File.separator + "routerLog.txt";
-        gdpRouterCommands.add("./" + gdpRouterCommand);
-        System.out.println("The command to run the gdp router:\n  "
-                + " " + _gdpRouter + "/" + gdpRouterCommand);
-
-        _gdpRouterExec.setCommands(gdpRouterCommands);
-        System.out.println("GDPManager: Using a local copy of the GDP.  To use this copy, do:\n"
-                + "and then run commands in " + _gdp + "/");
-        _gdpRouterExec.setWaitForLastSubprocess(false);
-        _gdpRouterExec.start();
-
-        // Sleep so that the router can come up.
-        try {
-            Thread.sleep(1000);
-        } catch (InterruptedException ex) {
-            System.err.println("GDPManager: sleep interrupted? " + ex);
+        // We could use StringUtilities.addDirectoryToJavaLibraryPath(),
+        // but adding to jna.library.path is more likely to work.
+        String jnaLibraryPath = StringUtilities.getProperty("jna.library.path");
+        String ptIILib = StringUtilities.getProperty("ptolemy.ptII.dir") + "/lib";
+        if (jnaLibraryPath.indexOf(ptIILib) == -1) {
+            String newPath = ptIILib;
+            if (jnaLibraryPath.indexOf(File.pathSeparator) != -1) {
+                newPath = jnaLibraryPath + File.pathSeparator + ptIILib;
+            }
+            System.setProperty("jna.library.path", newPath);
+            System.out.println("jna.library.path Java property is " + StringUtilities.getProperty("jna.library.path"));
         }
 
-        // Kill any previously running gdplogd processes
-        _gdpLogdExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
-        _gdpLogdExec.setWorkingDirectory(_gdp);
-        LinkedList<String> gdpCommands = new LinkedList<String>();
-        gdpCommands.add("pkill " + pkillUserFlag + " gdplogd");
-        _gdpLogdExec.setCommands(gdpCommands);
-        _gdpLogdExec.setWaitForLastSubprocess(true);
-        _gdpLogdExec.start();
+        if (!_calledWrapupOnce
+                || ((BooleanToken) stopGDPDaemonsInWrapup.getToken()).booleanValue()) {
+            // Start the gdp_router.
+            _gdpRouterExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+            _gdpRouterExec.setWorkingDirectory(_gdpRouter);
+            LinkedList<String> gdpRouterCommands = new LinkedList<String>();
 
-        // Start up the gdplogd process.
-        gdpCommands = new LinkedList<String>();
-        try {
-            _hostName = InetAddress.getLocalHost().getHostName();
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable, "Could not get the hostname?");
+            // Kill any router processes.
+            String userName = StringUtilities.getProperty("user.name");
+            String pkillUserFlag = userName.length() > 0
+                ? "-U " + userName
+                : "";
+
+            // FIXME: We should use pkill -f 'python ./src/gdp_router.py', but 
+            // passing arguments with spaces does not work here.
+            gdpRouterCommands.add("pkill " + pkillUserFlag + " python");
+            _gdpRouterExec.setCommands(gdpRouterCommands);
+            _gdpRouterExec.setWaitForLastSubprocess(true);
+            _gdpRouterExec.start();
+
+            // Start the router process.
+            gdpRouterCommands = new LinkedList<String>();
+            String gdpRouterCommand = "src/gdp_router.py -l" + _gdpRouter + File.separator + "routerLog.txt";
+            gdpRouterCommands.add("./" + gdpRouterCommand);
+            System.out.println("The command to run the gdp router:\n  "
+                    + " " + _gdpRouter + "/" + gdpRouterCommand);
+
+            _gdpRouterExec.setCommands(gdpRouterCommands);
+            System.out.println("GDPManager: Using a local copy of the GDP.  To use this copy, do:\n"
+                    + "and then run commands in " + _gdp + "/");
+            _gdpRouterExec.setWaitForLastSubprocess(false);
+            _gdpRouterExec.start();
+
+            // Sleep so that the router can come up.
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                System.err.println("GDPManager: sleep interrupted? " + ex);
+            }
+
+            // Kill any previously running gdplogd processes
+            _gdpLogdExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+            _gdpLogdExec.setWorkingDirectory(_gdp);
+            LinkedList<String> gdpCommands = new LinkedList<String>();
+            gdpCommands.add("pkill " + pkillUserFlag + " gdplogd");
+            _gdpLogdExec.setCommands(gdpCommands);
+            _gdpLogdExec.setWaitForLastSubprocess(true);
+            _gdpLogdExec.start();
+
+            // Start up the gdplogd process.
+            gdpCommands = new LinkedList<String>();
+            try {
+                _hostName = InetAddress.getLocalHost().getHostName();
+            } catch (Throwable throwable) {
+                throw new IllegalActionException(this, throwable, "Could not get the hostname?");
+            }
+            //String debug = "-Dgdp.gdp_chan=39";
+            String debug = "-Dgdplogd.physlog=39";
+
+            String gdplogdCommand = "gdplogd/gdplogd -F " + debug + " -N " + _hostName;
+            System.out.println("The command to run gdplogd:\n  "
+                    + " " + _gdp + "/" + gdplogdCommand);
+            gdpCommands.add("./" + gdplogdCommand);
+            _gdpLogdExec.setCommands(gdpCommands);
+            _gdpLogdExec.setWaitForLastSubprocess(false);
+            _gdpLogdExec.start();
         }
-        String gdplogdCommand = "gdplogd/gdplogd -F -Dgdplogd.physlog=39 -N " + _hostName;
-        System.out.println("The command to run gdplogd:\n  "
-                + " " + _gdp + "/" + gdplogdCommand);
-        gdpCommands.add("./" + gdplogdCommand);
-        _gdpLogdExec.setCommands(gdpCommands);
-        _gdpLogdExec.setWaitForLastSubprocess(false);
-        _gdpLogdExec.start();
 
         String log = ((StringToken) logName.getToken()).stringValue();
-        if (log.length() > 0) {
+        if ((!_calledWrapupOnce || ((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue())
+                && log.length() > 0) {
             // wrapup() might have removed the gcls log directory.
             if (!_gclsDirectory.exists()) {
                 if (!_gclsDirectory.mkdirs()) {
@@ -555,14 +588,7 @@ public class GDPManager extends AbstractInitializableAttribute {
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if (((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue()) {
-            if (_gclsDirectory.toString(). equals("/var/swarm/gdp/gcls")) {
-                MessageHandler.status("GDPManager: Not removing /var/swarm/gdp/gcls");
-            } else {
-                MessageHandler.status("GDPManager: Deleting " + _gclsDirectory);
-                FileUtilities.deleteDirectory(_gclsDirectory);
-            }
-        }
+        _calledWrapupOnce = true;
         if (((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue() 
                 || ((BooleanToken) stopGDPDaemonsInWrapup.getToken()).booleanValue()) {
             MessageHandler.status("Stopping the GDP daemons.");
@@ -570,6 +596,20 @@ public class GDPManager extends AbstractInitializableAttribute {
                 _gdpRouterExec.cancel();
             } finally {
                 _gdpLogdExec.cancel();
+            }
+        }
+        if (((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue()) {
+            if (_gclsDirectory.toString(). equals("/var/swarm/gdp/gcls")) {
+                MessageHandler.status("GDPManager: Not removing /var/swarm/gdp/gcls");
+            } else {
+                try {
+                    Thread.sleep(1000);
+                } catch (InterruptedException ex) {
+                    System.err.println("GDPManager: sleep interrupted? " + ex);
+                }
+
+                MessageHandler.status("GDPManager: Deleting " + _gclsDirectory);
+                FileUtilities.deleteDirectory(_gclsDirectory);
             }
         }
     }
@@ -643,6 +683,8 @@ public class GDPManager extends AbstractInitializableAttribute {
 
     private static String _badFileMessage = " is a file, it must either be a directory or not exist.";
 
+    private boolean _calledWrapupOnce = false;
+    
     /** The ep_adm_params directory, which is read by the gdplogd process. */
     private static File _epAdmParamsDirectory;
     
@@ -666,9 +708,12 @@ public class GDPManager extends AbstractInitializableAttribute {
     /** The hostname. */
     private String _hostName;
     
-    /** Last time of gdp respository update. */
+    /** Last time of gdp make. */
+    private static long _lastGDPMakeTime = -1L;
+
+    /** Last time of gdp repository update. */
     private static long _lastGDPRepoUpdateTime = -1L;
 
-    /** Last time of gdp_router respository update. */
+    /** Last time of gdp_router repository update. */
     private static long _lastGDPRouterRepoUpdateTime = -1L;
 }
