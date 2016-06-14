@@ -151,6 +151,10 @@ public class GDPManager extends AbstractInitializableAttribute {
         logName.setTypeEquals(BaseType.STRING);
         logName.setExpression("");
 
+        stopGDPDaemonsInWrapup = new Parameter(this, "stopGDPDaemonsInWrapup");
+        stopGDPDaemonsInWrapup.setTypeEquals(BaseType.BOOLEAN);
+        stopGDPDaemonsInWrapup.setExpression("true");
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -163,8 +167,8 @@ public class GDPManager extends AbstractInitializableAttribute {
     public Parameter cleanGDP;
     
     /** If true, the delete all the GCLs parameter in wrapup().  The
-     *  default value is false, meaning that all the logs are not
-     *  delted.
+     *  default value is true, meaning that all the logs are.
+     *  deleted.  If true, then the daemons are stopped in wrapup.
      */ 
     public Parameter deleteAllGCLsInWrapup;
 
@@ -186,6 +190,14 @@ public class GDPManager extends AbstractInitializableAttribute {
      *  are created.
      */
     public StringParameter logName;
+    
+    /** If true, then stop the GDP daemons in wrapup().  The
+     *  default value is true, meaning that the daemons are stopped.
+     *  If deleteAllGCLsInWrapup is true, the the value of this
+     *  parameter is ignored.  Set this parameter to true to debug
+     *  the daemons after running a model.
+     */ 
+    public Parameter stopGDPDaemonsInWrapup;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -454,6 +466,13 @@ public class GDPManager extends AbstractInitializableAttribute {
                     throw new IllegalActionException(this, "Failed to create " + _gclsDirectory);
                 }
             }
+
+            // Sleep so that gdplogd can come up.
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                System.err.println("GDPManager: sleep interrupted? " + ex);
+            }
             // FIXME: instead of spawning a separate process, we should use the
             // Java interface to the GDP.
             StringBufferExec gclCreateExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
@@ -461,6 +480,9 @@ public class GDPManager extends AbstractInitializableAttribute {
             LinkedList<String> gclCreateCommands = new LinkedList<String>();
             // FIXME: -k none means we are not setting keys
             String gclCreateCommand = "./apps/gcl-create -k none -s " + _hostName + " -q " + log;
+            System.out.println("The command to create the log is:\n  "
+                + "EP_PARAM_PATH=" + _epAdmParamsDirectory.toString()
+                + " " + _gdp + "/" + gclCreateCommand);
             gclCreateCommands.add(gclCreateCommand);
             gclCreateExec.setCommands(gclCreateCommands);
             gclCreateExec.setWaitForLastSubprocess(true);
@@ -470,8 +492,9 @@ public class GDPManager extends AbstractInitializableAttribute {
                 MessageHandler.status("Created " + log);
             } else {
                 throw new IllegalActionException(this, "Failed to create the " + log + "."
-                        + "  The command was:\n cd " + _gdp
-                        + gclCreateCommands + "\n"
+                        + "  The command was:\n cd " + _gdp + "; "
+                        + gclCreateCommand + "\n Return code was: " + returnCode
+                        + " Result was:\n"
                         + gclCreateExec.buffer);
             }
         }
@@ -509,10 +532,14 @@ public class GDPManager extends AbstractInitializableAttribute {
             MessageHandler.status(message);
             FileUtilities.deleteDirectory(_gclsDirectory);
         }
-        try {
-            _gdpRouterExec.cancel();
-        } finally {
-            _gdpLogdExec.cancel();
+        if (((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue() 
+                || ((BooleanToken) stopGDPDaemonsInWrapup.getToken()).booleanValue()) {
+            MessageHandler.status("Stopping the GDP daemons.");
+            try {
+                _gdpRouterExec.cancel();
+            } finally {
+                _gdpLogdExec.cancel();
+            }
         }
     }
 
