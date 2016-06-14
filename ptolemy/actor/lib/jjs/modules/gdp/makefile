@@ -53,6 +53,7 @@ JSRCS = \
 
 OTHER_FILES_TO_BE_JARED = \
 	GDP.js \
+	gdp.xml \
     package.json
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
