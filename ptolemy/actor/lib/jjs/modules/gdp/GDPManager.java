@@ -222,13 +222,17 @@ public class GDPManager extends AbstractInitializableAttribute {
         // Clone or pull the gdp git repository.
         _lastGDPRepoUpdateTime = GDPManager._cloneOrPull(gdpSourceDirectory,
                 "gdp",
-                "https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git",
+                // Default to ssh so that we don't hang while waiting for a username and pass.
+                "repoman@repo.eecs.berkeley.edu:projects/swarmlab/gdp.git",
+                // "https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp.git",
                 _lastGDPRepoUpdateTime);
 
         // Clone or pull the gdp_router git repository.
         _lastGDPRouterRepoUpdateTime = GDPManager._cloneOrPull(gdpSourceDirectory,
                 "gdp_router",
-                "https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp_router.git",
+                // Default to ssh.
+                "repoman@repo.eecs.berkeley.edu:projects/swarmlab/gdp_router.git",
+                //"https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp_router.git",
                 _lastGDPRouterRepoUpdateTime);
         _gdpRouter = new File(gdpSourceDirectory, "gdp_router");
 
