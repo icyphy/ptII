@@ -77,6 +77,10 @@ public class AccessorIconLoader implements IconLoader {
     @Override
     public boolean loadIconForClass(final String className, final NamedObj context)
             throws Exception {
+        // If we are creating hierarchy, then the context might be null.
+        if (context == null) {
+            return false;
+        }
         // Do this as a change request because the accessorSource attribute
         // of the accessor will not have been set yet when this is called.
         
