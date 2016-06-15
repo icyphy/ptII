@@ -71,18 +71,22 @@ import ptolemy.kernel.util.Workspace;
  action methods of this actor
  (initialize(), prefire(), fire(), postfire(), and wrapup())
  is called the <i>director thread</i>.
- <p>
- A paper describing the use of this actor is found at
- <a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-151.html">
- http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-151.html</a>.
- <p>
- This actor automatically creates input and output ports to
+
+ <p> A paper describing the use of this actor is found at
+ <a href="http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-151.html#in_browser">http://www.eecs.berkeley.edu/Pubs/TechRpts/2008/EECS-2008-151.html</a>.</p>
+
+ <p> To use this actor in Vergil, drag a ThreadedComposite on to the
+ canvas and then drag the actor to be contained on to the
+ ThreadedComposite actor.</p>
+
+ <p> This actor automatically creates input and output ports to
  match those of the inside actor. Input events provided at those
  input ports are provided as input events to the contained actor.
  Outputs provided by the contained actor become output events
  of this actor. The time stamp of the input events is provided
  by the container of this actor. The time stamp of the output events
- depends on the <i>delay</i> parameter, as explained below.
+ depends on the <i>delay</i> parameter, as explained below.</p>
+
  <p>
  The inside thread blocks waiting for inputs or pure events.
  Inputs are provided to that thread when the fire() method of
