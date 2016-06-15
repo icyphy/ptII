@@ -1751,7 +1751,7 @@ Optional Packages:
   --with-jna-jar=JARFILE       use JNA from JARFILE,
                           defaults to \$PTII/jna-4.0.0-variadic.jar
   --with-gdp-jar=JARFILE       use GDP from JARFILE,
-                          defaults to \$PTII/lib/gdp-0.6-1.jar
+                          defaults to \$PTII/lib/gdp-0.5-0.jar
   --with-joystick-jar=JARFILE       use JOYSTICK from JARFILE,
                           defaults to \$PTII/vendors/misc/joystick/Joystick.jar
   --with-ptjacl_jar=PTJACL.JAR  ptjacl.jar file,
@@ -9113,7 +9113,7 @@ $as_echo_n "checking for GDP jar file... " >&6; }
 if test "${with_gdp_jar+set}" = set; then :
   withval=$with_gdp_jar; PTGDP_JAR=$withval
 else
-  PTGDP_JAR=$PTII/lib/gdp-0.6-1.jar
+  PTGDP_JAR=$PTII/lib/gdp-0.5-0.jar
 fi
 
         if test -f "$PTGDP_JAR"; then
@@ -9124,10 +9124,10 @@ $as_echo "$PTGDP_JAR" >&6; }; fi
              updateClasspath "$PTGDP_JAR"
              PTGDP_PACKAGES=ptolemy.actor.lib.jjs.modules.gdp
         else
-             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/gdp-0.6-1.jar,
+             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/gdp-0.5-0.jar,
    which supplies an implementation of the Global Data Plane.
    The GDP is only necessary for use with the GDP Accessor." >&5
-$as_echo "$as_me: WARNING: Failed to find $PTII/lib/gdp-0.6-1.jar,
+$as_echo "$as_me: WARNING: Failed to find $PTII/lib/gdp-0.5-0.jar,
    which supplies an implementation of the Global Data Plane.
    The GDP is only necessary for use with the GDP Accessor." >&2;}
              updateExcludes "ptolemy/actor/lib/jjs/modules/gdp"
