@@ -72,7 +72,8 @@ public class GDPHelper {
      */
     public String getNextData(int timeout) {
         HashMap<String, Object> gdp_event = GDP_GCL.get_next_event(_gcl, timeout);
-        return gdp_event.toString();
+        System.out.println("GDPHelper.getNextData(" + timeout + "): " + gdp_event);
+        return _datumToData(gdp_event.get("datum"));
     }
     
     /** Read the indicated number of records.
@@ -82,24 +83,7 @@ public class GDPHelper {
      */
     public String read(long numberOfRecords) {
         HashMap<String,Object> datum = _gcl.read(numberOfRecords);
-        if (datum != null) {
-            Object data = datum.get("data");
-            if (data != null) {
-                if (data instanceof byte []) {
-                    try {
-                        return new String((byte[]) data, "UTF-8");
-                    } catch (Throwable throwable) {
-                        return throwable.toString();
-                    }
-                } else {
-                    return "Object: " + data;
-                }
-            } else {
-                return "data was null?";
-            }
-        } else {
-            return "datum was null?";
-        }
+        return _datumToData(datum);
     }
 
     /** Subscribe to a log.
@@ -111,9 +95,12 @@ public class GDPHelper {
     public void subscribe(final ScriptObjectMirror currentObj, int startRecord,
             int numberOfRecords, int timeout) {
         
-        EP_TIME_SPEC timeoutSpec = new EP_TIME_SPEC(timeout/1000,
-                0, /* nanoseconds */
-                0.001f /* accuracy in seconds */);
+        EP_TIME_SPEC timeoutSpec = null;
+        if (timeout != 0) {
+            timeoutSpec = new EP_TIME_SPEC(timeout/1000,
+                    0, /* nanoseconds */
+                    0.001f /* accuracy in seconds */);
+        }
         // FIXME: We need to cast to a long here because it seems
         // like passing longs from JavaScript does not work for us.
         _gcl.subscribe((long)startRecord, numberOfRecords, timeoutSpec);
@@ -143,6 +130,31 @@ public class GDPHelper {
     public void unsubscribe(final ScriptObjectMirror currentObj) {
         // FIXME: Properly close the C side.
         _subscribed = false;
+    }
+
+    /** Given a datum, return the value of the "data" key as a String.
+     *  @param datum A HashMap with a data key.
+     *  @return The value of the "data" key.
+     */
+    private String _datumToData(HashMap<String, Object> datum) {
+        if (datum != null) {
+            Object data = datum.get("data");
+            if (data != null) {
+                if (data instanceof byte []) {
+                    try {
+                        return new String((byte[]) data, "UTF-8");
+                    } catch (Throwable throwable) {
+                        return throwable.toString();
+                    }
+                } else {
+                    return "Object: " + data;
+                }
+            } else {
+                return "data was null?";
+            }
+        } else {
+            return "datum was null?";
+        }
     }
 
     /** The log. */
