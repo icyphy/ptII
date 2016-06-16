@@ -73,7 +73,7 @@ public class GDPHelper {
     public String getNextData(int timeout) {
         HashMap<String, Object> gdp_event = GDP_GCL.get_next_event(_gcl, timeout);
         System.out.println("GDPHelper.getNextData(" + timeout + "): " + gdp_event);
-        return _datumToData(gdp_event.get("datum"));
+        return _datumToData((HashMap<String, Object>)gdp_event.get("datum"));
     }
     
     /** Read the indicated number of records.
