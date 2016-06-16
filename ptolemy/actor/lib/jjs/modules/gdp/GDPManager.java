@@ -326,6 +326,9 @@ public class GDPManager extends AbstractInitializableAttribute {
             String jarFileName = "";
 
             File[] files = new File(_gdp, "lang/java").listFiles();
+            if (files == null) {
+                throw new IOException("No files found in " + _gdp + "/lang/java?");
+            }
             for (int i = 0; i < files.length; i++) {
                 if (files[i].isFile()) {
                     jarFileName = files[i].getName();
@@ -353,6 +356,10 @@ public class GDPManager extends AbstractInitializableAttribute {
                 String message = "Renaming " + jarFile + " to " + destination;
                 MessageHandler.status(message);
                 jarFile.renameTo(destination);
+                if (!jarFile.renameTo(destination)) {
+                    throw new IOException("Could not rename " + jarFile
+                            + " to " + destination);
+                }
             }
 
             // Copy the shared library file to $PTII/lib.
@@ -362,6 +369,9 @@ public class GDPManager extends AbstractInitializableAttribute {
             String sharedLibraryFileName = "";
 
             files = new File(_gdp, "gdp").listFiles();
+            if (files == null) {
+                throw new IOException("No files found in " + _gdp + "/gdp?");
+            }
             for (int i = 0; i < files.length; i++) {
                 if (files[i].isFile()) {
                     sharedLibraryFileName = files[i].getName();
@@ -393,7 +403,10 @@ public class GDPManager extends AbstractInitializableAttribute {
                 File destination = new File(StringUtilities.getProperty("ptolemy.ptII.dir") + File.separator + "lib",  newSharedLibraryFileName);
                 String message = "Renaming " + sharedLibraryFile + " to " + destination;
                 MessageHandler.status(message);
-                sharedLibraryFile.renameTo(destination);
+                if (!sharedLibraryFile.renameTo(destination)) {
+                    throw new IOException("Could not rename " + sharedLibraryFile
+                            + " to " + destination);
+                }
             }
             _lastGDPMakeTime = System.currentTimeMillis();
         }
