@@ -85,7 +85,10 @@ KERNEL_TESTDEFS = $(ROOT)/util/testsuite/testDefs.tcl
 JAVAFLAGS=-Djna.debug_load=true -Djna.library.path="$(PTII)/lib"
 
 # These tests do not require a graphics terminal, but do use Jacl and Java
-test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_auto
+test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl test_tcl test_auto
+
+# Run the tcl tests before auto so that we do the build of the gdp.
+test_tcl:
 	$(JTCLSH) alljtests.tcl
 
 test_jgraphical: test_auto
