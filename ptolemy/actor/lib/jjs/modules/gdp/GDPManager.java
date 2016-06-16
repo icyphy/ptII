@@ -130,10 +130,18 @@ public class GDPManager extends AbstractInitializableAttribute {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        buildGDP = new Parameter(this, "buildGDP");
+        buildGDP.setTypeEquals(BaseType.BOOLEAN);
+        buildGDP.setExpression("true");
+        
         cleanGDP = new Parameter(this, "cleanGDP");
         cleanGDP.setTypeEquals(BaseType.BOOLEAN);
         cleanGDP.setExpression("false");
-        
+
+        createNewLog = new Parameter(this, "createNewLog");
+        createNewLog.setTypeEquals(BaseType.BOOLEAN);
+        createNewLog.setExpression("false");
+
         deleteAllGCLsInWrapup = new Parameter(this, "deleteAllGCLsInWrapup");
         deleteAllGCLsInWrapup.setTypeEquals(BaseType.BOOLEAN);
         deleteAllGCLsInWrapup.setExpression("true");
@@ -160,17 +168,33 @@ public class GDPManager extends AbstractInitializableAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** If true then build the local copy of the GDP.
+     *  The default value is the value true;
+     */
+    public Parameter buildGDP;
+    
     /** If true then remove the contents of the <i>gdpSourceDirectory</i>
      *  at the start of initialization.  
      *  The default value is the value false.
      */
     public Parameter cleanGDP;
     
+    /** If true, then create a new log with a random number
+     *  appended to the value of <i>logName</i>.  This parameter
+     *  can be used instead of <i>deleteAllGCLsIWrapup.</i>.
+     *  If this parameter is true and  while creating the log
+     *  a log with that name already exists, then an exception
+     *  will be thrown.
+     */
+    public Parameter createNewLog;
+
     /** If true, the delete all the GCLs parameter in wrapup().  The
      *  default value is true, meaning that all the logs are.
      *  deleted.  If true, then the daemons are stopped in wrapup.  If
      *  ~/.ep_adm_params/ cannot be created, then the gcls are stored
      *  in /var/swarm/gdp/gcls and this parameter has no effect.
+     *  For a safer way to create a new log each time, use the
+     *  <i>createNewLog</i> parameter
      */ 
     public Parameter deleteAllGCLsInWrapup;
 
@@ -193,24 +217,43 @@ public class GDPManager extends AbstractInitializableAttribute {
      */
     public StringParameter logName;
     
-    /** If true, then stop the GDP daemons in wrapup().  The
-     *  default value is true, meaning that the daemons are stopped.
-     *  If deleteAllGCLsInWrapup is true, the the value of this
-     *  parameter is ignored.  Set this parameter to true to debug
-     *  the daemons after running a model.
+    /** If true, then stop the GDP daemons in wrapup().  The default
+     *  value is true, meaning that the daemons are stopped.  If
+     *  deleteAllGCLsInWrapup is true, the the value of this parameter
+     *  is ignored and the GDP daemons are always stopped in wrapup.
+     *  Set this parameter to true to debug the daemons after running
+     *  a model.
      */ 
     public Parameter stopGDPDaemonsInWrapup;
     
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
  
+    /** Checks constraints on the changed attribute (when it is required) and
+     *  associates his value to its corresponding local variables.
+     *  @param attribute The attribute that changed.
+     *  @exception IllegalActionException If the attribute is empty or negative.
+     */
+    @Override
+    public void attributeChanged(Attribute attribute)
+            throws IllegalActionException {
+        if (attribute == logName) {
+            System.out.println("Will create log");
+            _createLog = true;
+        }
+        super.attributeChanged(attribute);
+    }
+
     /** Download and build the gdp and gdp_router.
      *  @param gdpSourceDirectoryParameter The path to the gdp sources.
+     *  @param cleanGDP True if the gdp should be cleaned before installing
+     *  @param buildGDP True if the gdp should be built and installed
      *  @exception IllegalActionException If there are problems accessing the parameter.
      *  @exception IOException If there are problems accessing or build the repositories.
      */   
     public static void downloadAndBuild(FileParameter gdpSourceDirectoryParameter,
-                                        boolean cleanGDP)
+            boolean cleanGDP,
+            boolean buildGDP) 
             throws IllegalActionException, IOException {
         // This method is static to make it easier to test.
         File gdpSourceDirectory = gdpSourceDirectoryParameter.asFile();
@@ -248,13 +291,14 @@ public class GDPManager extends AbstractInitializableAttribute {
                 "repoman@repo.eecs.berkeley.edu:projects/swarmlab/gdp_router.git",
                 //"https://repo.eecs.berkeley.edu/git/projects/swarmlab/gdp_router.git",
                 _lastGDPRouterRepoUpdateTime);
+
         _gdpRouter = new File(gdpSourceDirectory, "gdp_router");
+        _gdp = new File(gdpSourceDirectory, "gdp");
 
-
-        if ((_lastGDPMakeTime < 0
+        if (buildGDP
+                && (_lastGDPMakeTime < 0
                             || (System.currentTimeMillis() - _lastGDPMakeTime > 43200000L))) {
             // Build the gdp.
-            _gdp = new File(gdpSourceDirectory, "gdp");
             System.out.println("Building the gdp typically requires installing some packages. "
                     + "see " + _gdp + "/README.md");
 
@@ -448,7 +492,8 @@ public class GDPManager extends AbstractInitializableAttribute {
             System.out.println("jna.library.path Java property is " + StringUtilities.getProperty("jna.library.path"));
         }
 
-        if (!_calledWrapupOnce
+        if (!_gdpRouterRunning || !_gdpLogdRunning
+                || ((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue()
                 || ((BooleanToken) stopGDPDaemonsInWrapup.getToken()).booleanValue()) {
             // Start the gdp_router.
             _gdpRouterExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
@@ -480,12 +525,20 @@ public class GDPManager extends AbstractInitializableAttribute {
                     + "and then run commands in " + _gdp + "/");
             _gdpRouterExec.setWaitForLastSubprocess(false);
             _gdpRouterExec.start();
+            _gdpRouterRunning = true;
 
             // Sleep so that the router can come up.
             try {
                 Thread.sleep(1000);
             } catch (InterruptedException ex) {
                 System.err.println("GDPManager: sleep interrupted? " + ex);
+            }
+
+            // wrapup() might have removed the gcls log directory.
+            if (!_gclsDirectory.exists()) {
+                if (!_gclsDirectory.mkdirs()) {
+                    throw new IllegalActionException(this, "Failed to create " + _gclsDirectory);
+                }
             }
 
             // Kill any previously running gdplogd processes
@@ -514,17 +567,18 @@ public class GDPManager extends AbstractInitializableAttribute {
             _gdpLogdExec.setCommands(gdpCommands);
             _gdpLogdExec.setWaitForLastSubprocess(false);
             _gdpLogdExec.start();
+            _gdpLogdRunning = true;
         }
 
+        // If necessary, create the log.
         String log = ((StringToken) logName.getToken()).stringValue();
-        if ((!_calledWrapupOnce || ((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue())
-                && log.length() > 0) {
-            // wrapup() might have removed the gcls log directory.
-            if (!_gclsDirectory.exists()) {
-                if (!_gclsDirectory.mkdirs()) {
-                    throw new IllegalActionException(this, "Failed to create " + _gclsDirectory);
-                }
-            }
+        if (log.length() > 0
+                && ! _calledWrapupOnce
+                || ((BooleanToken) createNewLog.getToken()).booleanValue()
+                || ((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue()
+                || _createLog) {
+
+            _createLog = false;
 
             // Sleep so that gdplogd can come up.
             try {
@@ -532,6 +586,7 @@ public class GDPManager extends AbstractInitializableAttribute {
             } catch (InterruptedException ex) {
                 System.err.println("GDPManager: sleep interrupted? " + ex);
             }
+
             // FIXME: instead of spawning a separate process, we should use the
             // Java interface to the GDP.
             StringBufferExec gclCreateExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
@@ -540,7 +595,7 @@ public class GDPManager extends AbstractInitializableAttribute {
             // FIXME: -k none means we are not setting keys
             String gclCreateCommand = "./apps/gcl-create -k none -s " + _hostName + " -q " + log;
             System.out.println("The command to create the log is:\n  "
-                + " " + _gdp + "/" + gclCreateCommand);
+                    + " " + _gdp + "/" + gclCreateCommand);
             gclCreateCommands.add(gclCreateCommand);
             gclCreateExec.setCommands(gclCreateCommands);
             gclCreateExec.setWaitForLastSubprocess(true);
@@ -573,7 +628,8 @@ public class GDPManager extends AbstractInitializableAttribute {
         if (((BooleanToken) isLocalGDP.getToken()).booleanValue()) {
             try {
                 GDPManager.downloadAndBuild(gdpSourceDirectory,
-                        ((BooleanToken) cleanGDP.getToken()).booleanValue());
+                        ((BooleanToken) cleanGDP.getToken()).booleanValue(),
+                        ((BooleanToken) buildGDP.getToken()).booleanValue());
             } catch (IOException ex) {
                 throw new IllegalActionException(this, ex, "Failed to build the gdp.");
             }
@@ -588,14 +644,18 @@ public class GDPManager extends AbstractInitializableAttribute {
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        _calledWrapupOnce = true;
         if (((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue() 
                 || ((BooleanToken) stopGDPDaemonsInWrapup.getToken()).booleanValue()) {
             MessageHandler.status("Stopping the GDP daemons.");
             try {
                 _gdpRouterExec.cancel();
             } finally {
-                _gdpLogdExec.cancel();
+                _gdpRouterRunning = false;
+                try {
+                    _gdpLogdExec.cancel();
+                } finally {
+                    _gdpLogdRunning = false;
+                }
             }
         }
         if (((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue()) {
@@ -699,11 +759,17 @@ public class GDPManager extends AbstractInitializableAttribute {
     /** The gdplogd process. */
     private StringBufferExec _gdpLogdExec;
 
+    /** True if the gdpLogd process is running. */
+    private static boolean _gdpLogdRunning;
+    
     /** The location of the gdp_router repository. */
     private static File _gdpRouter;
 
     /** The gdp_router process. */
     private StringBufferExec _gdpRouterExec;
+
+    /** True if the gdp_router is running. */
+    private static boolean _gdpRouterRunning;
 
     /** The hostname. */
     private String _hostName;
@@ -716,4 +782,7 @@ public class GDPManager extends AbstractInitializableAttribute {
 
     /** Last time of gdp_router repository update. */
     private static long _lastGDPRouterRepoUpdateTime = -1L;
+
+    /** True if the log should be created in initialize. */
+    private boolean _createLog;
 }
