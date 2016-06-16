@@ -7,44 +7,89 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 65.0]">
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[69.5, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 869, 673}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[635, 563]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 258.5}">
-    </property>
-    <property name="SynchronizeToRealTime" class="ptolemy.actor.lib.SynchronizeToRealTime">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 75.0]">
-        </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{317.5, 281.5}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A GDP Log append accessor example, that &#10;writes the current date every second to a &#10;log. The name of the log is a configuration &#10;parameter, it is created by the GDPManager.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A GDP Log append accessor example that writes an integer to a log and then reads it.&#10;The name of the log is a configuration parameter that has a random number suffix,&#10;so a new log is created each time.  The log is created by the GDPManager.&#10;The GDPAppend actor appends to the log, which is why we create a new log each time.&#10;The GDPLogRead actor reads from the log starting at record number 0.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 210.0]">
         </property>
     </property>
     <property name="GDPManager" class="ptolemy.actor.lib.jjs.modules.gdp.GDPManager">
+        <property name="buildGDP" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
         <property name="cleanGDP" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="createNewLog" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="deleteAllGCLsInWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="logName" class="ptolemy.data.expr.StringParameter" value="ptolemy.actor.lib.jjs.modules.gdp.test.auto.GDPLogAppendReadTestLog">
+        <property name="logName" class="ptolemy.data.expr.StringParameter" value="$logName">
         </property>
         <property name="stopGDPDaemonsInWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[184.5, 40.0]">
         </property>
     </property>
-    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 225.0]">
+    <property name="logName" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.actor.lib.jjs.modules.gdp.test.auto.GDPLogAppendRead&quot; + logSuffix">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
-    </entity>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 180.0]">
+        </property>
+    </property>
+    <property name="logSuffix" class="ptolemy.data.expr.Parameter" value="-2011988372">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 155.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="We use SetVariable to attempt to create a new log each time.&#10;However, the first time this model is run, it will use the log (if any)&#10;that was created previously. The second run will use a different&#10;log.  The issue here is that during the first run, the GDPManager is a &#10;AbstractInitializableAttribute and does not see the updated value.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, 90.0]">
+        </property>
+    </property>
     <entity name="GDPLogAppend" class="org.terraswarm.accessor.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/* Accessor for a log */&#10;&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Accessor for a log.&#10; *  @author Edward A. Lee, Nitesh Mor&#10; *  @version $$Id$$ &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, addInputParameter, console, exports, get, getParameter, input, parameter, removeInputHandler, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var GDP = require('gdp');&#10;var log = null;&#10;var handle = null;&#10;&#10;exports.setup = function() {&#10;    this.input('trigger');&#10;    this.input('data', {'type': 'string'});&#10;    this.parameter('logname', {'type': 'string'});&#10;};&#10;&#10;&#10;exports.append = function(data) {&#10;    console.log(&quot;GDPLogAppend.append()&quot;);&#10;    console.log(typeof(log));&#10;    var dataValues = this.get('data');&#10;    console.log('GDPLogAppend.js.append(): ' + dataValues);&#10;    log.append(dataValues);&#10;};&#10;&#10;exports.initialize = function() {&#10;    console.log(&quot;GDPLogAppend.initialize()&quot;);&#10;    var logname = this.getParameter('logname');&#10;    if (logname === '') {&#10;        throw new Error('The logname parameter cannot be empty.');&#10;    }&#10;    log = GDP.GDP(logname, 2);&#10;    handle = this.addInputHandler('trigger', this.exports.append.bind(this));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    console.log(&quot;GDPLogAppend.wrapup()&quot;);&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
@@ -60,9 +105,9 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 355.0]">
         </property>
-        <property name="logname" class="ptolemy.data.expr.Parameter" value="ptolemy.actor.lib.jjs.modules.gdp.test.auto.GDPLogAppendReadTestLog">
+        <property name="logname" class="ptolemy.data.expr.Parameter" value="$logName">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -73,19 +118,12 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.0}">
-        </property>
-        <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 335.0]">
-        </property>
-    </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={716, 338, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 400.0]">
         </property>
     </entity>
     <entity name="GDPLogRead" class="org.terraswarm.accessor.JSAccessor">
@@ -103,11 +141,11 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="logname" class="ptolemy.data.expr.Parameter" value="ptolemy.actor.lib.jjs.modules.gdp.test.auto.GDPLogAppendReadTestLog">
+        <property name="logname" class="ptolemy.data.expr.Parameter" value="$logName">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 345.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 485.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -121,61 +159,105 @@
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 390.0]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 520.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;data was null?&quot;, &quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;data was null?&quot;, &quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{615, 410}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 485.0]">
         </property>
     </entity>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+    <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
+        <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="logSuffix">
         </property>
-        <vertex name="vertex1" value="[210.0, 225.0]">
-        </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=100.0,y=225.0}, tail={id=&quot;relation3.vertex1&quot;,x=210.0,y=225.0}, points={} },{ head={id=&quot;GDPLogAppend.trigger&quot;,x=430.0,y=225.0}, tail={id=&quot;relation3.vertex1&quot;,x=210.0,y=225.0}, points={355.0,215.0,355.0,195.0,210.0,195.0} },{ head={id=&quot;Ramp.trigger&quot;,x=295.0,y=235.0}, tail={id=&quot;relation3.vertex1&quot;,x=210.0,y=225.0}, points={} } }">
+        <property name="delayed" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-    </relation>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 45.0]">
+        </property>
+    </entity>
+    <entity name="RandomInteger" class="ptolemy.actor.lib.RandomInteger">
+        <doc>Create a sequence of integers that are uniformly sampled from the range 32-bit integers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 45.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock3" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="stopTimeIsLocal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 45.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.1}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 345.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.1}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 475.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;GDPLogAppend.data&quot;,x=430.0,y=225.0}, tail={id=&quot;Ramp.output&quot;,x=295.0,y=235.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[215.0, 335.0]">
-        </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation4.vertex1&quot;,x=215.0,y=335.0}, tail={id=&quot;Ramp2.trigger&quot;,x=300.0,y=440.0}, points={215.0,430.0} },{ head={id=&quot;GDPLogRead.trigger&quot;,x=465.0,y=345.0}, tail={id=&quot;relation4.vertex1&quot;,x=215.0,y=335.0}, points={} },{ head={id=&quot;DiscreteClock2.output&quot;,x=100.0,y=335.0}, tail={id=&quot;relation4.vertex1&quot;,x=215.0,y=335.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{525.0, 345.0}">
+        <vertex name="vertex1" value="[420.0, 485.0]">
         </vertex>
     </relation>
-    <link port="DiscreteClock.output" relation="relation3"/>
-    <link port="GDPLogAppend.trigger" relation="relation3"/>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[145.0, 345.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[150.0, 475.0]">
+        </vertex>
+    </relation>
+    <link port="GDPLogAppend.trigger" relation="relation8"/>
     <link port="GDPLogAppend.data" relation="relation"/>
-    <link port="DiscreteClock2.output" relation="relation4"/>
     <link port="Display.input" relation="relation6"/>
     <link port="GDPLogRead.trigger" relation="relation4"/>
     <link port="GDPLogRead.recno" relation="relation2"/>
     <link port="GDPLogRead.data" relation="relation6"/>
     <link port="Ramp.output" relation="relation"/>
-    <link port="Ramp.trigger" relation="relation3"/>
+    <link port="Ramp.trigger" relation="relation8"/>
     <link port="Ramp2.output" relation="relation2"/>
     <link port="Ramp2.trigger" relation="relation4"/>
     <link port="Test.input" relation="relation6"/>
+    <link port="SetVariable.input" relation="relation5"/>
+    <link port="RandomInteger.output" relation="relation5"/>
+    <link port="RandomInteger.trigger" relation="relation7"/>
+    <link port="DiscreteClock3.output" relation="relation7"/>
+    <link port="DiscreteClock.output" relation="relation8"/>
+    <link port="DiscreteClock2.output" relation="relation4"/>
 </entity>
