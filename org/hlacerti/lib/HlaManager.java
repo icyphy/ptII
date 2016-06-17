@@ -249,9 +249,10 @@ TimeRegulator {
     public HlaManager(CompositeEntity container, String name)
 	    throws IllegalActionException, NameDuplicationException {
 	super(container, name);
-
-	_file = _createTextFile("org/hlacerti/lib/data.txt");
-	_csvFile = _createTextFile("org/hlacerti/lib/data.csv");
+	_testsFolder = _createFolder("testsResults");
+	
+	_file = _createTextFile("data.txt");
+	_csvFile = _createTextFile("data.csv");
 
 	_noObjectDicovered = true;
 	_rtia = null;
@@ -662,6 +663,7 @@ TimeRegulator {
     public void preinitialize() throws IllegalActionException {
 	super.preinitialize();
 	_startTime= System.nanoTime();
+	
 
 	// Try to launch the HLA/CERTI RTIG subprocess.
 	_certiRtig = new CertiRtig(this, _debugging);
@@ -709,7 +711,16 @@ TimeRegulator {
     @Override
     public Time proposeTime(Time proposedTime) throws IllegalActionException {
 
-	Time currentTime = _director.getModelTime();
+	Time currentTime = _getModelTime();
+	proposedTime =new Time(_director,_getDoubleOfTime(proposedTime));
+	
+	if(proposedTime.compareTo(_stopTime) ==1){
+	    if (_debugging) {
+                _debug(this.getDisplayName() + " proposeTime() -"
+                        + " called but the proposedTime is bigger than the stopTime.");
+            }   
+	    return _stopTime;
+	}
 	// This test is used to avoid exception when the RTIG subprocess is
 	// shutdown before the last call of this method.
 	// GL: FIXME: see Ptolemy team why this is called again after STOPTIME ?
@@ -733,7 +744,7 @@ TimeRegulator {
 	    if (_debugging) {
 		_debug(this.getDisplayName() + " proposeTime() - SKIP RTI"
 			+ " with current Time is equal to proposed Time ("
-			+ currentTime.getDoubleValue() + ")");
+			+ _getDoubleOfTime(currentTime) + ")");
 	    }
 	    try {
 		_rtia.tick();
@@ -820,8 +831,7 @@ TimeRegulator {
      */
     public void updateHlaAttribute(HlaPublisher hp, Token in, String senderName)
 	    throws IllegalActionException {
-	Time currentTime = _director.getModelTime();
-
+	Time currentTime = _getModelTime();
 	// The following operations build the different arguments required
 	// to use the updateAttributeValues() (UAV) service provided by HLA/CERTI.
 
@@ -830,13 +840,15 @@ TimeRegulator {
 
 	// Encode the value to be sent to the CERTI.
 	byte[] valAttribute = MessageProcessing.encodeHlaValue(hp, in);
-
+        if(_debugging){
+            _debug(this.getDisplayName()+" Trying to make an UAV.");
+        }	
 	if (_debugging) {
 	    if (hp.useCertiMessageBuffer()) {
 		_debug(this.getDisplayName()
 			+ " - A HLA value from ptolemy has been"
 			+ " encoded as CERTI MessageBuffer" + " , currentTime="
-			+ _director.getModelTime().getDoubleValue());
+			+ _getModelTime().getDoubleValue());
 	    }
 	}
 	SuppliedAttributes suppAttributes = null;
@@ -859,7 +871,13 @@ TimeRegulator {
 	if (_eventBased) {
 	    // for NER, we add the lookahead value to the uav event's timestamp.
 	    uavTimeStamp = currentTime.add(_hlaLookAHead);
+	    if(_debugging){
+	        _debug(this.getDisplayName()+" The federate is identified as event based.");
+	    }	    
 	} else {
+	    if(_debugging){
+                _debug(this.getDisplayName()+" The federate is identified as time based.");
+            }
 	    // For TAR, all uav-events with timestamp tau
 	    // that must be published after (hla current Time + lookahead)
 	    // We've made a choice for implementation of uav(tau): 
@@ -871,6 +889,9 @@ TimeRegulator {
 	    // tau is delayed to currentTime + lookahead.
 	    CertiLogicalTime certiCurrentTime = (CertiLogicalTime) _federateAmbassador.logicalTimeHLA;
 	    Time hlaCurrentTime = _convertToPtolemyTime(certiCurrentTime);
+	    if(_debugging){
+                _debug(this.getDisplayName()+" Checking if the hlaCurrentTime + lookAhead is greater than the currentTime  (if are not in the past).");
+            }
 	    if (hlaCurrentTime.add(_hlaLookAHead).compareTo(currentTime) > 0)
 		uavTimeStamp = currentTime.add(_hlaLookAHead);
 	    else
@@ -880,7 +901,7 @@ TimeRegulator {
 	if (_debugging) {
 	    _debug(this.getDisplayName() + " publish() -"
 		    + " send (UAV) updateAttributeValues "
-		    + " current Ptolemy Time=" + currentTime.getDoubleValue()
+		    + " current Ptolemy Time=" + _getDoubleOfTime(currentTime)
 		    + " HLA attribute \""
 		    + _getPortFromTab(tObj).getContainer().getName()
 		    + "\" (timestamp=" + ct.getTime() + ", value="
@@ -912,7 +933,9 @@ TimeRegulator {
 		"\n number of TARs: " + _numberOfTARs +
 		"\n number of NERs: " + _numberOfNERs +
 		"\n number of TAGs: " + _numberOfTAGs);
+	
 
+	calculateRuntime();
 	writeNumberOfHLACalls();
 	writeDelays();
 	initializeReportVariables();
@@ -1102,12 +1125,11 @@ TimeRegulator {
 
     /** Calculate the duration of the execution of the federation.
      * Uses the static value of the startTime of the execution.
-     * @return The duration of the execution of the federation.
      */
-    public static double calculateRuntime(){
+    public void calculateRuntime(){
 	double duration  = System.nanoTime() - _startTime;
 	duration = duration/(Math.pow(10, 9));
-	return duration;
+	_runtime =duration;
     }
 
     /** Write the number of HLA calls of each federate, along with informations about the
@@ -1119,23 +1141,27 @@ TimeRegulator {
 	try{
 	    Date date = new Date();
 	    String fullName=federateName.toString();
-	    String stopTime =_director.getModelStopTime().toString();
-	    String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
+	    //String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
 	    String nameOfTheFile= fullName.substring(fullName.indexOf('{')+1,  fullName.lastIndexOf('.'));
 
 	    nameOfTheFile = nameOfTheFile.substring(1, nameOfTheFile.lastIndexOf('.')) + ".xml";
 
-	    String info = "Federate: "+ nameOfTheFederate +" in the model: "+nameOfTheFile+ "\n" +"stopTime: " +stopTime+ "\n"
-		    + "hlaTimeUnit: "+_hlaTimeUnitValue + "\n";
+	    String info = "Federate "+ getDisplayName() +" in the model "+nameOfTheFile;
+	        
+	    info = info +  "\n" +"stopTime: " +_stopTime
+                    + "    hlaTimeUnit: "+_hlaTimeUnitValue ;
+	    if(_isCreator){
+                info = "SP creator -> " + info ;
+            }
 	    if(_timeStepped){
-		info = info +"Time Step: "  + _hlaTimeStep + "\n" 
+		info = info +"    Time Step: "  + _hlaTimeStep + "\n" 
 			+ "Number of TARs: " +_numberOfTARs;
 	    }else if (_eventBased){
 		info = info + "Number of NERs: " +_numberOfNERs ;
 	    }
 	    info = info + "\n"+ "Number of TAGs: " + _numberOfTAGs +"\n" 
-		    +"Runtime: " +calculateRuntime()+"\n";
-	    info = date.toString() + "\n"  + info;
+		    +"Runtime: " +_runtime+"\n";
+	    info = date.toString() + "\n" + info;
 	    writeInTextFile(_file,info);
 	}catch(Exception e){
 	    System.out.println("Couldn't write in the txt file.");
@@ -1158,9 +1184,9 @@ TimeRegulator {
 	    }else if(_eventBased){
 		info = info + "NER;Number of NERs:;" + _numberOfNERs +"\n";
 	    }
-	    info = info + "Number of UAVs:;"+_numberOfUAVs+ ";Number of RAVs:;" + _numberOfUAVs +"\n";
+	    info = info + "Number of UAVs:;"+_numberOfUAVs+ ";Number of RAVs:;" + _numberOfRAVs +"\n";
 	    
-	    info= info + "runtime: ;"+ calculateRuntime();
+	    info= info + "runtime: ;"+ _runtime;
 
 	    String numberOfTicks="\nNumber of ticks:;";
 	    String delay="\nDelay :;";
@@ -1190,9 +1216,9 @@ TimeRegulator {
 	    delayPerTick = delayPerTick + ";";
 	    header = header +"Average;";
 	    
-	    _reportFile=_createTextFile("org/hlacerti/lib/"+ nameOfTheFederate.substring(1, nameOfTheFederate.length())+".csv");
+	    _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+".csv");
 	    writeInTextFile(_reportFile,_hlaTimeStep + ";"+_hlaLookAHead + ";" + 
-	    calculateRuntime() +";" + totalNumberOfHLACalls+";"+averageDelay );
+	    _runtime +";" + totalNumberOfHLACalls+";"+averageDelay );
 	    
 	    averageNumberOfTicks=averageNumberOfTicks/_numberOfTAGs;
 	    averageDelay=averageDelay/_numberOfTAGs;
@@ -1252,6 +1278,8 @@ TimeRegulator {
      */
     protected HashMap<Integer, Integer> _objectIdToClassHandle;
 
+    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     /**
@@ -1260,7 +1288,8 @@ TimeRegulator {
      * @return certi logical time
      */
     private CertiLogicalTime _convertToCertiLogicalTime(Time pt) {
-	return new CertiLogicalTime(pt.getDoubleValue() * _hlaTimeUnitValue);
+        
+	return new CertiLogicalTime(_roundTimeValues(pt.getDoubleValue() * _hlaTimeUnitValue));
     }
 
     /**
@@ -1271,7 +1300,7 @@ TimeRegulator {
      */
     private Time _convertToPtolemyTime(CertiLogicalTime ct)
 	    throws IllegalActionException {
-	return new Time(_director, ct.getTime()/_hlaTimeUnitValue);
+	return new Time(_director,_roundTimeValues( ct.getTime()/_hlaTimeUnitValue));
     }
 
     /**
@@ -1398,9 +1427,9 @@ TimeRegulator {
 	    EnableTimeRegulationPending, EnableTimeConstrainedPending,
 	    RestoreInProgress, RTIinternalError, ConcurrentAccessAttempted {
 
-	Time currentTime = _director.getModelTime();
-
+	Time currentTime = _getModelTime();
 	if (_hlaTimeStep > 0) {
+	    
 	    // Calculate the next point in time for making a TAR(hlaNextPointInTime)
 	    // or TARA(hlaNextPointInTime)
 	    Time hlaNextPointInTime = _getHlaNextPointInTime();
@@ -1409,7 +1438,7 @@ TimeRegulator {
 	    // There are two types of events in a federate model:
 	    // - rav et uav events via RTI
 	    // - all events in ptolemy eventQueue
-
+	    
 	    if (_hlaLookAHead > 0) {
 		// Time-stepped + lookahead > 0 => TAR.
 		// LastFoundEvent is the earlist event in calendar queue,
@@ -1437,11 +1466,12 @@ TimeRegulator {
 		//         so return proposedTime, this event is valid to execute.
 
 		// case 1:
+
 		while (proposedTime.compareTo(hlaNextPointInTime) > 0) {
 		    if (_debugging) {
 			_debug(this.getDisplayName()
 				+ " proposeTime() - current status "
-				+ "t_ptII = " + currentTime + "; t_certi = "
+				+ "t_ptII = " + _getDoubleOfTime(currentTime) + "; t_certi = "
 				+ _federateAmbassador.logicalTimeHLA
 				+ " - call CERTI TAR - "
 				+ " timeAdvanceRequest("
@@ -1468,6 +1498,10 @@ TimeRegulator {
 			    _rtia.tick2();
 			    cntTick++;
 			} catch (RTIexception e) {
+			    if(_debugging){
+		                _debug(this.getDisplayName() + " Failed to make "
+		                        + "tick2(). There is a problem with the RTIambassador.");
+		            }
 			    throw new IllegalActionException(this, e,
 				    e.getMessage());
 			}
@@ -1475,6 +1509,9 @@ TimeRegulator {
 		    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+cntTick);
 
 		    // If we get any rav-event
+		    if(_debugging){
+                        _debug(this.getDisplayName() + " Checking if we've received any RAV event.");
+                    }
 		    if (cntTick != 1) {
 			// Store reflected attributes as events on HLASubscriber actors.
 			_putReflectedAttributesOnHlaSubscribers();
@@ -1491,7 +1528,7 @@ TimeRegulator {
 		if (_debugging) {
 		    _debug(this.getDisplayName()
 			    + " proposeTime() - current status " + "t_ptII = "
-			    + currentTime + "; t_certi = "
+			    + _getDoubleOfTime(currentTime) + "; t_certi = "
 			    + _federateAmbassador.logicalTimeHLA
 			    + " - an event with time stamp = " + proposedTime
 			    + " will be taken.");
@@ -1537,7 +1574,13 @@ TimeRegulator {
 		_timeOfTheLastAdvanceRequest=System.nanoTime();
 	    }
 	}
+	
+	if (_debugging) {
+            _debug(this.getDisplayName()
+                    + " TAR not successful.");
+        }
 	return null;
+	
     }
 
     /** The method {@link #_populatedHlaValueTables()} populates the tables
@@ -1637,7 +1680,11 @@ TimeRegulator {
      * @throws IllegalActionException if hlaTimeStep is NULL.
      */
     private Time _getHlaNextPointInTime() throws IllegalActionException {
-	return _getHlaCurrentTime().add(_hlaTimeStep);
+	Double time = _getHlaCurrentTime().add(_hlaTimeStep).getDoubleValue();
+	time = _roundTimeValues(time);
+	return _convertToPtolemyTime(new CertiLogicalTime(time));
+	//return _getHlaCurrentTime().add(_hlaTimeStep);
+
     }
 
     /**
@@ -1654,29 +1701,58 @@ TimeRegulator {
      * @param name the name to of the file
      */
     private File _createTextFile(String name){
-	if(name.equals(null) || name.length()<3){
-	    System.out.println("Choose a valid name for the txt file.");
-	    return null;
-	}else{
-	    if(!(name.endsWith(".txt")||name.endsWith(".csv"))){
-		name = name.concat(".txt");
-	    }
-	    try{
-		File file = new File(name);
-		boolean verify = false;
-		if(!file.exists()){
-		    verify = file.createNewFile();
-		}else {
-		    verify = true;
-		}if (!verify){
-		    throw new Exception();
-		}System.out.println(name);
-		return file;	
-	    }catch(Exception e){
-		System.out.println("Couldn't create the file.");
-		return null;
-	    }
-	}
+        if(_testsFolder!= null){
+            name = _testsFolder + "/"+ name;
+            if(name.equals(null) || name.length()<3){
+                System.out.println("Choose a valid name for the txt file.");
+                return null;
+            }else{
+                if(!(name.endsWith(".txt")||name.endsWith(".csv"))){
+                    name = name.concat(".txt");
+                }
+                try{
+                    File file = new File(name);
+                    boolean verify = false;
+                    if(!file.exists()){
+                        verify = file.createNewFile();
+                    }else {
+                        verify = true;
+                    }if (!verify){
+                        throw new Exception();
+                    }System.out.println(name);
+                    return file;	
+                }catch(Exception e){
+                    System.out.println("Couldn't create the file.");
+                    return null;
+                }
+            }
+        }else{
+            return null;
+        }
+    }
+    /**Verify the existence of a folder, if it doesn't exist, the function tries 
+     * to create it.
+     * 
+     * @param folderName The name of the folder that will be created.
+     * @return The full address of the folder in a string.
+     */
+    private String _createFolder(String folderName){
+        String homeDirectory = System.getProperty("user.home");
+        folderName= homeDirectory + "/" +folderName;
+        File folder = new File(folderName);
+        if (!folder.exists()) {
+            try{
+                folder.mkdir();
+                System.out.println("Folder "+ folderName +" created.");
+                return folderName;
+            } 
+            catch(SecurityException se){
+                System.out.println("Could not create the folder "+ folderName +".");
+                return null;
+            }        
+        }else{
+            return folderName;
+        }
     }
 
     /**
@@ -1687,6 +1763,7 @@ TimeRegulator {
 	_numberOfTARs=0;
 	_numberOfNERs=0;
 	_numberOfTAGs=0;
+	_runtime = 0;
 	_timeOfTheLastAdvanceRequest=0;
 	_numberOfOtherTicks=0;
 	_TAGDelay=new ArrayList<Double>();
@@ -1694,6 +1771,46 @@ TimeRegulator {
 	_numberOfRAVs=0;
 	_numberOfUAVs=0;
     }
+    /**This function was created with the sole purpose of solving the 
+     * java problem with mathematical operations of real numbers. 
+     * In time stepped systems, we used to have a situation where instead of,
+     * for example, TAR(0.001), we had TAR(0.0010000001) or TAR(0.0009999999).
+     * In order to prevent that, as we already know that a time value can't have
+     * more decimal digits than the time step + lookAhead, we round it 
+     * to this number of digits. 
+     * @param timeValue The time value that is going to be rounded.
+     * @return A double representing a rounded time value.
+     */
+    private double _roundTimeValues(double timeValue){
+       if(_timeStepped){
+           //Forcing the number to have the same amount of decimal digits 
+           //than the time step;
+           int pt = (int) Math.pow(10,_numberOfDecimalDigits);
+           double d = Math.round(timeValue*pt);
+           d = d/pt;
+           return d;
+       }else{
+           return timeValue;
+       }
+    }
+    
+    private double _getDoubleOfTime(Time time){
+        return _roundTimeValues(time.getDoubleValue());
+        
+    }
+       
+    private Time _getModelTime(){
+        double currentTime = _director.getModelTime().getDoubleValue();
+        currentTime = _roundTimeValues(currentTime);
+        try {
+            return new Time(_director, currentTime);
+            
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+            return _director.getModelTime();
+        }
+    }
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -1738,6 +1855,8 @@ TimeRegulator {
      *  point.
      */
     private Boolean _isCreator;
+    
+    private Time _stopTime;
 
     /** Represents the number of next event request this federate has made.
      * 
@@ -1760,6 +1879,10 @@ TimeRegulator {
      * advancement, they have to ask the federation's permission to do so using a TAR call.
      */
     private int _numberOfTARs;	
+    
+    private double _runtime;
+    
+    private String _testsFolder;
 
     /** Represents a text file that is going to keep track of the number of HLA calls of the
      * federate.
@@ -1838,6 +1961,8 @@ TimeRegulator {
     private int _numberOfRAVs;
     
     private int _numberOfUAVs;
+    
+    private int _numberOfDecimalDigits;
     
 
 
@@ -2122,6 +2247,21 @@ TimeRegulator {
 	RTIinternalError, AttributeNotDefined, SaveInProgress,
 	RestoreInProgress, ConcurrentAccessAttempted {
 	    initializeReportVariables();
+	    _stopTime = _director.getModelStopTime();
+	    if(_timeStepped){
+	         System.out.println(_hlaTimeStep);
+	         String s = _hlaTimeStep.toString();
+	         s= s.substring(s.indexOf(".")+1);
+	         int n1= s.length();
+	         s = _hlaLookAHead.toString();
+                 s= s.substring(s.indexOf(".")+1);
+                 int n2 = s.length();
+                 if(n1>n2){
+                     _numberOfDecimalDigits=n1;
+                 }else{
+                     _numberOfDecimalDigits=n2;
+                 }
+	    }
 	    _numberOfTicks.add(0);
 		
 
@@ -2145,13 +2285,10 @@ TimeRegulator {
 	 */
 	public void initializeTimeValues(Double startTime, Double lookAHead) throws IllegalActionException{
 	    if(lookAHead <= 0){
-		//				JOptionPane.showMessageDialog(null, "The lookAhead value must be bigger than 0. Changing it to 0.1.",
-		//						"HLAManager", JOptionPane.ERROR_MESSAGE);
 		throw new IllegalActionException(null, null, null, "LookAhead field in HLAManager must be greater than 0.");
-		//lookAHead = 0.1;
 	    }
 	    logicalTimeHLA = new CertiLogicalTime(startTime);
-
+	    
 	    effectiveLookAHead = new CertiLogicalTimeInterval(lookAHead
 		    * _hlaTimeUnitValue);
 	    if (_debugging) {
@@ -2175,6 +2312,9 @@ TimeRegulator {
 			FederateOwnsAttributes, InvalidFederationTime,
 			FederateInternalError {
 	    boolean done = false;
+	    if(_debugging){
+	        _debug(getDisplayName()+" Trying to make a RAV.");
+	    }
 	    try {
 		// Get the object class handle corresponding to
 		// received "theObject" id.
@@ -2203,8 +2343,8 @@ TimeRegulator {
 				&& hs.getObjectHandle() == theObject) {
 			    try {
 
-				double timeValue = ((CertiLogicalTime) theTime)
-					.getTime() / _hlaTimeUnitValue;
+				double timeValue = _roundTimeValues(((CertiLogicalTime) theTime)
+					.getTime() / _hlaTimeUnitValue);
 
 				ts = new Time(_director, timeValue);
 				value = MessageProcessing.decodeHlaValue(hs,
@@ -2268,6 +2408,10 @@ TimeRegulator {
 	    final int classHandle = classHandle_;
 	    final String objectName = objectName_;
 	    final int objectHandle = objectHandle_;
+	    
+	    if(_debugging){
+	            _debug(getDisplayName()+" Trying to discover an object.");
+	    }
 
 	    _objectIdToClassHandle.put(objectHandle, classHandle);
 
@@ -2442,10 +2586,13 @@ TimeRegulator {
 	public void timeAdvanceGrant(LogicalTime theTime)
 		throws InvalidFederationTime, TimeAdvanceWasNotInProgress,
 		FederateInternalError {
+	    double time= ((CertiLogicalTime) theTime).getTime();
+	    time = _roundTimeValues(time);
+	    time = _roundTimeValues(_hlaTimeUnitValue*time);
 
 
-	    logicalTimeHLA = new CertiLogicalTime(_hlaTimeUnitValue
-		    * ((CertiLogicalTime) theTime).getTime());
+	    logicalTimeHLA = new CertiLogicalTime(time);
+		   //* ((CertiLogicalTime) theTime).getTime());
 	    //Time spent between the last TAR or NER and the TAG
 	    _TAGDelay.add((System.nanoTime() - _timeOfTheLastAdvanceRequest)/Math.pow(10, 9));
 	    _timeOfTheLastAdvanceRequest=0;
