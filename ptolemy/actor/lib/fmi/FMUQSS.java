@@ -928,15 +928,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         if (getEventIndicatorCount() > 0) {
             // Handle state events      
-            // Check if the predicted time is bigger than a state event time in which case 
-            // reset the predicted time to the state event time.
-            // Needs to see how this should be implemented on Monday.....
-            if (_checkStateEvents(possibleFireAtTime)) {
-                // Compute the possible next state event time
-                final Time possibleNextStateEventTime = _zcSolver
-                        .predictQuantizationEventTimeEarliest();
+            final Time possibleNextStateEventTime = _zcSolver
+                    .predictQuantizationEventTimeEarliest();
                 if (possibleFireAtTime.compareTo(possibleNextStateEventTime) > 0) {
-                    possibleFireAtTime = possibleNextStateEventTime;
+                	possibleFireAtTime = possibleNextStateEventTime;
                     // Check if we have a real state event and if yes broadcast the states.
                     if (_checkStateEvents(possibleFireAtTime)) {
                         _forceQuantizationStateEvents = true;
@@ -949,7 +944,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                         }
                     }
                 }
-            }
         }
 
 		// Handle step events
@@ -1501,19 +1495,36 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Set quantization tolerances.
             // Set initial state values and quantization tolerances.
             final double absoluteQuantumMinimumEventDetection = 1e-20;
-            double modifiedInternalAbsoluteQuantumEventDetection = _internalRelativeQuantum/100;
-            double relativeQuantumEventDetection = _internalRelativeQuantum/100;
-            //final double relativeQuantumMinimumEventDetection = 1;
+            double modifiedInternalAbsoluteQuantumEventDetection = _internalRelativeQuantum/1000;
+            double relativeQuantumEventDetection = _internalRelativeQuantum/1000;
+            // double relativeQuantumEventDetection = 1;
             for (int ii = 0; ii < evtInCt; ++ii) {
                 if (modifiedInternalAbsoluteQuantumEventDetection < absoluteQuantumMinimumEventDetection) {
                     modifiedInternalAbsoluteQuantumEventDetection = absoluteQuantumMinimumEventDetection;
+                }
+                if (Math.abs(eventIndicators[ii]) < 1e-8){
+                    new Exception(
+                            "Warning: The " + ii + " eventIndicator "
+                                    + "is smaller than 1e-8."
+                            		+ " The value is " + eventIndicators[ii] + "."
+                                    + " This value wil be used to initialize "
+                                    + " the quantum of the event indicator model."
+                                    + " Such a small value leads to very small quantum"
+                                    + " which in turn lead to very small state event times. "
+                                    + " If such a state event time is used as firing time,"
+                                    + " then to compute the next firing time, the model will use"
+                                    + " two time instants which are very closed. This will cause"
+                                    + " for higher order QSS methods which estimate derivatives,"
+                                    + " to compute either 0 or very small high order dervatives."
+                                    + " This in turn will lead the model to compute a wrong next "
+                                    + " firing time (infinity).")
+                                            .printStackTrace();
                 }
                 _zcSolver.setStateValue(ii, eventIndicators[ii]);
                 _zcSolver.setQuantizationTolerance(ii,
                 		modifiedInternalAbsoluteQuantumEventDetection,
                 		relativeQuantumEventDetection);
             }
-
         }
         // Get initial state values from FMU.
         final int stateCt = _qssSolver.getStateCount();
