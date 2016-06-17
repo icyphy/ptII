@@ -315,7 +315,7 @@ if (accessorHost === accessorHostsEnum.DUKTAPE) {
 function Accessor(
         accessorName, code, getAccessorCode, bindings, extendedBy, implementedBy) {
     if (!code) {
-        throw 'No accessor code specified.';
+        throw new Error('No accessor code specified.');
     }
     // First, create all the properties that this instance will have as its 'own'
     // properties, even if it is being extended or implemented.
@@ -378,7 +378,7 @@ function Accessor(
         // List of contained accessors.
         this.containedAccessors = [];
     }
-    
+
     // Define the exports object to be populated by the accessor code.
     // Even if there is an object extending this one, this one has its own
     // exports property. If this object is being extended (rather than
@@ -396,6 +396,21 @@ function Accessor(
     // define it explicitly to be null.
     this.ssuper = null;
     this.exports.ssuper = null;
+
+    // Define an object to be populated with monitoring data active accessors, whose react() has been invoked. 
+    // A mapping from accessor class to statistics capturing the execution time (in milliseconds) of react() is stored.
+    // ************************FORMAT of output sample array***************************
+    // {<Accessor class> : [<count of sample>, <mean of react execution duration>, 
+    // <standard deviation of react execution duration>]}
+    // ********************************************************************************
+    // NOTE: We can use a different strategy for storing execution times, like a fixed window of recent durations that 
+    // can later be processed by monitoring components downstream. Should be an easy change, if needed.
+    // FIXME: It is possible a callback is created in react(), the execution time of callback is not accounted for  
+    // with current monitoring implementation
+    if(typeof Accessor.activeAccessors == 'undefined')
+    {
+        Accessor.activeAccessors = {};
+    }
     
     ////////////////////////////////////////////////////////////////////
     //// Evaluate the accessor code.
@@ -579,18 +594,18 @@ Accessor.prototype.addInputHandler = function(name, func) {
             name = null;
             argCount = 1;
         } else {
-            throw ('name argument is required to be a string. Got: ' + (typeof name));
+            throw new Error('name argument is required to be a string. Got: ' + (typeof name));
         }
     }
     if (!func) {
         func = nullHandlerFunction;
     } else if (typeof func !== 'function') {
-        throw ('Argument of addInputHandler is not a function. It is: ' + func);
+        throw new Error('Argument of addInputHandler is not a function. It is: ' + func);
     }
 
     // Check that the input exists.
     if (name && !this.inputs[name]) {
-        throw 'Cannot add an input handler to a non-existent input: ' + name;
+        throw new Error('Cannot add an input handler to a non-existent input: ' + name);
     }
     
     // Bind the callback function so that it is always invoked in the context
@@ -703,8 +718,8 @@ Accessor.prototype.assignImpliedPrioritiesDownstream = function(accessor, cycleP
                 var destinationInput = destinationAccessor.inputs[destination.inputName];
                 var theirPriority = destinationAccessor.priority;
                 if (theirPriority === cyclePriority) {
-                    throw('Causality loop found including at least: ' +
-                            destinationAccessor.accessorName);
+                    throw new Error('Causality loop found including at least: ' +
+                                    destinationAccessor.accessorName);
                 }
                 if (theirPriority === null) {
                     // Destination has no previously assigned priority. Give it one,
@@ -748,7 +763,7 @@ Accessor.prototype.assignImpliedPrioritiesUpstream = function(accessor, cyclePri
             //var output = source.outputs[source.outputName];
             var output = source.outputs[input.source.outputName];
             if (typeof output === 'undefined') {
-                throw('In "' + source.accessorName + ', source.outputName was: "' + source.outputName + '", and source.outputs[source.outputName] is of type undefined? outputs:' + source.outputs.toString() + ' source:\n' + util.inspect(source));
+                throw new Error('In "' + source.accessorName + ', source.outputName was: "' + source.outputName + '", and source.outputs[source.outputName] is of type undefined? outputs:' + source.outputs.toString() + ' source:\n' + util.inspect(source));
             }
             // If the output is marked 'spontaneous' then we can ignore it.
             if (output.spontaneous) {
@@ -756,7 +771,7 @@ Accessor.prototype.assignImpliedPrioritiesUpstream = function(accessor, cyclePri
             }
             var theirPriority = source.priority;
             if (theirPriority === cyclePriority) {
-                    throw('Causality loop found including at least: ' +
+                    throw new Error('Causality loop found including at least: ' +
                             accessor.accessorName);
             }
             if (theirPriority === null) {
@@ -816,7 +831,7 @@ Accessor.prototype.connect = function(a, b, c, d) {
         // form 2 or 4.
         var myInput = thiz.inputs[a];
         if (!myInput) {
-            throw('connect(): No such input: ' + a);
+            throw new Error('connect(): No such input: ' + a);
         }
         if (!myInput.destinations) {
             myInput.destinations = [];
@@ -824,14 +839,14 @@ Accessor.prototype.connect = function(a, b, c, d) {
         if (typeof b === 'string') {
             // form 4.
             if (!thiz.outputs[b]) {
-                throw('connect(): No such output: ' + b);
+                throw new Error('connect(): No such output: ' + b);
             }
             myInput.destinations.push(b);
             thiz.outputs[b].source = a;
         } else {
             // form 2.
             if (!b.inputs[c]) {
-                throw('connect(): Destination has no such input: ' + c);
+                throw new Error('connect(): Destination has no such input: ' + c);
             }
             myInput.destinations.push({'accessor': b, 'inputName': c});
             b.inputs[c].source = a;
@@ -840,7 +855,7 @@ Accessor.prototype.connect = function(a, b, c, d) {
         // form 1 or 3.
         var myOutput = a.outputs[b];
         if (!myOutput) {
-            throw('connect(): Source has no such output: ' + b);
+            throw new Error('connect(): Source has no such output: ' + b);
         }
         if (!myOutput.destinations) {
             myOutput.destinations = [];
@@ -848,14 +863,14 @@ Accessor.prototype.connect = function(a, b, c, d) {
         if (typeof c === 'string') {
             // form 3.
             if (!thiz.outputs[c]) {
-                throw('connect(): No such output: ' + b);
+                throw new Error('connect(): No such output: ' + b);
             }
             myOutput.destinations.push(c);
             thiz.outputs[c].source = {'accessor': a, 'outputName': b};
         } else {
             // form 1.
             if (!c.inputs[d]) {
-                throw('connect(): Destination has no such input: ' + d);
+                throw new Error('connect(): Destination has no such input: ' + d);
             }
             myOutput.destinations.push({'accessor': c, 'inputName': d});
             c.inputs[d].source = {'accessor': a, 'outputName': b};
@@ -879,7 +894,7 @@ function convertType(value, destination, name) {
             try {
                 value = JSON.stringify(value);
             } catch (error) {
-                throw('Object provided to ' +
+                throw new Error('Object provided to ' +
                         name +
                         ' does not have a string representation: ' +
                         error);
@@ -898,7 +913,7 @@ function convertType(value, destination, name) {
             try {
                 value = JSON.parse(value);
             } catch (error) {
-                throw('Failed to convert value to destination type: ' +
+                throw new Error('Failed to convert value to destination type: ' +
                         name +
                         ' expected a ' +
                         destination.type +
@@ -916,14 +931,14 @@ function convertType(value, destination, name) {
     } else if (destination.type === 'int' || destination.type === 'number') {
         // value is not a string. Needs to be a number.
         if (typeof value !== 'number') {
-            throw(name + ' expected an int, but got a ' +
+            throw new Error(name + ' expected an int, but got a ' +
                     (typeof value) +
                     ': ' +
                     value);
         }
         // If type is int, need the value to be an integer.
         if (destination.type === 'int' && value % 1 !== 0) {
-            throw(name + ' expected an int, but got ' + value);
+            throw new Error(name + ' expected an int, but got ' + value);
         }
     } else {
         // Only remaining case: value is not a string
@@ -932,7 +947,7 @@ function convertType(value, destination, name) {
         try {
             JSON.stringify(value);
         } catch(err) {
-            throw('Object provided to ' +
+            throw new Error('Object provided to ' +
                     name +
                     ' does not have a JSON representation: ' +
                     err);
@@ -967,7 +982,7 @@ Accessor.prototype.error = function(message) {
 Accessor.prototype.extend = function(accessorClass) {
     // NOTE: This function should not need to be overriden by any host.
     if (!this.getAccessorCode) {
-        throw('extend() is not supported by this swarmlet host.');
+        throw new Error('extend() is not supported by this swarmlet host.');
     }
     
     var baseName = this.accessorName + '_' + accessorClass;
@@ -995,7 +1010,7 @@ Accessor.prototype.get = function(name) {
         // this.get() for both inputs and parameters.
         input = thiz.parameters[name];
         if (!input) {
-            throw('get(name): No input named ' + name);
+            throw new Error('get(name): No input named ' + name);
         }
     }
     var value;
@@ -1024,7 +1039,7 @@ Accessor.prototype.get = function(name) {
 Accessor.prototype.getParameter = function(name) {
     var parameter = this.parameters[name];
     if (!parameter) {
-        throw('getParameter(name): No parameter named ' + name);
+        throw new Error('getParameter(name): No parameter named ' + name);
     }
     // If this.setParameter() has been called, return that value.
     if (parameter.currentValue) {
@@ -1040,7 +1055,7 @@ Accessor.prototype.getParameter = function(name) {
  *  that getResource is not supported.
  */    
 Accessor.prototype.getResource = function() {
-    throw 'This swarmlet host does not support this.getResource().';
+    throw new Error('This swarmlet host does not support this.getResource().');
 };
 
 /** Default implement of the httpRequest() function, which throws an exception stating
@@ -1049,7 +1064,7 @@ Accessor.prototype.getResource = function() {
  *  but we include it here anyway.
  */    
 Accessor.prototype.httpRequest = function() {
-    throw 'This swarmlet host does not support httpRequest().';
+    throw new Error('This swarmlet host does not support httpRequest().');
 };
 
 /** Implement the specified accessor interface, inheriting its inputs, outputs,
@@ -1061,7 +1076,7 @@ Accessor.prototype.httpRequest = function() {
 Accessor.prototype.implement = function(accessorClass) {
     // NOTE: This function should not need to be overriden by any host.
     if (!this.getAccessorCode) {
-        throw('implement() is not supported by this swarmlet host.');
+        throw new Error('implement() is not supported by this swarmlet host.');
     }
 
     var interfaceName = this.accessorName + '_' + accessorClass;
@@ -1092,7 +1107,7 @@ Accessor.prototype.input = function(name, options) {
  */
 Accessor.prototype.instantiate = function(instanceName, accessorClass) {
     if (!this.getAccessorCode) {
-        throw('instantiate() is not supported by this swarmlet host.');
+        throw new Error('instantiate() is not supported by this swarmlet host.');
     }
     // For functions that accessor ports, etc., we want the default implementation
     // when instantiating the contained accessor.
@@ -1150,7 +1165,7 @@ function instantiateAccessor(
  */
 Accessor.prototype.latestOutput = function(name) {
     if (!this.outputs[name]) {
-        throw('lastestOutput(): No output named ' + name);
+        throw new Error('lastestOutput(): No output named ' + name);
     }
     return this.outputs[name].latestOutput;
 };
@@ -1232,7 +1247,7 @@ Accessor.prototype.parameter = function(name, options) {
 Accessor.prototype.provideInput = function(name, value) {
     var input = this.inputs[name];
     if (!input) {
-        throw('provideInput(): Accessor has no input named ' + name);
+        throw new Error('provideInput(): Accessor has no input named ' + name);
     }
 
     value = convertType(value, input, name);
@@ -1279,7 +1294,15 @@ function pushIfNotPresent(item, list) {
         }
     }
     list.push(item);
-}
+};
+
+/** Test function to query the accessor execution time statistics
+ *  @return A mapping from accessor class to duration statistics for 
+ *          execution time of the accessor instance react function
+ */
+Accessor.queryActiveAccessors = function() {
+    return Accessor.activeAccessors;    
+};
 
 /** Invoke any registered handlers for all inputs or for a specified input.
  *  Also invoke any handlers that have been registered to respond to any input,
@@ -1293,6 +1316,8 @@ function pushIfNotPresent(item, list) {
  *  @param name The name of the input.
  */
 Accessor.prototype.react = function(name) {
+    // For monitoring, we want to time execution of this function. 
+    var startTime = Date.now();
     var thiz = this.root;
     // Allow further reactions to be scheduled by this reaction.
     thiz.reactRequestedAlready = false;
@@ -1375,7 +1400,28 @@ Accessor.prototype.react = function(name) {
     if (typeof this.exports.fire === 'function') {
         this.exports.fire.call(this);
     }
-    
+
+    // Duration is in milliseconds
+    var duration = Date.now() - startTime;   
+    if(this.accessorClass in Accessor.activeAccessors)
+    {
+        // Update mean and variance for duration of react execution
+        var newCount = Accessor.activeAccessors[this.accessorClass][0] + 1;
+        var currentMean = Accessor.activeAccessors[this.accessorClass][1];
+        var currentStdDev =  Accessor.activeAccessors[this.accessorClass][2];
+        Accessor.activeAccessors[this.accessorClass][0] = newCount;
+        Accessor.activeAccessors[this.accessorClass][1] = currentMean + ((duration - currentMean)/newCount);
+        if(newCount > 1)
+        {
+            var nextVar = (((newCount - 2)/(newCount - 1)) * Math.pow(currentStdDev , 2)) + ((1/newCount) * Math.pow(duration - currentMean, 2));
+            Accessor.activeAccessors[this.accessorClass][2] = Math.sqrt(nextVar);
+        }        
+    }
+    else 
+    {
+        Accessor.activeAccessors[this.accessorClass] = [1, duration, 0];
+    }
+
     this.emit('react');
 };
 
@@ -1385,7 +1431,7 @@ Accessor.prototype.react = function(name) {
  *  but we include it here anyway.
  */    
 Accessor.prototype.readURL = function() {
-    throw 'This swarmlet host does not support readURL().';
+    throw new Error('This swarmlet host does not support readURL().');
 };
 
 /** Remove the input handler with the specified handle, if it exists.
@@ -1453,7 +1499,7 @@ Accessor.prototype.scheduleEvent = function(accessor) {
     // There are already items in the event queue.
     var myPriority = accessor.priority;
     if (typeof myPriority !== 'number') {
-        throw('Accessor does not have a priority: ' +
+        throw new Error('Accessor does not have a priority: ' +
                 accessor.accessorName +
                 '. Perhaps initialize() is overridden?');
     }
@@ -1502,7 +1548,7 @@ Accessor.prototype.send = function(name, value) {
         // May be sending to my own input.
         var input = thiz.inputs[name];
         if (!input) {
-            throw('send(name, value): No output or input named ' + name);
+            throw new Error('send(name, value): No output or input named ' + name);
         }
         // Make the input available in the _next_ reaction.
         setTimeout(function() {
@@ -1555,11 +1601,11 @@ Accessor.prototype.send = function(name, value) {
  */
 Accessor.prototype.setDefault = function(name, value) {
     if (typeof name !== 'string') {
-        throw ('input argument is required to be a string. Got: ' + (typeof name));
+        throw new Error('input argument is required to be a string. Got: ' + (typeof name));
     }
     var input = this.inputs[name];
     if (!input) {
-        throw('setDefault(): Accessor has no input named ' + name);
+        throw new Error('setDefault(): Accessor has no input named ' + name);
     }
     value = convertType(value, input, name);
     input.value = value;
@@ -1572,13 +1618,21 @@ Accessor.prototype.setDefault = function(name, value) {
 Accessor.prototype.setParameter = function(name, value) {
     var parameter = this.parameters[name];
     if (!parameter) {
-        throw('setParameter(): Accessor has no parameter named ' + name);
+        throw new Error('setParameter(): Accessor has no parameter named ' + name);
     }
     // If necessary, convert the value to the match the type.
     value = convertType(value, parameter, name);
 
     parameter.currentValue = value;
 };
+
+/** Stop execution of the composite accessor.  In the commonHost, do
+ *  nothing.  Other hosts may invoke wrapup() on adjacent accessors
+ *  and stop execution.
+ */
+function stop() {
+    console.log("commonHost.js: stop() invoked, stop() does nothing.");
+}
 
 ////////////////////////////////////////////////////////////////////
 //// Module variables.
