@@ -97,7 +97,7 @@ public final class QSS2Pts extends QSSBase {
      *  @param quantEvtTimeMax The maximum quantization event time.
      *  @return the predicted quantization-event time for a state (QSS-specific).
      */
-    protected final Time _predictQuantizationStateEventTimeWorker(
+    protected final Time _predictQuantizationEventTimeWorker(
             final int stateIdx, final Time quantEvtTimeMax) {
 
         // Note the superclass takes care of updating status variables and
