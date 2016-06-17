@@ -4,7 +4,7 @@
 <entity name="FMUQSSStateEvent1_QSS3" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2012, 149, 1920, 1176}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 24, 1920, 1176}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1706, 1059]">
     </property>
@@ -33,11 +33,11 @@
         </property>
         <property name="absoluteQuantum" class="ptolemy.data.expr.Parameter" value="1e-8">
         </property>
-        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="1e-4">
+        <property name="relativeQuantum" class="ptolemy.data.expr.Parameter" value="1.0E-6">
         </property>
         <property name="QSSSolver" class="ptolemy.data.expr.StringParameter" value="QSS3Fd">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 20.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 20.0]">
         </property>
     </property>
     <entity name="StateEvents_StateEvent" class="ptolemy.actor.lib.fmi.FMUQSS">
@@ -82,7 +82,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {0.0,0.0}), smoothToken(0.9999, {-1.0,0.0}), smoothToken(-0.7507037677, {-1.0,0.0}), smoothToken(-9.0, {-1.0,0.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {0.0,0.0}), smoothToken(0.999999, {-1.0,0.0}), smoothToken(-0.7507261447, {-1.0,0.0}), smoothToken(-9.0, {-1.0,0.0})}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
@@ -90,19 +90,19 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(-2.5, {0.0,0.0}), smoothToken(-2.49975, {1.0,0.0}), smoothToken(-0.7492962323, {1.0,0.0}), smoothToken(7.5, {1.0,0.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(-2.5, {0.0,0.0}), smoothToken(-2.4999975, {1.0,0.0}), smoothToken(-0.7492738553, {1.0,0.0}), smoothToken(7.5, {1.0,0.0})}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 155.0}">
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(4.0, {0.0,0.0}), smoothToken(3.9996, {-2.0,0.0}), smoothToken(0.4985924646, {-2.0,0.0}), smoothToken(-16.0, {-2.0,0.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(4.0, {0.0,0.0}), smoothToken(3.999996, {-2.0,0.0}), smoothToken(0.4985477106, {-2.0,0.0}), smoothToken(-16.0, {-2.0,0.0})}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 220.0}">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 554, 500, 349}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 666, 500, 349}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
