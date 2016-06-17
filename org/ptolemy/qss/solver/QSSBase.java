@@ -916,7 +916,7 @@ public abstract class QSSBase {
 
         if (_need_predQuantEvtTimes[stateIdx]) {
             // Perform work defined by specific member of the QSS family.
-            predQuantEvtTime = _predictQuantizationStateEventTimeWorker(
+            predQuantEvtTime = _predictQuantizationEventTimeWorker(
                     stateIdx, _quantEvtTimeMax);
             assert (predQuantEvtTime.compareTo(_cStateMdls[stateIdx].tMdl) > 0
                     || predQuantEvtTime.compareTo(_quantEvtTimeMax) == 0);
@@ -1663,7 +1663,7 @@ public abstract class QSSBase {
      * @return Next time at which, in the absence of other events, the
      *   external state model must be re-formed, time <= quantEvtTimeMax.
      */
-    protected abstract Time _predictQuantizationStateEventTimeWorker(
+    protected abstract Time _predictQuantizationEventTimeWorker(
             final int stateIdx, final Time quantEvtTimeMax);
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS2.
