@@ -344,7 +344,8 @@ public class GDPManager extends AbstractInitializableAttribute {
             // FIXME: Copying a new jar file is not likely to cause the new class definitions to
             // be loaded in to the current JVM.
             if (jarFile.exists() && jarFile.isFile()) {
-                File destination = new File(StringUtilities.getProperty("ptolemy.ptII.dir") + File.separator + "lib",  jarFileName);
+                String destinationFileName = StringUtilities.getProperty("ptolemy.ptII.dir") + File.separator + "lib" + File.separator + jarFileName + "xx";
+                File destination = new File(destinationFileName);
                 if (!destination.exists()) {
                     throw new IOException("Building the GDP Java interface created "
                             + destination + ", which does not exist and therefore is "
@@ -353,12 +354,22 @@ public class GDPManager extends AbstractInitializableAttribute {
                             + "then run (cd $PTII; autoconf;./configure; ant) "
                             + "and then restart Ptolemy.");
                 }
+                if (!destination.delete()) {
+                    throw new IOException("Could not delete " + destination 
+                            + "before renaming " + jarFile + " to that location.");
+                }
                 String message = "Renaming " + jarFile + " to " + destination;
                 MessageHandler.status(message);
                 jarFile.renameTo(destination);
+                // renameTo sometimes returns false even though the file was
+                // renamed.  As we delete the file above, if it exists, then we can
+                // assume it was copied.
                 if (!jarFile.renameTo(destination)) {
-                    throw new IOException("Could not rename " + jarFile
-                            + " to " + destination);
+                    File newDestination = new File(destinationFileName);
+                    if (!newDestination.exists()) {
+                        throw new IOException("Could not rename " + jarFile
+                                + " to " + destination);
+                    }
                 }
             }
 
