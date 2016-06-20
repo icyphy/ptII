@@ -628,6 +628,11 @@ public class GDPManager extends AbstractInitializableAttribute {
             if (returnCode == 0) {
                 MessageHandler.status("Created " + log);
             } else if (returnCode == 73) {
+                if (((BooleanToken) createNewLog.getToken()).booleanValue()) {
+                    throw new IllegalActionException(this, "createNewLog was true, "
+                            + "yet the command " + _gdp + "/" + gclCreateCommand
+                            + "returned 73 indicating that the log was previously created?");
+                }
                 MessageHandler.status("Log " + log + " was previously created.");
             } else {
                 throw new IllegalActionException(this, "Failed to create the " + log + "."
