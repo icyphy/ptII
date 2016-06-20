@@ -553,7 +553,7 @@ public class GDPManager extends AbstractInitializableAttribute {
 
             // Sleep so that the router can come up.
             try {
-                Thread.sleep(1000);
+                Thread.sleep(2000);
             } catch (InterruptedException ex) {
                 System.err.println("GDPManager: sleep interrupted? " + ex);
             }
