@@ -29,6 +29,7 @@
 package ptolemy.actor.lib.jjs.modules.gdp;
 
 import org.terraswarm.gdp.EP_TIME_SPEC;
+import org.terraswarm.gdp.GDP;
 import org.terraswarm.gdp.GDP_GCL;
 import org.terraswarm.gdp.GDP_NAME;
 
@@ -53,6 +54,7 @@ public class GDPHelper {
      *  @param ioMode The i/o mode for the log (0: for internal use only, 1: read-only, 2: read-append, 3: append-only).
      */
     public GDPHelper(String logName, int ioMode) {
+        // The GDP_GCL constructor calls the gdp_init() C function for us.
         _gcl = GDP_GCL.newGCL(new GDP_NAME(logName), ioMode);
         _logName = logName;    
     }
@@ -84,6 +86,20 @@ public class GDPHelper {
     public String read(long numberOfRecords) {
         HashMap<String,Object> datum = _gcl.read(numberOfRecords);
         return _datumToData(datum);
+    }
+
+    /** Set the value of the GDP debug flag.
+     * @param} debug The value of the GDP debug flag.  See
+     * gdp/README.md for a complete summary.  The value is typically
+     * <code><i>pattern</i>=<i>level</i></code>, for example
+     * <code>gdplogd.physlog=39</code>.  To see the patterns, use the
+     * "what" command or <code>strings $PTII/lib/libgdp* | grep
+     * '@(#)'</code>.  Use <code>*=40</code> to set the debug level to
+     * 40 for all components. The value of level is not usually over
+     * 127.  Values over 100 may modify the behavior.
+     */
+    public void setDebugLevel(String debugLevel) {
+        GDP.dbg_set(debugLevel);
     }
 
     /** Subscribe to a log.

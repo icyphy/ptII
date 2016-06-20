@@ -55,6 +55,10 @@ exports.GDP.prototype.append = function (data) {
     this.helper.append(data);
 };
 
+exports.GDP.prototype.setDebugLevel = function (debugLevel) {
+    this.helper.setDebugLevel(debugLevel);
+}
+
 exports.GDP.prototype.subscribe = function (startrec, numrecs, timeout) {
     this.helper.subscribe(this, startrec, numrecs, timeout);
 };
