@@ -344,7 +344,7 @@ public class GDPManager extends AbstractInitializableAttribute {
             // FIXME: Copying a new jar file is not likely to cause the new class definitions to
             // be loaded in to the current JVM.
             if (jarFile.exists() && jarFile.isFile()) {
-                String destinationFileName = StringUtilities.getProperty("ptolemy.ptII.dir") + File.separator + "lib" + File.separator + jarFileName + "xx";
+                String destinationFileName = StringUtilities.getProperty("ptolemy.ptII.dir") + File.separator + "lib" + File.separator + jarFileName;
                 File destination = new File(destinationFileName);
                 if (!destination.exists()) {
                     throw new IOException("Building the GDP Java interface created "
