@@ -238,7 +238,6 @@ public class GDPManager extends AbstractInitializableAttribute {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == logName) {
-            System.out.println("Will create log");
             _createLog = true;
         }
         super.attributeChanged(attribute);
@@ -276,6 +275,11 @@ public class GDPManager extends AbstractInitializableAttribute {
             }
         }
 
+        // If the gdp directory does not exist, then force the build.
+        if (!(new File(gdpSourceDirectory, "gdp").isDirectory())) {
+            buildGDP = true;
+        }
+
         // Clone or pull the gdp git repository.
         _lastGDPRepoUpdateTime = GDPManager._cloneOrPull(gdpSourceDirectory,
                 "gdp",
@@ -295,10 +299,8 @@ public class GDPManager extends AbstractInitializableAttribute {
         _gdpRouter = new File(gdpSourceDirectory, "gdp_router");
         _gdp = new File(gdpSourceDirectory, "gdp");
 
-        if (buildGDP
-                && (_lastGDPMakeTime < 0
-                            || (System.currentTimeMillis() - _lastGDPMakeTime > 43200000L))) {
-            // Build the gdp.
+        // Build the gdp.
+        if (buildGDP) {
             System.out.println("Building the gdp typically requires installing some packages. "
                     + "see " + _gdp + "/README.md");
 
@@ -419,7 +421,6 @@ public class GDPManager extends AbstractInitializableAttribute {
                             + " to " + destination);
                 }
             }
-            _lastGDPMakeTime = System.currentTimeMillis();
         }
 
         // Create configuration files for the gdp.
@@ -803,9 +804,6 @@ public class GDPManager extends AbstractInitializableAttribute {
     /** The hostname. */
     private String _hostName;
     
-    /** Last time of gdp make. */
-    private static long _lastGDPMakeTime = -1L;
-
     /** Last time of gdp repository update. */
     private static long _lastGDPRepoUpdateTime = -1L;
 
