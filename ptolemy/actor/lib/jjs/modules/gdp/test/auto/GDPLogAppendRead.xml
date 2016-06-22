@@ -42,7 +42,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[184.5, 40.0]">
         </property>
     </property>
-    <property name="logName" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.actor.lib.jjs.modules.gdp.test.auto.GDPLogAppendRead&quot; + logSuffix">
+    <property name="logName" class="ptolemy.data.expr.Parameter" value="&quot;ptolemy.actor.lib.jjs.modules.gdp.test.auto.GDPLogAppendRead&quot; + random() + &quot;.&quot; + logSuffix">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

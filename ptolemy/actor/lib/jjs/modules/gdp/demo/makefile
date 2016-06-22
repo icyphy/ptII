@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/gdp/demo
 
-DIRS =		GDPLogAppend GDPLogRead GDPLogSubscribe
+DIRS =		GDPLogSubscribe
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -48,8 +48,6 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	GDPLogAppend/GDPLogAppend.jar \
-	GDPLogRead/GDPLogRead.jar \
 	GDPLogSubscribe/GDPLogSubscribe.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
