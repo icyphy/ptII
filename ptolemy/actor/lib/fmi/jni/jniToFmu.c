@@ -1196,7 +1196,7 @@ int runNativeFMU(JNIEnv * env,
 
 		// one call of fmiNewDiscreteStates is required according to the specification
 		// Dymola FMUs seems to need to call fmi2NewDiscreteStates in a loop.
-		// while (fmuInstances[idx]->eventInfo.newDiscreteStatesNeeded && !fmuInstances[idx]->eventInfo.terminateSimulation) {
+		 while (fmuInstances[idx]->eventInfo.newDiscreteStatesNeeded && !fmuInstances[idx]->eventInfo.terminateSimulation) {
 			fmuInstances[idx]->fmiFlag = fmuInstances[idx]->newDiscreteStates(
 				fmuInstances[idx]->c, &(fmuInstances[idx]->eventInfo));
 
@@ -1205,7 +1205,7 @@ int runNativeFMU(JNIEnv * env,
 
 			//if (fmuInstances[idx]->eventInfo.newDiscreteStatesNeeded) {
 			//}
-		//}
+		}
 
 		// get the next time event
 		jgetNextTimeEvent(idx, timEv_get);
