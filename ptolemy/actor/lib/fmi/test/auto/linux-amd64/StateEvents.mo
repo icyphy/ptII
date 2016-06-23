@@ -120,6 +120,32 @@ when simulated from 0 to 10s.
 </p>
 </html>"));
   end StateEvent5;
+
+    model StateEvent6
+      // This model has 8 state event at t = 0.0s,
+      //  t=1.25s, t = 2.5s, t = 3.75s, t = 5.0s,
+      // t = 6.25s, t = 7.5s, t = 8.75s
+      // when simulated from 0 to 10s.
+    Real x1(start=1.0);
+    Real x2(start=-2.5);
+    Real x3(start=4);
+    Real y;
+    equation
+      der(x1) = cos(2 * 3.14 * time/2.5);
+    der(x2) = 1;
+    der(x3) = -2;
+    if (x1 > 1) then
+      y = 1;
+    else
+      y = -1;
+    end if;
+    annotation (Documentation(info="<html>
+<p>
+This model has 8 state event at 0.0, 1.25, 2.5, 
+3.75, 5.0, 6.25, 7.5, 8.75 when simulated from 0 to 10s.
+</p>
+</html>"));
+    end StateEvent6;
   annotation (Documentation(revisions="<html>
 <ul>
 <li>
