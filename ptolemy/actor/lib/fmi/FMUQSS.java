@@ -516,11 +516,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Check if we have a valid state event. if true then requantize
             // all states as we do not know the state which had a state event.
             if (_forceQuantizationStateEvents || _forceQuantizationTimeEvents) {
-            	_triggerQuantizationEventsAtTimeStateEvents(currentTime);
+            	//_triggerQuantizationEventsAtTimeStateEvents(currentTime);
+            	_triggerQuantizationEvents(currentTime, true);
                 if(_forceQuantizationStateEvents) _forceQuantizationStateEvents = false;
                 if(_forceQuantizationTimeEvents) _forceQuantizationTimeEvents = false;
             } else {
-                _triggerQuantizationEvents(currentTime, false, false);
+                _triggerQuantizationEvents(currentTime, false);
             }
         }
         // FIXME: Maybe we can merge with the above?
@@ -546,7 +547,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     @Override
     public final int getEventIndicatorCount() {
     	return _fmiModelDescription.numberOfEventIndicators;
-       // return 0;
+        //return 0;
     }
 
     /**
@@ -899,6 +900,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Update the internal, continuous state models if necessary.
         boolean triggerRateEvent[] = { false };
         _triggerRateEvent(currentTime, false, triggerRateEvent);
+        
         if (getEventIndicatorCount() > 0) {
             if (triggerRateEvent[0]) {
                 try {
@@ -931,13 +933,13 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 				// not re-quantize the models as we know that the
 				// states are exported at simulation start.
 				_numberOfStateEvents++;
-				if (_debugging) {
+				//if (_debugging) {
 					_debugToStdOut(String.format(
 							"-- Id{%d} has a state event at start time %s",
 							System.identityHashCode(this),
 							currentTime.toString()));
 					_hasStateEventAtStart = false;
-				}
+				//}
 			} else {
 				final Time possibleNextStateEventTime = _zcSolver
 						.predictQuantizationEventTimeEarliest();
@@ -1801,6 +1803,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
             // Get the event indicator.
             _getEventIndicators(eventIndicator, number);
+            
         }
     }
 
@@ -2237,7 +2240,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         // Set up integrator's state models.
         // TODO: Not sure this is necessary.
-        _triggerQuantizationEvents(currentTime, false, false);
+        _triggerQuantizationEvents(currentTime, false);
         _triggerQuantizationEventsEventIndicator(currentTime, false);
         try {
             // TODO: This may not be allowed-- rate events change internal
@@ -2551,10 +2554,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      *
      * @param currentTime The current simulation time.
      * @param forceAll If true, re-quantize all state models.
-     * @param hasStateEvent Flag to indicate state events.
      */
     private final void _triggerQuantizationEvents(final Time currentTime,
-            final boolean forceAll, final boolean hasStateEvent) throws IllegalActionException {
+            final boolean forceAll) throws IllegalActionException {
 
         // Initialize.
         final int stateCt = _qssSolver.getStateCount();
@@ -2616,9 +2618,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // This is needed particularly if an output depends on a state.
         
         // Set the time in the FMU
-        if (!hasStateEvent){
         _fmiSetTime(currentTime);
-        }
+        
+        // A quantization-event implies other FMU outputs change.
+        // Produce outputs to all outputs that do not depend on the states.
+        _enterDiscreteStateMode();
 
         if (_firstRound || needQuantizationEvents) {
             for (int i = 0; i < stateCt; i++) {
@@ -2630,11 +2634,17 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         // Update the inputs at the current time so the outputs get the correct values
         // This is particularly important if an output depends on an input.
-        //_setFMUInputsAtCurrentTime(currentTime, null, true);
+        _setFMUInputsAtCurrentTime(currentTime, null, true);
 
-        // A quantization-event implies other FMU outputs change.
-        // Produce outputs to all outputs that do not depend on the states.
+        
+        // Get an updated time event if defined
+        _lastNextEventTime = _getNextEventTime();
+        
+        // Produce outputs
         _produceOutputs(currentTime);
+        
+        // Enter continuous time mode.
+        _enterContinuousTimeMode();
         
         // Reset hasChanged to false for next quantization events.
         // for (int i = 0; i < _indexesOfUpdatedModelVariables.size(); i++) {
@@ -2646,27 +2656,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // they can be used in the next quantization.
         // _indexesOfUpdatedModelVariables.clear();
     }
-    
-    /**
-     * Trigger quantization-events at time or state events.
-     *
-     * @param currentTime The current simulation time.
-     */
-    private void _triggerQuantizationEventsAtTimeStateEvents(Time currentTime) 
-    		throws IllegalActionException {
-    	
-        // Enter discrete state mode
-        _enterDiscreteStateMode();
-        
-        // Get an updated time event if defined
-        _lastNextEventTime = _getNextEventTime();
-
-        _triggerQuantizationEvents(currentTime, true, true);
-        
-		// Enter continuous time mode
-        _enterContinuousTimeMode();
-
-	}
 
     /**
      * Trigger quantization-events for event indicator if necessary.
