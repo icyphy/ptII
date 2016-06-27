@@ -195,7 +195,8 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
 ?       vendors/misc/javamail/javax.mail.jar} {
 ?       vendors/universalJavaApplicationStub} {
 M       lib/diva.jar} {
-M       lib/gdp-0.5-0.jar}}
+M       lib/gdp-0.5-0.jar} {
+M       lib/libgdp.0.5.so}}
         if { $result == $result2 } {
 	    puts "Result was:\n$result\nWhich is ok"
             set resultMessage {}
