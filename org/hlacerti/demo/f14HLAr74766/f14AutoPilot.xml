@@ -4,7 +4,7 @@
 <entity name="f14AutoPilot" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 487, 858, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={99, 453, 858, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[624, 524]">
     </property>
@@ -38,16 +38,16 @@
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
             <display name="Time Management Service"/>
         </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="samplePeriod">
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARtimeStep">
             <display name="*** If TAR is used, time step (s)"/>
         </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="0.0000001">
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
             <display name="lookahead (in ms)"/>
         </property>
         <property name="isCreator" class="ptolemy.data.expr.Parameter" value="false">
             <display name="Is synchronization point creator ?"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, -25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, -35.0]">
         </property>
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="12">
@@ -79,22 +79,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 210.0]">
         </property>
     </property>
-    <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="Ts/10">
-        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-        </property>
-        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-            <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
-      </svg>
-    </configure>
-        </property>
-        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 235.0]">
-        </property>
-    </property>
-    <property name="Ts" class="ptolemy.data.expr.Parameter" value="0.1">
+    <property name="TARtimeStep" class="ptolemy.data.expr.Parameter" value="0.010">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -110,7 +95,26 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 0.0]">
+        </property>
+    </property>
+    <property name="lookahead" class="ptolemy.data.expr.Parameter" value="0.005">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 15.0]">
         </property>
     </property>
     <class name="myObjectClass" extends="ptolemy.actor.TypedCompositeActor">
@@ -176,7 +180,7 @@
         <link port="HlaSubscriber2.output" relation="relation2"/>
     </class>
     <class name="JOYSTICK" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, -30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 30.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
@@ -634,7 +638,7 @@
         <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="AddS,Add,gain2">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 743, 509, 336}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={120, 564, 509, 336}, maximized=false}">
             </property>
             <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[509, 292]">
             </property>
@@ -846,7 +850,7 @@
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1066, 196, 588, 256}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={852, 196, 588, 256}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[588, 212]">
         </property>

@@ -4,7 +4,7 @@
 <entity name="f14PilotStick" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1066, 386, 695, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={958, 479, 695, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[461, 524]">
     </property>
@@ -95,16 +95,16 @@
         <property name="timeManagementService" class="ptolemy.data.expr.ChoiceParameter" value="Time Advancement Request (TAR)">
             <display name="Time Management Service"/>
         </property>
-        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="samplePeriod">
+        <property name="hlaTimeStep" class="ptolemy.data.expr.Parameter" value="TARtimeStep">
             <display name="*** If TAR is used, time step (s)"/>
         </property>
-        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="0.0000001">
+        <property name="hlaLookAHead" class="ptolemy.data.expr.Parameter" value="lookahead">
             <display name="lookahead (in ms)"/>
         </property>
         <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Is synchronization point register ?"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, -30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, -45.0]">
         </property>
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="12">
@@ -123,7 +123,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, -60.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, -65.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -134,6 +134,44 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier - SUPAERO ISAE - gilles.lasnier@gmail.com&#10;               Janette Cardoso - SUPAERO ISAE - janette.cardoso@isae.fr&#10;               Pierre Siron - SUPAERO ISAE / ONERA - pierre.siron@isae.fr&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 130.0]">
+        </property>
+    </property>
+    <property name="TARtimeStep" class="ptolemy.data.expr.Parameter" value="0.010">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, -5.0]">
+        </property>
+    </property>
+    <property name="lookahead" class="ptolemy.data.expr.Parameter" value="0.005">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 10.0]">
         </property>
     </property>
     <entity name="PilotStick" class="ptolemy.actor.TypedCompositeActor">
