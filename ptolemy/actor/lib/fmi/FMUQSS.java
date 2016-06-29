@@ -233,8 +233,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         assert (stateVariables.length == getStateCount());
         assert (stateVariableDerivatives.length == getStateCount());
         
-        // Set the time
+        // Set the time.
         _fmiSetTime(time);
+        
+        // Enter event mode.
+        _enterDiscreteStateMode();
         
         // Give {stateVariable} to the FMU.
         _fmiSetContinuousStates(stateVariables);
@@ -248,6 +251,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         } else {
             _fmiGetDerivativesJNI(stateVariableDerivatives);
         }
+        
+        // Enter continuous time mode.
+        _enterContinuousTimeMode();
+        
         return 0;
     }
 
@@ -547,7 +554,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     @Override
     public final int getEventIndicatorCount() {
     	return _fmiModelDescription.numberOfEventIndicators;
-        //return 0;
+        // return 0;
     }
 
     /**
@@ -763,16 +770,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             if (_eventInfo.terminateSimulation != 0) {
                 getDirector().finish();
             }
-
-            // FIXME: Switch to the continuous mode.
-            fmiFlag = ((Integer) _fmiEnterContinuousTimeModeFunction
-                    .invokeInt(new Object[] { _fmiComponent })).intValue();
-
-            if (fmiFlag != FMILibrary.FMIStatus.fmiOK) {
-                throw new IllegalActionException(this,
-                        "Could not enter continuous mode for FMU: "
-                                + _fmiStatusDescription(fmiFlag));
-            }
         } else {
             // Get the model identifier from the model description.
             final String modelIdentifier = _fmiModelDescription.modelIdentifier;
@@ -832,9 +829,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 _lastNextEventTime = new Time(_director,
                         _eventInfoJNI.nextEventTime);
             }
-
-            // Enter continuous state mode
-            _fmiEnterContinuousTimeModeJNI();
 
         }
 
@@ -933,28 +927,37 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 				// not re-quantize the models as we know that the
 				// states are exported at simulation start.
 				_numberOfStateEvents++;
-				//if (_debugging) {
+				if (_debugging) {
 					_debugToStdOut(String.format(
 							"-- Id{%d} has a state event at start time %s",
 							System.identityHashCode(this),
 							currentTime.toString()));
 					_hasStateEventAtStart = false;
-				//}
+				}
 			} else {
-				final Time possibleNextStateEventTime = _zcSolver
-						.predictQuantizationEventTimeEarliest();
-				if (possibleFireAtTime.compareTo(possibleNextStateEventTime) > 0) {
-					possibleFireAtTime = possibleNextStateEventTime;
-					// Check if we have a real state event 
-					if (_checkStateEvents(possibleFireAtTime)) {
-						_forceQuantizationStateEvents = true;
-						_numberOfStateEvents++;
-						 if (_debugging) {
-						_debugToStdOut(String.format(
-								"-- Id{%d} predicts a state event at time %s",
-								System.identityHashCode(this),
-								possibleFireAtTime.toString()));
-						 }
+				// We check if we have a state event at the predicted time.
+				// If we do, then we use the event indicator model to 
+				// determine the time. Another approach will be to check
+				// the event indicator model only but this will increase 
+				// the number of steps. Here we just have to select a quantum
+				// which is small enough so we can still catch state events.	
+				if (_checkStateEvents(possibleFireAtTime)) {
+					final Time possibleNextStateEventTime = _zcSolver
+							.predictQuantizationEventTimeEarliest();
+					if (possibleFireAtTime
+							.compareTo(possibleNextStateEventTime) > 0) {
+						possibleFireAtTime = possibleNextStateEventTime;
+						// Check if we have a real state event
+						if (_checkStateEvents(possibleFireAtTime)) {
+							_forceQuantizationStateEvents = true;
+							_numberOfStateEvents++;
+							if (_debugging) {
+								_debugToStdOut(String
+										.format("-- Id{%d} predicts a state event at time %s",
+												System.identityHashCode(this),
+												possibleFireAtTime.toString()));
+							}
+						}
 					}
 				}
 			}
@@ -1333,42 +1336,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     }
 
     /**
-     * Return true if we are not in the first firing and the sign of
-     * some event indicator has changed.
-     *
-     * @return True if a state event has occurred.
-     * @exception IllegalActionException If the fmiGetEventIndicators
-     * function is missing, or if calling it does not return fmiOK.
-     */
-    private boolean _checkStateEvents() throws IllegalActionException {
-        int number = getEventIndicatorCount();
-        if (number == 0) {
-            // No event indicators.
-            return false;
-        }
-        if (_eventIndicators == null || _eventIndicators.length != number) {
-            _eventIndicators = new double[number];
-        }
-
-        // Get the event indicators.
-        _getEventIndicators(_eventIndicators, number);
-
-        if (_firstRound) {
-            _eventIndicatorsPrevious = _eventIndicators;
-            _eventIndicators = null;
-            return false;
-        }
-        // Check for polarity change.
-        for (int i = 0; i < number; i++) {
-            if (_eventIndicatorsPrevious[i] * _eventIndicators[i] < 0.0) {
-                return true;
-            }
-        }
-        _eventIndicatorsPrevious = _eventIndicators;
-        return false;
-    }
-
-    /**
      * Return true if a state event occurred.
      *
      * @param nextStateEventTime The next state event time.
@@ -1435,8 +1402,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 		nextFiringTime);
             }
             
-            // Set the time in the FMU
+            // Set the time in the FMU.
             _fmiSetTime(nextFiringTime);
+            
+            // Enter event mode.
+            _enterDiscreteStateMode();
             
             // Give {stateVariable} to the FMU.
             _fmiSetContinuousStates(stateVariables);
@@ -1447,6 +1417,10 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Get step event indicator
             boolean noSetFMUStatePriorToCurrentPoint = true;
             boolean stepEvent = _fmiCompletedIntegratorStep(noSetFMUStatePriorToCurrentPoint);
+            
+             // Enter continuous time mode.
+            _enterContinuousTimeMode();
+            
             if (stepEvent){
                 return true;
             }
@@ -1524,6 +1498,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         final int stateCt = _qssSolver.getStateCount();
         _states = new double[stateCt];
         _stateVariables = new double[stateCt];
+        
+        // Enter continuous time mode
+       _enterContinuousTimeMode();
         
         // Get the continuous states.
         _fmiGetContinuousStates(_states);
@@ -1787,8 +1764,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Only run this code if event indicator is greater than 0.
         if (number > 0) {
 
-            // Set the time in the FMU
+            // Set the time in the FMU.
             _fmiSetTime(time);
+            
+            // Enter event mode.
+            _enterDiscreteStateMode();
             
             // Give {stateVariable} to the FMU.
             _fmiSetContinuousStates(stateVariables);
@@ -1804,6 +1784,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Get the event indicator.
             _getEventIndicators(eventIndicator, number);
             
+            // Enter continuous time mode.
+            _enterContinuousTimeMode();
         }
     }
 
@@ -2192,22 +2174,36 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         for (int ii = 0; ii < ivCt; ++ii) {
             // Get the input corresponding to input variable {ii}.
             final Input input = _inputs.get(ii);
+
+            // Get the model.
+            // We only initialize the first coefficient
+            // since we don't have other coefficients yet.
+            final ModelPolynomial ivMdl = _inputVariableModels[ii];
             double initialValue;
             // Look for a token.
-            if (input.port.hasNewToken(0)) {
-                final Token token = input.port.get(0);
-                if (token instanceof SmoothToken) {
-                    initialValue = ((SmoothToken) token).doubleValue();
-                } else if (token instanceof DoubleToken) {
-                    initialValue = ((DoubleToken) token).doubleValue();
-                } else {
-                    throw new IllegalActionException(this,
-                            String.format(
-                                    "Input port %s is connected to a port which has"
-                                            + " a type which is not an instance "
-                                            + "of SmoothToken or DoubleToken.",
-                                    input.port.getName()));
-                }
+			if (input.port.hasNewToken(0)) {
+				final Token token = input.port.get(0);
+				if (token instanceof SmoothToken) {
+					initialValue = ((SmoothToken) token).doubleValue();
+					// Initialize model with input derivatives
+					double[] derivatives = ((SmoothToken) token)
+							.derivativeValues();
+					if (derivatives != null) {
+						int factorial = 1;
+						for (int i = 1; i <= derivatives.length; i++) {
+							ivMdl.coeffs[i] = derivatives[i - 1] / factorial;
+							factorial = factorial * i;
+						}
+					}
+				} else if (token instanceof DoubleToken) {
+					initialValue = ((DoubleToken) token).doubleValue();
+				} else {
+					throw new IllegalActionException(this, String.format(
+							"Input port %s is connected to a port which has"
+									+ " a type which is not an instance "
+									+ "of SmoothToken or DoubleToken.",
+							input.port.getName()));
+				}
             } else {
                 // Here, missing a token.
                 // TODO: This means there may be an algebraic loop. Need
@@ -2223,11 +2219,6 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             }
             // Save the last double token seen at this port.
             _inputs.get(ii).lastInputPortValue = initialValue;
-
-            // Get the model.
-            // We only initialize the first coefficient
-            // since we don't have other coefficients yet.
-            final ModelPolynomial ivMdl = _inputVariableModels[ii];
             ivMdl.coeffs[0] = initialValue;
             ivMdl.tMdl = currentTime;
         }
@@ -2622,6 +2613,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         
         // A quantization-event implies other FMU outputs change.
         // Produce outputs to all outputs that do not depend on the states.
+        
+        // Enter event mode.
         _enterDiscreteStateMode();
 
         if (_firstRound || needQuantizationEvents) {
