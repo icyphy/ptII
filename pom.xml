@@ -36,11 +36,17 @@
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-maven-plugin</artifactId>
         <version>0.24.0</version>
-        <!-- See http://dev.eclipse.org/mhonarc/lists/tycho-user/msg03670.html-->
+        <extensions>true</extensions>
+      </plugin>
+
+      <!-- See http://dev.eclipse.org/mhonarc/lists/tycho-user/msg03670.html -->
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-compiler-plugin</artifactId>
+        <version>0.24.0</version>
         <configuration>
           <compilerArgument>-warn:+discouraged,forbidden</compilerArgument>
         </configuration>
-        <extensions>true</extensions>
       </plugin>
     </plugins>
   </build>
