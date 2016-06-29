@@ -1,7 +1,7 @@
 /* Test the GenerateHTML class, which provides us with a list of copyrights
 
  Copyright (c) 2015 The Regents of the University of California; iSencia Belgium NV.
- 
+
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -28,19 +28,12 @@
  */
 package org.ptolemy.actor.gui.test;
 
-import java.net.URL;
-
 import junit.framework.TestCase;
-
-import org.ptolemy.testsupport.ModelDefinitionAssertion;
-
-import com.microstar.xml.XmlException;
-
 import ptolemy.actor.gui.GenerateCopyrights;
 
 /**
  * Invoke generateHTML(null) so that we can see the licenses.
- * 
+ *
  * @author Christopher Brooks, based on org.ptolemy.core.test.ModelDefinitionTest by ErwinDL
  * @version $Id$
  * @since Ptolemy II 10.1

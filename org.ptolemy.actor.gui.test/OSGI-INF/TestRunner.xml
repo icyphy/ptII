@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.ptolemy.core.TestRunner">
-   <implementation class="org.ptolemy.core.test.TestRunner"/>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" name="org.ptolemy.actor.gui.test.TestRunner">
+   <implementation class="org.ptolemy.actor.gui.test.TestRunner"/>
    <service>
       <provide interface="org.eclipse.osgi.framework.console.CommandProvider"/>
    </service>

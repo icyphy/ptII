@@ -52,12 +52,12 @@ public class TestRunner implements CommandProvider {
     }
 
     /**
-     * Run core tests.
+     * Run actor lib gui tests.
      * Remark that the leading underscore is required for eclipse's CommandProvider mechanism to work!
      *
      * @param ci the equinox console's command interpreter from which (optional) arguments can be obtained for the command etc
      */
-    public void _runCoreTests(CommandInterpreter ci) {
+    public void _runActorLibGuiTests(CommandInterpreter ci) {
         junit.textui.TestRunner.run(AllTests.suite());
     }
 }
