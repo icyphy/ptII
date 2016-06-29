@@ -41,7 +41,7 @@
         </property>
     </property>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {0.0,0.0}), smoothToken(0.999999, {-1.0,0.0}), smoothToken(0.0, {-1.0,0.0}), smoothToken(-0.7507880695, {-1.0,0.0}), smoothToken(-9.0, {-1.0,0.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(1.0, {0.0,0.0}), smoothToken(0.999999, {-1.0,0.0}), smoothToken(0.0, {-1.0,0.0}), smoothToken(-0.7507472913, {-1.0,0.0}), smoothToken(-9.0, {-1.0,0.0})}">
         </property>
         <property name="requireOrderedValues" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -51,19 +51,19 @@
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(-2.5, {0.0,0.0}), smoothToken(-2.4999975, {1.0,0.0}), smoothToken(-1.5, {1.0,0.0}), smoothToken(-0.7492119305, {1.0,0.0}), smoothToken(7.5, {1.0,0.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(-2.5, {0.0,0.0}), smoothToken(-2.4999975, {1.0,0.0}), smoothToken(-1.5, {1.0,0.0}), smoothToken(-0.7492527087, {1.0,0.0}), smoothToken(7.5, {1.0,0.0})}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 90.0}">
         </property>
     </entity>
     <entity name="Test3" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(4.0, {0.0,0.0}), smoothToken(3.999996, {-2.0,0.0}), smoothToken(2.0, {-2.0,0.0}), smoothToken(0.498423861, {-2.0,0.0}), smoothToken(-16.0, {-2.0,0.0})}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{smoothToken(4.0, {0.0,0.0}), smoothToken(3.999996, {-2.0,0.0}), smoothToken(2.0, {-2.0,0.0}), smoothToken(0.4985054174, {-2.0,0.0}), smoothToken(-16.0, {-2.0,0.0})}">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{610.0, 220.0}">
         </property>
     </entity>
     <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 610, 500, 321}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={465, 610, 500, 349}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
         </property>
@@ -77,7 +77,7 @@
 <xLabel></xLabel>
 <yLabel></yLabel>
 <xRange min="0.0" max="10.0"/>
-<yRange min="-16.0" max="7.5"/>
+<yRange min="-16.0" max="7.500000000000001"/>
 <default connected="no"/>
 </plot>?>
         </configure>
