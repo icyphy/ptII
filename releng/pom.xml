@@ -1,0 +1,17 @@
+<project>
+  <modelVersion>4.0.0</modelVersion>
+  <groupId>org.ptolemy.tycho</groupId>
+  <artifactId>org.ptolemy.tycho.releng</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <packaging>pom</packaging>
+
+  <parent>
+    <groupId>org.ptolemy.tycho</groupId>
+    <artifactId>org.ptolemy.tycho.root</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+  <modules>
+    <module>org.ptolemy.tycho.update</module>
+  </modules>
+</project>

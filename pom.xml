@@ -18,11 +18,13 @@
   </properties>
 
   <modelVersion>4.0.0</modelVersion>
-  <groupId>ptolemy</groupId>
-  <artifactId>osgi-2-0</artifactId>
+  <groupId>org.ptolemy.tycho</groupId>
+  <artifactId>org.ptolemy.tycho.root</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
+
   <modules>
+    <module>features</module>
     <module>diva</module>
     <module>org.ptolemy.actor.gui.test</module>
     <module>org.ptolemy.commons</module>
@@ -36,6 +38,7 @@
     <module>ptolemy.domains.sdf</module>
     <module>ptolemy.gui</module>
     <module>ptolemy.moml</module>
+    <module>releng</module>
   </modules>
 
   <!-- See http://www.vogella.com/tutorials/EclipseTycho/article.html#using-p2-update-sites-for-dependencies-resolution -->
@@ -102,6 +105,15 @@
         <artifactId>tycho-maven-plugin</artifactId>
         <version>${tycho-version}</version>
         <extensions>true</extensions>
+      </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-p2-repository-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <includeAllDependencies>true</includeAllDependencies>
+        </configuration>
       </plugin>
 
     </plugins>

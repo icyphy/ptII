@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<site>
+   <feature url="features/org.ptolemy.tycho.feature_1.0.0.qualifier.jar" id="org.ptolemy.tycho.feature" version="1.0.0.qualifier">
+      <category name="ptolemy"/>
+   </feature>
+   <bundle id="ptolemy.actor.lib" version="11.0.0.qualifier">
+      <category name="ptolemy"/>
+   </bundle>
+   <bundle id="org.ptolemy.actor.gui.test" version="10.1.0.qualifier">
+      <category name="ptolemy"/>
+   </bundle>
+   <bundle id="org.ptolemy.commons" version="11.0.0.qualifier">
+      <category name="ptolemy"/>
+   </bundle>
+   <bundle id="org.ptolemy.core.test" version="11.0.0.qualifier">
+      <category name="ptolemy"/>
+   </bundle>
+   <bundle id="org.ptolemy.core.test.actor" version="11.0.0.qualifier">
+      <category name="ptolemy"/>
+   </bundle>
+   <bundle id="org.ptolemy.testsupport" version="11.0.0.qualifier">
+      <category name="ptolemy"/>
+   </bundle>
+   <bundle id="ptolemy.actor.lib.gui" version="11.0.0.qualifier">
+      <category name="ptolemy"/>
+   </bundle>
+   <bundle id="ptolemy.core" version="11.0.0.qualifier">
+      <category name="ptolemy"/>
+   </bundle>
+   <bundle id="ptolemy.domains.process" version="11.0.0.qualifier">
+      <category name="ptolemy"/>
+   </bundle>
+   <bundle id="ptolemy.domains.sdf" version="11.0.0.qualifier">
+      <category name="ptolemy"/>
+   </bundle>
+   <bundle id="ptolemy.gui" version="11.0.0.qualifier">
+      <category name="ptolemy"/>
+   </bundle>
+   <bundle id="ptolemy.moml" version="11.0.0.qualifier">
+      <category name="ptolemy"/>
+   </bundle>
+   <bundle id="diva" version="11.0.0.qualifier">
+      <category name="ptolemy"/>
+   </bundle>
+   <category-def name="ptolemy" label="Ptolemy II Modeling and Simulation Engine">
+      <description>
+         Ptolemy II is an open-source software framework supporting experimentation with actor-oriented design. Actors are software components that execute concurrently and communicate through messages sent via interconnected ports. A model is a hierarchical interconnection of actors. In Ptolemy II, the semantics of a model is not determined by the framework, but rather by a software component in the model called a director, which implements a model of computation.  Ptolemy II is used by Triquetrum.
+      </description>
+   </category-def>
+</site>
