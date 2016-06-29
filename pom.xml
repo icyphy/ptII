@@ -1,6 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+
+  <!--
+      For osgi-2-0 specific instructions, see
+      https://wiki.eclipse.org/Triquetrum/Ptolemy/osgi-2-0
+
+      For general information, see
+      http://www.vogella.com/tutorials/EclipseTycho/article.html
+
+      $Id$
+  -->
+  
+  <properties>
+    <target-version>0.1.0-SNAPSHOT</target-version>
+    <tycho-version>0.24.0</tycho-version>
+  </properties>
+
   <modelVersion>4.0.0</modelVersion>
   <groupId>ptolemy</groupId>
   <artifactId>osgi-2-0</artifactId>
@@ -22,6 +38,7 @@
     <module>ptolemy.moml</module>
   </modules>
 
+  <!-- See http://www.vogella.com/tutorials/EclipseTycho/article.html#using-p2-update-sites-for-dependencies-resolution -->
   <repositories>
     <repository>
       <id>eclipse-mars</id>
@@ -32,22 +49,61 @@
   
   <build>
     <plugins>
+      <!-- plugins are alphabetical by groupId and then artifactId -->
+
+      <!-- This configures the target platform and the supported architectures. -->
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
-        <artifactId>tycho-maven-plugin</artifactId>
-        <version>0.24.0</version>
-        <extensions>true</extensions>
+        <artifactId>target-platform-configuration</artifactId>
+        <version>${tycho-version}</version>
+        <configuration>
+          <environments>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>linux</os>
+              <ws>gtk</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86</arch>
+            </environment>
+            <environment>
+              <os>win32</os>
+              <ws>win32</ws>
+              <arch>x86_64</arch>
+            </environment>
+            <environment>
+              <os>macosx</os>
+              <ws>cocoa</ws>
+              <arch>x86_64</arch>
+            </environment>
+          </environments>
+        </configuration>
       </plugin>
-
+      
       <!-- See http://dev.eclipse.org/mhonarc/lists/tycho-user/msg03670.html -->
       <plugin>
         <groupId>org.eclipse.tycho</groupId>
         <artifactId>tycho-compiler-plugin</artifactId>
-        <version>0.24.0</version>
+        <version>${tycho-version}</version>
         <configuration>
           <compilerArgument>-warn:+discouraged,forbidden</compilerArgument>
         </configuration>
       </plugin>
+
+      <plugin>
+        <groupId>org.eclipse.tycho</groupId>
+        <artifactId>tycho-maven-plugin</artifactId>
+        <version>${tycho-version}</version>
+        <extensions>true</extensions>
+      </plugin>
+
     </plugins>
   </build>
 </project>
