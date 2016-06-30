@@ -37,6 +37,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.stream.IntStream;
 
 import org.ptolemy.fmi.FMI20ContinuousStateDerivative;
 import org.ptolemy.fmi.FMI20EventInfo;
@@ -487,12 +488,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     && currentTime.compareTo(_lastNextEventTime) == 0) {
                 _forceQuantizationTimeEvents = true;
                 _numberOfTimeEvents++;
-                //if (_debugging) {
+                if (_debugging) {
                     _debugToStdOut(String.format(
                             "-- Id{%d} has a time event at time %s",
                             System.identityHashCode(this),
                             currentTime.toString()));
-                //}
+                }
             }
             // Handle step events
             if (_checkStepEvents(currentTime)) {
@@ -960,12 +961,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                         if (_checkStateEvents(possibleFireAtTime)) {
                             _forceQuantizationStateEvents = true;
                             _numberOfStateEvents++;
-                            //if (_debugging) {
+                            if (_debugging) {
                                 _debugToStdOut(String
                                         .format("-- Id{%d} predicts a state event at time %s",
                                                 System.identityHashCode(this),
                                                 possibleFireAtTime.toString()));
-                            //}
+                            }
                         }
                     }
                 }
@@ -1950,6 +1951,15 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      *  @param curIdx The input index.
      *  @exception IllegalActionException If the input cannot be set.
      */
+    
+    private double sumOfVector (double array []){
+    	double accumulator = 0;
+    	for(int i = 0; i < array.length; i++) {
+    	    accumulator += array[i];
+    	}
+    	return accumulator;
+    }
+    
     private boolean _handleInput(Input input, Time currentTime, Token token,
             int curIdx) throws IllegalActionException {
         // Here we have gotten a SmoothToken which has derivatives information. We assume
@@ -1964,7 +1974,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         }
         // Handle cases where we have a smooth token with zero derivatives.
         else if (token instanceof SmoothToken
-                && (((SmoothToken) token).derivativeValues() == null)) {
+                && (((SmoothToken) token).derivativeValues() == null) 
+                || sumOfVector(((SmoothToken) token).derivativeValues())==0) {
             final double inputDoubleValue = ((SmoothToken) token).doubleValue();
             if (inputDoubleValue != input.lastInputPortValue) {
                 // Update the model.
@@ -2183,16 +2194,23 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     initialValue = ((SmoothToken) token).doubleValue();
                     // Initialize model with input derivatives
                     double[] derivatives = ((SmoothToken) token)
-                            .derivativeValues();
-                    if (derivatives != null) {
-                        int factorial = 1;
-                        for (int i = 1; i <= derivatives.length; i++) {
-                            ivMdl.coeffs[i] = derivatives[i - 1] / factorial;
+                            .derivativeValues();            
+                    int factorial = 1;
+                    for (int i = 1; i <= ivMdlOrder; i++) {
+                        if (derivatives == null || derivatives.length < i) {
+                            // Derivative not provided. Set it to zero.
+                        	ivMdl.coeffs[i] = 0.0;
+                        } else {
+                        	ivMdl.coeffs[i] = derivatives[i-1]/factorial;
                             factorial = factorial * i;
                         }
-                    }
+                    }         
                 } else if (token instanceof DoubleToken) {
                     initialValue = ((DoubleToken) token).doubleValue();
+                    for (int i = 1; i <= ivMdlOrder; i++) {
+                    	// Derivative not provided. Set it to zero.
+                    	ivMdl.coeffs[i] = 0.0;
+                    }
                 } else {
                     throw new IllegalActionException(this, String.format(
                             "Input port %s is connected to a port which has"
@@ -2205,8 +2223,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 // TODO: This means there may be an algebraic loop. Need
                 // to handle that as a real possibility.
                 // Fill in a default value, taken from the FMU.
-                // initialValue = input.scalarVariable.getDouble(_fmiComponent);
                 initialValue = input.start;
+                for (int i = 1; i <= ivMdlOrder; i++) {
+                    // Derivative not provided. Set it to zero.
+                	ivMdl.coeffs[i] = 0.0;
+                	}
                 if (_debugging) {
                     _debugToStdOut(String
                             .format("-- Id{%d} set initial value of input %d to default value of %g",
