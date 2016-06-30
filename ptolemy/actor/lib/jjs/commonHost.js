@@ -1507,7 +1507,7 @@ Accessor.prototype.scheduleEvent = function(accessor) {
     var theirPriority = queue[queue.length - 1].priority;
     if (myPriority > theirPriority) {
         // Simple case. Append to the end of the queue.
-        queue.push(instance);
+        queue.push(accessor);
         return;
     }
     if (myPriority == theirPriority) {
