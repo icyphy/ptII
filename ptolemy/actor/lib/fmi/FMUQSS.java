@@ -1781,14 +1781,15 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 _setFMUInputsAtCurrentTime(time, inputVariables, true);
             }
 
+            // Exit event mode.
+            _enterDiscreteStateMode();
+            
+            // Enter continuous time mode.
+            _enterContinuousTimeMode();
+            
             // Get the event indicator.
             _getEventIndicators(eventIndicator, number);
 
-            // Exit event mode.
-            _enterDiscreteStateMode();
-
-            // Enter continuous time mode.
-            _enterContinuousTimeMode();
         }
     }
 
@@ -1951,15 +1952,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      *  @param curIdx The input index.
      *  @exception IllegalActionException If the input cannot be set.
      */
-    
-    private double sumOfVector (double array []){
-    	double accumulator = 0;
-    	for(int i = 0; i < array.length; i++) {
-    	    accumulator += array[i];
-    	}
-    	return accumulator;
-    }
-    
+        
     private boolean _handleInput(Input input, Time currentTime, Token token,
             int curIdx) throws IllegalActionException {
         // Here we have gotten a SmoothToken which has derivatives information. We assume
@@ -1975,7 +1968,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // Handle cases where we have a smooth token with zero derivatives.
         else if (token instanceof SmoothToken
                 && (((SmoothToken) token).derivativeValues() == null) 
-                || sumOfVector(((SmoothToken) token).derivativeValues())==0) {
+                || _sumOfVector(((SmoothToken) token).derivativeValues())==0) {
             final double inputDoubleValue = ((SmoothToken) token).doubleValue();
             if (inputDoubleValue != input.lastInputPortValue) {
                 // Update the model.
@@ -2188,7 +2181,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             final ModelPolynomial ivMdl = _inputVariableModels[ii];
             double initialValue;
             // Look for a token.
-            if (input.port.hasNewToken(0)) {
+            if (input.port.hasToken(0)) {
                 final Token token = input.port.get(0);
                 if (token instanceof SmoothToken) {
                     initialValue = ((SmoothToken) token).doubleValue();
@@ -2561,6 +2554,20 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
 
         }
     }
+    
+    /**
+     * Calculate the sum of a vector.
+     *
+     * @param array The input vector.
+     * return sum The sum of the input vector elements.
+     */
+    private double _sumOfVector (double array []){
+    	double sum = 0;
+    	for(int i = 0; i < array.length; i++) {
+    	    sum += array[i];
+    	}
+    	return sum;
+    }
 
     /**
      * Trigger quantization-events if necessary.
@@ -2757,7 +2764,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // Guarantee that _inputs() has the same count of inputs
             // as it did during _initializeQssIntegrator_inputVars().
             // If not, then index {curIdx} can be wrong.
-            if (input.port.hasNewToken(0)) {
+            if (input.port.hasToken(0)) {
                 // Here, have a new value on the input port.
                 final Token token = input.port.get(0);
                 _updateInputModel(input, currentTime, token, curIdx);
