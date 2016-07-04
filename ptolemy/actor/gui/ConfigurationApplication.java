@@ -933,6 +933,22 @@ public class ConfigurationApplication implements ExecutionListener {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
+    /**Get the number of models that are active.
+     * @return The number of active models.
+     * @see #setActiveCount
+     */
+    public int getActiveCount() {
+        return _activeCount;
+    }
+
+    /**Set the number of active models.
+     * @param _activeCount The number of active models.
+     * @see #getActiveCount
+     */
+    public void setActiveCount(int _activeCount) {
+        this._activeCount = _activeCount;
+    }
+
     /** Return a string summarizing the command-line arguments,
      *  including any configuration directories in a base path,
      *  typically "ptolemy/configs".
