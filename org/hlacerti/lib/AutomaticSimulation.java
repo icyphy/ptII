@@ -321,8 +321,8 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
     public static void main(String[] args) {
         try {
             String[] modelPath = {"TestModels/sender.xml","TestModels/receiver.xml"};
-            //String[] modelPath = {"TestModels/f14Aircraft.xml",
-            	//	"TestModels/f14AutoPilot.xml","TestModels/f14PilotStick.xml"};
+            String[] modelPath2 = {"TestModels/f14Aircraft.xml",
+            	"TestModels/f14AutoPilot.xml","TestModels/f14PilotStick.xml"};
 
             AutomaticSimulation vergil = new AutomaticSimulation(args);
             /*			Scanner input = new Scanner(System.in);
@@ -391,14 +391,14 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 	                System.out.println("The simulation is about to start...");
 	                changeParameters(waitingTime, vergil, modelPath, parameters, values);
 	            }*/
-            String param = "lookAhead";
+            String param = "lookahead";
             param = "<property name=\""+param+ "\" class=\"ptolemy.data.expr.Parameter\" value=\"";
             float startValue = (float) 0.1;
             float endValue = (float) 0;
             float stepValue =(float) 5;
-            double[] values = {0.006};
+            double[] values = {0.005, 0.01, 0.02, 0.06};
 
-            changeParameter(-3,vergil,modelPath, param,values);
+            changeParameter(-5,vergil,modelPath2, param,values);
         } catch (Throwable e) {
             e.printStackTrace();
             System.exit(0);

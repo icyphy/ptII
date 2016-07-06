@@ -741,7 +741,7 @@ TimeRegulator {
         // so it has no need to ask for the HLA service
         // then return the currentTime.
 
-        if (currentTime.equals(proposedTime) && _getHlaCurrentTime().compareTo(proposedTime)<=0) {
+        if (currentTime.equals(proposedTime)) {
             // Even if we avoid the multiple calls of the HLA Time management
             // service for optimization, it could be possible to have events
             // from the Federation in the Federate's priority timestamp queue,
@@ -870,29 +870,31 @@ TimeRegulator {
 
         // Create a representation of uav-event timestamp for CERTI.
         // HLA implies to send event in the future when using NER or TAR services with lookahead > 0.
+        // Let us recall the lookahead rule: a federate promises that no events will be sent 
+        // before hlaCurrentTime + lookahead.
         // To avoid CERTI exception when calling UAV service
         // with condition: uav(tau) tau >= hlaCurrentTime + lookahead.
         Time uavTimeStamp = null;
         if (_eventBased) {
-            // for NER, we add the lookahead value to the uav event's timestamp.
+            // In the NER case, we have the equality currentTime = hlaCurrentTime.
+            // So, we chose tau <- currentTime + lookahead and we respect the condition
+            // above.
             uavTimeStamp = currentTime.add(_hlaLookAHead);   
         } else {
-            // For TAR, all uav-events with timestamp tau
-            // that must be published after (hla current Time + lookahead)
-            // We've made a choice for implementation of uav(tau): 
-            // option 1: (all or certain) tau is delayed to hlaNextPointInTime,
-            // option 2: (all or certain)tau is delayed to currentTime+lookahead,
-            // option 3: others may exist.
-
-            // Here we take option 2: if tau <= hlaCurrentTime + lookahead.
-            // tau is delayed to currentTime + lookahead.
+            // In the TAR case, currentTime >= hlaCurrentTime.
+            // So, we have two possible cases:
+            // case 1:  currentTime >= hlaCurrentTime + lookAhead
+            //          We will not break the lookahead rule, therefore tau <- currentTime.
+            // case 2: hlaCurrentTime <= currentTime < hlaCurrentTime + lookAhead
+            //         In order not to break the lookahead rule, we must delay the uav.
+            //         tau <- hlaCurrentTime + lookahead
             CertiLogicalTime certiCurrentTime = (CertiLogicalTime) _federateAmbassador.logicalTimeHLA;
             Time hlaCurrentTime = _convertToPtolemyTime(certiCurrentTime);
-            if(currentTime.compareTo(hlaCurrentTime.add(_hlaTimeStep))==0){
+/*            if(currentTime.compareTo(hlaCurrentTime.add(_hlaTimeStep))==0){
                 hlaCurrentTime= hlaCurrentTime.add(_hlaTimeStep);
-            }
+            }*/
             if (hlaCurrentTime.add(_hlaLookAHead).compareTo(currentTime) > 0){
-                uavTimeStamp = currentTime.add(_hlaLookAHead);
+                uavTimeStamp = hlaCurrentTime.add(_hlaLookAHead);
             }else{
                 uavTimeStamp = currentTime;
             }
@@ -1058,7 +1060,6 @@ TimeRegulator {
     public void setNumberOfTAGs(int _numberOfTAGs) {
         this._numberOfTAGs = _numberOfTAGs;
     }
-
     /** Return the number of next event requests that this federate has made.
      * @return The number of next event requests that this federate has made.
      * @see #_numberOfNERs
@@ -1483,7 +1484,7 @@ TimeRegulator {
 
                 // case 1:
 
-                while (proposedTime.compareTo(hlaNextPointInTime) >= 0) {
+                while (proposedTime.compareTo(hlaNextPointInTime) > 0) {
                     if (_debugging) {
                         _debug(this.getDisplayName()
                                 + " _timeSteppedBasedTimeAdvance(Time) - proposeTime() - current status "
