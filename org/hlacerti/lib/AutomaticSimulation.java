@@ -391,14 +391,14 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 	                System.out.println("The simulation is about to start...");
 	                changeParameters(waitingTime, vergil, modelPath, parameters, values);
 	            }*/
-            String param = "lookahead";
+            String param = "lookAhead";
             param = "<property name=\""+param+ "\" class=\"ptolemy.data.expr.Parameter\" value=\"";
             float startValue = (float) 0.1;
             float endValue = (float) 0;
             float stepValue =(float) 5;
-            double[] values = {0.005, 0.01, 0.02, 0.06};
+            double[] values = {0.7,2};
 
-            changeParameter(-5,vergil,modelPath2, param,values);
+            changeParameter(20,vergil,modelPath, param,values);
         } catch (Throwable e) {
             e.printStackTrace();
             System.exit(0);
@@ -456,6 +456,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                     _killRTIG();
+                    System.exit(0);
                 }  
             }
         };
@@ -469,6 +470,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             // TODO Auto-generated catch block
             e.printStackTrace();
             _killRTIG();
+            System.exit(0);
             return false;
         }
     }
@@ -685,6 +687,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             Thread.sleep(miliSeconds);
         } catch (InterruptedException e) {
             e.printStackTrace();
+            System.exit(0);
         }
 
     }
