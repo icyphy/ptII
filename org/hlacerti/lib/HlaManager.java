@@ -99,6 +99,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TimeRegulator;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.CurrentMicrostep;
+import ptolemy.actor.util.SuperdenseTime;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
@@ -836,7 +838,9 @@ TimeRegulator {
      */
     public void updateHlaAttribute(HlaPublisher hp, Token in, String senderName)
             throws IllegalActionException {
-        Time currentTime = _getModelTime();
+        SuperdenseTime currentSuperdenseTime = _getModelSuperdenseTime();
+        Time currentTime = currentSuperdenseTime.timestamp();
+        int microstep= currentSuperdenseTime.index();
         // The following operations build the different arguments required
         // to use the updateAttributeValues() (UAV) service provided by HLA/CERTI.
 
@@ -913,7 +917,8 @@ TimeRegulator {
         try {
             int id = _registeredObject.get(_federateName + " " + senderName);
             _UAVsValues=_UAVsValues + in.toString()+";";
-            _UAVsTimes= _UAVsTimes + ct.getTime()+";";
+            _pUAVsTimes= _pUAVsTimes + ct.getTime()+";";
+            _preUAVsTimes= _preUAVsTimes +"("+ currentTime+","+microstep+");";
             _rtia.updateAttributeValues(id, suppAttributes, tag, ct);
             _numberOfUAVs++;
 
@@ -945,6 +950,7 @@ TimeRegulator {
         writeNumberOfHLACalls();
         writeDelays();
         writeUAVsInformations();
+        writeRAVsInformations();
 
         if (_debugging) {
             _debug(this.getDisplayName() + " wrapup() - ... so termination");
@@ -1137,15 +1143,30 @@ TimeRegulator {
     }
 
     public void writeUAVsInformations(){
-        if(!_UAVsValues.equals("") && !_UAVsTimes.equals("")){
-            String header = ";LookAhead;TimeStep;StopTime;";
+        if(_numberOfUAVs>0){
+            String header = "LookAhead;TimeStep;StopTime;Information;";
             int count = _UAVsValues.split(";").length;
             for (int i = 0; i < count; i++) {
                 header=header+"UAV"+i+";";
             }
             _UAVsValuesFile=_createTextFile("uav"+getDisplayName()+".csv", header);
-            _UAVsTimes= _UAVsTimes +"\n";
-            writeInTextFile(_UAVsValuesFile,"TimeValues;"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";"+ _UAVsTimes +"UAVsValues;" +";;;"+ _UAVsValues);
+            _pUAVsTimes= ";;;"+"pUAV Time:;"+_pUAVsTimes +"\n";
+            _preUAVsTimes= "preUAV Time:;"+_preUAVsTimes+"\n";
+            writeInTextFile(_UAVsValuesFile,_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";"+ _preUAVsTimes+_pUAVsTimes +";;;UAVValues;"+ _UAVsValues);
+        }
+    }
+    
+    public void writeRAVsInformations(){
+        if(_numberOfRAVs>0){
+            String header = "LookAhead;TimeStep;StopTime;Information;";
+            int count = _RAVsValues.split(";").length;
+            for (int i = 0; i < count; i++) {
+                header=header+"RAV"+i+";";
+            }
+            _RAVsValuesFile=_createTextFile("rav"+getDisplayName()+".csv", header);
+            _pRAVsTimes= "pRAV Time:;"+_pRAVsTimes +"\n";
+            _folRAVsTimes= ";;;"+"folRAV Time:;"+_folRAVsTimes+"\n";
+            writeInTextFile(_RAVsValuesFile,_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";"+ _pRAVsTimes+_folRAVsTimes +";;;RAVValues;"+ _RAVsValues);
         }
     }
 
@@ -1687,6 +1708,7 @@ TimeRegulator {
                             + " put Event: " + ravevent.toString() + " in "
                             + hs.getDisplayName());
                 }
+                _folRAVsTimes=_folRAVsTimes+ravevent.timeStamp+";";
                 events.removeFirst();
             }
         }
@@ -1824,7 +1846,11 @@ TimeRegulator {
         _timeOfTheLastAdvanceRequest=0;
         _numberOfOtherTicks=0;
         _UAVsValues="";
-        _UAVsTimes="";
+        _pUAVsTimes="";
+        _preUAVsTimes="";
+        _RAVsValues="";
+        _pRAVsTimes="";
+        _folRAVsTimes="";
         _TAGDelay=new ArrayList<Double>();
         _numberOfTicks=new ArrayList<Integer>();
         _numberOfRAVs=0;
@@ -1867,6 +1893,19 @@ TimeRegulator {
             return _director.getModelTime();
         }
     }
+    
+    private SuperdenseTime _getModelSuperdenseTime(){
+        double currentTime = _director.getModelTime().getDoubleValue();
+        currentTime = _roundTimeValues(currentTime);
+        try {
+            Time time = new Time(_director, currentTime);
+            return new SuperdenseTime(time,_director.getMicrostep());
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+            return new SuperdenseTime(_director.getModelTime(),_director.getMicrostep());
+        }
+    }
+    
 
 
     ///////////////////////////////////////////////////////////////////
@@ -1962,10 +2001,14 @@ TimeRegulator {
      * Represents the file that tracks the values that have been updated and the time of their update.
      */
     private File _UAVsValuesFile;
-
+    //FIXME: add comments
     private String _UAVsValues;
-    private String _UAVsTimes;
-
+    private String _pUAVsTimes;
+    private String _preUAVsTimes;
+    private File _RAVsValuesFile;
+    private String _RAVsValues;
+    private String _pRAVsTimes;
+    private String _folRAVsTimes;
     /** Represents the instant when the simulation is fully started 
      * (when the last federate starts running).
      */
@@ -2447,6 +2490,9 @@ TimeRegulator {
                                             + hs.getDisplayName());
                                 }
                                 done = true;
+                                _pRAVsTimes=_pRAVsTimes+ te.timeStamp+";";
+                                _RAVsValues=_RAVsValues + value.toString()+";";
+            
                             } catch (IllegalActionException e) {
                                 e.printStackTrace();
                             }
