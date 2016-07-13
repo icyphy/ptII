@@ -1251,7 +1251,7 @@ TimeRegulator {
             delayPerTick = delayPerTick + ";";
             header = header +"Average;";
 
-            _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+".csv");
+            _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+".csv","timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
             writeInTextFile(_reportFile,_hlaTimeStep + ";"+_hlaLookAHead + ";" + 
                     _runtime +";" + totalNumberOfHLACalls+";"+_numberOfTARs+";"+ _numberOfTAGs+
                     ";"+_numberOfRAVs+";"+_numberOfUAVs+";"+ _numberOfTicks2+";"+averageDelay );
@@ -1658,7 +1658,7 @@ TimeRegulator {
     /** This method is called when a time advancement phase is performed. Every
      *  updated HLA attributes received by callbacks (from the RTI) during the
      *  time advancement phase is saved as {@link TimedEvent} and stored in a
-     *  queue. Then, every {@link TimedEvent}s are moved from this queue to the
+     *  queue. Then, every {@link TimedEvent} is moved from this queue to the
      *  output port of their corresponding {@link HLASubscriber} actors
      *  @exception IllegalActionException If the parent class throws it.
      */
@@ -1680,13 +1680,12 @@ TimeRegulator {
             while (events.size() > 0) {
 
                 TimedEvent ravevent = events.get(0);
-
+                
                 // All rav-events received by HlaSubscriber actors, RAV(tau) with tau < hlaCurrentTime
                 // are put in the event queue with timestamp hlaCurrentTime
                 if (_timeStepped) {
                     ravevent.timeStamp = _getHlaCurrentTime();
                 }
-
                 // If any rav-event received by HlaSubscriber actors, RAV(tau) with tau < ptolemy startTime
                 // are put in the event queue with timestamp startTime
                 //FIXME: Or should it be an exception because there is something wrong with 
@@ -1702,6 +1701,7 @@ TimeRegulator {
                 HlaSubscriber hs = (HlaSubscriber) tiop.getContainer();
 
                 hs.putReflectedHlaAttribute(ravevent);
+                
                 if (_debugging) {
                     _debug(this.getDisplayName()
                             + " _putReflectedAttributesOnHlaSubscribers() - "

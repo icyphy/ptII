@@ -391,14 +391,14 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 	                System.out.println("The simulation is about to start...");
 	                changeParameters(waitingTime, vergil, modelPath, parameters, values);
 	            }*/
-            String param = "lookAhead";
+            String param = "lookahead";
             param = "<property name=\""+param+ "\" class=\"ptolemy.data.expr.Parameter\" value=\"";
             float startValue = (float) 0.1;
             float endValue = (float) 0;
             float stepValue =(float) 5;
-            double[] values = {0.7,2};
+            double[] values = {0.005,0.001};
 
-            changeParameter(20,vergil,modelPath, param,values);
+            changeParameter(2000,vergil,modelPath2, param,values);
         } catch (Throwable e) {
             e.printStackTrace();
             System.exit(0);
