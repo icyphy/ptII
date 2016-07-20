@@ -27,6 +27,11 @@
  */
 package ptolemy.actor.lib.jjs;
 
+import io.vertx.core.AbstractVerticle;
+import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
+import io.vertx.core.eventbus.EventBus;
+
 import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayOutputStream;
@@ -35,15 +40,13 @@ import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.WeakHashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.imageio.ImageIO;
 
-import io.vertx.core.AbstractVerticle;
-import io.vertx.core.Vertx;
-import io.vertx.core.buffer.Buffer;
-import io.vertx.core.eventbus.EventBus;
 import ptolemy.data.ImageToken;
 import ptolemy.data.LongToken;
 import ptolemy.util.StringUtilities;
@@ -171,6 +174,68 @@ public class VertxHelperBase extends HelperBase {
         // Notify the verticle to process the next job.
         EventBus eventBus = _vertx.eventBus();
         eventBus.publish(_address, "submit");
+    }
+    
+    /** Return a set of informal image type names that can be sent.
+     *  @return A set of image type names.
+     */
+    public static Set<String> getImageTypes() {
+        return _sendImageTypes;
+    };
+    
+    /** Return an array of the types supported by the current host for
+     *  receiveType arguments, which are the types that can be extracted from buffers.
+     *  @return An array of types.
+     */
+    public static String[] supportedReceiveTypes() {
+        // Formerly, we checked to see if _receiveTypes was null outside of the synchronized block
+        // However, Coverity scan warned:
+        // "CID 1349635 (#1 of 1): Check of thread-shared field evades
+        // lock acquisition
+        // (LOCK_EVASION)5. thread2_checks_field_early: Thread2 checks
+        // _receiveTypes, reading it after Thread1 assigns to
+        // _receiveTypes but before some of the correlated field
+        // assignments can occur. It sees the condition
+        // ptolemy.actor.lib.jjs.modules.socket.SocketHelper._receiveTypes
+        // == null as being false. It continues on before the critical
+        // section has completed, and can read data changed by that
+        // critical section while it is in an inconsistent state."
+
+        // Avoid FindBugs LI: Unsynchronized Lazy Initialization (FB.LI_LAZY_INIT_UPDATE_STATIC)
+        synchronized (_receiveTypesMutex) {
+            if (_receiveTypes == null) {
+                int length = DATA_TYPE.values().length;
+                _receiveTypes = new String[length];
+                int i = 0;
+                for (DATA_TYPE type : DATA_TYPE.values()) {
+                    _receiveTypes[i++] = type.toString().toLowerCase();
+                }
+            }
+            return _receiveTypes;
+        }
+    }
+
+    /** Return an array of the types supported by the current host for
+     *  sendType arguments, which are the types that can be written to buffers.
+     *  @return An array of types.
+     */
+    public static String[] supportedSendTypes() {
+        // See supportedReceiveTypes() for why we grab the lock.
+        synchronized (_sendTypesMutex) {
+            if (_sendTypes == null) {
+                int length = DATA_TYPE.values().length;
+                _sendImageTypes = _removeDuplicates(ImageIO.getWriterFormatNames());
+                _sendTypes = new String[length + _sendImageTypes.size()];
+                int i = 0;
+                for (DATA_TYPE type : DATA_TYPE.values()) {
+                    _sendTypes[i++] = type.toString().toLowerCase();
+                }
+                for (String imageType : _sendImageTypes) {
+                    _sendTypes[i++] = imageType;
+                }
+            }
+            return _sendTypes;
+        }
     }
 
     /** Undeploy the associated verticle.
@@ -598,6 +663,21 @@ public class VertxHelperBase extends HelperBase {
 
     /** Queue of pending jobs. */
     private ConcurrentLinkedQueue<Runnable> _pendingJobs = new ConcurrentLinkedQueue<Runnable>();
+    
+    /** The array of receive type names. */
+    private static String[] _receiveTypes;
+
+    /** A mutex used when creating _receiveTypes. */
+    private static Object _receiveTypesMutex = new Object();
+
+    /** The set of informal image type names that can be sent. */
+    private static TreeSet<String> _sendImageTypes;
+    
+    /** The array of send type names. */
+    private static String[] _sendTypes;
+
+    /** A mutex used when creating _sendTypes. */
+    private static Object _sendTypesMutex = new Object();
 
     static {
         try {
