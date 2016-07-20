@@ -46,13 +46,13 @@ exports.GDP = function (name, iomode) {
     return this.helper;
 };
 
+exports.GDP.prototype.append = function (data) {
+    this.helper.append(data);
+};
+
 exports.GDP.prototype.read = function (recno) {
     var data = this.helper.read(recno);
     return data;
-};
-
-exports.GDP.prototype.append = function (data) {
-    this.helper.append(data);
 };
 
 exports.GDP.prototype.setDebugLevel = function (debugLevel) {
