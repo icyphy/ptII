@@ -53,7 +53,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="logname" class="ptolemy.data.expr.Parameter" value="&quot;GDPLogRead1&quot;">
+        <property name="logname" class="ptolemy.data.expr.Parameter" value="GDPLogRead1">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
