@@ -21,9 +21,9 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 
 /**
- * Module supporting UDP sockets.
+ * Module supporting UDP (datagram) sockets.
  * @module udpSocket
- * @author Hokeun Kim
+ * @author Hokeun Kim and Edward A. Lee
  * @version $$Id$$
  */
 
@@ -36,53 +36,97 @@
 var UDPSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.udpSocket.UDPSocketHelper');
 var EventEmitter = require('events').EventEmitter;
 
-// This file contains first the code for a UDP socket.
+///////////////////////////////////////////////////////////////////////////////
+//// createSocket
+
+/** Create a socket of the specified type.
+ *  This returns an instance of the Socket class.
+ *  @param type One of "udp4" or "udp6". Defaults to "udp4" if not given.
+ *  @param callback Optional function to bind to "message" events.
+ */
+exports.createSocket = function (type, callback) {
+	if (!type) {
+		type = "udp4";
+	}
+    var socket = new exports.Socket(type);
+    if (callback) {
+    	socket.on("message", callback);
+    }
+    return socket;
+};
 
 ///////////////////////////////////////////////////////////////////////////////
-//// Client
+//// supportedReceiveTypes
 
-/** Construct an instance of a socket client that can send or receive messages
- *  to a server at the specified host and port.
- *  The returned object subclasses EventEmitter.
- *  You can register handlers for events 'open', 'message', 'close', or 'error'.
+/** Return an array of the types supported by the current host for
+ *  receiveType arguments.
+ */
+exports.supportedReceiveTypes = function () {
+	return UDPSocketHelper.supportedReceiveTypes();
+};
+
+///////////////////////////////////////////////////////////////////////////////
+//// supportedSendTypes
+
+/** Return an array of the types supported by the current host for
+ *  sendType arguments.
+ */
+exports.supportedSendTypes = function () {
+	return UDPSocketHelper.supportedSendTypes();
+};
+
+///////////////////////////////////////////////////////////////////////////////
+//// Socket
+
+/** Construct an instance of a UDP (datagram) socket that can send or receive messages.
+ *  To receive messages, call bind() on the returned object.
+ *  To send messages, call send().
+ *  The returned object is an event emitter that emits
+ *  'listening', 'message', 'close', or 'error'.
  *  For example,
  *  <pre>
- *    var WebSocket = require('webSocket');
- *    var client = new WebSocket.Client('localhost', 8080);
- *    client.on('message', onMessage);
- *    function onMessage(message) {
+ *    var UDPSocket = require('udpSocket');
+ *    var socket = UDPSocket.createSocket();
+ *    socket.on('message', function(message) {
  *      print('Received from web socket: ' + message);
- *    }
+ *    });
+ *    socket.bind(8084);
  *  </pre>
- *  @param options A JSON object with fields 'host' and 'port' that give the
- *   IP address or host name for the host and the port on which the host is listening.
- *   If the host is omitted, 'localhost' is used. If the port is omitted, 80 is used.
+ *  This class is fashioned after the Socket class in Node's dgram module,
+ *  with the only exception being that the messages it emits are not instances
+ *  of Buffer, but rather appropriate data types as specified by the receiveType
+ *  argument to setReceiveType(). Similarly, the data provided to send() will be
+ *  converted to a Buffer according to the type set by setSendType().
+ *
+ *  @param type One of "udp4" or "udp6".
  */
-exports.Socket = function () {
-    this.helper = UDPSocketHelper.createSocket(this);
+exports.Socket = function(type) {
+	// FIXME: type is ignored.
+    var helper = UDPSocketHelper.getOrCreateHelper(actor);
+    this.socket = helper.createSocket(this);
 };
 
 util.inherits(exports.Socket, EventEmitter);
 
-exports.createSocket = function () {
-    return new exports.Socket();
-};
-
-/** Send data over the web socket.
- *  The data can be anything that has a JSON representation.
- *  If the socket has not yet been successfully opened, then queue
- *  data to be sent later, when the socket is opened.
- *  @param data The data to send.
+/** Listen for datagram messages on the specified port and optional address.
+ *  If no port is specified, then attempt to bind to a random port.
+ *  If no address is specified, attempt to listen on all addresses.
+ *  Once binding is complete, a 'listening' event is emitted and the
+ *  optional callback function is called. The value of 'this' in the
+ *  callback invocation will be this Socket object.
+ *  @param port The port to listen on.
+ *  @param address The network interface on which to listen.
+ *  @param callback A function to call when the binding is complete.
  */
-exports.Socket.prototype.send = function (data) {
-    if (typeof data != 'string') {
-        data = JSON.stringify(data);
-    }
-    this.helper.sendText(data);
-};
-
-exports.Socket.prototype.bind = function (port) {
-    this.helper.bind(port);
+exports.Socket.prototype.bind = function (port, address, callback) {
+	if (!address) {
+		// FIXME: This assumes udp4?
+		address = "0.0.0.0";
+	}
+	if (!callback) {
+		callback = null;
+	}
+    this.socket.bind(port, address, callback);
 };
 
 /** Close the current connection with the server.
@@ -91,24 +135,35 @@ exports.Socket.prototype.bind = function (port) {
  *  then throw an exception.
  */
 exports.Socket.prototype.close = function () {
-    this.helper.close();
+    this.socket.close();
 };
 
-/** Notify this object of a received message from the socket.
- *  This function attempts to parse the message as JSON and then
- *  emits a "message" event with the message as an argument.
- *  This function is called by the Java helper used by this particular
- *  implementation and should not be normally called by the user.
- *  FIXME: Any way to hide it?
- *  @param message The incoming message.
+/** Send a datagram message.
+ *  @param data The data to send.
+ *  @param port The destination port.
+ *  @param hostname The name of the destination host (a hostname or IP address).
+ *  @param callback An optional callback function to invoke when the send is complete,
+ *   or if an error occurs. In the latter case, the cause of the error will be passed
+ *   as an argument to the callback.
  */
-exports.Socket.prototype.notifyIncoming = function (message) {
-    try {
-        message = JSON.parse(message);
-    } catch (exception) {
-        // Assume that the message is a string.
-        // We can ignore the exception, because the message
-        // will be passed as a string.
-    }
-    this.emit("message", message);
+exports.Socket.prototype.send = function (data, port, hostname, callback) {
+	if (!callback) {
+		callback = null;
+	}
+    this.socket.send(data, port, hostname, callback);
 };
+
+/** Set the receive type. If this is not called, the type defaults to "string".
+ *  @type The name of the receive type.
+ */
+exports.Socket.prototype.setReceiveType = function(type) {
+	this.socket.setReceiveType(type);
+};
+
+/** Set the send type. If this is not called, the type defaults to "string".
+ *  @type The name of the send type.
+ */
+exports.Socket.prototype.setSendType = function(type) {
+	this.socket.setSendType(type);
+};
+
