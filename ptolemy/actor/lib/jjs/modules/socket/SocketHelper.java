@@ -30,16 +30,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.socket;
 
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.util.LinkedList;
-import java.util.Map;
-import java.util.TreeSet;
-
-import javax.imageio.ImageIO;
-
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.ClientAuth;
 import io.vertx.core.net.NetClient;
@@ -49,6 +39,16 @@ import io.vertx.core.net.NetServerOptions;
 import io.vertx.core.net.NetSocket;
 import io.vertx.core.net.PemTrustOptions;
 import io.vertx.core.net.PfxOptions;
+
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.LinkedList;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
+
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.data.AWTImageToken;
@@ -242,6 +242,28 @@ public class SocketHelper extends VertxHelperBase {
         return new SocketHelper(actor);
     }
 
+    /** Return an array of the types supported by the current host for
+     *  receiveType arguments.
+     *  @return An array of types.
+     */
+    public static String[] supportedReceiveTypes() {
+        // NOTE: Regrettably, Nashorn can't find the static method of the base class, even though
+        // in theory that method is inherited by this class. Hence, we have to define it here
+        // as well.
+        return VertxHelperBase.supportedReceiveTypes();
+    }
+
+    /** Return an array of the types supported by the current host for
+     *  sendType arguments.
+     *  @return An array of types.
+     */
+    public static String[] supportedSendTypes() {
+        // NOTE: Regrettably, Nashorn can't find the static method of the base class, even though
+        // in theory that method is inherited by this class. Hence, we have to define it here
+        // as well.
+        return VertxHelperBase.supportedSendTypes();
+    }
+
     /** Create a server that can accept socket connection requests
      *  on behalf of the specified JavaScript SocketServer object.
      *  After this is called, the specified JavaScript
@@ -367,82 +389,8 @@ public class SocketHelper extends VertxHelperBase {
                 _error(socketServer, "Failed to start server listening: " + ex);
             }
         });
-    }
-
-    /** Return an array of the types supported by the current host for
-     *  receiveType arguments.
-     *  @return An array of types
-     */
-    public static String[] supportedReceiveTypes() {
-        // Formerly, we checked to see if _receiveTypes was null outside of the syncronized block
-        // However, Coverity scan warned:
-        // "CID 1349635 (#1 of 1): Check of thread-shared field evades
-        // lock acquisition
-        // (LOCK_EVASION)5. thread2_checks_field_early: Thread2 checks
-        // _receiveTypes, reading it after Thread1 assigns to
-        // _receiveTypes but before some of the correlated field
-        // assignments can occur. It sees the condition
-        // ptolemy.actor.lib.jjs.modules.socket.SocketHelper._receiveTypes
-        // == null as being false. It continues on before the critical
-        // section has completed, and can read data changed by that
-        // critical section while it is in an inconsistent state."
-
-        // Avoid FindBugs LI: Unsynchronized Lazy Initialization (FB.LI_LAZY_INIT_UPDATE_STATIC)
-        synchronized (_receiveTypesMutex) {
-            if (_receiveTypes == null) {
-                int length = DATA_TYPE.values().length;
-                _receiveTypes = new String[length];
-                int i = 0;
-                for (DATA_TYPE type : DATA_TYPE.values()) {
-                    _receiveTypes[i++] = type.toString().toLowerCase();
-                }
-            }
-            return _receiveTypes;
-        }
-    }
-
-    /** Return an array of the types supported by the current host for
-     *  sendType arguments.
-     *  @return An array of types
-     */
-    public static String[] supportedSendTypes() {
-        // See supportedReceiveTypes() for why we grab the lock.
-        synchronized (_sendTypesMutex) {
-            if (_sendTypes == null) {
-                int length = DATA_TYPE.values().length;
-                _sendImageTypes = _removeDuplicates(ImageIO.getWriterFormatNames());
-                _sendTypes = new String[length + _sendImageTypes.size()];
-                int i = 0;
-                for (DATA_TYPE type : DATA_TYPE.values()) {
-                    _sendTypes[i++] = type.toString().toLowerCase();
-                }
-                for (String imageType : _sendImageTypes) {
-                    _sendTypes[i++] = imageType;
-                }
-            }
-            return _sendTypes;
-        }
-    }
-    
-    
-    ///////////////////////////////////////////////////////////////////
-    ////                     private fields                        ////
-    
-    /** The array of receive type names. */
-    private static String[] _receiveTypes;
-
-    /** A mutex used when creating _receiveTypes. */
-    private static Object _receiveTypesMutex = new Object();
-
-    /** The set of informal image type names that can be sent. */
-    private static TreeSet<String> _sendImageTypes;
-    
-    /** The array of send type names. */
-    private static String[] _sendTypes;
-
-    /** A mutex used when creating _sendTypes. */
-    private static Object _sendTypesMutex = new Object();
-
+    }    
+        
     ///////////////////////////////////////////////////////////////////
     ////                     public classes                        ////
 
@@ -594,7 +542,7 @@ public class SocketHelper extends VertxHelperBase {
                 _sendType = Enum.valueOf(DATA_TYPE.class, sendType.trim().toUpperCase());
             } catch (Exception ex) {
                 // It might be an image type.
-                if (_sendImageTypes.contains(sendType)) {
+                if (getImageTypes().contains(sendType)) {
                     _sendImageType = sendType;
                     _sendType = DATA_TYPE.IMAGE;
                 } else {
