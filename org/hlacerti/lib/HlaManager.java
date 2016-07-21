@@ -944,6 +944,7 @@ TimeRegulator {
                 "\n number of TARs: " + _numberOfTARs +
                 "\n number of NERs: " + _numberOfNERs +
                 "\n number of TAGs: " + _numberOfTAGs);
+        System.out.println("Number of decimal digits "+_numberOfDecimalDigits);
 
 
         calculateRuntime();
@@ -1149,10 +1150,10 @@ TimeRegulator {
             for (int i = 0; i < count; i++) {
                 header=header+"UAV"+i+";";
             }
-            _UAVsValuesFile=_createTextFile("uav"+getDisplayName()+".csv", header);
+            _UAVsValuesFile=_createTextFile("uav"+getDisplayName()+".csv");
             _pUAVsTimes= ";;;"+"pUAV Time:;"+_pUAVsTimes +"\n";
             _preUAVsTimes= "preUAV Time:;"+_preUAVsTimes+"\n";
-            writeInTextFile(_UAVsValuesFile,_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";"+ _preUAVsTimes+_pUAVsTimes +";;;UAVValues;"+ _UAVsValues);
+            writeInTextFile(_UAVsValuesFile,_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";"+ _preUAVsTimes+_pUAVsTimes +";;;UAVValues;"+ _UAVsValues+"\n");
         }
     }
     
@@ -1163,10 +1164,10 @@ TimeRegulator {
             for (int i = 0; i < count; i++) {
                 header=header+"RAV"+i+";";
             }
-            _RAVsValuesFile=_createTextFile("rav"+getDisplayName()+".csv", header);
+            _RAVsValuesFile=_createTextFile("rav"+getDisplayName()+".csv");
             _pRAVsTimes= "pRAV Time:;"+_pRAVsTimes +"\n";
             _folRAVsTimes= ";;;"+"folRAV Time:;"+_folRAVsTimes+"\n";
-            writeInTextFile(_RAVsValuesFile,_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";"+ _pRAVsTimes+_folRAVsTimes +";;;RAVValues;"+ _RAVsValues);
+            writeInTextFile(_RAVsValuesFile,_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";"+ _pRAVsTimes+_folRAVsTimes +";;;RAVValues;"+ _RAVsValues+"\n");
         }
     }
 
@@ -1177,7 +1178,6 @@ TimeRegulator {
      */
     public void writeNumberOfHLACalls(){
         try{
-            Date date = new Date();
             String fullName=federateName.toString();
             //String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
             String nameOfTheFile= fullName.substring(fullName.indexOf('{')+1,  fullName.lastIndexOf('.'));
@@ -1197,9 +1197,8 @@ TimeRegulator {
             }else if (_eventBased){
                 info = info + "Number of NERs: " +_numberOfNERs ;
             }
-            info = info +"    Number of UAVs:" +_numberOfUAVs+ "    Number of RAVs:" +_numberOfRAVs+ "\nNumber of TAGs: " + _numberOfTAGs +"\n" 
+            info =  info +"    Number of UAVs:" +_numberOfUAVs+ "    Number of RAVs:" +_numberOfRAVs+ "\nNumber of TAGs: " + _numberOfTAGs +"\n" 
                     +"Runtime: " +_runtime+"\n";
-            info = date.toString() + "\n" + info;
             writeInTextFile(_file,info);
         }catch(Exception e){
             System.out.println("Couldn't write in the txt file.");
@@ -2001,6 +2000,7 @@ TimeRegulator {
      * Represents the file that tracks the values that have been updated and the time of their update.
      */
     private File _UAVsValuesFile;
+    private Date _date;
     //FIXME: add comments
     private String _UAVsValues;
     private String _pUAVsTimes;
@@ -2362,9 +2362,10 @@ TimeRegulator {
         RestoreInProgress, ConcurrentAccessAttempted {
             initializeReportVariables();
             _stopTime = _director.getModelStopTime();
+            _date = new Date();
             if(_isCreator){
-                Date date = new Date();
-                writeInTextFile(_csvFile,"\n" + date.toString() + "\nSTART OF THE FEDERATION;");
+               writeInTextFile(_csvFile,"\n" + _date.toString() + "\nSTART OF THE FEDERATION;");
+               writeInTextFile(_file,"------------------\n"+ _date.toString() + "\nSTART OF THE FEDERATION");
             }
             if(_timeStepped){
                 System.out.println(_hlaTimeStep);
@@ -2461,10 +2462,10 @@ TimeRegulator {
                                 && hs.getObjectHandle() == theObject) {
                             try {
 
-                                double timeValue = _roundTimeValues(((CertiLogicalTime) theTime)
-                                        .getTime() / _hlaTimeUnitValue);
+                                double timeValue = ((CertiLogicalTime) theTime)
+                                        .getTime() / _hlaTimeUnitValue;
 
-                                ts = new Time(_director, timeValue);
+                                ts = new Time(_director, _roundTimeValues(timeValue));
                                 value = MessageProcessing.decodeHlaValue(hs,
                                         (BaseType) _getTypeFromTab(tObj),
                                         theAttributes.getValue(i));
@@ -2490,7 +2491,7 @@ TimeRegulator {
                                             + hs.getDisplayName());
                                 }
                                 done = true;
-                                _pRAVsTimes=_pRAVsTimes+ te.timeStamp+";";
+                                _pRAVsTimes=_pRAVsTimes+_getDoubleOfTime(te.timeStamp)+";";
                                 _RAVsValues=_RAVsValues + value.toString()+";";
             
                             } catch (IllegalActionException e) {
