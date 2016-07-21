@@ -320,85 +320,85 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      */
     public static void main(String[] args) {
         try {
-            String[] modelPath = {"TestModels/sender.xml","TestModels/receiver.xml"};
-            String[] modelPath2 = {"TestModels/f14Aircraft.xml",
-            	"TestModels/f14AutoPilot.xml","TestModels/f14PilotStick.xml"};
+//            String[] modelPath = {"TestModels/sender.xml","TestModels/receiver.xml"};
+//            String[] modelPath2 = {"TestModels/f14Aircraft.xml",
+//            	"TestModels/f14AutoPilot.xml","TestModels/f14PilotStick.xml"};
 
             AutomaticSimulation vergil = new AutomaticSimulation(args);
-            /*			Scanner input = new Scanner(System.in);
-		        System.out.println("How many ptolemy models will be a part of this simulation?");
-		        int numberOfModels = input.nextInt();
-		        String[] modelPath = new String[numberOfModels];
-		        System.out.println("You will now e requested to type the name of the models. "
-	            		+ "They will run in the same order that you've type, so remember that the syncronization point register must be the last.");
-		        for (int i = 0; i < numberOfModels; i++) {
-		        System.out.println("Type the name of the model " + i + ":");
-		        modelPath[i]= input.next();
-	            }System.out.println("How many seconds would you like to have to see the results? "
-	            		+ "(Type a negative value if you want to be asked if you are ready to close the models.) ");
-	            int waitingTime=input.nextInt();
-	            waitingTime = waitingTime*1000;
-	            System.out.println("How many parameterers would you like to change in the models?");
-	            int numberOfParameters = input.nextInt();
-	            if(numberOfParameters==1){
-	            	System.out.println("What is the name of this parameter(remember that the ptolemy model must have a variable 'parameter'(that can be found on "
-	                		+ "the library utilities/Parameters) with exacly the same name for this simulation to work.)?");
-	            	String parameter= input.next();
-	            	parameter = "<property name=\""+parameter+ "\" class=\"ptolemy.data.expr.Parameter\" value=\"";
-	            	System.out.println("Would you like to:\n1 - Type all the values your parameter will assume, or\n"
-	            			+ "2 - Make it vary within a range that you are going to be requested to choose?");
-	            	int answer = input.nextInt();
-	            	if(answer == 2){
-	                    System.out.println("What is the start value of the parameter?");
-	        	        float startValue = input.nextFloat();
-	        	        System.out.println("What is the final value of the parameter?");
-	                    float endValue = input.nextFloat();
-	                    System.out.println("What is the value of the parameter's increment?");
-	                    float stepValue = input.nextFloat();
-	                    System.out.println("The simulation is about to start...");
-	                    changeParameter(waitingTime, vergil, modelPath, parameter, startValue, endValue, stepValue);
-	            	}else{
-	            		System.out.println("How many values would you like the parameter to assume ?");
-	            		int numberOfValues = input.nextInt();
-	            		double[] values = new double[numberOfValues];
-	            		for (int i = 0; i < numberOfValues; i++) {
-	                    	System.out.println("Type the name of the value "+ i + ":");
-	                    	values[i]= input.nextDouble();
-	            		}
-	            		System.out.println("The simulation is about to start...");
-	            		changeParameter(waitingTime, vergil, modelPath, parameter, values);
-	            	}
+            Scanner input = new Scanner(System.in);
+            System.out.println("How many ptolemy models will be a part of this simulation?");
+            int numberOfModels = input.nextInt();
+            String[] modelPath = new String[numberOfModels];
+            System.out.println("You will now e requested to type the name of the models. "
+                    + "They will run in the same order that you've type, so remember that the syncronization point register must be the last.");
+            for (int i = 0; i < numberOfModels; i++) {
+                System.out.println("Type the name of the model " + i + ":");
+                modelPath[i]= input.next();
+            }System.out.println("How many seconds would you like to have to see the results? "
+                    + "(Type a negative value if you want to be asked if you are ready to close the models.) ");
+            int waitingTime=input.nextInt();
+            waitingTime = waitingTime*1000;
+            System.out.println("How many parameterers would you like to change in the models?");
+            int numberOfParameters = input.nextInt();
+            if(numberOfParameters==1){
+                System.out.println("What is the name of this parameter(remember that the ptolemy model must have a variable 'parameter'(that can be found on "
+                        + "the library utilities/Parameters) with exacly the same name for this simulation to work.)?");
+                String parameter= input.next();
+                parameter = "<property name=\""+parameter+ "\" class=\"ptolemy.data.expr.Parameter\" value=\"";
+                System.out.println("Would you like to:\n1 - Type all the values your parameter will assume, or\n"
+                        + "2 - Make it vary within a range that you are going to be requested to choose?");
+                int answer = input.nextInt();
+                if(answer == 2){
+                    System.out.println("What is the start value of the parameter?");
+                    float startValue = input.nextFloat();
+                    System.out.println("What is the final value of the parameter?");
+                    float endValue = input.nextFloat();
+                    System.out.println("What is the value of the parameter's increment?");
+                    float stepValue = input.nextFloat();
+                    System.out.println("The simulation is about to start...");
+                    changeParameter(waitingTime, vergil, modelPath, parameter, startValue, endValue, stepValue);
+                }else{
+                    System.out.println("How many values would you like the parameter to assume ?");
+                    int numberOfValues = input.nextInt();
+                    double[] values = new double[numberOfValues];
+                    for (int i = 0; i < numberOfValues; i++) {
+                        System.out.println("Type the name of the value "+ i + ":");
+                        values[i]= input.nextDouble();
+                    }
+                    System.out.println("The simulation is about to start...");
+                    changeParameter(waitingTime, vergil, modelPath, parameter, values);
+                }
 
-	            }else{
-	            	String[] parameters = new String[numberOfParameters];
-	            	System.out.println("You will now e requested to type the name of the parameters. "
-	                		+ "Remember that the ptolemy model must have a variable 'parameter'(that can be found on "
-	                		+ "the library utilities/Parameters) with exacly the same name for this simulation to work. Also,"
-	                		+ "the parameters must be listed here in the same order as they've been created in the model. "
-	                		+ "If you are not sure about who comes first, look in the .xml files.");
-	        		System.out.println("How many values would you like each parameter to assume ?");
-	        		int numberOfValues = input.nextInt();
-	        		double[][] values = new double[numberOfParameters][numberOfValues];
-	                for (int i = 0; i < numberOfParameters; i++) {
-	                	System.out.println("Type the name of the parameter "+ i + ":");
-	                	parameters[i]= input.next();
-	                	parameters[i] = "<property name=\""+parameters[i]+ "\" class=\"ptolemy.data.expr.Parameter\" value=\"";
-	                	for (int j = 0; j < numberOfValues; j++) {
-	                    	System.out.println("Type the name of the value "+ j + ":");
-	                    	values[i][j]= input.nextDouble();
-	            		}
-	    			}
-	                System.out.println("The simulation is about to start...");
-	                changeParameters(waitingTime, vergil, modelPath, parameters, values);
-	            }*/
-            String param = "lookahead";
-            param = "<property name=\""+param+ "\" class=\"ptolemy.data.expr.Parameter\" value=\"";
-            float startValue = (float) 0.1;
-            float endValue = (float) 0;
-            float stepValue =(float) 5;
-            double[] values = {0.005,0.001};
+            }else{
+                String[] parameters = new String[numberOfParameters];
+                System.out.println("You will now e requested to type the name of the parameters. "
+                        + "Remember that the ptolemy model must have a variable 'parameter'(that can be found on "
+                        + "the library utilities/Parameters) with exacly the same name for this simulation to work. Also,"
+                        + "the parameters must be listed here in the same order as they've been created in the model. "
+                        + "If you are not sure about who comes first, look in the .xml files.");
+                System.out.println("How many values would you like each parameter to assume ?");
+                int numberOfValues = input.nextInt();
+                double[][] values = new double[numberOfParameters][numberOfValues];
+                for (int i = 0; i < numberOfParameters; i++) {
+                    System.out.println("Type the name of the parameter "+ i + ":");
+                    parameters[i]= input.next();
+                    parameters[i] = "<property name=\""+parameters[i]+ "\" class=\"ptolemy.data.expr.Parameter\" value=\"";
+                    for (int j = 0; j < numberOfValues; j++) {
+                        System.out.println("Type the name of the value "+ j + ":");
+                        values[i][j]= input.nextDouble();
+                    }
+                }
+                System.out.println("The simulation is about to start...");
+                changeParameters(waitingTime, vergil, modelPath, parameters, values);
+            }
+//            String param = "lookAhead";
+//            param = "<property name=\""+param+ "\" class=\"ptolemy.data.expr.Parameter\" value=\"";
+//            float startValue = (float) 0.1;
+//            float endValue = (float) 0;
+//            float stepValue =(float) 5;
+//            double[] values = {0.005,0.001};
 
-            changeParameter(2000,vergil,modelPath2, param,values);
+            //changeParameter(2000,vergil,modelPath, param,values);
         } catch (Throwable e) {
             e.printStackTrace();
             System.exit(0);
@@ -528,13 +528,14 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             br.close();
             String[] data={dataBefore,line,dataAfter};
             if(line.equals("")){
-                System.out.println("Couldn't find the parameter.");
+                System.out.println("Could not find the parameter.");
                 System.exit(0);
+                return null;
             }
             return data;
         }
         catch(Exception e){
-            System.out.println("Couldn't find the string.");
+            System.out.println("Could not find the file " + file.getName() +".");
             System.exit(0);
             return null;
         }
@@ -552,6 +553,11 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         //number of the line
 
         ArrayList<String> lines =convertFileToString(file);
+        if(lines==null ||  lines.isEmpty()){
+            System.out.println("Could not find the file " + file.getName() +".");
+            System.exit(0);
+            return null;
+        }
 
         int numberOfLines=lines.size();
         int numberOfProperties=propertyLines.length;
