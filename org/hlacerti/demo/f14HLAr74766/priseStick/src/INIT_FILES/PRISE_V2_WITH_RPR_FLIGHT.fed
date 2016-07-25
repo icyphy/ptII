@@ -1,0 +1,199 @@
+;; PRISE Federation
+;; bugReport to : jean-baptiste.chaudron@onera.fr or david.saussie@polymtl.ca
+
+(Fed
+  (Federation PRISE_V2)
+  (FedVersion v1.3)
+  (Federate "Main_Controller_Fed" "Public")     ;; Fed 0
+  (Federate "Joystick_Fed" "Public")            ;; Fed 1
+  (Federate "EFCS_Fed" "Public")                ;; Fed 2
+  (Federate "Control_Surfaces_Fed" "Public")	;; Fed 3
+  (Federate "Engines_Fed" "Public")             ;; Fed 4
+  (Federate "Flight_Dynamics_Fed" "Public")     ;; Fed 5
+  (Federate "Sensors_Fed" "Public")             ;; Fed 6
+  (Federate "Visualization_Fed" "Public")       ;; Fed 7
+  (Federate "PFD_Fed" "Public")                 ;; Fed 8
+  (Federate "Environment_Fed" "Public")         ;; Fed 9
+  (Federate "Cockpit_Fed" "Public")        		;; Fed 11
+  (Spaces
+  )
+  (Objects
+    (Class TRIM_DATA
+        (Attribute RIGHT_ENGINE_THRUST_EQ        RELIABLE TIMESTAMP)
+        (Attribute LEFT_ENGINE_THRUST_EQ         RELIABLE TIMESTAMP)
+        (Attribute RIGHT_ENGINE_THROTTLE_EQ      RELIABLE TIMESTAMP)
+        (Attribute LEFT_ENGINE_THROTTLE_EQ       RELIABLE TIMESTAMP)        
+        (Attribute RIGHT_ELEVATOR_DEFLECTION_EQ  RELIABLE TIMESTAMP)
+        (Attribute LEFT_ELEVATOR_DEFLECTION_EQ 	 RELIABLE TIMESTAMP)
+    	)
+	(Class JOYSTICK
+        (Attribute AILERON    RELIABLE TIMESTAMP)
+        (Attribute ELEVATOR   RELIABLE TIMESTAMP)
+        (Attribute RUDDER     RELIABLE TIMESTAMP)
+        (Attribute THROTTLE   RELIABLE TIMESTAMP)
+        (Attribute AUTOPILOT  RELIABLE TIMESTAMP)
+	)
+	(Class COCKPIT
+        (Attribute AUTOPILOT_AP_ACTIVE    	RELIABLE TIMESTAMP)
+        (Attribute AUTOPILOT_ATHR_ACTIVE   	RELIABLE TIMESTAMP)
+        (Attribute AUTOPILOT_SPD     		RELIABLE TIMESTAMP)
+        (Attribute AUTOPILOT_HDG	   	RELIABLE TIMESTAMP)
+        (Attribute AUTOPILOT_ALT  		RELIABLE TIMESTAMP)
+		(Attribute AUTOPILOT_VS  		RELIABLE TIMESTAMP)
+	)
+	(Class FLIGHT_CONTROLS
+        (Attribute RIGHT_AILERON_COMMANDED_DEFLECTION 	RELIABLE TIMESTAMP)
+        (Attribute LEFT_AILERON_COMMANDED_DEFLECTION 	RELIABLE TIMESTAMP)
+        (Attribute RIGHT_ELEVATOR_COMMANDED_DEFLECTION 	RELIABLE TIMESTAMP)
+        (Attribute LEFT_ELEVATOR_COMMANDED_DEFLECTION 	RELIABLE TIMESTAMP)
+        (Attribute RUDDER_COMMANDED_DEFLECTION          RELIABLE TIMESTAMP)		
+        (Attribute RIGHT_ENGINE_COMMANDED_THROTTLE      RELIABLE TIMESTAMP)
+        (Attribute LEFT_ENGINE_COMMANDED_THROTTLE       RELIABLE TIMESTAMP)
+	)
+	(Class ACTUATORS
+        (Attribute RIGHT_AILERON_EFFECTIVE_DEFLECTION   RELIABLE TIMESTAMP)
+        (Attribute LEFT_AILERON_EFFECTIVE_DEFLECTION    RELIABLE TIMESTAMP)
+        (Attribute RIGHT_ELEVATOR_EFFECTIVE_DEFLECTION  RELIABLE TIMESTAMP)
+        (Attribute LEFT_ELEVATOR_EFFECTIVE_DEFLECTION   RELIABLE TIMESTAMP)
+        (Attribute RUDDER_EFFECTIVE_DEFLECTION          RELIABLE TIMESTAMP)	
+        (Attribute RIGHT_ENGINE_THRUST                  RELIABLE TIMESTAMP)
+        (Attribute LEFT_ENGINE_THRUST                   RELIABLE TIMESTAMP)
+	)
+    ;; ***********************************************
+    ;; AIRCRAFT STATE AND VARIABLES
+    ;; ***********************************************
+	(Class AIRCRAFT_POSITION
+        (Attribute LONGITUDE 	RELIABLE TIMESTAMP)
+        (Attribute LATITUDE 	RELIABLE TIMESTAMP)
+        (Attribute ALTITUDE 	RELIABLE TIMESTAMP)
+	)
+	(Class AIRCRAFT_ORIENTATION
+		(Attribute PHI 		RELIABLE TIMESTAMP)
+		(Attribute THETA 	RELIABLE TIMESTAMP)
+		(Attribute PSI 		RELIABLE TIMESTAMP)
+	)
+	(Class AIRCRAFT_UVW_SPEED
+		(Attribute U_SPEED 	RELIABLE TIMESTAMP)
+		(Attribute V_SPEED 	RELIABLE TIMESTAMP)
+		(Attribute W_SPEED	RELIABLE TIMESTAMP)
+	)
+	(Class AIRCRAFT_PQR_ANGULAR_SPEED
+		(Attribute P_ANG_SPEED RELIABLE TIMESTAMP)
+		(Attribute Q_ANG_SPEED RELIABLE TIMESTAMP)
+		(Attribute R_ANG_SPEED RELIABLE TIMESTAMP)
+	)
+	(Class AIRCRAFT_ACCELERATION
+		(Attribute X_ACC RELIABLE TIMESTAMP)
+		(Attribute Y_ACC RELIABLE TIMESTAMP)
+		(Attribute Z_ACC RELIABLE TIMESTAMP)
+	)
+	(Class AIRCRAFT_SPEED
+		(Attribute INDICATED_AIRSPEED 	RELIABLE TIMESTAMP)
+		(Attribute EQUIVALENT_AIRSPEED 	RELIABLE TIMESTAMP)
+		(Attribute CALIBRATED_AIRSPEED 	RELIABLE TIMESTAMP)
+		(Attribute TRUE_AIRSPEED        RELIABLE TIMESTAMP)
+		(Attribute GROUND_SPEED			RELIABLE TIMESTAMP)
+		(Attribute VERTICAL_SPEED	    RELIABLE TIMESTAMP)
+		(Attribute MACH_NUMBER 			RELIABLE TIMESTAMP)
+	)
+	(Class AIRCRAFT_ADDITIONAL
+		(Attribute ALPHA 				RELIABLE TIMESTAMP)
+		(Attribute BETA 				RELIABLE TIMESTAMP)
+		(Attribute DYNAMIC_PRESSURE 	RELIABLE TIMESTAMP)
+	)
+    ;; ***********************************************
+    ;; SENSORS MEASUREMENTS
+    ;; ***********************************************
+	(Class MEAS_AIRCRAFT_POSITION
+		(Attribute MEAS_LONGITUDE 	RELIABLE TIMESTAMP)
+		(Attribute MEAS_LATITUDE 	RELIABLE TIMESTAMP)
+		(Attribute MEAS_ALTITUDE 	RELIABLE TIMESTAMP)
+	)
+	(Class MEAS_AIRCRAFT_ORIENTATION
+		(Attribute MEAS_PHI 	RELIABLE TIMESTAMP)
+		(Attribute MEAS_THETA 	RELIABLE TIMESTAMP)
+		(Attribute MEAS_PSI 	RELIABLE TIMESTAMP)
+	)
+	(Class MEAS_AIRCRAFT_UVW_SPEED
+		(Attribute MEAS_U_SPEED RELIABLE TIMESTAMP)
+		(Attribute MEAS_V_SPEED RELIABLE TIMESTAMP)
+		(Attribute MEAS_W_SPEED	RELIABLE TIMESTAMP)
+	)
+	(Class MEAS_AIRCRAFT_PQR_ANGULAR_SPEED
+		(Attribute MEAS_P_ANG_SPEED RELIABLE TIMESTAMP)
+		(Attribute MEAS_Q_ANG_SPEED RELIABLE TIMESTAMP)
+		(Attribute MEAS_R_ANG_SPEED RELIABLE TIMESTAMP)
+	)
+	(Class MEAS_AIRCRAFT_ACCELERATION
+		(Attribute MEAS_X_ACC RELIABLE TIMESTAMP)
+		(Attribute MEAS_Y_ACC RELIABLE TIMESTAMP)
+		(Attribute MEAS_Z_ACC RELIABLE TIMESTAMP)
+	)
+	(Class MEAS_AIRCRAFT_SPEED
+		(Attribute MEAS_INDICATED_AIRSPEED 	RELIABLE TIMESTAMP)
+		(Attribute MEAS_EQUIVALENT_AIRSPEED RELIABLE TIMESTAMP)
+		(Attribute MEAS_CALIBRATED_AIRSPEED RELIABLE TIMESTAMP)
+		(Attribute MEAS_TRUE_AIRSPEED       RELIABLE TIMESTAMP)
+		(Attribute MEAS_GROUND_SPEED        RELIABLE TIMESTAMP)
+		(Attribute MEAS_VERTICAL_SPEED	    RELIABLE TIMESTAMP)
+		(Attribute MEAS_MACH_NUMBER         RELIABLE TIMESTAMP)
+	)
+	(Class MEAS_AIRCRAFT_ADDITIONAL
+		(Attribute MEAS_ALPHA 				RELIABLE TIMESTAMP)
+		(Attribute MEAS_BETA 				RELIABLE TIMESTAMP)
+		(Attribute MEAS_DYNAMIC_PRESSURE 	RELIABLE TIMESTAMP)
+	)
+	;; ***********************************************
+    ;; ENVIRONNEMENT
+    ;; ***********************************************
+	(Class ENVIRONMENT_VARIABLES
+		(Attribute TEMPERATURE 		RELIABLE TIMESTAMP)
+		(Attribute DENSITY_OF_AIR 	RELIABLE TIMESTAMP)
+		(Attribute PRESSURE			RELIABLE TIMESTAMP)
+		(Attribute SPEED_OF_SOUND 	RELIABLE TIMESTAMP)
+	)
+	(Class WIND_COMPONENTS
+		(Attribute U_WIND			RELIABLE TIMESTAMP)
+		(Attribute V_WIND 			RELIABLE TIMESTAMP)
+		(Attribute W_WIND			RELIABLE TIMESTAMP)
+		(Attribute P_WIND 			RELIABLE TIMESTAMP)
+		(Attribute Q_WIND 			RELIABLE TIMESTAMP)
+		(Attribute R_WIND 			RELIABLE TIMESTAMP)
+	)
+	;; ***********************************************
+    	;; MAIN CONTROLLER DATA
+    	;; ***********************************************
+	(Class USER_DATA
+		(Attribute ORDER			RELIABLE TIMESTAMP)
+	)
+	(class ObjectRoot 
+       (attribute privilegeToDelete  reliable timestamp)
+       (class RTIprivate)
+	(class BaseEntity
+		(attribute AccelerationVector best_effort receive)
+		(attribute AngularVelocityVector best_effort receive)
+		(attribute EntityType best_effort receive)
+		(attribute EntityIdentifier best_effort receive)
+		(attribute Orientation best_effort receive)
+		(attribute WorldLocation best_effort receive)
+		(attribute VelocityVector best_effort receive)
+	(class EnvironmentalEntity
+		)
+	(class PhysicalEntity
+		(attribute AlternateEntityType best_effort receive)
+		(attribute ForceIdentifier best_effort receive)
+		(attribute Marking best_effort receive)
+	(class Platform
+	(class Aircraft
+			)
+			) 
+		)
+		)
+	)
+   )
+  (Interactions
+    (Class InteractionRoot BEST_EFFORT RECEIVE
+      (Class RTIprivate BEST_EFFORT RECEIVE)
+    )
+  )
+)
