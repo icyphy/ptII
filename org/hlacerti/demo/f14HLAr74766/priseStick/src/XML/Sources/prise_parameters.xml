@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<federation>
+	<federationName>PRISE_V2</federationName>
+	<fedFile>PRISE_V2.fed</fedFile>
+	
+	<MAIN_CONTROLLER>
+		<federateName>Main_Controller_Fed</federateName>
+	</MAIN_CONTROLLER>
+	
+	<JOYSTICK>
+		<federateName>Joystick_Fed</federateName>
+		<input>
+			<Aileron>0</Aileron>
+			<Elevator>1</Elevator>
+			<Rudder>2</Rudder>
+			<Throttle_Left>3</Throttle_Left>
+			<Throttle_Right>4</Throttle_Right>
+		</input>
+
+		<yoke_caracteristics>
+			<MAX_PEDAL_AXIS>3</MAX_PEDAL_AXIS>
+			<MAX_YOKE_AXIS>7</MAX_YOKE_AXIS>
+			<MAX_YOKE_BUTTON>23</MAX_YOKE_BUTTON>
+			<MAX_INPUTS>5</MAX_INPUTS>
+			<MAX_INT>32767</MAX_INT>
+		</yoke_caracteristics>
+	</JOYSTICK>
+	
+	<COCKPIT>
+		<federateName>Cockpit_Fed</federateName>
+	</COCKPIT>
+	
+	<EFCS>
+		<federateName>EFCS_Fed</federateName>
+	</EFCS>
+	
+	<CONTROL_SURFACES>
+		<federateName>Control_Surfaces_Fed</federateName>
+	</CONTROL_SURFACES>
+	
+	<ENGINES>
+		<federateName>Engines_Fed</federateName>
+	</ENGINES>
+	
+	<FLIGHT_DYNAMICS>
+		<federateName>Flight_Dynamics_Fed</federateName>
+		<init>
+			<AltitudeInit>10000</AltitudeInit>
+			<VitesseInit>250</VitesseInit>
+		</init>
+	</FLIGHT_DYNAMICS>
+	
+	<SENSORS>
+		<federateName>Sensors_Fed</federateName>
+	</SENSORS>
+	
+	<VISUALIZATION>
+		<federateName>Visualization_Fed</federateName>
+	</VISUALIZATION>
+	
+	<PFD>
+		<federateName>PFD_Fed</federateName>
+	</PFD>
+	
+	<ENVIRONMENT>
+		<federateName>Environment_Fed</federateName>
+	</ENVIRONMENT>
+</federation>

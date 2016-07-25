@@ -174,7 +174,7 @@ public class CertiRtig extends NamedObj {
 
         File fedFileName = new File(directory);
 
-        // The list of command and argumentss to execute in the shell. */
+        // The list of command and arguments to execute in the shell.
         List<String> commandList = null;
 
         // Execute command as shell interpret.
@@ -259,7 +259,8 @@ public class CertiRtig extends NamedObj {
             System.out.println("CertiRtig: " + _hlaManager.getFullName() + ": About to terminate rtig.");
             try {
                 // Close the stdin of the subprocess.
-                _process.getOutputStream().close();
+                _process.getOutputStream().close();                
+                
             } catch (IOException io) {
                 throw new IllegalActionException(
                         _hlaManager,

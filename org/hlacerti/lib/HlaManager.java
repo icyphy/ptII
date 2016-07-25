@@ -30,6 +30,11 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package org.hlacerti.lib;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -94,6 +99,8 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.actor.IOPort;
 import ptolemy.actor.TimeRegulator;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.CurrentMicrostep;
+import ptolemy.actor.util.SuperdenseTime;
 import ptolemy.actor.util.Time;
 import ptolemy.actor.util.TimedEvent;
 import ptolemy.data.BooleanToken;
@@ -118,11 +125,13 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
+
+
 ///////////////////////////////////////////////////////////////////
 //// HlaManager
 
 /**
- * This attribute implements a HLA Manager which allows a Ptolemy model to
+ * This class implements a HLA Manager which allows a Ptolemy model to
  * cooperate with a HLA/CERTI Federation. The main goal is to allow a Ptolemy
  * simulation as Federate of a Federation.
  * 
@@ -151,7 +160,7 @@ import ptolemy.kernel.util.Workspace;
  * are called HLA attributes and their interaction mechanism is based on the
  * publish/subscribe paradigm. The FOM is specified in a .fed file used by
  * the RTI (e.g. by the RTIG process when using CERTI). More information in [3].
- * <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a></br></p>
+ * <p> <a href="http://savannah.nongnu.org/projects/certi" target="_top">http://savannah.nongnu.org/projects/certi</a></p>
  * <p> To enable a Ptolemy model as a Federate, the {@link HlaManager} has to be
  * deployed and configured (by double-clicking on the attribute).
  * Parameters <i>federateName</i>, <i>federationName</i> have to match the
@@ -212,6 +221,9 @@ import ptolemy.kernel.util.Workspace;
  * <p>[4] E. Noulard, J.-Y. Rousselot, and P. Siron, "CERTI, an open source RTI,
  *     why and how ?", Spring Simulation Interoperability Workshop, pp. 23-27,
  *     Mar 2009.</p>
+ * <p>[5] Y. Li, J. Cardoso, and P. Siron, "A distributed Simulation Environment for
+ *     Cyber-Physical Systems", Sept 2015.</p>
+ *     
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, Edward A. Lee, David Come, Yanxuan LI
  *  @version $Id$
@@ -221,7 +233,7 @@ import ptolemy.kernel.util.Workspace;
  *  @Pt.AcceptedRating Red (glasnier)
  */
 public class HlaManager extends AbstractInitializableAttribute implements
-        TimeRegulator {
+TimeRegulator {
 
     /** Construct a HlaManager with a name and a container. The container
      *  argument must not be null, or a NullPointerException will be thrown.
@@ -235,10 +247,16 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  @exception NameDuplicationException If the name coincides with
      *  an actor already in the container.
      */
+
     public HlaManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        //        _lastProposedTime = null;
+        _testsFolder = _createFolder("testsResults");
+
+        _file = _createTextFile("data.txt");
+        _csvFile = _createTextFile("data.csv");
+
+
         _noObjectDicovered = true;
         _rtia = null;
         _federateAmbassador = null;
@@ -248,7 +266,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
         _fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
         _objectIdToClassHandle = new HashMap<Integer, Integer>();
         _strucuralInformation = new HashMap<Integer, StructuralInformation>();
-
         _hlaTimeStep = null;
         _hlaLookAHead = null;
 
@@ -328,10 +345,13 @@ public class HlaManager extends AbstractInitializableAttribute implements
         hlaTimeUnit.setExpression("1.0");
         hlaTimeUnit.setDisplayName("HLA time unit");
         attributeChanged(hlaTimeUnit);
+
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
+
+
 
     /** Name of the Ptolemy Federate. This parameter must contain an
      *  StringToken. */
@@ -381,18 +401,20 @@ public class HlaManager extends AbstractInitializableAttribute implements
     public Parameter synchronizationPointName;
 
     /**
-     * Choice of time advancement service (NER or-exclusive TAR)
+     * Choice of time advancement service (NER or exclusive TAR).
      */
     public ChoiceParameter timeManagementService;
 
-    /**
-     * The two options for time advancement service (NER or TAR).
-     */
+    /** The two options for time advancement service (NER or TAR).*/
     public enum ETimeManagementService {
-        NextEventRequest, TimeAdvancementRequest;
-        /**
-         * Override the toString of enum class
-         * @return string associated for every enumerate
+        /** The federate uses next event request calls to advance in time.
+         */
+        NextEventRequest, 
+        /** The federate uses time advance request calls to advance in time.
+         */
+        TimeAdvancementRequest;
+        /**Override the toString of enum class.
+         * @return The string associated for every enumerate.
          */
         @Override
         public String toString() {
@@ -625,8 +647,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
     }
 
     /** Return true if at least an object has been discovered during the time
-    *   advance phase.
-    */
+     *   advance phase.
+     */
     @Override
     public boolean noNewActors() {
         boolean old = _noObjectDicovered;
@@ -644,6 +666,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
     @Override
     public void preinitialize() throws IllegalActionException {
         super.preinitialize();
+        _startTime= System.nanoTime();
+
 
         // Try to launch the HLA/CERTI RTIG subprocess.
         _certiRtig = new CertiRtig(this, _debugging);
@@ -690,9 +714,20 @@ public class HlaManager extends AbstractInitializableAttribute implements
      */
     @Override
     public Time proposeTime(Time proposedTime) throws IllegalActionException {
+        if (_debugging) {
+            _debug(this.getDisplayName() + " starting proposeTime()");
+    }  
 
-        Time currentTime = _director.getModelTime();
+        Time currentTime = _getModelTime();
+        proposedTime =new Time(_director,_getDoubleOfTime(proposedTime));
 
+        if(proposedTime.compareTo(_stopTime) ==1){
+            if (_debugging) {
+                _debug(this.getDisplayName() + " proposeTime() -"
+                        + " called but the proposedTime is bigger than the stopTime.");
+            }   
+            return _stopTime;
+        }
         // This test is used to avoid exception when the RTIG subprocess is
         // shutdown before the last call of this method.
         // GL: FIXME: see Ptolemy team why this is called again after STOPTIME ?
@@ -716,10 +751,15 @@ public class HlaManager extends AbstractInitializableAttribute implements
             if (_debugging) {
                 _debug(this.getDisplayName() + " proposeTime() - SKIP RTI"
                         + " with current Time is equal to proposed Time ("
-                        + currentTime.getDoubleValue() + ")");
+                        + _getDoubleOfTime(currentTime) + ")");
             }
             try {
                 _rtia.tick();
+                if(_timeOfTheLastAdvanceRequest>0){
+                    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+                }else{
+                    _numberOfOtherTicks++;
+                }
             } catch (ConcurrentAccessAttempted e) {
                 throw new IllegalActionException(this, e,
                         "ConcurrentAccessAttempted ");
@@ -784,7 +824,6 @@ public class HlaManager extends AbstractInitializableAttribute implements
             }
         }
 
-        //_lastProposedTime = breakpoint;
         return null;
     }
 
@@ -793,13 +832,15 @@ public class HlaManager extends AbstractInitializableAttribute implements
      *  Federation.
      *  @param hp The HLA publisher actor (HLA attribute) to update.
      *  @param in The updated value of the HLA attribute to update.
+     *  @param senderName the name of the federate that sent the attribute.
      *  @exception IllegalActionException If a CERTI exception is raised then
      *  displayed it to the user.
      */
     public void updateHlaAttribute(HlaPublisher hp, Token in, String senderName)
             throws IllegalActionException {
-        Time currentTime = _director.getModelTime();
-
+        SuperdenseTime currentSuperdenseTime = _getModelSuperdenseTime();
+        Time currentTime = currentSuperdenseTime.timestamp();
+        int microstep= currentSuperdenseTime.index();
         // The following operations build the different arguments required
         // to use the updateAttributeValues() (UAV) service provided by HLA/CERTI.
 
@@ -808,13 +849,15 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
         // Encode the value to be sent to the CERTI.
         byte[] valAttribute = MessageProcessing.encodeHlaValue(hp, in);
-
+        if(_debugging){
+            _debug(this.getDisplayName()+" updateHlaAttribute() - " +" trying to make an UAV.");
+        }	
         if (_debugging) {
             if (hp.useCertiMessageBuffer()) {
-                _debug(this.getDisplayName()
-                        + " - A HLA value from ptolemy has been"
+                _debug(this.getDisplayName()+
+                        " updateHlaAttribute() -  A HLA value from ptolemy has been"
                         + " encoded as CERTI MessageBuffer" + " , currentTime="
-                        + _director.getModelTime().getDoubleValue());
+                        + _getModelTime().getDoubleValue());
             }
         }
         SuppliedAttributes suppAttributes = null;
@@ -831,34 +874,41 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
         // Create a representation of uav-event timestamp for CERTI.
         // HLA implies to send event in the future when using NER or TAR services with lookahead > 0.
+        // Let us recall the lookahead rule: a federate promises that no events will be sent 
+        // before hlaCurrentTime + lookahead.
         // To avoid CERTI exception when calling UAV service
         // with condition: uav(tau) tau >= hlaCurrentTime + lookahead.
         Time uavTimeStamp = null;
         if (_eventBased) {
-            // for NER, we add the lookahead value to the uav event's timestamp.
-            uavTimeStamp = currentTime.add(_hlaLookAHead);
+            // In the NER case, we have the equality currentTime = hlaCurrentTime.
+            // So, we chose tau <- currentTime + lookahead and we respect the condition
+            // above.
+            uavTimeStamp = currentTime.add(_hlaLookAHead);   
         } else {
-            // For TAR, all uav-events with timestamp tau
-            // that must be published after (hla current Time + lookahead)
-            // We've made a choice for implementation of uav(tau): 
-            // option 1: (all or certain) tau is delayed to hlaNextPointInTime,
-            // option 2: (all or certain)tau is delayed to currentTime+lookahead,
-            // option 3: others may exist.
-
-            // Here we take option 2: if tau <= hlaCurrentTime + lookahead.
-            // tau is delayed to currentTime + lookahead.
+            // In the TAR case, currentTime >= hlaCurrentTime.
+            // So, we have two possible cases:
+            // case 1:  currentTime >= hlaCurrentTime + lookAhead
+            //          We will not break the lookahead rule, therefore tau <- currentTime.
+            // case 2: hlaCurrentTime <= currentTime < hlaCurrentTime + lookAhead
+            //         In order not to break the lookahead rule, we must delay the uav.
+            //         tau <- hlaCurrentTime + lookahead
             CertiLogicalTime certiCurrentTime = (CertiLogicalTime) _federateAmbassador.logicalTimeHLA;
             Time hlaCurrentTime = _convertToPtolemyTime(certiCurrentTime);
-            if (hlaCurrentTime.add(_hlaLookAHead).compareTo(currentTime) > 0)
-                uavTimeStamp = currentTime.add(_hlaLookAHead);
-            else
+/*            if(currentTime.compareTo(hlaCurrentTime.add(_hlaTimeStep))==0){
+                hlaCurrentTime= hlaCurrentTime.add(_hlaTimeStep);
+            }*/
+            if (hlaCurrentTime.add(_hlaLookAHead).compareTo(currentTime) > 0){
+                uavTimeStamp = hlaCurrentTime.add(_hlaLookAHead);
+            }else{
                 uavTimeStamp = currentTime;
+            }
         }
         CertiLogicalTime ct = _convertToCertiLogicalTime(uavTimeStamp);
         if (_debugging) {
-            _debug(this.getDisplayName() + " publish() -"
-                    + " send (UAV) updateAttributeValues "
-                    + " current Ptolemy Time=" + currentTime.getDoubleValue()
+            _debug(this.getDisplayName() + " updateHlaAttribute() - publish() -"
+                    + " sent (UAV) updateAttributeValues "
+                    + " current Ptolemy Time=" + _getDoubleOfTime(currentTime)
+                    + " current HLA Time = " + _getHlaCurrentTime()
                     + " HLA attribute \""
                     + _getPortFromTab(tObj).getContainer().getName()
                     + "\" (timestamp=" + ct.getTime() + ", value="
@@ -866,7 +916,13 @@ public class HlaManager extends AbstractInitializableAttribute implements
         }
         try {
             int id = _registeredObject.get(_federateName + " " + senderName);
+            _UAVsValues=_UAVsValues + in.toString()+";";
+            _pUAVsTimes= _pUAVsTimes + ct.getTime()+";";
+            _preUAVsTimes= _preUAVsTimes +"("+ currentTime+","+microstep+");";
             _rtia.updateAttributeValues(id, suppAttributes, tag, ct);
+            _numberOfUAVs++;
+
+
         } catch (Exception e) {
             throw new IllegalActionException(this, e, e.getMessage());
         }
@@ -884,6 +940,18 @@ public class HlaManager extends AbstractInitializableAttribute implements
         super.wrapup();
         _strucuralInformation.clear();
         _registeredObject.clear();
+        _debug("Data" + 
+                "\n number of TARs: " + _numberOfTARs +
+                "\n number of NERs: " + _numberOfNERs +
+                "\n number of TAGs: " + _numberOfTAGs);
+        System.out.println("Number of decimal digits "+_numberOfDecimalDigits);
+
+
+        calculateRuntime();
+        writeNumberOfHLACalls();
+        writeDelays();
+        writeUAVsInformations();
+        writeRAVsInformations();
 
         if (_debugging) {
             _debug(this.getDisplayName() + " wrapup() - ... so termination");
@@ -981,6 +1049,244 @@ public class HlaManager extends AbstractInitializableAttribute implements
         }
     }
 
+
+    /** Return the total number of time advance grants that this federate has received. 
+     * @return The number of time advance grants that this federate has received.
+     * @see #_numberOfTAGs
+     * @see #setNumberOfTAGs
+     */
+    public int getNumberOfTAGs() {
+        return _numberOfTAGs;
+    }
+
+    /** Set the total number of time advance grants that this federate has received.
+     * @param _numberOfTAGs The number of time advance grants that this federate has received.
+     * @see #_numberOfTAGs
+     * @see #getNumberOfTAGs
+     */
+    public void setNumberOfTAGs(int _numberOfTAGs) {
+        this._numberOfTAGs = _numberOfTAGs;
+    }
+    /** Return the number of next event requests that this federate has made.
+     * @return The number of next event requests that this federate has made.
+     * @see #_numberOfNERs
+     * @see #setNumberOfNERs
+     */
+    public int getNumberOfNERs() {
+        return _numberOfNERs;
+    }
+
+    /** Set the number of next event requests that this federate has made.
+     * @param _numberOfNERs The number of next event requests that this federate has made.
+     * @see #_numberOfNERs
+     * @see #getNumberOfNERs
+     */
+    public void setNumberOfNERs(int _numberOfNERs) {
+        this._numberOfNERs = _numberOfNERs;
+    }
+
+    /** Return the number of time advance requests that this federate has made.
+     * @return The number of time advance requests that this federate has made.
+     * @see #_numberOfTARs
+     * @see #setNumberOfTARs
+     */
+    public int getNumberOfTARs() {
+        return _numberOfTARs;
+    }
+
+    /** Set the number of time advance requests that this federate has made.
+     * @param _numberOfTARs The number of time advance requests that this federate has made.
+     * @see #_numberOfTARs
+     * @see #getNumberOfTARs
+     */
+    public void setNumberOfTARs(int _numberOfTARs) {
+        this._numberOfTARs = _numberOfTARs;
+    }
+
+    /** Return the start Time of the execution of the federation.
+     * @return The start Time of the execution of the federation.
+     * @see #setStartTime
+     */
+    public double getStartTime() {
+        return _startTime;
+    }
+
+    /** Set the start Time of the execution of the federation.
+     * @see #getStartTime
+     */
+    public void setStartTime() {
+        _startTime = System.nanoTime();
+    }
+
+    /**Return the file .csv that is used to register the reports of this federate.
+     * @return the _csvFile that is used to register the reports of this federate.
+     * @see #setCsvFile
+     */
+    public File getCsvFile() {
+        return _csvFile;
+    }
+
+    /**Set the file .csv that is used to register the repports of this federate.
+     * @param _csvFile The _csvFile that is going to be used to register the repports of this federate.
+     * @see #getCsvFile
+     */
+    public void setCsvFile(File _csvFile) {
+        this._csvFile = _csvFile;
+    }
+
+    /** Calculate the duration of the execution of the federation.
+     * Uses the static value of the startTime of the execution.
+     */
+    public void calculateRuntime(){
+        double duration  = System.nanoTime() - _startTime;
+        duration = duration/(Math.pow(10, 9));
+        _runtime =duration;
+    }
+
+    public void writeUAVsInformations(){
+        if(_numberOfUAVs>0){
+            String header = "LookAhead;TimeStep;StopTime;Information;";
+            int count = _UAVsValues.split(";").length;
+            for (int i = 0; i < count; i++) {
+                header=header+"UAV"+i+";";
+            }
+            _UAVsValuesFile=_createTextFile("uav"+getDisplayName()+".csv");
+            _pUAVsTimes= ";;;"+"pUAV Time:;"+_pUAVsTimes +"\n";
+            _preUAVsTimes= "preUAV Time:;"+_preUAVsTimes+"\n";
+            writeInTextFile(_UAVsValuesFile,_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";"+ _preUAVsTimes+_pUAVsTimes +";;;UAVValues;"+ _UAVsValues+"\n");
+        }
+    }
+    
+    public void writeRAVsInformations(){
+        if(_numberOfRAVs>0){
+            String header = "LookAhead;TimeStep;StopTime;Information;";
+            int count = _RAVsValues.split(";").length;
+            for (int i = 0; i < count; i++) {
+                header=header+"RAV"+i+";";
+            }
+            _RAVsValuesFile=_createTextFile("rav"+getDisplayName()+".csv");
+            _pRAVsTimes= "pRAV Time:;"+_pRAVsTimes +"\n";
+            _folRAVsTimes= ";;;"+"folRAV Time:;"+_folRAVsTimes+"\n";
+            writeInTextFile(_RAVsValuesFile,_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";"+ _pRAVsTimes+_folRAVsTimes +";;;RAVValues;"+ _RAVsValues+"\n");
+        }
+    }
+
+    /** Write the number of HLA calls of each federate, along with informations about the
+     * time step and the runtime, in a file.
+     * The name and location of this file are specified in the initialization of the 
+     * variable file.
+     */
+    public void writeNumberOfHLACalls(){
+        try{
+            String fullName=federateName.toString();
+            //String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
+            String nameOfTheFile= fullName.substring(fullName.indexOf('{')+1,  fullName.lastIndexOf('.'));
+
+            nameOfTheFile = nameOfTheFile.substring(1, nameOfTheFile.lastIndexOf('.')) + ".xml";
+
+            String info = "Federate "+ getDisplayName() +" in the model "+nameOfTheFile;
+
+            info = info +  "\n" +"stopTime: " +_stopTime
+                    + "    hlaTimeUnit: "+_hlaTimeUnitValue ;
+            if(_isCreator){
+                info = "SP creator -> " + info ;
+            }
+            if(_timeStepped){
+                info = info +"    Time Step: "  + _hlaTimeStep + "\n" 
+                        + "Number of TARs: " +_numberOfTARs;
+            }else if (_eventBased){
+                info = info + "Number of NERs: " +_numberOfNERs ;
+            }
+            info =  info +"    Number of UAVs:" +_numberOfUAVs+ "    Number of RAVs:" +_numberOfRAVs+ "\nNumber of TAGs: " + _numberOfTAGs +"\n" 
+                    +"Runtime: " +_runtime+"\n";
+            writeInTextFile(_file,info);
+        }catch(Exception e){
+            System.out.println("Couldn't write in the txt file.");
+        }
+
+    }
+    /** Write a report containing(in a .csv file {@link #_csvFile}), among other informations, 
+     * the number of ticks, the delay between a NER or a TAR and its respective TAG, the number of UAVs and RAVs.
+     */
+    public void writeDelays(){
+        try{
+            String fullName=federateName.toString();
+            String nameOfTheFile= fullName.substring(fullName.indexOf('{')+1,  fullName.lastIndexOf('.'));
+            nameOfTheFile = nameOfTheFile.substring(1, nameOfTheFile.lastIndexOf('.')) + ".xml";
+            String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
+            String info= "\nFederate: "+ nameOfTheFederate + ";in the model:;"+ nameOfTheFile
+                    +"\nhlaTimeUnit: ;"+ _hlaTimeUnitValue + ";lookAhead: ;"+ _hlaLookAHead +  ";runtime: ;"+ _runtime+ "\nApproach:;";
+            if(_timeStepped){
+                info = info + "TAR;Time step:;"+ _hlaTimeStep +";Number of TARs:;"+ _numberOfTARs+"\n";
+            }else if(_eventBased){
+                info = info + "NER;Number of NERs:;" + _numberOfNERs +"\n";
+            }
+            info = info + "Number of UAVs:;"+_numberOfUAVs+ ";Number of RAVs:;" + _numberOfRAVs +";Number of TAGs:;" + _numberOfTAGs ;
+            String numberOfTicks="\nNumber of ticks:;";
+            String delay="\nDelay :;";
+            double averageNumberOfTicks=0;
+            double averageDelay=0;
+            String header="\nInformation :;";
+            String delayPerTick="\nDelay per tick;";
+            for (int i = 0; i < _numberOfTAGs; i++) {
+                if(i<10){
+                    header = header +  (i+1) + ";";
+                    numberOfTicks=numberOfTicks+_numberOfTicks.get(i) +";";
+                    delay = delay + _TAGDelay.get(i) +  ";";
+                    if(_numberOfTicks.get(i)>0){
+                        delayPerTick= delayPerTick + (_TAGDelay.get(i)/_numberOfTicks.get(i)) + ";";
+                    }else{
+                        delayPerTick= delayPerTick + "0;";
+                    }
+                }
+                averageNumberOfTicks=averageNumberOfTicks+_numberOfTicks.get(i);
+                averageDelay = averageDelay + _TAGDelay.get(i);
+            }
+            header = header +"Sum;";
+            int totalNumberOfHLACalls=_numberOfOtherTicks +(int)averageNumberOfTicks
+                    +_numberOfTARs +_numberOfNERs+_numberOfRAVs + _numberOfUAVs + _numberOfTAGs;
+            numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
+            delay = delay + averageDelay + ";";
+            delayPerTick = delayPerTick + ";";
+            header = header +"Average;";
+
+            _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+".csv","timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
+            writeInTextFile(_reportFile,_hlaTimeStep + ";"+_hlaLookAHead + ";" + 
+                    _runtime +";" + totalNumberOfHLACalls+";"+_numberOfTARs+";"+ _numberOfTAGs+
+                    ";"+_numberOfRAVs+";"+_numberOfUAVs+";"+ _numberOfTicks2+";"+averageDelay );
+
+            averageNumberOfTicks=averageNumberOfTicks/_numberOfTAGs;
+            averageDelay=averageDelay/_numberOfTAGs;
+            delayPerTick = delayPerTick + (averageDelay/averageNumberOfTicks) + ";";
+            numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
+            delay = delay + averageDelay + ";";
+
+            writeInTextFile(_csvFile,info + header +delay + numberOfTicks+ delayPerTick+"\nOther ticks:;"+_numberOfOtherTicks +"\nTotal number of HLA Calls:;"+ totalNumberOfHLACalls);
+        }catch(Exception e){
+            System.out.println("Couldn't write in the csv file.");
+        }
+
+    }
+
+    /** Write information in a txt file.
+     * @param data The information you want to write.
+     * @param file The file in which you want to write.
+     * @return Return true if the information was successfully written in the file.
+     */
+    public boolean writeInTextFile(File file,String data){
+        try{
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+            writer.write(data);
+            writer.newLine();
+            writer.flush();
+            writer.close();
+            return true;
+        }catch(Exception e){
+            return false;
+        }
+    }
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 
@@ -1007,6 +1313,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
      */
     protected HashMap<Integer, Integer> _objectIdToClassHandle;
 
+
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     /**
@@ -1015,18 +1323,19 @@ public class HlaManager extends AbstractInitializableAttribute implements
      * @return certi logical time
      */
     private CertiLogicalTime _convertToCertiLogicalTime(Time pt) {
-        return new CertiLogicalTime(pt.getDoubleValue() * _hlaTimeUnitValue);
+
+        return new CertiLogicalTime(_roundTimeValues(pt.getDoubleValue() * _hlaTimeUnitValue));
     }
 
     /**
-     * make a conversion from certi logical time to ptolemy time
+     * Make a conversion from certi logical time to ptolemy time
      * @param ct certi logical time
      * @return ptolemy time
      * @throws IllegalActionException
      */
     private Time _convertToPtolemyTime(CertiLogicalTime ct)
             throws IllegalActionException {
-        return new Time(_director, ct.getTime() / _hlaTimeUnitValue);
+        return new Time(_director,_roundTimeValues( ct.getTime()/_hlaTimeUnitValue));
     }
 
     /**
@@ -1045,6 +1354,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
         CertiLogicalTime certiProposedTime = _convertToCertiLogicalTime(proposedTime);
 
+
         if (_hlaLookAHead > 0) {
             // Event-based + lookahead > 0 => NER.
             if (_debugging) {
@@ -1057,6 +1367,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         + proposedTime.getDoubleValue());
             }
             _rtia.nextEventRequest(certiProposedTime);
+            _numberOfNERs++;
+            _timeOfTheLastAdvanceRequest=System.nanoTime();
+
         } else {
             // Event-based + lookahead = 0 => NERA + NER.
             // Start the time advancement loop with one NERA call.
@@ -1067,6 +1380,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         + certiProposedTime.getTime() + ")");
             }
             _rtia.nextEventRequestAvailable(certiProposedTime);
+            _numberOfNERs++;
+            _timeOfTheLastAdvanceRequest=System.nanoTime();
 
             // Wait the time grant from the HLA/CERTI Federation (from the RTI).
             _federateAmbassador.timeAdvanceGrant = false;
@@ -1078,6 +1393,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             + ") by calling tick2()");
                 }
                 _rtia.tick2();
+                _numberOfTicks2++;
+                _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);;
             }
 
             // End the loop with one NER call.
@@ -1088,6 +1405,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         + ")");
             }
             _rtia.nextEventRequest(certiProposedTime);
+            _numberOfNERs++;
+            _timeOfTheLastAdvanceRequest=System.nanoTime();
         }
 
         // Wait the time grant from the HLA/CERTI Federation (from the RTI).
@@ -1100,8 +1419,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         + certiProposedTime.getTime() + ") by calling tick2()");
             }
             _rtia.tick2();
+            _numberOfTicks2++;
             cntTick++;
         }
+        _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+cntTick);
 
         // If we get any rav-event
         if (cntTick != 1) {
@@ -1143,9 +1464,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
             EnableTimeRegulationPending, EnableTimeConstrainedPending,
             RestoreInProgress, RTIinternalError, ConcurrentAccessAttempted {
 
-        Time currentTime = _director.getModelTime();
-
+        Time currentTime = _getModelTime();
         if (_hlaTimeStep > 0) {
+
             // Calculate the next point in time for making a TAR(hlaNextPointInTime)
             // or TARA(hlaNextPointInTime)
             Time hlaNextPointInTime = _getHlaNextPointInTime();
@@ -1171,35 +1492,39 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 //             all rav should be put in the queue
                 //             with a time stamp delay to hlaNextPointInTime;
                 //             IF hlaNextPointInTime < proposedTime which means LastFoundEvent
-                //             is no more our earlist event;
-                //             THEN proposedTime should be raplaced by hlaNextPointInTime.
+                //             is no more our earliest event;
+                //             THEN proposedTime should be replaced by hlaNextPointInTime.
                 //             END IF
                 //      END IF
                 // END WHILE
                 // case 2: LastFoundEvent is directly or indirectly(via case 1)
-                //         in (hlacurrentTime, hlaNextPointInTime]
+                //         in (hlacurrentTime, hlaNextPointInTime)
                 //         we don't want to advance the certi time.
                 //         so return proposedTime, this event is valid to execute.
 
                 // case 1:
+
                 while (proposedTime.compareTo(hlaNextPointInTime) > 0) {
                     if (_debugging) {
                         _debug(this.getDisplayName()
-                                + " proposeTime() - current status "
-                                + "t_ptII = " + currentTime + "; t_certi = "
+                                + " _timeSteppedBasedTimeAdvance(Time) - proposeTime() - current status "
+                                + "t_ptII = " + _getDoubleOfTime(currentTime) + "; t_certi = "
                                 + _federateAmbassador.logicalTimeHLA
-                                + " - call CERTI TAR - "
+                                + " . The lastFoundEvent's timeStamp >= hlaNextPointInTime- call CERTI TAR - "
                                 + " timeAdvanceRequest("
                                 + certiNextPointInTime.getTime() + ")");
                     }
                     _rtia.timeAdvanceRequest(certiNextPointInTime);
+                    _numberOfTARs++;
+                    _timeOfTheLastAdvanceRequest=System.nanoTime();
+
 
                     // Wait the time grant from the HLA/CERTI Federation (from the RTI).
                     _federateAmbassador.timeAdvanceGrant = false;
                     int cntTick = 0;
                     while (!(_federateAmbassador.timeAdvanceGrant)) {
                         if (_debugging) {
-                            _debug(this.getDisplayName() + " proposeTime() -"
+                            _debug(this.getDisplayName() + " _timeSteppedBasedTimeAdvance(Time) - proposeTime() -"
                                     + " wait CERTI TAG - "
                                     + "timeAdvanceGrant("
                                     + certiNextPointInTime.getTime()
@@ -1208,14 +1533,23 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
                         try {
                             _rtia.tick2();
+                            _numberOfTicks2++;
                             cntTick++;
                         } catch (RTIexception e) {
+                            if(_debugging){
+                                _debug(this.getDisplayName() +  " _timeSteppedBasedTimeAdvance(Time) - proposeTime() - Failed to make "
+                                        + "tick2(). There is a problem with the RTIambassador.");
+                            }
                             throw new IllegalActionException(this, e,
                                     e.getMessage());
                         }
                     }
+                    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+cntTick);
 
                     // If we get any rav-event
+                    if (_debugging) {
+                        _debug(this.getDisplayName() + " _timeSteppedBasedTimeAdvance(Time) - proposeTime() - Checking if we've received any RAV event.");
+                    }
                     if (cntTick != 1) {
                         // Store reflected attributes as events on HLASubscriber actors.
                         _putReflectedAttributesOnHlaSubscribers();
@@ -1231,11 +1565,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 // case 2:
                 if (_debugging) {
                     _debug(this.getDisplayName()
-                            + " proposeTime() - current status " + "t_ptII = "
-                            + currentTime + "; t_certi = "
+                            + " _timeSteppedBasedTimeAdvance(Time) - proposeTime() - current status " + "t_ptII = "
+                            + _getDoubleOfTime(currentTime) + "; t_certi = "
                             + _federateAmbassador.logicalTimeHLA
-                            + " - an event with time stamp = " + proposedTime
-                            + " will be taken.");
+                            + " - the lastFoundEvent (timeStamp = " + proposedTime
+                            + ") has its timeStamp < nextPointInTime. So, no TAR will be made and the event will be processed.");
                 }
                 return proposedTime;
 
@@ -1243,15 +1577,19 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 // Time-stepped + lookahead = 0 => TARA + TAR.
                 // Start the loop with one TARA call.
                 if (_debugging) {
-                    _debug(this.getDisplayName() + " proposeTime() -"
+                    _debug(this.getDisplayName() + " _timeSteppedBasedTimeAdvance(Time) - proposeTime() -"
                             + " wait CERTI TAG - " + "timeAdvanceGrant("
                             + certiNextPointInTime.getTime()
                             + ") by calling tick2()");
                 }
                 _rtia.timeAdvanceRequest(certiNextPointInTime);
-                
+                _numberOfTARs++;
+                _timeOfTheLastAdvanceRequest=System.nanoTime();
+
                 try {
                     _rtia.tick2();
+                    _numberOfTicks2++;
+                    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
                 } catch (SpecifiedSaveLabelDoesNotExist e) {
                     throw new IllegalActionException(this, e,
                             "SpecifiedSaveLabelDoesNotExist ");
@@ -1266,14 +1604,22 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 // End the loop with one TAR call.
                 if (_debugging) {
                     _debug(this.getDisplayName()
-                            + " proposeTime() -  call CERTI TAR -"
+                            + " _timeSteppedBasedTimeAdvance(Time) - proposeTime() -  call CERTI TAR -"
                             + " timeAdvanceRequest("
                             + certiNextPointInTime.getTime() + ")");
                 }
                 _rtia.timeAdvanceRequest(certiNextPointInTime);
+                _numberOfTARs++;
+                _timeOfTheLastAdvanceRequest=System.nanoTime();
             }
         }
+
+        if (_debugging) {
+            _debug(this.getDisplayName()
+                    + " _timeSteppedBasedTimeAdvance(Time) -  proposeTime() TAR not successful.");
+        }
         return null;
+
     }
 
     /** The method {@link #_populatedHlaValueTables()} populates the tables
@@ -1311,7 +1657,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
     /** This method is called when a time advancement phase is performed. Every
      *  updated HLA attributes received by callbacks (from the RTI) during the
      *  time advancement phase is saved as {@link TimedEvent} and stored in a
-     *  queue. Then, every {@link TimedEvent}s are moved from this queue to the
+     *  queue. Then, every {@link TimedEvent} is moved from this queue to the
      *  output port of their corresponding {@link HLASubscriber} actors
      *  @exception IllegalActionException If the parent class throws it.
      */
@@ -1333,13 +1679,12 @@ public class HlaManager extends AbstractInitializableAttribute implements
             while (events.size() > 0) {
 
                 TimedEvent ravevent = events.get(0);
-
+                
                 // All rav-events received by HlaSubscriber actors, RAV(tau) with tau < hlaCurrentTime
                 // are put in the event queue with timestamp hlaCurrentTime
                 if (_timeStepped) {
                     ravevent.timeStamp = _getHlaCurrentTime();
                 }
-
                 // If any rav-event received by HlaSubscriber actors, RAV(tau) with tau < ptolemy startTime
                 // are put in the event queue with timestamp startTime
                 //FIXME: Or should it be an exception because there is something wrong with 
@@ -1355,12 +1700,14 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 HlaSubscriber hs = (HlaSubscriber) tiop.getContainer();
 
                 hs.putReflectedHlaAttribute(ravevent);
+                
                 if (_debugging) {
                     _debug(this.getDisplayName()
                             + " _putReflectedAttributesOnHlaSubscribers() - "
                             + " put Event: " + ravevent.toString() + " in "
                             + hs.getDisplayName());
                 }
+                _folRAVsTimes=_folRAVsTimes+ravevent.timeStamp+";";
                 events.removeFirst();
             }
         }
@@ -1373,7 +1720,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
      * @throws IllegalActionException if hlaTimeStep is NULL.
      */
     private Time _getHlaNextPointInTime() throws IllegalActionException {
-        return _getHlaCurrentTime().add(_hlaTimeStep);
+        Double time = _getHlaCurrentTime().add(_hlaTimeStep).getDoubleValue();
+        time = _roundTimeValues(time);
+        return _convertToPtolemyTime(new CertiLogicalTime(time));
+        //return _getHlaCurrentTime().add(_hlaTimeStep);
+
     }
 
     /**
@@ -1384,6 +1735,177 @@ public class HlaManager extends AbstractInitializableAttribute implements
         CertiLogicalTime certiCurrentTime = (CertiLogicalTime) _federateAmbassador.logicalTimeHLA;
         return _convertToPtolemyTime(certiCurrentTime);
     }
+
+    /** Associate the object file with a file in the computer, creating it, if it doesn't 
+     * already exist. 
+     * @param name the name to of the file
+     */
+    private File _createTextFile(String name){
+        if(_testsFolder!= null){
+            name = _testsFolder + "/"+ name;
+            if(name.equals(null) || name.length()<3){
+                System.out.println("Choose a valid name for the txt file.");
+                return null;
+            }else{
+                if(!(name.endsWith(".txt")||name.endsWith(".csv"))){
+                    name = name.concat(".txt");
+                }
+                try{
+                    File file = new File(name);
+                    boolean verify = false;
+                    if(!file.exists()){
+                        verify = file.createNewFile();
+                    }else {
+                        verify = true;
+                    }if (!verify){
+                        throw new Exception();
+                    }System.out.println(name);
+                    return file;	
+                }catch(Exception e){
+                    System.out.println("Couldn't create the file.");
+                    return null;
+                }
+            }
+        }else{
+            return null;
+        }
+    }
+
+    /** Associate the object file with a file in the computer, creating it, if it doesn't 
+     * already exist. 
+     * @param name the name to of the file
+     */
+    private File _createTextFile(String name, String header){
+        if(_testsFolder!= null){
+            name = _testsFolder + "/"+ name;
+            if(name.equals(null) || name.length()<3){
+                System.out.println("Choose a valid name for the txt file.");
+                return null;
+            }else{
+                if(!(name.endsWith(".txt")||name.endsWith(".csv"))){
+                    name = name.concat(".txt");
+                }
+                try{
+                    File file = new File(name);
+                    boolean verify = false;
+                    if(!file.exists()){
+                        verify = file.createNewFile();
+                        writeInTextFile(file,header);
+                    }else {
+                        verify = true;
+                    }if (!verify){
+                        throw new Exception();
+                    }System.out.println(name);
+                    return file;	
+                }catch(Exception e){
+                    System.out.println("Couldn't create the file.");
+                    return null;
+                }
+            }
+        }else{
+            return null;
+        }
+    }
+
+    /**Verify the existence of a folder, if it doesn't exist, the function tries 
+     * to create it.
+     * 
+     * @param folderName The name of the folder that will be created.
+     * @return The full address of the folder in a string.
+     */
+    private String _createFolder(String folderName){
+        String homeDirectory = System.getProperty("user.home");
+        folderName= homeDirectory + "/" +folderName;
+        File folder = new File(folderName);
+        if (!folder.exists()) {
+            try{
+                folder.mkdir();
+                System.out.println("Folder "+ folderName +" created.");
+                return folderName;
+            } 
+            catch(SecurityException se){
+                System.out.println("Could not create the folder "+ folderName +".");
+                return null;
+            }        
+        }else{
+            return folderName;
+        }
+    }
+
+    /**
+     * Initialize the variables that are going to be used to create the reports 
+     * in the files {@link #_file} and {@link #_csvFile} 
+     */
+    private void initializeReportVariables(){
+        _numberOfTARs=0;
+        _numberOfTicks2=0;
+        _numberOfNERs=0;
+        _numberOfTAGs=0;
+        _runtime = 0;
+        _timeOfTheLastAdvanceRequest=0;
+        _numberOfOtherTicks=0;
+        _UAVsValues="";
+        _pUAVsTimes="";
+        _preUAVsTimes="";
+        _RAVsValues="";
+        _pRAVsTimes="";
+        _folRAVsTimes="";
+        _TAGDelay=new ArrayList<Double>();
+        _numberOfTicks=new ArrayList<Integer>();
+        _numberOfRAVs=0;
+        _numberOfUAVs=0;
+    }
+    /**This function was created with the sole purpose of solving the 
+     * java problem with mathematical operations of real numbers. 
+     * In time stepped systems, we used to have a situation where instead of,
+     * for example, TAR(0.001), we had TAR(0.0010000001) or TAR(0.0009999999).
+     * In order to prevent that, as we already know that a time value can't have
+     * more decimal digits than the time step + lookAhead, we round it 
+     * to this number of digits. 
+     * @param timeValue The time value that is going to be rounded.
+     * @return A double representing a rounded time value.
+     */
+    private double _roundTimeValues(double timeValue){
+        if(_timeStepped){
+            //Forcing the number to have the same amount of decimal digits 
+            //than the time step;
+            int pt = (int) Math.pow(10,_numberOfDecimalDigits);
+            double d = Math.round(timeValue*pt);
+            d = d/pt;
+            return d;
+        }else{
+            return timeValue;
+        }
+    }
+
+    private double _getDoubleOfTime(Time time){
+        return _roundTimeValues(time.getDoubleValue());
+    }
+
+    private Time _getModelTime(){
+        double currentTime = _director.getModelTime().getDoubleValue();
+        currentTime = _roundTimeValues(currentTime);
+        try {
+            return new Time(_director, currentTime);
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+            return _director.getModelTime();
+        }
+    }
+    
+    private SuperdenseTime _getModelSuperdenseTime(){
+        double currentTime = _director.getModelTime().getDoubleValue();
+        currentTime = _roundTimeValues(currentTime);
+        try {
+            Time time = new Time(_director, currentTime);
+            return new SuperdenseTime(time,_director.getMicrostep());
+        } catch (IllegalActionException e) {
+            e.printStackTrace();
+            return new SuperdenseTime(_director.getModelTime(),_director.getMicrostep());
+        }
+    }
+    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -1429,6 +1951,69 @@ public class HlaManager extends AbstractInitializableAttribute implements
      */
     private Boolean _isCreator;
 
+    private Time _stopTime;
+
+    /** Represents the number of next event request this federate has made.
+     * 
+     * Event driven federates advance to the time-stamp of the next event. In order to complete the
+     * advancement, they have to ask the federation's permission to do so using a NER call.
+     */
+    private int _numberOfNERs;
+
+    /** Represents the number of time advance grants this federate has received.
+     * 
+     * Federates have to ask permission to the federation in order to advance in time.
+     * If there is no events happening in an inferior time to the proposed one, the 
+     * federation sends a TAG to the federate and this last one advances in time.
+     */
+    private int _numberOfTAGs;
+
+    /** Represents the number of time advance requests(TAR) this federate has made.
+     * 
+     * Time-stepped federates advance with a fixed step in time. In order to complete the
+     * advancement, they have to ask the federation's permission to do so using a TAR call.
+     */
+    private int _numberOfTARs;	
+
+    private double _runtime;
+
+    private int _numberOfTicks2;
+
+    private String _testsFolder;
+
+    /** Represents a text file that is going to keep track of the number of HLA calls of the
+     * federate.
+     */
+    private File _file;
+
+    /** Represents a ".csv" file that is going to keep track of the number of HLA calls of the
+     * federate.
+     */
+    private File _csvFile;
+
+    /** Represents a ".csv" file that is going to keep track of the number of HLA calls of the
+     * federate.
+     */
+    private File _reportFile;
+
+    /**
+     * Represents the file that tracks the values that have been updated and the time of their update.
+     */
+    private File _UAVsValuesFile;
+    private Date _date;
+    //FIXME: add comments
+    private String _UAVsValues;
+    private String _pUAVsTimes;
+    private String _preUAVsTimes;
+    private File _RAVsValuesFile;
+    private String _RAVsValues;
+    private String _pRAVsTimes;
+    private String _folRAVsTimes;
+    /** Represents the instant when the simulation is fully started 
+     * (when the last federate starts running).
+     */
+    private static double _startTime;
+
     /** Records the last proposed time to avoid multiple HLA time advancement
      *  requests at the same time.
      */
@@ -1454,14 +2039,44 @@ public class HlaManager extends AbstractInitializableAttribute implements
     private HashMap<String, Integer> _registeredObject;
 
     /**
-     * Tha actual value for hlaTimeUnit parameter.
+     * The actual value for hlaTimeUnit parameter.
      */
     private double _hlaTimeUnitValue;
 
-    /*
+    /**
     Set to false once in discoverObjectInstance and resert to true in noNewActors
-    */
+     */
     private boolean _noObjectDicovered;
+
+    /**
+     * The time of the last TAR or last NER.
+     */
+    private double _timeOfTheLastAdvanceRequest;
+
+    /**
+     * Array that contains the delays between a NER or TAR and its respective TAG..
+     */
+    private ArrayList<Double> _TAGDelay;
+
+    /**
+     * Array that contains the number of ticks between a NER or TAR and its respective TAG.
+     */
+    private ArrayList<Integer> _numberOfTicks;
+
+    /**
+     * Represents the number of the ticks that were not considered in the variable {@link #_numberOfTicks}
+     */
+    private int _numberOfOtherTicks;
+
+    private int _numberOfRAVs;
+
+    private int _numberOfUAVs;
+
+    private int _numberOfDecimalDigits;
+
+
+
+
 
     ///////////////////////////////////////////////////////////////////
     ////                    private  methods                 ////
@@ -1481,7 +2096,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 byte[] rfspTag = EncodingHelpers
                         .encodeString(_synchronizationPointName);
                 _rtia.registerFederationSynchronizationPoint(
-                        _synchronizationPointName, rfspTag);
+                        _synchronizationPointName, rfspTag);	        
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
             }
@@ -1491,6 +2106,12 @@ public class HlaManager extends AbstractInitializableAttribute implements
                     && !(_federateAmbassador.synchronizationFailed)) {
                 try {
                     _rtia.tick2();
+                    _numberOfTicks2++;
+                    if(_timeOfTheLastAdvanceRequest>0){
+                        _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);;
+                    }else{
+                        _numberOfOtherTicks++;
+                    }
                 } catch (RTIexception e) {
                     throw new IllegalActionException(this, e, e.getMessage());
                 }
@@ -1506,6 +2127,12 @@ public class HlaManager extends AbstractInitializableAttribute implements
         while (!(_federateAmbassador.inPause)) {
             try {
                 _rtia.tick2();
+                _numberOfTicks2++;
+                if(_timeOfTheLastAdvanceRequest>0){
+                    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+                }else{
+                    _numberOfOtherTicks++;
+                }
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
             }
@@ -1516,10 +2143,10 @@ public class HlaManager extends AbstractInitializableAttribute implements
             _rtia.synchronizationPointAchieved(_synchronizationPointName);
             if (_debugging) {
                 _debug(this.getDisplayName()
-                        + " initialize() - Synchronisation point "
+                        + " _doInitialSynchronization() - initialize() - Synchronisation point "
                         + _synchronizationPointName + " satisfied !");
             }
-        } catch (RTIexception e) {
+        } catch(RTIexception e) {
             throw new IllegalActionException(this, e, e.getMessage());
         }
 
@@ -1527,11 +2154,17 @@ public class HlaManager extends AbstractInitializableAttribute implements
         while (_federateAmbassador.inPause) {
             if (_debugging) {
                 _debug(this.getDisplayName()
-                        + " initialize() - Waiting for simulation phase !");
+                        + " _doInitialSynchronization() - initialize() - Waiting for simulation phase !");
             }
 
             try {
                 _rtia.tick2();
+                _numberOfTicks2++;
+                if(_timeOfTheLastAdvanceRequest >0 ){
+                    _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+                }else{
+                    _numberOfOtherTicks++;
+                }
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
             }
@@ -1542,6 +2175,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
      * Will enable all time regulating aspect for the federate. After this call
      * the federate as stated to the RTI if it time regulating and/or time regulator
      * and has enable asynchronous delivery for RO messages
+     * @throws IllegalActionException
      */
     private void _initializeTimeAspects() throws IllegalActionException {
 
@@ -1575,6 +2209,12 @@ public class HlaManager extends AbstractInitializableAttribute implements
             while (!(_federateAmbassador.timeConstrained)) {
                 try {
                     _rtia.tick2();
+                    _numberOfTicks2++;
+                    if(_timeOfTheLastAdvanceRequest>0){
+                        _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+                    }else{
+                        _numberOfOtherTicks++;
+                    }
                 } catch (RTIexception e) {
                     throw new IllegalActionException(this, e, e.getMessage());
                 }
@@ -1583,13 +2223,19 @@ public class HlaManager extends AbstractInitializableAttribute implements
             while (!(_federateAmbassador.timeRegulator)) {
                 try {
                     _rtia.tick2();
+                    _numberOfTicks2++;
+                    if(_timeOfTheLastAdvanceRequest>0){
+                        _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
+                    }else{
+                        _numberOfOtherTicks++;
+                    }
                 } catch (RTIexception e) {
                     throw new IllegalActionException(this, e, e.getMessage());
                 }
             }
 
             if (_debugging) {
-                _debug(this.getDisplayName() + " initialize() -"
+                _debug(this.getDisplayName() + " _initializeTimeAspects() - initialize() -"
                         + " Time Management policies:" + " is Constrained = "
                         + _federateAmbassador.timeConstrained
                         + " and is Regulator = "
@@ -1637,6 +2283,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner class                       ////
+
+
 
     /** This class extends the {@link NullFederateAmbassador} class which
      *  implements the basics HLA services provided by the JCERTI bindings.
@@ -1709,9 +2357,33 @@ public class HlaManager extends AbstractInitializableAttribute implements
          *  All those exceptions are from the HLA/CERTI implementation.
          */
         public void initialize(RTIambassador rtia) throws NameNotFound,
-                ObjectClassNotDefined, FederateNotExecutionMember,
-                RTIinternalError, AttributeNotDefined, SaveInProgress,
-                RestoreInProgress, ConcurrentAccessAttempted {
+        ObjectClassNotDefined, FederateNotExecutionMember,
+        RTIinternalError, AttributeNotDefined, SaveInProgress,
+        RestoreInProgress, ConcurrentAccessAttempted {
+            initializeReportVariables();
+            _stopTime = _director.getModelStopTime();
+            _date = new Date();
+            if(_isCreator){
+               writeInTextFile(_csvFile,"\n" + _date.toString() + "\nSTART OF THE FEDERATION;");
+               writeInTextFile(_file,"------------------\n"+ _date.toString() + "\nSTART OF THE FEDERATION");
+            }
+            if(_timeStepped){
+                System.out.println(_hlaTimeStep);
+                String s = _hlaTimeStep.toString();
+                s= s.substring(s.indexOf(".")+1);
+                int n1= s.length();
+                s = _hlaLookAHead.toString();
+                s= s.substring(s.indexOf(".")+1);
+                int n2 = s.length();
+                if(n1>n2){
+                    _numberOfDecimalDigits=n1;
+                }else{
+                    _numberOfDecimalDigits=n2;
+                }
+            }
+            _numberOfTicks.add(0);
+
+
             this.timeAdvanceGrant = false;
             this.timeConstrained = false;
             this.timeRegulator = false;
@@ -1728,17 +2400,22 @@ public class HlaManager extends AbstractInitializableAttribute implements
          *  @param timeStep The time step of the Federate.
          *  @param lookAHead The contract value used by HLA/CERTI to synchronize
          *  the Federates and to order TSO events.
+         *  @throws IllegalActionException
          */
-        public void initializeTimeValues(Double startTime, Double lookAHead) {
+        public void initializeTimeValues(Double startTime, Double lookAHead) throws IllegalActionException{
+            if(lookAHead <= 0){
+                throw new IllegalActionException(null, null, null, "LookAhead field in HLAManager must be greater than 0.");
+            }
             logicalTimeHLA = new CertiLogicalTime(startTime);
 
             effectiveLookAHead = new CertiLogicalTimeInterval(lookAHead
                     * _hlaTimeUnitValue);
             if (_debugging) {
-                _debug("Effective HLA lookahead is "
+                _debug(" initializeTimeValues() - Effective HLA lookahead is "
                         + effectiveLookAHead.toString());
             }
             timeAdvanceGrant = false;
+
         }
 
         // HLA Object Management services (callbacks).
@@ -1750,10 +2427,13 @@ public class HlaManager extends AbstractInitializableAttribute implements
         public void reflectAttributeValues(int theObject,
                 ReflectedAttributes theAttributes, byte[] userSuppliedTag,
                 LogicalTime theTime, EventRetractionHandle retractionHandle)
-                throws ObjectNotKnown, AttributeNotKnown,
-                FederateOwnsAttributes, InvalidFederationTime,
-                FederateInternalError {
+                        throws ObjectNotKnown, AttributeNotKnown,
+                        FederateOwnsAttributes, InvalidFederationTime,
+                        FederateInternalError {
             boolean done = false;
+            if(_debugging){
+                _debug(getDisplayName()+" Trying to make a RAV.");
+            }
             try {
                 // Get the object class handle corresponding to
                 // received "theObject" id.
@@ -1785,7 +2465,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 double timeValue = ((CertiLogicalTime) theTime)
                                         .getTime() / _hlaTimeUnitValue;
 
-                                ts = new Time(_director, timeValue);
+                                ts = new Time(_director, _roundTimeValues(timeValue));
                                 value = MessageProcessing.decodeHlaValue(hs,
                                         (BaseType) _getTypeFromTab(tObj),
                                         theAttributes.getValue(i));
@@ -1796,7 +2476,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                                 value }, theObject);
 
                                 _fromFederationEvents.get(hs.getIdentity())
-                                        .add(te);
+                                .add(te);
                                 if (_debugging) {
                                     _debug(getDisplayName()
                                             + " INNER"
@@ -1811,6 +2491,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                             + hs.getDisplayName());
                                 }
                                 done = true;
+                                _pRAVsTimes=_pRAVsTimes+_getDoubleOfTime(te.timeStamp)+";";
+                                _RAVsValues=_RAVsValues + value.toString()+";";
+            
                             } catch (IllegalActionException e) {
                                 e.printStackTrace();
                             }
@@ -1826,6 +2509,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 throw new FederateInternalError(
                         "Received a RAV but could not put in "
                                 + "anyobject. Means the ChangeRequest has not been processed yet");
+            }else{
+                _numberOfRAVs++;
             }
         }
 
@@ -1835,16 +2520,20 @@ public class HlaManager extends AbstractInitializableAttribute implements
         @Override
         public void discoverObjectInstance(int objectHandle_, int classHandle_,
                 String objectName_) throws CouldNotDiscover,
-                ObjectClassNotKnown, FederateInternalError {
+        ObjectClassNotKnown, FederateInternalError {
 
             /*
              * Use final members to please Java 7 because these members are
              * in the request change class, which is nested. That implies members
              * have to be final ...
-            */
+             */
             final int classHandle = classHandle_;
             final String objectName = objectName_;
             final int objectHandle = objectHandle_;
+
+            if(_debugging){
+                _debug(getDisplayName()+" Trying to discover an object.");
+            }
 
             _objectIdToClassHandle.put(objectHandle, classHandle);
 
@@ -1857,11 +2546,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
             ChangeRequest request = new ChangeRequest(this, "Adding "
                     + objectName, true) {
                 /*
-                * Sum up of the structural change :
-                * Get the class instantiate and its container
-                * If no free actor, instantiate one otherwise use an existing one
-                * Map the actor (set its name, ObjectHandle and put it in _hlaAttributesSubscribedTo)
-                */
+                 * Sum up of the structural change :
+                 * Get the class instantiate and its container
+                 * If no free actor, instantiate one otherwise use an existing one
+                 * Map the actor (set its name, ObjectHandle and put it in _hlaAttributesSubscribedTo)
+                 */
                 @Override
                 protected void _execute() throws IllegalActionException {
 
@@ -1910,7 +2599,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                 }
                             }
                             if (_debugging) {
-                                _debug("New object will do object "
+                                _debug(" discoverObjectInstance() - New object will do object "
                                         + objectName);
                             }
 
@@ -1920,7 +2609,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
                             newActor = (CompositeActor) instance;
                             newActor.setDisplayName(objectName);
                             if (_debugging) {
-                                _debug(instance.getName() + " will do object "
+                                _debug(instance.getName() + "  discoverObjectInstance() - will do object "
                                         + objectName);
                             }
                         }
@@ -1952,8 +2641,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                                             sub.output,
                                             sub.output.getType(),
                                             "", //empty string because it is parameter no longer used, but
-                                                // some functions rely on classHandle and attributeHandle
-                                                // being at index 3 and 4
+                                            // some functions rely on classHandle and attributeHandle
+                                            // being at index 3 and 4
                                             classHandle,
                                             sub.getAttributeHandle() });
                             _fromFederationEvents.put(sub.getIdentity(),
@@ -2019,10 +2708,20 @@ public class HlaManager extends AbstractInitializableAttribute implements
         public void timeAdvanceGrant(LogicalTime theTime)
                 throws InvalidFederationTime, TimeAdvanceWasNotInProgress,
                 FederateInternalError {
+            double time= ((CertiLogicalTime) theTime).getTime();
+            time = _roundTimeValues(time);
+            time = _roundTimeValues(_hlaTimeUnitValue*time);
 
-            logicalTimeHLA = new CertiLogicalTime(_hlaTimeUnitValue
-                    * ((CertiLogicalTime) theTime).getTime());
+
+            logicalTimeHLA = new CertiLogicalTime(time);
+            //* ((CertiLogicalTime) theTime).getTime());
+            //Time spent between the last TAR or NER and the TAG
+            _TAGDelay.add((System.nanoTime() - _timeOfTheLastAdvanceRequest)/Math.pow(10, 9));
+            _timeOfTheLastAdvanceRequest=0;
             timeAdvanceGrant = true;
+            _numberOfTAGs++;
+            _numberOfTicks.add(0);
+
             if (_debugging) {
                 _debug(HlaManager.this.getDisplayName() + " INNER"
                         + " timeAdvanceGrant() - TAG("
@@ -2068,7 +2767,7 @@ public class HlaManager extends AbstractInitializableAttribute implements
         @Override
         public void announceSynchronizationPoint(
                 String synchronizationPointLabel, byte[] userSuppliedTag)
-                throws FederateInternalError {
+                        throws FederateInternalError {
             inPause = true;
             if (_debugging) {
                 _debug(HlaManager.this.getDisplayName() + " INNER"
@@ -2095,9 +2794,9 @@ public class HlaManager extends AbstractInitializableAttribute implements
         ////                         private methods                   ////
 
         private void setUpHlaPublisher(RTIambassador rtia) throws NameNotFound,
-                ObjectClassNotDefined, FederateNotExecutionMember,
-                RTIinternalError, AttributeNotDefined, SaveInProgress,
-                RestoreInProgress, ConcurrentAccessAttempted {
+        ObjectClassNotDefined, FederateNotExecutionMember,
+        RTIinternalError, AttributeNotDefined, SaveInProgress,
+        RestoreInProgress, ConcurrentAccessAttempted {
             // For each HlaPublisher actors deployed in the model we declare
             // to the HLA/CERTI Federation a HLA attribute to publish.
             // 1. Set classHandle and objAttributeHandle ids for each attribute
@@ -2183,8 +2882,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                 // Fill the attribute handle set with all attibute to publish.
                 for (String s : hlaPublishers) {
                     _attributesLocal
-                            .add(_getAttributeHandleFromTab(_hlaAttributesToPublish
-                                    .get(s)));
+                    .add(_getAttributeHandleFromTab(_hlaAttributesToPublish
+                            .get(s)));
                 }
 
                 // Declare to the Federation the HLA attribute(s) to publish.
@@ -2238,11 +2937,11 @@ public class HlaManager extends AbstractInitializableAttribute implements
         /**
          * Configure the different HLASubscribers (ie will make them suscribe
          * to what they should)
-        */
+         */
         private void setUpSubscription(RTIambassador rtia) throws NameNotFound,
-                ObjectClassNotDefined, FederateNotExecutionMember,
-                RTIinternalError, AttributeNotDefined, SaveInProgress,
-                RestoreInProgress, ConcurrentAccessAttempted {
+        ObjectClassNotDefined, FederateNotExecutionMember,
+        RTIinternalError, AttributeNotDefined, SaveInProgress,
+        RestoreInProgress, ConcurrentAccessAttempted {
 
             /** List all the classes, states to RTI we have interested in it
              *  for each class, list all the HlaSubscriber within and subscribe
@@ -2286,8 +2985,8 @@ public class HlaManager extends AbstractInitializableAttribute implements
                         sub.setClassHandle(classHandle);
                         _attributesLocal.add(attributeHandle);
                         if (_debugging) {
-                            _debug("Subscribe to " + sub.getParameterName()
-                                    + " for class " + currentClass.getName());
+                            _debug(" setUpSubscription() - Subscribe to " + sub.getParameterName()
+                            + " for class " + currentClass.getName());
                         }
                     }
 
