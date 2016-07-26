@@ -133,6 +133,7 @@ public class UDPSocketHelper extends VertxHelperBase {
          */
         public UDPSocket(ScriptObjectMirror currentObj) {
             _currentObj = currentObj;
+            _isOpen = false;
             _socket = _vertx.createDatagramSocket();
         }
         
@@ -153,6 +154,8 @@ public class UDPSocketHelper extends VertxHelperBase {
                 _socket.listen(port, address, new AsyncResultHandler<DatagramSocket>() {
                     public void handle(AsyncResult<DatagramSocket> asyncResult) {
                         if (asyncResult.succeeded()) {
+                            _isOpen = true;
+                            
                             _socket.handler(new Handler<DatagramPacket>() {
                                 public void handle(final DatagramPacket packet) {
                                     // Emit the message in the director thread.
@@ -189,9 +192,14 @@ public class UDPSocketHelper extends VertxHelperBase {
         /** Close the UDP socket.
          */
         public void close() {
-            _socket.close((AsyncResult<Void> result) -> {
-                _currentObj.callMember("emit", "close");
-            });
+            if (_isOpen) {
+                _isOpen = false; // Assign here, instead of in callback, since 
+                                 // more calls to close() may occur before 
+                                 // callback completes.  Assumes success.          
+                _socket.close((AsyncResult<Void> result) -> {
+                    _currentObj.callMember("emit", "close");
+                });
+            }
         }
 
         /** Send a datagram message.
@@ -325,6 +333,13 @@ public class UDPSocketHelper extends VertxHelperBase {
                 }
             }
         }
+        
+        /** True if the socket is open, false otherwise.  Vert.x does not seem
+         * to offer a way to check the socket status.  Needed to prevent calling
+         * close() on a closed socket - doing so causes multiple close events
+         * to be emitted, which an accessor may be listening to.
+         */
+        private boolean _isOpen;
 
         /** The receive type. */
         private DATA_TYPE _receiveType = DATA_TYPE.STRING;
