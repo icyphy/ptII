@@ -397,18 +397,21 @@ function Accessor(
     this.ssuper = null;
     this.exports.ssuper = null;
 
-    // Define an object to be populated with monitoring data active accessors, whose react() has been invoked. 
-    // A mapping from accessor class to statistics capturing the execution time (in milliseconds) of react() is stored.
-    // ************************FORMAT of output sample array***************************
-    // {<Accessor class> : [<count of sample>, <mean of react execution duration>, 
-    // <standard deviation of react execution duration>]}
-    // ********************************************************************************
-    // NOTE: We can use a different strategy for storing execution times, like a fixed window of recent durations that 
-    // can later be processed by monitoring components downstream. Should be an easy change, if needed.
-    // FIXME: It is possible a callback is created in react(), the execution time of callback is not accounted for  
-    // with current monitoring implementation
-    if(typeof Accessor.activeAccessors == 'undefined')
-    {
+    // Define an object to be populated with monitoring data for active 
+    // accessors whose react() has been invoked. A mapping from accessor 
+    // class to statistics capturing the execution time (in milliseconds) 
+    // of react() is stored.
+    // ****************FORMAT of output sample array*******************
+    // {<Accessor class> : [<count of sample>, <mean of react execution 
+    // duration>, <standard deviation of react execution duration>]}
+    // ****************************************************************
+    // NOTE: This is only a first iteration approach, we can use a different 
+    // strategy if needed for storing execution times, like a fixed window of 
+    // recent durations that can later be processed by monitoring components 
+    // downstream.
+    // FIXME: It is possible a callback is created in react(), execution 
+    // time of callback is not accounted for with current implementation
+    if (typeof Accessor.activeAccessors == 'undefined') {
         Accessor.activeAccessors = {};
     }
     
@@ -1402,23 +1405,22 @@ Accessor.prototype.react = function(name) {
     }
 
     // Duration is in milliseconds
-    var duration = Date.now() - startTime;   
-    if(this.accessorClass in Accessor.activeAccessors)
-    {
+    var duration = Date.now() - startTime;
+    if (this.accessorClass in Accessor.activeAccessors) {
         // Update mean and variance for duration of react execution
         var newCount = Accessor.activeAccessors[this.accessorClass][0] + 1;
         var currentMean = Accessor.activeAccessors[this.accessorClass][1];
-        var currentStdDev =  Accessor.activeAccessors[this.accessorClass][2];
+        var currentVar =  Accessor.activeAccessors[this.accessorClass][2];
         Accessor.activeAccessors[this.accessorClass][0] = newCount;
         Accessor.activeAccessors[this.accessorClass][1] = currentMean + ((duration - currentMean)/newCount);
-        if(newCount > 1)
-        {
-            var nextVar = (((newCount - 2)/(newCount - 1)) * Math.pow(currentStdDev , 2)) + ((1/newCount) * Math.pow(duration - currentMean, 2));
-            Accessor.activeAccessors[this.accessorClass][2] = Math.sqrt(nextVar);
+        if (newCount > 1) {
+            var deviation = duration - currentMean;
+            var nextVar = (((newCount - 2)/(newCount - 1)) * currentVar) + 
+			  ((1/newCount) * (deviation * deviation));
+            Accessor.activeAccessors[this.accessorClass][2] = nextVar;
         }        
     }
-    else 
-    {
+    else {
         Accessor.activeAccessors[this.accessorClass] = [1, duration, 0];
     }
 
