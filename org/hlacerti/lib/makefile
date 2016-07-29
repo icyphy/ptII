@@ -37,7 +37,7 @@ DIRS =      test
 ROOT =      ../../..
 
 # PTJCERTI_JAR is set to $PTII/lib/jcerti.jar by configure.
-CLASSPATH = $(ROOT)$(CLASSPATHSEPARATOR)$(PTJCERTI_JAR)
+CLASSPATH = $(ROOT)$(CLASSPATHSEPARATOR)$(PTJCERTI_JAR)$(CLASSPATHSEPARATOR)$(PTJSOUP_JAR)
 
 # Get configuration info
 CONFIG =    $(ROOT)/mk/ptII.mk
@@ -53,6 +53,7 @@ PTCLASSALLJARS =
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
 JSRCS = \
+	AutomaticSimulation.java \
 	CertiRtig.java \
 	HlaManager.java \
 	HlaPublisher.java \
@@ -76,6 +77,9 @@ MISC_FILES = test
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	'AutomaticSimulation$$1.class' \
+	'AutomaticSimulation$$2.class' \
+	'AutomaticSimulation$$3.class' \
 	'CertiRtig$$_StreamReaderThread.class' \
 	'HlaManager$$ETimeManagementService.class' \
 	'HlaManager$$PtolemyFederateAmbassadorInner.class' \
