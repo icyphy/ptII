@@ -118,6 +118,7 @@
     <pathelement location="lib/jetty-all-8.1.5-v20120716.jar" />
     <pathelement location="lib/javax.servlet-api-3.0.1.jar" />
     <pathelement location="lib/jna.jar" />
+    <pathelement location="lib/jsoup-1.8.2.jar" />
     <pathelement location="lib/junit-4.8.2.jar" />
     <pathelement location="lib/JUnitParams-0.3.0.jar"/>
     <pathelement location="lib/javax.mail.jar" />
