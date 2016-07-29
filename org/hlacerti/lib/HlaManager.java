@@ -522,6 +522,7 @@ TimeRegulator {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HlaManager newObject = (HlaManager) super.clone(workspace);
 
+        newObject._csvFile = _createTextFile("data.csv");
         newObject._hlaAttributesToPublish = new HashMap<String, Object[]>();
         newObject._hlaAttributesSubscribedTo = new HashMap<String, Object[]>();
         newObject._fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
@@ -532,6 +533,7 @@ TimeRegulator {
         newObject._federateAmbassador = null;
         newObject._federateName = _federateName;
         newObject._federationName = _federationName;
+        newObject._file = _createTextFile("data.txt");
         newObject._isTimeConstrained = _isTimeConstrained;
         newObject._isTimeRegulator = _isTimeRegulator;
         newObject._hlaTimeUnitValue = _hlaTimeUnitValue;
