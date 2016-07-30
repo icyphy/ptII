@@ -41,5 +41,4 @@ public interface Rejecting {
      *  @return True to reject the token.
      */
     boolean reject(Token token, IOPort port);
-
 }
