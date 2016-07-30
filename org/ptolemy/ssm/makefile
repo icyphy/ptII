@@ -53,8 +53,10 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 JSRCS = \
 	CovarianceStatePredictor.java \
 	GaussianMeasurementModel.java \
+	GaussianModel.java \
 	InferenceActor.java \
 	Map.java \
+	MapAttributes.java \
 	MapConstrained.java \
 	MeasurementModel.java\
 	MeasurementModelAttributes.java \
@@ -68,6 +70,7 @@ JSRCS = \
 	StateSpaceSimulator.java \
 	StatePredictorWithAccControl.java \
 	StatePredictorWithControl.java \
+	TrainableGaussianModel.java \
 	UnscentedKalmanFilterSSM.java
 
 

@@ -35,7 +35,7 @@ ME =		ptolemy/domains/de/demo
 ROOT =		../../../..
 
 DIRS =		AssemblyLine AFDX Bus \
-		Clock ClockDrift DateDemo \
+		Clock ClockDrift DateDemo EventButton \
 		Inspection LineFault LongRuns ModalModel \
 		OpenQueueingNetwork \
 		PersistentIO QueueAndServer \
@@ -60,6 +60,7 @@ PTCLASSALLJARS = \
 	AssemblyLine/AssemblyLine.jar \
 	Clock/Clock.jar \
 	ClockDrift/ClockDrift.jar \
+	EventButton/EventButton.jar \
 	Inspection/Inspection.jar \
 	LineFault/LineFault.jar \
 	LongRuns/LongRuns.jar \

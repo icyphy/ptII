@@ -53,7 +53,7 @@ MISC_FILES = \
 	cureos \
 	jhlabs \
 	jgoodies \
-	microstar 
+	microstar
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

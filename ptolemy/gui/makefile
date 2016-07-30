@@ -155,7 +155,12 @@ OPTIONAL_FILES = \
 	'Top$$HelpMenuListener.class' \
 	'Top$$HistoryMenuListener.class' \
 	'UndoListener$$RedoAction.class' \
-	'UndoListener$$UndoAction.class'
+	'UndoListener$$UndoAction.class' \
+	'UserDialog$$1.class' \
+	'UserDialog$$2.class' \
+	'UserDialog$$3$1.class' \
+	'UserDialog$$3.class' \
+	'UserDialog$$ShellKeyListener.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
