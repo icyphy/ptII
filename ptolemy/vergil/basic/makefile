@@ -116,6 +116,7 @@ OPTIONAL_FILES = \
 	'BasicGraphFrame$$1.class' \
 	'BasicGraphFrame$$2.class' \
 	'BasicGraphFrame$$3.class' \
+	'BasicGraphFrame$$4.class' \
 	'BasicGraphFrame$$ExportHTMLAction.class' \
 	'BasicGraphFrame$$ExportImageAction.class' \
 	'BasicGraphFrame$$FindAction.class' \

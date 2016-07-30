@@ -76,12 +76,20 @@ OPTIONAL_FILES = \
 	demo \
 	node_modules \
 	node_files \
+	'HelperBase$$1.class' \
+	'HelperBase$$2.class' \
 	'JavaScript$$1.class' \
 	'JavaScript$$2.class' \
+	'JavaScript$$DeferredSend.class' \
 	'JavaScript$$ParameterProxy.class' \
 	'JavaScript$$PortOrParameterProxy.class' \
 	'JavaScript$$PortProxy.class' \
 	'JavaScript$$PtolemyJavaScript.class' \
+	'VertxHelperBase$$1.class' \
+	'VertxHelperBase$$2.class' \
+	'VertxHelperBase$$AccessorVerticle.class' \
+	'VertxHelperBase$$DATA_TYPE.class' \
+	'VertxHelperBase$$HandlerInvocation.class' \
 	$(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)

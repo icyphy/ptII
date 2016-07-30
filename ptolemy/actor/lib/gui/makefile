@@ -132,7 +132,12 @@ OPTIONAL_FILES = \
 	'DisplayJavaSE$$7.class' \
 	'DisplayJavaSE$$8.class' \
 	'DisplayJavaSE$$DisplayWindowTableau.class' \
+	'EventButton$$DoubleClickHandler.class' \
 	'HistogramPlotter$$1.class' \
+	'InteractiveDialog$$1.class' \
+	'InteractiveDialog$$2.class' \
+	'InteractiveDialog$$DialogFrame.class' \
+	'InteractiveDialog$$DialogTableau.class' \
 	'InteractiveShell$$1.class' \
 	'InteractiveShell$$2.class' \
 	'InteractiveShell$$3.class' \

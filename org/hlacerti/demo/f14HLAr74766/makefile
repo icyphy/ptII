@@ -46,13 +46,16 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 	f14HLAr74766.xml
-	./f14PilotStick.xml\
-	./f14Aircraft.xml\
-	./f14HLAr74766.xml\
-	./priseStick/src/XML/Sources/prise_parameters.xml\
-	./initialCentralizedF14/f14Centralized.xml\
-	./f14AutoPilot.xml\
+OTHER_FILES_TO_BE_JARED = \
+	README.txt \
+	f14Aircraft.xml \
+	f14AutoPilot.xml \
+	f14HLAr74766.xml \
+	f14PilotStick.xml \
+	priseStick/src/XML/Sources/prise_parameters.xml \
+	priseV2.fed \
+	initialCentralizedF14/f14Centralized.xml
+
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -61,7 +64,10 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	doc
+OPTIONAL_FILES = \
+	doc \
+	initialCentralizedF14 \
+	priseStick
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -139,6 +139,9 @@ OPTIONAL_FILES = \
 	'Plot$$7.class' \
 	'Plot$$8.class' \
 	'Plot$$9.class' \
+	'PlotBox$$MoveListener.class' \
+	'PlotBox$$MoveMotionListener.class' \
+	'PlotBox$$ZoomListener2.class' \
 	ptolemy.plot$(JVERSION).tar.gz \
 	ptolemy.plot$(JVERSION).zip \
 	$(PTAUXJAR) \

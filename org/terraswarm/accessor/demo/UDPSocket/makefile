@@ -54,6 +54,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	UDPSocket.xml \
+	UDPSocketSelf.xml \
 	UDPPacketGen.js
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
