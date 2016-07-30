@@ -33,6 +33,7 @@ package org.hlacerti.lib;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -251,7 +252,11 @@ TimeRegulator {
     public HlaManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _testsFolder = _createFolder("testsResults");
+        try {
+            _testsFolder = _createFolder("testsResults");
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex, "Failed to create folder \"testResults/\".");
+        }
 
         _file = _createTextFile("data.txt");
         _csvFile = _createTextFile("data.csv");
@@ -723,7 +728,7 @@ TimeRegulator {
         Time currentTime = _getModelTime();
         proposedTime =new Time(_director,_getDoubleOfTime(proposedTime));
 
-        if(proposedTime.compareTo(_stopTime) ==1){
+        if(proposedTime.compareTo(_stopTime) > 0){
             if (_debugging) {
                 _debug(this.getDisplayName() + " proposeTime() -"
                         + " called but the proposedTime is bigger than the stopTime.");
@@ -1147,10 +1152,10 @@ TimeRegulator {
 
     public void writeUAVsInformations(){
         if(_numberOfUAVs>0){
-            String header = "LookAhead;TimeStep;StopTime;Information;";
+            StringBuffer header = new StringBuffer("LookAhead;TimeStep;StopTime;Information;");
             int count = _UAVsValues.split(";").length;
             for (int i = 0; i < count; i++) {
-                header=header+"UAV"+i+";";
+                header.append("UAV"+i+";");
             }
             _UAVsValuesFile=_createTextFile("uav"+getDisplayName()+".csv");
             _pUAVsTimes= ";;;"+"pUAV Time:;"+_pUAVsTimes +"\n";
@@ -1161,15 +1166,15 @@ TimeRegulator {
     
     public void writeRAVsInformations(){
         if(_numberOfRAVs>0){
-            String header = "LookAhead;TimeStep;StopTime;Information;";
+            StringBuffer header = new StringBuffer("LookAhead;TimeStep;StopTime;Information;");
             int count = _RAVsValues.split(";").length;
             for (int i = 0; i < count; i++) {
-                header=header+"RAV"+i+";";
+                header.append("RAV"+i+";");
             }
             _RAVsValuesFile=_createTextFile("rav"+getDisplayName()+".csv");
             _pRAVsTimes= "pRAV Time:;"+_pRAVsTimes +"\n";
             _folRAVsTimes= ";;;"+"folRAV Time:;"+_folRAVsTimes+"\n";
-            writeInTextFile(_RAVsValuesFile,_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";"+ _pRAVsTimes+_folRAVsTimes +";;;RAVValues;"+ _RAVsValues+"\n");
+            writeInTextFile(_RAVsValuesFile,_date.toString()+"\n"+header.toString()+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";"+ _pRAVsTimes+_folRAVsTimes +";;;RAVValues;"+ _RAVsValues+"\n");
         }
     }
 
@@ -1228,11 +1233,11 @@ TimeRegulator {
             String delay="\nDelay :;";
             double averageNumberOfTicks=0;
             double averageDelay=0;
-            String header="\nInformation :;";
+            StringBuffer header= new StringBuffer("\nInformation :;");
             String delayPerTick="\nDelay per tick;";
             for (int i = 0; i < _numberOfTAGs; i++) {
                 if(i<10){
-                    header = header +  (i+1) + ";";
+                    header.append((i+1) + ";");
                     numberOfTicks=numberOfTicks+_numberOfTicks.get(i) +";";
                     delay = delay + _TAGDelay.get(i) +  ";";
                     if(_numberOfTicks.get(i)>0){
@@ -1244,13 +1249,13 @@ TimeRegulator {
                 averageNumberOfTicks=averageNumberOfTicks+_numberOfTicks.get(i);
                 averageDelay = averageDelay + _TAGDelay.get(i);
             }
-            header = header +"Sum;";
+            header.append("Sum;");
             int totalNumberOfHLACalls=_numberOfOtherTicks +(int)averageNumberOfTicks
                     +_numberOfTARs +_numberOfNERs+_numberOfRAVs + _numberOfUAVs + _numberOfTAGs;
             numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
             delay = delay + averageDelay + ";";
             delayPerTick = delayPerTick + ";";
-            header = header +"Average;";
+            header.append("Average;");
 
             _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+".csv","timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
             writeInTextFile(_reportFile,_hlaTimeStep + ";"+_hlaLookAHead + ";" + 
@@ -1814,20 +1819,23 @@ TimeRegulator {
      * 
      * @param folderName The name of the folder that will be created.
      * @return The full address of the folder in a string.
+     * @exception IOException If the folder cannot be created.
      */
-    private String _createFolder(String folderName){
+    private String _createFolder(String folderName) throws IOException {
         String homeDirectory = System.getProperty("user.home");
         folderName= homeDirectory + "/" +folderName;
         File folder = new File(folderName);
         if (!folder.exists()) {
             try{
-                folder.mkdir();
-                System.out.println("Folder "+ folderName +" created.");
+                if (!folder.mkdir()) {
+                    throw new IOException("Failed to create " + folder + " directory.");
+                } else {
+                    System.out.println("Folder "+ folderName +" created.");
+                }
                 return folderName;
             } 
             catch(SecurityException se){
-                System.out.println("Could not create the folder "+ folderName +".");
-                return null;
+                throw new IOException("Could not create the folder "+ folderName +".");
             }        
         }else{
             return folderName;
