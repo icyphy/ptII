@@ -84,7 +84,8 @@ cd $gendir
 
 test coverity-1.0 {coverity} {
     set matches [nightlyMake coverity]
-} {}
+} {****************************************************
+***************************************************}
 
 set VERBOSE 0
 cd $startingDirectory
