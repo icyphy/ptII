@@ -133,7 +133,7 @@
     <pathelement location="lib/ptjacl.jar" />
     <pathelement location="lib/mapss.jar" />
     <pathelement location="lib/oscP5.jar" />
-    <pathelement location="lib/rsyntaxtextarea-2.5.7.jar" />
+    <pathelement location="lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar" />
     <pathelement location="lib/slf4j-api-1.7.12.jar" />
     <pathelement location="lib/slf4j-nop-1.7.12.jar" />
     <pathelement location="lib/smack.jar" />

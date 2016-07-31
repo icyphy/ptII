@@ -32,7 +32,7 @@
         <classpathentry kind="lib" path="lib/junit-4.8.2.jar"/>
         <classpathentry kind="lib" path="lib/jython.jar"/>
         <classpathentry kind="lib" path="lib/kieler.jar"/>
-        <classpathentry kind="lib" path="lib/rsyntaxtextarea-2.5.7.jar"/>
+        <classpathentry kind="lib" path="lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar"/>
         <classpathentry kind="lib" path="lib/mapss.jar"/>
         <classpathentry kind="lib" path="lib/matlab.jar"/>
         <classpathentry kind="lib" path="lib/matlabLinux.jar"/>
