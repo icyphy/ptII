@@ -87,7 +87,6 @@ OTHER_JARS = \
 	PtinyKeplerApplication.jar \
 	PtinySandboxApplication.jar \
 	SpaceApplication.jar \
-	ViptosApplication.jar \
 	VisualSenseApplication.jar
 
 # make clean removes $(KRUFT)
