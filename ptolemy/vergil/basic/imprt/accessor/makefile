@@ -72,6 +72,7 @@ MISC_FILES =	$(DIRS)
 OPTIONAL_FILES = \
 	'ImportAccessorAction$$1.class' \
 	'ImportAccessorAction$$2.class' \
+	'ReloadAccessors$$1.class' \
 	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)

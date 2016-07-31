@@ -47,9 +47,12 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	Chat.xml \
+	ChatClient.jar \
 	ChatClient.xml \
+	ChatClient2.jar \
 	ChatClient2.xml \
 	ChatMultiInstanceComposite.xml \
+	ChatServer.jar \
 	ChatServer.xml \
 	ChatServerSingleClient.xml
 

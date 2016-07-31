@@ -51,8 +51,7 @@ HYBRID_FMUS_2_0_CS = Adder Clock Constant Delay HybridPerPiecCosSigGen \
 		HybridCheckEquality HybridZeroCrossingDetector \
 		HybridTriggeredConst HybridSampler HybridZeroOrderHold \
 		HybridModalModelDiscContr HybridSequenceCheck Integrator\
-		ZeroCrossingDetector \
-		
+		ZeroCrossingDetector
 
 # Co-simulation FMUs that have have fmiVersion >= 2.0
 # New Co-simulation FMUS should be added here.
@@ -87,9 +86,14 @@ FMUS_2_0_ME = fourInputsFourOutputsME20 helloWorldME2
 
 FMUS_ME =	$(FMUSDK2_FMUS_1_0_ME) $(FMUSDK2_FMUS_2_0_ME) $(FMUS_PRE_2_0_ME) $(FMUS_2_0_ME)
 
+# Hybrid FMUs created by Fabio Cremona
+FMUS_HYBRID = AdderIT CTClockIT CTClockW CheckEqualityFP \
+	CheckEqualityIT ClockFP ClockIT ClockW ConstantIT DelayIT DelayW \
+	IntegratorIT SamplerFP SamplerIT ZeroCrossingDetectorIT	\
+	bouncingBallHybrid
 
 # All FMUs.
-FMUS = $(FMUS_CS) $(FMUS_ME)
+FMUS = $(FMUS_CS) $(FMUS_ME) $(FMUS_HYBRID)
 
 # All the ME FMUSDK2 FMUs.
 FMUSDK2_FMUS_ME = $(FMUSDK2_FMUS_1_0_ME) $(FMUSDK2_FMUS_2_0_ME)

@@ -60,6 +60,7 @@ CFILES = \
 	BouncingBallFMI20_records.c
 
 OTHER_OTHER_FILES_TO_BE_JARED = \
+	BouncingBallFMI20.mo \
 	BouncingBallFMI20.mos \
 	BouncingBallFMI20.xml
 
