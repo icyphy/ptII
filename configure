@@ -1818,7 +1818,7 @@ Optional Packages:
   --with-svgsalamanderjar=SVGSALAMANDER_JAR     use svgSalamander jar file,
                                   defaults to \$PTT/lib/svgSalamander.jar
   --with-rsyntaxeditor=RSYNTAXTEXTAREA_JAR     use RSyntaxEditor jar,
-                          defaults to \$PTII/lib/rsyntaxtextarea-2.5.7.jar
+                          defaults to \$PTII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar
   --with-tini=DIR       use TINI from DIR,
                           defaults to \$PTII/vendors/dalsemi/tini
   --with-giotto=DIR       use GiottoSDF from DIR,
@@ -12969,7 +12969,7 @@ $as_echo_n "checking for RSyntaxEditor... " >&6; }
 if test "${with_batikjar+set}" = set; then :
   withval=$with_batikjar; PTRSYNTAXTEXTAREA_JAR=$withval
 else
-  PTRSYNTAXTEXTAREA_JAR=$PTII/lib/rsyntaxtextarea-2.5.7.jar
+  PTRSYNTAXTEXTAREA_JAR=$PTII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar
 fi
 
 
