@@ -260,8 +260,9 @@ public class GDPManager extends AbstractInitializableAttribute {
         // if cleanGDP is true, the remove the gdp source directory.
         if (cleanGDP) {
             if (gdpSourceDirectory.exists()) {
-                System.out.println("cleanGDP was true, deleting " + gdpSourceDirectory);
-                FileUtilities.deleteDirectory(gdpSourceDirectory.toString());
+                //System.out.println("cleanGDP was true, deleting " + gdpSourceDirectory);
+                //FileUtilities.deleteDirectory(gdpSourceDirectory.toString());
+                System.out.println("cleanGDP was true but we are not deleting " + gdpSourceDirectory);
             }
         }
 
@@ -362,7 +363,6 @@ public class GDPManager extends AbstractInitializableAttribute {
                 }
                 String message = "Renaming " + jarFile + " to " + destination;
                 MessageHandler.status(message);
-                jarFile.renameTo(destination);
                 // renameTo sometimes returns false even though the file was
                 // renamed.  As we delete the file above, if it exists, then we can
                 // assume it was copied.
