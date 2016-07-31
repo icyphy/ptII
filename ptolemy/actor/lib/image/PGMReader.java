@@ -82,8 +82,6 @@ public class PGMReader extends Source {
         output.setTypeEquals(new RecordType(outputLabels, types));
     }
 
-
-
     ///////////////////////////////////////////////////////////////////
     ////                     ports and parameters                  ////
 
@@ -120,69 +118,80 @@ public class PGMReader extends Source {
         if (!super.prefire()) {
             return false;
         }
+        Scanner scan = null;
+        FileInputStream fileInputStream = null;
+        DataInputStream dis = null;
         try { 
-            Scanner scan  = new Scanner(new FileInputStream(fileOrURL.asFile()));
-            FileInputStream fileInputStream = new FileInputStream(fileOrURL.asFile());
-            DataInputStream dis = new DataInputStream(fileInputStream);
+            scan = new Scanner(new FileInputStream(fileOrURL.asFile()));
+            fileInputStream = new FileInputStream(fileOrURL.asFile());
+            dis = new DataInputStream(fileInputStream);
             scan.next(); // the magic number: used to determine the PGM format.
             _width = scan.nextInt();
             _height = scan.nextInt();
              
-            
-             
-            try { 
-
-                // Skip header. 
-                int lines = 0;
-                while (lines < 4) {
-                    char c;
-                    do {
-                        c = (char) dis.readUnsignedByte();
-                    } while (c != '\n');
-                    lines ++;
-                }
+            // Skip header. 
+            int lines = 0;
+            while (lines < 4) {
+                char c;
+                do {
+                    c = (char) dis.readUnsignedByte();
+                } while (c != '\n');
+                lines ++;
+            }
                 
-                _grid = new int[_height*_width];
+            _grid = new int[_height*_width];
 
-                for (int col = 0; col < _width; col++) { 
-                    for (int row = 0; row < _height; row++) {
-                        int intVal = dis.readUnsignedByte();
-                        if (!_quantize) {
-                            _grid[row*_width + col] = intVal; 
-                        } else {
-                            int index=0;
-                            for (int i = 0; i < _levels.length; i ++) {
-                                if (i==0 ) {
-                                    if (intVal < _levels[i]) {
-                                        index = 0;
-                                    } else {
-                                        continue;
-                                    }
-                                } else if( intVal > _levels[i-1] && intVal <= _levels[i]) {
-                                    index = i;
-                                } else if( intVal > _levels[i] && i >= _levels.length -1) {
-                                    index = i;
-                                } 
-                            }
-                            _grid[row + col*_height] = _levels[index];   
-
+            for (int col = 0; col < _width; col++) { 
+                for (int row = 0; row < _height; row++) {
+                    int intVal = dis.readUnsignedByte();
+                    if (!_quantize) {
+                        _grid[row*_width + col] = intVal; 
+                    } else {
+                        int index=0;
+                        for (int i = 0; i < _levels.length; i ++) {
+                            if (i==0 ) {
+                                if (intVal < _levels[i]) {
+                                    index = 0;
+                                } else {
+                                    continue;
+                                }
+                            } else if( intVal > _levels[i-1] && intVal <= _levels[i]) {
+                                index = i;
+                            } else if( intVal > _levels[i] && i >= _levels.length -1) {
+                                index = i;
+                            } 
                         }
+                        _grid[row + col*_height] = _levels[index];   
+
                     }
-                } 
-            } finally {
+                }
+            } 
+        } catch (IOException e) {
+            throw new IllegalActionException(this, e, "Failed to read " + fileOrURL);
+        } finally {
+            try {
                 if (dis != null) {
                     dis.close();
                 }
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex, "Failed to close data input stream " + fileOrURL);
+            }
+            try {
                 if (fileInputStream != null) {
                     fileInputStream.close();
                 }
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex, "Failed to close file input stream " + fileOrURL);
+            }
+            try {
                 if (scan!=null) {
                     scan.close();
                 }
+            } catch (Throwable ex) {
+                throw new IllegalActionException(this, ex, "Failed to close scanner " + fileOrURL);
             }
-        } catch (IOException e) {
-            throw new IllegalActionException(this, e.getMessage());
         }
+
         return super.prefire(); 
     }
 
