@@ -150,7 +150,8 @@ public class ImageReader extends Source {
                     "Failed to read image.");
         }
 
-        if (_image.getWidth(null) == -1 && _image.getHeight(null) == -1) {
+        // Coverity Scan: ImageIO.read() can return null.
+        if (_image != null && _image.getWidth(null) == -1 && _image.getHeight(null) == -1) {
             throw new IllegalActionException(this,
                     "Image size is -1 x -1.  Failed to open '" + _url + "'");
         }
