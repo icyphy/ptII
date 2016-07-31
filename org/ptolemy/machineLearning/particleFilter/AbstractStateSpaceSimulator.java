@@ -432,16 +432,14 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor im
             _currentState[i] = ((DoubleToken)s0.getElement(i)).doubleValue();
         }
         if (!satisfiesMapConstraints(_currentState)) {
-            String currentStateString = "(";
+            StringBuffer currentStateString = new StringBuffer("(");
             
             for (int i = 0; i < _stateSpaceSize; i++) {
-                currentStateString += _currentState[i] + " , ";
+                currentStateString.append(_currentState[i] + " , ");
             }
             
-            currentStateString = currentStateString.substring(0,currentStateString.length()-3) + ")";
-            
             throw new IllegalActionException(this.getName() 
-                    + ": Initial state "+ currentStateString 
+                    + ": Initial state "+ currentStateString.toString().substring(0,currentStateString.length()-3) + ")"
                     + " does not satisfy map constraints!");
         }
     }
