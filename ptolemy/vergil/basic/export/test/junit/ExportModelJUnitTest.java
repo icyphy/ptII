@@ -304,6 +304,7 @@ public class ExportModelJUnitTest {
                 "de/demo/Clock/Clock.xml", // "Audio Device Unavailable"
                 //"domains/gr", // FIXME: need to close ViewScreen3D by adding a ViewScreen3D Tableau.
                 "ExportExamples.xml", // Has links to other models
+                "f14HLAr74766.xml", // Has links to other models
                 "GeneratorRegulatorProtectorSimXRhapsodyFMU", //SimX only works under 32-bits.
                 "PhysicalPlantCausalityLoop", // Deliberately brings up message on run.  AMS
                 "ptango", // Skip running all ptango demos, they do not provide useful exportable output.
