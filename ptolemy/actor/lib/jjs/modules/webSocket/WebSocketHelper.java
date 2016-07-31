@@ -257,6 +257,17 @@ public class WebSocketHelper extends VertxHelperBase {
                     synchronized(WebSocketHelper.this) {
                         // NOTE that _pendingOutputs may have already been drained.
                         if (_pendingOutputs.size() > 0) {
+                            // Coverity Scan: "Unintentional integer
+                            // overflow
+                            // (OVERFLOW_BEFORE_WIDEN)overflow_before_widen:
+                            // Potentially overflowing expression
+                            // _throttleFactor *
+                            // (_pendingOutputs.size() - 1) with type
+                            // int (32 bits, signed) is evaluated
+                            // using 32-bit arithmetic, and then used
+                            // in a context that expects an expression
+                            // of type long (64 bits, signed)."
+                            // "To avoid overflow, cast either _throttleFactor or _pendingOutputs.size() - 1 to type long."
                             sleepTime = _throttleFactor * (_pendingOutputs.size() - 1);
                         }
                     }
@@ -417,9 +428,9 @@ public class WebSocketHelper extends VertxHelperBase {
     private WebSocketHelper(ScriptObjectMirror currentObj, String host, boolean sslTls,
             int port, String receiveType, String sendType,
             int connectTimeout,
-            int numberOfRetries, int timeBetweenRetries,
+            int numberOfRetries, long timeBetweenRetries,
             boolean trustAll, String trustedCACertPath,
-            boolean discardMessagesBeforeOpen, int throttleFactor) {
+            boolean discardMessagesBeforeOpen, long throttleFactor) {
         super(currentObj);
 
         _host = host;
@@ -626,10 +637,10 @@ public class WebSocketHelper extends VertxHelperBase {
     private String _sendType;
 
     /** The number of milliseconds to stall for each queued item waiting to be sent. */
-    private int _throttleFactor;
+    private long _throttleFactor;
 
     /** The time between retries, in milliseconds. */
-    private int _timeBetweenRetries;
+    private long _timeBetweenRetries;
 
     /** Whether the client trust all certificates. */
     private boolean _trustAll;
