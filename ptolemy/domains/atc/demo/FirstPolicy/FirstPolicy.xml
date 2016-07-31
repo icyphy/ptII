@@ -1468,11 +1468,11 @@
     <relation name="relation110" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Airport.input" relation="relation101"/>
-    <link port="Airport.Output" insertAt="2" relation="relation"/>
-    <link port="Airport.Output" relation="relation2"/>
-    <link port="Airport.Output" relation="relation3"/>
-    <link port="Airport.Output" relation="relation4"/>
-    <link port="Airport.Output" relation="relation5"/>
+    <link port="Airport.output" insertAt="2" relation="relation"/>
+    <link port="Airport.output" relation="relation2"/>
+    <link port="Airport.output" relation="relation3"/>
+    <link port="Airport.output" relation="relation4"/>
+    <link port="Airport.output" relation="relation5"/>
     <link port="CSVReader.output" relation="relation101"/>
     <link port="CSVReader.trigger" relation="relation96"/>
     <link port="MeasuringParameters.port" relation="relation89"/>
