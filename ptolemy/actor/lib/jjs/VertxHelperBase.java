@@ -180,7 +180,13 @@ public class VertxHelperBase extends HelperBase {
      *  @return A set of image type names.
      */
     public static Set<String> getImageTypes() {
-        return _sendImageTypes;
+        // Coverity Scan: "Unguarded read
+        // (GUARDED_BY_VIOLATION)1. missing_lock: Accessing
+        // ptolemy.actor.lib.jjs.VertxHelperBase._sendImageTypes
+        // without holding lock"
+        synchronized (_receiveTypesMutex) {
+            return _sendImageTypes;
+        }
     };
     
     /** Return an array of the types supported by the current host for
