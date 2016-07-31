@@ -302,34 +302,41 @@ public class UDPSocketHelper extends VertxHelperBase {
             } else {
                 // Assume a numeric type.
                 int size = _sizeOfType(_receiveType);
-                int length = buffer.length();
-                int numberOfElements = length / size;
-                if (numberOfElements == 1) {
-                    _currentObj.callMember("emit", "message", _extractFromBuffer(buffer, _receiveType, 0));
-                } else if (numberOfElements > 1) {
-                    // Using message framing, so we output a single array.
-                    Object[] result = new Object[numberOfElements];
-                    int position = 0;
-                    for (int i = 0; i < result.length; i++) {
-                        result[i] = _extractFromBuffer(buffer, _receiveType, position);
-                        position += size;
+                // Coverity Scan reports that _sizeOfType() can return
+                // 0, which would invoke _error() but might return so
+                // we check here.
+                if (size == 0) {
+                    _error(_currentObj, "Type " + _receiveType + " is not supported.");
+                } else {
+                    int length = buffer.length();
+                    int numberOfElements = length / size;
+                    if (numberOfElements == 1) {
+                        _currentObj.callMember("emit", "message", _extractFromBuffer(buffer, _receiveType, 0));
+                    } else if (numberOfElements > 1) {
+                        // Using message framing, so we output a single array.
+                        Object[] result = new Object[numberOfElements];
+                        int position = 0;
+                        for (int i = 0; i < result.length; i++) {
+                            result[i] = _extractFromBuffer(buffer, _receiveType, position);
+                            position += size;
+                        }
+                        // NOTE: If we return result, then the emitter will not
+                        // emit a native JavaScript array. We have to do a song and
+                        // dance here which is probably very inefficient (almost
+                        // certainly... the array gets copied).
+                        try {
+                            _currentObj.callMember("emit", "message", _actor.toJSArray(result));
+                        } catch (Exception e) {
+                            _error(_currentObj, "Failed to convert to a JavaScript array: "
+                                    + e);                    
+                            _currentObj.callMember("emit", "message", result);
+                        }
+                    } else if (numberOfElements <= 0) {
+                        _error(_currentObj, "Expect to receive type "
+                                + _receiveType
+                                + ", but received an insufficient number of bytes: "
+                                + buffer.length());
                     }
-                    // NOTE: If we return result, then the emitter will not
-                    // emit a native JavaScript array. We have to do a song and
-                    // dance here which is probably very inefficient (almost
-                    // certainly... the array gets copied).
-                    try {
-                        _currentObj.callMember("emit", "message", _actor.toJSArray(result));
-                    } catch (Exception e) {
-                        _error(_currentObj, "Failed to convert to a JavaScript array: "
-                                + e);                    
-                        _currentObj.callMember("emit", "message", result);
-                    }
-                } else if (numberOfElements <= 0) {
-                    _error(_currentObj, "Expect to receive type "
-                            + _receiveType
-                            + ", but received an insufficient number of bytes: "
-                            + buffer.length());
                 }
             }
         }
