@@ -447,8 +447,10 @@ public class Expression extends TypedAtomicActor {
     public void wrapup() throws IllegalActionException {
         super.wrapup();
 
-        if (matlabEngine != null) {
-            matlabEngine.close(engine);
+        synchronized (Engine.semaphore) {
+            if (matlabEngine != null) {
+                matlabEngine.close(engine);
+            }
         }
 
         engine = null;
