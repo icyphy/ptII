@@ -158,7 +158,7 @@ OPTIONAL_FILES = \
 	'UndoListener$$UndoAction.class' \
 	'UserDialog$$1.class' \
 	'UserDialog$$2.class' \
-	'UserDialog$$3$1.class' \
+	'UserDialog$$3$$1.class' \
 	'UserDialog$$3.class' \
 	'UserDialog$$ShellKeyListener.class'
 

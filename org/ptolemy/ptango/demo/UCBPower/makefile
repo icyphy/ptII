@@ -56,6 +56,7 @@ OTHER_FILES_TO_BE_JARED = \
 	ucb_medium_map.png \
 	UCBPower.xml \
 	UCBPowerAnalyzerForServer.xml \
+	UCBPowerAnalyzerServer.jar \
 	UCBPowerAnalyzerServer.xml \
 	UCBPowerForServer.xml 
 

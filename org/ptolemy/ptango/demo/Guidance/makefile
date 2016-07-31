@@ -47,6 +47,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	Guidance.xml \
+	GuidanceSingleUserWithName.jar \
 	GuidanceSingleUserWithName.xml \
 	IndoorLocalizationMap.xml \
 	IndoorLocalizationMapSingleUser.xml  \
