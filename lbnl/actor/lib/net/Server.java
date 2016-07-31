@@ -252,8 +252,11 @@ public class Server {
         flaFroCli = Integer.parseInt(ele[1]); // the communication flag
         if (flaFroCli == 0) { // read further if flag is nonzero
             final int nDbl = Integer.parseInt(ele[2]);
-            Integer.parseInt(ele[3]);
-            Integer.parseInt(ele[4]);
+            // Coverity Scan: side_effect_free: Calling
+            // java.lang.Integer.parseInt(ele[3]) is only useful for
+            // its return value, which is ignored.
+            //Integer.parseInt(ele[3]);
+            //Integer.parseInt(ele[4]);
             simTimRea = Double.parseDouble(ele[5]);
             dblVal = new double[nDbl];
             // check sufficient array length
