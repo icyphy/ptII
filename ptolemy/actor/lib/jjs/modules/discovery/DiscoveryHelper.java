@@ -219,8 +219,12 @@ public class DiscoveryHelper {
         NetworkInterface iface;
 
         try {
+            // Coverity Scan: "getNetworkInterfaces returns null".
             Enumeration<NetworkInterface> interfaces = 
                 NetworkInterface.getNetworkInterfaces();
+            if (interfaces == null) {
+                return "Unknown";
+            }
             Enumeration<InetAddress> addresses;
        
             while (interfaces.hasMoreElements()) {
