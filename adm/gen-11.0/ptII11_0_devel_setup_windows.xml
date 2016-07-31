@@ -771,6 +771,8 @@ The Ptiny pack is required.
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/atc/demo/demo.jar"
                   targetdir="$INSTALL_PATH/ptolemy/domains/atc/demo"/>
 
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar"
+                  targetdir="$INSTALL_PATH/lib"/>
         </pack>
 
         <pack name="Docs" required="no">

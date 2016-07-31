@@ -5742,9 +5742,9 @@ if test ! -d "$PTII/ptolemy/actor/gui/syntax"; then
 else
     AC_MSG_CHECKING([for RSyntaxEditor])
     AC_ARG_WITH(batikjar, [  --with-rsyntaxeditor=RSYNTAXTEXTAREA_JAR     use RSyntaxEditor jar,
-                          defaults to \$PTII/lib/rsyntaxtextarea-2.5.7.jar],
+                          defaults to \$PTII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar],
 	PTRSYNTAXTEXTAREA_JAR=$withval,
-	PTRSYNTAXTEXTAREA_JAR=$PTII/lib/rsyntaxtextarea-2.5.7.jar)
+	PTRSYNTAXTEXTAREA_JAR=$PTII/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar)
 
     if test -f "$PTRSYNTAXTEXTAREA_JAR"; then
 	PT_MSG_RESULT([$PTRSYNTAXTEXTAREA_JAR])
