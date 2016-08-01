@@ -248,7 +248,11 @@ public class Server {
         ////////////////////////////////////////////////////
         // get elements from the line
         String[] ele = line.split(" ");
-        Integer.parseInt(ele[0]);
+        // Coverity Scan: "Useless call
+        // (USELESS_CALL)side_effect_free: Calling
+        // java.lang.Integer.parseInt(ele[0]) is only useful for its
+        // return value, which is ignored."
+        //Integer.parseInt(ele[0]);
         flaFroCli = Integer.parseInt(ele[1]); // the communication flag
         if (flaFroCli == 0) { // read further if flag is nonzero
             final int nDbl = Integer.parseInt(ele[2]);
