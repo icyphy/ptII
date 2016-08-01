@@ -215,14 +215,13 @@ public class Airport extends TypedAtomicActor{
     private int _findDirection(RecordToken airplane) throws IllegalActionException{
         ArrayToken flightMap=(ArrayToken)airplane.get("flightMap");
         boolean finded=false;
-        for (int i=0; i<_Tracks.length();i++)
+        for (int i=0; i<_Tracks.length();i++) {
             if (flightMap.getElement(0).equals(_Tracks.getElement(i))) {
                 finded=true;
                 return i;
             }
-        if (finded==false)
-            throw new IllegalActionException("There is no route from the airport to the first track in flightMap");
-        return -1;
+        }
+        throw new IllegalActionException("There is no route from the airport to the first track in flightMap");
     }
    
     private Token _inTransit;
