@@ -331,7 +331,7 @@
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/gui/syntax/syntax.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/gui/syntax"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/rsyntaxtextarea-2.5.7.jar"
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/rsyntaxtextarea-2.6.0-SNAPSHOT.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/jsoup-1.8.2.jar"
                   targetdir="$INSTALL_PATH/lib"/>
