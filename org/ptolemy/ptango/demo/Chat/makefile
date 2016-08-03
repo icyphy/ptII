@@ -47,12 +47,9 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	Chat.xml \
-	ChatClient.jar \
 	ChatClient.xml \
-	ChatClient2.jar \
 	ChatClient2.xml \
 	ChatMultiInstanceComposite.xml \
-	ChatServer.jar \
 	ChatServer.xml \
 	ChatServerSingleClient.xml
 
@@ -63,7 +60,10 @@ EXTRA_SRCS = \
 # want make checkjunk to barf on them.
 MISC_FILES =
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	ChatClient.jar \
+	ChatClient2.jar \
+	ChatServer.jar
 
 # Files to remove with 'make clean'
 KRUFT = \
