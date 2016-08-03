@@ -1222,7 +1222,7 @@ TimeRegulator {
             String info = "Federate "+ getDisplayName() +" in the model "+nameOfTheFile;
 
             info = info +  "\n" +"stopTime: " +_stopTime
-                    + "    hlaTimeUnit: "+_hlaTimeUnitValue ;
+                    + "    hlaTimeUnit: "+_hlaTimeUnitValue + "    lookAhead: " + _hlaLookAHead;
             if(_isCreator){
                 info = "SP creator -> " + info ;
             }
@@ -1742,7 +1742,6 @@ TimeRegulator {
                             + " put Event: " + ravevent.toString() + " in "
                             + hs.getDisplayName());
                 }
-                System.out.println(_folRAVsTimes);
                 if(_folRAVsTimes.lastIndexOf("*")>=0){
                     _folRAVsTimes.replace(_folRAVsTimes.lastIndexOf("*"),_folRAVsTimes.length(),ravevent.timeStamp+";");
                 }
@@ -2559,7 +2558,6 @@ TimeRegulator {
                                     _RAVsValues[indexOfAttribute].replace(_RAVsValues[indexOfAttribute].length()-2,_RAVsValues[indexOfAttribute].length(),value.toString()+";");
                                    //_UAVsValues[indexOfAttribute].replace(_UAVsValues[indexOfAttribute].length()-2,_UAVsValues[indexOfAttribute].length(),in.toString()+";");
                                 }else{
-                                    System.out.println("RAVs: "+_numberOfRAVs);
                                     if(_numberOfRAVs<1){
                                         _numberOfAttributesSubscribedTo=_hlaAttributesSubscribedTo.size();
                                         _nameOfTheAttributesSubscribedTo= new String[_numberOfAttributesSubscribedTo];
@@ -2574,7 +2572,6 @@ TimeRegulator {
                                     }
                                     
                                     int indexOfAttribute=0;
-                                    System.out.println(attributeName);
                                     for(int j = 0; j<_numberOfAttributesSubscribedTo;j++){
                                         if(_nameOfTheAttributesSubscribedTo[j].substring(_nameOfTheAttributesSubscribedTo[j].lastIndexOf("-"+attributeName)+1).equals(attributeName)){
                                             indexOfAttribute=j;
