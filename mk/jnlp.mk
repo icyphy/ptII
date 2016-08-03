@@ -1916,7 +1916,9 @@ vergil_run:
 vergil_run_bcvtb:
 	$(MAKE) vergil_run CONFIGURATION_JARS=BCVTB_JNLP_JARS CONFIGURATION=bcvtb
 vergil_run_capecode:
-	$(MAKE) vergil_run CONFIGURATION_JARS=BCVTB_JNLP_JARS CONFIGURATION=capecode
+	$(MAKE) vergil_run CONFIGURATION_JARS=CAPECODE_JNLP_JARS CONFIGURATION=capecode
+vergil_run_cyphysim:
+	$(MAKE) vergil_run CONFIGURATION_JARS=CYPHYSIM_JNLP_JARS CONFIGURATION=cyphysim
 vergil_run_full:
 	$(MAKE) vergil_run CONFIGURATION_JARS=FULL_JNLP_JARS CONFIGURATION=full
 vergil_run_hyvisual:
