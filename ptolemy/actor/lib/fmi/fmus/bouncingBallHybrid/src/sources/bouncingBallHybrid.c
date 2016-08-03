@@ -161,7 +161,8 @@ fmi2Boolean doStep(ModelInstance* comp, fmi2Real hLocal) {
         r(v_) = - r(e_) * r(v_);
     }
     fmi2ValueReference vrStates0[NUMBER_OF_STATES] = STATES;
-    for (int i = 0; i < NUMBER_OF_STATES; i++) {
+    int i;
+    for (i = 0; i < NUMBER_OF_STATES; i++) {
         fmi2ValueReference vr = vrStates0[i];
         r(vr) += hLocal * getReal(comp, vr + 1); // forward Euler step
     }

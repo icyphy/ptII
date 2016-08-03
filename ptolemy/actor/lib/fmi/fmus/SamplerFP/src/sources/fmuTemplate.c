@@ -1039,7 +1039,8 @@ fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
         timeEvent = 1;
     }
     // check for state event
-    for (int i = 0; i < NUMBER_OF_EVENT_INDICATORS; i++) {
+    int i;
+    for (i = 0; i < NUMBER_OF_EVENT_INDICATORS; i++) {
         double ei = getEventIndicator(comp, i);
         if (ei < 0) {
             FILTERED_LOG(comp, fmi2OK, LOG_EVENT,
