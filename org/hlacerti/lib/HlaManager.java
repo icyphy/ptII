@@ -33,6 +33,7 @@ package org.hlacerti.lib;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -251,7 +252,11 @@ TimeRegulator {
     public HlaManager(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        _testsFolder = _createFolder("testsResults");
+        try {
+            _testsFolder = _createFolder("testsResults");
+        } catch (IOException ex) {
+            throw new IllegalActionException(this, ex, "Failed to create folder \"testResults/\".");
+        }
 
         _file = _createTextFile("data.txt");
         _csvFile = _createTextFile("data.csv");
@@ -522,6 +527,7 @@ TimeRegulator {
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         HlaManager newObject = (HlaManager) super.clone(workspace);
 
+        newObject._csvFile = _createTextFile("data.csv");
         newObject._hlaAttributesToPublish = new HashMap<String, Object[]>();
         newObject._hlaAttributesSubscribedTo = new HashMap<String, Object[]>();
         newObject._fromFederationEvents = new HashMap<String, LinkedList<TimedEvent>>();
@@ -532,6 +538,7 @@ TimeRegulator {
         newObject._federateAmbassador = null;
         newObject._federateName = _federateName;
         newObject._federationName = _federationName;
+        newObject._file = _createTextFile("data.txt");
         newObject._isTimeConstrained = _isTimeConstrained;
         newObject._isTimeRegulator = _isTimeRegulator;
         newObject._hlaTimeUnitValue = _hlaTimeUnitValue;
@@ -721,7 +728,7 @@ TimeRegulator {
         Time currentTime = _getModelTime();
         proposedTime =new Time(_director,_getDoubleOfTime(proposedTime));
 
-        if(proposedTime.compareTo(_stopTime) ==1){
+        if(proposedTime.compareTo(_stopTime) > 0){
             if (_debugging) {
                 _debug(this.getDisplayName() + " proposeTime() -"
                         + " called but the proposedTime is bigger than the stopTime.");
@@ -916,13 +923,34 @@ TimeRegulator {
         }
         try {
             int id = _registeredObject.get(_federateName + " " + senderName);
-            _UAVsValues=_UAVsValues + in.toString()+";";
-            _pUAVsTimes= _pUAVsTimes + ct.getTime()+";";
-            _preUAVsTimes= _preUAVsTimes +"("+ currentTime+","+microstep+");";
+            int indexOfAttribute=0;
+            String attributeName = _getPortFromTab(tObj).getContainer().getName();
+            for(int i = 0; i<_numberOfAttributesToPublish;i++){
+                if(attributeName.equals(_nameOfTheAttributesToPublish[i])){
+                    indexOfAttribute=i;
+                    break;
+                }
+            }
+            String pUAVTimeStamp=ct.getTime()+";";;
+            String preUAVTimeStamp="("+ currentTime+","+microstep+");";
+            
+            if(_numberOfUAVs>0 &&(_preUAVsTimes.length() - _preUAVsTimes.lastIndexOf(preUAVTimeStamp))<=preUAVTimeStamp.length() && 
+                        (_pUAVsTimes.length() - _pUAVsTimes.lastIndexOf(pUAVTimeStamp))<=pUAVTimeStamp.length()){
+                //System.out.println(_UAVsValues[indexOfAttribute].toString().substring(_UAVsValues.length-2, _UAVsValues.length));
+                _UAVsValues[indexOfAttribute].replace(_UAVsValues[indexOfAttribute].length()-2,_UAVsValues[indexOfAttribute].length(),in.toString()+";");
+            }else{
+                _preUAVsTimes.append(preUAVTimeStamp);
+                _pUAVsTimes.append(pUAVTimeStamp);
+                for(int i = 0; i<_numberOfAttributesToPublish;i++){
+                    if(i==indexOfAttribute){
+                        _UAVsValues[i].append(in.toString()+";");
+                    }else{
+                        _UAVsValues[i].append("-;");
+                    }
+                }
+            }
             _rtia.updateAttributeValues(id, suppAttributes, tag, ct);
             _numberOfUAVs++;
-
-
         } catch (Exception e) {
             throw new IllegalActionException(this, e, e.getMessage());
         }
@@ -1145,30 +1173,37 @@ TimeRegulator {
 
     public void writeUAVsInformations(){
         if(_numberOfUAVs>0){
-            String header = "LookAhead;TimeStep;StopTime;Information;";
-            int count = _UAVsValues.split(";").length;
+            StringBuffer header = new StringBuffer("LookAhead;TimeStep;StopTime;Information;");
+            int count = String.valueOf(_UAVsValues[0]).split(";").length;
             for (int i = 0; i < count; i++) {
-                header=header+"UAV"+i+";";
+                header.append("UAV"+i+";");
+            }
+            StringBuffer info = new StringBuffer(_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";" + "preUAV TimeStamp:;"+_preUAVsTimes+"\n"+
+                    ";;;"+"pUAV TimeStamp:;"+_pUAVsTimes +"\n");
+            for (int i = 0; i < _numberOfAttributesToPublish; i++){
+                info.append(";;;"+ _nameOfTheAttributesToPublish[i] +";"+ _UAVsValues[i]+ "\n");
             }
             _UAVsValuesFile=_createTextFile("uav"+getDisplayName()+".csv");
-            _pUAVsTimes= ";;;"+"pUAV Time:;"+_pUAVsTimes +"\n";
-            _preUAVsTimes= "preUAV Time:;"+_preUAVsTimes+"\n";
-            writeInTextFile(_UAVsValuesFile,_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";"+ _preUAVsTimes+_pUAVsTimes +";;;UAVValues;"+ _UAVsValues+"\n");
+            writeInTextFile(_UAVsValuesFile,String.valueOf(info));
         }
     }
     
     public void writeRAVsInformations(){
         if(_numberOfRAVs>0){
-            String header = "LookAhead;TimeStep;StopTime;Information;";
-            int count = _RAVsValues.split(";").length;
+            StringBuffer header = new StringBuffer("LookAhead;TimeStep;StopTime;Information;");
+            int count = _RAVsValues[0].toString().split(";").length;
             for (int i = 0; i < count; i++) {
-                header=header+"RAV"+i+";";
+                header.append("RAV"+i+";");
+            }
+            
+            StringBuffer info = new StringBuffer(_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";" + "pRAV TimeStamp:;"+_pRAVsTimes+"\n"+
+                    ";;;"+"folRAV TimeStamp:;"+_folRAVsTimes +"\n");
+            for (int i = 0; i < _numberOfAttributesSubscribedTo; i++){
+                info.append(";;;"+ _nameOfTheAttributesSubscribedTo[i] +";"+ _RAVsValues[i]+ "\n");
             }
             _RAVsValuesFile=_createTextFile("rav"+getDisplayName()+".csv");
-            _pRAVsTimes= "pRAV Time:;"+_pRAVsTimes +"\n";
-            _folRAVsTimes= ";;;"+"folRAV Time:;"+_folRAVsTimes+"\n";
-            writeInTextFile(_RAVsValuesFile,_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";"+ _pRAVsTimes+_folRAVsTimes +";;;RAVValues;"+ _RAVsValues+"\n");
-        }
+            writeInTextFile(_RAVsValuesFile,String.valueOf(info));
+           }
     }
 
     /** Write the number of HLA calls of each federate, along with informations about the
@@ -1226,11 +1261,11 @@ TimeRegulator {
             String delay="\nDelay :;";
             double averageNumberOfTicks=0;
             double averageDelay=0;
-            String header="\nInformation :;";
+            StringBuffer header= new StringBuffer("\nInformation :;");
             String delayPerTick="\nDelay per tick;";
             for (int i = 0; i < _numberOfTAGs; i++) {
                 if(i<10){
-                    header = header +  (i+1) + ";";
+                    header.append((i+1) + ";");
                     numberOfTicks=numberOfTicks+_numberOfTicks.get(i) +";";
                     delay = delay + _TAGDelay.get(i) +  ";";
                     if(_numberOfTicks.get(i)>0){
@@ -1242,13 +1277,13 @@ TimeRegulator {
                 averageNumberOfTicks=averageNumberOfTicks+_numberOfTicks.get(i);
                 averageDelay = averageDelay + _TAGDelay.get(i);
             }
-            header = header +"Sum;";
+            header.append("Sum;");
             int totalNumberOfHLACalls=_numberOfOtherTicks +(int)averageNumberOfTicks
                     +_numberOfTARs +_numberOfNERs+_numberOfRAVs + _numberOfUAVs + _numberOfTAGs;
             numberOfTicks = numberOfTicks + averageNumberOfTicks + ";";
             delay = delay + averageDelay + ";";
             delayPerTick = delayPerTick + ";";
-            header = header +"Average;";
+            header.append("Average;");
 
             _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+".csv","timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
             writeInTextFile(_reportFile,_hlaTimeStep + ";"+_hlaLookAHead + ";" + 
@@ -1707,7 +1742,10 @@ TimeRegulator {
                             + " put Event: " + ravevent.toString() + " in "
                             + hs.getDisplayName());
                 }
-                _folRAVsTimes=_folRAVsTimes+ravevent.timeStamp+";";
+                System.out.println(_folRAVsTimes);
+                if(_folRAVsTimes.lastIndexOf("*")>=0){
+                    _folRAVsTimes.replace(_folRAVsTimes.lastIndexOf("*"),_folRAVsTimes.length(),ravevent.timeStamp+";");
+                }
                 events.removeFirst();
             }
         }
@@ -1812,20 +1850,23 @@ TimeRegulator {
      * 
      * @param folderName The name of the folder that will be created.
      * @return The full address of the folder in a string.
+     * @exception IOException If the folder cannot be created.
      */
-    private String _createFolder(String folderName){
+    private String _createFolder(String folderName) throws IOException {
         String homeDirectory = System.getProperty("user.home");
         folderName= homeDirectory + "/" +folderName;
         File folder = new File(folderName);
         if (!folder.exists()) {
             try{
-                folder.mkdir();
-                System.out.println("Folder "+ folderName +" created.");
+                if (!folder.mkdir()) {
+                    throw new IOException("Failed to create " + folder + " directory.");
+                } else {
+                    System.out.println("Folder "+ folderName +" created.");
+                }
                 return folderName;
             } 
             catch(SecurityException se){
-                System.out.println("Could not create the folder "+ folderName +".");
-                return null;
+                throw new IOException("Could not create the folder "+ folderName +".");
             }        
         }else{
             return folderName;
@@ -1844,12 +1885,21 @@ TimeRegulator {
         _runtime = 0;
         _timeOfTheLastAdvanceRequest=0;
         _numberOfOtherTicks=0;
-        _UAVsValues="";
-        _pUAVsTimes="";
-        _preUAVsTimes="";
-        _RAVsValues="";
-        _pRAVsTimes="";
-        _folRAVsTimes="";
+        _numberOfAttributesToPublish=_hlaAttributesToPublish.size();
+        _nameOfTheAttributesToPublish= new String[_numberOfAttributesToPublish];
+        Object attributesToPublish[]= _hlaAttributesToPublish.keySet().toArray();  
+        System.out.println("Attributes to publish: ");
+        _UAVsValues=new StringBuffer[_numberOfAttributesToPublish];
+        _RAVsValues=null;
+        for(int i = 0; i < _numberOfAttributesToPublish; i ++){        
+            _nameOfTheAttributesToPublish[i]=attributesToPublish[i].toString();
+            _UAVsValues[i]=new StringBuffer("");
+            System.out.println(_nameOfTheAttributesToPublish[i]);
+        }
+        _pUAVsTimes=new StringBuffer("");
+        _preUAVsTimes=new StringBuffer("");
+        _pRAVsTimes=new StringBuffer("");
+        _folRAVsTimes=new StringBuffer("");
         _TAGDelay=new ArrayList<Double>();
         _numberOfTicks=new ArrayList<Integer>();
         _numberOfRAVs=0;
@@ -2002,13 +2052,17 @@ TimeRegulator {
     private File _UAVsValuesFile;
     private Date _date;
     //FIXME: add comments
-    private String _UAVsValues;
-    private String _pUAVsTimes;
-    private String _preUAVsTimes;
+    private StringBuffer[] _UAVsValues;
+    private int _numberOfAttributesToPublish;
+    private int _numberOfAttributesSubscribedTo;
+    private String[] _nameOfTheAttributesToPublish;
+    private String[] _nameOfTheAttributesSubscribedTo;
+    private StringBuffer _pUAVsTimes;
+    private StringBuffer _preUAVsTimes;
     private File _RAVsValuesFile;
-    private String _RAVsValues;
-    private String _pRAVsTimes;
-    private String _folRAVsTimes;
+    private StringBuffer[] _RAVsValues;
+    private StringBuffer _pRAVsTimes;
+    private StringBuffer _folRAVsTimes;
     /** Represents the instant when the simulation is fully started 
      * (when the last federate starts running).
      */
@@ -2491,8 +2545,55 @@ TimeRegulator {
                                             + hs.getDisplayName());
                                 }
                                 done = true;
-                                _pRAVsTimes=_pRAVsTimes+_getDoubleOfTime(te.timeStamp)+";";
-                                _RAVsValues=_RAVsValues + value.toString()+";";
+                                String attributeName = hs.getParameterName();
+                                
+                                String pRAVTimeStamp =_getDoubleOfTime(te.timeStamp)+";";
+                                if(_numberOfRAVs>0 && (_pRAVsTimes.length() -_pRAVsTimes.lastIndexOf(pRAVTimeStamp))<= pRAVTimeStamp.length()){
+                                    int indexOfAttribute=0;
+                                    for(int j = 0; j<_numberOfAttributesSubscribedTo;j++){
+                                        if(_nameOfTheAttributesSubscribedTo[j].substring(_nameOfTheAttributesSubscribedTo[j].lastIndexOf("-"+attributeName)+1).equals(attributeName)){
+                                            indexOfAttribute=j;
+                                            break;
+                                        }
+                                    }
+                                    _RAVsValues[indexOfAttribute].replace(_RAVsValues[indexOfAttribute].length()-2,_RAVsValues[indexOfAttribute].length(),value.toString()+";");
+                                   //_UAVsValues[indexOfAttribute].replace(_UAVsValues[indexOfAttribute].length()-2,_UAVsValues[indexOfAttribute].length(),in.toString()+";");
+                                }else{
+                                    System.out.println("RAVs: "+_numberOfRAVs);
+                                    if(_numberOfRAVs<1){
+                                        _numberOfAttributesSubscribedTo=_hlaAttributesSubscribedTo.size();
+                                        _nameOfTheAttributesSubscribedTo= new String[_numberOfAttributesSubscribedTo];
+                                        Object attributesSubscribedTo[]= _hlaAttributesSubscribedTo.keySet().toArray(); 
+                                        System.out.println("Attributes subscribed to: ");
+                                        _RAVsValues= new StringBuffer[_numberOfAttributesSubscribedTo];
+                                        for(int y = 0; y < _numberOfAttributesSubscribedTo; y ++){        
+                                            _nameOfTheAttributesSubscribedTo[y]=attributesSubscribedTo[y].toString();
+                                           _RAVsValues[y]=new StringBuffer("");
+                                            System.out.println(_nameOfTheAttributesSubscribedTo[y]);
+                                        }
+                                    }
+                                    
+                                    int indexOfAttribute=0;
+                                    System.out.println(attributeName);
+                                    for(int j = 0; j<_numberOfAttributesSubscribedTo;j++){
+                                        if(_nameOfTheAttributesSubscribedTo[j].substring(_nameOfTheAttributesSubscribedTo[j].lastIndexOf("-"+attributeName)+1).equals(attributeName)){
+                                            indexOfAttribute=j;
+                                            break;
+                                        }
+                                    }
+                                    _folRAVsTimes.append("*");
+                                    _pRAVsTimes.append(pRAVTimeStamp);
+                                    for(int j = 0; j<_numberOfAttributesSubscribedTo;j++){
+                                        if(j==indexOfAttribute){
+                                            _RAVsValues[j].append(value.toString()+";");
+                                        }else{
+                                            _RAVsValues[j].append("-;");
+                                        }
+                                    }
+                                }
+                                _numberOfRAVs++;
+                                //_RAVsValues=_RAVsValues + value.toString()+";";
+                                        
             
                             } catch (IllegalActionException e) {
                                 e.printStackTrace();
@@ -2509,8 +2610,6 @@ TimeRegulator {
                 throw new FederateInternalError(
                         "Received a RAV but could not put in "
                                 + "anyobject. Means the ChangeRequest has not been processed yet");
-            }else{
-                _numberOfRAVs++;
             }
         }
 

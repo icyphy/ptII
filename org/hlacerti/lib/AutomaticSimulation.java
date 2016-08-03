@@ -275,15 +275,13 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         for(int i=0;i<numberOfInteractions;i++){   
             final CompositeEntity[] model= new CompositeEntity[numberOfFederates];
             for(int j=0;j<numberOfFederates;j++){
-                String info = "";
+                StringBuffer info = new StringBuffer();
                 for (int y = 0; y < numberOfParameters; y++) {
-                    info = info+"\n" + data[j][y][0] +"\n"+ data[j][y][1]+values[y][i]+ "\">";
+                    info.append("\n" + data[j][y][0] +"\n"+ data[j][y][1]+values[y][i]+ "\">");
                 }
-                info = info.substring(1);
-                info = info+"\n"+ data[j][numberOfParameters][0];
                 System.out.println("Reading file "+j +".");
 
-                _writeInFile(file[j], info);
+                _writeInFile(file[j], info.substring(1) + "\n"+ data[j][numberOfParameters][0]);
                 model[j]=_openModel(modelPath[j]);
 
             }
