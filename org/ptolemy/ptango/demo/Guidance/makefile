@@ -47,7 +47,6 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 OTHER_FILES_TO_BE_JARED = \
 	Guidance.xml \
-	GuidanceSingleUserWithName.jar \
 	GuidanceSingleUserWithName.xml \
 	IndoorLocalizationMap.xml \
 	IndoorLocalizationMapSingleUser.xml  \
@@ -60,7 +59,8 @@ EXTRA_SRCS = \
 # want make checkjunk to barf on them.
 MISC_FILES = $(DIRS)
 
-OPTIONAL_FILES = $(DIRS)
+OPTIONAL_FILES = $(DIRS) \
+	GuidanceSingleUserWithName.jar
 
 # Files to remove with 'make clean'
 KRUFT = \

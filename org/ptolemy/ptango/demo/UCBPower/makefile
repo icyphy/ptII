@@ -56,7 +56,6 @@ OTHER_FILES_TO_BE_JARED = \
 	ucb_medium_map.png \
 	UCBPower.xml \
 	UCBPowerAnalyzerForServer.xml \
-	UCBPowerAnalyzerServer.jar \
 	UCBPowerAnalyzerServer.xml \
 	UCBPowerForServer.xml 
 
@@ -67,7 +66,8 @@ EXTRA_SRCS = \
 # want make checkjunk to barf on them.
 MISC_FILES =
 
-OPTIONAL_FILES =
+OPTIONAL_FILES = \
+	UCBPowerAnalyzerServer.jar
 
 # Files to remove with 'make clean'
 KRUFT = \
