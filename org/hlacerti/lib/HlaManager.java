@@ -1216,27 +1216,33 @@ TimeRegulator {
             String fullName=federateName.toString();
             //String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
             String nameOfTheFile= fullName.substring(fullName.indexOf('{')+1,  fullName.lastIndexOf('.'));
-
+            String RKSolver="<property name=\"ODESolver\" class=\"ptolemy.data.expr.StringParameter\" value=\"ExplicitRK";
             nameOfTheFile = nameOfTheFile.substring(1, nameOfTheFile.lastIndexOf('.')) + ".xml";
+            String path = fedFile.asFile().getPath();
+            path = path.substring(0,path.lastIndexOf("/") +1);
+            File file = new File(path+nameOfTheFile);
+           
 
-            String info = "Federate "+ getDisplayName() +" in the model "+nameOfTheFile;
+            StringBuffer info = new StringBuffer("Federate "+ getDisplayName() +" in the model "+nameOfTheFile);
+            RKSolver = AutomaticSimulation.findParameterValue(file, RKSolver, 0);
+            info.append("\nRKSolver: " + RKSolver);
 
-            info = info +  "\n" +"stopTime: " +_stopTime
-                    + "    hlaTimeUnit: "+_hlaTimeUnitValue + "    lookAhead: " + _hlaLookAHead;
+            info.append("\n" +"stopTime: " +_stopTime
+                    + "    hlaTimeUnit: "+_hlaTimeUnitValue + "    lookAhead: " + _hlaLookAHead);
             if(_isCreator){
-                info = "SP creator -> " + info ;
+                info = new StringBuffer( "SP creator -> " + info) ;
             }
             if(_timeStepped){
-                info = info +"    Time Step: "  + _hlaTimeStep + "\n" 
-                        + "Number of TARs: " +_numberOfTARs;
+                info.append("    Time Step: "  + _hlaTimeStep + "\n" 
+                        + "Number of TARs: " +_numberOfTARs);
             }else if (_eventBased){
-                info = info + "Number of NERs: " +_numberOfNERs ;
+                info.append("\nNumber of NERs: " +_numberOfNERs) ;
             }
-            info =  info +"    Number of UAVs:" +_numberOfUAVs+ "    Number of RAVs:" +_numberOfRAVs+ "\nNumber of TAGs: " + _numberOfTAGs +"\n" 
-                    +"Runtime: " +_runtime+"\n";
-            writeInTextFile(_file,info);
+            info.append("    Number of UAVs:" +_numberOfUAVs+ "    Number of RAVs:" +_numberOfRAVs+ "\nNumber of TAGs: " + _numberOfTAGs +"\n" 
+                    +"Runtime: " +_runtime+"\n");
+            writeInTextFile(_file,info.toString());
         }catch(Exception e){
-            System.out.println("Couldn't write in the txt file.");
+            System.out.println("Couldn't write in the txt file." );
         }
 
     }
