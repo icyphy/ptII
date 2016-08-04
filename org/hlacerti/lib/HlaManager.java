@@ -1238,7 +1238,7 @@ TimeRegulator {
             }else if (_eventBased){
                 info.append("\nNumber of NERs: " +_numberOfNERs) ;
             }
-            info.append("    Number of UAVs:" +_numberOfUAVs+ "    Number of RAVs:" +_numberOfRAVs+ "\nNumber of TAGs: " + _numberOfTAGs +"\n" 
+            info.append("    Number of UAVs:" +_numberOfUAVs+"\nNumber of TAGs: " + _numberOfTAGs + "    Number of RAVs:" +_numberOfRAVs+ "\n" 
                     +"Runtime: " +_runtime+"\n");
             writeInTextFile(_file,info.toString());
         }catch(Exception e){
@@ -1291,13 +1291,13 @@ TimeRegulator {
             delayPerTick = delayPerTick + ";";
             header.append("Average;");
             if(_timeStepped){
-                _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+"TAR"+".csv","timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
-                writeInTextFile(_reportFile,_hlaTimeStep + ";"+_hlaLookAHead + ";" + 
+                _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+"TAR"+".csv","date;timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
+                writeInTextFile(_reportFile, _date +";"+_hlaTimeStep + ";"+_hlaLookAHead + ";" + 
                         _runtime +";" + totalNumberOfHLACalls+";"+_numberOfTARs+";"+ _numberOfTAGs+
                         ";"+_numberOfRAVs+";"+_numberOfUAVs+";"+ _numberOfTicks2+";"+averageDelay );
             }else{
-                _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+"NER"+".csv","lookahead;runtime;total number of calls;NERs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
-                writeInTextFile(_reportFile,_hlaLookAHead + ";" + 
+                _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+"NER"+".csv","date;lookahead;runtime;total number of calls;NERs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
+                writeInTextFile(_reportFile,_date +";" +_hlaLookAHead + ";" + 
                         _runtime +";" + totalNumberOfHLACalls+";"+_numberOfNERs+";"+ _numberOfTAGs+
                         ";"+_numberOfRAVs+";"+_numberOfUAVs+";"+ _numberOfTicks2+";"+averageDelay );
             }
