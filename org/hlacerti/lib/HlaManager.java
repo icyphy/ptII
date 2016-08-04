@@ -1230,7 +1230,7 @@ TimeRegulator {
             info.append("\n" +"stopTime: " +_stopTime
                     + "    hlaTimeUnit: "+_hlaTimeUnitValue + "    lookAhead: " + _hlaLookAHead);
             if(_isCreator){
-                info = new StringBuffer( "SP creator -> " + info) ;
+                info = new StringBuffer( "SP register -> " + info) ;
             }
             if(_timeStepped){
                 info.append("    Time Step: "  + _hlaTimeStep + "\n" 
@@ -1290,11 +1290,17 @@ TimeRegulator {
             delay = delay + averageDelay + ";";
             delayPerTick = delayPerTick + ";";
             header.append("Average;");
-
-            _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+".csv","timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
-            writeInTextFile(_reportFile,_hlaTimeStep + ";"+_hlaLookAHead + ";" + 
-                    _runtime +";" + totalNumberOfHLACalls+";"+_numberOfTARs+";"+ _numberOfTAGs+
-                    ";"+_numberOfRAVs+";"+_numberOfUAVs+";"+ _numberOfTicks2+";"+averageDelay );
+            if(_timeStepped){
+                _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+"TAR"+".csv","timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
+                writeInTextFile(_reportFile,_hlaTimeStep + ";"+_hlaLookAHead + ";" + 
+                        _runtime +";" + totalNumberOfHLACalls+";"+_numberOfTARs+";"+ _numberOfTAGs+
+                        ";"+_numberOfRAVs+";"+_numberOfUAVs+";"+ _numberOfTicks2+";"+averageDelay );
+            }else{
+                _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+"NER"+".csv","lookahead;runtime;total number of calls;NERs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
+                writeInTextFile(_reportFile,_hlaLookAHead + ";" + 
+                        _runtime +";" + totalNumberOfHLACalls+";"+_numberOfNERs+";"+ _numberOfTAGs+
+                        ";"+_numberOfRAVs+";"+_numberOfUAVs+";"+ _numberOfTicks2+";"+averageDelay );
+            }
 
             averageNumberOfTicks=averageNumberOfTicks/_numberOfTAGs;
             averageDelay=averageDelay/_numberOfTAGs;
