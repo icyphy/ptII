@@ -121,7 +121,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
     
     private static ArrayList<String> _changeRKSolver(ArrayList<String> file, int newSolver){
         if(newSolver >0 ){
-            String oldParameter="<property name=\"solver\" class=\"ptolemy.data.expr.StringParameter\" value=";
+            String oldParameter="<property name=\"solver\" class=\"ptolemy.data.expr.StringParameter\" value=\"RK";
             String newParameter="<property name=\"solver\" class=\"ptolemy.data.expr.StringParameter\" value=\"RK"+newSolver+"\">";
             String oldPropertyLine ="<property name=\"ODESolver\" class=\"ptolemy.data.expr.StringParameter\" value=\"ExplicitRK";
             String newPropertyLine ="<property name=\"ODESolver\" class=\"ptolemy.data.expr.StringParameter\" value=\"ExplicitRK"+newSolver+"Solver\">"; 
@@ -131,6 +131,34 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             return file;
         }
     }
+    /**
+     * 
+     * @param file
+     * @param propertyLine
+     * @param type The type of the data. 0 for String, 1 for int, 2 for float.
+     * @return
+     */
+    public static String findParameterValue(File file, String propertyLine, int type){
+        ArrayList<String> fileContent = _readFile(file);
+        String value="UNDEFINED";
+        for(String s: fileContent){
+            if(s.contains(propertyLine)){
+                try{
+                    value=s.substring(s.lastIndexOf("value=\"")+7, s.lastIndexOf("\""));
+                    if(type == 1){
+                        Integer.parseInt(value);
+                    }else if(type==2){
+                        Float.parseFloat(value);
+                    }
+                    break;
+                }
+                catch(Exception e){
+                    value ="UNDEFINED";
+                }
+            }
+        }
+        return value;
+    }
  
     
 
@@ -138,7 +166,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * parameter has to assume.
      * @param waitingTime The time the system will wait to close all the windows of a federation, after its execution has finished. 
      * This parameter is intended to give the user the ability to choose how long he will have to look at the simulation's results. 
-     * If the variable is given a negative value, the user will be asked repetedly if he had time to look at the models and they will 
+     * If the variable is given a negative value, the user will be asked repetedly if he havalued time to look at the models and they will 
      * only close when he answers "yes".
      * @param vergil An instance of vergil.
      * @param modelPath The path to the model you want to run.
@@ -380,7 +408,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             int waitingTime=input.nextInt();
             waitingTime = waitingTime*1000;
             System.out.println("Would you like to change the RK solver of the models?\n(This will only change something if there's a continuous director in at least one of the federates)\n"
-                    + "(Type a non positive number to keep using the current RK solver.)");
+                    + "(Type a positive number to change the RK solver)");
             int solver=input.nextInt();
             System.out.println("How many parameterers would you like to change in the models?");
             int numberOfParameters = input.nextInt();
