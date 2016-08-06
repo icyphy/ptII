@@ -261,6 +261,8 @@ public class CertiRtig extends NamedObj {
                 // Close the stdin of the subprocess.
                 _process.getOutputStream().close();                
                 
+            } catch (NullPointerException ex) {
+                // Ignore, _process was set to null elsewhere.
             } catch (IOException io) {
                 throw new IllegalActionException(
                         _hlaManager,
