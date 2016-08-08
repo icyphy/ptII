@@ -250,7 +250,7 @@ public class UDPSocketHelper extends VertxHelperBase {
         }
         
         /** Set the receive type. If this is not called, the type defaults to "string".
-         *  @type The name of the receive type.
+         *  @param type The name of the receive type.
          */
         public void setReceiveType(String type) {
             try {
@@ -261,7 +261,7 @@ public class UDPSocketHelper extends VertxHelperBase {
         }
         
         /** Set the send type. If this is not called, the type defaults to "string".
-         *  @type The name of the send type.
+         *  @param type The name of the send type.
          */
         public void setSendType(String type) {
             try {

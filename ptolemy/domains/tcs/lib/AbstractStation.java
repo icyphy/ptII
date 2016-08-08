@@ -174,15 +174,13 @@ public class AbstractStation extends StationWriter implements Rejecting{
     ///////////////////////////////////////////////////////////////////
     ////                       ports and parameters                ////
     
-    /** The input port, which is a multiport */
+    /** The input port, which is a multiport. */
     public TypedIOPort input;
 
-    /** The output port, which is a multiport consisting of RecordTokens */
+    /** The output port, which is a multiport consisting of RecordTokens. */
     public TypedIOPort output;
 
-    /** The station ID.  The initial value is an integer with value
-     * -1.
-     */
+    /** The station ID.  The initial value is an integer with value -1. */
     public Parameter stationId;
 
 

@@ -133,6 +133,7 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
      *  @param source The source image, on which motion is detected.
      *  @param destination The destination image, on which the red circle is added,
      *   or null to specify to add the circle to the source image.
+     *  @return the filtered image.
      */
     @Override
     public BufferedImage filter(BufferedImage source, BufferedImage destination) {
@@ -205,6 +206,10 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
 
 
 
+    /** Detect faces.
+     *  @param img The image containing faces
+     *  @return An array of faces.
+     */
     public Rect[] detectFaces(Mat img) {
         Mat gray = new Mat();
         Imgproc.cvtColor(img, gray, Imgproc.COLOR_RGB2GRAY);
@@ -228,10 +233,16 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         return _facesDetected;
     }
 
+    /** Set the count of faces detected.
+     *  @param count the count of faces detected.
+     */
     public void setFaceCount(int count) {
         _facesDetected = count;
     }
    
+    /** Set the minimum face size.
+     *  @param size the minimum face size, which must be positive.
+     */
     public void setMinFaceSize( int size ) throws IllegalActionException {
         if ( size > 0) {
             _minFaceSize = size;
@@ -240,6 +251,9 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         }
     }
     
+    /** Set the maximum face size.
+     *  @param size the maximum face size, which must be positive.
+     */
     public void setMaxFaceSize( int size ) throws IllegalActionException {
         if ( size > 0) {
             _maxFaceSize = size;

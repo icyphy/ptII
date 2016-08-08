@@ -2773,7 +2773,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     }
     
     /**
-     * Enter event mode of the FMU
+     * Enter event mode of the FMU.
      *
      */
     protected void _fmiEnterEventModeJNI() {
@@ -2854,7 +2854,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      * array.
      *
      * @param values The values of the outputs to get.
-     * @param valueReferences The value references of the outputs.
      */
     protected void _fmiGetContinuousStatesJNI(double values[]) {
         runNativeFMU(_fmiJNIComponent, 4, null, null, null, 0.0, 0.0, 0.0,
@@ -2903,7 +2902,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     }
     
     /**
-     * Get the event indicators
+     * Get the event indicators.
      *
      * @param values The event indicators values.
      */
@@ -3126,8 +3125,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /**
      * Initialize the FMU
      * array.
-     *
-     * @param timeValue The current time.
      */
     protected void _fmiInitializeJNI() {
         runNativeFMU(_fmiJNIComponent, 1, null, null, null, 0.0, 0.0, 0.0,
@@ -3170,8 +3167,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /**
      * Enter discrete states of the FMU
      * array.
-     *
-     * @param timeValue The current time.
      */
     protected void _fmiNewDiscreteStatesJNI() {
         // Time event indicator
@@ -3256,7 +3251,6 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *
      * @param values The values to assign to the inputs.
      * @param valueReferences The value references of the inputs.
-     * @param timeValue The current time.
      */
     protected void _fmiSetRealJNI(double values[], long valueReferences[]) {
         runNativeFMU(_fmiJNIComponent, 7, null, null, null, 0.0, 0.0, 0.0,
@@ -3289,7 +3283,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     }
     
     /**
-     * Set the time in the FMU
+     * Set the time in the FMU.
      *
      * @param timeValue The current time
      */

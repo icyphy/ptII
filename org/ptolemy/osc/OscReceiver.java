@@ -104,7 +104,7 @@ public class OscReceiver extends TypedAtomicActor implements OscEventListener {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
-    /** The receive port*/
+    /** The receive port. */
     public Parameter port;
 
     ///////////////////////////////////////////////////////////////////

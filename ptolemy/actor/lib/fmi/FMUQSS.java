@@ -167,13 +167,14 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      *
      * @param time The current simulation time.
      * @param dtSample The delta time used to approximate the first derivative.
-     * @param eventIndicatorDerivatives The (output) vector of 
+     * @param eventIndicatorVariableDerivatives The (output) vector of 
      * time rates of change of the event indicators variables
      * at <code>time</code>.
-     * @param eventIndicatorDerivatives2 The (output) vector of 
+     * @param eventIndicatorVariableDerivatives2 The (output) vector of 
      * time rates of change of the event indicators variables.
-     * @param eventIndicatorDerivatives3 The (output) vector of 
+     * @param eventIndicatorVariableDerivatives3 The (output) vector of 
      * time rates of change of the event indicators variables.
+     * @param order The order.
      * @return Success (0 for success, else user-defined error code).
      * @exception IllegalActionException If an error occurred.
      */
@@ -359,6 +360,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     * @param stateVariablesSample5 The vector of state variables at <code>timeSample5</code>.
     * @param inputVariablesSample5 The vector of input variables at <code>timeSample5</code>.
     * @param dtSample5 The delta between <timeSample4> and  <code>time</code>.
+    * @param stateModelOrder The model order.
     * @return Success (0 for success, else user-defined error code).
     * @exception IllegalActionException If an error occurred.
     */

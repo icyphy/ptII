@@ -588,7 +588,6 @@ public abstract class QSSBase {
      * to simply exposing the model for the user to evaluate as needed.</p>
      *
      * @param stateIdx The state index, 0 &le; stateIdx &lt; this.getStateCt().
-     * @param qStateMdl The model to use.
      * @return the external, quantized state model for a state predicted by the integrator.
      */
     public final ModelPolynomial getStateModel(final int stateIdx) {
@@ -1563,8 +1562,8 @@ public abstract class QSSBase {
     * method {@link #triggerRateEventWorkerEventDetection() 
     * to detect and handle state events.</p>
     * 
-    * @param eventDetection The event detection flag.
-    *
+    * @param numberEventIndicators The number of event indicators.
+    * @exception Exception If thrown while triggering the rate event.
     */
     public final void triggerRateEvent(final int numberEventIndicators)
             throws Exception {
@@ -1682,8 +1681,8 @@ public abstract class QSSBase {
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>
      *
-     * @param cStateMdl The model of internal, continuous state.
      * @param qStateMdl The model of external, quantized state.
+     * @param cStateMdl The model of internal, continuous state.
      * @param dq The quantum, i.e., the critical difference between the models, at
      *   which the external state model must be re-formed.
      * @param exactInputs If true, then the inputs are known to be exact.
@@ -1692,6 +1691,7 @@ public abstract class QSSBase {
      *   external state model must be re-formed.
      *   Note 0 <= dt <= Double.POSITIVE_INFINITY.
      *   A value of 0 means need a quantization-event as soon as possible.
+     * @param exactInputs True if exact inputs are expected.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS2QFromC(
             final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl,
@@ -1752,14 +1752,11 @@ public abstract class QSSBase {
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>
      *
-     * @param cStateMdl The model of internal, continuous state.
      * @param qStateMdl The model of external, quantized state.
+     * @param cStateMdl The model of internal, continuous state.
      * @param dq The quantum, i.e., the critical difference between the models, at
      *   which the external state model must be re-formed.
-     * @return dt The delta-time at which, in the absence of other events, the
-     *   external state model must be re-formed.
-     *   Note 0 <= dt <= Double.POSITIVE_INFINITY.
-     *   A value of 0 means need a quantization-event as soon as possible.
+     * @param exactInputs True if exact inputs are expected.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS2General(
             final ModelPolynomial qStateMdl, final ModelPolynomial cStateMdl,
@@ -1981,6 +1978,7 @@ public abstract class QSSBase {
      *
      * <p>The implementation of this "worker" method depends on the
      * specific member of the QSS family.</p>
+     * @exception Exception If the rate event worker fails.
      */
     protected abstract void _triggerRateEventWorker() throws Exception;
 
@@ -1990,6 +1988,7 @@ public abstract class QSSBase {
     *
     * <p>The implementation of this "worker" method depends on the
     * specific member of the QSS family.</p>
+     * @exception Exception If the rate event worker event detection fails.
     */
     protected abstract void _triggerRateEventWorkerEventDetection()
             throws Exception;
@@ -2315,7 +2314,7 @@ public abstract class QSSBase {
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables 
 
-    // Maximum Time for predicted quantization-event times.
+    /** Maximum Time for predicted quantization-event times. */
     protected Time _quantEvtTimeMax = Time.POSITIVE_INFINITY;
 
     ///////////////////////////////////////////////////////////////////
