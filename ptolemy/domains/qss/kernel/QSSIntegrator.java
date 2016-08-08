@@ -334,11 +334,11 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     * Ignored in this base class.
     *
     * @param time Simulation time.
-    * @param xx The vector of state variables at <code>time</code>.
-    * @param uu The vector of input variables at <code>time</code>.
+    * @param dtSample An array of samples over time.
     * @param xdot The vector of time rates of change of the state variables at <code>time</code>.
     * @param xdotSample The vector of time rates of change of the state variables at a sample time.
     * @param xdotSample2 The vector of time rates of change of the state variables at a sample time.
+    * @param stOrd The stOrd.
     * @return Success (0 for success, else user-defined error code).
     * @exception IllegalActionException If derivatives cannot be evaluated.
     */
@@ -409,6 +409,7 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     * @param uuSample5 The vector of input variables at <code>timeSample5</code>.
     * @param dtSample5 The delta between <timeSample5> and  <code>time</code>.
     * variables at <code>time</code>.
+    * @param stateModelOrder The state model order.
     * @return Success (0 for success, else user-defined error code).
     * @exception IllegalActionException If derivatives cannot be evaluated.
     */

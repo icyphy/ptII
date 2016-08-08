@@ -89,7 +89,7 @@ public class GDPHelper {
     }
 
     /** Set the value of the GDP debug flag.
-     * @param} debug The value of the GDP debug flag.  See
+     * @param debug The value of the GDP debug flag.  See
      * gdp/README.md for a complete summary.  The value is typically
      * <code><i>pattern</i>=<i>level</i></code>, for example
      * <code>gdplogd.physlog=39</code>.  To see the patterns, use the

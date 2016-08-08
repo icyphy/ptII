@@ -4876,7 +4876,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
             }
         }
     }
-    /** Move the items in the plot */
+    /** Move the items in the plot. */
     public class MoveListener implements MouseListener {
         // Author: Dirk Bueche.
 
@@ -4974,7 +4974,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
         // Author: Dirk Bueche.
 
         /** If the mouse wheel is moved, then zoom accordingly.
-         *  @param event The mouse wheel event.
+         *  @param e The mouse wheel event.
          */
         public void mouseWheelMoved(MouseWheelEvent e) {
             String message;

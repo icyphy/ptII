@@ -239,7 +239,7 @@ public class TCSDirector extends DEDirector {
     
     
     /** Handle initializing of a SourceStation.
-     *  @param abstractSourceStation
+     *  @param abstractSourceStation The Abstract Source state
      *  @throws IllegalActionException If the line symbol cannot be obtained or if the stationID is -1.
      */
     public void handleInitializedSourceStation(AbstractSourceStation abstractSourceStation) throws IllegalActionException{
@@ -261,8 +261,9 @@ public class TCSDirector extends DEDirector {
         _brokenStations.put(symbol,(Token)(new BooleanToken(false)));  
     }
     
-     /** Retrun color of the train.
+     /** Return color of the train.
      *  @param id Id of the train.
+     *  @return the color of the train.
      *  @throws IllegalActionException If thrown while creating an ArrayToken
      *  from the color specification.
      */

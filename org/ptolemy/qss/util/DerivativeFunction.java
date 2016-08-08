@@ -169,6 +169,7 @@ public interface DerivativeFunction {
     * @param uuSample5 The vector of input variables at <code>timeSample5</code>.
     * @param dtSample5 The delta between <timeSample5> and  <code>time</code>.
     * variables at <code>time</code>.
+    * @param stateModelOrder The order of the model.
     * @return Success (0 for success, else user-defined error code).
     * @exception IllegalActionException If derivatives cannot be evaluated.
     */
