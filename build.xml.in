@@ -215,10 +215,31 @@
 
   <!-- Ant targets. Alphabetize and add a description, please.  -->
 
+  <!-- Targets that start with "-" are not meant to be run by users.
+       These targets typically check to see if files are present.
+  -->
+
+  <target name="-check-bin-vergil" unless="bin.vergil.exists">
+    <available property="bin.vergil.exists" file="bin/vergil"/>
+  </target>
+
   <target name="-check-jshint-executable" unless="jshint.executable.exists">
     <available property="jshint.executable.exists" file="${jshint.executable}"/>
   </target>
   
+  <target name="-check-make-bin-vergil" unless="bin.vergil.exists">
+    <condition property="bin.vergil.makeable">
+      <and>
+	<not>
+	  <available file="bin/vergil"/>
+	</not>
+	<available file="mk/ptII.mk"/>
+	<available file="make"
+		   filepath="${env.PATH}"/>
+      </and>
+    </condition>
+  </target>
+
   <target name="-check-ptII-mk-file" unless="ptII.mk..exists">
     <available property="ptII.mk.exists" file="mk/ptII.mk"/>
   </target>
@@ -232,17 +253,17 @@
   </target>
 
   <target name="build"
-	  depends="build-message, build-subprojects, build-project"
-	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target.  Run 'ant build-all' to build everything."/>
+	  depends="build-message, build-subprojects, build-project, build-bin"
+	  description="Build Ptolemy II by compiling the .java files and possibly the scripts in $PTII/bin.  This is the default ant target.  Run 'ant build-all' to build everything."/>
 
   <target name="build-all"
-	  depends="build, build-lbnl, build-bin"
-	  description="Build Ptolemy II by compiling the .java files, the .c files in $PTII/lbnl and the $PTII/bin scripts."/>
+	  depends="build, build-lbnl"
+	  description="Build Ptolemy II by compiling the .java files, the scripts in $PTII/bin and the .c files in $PTII/lbnl"/>
 
   <target name="build-bin"
-	  depends="-check-ptII-mk-file, build-bin-not"
+	  depends="-check-ptII-mk-file, -check-bin-vergil, -check-make-bin-vergil, build-bin-not, build-not-bin-vergil"
 	  description="Run make in $PTII/bin, which creates scripts like $PTII/bin/vergil."
-	  if="${ptII.mk.exists}">
+	  if="${bin.vergil.makeable}">
       <exec dir="${basedir}/bin" executable="make">
       </exec>
   </target>
@@ -251,6 +272,15 @@
 	  unless="${ptII.mk.exists}">
       <echo>
 	$PTII/mk/ptII.mk does not exist, perhaps (cd $PTII; ./configure) has not been run?
+      </echo>
+  </target>
+
+  <target name="build-not-bin-vergil"
+	  unless="${bin.vergil.exists}">
+      <echo>
+	$PTII/bin/vergil does not exist, perhaps (cd $PTII/bin; make) has not been run?
+	This can happen if the make binary cannot be found in the path or if $PTII/mk/ptII.mk
+	is not present.
 	Skipping running make in $PTII/bin, which creates scripts like $PTII/bin/vergil.
 	This is only an issue if you want to invoke "$PTII/bin/vergil" instead of "ant vergil".
 	However, $PTII/bin does include other scripts that may be of use.
