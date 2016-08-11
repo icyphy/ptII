@@ -35,11 +35,14 @@ import org.terraswarm.gdp.GDP_GCL;
 import org.terraswarm.gdp.GDP_NAME;
 
 
+import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+
+import ptolemy.util.StringUtilities;
 
 /** Helper for the GDP JavaScript module for use by accessors.
  *
@@ -70,12 +73,25 @@ public class GDPHelper {
     public GDPHelper(String logName, int ioMode, String logdname) throws GDPException {
         // The GDP_GCL constructor calls the gdp_init() C function for us.
         System.out.println("GDPHelper.GDPHelper(" + logName + ", " + ioMode + ", " + logdname + "): ");
+
+	// Update ~/.ep_adm_params/gdp according to the value of logdname.
+	String swarmGdpRouters = "swarm.gdp.routers=gdp-03.eecs.berkeley.edu; gdp-02.eecs.berkeley.edu";
 	if (logdname.length() == 0) {
 	    try {
 		logdname = InetAddress.getLocalHost().getHostName();
+		swarmGdpRouters = "swarm.gdp.routers=Localhost";
 	    } catch (Throwable throwable) {
 		throw new GDPException("Could not get the local host name.", throwable);
 	    }
+	}
+        String userHome = StringUtilities.getProperty("user.home");
+	if (userHome.length() == 0) {
+	    throw new GDPException("Could not get the user.home JVM property?  This is necessary so that ~/.ep_adm_params/gdp can be created to configure the hostname of the gdp router.");
+	}
+	try {
+	    GDPManager.setGdpConfigurationFile(userHome, swarmGdpRouters);
+	} catch (IOException ex) {
+	    throw new GDPException("Could not update ~/.ep_adm_params/gdp with the GDP router name(s).");
 	}
         _gcl = GDP_GCL.newGCL(new GDP_NAME(logName), ioMode, new GDP_NAME(logdname));
         _logName = logName;    

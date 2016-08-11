@@ -283,6 +283,7 @@ public class GDPManager extends AbstractInitializableAttribute {
             exec.setWorkingDirectory(_gdp);
             List execCommands = new LinkedList<String>();
 	    // Do not require libavahi, which is used for zero-conf support.  libavah is not easy to compile under Darwin with homebrew
+	    // Run clean_java to get rid of jar files from previous versions.
             String makeCommand = "make all_noavahi install_Java";
             execCommands.add(makeCommand);
             exec.setCommands(execCommands);
@@ -420,29 +421,7 @@ public class GDPManager extends AbstractInitializableAttribute {
                 }
             }
         } else {
-            // Create ~/.ep_adm_params/ 
-            _epAdmParamsDirectory = new File(userHome, ".ep_adm_params");
-            if (!_epAdmParamsDirectory.exists()) {
-                if (!_epAdmParamsDirectory.mkdirs()) {
-                    throw new IOException("Failed to create " + _epAdmParamsDirectory);
-                }
-            }
-
-            System.out.println("Using configuration files in " + _epAdmParamsDirectory);
-
-            // Create ~/.ep_adm_params/gdp
-            File gdpConfigurationFile = new File(_epAdmParamsDirectory, "gdp");
-            BufferedWriter writer = null;
-            try {
-                writer = new BufferedWriter(new OutputStreamWriter(
-                                new FileOutputStream(gdpConfigurationFile), "utf-8"));
-                writer.write("swarm.gdp.routers=localhost");
-                writer.newLine();
-            } finally {
-                if (writer != null) {
-                    writer.close();
-                }
-            }
+	    GDPManager.setGdpConfigurationFile(userHome, "swarm.gdp.routers=localhost");
 
             // Create the directory where the logs are stored.
             _gclsDirectory = new File(gdpSourceDirectory, "gcls");
@@ -454,7 +433,7 @@ public class GDPManager extends AbstractInitializableAttribute {
 
             // Create ~/.ep_adm_params/gdplogd
             File gdplogdConfigurationFile = new File(_epAdmParamsDirectory, "gdplogd");
-            writer = null;
+	    BufferedWriter writer = null;
             try {
                 writer = new BufferedWriter(new OutputStreamWriter(
                                 new FileOutputStream(gdplogdConfigurationFile), "utf-8"));
@@ -589,6 +568,40 @@ public class GDPManager extends AbstractInitializableAttribute {
                 throw new IllegalActionException(this, ex, "Failed to build the gdp.");
             }
         }
+    }
+
+    /** Write the value of the settings parameter to ~/.ep_adm_params/gdp.
+     *  @param userHome The value of the user.home jvm property.
+     *  @param settings The settings to be written, such as "swarm.gdp.routers=localhost"
+     *  or "gdp-03.eecs.berkeley.edu; gdp-02.eecs.berkeley.edu".
+     *  @exception IOException If the file cannot be created.
+     */
+    public static void setGdpConfigurationFile(String userHome, String settings)
+	throws IOException {
+	// Create ~/.ep_adm_params/ 
+	_epAdmParamsDirectory = new File(userHome, ".ep_adm_params");
+	if (!_epAdmParamsDirectory.exists()) {
+	    if (!_epAdmParamsDirectory.mkdirs()) {
+		throw new IOException("Failed to create " + _epAdmParamsDirectory);
+	    }
+	}
+
+	System.out.println("GDPManager: Using configuration files in " + _epAdmParamsDirectory);
+	System.out.println("GDPManager: gdp settings:\n" + settings);
+
+	// Create ~/.ep_adm_params/gdp
+	File gdpConfigurationFile = new File(_epAdmParamsDirectory, "gdp");
+	BufferedWriter writer = null;
+	try {
+	    writer = new BufferedWriter(new OutputStreamWriter(
+                                new FileOutputStream(gdpConfigurationFile), "utf-8"));
+	    writer.write(settings);
+	    writer.newLine();
+	} finally {
+	    if (writer != null) {
+		writer.close();
+	    }
+	}
     }
 
     /** Optionally delete the gcls log directory and terminate the
