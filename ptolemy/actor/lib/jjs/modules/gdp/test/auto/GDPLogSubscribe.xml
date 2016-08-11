@@ -1,0 +1,432 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="GDPLogSubscribe" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -10.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={49, 23, 934, 790}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 680]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.877049701273926">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{196.4140818154634, 344.14403057098383}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Each time the model is run, create a new log.&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, 190.0]">
+        </property>
+    </property>
+    <property name="logdname" class="ptolemy.data.expr.StringParameter" value="edu.berkeley.eecs.gdp-01.gdplogd">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 85.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Read from the log. In the GDP, record numbers start at 1.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-175.0, 515.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Append to the end of the log.  Each time the model is run, a new log is created,&#10;so the append starts with record number 1.&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, 370.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If logdname is blank, then the local hostname is used.&#10;To use the production servers, try:&#10;edu.berkeley.eecs.gdp-01.gdplogd&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-150.0, 15.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create a new log, append, read and subscribe to it.&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -25.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Subscribe to the log.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-160.0, 690.0]">
+        </property>
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.1}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 300.0]">
+        </property>
+    </entity>
+    <entity name="GDPLogAppend" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/* Append to a Global Data Plane (GDP) log. */&#10;&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Append to a Global Data Plane (GDP) log.&#10; *&#10; *  @parameter {string} debugLevel The value of the GDP debug flag.  See&#10; *  gdp/README.md for a complete summary.  The value is typically&#10; *  &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To see the&#10; *  patterns, use the &quot;what&quot; command or strings $PTII/lib/libgdp* |&#10; *  grep '@(#)'.  Use &quot;*=40&quot; to set the debug level to 40 for all&#10; *  components. The value of level is not usually over 127.  Values&#10; *  over 100 may modify the behavior.&#10; *  @param {string} logname The GDP logname.  By convention, use &#10; *  a reverse fully qualified name like&#10; *  &quot;org.ptolemy.actor.lib.jjs.modules.gdp.demo.GDPLogRead.GDPLogRead&quot;&#10; *  @input {string} data The data to be written&#10; *  @input trigger An input that triggers firing the reading of the data&#10;&#10; *  @author Edward A. Lee, Nitesh Mor. Contributor: Christopher Brooks&#10; *  @version $$Id: GDPLogSubscribe.xml 75036 2016-08-11 20:56:59Z cxh $$ &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, addInputParameter, console, exports, get, getParameter, input, parameter, removeInputHandler, require */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var GDP = require('gdp');&#10;var handle = null;&#10;var log = null;&#10;var oldLogname = null;&#10;&#10;exports.setup = function() {&#10;    this.input('data', {'type': 'string'});&#10;    this.parameter('debugLevel', {'type': 'string'});&#10;    this.input('logname', {'type': 'string', 'value': 'myLog'});&#10;    this.input('logdname', {'type': 'string', 'value': ''});&#10;    this.input('trigger');&#10;};&#10;&#10;exports.append = function(data) {&#10;    console.log(&quot;GDPLogAppend.append()&quot;);&#10;    console.log(typeof(log));&#10;    var logname = this.getParameter('logname');&#10;    if (logname === '') {&#10;        throw new Error('The logname parameter cannot be empty.');&#10;    }&#10;    if (logname != oldLogname) {&#10;	var logdname = this.getParameter('logdname');&#10;	log = new GDP.GDP(logname, 2, logdname);&#10;	log.setDebugLevel(this.getParameter('debugLevel'));&#10;	oldLogname = logname;&#10;    }&#10;    var dataValues = this.get('data');&#10;    console.log('GDPLogAppend.js.append(): ' + dataValues);&#10;    log.append(dataValues);&#10;};&#10;&#10;exports.initialize = function() {&#10;    oldLogname = null;&#10;    handle = this.addInputHandler('trigger', this.exports.append.bind(this));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/gdp/GDPLogAppend.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 320.0]">
+        </property>
+        <property name="debugLevel" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="myLog">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logdname" class="ptolemy.actor.parameters.PortParameter" value="$logdname">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="logdname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.1}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 455.0]">
+        </property>
+    </entity>
+    <entity name="DisplayRead" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={893, 410, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 475.0]">
+        </property>
+    </entity>
+    <entity name="GDPLogRead" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/* Read a log. */&#10;&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Read a log.&#10; *  @version $$Id: GDPLogSubscribe.xml 75036 2016-08-11 20:56:59Z cxh $$ &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, parameter, removeInputHandler, require, send */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var GDP = require('gdp');&#10;var handle = null;&#10;var log = null;&#10;var oldLogname = null;&#10;&#10;exports.setup = function() {&#10;    this.output('data', {'type': 'string'});&#10;    this.parameter('debugLevel', {'type': 'string'});&#10;    this.input('logname', {'type': 'string', 'value': 'myLog'});&#10;    this.input('logdname', {'type': 'string', 'value': ''});&#10;    this.input('trigger');&#10;    this.input('recno', {'type': 'int'});&#10;};&#10;&#10;&#10;exports.read = function() {&#10;    console.log(&quot;GDPLogRead.read()&quot;);&#10;    var recno = this.get('recno');&#10;    var logname = this.getParameter('logname');&#10;    if (logname === '') {&#10;        throw new Error('The logname parameter cannot be empty.');&#10;    }&#10;    if (logname != oldLogname) {&#10;	console.log(&quot;GDPLogRead.read(): About to call new GDP.GDP()&quot;);&#10;	var logdname = this.getParameter('logdname');&#10;	log = new GDP.GDP(logname, 1, logdname);&#10;	log.setDebugLevel(this.getParameter('debugLevel'));&#10;	oldLogname = logname;&#10;    }&#10;    var data = log.read(recno);&#10;    this.send('data', data);&#10;};&#10;&#10;exports.initialize = function() {&#10;    console.log(&quot;GDPLogRead.initialize()&quot;);&#10;//     var logname = this.getParameter('logname');&#10;//     if (logname === '') {&#10;//         throw new Error('The logname parameter cannot be empty.');&#10;//     }&#10;//     var logdname = this.getParameter('logdname');&#10;//     log = new GDP.GDP(logname, 1, logdname);&#10;    oldLogname = null;&#10;    handle = this.addInputHandler('trigger', this.exports.read.bind(this));&#10;    console.log(&quot;GDPLogRead.initialize() done&quot;);&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/gdp/GDPLogRead.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 475.0]">
+        </property>
+        <property name="debugLevel" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="myLog">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logdname" class="ptolemy.actor.parameters.PortParameter" value="$logdname">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="logdname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="recno" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 340.0]">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 495.0]">
+        </property>
+    </entity>
+    <entity name="Test" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 535.0]">
+        </property>
+    </entity>
+    <entity name="RandomInteger2" class="ptolemy.actor.lib.RandomInteger">
+        <doc>Create a sequence of integers that are uniformly sampled from the range 32-bit integers</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="DiscreteClock4" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="0.5">
+        </property>
+        <property name="stopTimeIsLocal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 140.0]">
+        </property>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;ptolemy.actor.lib.jjs.modules.gdp.test.auto.GDPLogAppendRead.&quot; + random() + &quot;.&quot; + input">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 140.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="GDPLogCreate" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/* Create a Global Data Plane (GDP) log. */&#10;&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Create a Global Data Plane (GDP) log.&#10; *&#10; *  @parameter {string} debugLevel The value of the GDP debug flag.  See&#10; *  gdp/README.md for a complete summary.  The value is typically&#10; *  &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To see the&#10; *  patterns, use the &quot;what&quot; command or strings $PTII/lib/libgdp* |&#10; *  grep '@(#)'.  Use &quot;*=40&quot; to set the debug level to 40 for all&#10; *  components. The value of level is not usually over 127.  Values&#10; *  over 100 may modify the behavior.&#10; *  @input {string} logname The GDP logname.  By convention, use &#10; *  a reverse fully qualified name like&#10; *  &quot;org.ptolemy.actor.lib.jjs.modules.gdp.demo.GDPLogRead.GDPLogRead&quot;&#10; *  @input {string} logdname The IP address or DNS name of the gdp&#10; *  router.  If empty, then the swarm.gdp.routers key is searched for&#10; *  in the gdp configuration file ep_adm_para, in the following order&#10; *  &quot;`.ep_adm_params:~/.ep_adm_params:/usr/local/etc/ep_adm_params:/etc/ep_adm_params`&quot;&#10; *  The values of swarm.gdp.routers are then contacted in order.&#10; *  @input trigger An input that triggers firing the reading of the data&#10; *  @output output An output that is written to when the creation is complete.&#10; *&#10; *  @author Christopher Brooks&#10; *  @version $$Id: GDPLogSubscribe.xml 75036 2016-08-11 20:56:59Z cxh $$ &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, addInputParameter, console, exports, get, getParameter, input, parameter, removeInputHandler, require */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var GDP = require('gdp');&#10;var log = null;&#10;var handle = null;&#10;&#10;exports.setup = function() {&#10;    this.parameter('debugLevel', {'type': 'string'});&#10;    this.input('logname', {'type': 'string', 'value': 'myLog'});&#10;    this.input('logdname', {'type': 'string', 'value': ''});&#10;    this.output('output', {'type': 'string'});&#10;    this.input('trigger');&#10;};&#10;&#10;exports.create = function() {&#10;    console.log(&quot;GDPLogCreate.create()&quot;);&#10;    var logname = this.getParameter('logname');&#10;    if (logname === '') {&#10;        throw new Error('The logname parameter cannot be empty.');&#10;    }&#10;    var logdname = this.getParameter('logdname');&#10;    console.log('GDPLogCreate.create(: ' + logname + &quot;, &quot; + logdname + &quot;)&quot;);&#10;    log = new GDP.GDP(logname, 3, logdname);&#10;    log.setDebugLevel(this.getParameter('debugLevel'));&#10;    console.log('GDPLogCreate.create: after new GDP.GDP()');&#10;    this.send('output', logname);&#10;};&#10;&#10;exports.initialize = function() {&#10;    handle = this.addInputHandler('trigger', this.exports.create.bind(this));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/gdp/GDPLogCreate.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="debugLevel" class="ptolemy.data.expr.Parameter" value="*=20">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="mylog1">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logdname" class="ptolemy.actor.parameters.PortParameter" value="$logdname">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 225.0]">
+        </property>
+        <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="logdname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="DiscreteClock3" class="ptolemy.actor.lib.DiscreteClock">
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 635.0]">
+        </property>
+    </entity>
+    <entity name="DisplaySubscribe" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={894, 634, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 625.0]">
+        </property>
+    </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;datum was null?&quot;, &quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 695.0]">
+        </property>
+    </entity>
+    <entity name="GDPLogSubscribe" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/* Subscribe to a log. */&#10;&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Subscribe to a log.&#10; *  @version $$Id: GDPLogSubscribe.xml 75036 2016-08-11 20:56:59Z cxh $$ &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, getParameter, input, output, parameter, removeInputHandler, require, send */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var GDP = require('gdp');&#10;var log = null;&#10;var handle = null;&#10;var oldLogname = null;&#10;&#10;exports.setup = function() {&#10;    this.input('trigger');&#10;    this.output('data', {'type': 'string'});&#10;    this.parameter('debugLevel', {'type': 'string'});&#10;    this.input('logname', {'type': 'string', 'value': 'myLog'});&#10;    this.input('logdname', {'type': 'string', 'value': ''});&#10;    this.parameter('startrec', {'type': 'int', 'value': 0});&#10;    this.parameter('numrec', {'type': 'int', 'value':0});&#10;    this.parameter('timeout', {'type': 'int', 'value':0});&#10;};&#10;&#10;exports.getNextData = function() {&#10;    console.log(&quot;GDPLogSubscribe.getNextData()&quot;);&#10;    var logname = this.getParameter('logname');&#10;    if (logname === '') {&#10;        throw new Error('The logname parameter cannot be empty.  The _gdp_gcl_subscribe() C function will crash the JVM if the logname is empty.');&#10;    }&#10;    if (logname != oldLogname) {&#10;	console.log(&quot;GDPLogSubscribe.read(): About to call new GDP.GDP()&quot;);&#10;	var logdname = this.getParameter('logdname');&#10;	log = new GDP.GDP(logname, 1, logdname);&#10;	log.setDebugLevel(this.getParameter('debugLevel'));&#10;	oldLogname = logname;&#10;    }&#10;    log.subscribe(this, this.getParameter('startrec'), this.getParameter('numrec'), this.getParameter('timeout'));&#10;    console.log(&quot;GDPLogSubscribe.initialize() after subscribe()&quot;);&#10;&#10;    // this blocks&#10;    while (true) {&#10;        var data = log.getNextData(100);&#10;        console.log(&quot;GDPLogSubscribe.getNextData() data: &quot; + data);&#10;        if (data !== null) {&#10;            this.send('data', data); &#10;            break;&#10;        }&#10;    }&#10;};&#10;&#10;exports.initialize = function() {&#10;    console.log(&quot;GDPLogSubscribe.initialize()&quot;);&#10;    var oldLogname = null;&#10;    handle = this.addInputHandler('trigger', this.exports.getNextData.bind(this));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/gdp/GDPLogSubscribe.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="debugLevel" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logdname" class="ptolemy.actor.parameters.PortParameter" value="$logdname">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 625.0]">
+        </property>
+        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="myLog">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="logdname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[350.0, 475.0]">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[0.0, 300.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[30.0, 455.0]">
+        </vertex>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[150.0, 175.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[145.0, 275.0]">
+        </vertex>
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[340.0, 625.0]">
+        </vertex>
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation10"/>
+    <link port="GDPLogAppend.logname" relation="relation8"/>
+    <link port="GDPLogAppend.trigger" relation="relation10"/>
+    <link port="GDPLogAppend.data" relation="relation"/>
+    <link port="DiscreteClock2.output" relation="relation4"/>
+    <link port="DisplayRead.input" relation="relation6"/>
+    <link port="GDPLogRead.logname" relation="relation8"/>
+    <link port="GDPLogRead.trigger" relation="relation4"/>
+    <link port="GDPLogRead.recno" relation="relation2"/>
+    <link port="GDPLogRead.data" relation="relation6"/>
+    <link port="Ramp.output" relation="relation"/>
+    <link port="Ramp.trigger" relation="relation10"/>
+    <link port="Ramp2.output" relation="relation2"/>
+    <link port="Ramp2.trigger" relation="relation4"/>
+    <link port="Test.input" relation="relation6"/>
+    <link port="RandomInteger2.output" relation="relation5"/>
+    <link port="RandomInteger2.trigger" relation="relation3"/>
+    <link port="DiscreteClock4.output" relation="relation3"/>
+    <link port="Expression.output" relation="relation9"/>
+    <link port="Expression.input" relation="relation5"/>
+    <link port="GDPLogCreate.logname" relation="relation9"/>
+    <link port="GDPLogCreate.output" relation="relation8"/>
+    <link port="GDPLogCreate.trigger" relation="relation9"/>
+    <link port="DiscreteClock3.output" relation="relation7"/>
+    <link port="DisplaySubscribe.input" relation="relation11"/>
+    <link port="Test2.input" relation="relation11"/>
+    <link port="GDPLogSubscribe.logname" relation="relation8"/>
+    <link port="GDPLogSubscribe.trigger" relation="relation7"/>
+    <link port="GDPLogSubscribe.data" relation="relation11"/>
+</entity>
