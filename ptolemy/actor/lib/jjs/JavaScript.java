@@ -1878,6 +1878,14 @@ public class JavaScript extends TypedAtomicActor {
                         "Failure executing the " + methodName + " function: "
                                 + e.getMessage());
             }
+        } catch (Throwable throwable) {
+            if (error.getWidth() > 0) {
+                error.send(0, new StringToken(throwable.getMessage()));
+            } else {
+                throw new IllegalActionException(this, throwable,
+                        "Failure executing the " + methodName + " function: "
+                                + throwable.getMessage());
+            }
         }
     }
 
