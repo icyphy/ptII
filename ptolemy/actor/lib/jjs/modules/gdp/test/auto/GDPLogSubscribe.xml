@@ -256,7 +256,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="debugLevel" class="ptolemy.data.expr.Parameter" value="*=20">
+        <property name="debugLevel" class="ptolemy.data.expr.Parameter" value="*=10">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
