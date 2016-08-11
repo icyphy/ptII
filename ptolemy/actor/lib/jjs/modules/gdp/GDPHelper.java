@@ -30,6 +30,7 @@ package ptolemy.actor.lib.jjs.modules.gdp;
 
 import org.terraswarm.gdp.EP_TIME_SPEC;
 import org.terraswarm.gdp.GDP;
+import org.terraswarm.gdp.GDPException;
 import org.terraswarm.gdp.GDP_GCL;
 import org.terraswarm.gdp.GDP_NAME;
 
@@ -49,20 +50,31 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
  */
 public class GDPHelper {
 
-    /** Create a GDP Helper.
-     *  @param logName FIXME: What is the format?
-     *  @param ioMode The i/o mode for the log (0: for internal use only, 1: read-only, 2: read-append, 3: append-only).
+    /** Create a GDP Helper by opening a pre-existing GDP Log.
+     *
+     *  @param logName The name of the log.  The format can be any
+     *  string, but as multiple users could be sharing a log server, a
+     *  dot-separated log name that is the reverse domain name
+     *  followed by the user name could be helpful.  For example,
+     *  org.ptolemy.claudius.myLog01.
+     *  @param ioMode The i/o mode for the log (0: for internal use
+     *  only, 1: read-only, 2: read-append, 3: append-only).
+     *  @param logdName  Name of the log server where this should be 
+     *  placed if it does not yet exist.
+     *  @exception GDPException If the log does not exist or if the
+     *  connection to the log server fails
      */
-    public GDPHelper(String logName, int ioMode) {
+    public GDPHelper(String logName, int ioMode, String logdname) throws GDPException {
         // The GDP_GCL constructor calls the gdp_init() C function for us.
-        _gcl = GDP_GCL.newGCL(new GDP_NAME(logName), ioMode);
+        System.out.println("GDPHelper.GDPHelper(" + logName + ", " + ioMode + ", " + logdname + "): ");
+        _gcl = GDP_GCL.newGCL(new GDP_NAME(logName), ioMode, new GDP_NAME(logdname));
         _logName = logName;    
     }
 
     /** Append a string to the log.
      *  @param data The string to be appended, which assumed to be UTF-8.
      */   
-    public void append(String data) {
+    public void append(String data) throws GDPException {
         byte [] bytes = data.getBytes(StandardCharsets.UTF_8);
         System.out.println("GDPHelper.append(" + data + ")");
         _gcl.append(bytes);
@@ -83,7 +95,7 @@ public class GDPHelper {
      *  @return A string representing the records that were read or the empty
      *  string if no records were read.
      */
-    public String read(long numberOfRecords) {
+    public String read(long numberOfRecords) throws GDPException {
         HashMap<String,Object> datum = _gcl.read(numberOfRecords);
         return _datumToData(datum);
     }
@@ -109,7 +121,7 @@ public class GDPHelper {
      *  @param timeout The timeout in milliseconds.
      */
     public void subscribe(final ScriptObjectMirror currentObj, int startRecord,
-            int numberOfRecords, int timeout) {
+            int numberOfRecords, int timeout) throws GDPException {
         
         EP_TIME_SPEC timeoutSpec = null;
         if (timeout != 0) {
