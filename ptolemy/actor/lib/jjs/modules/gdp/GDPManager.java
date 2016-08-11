@@ -155,10 +155,6 @@ public class GDPManager extends AbstractInitializableAttribute {
         isLocalGDP.setTypeEquals(BaseType.BOOLEAN);
         isLocalGDP.setExpression("true");
 
-        logName = new StringParameter(this, "logName");
-        logName.setTypeEquals(BaseType.STRING);
-        logName.setExpression("");
-
         stopGDPDaemonsInWrapup = new Parameter(this, "stopGDPDaemonsInWrapup");
         stopGDPDaemonsInWrapup.setTypeEquals(BaseType.BOOLEAN);
         stopGDPDaemonsInWrapup.setExpression("true");
@@ -208,15 +204,6 @@ public class GDPManager extends AbstractInitializableAttribute {
      */
     public Parameter isLocalGDP;
     
-    /** The name of the GDP log to create, if any. The default value
-     *  is the empty string, meaning that no log is created.
-     *  Models typically have the logName as a parameter that is used
-     *  in this attribute and in the GDP accessors.
-     *  The default value is the empty string, meaning that no logs
-     *  are created.
-     */
-    public StringParameter logName;
-    
     /** If true, then stop the GDP daemons in wrapup().  The default
      *  value is true, meaning that the daemons are stopped.  If
      *  deleteAllGCLsInWrapup is true, the the value of this parameter
@@ -229,20 +216,6 @@ public class GDPManager extends AbstractInitializableAttribute {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
  
-    /** Checks constraints on the changed attribute (when it is required) and
-     *  associates his value to its corresponding local variables.
-     *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If the attribute is empty or negative.
-     */
-    @Override
-    public void attributeChanged(Attribute attribute)
-            throws IllegalActionException {
-        if (attribute == logName) {
-            _createLog = true;
-        }
-        super.attributeChanged(attribute);
-    }
-
     /** Download and build the gdp and gdp_router.
      *  @param gdpSourceDirectoryParameter The path to the gdp sources.
      *  @param cleanGDP True if the gdp should be cleaned before installing
@@ -309,7 +282,8 @@ public class GDPManager extends AbstractInitializableAttribute {
             final StringBufferExec exec = new StringBufferExec(true /*appendToStderrAndStdout*/);
             exec.setWorkingDirectory(_gdp);
             List execCommands = new LinkedList<String>();
-            String makeCommand = "make all install_Java";
+	    // Do not require libavahi, which is used for zero-conf support.  libavah is not easy to compile under Darwin with homebrew
+            String makeCommand = "make all_noavahi install_Java";
             execCommands.add(makeCommand);
             exec.setCommands(execCommands);
             exec.setWaitForLastSubprocess(true);
@@ -593,55 +567,6 @@ public class GDPManager extends AbstractInitializableAttribute {
             _gdpLogdExec.setWaitForLastSubprocess(false);
             _gdpLogdExec.start();
             _gdpLogdRunning = true;
-        }
-
-        // If necessary, create the log.
-        String log = ((StringToken) logName.getToken()).stringValue();
-        if (log.length() > 0
-                && ! _calledWrapupOnce
-                || ((BooleanToken) createNewLog.getToken()).booleanValue()
-                || ((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue()
-                || _createLog) {
-
-            _createLog = false;
-
-            // Sleep so that gdplogd can come up.
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException ex) {
-                System.err.println("GDPManager: sleep interrupted? " + ex);
-            }
-
-            // FIXME: instead of spawning a separate process, we should use the
-            // Java interface to the GDP.
-            StringBufferExec gclCreateExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
-            gclCreateExec.setWorkingDirectory(_gdp);
-            LinkedList<String> gclCreateCommands = new LinkedList<String>();
-            // FIXME: -k none means we are not setting keys
-            String gclCreateCommand = "./apps/gcl-create -k none -s " + _hostName + " -q " + log;
-            System.out.println("The command to create the log is:\n  "
-                    + " " + _gdp + "/" + gclCreateCommand);
-            gclCreateCommands.add(gclCreateCommand);
-            gclCreateExec.setCommands(gclCreateCommands);
-            gclCreateExec.setWaitForLastSubprocess(true);
-            gclCreateExec.start();
-            int returnCode = gclCreateExec.getLastSubprocessReturnCode();
-            if (returnCode == 0) {
-                MessageHandler.status("Created " + log);
-            } else if (returnCode == 73) {
-                if (((BooleanToken) createNewLog.getToken()).booleanValue()) {
-                    throw new IllegalActionException(this, "createNewLog was true, "
-                            + "yet the command " + _gdp + "/" + gclCreateCommand
-                            + "returned 73 indicating that the log was previously created?");
-                }
-                MessageHandler.status("Log " + log + " was previously created.");
-            } else {
-                throw new IllegalActionException(this, "Failed to create the " + log + "."
-                        + "  The command was:\n cd " + _gdp + "; "
-                        + gclCreateCommand + "\n Return code was: " + returnCode
-                        + " Result was:\n"
-                        + gclCreateExec.buffer);
-            }
         }
     }
 

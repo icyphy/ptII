@@ -35,6 +35,7 @@ import org.terraswarm.gdp.GDP_GCL;
 import org.terraswarm.gdp.GDP_NAME;
 
 
+import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -50,7 +51,8 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
  */
 public class GDPHelper {
 
-    /** Create a GDP Helper by opening a pre-existing GDP Log.
+    /** Create a GDP Helper by opening a pre-existing GDP Log
+     *  or creating one if necessary.
      *
      *  @param logName The name of the log.  The format can be any
      *  string, but as multiple users could be sharing a log server, a
@@ -60,13 +62,21 @@ public class GDPHelper {
      *  @param ioMode The i/o mode for the log (0: for internal use
      *  only, 1: read-only, 2: read-append, 3: append-only).
      *  @param logdName  Name of the log server where this should be 
-     *  placed if it does not yet exist.
+     *  placed if it does not yet exist.  If the string is of length
+     *  zero, then the hostname is used.
      *  @exception GDPException If the log does not exist or if the
-     *  connection to the log server fails
+     *  connection to the log server fails.
      */
     public GDPHelper(String logName, int ioMode, String logdname) throws GDPException {
         // The GDP_GCL constructor calls the gdp_init() C function for us.
         System.out.println("GDPHelper.GDPHelper(" + logName + ", " + ioMode + ", " + logdname + "): ");
+	if (logdname.length() == 0) {
+	    try {
+		logdname = InetAddress.getLocalHost().getHostName();
+	    } catch (Throwable throwable) {
+		throw new GDPException("Could not get the local host name.", throwable);
+	    }
+	}
         _gcl = GDP_GCL.newGCL(new GDP_NAME(logName), ioMode, new GDP_NAME(logdname));
         _logName = logName;    
     }
@@ -85,24 +95,26 @@ public class GDPHelper {
      *  @return The next data.
      */
     public String getNextData(int timeout) {
+	// FIXME: timeout should be a long.
         HashMap<String, Object> gdp_event = GDP_GCL.get_next_event(_gcl, timeout);
         System.out.println("GDPHelper.getNextData(" + timeout + "): " + gdp_event);
         return _datumToData((HashMap<String, Object>)gdp_event.get("datum"));
     }
     
-    /** Read the indicated number of records.
-     *  @param numberOfRecords The number of records to read.
+    /** Read a record.
+     *  @param recordNumber The record number to be read.  The first record
+     *  in the log is record 1.
      *  @return A string representing the records that were read or the empty
      *  string if no records were read.
      */
-    public String read(long numberOfRecords) throws GDPException {
-        HashMap<String,Object> datum = _gcl.read(numberOfRecords);
+    public String read(long recordNumber) throws GDPException {
+        HashMap<String,Object> datum = _gcl.read(recordNumber);
         return _datumToData(datum);
     }
 
     /** Set the value of the GDP debug flag.
      * @param debug The value of the GDP debug flag.  See
-     * gdp/README.md for a complete summary.  The value is typically
+     * gdp/README-developers.md for a complete summary.  The value is typically
      * <code><i>pattern</i>=<i>level</i></code>, for example
      * <code>gdplogd.physlog=39</code>.  To see the patterns, use the
      * "what" command or <code>strings $PTII/lib/libgdp* | grep
@@ -116,13 +128,14 @@ public class GDPHelper {
 
     /** Subscribe to a log.
      *  @param currentObj The handle   
-     *  @param startRecord The index of the starting record.
+     *  @param startRecord The index of the starting record.  The first 
+     *  record in the log is record 1.
      *  @param numberOfRecords The number of records to read.
      *  @param timeout The timeout in milliseconds.
      */
     public void subscribe(final ScriptObjectMirror currentObj, int startRecord,
             int numberOfRecords, int timeout) throws GDPException {
-        
+        // FIXME timeout should be a long.
         EP_TIME_SPEC timeoutSpec = null;
         if (timeout != 0) {
             timeoutSpec = new EP_TIME_SPEC(timeout/1000,
