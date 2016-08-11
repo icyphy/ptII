@@ -28,6 +28,10 @@
 /**
  * Module to access the Global Data Plane.
  * 
+ * This module is read by the Cape Code Accessor host.
+ *
+ * See <a href="https://www.terraswarm.org/accessors/wiki/Main/GDPWithAccessors">https://www.terraswarm.org/accessors/wiki/Main/GDPWithAccessors</a>
+ *
  * @module GDP
  * @author Edward A. Lee, Christopher Brooks
  * @version $$Id$$
@@ -41,28 +45,64 @@
 
 var GDPHelper = Java.type('ptolemy.actor.lib.jjs.modules.gdp.GDPHelper');
 
-exports.GDP = function (name, iomode) {
-    this.helper = new GDPHelper(name, iomode);
+/** Instantiate a GDPHelper.  Create the log if necessary.
+ *  @param name The name of the GDP log.  Dot-separated reverse notation preferred: edu.berkeley.terraswarm.yourname.log00
+ *  @param iomode Opening mode (0: for internal use only, 1: read-only, 2: read-append, 3: append-only)
+ * @param logdName  Name of the log server where this should be placed if it does not yet exist.
+ */
+exports.GDP = function (name, iomode, logdname) {
+    this.helper = new GDPHelper(name, iomode, logdname);
     return this.helper;
 };
 
+/** Append data to the already open log. 
+ *  @param {string} data The data to be appended
+ */
 exports.GDP.prototype.append = function (data) {
     this.helper.append(data);
 };
 
+/** Get the next data.
+ *  @param {int} timeout The timeout in milliseconds.
+ *  @return {string} the next data.
+ */
+exports.GDP.prototype.getNextData = function (timeout) {
+    // FIXME: The timeout should be a long.
+    return this.helper.getNextData(timeout);
+};
+
+/** Read a record.
+ *  @param {int} recno The record number.  GDP records start with 1.
+ *  @return {string} The data.
+ */
 exports.GDP.prototype.read = function (recno) {
     var data = this.helper.read(recno);
     return data;
 };
 
+/** Set the debug level.
+ *  @param {string} debugLevel The debug level.  "*=10" will set the
+ *  level to 10 for all modules.  See gdp/README-developers.md for
+ *  details.  The value is typically
+ *  <code><i>pattern</i>=<i>level</i></code>, for example
+ *  <code>gdplogd.physlog=39</code>.  To see the patterns, use the
+ *  "what" command or <code>strings $PTII/lib/libgdp* | grep
+ *  '@(#)'</code>.  Use <code>*=40</code> to set the debug level to 40
+ *  for all components. The value of level is not usually over 127.
+ *  Values over 100 may modify the behavior.
+ */
 exports.GDP.prototype.setDebugLevel = function (debugLevel) {
     this.helper.setDebugLevel(debugLevel);
 }
 
+/** Subscribe.
+ *  @param {int} startrec The starting record. The first record is record 1.
+ *  @param {int} numrecs The number of records
+ *  @param {int} timeout The timeout in milliseconds.
+ */
 exports.GDP.prototype.subscribe = function (startrec, numrecs, timeout) {
+    // FIXME: The timeout should be a long.
     this.helper.subscribe(this, startrec, numrecs, timeout);
 };
 
-exports.GDP.prototype.getNextData = function (timeout_msec) {
-    return this.helper.getNextData(timeout_msec);
-};
+
