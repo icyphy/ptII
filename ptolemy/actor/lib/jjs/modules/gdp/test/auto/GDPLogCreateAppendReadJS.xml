@@ -1,0 +1,487 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="GDPLogCreateAppendReadJS" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -10.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={49, 23, 934, 790}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 680]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.877049701273926">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{196.4140818154634, 344.14403057098383}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Each time the model is run, create a new log.&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, 190.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Read from the log. In the GDP, record numbers start at 1.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-155.0, 525.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Append to the end of the log.  Each time the model is run, a new log is created,&#10;so the append starts with record number 1.&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, 370.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create a new log, append, read and subscribe to it.&#10;&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 40.0]">
+        </property>
+    </property>
+    <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/gdp/test/auto">
+        </property>
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../hosts/node/nodeHostInvoke.js -timeout 6000 gdp/test/auto/@modelName@">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 10.0]">
+        </property>
+    </property>
+    <entity name="GDPLogAppend" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/* Append to a Global Data Plane (GDP) log. */&#10;&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Append to a Global Data Plane (GDP) log.&#10; *&#10; *  @input {string} data The data to be written.&#10; *&#10; *  @parameter {string} debugLevel The value of the GDP debug flag.&#10; *  See gdp/README-developers.md for a complete summary.  The value is&#10; *  typically &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To&#10; *  see the patterns, use the &quot;what&quot; command or strings&#10; *  $PTII/lib/libgdp* | grep '@(#)'.  Use &quot;*=40&quot; to set the debug&#10; *  level to 40 for all components. The value of level is not usually&#10; *  over 127.  Values over 100 may modify the behavior.&#10; *&#10; *  @param {string} logname The GDP logname.  By convention, use &#10; *  a reverse fully qualified name like&#10; *  &quot;org.ptolemy.actor.lib.jjs.modules.gdp.demo.GDPLogRead.GDPLogRead&quot;&#10; *&#10; *  @param {string} logdname The name of the logd server.  If empty,&#10; *  then the hostname of the local machine is used.&#10; *&#10; *  @input trigger An input that triggers firing the reading of the data.&#10; *&#10; *  @author Edward A. Lee, Nitesh Mor. Contributor: Christopher Brooks&#10; *  @version $$Id: GDPLogAppend.js 882 2016-08-11 21:20:30Z cxh $$ &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, addInputParameter, console, exports, get, getParameter, input, parameter, removeInputHandler, require */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var GDP = require('gdp');&#10;var handle = null;&#10;var log = null;&#10;var oldLogname = null;&#10;&#10;exports.setup = function() {&#10;    this.input('data', {'type': 'string'});&#10;    this.parameter('debugLevel', {'type': 'string'});&#10;    this.input('logname', {'type': 'string', 'value': 'myLog'});&#10;    this.input('logdname', {'type': 'string', 'value': ''});&#10;    this.input('trigger');&#10;};&#10;&#10;/** Append data to the log.&#10; *  If necessary create the log.&#10; *  @param {string} data The data to be appended.&#10; */&#10;exports.append = function(data) {&#10;    var logname = this.getParameter('logname');&#10;    if (logname === '') {&#10;        throw new Error('The logname parameter cannot be empty.');&#10;    }&#10;    if (logname != oldLogname) {&#10;	var logdname = this.getParameter('logdname');&#10;	log = new GDP.GDP(logname, 2, logdname);&#10;	log.setDebugLevel(this.getParameter('debugLevel'));&#10;	oldLogname = logname;&#10;    }&#10;    var dataValues = this.get('data');&#10;    console.log('GDPLogAppend.js.append(): ' + dataValues);&#10;    log.append(dataValues);&#10;};&#10;&#10;/** Add an input handler that will append data. */&#10;exports.initialize = function() {&#10;    oldLogname = null;&#10;    handle = this.addInputHandler('trigger', this.exports.append.bind(this));&#10;};&#10;&#10;/** Remove the input handler. */&#10;exports.wrapup = function() {&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/gdp/GDPLogAppend.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 320.0]">
+        </property>
+        <property name="debugLevel" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="myLog">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logdname" class="ptolemy.actor.parameters.PortParameter" value="edu.berkeley.eecs.gdp-01.gdplogd">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="logdname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="GDPLogRead" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/* Read a log. */&#10;&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Read a log.&#10; *&#10; *  @output {string} data The data that is read from the log&#10; *&#10; *  @parameter {string} debugLevel The value of the GDP debug flag.&#10; *  See gdp/README-developers.md for a complete summary.  The value is&#10; *  typically &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To&#10; *  see the patterns, use the &quot;what&quot; command or strings&#10; *  $PTII/lib/libgdp* | grep '@(#)'.  Use &quot;*=40&quot; to set the debug&#10; *  level to 40 for all components. The value of level is not usually&#10; *  over 127.  Values over 100 may modify the behavior.&#10; *&#10; *  @param {string} logname The GDP logname.  By convention, use &#10; *  a reverse fully qualified name like&#10; *  &quot;org.ptolemy.actor.lib.jjs.modules.gdp.demo.GDPLogRead.GDPLogRead&quot;&#10; *&#10; *  @param {string} logdname The name of the logd server.  If empty,&#10; *  then the hostname of the local machine is used.&#10; *&#10; *  @input trigger An input that triggers firing the reading of the data.&#10; *&#10; *  @input {int} recno The record number to be read.  In the GDP,&#10; *  the first record is record 1.&#10; *&#10; *  @author Edward A. Lee, Nitesh Mor. Contributor: Christopher Brooks&#10; *  @version $$Id: GDPLogRead.js 882 2016-08-11 21:20:30Z cxh $$ &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, parameter, removeInputHandler, require, send */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var GDP = require('gdp');&#10;var handle = null;&#10;var log = null;&#10;var oldLogname = null;&#10;&#10;/** Setup the parameters and ports. */&#10;exports.setup = function() {&#10;    this.output('data', {'type': 'string'});&#10;    this.parameter('debugLevel', {'type': 'string'});&#10;    this.input('logname', {'type': 'string', 'value': 'myLog'});&#10;    this.input('logdname', {'type': 'string', 'value': ''});&#10;    this.input('trigger');&#10;    this.input('recno', {'type': 'int'});&#10;};&#10;&#10;&#10;/** Read a record and send the data on the output.&#10; *  Note that if the log does not exist, it will be created&#10; *  and a null will be sent.&#10; */&#10;exports.read = function() {&#10;    var recno = this.get('recno');&#10;    var logname = this.getParameter('logname');&#10;    if (logname === '') {&#10;        throw new Error('The logname parameter cannot be empty.');&#10;    }&#10;    if (logname != oldLogname) {&#10;	// console.log(&quot;GDPLogRead.read(): About to call new GDP.GDP()&quot;);&#10;	var logdname = this.getParameter('logdname');&#10;	log = new GDP.GDP(logname, 1, logdname);&#10;	log.setDebugLevel(this.getParameter('debugLevel'));&#10;	oldLogname = logname;&#10;	this.send('data', null);&#10;    } else {&#10;	var data = log.read(recno);&#10;	this.send('data', data);&#10;    }&#10;};&#10;&#10;/** Add an input handler that will read data. */&#10;exports.initialize = function() {&#10;    oldLogname = null;&#10;    handle = this.addInputHandler('trigger', this.exports.read.bind(this));&#10;};&#10;&#10;/** Remove the input handler. */&#10;exports.wrapup = function() {&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/gdp/GDPLogRead.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 475.0]">
+        </property>
+        <property name="debugLevel" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="myLog">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logdname" class="ptolemy.actor.parameters.PortParameter" value="edu.berkeley.eecs.gdp-01.gdplogd">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="logdname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="recno" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="GDPLogCreate" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/* Create a Global Data Plane (GDP) log. */&#10;&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Create a Global Data Plane (GDP) log.&#10; *&#10; *  @parameter {string} debugLevel The value of the GDP debug flag.  See&#10; *  gdp/README.md for a complete summary.  The value is typically&#10; *  &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To see the&#10; *  patterns, use the &quot;what&quot; command or strings $PTII/lib/libgdp* |&#10; *  grep '@(#)'.  Use &quot;*=40&quot; to set the debug level to 40 for all&#10; *  components. The value of level is not usually over 127.  Values&#10; *  over 100 may modify the behavior.&#10; *  @input {string} logname The GDP logname.  By convention, use &#10; *  a reverse fully qualified name like&#10; *  &quot;org.ptolemy.actor.lib.jjs.modules.gdp.demo.GDPLogRead.GDPLogRead&quot;&#10; *  @input {string} logdname The IP address or DNS name of the gdp&#10; *  router.  If empty, then the swarm.gdp.routers key is searched for&#10; *  in the gdp configuration file ep_adm_para, in the following order&#10; *  &quot;`.ep_adm_params:~/.ep_adm_params:/usr/local/etc/ep_adm_params:/etc/ep_adm_params`&quot;&#10; *  The values of swarm.gdp.routers are then contacted in order.&#10; *  @input trigger An input that triggers firing the reading of the data&#10; *  @output output An output that is written to when the creation is complete.&#10; *&#10; *  @author Christopher Brooks&#10; *  @version $$Id: GDPLogCreate.js 865 2016-07-20 14:11:58Z cxh $$ &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, addInputParameter, console, exports, get, getParameter, input, parameter, removeInputHandler, require */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var GDP = require('gdp');&#10;var log = null;&#10;var handle = null;&#10;&#10;/** Setup the parameters and ports. */&#10;exports.setup = function() {&#10;    this.parameter('debugLevel', {'type': 'string'});&#10;    this.input('logname', {'type': 'string', 'value': 'myLog'});&#10;    this.input('logdname', {'type': 'string', 'value': ''});&#10;    this.output('output', {'type': 'string'});&#10;    this.input('trigger');&#10;};&#10;&#10;/** If the log is not present, then create it.&#10; */&#10;exports.create = function() {&#10;    var logname = this.getParameter('logname');&#10;    if (logname === '') {&#10;        throw new Error('The logname parameter cannot be empty.');&#10;    }&#10;    var logdname = this.getParameter('logdname');&#10;    log = new GDP.GDP(logname, 3, logdname);&#10;    log.setDebugLevel(this.getParameter('debugLevel'));&#10;    this.send('output', logname);&#10;};&#10;&#10;/** Add an input handler that will create the log. */&#10;exports.initialize = function() {&#10;    handle = this.addInputHandler('trigger', this.exports.create.bind(this));&#10;};&#10;&#10;/** Remove the input handler. */&#10;exports.wrapup = function() {&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/gdp/GDPLogCreate.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="debugLevel" class="ptolemy.data.expr.Parameter" value="*=1">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="mylog1">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logdname" class="ptolemy.actor.parameters.PortParameter" value="edu.berkeley.eecs.gdp-01.gdplogd">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 160.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="logdname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Test accessor that spontaneously produces outputs once per time interval.&#10;//&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Test accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor test/TestSpontaneous&#10; *  @parameter interval The interval between outputs in milliseconds.&#10; *  @output output Output for the counting sequence, of type number.&#10; *  @author Edward A. Lee&#10; *  @version $$Id: GDPLogRead.xml 75037 2016-08-11 21:29:55Z cxh $$&#10; */&#10;&#10;exports.setup = function() {&#10;    this.parameter('interval', {'type':'number', 'value':1000});&#10;    this.output('output', {'type': 'number'});&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;var count = 0;&#10;&#10;exports.initialize = function() {&#10;    count = 0;&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;    handle = setInterval(function() {&#10;        thiz.send('output', count++);&#10;    }, this.getParameter('interval'));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        clearInterval(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TestSpontaneous.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogRead.xml 75037 2016-08-11 21:29:55Z cxh $$">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="Output for the counting sequence, of type number.">
+            </property>
+            <property name="interval (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The interval between outputs in milliseconds.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 290.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JavaScriptRamp" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Output a sequence with a given step in values.&#10; *&#10; *  @accessor JavaScriptRamp&#10; *  @param init The value produced on its first iteration.  The&#10; *  initial default is 0.&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @param step The amount by which the output is incremented. The&#10; *  default is 1.&#10; *  @author Christopher Brooks&#10; *  @version $$Id: GDPLogRead.xml 75037 2016-08-11 21:29:55Z cxh $$&#10; */&#10;exports.setup = function() {&#10;    // FIXME: this only supports numbers, unlike the Cape Code Ramp&#10;    // actor, which supports many types.&#10;    this.parameter('init', {'type':'number', 'value':0});&#10;    this.input('trigger');&#10;    this.output('output', {'type':'number'});&#10;    this.parameter('step', {'type':'number', 'value':1});&#10;};&#10;&#10;var _lastValue = 0;&#10;&#10;exports.initialize = function() {&#10;    _lastValue = this.getParameter('init');&#10;}&#10;exports.fire = function() {&#10;    _lastValue += this.getParameter('step');&#10;    this.send('output', _lastValue);&#10;};">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 340.0]">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TestSpontaneous2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Test accessor that spontaneously produces outputs once per time interval.&#10;//&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Test accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor test/TestSpontaneous&#10; *  @parameter interval The interval between outputs in milliseconds.&#10; *  @output output Output for the counting sequence, of type number.&#10; *  @author Edward A. Lee&#10; *  @version $$Id: GDPLogRead.xml 75037 2016-08-11 21:29:55Z cxh $$&#10; */&#10;&#10;exports.setup = function() {&#10;    this.parameter('interval', {'type':'number', 'value':1000});&#10;    this.output('output', {'type': 'number'});&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;var count = 0;&#10;&#10;exports.initialize = function() {&#10;    count = 0;&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;    handle = setInterval(function() {&#10;        thiz.send('output', count++);&#10;    }, this.getParameter('interval'));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        clearInterval(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TestSpontaneous.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogRead.xml 75037 2016-08-11 21:29:55Z cxh $$">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="Output for the counting sequence, of type number.">
+            </property>
+            <property name="interval (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The interval between outputs in milliseconds.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-135.0, 455.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <property name="interval" class="ptolemy.data.expr.Parameter" value="1000.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JavaScriptRamp2" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Output a sequence with a given step in values.&#10; *&#10; *  @accessor test/TestRamp&#10; *  @param init The value produced on its first iteration.  The&#10; *  initial default is 0.&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @param step The amount by which the output is incremented. The&#10; *  default is 1.&#10; *  @author Christopher Brooks&#10; *  @version $$Id: GDPLogRead.xml 75037 2016-08-11 21:29:55Z cxh $$&#10; */&#10;exports.setup = function() {&#10;    // FIXME: this only supports numbers, unlike the Cape Code Ramp&#10;    // actor, which supports many types.&#10;    this.parameter('init', {'type':'number', 'value':0});&#10;    this.input('trigger');&#10;    this.output('output', {'type':'number'});&#10;    this.parameter('step', {'type':'number', 'value':1});&#10;};&#10;&#10;var _lastValueJavaScriptRamp2 = 0;&#10;&#10;exports.initialize = function() {&#10;    _lastValueJavaScriptRamp2 = this.getParameter('init');&#10;}&#10;exports.fire = function() {&#10;    _lastValueJavaScriptRamp2 += this.getParameter('step');&#10;    this.send('output', _lastValueJavaScriptRamp2);&#10;};">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 495.0]">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TrainableTest" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Compare the input with a known good input.&#10; *&#10; *  This actor is based on the NonStrictTest actor, but currently only&#10; *  handles numeric and string input.&#10; *  &#10; *  @accessor test/TrainableTest&#10; *  @input input The input value&#10; *  @output output False as long as there is data to compare against the input&#10; *  @param correctValues a JSON array of the correct values.&#10; *  @param trainingMode true if the input is being trained.&#10; *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee&#10; *  @version $$Id: TrainableTest.js 879 2016-08-04 03:06:31Z beth@berkeley.edu $$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals */&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;exports.setup = function () {&#10;    // FIXME: this only supports numbers and strings, unlike the Cape Code Test&#10;    // actor, which supports many types.&#10;    this.parameter('correctValues', {'type': 'JSON', 'value': '{0}'});&#10;    this.input('input');&#10;    this.output('output', {'type': 'boolean'});&#10;    this.parameter('tolerance', {'type': 'number', 'value': 0.000000001});&#10;    this.parameter('trainingMode', {'type': 'boolean', 'value': false});&#10;};&#10;&#10;// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java&#10;&#10;// Set to true if fire is called once.  If fire() is not called at all,&#10;// then throw an exception in wrapup().&#10;var firedOnce = false;&#10;&#10;// Set to true when initialized() is called.&#10;var initialized = false;&#10;&#10;// The number of input tokens that have been read in.&#10;var numberOfInputTokensSeen = 0;&#10;&#10;// If trainingMode is true, then inputs that have been seen so far.&#10;var trainingTokens = [];&#10;&#10;exports.initialize = function () {&#10;    //console.log(&quot;Test initialize(): typeof correctValues: &quot; + typeof this.getParameter('correctValues'))&#10;    firedOnce = false;&#10;    initialized = true;&#10;    numberOfInputTokensSeen = 0;&#10;    trainingTokens = [];&#10;};&#10;&#10;/** Get the input and compare it with the appropriate element from &#10; *  correctValues.&#10; */&#10;exports.fire = function () {&#10;    var inputValue = this.get('input');&#10;    firedOnce = true;&#10;    // If the input is not connected, then inputValue will be null.&#10;    if (this.getParameter('trainingMode')) {&#10;        trainingTokens.push(inputValue);&#10;        this.send('output', false);&#10;        return;&#10;    }&#10;    var correctValuesValues = this.getParameter('correctValues');&#10;&#10;    if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;        var referenceToken = correctValuesValues[numberOfInputTokensSeen];&#10;        //console.log(&quot;Test: &quot; + numberOfInputTokensSeen + &quot;, input: &quot; + inputValue&#10;        //+ &quot;, referenceToken: &quot; + referenceToken);&#10;        if (typeof inputValue !== 'number' &amp;&amp; typeof inputValue !== 'string' &amp;&amp; typeof inputValue !== 'object') {&#10;            if (inputValue === null) {&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the value of the input was null?  ' +&#10;                                'Perhaps the input is not connected?'&#10;                               );&#10;            }&#10;            var cache = [];&#10;            var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                    if (cache.indexOf(value) !== -1) {&#10;                        // Circular reference found, discard key&#10;                        return;&#10;                    }&#10;                    // Store value in our collection&#10;                    cache.push(value);&#10;                }&#10;                return value;&#10;            });&#10;            if (inputValueValue.length &gt; 100) {&#10;                inputValueValue = inputValueValue.substring(0,100) + '...';&#10;            }&#10;            cache = null; // Enable garbage collection&#10;&#10;&#10;            throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                            ' tokens, the input &quot;' + inputValue +&#10;                            '&quot; is neither a number nor a string, it is a ' +&#10;                            typeof inputValue  + ' with value ' + inputValueValue);&#10;        }&#10;        if (typeof referenceToken === 'number') {&#10;            if (Math.abs(inputValue - referenceToken) &gt; this.getParameter('tolerance')) {&#10;                throw new Error('The input &quot;' + inputValue + '&quot; is not within &quot;' +&#10;                                this.getParameter('tolerance') +&#10;                                '&quot; of the expected value &quot;' +&#10;                                referenceToken + '&quot;');&#10;            }&#10;        } else if (typeof referenceToken === 'string') {&#10;            if (inputValue !== referenceToken) {&#10;            	console.log('typeof inputValue ' + typeof inputValue);&#10;            	console.log('typeof referenceToken ' + typeof referenceToken);&#10;                throw new Error('The input &quot;' + inputValue + '&quot; is !== ' +&#10;                                ' to the expected value &quot;' +&#10;                                referenceToken + '&quot;');&#10;            }&#10;        } else if (typeof referenceToken === 'object') {&#10;            var cache = [];&#10;            var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                    if (cache.indexOf(value) !== -1) {&#10;                        // Circular reference found, discard key&#10;                        return;&#10;                    }&#10;                    // Store value in our collection&#10;                    cache.push(value);&#10;                }&#10;                return value;&#10;            });&#10;            var cache = [];&#10;            var referenceTokenValue = JSON.stringify(referenceToken, function(key, value) {&#10;                if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                    if (cache.indexOf(value) !== -1) {&#10;                        // Circular reference found, discard key&#10;                        return;&#10;                    }&#10;                    // Store value in our collection&#10;                    cache.push(value);&#10;                }&#10;                return value;&#10;            });&#10;&#10;            cache = null; // Enable garbage collection&#10;            if (inputValueValue.length &gt; 100) {&#10;                inputValueValue = inputValueValue.substring(0,100) + '...';&#10;            }&#10;            if (referenceTokenValue.length &gt; 100) {&#10;                referenceTokenValue = referenceTokenValue.substring(0,100) + '...';&#10;            }&#10;            if (inputValueValue !== referenceTokenValue) {&#10;                throw new Error('The input &quot;' + inputValueValue + '&quot; is !== &quot;' +&#10;                                '&quot; to the expected value &quot;' +&#10;                                referenceTokenValue + '&quot;');&#10;            }&#10;        } else {&#10;            throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                            ' tokens, the referenceToken &quot;' + referenceToken +&#10;                            '&quot; is not a number, it is a ' +&#10;                            typeof referenceToken);&#10;        }&#10;        numberOfInputTokensSeen++;&#10;        // If we are past the end of the expected inputs, then read&#10;        if (numberOfInputTokensSeen &gt;= correctValuesValues.length) {&#10;            this.send('output', true);&#10;        } else {&#10;            this.send('output', false);&#10;        }&#10;    } else {&#10;        this.send('output', true);&#10;    }&#10;};&#10;&#10;/** If trainingMode is true, then updated the correctValues. */&#10;exports.wrapup = function () {&#10;    if (this.getParameter('trainingMode')) {&#10;        this.setParameter('correctValues', trainingTokens);&#10;    } else {&#10;        if (initialized) {&#10;            if (!firedOnce) {&#10;                initialized = false;&#10;                throw new Error('The fire() function of this accessor was never called. ' +&#10;                                'Usually, this is an error indicating that ' +&#10;                                'starvation is occurring.');&#10;            }&#10;            var correctValuesValues = this.getParameter('correctValues');&#10;            if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;                throw new Error('The test produced only ' +&#10;                                numberOfInputTokensSeen +&#10;                                ' tokens, yet the correctValues parameter was ' +&#10;                                'expecting ' +&#10;                                correctValuesValues.length +&#10;                                ' tokens');&#10;            }&#10;        }&#10;        initialized = false;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TrainableTest.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[null,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;,&quot;5&quot;]">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 475.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="JavaScriptGDPLogName" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Generate a GDP log name that has a random suffix.&#10; *&#10; *  @accessor JavaScriptGDPLogName&#10; *  @input trigger The trigger&#10; *  @output Pstring} output The GDP Log name with a random suffix.&#10; *  @author Christopher Brooks&#10; *  @version $$Id: GDPLogRead.xml 75037 2016-08-11 21:29:55Z cxh $$&#10; */&#10;exports.setup = function() {&#10;    this.input('trigger');&#10;    this.output('output', {'type':'string'});&#10;};&#10;&#10;exports.fire = function() {&#10;    var logName = &quot;ptolemy.actor.lib.jjs.modules.gdp.test.auto.GDPLogSubscribeJS.&quot; + Math.random();&#10;    console.log(&quot;JavaScriptGDPLogName: &quot; + logName);&#10;    this.send('output', logName);&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 150.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TestSpontaneousOnce" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Test accessor that spontaneously produces outputs once.&#10;//&#10;// Copyright (c) 2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Test accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor test/TestSpontaneousOnce&#10; *  @parameter interval The interval before the output in milliseconds.&#10; *  @output output Output for the counting sequence, of type number.&#10; *  @author Christopher Brooks. Based on TestSpontaneous by Edward A. Lee&#10; *  @version $$Id: TestSpontaneous.js 546 2016-02-03 02:07:57Z cxh $$&#10; */&#10;&#10;exports.setup = function() {&#10;    this.parameter('interval', {'type':'number', 'value':1000});&#10;    this.output('output', {'type': 'number'});&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;var count = 0;&#10;&#10;exports.initialize = function() {&#10;    count = 0;&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;    handle = setTimeout(function() {&#10;        thiz.send('output', count++);&#10;    }, this.getParameter('interval'));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        clearTimeoutInterval(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TestSpontaneousOnce.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-130.0, 150.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <property name="interval" class="ptolemy.data.expr.Parameter" value="500.0">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[10.0, 455.0]">
+        </vertex>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[150.0, 150.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[145.0, 275.0]">
+        </vertex>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[5.0, 290.0]">
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="GDPLogAppend.logname" relation="relation8"/>
+    <link port="GDPLogAppend.trigger" relation="relation12"/>
+    <link port="GDPLogAppend.data" relation="relation13"/>
+    <link port="GDPLogRead.logname" relation="relation8"/>
+    <link port="GDPLogRead.trigger" relation="relation4"/>
+    <link port="GDPLogRead.recno" relation="relation"/>
+    <link port="GDPLogRead.data" relation="relation6"/>
+    <link port="GDPLogCreate.logname" relation="relation9"/>
+    <link port="GDPLogCreate.output" relation="relation8"/>
+    <link port="GDPLogCreate.trigger" relation="relation9"/>
+    <link port="TestSpontaneous.output" relation="relation12"/>
+    <link port="JavaScriptRamp.trigger" relation="relation12"/>
+    <link port="JavaScriptRamp.output" relation="relation13"/>
+    <link port="TestSpontaneous2.output" relation="relation4"/>
+    <link port="JavaScriptRamp2.trigger" relation="relation4"/>
+    <link port="JavaScriptRamp2.output" relation="relation"/>
+    <link port="TrainableTest.input" relation="relation6"/>
+    <link port="JavaScriptGDPLogName.trigger" relation="relation3"/>
+    <link port="JavaScriptGDPLogName.output" relation="relation9"/>
+    <link port="TestSpontaneousOnce.output" relation="relation3"/>
+</entity>
