@@ -50,38 +50,42 @@ import ptolemy.kernel.util.Workspace;
  The input and output types are DoubleToken.  The functions
  are exactly those in the java.lang.Math class.  They are:</p>
  <ul>
- <li> <b>acos</b>: The arc cosine of an angle, in the range from
- 0.0 through pi. If the argument is NaN or its absolute value is
- greater than 1, then the result is NaN.</li>
- <li> <b>asin</b>: The arc sine of an angle, in the range of
- -pi/2 through pi/2. If the argument is NaN or its absolute
- value is greater than 1, then the result is NaN.
- If the argument is positive zero, then the result is positive zero;
- if the argument is negative zero, then the result is negative zero.
+ <li> <b>acos</b>: The arc cosine of an angle.  The returned value
+ is between 0.0 an pi.
+ If the absolute value of the argument is greater than one or if the
+ argument is NaN, then the returned value is NaN.
  </li>
- <li> <b>atan</b>: The arc tangent of an angle, in the range of
- -pi/2 through pi/2. If the argument is NaN, then the result is NaN.
- If the argument is positive zero, then the result is positive zero;
- if the argument is negative zero, then the result is negative zero.
+ <li> <b>asin</b>: The arc sine of an angle.  The returned value
+ is between -pi/2 through pi/2. 
+ If the absolute value of the argument is greater than one or if the
+ argument is NaN, then the returned value is NaN.
+ If the argument is positive zero, then the returned value is positive
+ zero.
+ If the argument is negative zero, then the returned value is negative
+ zero.
+ </li>
+ <li> <b>atan</b>: The arc tangent of an angle.  The returned value is
+ between -pi/2 through pi/2.
+ If the argument is NaN, then the returned value is NaN.
+ If the argument is positive zero, then the returned value is positive
+ zero.
+ If the argument is negative zero, then the returned value is negative
+ zero.
  </li>
  <li> <b>cos</b>: The trigonometric cosine of an angle.
- If the argument is NaN or an infinity, then the result is NaN.
+ If the argument is an infinity or NaN, then the returned value is NaN.
  </li>
  <li> <b>sin</b>: The trigonometric sine of an angle.
- If the argument is NaN or an infinity, then the result is NaN.
+ If the argument is an infinity or NaN, then the returned value is NaN.
  </li>
  <li> <b>tan</b>: The trigonometric tangent of an angle.
- If the argument is NaN or an infinity, then the result is NaN.
- If the argument is positive zero, then the result is positive zero;
- if the argument is negative zero, then the result is negative zero
+ If the argument is an infinity or NaN, then the returned value is NaN.
+ If the argument is positive zero, then the returned value is positive
+ zero.
+ If the argument is negative zero, then the returned value is negative
+ zero.
  </li>
  </ul>
- <p>(NOTE: The above documentation is adapted from the class documentation
- for java.lang.Math as released in JDK 1.3).
- </p><p>
- (NOTE: This actor will eventually be augmented to do hyperbolic trig
- functions, and possibly to operate on matrices and arrays).
- </p><p>
  The following functions in java.lang.Math are implemented elsewhere:</p>
  <ul>
  <li> <b>abs</b>: AbsoluteValue actor.
