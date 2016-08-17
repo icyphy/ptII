@@ -226,10 +226,6 @@ public class JCanvas extends JComponent implements Printable {
      * This method allocates an offscreen buffer if necessary, and then
      * paints the canvas into the right buffer and blits it to the
      * on-screen buffer.
-     * <p>
-     * Acknowledgment: some of this code was adapted from code
-     * posted by Jonathon Knudsen to the Java2D mailing list, May
-     * 1998.
      */
     @Override
     public void paint(Graphics g) {
@@ -261,14 +257,13 @@ public class JCanvas extends JComponent implements Printable {
                 g2d.clearRect(clip.x, clip.y, clip.width, clip.height);
             }
 
-            // Draw directly onto the graphics pane
             if (paintAll) {
                 _canvasPane.paint(g2d);
             } else {
                 _canvasPane.paint(g2d, clip);
             }
         } else {
-            // Get a new offscreen buffer if necessary. Clear the reference
+            // If necessary, get a new offscreen buffer. Clear the reference
             // to the off-screen buffer, so that the memory can be freed
             // if necessary by the GC and reallocated for the new buffer.
             if (_offscreen == null || _offscreen.getWidth() != clip.width
@@ -289,7 +284,6 @@ public class JCanvas extends JComponent implements Printable {
                 g2d.clearRect(clip.x, clip.y, clip.width, clip.height);
             }
 
-            // Paint on it
             if (paintAll) {
                 _canvasPane.paint(g2d);
             } else {
@@ -300,7 +294,6 @@ public class JCanvas extends JComponent implements Printable {
                 _canvasPane.paint(g2d, clip);
             }
 
-            // Blit it to the onscreen buffer
             g.drawImage(_offscreen, clip.x, clip.y, null);
         }
 
