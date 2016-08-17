@@ -1,5 +1,5 @@
 /*
-  A clean reimplementation of Ptolemy II's original ExtensionFilenameFilter, that was based on Sun-licensed code.
+  A clean reimplementation of Ptolemy II's original ExtensionFilenameFilter.
 
   Copyright (c) 2016 The Regents of the University of California.
   All rights reserved.
@@ -77,7 +77,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      */
     public ExtensionFilenameFilter(String [] extensions) {
         // This method is used by Kepler in gui/src/org/kepler/gui/kar/OpenArchiveAction.java
-        // See https://kepler-project.org/developers.  To build: "ant change-to -Dsuite=nightly; ant compile" 
+        // See https://kepler-project.org/developers.  To build: "ant change-to -Dsuite=nightly; ant compile"
        this(extensions, null);
     }
 
@@ -108,7 +108,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      */
     public ExtensionFilenameFilter(String [] extensions, String description) {
         // This method is used by Kepler in reporting/src/org/kepler/reporting/gui/ReportDesignerPanel.java
-        // See https://kepler-project.org/developers.  To build: "ant change-to -Dsuite=nightly; ant compile" 
+        // See https://kepler-project.org/developers.  To build: "ant change-to -Dsuite=nightly; ant compile"
         for (int i = 0; i < extensions.length; i++) {
             registerExtension(extensions[i]);
         }
@@ -215,7 +215,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
      * If the file is null, if it's name does not contain a '.', or if it ends
      * in a '.', this method returns null.
      * </p>
-     * 
+     *
      * @param file The file
      * @return the extension of the file or null if the file is null,
      * or if it has no extension.
