@@ -2363,16 +2363,7 @@ public class Query extends JPanel {
                 // FIXME: This doesn't really do the right thing.
                 // If _allowDirectories is set, then you cannot select files!
                 // However, this is the way Apple intended this mechanism to be used.
-                // https://developer.apple.com/library/mac/documentation/Java/Reference/Java_PropertiesRef/Articles/JavaSystemProperties.html
-                // says:
-
-                // "apple.awt.fileDialogForDirectories By default, the
-                // AWT File Dialog lets you choose a file. Under
-                // certain circumstances, however, it may be proper
-                // for you to choose a directory instead. If that is
-                // the case, set this property to allow for directory
-                // selection in a file dialog. The default value is
-                // false."
+                // Cfr https://developer.apple.com/library/mac/documentation/Java/Reference/Java_PropertiesRef/Articles/JavaSystemProperties.html
 
                 // Also, this seems like a poor mechanism, since it sets a property
                 // that affects anything running in this JVM!
