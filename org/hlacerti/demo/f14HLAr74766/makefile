@@ -54,7 +54,7 @@ OTHER_FILES_TO_BE_JARED = \
 	f14PilotStick.xml \
 	priseStick/src/XML/Sources/prise_parameters.xml \
 	priseV2.fed \
-	initialCentralizedF14/f14Centralized.xml
+	initialCentralizedF14/f14CentralizedControllerDE.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
