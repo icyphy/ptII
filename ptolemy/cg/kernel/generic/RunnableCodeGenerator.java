@@ -182,10 +182,11 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
     protected int _executeCommands() throws IllegalActionException {
         List<String> commands = new LinkedList<String>();
 
+	String command = "";
         // The run command.
         if (_isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
-		String command = _runCommand();
+		command = _runCommand();
                 commands.add(command);
             }
         }
@@ -193,6 +194,10 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
         if (commands.size() == 0) {
             return -1;
         }
+
+	System.out.println("RunnableCodeGenerator: run command: (cd "
+			   + codeDirectory.asFile() + "; "
+			   + command + ")");
 
         _executeCommands.setCommands(commands);
         _executeCommands.setWorkingDirectory(codeDirectory.asFile());
@@ -224,9 +229,6 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
 	String command = CodeGeneratorUtilities
 	    .substitute(((StringToken) runCommand.getToken())
 			.stringValue(), substituteMap);
-	System.out.println("RunnableCodeGenerator: run command: (cd "
-			   + codeDirectory.asFile() + "; "
-			   + command + ")");
 	return command;
     }
 
