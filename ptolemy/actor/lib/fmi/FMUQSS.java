@@ -141,6 +141,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
         // stateVariablesAsInputPorts is true in the parent class and
         // it is used by FMUImport._getInputs().
         stateVariablesAsInputPorts.setExpression("false");
+        
+        // The state event detection parameter is set to the expert mode.
+        eventDetection = new Parameter(this, "eventDetection");
+        eventDetection.setTypeEquals(BaseType.BOOLEAN);
+        eventDetection.setExpression("true");
+        eventDetection.setVisibility(Settable.EXPERT);
 
         _attachText("_iconDescription", "<svg>\n"
                 + "<rect x=\"-30\" y=\"-20\" " + "width=\"60\" height=\"40\" "
@@ -158,6 +164,12 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * parameters.  The default value is true.
      */
     public Parameter initFMUParameters;
+    
+    /**
+     * If true, indicate the FMU can do state/time/step event detection.
+     * The default value is true.
+     */
+    public Parameter eventDetection;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -560,8 +572,19 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      */
     @Override
     public final int getEventIndicatorCount() {
-        return _fmiModelDescription.numberOfEventIndicators;
-        // return 0;
+        try {
+			if (((BooleanToken) eventDetection.getToken()).booleanValue()) {
+			return _fmiModelDescription.numberOfEventIndicators;
+			}
+			else{
+				return 0;
+			}
+		} catch (IllegalActionException e) {
+            new Exception(
+                    "Failed to get the number of event indicators.")
+                    .printStackTrace();
+		}  
+        return 0;
     }
 
     /**
