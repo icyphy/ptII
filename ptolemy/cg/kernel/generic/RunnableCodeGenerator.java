@@ -185,15 +185,7 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
         // The run command.
         if (_isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
-                Map<String, String> substituteMap = CodeGeneratorUtilities.newMap(this);
-                substituteMap.put("@modelName@", _sanitizedModelName);
-                substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
-                String command = CodeGeneratorUtilities
-                    .substitute(((StringToken) runCommand.getToken())
-                            .stringValue(), substituteMap);
-                System.out.println("RunnableCodeGenerator: run command: (cd "
-                        + codeDirectory.asFile() + "; "
-                        + command + ")");
+		String command = _runCommand();
                 commands.add(command);
             }
         }
@@ -218,6 +210,24 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
                     + "commands:" + _eol + errorMessage + _eol + throwable);
         }
         return _executeCommands.getLastSubprocessReturnCode();
+    }
+
+    /** Return the command to run the generated code.
+     *  @return The command to run the generated code.
+     *  @exception IllegalActionException If the there is a problem
+     *  substituting the @..@ tags.
+     */
+    protected String _runCommand() throws IllegalActionException {
+	Map<String, String> substituteMap = CodeGeneratorUtilities.newMap(this);
+	substituteMap.put("@modelName@", _sanitizedModelName);
+	substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
+	String command = CodeGeneratorUtilities
+	    .substitute(((StringToken) runCommand.getToken())
+			.stringValue(), substituteMap);
+	System.out.println("RunnableCodeGenerator: run command: (cd "
+			   + codeDirectory.asFile() + "; "
+			   + command + ")");
+	return command;
     }
 
     ///////////////////////////////////////////////////////////////////

@@ -148,6 +148,9 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                                        
         code.append("exports.setup = function() {" + _eol
                 + INDENT1 + comment(" This composite accessor was created by Cape Code.")
+	        + INDENT1 + comment(" To run the code, run: ")
+                + INDENT1 + comment(" (cd " + codeDirectory.asFile() + "; "
+				    + _runCommand() + ")")
                 + INDENT1 + comment(" To regenerate this composite accessor, run:")
                 + INDENT1 + comment(" java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor " + modelURI)
                 + INDENT1 + comment(" to edit the model, run:")
