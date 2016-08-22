@@ -24,7 +24,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, 190.0]">
         </property>
     </property>
-    <property name="logdname" class="ptolemy.data.expr.StringParameter" value="edu.berkeley.eecs.gdp-01.gdplogd">
+    <property name="logdname" class="ptolemy.data.expr.StringParameter" value="edu.berkeley.eecs.gdp-03.gdplogd">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -56,7 +56,7 @@
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If logdname is blank, then the local hostname is used.&#10;To use the production servers, try:&#10;edu.berkeley.eecs.gdp-01.gdplogd&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If logdname is blank, then the local hostname is used.&#10;To use the production servers, try:&#10;edu.berkeley.eecs.gdp-03.gdplogd&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-150.0, 15.0]">
         </property>
