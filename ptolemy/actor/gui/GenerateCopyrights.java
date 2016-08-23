@@ -225,6 +225,8 @@ public class GenerateCopyrights {
 
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.gui.BrowserLauncher",
                 "ptolemy/actor/gui/BrowserLauncher-license.htm");
+        _addIfClassPresent(copyrightsMap, "ptolemy.actor.gui.PortConfigurerDialog",
+                "ptolemy/actor/gui/PortConfigurerDialog-license.htm");
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.gui.run.PtolemyFormEditor",
                 "com/jgoodies/jgoodies-copyright.htm");
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.gui.run.RunLayoutFrame",
@@ -314,6 +316,9 @@ public class GenerateCopyrights {
 
         _addIfClassPresent(copyrightsMap, "ptolemy.graph.Element",
                 "ptolemy/graph/graph-license.htm");
+
+        _addIfClassPresent(copyrightsMap, "ptolemy.gui.ComponentDialog",
+                "ptolemy/gui/ComponentDialog-license.htm");
 
         _addIfClassPresent(copyrightsMap,
                 "ptolemy.homer.widgets.ResizableImageWidget",
@@ -984,10 +989,14 @@ public class GenerateCopyrights {
             { "Audio", "Y", " ", "Y", "Y ", "Include credit text" },
             { "BrowserLauncher", "Y", " ", "Y", "Y",
                     "Include the BrowserLauncher copyright" },
+            { "ComponentDialog", "Y", " ", "Y", "Y",
+                    "Oracle BSD Example License" },
             { "DoubleUtilities", "Y", " ", "Y", "Y", "Apache License"},
             { "JUnitParams", " ", " ", "Y", "Y", "Apache License" },
             { "javamail", " ", " ", "Y", " ",
                     "CDDL + GPLv2 with Classpath exception" },
+            { "PortConfigurerDialog", "Y", " ", "Y", "Y",
+                    "Oracle BSD Example License" },
             { "PDFRenderer", " ", " ", "Y", "Y", "GNU Lesser General Public" },
             { "ResizableImageWidget", " ", " ", "Y", " ",
                     "CDDL + Oracle + Oracle" },

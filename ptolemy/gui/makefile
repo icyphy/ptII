@@ -77,7 +77,8 @@ JSRCS = \
 	UndoListener.java \
 	UserDialog.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	ComponentDialog-license.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

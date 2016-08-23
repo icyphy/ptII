@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1998-2015 The Regents of the University of California.
+# @Copyright (c) 1998-2016 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -176,7 +176,8 @@ JSRCS = \
 # Files to be included in the jar file
 OTHER_FILES_TO_BE_JARED = \
 	BrowserLauncher-license.htm \
-	 masterCopyrightStart.htm.in \
+	masterCopyrightStart.htm.in \
+	PortConfigurerDialog-license.htm \
 	PtolemyIISmallIcon.gif
 
 # Note that PtolemyIISmallIcon.gif is also in doc/img.
