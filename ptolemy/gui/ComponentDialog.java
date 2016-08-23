@@ -366,15 +366,15 @@ public class ComponentDialog extends JDialog {
                             .equals(JOptionPane.INPUT_VALUE_PROPERTY))) {
                 Object value = _optionPane.getValue();
 
-                // Ignore reset.
+                // Reset should be ignored.
                 if (value == JOptionPane.UNINITIALIZED_VALUE) {
                     return;
                 }
 
-                // Reset the JOptionPane's value.
-                // If you don't do this, then if the user
-                // presses the same button next time, no
-                // property change event will be fired.
+                // The value of JOptionPane is reset.
+		// Resetting is required, otherwise when
+		// the button is pressed again, a property
+		// change event will not be fired.
                 // Note that this seems to trigger the listener
                 // again, so the previous line is essential.
                 _optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);
