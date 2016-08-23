@@ -210,6 +210,7 @@
   <!-- Path of JavaScript tests for Mocha -->
   <fileset id="test.mocha.files" dir="${basedir}">
     <include name="**/mocha/test*.js"/>
+    <exclude name="**/node_modules/**"/>
     <patternset refid="ptII.excludes" />
   </fileset>
 
@@ -1331,6 +1332,7 @@ For example:
 		 pathsep=" "
 		 property="converted"/>
 
+    <echo>Running test.mocha in ${converted}</echo>
     <exec executable="mocha">
       <arg line="${converted}"/>
     </exec>
