@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/testing/test
 
-DIRS = 		auto
+DIRS = 		#auto
 
 # Root of the Java directory
 ROOT =		../../../../../../..
