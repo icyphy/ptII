@@ -111,7 +111,8 @@ public class RelationWidthChanges extends MoMLFilterSimple {
                     _currentlyProcessingWidth = true;
                 }
             }
-        } else if (element.equals("relation") && attributeName.equals("class")) {
+        } else if (element != null && element.equals("relation") &&
+		   attributeName != null && attributeName.equals("class")) {
             _currentlyProcessingRelation = true;
         }
         return attributeValue;
