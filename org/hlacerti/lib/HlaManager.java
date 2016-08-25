@@ -932,18 +932,19 @@ TimeRegulator {
                 }
             }
             String pUAVTimeStamp=ct.getTime()+";";;
-            String preUAVTimeStamp="("+ currentTime+","+microstep+");";
-            
-            if(_numberOfUAVs>0 &&(_preUAVsTimes.length() - _preUAVsTimes.lastIndexOf(preUAVTimeStamp))<=preUAVTimeStamp.length() && 
-                        (_pUAVsTimes.length() - _pUAVsTimes.lastIndexOf(pUAVTimeStamp))<=pUAVTimeStamp.length()){
+            String preUAVTimeStamp="("+ _getDoubleOfTime(currentTime)+","+microstep+");";
+            //&&_UAVsValues[indexOfAttribute].indexOf("-;")>-1
+            if(_numberOfUAVs>0 &&(_preUAVsTimes.length() - _preUAVsTimes.lastIndexOf(preUAVTimeStamp))==preUAVTimeStamp.length() && 
+                        (_pUAVsTimes.length() - _pUAVsTimes.lastIndexOf(pUAVTimeStamp))==pUAVTimeStamp.length()){
                 //System.out.println(_UAVsValues[indexOfAttribute].toString().substring(_UAVsValues.length-2, _UAVsValues.length));
-                _UAVsValues[indexOfAttribute].replace(_UAVsValues[indexOfAttribute].length()-2,_UAVsValues[indexOfAttribute].length(),in.toString()+";");
+                _UAVsValues[indexOfAttribute].replace(_UAVsValues[indexOfAttribute].lastIndexOf("-;"),_UAVsValues[indexOfAttribute].length(),in.toString()+";");
             }else{
                 _preUAVsTimes.append(preUAVTimeStamp);
                 _pUAVsTimes.append(pUAVTimeStamp);
                 for(int i = 0; i<_numberOfAttributesToPublish;i++){
                     if(i==indexOfAttribute){
                         _UAVsValues[i].append(in.toString()+";");
+                        break;
                     }else{
                         _UAVsValues[i].append("-;");
                     }
@@ -2559,7 +2560,7 @@ TimeRegulator {
                                 String attributeName = hs.getParameterName();
                                 
                                 String pRAVTimeStamp =_getDoubleOfTime(te.timeStamp)+";";
-                                if(_numberOfRAVs>0 && (_pRAVsTimes.length() -_pRAVsTimes.lastIndexOf(pRAVTimeStamp))<= pRAVTimeStamp.length()){
+                                if(_numberOfRAVs>0 && (_pRAVsTimes.length() -_pRAVsTimes.lastIndexOf(pRAVTimeStamp))== pRAVTimeStamp.length()){
                                     int indexOfAttribute=0;
                                     for(int j = 0; j<_numberOfAttributesSubscribedTo;j++){
                                         if(_nameOfTheAttributesSubscribedTo[j].substring(_nameOfTheAttributesSubscribedTo[j].lastIndexOf("-"+attributeName)+1).equals(attributeName)){
