@@ -568,7 +568,7 @@ function Accessor(
             if (typeof this.exports.wrapup === 'function') {
                 // Call with 'this' being the accessor instance, not the exports
                 // property.
-                this.exports.wrapup.call(this);
+		this.exports.wrapup.call(this);
             }
             this.emit('wrapup');
         };
@@ -960,6 +960,9 @@ function convertType(value, destination, name) {
 }
 
 /** Report an error using console.error().
+ *  This should be used by an accessor to report non-fatal errors.
+ *  For fatal errors, invoke "throw new Error('A Description');"
+ *  
  *  @param message The error message.
  */
 Accessor.prototype.error = function(message) {
@@ -1327,17 +1330,27 @@ Accessor.prototype.react = function(name) {
     
     // To avoid code duplication, define a local function.
     var invokeSpecificHandler = function(name) {
+
         if (thiz.inputHandlers[name] && thiz.inputHandlers[name].length > 0) {
-            for (var i = 0; i < thiz.inputHandlers[name].length; i++) {
+	    // When calling stop, there is a chance that "removed[0].react()" below
+	    // will fail with 'TypeError: Cannot read property 'length' of undefined',
+	    // so we check to see if thiz.inputHandlers[name] is defined.
+            for (var i = 0; thiz.inputHandlers[name] && i < thiz.inputHandlers[name].length; i++) {
                 if (typeof thiz.inputHandlers[name][i] === 'function') {
                     // Input handlers functions are bound to the exports object.
                     try {
                         thiz.inputHandlers[name][i]();
                     } catch (exception) {
                         // Remove the input handler.
-                        thiz.removeInputHandler(
-                                thiz.inputHandlers[name][i].handle);
-                        thiz.error('commonHost.js, react(), invoking a specific handler for \"' +
+			if (thiz.inputHandlers && thiz.inputHandlers[name]) {
+			    thiz.removeInputHandler(
+						    thiz.inputHandlers[name][i].handle);
+			}
+			// Throw an Error here instead of calling error() so that
+			// if TrainableTest.wrapup() throws an Error because
+			// the input does not match the training data, then we 
+			// don't ignore the error in commonHost.error().
+                        throw new Error('commonHost.js, react(), invoking a specific handler for \"' +
                                    name + '\": Exception occurred in input handler,' +
                                    ' which has now has been removed.  Exception was: ' +
                                    exception +
