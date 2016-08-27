@@ -82,7 +82,9 @@ public class JSAccessor
                 .replace("https://www.terraswarm.org/accessors/", "")
                 .replace("http://www.terraswarm.org/accessors/", "")
                 + "');"
-                + _eol);
+                + _eol
+                + _INDENT1 + name + ".container = this;" + _eol
+                + _INDENT1 + "this.containedAccessors.push("+ name + ");" + _eol);
 
         // _generateJavaScriptParameters() is defined in
         // ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java
