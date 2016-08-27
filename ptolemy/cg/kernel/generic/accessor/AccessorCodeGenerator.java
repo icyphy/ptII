@@ -99,7 +99,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
 
     /** Return a formatted comment containing the specified string. In
      *  this base class, the comments is a Accessor-style comment, which
-     *  begins with "<!--" and ends with "-->" followed by the platform
+     *  begins with "//" followed by the platform
      *  dependent end of line character(s): under Unix: "\n", under
      *  Windows: "\n\r". Subclasses may override this produce comments
      *  that match the code generation language.
