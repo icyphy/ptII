@@ -4,13 +4,13 @@
 <entity name="WebSocketSendReceive" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 13, 963, 660}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 23, 969, 653}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 543]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0305146405453987">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.8197979366806, 215.79029062822093}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{297.8197979366805, 215.79029062822093}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15.0">
@@ -87,7 +87,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[&quot;0123456789&quot;]">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
@@ -106,25 +106,6 @@
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-        </port>
-    </entity>
-    <entity name="JavaScriptStop" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;}&#10;&#10;var handle;&#10;exports.initialize  = function() {&#10;  handle = this.addInputHandler('input', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;    var value = this.get('input');&#10;    if (value === true) {&#10;        console.log(&quot;JavaScriptStop: about to call stop().&quot;);&#10;        // stop() is defined for all accessors, though it might not actually do anything.&#10;        stop();&#10;        // An accessor host might not get to the next line.&#10;        console.log(&quot;JavaScriptStop: done calling stop() on container&quot;);&#10;    }&#10;}&#10; &#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptStop.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 95.0]">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
         </port>
     </entity>
     <entity name="WebSocketClient" class="org.terraswarm.accessor.JSAccessor">
@@ -348,7 +329,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[{&quot;message&quot;:&quot;abcdefg&quot;,&quot;socketID&quot;:0}]">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
@@ -415,6 +396,25 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="JavaScriptStop" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;}&#10;&#10;var handle;&#10;exports.initialize  = function() {&#10;  handle = this.addInputHandler('input', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;    var value = this.get('input');&#10;    if (value === true) {&#10;        console.log(&quot;JavaScriptStop: about to call stop().&quot;);&#10;        // stop() is defined for all accessors, though it might not actually do anything.&#10;        stop.call(this);&#10;        // An accessor host might not get to the next line.&#10;        console.log(&quot;JavaScriptStop: done calling stop() on container&quot;);&#10;    }&#10;}&#10; &#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptStop.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[542.391904552074, 94.50324116073313]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -440,7 +440,6 @@
     <link port="JavaScript2.connectionReady" relation="relation3"/>
     <link port="JavaScript2.toSend" relation="relation4"/>
     <link port="TrainableTest.input" relation="relation2"/>
-    <link port="JavaScriptStop.input" relation="relation"/>
     <link port="WebSocketClient.port" relation="relation6"/>
     <link port="WebSocketClient.toSend" relation="relation12"/>
     <link port="WebSocketClient.received" relation="relation7"/>
@@ -459,4 +458,5 @@
     <link port="JavaScriptDelay.output" relation="relation5"/>
     <link port="JavaScriptTrueToken.input" relation="relation5"/>
     <link port="JavaScriptTrueToken.output" relation="relation"/>
+    <link port="JavaScriptStop.input" relation="relation"/>
 </entity>
