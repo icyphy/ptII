@@ -2668,10 +2668,6 @@ TimeRegulator {
             final String objectName = objectName_;
             final int objectHandle = objectHandle_;
 
-            if(_debugging){
-                _debug(getDisplayName()+" Trying to discover an object.");
-            }
-
             _objectIdToClassHandle.put(objectHandle, classHandle);
 
             //if we discover it means we registered
