@@ -36,23 +36,15 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Scanner;
-
 import javax.swing.SwingUtilities;
-
-import org.jsoup.select.Evaluator.IsEmpty;
-
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.ExecutionListener;
 import ptolemy.actor.Manager;
 import ptolemy.actor.gui.Configuration;
 import ptolemy.actor.gui.Effigy;
-import ptolemy.backtrack.util.PathFinder;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
@@ -108,26 +100,89 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         }
 
     }
+    
+    private static ArrayList<String> _readFile(File file){
+        ArrayList<String> lines= new ArrayList<String>();
+        try{
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            String content=br.readLine();
+            while (content != null) {
+                lines.add(content);
+                content=br.readLine();
+            }
+            br.close();
+            return lines;
+        }catch(Exception e){
+            System.out.println("Couldn't read the file.");
+            System.exit(0);
+            return null;
+        }
+    }
+    
+    private static ArrayList<String> _changeRKSolver(ArrayList<String> file, int newSolver){
+        if(newSolver >0 ){
+            String oldParameter="<property name=\"solver\" class=\"ptolemy.data.expr.StringParameter\" value=\"RK";
+            String newParameter="<property name=\"solver\" class=\"ptolemy.data.expr.StringParameter\" value=\"RK"+newSolver+"\">";
+            String oldPropertyLine ="<property name=\"ODESolver\" class=\"ptolemy.data.expr.StringParameter\" value=\"ExplicitRK";
+            String newPropertyLine ="<property name=\"ODESolver\" class=\"ptolemy.data.expr.StringParameter\" value=\"ExplicitRK"+newSolver+"Solver\">"; 
+            
+            return _findAndChangePropertyLines(file, new String[]{oldPropertyLine, oldParameter}, new String[]{newPropertyLine, newParameter});   
+        }else{
+            return file;
+        }
+    }
+    /**
+     * 
+     * @param file
+     * @param propertyLine
+     * @param type The type of the data. 0 for String, 1 for int, 2 for float.
+     * @return
+     */
+    public static String findParameterValue(File file, String propertyLine, int type){
+        ArrayList<String> fileContent = _readFile(file);
+        String value="UNDEFINED";
+        for(String s: fileContent){
+            if(s.contains(propertyLine)){
+                try{
+                    value=s.substring(s.lastIndexOf("value=\"")+7, s.lastIndexOf("\""));
+                    if(type == 1){
+                        Integer.parseInt(value);
+                    }else if(type==2){
+                        Float.parseFloat(value);
+                    }
+                    break;
+                }
+                catch(Exception e){
+                    value ="UNDEFINED";
+                }
+            }
+        }
+        return value;
+    }
+ 
+    
 
     /**Change a parameter in the .xml, making it assume previously chosen values. Run a ptolemy simulation for each value that the 
      * parameter has to assume.
      * @param waitingTime The time the system will wait to close all the windows of a federation, after its execution has finished. 
      * This parameter is intended to give the user the ability to choose how long he will have to look at the simulation's results. 
-     * If the variable is given a negative value, the user will be asked repetedly if he had time to look at the models and they will 
+     * If the variable is given a negative value, the user will be asked repetedly if he havalued time to look at the models and they will 
      * only close when he answers "yes".
      * @param vergil An instance of vergil.
      * @param modelPath The path to the model you want to run.
      * @param propertyLine The xml line of the parameter that we want to change. 
      * @param values The values the new property will assume.
      **/
-    public static void changeParameter(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String propertyLine, double[] values ){
+    public static void changeParameter(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String propertyLine, double[] values , int solver){
         int numberOfFederates = modelPath.length;
         File[] file = new File[numberOfFederates];
         String[][] data = new String[numberOfFederates][3];
 
         for(int i=0;i<numberOfFederates;i++){   
             file[i] = new File(modelPath[i]);
-            String[] info=  _findPropertyLine(file[i], propertyLine);
+            ArrayList<String> content= _readFile(file[i]);
+            content=_changeRKSolver(content, solver);
+            String[] info=  _findPropertyLine(content, propertyLine);
             data[i][0]=info[0];
             data[i][1]=info[1];
             data[i][2]=info[2];  
@@ -184,7 +239,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * @param end The end value of the parameter.
      * @param step The increment of the parameter value.
      */
-    public static void changeParameter(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String propertyLine, float start, float end, float step){
+    public static void changeParameter(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String propertyLine, float start, float end, float step, int solver){
         int numberOfFederates = modelPath.length;
         File[] file = new File[numberOfFederates];
         String[][] data = new String[numberOfFederates][3];
@@ -198,7 +253,9 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 
         for(int i=0;i<numberOfFederates;i++){   
             file[i] = new File(modelPath[i]);
-            String[] info=  _findPropertyLine(file[i], propertyLine);
+            ArrayList<String> content= _readFile(file[i]);
+            content=_changeRKSolver(content, solver);
+            String[] info=  _findPropertyLine(content, propertyLine);
             data[i][0]=info[0];
             data[i][1]=info[1];
             data[i][2]=info[2];  
@@ -256,7 +313,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * @param propertyLine The xml line of the parameter that we want to change. 
      * @param values The values the new property will assume.
      **/
-    public static void changeParameters(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String[] propertyLines, double[][] values ){
+    public static void changeParameters(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String[] propertyLines, double[][] values, int solver){
         if(propertyLines.length!= values.length){
             System.out.println("The variable #propertyLines must have the number of elements equal to the number of lines of the variable #values.");
             return;
@@ -269,7 +326,9 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 
         for(int i=0;i<numberOfFederates;i++){   
             file[i] = new File(modelPath[i]);
-            data[i]=_findPropertyLines(file[i], propertyLines); 
+            ArrayList<String> content= _readFile(file[i]);
+            content=_changeRKSolver(content, solver);
+            data[i]=_findPropertyLines(content, propertyLines); 
         }
         int numberOfInteractions = values[0].length;
         for(int i=0;i<numberOfInteractions;i++){   
@@ -321,6 +380,18 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 //            String[] modelPath = {"TestModels/sender.xml","TestModels/receiver.xml"};
 //            String[] modelPath2 = {"TestModels/f14Aircraft.xml",
 //            	"TestModels/f14AutoPilot.xml","TestModels/f14PilotStick.xml"};
+            
+//            File file = new File("toto.xml");
+//            String toPrint[]= _readFile(file);
+//            File file2 = new File("toto2.xml");
+//            file2.createNewFile();
+//            StringBuffer content= new StringBuffer("");
+//            for(String s:toPrint){
+//                System.out.println(s);
+//                content.append(s + "\n");
+//            }
+//            _writeInFile(file2, content.toString());
+            
 
             AutomaticSimulation vergil = new AutomaticSimulation(args);
             Scanner input = new Scanner(System.in);
@@ -336,6 +407,9 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     + "(Type a negative value if you want to be asked if you are ready to close the models.) ");
             int waitingTime=input.nextInt();
             waitingTime = waitingTime*1000;
+            System.out.println("Would you like to change the RK solver of the models?\n(This will only change something if there's a continuous director in at least one of the federates)\n"
+                    + "(Type a positive number to change the RK solver)");
+            int solver=input.nextInt();
             System.out.println("How many parameterers would you like to change in the models?");
             int numberOfParameters = input.nextInt();
             if(numberOfParameters==1){
@@ -354,7 +428,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     System.out.println("What is the value of the parameter's increment?");
                     float stepValue = input.nextFloat();
                     System.out.println("The simulation is about to start...");
-                    changeParameter(waitingTime, vergil, modelPath, parameter, startValue, endValue, stepValue);
+                    changeParameter(waitingTime, vergil, modelPath, parameter, startValue, endValue, stepValue, solver);
                 }else{
                     System.out.println("How many values would you like the parameter to assume ?");
                     int numberOfValues = input.nextInt();
@@ -364,7 +438,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                         values[i]= input.nextDouble();
                     }
                     System.out.println("The simulation is about to start...");
-                    changeParameter(waitingTime, vergil, modelPath, parameter, values);
+                    changeParameter(waitingTime, vergil, modelPath, parameter, values, solver);
                 }
 
             }else{
@@ -387,7 +461,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     }
                 }
                 System.out.println("The simulation is about to start...");
-                changeParameters(waitingTime, vergil, modelPath, parameters, values);
+                changeParameters(waitingTime, vergil, modelPath, parameters, values, solver);
             }
 //            String param = "lookAhead";
 //            param = "<property name=\""+param+ "\" class=\"ptolemy.data.expr.Parameter\" value=\"";
@@ -472,6 +546,24 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             return false;
         }
     }
+    
+    private static ArrayList<String> _findAndChangePropertyLines(ArrayList<String> file, String[] oldPropertyLines, String[] newPropertyLines){
+        ArrayList<String> newContent = new ArrayList<String>();
+        for(String s: file){
+            boolean lineFound=false;
+            for(int i=0;i<oldPropertyLines.length;i++){
+                if(s.contains(oldPropertyLines[i])){
+                    String identation = s.substring(0, s.lastIndexOf(oldPropertyLines[i]));
+                    newContent.add(identation+newPropertyLines[i]);
+                    lineFound=true;
+                    break;
+                }
+            }if(!lineFound){
+                newContent.add(s);
+            }
+        }return newContent;
+       
+    }
 
     /** Find some property line in a file.
      * @param file The file that is going to be searched.
@@ -480,63 +572,51 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * the propertyLine with the indentation it possesses in the file, and the data after it.
      * it
      */
-    private static String[] _findPropertyLine(File file, String propertyLine){
+    private static String[] _findPropertyLine(ArrayList<String> file, String propertyLine){
         //number of the line
         boolean lineFound = false;
-        String content ="";
         String dataBefore="";
         String dataAfter="";
         String line="";
-        try{
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            content=br.readLine();
-            while (content != null) {
-                if(!content.isEmpty()||!(content.equals("\n"))||!(content.equals(" "))){
-                    if(content.contains(propertyLine) && !lineFound){
-                        line = content.substring(0,content.length()-2);
-                        line = line.substring(line.lastIndexOf("\"")+1);
-                        try{
-                            Double.valueOf(line);
-                            line=content.substring(0,content.indexOf(line));
-                            lineFound=true;
-                            System.out.println(true);
-                        }catch(Exception e){
-                            if(dataBefore.isEmpty()){
-                                dataBefore=content;
-                            }else{
-                                dataBefore = dataBefore+ "\n"+ content;
-                            }
-                        }     
-                    }else if(!lineFound){
+        for(String content: file){
+            if(!content.isEmpty()||!(content.equals("\n"))||!(content.equals(" "))){
+                if(content.contains(propertyLine) && !lineFound){
+                    line = content.substring(0,content.length()-2);
+                    line = line.substring(line.lastIndexOf("\"")+1);
+                    try{
+                        Double.valueOf(line);
+                        line=content.substring(0,content.indexOf(line));
+                        lineFound=true;
+                        System.out.println(true);
+                    }catch(Exception e){
                         if(dataBefore.isEmpty()){
                             dataBefore=content;
                         }else{
                             dataBefore = dataBefore+ "\n"+ content;
                         }
+                    }     
+                }else if(!lineFound){
+                    if(dataBefore.isEmpty()){
+                        dataBefore=content;
                     }else{
-                        if(dataAfter.isEmpty()){
-                            dataAfter=content;
-                        }else{
-                            dataAfter = dataAfter+ "\n"+ content;
-                        }
+                        dataBefore = dataBefore+ "\n"+ content;
+                    }
+                }else{
+                    if(dataAfter.isEmpty()){
+                        dataAfter=content;
+                    }else{
+                        dataAfter = dataAfter+ "\n"+ content;
                     }
                 }
-                content=br.readLine();
             }
-            br.close();
-            String[] data={dataBefore,line,dataAfter};
-            if(line.equals("")){
-                System.out.println("Could not find the parameter.");
-                System.exit(0);
-                return null;
-            }
-            return data;
         }
-        catch(Exception e){
-            System.out.println("Could not find the file " + file.getName() +".");
+        String[] data={dataBefore,line,dataAfter};
+        if(line.equals("")){
+            System.out.println("Could not find the parameter.");
             System.exit(0);
             return null;
         }
+        return data;
     }
 
     /** Find some property lines in a file.
@@ -547,24 +627,18 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * represents the property lines with the same indentation as they were found on the file. The second column of the last 
      * line contains nothing but "", as there's no property left to be written. 
      */
-    private static String[][] _findPropertyLines(File file, String[] propertyLines){
+    private static String[][] _findPropertyLines(ArrayList<String> file, String[] propertyLines){
         //number of the line
 
-        ArrayList<String> lines =convertFileToString(file);
-        if(lines==null ||  lines.isEmpty()){
-            System.out.println("Could not find the file " + file.getName() +".");
-            System.exit(0);
-            return null;
-        }
 
-        int numberOfLines=lines.size();
+        int numberOfLines=file.size();
         int numberOfProperties=propertyLines.length;
         String[][] result= new String[ numberOfProperties+1][2];
         int linesFound=0 ;
         String content ="";
         result[0][0]="";
         for (int i = 0; i < numberOfLines; i++) {
-            content=lines.get(i);
+            content=file.get(i);
             if(linesFound<numberOfProperties){
                 if(content.contains(propertyLines[linesFound])){
                     String line = content.substring(0,content.length()-2);
