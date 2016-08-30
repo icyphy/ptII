@@ -44,8 +44,8 @@
   <!-- See http://www.vogella.com/tutorials/EclipseTycho/article.html#using-p2-update-sites-for-dependencies-resolution -->
   <repositories>
     <repository>
-      <id>eclipse-mars</id>
-      <url>http://download.eclipse.org/releases/mars</url>
+      <id>eclipse-neon</id>
+      <url>http://download.eclipse.org/releases/neon</url>
       <layout>p2</layout>
     </repository>
   </repositories>
