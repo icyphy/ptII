@@ -16,4 +16,112 @@
       [Enter License Description here.]
    </license>
 
+   <requires>
+      <import plugin="org.w3c.dom.svg"/>
+      <import plugin="org.ptolemy.testsupport" version="10.1.0" match="greaterOrEqual"/>
+      <import plugin="ptolemy.core" version="10.1.0" match="greaterOrEqual"/>
+      <import plugin="ptolemy.actor.lib" version="10.1.0" match="greaterOrEqual"/>
+      <import plugin="ptolemy.domains.sdf" version="10.1.0" match="greaterOrEqual"/>
+      <import plugin="ptolemy.gui" version="10.1.0" match="greaterOrEqual"/>
+      <import plugin="org.junit"/>
+      <import plugin="org.eclipse.osgi"/>
+      <import plugin="org.ptolemy.testsupport" version="11.0.0" match="greaterOrEqual"/>
+      <import plugin="ptolemy.core" version="11.0.0" match="greaterOrEqual"/>
+      <import plugin="ptolemy.actor.lib" version="11.0.0" match="greaterOrEqual"/>
+      <import plugin="ptolemy.domains.sdf" version="11.0.0" match="greaterOrEqual"/>
+      <import plugin="ptolemy.domains.process" version="11.0.0" match="greaterOrEqual"/>
+      <import plugin="ptolemy.moml" version="11.0.0" match="greaterOrEqual"/>
+   </requires>
+
+   <plugin
+         id="diva"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.ptolemy.actor.gui.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.ptolemy.commons"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.ptolemy.core.test"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.ptolemy.core.test.actor"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.ptolemy.testsupport"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ptolemy.actor.lib"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ptolemy.actor.lib.gui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ptolemy.core"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ptolemy.domains.process"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ptolemy.domains.sdf"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ptolemy.gui"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="ptolemy.moml"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
 </feature>
