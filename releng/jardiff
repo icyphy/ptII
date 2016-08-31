@@ -1,0 +1,24 @@
+#!/bin/sh
+
+jars=`ls -1 cqd/plugins/*.jar`
+for jar in $jars
+do
+    bundle=`echo $jar | sed -e 's@cqd/plugins/\(.*\).source.*@\1@'`
+    echo $bundle
+
+    orig=tmp/${bundle}-orig
+    if [ ! -d $orig ]; then 
+	mkdir -p $orig
+	(cd $orig; jar -xf ../../$jar)
+    fi
+
+    new=tmp/${bundle}-new
+    if [ ! -d $new ]; then 
+	mkdir -p $new
+	newjar=`ls ../$bundle/target/$bundle-*-sources.jar`
+	echo "newjar: $newjar"
+	(cd $new; jar -xf ../../$newjar);
+    fi
+    diff -rwb -I '@version' -I '$Id:' $orig $new
+
+done
