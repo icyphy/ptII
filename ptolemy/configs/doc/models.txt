@@ -51,6 +51,7 @@ $CLASSPATH/org/ptolemy/ssm/demo/SingleRobotTargetLocalization/SingleRobotTargetL
 $CLASSPATH/org/ptolemy/ssm/demo/StatePrediction/StatePrediction.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AprilTags/AprilTags.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Audio/Audio.xml
+$CLASSPATH/org/terraswarm/accessor/demo/Browser/Browser.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/Camera.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/CaptureOpenLoop.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Foscam/Foscam.xml
