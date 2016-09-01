@@ -1193,15 +1193,15 @@ TimeRegulator {
             StringBuffer info;
             if(_eventBased){
                 info = new StringBuffer(_date.toString()+"\n"+header+"\n"+basicInfo + "preUAV TimeStamp:;"+_preUAVsTimes+"\n"+
-                        ";;"+"pUAV TimeStamp:;"+_pUAVsTimes +"\n");
+                        "Approach;;"+"pUAV TimeStamp:;"+_pUAVsTimes +"\n");
                 for (int i = 0; i < _numberOfAttributesToPublish; i++){
-                    info.append(";;"+ _nameOfTheAttributesToPublish[i] +";"+ _UAVsValues[i]+ "\n");
+                    info.append("NER;;"+ _nameOfTheAttributesToPublish[i] +";"+ _UAVsValues[i]+ "\n");
                 }
             }else{
                 info = new StringBuffer(_date.toString()+"\n"+header+"\n"+basicInfo + "preUAV TimeStamp:;"+_preUAVsTimes+"\n"+
-                        ";;;"+"pUAV TimeStamp:;"+_pUAVsTimes +"\n");
+                        "Approach;;;"+"pUAV TimeStamp:;"+_pUAVsTimes +"\n");
                 for (int i = 0; i < _numberOfAttributesToPublish; i++){
-                    info.append(";;;"+ _nameOfTheAttributesToPublish[i] +";"+ _UAVsValues[i]+ "\n");
+                    info.append("TAR;;;"+ _nameOfTheAttributesToPublish[i] +";"+ _UAVsValues[i]+ "\n");
                 }
             }
             
@@ -1233,15 +1233,15 @@ TimeRegulator {
             StringBuffer info;
             if(_eventBased){
                 info = new StringBuffer(_date.toString()+"\n"+header+"\n" + basicInfo+ "pRAV TimeStamp:;"+_pRAVsTimes+"\n"+
-                        ";;"+"folRAV TimeStamp:;"+_folRAVsTimes +"\n");
+                        "Approach;;"+"folRAV TimeStamp:;"+_folRAVsTimes +"\n");
                 for (int i = 0; i < _numberOfAttributesSubscribedTo; i++){
-                    info.append(";;"+ _nameOfTheAttributesSubscribedTo[i] +";"+ _RAVsValues[i]+ "\n");
+                    info.append("NER;;"+ _nameOfTheAttributesSubscribedTo[i] +";"+ _RAVsValues[i]+ "\n");
                 }
             }else{
                 info = new StringBuffer(_date.toString()+"\n"+header+"\n" + basicInfo+ "pRAV TimeStamp:;"+_pRAVsTimes+"\n"+
-                        ";;;"+"folRAV TimeStamp:;"+_folRAVsTimes +"\n");
+                        "Approach;;;"+"folRAV TimeStamp:;"+_folRAVsTimes +"\n");
                 for (int i = 0; i < _numberOfAttributesSubscribedTo; i++){
-                    info.append(";;;"+ _nameOfTheAttributesSubscribedTo[i] +";"+ _RAVsValues[i]+ "\n");
+                    info.append("TAR;;;"+ _nameOfTheAttributesSubscribedTo[i] +";"+ _RAVsValues[i]+ "\n");
                 }
             }
             _RAVsValuesFile=_createTextFile(fileName);
