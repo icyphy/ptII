@@ -628,8 +628,7 @@ TimeRegulator {
                     .toURI().toURL());
         } catch (FederationExecutionAlreadyExists e) {
             if (_debugging) {
-                _debug(this.getDisplayName()
-                        + " initialize() - WARNING: FederationExecutionAlreadyExists");
+                _debug("initialize() - WARNING: FederationExecutionAlreadyExists");
             }
         } catch (Exception e) {
             throw new IllegalActionException(this, e, e.getMessage());
@@ -685,7 +684,7 @@ TimeRegulator {
 
         _certiRtig.exec();
         if (_debugging) {
-            _debug(this.getDisplayName() + " preinitialize() - "
+            _debug("Federate "+this.getDisplayName() + "\npreinitialize() - "
                     + "Launch RTIG process");
         }
 
@@ -694,7 +693,7 @@ TimeRegulator {
             _certiRtig = null;
 
             if (_debugging) {
-                _debug(this.getDisplayName() + " preinitialize() - "
+                _debug("preinitialize() - "
                         + "Destroy RTIG process as another one is already "
                         + "launched");
             }
@@ -732,7 +731,7 @@ TimeRegulator {
             "t_ptII = " + _printTimes(_director.getModelTime())+ "; t_hla = " + _federateAmbassador.logicalTimeHLA);
             }
             else{
-                _debug("starting proposeTime("+proposedTimeInString+")) - current status - " +
+                _debug("starting proposeTime("+proposedTimeInString+") - current status - " +
             "t_ptII = " +_printTimes(_director.getModelTime())+ "; t_hla = " + _federateAmbassador.logicalTimeHLA);
             }
         }  
@@ -835,7 +834,7 @@ TimeRegulator {
                 } catch (NoSuchElementException e) {
                     // GL: FIXME: to investigate.
                     if (_debugging) {
-                        _debug("    proposeTime() -"
+                        _debug("    proposeTime("+proposedTimeInString+") -"
                                 + " NoSuchElementException " + " for _rtia");
                     }
                     return proposedTime;
@@ -941,7 +940,7 @@ TimeRegulator {
             _storeTimes("UAV "+ _getPortFromTab(tObj).getContainer().getName());
             
             if(_numberOfUAVs>0 &&(_preUAVsTimes.length() - _preUAVsTimes.lastIndexOf(preUAVTimeStamp))==preUAVTimeStamp.length() && 
-                        (_pUAVsTimes.length() - _pUAVsTimes.lastIndexOf(pUAVTimeStamp))==pUAVTimeStamp.length()){
+                        (_pUAVsTimes.length() - _pUAVsTimes.lastIndexOf(pUAVTimeStamp))==pUAVTimeStamp.length() && _UAVsValues[indexOfAttribute].indexOf("-;")>-1){
                 //System.out.println(_UAVsValues[indexOfAttribute].toString().substring(_UAVsValues.length-2, _UAVsValues.length));
                 _UAVsValues[indexOfAttribute].replace(_UAVsValues[indexOfAttribute].length()-2,_UAVsValues[indexOfAttribute].length(),in.toString()+";");
             }else{
@@ -987,7 +986,7 @@ TimeRegulator {
         writeTimes();
 
         if (_debugging) {
-            _debug(this.getDisplayName() + " wrapup() - ... so termination");
+            _debug("wrapup() - ... so termination");
         }
 
         // Unsubscribe to HLA attributes
@@ -998,7 +997,7 @@ TimeRegulator {
                 throw new IllegalActionException(this, e, e.getMessage());
             }
             if (_debugging) {
-                _debug(this.getDisplayName() + " wrapup() - Unsubscribe "
+                _debug("wrapup() - unsubscribe "
                         + _getPortFromTab(obj).getContainer().getName()
                         + "(classHandle = " + _getClassHandleFromTab(obj) + ")");
             }
@@ -1012,7 +1011,7 @@ TimeRegulator {
                 throw new IllegalActionException(this, e, e.getMessage());
             }
             if (_debugging) {
-                _debug(this.getDisplayName() + " wrapup() - Unpublish "
+                _debug("wrapup() - unpublish "
                         + _getPortFromTab(obj).getContainer().getName()
                         + "(classHandle = " + _getClassHandleFromTab(obj) + ")");
             }
@@ -1025,8 +1024,7 @@ TimeRegulator {
             throw new IllegalActionException(this, e, e.getMessage());
         }
         if (_debugging) {
-            _debug(this.getDisplayName()
-                    + " wrapup() - Resign Federation execution");
+            _debug("wrapup() - Resign Federation execution");
         }
 
         boolean canDestroyRtig = false;
@@ -1037,14 +1035,12 @@ TimeRegulator {
                 _rtia.destroyFederationExecution(_federationName);
             } catch (FederatesCurrentlyJoined e) {
                 if (_debugging) {
-                    _debug(this.getDisplayName()
-                            + " wrapup() - WARNING: FederatesCurrentlyJoined");
+                    _debug("wrapup() - WARNING: FederatesCurrentlyJoined");
                 }
             } catch (FederationExecutionDoesNotExist e) {
                 // GL: FIXME: This should be an IllegalActionExeception
                 if (_debugging) {
-                    _debug(this.getDisplayName()
-                            + " wrapup() - WARNING: FederationExecutionDoesNotExist");
+                    _debug("wrapup() - WARNING: FederationExecutionDoesNotExist");
                 }
                 canDestroyRtig = true;
             } catch (RTIinternalError e) {
@@ -1054,7 +1050,7 @@ TimeRegulator {
                         "ConcurrentAccessAttempted ");
             }
             if (_debugging) {
-                _debug(this.getDisplayName() + " wrapup() - "
+                _debug("wrapup() - "
                         + "Destroy Federation execution - no fail");
             }
 
@@ -1066,7 +1062,7 @@ TimeRegulator {
             _certiRtig.terminateProcess();
 
             if (_debugging) {
-                _debug(this.getDisplayName() + " wrapup() - "
+                _debug("wrapup() - "
                         + "Destroy RTIG process (if authorized)");
             }
         }
@@ -1178,35 +1174,60 @@ TimeRegulator {
 
     public void writeUAVsInformations(){
         if(_numberOfUAVs>0){
-            StringBuffer header = new StringBuffer("LookAhead;TimeStep;StopTime;Information;");
+            StringBuffer header = new StringBuffer("LookAhead;");
+            String fileName;
+            StringBuffer basicInfo=new StringBuffer(_hlaLookAHead +";");
+            if(_eventBased){
+                fileName="uav"+getDisplayName()+"NER.csv";
+            }else{
+                fileName="uav"+getDisplayName()+"TAR.csv";
+                header.append("TimeStep;");
+                basicInfo.append( _hlaTimeStep +";");
+            }
+            header.append("StopTime;Information;");
+            basicInfo.append( _stopTime+";");
             int count = String.valueOf(_UAVsValues[0]).split(";").length;
             for (int i = 0; i < count; i++) {
                 header.append("UAV"+i+";");
             }
-            StringBuffer info = new StringBuffer(_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";" + "preUAV TimeStamp:;"+_preUAVsTimes+"\n"+
+            StringBuffer info = new StringBuffer(_date.toString()+"\n"+header+"\n"+basicInfo + "preUAV TimeStamp:;"+_preUAVsTimes+"\n"+
                     ";;;"+"pUAV TimeStamp:;"+_pUAVsTimes +"\n");
             for (int i = 0; i < _numberOfAttributesToPublish; i++){
                 info.append(";;;"+ _nameOfTheAttributesToPublish[i] +";"+ _UAVsValues[i]+ "\n");
             }
-            _UAVsValuesFile=_createTextFile("uav"+getDisplayName()+".csv");
+            _UAVsValuesFile=_createTextFile(fileName);
+
             writeInTextFile(_UAVsValuesFile,String.valueOf(info));
         }
     }
     
     public void writeRAVsInformations(){
         if(_numberOfRAVs>0){
-            StringBuffer header = new StringBuffer("LookAhead;TimeStep;StopTime;Information;");
+            StringBuffer header = new StringBuffer("LookAhead;");
+            String fileName;
+            StringBuffer basicInfo=new StringBuffer(_hlaLookAHead +";");
+            if(_eventBased){
+                fileName="rav"+getDisplayName()+"NER.csv";
+            }else{
+                fileName="rav"+getDisplayName()+"TAR.csv";
+                header.append("TimeStep;");
+                basicInfo.append( _hlaTimeStep +";");
+            }
+            header.append("StopTime;Information;");
+            basicInfo.append( _stopTime+";");
             int count = _RAVsValues[0].toString().split(";").length;
             for (int i = 0; i < count; i++) {
                 header.append("RAV"+i+";");
             }
             
-            StringBuffer info = new StringBuffer(_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";" + "pRAV TimeStamp:;"+_pRAVsTimes+"\n"+
+            StringBuffer info = new StringBuffer(_date.toString()+"\n"+header+"\n" + basicInfo+ "pRAV TimeStamp:;"+_pRAVsTimes+"\n"+
                     ";;;"+"folRAV TimeStamp:;"+_folRAVsTimes +"\n");
             for (int i = 0; i < _numberOfAttributesSubscribedTo; i++){
                 info.append(";;;"+ _nameOfTheAttributesSubscribedTo[i] +";"+ _RAVsValues[i]+ "\n");
             }
-            _RAVsValuesFile=_createTextFile("rav"+getDisplayName()+".csv");
+           
+            _RAVsValuesFile=_createTextFile(fileName);
+            
             writeInTextFile(_RAVsValuesFile,String.valueOf(info));
            }
     }
@@ -1522,7 +1543,7 @@ TimeRegulator {
             // Event-based + lookahead > 0 => NER.
             if (_debugging) {
                 _debug("        proposeTime(t(lastFoundEvent)="+proposedTimeInString+") - _eventsBasedTimeAdvance("+proposedTimeInString+")"
-                        + " - calling CERTI NER("+ certiProposedTime.getTime() + ")");
+                        + " - calling CERTI NER(proposedTime*hlaTimeUnitValue = "+ certiProposedTime.getTime() + ")");
             }
             _rtia.nextEventRequest(certiProposedTime);
             _numberOfNERs++;
@@ -1532,7 +1553,8 @@ TimeRegulator {
             // Event-based + lookahead = 0 => NERA + NER.
             // Start the time advancement loop with one NERA call.
             if (_debugging) {
-                _debug("        proposeTime(t(lastFoundEvent)="+proposedTimeInString+") - _eventsBasedTimeAdvance("+proposedTimeInString+")- call CERTI NERA -("
+                _debug("        proposeTime(t(lastFoundEvent)="+proposedTimeInString+") - _eventsBasedTimeAdvance("+proposedTimeInString+")- "
+                        + "call CERTI NERA(proposedTime*hlaTimeUnitValue = "
                        + certiProposedTime.getTime() + ")");
             }
             _rtia.nextEventRequestAvailable(certiProposedTime);
@@ -1555,7 +1577,7 @@ TimeRegulator {
             if (_debugging) {
                 if (_debugging) {
                     _debug("        proposeTime(t(lastFoundEvent)="+proposedTimeInString+") - _eventsBasedTimeAdvance("+proposedTimeInString+")"
-                            + " - calling CERTI NER("+ certiProposedTime.getTime() + ")");
+                            + " - calling CERTI NER(proposedTime*hlaTimeUnitValue = "+ certiProposedTime.getTime() + ")");
                 }
             }
             _rtia.nextEventRequest(certiProposedTime);
@@ -1620,7 +1642,6 @@ TimeRegulator {
             EnableTimeRegulationPending, EnableTimeConstrainedPending,
             RestoreInProgress, RTIinternalError, ConcurrentAccessAttempted {
 
-        Time currentTime = _getModelTime();
         String proposedTimeInString=_printTimes(proposedTime);
         if (_hlaTimeStep > 0) {
 
@@ -1664,7 +1685,7 @@ TimeRegulator {
                 while (proposedTime.compareTo(hlaNextPointInTime) > 0) {
                     if (_debugging) {
                         _debug("        proposeTime("+proposedTimeInString+") - _timeSteppedBasedTimeAdvance("+proposedTimeInString+") - the lastFoundEvent's "
-                                        + "timestamp >= hlaNextPointInTime- calling CERTI TAR("+ certiNextPointInTime.getTime() + ")");
+                                        + "timestamp >= hlaNextPointInTime- calling CERTI TAR(proposedTime*hlaTimeUnitValue = "+ certiNextPointInTime.getTime() + ")");
                     }
                     _rtia.timeAdvanceRequest(certiNextPointInTime);
                     _numberOfTARs++;
@@ -1751,7 +1772,8 @@ TimeRegulator {
 
                 // End the loop with one TAR call.
                 if (_debugging) {
-                    _debug("        proposeTime("+proposedTimeInString+") - _timeSteppedBasedTimeAdvance("+proposedTimeInString+") -  calling CERTI TAR("
+                    _debug("        proposeTime("+proposedTimeInString+") - _timeSteppedBasedTimeAdvance("+proposedTimeInString+") - "
+                            + " calling CERTI TAR(proposedTime*hlaTimeUnitValue = "
                             + certiNextPointInTime.getTime() + ")");
                 }
                 _rtia.timeAdvanceRequest(certiNextPointInTime);
@@ -1761,7 +1783,7 @@ TimeRegulator {
         }
 
         if (_debugging) {
-            _debug("        proposeTime("+proposedTimeInString+") - _timeSteppedBasedTimeAdvance("+proposedTimeInString+") TAR not successful");
+            _debug("        proposeTime("+proposedTimeInString+") - _timeSteppedBasedTimeAdvance("+proposedTimeInString+") - TAR not successful");
         }
         return null;
 
@@ -1856,8 +1878,9 @@ TimeRegulator {
                             +", timestamp = "+ _printTimes(ravevent.timeStamp) +") "+ " in the Hla Subscriber"
                             );
                 }
-                if(_folRAVsTimes.lastIndexOf("*")>=0){
-                    _folRAVsTimes.replace(_folRAVsTimes.lastIndexOf("*"),_folRAVsTimes.length(),ravevent.timeStamp+";");
+                int position = _folRAVsTimes.indexOf("*");
+                if(position>=0){
+                    _folRAVsTimes.replace(position,position,_printTimes(ravevent.timeStamp)+";");
                 }
                 events.removeFirst();
             }
@@ -1940,6 +1963,7 @@ TimeRegulator {
     
     private String _printFormatedNumbers(double value){
         DecimalFormat df = new DecimalFormat(_decimalFormat);
+        df.setMinimumFractionDigits(1);
         df.setRoundingMode(RoundingMode.HALF_DOWN);
         return df.format(value);
     }
@@ -2233,8 +2257,7 @@ TimeRegulator {
         try {
             _rtia.synchronizationPointAchieved(_synchronizationPointName);
             if (_debugging) {
-                _debug(this.getDisplayName()
-                        + " _doInitialSynchronization() - initialize() - Synchronisation point "
+                _debug("_doInitialSynchronization() - initialize() - Synchronisation point "
                         + _synchronizationPointName + " satisfied !");
             }
         } catch(RTIexception e) {
@@ -2244,8 +2267,7 @@ TimeRegulator {
         // Wait federation synchronization.
         while (_federateAmbassador.inPause) {
             if (_debugging) {
-                _debug(this.getDisplayName()
-                        + " _doInitialSynchronization() - initialize() - Waiting for simulation phase !");
+                _debug("_doInitialSynchronization() - initialize() - Waiting for simulation phase !");
             }
 
             try {
@@ -2326,7 +2348,7 @@ TimeRegulator {
             }
 
             if (_debugging) {
-                _debug(this.getDisplayName() + " _initializeTimeAspects() - initialize() -"
+                _debug("_initializeTimeAspects() - initialize() -"
                         + " Time Management policies:" + " is Constrained = "
                         + _federateAmbassador.timeConstrained
                         + " and is Regulator = "
@@ -2511,7 +2533,7 @@ TimeRegulator {
             effectiveLookAHead = new CertiLogicalTimeInterval(lookAHead
                     * _hlaTimeUnitValue);
             if (_debugging) {
-                _debug(" initializeTimeValues() - Effective HLA lookahead is "
+                _debug("initializeTimeValues() - Effective HLA lookahead is "
                         + effectiveLookAHead.toString());
             }
             timeAdvanceGrant = false;
@@ -2591,18 +2613,19 @@ TimeRegulator {
                                 }
                                 done = true;
                                 String attributeName = hs.getParameterName();
+                                int indexOfAttribute=0;
+                                
+                                for(int j = 0; j<_numberOfAttributesSubscribedTo;j++){
+                                    if(_nameOfTheAttributesSubscribedTo[j].substring(_nameOfTheAttributesSubscribedTo[j].lastIndexOf("-"+attributeName)+1).equals(attributeName)){
+                                        indexOfAttribute=j;
+                                        break;
+                                    }
+                                }
                                 
                                 String pRAVTimeStamp =_printTimes(te.timeStamp)+";";
-                                if(_numberOfRAVs>0 && (_pRAVsTimes.length() -_pRAVsTimes.lastIndexOf(pRAVTimeStamp))== pRAVTimeStamp.length()){
-                                    int indexOfAttribute=0;
-                                    for(int j = 0; j<_numberOfAttributesSubscribedTo;j++){
-                                        if(_nameOfTheAttributesSubscribedTo[j].substring(_nameOfTheAttributesSubscribedTo[j].lastIndexOf("-"+attributeName)+1).equals(attributeName)){
-                                            indexOfAttribute=j;
-                                            break;
-                                        }
-                                    }
-                                    _RAVsValues[indexOfAttribute].replace(_RAVsValues[indexOfAttribute].length()-2,_RAVsValues[indexOfAttribute].length(),value.toString()+";");
-                                   //_UAVsValues[indexOfAttribute].replace(_UAVsValues[indexOfAttribute].length()-2,_UAVsValues[indexOfAttribute].length(),in.toString()+";");
+                                if(_numberOfRAVs>0 && (_pRAVsTimes.length() -_pRAVsTimes.lastIndexOf(pRAVTimeStamp))== pRAVTimeStamp.length() && _RAVsValues[indexOfAttribute].lastIndexOf("-;")>-1){
+                                    _RAVsValues[indexOfAttribute].replace(_RAVsValues[indexOfAttribute].lastIndexOf("-;"),_RAVsValues[indexOfAttribute].length(),value.toString()+";");
+                                   
                                 }else{
                                     if(_numberOfRAVs<1){
                                         _numberOfAttributesSubscribedTo=_hlaAttributesSubscribedTo.size();
@@ -2614,14 +2637,6 @@ TimeRegulator {
                                             _nameOfTheAttributesSubscribedTo[y]=attributesSubscribedTo[y].toString();
                                            _RAVsValues[y]=new StringBuffer("");
                                             System.out.println(_nameOfTheAttributesSubscribedTo[y]);
-                                        }
-                                    }
-                                    
-                                    int indexOfAttribute=0;
-                                    for(int j = 0; j<_numberOfAttributesSubscribedTo;j++){
-                                        if(_nameOfTheAttributesSubscribedTo[j].substring(_nameOfTheAttributesSubscribedTo[j].lastIndexOf("-"+attributeName)+1).equals(attributeName)){
-                                            indexOfAttribute=j;
-                                            break;
                                         }
                                     }
                                     _folRAVsTimes.append("*");
@@ -2672,10 +2687,6 @@ TimeRegulator {
             final int classHandle = classHandle_;
             final String objectName = objectName_;
             final int objectHandle = objectHandle_;
-
-            if(_debugging){
-                _debug(getDisplayName()+" Trying to discover an object.");
-            }
 
             _objectIdToClassHandle.put(objectHandle, classHandle);
 
@@ -2800,7 +2811,7 @@ TimeRegulator {
             requestChange(request);
 
             if (_debugging) {
-                String toLog = HlaManager.this.getDisplayName() + " INNER"
+                String toLog = "INNER"
                         + " discoverObjectInstance() - the object "
                         + objectName + " has been discovered" + " (ID="
                         + objectHandle + ", class'ID=" + classHandle + ")";
@@ -2819,7 +2830,7 @@ TimeRegulator {
                 EnableTimeRegulationWasNotPending, FederateInternalError {
             timeRegulator = true;
             if (_debugging) {
-                _debug(HlaManager.this.getDisplayName() + " INNER"
+                _debug("INNER"
                         + " timeRegulationEnabled() - timeRegulator = "
                         + timeRegulator);
             }
@@ -2834,7 +2845,7 @@ TimeRegulator {
                 EnableTimeConstrainedWasNotPending, FederateInternalError {
             timeConstrained = true;
             if (_debugging) {
-                _debug(HlaManager.this.getDisplayName() + " INNER"
+                _debug("INNER"
                         + " timeConstrainedEnabled() - timeConstrained = "
                         + timeConstrained);
             }
@@ -2881,7 +2892,7 @@ TimeRegulator {
                 String synchronizationPointLabel) throws FederateInternalError {
             synchronizationFailed = true;
             if (_debugging) {
-                _debug(HlaManager.this.getDisplayName() + " INNER"
+                _debug("INNER"
                         + " synchronizationPointRegistrationFailed()"
                         + " - synchronizationFailed = " + synchronizationFailed);
             }
@@ -2895,7 +2906,7 @@ TimeRegulator {
                 String synchronizationPointLabel) throws FederateInternalError {
             synchronizationSuccess = true;
             if (_debugging) {
-                _debug(HlaManager.this.getDisplayName() + " INNER"
+                _debug("INNER"
                         + " synchronizationPointRegistrationSucceeded()"
                         + " - synchronizationSuccess = "
                         + synchronizationSuccess);
@@ -2911,7 +2922,7 @@ TimeRegulator {
                         throws FederateInternalError {
             inPause = true;
             if (_debugging) {
-                _debug(HlaManager.this.getDisplayName() + " INNER"
+                _debug("INNER"
                         + " announceSynchronizationPoint() - inPause = "
                         + inPause);
             }
@@ -2926,7 +2937,7 @@ TimeRegulator {
                 throws FederateInternalError {
             inPause = false;
             if (_debugging) {
-                _debug(HlaManager.this.getDisplayName() + " INNER"
+                _debug("INNER"
                         + " federationSynchronized() - inPause = " + inPause);
             }
         }
