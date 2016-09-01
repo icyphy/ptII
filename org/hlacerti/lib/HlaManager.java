@@ -1190,11 +1190,22 @@ TimeRegulator {
             for (int i = 0; i < count; i++) {
                 header.append("UAV"+i+";");
             }
-            StringBuffer info = new StringBuffer(_date.toString()+"\n"+header+"\n"+basicInfo + "preUAV TimeStamp:;"+_preUAVsTimes+"\n"+
-                    ";;;"+"pUAV TimeStamp:;"+_pUAVsTimes +"\n");
-            for (int i = 0; i < _numberOfAttributesToPublish; i++){
-                info.append(";;;"+ _nameOfTheAttributesToPublish[i] +";"+ _UAVsValues[i]+ "\n");
+            StringBuffer info;
+            if(_eventBased){
+                info = new StringBuffer(_date.toString()+"\n"+header+"\n"+basicInfo + "preUAV TimeStamp:;"+_preUAVsTimes+"\n"+
+                        ";;"+"pUAV TimeStamp:;"+_pUAVsTimes +"\n");
+                for (int i = 0; i < _numberOfAttributesToPublish; i++){
+                    info.append(";;"+ _nameOfTheAttributesToPublish[i] +";"+ _UAVsValues[i]+ "\n");
+                }
+            }else{
+                info = new StringBuffer(_date.toString()+"\n"+header+"\n"+basicInfo + "preUAV TimeStamp:;"+_preUAVsTimes+"\n"+
+                        ";;;"+"pUAV TimeStamp:;"+_pUAVsTimes +"\n");
+                for (int i = 0; i < _numberOfAttributesToPublish; i++){
+                    info.append(";;;"+ _nameOfTheAttributesToPublish[i] +";"+ _UAVsValues[i]+ "\n");
+                }
             }
+            
+            
             _UAVsValuesFile=_createTextFile(fileName);
 
             writeInTextFile(_UAVsValuesFile,String.valueOf(info));
@@ -1219,13 +1230,20 @@ TimeRegulator {
             for (int i = 0; i < count; i++) {
                 header.append("RAV"+i+";");
             }
-            
-            StringBuffer info = new StringBuffer(_date.toString()+"\n"+header+"\n" + basicInfo+ "pRAV TimeStamp:;"+_pRAVsTimes+"\n"+
-                    ";;;"+"folRAV TimeStamp:;"+_folRAVsTimes +"\n");
-            for (int i = 0; i < _numberOfAttributesSubscribedTo; i++){
-                info.append(";;;"+ _nameOfTheAttributesSubscribedTo[i] +";"+ _RAVsValues[i]+ "\n");
+            StringBuffer info;
+            if(_eventBased){
+                info = new StringBuffer(_date.toString()+"\n"+header+"\n" + basicInfo+ "pRAV TimeStamp:;"+_pRAVsTimes+"\n"+
+                        ";;"+"folRAV TimeStamp:;"+_folRAVsTimes +"\n");
+                for (int i = 0; i < _numberOfAttributesSubscribedTo; i++){
+                    info.append(";;"+ _nameOfTheAttributesSubscribedTo[i] +";"+ _RAVsValues[i]+ "\n");
+                }
+            }else{
+                info = new StringBuffer(_date.toString()+"\n"+header+"\n" + basicInfo+ "pRAV TimeStamp:;"+_pRAVsTimes+"\n"+
+                        ";;;"+"folRAV TimeStamp:;"+_folRAVsTimes +"\n");
+                for (int i = 0; i < _numberOfAttributesSubscribedTo; i++){
+                    info.append(";;;"+ _nameOfTheAttributesSubscribedTo[i] +";"+ _RAVsValues[i]+ "\n");
+                }
             }
-           
             _RAVsValuesFile=_createTextFile(fileName);
             
             writeInTextFile(_RAVsValuesFile,String.valueOf(info));
