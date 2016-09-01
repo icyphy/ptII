@@ -32,7 +32,7 @@
 # Root of Ptolemy II directory
 ROOT = ../../../..
 
-DIRS = AprilTags Audio Camera Foscam HappySadStock HueToggle \
+DIRS = AprilTags Audio Browser Camera Foscam HappySadStock HueToggle \
 	IMUSensor ImageAnnotate ImageFilters KeyValueStoreClient \
 	MoC MockHueBridge MoodLights MotionDetector MotionLights \
 	OccupancyLights Scarab SecureSocket StockTick \
@@ -62,6 +62,7 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	AprilTags/AprilTags.jar \
 	Audio/Audio.jar \
+	Browser/Browser.jar \
 	Camera/Camera.jar \
 	Foscam/Foscam.jar \
 	HappySadStock/HappySadStock.jar \
