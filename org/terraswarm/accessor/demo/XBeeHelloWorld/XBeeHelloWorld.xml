@@ -28,7 +28,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0476717503335393">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.4558272742142, 333.00600750358}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.45582727421424, 333.00600750358007}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -99,7 +99,7 @@
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 23, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Top Received">
         </property>
@@ -109,7 +109,7 @@
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={906, 240, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Bottom Received">
         </property>
@@ -158,7 +158,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01QWMR">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01LK3S">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -212,7 +212,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01QZI2">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-AJV9ONHV">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
