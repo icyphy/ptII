@@ -1,0 +1,153 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="BrowserRamp" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 934, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1276453126496224">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{246.60351562500034, 259.8030740489132}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Plot the output of a Ramp in the browser.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 75.0]">
+        </property>
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="startTime" class="ptolemy.data.expr.Parameter" value="0.0">
+        </property>
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="3.0">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 85.0]">
+        </property>
+    </property>
+    <entity name="Browser" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Accessor that connects with a browser on the local host.&#10;//&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Accessor that connects with a browser on the local host.&#10; *  This is intended to be used by a swarmlet to interact with users,&#10; *  for example by providing forms to be filled in.&#10; *  For now, however, it simply displays HTML provided to its input.&#10; *&#10; *  @accessor utilities/Browser&#10; *  @input {string} html An HTML document to render in the browser.&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; */&#10;var browser = require('browser');&#10;&#10;exports.setup = function() {&#10;    this.input('html', {'type':'string'});&#10;};&#10;&#10;function display() {&#10;	var toDisplay = this.get('html');&#10;	browser.display(toDisplay);&#10;}&#10;&#10;exports.initialize = function() {&#10;	this.addInputHandler('html', display);&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="http://terraswarm.org/accessors/utilities/Browser.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 180.0]">
+        </property>
+        <port name="html" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="JavaScriptGDPToGraph2D" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Generate Vis-compatible Graph2D html from an input&#10; *&#10; *  @accessor JavaScriptGDPToGraph2D&#10; *  @input data The input data&#10; *  @output output The HTML page.&#10; *  @author Christopher Brooks&#10; *  @version $$Id: GDPLogRead.xml 75037 2016-08-11 21:29:55Z cxh $$&#10; */&#10;exports.setup = function() {&#10;    this.input('data');&#10;    this.output('output', {'type':'string'});&#10;};&#10;&#10;function isNumeric(n) {&#10;  return !isNaN(parseFloat(n)) &amp;&amp; isFinite(n);&#10;}&#10;&#10;exports.generate = function() {&#10;	var dataValue = this.get('data')&#10;	console.log(&quot;JavaScriptGDPToGraph2D: &quot; + dataValue);&#10;var output = '&lt;!DOCTYPE HTML&gt;\n' +&#10;'&lt;html&gt;\n' +&#10;'  &lt;head&gt;\n' +&#10;'    &lt;title&gt;Graph2d or Basic Example&lt;/title&gt;\n' +&#10;'\n' +&#10;'    &lt;style type=&quot;text/css&quot;&gt;\n' +&#10;'      body, html {\n' +&#10;'      font-family: sans-serif;\n' +&#10;'      }\n' +&#10;'    &lt;/style&gt;\n' +&#10;'\n' +&#10;'  &lt;script src=&quot;https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.js&quot;&gt;&lt;/script&gt;\n' +&#10;'  &lt;link href=&quot;https://cdnjs.cloudflare.com/ajax/libs/vis/4.16.1/vis.min.css&quot; rel=&quot;stylesheet&quot; type=&quot;t\&#10;ext/css&quot; /&gt;\n' +&#10;'  &lt;/head&gt;\n' +&#10;'  &lt;body&gt;\n' +&#10;'\n' +&#10;'    &lt;div id=&quot;visualization&quot;&gt;&lt;/div&gt;\n' +&#10;'\n' +&#10;'    &lt;script type=&quot;text/javascript&quot;&gt;\n' +&#10;'      var container = document.getElementById(\'visualization\');\n' +&#10;'      var items = [\n' +&#10;'      {x: \'' + Date.now() + '\', y: ' + dataValue + '},\n' +&#10;'      ];\n' +&#10;'\n' +&#10;'      var dataset = new vis.DataSet(items);\n' +&#10;'      var options = {\n' +&#10;       // Comment out the start and end for now, it seems to cause trouble.&#10;'      // start: \'' + (Date.now() - 10000) + '\',\n' +&#10;'      // end: \'' + (Date.now() + 10000) + '\'\n' +&#10;'      };\n' +&#10;'      var Graph2d = new vis.Graph2d(container, dataset, options);\n' +&#10;'    &lt;/script&gt;\n' +&#10;'  &lt;/body&gt;\n' +&#10;'&lt;/html&gt;\n';&#10;	if (isNumeric(dataValue)) {&#10;		this.send('output', output);&#10;	}&#10;}&#10;&#10;exports.initialize = function() {&#10;	handle = this.addInputHandler('data', this.exports.generate.bind(this));&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 180.0]">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="JavaScriptRamp" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Output a sequence with a given step in values.&#10; *&#10; *  @accessor JavaScriptRamp&#10; *  @param init The value produced on its first iteration.  The&#10; *  initial default is 0.&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @param step The amount by which the output is incremented. The&#10; *  default is 1.&#10; *  @author Christopher Brooks&#10; *  @version $$Id: GDPLogRead.xml 75037 2016-08-11 21:29:55Z cxh $$&#10; */&#10;exports.setup = function() {&#10;    // FIXME: this only supports numbers, unlike the Cape Code Ramp&#10;    // actor, which supports many types.&#10;    this.parameter('init', {'type':'number', 'value':0});&#10;    this.input('trigger');&#10;    this.output('output', {'type':'number'});&#10;    this.parameter('step', {'type':'number', 'value':1});&#10;};&#10;&#10;var _lastValue = 0;&#10;&#10;exports.initialize = function() {&#10;    _lastValue = this.getParameter('init');&#10;}&#10;exports.fire = function() {&#10;    _lastValue += this.getParameter('step');&#10;    this.send('output', _lastValue);&#10;};">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 180.0]">
+        </property>
+        <property name="init" class="ptolemy.data.expr.Parameter" value="0">
+        </property>
+        <property name="step" class="ptolemy.data.expr.Parameter" value="1">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="int">
+            </property>
+        </port>
+    </entity>
+    <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Test accessor that spontaneously produces outputs once per time interval.&#10;//&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Test accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor test/TestSpontaneous&#10; *  @parameter interval The interval between outputs in milliseconds.&#10; *  @output output Output for the counting sequence, of type number.&#10; *  @author Edward A. Lee&#10; *  @version $$Id: TestSpontaneous.js 546 2016-02-03 02:07:57Z cxh $$&#10; */&#10;&#10;exports.setup = function() {&#10;    this.parameter('interval', {'type':'number', 'value':1000});&#10;    this.output('output', {'type': 'number'});&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;var count = 0;&#10;&#10;exports.initialize = function() {&#10;    count = 0;&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;    handle = setInterval(function() {&#10;        thiz.send('output', count++);&#10;    }, this.getParameter('interval'));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        clearInterval(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TestSpontaneous.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TestSpontaneous.js 546 2016-02-03 02:07:57Z cxh $$">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="Output for the counting sequence, of type number.">
+            </property>
+            <property name="interval (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The interval between outputs in milliseconds.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-15.0, 180.0]">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="Browser.html" relation="relation"/>
+    <link port="JavaScriptGDPToGraph2D.output" relation="relation"/>
+    <link port="JavaScriptGDPToGraph2D.data" relation="relation3"/>
+    <link port="JavaScriptRamp.trigger" relation="relation2"/>
+    <link port="JavaScriptRamp.output" relation="relation3"/>
+    <link port="TestSpontaneous.output" relation="relation2"/>
+</entity>
