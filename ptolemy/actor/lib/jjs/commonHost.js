@@ -727,7 +727,19 @@ Accessor.prototype.assignImpliedPrioritiesDownstream = function(accessor, cycleP
                 if (theirPriority === null) {
                     // Destination has no previously assigned priority. Give it one,
                     // and follow the implications.
-                    destinationAccessor.priority = myPriority + 1;
+
+		    // We increment myPriority before use so that if
+		    // an output is connected to multiple inputs, the
+		    // inputs do not have the same priority.
+		    // To replicate this, run:
+
+		    // (cd $PTII/org/terraswarm/accessor/accessors/web/hosts/node; node nodeHostInvoke -timeout 6000 test/auto/RampJSTestDisplay.js)
+
+		    // If we don't increment the priority then either
+		    // the Display or the TrainableTest fails to get
+		    // inputs.
+
+		    destinationAccessor.priority = ++myPriority;
                     // console.log('Assigned downstream priority to ' + destinationAccessor.accessorName + ' of ' + (myPriority + 1));
                     this.assignImpliedPrioritiesDownstream(
                             destinationAccessor, cyclePriority);
@@ -737,7 +749,9 @@ Accessor.prototype.assignImpliedPrioritiesDownstream = function(accessor, cycleP
                         continue;
                     }
                     // Priority has to be adjusted.
-                    destinationAccessor.priority = myPriority + 1;
+
+		    // See comment above for why we increment myPriority.
+                    destinationAccessor.priority = ++myPriority;
                     // console.log('Assigned downstream priority to ' + destinationAccessor.accessorName + ' of ' + (myPriority + 1));
                     this.assignImpliedPrioritiesDownstream(
                             destinationAccessor, cyclePriority);
