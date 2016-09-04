@@ -130,9 +130,11 @@ test release-3.1 {Run svn status and look for files that should be checked in.  
     puts "Removing \$PTII/vergil_l4j.jar."
     exec rm -f vergil_l4j.jar vergil_l4j.mf
    
-    puts "Removing hs_err_pid* files: [exec find $PTII . -name hs_err_pid* -print -exec rm \{\} \;]"
-    puts "Removing replay_pid* files: [exec find $PTII . -name replay_pid* -print -exec rm \{\} \;]"
-    puts "Removing .vertx directories: [exec -stderrok find $PTII . -name .vertx -print -exec rm -rf \{\} \;]"
+    catch {
+	puts "Removing hs_err_pid* files: [exec find $PTII . -name hs_err_pid* -print -exec rm \{\} \;]"
+	puts "Removing replay_pid* files: [exec find $PTII . -name replay_pid* -print -exec rm \{\} \;]"
+	puts "Removing .vertx directories: [exec -stderrok find $PTII . -name .vertx -print -exec rm -rf \{\} \;]"
+    }
 
     set result {}
     set status [exec svn status]
