@@ -126,7 +126,7 @@ exports.parseIoTSP = function(buf) {
 ///////////////////////////////////////////////////////////////////
 ////            Functions for Auth packet handling             ////
 
-exports.parseAuthHello = function(buf) {
+var parseAuthHello = function(buf) {
     var authId = buf.readUInt32BE(0);
     var nonce = buf.slice(4, 4 + AUTH_NONCE_SIZE);
     return {authId: authId, nonce: nonce};
@@ -278,18 +278,18 @@ var crypto = require('crypto');
 
 /*
 options = {
-	authHost,
-	authPort,
-	entityName,
-	numKeys,
-	purpose,
-	distributionKey = {val, absValidity},
-	distCipher,
-	distHash,
-	publicCipher,
-	signAlgorithm,
-	authPublicKey,
-	entityPrivateKey
+    authHost,
+    authPort,
+    entityName,
+    numKeys,
+    purpose,
+    distributionKey = {val, absValidity},
+    distCipherAlgorithm,
+    distHashAlgorithm,
+    publicCipherAlgorithm,
+    signAlgorithm,
+    authPublicKey,
+    entityPrivateKey
 }
 */
 // Helper function for common code in handing session key response
@@ -307,7 +307,7 @@ function processSessionKeyResp(options, sessionKeyRespBuf, distributionKeyVal, m
     }
     console.log('Auth nonce verified');
     return {sessionKeyList: sessionKeyResp.sessionKeyList};
-}
+};
 
 function handleSessionKeyResp(options, obj, myNonce, callback) {
     if (obj.msgType == msgType.SESSION_KEY_RESP_WITH_DIST_KEY) {
@@ -330,7 +330,7 @@ function handleSessionKeyResp(options, obj, myNonce, callback) {
             callback({error: ret.error});
             return;
         }
-        callback({success:true}, receivedDistKey, ret.sessionKeyList);
+        callback({success: true}, receivedDistKey, ret.sessionKeyList);
     }
     else if (obj.msgType == msgType.SESSION_KEY_RESP) {
         console.log('Received session key response encrypted with distribution key');
@@ -339,7 +339,7 @@ function handleSessionKeyResp(options, obj, myNonce, callback) {
             callback({error: ret.error});
             return;
         }
-        callback({success:true}, null, ret.sessionKeyList);
+        callback({success: true}, null, ret.sessionKeyList);
     }
     else if (obj.msgType == msgType.AUTH_ALERT) {
         console.log('Received Auth alert!');
@@ -395,7 +395,7 @@ exports.sendSessionKeyReq = function(options, callback) {
 		var buf = new buffer.Buffer(data);
 		var obj = exports.parseIoTSP(buf);
 		if (obj.msgType == msgType.AUTH_HELLO) {
-			var authHello = exports.parseAuthHello(obj.payload);
+			var authHello = parseAuthHello(obj.payload);
 			myNonce = new buffer.Buffer(crypto.randomBytes(AUTH_NONCE_SIZE));
 		
             var sessionKeyReq = {
@@ -443,9 +443,149 @@ exports.sendSessionKeyReq = function(options, callback) {
     	console.log('disconnected from auth');
     });
     authClientSocket.on('error', function(message) {
-    	console.log('an error occurred');
-        self.error(message);
+        callback({error: 'an error occurred in socket during session key request'});
+        authClientSocket.close();
     });
 	authClientSocket.open();
 };
 
+///////////////////////////////////////////////////////////////////
+////                Functions for entity client                ////
+
+/*
+options = {
+    serverHost,
+    serverPort,
+    sessionKey = {val, absValidity},
+    sessionCipherAlgorithm,
+    sessionHashAlgorithm
+}
+*/
+/*
+eventHandlers = {
+    onClose,
+    onError,
+    onData
+}
+*/
+exports.initializeSecureCommunication = function(options, callback, eventHandlers) {
+    if (options.sessionKey == null) {
+        callback({error: 'No available key'});
+        return;
+    }
+    // client communication state
+    var entityClientCommState = {
+        IDLE: 0,
+        HANDSHAKE_1_SENT: 10,
+        IN_COMM: 30                    // Session message
+    };
+    var entityClientState = entityClientCommState.IDLE;
+    var entityClientSocket = new socket.SocketClient(options.serverPort, options.serverHost,
+    {
+        //'connectTimeout' : this.getParameter('connectTimeout'),
+        'discardMessagesBeforeOpen' : false,
+        'emitBatchDataAsAvailable' : true,
+        //'idleTimeout' : this.getParameter('idleTimeout'),
+        //'keepAlive' : false,
+        //'maxUnsentMessages' : this.getParameter('maxUnsentMessages'),
+        //'noDelay' : this.getParameter('noDelay'),
+        //'pfxKeyCertPassword' : this.getParameter('pfxKeyCertPassword'),
+        //'pfxKeyCertPath' : this.getParameter('pfxKeyCertPath'),
+        'rawBytes' : true,
+        //'receiveBufferSize' : this.getParameter('receiveBufferSize'),
+        'receiveType' : 'byte',
+        //'reconnectAttempts' : this.getParameter('reconnectAttempts'),
+        //'reconnectInterval' : this.getParameter('reconnectInterval'),
+        //'sendBufferSize' : this.getParameter('sendBufferSize'),
+        'sendType' : 'byte',
+        //'sslTls' : this.getParameter('sslTls'),
+        //'trustAll' : this.getParameter('trustAll'),
+        //'trustedCACertPath' : this.getParameter('trustedCACertPath')
+    });
+    
+    var myNonce;
+    entityClientSocket.on('open', function() {
+        console.log('connected to server');
+        myNonce = new buffer.Buffer(crypto.randomBytes(HANDSHAKE_NONCE_SIZE));
+        console.log('chosen nonce: ' + myNonce.inspect());
+        var handshake1 = {nonce: myNonce};
+        var buf = exports.serializeHandshake(handshake1);
+        var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
+            options.sessionKey.val, options.sessionCipherAlgorithm, options.sessionHashAlgorithm));
+        
+        var keyIdBuf = new buffer.Buffer(SESSION_KEY_ID_SIZE);
+        keyIdBuf.writeUIntBE(options.sessionKey.id, 0, SESSION_KEY_ID_SIZE);
+        var msg = {
+            msgType: msgType.SKEY_HANDSHAKE_1,
+            payload: buffer.concat([keyIdBuf, encBuf])
+        };
+        var toSend = exports.serializeIoTSP(msg).getArray();
+        entityClientSocket.send(toSend);
+        console.log('switching to HANDSHAKE_1_SENT');
+        entityClientState = entityClientCommState.HANDSHAKE_1_SENT;
+    });
+    entityClientSocket.on('data', function(data) {
+        if (entityClientState == entityClientCommState.IN_COMM) {
+            eventHandlers.onData(data);
+            return;
+        }
+        console.log('data received from server');
+        var obj = exports.parseIoTSP(new buffer.Buffer(data));
+        if (obj.msgType == msgType.SKEY_HANDSHAKE_2) {
+            console.log('received session key handshake2!');
+            if (entityClientState != entityClientCommState.HANDSHAKE_1_SENT) {
+                callback({error: 'Error: wrong sequence of handshake, disconnecting...'});
+                entityClientSocket.close();
+                return;
+            }
+            var ret = crypto.symmetricDecryptWithHash(obj.payload.getArray(),
+                options.sessionKey.val, options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
+            if (!ret.hashOk) {
+                callback({error: 'Received hash for handshake2 is NOT ok'});
+                entityClientSocket.close();
+                return;
+            }
+            console.log('Received hash for handshake2 is ok');
+            var buf = new buffer.Buffer(ret.data);
+            var handshake2 = exports.parseHandshake(buf);
+            if (!handshake2.replyNonce.equals(myNonce)) {
+                callback({error: 'Server nonce NOT verified'});
+                return;
+            }
+            console.log('Server nonce verified');
+            var theirNonce = handshake2.nonce;
+            var handshake3 = {replyNonce: theirNonce};
+            buf = exports.serializeHandshake(handshake3);
+            var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
+                options.sessionKey.val, options.sessionCipherAlgorithm, options.sessionHashAlgorithm));
+            var msg = {
+                msgType: msgType.SKEY_HANDSHAKE_3,
+                payload: encBuf
+            };
+            entityClientSocket.send(exports.serializeIoTSP(msg).getArray());
+
+            console.log('switching to IN_COMM');
+            entityClientState = entityClientCommState.IN_COMM;
+            callback({success: true}, entityClientSocket);
+        }
+    });
+    entityClientSocket.on('close', function() {
+        if (entityClientState == entityClientCommState.IN_COMM) {
+            eventHandlers.onClose();
+            return;
+        }
+        callback({error: 'disconnected from server during communication initialization.'});
+        //console.log('switching to IDLE');
+        //entityClientState = entityClientCommState.IDLE;
+    });
+    entityClientSocket.on('error', function(message) {
+        if (entityClientState == entityClientCommState.IN_COMM) {
+            eventHandlers.onError(message);
+            return;
+        }
+        callback({error: 'Error in comm init - details: ' + message});
+        entityClientSocket.close();
+        return;
+    });
+    entityClientSocket.open();
+};
