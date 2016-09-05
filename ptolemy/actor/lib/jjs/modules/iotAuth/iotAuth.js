@@ -152,13 +152,13 @@ var serializeSessionKeyReqWithDistributionKey = function(senderName,
     return buffer.concat([lengthBuf, senderBuf, encryptedSessionKeyReqBuf]);
 };
 
-exports.parseDistributionKey = function(buf) {
+var parseDistributionKey = function(buf) {
     var absValidity = new Date(buf.readUIntBE(0, ABS_VALIDITY_SIZE));
     var keyVal = buf.slice(ABS_VALIDITY_SIZE, ABS_VALIDITY_SIZE + DIST_CIPHER_KEY_SIZE);
     return {val: keyVal, absValidity: absValidity};
 };
 
-exports.parseSessionKey = function(buf) {
+var parseSessionKey = function(buf) {
     var keyId = buf.readUIntBE(0, SESSION_KEY_ID_SIZE);
     var absValidityValue = buf.readUIntBE(SESSION_KEY_ID_SIZE, ABS_VALIDITY_SIZE);
     var absValidity = new Date(absValidityValue);
@@ -168,7 +168,7 @@ exports.parseSessionKey = function(buf) {
     return {id: keyId, val: keyVal, absValidity: absValidity, relValidity: relValidity};
 };
 
-exports.parseSessionKeyResp = function(buf) {
+var parseSessionKeyResp = function(buf) {
     var replyNonce = buf.slice(0, AUTH_NONCE_SIZE);
     var bufIdx = AUTH_NONCE_SIZE;
     
@@ -184,7 +184,7 @@ exports.parseSessionKeyResp = function(buf) {
 
     var SESSION_KEY_BUF_SIZE = SESSION_KEY_ID_SIZE + ABS_VALIDITY_SIZE + REL_VALIDITY_SIZE + SESSION_CIPHER_KEY_SIZE;
     for (var i = 0; i < sessionKeyCount; i++) {
-        var sessionKey = exports.parseSessionKey(buf.slice(bufIdx));
+        var sessionKey = parseSessionKey(buf.slice(bufIdx));
         sessionKeyList.push(sessionKey);
         bufIdx += SESSION_KEY_BUF_SIZE;
     }
@@ -281,6 +281,57 @@ options = {
 	entityPrivateKey
 }
 */
+// Helper function for common code in handing session key response
+function processSessionKeyResp(options, sessionKeyRespBuf, distributionKeyVal, myNonce) {
+    var ret = crypto.symmetricDecryptWithHash(sessionKeyRespBuf.getArray(),
+        distributionKeyVal.getArray(), options.distCipherAlgorithm, options.distHashAlgorithm);
+    if (!ret.hashOk) {
+        return {error: 'Received hash for session key resp is NOT ok'};
+    }
+    console.log('Received hash for session key resp is ok');
+    sessionKeyRespBuf = new buffer.Buffer(ret.data);
+    var sessionKeyResp = parseSessionKeyResp(sessionKeyRespBuf);
+    if (!sessionKeyResp.replyNonce.equals(myNonce)) {
+        return {error: 'Auth nonce NOT verified'};
+    }
+    console.log('Auth nonce verified');
+    return {sessionKeyList: sessionKeyResp.sessionKeyList};
+}
+
+function handleSessionKeyResp(options, obj, myNonce, callback) {
+    if (obj.msgType == msgType.SESSION_KEY_RESP_WITH_DIST_KEY) {
+        console.log('received session key response with distribution key attached!');
+        var distKeyBuf = obj.payload.slice(0, 512);
+        var sessionKeyRespBuf = obj.payload.slice(512);
+        var pubEncData = distKeyBuf.slice(0, 256).getArray();
+        var signature = distKeyBuf.slice(256).getArray();
+        var verified = crypto.verifySignature(pubEncData, signature, options.authPublicKey, options.signAlgorithm);
+        if (!verified) {
+            callback({error: 'Auth signature NOT verified'});
+            return;
+        }
+        console.log('Auth signature verified');
+        distKeyBuf = new buffer.Buffer(
+            crypto.privateDecrypt(pubEncData, options.entityPrivateKey, options.publicCipherAlgorithm));
+        var receivedDistKey = parseDistributionKey(distKeyBuf);
+        var ret = processSessionKeyResp(options, sessionKeyRespBuf, receivedDistKey.val, myNonce);
+        if (ret.error) {
+            callback({error: ret.error});
+            return;
+        }
+        callback({success:true}, receivedDistKey, ret.sessionKeyList);
+    }
+    else if (obj.msgType == msgType.SESSION_KEY_RESP) {
+        console.log('received session key response encrypted with distribution key');
+        var ret = processSessionKeyResp(options, obj.payload, options.distributionKey.val, myNonce);
+        if (ret.error) {
+            callback({error: ret.error});
+            return;
+        }
+        callback({success:true}, null, ret.sessionKeyList);
+    }
+};
+
 exports.sendSessionKeyReq = function(options, callback) {
     var authClientSocket = new socket.SocketClient(options.authPort, options.authHost,
     {
@@ -354,9 +405,7 @@ exports.sendSessionKeyReq = function(options, callback) {
 		}
 		else if (obj.msgType == msgType.SESSION_KEY_RESP_WITH_DIST_KEY ||
 		    obj.msgType == msgType.SESSION_KEY_RESP) {
-	    	if (callback(obj, myNonce)) {
-                console.log('Status: Connection closed after handling auth response successfully.');
-            }
+	    	handleSessionKeyResp(options, obj, myNonce, callback);
 	    	authClientSocket.close();
 		}
     });
