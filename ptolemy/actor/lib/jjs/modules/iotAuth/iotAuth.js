@@ -33,6 +33,38 @@
 
 "use strict";
 
+var buffer = require('buffer');
+
+// Message types
+exports.msgType = {
+    AUTH_HELLO: 0,
+    AUTH_SESSION_KEY_REQ: 10,
+    AUTH_SESSION_KEY_RESP: 11,
+    SESSION_KEY_REQ_IN_PUB_ENC: 20,
+    /** Includes distribution message (session keys) */
+    SESSION_KEY_RESP_WITH_DIST_KEY: 21,
+    /** Distribution message */
+    SESSION_KEY_REQ: 22,
+    /** Distribution message */
+    SESSION_KEY_RESP: 23,
+    SKEY_HANDSHAKE_1: 30,
+    SKEY_HANDSHAKE_2: 31,
+    SKEY_HANDSHAKE_3: 32,
+    SECURE_COMM_MSG: 33,
+    FIN_SECURE_COMM: 34,
+    SECURE_PUB: 40,
+    AUTH_ALERT: 100
+};
+
+var AUTH_NONCE_SIZE = 8;					// used in parseAuthHello
+var SESSION_KEY_ID_SIZE = 8;
+var ABS_VALIDITY_SIZE = 6;
+var REL_VALIDITY_SIZE = 6;
+var DIST_CIPHER_KEY_SIZE = 16;               // 256 bit key = 32 bytes
+var SESSION_CIPHER_KEY_SIZE = 16;            // 128 bit key = 16 bytes
+
+exports.AUTH_NONCE_SIZE = AUTH_NONCE_SIZE;
+
 function numToVarLenInt(num) {
     var buf = new buffer.Buffer(0);
     while (num > 127) {
@@ -77,50 +109,74 @@ exports.parseIoTSP = function(buf) {
     return {msgType: msgTypeVal, payloadLen: ret.num, payload: payloadVal};
 };
 
-exports.test = function(str) {
-    console.log(str);
-}
 
-/*
-exports.Buffer = function(param) {
-	if (typeof param === 'number') {
-		this.array = new Array(param);
-		for (var i = 0; i < this.array.length; i++) {
-			this.array[i] = 0;
-		}
-	}
-	else if (typeof param === 'string') {
-		this.array = new Array(param.length);
-		for (var i = 0; i < this.array.length; i++) {
-			this.array[i] = (param.charCodeAt(i) & 255);
-		}
-	}
-	else if (Array.isArray(param)) {
-		this.array = new Array(param.length);
-		for (var i = 0; i < this.array.length; i++) {
-			if (typeof param[i] !== 'number') {
-				throw 'Unsupported type of array for initializing Buffer!';
-			}
-			this.array[i] = (param[i] & 255);
-		}
-	}
-	else {
-		throw 'Unsupported type for initializing Buffer!';
-	}
-	Object.defineProperty(this, 'length', {
-		get: function() { return this.array.length; }
-	});
+exports.parseAuthHello = function(buf) {
+    var authId = buf.readUInt32BE(0);
+    var nonce = buf.slice(4, 4 + AUTH_NONCE_SIZE);
+    return {authId: authId, nonce: nonce};
 };
 
-exports.Buffer.prototype.inspect = function() {
-	var ret = '[';
-	for (var i = 0; i < this.array.length; i++) {
-		if (i != 0) {
-			ret += ', ';
-		}
-		ret += this.array[i];
-	}
-	ret += ']';
-	return ret;
+exports.serializeSessionKeyReq = function(obj) {
+    if (obj.nonce == undefined || obj.replyNonce == undefined || obj.sender == undefined
+        || obj.purpose == undefined || obj.numKeys == undefined) {
+        console.log('Error: SessionKeyReq nonce or replyNonce '
+            + 'or purpose or numKeys is missing.');
+        return;
+    }
+    var buf = new buffer.Buffer(AUTH_NONCE_SIZE * 2 + 5);
+    obj.nonce.copy(buf, 0);
+    obj.replyNonce.copy(buf, AUTH_NONCE_SIZE);
+    buf.writeUInt32BE(obj.numKeys, AUTH_NONCE_SIZE * 2);
+    buf.writeUInt8(obj.sender.length, AUTH_NONCE_SIZE * 2 + 4);
+
+    var senderBuf = new buffer.Buffer(obj.sender);
+    var purposeBuf = new buffer.Buffer(JSON.stringify(obj.purpose));
+    return buffer.concat([buf, senderBuf, purposeBuf]);
 };
-*/
+
+exports.serializeSessionKeyReqWithDistributionKey = function(senderName,
+    encryptedSessionKeyReqBuf) {
+    var senderBuf = new buffer.Buffer(senderName);
+    var lengthBuf = new buffer.Buffer(1);
+    lengthBuf.writeUInt8(senderBuf.length);
+    return buffer.concat([lengthBuf, senderBuf, encryptedSessionKeyReqBuf]);
+};
+
+exports.parseDistributionKey = function(buf) {
+    var absValidity = new Date(buf.readUIntBE(0, ABS_VALIDITY_SIZE));
+    var keyVal = buf.slice(ABS_VALIDITY_SIZE, ABS_VALIDITY_SIZE + DIST_CIPHER_KEY_SIZE);
+    return {val: keyVal, absValidity: absValidity};
+};
+
+exports.parseSessionKey = function(buf) {
+    var keyId = buf.readUIntBE(0, SESSION_KEY_ID_SIZE);
+    var absValidityValue = buf.readUIntBE(SESSION_KEY_ID_SIZE, ABS_VALIDITY_SIZE);
+    var absValidity = new Date(absValidityValue);
+    var relValidity = buf.readUIntBE(SESSION_KEY_ID_SIZE + ABS_VALIDITY_SIZE, REL_VALIDITY_SIZE);
+    var curIndex =  SESSION_KEY_ID_SIZE + ABS_VALIDITY_SIZE + REL_VALIDITY_SIZE;
+    var keyVal = buf.slice(curIndex, curIndex + SESSION_CIPHER_KEY_SIZE);
+    return {id: keyId, val: keyVal, absValidity: absValidity, relValidity: relValidity};
+};
+
+var SESSION_KEY_BUF_SIZE = SESSION_KEY_ID_SIZE + ABS_VALIDITY_SIZE + REL_VALIDITY_SIZE + SESSION_CIPHER_KEY_SIZE;
+
+exports.parseSessionKeyResp = function(buf) {
+    var replyNonce = buf.slice(0, AUTH_NONCE_SIZE);
+    var bufIdx = AUTH_NONCE_SIZE;
+    
+	var cryptoSpecLen = buf.readUInt8(bufIdx);
+	bufIdx += 1;
+	var cryptoSpecStr = buf.toString(bufIdx, bufIdx + cryptoSpecLen);
+	bufIdx += cryptoSpecLen;
+	
+    var sessionKeyCount = buf.readUInt32BE(bufIdx);
+
+    bufIdx += 4;
+    var sessionKeyList = [];
+    for (var i = 0; i < sessionKeyCount; i++) {
+        var sessionKey = exports.parseSessionKey(buf.slice(bufIdx));
+        sessionKeyList.push(sessionKey);
+        bufIdx += SESSION_KEY_BUF_SIZE;
+    }
+    return {replyNonce: replyNonce, sessionKeyList: sessionKeyList};
+};
