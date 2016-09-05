@@ -56,6 +56,11 @@ var msgType = {
     AUTH_ALERT: 100
 };
 
+var authAlertCode = {
+    INVALID_DISTRIBUTION_KEY: 0,
+    INVALID_SESSION_KEY_REQ_TARGET: 1
+};
+
 exports.msgType = msgType;
 
 var AUTH_NONCE_SIZE = 8;					// used in parseAuthHello
@@ -64,6 +69,7 @@ var ABS_VALIDITY_SIZE = 6;
 var REL_VALIDITY_SIZE = 6;
 var DIST_CIPHER_KEY_SIZE = 16;               // 256 bit key = 32 bytes
 var SESSION_CIPHER_KEY_SIZE = 16;            // 128 bit key = 16 bytes
+var AUTH_ALERT_CODE_SIZE = 1;
 
 
 var HANDSHAKE_NONCE_SIZE = 8;            // handshake nonce size
@@ -190,6 +196,11 @@ var parseSessionKeyResp = function(buf) {
     }
     return {replyNonce: replyNonce, sessionKeyList: sessionKeyList};
 };
+
+var parseAuthAlert = function(buf) {
+    var code = buf.readUIntBE(0, AUTH_ALERT_CODE_SIZE);
+    return {code: code};
+}
 
 ///////////////////////////////////////////////////////////////////
 ////           Functions for Entity packet handling            ////
@@ -322,13 +333,33 @@ function handleSessionKeyResp(options, obj, myNonce, callback) {
         callback({success:true}, receivedDistKey, ret.sessionKeyList);
     }
     else if (obj.msgType == msgType.SESSION_KEY_RESP) {
-        console.log('received session key response encrypted with distribution key');
+        console.log('Received session key response encrypted with distribution key');
         var ret = processSessionKeyResp(options, obj.payload, options.distributionKey.val, myNonce);
         if (ret.error) {
             callback({error: ret.error});
             return;
         }
         callback({success:true}, null, ret.sessionKeyList);
+    }
+    else if (obj.msgType == msgType.AUTH_ALERT) {
+        console.log('Received Auth alert!');
+        var authAlert = parseAuthAlert(obj.payload);
+        if (authAlert.code == authAlertCode.INVALID_DISTRIBUTION_KEY) {
+            callback({error: 'Received Auth alert due to invalid distribution key'});
+            return;
+        }
+        else if (authAlert.code == authAlertCode.INVALID_SESSION_KEY_REQ_TARGET) {
+            callback({error: 'Received Auth alert due to invalid session key request target'});
+            return;
+        }
+        else {
+            callback({error: 'Received Auth alert with unknown code :' + authAlert.code});
+            return;
+        }
+    }
+    else {
+        callback({error: 'Unknown message type :' + obj.msgType});
+        return;
     }
 };
 
@@ -403,8 +434,7 @@ exports.sendSessionKeyReq = function(options, callback) {
             var toSend = exports.serializeIoTSP({msgType: reqMsgType, payload: reqPayload}).getArray();
             authClientSocket.send(toSend);
 		}
-		else if (obj.msgType == msgType.SESSION_KEY_RESP_WITH_DIST_KEY ||
-		    obj.msgType == msgType.SESSION_KEY_RESP) {
+		else {
 	    	handleSessionKeyResp(options, obj, myNonce, callback);
 	    	authClientSocket.close();
 		}
