@@ -63,7 +63,13 @@ var REL_VALIDITY_SIZE = 6;
 var DIST_CIPHER_KEY_SIZE = 16;               // 256 bit key = 32 bytes
 var SESSION_CIPHER_KEY_SIZE = 16;            // 128 bit key = 16 bytes
 
+
+var HANDSHAKE_NONCE_SIZE = 8;            // handshake nonce size
+var SEQ_NUM_SIZE = 8;
+
 exports.AUTH_NONCE_SIZE = AUTH_NONCE_SIZE;
+exports.SESSION_KEY_ID_SIZE = SESSION_KEY_ID_SIZE;
+exports.HANDSHAKE_NONCE_SIZE = HANDSHAKE_NONCE_SIZE;
 
 function numToVarLenInt(num) {
     var buf = new buffer.Buffer(0);
@@ -109,6 +115,9 @@ exports.parseIoTSP = function(buf) {
     return {msgType: msgTypeVal, payloadLen: ret.num, payload: payloadVal};
 };
 
+
+///////////////////////////////////////////////////////////////////
+////            Functions for Auth packet handling             ////
 
 exports.parseAuthHello = function(buf) {
     var authId = buf.readUInt32BE(0);
@@ -158,8 +167,6 @@ exports.parseSessionKey = function(buf) {
     return {id: keyId, val: keyVal, absValidity: absValidity, relValidity: relValidity};
 };
 
-var SESSION_KEY_BUF_SIZE = SESSION_KEY_ID_SIZE + ABS_VALIDITY_SIZE + REL_VALIDITY_SIZE + SESSION_CIPHER_KEY_SIZE;
-
 exports.parseSessionKeyResp = function(buf) {
     var replyNonce = buf.slice(0, AUTH_NONCE_SIZE);
     var bufIdx = AUTH_NONCE_SIZE;
@@ -173,6 +180,8 @@ exports.parseSessionKeyResp = function(buf) {
 
     bufIdx += 4;
     var sessionKeyList = [];
+
+    var SESSION_KEY_BUF_SIZE = SESSION_KEY_ID_SIZE + ABS_VALIDITY_SIZE + REL_VALIDITY_SIZE + SESSION_CIPHER_KEY_SIZE;
     for (var i = 0; i < sessionKeyCount; i++) {
         var sessionKey = exports.parseSessionKey(buf.slice(bufIdx));
         sessionKeyList.push(sessionKey);
@@ -180,3 +189,72 @@ exports.parseSessionKeyResp = function(buf) {
     }
     return {replyNonce: replyNonce, sessionKeyList: sessionKeyList};
 };
+
+///////////////////////////////////////////////////////////////////
+////           Functions for Entity packet handling            ////
+/*
+    Handshake Format
+    {
+        nonce: /Buffer/, // encrypted, may be undefined
+        replyNonce: /Buffer/, // encrypted, may be undefined
+    }
+*/
+exports.serializeHandshake = function(obj) {
+    if (obj.nonce == undefined && obj.replyNonce == undefined) {
+        console.log('Error: handshake should include at least on nonce.');
+        return;
+    }
+    var buf = new buffer.Buffer(1 + HANDSHAKE_NONCE_SIZE * 2);
+
+    // indicates existance of nonces
+    var indicator = 0;
+    if (obj.nonce != undefined) {
+        indicator += 1;
+        obj.nonce.copy(buf, 1);
+    }
+    if (obj.replyNonce != undefined) {
+        indicator += 2;
+        obj.replyNonce.copy(buf, 1 + HANDSHAKE_NONCE_SIZE);
+    }
+    buf.writeUInt8(indicator, 0);
+
+    return buf;
+};
+
+// buf should be just the unencrypted part
+exports.parseHandshake = function(buf) {
+    var obj = {};
+    var indicator = buf.readUInt8(0);
+    if ((indicator & 1) != 0) {
+        // nonce exists
+        obj.nonce = buf.slice(1, 1 + HANDSHAKE_NONCE_SIZE);
+    }
+    if ((indicator & 2) != 0) {
+        // replayNonce exists
+        obj.replyNonce = buf.slice(1 + HANDSHAKE_NONCE_SIZE, 1 + HANDSHAKE_NONCE_SIZE * 2);
+    }
+    return obj;
+};
+
+/*
+    SecureSessionMessage Format
+    {
+        SeqNum: /Buffer/, // UIntBE, SEQ_NUM_SIZE Bytes
+        data: /Buffer/,
+    }
+*/
+exports.serializeSessionMessage = function(obj) {
+    if (obj.seqNum == undefined || obj.data == undefined) {
+        console.log('Error: Secure session message seqNum or data is missing.');
+        return;
+    }
+    var seqNumBuf = new buffer.Buffer(SEQ_NUM_SIZE);
+    seqNumBuf.writeUIntBE(obj.seqNum, 0, SEQ_NUM_SIZE);
+    return buffer.concat([seqNumBuf, obj.data]);
+};
+exports.parseSessionMessage = function(buf) {
+    var seqNum = buf.readUIntBE(0, SEQ_NUM_SIZE);
+    var data = buf.slice(SEQ_NUM_SIZE);
+    return {seqNum: seqNum, data: data};
+};
+
