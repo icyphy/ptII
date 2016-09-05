@@ -36,7 +36,7 @@
 var buffer = require('buffer');
 
 // Message types
-exports.msgType = {
+var msgType = {
     AUTH_HELLO: 0,
     AUTH_SESSION_KEY_REQ: 10,
     AUTH_SESSION_KEY_RESP: 11,
@@ -56,6 +56,8 @@ exports.msgType = {
     AUTH_ALERT: 100
 };
 
+exports.msgType = msgType;
+
 var AUTH_NONCE_SIZE = 8;					// used in parseAuthHello
 var SESSION_KEY_ID_SIZE = 8;
 var ABS_VALIDITY_SIZE = 6;
@@ -67,7 +69,6 @@ var SESSION_CIPHER_KEY_SIZE = 16;            // 128 bit key = 16 bytes
 var HANDSHAKE_NONCE_SIZE = 8;            // handshake nonce size
 var SEQ_NUM_SIZE = 8;
 
-exports.AUTH_NONCE_SIZE = AUTH_NONCE_SIZE;
 exports.SESSION_KEY_ID_SIZE = SESSION_KEY_ID_SIZE;
 exports.HANDSHAKE_NONCE_SIZE = HANDSHAKE_NONCE_SIZE;
 
@@ -125,7 +126,7 @@ exports.parseAuthHello = function(buf) {
     return {authId: authId, nonce: nonce};
 };
 
-exports.serializeSessionKeyReq = function(obj) {
+var serializeSessionKeyReq = function(obj) {
     if (obj.nonce == undefined || obj.replyNonce == undefined || obj.sender == undefined
         || obj.purpose == undefined || obj.numKeys == undefined) {
         console.log('Error: SessionKeyReq nonce or replyNonce '
@@ -143,7 +144,7 @@ exports.serializeSessionKeyReq = function(obj) {
     return buffer.concat([buf, senderBuf, purposeBuf]);
 };
 
-exports.serializeSessionKeyReqWithDistributionKey = function(senderName,
+var serializeSessionKeyReqWithDistributionKey = function(senderName,
     encryptedSessionKeyReqBuf) {
     var senderBuf = new buffer.Buffer(senderName);
     var lengthBuf = new buffer.Buffer(1);
@@ -256,5 +257,116 @@ exports.parseSessionMessage = function(buf) {
     var seqNum = buf.readUIntBE(0, SEQ_NUM_SIZE);
     var data = buf.slice(SEQ_NUM_SIZE);
     return {seqNum: seqNum, data: data};
+};
+
+///////////////////////////////////////////////////////////////////
+////           Functions for accessing Auth service            ////
+
+var socket = require('socket');
+var crypto = require('crypto');
+
+/*
+options = {
+	authHost,
+	authPort,
+	entityName,
+	numKeys,
+	purpose,
+	distributionKey = {val, absValidity},
+	distCipher,
+	distHash,
+	publicCipher,
+	signAlgorithm,
+	authPublicKey,
+	entityPrivateKey
+}
+*/
+exports.sendSessionKeyReq = function(options, callback) {
+    var authClientSocket = new socket.SocketClient(options.authPort, options.authHost,
+    {
+        //'connectTimeout' : this.getParameter('connectTimeout'),
+        'discardMessagesBeforeOpen' : false,
+        'emitBatchDataAsAvailable' : true,
+        //'idleTimeout' : this.getParameter('idleTimeout'),
+        'keepAlive' : false,
+        //'maxUnsentMessages' : this.getParameter('maxUnsentMessages'),
+        //'noDelay' : this.getParameter('noDelay'),
+        //'pfxKeyCertPassword' : this.getParameter('pfxKeyCertPassword'),
+        //'pfxKeyCertPath' : this.getParameter('pfxKeyCertPath'),
+        'rawBytes' : true,
+        //'receiveBufferSize' : this.getParameter('receiveBufferSize'),
+        'receiveType' : 'byte',
+        //'reconnectAttempts' : this.getParameter('reconnectAttempts'),
+        //'reconnectInterval' : this.getParameter('reconnectInterval'),
+        //'sendBufferSize' : this.getParameter('sendBufferSize'),
+        'sendType' : 'byte',
+        //'sslTls' : this.getParameter('sslTls'),
+        //'trustAll' : this.getParameter('trustAll'),
+        //'trustedCACertPath' : this.getParameter('trustedCACertPath')
+    });
+    authClientSocket.on('open', function() {
+    	console.log('connected to auth');
+    });
+    var myNonce;
+    authClientSocket.on('data', function(data) {
+    	console.log('data received from auth');
+		var buf = new buffer.Buffer(data);
+		var obj = exports.parseIoTSP(buf);
+		if (obj.msgType == msgType.AUTH_HELLO) {
+			var authHello = exports.parseAuthHello(obj.payload);
+			myNonce = new buffer.Buffer(crypto.randomBytes(AUTH_NONCE_SIZE));
+		
+            var sessionKeyReq = {
+                nonce: myNonce,
+                replyNonce: authHello.nonce,
+                numKeys: options.numKeys,
+                sender: options.entityName,
+                purpose: options.purpose
+            };
+            var reqMsgType;
+            var reqPayload;
+            if (options.distributionKey == null || options.distributionKey.absValidity < new Date()) {
+                if (options.distributionKey != null) {
+                    console.log('Distribution key expired, requesting new distribution key as well...');
+                }
+                else {
+                    console.log('No distribution key yet, requesting new distribution key as well...');
+                }
+                reqMsgType = msgType.SESSION_KEY_REQ_IN_PUB_ENC;
+	            var sessionKeyReqBuf = serializeSessionKeyReq(sessionKeyReq);
+	            reqPayload = new buffer.Buffer(
+	            	crypto.publicEncryptAndSign(sessionKeyReqBuf.getArray(),
+	            	options.authPublicKey, options.entityPrivateKey,
+	            	options.publicCipherAlgorithm, options.signAlgorithm));
+            }
+            else {
+                console.log('distribution key available! ');
+                reqMsgType = msgType.SESSION_KEY_REQ;
+                var sessionKeyReqBuf = serializeSessionKeyReq(sessionKeyReq);
+   				var encryptedSessionKeyReqBuf = new buffer.Buffer(
+   					crypto.symmetricEncryptWithHash(sessionKeyReqBuf.getArray(), 
+   					options.distributionKey.val.getArray(), options.distCipherAlgorithm, options.distHashAlgorithm));
+                reqPayload = serializeSessionKeyReqWithDistributionKey(options.entityName,
+                		encryptedSessionKeyReqBuf)
+            }
+            var toSend = exports.serializeIoTSP({msgType: reqMsgType, payload: reqPayload}).getArray();
+            authClientSocket.send(toSend);
+		}
+		else if (obj.msgType == msgType.SESSION_KEY_RESP_WITH_DIST_KEY ||
+		    obj.msgType == msgType.SESSION_KEY_RESP) {
+	    	if (callback(obj, myNonce)) {
+                console.log('Status: Connection closed after handling auth response successfully.');
+            }
+	    	authClientSocket.close();
+		}
+    });
+    authClientSocket.on('close', function() {
+    	console.log('disconnected from auth');
+    });
+    authClientSocket.on('error', function(message) {
+    	console.log('an error occurred');
+        self.error(message);
+    });
+	authClientSocket.open();
 };
 
