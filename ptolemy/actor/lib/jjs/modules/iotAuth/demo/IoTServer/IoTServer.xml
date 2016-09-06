@@ -13,15 +13,263 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 25.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1168, 128, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={739, 156, 1024, 578}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[790, 468]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0910119097216056">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 255.181640625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{276.46630859375006, 196.42813376402245}">
     </property>
+    <property name="PROJECT_PATH" class="ptolemy.data.expr.Parameter" value="&quot;/Users/hokeunkim/Development/iotauth/&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 255.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To run this demo, an open-source local authorization entity (Auth) should be running.&#10;The Auth can be obtained in the github repository, https://github.com/iotauth/iotauth.&#10;&#10;NOTE2: The parameter PROJECT_PATH in this demo should be set to the repository directory of iotauth.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 280.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 380.0]">
+        </property>
+    </property>
+    <entity name="AuthForServer" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;;&#10;&#10;var iotAuth = require('iotAuth');&#10;var crypto = require('crypto');&#10;var socket = require('socket');&#10;var buffer = require('buffer');&#10;var msgType = iotAuth.msgType;&#10;&#10;exports.setup = function() {&#10;    this.input('purpose');&#10;    this.output('sessionKey', {&#10;        type : 'string'&#10;    });&#10;    &#10;    this.parameter('authHost', {&#10;        type : 'string',&#10;        value : 'localhost'&#10;    });&#10;    this.parameter('authPort', {&#10;        value: -1,&#10;        type: 'int'&#10;    });&#10;    this.parameter('authCertPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    &#10;    this.parameter('entityName', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('entityPrivateKeyPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    &#10;    this.parameter('publicCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('signAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('numKeys', {&#10;        value: 1,&#10;        type: 'int'&#10;    });&#10;};&#10;&#10;// Auth &amp; entity keys&#10;var authPublicKey;&#10;var entityPrivateKey;&#10;&#10;// local variables&#10;var self;&#10;var currentDistributionKey = null;&#10;var currentSessionKeyList = [];&#10;&#10;function outputSessionKey(sessionKey) {&#10;    sessionKey.val = sessionKey.val.getArray();&#10;    self.send('sessionKey', JSON.stringify(sessionKey));&#10;};&#10;&#10;function sessionKeyRespCallback(status, distributionKey, sessionKeyList) {&#10;    if (status.error) {&#10;        console.log(status.error);&#10;        console.log('session key request failed...');&#10;        return;&#10;    }&#10;    console.log('session key request succeeded');&#10;&#10;    if (distributionKey) {&#10;        console.log('Updating to a new distribution key key');&#10;        currentDistributionKey = distributionKey;&#10;        console.log(currentDistributionKey);&#10;    }&#10;&#10;    console.log('received ' + sessionKeyList.length + ' session keys');&#10;    for (var i = 0; i &lt; sessionKeyList.length; i++) {&#10;        currentSessionKeyList.push(sessionKeyList[i]);&#10;    }&#10;    if (currentSessionKeyList.length &gt; 0) {&#10;        outputSessionKey(currentSessionKeyList.shift());&#10;    }&#10;}&#10;&#10;exports.purposeInputHandler = function() {&#10;    if (currentSessionKeyList.length &gt; 0) {&#10;        outputSessionKey(currentSessionKeyList.shift());&#10;    }&#10;    else {&#10;        var options = {&#10;            authHost: this.getParameter('authHost'),&#10;            authPort: this.getParameter('authPort'),&#10;            entityName: this.getParameter('entityName'),&#10;            numKeys: this.getParameter('numKeys'),&#10;            purpose: this.get('purpose'),&#10;            distributionKey: currentDistributionKey,&#10;            distCipherAlgorithm: this.getParameter('distCipherAlgorithm'),&#10;            distHashAlgorithm: this.getParameter('distHashAlgorithm'),&#10;            publicCipherAlgorithm: this.getParameter('publicCipherAlgorithm'),&#10;            signAlgorithm: this.getParameter('signAlgorithm'),&#10;            authPublicKey: authPublicKey,&#10;            entityPrivateKey: entityPrivateKey&#10;        };&#10;        iotAuth.sendSessionKeyReq(options, sessionKeyRespCallback);&#10;    }&#10;};&#10;&#10;exports.initialize = function () {&#10;    authPublicKey = crypto.loadPublicKey(this.getParameter('authCertPath'));&#10;    entityPrivateKey = crypto.loadPrivateKey(this.getParameter('entityPrivateKeyPath'));&#10;        &#10;    self = this;&#10;    &#10;    this.addInputHandler('purpose',&#10;        this.exports.purposeInputHandler.bind(this));&#10;};&#10;&#10;exports.wrapup = function () {&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 15.0]">
+        </property>
+        <property name="authHost" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="authPort" class="ptolemy.data.expr.Parameter" value="21900">
+        </property>
+        <property name="authCertPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/auth_certs/Auth101EntityCert.pem">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="entityName" class="ptolemy.data.expr.Parameter" value="net1.ptServer">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="entityPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/credentials/keys/net1/PtServerKey.der">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="publicCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="RSA/ECB/PKCS1PADDING">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="signAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA256withRSA">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="distCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="AES-128-CBC">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="distHashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="numKeys" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="purpose" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="sessionKey" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="RecordAssembler" class="ptolemy.actor.lib.RecordAssembler">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[393.3359832763672, 59.99204635620117]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+        <port name="keyId" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 80.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
+    <entity name="IoTServer" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;;&#10;&#10;var socket = require('socket');&#10;var buffer = require('buffer');&#10;var crypto = require('crypto');&#10;var iotAuth = require('iotAuth');&#10;var msgType = iotAuth.msgType;&#10;&#10;exports.setup = function () {&#10;    this.input('sessionKey', {&#10;        type : 'string'&#10;    });&#10;    this.input('toSend');&#10;    this.output('keyId', {&#10;        type : 'int'&#10;    });&#10;    this.output('listening', {&#10;        type: 'int'&#10;    });&#10;    this.output('connection');&#10;    this.output('received');&#10;    //this.output('receivedID');&#10;    &#10;    this.parameter('port', {&#10;        type : 'int',&#10;        value : 4000&#10;    });&#10;    &#10;    this.parameter('sessionCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('sessionHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;};&#10;&#10;var SEQ_NUM_SIZE = 8;&#10;&#10;// crypto info&#10;var sessionCipherAlgorithm;&#10;var sessionHashAlgorithm;&#10;&#10;&#10;// server communication state&#10;var serverCommState = {&#10;    IDLE: 0,&#10;    WAITING_SESSION_KEY: 20,&#10;    HANDSHAKE_1_RECEIVED: 21,&#10;    HANDSHAKE_2_SENT: 22,&#10;    IN_COMM: 30                    // Session message&#10;};&#10;&#10;// local variables&#10;var server = null;&#10;var connectionCount = 0;&#10;var sockets = [];&#10;var self;&#10;var sessionKey = null;&#10;var currentState = serverCommState.IDLE;&#10;var writeSeqNum = 0;&#10;var readSeqNum = 0;&#10;&#10;var lastClientState = {&#10;    serverSocket: null,&#10;    myNonce: null,&#10;    obj: null,&#10;    keyId: 100&#10;};&#10;&#10;function outputError(errorMessage) {&#10;    console.log(errorMessage);&#10;    self.send('error', errorMessage);&#10;};&#10;        &#10;function sendHandshake2(obj, serverSocket) {&#10;    if (currentState != serverCommState.HANDSHAKE_1_RECEIVED) {&#10;        outputError('in wrong state, expected: HANDSHAKE_1_RECEIVED, disconnecting...');&#10;        currentState = serverCommState.IDLE;&#10;        lastClientState.serverSocket.close();&#10;        return;&#10;    }&#10;    var enc = obj.payload.slice(iotAuth.SESSION_KEY_ID_SIZE);&#10;    var ret = crypto.symmetricDecryptWithHash(enc.getArray(), sessionKey.val,&#10;        sessionCipherAlgorithm, sessionHashAlgorithm);&#10;    if (!ret.hashOk) {&#10;        outputError('received hash for handshake 1 is NOT ok');&#10;    }&#10;    console.log('received hash for handshake 1 is ok');&#10;    var buf = new buffer.Buffer(ret.data);&#10;    &#10;    var handshake1 = iotAuth.parseHandshake(buf);&#10;    &#10;    var myNonce = new buffer.Buffer(crypto.randomBytes(iotAuth.HANDSHAKE_NONCE_SIZE));&#10;    console.log('chosen nonce: ' + myNonce.inspect());&#10;    &#10;    var theirNonce = handshake1.nonce;&#10;    &#10;    var handshake2 = {nonce: myNonce, replyNonce: theirNonce};&#10;    &#10;    var encBuf = crypto.symmetricEncryptWithHash(iotAuth.serializeHandshake(handshake2).getArray(),&#10;        sessionKey.val, sessionCipherAlgorithm, sessionHashAlgorithm);&#10;    var msg = {&#10;        msgType: msgType.SKEY_HANDSHAKE_2,&#10;        payload: new buffer.Buffer(encBuf)&#10;    };&#10;    var toSend = iotAuth.serializeIoTSP(msg).getArray();&#10;    &#10;    lastClientState.myNonce = myNonce;&#10;    &#10;    console.log('switching to HANDSHAKE_2_SENT state.');&#10;    currentState = serverCommState.HANDSHAKE_2_SENT;&#10;    &#10;    serverSocket.send(toSend);&#10;};&#10;&#10;exports.sessionKeyInputHandler = function() {&#10;    console.log('sessionKey arrived');&#10;    if (currentState != serverCommState.WAITING_SESSION_KEY) {&#10;        outputError('in wrong state, expected: WAITING_SESSION_KEY, disconnecting...');&#10;        currentState = serverCommState.IDLE;&#10;        if (lastClientState.serverSocket != null) {&#10;            lastClientState.serverSocket.close();&#10;        }&#10;        return;&#10;    }&#10;    &#10;    var receivedSessionKey = JSON.parse(self.get('sessionKey'));&#10;    receivedSessionKey.absValidity = new Date(receivedSessionKey.absValidity);&#10;    &#10;    if (receivedSessionKey.id == lastClientState.keyId) {&#10;        console.log('sessionKey id is as expected');&#10;        sessionKey = receivedSessionKey;&#10;        console.log('switching to HANDSHAKE_1_RECEIVED state.');&#10;        currentState = serverCommState.HANDSHAKE_1_RECEIVED;&#10;        sendHandshake2(lastClientState.obj, lastClientState.serverSocket);&#10;    }&#10;    else {&#10;        outputError('sessionKey id is NOT as expected');&#10;    }&#10;};&#10;&#10;function initServer(port) {&#10;    server = new socket.SocketServer(&#10;        {&#10;            //'clientAuth' : this.getParameter('clientAuth'),&#10;            'emitBatchDataAsAvailable' : true,&#10;            //'hostInterface' : this.getParameter('hostInterface'),&#10;            //'idleTimeout' : this.getParameter('idleTimeout'),&#10;            //'keepAlive' : false,&#10;            //'noDelay' : this.getParameter('noDelay'),&#10;            //'pfxKeyCertPassword' : this.getParameter('pfxKeyCertPassword'),&#10;            //'pfxKeyCertPath' : this.getParameter('pfxKeyCertPath'),&#10;            'port' : port,&#10;            'rawBytes' : true,&#10;            //'receiveBufferSize' : this.getParameter('receiveBufferSize'),&#10;            'receiveType' : 'byte',&#10;            //'sendBufferSize' : this.getParameter('sendBufferSize'),&#10;            'sendType' : 'byte',&#10;            //'sslTls' : this.getParameter('sslTls'),&#10;            //'trustedCACertPath' : this.getParameter('trustedCACertPath')&#10;        }&#10;    );&#10;&#10;    server.on('error', function(message) {&#10;        self.error(message);&#10;    });&#10;        &#10;    server.on('listening', function(port) {&#10;        console.log('Server: Listening for socket connection requests on port ' + port);&#10;        self.send('listening', port);&#10;    });&#10;    &#10;    server.on('connection', function(serverSocket) {&#10;        console.log('client connected');&#10;        // serverSocket is an instance of the Socket class defined&#10;        // in the socket module.&#10;        connectionCount++;&#10;        var socketInstance = connectionCount;&#10;        var socketID = {&#10;            'id': socketInstance,&#10;            'remoteHost': serverSocket.remoteHost(),&#10;            'remotePort': serverSocket.remotePort(),&#10;            'status': 'open'&#10;        };&#10;        self.send('connection', socketID);&#10;        &#10;        sockets[socketInstance] = serverSocket;&#10;&#10;        serverSocket.on('close', function() {&#10;            console.log('switching to IDLE state.');&#10;            currentState = serverCommState.IDLE;&#10;            socketID.status = 'closed';&#10;            self.send('connection', socketID);&#10;            // Avoid a memory leak here.&#10;            sockets[socketInstance] = null;&#10;        });&#10;        &#10;        serverSocket.on('error', function(message) {&#10;            self.error(message);&#10;        });&#10;        &#10;        var expectingMoreData = false;&#10;        serverSocket.on('data', function(data) {&#10;            console.log('received data from client');&#10;            var buf = new buffer.Buffer(data);&#10;            var obj;&#10;            if (!expectingMoreData) {&#10;                obj = iotAuth.parseIoTSP(buf);&#10;                if (obj.payload.length &lt; obj.payloadLen) {&#10;                    expectingMoreData = true;&#10;                    console.log('more data will come. current: ' + obj.payload.length&#10;                        + ' expected: ' + obj.payloadLen);&#10;                }&#10;            }&#10;            else {&#10;                obj.payload = buffer.concat([obj.payload, new buffer.Buffer(data)]);&#10;                if (obj.payload.length ==  obj.payloadLen) {&#10;                    expectingMoreData = false;&#10;                }&#10;                else {&#10;                    console.log('more data will come. current: ' + obj.payload.length&#10;                        + ' expected: ' + obj.payloadLen);&#10;                }&#10;            }&#10;            &#10;            if (expectingMoreData) {&#10;                // do not process the packet yet&#10;                return;&#10;            }&#10;            else if (obj.msgType == msgType.SKEY_HANDSHAKE_1) {&#10;                console.log('received session key handshake1');&#10;                var keyId = obj.payload.readUIntBE(0, iotAuth.SESSION_KEY_ID_SIZE);&#10;                lastClientState.obj = obj;&#10;                lastClientState.keyId = keyId;&#10;                lastClientState.serverSocket = serverSocket;&#10;                &#10;                if (sessionKey != null &amp;&amp; sessionKey.id == keyId) {&#10;                    console.log('switching to HANDSHAKE_1_RECEIVED state.');&#10;                    currentState = serverCommState.HANDSHAKE_1_RECEIVED;&#10;                    sendHandshake2();&#10;                }&#10;                else {&#10;                    console.log('session key NOT found! sending session key id to AuthService');&#10;                    console.log('switching to WAITING_SESSION_KEY state.');&#10;                    currentState = serverCommState.WAITING_SESSION_KEY;&#10;                    self.send('keyId', keyId);&#10;                }&#10;            }&#10;            else if (obj.msgType == msgType.SKEY_HANDSHAKE_3) {&#10;                console.log('received session key handshake3');&#10;                if (currentState != serverCommState.HANDSHAKE_2_SENT) {&#10;                    outputError('in wrong state, expected: HANDSHAKE_2_SENT, disconnecting...');&#10;                    currentState = serverCommState.IDLE;&#10;                    serverSocket.close();&#10;                    return;&#10;                }&#10;                var ret = crypto.symmetricDecryptWithHash(obj.payload.getArray(), sessionKey.val,&#10;                    sessionCipherAlgorithm, sessionHashAlgorithm);&#10;                if (!ret.hashOk) {&#10;                    outputError('received hash for handshake 3 is NOT ok');&#10;                }&#10;                console.log('received hash for handshake 3 is ok');&#10;                var buf = new buffer.Buffer(ret.data);&#10;                var handshake3 = iotAuth.parseHandshake(buf);&#10;                if (!handshake3.replyNonce.equals(lastClientState.myNonce)) {&#10;                    outputError('client nonce NOT verified');&#10;                    return;&#10;                }&#10;                console.log('client nonce verified');&#10;                &#10;                console.log('switching to IN_COMM state.');&#10;                currentState = serverCommState.IN_COMM;&#10;            }&#10;            else if (obj.msgType == msgType.SECURE_COMM_MSG) {&#10;                console.log('received secure communication message');&#10;                if (currentState != serverCommState.IN_COMM) {&#10;                    outputError('in wrong state, expected: IN_COMM, disconnecting...');&#10;                    currentState = serverCommState.IDLE;&#10;                    serverSocket.close();&#10;                    return;&#10;                }&#10;                var ret = crypto.symmetricDecryptWithHash(obj.payload.getArray(), sessionKey.val,&#10;                    sessionCipherAlgorithm, sessionHashAlgorithm);&#10;                if (!ret.hashOk) {&#10;                    outputError('received hash for secure communication message is NOT ok');&#10;                }&#10;                console.log('received hash for secure communication message is ok');&#10;                ret = iotAuth.parseSessionMessage(new buffer.Buffer(ret.data));&#10;                console.log('seqNum: ' + ret.seqNum + ' data: ' + ret.data.toString());&#10;                &#10;                if (ret.seqNum != readSeqNum) {&#10;                    console.log('wrong seqNum. expected: ' + readSeqNum);&#10;                }&#10;                readSeqNum++;&#10;                &#10;                self.send('received', ret.data.toString());&#10;                //self.send('receivedID', connectionCount);&#10;            }&#10;        });&#10;    });&#10;    &#10;    // Open the server after setting up all the handlers.&#10;    server.start();&#10;};&#10;&#10;exports.initialize = function () {&#10;    currentState = serverCommState.IDLE;&#10;    writeSeqNum = 0;&#10;    readSeqNum = 0;&#10;    sessionKey = null;&#10;    &#10;    sessionCipherAlgorithm = this.getParameter('sessionCipherAlgorithm');&#10;    sessionHashAlgorithm = this.getParameter('sessionHashAlgorithm');&#10;    &#10;    self = this;&#10;    initServer(this.getParameter('port'));&#10;    &#10;    // Bind the input handler to caller's object so that when it is invoked,&#10;    // it is invoked in the context of that object and not this one.&#10;    &#10;    this.addInputHandler('sessionKey', exports.sessionKeyInputHandler.bind(this));&#10;    //this.addInputHandler('toSend', exports.toSendInputHandler.bind(this));&#10;};&#10;&#10;/** Close all sockets, unregister event listeners, and stop the server.&#10; */&#10;exports.wrapup = function() {&#10;    sockets = [];&#10;&#10;    if (server !== null) {&#10;        server.stop();&#10;        server = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 110.0]">
+        </property>
+        <property name="port" class="ptolemy.data.expr.Parameter" value="21200">
+        </property>
+        <property name="sessionCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="AES-128-CBC">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sessionHashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="sessionKey" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="keyId" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="listening" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="connection" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="SessionKey" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1729, 660, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 190.0]">
+        </property>
+    </entity>
+    <entity name="Listening" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1269, 845, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="Connection" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={725, 934, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 120.0]">
+        </property>
+    </entity>
+    <entity name="Received" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1399, 856, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 165.0]">
+        </property>
+    </entity>
+    <entity name="Error" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1030, 616, 1316, 225}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 205.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[135.0, 15.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[135.0, 100.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="AuthForServer.purpose" relation="relation3"/>
+    <link port="AuthForServer.sessionKey" relation="relation5"/>
+    <link port="RecordAssembler.output" relation="relation2"/>
+    <link port="RecordAssembler.keyId" relation="relation"/>
+    <link port="MicrostepDelay.input" relation="relation2"/>
+    <link port="MicrostepDelay.output" relation="relation3"/>
+    <link port="IoTServer.error" relation="relation9"/>
+    <link port="IoTServer.sessionKey" relation="relation4"/>
+    <link port="IoTServer.keyId" relation="relation"/>
+    <link port="IoTServer.listening" relation="relation6"/>
+    <link port="IoTServer.connection" relation="relation7"/>
+    <link port="IoTServer.received" relation="relation8"/>
+    <link port="SessionKey.input" relation="relation4"/>
+    <link port="Listening.input" relation="relation6"/>
+    <link port="Connection.input" relation="relation7"/>
+    <link port="Received.input" relation="relation8"/>
+    <link port="Error.input" relation="relation9"/>
+    <link relation1="relation5" relation2="relation4"/>
 </entity>

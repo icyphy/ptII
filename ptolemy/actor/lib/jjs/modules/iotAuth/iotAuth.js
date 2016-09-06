@@ -104,6 +104,14 @@ function varLenIntToNum(buf, offset) {
     return null;
 };
 
+/*
+    IoTSP (IoT Secure Protocol) Message
+    {
+        msgType: /UInt8/,
+        payloadLen: /variable-length integer encoding/
+        payload: /Buffer/
+    }
+*/
 exports.serializeIoTSP = function(obj) {
     if (obj.msgType == undefined || obj.payload == undefined) {
         console.log('Error: IoTSP msgType or payload is missing.');
