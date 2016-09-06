@@ -597,3 +597,22 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
     });
     entityClientSocket.open();
 };
+
+///////////////////////////////////////////////////////////////////
+////                Functions for entity server                ////
+
+/*
+options = {
+    serverPort,
+    sessionCipherAlgorithm,
+    sessionHashAlgorithm
+}
+*/
+/*
+eventHandlers = {
+    onClose,
+    onError,
+    onData
+}
+*/
+
