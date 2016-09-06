@@ -83,8 +83,12 @@ public class JSAccessor
                 .replace("http://www.terraswarm.org/accessors/", "")
                 + "');"
                 + _eol
-                + _INDENT1 + name + ".container = this;" + _eol
-                + _INDENT1 + "this.containedAccessors.push("+ name + ");" + _eol);
+	        // No need to add this accessor to the container or containedAccessors because
+                // this is handled elsewhere.  Note that for JavaScript actors, we *do*
+		// need to add them.
+                // + _INDENT1 + name + ".container = this;" + _eol
+                // + _INDENT1 + "this.containedAccessors.push("+ name + ");" + _eol
+		    );
 
         // _generateJavaScriptParameters() is defined in
         // ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java
