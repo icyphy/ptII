@@ -317,7 +317,7 @@ function processSessionKeyResp(options, sessionKeyRespBuf, distributionKeyVal, m
     return {sessionKeyList: sessionKeyResp.sessionKeyList};
 };
 
-function handleSessionKeyResp(options, obj, myNonce, callback) {
+function handleSessionKeyResp(options, obj, myNonce, callback, callbackParams) {
     if (obj.msgType == msgType.SESSION_KEY_RESP_WITH_DIST_KEY) {
         console.log('received session key response with distribution key attached!');
         var distKeyBuf = obj.payload.slice(0, 512);
@@ -338,7 +338,7 @@ function handleSessionKeyResp(options, obj, myNonce, callback) {
             callback({error: ret.error});
             return;
         }
-        callback({success: true}, receivedDistKey, ret.sessionKeyList);
+        callback({success: true}, receivedDistKey, ret.sessionKeyList, callbackParams);
     }
     else if (obj.msgType == msgType.SESSION_KEY_RESP) {
         console.log('Received session key response encrypted with distribution key');
@@ -347,7 +347,7 @@ function handleSessionKeyResp(options, obj, myNonce, callback) {
             callback({error: ret.error});
             return;
         }
-        callback({success: true}, null, ret.sessionKeyList);
+        callback({success: true}, null, ret.sessionKeyList, callbackParams);
     }
     else if (obj.msgType == msgType.AUTH_ALERT) {
         console.log('Received Auth alert!');
@@ -371,7 +371,7 @@ function handleSessionKeyResp(options, obj, myNonce, callback) {
     }
 };
 
-exports.sendSessionKeyReq = function(options, callback) {
+exports.sendSessionKeyReq = function(options, callback, callbackParams) {
     var authClientSocket = new socket.SocketClient(options.authPort, options.authHost,
     {
         //'connectTimeout' : this.getParameter('connectTimeout'),
@@ -443,7 +443,7 @@ exports.sendSessionKeyReq = function(options, callback) {
             authClientSocket.send(toSend);
 		}
 		else {
-	    	handleSessionKeyResp(options, obj, myNonce, callback);
+	    	handleSessionKeyResp(options, obj, myNonce, callback, callbackParams);
 	    	authClientSocket.close();
 		}
     });
@@ -451,7 +451,7 @@ exports.sendSessionKeyReq = function(options, callback) {
     	console.log('disconnected from auth');
     });
     authClientSocket.on('error', function(message) {
-        callback({error: 'an error occurred in socket during session key request'});
+        callback({error: 'an error occurred in socket during session key request, details: ' + message});
         authClientSocket.close();
     });
 	authClientSocket.open();

@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 155.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 130, 1198, 748}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 23, 1198, 748}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[964, 638]">
     </property>
@@ -213,7 +213,7 @@
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 510.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -227,7 +227,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 425.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -245,9 +245,9 @@
         </property>
     </entity>
     <entity name="Error" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={419, 866, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={419, 692, 499, 208}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 385.0]">
         </property>
@@ -258,6 +258,10 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 495.0]">
+        </property>
+    </entity>
+    <entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[694.78125, 379.84375]">
         </property>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -304,6 +308,8 @@
         <vertex name="vertex1" value="[390.0, 350.0]">
         </vertex>
     </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="AuthForClient.purpose" relation="relation3"/>
     <link port="AuthForClient.sessionKey" relation="relation4"/>
     <link port="DiscreteClock.output" relation="relation"/>
@@ -317,7 +323,7 @@
     <link port="IoTClient.received" relation="relation5"/>
     <link port="Connected.input" relation="relation6"/>
     <link port="Received.input" relation="relation5"/>
-    <link port="MicrostepDelay.input" relation="relation6"/>
+    <link port="MicrostepDelay.input" relation="relation10"/>
     <link port="MicrostepDelay.output" relation="relation11"/>
     <link port="DiscreteClock2.output" relation="relation8"/>
     <link port="DiscreteClock2.start" relation="relation11"/>
@@ -333,4 +339,6 @@
     <link port="TimeDelay.output" relation="relation2"/>
     <link port="Error.input" relation="relation12"/>
     <link port="ToSend.input" relation="relation13"/>
+    <link port="TrueGate.input" relation="relation6"/>
+    <link port="TrueGate.output" relation="relation10"/>
 </entity>
