@@ -532,14 +532,36 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
         console.log('switching to HANDSHAKE_1_SENT');
         entityClientState = entityClientCommState.HANDSHAKE_1_SENT;
     });
+    var expectingMoreData = false;
+    var obj;
     entityClientSocket.on('data', function(data) {
-        if (entityClientState == entityClientCommState.IN_COMM) {
-            eventHandlers.onData(data);
+        console.log('data received from server');
+        var buf = new buffer.Buffer(data);
+        if (!expectingMoreData) {
+            obj = exports.parseIoTSP(buf);
+            if (obj.payload.length < obj.payloadLen) {
+                expectingMoreData = true;
+                console.log('more data will come. current: ' + obj.payload.length
+                    + ' expected: ' + obj.payloadLen);
+            }
+        }
+        else {
+            obj.payload = buffer.concat([obj.payload, new buffer.Buffer(data)]);
+            if (obj.payload.length ==  obj.payloadLen) {
+                expectingMoreData = false;
+            }
+            else {
+                console.log('more data will come. current: ' + obj.payload.length
+                    + ' expected: ' + obj.payloadLen);
+            }
+        }
+        
+        if (expectingMoreData) {
+            // do not process the packet yet
             return;
         }
-        console.log('data received from server');
-        var obj = exports.parseIoTSP(new buffer.Buffer(data));
-        if (obj.msgType == msgType.SKEY_HANDSHAKE_2) {
+        //var obj = exports.parseIoTSP(new buffer.Buffer(data));
+        else if (obj.msgType == msgType.SKEY_HANDSHAKE_2) {
             console.log('received session key handshake2!');
             if (entityClientState != entityClientCommState.HANDSHAKE_1_SENT) {
                 callback({error: 'Error: wrong sequence of handshake, disconnecting...'});
@@ -576,6 +598,19 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
             entityClientState = entityClientCommState.IN_COMM;
             callback({success: true}, entityClientSocket);
         }
+        else if (obj.msgType == msgType.SECURE_COMM_MSG) {
+            console.log('received secure communication message!');
+            if (entityClientState == entityClientCommState.IN_COMM) {
+                // TODO: decrypt the message as well.
+                eventHandlers.onData(obj.payload);
+                return;
+            }
+            else {
+                callback({error: 'Error: it is not in IN_COMM state, disconnecting...'});
+                entityClientSocket.close();
+                return;
+            }
+        }
     });
     entityClientSocket.on('close', function() {
         if (entityClientState == entityClientCommState.IN_COMM) {
@@ -610,9 +645,219 @@ options = {
 */
 /*
 eventHandlers = {
-    onClose,
+    onServerError,      // for server
+    onServerListening,
+
+    onClose,            // for individual sockets
     onError,
-    onData
+    onData,
+    onConnection
 }
 */
+exports.initializeSecureServer = function(options, sessionKeyGetterCallback, connectionCallback, eventHandlers) {
+    var entityServer;
 
+    entityServer = new socket.SocketServer(
+        {
+            //'clientAuth' : this.getParameter('clientAuth'),
+            'emitBatchDataAsAvailable' : true,
+            //'hostInterface' : this.getParameter('hostInterface'),
+            //'idleTimeout' : this.getParameter('idleTimeout'),
+            //'keepAlive' : false,
+            //'noDelay' : this.getParameter('noDelay'),
+            //'pfxKeyCertPassword' : this.getParameter('pfxKeyCertPassword'),
+            //'pfxKeyCertPath' : this.getParameter('pfxKeyCertPath'),
+            'port' : options.serverPort,
+            'rawBytes' : true,
+            //'receiveBufferSize' : this.getParameter('receiveBufferSize'),
+            'receiveType' : 'byte',
+            //'sendBufferSize' : this.getParameter('sendBufferSize'),
+            'sendType' : 'byte',
+            //'sslTls' : this.getParameter('sslTls'),
+            //'trustedCACertPath' : this.getParameter('trustedCACertPath')
+        }
+    );
+
+    entityServer.on('error', function(message) {
+        eventHandlers.onServerError(message);
+    });
+        
+    entityServer.on('listening', function(listeningPort) {
+        eventHandlers.onServerListening(listeningPort);
+    });
+
+    // server communication state
+    var entityServerCommState = {
+        IDLE: 0,
+        WAITING_SESSION_KEY: 20,
+        HANDSHAKE_1_RECEIVED: 21,
+        HANDSHAKE_2_SENT: 22,
+        IN_COMM: 30                    // Session message
+    };
+    var connectionCount = 0;
+    var sockets = [];
+    entityServer.on('connection', function(entityServerSocket) {
+        console.log('client connected');
+        // entityServerSocket is an instance of the Socket class defined
+        // in the socket module.
+        var entityServerState = entityServerCommState.IDLE;
+        var myNonce;
+        var entityServerSessionKey;
+
+        function sendHandshake2(handshake1Payload, serverSocket, sessionKey) {
+            if (entityServerState != entityServerCommState.HANDSHAKE_1_RECEIVED) {
+                connectionCallback({error: 'in wrong state, expected: HANDSHAKE_1_RECEIVED, disconnecting...'});
+                serverSocket.close();
+                return;
+            }
+            var enc = handshake1Payload.slice(SESSION_KEY_ID_SIZE);
+            entityServerSessionKey = sessionKey;
+            var ret = crypto.symmetricDecryptWithHash(enc.getArray(), entityServerSessionKey.val.getArray(),
+                options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
+            if (!ret.hashOk) {
+                connectionCallback({error: 'received hash for handshake 1 is NOT ok'});
+                serverSocket.close();
+                return;
+            }
+            console.log('received hash for handshake 1 is ok');
+            var buf = new buffer.Buffer(ret.data);
+            
+            var handshake1 = exports.parseHandshake(buf);
+            
+            myNonce = new buffer.Buffer(crypto.randomBytes(HANDSHAKE_NONCE_SIZE));
+            console.log('chosen nonce: ' + myNonce.inspect());
+            
+            var theirNonce = handshake1.nonce;
+            
+            var handshake2 = {nonce: myNonce, replyNonce: theirNonce};
+            
+            var encBuf = crypto.symmetricEncryptWithHash(exports.serializeHandshake(handshake2).getArray(),
+                entityServerSessionKey.val.getArray(), options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
+            var msg = {
+                msgType: msgType.SKEY_HANDSHAKE_2,
+                payload: new buffer.Buffer(encBuf)
+            };
+            var toSend = exports.serializeIoTSP(msg).getArray();
+            
+            //lastClientState.myNonce = myNonce;
+            
+            console.log('switching to HANDSHAKE_2_SENT state.');
+            entityServerState = entityServerCommState.HANDSHAKE_2_SENT;
+            
+            serverSocket.send(toSend);
+        };
+
+        connectionCount++;
+        var socketInstance = connectionCount;
+        var socketID = {
+            'id': socketInstance,
+            'remoteHost': entityServerSocket.remoteHost(),
+            'remotePort': entityServerSocket.remotePort(),
+            'status': 'open'
+        };
+        console.log('A client connected: ' + util.inspect(socketID));
+        // To
+        //self.send('connection', socketID);
+        
+        sockets[socketInstance] = entityServerSocket;
+
+        entityServerSocket.on('close', function() {
+            console.log('switching to IDLE state.');
+            entityServerState = entityServerCommState.IDLE;
+            socketID.status = 'closed';
+            eventHandlers.onClose(socketID);
+            //self.send('connection', socketID);
+            // Avoid a memory leak here.
+            sockets[socketInstance] = null;
+        });
+        
+        entityServerSocket.on('error', function(message) {
+            eventHandlers.onError(message);
+            //self.error(message);
+        });
+        
+        var expectingMoreData = false;
+        var obj;
+        entityServerSocket.on('data', function(data) {
+            console.log('received data from client');
+            var buf = new buffer.Buffer(data);
+            if (!expectingMoreData) {
+                obj = exports.parseIoTSP(buf);
+                if (obj.payload.length < obj.payloadLen) {
+                    expectingMoreData = true;
+                    console.log('more data will come. current: ' + obj.payload.length
+                        + ' expected: ' + obj.payloadLen);
+                }
+            }
+            else {
+                obj.payload = buffer.concat([obj.payload, new buffer.Buffer(data)]);
+                if (obj.payload.length ==  obj.payloadLen) {
+                    expectingMoreData = false;
+                }
+                else {
+                    console.log('more data will come. current: ' + obj.payload.length
+                        + ' expected: ' + obj.payloadLen);
+                }
+            }
+            
+            if (expectingMoreData) {
+                // do not process the packet yet
+                return;
+            }
+            else if (obj.msgType == msgType.SKEY_HANDSHAKE_1) {
+                console.log('received session key handshake1');
+
+                console.log('switching to HANDSHAKE_1_RECEIVED state.');
+                entityServerState = entityServerCommState.HANDSHAKE_1_RECEIVED;
+                console.log('debugging 0');
+                sessionKeyGetterCallback(obj.payload, entityServerSocket, sendHandshake2);
+
+            }
+            else if (obj.msgType == msgType.SKEY_HANDSHAKE_3) {
+                console.log('received session key handshake3');
+                if (entityServerState != entityServerCommState.HANDSHAKE_2_SENT) {
+                    connectionCallback({error: 'in wrong state, expected: HANDSHAKE_2_SENT, disconnecting...'});
+                    entityServerSocket.close();
+                    return;
+                }
+                var ret = crypto.symmetricDecryptWithHash(obj.payload.getArray(), entityServerSessionKey.val.getArray(),
+                    options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
+                if (!ret.hashOk) {
+                    connectionCallback({error: 'received hash for handshake 3 is NOT ok, disconnecting...'});
+                    entityServerSocket.close();
+                    return;
+                }
+                console.log('received hash for handshake 3 is ok');
+                var buf = new buffer.Buffer(ret.data);
+                var handshake3 = exports.parseHandshake(buf);
+                if (!handshake3.replyNonce.equals(myNonce)) {
+                    connectionCallback({error: 'client nonce NOT verified'});
+                    entityServerSocket.close();
+                    return;
+                }
+                console.log('client nonce verified');
+                
+                console.log('switching to IN_COMM state.');
+                entityServerState = entityServerCommState.IN_COMM;
+                connectionCallback({success: true}, entityServerSocket);
+                eventHandlers.onConnection(socketID);
+            }
+            else if (obj.msgType == msgType.SECURE_COMM_MSG) {
+                if (entityServerState == entityServerCommState.IN_COMM) {
+                    // TODO: decrypt the message as well.
+                    eventHandlers.onData(obj.payload);
+                    return;
+                }
+                else {
+                    callback({error: 'Error: it is not in IN_COMM state, disconnecting...'});
+                    entityServerSocket.close();
+                    return;
+                }
+            }
+        });
+    });
+    
+    // Open the server after setting up all the handlers.
+    entityServer.start();
+    return entityServer;
+};
