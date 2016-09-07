@@ -51,9 +51,12 @@ PTCLASSJAR = $(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	AccessorCodeGenerator.java \
-	AccessorCodeGeneratorAdapter.java
+	AccessorCodeGeneratorAdapter.java \
+	AccessorSSHCodeGenerator.java \
 
-OTHER_FILES_TO_BE_JARED = 
+
+OTHER_FILES_TO_BE_JARED = \
+	accessorInvokeSSH
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -1,0 +1,145 @@
+/* Code generator for JavaScript Accessors that uses SSH to deploy Swarmlets.
+
+Copyright (c) 2009-2015 The Regents of the University of California.
+All rights reserved.
+Permission is hereby granted, without written agreement and without
+license or royalty fees, to use, copy, modify, and distribute this
+software and its documentation for any purpose, provided that the above
+copyright notice and the following two paragraphs appear in all copies
+of this software.
+
+IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+
+THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ENHANCEMENTS, OR MODIFICATIONS.
+
+PT_COPYRIGHT_VERSION_2
+COPYRIGHTENDKEY
+
+ */
+
+package ptolemy.cg.kernel.generic.accessor;
+
+import java.io.IOException;
+import java.net.URI;
+import java.util.Map;
+
+import ptolemy.actor.CompositeActor;
+import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
+import ptolemy.cg.kernel.generic.RunnableCodeGenerator;
+import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.Type;
+import ptolemy.data.StringToken;
+import ptolemy.kernel.attributes.URIAttribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.StringUtilities;
+
+///////////////////////////////////////////////////////////////////
+//// AccessorSSHCodeGenerator
+
+/** Generate a JavaScript composite accessor for a  model and deploy
+ *  it using ssh.
+ *
+ *  <p>Accessors are a technology, developed by the
+ *  <a href="http://www.terraswarm.org#in_browser" target="_top">TerraSwarm Research Center</a>,
+ *  for composing heterogeneous devices and services in the
+ *  Internet of Things (IoT).  For more information, see
+ *  <a href="http://accessors.org#in_browser" target="_top">http://accessors.org</a>.</p>
+ *
+ *  <p>The model can only contain JavaScript and JSAccessor actors.</p>
+ *
+ *  <p>To generate an Accessor version of a model, use:</p>
+ *  <pre>
+ *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator -language accessor $PTII/ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml; cat $PTII/org/terraswarm/accessor/accessors/web/hosts/node/TestComposite.js 
+ *  </pre>
+ *  which is shorthand for:
+ *  <pre>
+ *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js 
+ *  </pre>
+ *
+ *  <p>For more information, see <a href="https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#CodeGeneration#in_browser">https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
+ * 
+ *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
+ *  @version $Id: AccessorSSHCodeGenerator.java 75087 2016-08-27 01:05:39Z cxh $
+ *  @since Ptolemy II 11.0
+ *  @Pt.ProposedRating red (cxh)
+ *  @Pt.AcceptedRating red (cxh)
+ */
+public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
+
+    /** Create a new instance of the AccessorSSHCodeGenerator.
+     *  The value of the <i>generatorPackageList</i> parameter of the
+     *  base class is set to <code>generic.accessor</code>
+     *  @param container The container.
+     *  @param name The name of the AccessorSSHCodeGenerator.
+     *  @exception IllegalActionException If the super class throws the
+     *   exception or error occurs when setting the file path.
+     *  @exception NameDuplicationException If the super class throws the
+     *   exception or an error occurs when setting the file path.
+     */
+    public AccessorSSHCodeGenerator(NamedObj container, String name)
+            throws IllegalActionException, NameDuplicationException {
+        super(container, name);
+
+	userHost = new StringParameter(this, "userHost");
+	userHost.setExpression("sbuser@swarmnuc001.eecs.berkeley.edu");
+
+	// Invoke the accessoInvokeSSH script
+        runCommand.setExpression("@PTII@/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeout@");
+
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     parameters                            ////
+
+    /** The username and hostname that is used with ssh.
+     *  The default value is "sbuser@swarmnuc001.eecs.berkeley.edu".
+     *  To get ssh access, see 
+     *  <a href="https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess#in_browser">https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess</a>.
+     */
+    public StringParameter userHost;
+
+    /** Return the command to run the generated code.
+     *  @return The command to run the generated code.
+     *  @exception IllegalActionException If the there is a problem
+     *  substituting the @..@ tags.
+     */
+    protected String _runCommand() throws IllegalActionException {
+	Map<String, String> substituteMap = CodeGeneratorUtilities.newMap(this);
+	substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
+	substituteMap.put("@modelName@", _sanitizedModelName);
+	substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
+
+        if (_model instanceof CompositeActor) {
+	    String stopTime = ((CompositeActor) _model).getDirector().stopTime.getExpression();
+	    String timeout = "";
+	    if (stopTime.length() > 0) {
+		try {
+		    timeout = new Double(Double.parseDouble(stopTime) * 1000.0).toString();
+		} catch (NumberFormatException ex) {
+		    throw new IllegalActionException(_model, ex, "Could not parse " + stopTime);
+		}
+	    }
+	    substituteMap.put("@timeout@", timeout);
+	}
+
+	String command = CodeGeneratorUtilities
+	    .substitute(((StringToken) runCommand.getToken())
+			.stringValue(), substituteMap);
+	return command;
+    }
+
+}
+

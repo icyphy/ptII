@@ -29,7 +29,7 @@
         </property>
         <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../hosts/node/nodeHostInvoke.js -timeout 6000 test/auto/@modelName@">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 350.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -38,6 +38,26 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model generates an &#10;composite accessor that uses&#10;both a Display and a Test.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 180.0]">
+        </property>
+    </property>
+    <property name="AccessorSSHCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 460.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Double click on this code generator &#10;to generate code and run it locally.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 325.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This code generator runs the composite&#10;accessor on a remote machine that has node and npm&#10;installed.&#10;If you do not have access to the sbuser account, then&#10;change the userHost parameter to be a username and&#10;an machine name.  If you have ssh set up on your local&#10;machine, then you could use localhost.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 390.0]">
         </property>
     </property>
     <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">
@@ -73,6 +93,10 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -94,6 +118,10 @@
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
             </property>
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -132,6 +160,10 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -167,6 +199,10 @@
             </property>
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>

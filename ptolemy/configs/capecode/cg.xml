@@ -7,6 +7,7 @@
       <group>
         <doc>Template based code generator for models containing on JSAccessor actors.</doc>
         <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator"/>
+        <property name="AccessorSSHCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator"/>
       </group>
     ?>
   </configure>
