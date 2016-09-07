@@ -27,11 +27,16 @@
  */
 package ptolemy.actor.lib.jjs;
 
+import java.nio.charset.Charset;
+import java.util.Collection;
 import java.util.TreeSet;
 
 import javax.script.ScriptContext;
+import javax.xml.bind.DatatypeConverter;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import jdk.nashorn.internal.objects.NativeArray;
+import ptolemy.data.UnsignedByteToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 
@@ -45,7 +50,7 @@ import ptolemy.kernel.util.InternalErrorException;
    in JavaScript. This actor should be used for all synchronized actions
    (to avoid deadlocks and race conditions).
 
-   @author Edward A. Lee
+   @author Edward A. Lee, Hokeun Kim
    @version $Id$
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
@@ -201,6 +206,80 @@ public class HelperBase {
         return result;
     }
 
+    /** Convert a Java byte array into the JavaScript integer array.
+     *  @param buffer The input Java byte array to be converted.
+     *  @return The resulting JavaScript integer array.
+     *  @throws IllegalActionException If the conversion fails.
+     */
+    protected Object _toJSArray(byte[] buffer) throws IllegalActionException {
+        Object[] result = new Object[buffer.length];
+        for (int i = 0; i < result.length; i++) {
+            result[i] = (Object) buffer[i];
+        }
+        return _actor.toJSArray(result);
+    }
+
+    /** Convert the native JavaScript array or JavaScript string into a Java byte array.
+     *  When the input is String that starts with "0x", interpret the input as hex bytes.
+     *  @param object The input in JavaScript object, either a JavaScrypt integer array or
+     *    a JavaScript string. If the string starts with "0x", it is interpreted as hex bytes.
+     *  @return The Java byte array.
+     *  @throws IllegalActionException If the conversion fails.
+     */
+    protected static byte[] _toJavaBytes(Object object) throws IllegalActionException {
+        if (object instanceof ScriptObjectMirror || object instanceof NativeArray) {
+            Collection<Object> values = null;
+            if (object instanceof ScriptObjectMirror) {
+                ScriptObjectMirror objectMirror = ((ScriptObjectMirror) object);
+                values = objectMirror.values();
+            } else if (object instanceof NativeArray) {
+                NativeArray nativeArray = (NativeArray)object;
+                values = nativeArray.values();
+            }
+
+            byte[] result = new byte[values.size()];
+            int i = 0;
+            for (Object value : values) {
+                if (value instanceof UnsignedByteToken) {
+                    result[i] = ((UnsignedByteToken) value).byteValue();
+                }
+                else if (value instanceof Byte) {
+                    result[i] = ((Byte) value).byteValue();
+                }
+                else if (value instanceof Integer) {
+                    result[i] = ((Integer) value).byteValue();
+                }
+                else if (value instanceof Long) {
+                    result[i] = ((Long) value).byteValue();
+                }
+                else if (value instanceof Short) {
+                    result[i] = ((Short) value).byteValue();
+                }
+                else if (value instanceof Double) {
+                    result[i] = ((Double) value).byteValue();
+                }
+                else {
+                    throw new IllegalActionException("Cannot interpret the input array element type: " 
+                            + value.getClass().getName());
+                }
+                
+                i++;
+            }
+            return result;
+        } else if (object instanceof String) {
+            String stringObject = (String) object;
+            if (stringObject.startsWith("0x")) {
+                // hex encoded string
+                return DatatypeConverter.parseHexBinary(stringObject.substring(2));
+            } else {
+                // String.getBytes() causes Dm: Dubious method used (FB.DM_DEFAULT_ENCODING)
+                return ((String) object).getBytes(Charset.forName("UTF-8"));
+            }
+        }
+        throw new IllegalActionException("Cannot interpret the input, the input should be either"
+                + "JavaScript int array or string.");
+    }
+    
     ///////////////////////////////////////////////////////////////////
     ////                     protected fields                      ////
 
