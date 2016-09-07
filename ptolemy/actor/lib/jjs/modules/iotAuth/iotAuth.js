@@ -458,6 +458,91 @@ exports.sendSessionKeyReq = function(options, callback, callbackParams) {
 };
 
 ///////////////////////////////////////////////////////////////////
+////     Common socket class for entity server and client      ////
+
+var IoTSecureSocket = function(socket, sessionKey, cipherAlgorithm, hashAlgorithm) {
+    this.socket = socket;
+    this.sessionKey = sessionKey;
+    this.cipherAlgorithm = cipherAlgorithm;
+    this.hashAlgorithm = hashAlgorithm;
+    this.writeSeqNum = 0;
+    this.readSeqNum = 0;
+};
+
+IoTSecureSocket.prototype.close = function() {
+    if (this.socket) {
+        this.socket.close();
+    }
+    this.socket = null;
+};
+
+IoTSecureSocket.prototype.checkSessionKeyValidity = function() {
+    if (this.sessionKey.absValidity > new Date()) {
+        return true;
+    }
+    return false;
+};
+
+// to be called from outside of iotAuth module
+IoTSecureSocket.prototype.send = function(data) {
+    if (!this.socket) {
+        console.log('Internal socket is not available');
+        return false;
+    }
+    if (!this.checkSessionKeyValidity()) {
+        console.log('Session key expired!');
+        return false;
+    }
+    var buf = exports.serializeSessionMessage({seqNum: this.writeSeqNum, data: new buffer.Buffer(data)});
+    var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
+        this.sessionKey.val.getArray(), this.cipherAlgorithm, this.hashAlgorithm));
+    this.writeSeqNum++;
+    var msg = {
+        msgType: msgType.SECURE_COMM_MSG,
+        payload: encBuf
+    };
+    var toSend = exports.serializeIoTSP(msg).getArray();
+    this.socket.send(toSend);
+    return true;
+};
+
+// to be called inside of iotAuth module
+IoTSecureSocket.prototype.receive = function(payload) {
+    if (!this.socket) {
+        return {success: false, error: 'Internal socket is not available'};
+    }
+    if (!this.checkSessionKeyValidity()) {
+        return {success: false, error: 'Session key expired!'};
+    }
+    var ret = crypto.symmetricDecryptWithHash(payload.getArray(),
+        this.sessionKey.val.getArray(), this.cipherAlgorithm, this.hashAlgorithm);
+    if (!ret.hashOk) {
+        return {success: false, error: 'Received hash for secure comm msg is NOT ok'};
+        //outputError('Received hash for secure comm msg is NOT ok');
+        //currentState = clientCommState.IDLE;
+        //currentSecureClient.close();
+        //return;
+    }
+    console.log('Received hash for secure comm msg is ok');
+    var buf = new buffer.Buffer(ret.data);
+    ret = exports.parseSessionMessage(buf);
+    
+    if (ret.seqNum != this.readSeqNum) {
+        return {success: false, error: 'seqNum does not match! expected: ' + this.readSeqNum + ' received: ' + ret.seqNum};
+    }
+    this.readSeqNum++;
+    console.log('Received seqNum: ' + ret.seqNum);
+    return {success: true, data: ret.data};
+};
+
+IoTSecureSocket.prototype.inspect = function() {
+    var ret = 'sessionKey: ' + this.sessionKey.toString();
+    ret += ' writeSeqNum: '+ this.writeSeqNum;
+    ret += ' readSeqNum: '+ this.readSeqNum;
+    return ret;
+};
+
+///////////////////////////////////////////////////////////////////
 ////                Functions for entity client                ////
 
 /*
@@ -519,7 +604,7 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
         var handshake1 = {nonce: myNonce};
         var buf = exports.serializeHandshake(handshake1);
         var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
-            options.sessionKey.val, options.sessionCipherAlgorithm, options.sessionHashAlgorithm));
+            options.sessionKey.val.getArray(), options.sessionCipherAlgorithm, options.sessionHashAlgorithm));
         
         var keyIdBuf = new buffer.Buffer(SESSION_KEY_ID_SIZE);
         keyIdBuf.writeUIntBE(options.sessionKey.id, 0, SESSION_KEY_ID_SIZE);
@@ -534,6 +619,7 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
     });
     var expectingMoreData = false;
     var obj;
+    var iotSecureSocket = null;
     entityClientSocket.on('data', function(data) {
         console.log('data received from server');
         var buf = new buffer.Buffer(data);
@@ -569,7 +655,7 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
                 return;
             }
             var ret = crypto.symmetricDecryptWithHash(obj.payload.getArray(),
-                options.sessionKey.val, options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
+                options.sessionKey.val.getArray(), options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
             if (!ret.hashOk) {
                 callback({error: 'Received hash for handshake2 is NOT ok'});
                 entityClientSocket.close();
@@ -587,7 +673,7 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
             var handshake3 = {replyNonce: theirNonce};
             buf = exports.serializeHandshake(handshake3);
             var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
-                options.sessionKey.val, options.sessionCipherAlgorithm, options.sessionHashAlgorithm));
+                options.sessionKey.val.getArray(), options.sessionCipherAlgorithm, options.sessionHashAlgorithm));
             var msg = {
                 msgType: msgType.SKEY_HANDSHAKE_3,
                 payload: encBuf
@@ -596,13 +682,21 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
 
             console.log('switching to IN_COMM');
             entityClientState = entityClientCommState.IN_COMM;
-            callback({success: true}, entityClientSocket);
+            // socket, sessionKey, cipherAlgorithm, hashAlgorithm
+            iotSecureSocket = new IoTSecureSocket(entityClientSocket, options.sessionKey,
+                options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
+            callback({success: true}, iotSecureSocket);
         }
         else if (obj.msgType == msgType.SECURE_COMM_MSG) {
             console.log('received secure communication message!');
             if (entityClientState == entityClientCommState.IN_COMM) {
                 // TODO: decrypt the message as well.
-                eventHandlers.onData(obj.payload);
+                var ret = iotSecureSocket.receive(obj.payload);
+                if (!ret.success) {
+                    eventHandlers.onError(ret.error);
+                    return;
+                }
+                eventHandlers.onData(ret.data);
                 return;
             }
             else {
@@ -778,6 +872,7 @@ exports.initializeSecureServer = function(options, sessionKeyGetterCallback, con
         
         var expectingMoreData = false;
         var obj;
+        var iotSecureSocket = null;
         entityServerSocket.on('data', function(data) {
             console.log('received data from client');
             var buf = new buffer.Buffer(data);
@@ -809,7 +904,6 @@ exports.initializeSecureServer = function(options, sessionKeyGetterCallback, con
 
                 console.log('switching to HANDSHAKE_1_RECEIVED state.');
                 entityServerState = entityServerCommState.HANDSHAKE_1_RECEIVED;
-                console.log('debugging 0');
                 sessionKeyGetterCallback(obj.payload, entityServerSocket, sendHandshake2);
 
             }
@@ -839,13 +933,20 @@ exports.initializeSecureServer = function(options, sessionKeyGetterCallback, con
                 
                 console.log('switching to IN_COMM state.');
                 entityServerState = entityServerCommState.IN_COMM;
-                connectionCallback({success: true}, entityServerSocket);
+                iotSecureSocket = new IoTSecureSocket(entityServerSocket, entityServerSessionKey,
+                    options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
+
+                connectionCallback({success: true}, iotSecureSocket);
                 eventHandlers.onConnection(socketID);
             }
             else if (obj.msgType == msgType.SECURE_COMM_MSG) {
                 if (entityServerState == entityServerCommState.IN_COMM) {
-                    // TODO: decrypt the message as well.
-                    eventHandlers.onData(obj.payload);
+                    var ret = iotSecureSocket.receive(obj.payload);
+                    if (!ret.success) {
+                        eventHandlers.onError(ret.error);
+                        return;
+                    }
+                    eventHandlers.onData(ret.data);
                     return;
                 }
                 else {
