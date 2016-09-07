@@ -1,0 +1,33 @@
+#!/bin/sh
+# $Id$
+# A script that deploys a composite accessor to a remote machine
+#
+
+if [ $# -ne 2 -a $# -ne 3 ]; then
+    echo "$0: Usage: $0 remoteuser@remotehost compositeAccessor.js [timeout in ms]"
+    exit 3
+fi
+
+userHost=$1
+
+accessor=$2
+
+timeout=5000
+if [ $# -eq 3 ]; then
+    timeout=$3
+fi
+
+if [ ! -f "$accessor" ]; then
+    echo "$0: $accessor could not be found?"
+    exit 4
+fi
+
+echo "require('@terraswarm/accessors');invoke(process.argv);" | ssh $userHost "cat > /tmp/invoke.js"
+
+
+remoteName="`basename $accessor .js``md5 $accessor | awk '{print $NF}'`.js"
+
+scp $accessor $userHost:/tmp/$remoteName
+
+ssh $userHost node /tmp/invoke.js -timeout $timeout /tmp/$remoteName 
+

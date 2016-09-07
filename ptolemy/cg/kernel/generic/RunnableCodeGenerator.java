@@ -224,8 +224,14 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
      */
     protected String _runCommand() throws IllegalActionException {
 	Map<String, String> substituteMap = CodeGeneratorUtilities.newMap(this);
-	substituteMap.put("@modelName@", _sanitizedModelName);
 	substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
+	substituteMap.put("@modelName@", _sanitizedModelName);
+	substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
+
+        if (_model instanceof CompositeActor) {
+	    substituteMap.put("@stopTime@", ((CompositeActor) _model).getDirector().stopTime.getExpression());
+	}
+
 	String command = CodeGeneratorUtilities
 	    .substitute(((StringToken) runCommand.getToken())
 			.stringValue(), substituteMap);
