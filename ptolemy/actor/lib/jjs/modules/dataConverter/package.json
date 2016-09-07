@@ -1,0 +1,11 @@
+{
+  "name": "dataConverter",
+  "version": "0.1.0",
+  "main": "dataConverter.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Hokeun Kim"
+    , "email" : "hokeunkim@eecs.berkeley.edu"}
+  ],
+  "description": "A module for data conversion."
+}
