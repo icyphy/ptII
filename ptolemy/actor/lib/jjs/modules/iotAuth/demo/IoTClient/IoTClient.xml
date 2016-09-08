@@ -11,16 +11,16 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 210.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 97, 1198, 748}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={79, 133, 1133, 657}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[964, 638]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[899, 547]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.078058890132228">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.139854903699029">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{483.61816406249983, 438.4458775550314}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{516.1181640625, 417.73793742090834}">
     </property>
     <property name="PROJECT_PATH" class="ptolemy.data.expr.Parameter" value="&quot;/Users/hokeunkim/Development/iotauth/&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -38,13 +38,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 510.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To run this demo, an open-source local authorization entity (Auth) should be running.&#10;The Auth can be obtained in the github repository, https://github.com/iotauth/iotauth.&#10;&#10;NOTE2: The parameter PROJECT_PATH in this demo should be set to the repository directory of iotauth.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 550.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 525.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -52,91 +52,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 625.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 600.0]">
         </property>
     </property>
-    <entity name="AuthForClient" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;;&#10;&#10;var iotAuth = require('iotAuth');&#10;var msgType = iotAuth.msgType;&#10;&#10;exports.setup = function() {&#10;    this.input('purpose');&#10;    this.output('sessionKey', {&#10;        type : 'string'&#10;    });&#10;    &#10;    this.parameter('authHost', {&#10;        type : 'string',&#10;        value : 'localhost'&#10;    });&#10;    this.parameter('authPort', {&#10;        value: -1,&#10;        type: 'int'&#10;    });&#10;    this.parameter('authCertPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    &#10;    this.parameter('entityName', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('entityPrivateKeyPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    &#10;    this.parameter('publicCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('signAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('numKeys', {&#10;        value: 1,&#10;        type: 'int'&#10;    });&#10;};&#10;&#10;// Auth &amp; entity keys&#10;var authPublicKey;&#10;var entityPrivateKey;&#10;&#10;// local variables&#10;var self;&#10;var currentDistributionKey = null;&#10;var currentSessionKeyList = [];&#10;&#10;function outputSessionKey(sessionKey) {&#10;    sessionKey.val = sessionKey.val.getArray();&#10;    self.send('sessionKey', JSON.stringify(sessionKey));&#10;};&#10;&#10;function sessionKeyRespCallback(status, distributionKey, sessionKeyList) {&#10;    if (status.error) {&#10;        console.log(status.error);&#10;        console.log('session key request failed...');&#10;        return;&#10;    }&#10;    console.log('session key request succeeded');&#10;&#10;    if (distributionKey) {&#10;        console.log('Updating to a new distribution key key');&#10;        currentDistributionKey = distributionKey;&#10;        console.log(currentDistributionKey);&#10;    }&#10;&#10;    console.log('received ' + sessionKeyList.length + ' session keys');&#10;    for (var i = 0; i &lt; sessionKeyList.length; i++) {&#10;        currentSessionKeyList.push(sessionKeyList[i]);&#10;    }&#10;    if (currentSessionKeyList.length &gt; 0) {&#10;        outputSessionKey(currentSessionKeyList.shift());&#10;    }&#10;};&#10;&#10;exports.purposeInputHandler = function() {&#10;    if (currentSessionKeyList.length &gt; 0) {&#10;        outputSessionKey(currentSessionKeyList.shift());&#10;    }&#10;    else {&#10;        var options = {&#10;            authHost: this.getParameter('authHost'),&#10;            authPort: this.getParameter('authPort'),&#10;            entityName: this.getParameter('entityName'),&#10;            numKeys: this.getParameter('numKeys'),&#10;            purpose: this.get('purpose'),&#10;            distributionKey: currentDistributionKey,&#10;            distCipherAlgorithm: this.getParameter('distCipherAlgorithm'),&#10;            distHashAlgorithm: this.getParameter('distHashAlgorithm'),&#10;            publicCipherAlgorithm: this.getParameter('publicCipherAlgorithm'),&#10;            signAlgorithm: this.getParameter('signAlgorithm'),&#10;            authPublicKey: authPublicKey,&#10;            entityPrivateKey: entityPrivateKey&#10;        };&#10;        iotAuth.sendSessionKeyReq(options, sessionKeyRespCallback);&#10;    }&#10;};&#10;&#10;exports.initialize = function () {&#10;    authPublicKey = iotAuth.loadPublicKey(this.getParameter('authCertPath'));&#10;    entityPrivateKey = iotAuth.loadPrivateKey(this.getParameter('entityPrivateKeyPath'));&#10;        &#10;    self = this;&#10;    &#10;    this.addInputHandler('purpose',&#10;        this.exports.purposeInputHandler.bind(this));&#10;};&#10;&#10;exports.wrapup = function () {&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 245.0}">
-        </property>
-        <property name="authHost" class="ptolemy.data.expr.Parameter" value="localhost">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="authPort" class="ptolemy.data.expr.Parameter" value="21900">
-        </property>
-        <property name="authCertPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/auth_certs/Auth101EntityCert.pem">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="entityName" class="ptolemy.data.expr.Parameter" value="net1.ptClient">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="entityPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/credentials/keys/net1/PtClientKey.der">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="publicCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="RSA/ECB/PKCS1PADDING">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="signAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA256withRSA">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="distCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="AES-128-CBC">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="distHashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="numKeys" class="ptolemy.data.expr.Parameter" value="2">
-        </property>
-        <port name="purpose" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="sessionKey" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="3.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 245.0]">
-        </property>
-    </entity>
-    <entity name="Const" class="ptolemy.actor.lib.Const">
-        <property name="value" class="ptolemy.data.expr.Parameter" value="{group=&quot;PtServers&quot;}">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 245.0]">
-        </property>
-    </entity>
-    <entity name="SessionKey" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 336, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 275.0]">
         </property>
     </entity>
     <entity name="Connected" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -144,19 +66,21 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[835.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 275.0]">
         </property>
     </entity>
     <entity name="Received" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 76, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={848, 76, 592, 211}, maximized=false}">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[592, 167]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 315.0]">
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{750, 380}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[750.0, 315.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
@@ -164,14 +88,14 @@
         </property>
         <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.5">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[860.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[840.0, 375.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 510.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 475.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -199,7 +123,7 @@
     <entity name="TimeDelay" class="ptolemy.actor.lib.TimeDelay">
         <property name="delay" class="ptolemy.actor.parameters.PortParameter" value="1.6">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[865.0, 350.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[845.0, 315.0]">
         </property>
     </entity>
     <entity name="Error" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -211,11 +135,31 @@
         </property>
     </entity>
     <entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[694.78125, 379.84375]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 315.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
+    <entity name="Const3" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="{host=&quot;localhost&quot;, port=21200}">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 275.0]">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="multiport"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="false">
+            </property>
+        </port>
+    </entity>
     <entity name="IoTClient" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;;&#10;&#10;var buffer = require('buffer');&#10;var iotAuth = require('iotAuth');&#10;var dataConverter = require('dataConverter');&#10;var msgType = iotAuth.msgType;&#10;&#10;exports.setup = function() {&#10;    this.input('sessionKey', {&#10;        type : 'string'&#10;    });&#10;    this.input('toSend');&#10;    this.output('connected', {&#10;        type: 'boolean'&#10;    });&#10;    this.output('received', {&#10;        type : 'string'&#10;    });&#10;    &#10;    this.parameter('serverHost', {&#10;        type : 'string',&#10;        value : 'localhost'&#10;    });&#10;    this.parameter('serverPort', {&#10;        value: -1,&#10;        type: 'int'&#10;    });&#10;    &#10;    this.parameter('sessionCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('sessionHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    &#10;    this.parameter('receiveType', {&#10;        type : 'string',&#10;        value : 'string',&#10;        options : ['string', 'image', 'byteArray']&#10;    });&#10;    this.parameter('sendType', {&#10;        type : 'string',&#10;        value : 'string',&#10;        options : ['string', 'image', 'byteArray']&#10;    });&#10;};&#10;&#10;// client communication state&#10;var clientCommState = {&#10;    IDLE: 0,&#10;    HANDSHAKE_1_SENT: 10,&#10;    IN_COMM: 30                    // Session message&#10;};&#10;&#10;var receiveType;&#10;var sendType;&#10;&#10;var sessionCipherAlgorithm;&#10;var sessionHashAlgorithm;&#10;&#10;// local variables&#10;var self;&#10;var currentSecureClient = null;&#10;var currentSessionKey = null;&#10;var currentState = clientCommState.IDLE;&#10;&#10;function outputError(errorMessage) {&#10;    console.log(errorMessage);&#10;    self.send('error', errorMessage);&#10;};&#10;&#10;function onConnection(entityClientSocket) {&#10;    console.log('communication initialization succeeded');&#10;    currentSecureClient = entityClientSocket;&#10;    currentState = clientCommState.IN_COMM;&#10;    self.send('connected', true);&#10;};&#10;&#10;function onClose() {&#10;    console.log('secure connection with the server closed.');&#10;    self.send('connected', false);&#10;};&#10;&#10;function onError(message) {&#10;    outputError('Error in secure comm - details: ' + message);&#10;};&#10;&#10;function onData(data) {&#10;    console.log('data received from server via secure communication');&#10;&#10;    if (receiveType == 'string') {&#10;    	self.send('received', data.toString());&#10;	}&#10;    else if (receiveType == 'image') {&#10;    	self.send('received', dataConverter.jsArrayToImage(data.getArray()));&#10;    }&#10;    else if (receiveType == 'byteArray') {&#10;    	self.send('received', data.getArray());&#10;    }&#10;};&#10;&#10;exports.sessionKeyInputHandler = function() {&#10;    if (currentSecureClient) {&#10;        currentSecureClient.close();&#10;        console.log('Status: Secure connection closed before starting a new connection.');&#10;        currentState = clientCommState.IDLE;&#10;    }&#10;    currentSessionKey = JSON.parse(this.get('sessionKey'));&#10;    currentSessionKey.val = new buffer.Buffer(currentSessionKey.val);&#10;    currentSessionKey.absValidity = new Date(currentSessionKey.absValidity);&#10;    console.log(currentSessionKey);&#10;    var options = {&#10;        serverHost: this.getParameter('serverHost'),&#10;        serverPort: this.getParameter('serverPort'),&#10;        sessionKey: currentSessionKey,&#10;        sessionCipherAlgorithm: sessionCipherAlgorithm,&#10;        sessionHashAlgorithm: sessionHashAlgorithm&#10;    };&#10;    var eventHandlers = {&#10;        onClose: onClose,&#10;        onError: onError,&#10;        onData: onData,&#10;        onConnection: onConnection&#10;    };&#10;    iotAuth.initializeSecureCommunication(options, eventHandlers);&#10;};&#10;&#10;exports.toSendInputHandler = function () {&#10;    var toSend = this.get('toSend');&#10;    &#10;    if (sendType == 'image') {&#10;    	toSend = dataConverter.imageToJSArray(toSend);&#10;    }&#10;    //toSend = convertToJSArray(toSend.toByteArray());&#10;    // May be receiving inputs before client has been set.&#10;    if (currentSecureClient &amp;&amp; currentState == clientCommState.IN_COMM) {&#10;    	if (!currentSecureClient.checkSessionKeyValidity()) {&#10;    		outputError('session key expired!');&#10;    	}&#10;    	else if (!currentSecureClient.send(toSend)) {&#10;    		outputError('Error in sending data');&#10;    	}&#10;    }&#10;    else {&#10;        console.log('Discarding data because socket is not open.');&#10;    }&#10;};&#10;&#10;exports.initialize = function () {&#10;    currentState = clientCommState.IDLE;&#10;    currentSessionKey = null;&#10;        &#10;    sessionCipherAlgorithm = this.getParameter('sessionCipherAlgorithm');&#10;    sessionHashAlgorithm = this.getParameter('sessionHashAlgorithm');&#10;    &#10;    receiveType = this.getParameter('receiveType');&#10;    sendType = this.getParameter('sendType');&#10;&#10;    self = this;&#10;    &#10;    this.addInputHandler('sessionKey',&#10;        this.exports.sessionKeyInputHandler.bind(this));&#10;    this.addInputHandler('toSend',&#10;        this.exports.toSendInputHandler.bind(this));&#10;};&#10;&#10;/** Close the web socket connection. */&#10;exports.wrapup = function () {&#10;    if (currentSecureClient) {&#10;        currentSecureClient.close();&#10;        console.log('Status: Connection closed in wrap-up.');&#10;        currentState = clientCommState.IDLE;&#10;    }&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;;&#10;&#10;var iotAuth = require('iotAuth');&#10;var dataConverter = require('dataConverter');&#10;var msgType = iotAuth.msgType;&#10;&#10;exports.setup = function() {&#10;    // Inputs and outputs&#10;    this.input('serverHostPort');&#10;    this.input('toSend');&#10;    this.output('connected', {&#10;        type: 'boolean'&#10;    });&#10;    this.output('received', {&#10;        type : 'string'&#10;    });&#10;    // Client information&#10;    this.parameter('entityName', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // For communication with Auth&#10;    this.parameter('authHost', {&#10;        type : 'string',&#10;        value : 'localhost'&#10;    });&#10;    this.parameter('authPort', {&#10;        value: -1,&#10;        type: 'int'&#10;    });&#10;    this.parameter('authCertPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('entityPrivateKeyPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Spec for communication with Auth&#10;    this.parameter('publicCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('signAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('numKeysPerRequest', {&#10;        value: 1,&#10;        type: 'int'&#10;    });&#10;    // For communication with server&#10;    this.parameter('targetServerGroup', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('sessionCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('sessionHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Send/receive type&#10;    this.parameter('receiveType', {&#10;        type : 'string',&#10;        value : 'string',&#10;        options : ['string', 'image', 'byteArray']&#10;    });&#10;    this.parameter('sendType', {&#10;        type : 'string',&#10;        value : 'string',&#10;        options : ['string', 'image', 'byteArray']&#10;    });&#10;};&#10;&#10;// client communication state&#10;var clientCommState = {&#10;    IDLE: 0,&#10;    IN_COMM: 30                    // Session message&#10;};&#10;&#10;// local variables&#10;var self;&#10;var receiveType;&#10;var sendType;&#10;var authPublicKey;&#10;var entityPrivateKey;&#10;var currentSecureClient = null;&#10;var currentDistributionKey = null;&#10;var currentSessionKeyList = [];&#10;var currentSessionKey = null;&#10;var currentState = clientCommState.IDLE;&#10;&#10;function outputError(errorMessage) {&#10;    console.log(errorMessage);&#10;    self.send('error', errorMessage);&#10;};&#10;&#10;// Event handlers for a secure client socket&#10;function onConnection(entityClientSocket) {&#10;    console.log('communication initialization succeeded');&#10;    currentSecureClient = entityClientSocket;&#10;    currentState = clientCommState.IN_COMM;&#10;    self.send('connected', true);&#10;};&#10;function onClose() {&#10;    console.log('secure connection with the server closed.');&#10;    self.send('connected', false);&#10;};&#10;function onError(message) {&#10;    outputError('Error in secure comm - details: ' + message);&#10;};&#10;function onData(data) {&#10;    console.log('data received from server via secure communication');&#10;&#10;    if (receiveType == 'string') {&#10;        self.send('received', data.toString());&#10;    }&#10;    else if (receiveType == 'image') {&#10;        self.send('received', dataConverter.jsArrayToImage(data.getArray()));&#10;    }&#10;    else if (receiveType == 'byteArray') {&#10;        self.send('received', data.getArray());&#10;    }&#10;};&#10;&#10;function initSecureCommWithSessionKey(sessionKey, serverHost, serverPort) {&#10;    currentSessionKey = sessionKey;&#10;    console.log(currentSessionKey);&#10;    if (currentSecureClient) {&#10;        currentSecureClient.close();&#10;        console.log('Status: Secure connection closed before starting a new connection.');&#10;        currentState = clientCommState.IDLE;&#10;    }&#10;    var options = {&#10;        serverHost: serverHost,&#10;        serverPort: serverPort,&#10;        sessionKey: currentSessionKey,&#10;        sessionCipherAlgorithm: self.getParameter('sessionCipherAlgorithm'),&#10;        sessionHashAlgorithm: self.getParameter('sessionHashAlgorithm')&#10;    };&#10;    var eventHandlers = {&#10;        onClose: onClose,&#10;        onError: onError,&#10;        onData: onData,&#10;        onConnection: onConnection&#10;    };&#10;    iotAuth.initializeSecureCommunication(options, eventHandlers);&#10;};&#10;&#10;/*&#10;callbackParams = {&#10;    host,&#10;    port&#10;}&#10;*/&#10;function sessionKeyRespCallback(status, distributionKey, sessionKeyList, callbackParams) {&#10;    if (status.error) {&#10;        console.log(status.error);&#10;        console.log('session key request failed...');&#10;        return;&#10;    }&#10;    console.log('session key request succeeded');&#10;&#10;    if (distributionKey) {&#10;        console.log('Updating to a new distribution key key');&#10;        currentDistributionKey = distributionKey;&#10;        console.log(currentDistributionKey);&#10;    }&#10;&#10;    console.log('received ' + sessionKeyList.length + ' session keys');&#10;    for (var i = 0; i &lt; sessionKeyList.length; i++) {&#10;        currentSessionKeyList.push(sessionKeyList[i]);&#10;    }&#10;    if (currentSessionKeyList.length &gt; 0) {&#10;        initSecureCommWithSessionKey(currentSessionKeyList.shift(),&#10;            callbackParams.host, callbackParams.port);&#10;    }&#10;};&#10;&#10;exports.serverHostPortInputHandler = function() {&#10;    var serverHostPort = this.get('serverHostPort');&#10;    if (currentSessionKeyList.length &gt; 0) {&#10;        initSecureCommWithSessionKey(currentSessionKeyList.shift(),&#10;            serverHostPort.host, serverHostPort.port);&#10;    }&#10;    else {&#10;        var options = {&#10;            authHost: this.getParameter('authHost'),&#10;            authPort: this.getParameter('authPort'),&#10;            entityName: this.getParameter('entityName'),&#10;            numKeysPerRequest: this.getParameter('numKeysPerRequest'),&#10;            purpose: {group: this.getParameter('targetServerGroup')},&#10;            distributionKey: currentDistributionKey,&#10;            distCipherAlgorithm: this.getParameter('distCipherAlgorithm'),&#10;            distHashAlgorithm: this.getParameter('distHashAlgorithm'),&#10;            publicCipherAlgorithm: this.getParameter('publicCipherAlgorithm'),&#10;            signAlgorithm: this.getParameter('signAlgorithm'),&#10;            authPublicKey: authPublicKey,&#10;            entityPrivateKey: entityPrivateKey&#10;        };&#10;        iotAuth.sendSessionKeyReq(options, sessionKeyRespCallback, serverHostPort);&#10;    }&#10;};&#10;&#10;exports.toSendInputHandler = function () {&#10;    var toSend = this.get('toSend');&#10;    &#10;    if (sendType == 'image') {&#10;        toSend = dataConverter.imageToJSArray(toSend);&#10;    }&#10;    if (currentSecureClient &amp;&amp; currentState == clientCommState.IN_COMM) {&#10;        if (!currentSecureClient.checkSessionKeyValidity()) {&#10;            outputError('session key expired!');&#10;        }&#10;        else if (!currentSecureClient.send(toSend)) {&#10;            outputError('Error in sending data');&#10;        }&#10;    }&#10;    else {&#10;        console.log('Discarding data because socket is not open.');&#10;    }&#10;};&#10;&#10;exports.initialize = function () {&#10;    currentState = clientCommState.IDLE;&#10;    currentSessionKey = null;&#10;    &#10;    authPublicKey = iotAuth.loadPublicKey(this.getParameter('authCertPath'));&#10;    entityPrivateKey = iotAuth.loadPrivateKey(this.getParameter('entityPrivateKeyPath'));&#10;    receiveType = this.getParameter('receiveType');&#10;    sendType = this.getParameter('sendType');&#10;&#10;    self = this;&#10;    &#10;    this.addInputHandler('serverHostPort',&#10;        this.exports.serverHostPortInputHandler.bind(this));&#10;    this.addInputHandler('toSend',&#10;        this.exports.toSendInputHandler.bind(this));&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (currentSecureClient) {&#10;        currentSecureClient.close();&#10;        console.log('Status: Connection closed in wrap-up.');&#10;        currentState = clientCommState.IDLE;&#10;    }&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -227,13 +171,47 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 325.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 285.0]">
         </property>
-        <property name="serverHost" class="ptolemy.data.expr.Parameter" value="localhost">
+        <property name="entityName" class="ptolemy.data.expr.Parameter" value="net1.ptClient">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="serverPort" class="ptolemy.data.expr.Parameter" value="21200">
+        <property name="authHost" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="authPort" class="ptolemy.data.expr.Parameter" value="21900">
+        </property>
+        <property name="authCertPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/auth_certs/Auth101EntityCert.pem">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="entityPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/credentials/keys/net1/PtClientKey.der">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="publicCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="RSA/ECB/PKCS1PADDING">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="signAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA256withRSA">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="distCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="AES-128-CBC">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="distHashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="numKeysPerRequest" class="ptolemy.data.expr.Parameter" value="2">
+        </property>
+        <property name="targetServerGroup" class="ptolemy.data.expr.Parameter" value="PtServers">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
         <property name="sessionCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="AES-128-CBC">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -251,7 +229,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <port name="sessionKey" class="ptolemy.actor.TypedIOPort">
+        <port name="serverHostPort" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
@@ -264,26 +242,16 @@
             <property name="output"/>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="{465.0, 245.0}">
-        </vertex>
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{680.0, 305.0}">
+        <vertex name="vertex1" value="[665.0, 275.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{894.4989682404891, 462.4925890549369}">
+        <vertex name="vertex1" value="[875.0, 455.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -293,7 +261,7 @@
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{805.0, 395.0}">
+        <vertex name="vertex1" value="[790.0, 315.0]">
         </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -306,16 +274,15 @@
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="AuthForClient.purpose" relation="relation3"/>
-    <link port="AuthForClient.sessionKey" relation="relation4"/>
     <link port="DiscreteClock.output" relation="relation"/>
-    <link port="Const.output" relation="relation3"/>
-    <link port="Const.trigger" relation="relation"/>
-    <link port="SessionKey.input" relation="relation4"/>
     <link port="Connected.input" relation="relation6"/>
     <link port="Received.input" relation="relation5"/>
     <link port="MicrostepDelay.input" relation="relation10"/>
@@ -332,11 +299,13 @@
     <link port="AddSubtract.output" relation="relation13"/>
     <link port="TimeDelay.input" relation="relation11"/>
     <link port="TimeDelay.output" relation="relation2"/>
-    <link port="Error.input" relation="relation12"/>
+    <link port="Error.input" relation="relation4"/>
     <link port="TrueGate.input" relation="relation6"/>
     <link port="TrueGate.output" relation="relation10"/>
-    <link port="IoTClient.error" relation="relation12"/>
-    <link port="IoTClient.sessionKey" relation="relation4"/>
+    <link port="Const3.output" relation="relation3"/>
+    <link port="Const3.trigger" relation="relation"/>
+    <link port="IoTClient.error" relation="relation4"/>
+    <link port="IoTClient.serverHostPort" relation="relation3"/>
     <link port="IoTClient.toSend" relation="relation13"/>
     <link port="IoTClient.connected" relation="relation6"/>
     <link port="IoTClient.received" relation="relation5"/>

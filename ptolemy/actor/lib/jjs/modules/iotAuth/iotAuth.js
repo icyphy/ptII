@@ -25,6 +25,10 @@
  * Module supporting authorization (Auth) service for the Internet of Things (IoT).
  * This module includes common functions for communication with IoT Auth service
  * and communication with other registered entities.
+ * 
+ * The authorization service is provided by a local authorization entity, Auth,
+ * whose open-source Java implementation can be found on a GitHub repository 
+ * (https://github.com/iotauth/iotauth).
  *
  * @module iotAuth
  * @author Hokeun Kim
@@ -142,15 +146,15 @@ var parseAuthHello = function(buf) {
 
 var serializeSessionKeyReq = function(obj) {
     if (obj.nonce == undefined || obj.replyNonce == undefined || obj.sender == undefined
-        || obj.purpose == undefined || obj.numKeys == undefined) {
+        || obj.purpose == undefined || obj.numKeysPerRequest == undefined) {
         console.log('Error: SessionKeyReq nonce or replyNonce '
-            + 'or purpose or numKeys is missing.');
+            + 'or purpose or numKeysPerRequest is missing.');
         return;
     }
     var buf = new buffer.Buffer(AUTH_NONCE_SIZE * 2 + 5);
     obj.nonce.copy(buf, 0);
     obj.replyNonce.copy(buf, AUTH_NONCE_SIZE);
-    buf.writeUInt32BE(obj.numKeys, AUTH_NONCE_SIZE * 2);
+    buf.writeUInt32BE(obj.numKeysPerRequest, AUTH_NONCE_SIZE * 2);
     buf.writeUInt8(obj.sender.length, AUTH_NONCE_SIZE * 2 + 4);
 
     var senderBuf = new buffer.Buffer(obj.sender);
@@ -219,7 +223,7 @@ var parseAuthAlert = function(buf) {
         replyNonce: /Buffer/, // encrypted, may be undefined
     }
 */
-exports.serializeHandshake = function(obj) {
+var serializeHandshake = function(obj) {
     if (obj.nonce == undefined && obj.replyNonce == undefined) {
         console.log('Error: handshake should include at least on nonce.');
         return;
@@ -242,7 +246,7 @@ exports.serializeHandshake = function(obj) {
 };
 
 // buf should be just the unencrypted part
-exports.parseHandshake = function(buf) {
+var parseHandshake = function(buf) {
     var obj = {};
     var indicator = buf.readUInt8(0);
     if ((indicator & 1) != 0) {
@@ -263,7 +267,7 @@ exports.parseHandshake = function(buf) {
         data: /Buffer/,
     }
 */
-exports.serializeSessionMessage = function(obj) {
+var serializeSessionMessage = function(obj) {
     if (obj.seqNum == undefined || obj.data == undefined) {
         console.log('Error: Secure session message seqNum or data is missing.');
         return;
@@ -272,7 +276,7 @@ exports.serializeSessionMessage = function(obj) {
     seqNumBuf.writeUIntBE(obj.seqNum, 0, SEQ_NUM_SIZE);
     return buffer.concat([seqNumBuf, obj.data]);
 };
-exports.parseSessionMessage = function(buf) {
+var parseSessionMessage = function(buf) {
     var seqNum = buf.readUIntBE(0, SEQ_NUM_SIZE);
     var data = buf.slice(SEQ_NUM_SIZE);
     return {seqNum: seqNum, data: data};
@@ -301,7 +305,7 @@ options = {
     authHost,
     authPort,
     entityName,
-    numKeys,
+    numKeysPerRequest,
     purpose,
     distributionKey = {val, absValidity},
     distCipherAlgorithm,
@@ -421,7 +425,7 @@ exports.sendSessionKeyReq = function(options, callback, callbackParams) {
             var sessionKeyReq = {
                 nonce: myNonce,
                 replyNonce: authHello.nonce,
-                numKeys: options.numKeys,
+                numKeysPerRequest: options.numKeysPerRequest,
                 sender: options.entityName,
                 purpose: options.purpose
             };
@@ -505,7 +509,7 @@ IoTSecureSocket.prototype.send = function(data) {
         console.log('Session key expired!');
         return false;
     }
-    var buf = exports.serializeSessionMessage({seqNum: this.writeSeqNum, data: new buffer.Buffer(data)});
+    var buf = serializeSessionMessage({seqNum: this.writeSeqNum, data: new buffer.Buffer(data)});
     var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
         this.sessionKey.val.getArray(), this.cipherAlgorithm, this.hashAlgorithm));
     this.writeSeqNum++;
@@ -530,14 +534,10 @@ IoTSecureSocket.prototype.receive = function(payload) {
         this.sessionKey.val.getArray(), this.cipherAlgorithm, this.hashAlgorithm);
     if (!ret.hashOk) {
         return {success: false, error: 'Received hash for secure comm msg is NOT ok'};
-        //outputError('Received hash for secure comm msg is NOT ok');
-        //currentState = clientCommState.IDLE;
-        //currentSecureClient.close();
-        //return;
     }
     console.log('Received hash for secure comm msg is ok');
     var buf = new buffer.Buffer(ret.data);
-    ret = exports.parseSessionMessage(buf);
+    ret = parseSessionMessage(buf);
     
     if (ret.seqNum != this.readSeqNum) {
         return {success: false, error: 'seqNum does not match! expected: ' + this.readSeqNum + ' received: ' + ret.seqNum};
@@ -615,7 +615,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
         myNonce = new buffer.Buffer(crypto.randomBytes(HANDSHAKE_NONCE_SIZE));
         console.log('chosen nonce: ' + myNonce.inspect());
         var handshake1 = {nonce: myNonce};
-        var buf = exports.serializeHandshake(handshake1);
+        var buf = serializeHandshake(handshake1);
         var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
             options.sessionKey.val.getArray(), options.sessionCipherAlgorithm, options.sessionHashAlgorithm));
         
@@ -675,7 +675,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
             }
             console.log('Received hash for handshake2 is ok');
             var buf = new buffer.Buffer(ret.data);
-            var handshake2 = exports.parseHandshake(buf);
+            var handshake2 = parseHandshake(buf);
             if (!handshake2.replyNonce.equals(myNonce)) {
                 eventHandlers.onError('Comm init failed: Server nonce NOT verified');
                 return;
@@ -683,7 +683,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
             console.log('Server nonce verified');
             var theirNonce = handshake2.nonce;
             var handshake3 = {replyNonce: theirNonce};
-            buf = exports.serializeHandshake(handshake3);
+            buf = serializeHandshake(handshake3);
             var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
                 options.sessionKey.val.getArray(), options.sessionCipherAlgorithm, options.sessionHashAlgorithm));
             var msg = {
@@ -702,7 +702,6 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
         else if (obj.msgType == msgType.SECURE_COMM_MSG) {
             console.log('received secure communication message!');
             if (entityClientState == entityClientCommState.IN_COMM) {
-                // TODO: decrypt the message as well.
                 var ret = iotSecureSocket.receive(obj.payload);
                 if (!ret.success) {
                     eventHandlers.onError(ret.error);
@@ -724,8 +723,6 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
             return;
         }
         eventHandlers.onError('Comm init failed: disconnected from server during communication initialization.');
-        //console.log('switching to IDLE');
-        //entityClientState = entityClientCommState.IDLE;
     });
     entityClientSocket.on('error', function(message) {
         if (entityClientState == entityClientCommState.IN_COMM) {
@@ -829,7 +826,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
             console.log('received hash for handshake 1 is ok');
             var buf = new buffer.Buffer(ret.data);
             
-            var handshake1 = exports.parseHandshake(buf);
+            var handshake1 = parseHandshake(buf);
             
             myNonce = new buffer.Buffer(crypto.randomBytes(HANDSHAKE_NONCE_SIZE));
             console.log('chosen nonce: ' + myNonce.inspect());
@@ -838,7 +835,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
             
             var handshake2 = {nonce: myNonce, replyNonce: theirNonce};
             
-            var encBuf = crypto.symmetricEncryptWithHash(exports.serializeHandshake(handshake2).getArray(),
+            var encBuf = crypto.symmetricEncryptWithHash(serializeHandshake(handshake2).getArray(),
                 entityServerSessionKey.val.getArray(), options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
             var msg = {
                 msgType: msgType.SKEY_HANDSHAKE_2,
@@ -936,7 +933,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
                 }
                 console.log('received hash for handshake 3 is ok');
                 var buf = new buffer.Buffer(ret.data);
-                var handshake3 = exports.parseHandshake(buf);
+                var handshake3 = parseHandshake(buf);
                 if (!handshake3.replyNonce.equals(myNonce)) {
                     eventHandlers.onError('Error during communication initialization - client nonce NOT verified');
                     entityServerSocket.close();
