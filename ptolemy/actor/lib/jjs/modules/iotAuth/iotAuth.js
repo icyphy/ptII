@@ -799,7 +799,6 @@ exports.initializeSecureServer = function(options, eventHandlers) {
         IN_COMM: 30                    // Session message
     };
     var connectionCount = 0;
-    var sockets = [];
     entityServer.on('connection', function(entityServerSocket) {
         console.log('client connected');
         // entityServerSocket is an instance of the Socket class defined
@@ -807,10 +806,11 @@ exports.initializeSecureServer = function(options, eventHandlers) {
         var entityServerState = entityServerCommState.IDLE;
         var myNonce;
         var entityServerSessionKey;
+        var socketID = -1;
 
         function sendHandshake2(handshake1Payload, serverSocket, sessionKey) {
             if (entityServerState != entityServerCommState.HANDSHAKE_1_RECEIVED) {
-                eventHandlers.onError('Error during communication initialization - in wrong state, expected: HANDSHAKE_1_RECEIVED, disconnecting...');
+                eventHandlers.onServerError('Error during comm init - in wrong state, expected: HANDSHAKE_1_RECEIVED, disconnecting...');
                 serverSocket.close();
                 return;
             }
@@ -819,7 +819,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
             var ret = crypto.symmetricDecryptWithHash(enc.getArray(), entityServerSessionKey.val.getArray(),
                 options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
             if (!ret.hashOk) {
-                eventHandlers.onError('Error during communication initialization - received hash for handshake 1 is NOT ok');
+                eventHandlers.onServerError('Error during comm init - received hash for handshake 1 is NOT ok');
                 serverSocket.close();
                 return;
             }
@@ -842,42 +842,39 @@ exports.initializeSecureServer = function(options, eventHandlers) {
                 payload: new buffer.Buffer(encBuf)
             };
             var toSend = exports.serializeIoTSP(msg).getArray();
-            
-            //lastClientState.myNonce = myNonce;
-            
+
             console.log('switching to HANDSHAKE_2_SENT state.');
             entityServerState = entityServerCommState.HANDSHAKE_2_SENT;
             
             serverSocket.send(toSend);
         };
 
-        connectionCount++;
-        var socketID = connectionCount;
-        var socketInstance = {
-            'id': socketID,
-            'remoteHost': entityServerSocket.remoteHost(),
-            'remotePort': entityServerSocket.remotePort(),
-            'status': 'open'
-        };
-        console.log('A client connected: ' + util.inspect(socketInstance));
-        // To
-        //self.send('connection', socketID);
+        console.log('A client connected from ' +
+            entityServerSocket.remoteHost() + ':' + entityServerSocket.remotePort());
         
-        sockets[socketID] = entityServerSocket;
-
         entityServerSocket.on('close', function() {
-            console.log('switching to IDLE state.');
-            entityServerState = entityServerCommState.IDLE;
-            socketInstance.status = 'closed';
-            eventHandlers.onClose(socketInstance);
-            //self.send('connection', socketID);
-            // Avoid a memory leak here.
-            sockets[socketID] = null;
+            if (entityServerState == entityServerCommState.IN_COMM) {
+                eventHandlers.onClose(socketID);
+                return;
+            }
+            else {
+                eventHandlers.onServerError('Closed during comm init from ' +
+                    entityServerSocket.remoteHost() + ':' + entityServerSocket.remotePort());
+                entityServerSocket.close();
+                return;
+            }
         });
         
         entityServerSocket.on('error', function(message) {
-            eventHandlers.onError(message);
-            //self.error(message);
+            if (entityServerState == entityServerCommState.IN_COMM) {
+                eventHandlers.onError(message, socketID);
+                return;
+            }
+            else {
+                eventHandlers.onServerError('Error during comm init, details: ' + message);
+                entityServerSocket.close();
+                return;
+            }
         });
         
         var expectingMoreData = false;
@@ -911,7 +908,11 @@ exports.initializeSecureServer = function(options, eventHandlers) {
             }
             else if (obj.msgType == msgType.SKEY_HANDSHAKE_1) {
                 console.log('received session key handshake1');
-
+                if (entityServerState != entityServerCommState.IDLE) {
+                    eventHandlers.onServerError('Error during comm init - in wrong state, expected: IDLE, disconnecting...');
+                    entityServerSocket.close();
+                    return;
+                }
                 console.log('switching to HANDSHAKE_1_RECEIVED state.');
                 entityServerState = entityServerCommState.HANDSHAKE_1_RECEIVED;
                 eventHandlers.onClientRequest(obj.payload, entityServerSocket, sendHandshake2);
@@ -920,14 +921,14 @@ exports.initializeSecureServer = function(options, eventHandlers) {
             else if (obj.msgType == msgType.SKEY_HANDSHAKE_3) {
                 console.log('received session key handshake3');
                 if (entityServerState != entityServerCommState.HANDSHAKE_2_SENT) {
-                    eventHandlers.onError('Error during communication initialization - in wrong state, expected: HANDSHAKE_2_SENT, disconnecting...');
+                    eventHandlers.onServerError('Error during comm init - in wrong state, expected: HANDSHAKE_2_SENT, disconnecting...');
                     entityServerSocket.close();
                     return;
                 }
                 var ret = crypto.symmetricDecryptWithHash(obj.payload.getArray(), entityServerSessionKey.val.getArray(),
                     options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
                 if (!ret.hashOk) {
-                    eventHandlers.onError('Error during communication initialization - received hash for handshake 3 is NOT ok, disconnecting...');
+                    eventHandlers.onServerError('Error during comm init - received hash for handshake 3 is NOT ok, disconnecting...');
                     entityServerSocket.close();
                     return;
                 }
@@ -935,7 +936,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
                 var buf = new buffer.Buffer(ret.data);
                 var handshake3 = parseHandshake(buf);
                 if (!handshake3.replyNonce.equals(myNonce)) {
-                    eventHandlers.onError('Error during communication initialization - client nonce NOT verified');
+                    eventHandlers.onServerError('Error during comm init - client nonce NOT verified');
                     entityServerSocket.close();
                     return;
                 }
@@ -946,20 +947,27 @@ exports.initializeSecureServer = function(options, eventHandlers) {
                 iotSecureSocket = new IoTSecureSocket(entityServerSocket, entityServerSessionKey,
                     options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
 
+                socketID = connectionCount++;
+                var socketInstance = {
+                    'id': socketID,
+                    'remoteHost': entityServerSocket.remoteHost(),
+                    'remotePort': entityServerSocket.remotePort(),
+                    'status': 'open'
+                };
                 eventHandlers.onConnection(socketInstance, iotSecureSocket);
             }
             else if (obj.msgType == msgType.SECURE_COMM_MSG) {
                 if (entityServerState == entityServerCommState.IN_COMM) {
                     var ret = iotSecureSocket.receive(obj.payload);
                     if (!ret.success) {
-                        eventHandlers.onError(ret.error);
+                        eventHandlers.onError(ret.error, socketID);
                         return;
                     }
-                    eventHandlers.onData(ret.data);
+                    eventHandlers.onData(ret.data, socketID);
                     return;
                 }
                 else {
-                    callback({error: 'Error: it is not in IN_COMM state, disconnecting...'});
+                    eventHandlers.onServerError('Error: it is not in IN_COMM state, disconnecting...');
                     entityServerSocket.close();
                     return;
                 }

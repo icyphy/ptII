@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 25.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={416, 268, 1024, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={889, 581, 1024, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[790, 522]">
     </property>
@@ -40,13 +40,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 240.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To run this demo, an open-source local authorization entity (Auth) should be running.&#10;The Auth can be obtained in the github repository, https://github.com/iotauth/iotauth.&#10;&#10;NOTE2: The parameter PROJECT_PATH in this demo should be set to the repository directory of iotauth.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-75.0, 280.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 250.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -54,7 +54,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 330.0]">
         </property>
     </property>
     <entity name="Listening" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -74,15 +74,15 @@
         </property>
     </entity>
     <entity name="Received" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={318, 482, 887, 418}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={323, 857, 887, 418}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[887, 374]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 160.0]">
         </property>
     </entity>
     <entity name="Error" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={983, 721, 2054, 271}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 629, 2054, 271}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[2054, 227]">
         </property>
@@ -90,7 +90,7 @@
         </property>
     </entity>
     <entity name="IoTServer" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;;&#10;&#10;var iotAuth = require('iotAuth');&#10;var dataConverter = require('dataConverter');&#10;var msgType = iotAuth.msgType;&#10;&#10;exports.setup = function () {&#10;    // Inputs and outputs&#10;    this.input('toSend');&#10;    this.output('listening', {&#10;        type: 'int'&#10;    });&#10;    this.output('connection');&#10;    this.output('received');&#10;    // Server information&#10;    this.parameter('entityName', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('serverPort', {&#10;        type : 'int',&#10;        value : 4000&#10;    });&#10;    // For communication with Auth&#10;    this.parameter('authHost', {&#10;        type : 'string',&#10;        value : 'localhost'&#10;    });&#10;    this.parameter('authPort', {&#10;        value: -1,&#10;        type: 'int'&#10;    });&#10;    this.parameter('authCertPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('entityPrivateKeyPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Spec for communication with Auth&#10;    this.parameter('publicCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('signAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // For communication with client&#10;    this.parameter('sessionCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('sessionHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Send/receive type&#10;    this.parameter('receiveType', {&#10;        type : 'string',&#10;        value : 'string',&#10;        options : ['string', 'image', 'byteArray']&#10;    });&#10;    this.parameter('sendType', {&#10;        type : 'string',&#10;        value : 'string',&#10;        options : ['string', 'image', 'byteArray']&#10;    });&#10;};&#10;&#10;&#10;// local variables&#10;var self;&#10;var receiveType;&#10;var sendType;&#10;var authPublicKey;&#10;var entityPrivateKey;&#10;var currentDistributionKey = null;&#10;var server = null;&#10;var currentSessionKey = null;&#10;var currentSecureServer = null;&#10;&#10;function outputError(errorMessage) {&#10;    console.log(errorMessage);&#10;    self.send('error', errorMessage);&#10;};&#10;&#10;/*&#10;callbackParams = {&#10;    keyId,&#10;    sendHandshake2Callback,&#10;    handshake1Payload,&#10;    serverSocket&#10;}&#10;*/&#10;function sessionKeyRespCallback(status, distributionKey, sessionKeyList, callbackParams) {&#10;    if (status.error) {&#10;        console.log('session key request failed: ' + status.error);&#10;        return;&#10;    }&#10;    console.log('session key request succeeded');&#10;&#10;    if (distributionKey) {&#10;        console.log('Updating to a new distribution key key');&#10;        currentDistributionKey = distributionKey;&#10;        console.log(currentDistributionKey);&#10;    }&#10;&#10;    console.log('received ' + sessionKeyList.length + ' session keys');&#10;    var receivedSessionKey;&#10;    for (var i = 0; i &lt; sessionKeyList.length; i++) {&#10;        receivedSessionKey = sessionKeyList[i];&#10;        console.log(receivedSessionKey);&#10;    }&#10;    console.log('Session key arrived');    &#10;    if (receivedSessionKey.id == callbackParams.keyId) {&#10;        console.log('Session key id is as expected');&#10;        currentSessionKey = receivedSessionKey;&#10;        callbackParams.sendHandshake2Callback(callbackParams.handshake1Payload,&#10;            callbackParams.serverSocket, currentSessionKey);&#10;    }&#10;    else {&#10;        outputError('Session key id is NOT as expected');&#10;    }&#10;};&#10;&#10;// event handlers for the listening server&#10;function onServerListening(listeningPort) {&#10;    console.log('Server: Listening for socket connection requests on port ' + listeningPort);&#10;    self.send('listening', listeningPort);&#10;};&#10;function onServerError(message) {&#10;    outputError('Error in server - details: ' + message);&#10;};&#10;function onClientRequest(handshake1Payload, serverSocket, sendHandshake2Callback) {&#10;    var keyId = handshake1Payload.readUIntBE(0, iotAuth.SESSION_KEY_ID_SIZE);&#10;    if (currentSessionKey != null &amp;&amp; currentSessionKey.id == keyId) {&#10;        sendHandshake2Callback(handshake1Payload, serverSocket, currentSessionKey);&#10;    }&#10;    else {&#10;        console.log('session key NOT found! sending session key id to AuthService');&#10;        var options = {&#10;            authHost: self.getParameter('authHost'),&#10;            authPort: self.getParameter('authPort'),&#10;            entityName: self.getParameter('entityName'),&#10;            numKeysPerRequest: 1,&#10;            purpose: {keyId: keyId},&#10;            distributionKey: currentDistributionKey,&#10;            distCipherAlgorithm: self.getParameter('distCipherAlgorithm'),&#10;            distHashAlgorithm: self.getParameter('distHashAlgorithm'),&#10;            publicCipherAlgorithm: self.getParameter('publicCipherAlgorithm'),&#10;            signAlgorithm: self.getParameter('signAlgorithm'),&#10;            authPublicKey: authPublicKey,&#10;            entityPrivateKey: entityPrivateKey&#10;        };&#10;        var callbackParams = {&#10;            keyId: keyId,&#10;            sendHandshake2Callback: sendHandshake2Callback,&#10;            handshake1Payload: handshake1Payload,&#10;            serverSocket: serverSocket&#10;        }&#10;        iotAuth.sendSessionKeyReq(options, sessionKeyRespCallback, callbackParams);&#10;    }&#10;};&#10;&#10;// event handlers for individual sockets&#10;function onClose(socketInstance) {&#10;    console.log('secure connection with the client closed.');&#10;    self.send('connection', socketInstance);&#10;};&#10;function onError(message) {&#10;    outputError('Error in secure server - details: ' + message);&#10;};&#10;function onConnection(socketInstance, entityServerSocket) {&#10;    console.log('secure connection with the client established.');&#10;    self.send('connection', socketInstance);&#10;    currentSecureServer = entityServerSocket;&#10;};&#10;function onData(data) {&#10;    console.log('data received from server via secure communication');&#10;    &#10;    if (receiveType == 'string') {&#10;        self.send('received', data.toString());&#10;    }&#10;    else if (receiveType == 'image') {&#10;        self.send('received', dataConverter.jsArrayToImage(data.getArray()));&#10;    }&#10;    else if (receiveType == 'byteArray') {&#10;        self.send('received', data.getArray());&#10;    }&#10;    //self.send('receivedID', connectionCount);&#10;}&#10;&#10;exports.toSendInputHandler = function () {&#10;    var toSend = this.get('toSend');&#10;    &#10;    if (sendType == 'image') {&#10;        toSend = dataConverter.imageToJSArray(toSend);&#10;    }&#10;    // May be receiving inputs before client has been set.&#10;    if (currentSecureServer) {&#10;        if (!currentSecureServer.checkSessionKeyValidity()) {&#10;            outputError('session key expired!');&#10;        }&#10;        else if (!currentSecureServer.send(toSend)) {&#10;            outputError('Error in sending data');&#10;        }&#10;    }&#10;    else {&#10;        console.log('Discarding data because socket is not open.');&#10;    }&#10;};&#10;&#10;exports.initialize = function () {&#10;    currentSessionKey = null;&#10;    authPublicKey = iotAuth.loadPublicKey(this.getParameter('authCertPath'));&#10;    entityPrivateKey = iotAuth.loadPrivateKey(this.getParameter('entityPrivateKeyPath'));&#10;    receiveType = this.getParameter('receiveType');&#10;    sendType = this.getParameter('sendType');&#10;&#10;    self = this;&#10;    var options = {&#10;        serverPort: this.getParameter('serverPort'),&#10;        sessionCipherAlgorithm: this.getParameter('sessionCipherAlgorithm'),&#10;        sessionHashAlgorithm: this.getParameter('sessionHashAlgorithm')&#10;    };&#10;    var eventHandlers = {&#10;        onServerError: onServerError,&#10;        onServerListening: onServerListening,&#10;        onClientRequest: onClientRequest,&#10;&#10;        onData: onData,&#10;        onClose: onClose,&#10;        onError: onError,&#10;        onConnection: onConnection&#10;    };&#10;    server = iotAuth.initializeSecureServer(options, eventHandlers);&#10;    &#10;    this.addInputHandler('toSend', exports.toSendInputHandler.bind(this));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (server !== null) {&#10;        server.stop();&#10;        server = null;&#10;    }&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;;&#10;&#10;var iotAuth = require('iotAuth');&#10;var dataConverter = require('dataConverter');&#10;var msgType = iotAuth.msgType;&#10;&#10;exports.setup = function () {&#10;    // Inputs and outputs&#10;    this.input('toSend');&#10;    this.input('toSendID', {&#10;        type: 'int',&#10;        value: -1&#10;    });&#10;    this.output('listening', {&#10;        type: 'int'&#10;    });&#10;    this.output('connection');&#10;    this.output('received');&#10;    this.output('receivedID', {&#10;        type: 'int'&#10;    });&#10;    // Server information&#10;    this.parameter('entityName', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('serverPort', {&#10;        type : 'int',&#10;        value : 4000&#10;    });&#10;    // For communication with Auth&#10;    this.parameter('authHost', {&#10;        type : 'string',&#10;        value : 'localhost'&#10;    });&#10;    this.parameter('authPort', {&#10;        value: -1,&#10;        type: 'int'&#10;    });&#10;    this.parameter('authCertPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('entityPrivateKeyPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Spec for communication with Auth&#10;    this.parameter('publicCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('signAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // For communication with client&#10;    this.parameter('sessionCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('sessionHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Send/receive type&#10;    this.parameter('receiveType', {&#10;        type : 'string',&#10;        value : 'string',&#10;        options : ['string', 'image', 'byteArray']&#10;    });&#10;    this.parameter('sendType', {&#10;        type : 'string',&#10;        value : 'string',&#10;        options : ['string', 'image', 'byteArray']&#10;    });&#10;};&#10;&#10;&#10;// local variables&#10;var self;&#10;var receiveType;&#10;var sendType;&#10;var authPublicKey;&#10;var entityPrivateKey;&#10;var currentDistributionKey = null;&#10;var server = null;&#10;var sockets = [];&#10;var currentSessionKey = null;&#10;&#10;function outputError(errorMessage) {&#10;    console.log(errorMessage);&#10;    self.send('error', errorMessage);&#10;};&#10;&#10;/*&#10;callbackParams = {&#10;    keyId,&#10;    sendHandshake2Callback,&#10;    handshake1Payload,&#10;    serverSocket&#10;}&#10;*/&#10;function sessionKeyRespCallback(status, distributionKey, sessionKeyList, callbackParams) {&#10;    if (status.error) {&#10;        console.log('session key request failed: ' + status.error);&#10;        return;&#10;    }&#10;    console.log('session key request succeeded');&#10;&#10;    if (distributionKey) {&#10;        console.log('Updating to a new distribution key key');&#10;        currentDistributionKey = distributionKey;&#10;        console.log(currentDistributionKey);&#10;    }&#10;&#10;    console.log('received ' + sessionKeyList.length + ' session keys');&#10;    var receivedSessionKey;&#10;    for (var i = 0; i &lt; sessionKeyList.length; i++) {&#10;        receivedSessionKey = sessionKeyList[i];&#10;        console.log(receivedSessionKey);&#10;    }&#10;    console.log('Session key arrived');    &#10;    if (receivedSessionKey.id == callbackParams.keyId) {&#10;        console.log('Session key id is as expected');&#10;        currentSessionKey = receivedSessionKey;&#10;        callbackParams.sendHandshake2Callback(callbackParams.handshake1Payload,&#10;            callbackParams.serverSocket, receivedSessionKey);&#10;    }&#10;    else {&#10;        outputError('Session key id is NOT as expected');&#10;    }&#10;};&#10;&#10;// event handlers for the listening server&#10;function onServerListening(listeningPort) {&#10;    console.log('Server: Listening for socket connection requests on port ' + listeningPort);&#10;    self.send('listening', listeningPort);&#10;};&#10;function onServerError(message) {&#10;    outputError('Error in server - details: ' + message);&#10;};&#10;function onClientRequest(handshake1Payload, serverSocket, sendHandshake2Callback) {&#10;    var keyId = handshake1Payload.readUIntBE(0, iotAuth.SESSION_KEY_ID_SIZE);&#10;    if (currentSessionKey != null &amp;&amp; currentSessionKey.id == keyId) {&#10;        sendHandshake2Callback(handshake1Payload, serverSocket, currentSessionKey);&#10;    }&#10;    else {&#10;        console.log('session key NOT found! sending session key id to AuthService');&#10;        var options = {&#10;            authHost: self.getParameter('authHost'),&#10;            authPort: self.getParameter('authPort'),&#10;            entityName: self.getParameter('entityName'),&#10;            numKeysPerRequest: 1,&#10;            purpose: {keyId: keyId},&#10;            distributionKey: currentDistributionKey,&#10;            distCipherAlgorithm: self.getParameter('distCipherAlgorithm'),&#10;            distHashAlgorithm: self.getParameter('distHashAlgorithm'),&#10;            publicCipherAlgorithm: self.getParameter('publicCipherAlgorithm'),&#10;            signAlgorithm: self.getParameter('signAlgorithm'),&#10;            authPublicKey: authPublicKey,&#10;            entityPrivateKey: entityPrivateKey&#10;        };&#10;        var callbackParams = {&#10;            keyId: keyId,&#10;            sendHandshake2Callback: sendHandshake2Callback,&#10;            handshake1Payload: handshake1Payload,&#10;            serverSocket: serverSocket&#10;        }&#10;        iotAuth.sendSessionKeyReq(options, sessionKeyRespCallback, callbackParams);&#10;    }&#10;};&#10;&#10;// event handlers for individual sockets&#10;function onClose(socketID) {&#10;    console.log('secure connection with the client closed.');&#10;    sockets[socketID] = null;&#10;    self.send('connection', 'socket #' + socketID + ' closed');&#10;};&#10;function onError(message, socketID) {&#10;    outputError('Error in secure server socket #' + socketID +&#10;        ' details: ' + message);&#10;};&#10;function onConnection(socketInstance, entityServerSocket) {&#10;    console.log('secure connection with the client established.');&#10;    self.send('connection', socketInstance);&#10;    sockets[socketInstance.id] = entityServerSocket;&#10;};&#10;function onData(data, socketID) {&#10;    console.log('data received from server via secure communication');&#10;    &#10;    if (receiveType == 'string') {&#10;        self.send('received', data.toString());&#10;    }&#10;    else if (receiveType == 'image') {&#10;        self.send('received', dataConverter.jsArrayToImage(data.getArray()));&#10;    }&#10;    else if (receiveType == 'byteArray') {&#10;        self.send('received', data.getArray());&#10;    }&#10;    self.send('receivedID', socketID);&#10;}&#10;&#10;exports.toSendInputHandler = function () {&#10;    var toSend = this.get('toSend');&#10;    if (sendType == 'image') {&#10;        toSend = dataConverter.imageToJSArray(toSend);&#10;    }&#10;&#10;    var toSendID = this.get('toSendID');&#10;    // broadcasting&#10;    if (toSendID &lt; 0) {&#10;        for (var i = 0; i &lt; sockets.length; i++) {&#10;            if (!sockets[i]) {&#10;                continue;&#10;            }&#10;            if (!sockets[i].checkSessionKeyValidity()) {&#10;                outputError('session key expired!');&#10;            }&#10;            else if (!sockets[i].send(toSend)) {&#10;                outputError('Error in sending data');&#10;            }&#10;        }&#10;    }&#10;    else if (sockets[toSendID]) {&#10;        sockets[toSendID].send(toSend);&#10;    } else {&#10;        console.log('Socket with ID ' + idToSendTo + ' is not open. Discarding data.');&#10;    }&#10;};&#10;&#10;exports.initialize = function () {&#10;    currentSessionKey = null;&#10;    authPublicKey = iotAuth.loadPublicKey(this.getParameter('authCertPath'));&#10;    entityPrivateKey = iotAuth.loadPrivateKey(this.getParameter('entityPrivateKeyPath'));&#10;    receiveType = this.getParameter('receiveType');&#10;    sendType = this.getParameter('sendType');&#10;&#10;    self = this;&#10;    var options = {&#10;        serverPort: this.getParameter('serverPort'),&#10;        sessionCipherAlgorithm: this.getParameter('sessionCipherAlgorithm'),&#10;        sessionHashAlgorithm: this.getParameter('sessionHashAlgorithm')&#10;    };&#10;    var eventHandlers = {&#10;        onServerError: onServerError,&#10;        onServerListening: onServerListening,&#10;        onClientRequest: onClientRequest,&#10;&#10;        onData: onData,&#10;        onClose: onClose,&#10;        onError: onError,&#10;        onConnection: onConnection&#10;    };&#10;    server = iotAuth.initializeSecureServer(options, eventHandlers);&#10;    &#10;    this.addInputHandler('toSend', exports.toSendInputHandler.bind(this));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    sockets = [];&#10;    if (server !== null) {&#10;        server.stop();&#10;        server = null;&#10;    }&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -156,6 +156,8 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
+        <property name="toSendID" class="ptolemy.actor.parameters.PortParameter" value="-1">
+        </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -168,9 +170,21 @@
         <port name="received" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
+        <port name="toSendID" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="receivedID" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 65.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
@@ -208,6 +222,20 @@
             </property>
         </port>
     </entity>
+    <entity name="ReceivedID" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1370, 299, 887, 418}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[887, 374]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, 135.0]">
+        </property>
+    </entity>
+    <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 100.0]">
+        </property>
+        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -226,6 +254,20 @@
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{288.97817883613783, 134.61731395232374}">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[290.0, 160.0]">
+        </vertex>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Listening.input" relation="relation3"/>
     <link port="Connection.input" relation="relation4"/>
     <link port="Received.input" relation="relation5"/>
@@ -235,6 +277,8 @@
     <link port="IoTServer.listening" relation="relation3"/>
     <link port="IoTServer.connection" relation="relation4"/>
     <link port="IoTServer.received" relation="relation5"/>
+    <link port="IoTServer.toSendID" relation="relation10"/>
+    <link port="IoTServer.receivedID" relation="relation9"/>
     <link port="MicrostepDelay.input" relation="relation7"/>
     <link port="MicrostepDelay.output" relation="relation2"/>
     <link port="Ramp.output" relation="relation6"/>
@@ -242,4 +286,8 @@
     <link port="Expression.output" relation="relation7"/>
     <link port="Expression.received" relation="relation5"/>
     <link port="Expression.count" relation="relation6"/>
+    <link port="ReceivedID.input" relation="relation9"/>
+    <link port="MicrostepDelay2.input" relation="relation8"/>
+    <link port="MicrostepDelay2.output" relation="relation10"/>
+    <link relation1="relation9" relation2="relation8"/>
 </entity>
