@@ -570,12 +570,13 @@ options = {
 eventHandlers = {
     onClose,
     onError,
-    onData
+    onData,
+    onConnection
 }
 */
-exports.initializeSecureCommunication = function(options, callback, eventHandlers) {
+exports.initializeSecureCommunication = function(options, eventHandlers) {
     if (options.sessionKey == null) {
-        callback({error: 'No available key'});
+        eventHandlers.onError('Comm init failed: No available key');
         return;
     }
     // client communication state
@@ -658,18 +659,17 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
             // do not process the packet yet
             return;
         }
-        //var obj = exports.parseIoTSP(new buffer.Buffer(data));
         else if (obj.msgType == msgType.SKEY_HANDSHAKE_2) {
             console.log('received session key handshake2!');
             if (entityClientState != entityClientCommState.HANDSHAKE_1_SENT) {
-                callback({error: 'Error: wrong sequence of handshake, disconnecting...'});
+                eventHandlers.onError('Comm init failed: Wrong sequence of handshake, disconnecting...');
                 entityClientSocket.close();
                 return;
             }
             var ret = crypto.symmetricDecryptWithHash(obj.payload.getArray(),
                 options.sessionKey.val.getArray(), options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
             if (!ret.hashOk) {
-                callback({error: 'Received hash for handshake2 is NOT ok'});
+                eventHandlers.onError('Comm init failed: Received hash for handshake2 is NOT ok');
                 entityClientSocket.close();
                 return;
             }
@@ -677,7 +677,7 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
             var buf = new buffer.Buffer(ret.data);
             var handshake2 = exports.parseHandshake(buf);
             if (!handshake2.replyNonce.equals(myNonce)) {
-                callback({error: 'Server nonce NOT verified'});
+                eventHandlers.onError('Comm init failed: Server nonce NOT verified');
                 return;
             }
             console.log('Server nonce verified');
@@ -697,7 +697,7 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
             // socket, sessionKey, cipherAlgorithm, hashAlgorithm
             iotSecureSocket = new IoTSecureSocket(entityClientSocket, options.sessionKey,
                 options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
-            callback({success: true}, iotSecureSocket);
+            eventHandlers.onConnection(iotSecureSocket);
         }
         else if (obj.msgType == msgType.SECURE_COMM_MSG) {
             console.log('received secure communication message!');
@@ -712,7 +712,7 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
                 return;
             }
             else {
-                callback({error: 'Error: it is not in IN_COMM state, disconnecting...'});
+                eventHandlers.onError('Comm init failed: it is not in IN_COMM state, disconnecting...');
                 entityClientSocket.close();
                 return;
             }
@@ -723,7 +723,7 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
             eventHandlers.onClose();
             return;
         }
-        callback({error: 'disconnected from server during communication initialization.'});
+        eventHandlers.onError('Comm init failed: disconnected from server during communication initialization.');
         //console.log('switching to IDLE');
         //entityClientState = entityClientCommState.IDLE;
     });
@@ -732,7 +732,7 @@ exports.initializeSecureCommunication = function(options, callback, eventHandler
             eventHandlers.onError(message);
             return;
         }
-        callback({error: 'Error in comm init - details: ' + message});
+        eventHandlers.onError('Comm init failed: Error in comm init - details: ' + message);
         entityClientSocket.close();
         return;
     });
