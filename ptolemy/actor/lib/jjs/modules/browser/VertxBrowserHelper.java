@@ -85,7 +85,7 @@ public class VertxBrowserHelper {
                     // Need to close the server after writing to it
                     // otherwise subsequent firings of the accessor
                     // will not write new material
-                    //server.close();
+                    server.close();
                 }
             });
 
