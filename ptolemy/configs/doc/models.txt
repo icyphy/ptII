@@ -198,6 +198,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/DiscoveryJS.xm
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/AudioFFT.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/SinusoidFFT.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPBrowser/GDPBrowser.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogSubscribe/GDPLogSubscribe.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/HttpServer/HttpServer.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/iotAuth/demo/IoTClient/IoTClient.xml
