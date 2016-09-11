@@ -4,13 +4,13 @@
 <entity name="WebSocketGraph" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 23, 1095, 653}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={150, 8, 1062, 660}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[861, 543]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[834, 543]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0524967230479882">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{381.2767931550126, 210.33243919109472}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.4501498939258, 210.3324391910938}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
@@ -33,59 +33,15 @@
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="4.  In the browser, click 'react to inputs'.  Data should appear on the graph.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Instantiate a WebSocketServer, open a browser tab and &#10;send a series of numbers to a browser WebSocketClient. &#10;&#10;The client may also be run independently.&#10;">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{-5.0, 265.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-5.0, 30.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="3. Click here to open  http://localhost:8089/hosts/browser/demo/WebSocketGraph/WebSocketGraph.html&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Currently, the file is hardcoded as a constant in HTMLGraph.&#10;Alternatives are:&#10;Use a Ptolemy FileReader (not compatible with code gen)&#10;Use a REST accessor to fetch the content from terraswarm.org (unfortunately, introduces extra page formatting)&#10;Use a REST accessor to fetch from local host (the browser accessor would need to start the server in initialize()).&#10;">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-5.0, 235.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8089/hosts/browser/demo/WebSocketGraph/WebSocketGraph.html#in_browser">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{270, 430}">
-            </property>
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Instantiate a WebSocketServer and send a series of numbers. &#10;&#10;A browser client is available.  To run:&#10;1. Run this model, &#10;2. Start the browser test server,  click here to open&#10;    $PTII/org/terraswarm/accessor/accessors/web/hosts/browser/test/README.txt&#10;">
-        </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-5.0, 125.0]">
-        </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="file://$PTII/org/terraswarm/accessor/accessors/web/hosts/browser/test/README.txt">
-            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
-                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
-                </property>
-            </property>
-            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
-                <configure>
-      <svg>
-        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
-      </svg>
-    </configure>
-            </property>
-            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{275, 195}">
-            </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[5.0, 330.0]">
         </property>
     </property>
     <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">
@@ -103,7 +59,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 165.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -130,7 +86,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 165.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -190,7 +146,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 175.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -203,12 +159,98 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="TestSpontaneousOnce" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Test accessor that spontaneously produces outputs once.&#10;//&#10;// Copyright (c) 2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Test accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor test/TestSpontaneousOnce&#10; *  @parameter interval The interval before the output in milliseconds.&#10; *  @output output Output for the counting sequence, of type number.&#10; *  @author Christopher Brooks. Based on TestSpontaneous by Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;exports.setup = function() {&#10;    this.parameter('interval', {'type':'number', 'value':1000});&#10;    this.output('output', {'type': 'number'});&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;var count = 0;&#10;&#10;exports.initialize = function() {&#10;    count = 0;&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;    handle = setTimeout(function() {&#10;        thiz.send('output', count++);&#10;    }, this.getParameter('interval'));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        clearTimeoutInterval(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TestSpontaneousOnce.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 265.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="HTMLGraph" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Generate an HTML page with a graph of the websocket data.&#10; *&#10; *  @accessor HTMLGraph&#10; *  @input trigger When an input is received, output the HTML page.&#10; *  @output output The HTML page.&#10; *  @author Elizabeth Osyk&#10; *  @version $$Id$$&#10; */&#10;exports.setup = function() {&#10;    this.input('trigger');&#10;    this.output('output', {'type':'string'});&#10;};&#10;&#10;exports.initialize = function() {&#10;    var self = this;&#10;    this.addInputHandler('trigger', function() {&#10;var html = &quot;&lt;!DOCTYPE html&gt;\n&lt;!-- A sample graph using the WebSocketClient.  \n     A WebSocketServer is available in Cape Code.\n     Please open the model at: $PTII/org/terraswarm/accessor/demo/WebSocketGraph/WebSocketGraph.xml\n     Run the model, \n     Start the browser test server (see /accessors/host/browser/test/README.txt), \n     Point your browser to http://localhost:8089/hosts/browser/demo/WebSocketGraph/WebSocketGraph.html,\n     Click 'react to inputs'.  Data should appear on the graph.   --&gt;\n&lt;html lang=\&quot;en\&quot;&gt;\n&lt;head&gt;\n    &lt;meta charset=\&quot;utf-8\&quot;&gt;\n    &lt;title&gt;Sample graph using WebSocketClient &lt;/title&gt;\n    &lt;link rel=\&quot;stylesheet\&quot; type=\&quot;text/css\&quot; href=\&quot;/accessors/hosts/browser/accessorStyle.css\&quot;&gt;\n    \n    &lt;!-- Graph styling. --&gt;\n    &lt;link rel=\&quot;stylesheet\&quot; type=\&quot;text/css\&quot; href=\&quot;/accessors/hosts/browser/demo/WebSocketGraph/WebSocketGraph.css\&quot;&gt;\n    &lt;script&gt;\n        // Define initial values for accessor inputs.  Do so here vs. in the accessor\n        //  definition since they're specific to this scenario.  Wait until page\n        //  has loaded so that form fields exist.   \n \t    var initialValues = {};\n \t    initialValues[\&quot;WebSocketClient.server\&quot;] = \&quot;localhost\&quot;;\n \t    initialValues[\&quot;WebSocketClient.port\&quot;] = 8070;\n \t    initialValues[\&quot;WebSocketClient.receiveType\&quot;] = \&quot;text/plain\&quot;;\n \t    initialValues[\&quot;WebSocketClient.sendType\&quot;] = \&quot;text/plain\&quot;;\n \t    initialValues[\&quot;WebSocketClient.sslTls\&quot;] = false;\n    &lt;/script&gt;\n\t\n  \t&lt;script src=\&quot;//visjs.org/dist/vis.js\&quot;&gt;&lt;/script&gt;\n  \t&lt;link href=\&quot;//visjs.org/dist/vis.css\&quot; rel=\&quot;stylesheet\&quot; type=\&quot;text/css\&quot; /&gt;\n    \n\t&lt;script type=\&quot;text/javascript\&quot;&gt;\n\tfunction createGraph() {\n\t  \n\t  // Watch for changes in the WebSocketClient.received output.\n\t  // Wait a bit after onload to make sure accessors are fully loaded.\n\t  setTimeout(function() {\n\t\t  \n\t\t  document.getElementById('WebSocketClient.received')\n\t\t  \t.addEventListener('DOMSubtreeModified', function() {\n\t\t\t  var value = \n\t\t\t\t  document.getElementById('WebSocketClient.received').innerText;\n\t\t\t  \n\t\t\t  // Remove any ' or \&quot; in the string.  These cause parseFloat() to fail.\n\t\t\t  value = value.replace(/'/g, \&quot;\&quot;);\n\t\t\t  value = value.replace(/\&quot;/g, \&quot;\&quot;);\n\t\t\t  addDataPoint(parseFloat(value));\n\t\t  });\n\t\t  \n\t\t  // React accessor so graph will update automatically.\n\t\t  reactIfExecutable('WebSocketClient');\n\t  }, 500);\n\n\t\n\t  // Graph from: http://visjs.org/examples/graph2d/15_streaming_data.html\n\t  // MIT license: http://visjs.org/#licenses\n\t\t  \n\t  var DELAY = 5000; // delay in ms to add new data points\n\t\n\t  // create a graph2d with an (currently empty) dataset\n\t  var container = document.getElementById('graph');\n\t  var dataset = new vis.DataSet();\n\t  var yMin = 0, yMax = 10;\n\t\n\t  var options = {\n\t    start: vis.moment().add(-30, 'seconds'), // changed so its faster\n\t    end: vis.moment(),\n\t    dataAxis: {\n\t      left: {\n\t        range: {\n\t          min: yMin, max: yMax\n\t        }\n\t      }\n\t    },\n\t    drawPoints: {\n\t      style: 'circle' // square, circle\n\t    },\n\t    shaded: {\n\t      orientation: 'bottom' // top, bottom\n\t    },\n\t    width: '80%',\n\t    height: '300px'\n\t  };\n\t  var graph2d = new vis.Graph2d(container, dataset, options);\n\t\n\t  function renderStep() {\n\t    // move the window (you can think of different strategies).\n\t    var now = vis.moment();\n\t    var range = graph2d.getWindow();\n\t    var interval = range.end - range.start;\n\n\t    // continuously move the window\n\t    graph2d.setWindow(now - interval, now, {animation: false});\n\t    requestAnimationFrame(renderStep);\n\t  }\n\t  renderStep();\n\t\n\t  /**\n\t   * Add a new datapoint to the graph\n\t   */\n\t   \n\t   // Need to set y range?\n\t  function addDataPoint(value) {\n\t    // add a new data point to the dataset\n\t    var now = vis.moment();\n\t    \n\t    // Rescale the y axis, if needed.\n\t    if (value &lt; yMin) {\n\t    \tyMin = value;\n\t    \tgraph2d.setOptions({\n\t    \t\tdataAxis: {\n\t      \t\t\tleft: {\n\t        \t\t\trange: {\n\t        \t\t\t\t// Make the min a little lower than last data point\n\t        \t\t\t\t// so the point isn't on the edge of the graph.\n\t          \t\t\t\tmin: yMin - ((yMax - yMin) / 20)\n\t        \t\t\t}\n\t      \t\t\t}\n\t    \t\t}\n\t    \t});\n\t    } else if (value &gt; yMax) {\n\t    \tyMax = value;\n\t    \tgraph2d.setOptions({\n\t    \t\tdataAxis: {\n\t      \t\t\tleft: {\n\t        \t\t\trange: {\n\t          \t\t\t\tmax: yMax + ((yMax - yMin) / 20)\n\t        \t\t\t}\n\t      \t\t\t}\n\t    \t\t}\n\t    \t});\n\t    }\n\t    \n\t    dataset.add({\n\t      x: now + Math.random()*1000,\n\t      y: value\n\t    });\n\t\n\t    // remove all data points which are no longer visible\n\t    var range = graph2d.getWindow();\n\t    var interval = range.end - range.start;\n\t    var oldIds = dataset.getIds({\n\t      filter: function (item) {\n\t        return item.x &lt; range.start - interval;\n\t      }\n\t    });\n\t    dataset.remove(oldIds);\n\t  }\n\t}\n\t&lt;/script&gt;\n\n   &lt;script src=\&quot;/accessors/hosts/browser/browser.js\&quot;&gt; &lt;/script&gt;&lt;/head&gt;\n&lt;/head&gt;&lt;!-- --&gt;\n&lt;body\tonload=\&quot;createGraph()\&quot;&gt;\n\n   \n\n&lt;div id=\&quot;graph\&quot;&gt;\n&lt;/div&gt;\n\nIf you do not see an accessor below, then see the\n&lt;a href=\&quot;/accessors/hosts/browser/test/index.html\&quot;&gt;instructions for running a browser host&lt;/a&gt;.\n\n&lt;div class=\&quot;accessor\&quot;\n   src=\&quot;net/WebSocketClient\&quot;\n   id=\&quot;WebSocketClient\&quot;&gt;&lt;/div&gt;\n &lt;/body&gt;&lt;/html&gt;&quot;;	&#10;self.send('output', html);&#10;    });&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 265.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Browser" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Accessor that connects with a browser on the local host.&#10;//&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Accessor that connects with a browser on the local host.&#10; *  This is intended to be used by a swarmlet to interact with users,&#10; *  for example by providing forms to be filled in.&#10; *  For now, however, it simply displays HTML provided to its input.&#10; *&#10; *  @accessor utilities/Browser&#10; *  @input {string} html An HTML document to render in the browser.&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; */&#10;var Browser = require('browser');&#10;var browser = new Browser.Browser();&#10;&#10;exports.setup = function() {&#10;    this.input('html', {'type':'string'});&#10;};&#10;&#10;function display() {&#10;	var toDisplay = this.get('html');&#10;	browser.display(toDisplay);&#10;}&#10;&#10;exports.initialize = function() {&#10;	this.addInputHandler('html', display);&#10;};&#10;&#10;exports.wrapup = function(){&#10;	browser.shutdown();&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/utilities/Browser.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 265.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="html" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="TestSpontaneous.output" relation="relation"/>
     <link port="WebSocketServer.toSend" relation="relation"/>
     <link port="WebSocketServer.connection" relation="relation4"/>
     <link port="TestDisplay.input" relation="relation4"/>
+    <link port="TestSpontaneousOnce.output" relation="relation2"/>
+    <link port="HTMLGraph.output" relation="relation5"/>
+    <link port="HTMLGraph.trigger" relation="relation2"/>
+    <link port="Browser.html" relation="relation5"/>
 </entity>
