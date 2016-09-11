@@ -34,8 +34,9 @@ import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
 import io.vertx.core.http.HttpServer;
-import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.StaticHandler;
 
 ///////////////////////////////////////////////////////////////////
 //// VertxHelper
@@ -67,42 +68,59 @@ public class VertxBrowserHelper {
     /** A http server that gets and sets responses.
      */
     public static class Server {
+        
+        ///////////////////////////////////////////////////////////////////
+        ////                     public methods                        ////
+        
         /** Instantiate a http server that listens only on localhost.
          *  @param port The port number
          */
         public Server(int port) {
-            HttpServer server = _vertx.createHttpServer();
-            // new Exception("Start of Server(" + port + ")").printStackTrace();
-            server.requestHandler(new Handler<HttpServerRequest>() {
-                public void handle(HttpServerRequest request) {
-                    // System.err.println("Server(" + port + ").handle(HttpServerRequest " + request + "), server: " + server + " _response: " + _getResponse());
-                    HttpServerResponse response = request.response();
+            boolean firstStart = false;
+            
+            if (_server == null) {
+                _server = _vertx.createHttpServer();
+
+                // Serve static content.  This assumes the accessors repo is 
+                // installed locally at $PTII/org/terraswarm/accessor
+                _router = Router.router(_vertx);
+                _router.route("/accessors/*").handler(StaticHandler.create("org/terraswarm/accessor/accessors/web"));
+                
+                // new Exception("Start of Server(" + port + ")").printStackTrace();
+                
+                // Handle dynamic content (requests to / ).  
+                _router.route().handler(routingContext -> {
+                    HttpServerResponse response = routingContext.response();
                     response.putHeader("content-type", "text/html");
                     response.setChunked(true);
                     response.write(_getResponse());
                     response.end();
-
-                    // Need to close the server after writing to it
-                    // otherwise subsequent firings of the accessor
-                    // will not write new material
-                    server.close();
-                }
-            });
+                });
+               
+                _server.requestHandler(_router::accept);
+                
+                firstStart = true;
+            }
 
             // The second argument specifies to listen
             // on localhost only (interface lo0).
-            server.listen(port, "127.0.0.1",
-                    new Handler<AsyncResult<HttpServer>>() {
-                        public void handle(AsyncResult<HttpServer> asyncResult) {
-                            System.err.println("Server(" + port
-                                    + ").handle(<AsyncResult> " + asyncResult
-                                    + ")" + " Listen succeeded? "
-                                    + asyncResult.succeeded() + " cause: "
-                                    + asyncResult.cause());
-                            // FIXME: Called when the server actually starts listening.
-                            // Probably need to have a callback back to JavaScript here.
-                        }
-                    });
+            if (firstStart || port != _port) {
+                _port = port;
+                firstStart = false;
+                _server.listen(port, "127.0.0.1",
+                        new Handler<AsyncResult<HttpServer>>() {
+                            public void handle(AsyncResult<HttpServer> asyncResult) {
+                                System.err.println("Server(" + port
+                                        + ").handle(<AsyncResult> " + asyncResult
+                                        + ")" + " Listen succeeded? "
+                                        + asyncResult.succeeded() + " cause: "
+                                        + asyncResult.cause());
+                                // FIXME: Called when the server actually starts listening.
+                                // Probably need to have a callback back to JavaScript here.
+                            }
+                        });
+            }
+
         }
 
         /** Set the response.
@@ -112,6 +130,19 @@ public class VertxBrowserHelper {
             System.err.println("setResponse(" + response + ")");
             _response = response;
         }
+        
+        /** Shut down the server, if running.
+         */
+        public void shutdown() {
+            if (_server != null) {
+                _server.close();
+                _server = null;
+            }
+            // FIXME:  Wait for callback to ensure no shutdown errors?
+        }
+        
+        ///////////////////////////////////////////////////////////////////
+        ////                     private methods                       ////
 
         /** Get the response.
          *  @return The response.
@@ -120,8 +151,26 @@ public class VertxBrowserHelper {
             System.err.println("getResponse(): " + _response);
             return _response;
         }
+        
+        ///////////////////////////////////////////////////////////////////
+        ////                     private fields                        ////
 
+        /** The port that the server is listening on.
+         */
+        private int _port = 8080;
+        
+        /** The server's response.  
+         */
         private String _response = "No data yet";
+        
+        /** The HTTP server.  Currently, only a single server at a time is 
+         * supported.
+         */
+        private HttpServer _server = null;
+        
+        /** A router to route incoming requests to the appropriate handlers.
+         */
+        private Router _router = null;
     }
 
     ///////////////////////////////////////////////////////////////////
