@@ -116,6 +116,24 @@
         </configuration>
       </plugin>
 
+      <!-- To create source bundles, run mvn org.eclipse.tycho:tycho-source-plugin:plugin-source
+	   See https://eclipse.org/tycho/sitedocs/tycho-source-plugin/plugin-info.html
+	-->
+<!--       <plugin> -->
+<!-- 	<groupId>org.eclipse.tycho</groupId> -->
+<!-- 	<artifactId>tycho-source-plugin</artifactId> -->
+<!-- 	<version>${tycho-version}</version> -->
+<!-- 	<executions> -->
+<!-- 	  <execution> -->
+<!-- 	    <id>plugin-source</id> -->
+<!-- 	    <goals> -->
+<!-- 	      <goal>plugin-source</goal> -->
+<!-- 	    </goals> -->
+<!-- 	  </execution> -->
+<!-- 	</executions> -->
+<!--       </plugin> -->
+
     </plugins>
+
   </build>
 </project>

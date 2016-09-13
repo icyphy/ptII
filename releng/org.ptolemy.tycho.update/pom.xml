@@ -8,4 +8,24 @@
   <artifactId>org.ptolemy.tycho.update</artifactId>
   <version>0.0.1-SNAPSHOT</version>
   <packaging>eclipse-repository</packaging>
+  <build>
+  <plugins>
+      <plugin>
+        <groupId>org.eclipse.tycho.extras</groupId>
+        <artifactId>tycho-source-feature-plugin</artifactId>
+	<version>${tycho-version}</version>
+
+	<executions>
+	  <execution>
+	    <id>source-feature</id>
+	    <phase>package</phase>
+	    <goals>
+	      <goal>source-feature</goal>
+	      </goals>
+	    </execution>
+	</executions>
+
+      </plugin>
+  </plugins>
+ </build>
 </project>
