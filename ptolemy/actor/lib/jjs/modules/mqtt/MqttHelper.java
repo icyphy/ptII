@@ -119,8 +119,9 @@ public class MqttHelper {
             @Override
             public void messageArrived(String topic, MqttMessage message)
                     throws Exception {
+                // TODO: Process differently depending on types
                 _currentObj.callMember("emit", "message", topic,
-                        message.getPayload());
+                        new String(message.getPayload()));
             }
 
             @Override

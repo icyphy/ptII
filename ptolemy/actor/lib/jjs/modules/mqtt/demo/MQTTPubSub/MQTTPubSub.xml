@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.5, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{343.5, 237.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for JavaScript MQTT publisher / subscriber.&#10;&#10;NOTE: The default assumes you have a broker server (e.g. mosquitto) running on 'localhost'.&#10;If you don't have a broker server, then try 'iot.eclipse.org' as the broker server address.&#10;It is an open and public broker server provided by the Paho project (https://eclipse.org/paho/).&#10;&#10;The publisher publishes a message every second.&#10;The subscriber unsubscribes after the 7th message arrives.">
@@ -36,57 +36,144 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 415.0]">
         </property>
     </property>
-    <entity name="MqttSubscriber" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var mqtt = require('mqtt');&#10;var client;&#10;&#10;var receivedCount = 0;&#10;function onMessage(topic, data) {&#10;  data = mqtt.binToStr(data);&#10;  this.send(data, output);&#10;  receivedCount++;&#10;  if (receivedCount &gt;= 7) {&#10;    client.unsubscribe(topic);&#10;  }&#10;}&#10;&#10;function onConnect() {&#10;  this.send(&quot;Subscriber connected&quot;, output);&#10;  client.subscribe('ptTest');&#10;}&#10;&#10;exports.initialize = function() {&#10;  // if you want to assign a specified clientId,&#10;  //client = mqtt.createClient(1883, 'localhost', {clientId: 'subscriber'});&#10;  // if you don't have a broker server on localhost,&#10;  //client = mqtt.createClient(1883, 'iot.eclipse.org');&#10;  client = mqtt.createClient(1883, 'localhost');&#10;  client.on('connect', onConnect.bind(this));&#10;  client.on('message', onMessage.bind(this));&#10;  client.start();&#10;  this.send('output', 'Subscriber started');&#10;}&#10;&#10;exports.wrapup = function() {&#10;  client.end();&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 120.0]">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
-            </property>
-        </port>
-    </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={473, 517, 499, 208}, maximized=false}">
-        </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 120.0]">
-        </property>
-    </entity>
-    <entity name="MqttPublisher" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var mqtt = require('mqtt');&#10;&#10;var client;&#10;exports.initialize = function() {&#10;  // if you want to assign a specified clientId,&#10;  //client = mqtt.createClient(1883, 'localhost', {clientId: 'publisher'});&#10;  // if you don't have a broker server on localhost,&#10;  //client = mqtt.createClient(1883, 'iot.eclipse.org');&#10;  client = mqtt.createClient(1883, 'localhost');&#10;  client.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;  client.end();&#10;}&#10;&#10;var count = 0;&#10;exports.fire = function() {&#10;  if (client.connected) {&#10;    count++;&#10;    client.publish('ptTest', 'Publishing count: ' + count, {qos:2});&#10;  }&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 205.0]">
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 205.0]">
         </property>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    <entity name="MqttPublisher" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;;&#10;&#10;var mqtt = require('mqtt');&#10;&#10;exports.setup = function () {&#10;    // Inputs and outputs&#10;    this.input('toSend');&#10;    // Server information&#10;    this.parameter('topic', {&#10;        type: 'string',&#10;        value: ''&#10;    });&#10;    this.parameter('qosLevel', {&#10;        type: 'int',&#10;        value: 2&#10;    });&#10;    this.parameter('brokerHost', {&#10;        type: 'string',&#10;        value: ''&#10;    });&#10;    this.parameter('brokerPort', {&#10;        type : 'int',&#10;        value : 1883&#10;    });&#10;}&#10;var self;&#10;var client;&#10;exports.toSendInputHandler = function () {&#10;    var toSend = this.get('toSend');&#10;&#10;    if (client.connected) {&#10;        client.publish(this.getParameter('topic'), toSend,&#10;            {qos: this.getParameter('qosLevel')});&#10;    } else {&#10;        console.log('MQTT client is not connected. Discarding data.');&#10;    }&#10;};&#10;&#10;exports.initialize = function() {&#10;    // if you want to assign a specified clientId,&#10;    //client = mqtt.createClient(1883, 'localhost', {clientId: 'publisher'});&#10;    // if you don't have a broker server on localhost,&#10;    //client = mqtt.createClient(1883, 'iot.eclipse.org');&#10;    self = this;&#10;    this.addInputHandler('toSend', exports.toSendInputHandler.bind(this));&#10;    client = mqtt.createClient(this.getParameter('brokerPort'), this.getParameter('brokerHost'));&#10;    client.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;    client.end();&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 215.0]">
+        </property>
+        <property name="topic" class="ptolemy.data.expr.Parameter" value="ptTest">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="brokerHost" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="toSend" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Published message: &quot; + count">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 215.0]">
+        </property>
+        <port name="count" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="MqttSubscriber" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;;&#10;&#10;var mqtt = require('mqtt');&#10;var client;&#10;&#10;exports.setup = function () {&#10;    // Inputs and outputs&#10;    this.input('unsubscribe');&#10;    this.output('connection');&#10;    this.output('received');&#10;    this.output('receivedTopic');&#10;    this.parameter('topic', {&#10;        type: 'string',&#10;        value: ''&#10;    });&#10;    this.parameter('brokerHost', {&#10;        type: 'string',&#10;        value: ''&#10;    });&#10;    this.parameter('brokerPort', {&#10;        type : 'int',&#10;        value : 1883&#10;    });&#10;}&#10;var self;&#10;var receivedCount = 0;&#10;function onMessage(topic, data) {&#10;    //data = mqtt.binToStr(data);&#10;    self.send('received', data);&#10;    self.send('receivedTopic', topic);&#10;    //receivedCount++;&#10;    //if (receivedCount &gt;= 7) {&#10;    //    client.unsubscribe(topic);&#10;    //}&#10;}&#10;&#10;function onConnect() {&#10;    self.send('connection', 'connected to broker');&#10;    client.subscribe(self.getParameter('topic'));&#10;}&#10;&#10;exports.unsubscribeInputHandler = function () {&#10;    var unsubscribe = this.get('unsubscribe');&#10;    if (unsubscribe === true) {&#10;        client.unsubscribe(topic);&#10;        self.send('connection', 'unsubscribed')&#10;    }&#10;};&#10;&#10;exports.initialize = function() {&#10;    // if you want to assign a specified clientId,&#10;    //client = mqtt.createClient(1883, 'localhost', {clientId: 'subscriber'});&#10;    // if you don't have a broker server on localhost,&#10;    //client = mqtt.createClient(1883, 'iot.eclipse.org');&#10;    self = this;&#10;    this.addInputHandler('unsubscribe', exports.unsubscribeInputHandler.bind(this));&#10;    client = mqtt.createClient(self.getParameter('brokerPort'), self.getParameter('brokerHost'));&#10;    client.on('connect', onConnect);&#10;    client.on('message', onMessage);&#10;    client.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;    client.end();&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, 55.0]">
+        </property>
+        <property name="topic" class="ptolemy.data.expr.Parameter" value="ptTest">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="brokerHost" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="unsubscribe" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="connection" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="receivedTopic" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Connection" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 346, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 45.0]">
+        </property>
+    </entity>
+    <entity name="Received" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 245, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 100.0]">
+        </property>
+    </entity>
+    <entity name="ReceivedTopic" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 480, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 150.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="MqttSubscriber.output" relation="relation"/>
-    <link port="Display.input" relation="relation"/>
-    <link port="MqttPublisher.input" relation="relation2"/>
-    <link port="DiscreteClock.output" relation="relation2"/>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation4"/>
+    <link port="MqttPublisher.toSend" relation="relation3"/>
+    <link port="Expression.output" relation="relation3"/>
+    <link port="Expression.count" relation="relation2"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp.trigger" relation="relation4"/>
+    <link port="MqttSubscriber.connection" relation="relation"/>
+    <link port="MqttSubscriber.received" relation="relation5"/>
+    <link port="MqttSubscriber.receivedTopic" relation="relation6"/>
+    <link port="Connection.input" relation="relation"/>
+    <link port="Received.input" relation="relation5"/>
+    <link port="ReceivedTopic.input" relation="relation6"/>
 </entity>
