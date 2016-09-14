@@ -5,27 +5,48 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 35.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 134, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 66, 934, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 255.181640625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{329.3454396802325, 7.166179142441848}">
+    </property>
+    <property name="PROJECT_PATH" class="ptolemy.data.expr.Parameter" value="&quot;/Users/hokeunkim/Development/iotauth/&quot;">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 235.0]">
+        </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 135.0]">
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;;&#10;&#10;var mqtt = require('mqtt');&#10;var iotAuth = require('iotAuth');&#10;&#10;exports.setup = function () {&#10;    // Inputs and outputs&#10;    this.input('toPublish');&#10;    // MQTT information&#10;    this.parameter('brokerHost', {&#10;        type: 'string',&#10;        value: ''&#10;    });&#10;    this.parameter('brokerPort', {&#10;        type : 'int',&#10;        value : 1883&#10;    });&#10;    this.parameter('topic', {&#10;        type: 'string',&#10;        value: ''&#10;    });&#10;    this.parameter('qosLevel', {&#10;        type: 'int',&#10;        value: 2&#10;    });&#10;    // Publisher information&#10;    this.parameter('entityName', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // For communication with Auth&#10;    this.parameter('authHost', {&#10;        type : 'string',&#10;        value : 'localhost'&#10;    });&#10;    this.parameter('authPort', {&#10;        value: -1,&#10;        type: 'int'&#10;    });&#10;    this.parameter('authCertPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('entityPrivateKeyPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Spec for communication with Auth&#10;    this.parameter('publicCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('signAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('numKeysPerRequest', {&#10;        value: 1,&#10;        type: 'int'&#10;    });&#10;    // For communication to subscribers&#10;    this.parameter('sessionCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('sessionHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Publish type&#10;    this.parameter('publishType', {&#10;        type : 'string',&#10;        value : 'string',&#10;        options : ['string', 'image', 'byteArray']&#10;    });&#10;}&#10;var self;&#10;var mqttClient;&#10;&#10;// local variables&#10;var self;&#10;var publishType;&#10;var authPublicKey;&#10;var entityPrivateKey;&#10;var currentSecureClient = null;&#10;var currentDistributionKey = null;&#10;var currentSessionKeyList = [];&#10;var currentSessionKey = null;&#10;&#10;function sessionKeyRespCallback(status, distributionKey, sessionKeyList, callbackParams) {&#10;    if (status.error) {&#10;        console.log(status.error);&#10;        console.log('session key request failed...');&#10;        return;&#10;    }&#10;    console.log('session key request succeeded');&#10;&#10;    if (distributionKey) {&#10;        console.log('Updating to a new distribution key key');&#10;        currentDistributionKey = distributionKey;&#10;        console.log(currentDistributionKey);&#10;    }&#10;&#10;    console.log('received ' + sessionKeyList.length + ' session keys');&#10;    for (var i = 0; i &lt; sessionKeyList.length; i++) {&#10;        currentSessionKeyList.push(sessionKeyList[i]);&#10;    }&#10;    if (currentSessionKeyList.length &gt; 0) {&#10;    	currentSessionKey = currentSessionKeyList.shift();&#10;    }&#10;};&#10;&#10;exports.toPublishInputHandler = function () {&#10;    var toPublish = this.get('toPublish');&#10;&#10;    if (mqttClient.connected) {&#10;        mqttClient.publish(this.getParameter('topic'), toPublish,&#10;            {qos: this.getParameter('qosLevel')});&#10;    } else {&#10;        console.log('MQTT client is not connected. Discarding data.');&#10;    }&#10;};&#10;&#10;exports.initialize = function() {&#10;    self = this;&#10;    &#10;    currentSessionKey = null;&#10;    authPublicKey = iotAuth.loadPublicKey(this.getParameter('authCertPath'));&#10;    entityPrivateKey = iotAuth.loadPrivateKey(this.getParameter('entityPrivateKeyPath'));&#10;    publishType = this.getParameter('publishType');&#10;    &#10;    this.addInputHandler('toPublish', exports.toPublishInputHandler.bind(this));&#10;    mqttClient = mqtt.createClient(this.getParameter('brokerPort'), this.getParameter('brokerHost'));&#10;    mqttClient.start();&#10;    &#10;    var options = {&#10;        authHost: this.getParameter('authHost'),&#10;        authPort: this.getParameter('authPort'),&#10;        entityName: this.getParameter('entityName'),&#10;        numKeysPerRequest: this.getParameter('numKeysPerRequest'),&#10;        // this is different from Client&#10;        purpose: {pubTopic: this.getParameter('topic')},&#10;        distributionKey: currentDistributionKey,&#10;        distCipherAlgorithm: this.getParameter('distCipherAlgorithm'),&#10;        distHashAlgorithm: this.getParameter('distHashAlgorithm'),&#10;        publicCipherAlgorithm: this.getParameter('publicCipherAlgorithm'),&#10;        signAlgorithm: this.getParameter('signAlgorithm'),&#10;        authPublicKey: authPublicKey,&#10;        entityPrivateKey: entityPrivateKey&#10;    };&#10;    iotAuth.sendSessionKeyReq(options, sessionKeyRespCallback);&#10;}&#10;&#10;exports.wrapup = function() {&#10;    mqttClient.end();&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -37,7 +58,80 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 140.0]">
         </property>
+        <property name="brokerHost" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="topic" class="ptolemy.data.expr.Parameter" value="Ptopic">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="entityName" class="ptolemy.data.expr.Parameter" value="net1.ptPublisher">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="authHost" class="ptolemy.data.expr.Parameter" value="localhost">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="authPort" class="ptolemy.data.expr.Parameter" value="21900">
+        </property>
+        <property name="authCertPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/auth_certs/Auth101EntityCert.pem">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="entityPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/credentials/keys/net1/PtPublisherKey.der">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="publicCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="RSA/ECB/PKCS1PADDING">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="signAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA256withRSA">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="distCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="AES-128-CBC">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="distHashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="numKeysPerRequest" class="ptolemy.data.expr.Parameter" value="3">
+        </property>
+        <property name="targetServerGroup" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sessionCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="AES-128-CBC">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sessionHashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="string">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="string">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="publishType" class="ptolemy.data.expr.Parameter" value="string">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="toPublish" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
     </entity>
 </entity>
