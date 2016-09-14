@@ -32,9 +32,6 @@ package ptolemy.actor.lib.jjs.modules.mqtt;
 
 import java.util.Random;
 
-import javax.script.ScriptEngine;
-import javax.script.ScriptException;
-
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
 import org.eclipse.paho.client.mqttv3.IMqttDeliveryToken;
 import org.eclipse.paho.client.mqttv3.IMqttToken;
@@ -47,6 +44,7 @@ import org.eclipse.paho.client.mqttv3.MqttSecurityException;
 import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import ptolemy.actor.lib.jjs.HelperBase;
 
 ///////////////////////////////////////////////////////////////////
 //// WebSocketHelper
@@ -61,147 +59,28 @@ import jdk.nashorn.api.scripting.ScriptObjectMirror;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
  */
-public class MqttHelper {
+public class MqttHelper extends HelperBase {
 
-    /**
-     * This constructor creates one Paho MQTT client inside using given parameters.
-     *
-     * @param engine The JavaScript engine of the JavaScript actor.
-     * @param currentObj The JavaScript instance of the WebSocket.
-     * @param port The port number of the broker server.
-     * @param host The host name of the broker server.
-     * @param clientId The id of the client, whiich is passed to MqttAsyncClient();
-     * @exception MqttException
-     */
-    public MqttHelper(ScriptEngine engine, ScriptObjectMirror currentObj,
-            int port, String host, String clientId) throws MqttException {
-        _engine = engine;
-        _currentObj = currentObj;
-
-        MemoryPersistence persistence = new MemoryPersistence();
-        String hostUrl = "tcp://" + host + ":" + port;
-
-        _mqttClient = new MqttAsyncClient(hostUrl, clientId, persistence);
-        _connOpts = new MqttConnectOptions();
-        _connOpts.setCleanSession(true);
+    public MqttHelper(Object actor) {
+        super(actor);
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /**
-     * Start connection between the client and the broker server.
-     * @exception MqttSecurityException
-     * @exception MqttException
+    /** Get or create a helper for the specified actor.
+     *  If one has been created before and has not been garbage collected, return
+     *  that one. Otherwise, create a new one.
+     *  @param actor Either a JavaScript actor or a RestrictedJavaScriptInterface.
+     *  @return The MqttHelper.
      */
-    public void start() throws MqttSecurityException, MqttException {
-        _mqttClient.connect(_connOpts, null, new IMqttActionListener() {
-
-            @Override
-            public void onSuccess(IMqttToken arg0) {
-                _currentObj.callMember("emit", "connect");
-            }
-
-            @Override
-            public void onFailure(IMqttToken arg0, Throwable arg1) {
-                try {
-                    Object jsArg = _engine
-                            .eval("new Error('Connection refused')");
-                    _currentObj.callMember("emit", "error", jsArg);
-                } catch (ScriptException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        _mqttClient.setCallback(new MqttCallback() {
-
-            @Override
-            public void messageArrived(String topic, MqttMessage message)
-                    throws Exception {
-                // TODO: Process differently depending on types
-                _currentObj.callMember("emit", "message", topic,
-                        new String(message.getPayload()));
-            }
-
-            @Override
-            public void deliveryComplete(IMqttDeliveryToken arg0) {
-                _currentObj.callMember("emit", "published");
-            }
-
-            @Override
-            public void connectionLost(Throwable arg0) {
-                _currentObj.callMember("emit", "close");
-            }
-        });
-
-    }
-
-    /**
-     * Publish an MQTT message to subscribers listening to the topic.
-     *
-     *  @param topic The topic to which to publish.
-     *  @param message The message sent to subscribers.
-     *  @param qos The QoS level of the message. (0: At most once, 1: At least once, 2: Exactly once)
-     *  @param retain Whether the sever should hold on the message after it has been delivered to
-     *  current subscribers so that a newly incoming subscriber can receive the message later.
-     *  @exception MqttException If the publish fails.
-     */
-    public void publish(String topic, String message, Integer qos,
-            boolean retain) throws MqttException {
-        byte[] payload = message.getBytes();
-
-        MqttMessage mqttMessage = new MqttMessage(payload);
-
-        mqttMessage.setQos(qos);
-        mqttMessage.setRetained(retain);
-        _mqttClient.publish(topic, mqttMessage);
-    }
-
-    /**
-     * Subscribe a topic using the given maximum QoS level. Start getting messages on the topic.
-     *
-     * @param topic The topic which the client will subscribe.
-     * @param qos The maximum QoS at which to subscribe. Messages published at
-     * a lower quality of service will be received at the published QoS. Messages published
-     * at a higher quality of service will be received using the QoS specified on the subscribe.
-     * @exception MqttException
-     */
-    public void subscribe(String topic, int qos) throws MqttException {
-        _mqttClient.subscribe(topic, qos);
-    }
-
-    /**
-     * Unsubscribe a topic. Stop getting messages on the topic.
-     *
-     * @param topic The topic which the client will unsubscribe.
-     * @exception MqttException
-     */
-    public void unsubscribe(String topic) throws MqttException {
-        _mqttClient.unsubscribe(topic);
-    }
-
-    /**
-     * Disconnect from the broker server and close (i.e. return all allocated resources) the client.
-     *
-     * @exception MqttException
-     */
-    public void end() throws MqttException {
-        if (_mqttClient.isConnected()) {
-            _mqttClient.disconnect();
+    public static MqttHelper getOrCreateHelper(Object actor) {
+        if (_mqttHelper == null) {
+            _mqttHelper = new MqttHelper(actor);
         }
-        _mqttClient.close();
+        return _mqttHelper;
     }
-
-    /**
-     * Return whether the client is connected to a broker server.
-     *
-     * @return if the client is connected.
-     */
-    public boolean isConnected() {
-        return _mqttClient.isConnected();
-    }
-
+    
     /**
      * Generate a default client ID randomly.
      *
@@ -214,30 +93,165 @@ public class MqttHelper {
                 + javax.xml.bind.DatatypeConverter.printHexBinary(idBytes);
         return newId;
     }
-
-    ///////////////////////////////////////////////////////////////////
-    ////                         private methods                   ////
-
-    /**
-     * Private constructor for WebSocketHelper with a server-side web socket.
-     * The server-side web socket is given from the web socket server.
-     */
-
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
     /** Share the Random object. */
     private static Random _random = new Random();
 
-    /** Instance of the current JavaScript engine. */
-    private static ScriptEngine _engine;
+    /** Share the MqttHelper object. */
+    private static MqttHelper _mqttHelper = null;
 
-    /** The current instance of the JavaScript module. */
-    private ScriptObjectMirror _currentObj;
-
-    /** The internal MQTT client created in Java */
-    private MqttAsyncClient _mqttClient = null;
-
-    /** Connection options for the current MQTT connection */
-    MqttConnectOptions _connOpts = null;
+    ///////////////////////////////////////////////////////////////////
+    ////                         public classes                    ////
+    
+    public class MqttClientWrapper {
+        /**
+         * This constructor creates one Paho MQTT client inside using given parameters.
+         *
+         * @param currentObj The JavaScript instance of the WebSocket.
+         * @param port The port number of the broker server.
+         * @param host The host name of the broker server.
+         * @param clientId The id of the client, whiich is passed to MqttAsyncClient();
+         * @exception MqttException
+         */
+        public MqttClientWrapper(ScriptObjectMirror currentObj,
+                int port, String host, String clientId) throws MqttException {
+            _currentObj = currentObj;
+    
+            MemoryPersistence persistence = new MemoryPersistence();
+            String hostUrl = "tcp://" + host + ":" + port;
+    
+            _mqttClient = new MqttAsyncClient(hostUrl, clientId, persistence);
+            _connOpts = new MqttConnectOptions();
+            _connOpts.setCleanSession(true);
+        }
+    
+        ///////////////////////////////////////////////////////////////////
+        ////                         public methods                    ////
+    
+        /**
+         * Start connection between the client and the broker server.
+         * @exception MqttSecurityException
+         * @exception MqttException
+         */
+        public void start() throws MqttSecurityException, MqttException {
+            _mqttClient.connect(_connOpts, null, new IMqttActionListener() {
+    
+                @Override
+                public void onSuccess(IMqttToken arg0) {
+                    _currentObj.callMember("emit", "connect");
+                }
+    
+                @Override
+                public void onFailure(IMqttToken arg0, Throwable arg1) {
+                    _error(_currentObj, "Connection refused.");
+                }
+            });
+    
+            _mqttClient.setCallback(new MqttCallback() {
+    
+                @Override
+                public void messageArrived(String topic, MqttMessage message)
+                        throws Exception {
+                    // TODO: Process differently depending on types
+                    _currentObj.callMember("emit", "message", topic,
+                            new String(message.getPayload()));
+                }
+    
+                @Override
+                public void deliveryComplete(IMqttDeliveryToken arg0) {
+                    _currentObj.callMember("emit", "published");
+                }
+    
+                @Override
+                public void connectionLost(Throwable arg0) {
+                    _currentObj.callMember("emit", "close");
+                }
+            });
+    
+        }
+    
+        /**
+         * Publish an MQTT message to subscribers listening to the topic.
+         *
+         *  @param topic The topic to which to publish.
+         *  @param message The message sent to subscribers.
+         *  @param qos The QoS level of the message. (0: At most once, 1: At least once, 2: Exactly once)
+         *  @param retain Whether the sever should hold on the message after it has been delivered to
+         *  current subscribers so that a newly incoming subscriber can receive the message later.
+         *  @exception MqttException If the publish fails.
+         */
+        public void publish(String topic, String message, Integer qos,
+                boolean retain) throws MqttException {
+            byte[] payload = message.getBytes();
+    
+            MqttMessage mqttMessage = new MqttMessage(payload);
+    
+            mqttMessage.setQos(qos);
+            mqttMessage.setRetained(retain);
+            _mqttClient.publish(topic, mqttMessage);
+        }
+    
+        /**
+         * Subscribe a topic using the given maximum QoS level. Start getting messages on the topic.
+         *
+         * @param topic The topic which the client will subscribe.
+         * @param qos The maximum QoS at which to subscribe. Messages published at
+         * a lower quality of service will be received at the published QoS. Messages published
+         * at a higher quality of service will be received using the QoS specified on the subscribe.
+         * @exception MqttException
+         */
+        public void subscribe(String topic, int qos) throws MqttException {
+            _mqttClient.subscribe(topic, qos);
+        }
+    
+        /**
+         * Unsubscribe a topic. Stop getting messages on the topic.
+         *
+         * @param topic The topic which the client will unsubscribe.
+         * @exception MqttException
+         */
+        public void unsubscribe(String topic) throws MqttException {
+            _mqttClient.unsubscribe(topic);
+        }
+    
+        /**
+         * Disconnect from the broker server and close (i.e. return all allocated resources) the client.
+         *
+         * @exception MqttException
+         */
+        public void end() throws MqttException {
+            if (_mqttClient.isConnected()) {
+                _mqttClient.disconnect();
+            }
+            _mqttClient.close();
+        }
+    
+        /**
+         * Return whether the client is connected to a broker server.
+         *
+         * @return if the client is connected.
+         */
+        public boolean isConnected() {
+            return _mqttClient.isConnected();
+        }
+    
+        ///////////////////////////////////////////////////////////////////
+        ////                         private methods                   ////
+    
+        /**
+         * Private constructor for WebSocketHelper with a server-side web socket.
+         * The server-side web socket is given from the web socket server.
+         */
+    
+        /** The current instance of the JavaScript module. */
+        private ScriptObjectMirror _currentObj;
+    
+        /** The internal MQTT client created in Java */
+        private MqttAsyncClient _mqttClient = null;
+    
+        /** Connection options for the current MQTT connection */
+        MqttConnectOptions _connOpts = null;
+    }
 }

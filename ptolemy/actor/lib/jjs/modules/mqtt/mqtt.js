@@ -37,9 +37,12 @@
 /*jshint globalstrict: true */
 "use strict";
 
+var EventEmitter = require('events').EventEmitter;
+var MqttHelper = Java.type('ptolemy.actor.lib.jjs.modules.mqtt.MqttHelper');
+var helper = MqttHelper.getOrCreateHelper(actor);
 
-module.exports.createClient = function (port, host, opts) {
-    return new Client(port, host, opts);
+module.exports.createClient = function (port, host, options) {
+    return new Client(port, host, options);
 };
 
 ////////////////////
@@ -56,26 +59,22 @@ module.exports.binToStr = function (data) {
 // Construct an instance of an MQTT client.
 var events = require('events');
 
-function Client(port, host, opts) {
+function Client(port, host, options) {
     if (typeof port != 'number') {
-        opts = host;
-        host = port;
-        port = 1883;
+        throw "Invalid MQTT broker port";
     }
     if (typeof host != 'string') {
-        opts = host;
-        host = 'localhost';
+        throw "Invalid MQTT broker host";
     }
-    if (!opts) {
-        opts = {};
-    }
-
-    var MqtttHelper = Java.type('ptolemy.actor.lib.jjs.modules.mqtt.MqttHelper');
-    if (!opts.clientId) {
-        opts.clientId = MqtttHelper.getDefaultId();
+    if (options == null) {
+        options = {};
     }
 
-    this.javaClient = new MqtttHelper(actor.getEngine(), this, port, host, opts.clientId);
+    if (!options.clientId) {
+        options.clientId = MqttHelper.getDefaultId();
+    }
+
+    this.javaClient = new MqttHelper.MqttClientWrapper(helper, this, port, host, options.clientId);
 
     // When "use strict" was added, the following exception occurred because of this.connected = undefined.
     //
@@ -103,16 +102,16 @@ Object.defineProperties(Client.prototype, {
 
 ////////////////////
 // Subscribe a topic using the given maximum QoS level. Start getting messages on the topic.
-Client.prototype.subscribe = function (topic, opts) {
-    if (!opts) {
-        opts = {
+Client.prototype.subscribe = function (topic, options) {
+    if (!options) {
+        options = {
             qos: 0
         };
     }
 
     var qos;
-    if (opts.qos) {
-        qos = opts.qos;
+    if (options.qos) {
+        qos = options.qos;
     } else {
         qos = 0;
     }
