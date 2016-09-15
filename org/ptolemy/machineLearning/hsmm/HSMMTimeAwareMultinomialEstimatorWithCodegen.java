@@ -64,9 +64,28 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.math.SignalProcessing;
 import ptolemy.util.StringUtilities;
 
+/**
+ * A parameter estimator for a Hidden Semi-Markov Model with
+ * Multinomial Emissions and code generation. The transition probability matrix is estimated
+ * on an hourly basis.
+ *
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating Red (cxh)
+ */
 public class HSMMTimeAwareMultinomialEstimatorWithCodegen extends
 HSMMTimeAwareMultinomialEstimator {
 
+   /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public HSMMTimeAwareMultinomialEstimatorWithCodegen(CompositeEntity container,
             String name) throws NameDuplicationException,
             IllegalActionException {
@@ -177,8 +196,12 @@ HSMMTimeAwareMultinomialEstimator {
      */
     public FilePortParameter filename;
 
+    /** The property file. */
     public FilePortParameter propertyFile;
 
+    /** The maximum number of function evaluations before terminating. 
+     *  The default value is 10.
+     */
     public Parameter optStep;
 
     /**
@@ -192,6 +215,9 @@ HSMMTimeAwareMultinomialEstimator {
      */
     public Parameter modelChecking;
 
+    /** 
+     * The default value is true.
+     */	
     public Parameter testPreset;
 
     public TypedIOPort optvals;
@@ -406,11 +432,13 @@ HSMMTimeAwareMultinomialEstimator {
                                 propertyFile.getExpression(), "-const", paramValues.toString(),
                                 "-prop", ""+(hour+1), "-exportresults", "stdout:csv");
                         pb.directory(new File(_uri));
+			BufferedReader in = null;
+			BufferedReader err = null;
                         try {
                             Process pr = pb.start();
-                            BufferedReader in = new BufferedReader(
+                            in = new BufferedReader(
                                     new InputStreamReader(pr.getInputStream()));
-                            BufferedReader err = new BufferedReader(
+                            err = new BufferedReader(
                                     new InputStreamReader(pr.getErrorStream()));
 
                             String line = null;
@@ -431,7 +459,30 @@ HSMMTimeAwareMultinomialEstimator {
                             }
                         } catch (IOException ex) {
                             throw new IllegalActionException(null, ex, "Failed to run prism");
-                        }
+                        } finally {
+			    if (in != null) {
+				try {
+				    in.close();
+				} catch (IOException ex) {
+				    throw new IllegalActionException(null, ex, "Failed to close input stream to prism: " + pb);
+				} finally {
+				    if (err != null) {
+					try {
+					    err.close();
+					} catch (IOException ex) {
+					    throw new IllegalActionException(null, ex, "Failed to close error stream from prism: " + pb);					    
+					}
+				    }
+				}
+			    }
+			    if (err != null) {
+				try {
+				    err.close();
+				} catch (IOException ex) {
+				    throw new IllegalActionException(null, ex, "Failed to close error stream to prism: " + pb);
+				}
+			    }
+			}
                     }
                     return 0;
                 }
@@ -661,7 +712,7 @@ HSMMTimeAwareMultinomialEstimator {
 
         code.append(_getPriors());
 
-        // write emissions
+        // Write emissions.
         for (int s = 0; s <_nStates; s++) {
             StringBuffer emissions = new StringBuffer(INDENT2 +  "[step] s=");
             emissions.append(s + "& d>0 & initState = false & testThisHour = true -> ");
@@ -673,7 +724,7 @@ HSMMTimeAwareMultinomialEstimator {
                     emissions.append(p[d] + ": (pow' =" + d + ") + ");
                 }
             }
-            // remove the extra plus
+            // Remove the extra plus.
             code.append(emissions.toString().substring(0,emissions.length()-3) + ";" + _eol);
         }
 
