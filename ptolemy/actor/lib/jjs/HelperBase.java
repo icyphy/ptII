@@ -235,7 +235,10 @@ public class HelperBase {
             } else if (object instanceof NativeArray) {
                 NativeArray nativeArray = (NativeArray)object;
                 values = nativeArray.values();
-            }
+            } else {
+		// FindBugs: Avoid a possibly NPE when dereferencing values.
+		throw new InternalErrorException("The object argument must be an instance of either ScriptObjectMirror or NativeArray.  It was a " + object.getClass().getName());
+	    }
 
             byte[] result = new byte[values.size()];
             int i = 0;
