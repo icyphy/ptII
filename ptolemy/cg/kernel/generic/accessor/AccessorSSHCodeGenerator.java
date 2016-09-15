@@ -127,7 +127,7 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
 	    String timeout = "";
 	    if (stopTime.length() > 0) {
 		try {
-		    timeout = new Double(Double.parseDouble(stopTime) * 1000.0).toString();
+		    timeout = Double.toString(Double.parseDouble(stopTime) * 1000.0);
 		} catch (NumberFormatException ex) {
 		    throw new IllegalActionException(_model, ex, "Could not parse " + stopTime);
 		}
