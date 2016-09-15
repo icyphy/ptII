@@ -329,7 +329,7 @@ public class KMeans extends TypedAtomicActor {
     private List _clusterCenters;
     private int _numClusters;
     private Metric _distanceMeasure;
-    private final int MAX_ITER = 10000;
+    private final static int MAX_ITER = 10000;
     private enum Metric {
         EUCLIDEAN
     };

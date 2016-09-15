@@ -55,14 +55,15 @@ import ptolemy.kernel.util.Workspace;
 ////
 
 /**
-<p>This actor implements a parameter estimator for a Hidden Semi-Markov Model with Multinomial
-Emissions. The transition probability matrix is estimated on an hourly basis.
-
- @author Ilge Akkaya
- @version $Id$
- @since Ptolemy II 10.0
- @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating
+ * A parameter estimator for a Hidden Semi-Markov Model with
+ * Multinomial Emissions. The transition probability matrix is estimated
+ * on an hourly basis.
+ *
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator {
 
@@ -285,7 +286,7 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
     }
 
     /** Number of partitions in the probability transition matrix. */
-    protected final int NUM_CATEGORIES = 24;
+    protected final static int NUM_CATEGORIES = 24;
 
     /** Completion strategy for A set to interpolation, that is, a uniform distribuition
      * on all states that have
