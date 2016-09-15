@@ -45,7 +45,8 @@ import soot.util.Chain;
 //// EntitySootClass
 
 /**
-
+ * An Soot representation of an Entity.
+ *
  @author Stephen Neuendorffer, Christopher Hylands
  @version $Id$
  @since Ptolemy II 2.0
@@ -53,6 +54,11 @@ import soot.util.Chain;
  @Pt.AcceptedRating Red (cxh)
  */
 public class EntitySootClass extends SootClass {
+    /** Construct a EntitySootClass.
+     *  @param superClass the super class
+     *  @param name The name of this instance
+     *  @param modifier The modifier, which is passed to the SootClass constructor.
+     */
     public EntitySootClass(SootClass superClass, String name, int modifier) {
         super(name, modifier);
         setSuperclass(superClass);
@@ -92,6 +98,9 @@ public class EntitySootClass extends SootClass {
         }
     }
 
+    /** Get the init method.
+     *  @return the init method.
+     */
     public SootMethod getInitMethod() {
         return _initMethod;
     }

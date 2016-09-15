@@ -132,11 +132,11 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         }
     }
     /**
-     * 
-     * @param file
-     * @param propertyLine
+     * Find a parameter value from a file.
+     * @param file The file to be read
+     * @param propertyLine The property line to be found
      * @param type The type of the data. 0 for String, 1 for int, 2 for float.
-     * @return
+     * @return The parameter value.
      */
     public static String findParameterValue(File file, String propertyLine, int type){
         ArrayList<String> fileContent = _readFile(file);

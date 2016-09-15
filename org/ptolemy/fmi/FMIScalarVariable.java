@@ -436,7 +436,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @return the value of this variable as Token.
-     *  @see #setBoolean(Pointer, boolean)
+     *  @see #setBooleanHybrid(Pointer, boolean)
      */
     public Token getBooleanHybrid(Pointer fmiComponent) {
         IntBuffer valueBuffer = IntBuffer.allocate(1);
@@ -453,7 +453,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @return the value of this variable as Token.
-     *  @see #setDouble(Pointer, double)
+     *  @see #setDoubleHybrid(Pointer, double)
      */
     public Token getDoubleHybrid(Pointer fmiComponent) {
         double result;
@@ -484,7 +484,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @return the value of this variable as a Token.
-     *  @see #setInt(Pointer, int)
+     *  @see #setIntHybrid(Pointer, int)
      */
     public Token getIntHybrid(Pointer fmiComponent) {
         IntBuffer valueBuffer = IntBuffer.allocate(1);
@@ -499,7 +499,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @return the value of this variable as a Token.
-     *  @see #setString(Pointer, String)
+     *  @see #setStringHybrid(Pointer, String)
      */
     public Token getStringHybrid(Pointer fmiComponent) {
         LongBuffer isAbsentBuffer = LongBuffer.allocate(1);
@@ -522,7 +522,7 @@ public class FMIScalarVariable {
      *  component that contains a reference to the variable.
      *  @param value The value of this variable.
      *  @param isAbsent True if the variable can have the value of absent.
-     *  @see #getBoolean(Pointer fmiComponent)
+     *  @see #getBooleanHybrid(Pointer fmiComponent)
      */
     public void setBooleanHybrid(Pointer fmiComponent, boolean value,
             boolean isAbsent) {
@@ -540,7 +540,7 @@ public class FMIScalarVariable {
      *  component that contains a reference to the variable.
      *  @param value The value of this variable.
      *  @param isAbsent True if the variable can have the value of absent.
-     *  @see #getDouble(Pointer)
+     *  @see #getDoubleHybrid(Pointer)
      */
     public void setDoubleHybrid(Pointer fmiComponent, Double value,
             boolean isAbsent) {
@@ -557,7 +557,7 @@ public class FMIScalarVariable {
      *  component that contains a reference to the variable.
      *  @param value The value of this variable.
      *  @param isAbsent True if the variable can have the value of absent.
-     *  @see #getInt(Pointer)
+     *  @see #getIntHybrid(Pointer)
      */
     public void setIntHybrid(Pointer fmiComponent, Integer value,
             boolean isAbsent) {
@@ -577,7 +577,7 @@ public class FMIScalarVariable {
      *  component that contains a reference to the variable.
      *  @param value The value of this variable.
      *  @param isAbsent True if the variable can have the value of absent.
-     *  @see #getString(Pointer)
+     *  @see #getStringHybrid(Pointer)
      */
     public void setStringHybrid(Pointer fmiComponent, String value,
             boolean isAbsent) {
@@ -653,19 +653,20 @@ public class FMIScalarVariable {
      *  xml attribute defines how the variable is initialized.
      */
     public enum Initial {
-        /** "The variable is an iteration variable of an algebraic
-         *   loop and the iteration at initialization starts with the start value."
+        /** The variable is an iteration variable of an algebraic
+         *  loop and the iteration at initialization starts with the start value.
          */
         approx,
         /** The variable is calculated from other variables during
-            initialization.  It is not allowed to provide a "start"
-            value. */
+         *  initialization.  It is not allowed to provide a "start"
+         *  value.
+	 */
         calculated,
         /** The variable is initialized with the start value (provided under Real,
-            Integer, Boolean, String or Enumeration".*/
+         *  Integer, Boolean, String or Enumeration".
+	 */
         exact,
-        /** Not present.
-          */
+        /** Not present. */
         notPresent
     }
 

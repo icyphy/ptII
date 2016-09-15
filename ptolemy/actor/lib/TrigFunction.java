@@ -86,7 +86,7 @@ import ptolemy.kernel.util.Workspace;
  zero.
  </li>
  </ul>
- The following functions in java.lang.Math are implemented elsewhere:</p>
+ <p> The following functions in java.lang.Math are implemented elsewhere:</p>
  <ul>
  <li> <b>abs</b>: AbsoluteValue actor.
  </li><li> <b>atan2</b>: CartesianToPolar actor.

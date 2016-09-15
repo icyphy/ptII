@@ -52,6 +52,9 @@ import java.util.Random;
 
 import edu.umich.eecs.april.jmat.LinAlg;
 
+/** An image backed by a floating point data.
+ *  @version: $Id$
+ */
 public class FloatImage {
     public int width;
     public int height;

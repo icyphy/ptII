@@ -64,7 +64,7 @@ public class GDPHelper {
      *  org.ptolemy.claudius.myLog01.
      *  @param ioMode The i/o mode for the log (0: for internal use
      *  only, 1: read-only, 2: read-append, 3: append-only).
-     *  @param logdName  Name of the log server where this should be 
+     *  @param logdname  Name of the log server where this should be 
      *  placed if it does not yet exist.  If the string is of length
      *  zero, then the hostname is used.
      *  @exception GDPException If the log does not exist or if the
@@ -99,6 +99,7 @@ public class GDPHelper {
 
     /** Append a string to the log.
      *  @param data The string to be appended, which assumed to be UTF-8.
+     *  @exception GDPException If there is a problem appending the string.
      */   
     public void append(String data) throws GDPException {
         byte [] bytes = data.getBytes(StandardCharsets.UTF_8);
@@ -122,6 +123,7 @@ public class GDPHelper {
      *  in the log is record 1.
      *  @return A string representing the records that were read or the empty
      *  string if no records were read.
+     *  @exception GDPException If there is a problem reading the string.
      */
     public String read(long recordNumber) throws GDPException {
         HashMap<String,Object> datum = _gcl.read(recordNumber);
@@ -129,7 +131,7 @@ public class GDPHelper {
     }
 
     /** Set the value of the GDP debug flag.
-     * @param debug The value of the GDP debug flag.  See
+     * @param debugLevel The value of the GDP debug flag.  See
      * gdp/README-developers.md for a complete summary.  The value is typically
      * <code><i>pattern</i>=<i>level</i></code>, for example
      * <code>gdplogd.physlog=39</code>.  To see the patterns, use the
@@ -148,6 +150,7 @@ public class GDPHelper {
      *  record in the log is record 1.
      *  @param numberOfRecords The number of records to read.
      *  @param timeout The timeout in milliseconds.
+     *  @exception GDPException If there is a problem subscribing to the log.
      */
     public void subscribe(final ScriptObjectMirror currentObj, int startRecord,
             int numberOfRecords, int timeout) throws GDPException {
