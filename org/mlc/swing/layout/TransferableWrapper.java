@@ -38,29 +38,43 @@ package org.mlc.swing.layout;
 import java.awt.datatransfer.DataFlavor;
 
 /**
- *
+ * A wrapper for transferring data using drag and drop.
  * @author Michael Connor
-@version $Id$
-@since Ptolemy II 8.0
+ * @version $Id$
+ * @since Ptolemy II 8.0
  */
 public class TransferableWrapper implements java.awt.datatransfer.Transferable {
     Object dragObject;
 
+    /** Instantiate a TransferableWrapper.
+     *  @param dragObject The drag object
+     */
     public TransferableWrapper(Object dragObject) {
         this.dragObject = dragObject;
     }
 
+    /** Get the transfer data for a flavor.
+     *  @param flavor the flavor
+     *  @retrun the transfer data.
+     */
     @Override
     public synchronized Object getTransferData(DataFlavor flavor) {
         return dragObject;
     }
 
+    /** Return true if the data flavor is supported.
+     *  @param flavor the flavor to be checked.
+     *  @return true if the data flavor is supported.	
+     */
     @Override
     public boolean isDataFlavorSupported(DataFlavor flavor) {
         return flavor.getMimeType().equals(
                 DataFlavor.javaJVMLocalObjectMimeType);
     }
 
+    /** Get the transfer data flavors.
+     *  @retrun the transfer data flavors.
+     */
     @Override
     public synchronized DataFlavor[] getTransferDataFlavors() {
         try {

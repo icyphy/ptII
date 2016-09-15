@@ -58,10 +58,10 @@ import ptolemy.verification.kernel.maude.RTMaudeUtility;
 //// MathematicalModelConverter
 
 /**
+ * Base class for mathematical model converter.
  * @deprecated ptolemy.de.lib.TimedDelay is deprecated, use ptolemy.actor.lib.TimeDelay.
  * @author Chihhong Patrick Cheng   (modified by: Kyungmin Bae)   Contributors: Edward A. Lee , Christopher Brooks,
- * @version $Id: MathematicalModelConverter.java,v 1.5 2008/03/06 09:16:22
- *          patrickj Exp $
+ * @version $Id$
  * @since Ptolemy II 8.0
  * @Pt.ProposedRating Red (patrickj)
  * @Pt.AcceptedRating Red (patrickj)

@@ -36,10 +36,10 @@ import javax.swing.UIManager;
 
 import org.mlc.swing.layout.LayoutFrame;
 
-/**
+/** A customer panel example.
  * @author Michael Connor
-@version $Id$
-@since Ptolemy II 8.0
+ * @version $Id$
+ * @since Ptolemy II 8.0
  */
 @SuppressWarnings("serial")
 public class CustomerPanel extends javax.swing.JPanel {
@@ -96,6 +96,7 @@ public class CustomerPanel extends javax.swing.JPanel {
     javax.swing.JScrollPane orderTable = new javax.swing.JScrollPane(
             orderTableControl);
 
+    /** Instantiate the CustomerPanel. */ 
     public CustomerPanel() {
         super();
         java.io.InputStream is = this.getClass().getResourceAsStream(
@@ -137,6 +138,9 @@ public class CustomerPanel extends javax.swing.JPanel {
         frame.setVisible(true);
     }
 
+    /** Run the CustomerPanel example.
+     *  @param args Not used.
+     */
     public static void main(String[] args) {
         UIDefaults defaults = UIManager.getDefaults();
         defaults.put("Label.font", new javax.swing.plaf.FontUIResource(

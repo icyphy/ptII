@@ -108,7 +108,6 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
  */
 @Deprecated
 public class REDUtility {
-
     /**
      * This function generates an equivalent system which is flattened.
      * It would perform a rewriting of each ModalModel with hierarchy to an
@@ -117,11 +116,16 @@ public class REDUtility {
      *
      * @param originalCompositeActor original system under processing
      * @return a flattened equivalent system.
+     * @exception CloneNotSupportedException If thrown while rewriting the
+     * modal model with state refinements to a FSMActor.
+     * @exception IllegalActionException If thrown while rewriting the
+     * modal model with state refinements to a FSMActor.
+     * @exception NameDuplicationException If thrown while rewriting the
+     * modal model with state refinements to a FSMActor.
      */
     public static CompositeActor generateEquivalentSystemWithoutHierarchy(
             CompositeActor originalCompositeActor)
-                    throws NameDuplicationException, IllegalActionException,
-                    CloneNotSupportedException {
+	throws CloneNotSupportedException, IllegalActionException, NameDuplicationException {
 
         ArrayList<FSMActor> list = new ArrayList<FSMActor>();
 
@@ -165,12 +169,17 @@ public class REDUtility {
      * @param bufferSizeDelayActor The buffer size of the TimedDelay actor.
      * @return A Communicating Timed Automata system description of the original
      *         system
-     * @exception IllegalActionException
+
+     * @exception CloneNotSupportedException If thrown while
+     * generating an equivalent system without hierarchy.
+     * @exception IllegalActionException If there is a problem generating the RED description.
+     * @exception NameDuplicationException If thrown while
+     * generating an equivalent system without hierarchy.
      */
     public static StringBuffer generateREDDescription(CompositeActor PreModel,
             String pattern, FormulaType choice, int span,
             int bufferSizeDelayActor) throws IllegalActionException,
-            NameDuplicationException, CloneNotSupportedException {
+					     NameDuplicationException, CloneNotSupportedException {
 
         StringBuffer returnREDFormat = new StringBuffer("");
 

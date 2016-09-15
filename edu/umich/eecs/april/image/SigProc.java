@@ -46,6 +46,9 @@ package edu.umich.eecs.april.image;
 
 import edu.umich.eecs.april.jmat.LinAlg;
 
+/** Signal processing algorithms for images.
+ *  @version: $Id$
+ */
 public class SigProc {
     static boolean warned = false;
 

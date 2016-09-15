@@ -36,10 +36,10 @@ import javax.swing.JTextField;
 
 import org.mlc.swing.layout.LayoutFrame;
 
-/**
+/** An example.
  * @author Michael Connor
-@version $Id$
-@since Ptolemy II 8.0
+ * @version $Id$
+ * @since Ptolemy II 8.0
  */
 @SuppressWarnings("serial")
 public class ExamplePanel extends javax.swing.JPanel {
@@ -55,6 +55,7 @@ public class ExamplePanel extends javax.swing.JPanel {
 
     JPanel thirdTab = new JPanel();
 
+    /** Create the ExamplePanel. */
     public ExamplePanel() {
         super();
         org.mlc.swing.layout.LayoutConstraintsManager layoutConstraintsManager = new org.mlc.swing.layout.LayoutConstraintsManager();
@@ -76,6 +77,9 @@ public class ExamplePanel extends javax.swing.JPanel {
         tabbedPane.add("Third", thirdTab);
     }
 
+    /** Run the CustomerPanel example.
+     *  @param args Not used.
+     */
     public static void main(String[] args) {
         ExamplePanel examplePanel = new ExamplePanel();
 

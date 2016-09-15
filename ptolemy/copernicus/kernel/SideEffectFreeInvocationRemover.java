@@ -54,11 +54,16 @@ import soot.toolkits.scalar.SimpleLiveLocals;
 import soot.toolkits.scalar.SimpleLocalDefs;
 
 /**
- @author Steve Neuendorffer
- @version $Id$
- @since Ptolemy II 4.0
- @Pt.ProposedRating Red (cxh)
- @Pt.AcceptedRating Red (cxh)
+ * Remove any calls to other methods from the given method that
+ * have no side effects and whose return value is dead.  A method
+ * has no side effects if it does not assign the value to any
+ * fields.
+ *
+ * @author Steve Neuendorffer
+ * @version $Id$
+ * @since Ptolemy II 4.0
+ * @Pt.ProposedRating Red (cxh)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class SideEffectFreeInvocationRemover extends SceneTransformer {
     /** Construct a new transformer
@@ -72,10 +77,16 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
         return instance;
     }
 
+    /** Return the default options.
+     *  @return The default options, which in this case is the empty string.
+     */	
     public String getDefaultOptions() {
         return "";
     }
 
+    /** Return the declared options.
+     *  @return The declared options, which in this case is the empty string.
+     */	
     public String getDeclaredOptions() {
         return "";
     }
@@ -159,6 +170,9 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
      *  have no side effects and whose return value is dead.  A method
      *  has no side effects if it does not assign the value to any
      *  fields.
+     *  @param method The given method.
+     *  @param callGraph the call graph.
+     *  @param analysis the analysis.
      */
     public static void _removeSideEffectFreeMethodCalls(SootMethod method,
             CallGraph callGraph, SideEffectAnalysis analysis) {

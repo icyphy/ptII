@@ -174,7 +174,7 @@ public class Map extends TypedAtomicActor implements Decorator {
      * Check if queried (x,y) position is within the valid map area. 
      * @param xCoord
      * @param yCoord
-     * @return
+     * @return True if the position is within the valid map area.
      */
     public boolean withinValidMapArea(double xCoord, double yCoord) {
         
