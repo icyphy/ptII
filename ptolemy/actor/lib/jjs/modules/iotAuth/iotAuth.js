@@ -308,10 +308,8 @@ options = {
     numKeysPerRequest,
     purpose,
     distributionKey = {val, absValidity},
-    distCipherAlgorithm,
-    distHashAlgorithm,
-    publicCipherAlgorithm,
-    signAlgorithm,
+    distCryptoSpec,
+    publicKeyCryptoSpec,
     authPublicKey,
     entityPrivateKey
 }
@@ -319,7 +317,7 @@ options = {
 // Helper function for common code in handing session key response
 function processSessionKeyResp(options, sessionKeyRespBuf, distributionKeyVal, myNonce) {
     var ret = crypto.symmetricDecryptWithHash(sessionKeyRespBuf.getArray(),
-        distributionKeyVal.getArray(), options.distCipherAlgorithm, options.distHashAlgorithm);
+        distributionKeyVal.getArray(), options.distCryptoSpec);
     if (!ret.hashOk) {
         return {error: 'Received hash for session key resp is NOT ok'};
     }
@@ -340,14 +338,14 @@ function handleSessionKeyResp(options, obj, myNonce, callback, callbackParams) {
         var sessionKeyRespBuf = obj.payload.slice(512);
         var pubEncData = distKeyBuf.slice(0, 256).getArray();
         var signature = distKeyBuf.slice(256).getArray();
-        var verified = crypto.verifySignature(pubEncData, signature, options.authPublicKey, options.signAlgorithm);
+        var verified = crypto.verifySignature(pubEncData, signature, options.authPublicKey, options.publicKeyCryptoSpec.sign);
         if (!verified) {
             callback({error: 'Auth signature NOT verified'});
             return;
         }
         console.log('Auth signature verified');
         distKeyBuf = new buffer.Buffer(
-            crypto.privateDecrypt(pubEncData, options.entityPrivateKey, options.publicCipherAlgorithm));
+            crypto.privateDecrypt(pubEncData, options.entityPrivateKey, options.publicKeyCryptoSpec.cipher));
         var receivedDistKey = parseDistributionKey(distKeyBuf);
         var ret = processSessionKeyResp(options, sessionKeyRespBuf, receivedDistKey.val, myNonce);
         if (ret.error) {
@@ -388,6 +386,7 @@ function handleSessionKeyResp(options, obj, myNonce, callback, callbackParams) {
 };
 
 exports.sendSessionKeyReq = function(options, callback, callbackParams) {
+	options.publicKeyCryptoSpec = crypto.parsePublicKeyCryptoSpec(options.publicKeyCryptoSpec);
     var authClientSocket = new socket.SocketClient(options.authPort, options.authHost,
     {
         //'connectTimeout' : this.getParameter('connectTimeout'),
@@ -443,7 +442,7 @@ exports.sendSessionKeyReq = function(options, callback, callbackParams) {
 	            reqPayload = new buffer.Buffer(
 	            	crypto.publicEncryptAndSign(sessionKeyReqBuf.getArray(),
 	            	options.authPublicKey, options.entityPrivateKey,
-	            	options.publicCipherAlgorithm, options.signAlgorithm));
+	            	options.publicKeyCryptoSpec.cipher, options.publicKeyCryptoSpec.sign));
             }
             else {
                 console.log('distribution key available! ');
@@ -451,7 +450,7 @@ exports.sendSessionKeyReq = function(options, callback, callbackParams) {
                 var sessionKeyReqBuf = serializeSessionKeyReq(sessionKeyReq);
    				var encryptedSessionKeyReqBuf = new buffer.Buffer(
    					crypto.symmetricEncryptWithHash(sessionKeyReqBuf.getArray(), 
-   					options.distributionKey.val.getArray(), options.distCipherAlgorithm, options.distHashAlgorithm));
+   					options.distributionKey.val.getArray(), options.distCryptoSpec));
                 reqPayload = serializeSessionKeyReqWithDistributionKey(options.entityName,
                 		encryptedSessionKeyReqBuf)
             }
@@ -474,13 +473,22 @@ exports.sendSessionKeyReq = function(options, callback, callbackParams) {
 };
 
 ///////////////////////////////////////////////////////////////////
+////       List of available cryptography specifications       ////
+exports.symmetricCryptoSpecs = ['AES-128-CBC:SHA-256',
+'AES-192-CBC:SHA-256',
+'AES-128-GCM'
+];
+
+exports.publicKeyCryptoSpecs = ['RSA/ECB/PKCS1PADDING:SHA256withRSA'];
+
+
+///////////////////////////////////////////////////////////////////
 ////     Common socket class for entity server and client      ////
 
-var IoTSecureSocket = function(socket, sessionKey, cipherAlgorithm, hashAlgorithm) {
+var IoTSecureSocket = function(socket, sessionKey, sessionCryptoSpec) {
     this.socket = socket;
     this.sessionKey = sessionKey;
-    this.cipherAlgorithm = cipherAlgorithm;
-    this.hashAlgorithm = hashAlgorithm;
+    this.sessionCryptoSpec = sessionCryptoSpec;
     this.writeSeqNum = 0;
     this.readSeqNum = 0;
 };
@@ -511,7 +519,7 @@ IoTSecureSocket.prototype.send = function(data) {
     }
     var buf = serializeSessionMessage({seqNum: this.writeSeqNum, data: new buffer.Buffer(data)});
     var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
-        this.sessionKey.val.getArray(), this.cipherAlgorithm, this.hashAlgorithm));
+        this.sessionKey.val.getArray(), this.sessionCryptoSpec));
     this.writeSeqNum++;
     var msg = {
         msgType: msgType.SECURE_COMM_MSG,
@@ -531,7 +539,7 @@ IoTSecureSocket.prototype.receive = function(payload) {
         return {success: false, error: 'Session key expired!'};
     }
     var ret = crypto.symmetricDecryptWithHash(payload.getArray(),
-        this.sessionKey.val.getArray(), this.cipherAlgorithm, this.hashAlgorithm);
+        this.sessionKey.val.getArray(), this.sessionCryptoSpec);
     if (!ret.hashOk) {
         return {success: false, error: 'Received hash for secure comm msg is NOT ok'};
     }
@@ -562,8 +570,7 @@ options = {
     serverHost,
     serverPort,
     sessionKey = {val, absValidity},
-    sessionCipherAlgorithm,
-    sessionHashAlgorithm
+    sessionCryptoSpec
 }
 */
 /*
@@ -617,7 +624,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
         var handshake1 = {nonce: myNonce};
         var buf = serializeHandshake(handshake1);
         var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
-            options.sessionKey.val.getArray(), options.sessionCipherAlgorithm, options.sessionHashAlgorithm));
+            options.sessionKey.val.getArray(), options.sessionCryptoSpec));
         
         var keyIdBuf = new buffer.Buffer(SESSION_KEY_ID_SIZE);
         keyIdBuf.writeUIntBE(options.sessionKey.id, 0, SESSION_KEY_ID_SIZE);
@@ -667,7 +674,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
                 return;
             }
             var ret = crypto.symmetricDecryptWithHash(obj.payload.getArray(),
-                options.sessionKey.val.getArray(), options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
+                options.sessionKey.val.getArray(), options.sessionCryptoSpec);
             if (!ret.hashOk) {
                 eventHandlers.onError('Comm init failed: Received hash for handshake2 is NOT ok');
                 entityClientSocket.close();
@@ -685,7 +692,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
             var handshake3 = {replyNonce: theirNonce};
             buf = serializeHandshake(handshake3);
             var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
-                options.sessionKey.val.getArray(), options.sessionCipherAlgorithm, options.sessionHashAlgorithm));
+                options.sessionKey.val.getArray(), options.sessionCryptoSpec));
             var msg = {
                 msgType: msgType.SKEY_HANDSHAKE_3,
                 payload: encBuf
@@ -696,7 +703,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
             entityClientState = entityClientCommState.IN_COMM;
             // socket, sessionKey, cipherAlgorithm, hashAlgorithm
             iotSecureSocket = new IoTSecureSocket(entityClientSocket, options.sessionKey,
-                options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
+                options.sessionCryptoSpec);
             eventHandlers.onConnection(iotSecureSocket);
         }
         else if (obj.msgType == msgType.SECURE_COMM_MSG) {
@@ -742,8 +749,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
 /*
 options = {
     serverPort,
-    sessionCipherAlgorithm,
-    sessionHashAlgorithm
+    sessionCryptoSpec
 }
 */
 /*
@@ -817,7 +823,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
             var enc = handshake1Payload.slice(SESSION_KEY_ID_SIZE);
             entityServerSessionKey = sessionKey;
             var ret = crypto.symmetricDecryptWithHash(enc.getArray(), entityServerSessionKey.val.getArray(),
-                options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
+                options.sessionCryptoSpec);
             if (!ret.hashOk) {
                 eventHandlers.onServerError('Error during comm init - received hash for handshake 1 is NOT ok');
                 serverSocket.close();
@@ -836,7 +842,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
             var handshake2 = {nonce: myNonce, replyNonce: theirNonce};
             
             var encBuf = crypto.symmetricEncryptWithHash(serializeHandshake(handshake2).getArray(),
-                entityServerSessionKey.val.getArray(), options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
+                entityServerSessionKey.val.getArray(), options.sessionCryptoSpec);
             var msg = {
                 msgType: msgType.SKEY_HANDSHAKE_2,
                 payload: new buffer.Buffer(encBuf)
@@ -926,7 +932,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
                     return;
                 }
                 var ret = crypto.symmetricDecryptWithHash(obj.payload.getArray(), entityServerSessionKey.val.getArray(),
-                    options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
+                    options.sessionCryptoSpec);
                 if (!ret.hashOk) {
                     eventHandlers.onServerError('Error during comm init - received hash for handshake 3 is NOT ok, disconnecting...');
                     entityServerSocket.close();
@@ -945,7 +951,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
                 console.log('switching to IN_COMM state.');
                 entityServerState = entityServerCommState.IN_COMM;
                 iotSecureSocket = new IoTSecureSocket(entityServerSocket, entityServerSessionKey,
-                    options.sessionCipherAlgorithm, options.sessionHashAlgorithm);
+                    options.sessionCryptoSpec);
 
                 socketID = connectionCount++;
                 var socketInstance = {
