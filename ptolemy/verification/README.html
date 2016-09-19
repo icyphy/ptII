@@ -154,11 +154,17 @@ Install NuSMV by downloading from its <a href="http://nusmv.fbk.eu/#in_browser" 
 
 <p>For Mac OS X 10.8, see <a href="https://www.macupdate.com/app/mac/46133/nusmv#in_browser">https://www.macupdate.com/app/mac/46133/nusmv</a>.</p>
 
-<p>For Mac OS X 10.7, try <a href="https://www.macports.org/#in_browser">Mac Ports</a>.   After installing Mac Ports, try
+<p>For Mac OS X 10.7, try <a href="https://www.macports.org/#in_browser">Mac Ports</a>.   After installing Mac Ports, try</p>
 <pre>
 sudo port install nusmv
 </pre>
-This should create <code>/opt/local/bin/nusmv</code>.
+<p>This should create <code>/opt/local/bin/nusmv</code>.</p>
+
+<p>If the build fails, try</p>
+<pre>
+sudo port clean nusmv
+sudo port install nusmv configure.compiler=llvm-gcc-4.2
+</pre>
 
 <h2><a name="RED"></a>Installing REDLIB (RED 7.0)</h2>
 Install RED 7.0 by downloading from its <a href="http://sourceforge.net/projects/redlib/#in_browser" target="_top">website</a></p>
