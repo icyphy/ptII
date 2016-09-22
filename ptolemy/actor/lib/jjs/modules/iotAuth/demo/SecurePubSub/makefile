@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II IoTPublisher demo
+# Makefile for Ptolemy II SecurePubSub demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/iotAuth/demo/IoTPublisher
+ME =		ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub
 
 # Root of the Java directory
 ROOT =		../../../../../../../..
@@ -41,13 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	IoTPublisher
+PTPACKAGE = 	SecurePubSub
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	IoTPublisher.xml
+	SecurePubSub.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -78,10 +78,10 @@ demo: demo_ptolemy demo_vergil
 #_vergil:
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" IoTPublisher.xml
+	"$(PTII)/bin/ptolemy" SecurePubSub.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" IoTPublisher.xml
+	"$(PTII)/bin/vergil" SecurePubSub.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

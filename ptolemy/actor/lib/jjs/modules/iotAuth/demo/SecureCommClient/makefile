@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II IoTServer demo
+# Makefile for Ptolemy II SecureCommClient demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/iotAuth/demo/IoTServer
+ME =		ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommClient
 
 # Root of the Java directory
 ROOT =		../../../../../../../..
@@ -41,13 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	IoTServer
+PTPACKAGE = 	SecureCommClient
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	IoTServer.xml
+	SecureCommClient.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -78,10 +78,10 @@ demo: demo_ptolemy demo_vergil
 #_vergil:
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" IoTServer.xml
+	"$(PTII)/bin/ptolemy" SecureCommClient.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" IoTServer.xml
+	"$(PTII)/bin/vergil" SecureCommClient.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

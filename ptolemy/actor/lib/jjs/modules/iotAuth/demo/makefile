@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/iotAuth/demo
 
-DIRS =		IoTClient IoTServer IoTPublisher IoTSubscriber
+DIRS =		SecureCommClient SecureCommServer SecurePubSub
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -48,10 +48,9 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	IoTClient/IoTClient.jar \
-	IoTServer/IoTServer.jar \
-	IoTServer/IoTPublisher.jar \
-	IoTServer/IoTSubscriber.jar
+	SecureCommClient/SecureCommClient.jar \
+	SecureCommServer/SecureCommServer.jar \
+	SecurePubSub/SecurePubSub.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
