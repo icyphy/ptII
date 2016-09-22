@@ -38,6 +38,8 @@
 "use strict";
 
 var buffer = require('buffer');
+var crypto = require('crypto');
+var socket = require('socket');
 
 // Message types
 var msgType = {
@@ -282,8 +284,6 @@ var parseSessionMessage = function(buf) {
     return {seqNum: seqNum, data: data};
 };
 
-var crypto = require('crypto');
-
 ///////////////////////////////////////////////////////////////////
 ////            Wrapper functions for crypto module            ////
 
@@ -298,8 +298,6 @@ exports.loadPrivateKey = function(path) {
 ///////////////////////////////////////////////////////////////////
 ////           Functions for accessing Auth service            ////
 
-var socket = require('socket');
-
 /*
 options = {
     authHost,
@@ -308,16 +306,16 @@ options = {
     numKeysPerRequest,
     purpose,
     distributionKey = {val, absValidity},
-    distCryptoSpec,
+    distributionCryptoSpec,
     publicKeyCryptoSpec,
     authPublicKey,
     entityPrivateKey
 }
 */
 // Helper function for common code in handing session key response
-function processSessionKeyResp(options, sessionKeyRespBuf, distributionKeyVal, myNonce) {
+function processSessionKeyResponse(options, sessionKeyRespBuf, distributionKeyValue, myNonce) {
     var ret = crypto.symmetricDecryptWithHash(sessionKeyRespBuf.getArray(),
-        distributionKeyVal.getArray(), options.distCryptoSpec);
+        distributionKeyValue.getArray(), options.distributionCryptoSpec);
     if (!ret.hashOk) {
         return {error: 'Received hash for session key resp is NOT ok'};
     }
@@ -331,7 +329,7 @@ function processSessionKeyResp(options, sessionKeyRespBuf, distributionKeyVal, m
     return {sessionKeyList: sessionKeyResp.sessionKeyList};
 };
 
-function handleSessionKeyResp(options, obj, myNonce, callback, callbackParams) {
+function handleSessionKeyResponse(options, obj, myNonce, sessionKeyResponseCallback, callbackParameters) {
     if (obj.msgType == msgType.SESSION_KEY_RESP_WITH_DIST_KEY) {
         console.log('received session key response with distribution key attached!');
         var distKeyBuf = obj.payload.slice(0, 512);
@@ -340,52 +338,52 @@ function handleSessionKeyResp(options, obj, myNonce, callback, callbackParams) {
         var signature = distKeyBuf.slice(256).getArray();
         var verified = crypto.verifySignature(pubEncData, signature, options.authPublicKey, options.publicKeyCryptoSpec.sign);
         if (!verified) {
-            callback({error: 'Auth signature NOT verified'});
+            sessionKeyResponseCallback({error: 'Auth signature NOT verified'});
             return;
         }
         console.log('Auth signature verified');
         distKeyBuf = new buffer.Buffer(
             crypto.privateDecrypt(pubEncData, options.entityPrivateKey, options.publicKeyCryptoSpec.cipher));
         var receivedDistKey = parseDistributionKey(distKeyBuf);
-        var ret = processSessionKeyResp(options, sessionKeyRespBuf, receivedDistKey.val, myNonce);
+        var ret = processSessionKeyResponse(options, sessionKeyRespBuf, receivedDistKey.val, myNonce);
         if (ret.error) {
-            callback({error: ret.error});
+            sessionKeyResponseCallback({error: ret.error});
             return;
         }
-        callback({success: true}, receivedDistKey, ret.sessionKeyList, callbackParams);
+        sessionKeyResponseCallback({success: true}, receivedDistKey, ret.sessionKeyList, callbackParameters);
     }
     else if (obj.msgType == msgType.SESSION_KEY_RESP) {
         console.log('Received session key response encrypted with distribution key');
-        var ret = processSessionKeyResp(options, obj.payload, options.distributionKey.val, myNonce);
+        var ret = processSessionKeyResponse(options, obj.payload, options.distributionKey.val, myNonce);
         if (ret.error) {
-            callback({error: ret.error});
+            sessionKeyResponseCallback({error: ret.error});
             return;
         }
-        callback({success: true}, null, ret.sessionKeyList, callbackParams);
+        sessionKeyResponseCallback({success: true}, null, ret.sessionKeyList, callbackParameters);
     }
     else if (obj.msgType == msgType.AUTH_ALERT) {
         console.log('Received Auth alert!');
         var authAlert = parseAuthAlert(obj.payload);
         if (authAlert.code == authAlertCode.INVALID_DISTRIBUTION_KEY) {
-            callback({error: 'Received Auth alert due to invalid distribution key'});
+            sessionKeyResponseCallback({error: 'Received Auth alert due to invalid distribution key'});
             return;
         }
         else if (authAlert.code == authAlertCode.INVALID_SESSION_KEY_REQ_TARGET) {
-            callback({error: 'Received Auth alert due to invalid session key request target'});
+            sessionKeyResponseCallback({error: 'Received Auth alert due to invalid session key request target'});
             return;
         }
         else {
-            callback({error: 'Received Auth alert with unknown code :' + authAlert.code});
+            sessionKeyResponseCallback({error: 'Received Auth alert with unknown code :' + authAlert.code});
             return;
         }
     }
     else {
-        callback({error: 'Unknown message type :' + obj.msgType});
+        sessionKeyResponseCallback({error: 'Unknown message type :' + obj.msgType});
         return;
     }
 };
 
-exports.sendSessionKeyReq = function(options, callback, callbackParams) {
+exports.sendSessionKeyRequest = function(options, sessionKeyResponseCallback, callbackParameters) {
 	options.publicKeyCryptoSpec = crypto.parsePublicKeyCryptoSpec(options.publicKeyCryptoSpec);
     var authClientSocket = new socket.SocketClient(options.authPort, options.authHost,
     {
@@ -450,7 +448,7 @@ exports.sendSessionKeyReq = function(options, callback, callbackParams) {
                 var sessionKeyReqBuf = serializeSessionKeyReq(sessionKeyReq);
    				var encryptedSessionKeyReqBuf = new buffer.Buffer(
    					crypto.symmetricEncryptWithHash(sessionKeyReqBuf.getArray(), 
-   					options.distributionKey.val.getArray(), options.distCryptoSpec));
+   					options.distributionKey.val.getArray(), options.distributionCryptoSpec));
                 reqPayload = serializeSessionKeyReqWithDistributionKey(options.entityName,
                 		encryptedSessionKeyReqBuf)
             }
@@ -458,7 +456,7 @@ exports.sendSessionKeyReq = function(options, callback, callbackParams) {
             authClientSocket.send(toSend);
 		}
 		else {
-	    	handleSessionKeyResp(options, obj, myNonce, callback, callbackParams);
+	    	handleSessionKeyResponse(options, obj, myNonce, sessionKeyResponseCallback, callbackParameters);
 	    	authClientSocket.close();
 		}
     });
@@ -466,7 +464,7 @@ exports.sendSessionKeyReq = function(options, callback, callbackParams) {
     	console.log('disconnected from auth');
     });
     authClientSocket.on('error', function(message) {
-        callback({error: 'an error occurred in socket during session key request, details: ' + message});
+        sessionKeyResponseCallback({error: 'an error occurred in socket during session key request, details: ' + message});
         authClientSocket.close();
     });
 	authClientSocket.open();
@@ -569,7 +567,7 @@ IoTSecureSocket.prototype.inspect = function() {
 options = {
     serverHost,
     serverPort,
-    sessionKey = {val, absValidity},
+    sessionKey = {id, val, absValidity},
     sessionCryptoSpec
 }
 */
