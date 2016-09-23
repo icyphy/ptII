@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="IoTPublisher" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SecurePubSub" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -11,16 +11,30 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 35.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, -75.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={63, 66, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={92, 104, 1212, 796}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[978, 686]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.001812007978926">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{329.3454396802325, 7.166179142441848}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{413.8350665314253, 230.93237704599875}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for JavaScript MQTT publisher / subscriber.&#10;&#10;NOTE: The default assumes you have a broker server (e.g. mosquitto) running on 'localhost'.&#10;If you don't have a broker server, then try 'iot.eclipse.org' as the broker server address.&#10;It is an open and public broker server provided by the Paho project (https://eclipse.org/paho/).&#10;&#10;The publisher publishes a message every second.&#10;The subscriber unsubscribes after the 7th message arrives.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 385.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 530.0]">
+        </property>
     </property>
     <property name="PROJECT_PATH" class="ptolemy.data.expr.Parameter" value="&quot;/Users/hokeunkim/Development/iotauth/&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -38,15 +52,142 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 280.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To run this demo, an open-source local authorization entity (Auth) should be running.&#10;The Auth can be obtained in the github repository, https://github.com/iotauth/iotauth.&#10;&#10;NOTE2: The parameter PROJECT_PATH in this demo should be set to the repository directory of iotauth.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 305.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 135.0]">
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 205.0]">
         </property>
     </entity>
-    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&quot;use strict&quot;;&#10;&#10;var mqtt = require('mqtt');&#10;var iotAuth = require('iotAuth');&#10;&#10;exports.setup = function () {&#10;    // Inputs and outputs&#10;    this.input('toPublish');&#10;    // MQTT information&#10;    this.parameter('brokerHost', {&#10;        type: 'string',&#10;        value: ''&#10;    });&#10;    this.parameter('brokerPort', {&#10;        type : 'int',&#10;        value : 1883&#10;    });&#10;    this.parameter('topic', {&#10;        type: 'string',&#10;        value: ''&#10;    });&#10;    this.parameter('qosLevel', {&#10;        type: 'int',&#10;        value: 2&#10;    });&#10;    // Publisher information&#10;    this.parameter('entityName', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // For communication with Auth&#10;    this.parameter('authHost', {&#10;        type : 'string',&#10;        value : 'localhost'&#10;    });&#10;    this.parameter('authPort', {&#10;        value: -1,&#10;        type: 'int'&#10;    });&#10;    this.parameter('authCertPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('entityPrivateKeyPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Spec for communication with Auth&#10;    this.parameter('publicCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('signAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('distHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('numKeysPerRequest', {&#10;        value: 1,&#10;        type: 'int'&#10;    });&#10;    // For communication to subscribers&#10;    this.parameter('sessionCipherAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('sessionHashAlgorithm', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Publish type&#10;    this.parameter('publishType', {&#10;        type : 'string',&#10;        value : 'string',&#10;        options : ['string', 'image', 'byteArray']&#10;    });&#10;}&#10;var self;&#10;var mqttClient;&#10;&#10;// local variables&#10;var self;&#10;var publishType;&#10;var authPublicKey;&#10;var entityPrivateKey;&#10;var currentSecureClient = null;&#10;var currentDistributionKey = null;&#10;var currentSessionKeyList = [];&#10;var currentSessionKey = null;&#10;&#10;function sessionKeyRespCallback(status, distributionKey, sessionKeyList, callbackParams) {&#10;    if (status.error) {&#10;        console.log(status.error);&#10;        console.log('session key request failed...');&#10;        return;&#10;    }&#10;    console.log('session key request succeeded');&#10;&#10;    if (distributionKey) {&#10;        console.log('Updating to a new distribution key key');&#10;        currentDistributionKey = distributionKey;&#10;        console.log(currentDistributionKey);&#10;    }&#10;&#10;    console.log('received ' + sessionKeyList.length + ' session keys');&#10;    for (var i = 0; i &lt; sessionKeyList.length; i++) {&#10;        currentSessionKeyList.push(sessionKeyList[i]);&#10;    }&#10;    if (currentSessionKeyList.length &gt; 0) {&#10;    	currentSessionKey = currentSessionKeyList.shift();&#10;    }&#10;};&#10;&#10;exports.toPublishInputHandler = function () {&#10;    var toPublish = this.get('toPublish');&#10;&#10;    if (mqttClient.connected) {&#10;        mqttClient.publish(this.getParameter('topic'), toPublish,&#10;            {qos: this.getParameter('qosLevel')});&#10;    } else {&#10;        console.log('MQTT client is not connected. Discarding data.');&#10;    }&#10;};&#10;&#10;exports.initialize = function() {&#10;    self = this;&#10;    &#10;    currentSessionKey = null;&#10;    authPublicKey = iotAuth.loadPublicKey(this.getParameter('authCertPath'));&#10;    entityPrivateKey = iotAuth.loadPrivateKey(this.getParameter('entityPrivateKeyPath'));&#10;    publishType = this.getParameter('publishType');&#10;    &#10;    this.addInputHandler('toPublish', exports.toPublishInputHandler.bind(this));&#10;    mqttClient = mqtt.createClient(this.getParameter('brokerPort'), this.getParameter('brokerHost'));&#10;    mqttClient.start();&#10;    &#10;    var options = {&#10;        authHost: this.getParameter('authHost'),&#10;        authPort: this.getParameter('authPort'),&#10;        entityName: this.getParameter('entityName'),&#10;        numKeysPerRequest: this.getParameter('numKeysPerRequest'),&#10;        // this is different from Client&#10;        purpose: {pubTopic: this.getParameter('topic')},&#10;        distributionKey: currentDistributionKey,&#10;        distCipherAlgorithm: this.getParameter('distCipherAlgorithm'),&#10;        distHashAlgorithm: this.getParameter('distHashAlgorithm'),&#10;        publicCipherAlgorithm: this.getParameter('publicCipherAlgorithm'),&#10;        signAlgorithm: this.getParameter('signAlgorithm'),&#10;        authPublicKey: authPublicKey,&#10;        entityPrivateKey: entityPrivateKey&#10;    };&#10;    iotAuth.sendSessionKeyReq(options, sessionKeyRespCallback);&#10;}&#10;&#10;exports.wrapup = function() {&#10;    mqttClient.end();&#10;}&#10;">
+    <entity name="Expression" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="&quot;Published message: &quot; + count">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 215.0]">
+        </property>
+        <port name="count" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 215.0]">
+        </property>
+    </entity>
+    <entity name="Connection" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1055, 358, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[395.0, 20.0]">
+        </property>
+    </entity>
+    <entity name="Received" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={108, 245, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 80.0]">
+        </property>
+    </entity>
+    <entity name="ReceivedTopic" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 480, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 145.0]">
+        </property>
+    </entity>
+    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
+        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <doc>Create a sequence of tokens with increasing value</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, -20.0]">
+        </property>
+    </entity>
+    <entity name="Expression2" class="ptolemy.actor.lib.Expression">
+        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="count == 7">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+            </property>
+            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, -20.0]">
+        </property>
+        <port name="count" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="TrueGate" class="ptolemy.actor.lib.logic.TrueGate">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, -55.0]">
+        </property>
+        <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+    </entity>
+    <entity name="Error" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={470, 501, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[319.6875, 152.1875]">
+        </property>
+    </entity>
+    <entity name="Const" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Ptopic&quot;">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 55.0]">
+        </property>
+    </entity>
+    <entity name="Const2" class="ptolemy.actor.lib.Const">
+        <property name="value" class="ptolemy.data.expr.Parameter" value="&quot;Ptopic&quot;">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 90.0]">
+        </property>
+    </entity>
+    <entity name="Subscription" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={910, 450, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{405.0, 60.0}">
+        </property>
+    </entity>
+    <entity name="SecureSubscriber" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor is used for subscribing secure messages over MQTt protocol,&#10; *  using authorization service provided by a local authorization entity.&#10; *&#10; *  This accessor requires the 'iotAuth' and 'mqtt' modules.&#10; *&#10; *  @accessor net/SecureSubscriber&#10; *  TODO: populate inputs/outputs/parameters&#10; *&#10; *  @author Hokeun Kim&#10; *  @version $$Id$$&#10; */&#10; &#10;&quot;use strict&quot;;&#10;&#10;var iotAuth = require('iotAuth');&#10;var mqtt = require('mqtt');&#10;&#10;exports.setup = function () {&#10;    // Inputs and outputs&#10;    this.input('subscribe');&#10;    this.input('unsubscribe');&#10;    this.output('connection', {	&#10;    	spontaneous: true&#10;    });&#10;    this.output('subscription');&#10;    this.output('received', {&#10;    	spontaneous: true&#10;    });&#10;    this.output('receivedTopic');&#10;    // MQTT information&#10;    this.parameter('brokerHost', {&#10;        type: 'string',&#10;        value: ''&#10;    });&#10;    this.parameter('brokerPort', {&#10;        type : 'int',&#10;        value : 1883&#10;    });&#10;    this.parameter('qosLevel', {&#10;        type: 'int',&#10;        value: 0&#10;    });&#10;    &#10;    // Subscriber information&#10;    this.parameter('subscriberName', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // For communication with Auth&#10;    this.parameter('authHost', {&#10;        type : 'string',&#10;        value : 'localhost'&#10;    });&#10;    this.parameter('authPort', {&#10;        value: -1,&#10;        type: 'int'&#10;    });&#10;    this.parameter('authCertPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('subscriberPrivateKeyPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Spec for communication with Auth&#10;    this.parameter('publicKeyCryptoSpec', {&#10;        type: 'string',&#10;        options: iotAuth.publicKeyCryptoSpecs,&#10;        value: iotAuth.publicKeyCryptoSpecs[0]&#10;    });&#10;    this.parameter('distributionCryptoSpec', {&#10;        type: 'string',&#10;        options: iotAuth.symmetricCryptoSpecs,&#10;        value: iotAuth.symmetricCryptoSpecs[0]&#10;    });&#10;    // For communication with server&#10;    this.parameter('sessionCryptoSpec', {&#10;        type: 'string',&#10;        options: iotAuth.symmetricCryptoSpecs,&#10;        value: iotAuth.symmetricCryptoSpecs[0]&#10;    });&#10;}&#10;&#10;var self;&#10;var mqttClient;&#10;function onMessage(topic, data) {&#10;    self.send('received', data);&#10;    self.send('receivedTopic', topic);&#10;}&#10;&#10;function onConnect() {&#10;    self.send('connection', 'connected to broker');&#10;}&#10;&#10;exports.subscribeInputHandler = function () {&#10;    var topic = this.get('subscribe');&#10;    if (mqttClient.connected) {&#10;        mqttClient.subscribe(topic);&#10;        self.send('subscription', 'Topic: ' + topic + ' - subscribed');&#10;    }&#10;    else {&#10;        self.send('error', 'Client is not connected to broker, subscribe failed. Topic: ' + topic);&#10;    }&#10;};&#10;&#10;exports.unsubscribeInputHandler = function () {&#10;    var topic = this.get('unsubscribe');&#10;    if (mqttClient.connected) {&#10;        mqttClient.unsubscribe(topic);&#10;        self.send('subscription', 'Topic: ' + topic + ' - unsubscribed');&#10;    }&#10;    else {&#10;        self.send('error', 'Client is not connected to broker, unsubscribe failed. Topic: ' + topic);&#10;    }&#10;};&#10;&#10;exports.initialize = function() {&#10;    self = this;&#10;    this.addInputHandler('subscribe', exports.subscribeInputHandler.bind(this));&#10;    this.addInputHandler('unsubscribe', exports.unsubscribeInputHandler.bind(this));&#10;    mqttClient = mqtt.createClient(self.getParameter('brokerPort'), self.getParameter('brokerHost'));&#10;    mqttClient.on('connect', onConnect);&#10;    mqttClient.on('message', onMessage);&#10;    mqttClient.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;    mqttClient.end();&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -58,17 +199,13 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 60.0]">
         </property>
         <property name="brokerHost" class="ptolemy.data.expr.Parameter" value="localhost">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="topic" class="ptolemy.data.expr.Parameter" value="Ptopic">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="entityName" class="ptolemy.data.expr.Parameter" value="net1.ptPublisher">
+        <property name="subscriberName" class="ptolemy.data.expr.Parameter" value="net1.ptSubscriber">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -82,49 +219,107 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="entityPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/credentials/keys/net1/PtPublisherKey.der">
+        <property name="subscriberPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/credentials/keys/net1/PtSubscriberKey.der">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="publicCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="RSA/ECB/PKCS1PADDING">
+        <property name="publicKeyCryptoSpec" class="ptolemy.data.expr.Parameter" value="RSA/ECB/PKCS1PADDING:SHA256withRSA">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="signAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA256withRSA">
+        <property name="distributionCryptoSpec" class="ptolemy.data.expr.Parameter" value="AES-128-CBC:SHA-256">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="distCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="AES-128-CBC">
+        <property name="sessionCryptoSpec" class="ptolemy.data.expr.Parameter" value="AES-128-CBC:SHA-256">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="distHashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
+        <port name="subscribe" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="unsubscribe" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="connection" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="subscription" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="received" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="receivedTopic" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="SecurePublisher" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor is used for publishing secure messages over MQTt protocol,&#10; *  using authorization service provided by a local authorization entity.&#10; *&#10; *  This accessor requires the 'iotAuth' and 'mqtt' modules.&#10; *&#10; *  @accessor net/SecurePublisher&#10; *  TODO: populate inputs/outputs/parameters&#10; *&#10; *  @author Hokeun Kim&#10; *  @version $$Id$$&#10; */&#10; &#10;&quot;use strict&quot;;&#10;&#10;var iotAuth = require('iotAuth');&#10;var mqtt = require('mqtt');&#10;&#10;exports.setup = function () {&#10;    // Inputs and outputs&#10;    this.input('toPublish');&#10;    // MQTT information&#10;    this.parameter('brokerHost', {&#10;        type: 'string',&#10;        value: ''&#10;    });&#10;    this.parameter('brokerPort', {&#10;        type : 'int',&#10;        value : 1883&#10;    });&#10;    this.parameter('topic', {&#10;        type: 'string',&#10;        value: ''&#10;    });&#10;    this.parameter('qosLevel', {&#10;        type: 'int',&#10;        value: 2&#10;    });&#10;    // Publisher information&#10;    this.parameter('publisherName', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // For communication with Auth&#10;    this.parameter('authHost', {&#10;        type : 'string',&#10;        value : 'localhost'&#10;    });&#10;    this.parameter('authPort', {&#10;        value: -1,&#10;        type: 'int'&#10;    });&#10;    this.parameter('authCertPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    this.parameter('publisherPrivateKeyPath', {&#10;        value: '',&#10;        type: 'string'&#10;    });&#10;    // Spec for communication with Auth&#10;    this.parameter('publicKeyCryptoSpec', {&#10;        type: 'string',&#10;        options: iotAuth.publicKeyCryptoSpecs,&#10;        value: iotAuth.publicKeyCryptoSpecs[0]&#10;    });&#10;    this.parameter('distributionCryptoSpec', {&#10;        type: 'string',&#10;        options: iotAuth.symmetricCryptoSpecs,&#10;        value: iotAuth.symmetricCryptoSpecs[0]&#10;    });&#10;    this.parameter('numKeysPerRequest', {&#10;        value: 1,&#10;        type: 'int'&#10;    });&#10;    // For communication with server&#10;    this.parameter('sessionCryptoSpec', {&#10;        type: 'string',&#10;        options: iotAuth.symmetricCryptoSpecs,&#10;        value: iotAuth.symmetricCryptoSpecs[0]&#10;    });&#10;}&#10;var self;&#10;var mqttClient;&#10;exports.toPublishInputHandler = function () {&#10;    var toPublish = this.get('toPublish');&#10;&#10;    if (mqttClient.connected) {&#10;        mqttClient.publish(this.getParameter('topic'), toPublish,&#10;            {qos: this.getParameter('qosLevel')});&#10;    } else {&#10;        console.log('MQTT client is not connected. Discarding data.');&#10;    }&#10;};&#10;&#10;exports.initialize = function() {&#10;    self = this;&#10;    this.addInputHandler('toPublish', exports.toPublishInputHandler.bind(this));&#10;    mqttClient = mqtt.createClient(this.getParameter('brokerPort'), this.getParameter('brokerHost'));&#10;    mqttClient.start();&#10;}&#10;&#10;exports.wrapup = function() {&#10;    mqttClient.end();&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 215.0]">
+        </property>
+        <property name="brokerHost" class="ptolemy.data.expr.Parameter" value="localhost">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="numKeysPerRequest" class="ptolemy.data.expr.Parameter" value="3">
-        </property>
-        <property name="targetServerGroup" class="ptolemy.data.expr.Parameter" value="">
+        <property name="topic" class="ptolemy.data.expr.Parameter" value="Ptopic">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="sessionCipherAlgorithm" class="ptolemy.data.expr.Parameter" value="AES-128-CBC">
+        <property name="publisherName" class="ptolemy.data.expr.Parameter" value="net1.ptPublisher">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="sessionHashAlgorithm" class="ptolemy.data.expr.Parameter" value="SHA-256">
+        <property name="authHost" class="ptolemy.data.expr.Parameter" value="localhost">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="string">
+        <property name="authPort" class="ptolemy.data.expr.Parameter" value="21900">
+        </property>
+        <property name="authCertPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/auth_certs/Auth101EntityCert.pem">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="sendType" class="ptolemy.data.expr.Parameter" value="string">
+        <property name="publisherPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/credentials/keys/net1/PtPublisherKey.der">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="publishType" class="ptolemy.data.expr.Parameter" value="string">
+        <property name="publicKeyCryptoSpec" class="ptolemy.data.expr.Parameter" value="RSA/ECB/PKCS1PADDING:SHA256withRSA">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="distributionCryptoSpec" class="ptolemy.data.expr.Parameter" value="AES-128-CBC:SHA-256">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="sessionCryptoSpec" class="ptolemy.data.expr.Parameter" value="AES-128-CBC:SHA-256">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -134,4 +329,91 @@
             </property>
         </port>
     </entity>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[450.0, 75.0]">
+        </vertex>
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[245.0, -40.0]">
+        </vertex>
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[70.0, -40.0]">
+        </vertex>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[350.0, 40.0]">
+        </vertex>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[100.0, -5.0]">
+        </vertex>
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[350.0, -5.0]">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="DiscreteClock.output" relation="relation4"/>
+    <link port="Expression.output" relation="relation3"/>
+    <link port="Expression.count" relation="relation2"/>
+    <link port="Ramp.output" relation="relation2"/>
+    <link port="Ramp.trigger" relation="relation4"/>
+    <link port="Connection.input" relation="relation6"/>
+    <link port="Received.input" relation="relation7"/>
+    <link port="ReceivedTopic.input" relation="relation15"/>
+    <link port="Ramp2.output" relation="relation5"/>
+    <link port="Ramp2.trigger" relation="relation7"/>
+    <link port="Expression2.output" relation="relation8"/>
+    <link port="Expression2.count" relation="relation5"/>
+    <link port="TrueGate.input" relation="relation8"/>
+    <link port="TrueGate.output" relation="relation9"/>
+    <link port="Error.input" relation="relation16"/>
+    <link port="Const.output" relation="relation"/>
+    <link port="Const.trigger" relation="relation10"/>
+    <link port="Const2.output" relation="relation11"/>
+    <link port="Const2.trigger" relation="relation13"/>
+    <link port="Subscription.input" relation="relation14"/>
+    <link port="SecureSubscriber.error" relation="relation16"/>
+    <link port="SecureSubscriber.subscribe" relation="relation"/>
+    <link port="SecureSubscriber.unsubscribe" relation="relation11"/>
+    <link port="SecureSubscriber.connection" relation="relation6"/>
+    <link port="SecureSubscriber.subscription" relation="relation14"/>
+    <link port="SecureSubscriber.received" relation="relation7"/>
+    <link port="SecureSubscriber.receivedTopic" relation="relation15"/>
+    <link port="SecurePublisher.toPublish" relation="relation3"/>
+    <link relation1="relation9" relation2="relation13"/>
+    <link relation1="relation6" relation2="relation12"/>
+    <link relation1="relation10" relation2="relation12"/>
 </entity>

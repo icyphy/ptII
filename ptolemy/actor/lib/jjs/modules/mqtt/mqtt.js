@@ -47,7 +47,7 @@ module.exports.createClient = function (port, host, options) {
 
 ////////////////////
 // Convert data fromat from binary array to string.
-module.exports.binToStr = function (data) {
+module.exports.byteArrayToString = function (data) {
     var result = "";
     for (var i = 0; i < data.length; i++) {
         result += String.fromCharCode(data[i]);

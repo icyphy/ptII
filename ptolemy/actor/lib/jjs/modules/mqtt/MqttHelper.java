@@ -156,7 +156,7 @@ public class MqttHelper extends HelperBase {
                         throws Exception {
                     // TODO: Process differently depending on types
                     _currentObj.callMember("emit", "message", topic,
-                            new String(message.getPayload()));
+                            _toJSArray(message.getPayload()));
                 }
     
                 @Override

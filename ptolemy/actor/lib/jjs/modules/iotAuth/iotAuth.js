@@ -983,3 +983,120 @@ exports.initializeSecureServer = function(options, eventHandlers) {
     entityServer.start();
     return entityServer;
 };
+
+
+///////////////////////////////////////////////////////////////////
+////          Functions for secure publish-subscribe           ////
+
+/*
+    SecurePublishedMessage Format
+    {
+        keyId: /UIntBE/, // S_KEY_ID_SIZE Bytes - in plain text
+        seqNum: /UIntBE/, SEQ_NUM_SIZE Bytes - encrypted
+        data: /Buffer/, // data - encrypted
+    }
+*/
+/*
+    cryptoSpec          // 'cipher:hash'
+*/
+/*
+    message = {
+        sequenceNum,    // Integer
+        data            // Buffer
+}
+*/
+exports.encryptSecureMessageToPublish = function(message, cryptoSpec, sessionKey) {
+    var buf = serializeSessionMessage(
+        {seqNum: message.sequenceNum, data: new buffer.Buffer(message.data)});
+    var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
+        this.sessionKey.val.getArray(), cryptoSpec));
+
+
+    var keyIdBuf = new buffer.Buffer(SESSION_KEY_ID_SIZE);
+    keyIdBuf.writeUIntBE(sessionKey.id, 0, SESSION_KEY_ID_SIZE);
+    var msg = {
+        msgType: msgType.SECURE_PUB,
+        payload: buffer.concat([keyIdBuf, encBuf])
+    };
+    return exports.serializeIoTSP(msg).getArray();
+    /*
+    if (message.sequenceNum == undefined || obj.data == undefined) {
+        console.log('Error: SecureMqtt seqNum or data is missing.');
+        return;
+    }
+    var seqNumBuf = new Buffer(SEQ_NUM_SIZE);
+    seqNumBuf.writeUIntBE(obj.seqNum, 0, SEQ_NUM_SIZE);
+    var buf = Buffer.concat([seqNumBuf, obj.data]);
+    var encBuf = exports.encryptSessionMessage(buf, sessionKey.val);
+    var keyIdBuf = new Buffer(common.S_KEY_ID_SIZE);
+    keyIdBuf.writeUIntBE(sessionKey.id, 0, common.S_KEY_ID_SIZE);
+
+    var buf = common.serializeIoTSP({
+        msgType: msgType.SECURE_PUB,
+        payload: Buffer.concat([keyIdBuf, encBuf])
+    });
+
+    return buf;
+    */
+    /*
+    var buf = serializeSessionMessage({seqNum: this.writeSeqNum, data: new buffer.Buffer(data)});
+    var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
+        this.sessionKey.val.getArray(), this.sessionCryptoSpec));
+    this.writeSeqNum++;
+    var msg = {
+        msgType: msgType.SECURE_COMM_MSG,
+        payload: encBuf
+    };
+    var toSend = exports.serializeIoTSP(msg).getArray();
+    this.socket.send(toSend);
+    */
+};
+
+exports.getKeyIdOfSecurePublishedMessage = function(rawData) {
+    var buf = new buffer.Buffer(rawData);
+
+    var obj = exports.parseIoTSP(buf);
+    if (obj.msgType != msgType.SECURE_PUB) {
+        return {success: false, error: 'Not a secure published message'};
+    }
+    var keyId = obj.payload.readUIntBE(0, SESSION_KEY_ID_SIZE);
+    return {success: true, keyId: keyId, encryptedMessage: obj.payload.slice(SESSION_KEY_ID_SIZE)};
+};
+
+exports.decryptSecurePublishedMessage = function(encryptedMessage, cryptoSpec, sessionKey) {
+    var ret = crypto.symmetricDecryptWithHash(encryptedMessage.getArray(),
+        sessionKey.val.getArray(), cryptoSpec);
+    if (!ret.hashOk) {
+        return {success: false, error: 'Received hash for secure comm msg is NOT ok'};
+    }
+    console.log('Received hash for secure published message is ok');
+    var buf = new buffer.Buffer(ret.data);
+    ret = parseSessionMessage(buf);
+    return {success: true, message: {sequenceNum: ret.seqNum, data: ret.data}};
+
+    /*
+
+    if (!this.socket) {
+        return {success: false, error: 'Internal socket is not available'};
+    }
+    if (!this.checkSessionKeyValidity()) {
+        return {success: false, error: 'Session key expired!'};
+    }
+    var ret = crypto.symmetricDecryptWithHash(payload.getArray(),
+        this.sessionKey.val.getArray(), this.sessionCryptoSpec);
+    if (!ret.hashOk) {
+        return {success: false, error: 'Received hash for secure comm msg is NOT ok'};
+    }
+    console.log('Received hash for secure comm msg is ok');
+    var buf = new buffer.Buffer(ret.data);
+    ret = parseSessionMessage(buf);
+    
+    if (ret.seqNum != this.readSeqNum) {
+        return {success: false, error: 'seqNum does not match! expected: ' + this.readSeqNum + ' received: ' + ret.seqNum};
+    }
+    this.readSeqNum++;
+    console.log('Received seqNum: ' + ret.seqNum);
+    return {success: true, data: ret.data};
+    */
+};
+
