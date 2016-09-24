@@ -45,6 +45,7 @@ import org.eclipse.paho.client.mqttv3.persist.MemoryPersistence;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
+import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// WebSocketHelper
@@ -116,13 +117,14 @@ public class MqttHelper extends HelperBase {
          * @exception MqttException
          */
         public MqttClientWrapper(ScriptObjectMirror currentObj,
-                int port, String host, String clientId) throws MqttException {
+                int port, String host, String clientId, boolean rawBytes) throws MqttException {
             _currentObj = currentObj;
     
             MemoryPersistence persistence = new MemoryPersistence();
             String hostUrl = "tcp://" + host + ":" + port;
     
             _mqttClient = new MqttAsyncClient(hostUrl, clientId, persistence);
+            _rawBytes = rawBytes;
             _connOpts = new MqttConnectOptions();
             _connOpts.setCleanSession(true);
         }
@@ -155,8 +157,14 @@ public class MqttHelper extends HelperBase {
                 public void messageArrived(String topic, MqttMessage message)
                         throws Exception {
                     // TODO: Process differently depending on types
-                    _currentObj.callMember("emit", "message", topic,
-                            _toJSArray(message.getPayload()));
+                    Object messageObject;
+                    if (_rawBytes) {
+                        messageObject = _toJSArray(message.getPayload());
+                    }
+                    else {
+                        messageObject = new String(message.getPayload());
+                    }
+                    _currentObj.callMember("emit", "message", topic, messageObject);
                 }
     
                 @Override
@@ -181,11 +189,18 @@ public class MqttHelper extends HelperBase {
          *  @param retain Whether the sever should hold on the message after it has been delivered to
          *  current subscribers so that a newly incoming subscriber can receive the message later.
          *  @exception MqttException If the publish fails.
+         *  @throws IllegalActionException 
          */
-        public void publish(String topic, String message, Integer qos,
-                boolean retain) throws MqttException {
-            byte[] payload = message.getBytes();
-    
+        public void publish(String topic, Object message, Integer qos,
+                boolean retain) throws MqttException, IllegalActionException {
+            byte[] payload;
+            if (_rawBytes) {
+                payload = _toJavaBytes(message);
+            }
+            else {
+                payload = ((String)message).getBytes();
+            }
+            
             MqttMessage mqttMessage = new MqttMessage(payload);
     
             mqttMessage.setQos(qos);
@@ -244,7 +259,10 @@ public class MqttHelper extends HelperBase {
          * Private constructor for WebSocketHelper with a server-side web socket.
          * The server-side web socket is given from the web socket server.
          */
-    
+
+        /** Whether to use raw bytes or string for data to be published. */
+        private boolean _rawBytes;
+        
         /** The current instance of the JavaScript module. */
         private ScriptObjectMirror _currentObj;
     

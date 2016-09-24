@@ -49,7 +49,7 @@ exports.Buffer = function(param) {
 		this.array = new Array(param.length);
 		for (var i = 0; i < this.array.length; i++) {
 			if (typeof param[i] !== 'number') {
-				throw 'Unsupported type of array for initializing Buffer!';
+				throw 'Unsupported type of array for initializing Buffer! - Array but not number!';
 			}
 			this.array[i] = (param[i] & 255);
 		}
