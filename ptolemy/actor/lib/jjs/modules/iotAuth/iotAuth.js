@@ -618,7 +618,6 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
     entityClientSocket.on('open', function() {
         console.log('connected to server');
         myNonce = new buffer.Buffer(crypto.randomBytes(HANDSHAKE_NONCE_SIZE));
-        console.log('chosen nonce: ' + myNonce.inspect());
         var handshake1 = {nonce: myNonce};
         var buf = serializeHandshake(handshake1);
         var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
@@ -833,7 +832,6 @@ exports.initializeSecureServer = function(options, eventHandlers) {
             var handshake1 = parseHandshake(buf);
             
             myNonce = new buffer.Buffer(crypto.randomBytes(HANDSHAKE_NONCE_SIZE));
-            console.log('chosen nonce: ' + myNonce.inspect());
             
             var theirNonce = handshake1.nonce;
             
@@ -1009,7 +1007,7 @@ exports.encryptSecureMessageToPublish = function(message, cryptoSpec, sessionKey
     var buf = serializeSessionMessage(
         {seqNum: message.sequenceNum, data: new buffer.Buffer(message.data)});
     var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
-        this.sessionKey.val.getArray(), cryptoSpec));
+        sessionKey.val.getArray(), cryptoSpec));
 
 
     var keyIdBuf = new buffer.Buffer(SESSION_KEY_ID_SIZE);
@@ -1072,7 +1070,7 @@ exports.decryptSecurePublishedMessage = function(encryptedMessage, cryptoSpec, s
     console.log('Received hash for secure published message is ok');
     var buf = new buffer.Buffer(ret.data);
     ret = parseSessionMessage(buf);
-    return {success: true, message: {sequenceNum: ret.seqNum, data: ret.data}};
+    return {success: true, sequenceNum: ret.seqNum, message: ret.data.getArray()};
 
     /*
 

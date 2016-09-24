@@ -74,7 +74,11 @@ function Client(port, host, options) {
         options.clientId = MqttHelper.getDefaultId();
     }
 
-    this.javaClient = new MqttHelper.MqttClientWrapper(helper, this, port, host, options.clientId);
+    if (options.rawBytes == null) {
+        options.rawBytes = false;
+    }
+
+    this.javaClient = new MqttHelper.MqttClientWrapper(helper, this, port, host, options.clientId, options.rawBytes);
 
     // When "use strict" was added, the following exception occurred because of this.connected = undefined.
     //
