@@ -383,7 +383,20 @@ public class JSAccessor extends JavaScript {
                             + _commands + "\n"
                             + "The output was: " + exec.buffer);
                 } else {
-                    MessageHandler.status("Could not update the accessors repository. Using local version.");
+		    String message = "Could not update the accessors repository. Using local version.";
+		    if (exec.buffer.toString().indexOf("Unable to conect to a repository") != -1
+			|| exec.buffer.toString().indexOf("No more credentials or we tried too many times.") != -1) {
+			String osName = StringUtilities.getProperty("os.name");
+			if (osName.startsWith("Mac OS X")) {
+			    message += "  Under Mac OS X, this can occur if the svn " +
+				"command does not have access to your keychain. " +
+				"One possible solution is reboot and run the command " +
+				"by hand.  A dialog will pop up asking if the svn " +
+				"command should have access to the keychain. " +
+				"Select 'Always' and rerun the demo.";
+			}
+		    } 
+		    MessageHandler.status(message);
                 }
             }
         } catch (Throwable throwable) {
