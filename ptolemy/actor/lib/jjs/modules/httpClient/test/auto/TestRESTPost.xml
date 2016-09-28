@@ -44,6 +44,12 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, 40.0]">
         </property>
     </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The test site returns, among other things, &#10;the host's IP address. Delete this since it&#10;varies among machines.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 185.0]">
+        </property>
+    </property>
     <entity name="TestSpontaneousOnce" class="org.terraswarm.accessor.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Test accessor that spontaneously produces outputs once.&#10;//&#10;// Copyright (c) 2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Test accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor test/TestSpontaneousOnce&#10; *  @parameter interval The interval before the output in milliseconds.&#10; *  @output output Output for the counting sequence, of type number.&#10; *  @author Christopher Brooks. Based on TestSpontaneous by Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;exports.setup = function() {&#10;    this.parameter('interval', {'type':'number', 'value':1000});&#10;    this.output('output', {'type': 'number'});&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;var count = 0;&#10;&#10;exports.initialize = function() {&#10;    count = 0;&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;    handle = setTimeout(function() {&#10;        thiz.send('output', count++);&#10;    }, this.getParameter('interval'));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (handle) {&#10;        clearTimeoutInterval(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
@@ -156,13 +162,13 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[348.974609375, 97.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 130.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[&quot;{\n  \&quot;args\&quot;: {}, \n  \&quot;data\&quot;: \&quot;test\&quot;, \n  \&quot;files\&quot;: {}, \n  \&quot;form\&quot;: {}, \n  \&quot;headers\&quot;: {\n    \&quot;Content-Length\&quot;: \&quot;4\&quot;, \n    \&quot;Host\&quot;: \&quot;httpbin.org\&quot;\n  }, \n  \&quot;json\&quot;: null, \n  \&quot;origin\&quot;: \&quot;98.16.82.40\&quot;, \n  \&quot;url\&quot;: \&quot;http://httpbin.org/post\&quot;\n}\n&quot;]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[&quot;{\n  \&quot;args\&quot;: {}, \n  \&quot;data\&quot;: \&quot;test\&quot;, \n  \&quot;files\&quot;: {}, \n  \&quot;form\&quot;: {}, \n  \&quot;headers\&quot;: {\n    \&quot;Content-Length\&quot;: \&quot;4\&quot;, \n    \&quot;Host\&quot;: \&quot;httpbin.org\&quot;\n  }, \n  \&quot;json\&quot;: null, \n  \&quot;url\&quot;: \&quot;http://httpbin.org/post\&quot;\n}\n&quot;]">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
@@ -203,19 +209,49 @@
             <property name="input"/>
         </port>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="RemoveIPAddress" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Remove IP address from response.&#10; *&#10; *  @accessor RemoveIPAddress&#10; *  @input input Remove IP address portion of the response.&#10; *  @output output The HTTP response without the IP address.&#10; *  @author Elizabeth Osyk&#10; *  @version $$Id$$&#10; */&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.output('output');&#10;};&#10;&#10;exports.initialize = function() {&#10;    var self = this;&#10;    this.addInputHandler('input', function() {&#10;       var data = self.get('input');&#10;       // Remove the &quot;origin&quot; (i.e. IP address) since this will differ per machine&#10;       var start = data.indexOf(&quot;origin&quot;);&#10;       var end;&#10;       var result = data;&#10;       if (start &gt;= 0) {&#10;       	  end = data.indexOf(&quot;url&quot;);&#10;       	  result = data.substring(0, start) + data.substring(end, data.length);&#10;       }&#10;	   self.send('output', result);&#10;    });&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{340.0, 130.0}">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[103.974609375, 117.5]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="TestSpontaneousOnce.output" relation="relation3"/>
     <link port="REST.trigger" relation="relation3"/>
     <link port="REST.body" relation="relation"/>
-    <link port="REST.response" relation="relation2"/>
+    <link port="REST.response" relation="relation5"/>
     <link port="TrainableTest.input" relation="relation2"/>
     <link port="String.output" relation="relation"/>
     <link port="String.trigger" relation="relation3"/>
+    <link port="RemoveIPAddress.output" relation="relation2"/>
+    <link port="RemoveIPAddress.input" relation="relation5"/>
 </entity>
