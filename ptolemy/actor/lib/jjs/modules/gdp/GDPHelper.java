@@ -35,6 +35,7 @@ import org.terraswarm.gdp.GDP_GCL;
 import org.terraswarm.gdp.GDP_NAME;
 
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.nio.charset.StandardCharsets;
@@ -73,6 +74,37 @@ public class GDPHelper {
     public GDPHelper(String logName, int ioMode, String logdname) throws GDPException {
         // The GDP_GCL constructor calls the gdp_init() C function for us.
         System.out.println("GDPHelper.GDPHelper(" + logName + ", " + ioMode + ", " + logdname + "): ");
+
+
+        // If we are running under RHEL, update jna.library.path to include
+        // $PTII/lib/gdp-0.7-0.jar!/linux-x86-64-rhel/libgdp.0.7.so'
+
+        // The reason we have to do this is because if the GDP is
+        // compiled with Zeroconf support (avahi), then the Ubuntu
+        // shared library will require a more recent version of GLIBC.
+        // We will see: java.lang.UnsatisfiedLinkError:
+        // /lib64/libc.so.6: version `GLIBC_2.14' not found
+
+        // We can't use the RHEL version of the GDP library under
+        // Ubuntu because libcrypto and libssl are different.  See
+        // gdp/lang/js/gdpjs/gdpjs.js
+
+        // To test this, run
+        // export JAVAFLAGS='-Djna.debug_load=true'
+        // $PTII/bin/ptinvoke ptolemy.moml.MoMLSimpleApplication $PTII/ptolemy/actor/lib/jjs/modules/gdp/test/auto/GDPLogCreateAppendReadJS.xml
+
+        if (new File("/etc/redhat-release").exists()) {
+            String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
+            String gdpLibraryPath = ptII + "/lib/linux-x86-64-rhel/";
+            String jnaLibraryPath = StringUtilities.getProperty("jna.library.path").trim(); 
+            if (jnaLibraryPath.length() > 0) {
+                jnaLibraryPath += File.pathSeparator + gdpLibraryPath;
+            } else {
+                jnaLibraryPath = gdpLibraryPath;
+            }
+            System.setProperty("jna.library.path", jnaLibraryPath);
+            System.out.println("GDPHelper: Updated jna.library.path to " + jnaLibraryPath);
+        }
 
 	// Update ~/.ep_adm_params/gdp according to the value of logdname.
 	String swarmGdpRouters = "swarm.gdp.routers=gdp-03.eecs.berkeley.edu; gdp-02.eecs.berkeley.edu";
