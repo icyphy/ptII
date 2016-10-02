@@ -14,12 +14,11 @@
         <classpathentry kind="lib" path="lib/chic.jar"/>
         <classpathentry kind="lib" path="lib/diva.jar"/>
         <classpathentry kind="lib" path="lib/g4ltl.jar"/>
-        <classpathentry kind="lib" path="lib/gdp-0.6-1.jar"/>
-        <classpathentry kind="lib" path="lib/hazelcast-3.2.3.jar"/>
-        <classpathentry kind="lib" path="lib/jackson-annotations-2.2.2.jar"/>
-        <classpathentry kind="lib" path="lib/jackson-core-2.2.2.jar"/>
-        <classpathentry kind="lib" path="lib/jackson-databind-2.2.2.jar"/>
-        <classpathentry kind="lib" path="lib/java-xmlhttprequest-20140923.jar"/>
+        <classpathentry kind="lib" path="lib/gdp-0.7-0.jar"/>
+        <classpathentry kind="lib" path="lib/hazelcast-3.5.2.jar"/>
+        <classpathentry kind="lib" path="lib/jackson-annotations-2.6.0.jar"/>
+        <classpathentry kind="lib" path="lib/jackson-core-2.6.1.jar"/>
+        <classpathentry kind="lib" path="lib/jackson-databind-2.6.1.jar"/>
         <classpathentry kind="lib" path="lib/java_cup.jar"/>
         <classpathentry kind="lib" path="lib/javax.mail.jar"/>
         <classpathentry kind="lib" path="lib/javax.servlet-api-3.0.1.jar"/>
@@ -39,7 +38,12 @@
         <classpathentry kind="lib" path="lib/matlabMacOSX.jar"/>
         <classpathentry kind="lib" path="lib/matlabSunOS.jar"/>
         <classpathentry kind="lib" path="lib/matlabWindows.jar"/>
-        <classpathentry kind="lib" path="lib/netty-all-4.0.21.Final.jar"/>
+        <classpathentry kind="lib" path="lib/netty-buffer-4.0.33.Final.jar"/>
+        <classpathentry kind="lib" path="lib/netty-codec-4.0.33.Final.jar"/>
+        <classpathentry kind="lib" path="lib/netty-codec-http-4.0.33.Final.jar"/>
+        <classpathentry kind="lib" path="lib/netty-common-4.0.33.Final.jar"/>
+        <classpathentry kind="lib" path="lib/netty-handler-4.0.33.Final.jar"/>
+        <classpathentry kind="lib" path="lib/netty-transport-4.0.33.Final.jar"/>
         <classpathentry kind="lib" path="lib/ojdcheck.jar"/>
         <classpathentry kind="lib" path="lib/org-netbeans-api-visual.jar"/>
         <classpathentry kind="lib" path="lib/org-openide-util-lookup.jar"/>
@@ -53,8 +57,6 @@
         <classpathentry kind="lib" path="lib/ptCal.jar"/>
         <classpathentry kind="lib" path="lib/ptcolt.jar"/>
         <classpathentry kind="lib" path="lib/ptjacl.jar"/>
-        <classpathentry kind="lib" path="lib/rxtxMacOSX.jar"/>
-        <classpathentry kind="lib" path="lib/rxtxWindows.jar"/>
         <classpathentry kind="lib" path="lib/saxon8-dom.jar"/>
         <classpathentry kind="lib" path="lib/saxon8.jar"/>
         <classpathentry kind="lib" path="lib/smack.jar"/>
@@ -62,12 +64,9 @@
         <classpathentry kind="lib" path="lib/socketio.jar"/>
         <classpathentry kind="lib" path="lib/sootclasses.jar"/>
 	<classpathentry kind="lib" path="lib/svgSalamander.jar"/>
-        <classpathentry kind="lib" path="lib/vertx-core-2.1.5.jar"/>
-        <classpathentry kind="lib" path="lib/vertx-hazelcast-2.1.5.jar"/>
-        <classpathentry kind="lib" path="lib/vertx-platform-2.1.5.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-core-3.2.0.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-hazelcast-3.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/webcam-capture-0.3.10.jar"/>
-
-
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-core.jar"/>
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-ext.jar"/>
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/sun-util.jar"/>
