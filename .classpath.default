@@ -44,6 +44,7 @@
         <classpathentry kind="lib" path="lib/netty-common-4.0.33.Final.jar"/>
         <classpathentry kind="lib" path="lib/netty-handler-4.0.33.Final.jar"/>
         <classpathentry kind="lib" path="lib/netty-transport-4.0.33.Final.jar"/>
+        <classpathentry kind="lib" path="lib/nrjavaserial-3.11.0.devel.jar"/>
         <classpathentry kind="lib" path="lib/ojdcheck.jar"/>
         <classpathentry kind="lib" path="lib/org-netbeans-api-visual.jar"/>
         <classpathentry kind="lib" path="lib/org-openide-util-lookup.jar"/>
@@ -64,9 +65,16 @@
         <classpathentry kind="lib" path="lib/socketio.jar"/>
         <classpathentry kind="lib" path="lib/sootclasses.jar"/>
 	<classpathentry kind="lib" path="lib/svgSalamander.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-codegen-3.2.0.jar"/>
         <classpathentry kind="lib" path="lib/vertx-core-3.2.0.jar"/>
         <classpathentry kind="lib" path="lib/vertx-hazelcast-3.2.0.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-lang-groovy-3.2.0.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-lang-js-3.2.0.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-lang-ruby-3.2.0.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-service-proxy-3.2.0.jar"/>
+        <classpathentry kind="lib" path="lib/vertx-web-3.2.0.jar"/>
 	<classpathentry kind="lib" path="lib/webcam-capture-0.3.10.jar"/>
+        <classpathentry kind="lib" path="lib/xbjlib-1.1.0.nrjavaserial.jar"/>
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-core.jar"/>
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-ext.jar"/>
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/sun-util.jar"/>
