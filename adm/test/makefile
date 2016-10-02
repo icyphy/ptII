@@ -50,6 +50,7 @@ JSRCS =
 # Non-graphical Java tests written in Tcl
 JSIMPLE_TESTS = \
 	ant.tcl \
+	checkClasspathDefault.tcl \
 	Coverity.tcl \
 	license.tcl \
 	Nightly.tcl \
@@ -98,6 +99,10 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) alljtests.tcl \
 
 chktestdir:
 	@$(ROOT)/adm/bin/chktestdir | sort
+
+# Check that .classpath.default refers to jar files that exist
+checkClasspathDefault:
+	(cd $(PTII); ls `grep classpathentry $(PTII)/.classpath.default | grep -v 'To update' |  sed 's/.*path="\([^"]*\)".*/\1/' | grep /`) > /dev/null
 
 # Check the demos for demos that have $PTII in them.
 # Ignore <property name="script" lines like what's in WebSocketImage.xml
