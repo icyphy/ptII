@@ -104,6 +104,16 @@ chktestdir:
 checkClasspathDefault:
 	(cd $(PTII); ls `grep classpathentry $(PTII)/.classpath.default | grep -v 'To update' |  sed 's/.*path="\([^"]*\)".*/\1/' | grep /`) > /dev/null
 
+# Check that .classpath.default includes most of the jar files in $PTII/lib.
+checkClasspathDefaultMissing:
+	(MISSING1=/tmp/checkClasspathDefaultMissing.1.$$$$; \
+	MISSING2=/tmp/checkClasspathDefaultMissing.2.$$$$; \
+	(cd $(PTII); ls `grep classpathentry $(PTII)/.classpath.default | grep -v 'To update' |  sed 's/.*path="\([^"]*\)".*/\1/' | grep /`) > $$MISSING1; \
+	(cd $(PTII); ls lib/*.jar > $$MISSING2); \
+	echo 'Below are jar files in $$PTII/lib that are not in .classpath.default:'; \
+	comm -13 $$MISSING1 $$MISSING2; \
+	rm $$MISSING1 $$MISSING2)
+
 # Check the demos for demos that have $PTII in them.
 # Ignore <property name="script" lines like what's in WebSocketImage.xml
 # Ignore <property name="codeDirectory" lines like what's in WebSocketGraph.xml
