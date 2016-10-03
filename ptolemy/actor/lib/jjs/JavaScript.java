@@ -39,6 +39,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -2552,7 +2554,15 @@ public class JavaScript extends TypedAtomicActor {
             // The type of the port will have to be set manually.
             Type ptType = Constants.nameToType(type);
             if (ptType == null) {
-                throw new IllegalActionException(this, "Unsupported type: " + type);
+                // Print out all the acceptable types.
+                List types = new ArrayList(Constants.types().keySet());
+                types.add("number");
+                types.add("JSON");
+                types.add("select");
+                Collections.sort(types);
+                throw new IllegalActionException(this, "Unsupported type: " + type
+                                                 + ".  Should be one of: "
+                                                 + Arrays.toString(types.toArray()));
             }
             return ptType;
         }
