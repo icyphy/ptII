@@ -53,5 +53,15 @@ set gendir $PTII
 test checkEclipseUpdate-1.0 {Check that $PTII/.classpath.default refers to jar files that exist.} {
     # If this fails, it probably means that $PTII/.classpath.default
     # was not updated after jar files in $PTII/lib were updated.
-    set results [exec make checkClasspathDefault]
+    set results [exec make --no-print-directory --silent checkClasspathDefault]
 } {}
+
+test checkEclipseUpdate-2.0 {Check that $PTII/.classpath.default refers to jar files in $PTII/lib.} {
+    # If this fails, it probably means that $PTII/.classpath.default
+    # was not updated after jar files in $PTII/lib were updated.
+    set results [exec make --no-print-directory --silent checkClasspathDefaultMissing]
+} {Below are jar files in $PTII/lib that are not in .classpath.default:
+lib/jna-4.1.0-variadic.jar
+lib/nrjavaserial-3.11.0.devel.debug.jar
+lib/slf4j-simple-1.7.13.jar}
+

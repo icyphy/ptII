@@ -62,6 +62,8 @@
         <classpathentry kind="lib" path="lib/saxon8.jar"/>
         <classpathentry kind="lib" path="lib/smack.jar"/>
         <classpathentry kind="lib" path="lib/smackx.jar"/>
+        <classpathentry kind="lib" path="lib/slf4j-api-1.7.13.jar"/>
+        <classpathentry kind="lib" path="lib/slf4j-nop-1.7.13.jar"/>
         <classpathentry kind="lib" path="lib/socketio.jar"/>
         <classpathentry kind="lib" path="lib/sootclasses.jar"/>
 	<classpathentry kind="lib" path="lib/svgSalamander.jar"/>
@@ -73,6 +75,7 @@
         <classpathentry kind="lib" path="lib/vertx-lang-ruby-3.2.0.jar"/>
         <classpathentry kind="lib" path="lib/vertx-service-proxy-3.2.0.jar"/>
         <classpathentry kind="lib" path="lib/vertx-web-3.2.0.jar"/>
+        <classpathentry kind="lib" path="lib/bridj-0.6.2.jar"/>
 	<classpathentry kind="lib" path="lib/webcam-capture-0.3.10.jar"/>
         <classpathentry kind="lib" path="lib/xbjlib-1.1.0.nrjavaserial.jar"/>
 	<classpathentry kind="lib" path="ptolemy/distributed/jini/jar/jini-core.jar"/>
