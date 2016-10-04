@@ -47,3 +47,4 @@ Export-Package: ptolemy.actor.gui;version="11.0.0",
  ptolemy.vergil.kernel.attributes;version="11.0.0",
  ptolemy.vergil.toolbox;version="11.0.0"
 Bundle-Activator: ptolemy.gui.activator.Activator
+Bundle-ActivationPolicy: lazy

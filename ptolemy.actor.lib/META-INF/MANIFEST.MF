@@ -27,3 +27,4 @@ Export-Package: ptolemy.actor.lib;version="11.0.0",
  ptolemy.actor.lib.string;version="11.0.0"
 Require-Bundle: ptolemy.moml;bundle-version="11.0.0"
 Bundle-Activator: ptolemy.actor.lib.activator.Activator
+Bundle-ActivationPolicy: lazy
