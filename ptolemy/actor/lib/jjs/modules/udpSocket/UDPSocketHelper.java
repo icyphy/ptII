@@ -227,6 +227,25 @@ public class UDPSocketHelper extends VertxHelperBase {
                             _appendToBuffer(element, _sendType, _sendImageType, buffer);
                         }
                     }
+                } else if (data instanceof ScriptObjectMirror) {
+                    // If we pass a Uint8Array to UDPSocketSender,
+                    // then we end up passing a JavaScript object like
+                    // { '1': 48, '2': 57 ...}  and data is a
+                    // ScriptObjectMirror. So we go through the values
+                    // and create an array.
+
+                    // FIXME: The object might not be an array.  This
+                    // is ignoring the keys.
+
+                    // One idea would be to traverse the keys and only
+                    // create an array if all the keys were numbers
+                    // starting with 1 and increasing monotonically.
+
+                    for (Object element : ((ScriptObjectMirror) data).values()) {
+                        if (element != null) {
+                            _appendToBuffer(element, _sendType, _sendImageType, buffer);
+                        }
+                    }
                 } else {
                     _appendToBuffer(data, _sendType, _sendImageType, buffer);
                 }
