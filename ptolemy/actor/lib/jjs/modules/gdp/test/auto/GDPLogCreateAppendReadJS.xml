@@ -176,7 +176,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="logdname" class="ptolemy.actor.parameters.PortParameter" value="edu.berkeley.eecs.gdp-01.gdplogd">
+        <property name="logdname" class="ptolemy.actor.parameters.PortParameter" value="edu.berkeley.eecs.gdp-03.gdplogd">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
