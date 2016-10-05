@@ -29,7 +29,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, exports, require, util */
+/*globals Java, actor, exports, require, util */
 /*jshint globalstrict: true */
 "use strict";
 
@@ -45,12 +45,12 @@ var EventEmitter = require('events').EventEmitter;
  *  @param callback Optional function to bind to "message" events.
  */
 exports.createSocket = function (type, callback) {
-	if (!type) {
-		type = "udp4";
-	}
+    if (!type) {
+        type = "udp4";
+    }
     var socket = new exports.Socket(type);
     if (callback) {
-    	socket.on("message", callback);
+        socket.on("message", callback);
     }
     return socket;
 };
@@ -62,7 +62,7 @@ exports.createSocket = function (type, callback) {
  *  receiveType arguments.
  */
 exports.supportedReceiveTypes = function () {
-	return UDPSocketHelper.supportedReceiveTypes();
+    return UDPSocketHelper.supportedReceiveTypes();
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -72,7 +72,7 @@ exports.supportedReceiveTypes = function () {
  *  sendType arguments.
  */
 exports.supportedSendTypes = function () {
-	return UDPSocketHelper.supportedSendTypes();
+    return UDPSocketHelper.supportedSendTypes();
 };
 
 ///////////////////////////////////////////////////////////////////////////////
@@ -98,10 +98,10 @@ exports.supportedSendTypes = function () {
  *  argument to setReceiveType(). Similarly, the data provided to send() will be
  *  converted to a Buffer according to the type set by setSendType().
  *
- *  @param type One of "udp4" or "udp6".
+ *  @param type One of "udp4" or "udp6", which is ignored in Cape Code.
  */
-exports.Socket = function(type) {
-	// FIXME: type is ignored.
+exports.Socket = function (type) {
+    // FIXME: type is ignored.
     var helper = UDPSocketHelper.getOrCreateHelper(actor);
     this.socket = helper.createSocket(this);
 };
@@ -119,13 +119,13 @@ util.inherits(exports.Socket, EventEmitter);
  *  @param callback A function to call when the binding is complete.
  */
 exports.Socket.prototype.bind = function (port, address, callback) {
-	if (!address) {
-		// FIXME: This assumes udp4?
-		address = "0.0.0.0";
-	}
-	if (!callback) {
-		callback = null;
-	}
+    if (!address) {
+        // FIXME: This assumes udp4?
+        address = "0.0.0.0";
+    }
+    if (!callback) {
+        callback = null;
+    }
     this.socket.bind(port, address, callback);
 };
 
@@ -147,23 +147,23 @@ exports.Socket.prototype.close = function () {
  *   as an argument to the callback.
  */
 exports.Socket.prototype.send = function (data, port, hostname, callback) {
-	if (!callback) {
-		callback = null;
-	}
+    if (!callback) {
+        callback = null;
+    }
     this.socket.send(data, port, hostname, callback);
 };
 
 /** Set the receive type. If this is not called, the type defaults to "string".
  *  @type The name of the receive type.
  */
-exports.Socket.prototype.setReceiveType = function(type) {
-	this.socket.setReceiveType(type);
+exports.Socket.prototype.setReceiveType = function (type) {
+    this.socket.setReceiveType(type);
 };
 
 /** Set the send type. If this is not called, the type defaults to "string".
  *  @type The name of the send type.
  */
-exports.Socket.prototype.setSendType = function(type) {
-	this.socket.setSendType(type);
+exports.Socket.prototype.setSendType = function (type) {
+    this.socket.setSendType(type);
 };
 
