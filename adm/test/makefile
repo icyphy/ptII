@@ -111,7 +111,7 @@ checkClasspathDefaultMissing:
 	(cd $(PTII); ls `grep classpathentry $(PTII)/.classpath.default | grep -v 'To update' |  sed 's/.*path="\([^"]*\)".*/\1/' | grep /`) > $$MISSING1; \
 	(cd $(PTII); ls lib/*.jar > $$MISSING2); \
 	echo 'Below are jar files in $$PTII/lib that are not in .classpath.default:'; \
-	comm -13 $$MISSING1 $$MISSING2; \
+	comm -13 $$MISSING1 $$MISSING2 | grep -v ptliblicenses.jar; \
 	rm $$MISSING1 $$MISSING2)
 
 # Check the demos for demos that have $PTII in them.
