@@ -78,7 +78,8 @@ import java.awt.Color;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
- 
+import java.io.IOException;
+
 
 import java.net.URL;
 
@@ -94,6 +95,7 @@ import org.opencv.imgproc.*;
 import org.opencv.objdetect.CascadeClassifier;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.FileUtilities;
 
 import com.jhlabs.image.AbstractBufferedImageOp;
 
@@ -146,8 +148,14 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         // Get OpenCV image
         Mat inputImage = bufferedImage2Mat(source); 
 
-        // Detect faces in image
-        Rect[] faceRectangles = detectFaces(inputImage);
+        // Detect faces in image.
+        Rect[] faceRectangles;
+        try {
+            faceRectangles = detectFaces(inputImage);
+        } catch (IOException ex) {
+            // The super class throws no exceptions, so we can't throw IOException here.
+            throw new RuntimeException(ex);
+        }
         // Draw rectangles around each detected face
         
         for (int i= 0; i < faceRectangles.length; i++) {
@@ -209,14 +217,20 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
     /** Detect faces.
      *  @param img The image containing faces
      *  @return An array of faces.
+     *  @exception IOException if the haar cascade file cannot be found.
      */
-    public Rect[] detectFaces(Mat img) {
+    public Rect[] detectFaces(Mat img) throws IOException {
         Mat gray = new Mat();
         Imgproc.cvtColor(img, gray, Imgproc.COLOR_RGB2GRAY);
 
         CascadeClassifier cas = new CascadeClassifier();
-        URL url = getClass().getResource("haarcascade_frontalface_default.xml"); 
-        
+        String trainingFile = "$CLASSPATH/org/ptolemy/opencv/haarcascade_frontalface_default.xml";
+        //URL url = getClass().getResource(trainingFile);
+        URL url = FileUtilities.nameToURL(trainingFile, null, null);
+        if (url == null) {
+            throw new IOException("Could not load " + trainingFile);
+        }
+
         cas.load(url.getPath());
         MatOfRect faces = new MatOfRect(); 
         cas.detectMultiScale(img, faces, 1.05, 5, 0, new Size(_minFaceSize,_minFaceSize), 

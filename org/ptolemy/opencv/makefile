@@ -54,7 +54,8 @@ JSRCS = \
 	FaceRecognizer.java \
 	OpenCVLoader.java
 
-OTHER_FILES_TO_BE_JARED =
+OTHER_FILES_TO_BE_JARED = \
+	haarcascade_frontalface_default.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
