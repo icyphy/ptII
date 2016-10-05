@@ -284,7 +284,7 @@ public class GDPManager extends AbstractInitializableAttribute {
             List execCommands = new LinkedList<String>();
 	    // Do not require libavahi, which is used for zero-conf support.  libavah is not easy to compile under Darwin with homebrew
 	    // Run clean_java to get rid of jar files from previous versions.
-            String makeCommand = "make clean clean_Java all_noavahi install_Java";
+            String makeCommand = "make clean clean_Java all install_Java";
             execCommands.add(makeCommand);
             exec.setCommands(execCommands);
             exec.setWaitForLastSubprocess(true);
