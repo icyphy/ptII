@@ -13,27 +13,27 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{45.0, 10.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[77.5, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={151, 45, 962, 803}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={151, 45, 949, 676}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[728, 693]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[715, 566]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6442992589644664">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{549.194494646779, 509.03320312500006}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{357.5, 283.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Emulate a watch, transmit the data via UDP,&#10;read the data and plot it.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{385.0, -20.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 10.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Listen for messages.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, -20.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 255.0]">
         </property>
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
@@ -41,7 +41,7 @@
         </property>
         <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node nodeHostInvoke.js -timeout 2000 hosts/node/@modelName@">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{295.0, 15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 45.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -49,7 +49,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christopher Brooks.  Based on TestUDPSocketSelf.xml by Edward A. Lee, Elizabeth Osyk">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-10.0, 35.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 345.0]">
         </property>
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
@@ -60,7 +60,13 @@
             <display name="Aspect ratio"/>
         </property>
     </property>
-    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Remove the timestamps from the JSON output&#10;because they change during each run.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 285.0]">
+        </property>
+    </property>
+    <entity name="JavaScriptWatchEmulator" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;&#10;exports.setup = function() {&#10;    this.parameter('interval', {'type':'number', 'value':1000});&#10;    this.output('output', {'type': 'record'});&#10;    this.input('trigger');&#10;};&#10;&#10;// Define a few helper functions to help set up the watch data&#10;/** Convert short int to 2 bytes array.                                                                          &#10; */&#10;function short_to_bytes(n) {&#10;    var b = new Uint8Array([0, 0]);&#10;    if (b &lt; 0) {&#10;        n = (Math.pow(2, 16) + n);&#10;    }&#10;    b[0] = n &amp; 0xFF;&#10;    n &gt;&gt;= 8;&#10;    b[1] = n &amp; 0xFF;&#10;    return b;&#10;}&#10;&#10;/** Convert int to 3 bytes array. */&#10;function int_to_3bytes(n) {&#10;    var b = new Uint8Array([0, 0, 0]);&#10;    b[0] = n &amp; 0xFF;&#10;    n &gt;&gt;= 8;&#10;    b[1] = n &amp; 0xFF;&#10;    n &gt;&gt;= 8;&#10;    b[2] = n &amp; 0xFF;&#10;    return b;&#10;}&#10;&#10;&#10;/** Convert int to 4 bytes array */&#10;function int_to_4bytes(n) {&#10;    var b = new Uint8Array([0, 0, 0, 0]);&#10;    b[0] = n &amp; 0xFF;&#10;    n &gt;&gt;= 8;&#10;    b[1] = n &amp; 0xFF;&#10;    n &gt;&gt;= 8;&#10;    b[2] = n &amp; 0xFF;&#10;    n &gt;&gt;= 8;&#10;    b[3] = n &amp; 0xFF;&#10;    return b;&#10;}&#10;&#10;/** Create an unsigned byte array with the watch data.&#10; *  @return The unsigned byte array.&#10; */&#10;function initializeWatchData() {&#10;&#10;    // package head info -- Device data and Package type                                                         &#10;    var DEV_ID = '9096';&#10;    var WATCH_TYPE = &quot;w&quot;.charCodeAt(0);&#10;    var GLASS_TYPE = &quot;g&quot;.charCodeAt(0);&#10;    var BATTERY_TYPE = &quot;b&quot;.charCodeAt(0);&#10;&#10;    // Original data of the data body for all three kinds of package.                                            &#10;    var ACCx = 0.98;&#10;    var ACCy = 0.01;&#10;    var ACCz = -0.02;&#10;    var GYRx = 0.2;&#10;    var GYRy = -0.3;&#10;    var GYRz = 0.4;&#10;    var PPG = 100000;&#10;    var HR = 70;&#10;    var BATTERY_LIFE = 90;&#10;&#10;    // Convert the original data to the format the data body requires.                                           &#10;    var accx = (ACCx * 10000) | 0;&#10;    var accy = (ACCy * 10000) | 0;&#10;    var accz = (ACCz * 10000) | 0;&#10;    var gyrx = (GYRx * 10000) | 0;&#10;    var gyry = (GYRy * 10000) | 0;&#10;    var gyrz = (GYRz * 10000) | 0;&#10;&#10;    // Pack the watch IMU and PPG data package, assuming that every package contains 10 data samples             &#10;    var watch_p = new Uint8Array(205);&#10;    watch_p[0] = DEV_ID.charCodeAt(0);&#10;    watch_p[1] = DEV_ID.charCodeAt(1);&#10;    watch_p[2] = DEV_ID.charCodeAt(2);&#10;    watch_p[3] = DEV_ID.charCodeAt(3);&#10;    watch_p[4] = WATCH_TYPE;&#10;    for(var i = 0; i &lt; 10; i++) {&#10;    	// Use a fixed time so that we get the same results each time&#10;        //var now = Date.now();&#10;        var now = 1475619599;&#10;        watch_p[5 + i * 20] = short_to_bytes(accx)[0];&#10;        watch_p[5 + i * 20 + 1] = short_to_bytes(accx)[1];&#10;        watch_p[5 + i * 20 + 2] = short_to_bytes(accy)[0];&#10;        watch_p[5 + i * 20 + 3] = short_to_bytes(accy)[1];&#10;        watch_p[5 + i * 20 + 4] = short_to_bytes(accz)[0];&#10;        watch_p[5 + i * 20 + 5] = short_to_bytes(accz)[1];&#10;        watch_p[5 + i * 20 + 6] = short_to_bytes(gyrx)[0];&#10;        watch_p[5 + i * 20 + 7] = short_to_bytes(gyrx)[1];&#10;        watch_p[5 + i * 20 + 8] = short_to_bytes(gyry)[0];&#10;	    watch_p[5 + i * 20 + 9] = short_to_bytes(gyry)[1];&#10;        watch_p[5 + i * 20 + 10] = short_to_bytes(gyrz)[0];&#10;        watch_p[5 + i * 20 + 11] = short_to_bytes(gyrz)[1];&#10;	    watch_p[5 + i * 20 + 12] = int_to_3bytes(PPG)[0];&#10;        watch_p[5 + i * 20 + 13] = int_to_3bytes(PPG)[1];&#10;	    watch_p[5 + i * 20 + 14] = int_to_3bytes(PPG)[2];&#10;        watch_p[5 + i * 20 + 15] = (HR &amp; 0xFF);&#10;        watch_p[5 + i * 20 + 16] = int_to_4bytes(now)[0];&#10;        watch_p[5 + i * 20 + 17] = int_to_4bytes(now)[1];&#10;        watch_p[5 + i * 20 + 18] = int_to_4bytes(now)[2];&#10;        watch_p[5 + i * 20 + 19] = int_to_4bytes(now)[3];&#10;    }&#10;    return watch_p;&#10;}&#10;&#10;&#10;&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;var count = 0;&#10;&#10;exports.generate = function() {&#10;	var watch_p = initializeWatchData();&#10;	this.send('output', watch_p);&#10;}&#10;&#10;exports.initialize = function() {&#10;	handle = this.addInputHandler('trigger', this.exports.generate.bind(this));&#10;	//var count = 0;&#10;	//var watch_p = initializeWatchData();&#10;    // Need to record 'this' for use in the callback.&#10;    //var thiz = this;&#10;    // Send the contents of the watch data, one element at a time.&#10;    //handle = setInterval(function() {&#10;&#10;     //   thiz.send('output', watch_p);&#10;     	//count++;&#10;        //if (count &gt;= watch_p.length) {&#10;        //	count = 0;&#10;        	//clearInterval(handle);&#10;        //}&#10;    //}, this.getParameter('interval'));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (handle !== null) {&#10;        //clearInterval(handle);&#10;        //handle = null;&#10;        this.removeInputHandler(handle);&#10;    }&#10;};">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
@@ -73,7 +79,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 95.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[242.5, 125.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -88,44 +94,8 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="TestDisplay" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display data on the console.&#10;//&#10;// Copyright (c) 2016. The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Display data on the console.&#10; *&#10; *  @accessor test/TestDisplay&#10; *  @param input The output&#10; *  @author Christopher Brooks&#10; *  @version $$Id: TestDisplay.js 748 2016-04-29 21:51:14Z cxh $$&#10; */&#10;&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.output('output');&#10;};&#10;&#10;exports.initialize = function() {&#10;    this.addInputHandler('input', function() {&#10;        var inputValue = this.get('input');&#10;        console.log(inputValue);&#10;        this.send('output', inputValue);&#10;    });&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TestDisplay.js">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 190.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data on the console.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TestDisplay.js 748 2016-04-29 21:51:14Z cxh $$">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="UDPSocketSender" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2014-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor sends UDP (datagram) messages to the specified&#10; *  destination address and port.&#10; *&#10; *  The send type can be any of those supported by the host.&#10; *  The list of supported types will be provided as options for the `sendType`&#10; *  parameter. For the Ptolemy II host, these include at&#10; *  least 'string', 'number', 'image', and a variety of numeric types.&#10; *&#10; *  @accessor net/UDPSocketSender&#10; *  @author Hokeun Kim and Edward A. Lee&#10; *  @version $$Id: UDPSocketSender.js 962 2016-09-27 01:00:18Z cxh $$&#10; *&#10; *  @input toSend The message to send.&#10; *  @input {string} destinationAddress The host name or IP address to send to.&#10; *   This defaults to &quot;localhost&quot;.&#10; *  @input {int} destinationPort The port to send to.&#10; *   This defaults to 8084.&#10; *  @parameter {string} sendType See above.&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals addInputHandler, console, exports, get, input, output, require, send */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10;&#10;// This accessor requires the optional 'udpSocket' module, which may or may&#10;// not be provided by an accessor host. Most hosts will provide this module.&#10;var UDPSocket = require('udpSocket');&#10;&#10;// Set up the accessor. In an XML specification, this information would&#10;// be provided in XML syntax.&#10;exports.setup = function () {&#10;    this.input('toSend');&#10;&#10;    this.input('destinationAddress', {&#10;        'value': 'localhost',&#10;        'type': 'string'&#10;    });&#10;&#10;    this.input('destinationPort', {&#10;        'value': 8084,&#10;        'type': 'int'&#10;    });&#10;    this.parameter('sendType', {&#10;        type : 'string',&#10;        value : 'string',&#10;    });&#10;&#10;    // Attempt to add a list of options for types, but do not error out&#10;    // if the socket module is not supported by the host.&#10;    try {&#10;        this.parameter('sendType', {&#10;            options : UDPSocket.supportedSendTypes()&#10;        });&#10;    } catch (err) {&#10;        this.error(err);&#10;    }&#10;};&#10;&#10;var socket = null;&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;&#10;    socket = UDPSocket.createSocket();&#10;    socket.on('error', function (message) {&#10;        self.error(message);&#10;    });&#10;    socket.setSendType(this.get('sendType'));&#10;    this.addInputHandler('toSend', function () {&#10;        var message = self.get('toSend');&#10;        socket.send(message,&#10;                    self.get('destinationPort'),&#10;                    self.get('destinationAddress'));&#10;    });&#10;};&#10;&#10;exports.wrapup = function () {&#10;    // This null check avoids an error in code generation.&#10;    if (socket !== null) {&#10;        socket.close();&#10;    }&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2014-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** This accessor sends UDP (datagram) messages to the specified&#10; *  destination address and port.&#10; *&#10; *  The send type can be any of those supported by the host.  The list&#10; *  of supported types will be provided as options for the `sendType`&#10; *  parameter. For the Ptolemy II host, these include at least&#10; *  'string', 'number', 'image', and a variety of numeric types.&#10; *&#10; *  Note that UDP, unlike TCP, has the notion of a &quot;message&quot; (a&#10; *  datagram). A message can contain more than one byte.  The&#10; *  `receiveType` determines the type of the elements sent&#10; *  by this accessor&#10; *&#10; *  @accessor net/UDPSocketSender&#10; *  @author Hokeun Kim and Edward A. Lee, Contributor: Christopher Brooks&#10; *  @version $$Id: UDPSocketSender.js 978 2016-10-05 23:52:48Z cxh $$&#10; *&#10; *  @input toSend The message to send.&#10; *  @input {string} destinationAddress The host name or IP address to send to.&#10; *   This defaults to &quot;localhost&quot;.&#10; *  @input {int} destinationPort The port to send to.&#10; *   This defaults to 8084.&#10; *  @parameter {string} sendType See above.&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals addInputHandler, console, exports, get, input, output, require, send */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10;&#10;// This accessor requires the optional 'udpSocket' module, which may or may&#10;// not be provided by an accessor host. Most hosts will provide this module.&#10;var UDPSocket = require('udpSocket');&#10;&#10;// Set up the accessor. In an XML specification, this information would&#10;// be provided in XML syntax.&#10;exports.setup = function () {&#10;    this.input('toSend');&#10;&#10;    this.input('destinationAddress', {&#10;        'value': 'localhost',&#10;        'type': 'string'&#10;    });&#10;&#10;    this.input('destinationPort', {&#10;        'value': 8084,&#10;        'type': 'int'&#10;    });&#10;    this.parameter('sendType', {&#10;        type : 'string',&#10;        value : 'string',&#10;    });&#10;&#10;    // Attempt to add a list of options for types, but do not error out&#10;    // if the socket module is not supported by the host.&#10;    try {&#10;        this.parameter('sendType', {&#10;            options : UDPSocket.supportedSendTypes()&#10;        });&#10;    } catch (err) {&#10;        this.error(err);&#10;    }&#10;};&#10;&#10;var socket = null;&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;&#10;    socket = UDPSocket.createSocket();&#10;    socket.on('error', function (message) {&#10;        self.error(message);&#10;    });&#10;    socket.setSendType(this.get('sendType'));&#10;    this.addInputHandler('toSend', function () {&#10;        var message = self.get('toSend');&#10;        socket.send(message,&#10;                    self.get('destinationPort'),&#10;                    self.get('destinationAddress'));&#10;    });&#10;};&#10;&#10;exports.wrapup = function () {&#10;    // This null check avoids an error in code generation.&#10;    if (socket !== null) {&#10;        socket.close();&#10;    }&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -139,7 +109,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 85.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, 115.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -212,7 +182,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{15.0, 95.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 125.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -220,82 +190,6 @@
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-        </port>
-    </entity>
-    <entity name="Moto360GestureListener" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** &#10; * Read UDP gesture data from a Moto 360 watch.&#10; *  &#10; * See https://github.com/Zziwei/GestureUDP for software for the watch.&#10; *&#10; * @accessor devices/Moto360GestureListener&#10; * @output {string} message The received message.&#10; * @output {boolean} listening True to indicate that listening has begun, false to&#10; *   indicate that it has stopped.&#10; *&#10; * @input {string} listeningAddress The interface to listen on for incoming messages.&#10; *   This defaults to &quot;0.0.0.0&quot;, which means to listen on all network interfaces.&#10; * @input {int} listeningPort The port to listen on for incoming messages.&#10; *   This defaults to 4567, which is the value found in https://github.com/Zziwei/PackageSendTest&#10; *   &#10; *  @parameter {string} receiveType See above.&#10;&#10; *  @author Christopher Brooks&#10; *  @version $$Id: Hue.js 748 2016-04-29 21:51:14Z cxh $$ &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearTimeout, console, error, exports, httpRequest, require, setTimeout  */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;// This accessor requires the optional 'udpSocket' module, which may or may&#10;// not be provided by an accessor host. Most hosts will provide this module.&#10;var UDPSocket = require('udpSocket');&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function () {&#10;    this.extend('net/UDPSocketListener');&#10;    this.input('listeningPort', {&#10;        'value': 4567, // 4567 is the value found in https://github.com/Zziwei/PackageSendTest&#10;        'type': 'int'&#10;    });&#10;    this.output('accelerometerX', {'type': 'number'});&#10;    this.output('accelerometerY', {'type': 'number'});&#10;    this.output('accelerometerZ', {'type': 'number'});&#10;    this.output('gyroscopeX', {'type': 'number'});&#10;    this.output('gyroscopeY', {'type': 'number'});&#10;    this.output('gyroscopeZ', {'type': 'number'});&#10;    this.output('watchID', {'type': 'string'});&#10;    // PPG is like pulse? https://en.wikipedia.org/wiki/Photoplethysmogram&#10;    this.output('ppg', {'type': 'int'})&#10;    this.output('heartRate', {'type': 'int'});&#10;    this.output('timestamp', {'type': 'int'});&#10;&#10;    this.parameter('receiveType', {&#10;        type: 'string',&#10;        value: 'unsignedbyte',&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    exports.ssuper.initialize.call(this);&#10;    console.log(&quot;Moto360GesterListener.js: initialize()&quot;);&#10;};&#10;&#10;// Convert the 2 bytes data to a integer.&#10;function trans(a, b) {&#10;    var c = a * Math.pow(2, 8);&#10;    c = c + b;&#10;    if (c &gt; Math.pow(2, 15)) { &#10;        c = (Math.pow(2, 16) - c) * -1;&#10;    }&#10;    return c;&#10;}&#10;&#10;exports.closeAndOpen = function () {&#10;    console.log(&quot;Moto360GestureListener.js: closeAndOpen()&quot;);&#10;&#10;    exports.ssuper.closeAndOpen.call(this);&#10;    var self = this;&#10;&#10;    exports.ssuper.socket.on('message', function (message) {&#10;        console.log(&quot;Moto360GestureListener: sending message0&quot;);&#10;        if (exports.ssuper.running) {&#10;            console.log(&quot;Moto360GestureListener: sending message&quot;);&#10;            self.send('message', message);&#10;            // Here's where Moto360GestureListener differs from UDPSocketListener.&#10;            // See https://www.terraswarm.org/urbanheartbeat/wiki/Main/WatchSoftware#Package&#10;            console.log(&quot;Moto360GestureListener.parseGestureData(): message: &quot; + message);&#10;            // Receive the data and parse them and print.&#10;            if (message[4] === &quot;w&quot;.charCodeAt(0)) {&#10;                var watchID = String.fromCharCode(message[0]) + String.fromCharCode(message[1]) +&#10;                            String.fromCharCode(message[2]) + String.fromCharCode(message[3]);&#10;                console.log(watchID);&#10;                self.send(&quot;watchID&quot;, watchID);&#10;&#10;                console.log(String.fromCharCode(message[4]));&#10;                for(var i = 0; i &lt; (message.length - 5)/20; i++) {&#10;                    var accelerometerX = trans(message[5 + i * 20 + 1], message[5 + i * 20]) / 10000.0;&#10;                    var accelerometerY = trans(message[5 + i * 20 + 3], message[5 + i * 20] + 2) / 10000.0;&#10;                    var accelerometerZ = trans(message[5 + i * 20 + 5], message[5 + i * 20] + 4) / 10000.0;&#10;                    var gyroscopeX = trans(message[5 + i * 20 + 7], message[5 + i * 20] + 6) / 10000.0;&#10;                    var gyroscopeY = trans(message[5 + i * 20 + 9], message[5 + i * 20] + 8) / 10000.0;&#10;                    var gyroscopeZ = trans(message[5 + i * 20 + 11], message[5 + i * 20] + 10) / 10000.0;&#10;                    var ppg = (message[5 + i * 20 + 12] | (message[5 + i * 20 + 13] &lt;&lt; 8) | (message[5 + i * 20 + 14] &lt;&lt; 16));&#10;                    var heartRate = message[5 + i * 20 + 15]; &#10;                    var timestamp = ((message[5 + i * 20 + 16] | (message[5 + i * 20 + 17] &lt;&lt; 8) | (message[5 + i * 20 + 18] &lt;&lt; 18) | (message[5 + i * 20 + 19] &lt;&lt; 24)) &gt;&gt;&gt; 0); // Use &gt;&gt;&gt; 0 to convert to unsigned.&#10;                    console.log(accelerometerX + &quot; &quot; +&#10;                                accelerometerY + &quot; &quot; +&#10;                                accelerometerZ + &quot; &quot; +&#10;                                gyroscopeX + &quot; &quot; +&#10;                                gyroscopeY + &quot; &quot; +&#10;                                gyroscopeZ + &quot; &quot; +                                &#10;                                ppg + &quot; &quot; +&#10;                                heartRate + &quot; &quot; +&#10;                                timestamp);&#10;&#10;&#10;                    self.send('accelerometerX', accelerometerX);&#10;                    self.send('accelerometerY', accelerometerY);&#10;                    self.send('accelerometerZ', accelerometerZ);&#10;&#10;                    self.send('gyroscopeX', gyroscopeX);&#10;                    self.send('gyroscopeY', gyroscopeY);&#10;                    self.send('gyroscopeZ', gyroscopeZ);&#10;&#10;                    self.send('ppg', ppg)&#10;                    self.send('heartRate', heartRate);&#10;                    self.send('timestamp', timestamp);&#10;                }&#10;            } else if (message.toString(&quot;utf-8&quot;, 4, 5) === &quot;g&quot;) {&#10;                console.log(message.toString(&quot;utf-8&quot;, 0, 4));&#10;                console.log(message.toString(&quot;utf-8&quot;, 4, 5));&#10;                for(var i = 0; i &lt; (message.length - 5) / 10; i++) {&#10;                    console.log(trans(message[5 + i * 10 + 1], message[5 + i * 10]) / 10000.0 + &quot; &quot; +&#10;                                trans(message[5 + i * 10 + 3], message[5 + i * 10 + 2]) / 10000.0 + &quot; &quot; +&#10;                                trans(message[5 + i * 10 + 5], message[5 + i * 10 + 4]) / 10000.0 + &quot; &quot; +&#10;                                ((message[5 + i * 10 + 6] | (message[5 + i * 10 + 7] &lt;&lt; 8) | (message[5 + i * 10 + 8] &lt;&lt; 16) | (message[5 + i * 10 + 9] &lt;&lt; 24)) &gt;&gt;&gt; 0)); // Use &gt;&gt;&gt; 0 to convert to unsigned.&#10;                }&#10;            } else if (message.toString(&quot;utf-8&quot;, 4, 5) === &quot;b&quot;) {&#10;                console.log(message.toString(&quot;utf-8&quot;, 0, 4));&#10;                console.log(message.toString(&quot;utf-8&quot;, 4, 5));&#10;                console.log(message[5]);&#10;            }&#10;            console.log(&quot;&quot;);&#10;&#10;&#10;        }&#10;    });&#10;};&#10;&#10;&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/devices/Moto360GestureListener.js">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="listeningAddress" class="ptolemy.actor.parameters.PortParameter" value="0.0.0.0">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="unsignedbyte">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 250.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <port name="listeningAddress" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="message" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="listening" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="listeningPort" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
-        <port name="accelerometerX" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="accelerometerY" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="accelerometerZ" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="gyroscopeX" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="gyroscopeY" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="gyroscopeZ" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="watchID" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="ppg" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="heartRate" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="timestamp" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="TrainableTest2" class="org.terraswarm.accessor.JSAccessor">
@@ -313,19 +207,19 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98,0.98]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[&quot;{\&quot;watchID\&quot;:\&quot;9096\&quot;,\&quot;accelerometerX\&quot;:0.98,\&quot;accelerometerY\&quot;:0.0074,\&quot;accelerometerZ\&quot;:-0.018,\&quot;gyroscopeX\&quot;:0.187,\&quot;gyroscopeY\&quot;:-0.2992,\&quot;gyroscopeZ\&quot;:0.3922,\&quot;ppg\&quot;:100000,\&quot;heartRate\&quot;:70}&quot;,&quot;{\&quot;watchID\&quot;:\&quot;9096\&quot;,\&quot;accelerometerX\&quot;:0.98,\&quot;accelerometerY\&quot;:0.0074,\&quot;accelerometerZ\&quot;:-0.018,\&quot;gyroscopeX\&quot;:0.187,\&quot;gyroscopeY\&quot;:-0.2992,\&quot;gyroscopeZ\&quot;:0.3922,\&quot;ppg\&quot;:100000,\&quot;heartRate\&quot;:70}&quot;,&quot;{\&quot;watchID\&quot;:\&quot;9096\&quot;,\&quot;accelerometerX\&quot;:0.98,\&quot;accelerometerY\&quot;:0.0074,\&quot;accelerometerZ\&quot;:-0.018,\&quot;gyroscopeX\&quot;:0.187,\&quot;gyroscopeY\&quot;:-0.2992,\&quot;gyroscopeZ\&quot;:0.3922,\&quot;ppg\&quot;:100000,\&quot;heartRate\&quot;:70}&quot;,&quot;{\&quot;watchID\&quot;:\&quot;9096\&quot;,\&quot;accelerometerX\&quot;:0.98,\&quot;accelerometerY\&quot;:0.0074,\&quot;accelerometerZ\&quot;:-0.018,\&quot;gyroscopeX\&quot;:0.187,\&quot;gyroscopeY\&quot;:-0.2992,\&quot;gyroscopeZ\&quot;:0.3922,\&quot;ppg\&quot;:100000,\&quot;heartRate\&quot;:70}&quot;,&quot;{\&quot;watchID\&quot;:\&quot;9096\&quot;,\&quot;accelerometerX\&quot;:0.98,\&quot;accelerometerY\&quot;:0.0074,\&quot;accelerometerZ\&quot;:-0.018,\&quot;gyroscopeX\&quot;:0.187,\&quot;gyroscopeY\&quot;:-0.2992,\&quot;gyroscopeZ\&quot;:0.3922,\&quot;ppg\&quot;:100000,\&quot;heartRate\&quot;:70}&quot;,&quot;{\&quot;watchID\&quot;:\&quot;9096\&quot;,\&quot;accelerometerX\&quot;:0.98,\&quot;accelerometerY\&quot;:0.0074,\&quot;accelerometerZ\&quot;:-0.018,\&quot;gyroscopeX\&quot;:0.187,\&quot;gyroscopeY\&quot;:-0.2992,\&quot;gyroscopeZ\&quot;:0.3922,\&quot;ppg\&quot;:100000,\&quot;heartRate\&quot;:70}&quot;,&quot;{\&quot;watchID\&quot;:\&quot;9096\&quot;,\&quot;accelerometerX\&quot;:0.98,\&quot;accelerometerY\&quot;:0.0074,\&quot;accelerometerZ\&quot;:-0.018,\&quot;gyroscopeX\&quot;:0.187,\&quot;gyroscopeY\&quot;:-0.2992,\&quot;gyroscopeZ\&quot;:0.3922,\&quot;ppg\&quot;:100000,\&quot;heartRate\&quot;:70}&quot;,&quot;{\&quot;watchID\&quot;:\&quot;9096\&quot;,\&quot;accelerometerX\&quot;:0.98,\&quot;accelerometerY\&quot;:0.0074,\&quot;accelerometerZ\&quot;:-0.018,\&quot;gyroscopeX\&quot;:0.187,\&quot;gyroscopeY\&quot;:-0.2992,\&quot;gyroscopeZ\&quot;:0.3922,\&quot;ppg\&quot;:100000,\&quot;heartRate\&quot;:70}&quot;,&quot;{\&quot;watchID\&quot;:\&quot;9096\&quot;,\&quot;accelerometerX\&quot;:0.98,\&quot;accelerometerY\&quot;:0.0074,\&quot;accelerometerZ\&quot;:-0.018,\&quot;gyroscopeX\&quot;:0.187,\&quot;gyroscopeY\&quot;:-0.2992,\&quot;gyroscopeZ\&quot;:0.3922,\&quot;ppg\&quot;:100000,\&quot;heartRate\&quot;:70}&quot;,&quot;{\&quot;watchID\&quot;:\&quot;9096\&quot;,\&quot;accelerometerX\&quot;:0.98,\&quot;accelerometerY\&quot;:0.0074,\&quot;accelerometerZ\&quot;:-0.018,\&quot;gyroscopeX\&quot;:0.187,\&quot;gyroscopeY\&quot;:-0.2992,\&quot;gyroscopeZ\&quot;:0.3922,\&quot;ppg\&quot;:100000,\&quot;heartRate\&quot;:70}&quot;]">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 275.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 220.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&lt;/p&gt;&#10;&lt;p&gt; This actor is based on the NonStrictTest actor, but currently only&#10; handles numeric and string input.&lt;/p&gt;">
@@ -355,7 +249,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 275.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[610.0, 220.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -365,14 +259,32 @@
             <property name="input"/>
         </port>
     </entity>
-    <entity name="TrainableTest" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Compare the input with a known good input.&#10; *&#10; *  This actor is based on the NonStrictTest actor, but currently only&#10; *  handles numeric and string input.&#10; *  &#10; *  @accessor test/TrainableTest&#10; *  @input input The input value&#10; *  @output output False as long as there is data to compare against the input&#10; *  @param correctValues a JSON array of the correct values.&#10; *  @param trainingMode true if the input is being trained.&#10; *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee&#10; *  @version $$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals */&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;exports.setup = function () {&#10;    // FIXME: this only supports numbers and strings, unlike the Cape Code Test&#10;    // actor, which supports many types.&#10;    this.parameter('correctValues', {'type': 'JSON', 'value': '{0}'});&#10;    this.input('input');&#10;    this.output('output', {'type': 'boolean'});&#10;    this.parameter('tolerance', {'type': 'number', 'value': 0.000000001});&#10;    this.parameter('trainingMode', {'type': 'boolean', 'value': false});&#10;};&#10;&#10;// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java&#10;&#10;// Set to true if an input is handled.  If no inputs are handled, then&#10;// throw an exception in wrapup().&#10;var inputHandled = false;&#10;&#10;// Set to true when initialized() is called.&#10;var initialized = false;&#10;&#10;// The number of input tokens that have been read in.&#10;var numberOfInputTokensSeen = 0;&#10;&#10;// If trainingMode is true, then inputs that have been seen so far.&#10;var trainingTokens = [];&#10;&#10;/** Create an input handler to compare the input with the appropriate element(s) &#10; *  from correctValues.&#10; */&#10;exports.initialize = function () {&#10;    //console.log(&quot;Test initialize(): typeof correctValues: &quot; + typeof this.getParameter('correctValues'))&#10;    inputHandled = false;&#10;    initialized = true;&#10;    numberOfInputTokensSeen = 0;&#10;    trainingTokens = [];&#10;    &#10;    var self = this;&#10;    &#10;    this.addInputHandler('input', function() {&#10;        var inputValue = self.get('input');&#10;        inputHandled = true;&#10;        // If the input is not connected, then inputValue will be null.&#10;        if (self.getParameter('trainingMode')) {&#10;            trainingTokens.push(inputValue);&#10;            self.send('output', false);&#10;            return;&#10;        }&#10;        var correctValuesValues = self.getParameter('correctValues');&#10;&#10;        if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;            var referenceToken = correctValuesValues[numberOfInputTokensSeen];&#10;            //console.log(&quot;Test: &quot; + numberOfInputTokensSeen + &quot;, input: &quot; + inputValue&#10;            //+ &quot;, referenceToken: &quot; + referenceToken);&#10;            if (typeof inputValue !== 'number' &amp;&amp; typeof inputValue !== 'string' &amp;&amp; typeof inputValue !== 'object') {&#10;                if (inputValue === null) {&#10;                    throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the value of the input was null?  ' +&#10;                                    'Perhaps the input is not connected?'&#10;                                   );&#10;                }&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                cache = null; // Enable garbage collection&#10;&#10;&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the input &quot;' + inputValue +&#10;                                '&quot; is neither a number nor a string, it is a ' +&#10;                                typeof inputValue  + ' with value ' + inputValueValue);&#10;            }&#10;            if (typeof referenceToken === 'number') {&#10;                if (Math.abs(inputValue - referenceToken) &gt; self.getParameter('tolerance')) {&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is not within &quot;' +&#10;                                    self.getParameter('tolerance') +&#10;                                    '&quot; of the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'string') {&#10;                if (inputValue !== referenceToken) {&#10;                	console.log('typeof inputValue ' + typeof inputValue);&#10;                	console.log('typeof referenceToken ' + typeof referenceToken);&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is !== ' +&#10;                                    ' to the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'object') {&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                var cache = [];&#10;                var referenceTokenValue = JSON.stringify(referenceToken, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;&#10;                cache = null; // Enable garbage collection&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                if (referenceTokenValue.length &gt; 100) {&#10;                    referenceTokenValue = referenceTokenValue.substring(0,100) + '...';&#10;                }&#10;                if (inputValueValue !== referenceTokenValue) {&#10;                    throw new Error('The input &quot;' + inputValueValue + '&quot; is !== &quot;' +&#10;                                    '&quot; to the expected value &quot;' +&#10;                                    referenceTokenValue + '&quot;');&#10;                }&#10;            } else {&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the referenceToken &quot;' + referenceToken +&#10;                                '&quot; is not a number, it is a ' +&#10;                                typeof referenceToken);&#10;            }&#10;            numberOfInputTokensSeen++;&#10;            // If we are past the end of the expected inputs, then read&#10;            if (numberOfInputTokensSeen &gt;= correctValuesValues.length) {&#10;                self.send('output', true);&#10;            } else {&#10;                self.send('output', false);&#10;            }&#10;        } else {&#10;            self.send('output', true);&#10;        }&#10;    });&#10;};&#10;&#10;/** If trainingMode is true, then updated the correctValues. */&#10;exports.wrapup = function () {&#10;    if (this.getParameter('trainingMode')) {&#10;        this.setParameter('correctValues', trainingTokens);&#10;    } else {&#10;        if (initialized) {&#10;            if (!inputHandled) {&#10;                initialized = false;&#10;                throw new Error(this.accessorName + 'The input handler of this accessor was never invoked. ' +&#10;                                'Usually, this is an error indicating that ' +&#10;                                'starvation is occurring.');&#10;            }&#10;            var correctValuesValues = this.getParameter('correctValues');&#10;            if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;                throw new Error(this.accessorName + ': The test produced only ' +&#10;                                numberOfInputTokensSeen +&#10;                                ' tokens, yet the correctValues parameter was ' +&#10;                                'expecting ' +&#10;                                correctValuesValues.length +&#10;                                ' tokens');&#10;            }&#10;        }&#10;        initialized = false;&#10;    }&#10;    var name = this.accessorName&#10;    if (this.container) {&#10;	name = this.container.accessorName + &quot;.&quot; + name&#10;    }&#10;    console.log(&quot;TrainableTest.js: wrapup() finished: &quot; + name);&#10;};&#10;">
+    <entity name="Moto360GestureListener2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** &#10; * Read UDP gesture data from a Moto 360 watch.&#10; *  &#10; * See https://github.com/Zziwei/GestureUDP for software for the watch.&#10; *&#10; * @accessor devices/Moto360GestureListener&#10; * @output {string} message The received message.&#10; * @output {boolean} listening True to indicate that listening has begun, false to&#10; *   indicate that it has stopped.&#10; * @output {json} data The data from the watch.&#10; *&#10; * @input {string} listeningAddress The interface to listen on for incoming messages.&#10; *   This defaults to &quot;0.0.0.0&quot;, which means to listen on all network interfaces.&#10; * @input {int} listeningPort The port to listen on for incoming messages.&#10; *   This defaults to 4567, which is the value found in https://github.com/Zziwei/PackageSendTest&#10; *   &#10; * @parameter {string} receiveType See above.&#10; &#10; * @author Christopher Brooks&#10; * @version $$Id: Hue.js 748 2016-04-29 21:51:14Z cxh $$ &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearTimeout, console, error, exports, httpRequest, require, setTimeout  */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;// This accessor requires the optional 'udpSocket' module, which may or may&#10;// not be provided by an accessor host. Most hosts will provide this module.&#10;var UDPSocket = require('udpSocket');&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function () {&#10;    this.extend('net/UDPSocketListener');&#10;&#10;    // Override the value of listeningPort in the parent.&#10;    this.input('listeningPort', {&#10;        'value': 4567, // 4567 is the value found in https://github.com/Zziwei/PackageSendTest&#10;        'type': 'int'&#10;    });&#10;&#10;    &#10;    this.output('data', {'type': 'JSON'});&#10;&#10;    this.parameter('receiveType', {&#10;        type: 'string',&#10;        value: 'unsignedbyte',&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    exports.ssuper.initialize.call(this);&#10;};&#10;&#10;// Convert the 2 bytes data to a integer.&#10;function trans(a, b) {&#10;    var c = a * Math.pow(2, 8);&#10;    c = c + b;&#10;    if (c &gt; Math.pow(2, 15)) { &#10;        c = (Math.pow(2, 16) - c) * -1;&#10;    }&#10;    return c;&#10;}&#10;&#10;var debug = false;&#10;&#10;exports.closeAndOpen = function () {&#10;&#10;    exports.ssuper.closeAndOpen.call(this);&#10;    var self = this;&#10;&#10;    exports.ssuper.socket.on('message', function (message) {&#10;        if (exports.ssuper.running) {&#10;            self.send('message', message);&#10;&#10;            // Here's where Moto360GestureListener differs from UDPSocketListener.&#10;            // See https://www.terraswarm.org/urbanheartbeat/wiki/Main/WatchSoftware#Package&#10;            if (debug) {&#10;                console.log(&quot;Moto360GestureListener.parseGestureData(): message: &quot; + message);&#10;            }&#10;            // Receive the data and parse them and print.&#10;            if (message[4] === &quot;w&quot;.charCodeAt(0)) {&#10;                var watchID = String.fromCharCode(message[0]) + String.fromCharCode(message[1]) +&#10;                            String.fromCharCode(message[2]) + String.fromCharCode(message[3]);&#10;&#10;                if (debug) {&#10;                    console.log(watchID);&#10;                    console.log(String.fromCharCode(message[4]));&#10;                }&#10;&#10;                for(var i = 0; i &lt; (message.length - 5)/20; i++) {&#10;                    var accelerometerX = trans(message[5 + i * 20 + 1], message[5 + i * 20]) / 10000.0;&#10;                    var accelerometerY = trans(message[5 + i * 20 + 3], message[5 + i * 20] + 2) / 10000.0;&#10;                    var accelerometerZ = trans(message[5 + i * 20 + 5], message[5 + i * 20] + 4) / 10000.0;&#10;                    var gyroscopeX = trans(message[5 + i * 20 + 7], message[5 + i * 20] + 6) / 10000.0;&#10;                    var gyroscopeY = trans(message[5 + i * 20 + 9], message[5 + i * 20] + 8) / 10000.0;&#10;                    var gyroscopeZ = trans(message[5 + i * 20 + 11], message[5 + i * 20] + 10) / 10000.0;&#10;                    var ppg = (message[5 + i * 20 + 12] | (message[5 + i * 20 + 13] &lt;&lt; 8) | (message[5 + i * 20 + 14] &lt;&lt; 16));&#10;                    var heartRate = message[5 + i * 20 + 15]; &#10;                    var timestamp = ((message[5 + i * 20 + 16] | (message[5 + i * 20 + 17] &lt;&lt; 8) | (message[5 + i * 20 + 18] &lt;&lt; 18) | (message[5 + i * 20 + 19] &lt;&lt; 24)) &gt;&gt;&gt; 0); // Use &gt;&gt;&gt; 0 to convert to unsigned.&#10;                    if (debug) {&#10;                        console.log(accelerometerX + &quot; &quot; +&#10;                                    accelerometerY + &quot; &quot; +&#10;                                    accelerometerZ + &quot; &quot; +&#10;                                    gyroscopeX + &quot; &quot; +&#10;                                    gyroscopeY + &quot; &quot; +&#10;                                    gyroscopeZ + &quot; &quot; +                                &#10;                                    ppg + &quot; &quot; +&#10;                                    heartRate + &quot; &quot; +&#10;                                    timestamp);&#10;                    }&#10;                    var json = JSON.stringify({watchID: watchID, accelerometerX: accelerometerX, accelerometerY: accelerometerY, accelerometerZ: accelerometerZ, gyroscopeX: gyroscopeX, gyroscopeY: gyroscopeY, gyroscopeZ: gyroscopeZ, ppg: ppg, heartRate: heartRate, timestamp: timestamp})&#10;                    self.send(&quot;data&quot;, json)&#10;                }&#10;            } else if (message.toString(&quot;utf-8&quot;, 4, 5) === &quot;g&quot;) {&#10;                console.log(message.toString(&quot;utf-8&quot;, 0, 4));&#10;                console.log(message.toString(&quot;utf-8&quot;, 4, 5));&#10;                for(var i = 0; i &lt; (message.length - 5) / 10; i++) {&#10;                    console.log(trans(message[5 + i * 10 + 1], message[5 + i * 10]) / 10000.0 + &quot; &quot; +&#10;                                trans(message[5 + i * 10 + 3], message[5 + i * 10 + 2]) / 10000.0 + &quot; &quot; +&#10;                                trans(message[5 + i * 10 + 5], message[5 + i * 10 + 4]) / 10000.0 + &quot; &quot; +&#10;                                ((message[5 + i * 10 + 6] | (message[5 + i * 10 + 7] &lt;&lt; 8) | (message[5 + i * 10 + 8] &lt;&lt; 16) | (message[5 + i * 10 + 9] &lt;&lt; 24)) &gt;&gt;&gt; 0)); // Use &gt;&gt;&gt; 0 to convert to unsigned.&#10;                }&#10;            } else if (message.toString(&quot;utf-8&quot;, 4, 5) === &quot;b&quot;) {&#10;                console.log(message.toString(&quot;utf-8&quot;, 0, 4));&#10;                console.log(message.toString(&quot;utf-8&quot;, 4, 5));&#10;                console.log(message[5]);&#10;            }&#10;            console.log(&quot;&quot;);&#10;&#10;&#10;        }&#10;    });&#10;};&#10;&#10;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TrainableTest.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/devices/Moto360GestureListener.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Read UDP gesture data from a Moto 360 watch.&lt;/p&gt;&#10;&lt;p&gt;See https://github.com/Zziwei/GestureUDP for software for the watch.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Hue.js 748 2016-04-29 21:51:14Z cxh $$">
+            </property>
+            <property name="listeningAddress (port)" class="ptolemy.kernel.util.StringAttribute" value="The interface to listen on for incoming messages.&#10;  This defaults to &quot;0.0.0.0&quot;, which means to listen on all network interfaces.">
+            </property>
+            <property name="listeningPort (port)" class="ptolemy.kernel.util.StringAttribute" value="The port to listen on for incoming messages.&#10;  This defaults to 4567, which is the value found in https://github.com/Zziwei/PackageSendTest">
+            </property>
+            <property name="message (port)" class="ptolemy.kernel.util.StringAttribute" value="The received message.">
+            </property>
+            <property name="listening (port)" class="ptolemy.kernel.util.StringAttribute" value="True to indicate that listening has begun, false to&#10;  indicate that it has stopped.">
+            </property>
+            <property name="receiveType (parameter)" class="ptolemy.kernel.util.StringAttribute" value="See above.">
+            </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -380,66 +292,46 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[0.0074,0.0074,0.0074,0.0074,0.0074,0.0074,0.0074,0.0074,0.0074,0.0074]">
+        <property name="listeningAddress" class="ptolemy.actor.parameters.PortParameter" value="0.0.0.0">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="unsignedbyte">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 365.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 210.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&lt;/p&gt;&#10;&lt;p&gt; This actor is based on the NonStrictTest actor, but currently only&#10; handles numeric and string input.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$">
-            </property>
-            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The input value">
-            </property>
-            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="False as long as there is data to compare against the input">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
+        <port name="listeningAddress" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
+        <port name="message" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-    </entity>
-    <entity name="JavaScriptStop" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;}&#10;&#10;var handle;&#10;exports.initialize  = function() {&#10;  handle = this.addInputHandler('input', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;    var value = this.get('input');&#10;    if (value === true) {&#10;        console.log(&quot;JavaScriptStop: about to call stop().&quot;);&#10;        // stop() is defined for all accessors, though it might not actually do anything.&#10;        stop.call(this);&#10;        // An accessor host might not get to the next line.&#10;        console.log(&quot;JavaScriptStop: done calling stop() on container&quot;);&#10;    }&#10;}&#10; &#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptStop.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 365.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
+        <port name="listening" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="listeningPort" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
     </entity>
-    <entity name="TrainableTest3" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Compare the input with a known good input.&#10; *&#10; *  This actor is based on the NonStrictTest actor, but currently only&#10; *  handles numeric and string input.&#10; *  &#10; *  @accessor test/TrainableTest&#10; *  @input input The input value&#10; *  @output output False as long as there is data to compare against the input&#10; *  @param correctValues a JSON array of the correct values.&#10; *  @param trainingMode true if the input is being trained.&#10; *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee&#10; *  @version $$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals */&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;exports.setup = function () {&#10;    // FIXME: this only supports numbers and strings, unlike the Cape Code Test&#10;    // actor, which supports many types.&#10;    this.parameter('correctValues', {'type': 'JSON', 'value': '{0}'});&#10;    this.input('input');&#10;    this.output('output', {'type': 'boolean'});&#10;    this.parameter('tolerance', {'type': 'number', 'value': 0.000000001});&#10;    this.parameter('trainingMode', {'type': 'boolean', 'value': false});&#10;};&#10;&#10;// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java&#10;&#10;// Set to true if an input is handled.  If no inputs are handled, then&#10;// throw an exception in wrapup().&#10;var inputHandled = false;&#10;&#10;// Set to true when initialized() is called.&#10;var initialized = false;&#10;&#10;// The number of input tokens that have been read in.&#10;var numberOfInputTokensSeen = 0;&#10;&#10;// If trainingMode is true, then inputs that have been seen so far.&#10;var trainingTokens = [];&#10;&#10;/** Create an input handler to compare the input with the appropriate element(s) &#10; *  from correctValues.&#10; */&#10;exports.initialize = function () {&#10;    //console.log(&quot;Test initialize(): typeof correctValues: &quot; + typeof this.getParameter('correctValues'))&#10;    inputHandled = false;&#10;    initialized = true;&#10;    numberOfInputTokensSeen = 0;&#10;    trainingTokens = [];&#10;    &#10;    var self = this;&#10;    &#10;    this.addInputHandler('input', function() {&#10;        var inputValue = self.get('input');&#10;        inputHandled = true;&#10;        // If the input is not connected, then inputValue will be null.&#10;        if (self.getParameter('trainingMode')) {&#10;            trainingTokens.push(inputValue);&#10;            self.send('output', false);&#10;            return;&#10;        }&#10;        var correctValuesValues = self.getParameter('correctValues');&#10;&#10;        if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;            var referenceToken = correctValuesValues[numberOfInputTokensSeen];&#10;            //console.log(&quot;Test: &quot; + numberOfInputTokensSeen + &quot;, input: &quot; + inputValue&#10;            //+ &quot;, referenceToken: &quot; + referenceToken);&#10;            if (typeof inputValue !== 'number' &amp;&amp; typeof inputValue !== 'string' &amp;&amp; typeof inputValue !== 'object') {&#10;                if (inputValue === null) {&#10;                    throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the value of the input was null?  ' +&#10;                                    'Perhaps the input is not connected?'&#10;                                   );&#10;                }&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                cache = null; // Enable garbage collection&#10;&#10;&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the input &quot;' + inputValue +&#10;                                '&quot; is neither a number nor a string, it is a ' +&#10;                                typeof inputValue  + ' with value ' + inputValueValue);&#10;            }&#10;            if (typeof referenceToken === 'number') {&#10;                if (Math.abs(inputValue - referenceToken) &gt; self.getParameter('tolerance')) {&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is not within &quot;' +&#10;                                    self.getParameter('tolerance') +&#10;                                    '&quot; of the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'string') {&#10;                if (inputValue !== referenceToken) {&#10;                	console.log('typeof inputValue ' + typeof inputValue);&#10;                	console.log('typeof referenceToken ' + typeof referenceToken);&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is !== ' +&#10;                                    ' to the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'object') {&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                var cache = [];&#10;                var referenceTokenValue = JSON.stringify(referenceToken, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;&#10;                cache = null; // Enable garbage collection&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                if (referenceTokenValue.length &gt; 100) {&#10;                    referenceTokenValue = referenceTokenValue.substring(0,100) + '...';&#10;                }&#10;                if (inputValueValue !== referenceTokenValue) {&#10;                    throw new Error('The input &quot;' + inputValueValue + '&quot; is !== &quot;' +&#10;                                    '&quot; to the expected value &quot;' +&#10;                                    referenceTokenValue + '&quot;');&#10;                }&#10;            } else {&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the referenceToken &quot;' + referenceToken +&#10;                                '&quot; is not a number, it is a ' +&#10;                                typeof referenceToken);&#10;            }&#10;            numberOfInputTokensSeen++;&#10;            // If we are past the end of the expected inputs, then read&#10;            if (numberOfInputTokensSeen &gt;= correctValuesValues.length) {&#10;                self.send('output', true);&#10;            } else {&#10;                self.send('output', false);&#10;            }&#10;        } else {&#10;            self.send('output', true);&#10;        }&#10;    });&#10;};&#10;&#10;/** If trainingMode is true, then updated the correctValues. */&#10;exports.wrapup = function () {&#10;    if (this.getParameter('trainingMode')) {&#10;        this.setParameter('correctValues', trainingTokens);&#10;    } else {&#10;        if (initialized) {&#10;            if (!inputHandled) {&#10;                initialized = false;&#10;                throw new Error(this.accessorName + 'The input handler of this accessor was never invoked. ' +&#10;                                'Usually, this is an error indicating that ' +&#10;                                'starvation is occurring.');&#10;            }&#10;            var correctValuesValues = this.getParameter('correctValues');&#10;            if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;                throw new Error(this.accessorName + ': The test produced only ' +&#10;                                numberOfInputTokensSeen +&#10;                                ' tokens, yet the correctValues parameter was ' +&#10;                                'expecting ' +&#10;                                correctValuesValues.length +&#10;                                ' tokens');&#10;            }&#10;        }&#10;        initialized = false;&#10;    }&#10;    var name = this.accessorName&#10;    if (this.container) {&#10;	name = this.container.accessorName + &quot;.&quot; + name&#10;    }&#10;    console.log(&quot;TrainableTest.js: wrapup() finished: &quot; + name);&#10;};&#10;">
+    <entity name="JavaScriptDeleteTimestamps" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Delete timestamps from JSON input.&#10;&#10;exports.setup = function() {&#10;    this.output('output', {'type': 'JSON'});&#10;    this.input('input', {'type': 'JSON'});&#10;};&#10;&#10;exports.deleteTimestamp = function() {&#10;	var json = this.get('input');&#10;	delete json.timestamp&#10;	this.send('output', json);&#10;}&#10;&#10;var handle = null;&#10;&#10;exports.initialize = function() {&#10;	handle = this.addInputHandler('input', this.exports.deleteTimestamp.bind(this));&#10;};&#10;&#10;exports.wrapup = function() {&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;};">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
             </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TrainableTest.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -447,584 +339,43 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[-0.018,-0.018,-0.018,-0.018,-0.018,-0.018,-0.018,-0.018,-0.018,-0.018]">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 455.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 220.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="interval" class="ptolemy.data.expr.Parameter" value="1000.0">
         </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&lt;/p&gt;&#10;&lt;p&gt; This actor is based on the NonStrictTest actor, but currently only&#10; handles numeric and string input.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$">
-            </property>
-            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The input value">
-            </property>
-            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="False as long as there is data to compare against the input">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-        </port>
-    </entity>
-    <entity name="JavaScriptStop3" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;}&#10;&#10;var handle;&#10;exports.initialize  = function() {&#10;  handle = this.addInputHandler('input', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;    var value = this.get('input');&#10;    if (value === true) {&#10;        console.log(&quot;JavaScriptStop: about to call stop().&quot;);&#10;        // stop() is defined for all accessors, though it might not actually do anything.&#10;        stop.call(this);&#10;        // An accessor host might not get to the next line.&#10;        console.log(&quot;JavaScriptStop: done calling stop() on container&quot;);&#10;    }&#10;}&#10; &#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptStop.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 455.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="TrainableTest4" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Compare the input with a known good input.&#10; *&#10; *  This actor is based on the NonStrictTest actor, but currently only&#10; *  handles numeric and string input.&#10; *  &#10; *  @accessor test/TrainableTest&#10; *  @input input The input value&#10; *  @output output False as long as there is data to compare against the input&#10; *  @param correctValues a JSON array of the correct values.&#10; *  @param trainingMode true if the input is being trained.&#10; *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee&#10; *  @version $$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals */&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;exports.setup = function () {&#10;    // FIXME: this only supports numbers and strings, unlike the Cape Code Test&#10;    // actor, which supports many types.&#10;    this.parameter('correctValues', {'type': 'JSON', 'value': '{0}'});&#10;    this.input('input');&#10;    this.output('output', {'type': 'boolean'});&#10;    this.parameter('tolerance', {'type': 'number', 'value': 0.000000001});&#10;    this.parameter('trainingMode', {'type': 'boolean', 'value': false});&#10;};&#10;&#10;// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java&#10;&#10;// Set to true if an input is handled.  If no inputs are handled, then&#10;// throw an exception in wrapup().&#10;var inputHandled = false;&#10;&#10;// Set to true when initialized() is called.&#10;var initialized = false;&#10;&#10;// The number of input tokens that have been read in.&#10;var numberOfInputTokensSeen = 0;&#10;&#10;// If trainingMode is true, then inputs that have been seen so far.&#10;var trainingTokens = [];&#10;&#10;/** Create an input handler to compare the input with the appropriate element(s) &#10; *  from correctValues.&#10; */&#10;exports.initialize = function () {&#10;    //console.log(&quot;Test initialize(): typeof correctValues: &quot; + typeof this.getParameter('correctValues'))&#10;    inputHandled = false;&#10;    initialized = true;&#10;    numberOfInputTokensSeen = 0;&#10;    trainingTokens = [];&#10;    &#10;    var self = this;&#10;    &#10;    this.addInputHandler('input', function() {&#10;        var inputValue = self.get('input');&#10;        inputHandled = true;&#10;        // If the input is not connected, then inputValue will be null.&#10;        if (self.getParameter('trainingMode')) {&#10;            trainingTokens.push(inputValue);&#10;            self.send('output', false);&#10;            return;&#10;        }&#10;        var correctValuesValues = self.getParameter('correctValues');&#10;&#10;        if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;            var referenceToken = correctValuesValues[numberOfInputTokensSeen];&#10;            //console.log(&quot;Test: &quot; + numberOfInputTokensSeen + &quot;, input: &quot; + inputValue&#10;            //+ &quot;, referenceToken: &quot; + referenceToken);&#10;            if (typeof inputValue !== 'number' &amp;&amp; typeof inputValue !== 'string' &amp;&amp; typeof inputValue !== 'object') {&#10;                if (inputValue === null) {&#10;                    throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the value of the input was null?  ' +&#10;                                    'Perhaps the input is not connected?'&#10;                                   );&#10;                }&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                cache = null; // Enable garbage collection&#10;&#10;&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the input &quot;' + inputValue +&#10;                                '&quot; is neither a number nor a string, it is a ' +&#10;                                typeof inputValue  + ' with value ' + inputValueValue);&#10;            }&#10;            if (typeof referenceToken === 'number') {&#10;                if (Math.abs(inputValue - referenceToken) &gt; self.getParameter('tolerance')) {&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is not within &quot;' +&#10;                                    self.getParameter('tolerance') +&#10;                                    '&quot; of the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'string') {&#10;                if (inputValue !== referenceToken) {&#10;                	console.log('typeof inputValue ' + typeof inputValue);&#10;                	console.log('typeof referenceToken ' + typeof referenceToken);&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is !== ' +&#10;                                    ' to the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'object') {&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                var cache = [];&#10;                var referenceTokenValue = JSON.stringify(referenceToken, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;&#10;                cache = null; // Enable garbage collection&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                if (referenceTokenValue.length &gt; 100) {&#10;                    referenceTokenValue = referenceTokenValue.substring(0,100) + '...';&#10;                }&#10;                if (inputValueValue !== referenceTokenValue) {&#10;                    throw new Error('The input &quot;' + inputValueValue + '&quot; is !== &quot;' +&#10;                                    '&quot; to the expected value &quot;' +&#10;                                    referenceTokenValue + '&quot;');&#10;                }&#10;            } else {&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the referenceToken &quot;' + referenceToken +&#10;                                '&quot; is not a number, it is a ' +&#10;                                typeof referenceToken);&#10;            }&#10;            numberOfInputTokensSeen++;&#10;            // If we are past the end of the expected inputs, then read&#10;            if (numberOfInputTokensSeen &gt;= correctValuesValues.length) {&#10;                self.send('output', true);&#10;            } else {&#10;                self.send('output', false);&#10;            }&#10;        } else {&#10;            self.send('output', true);&#10;        }&#10;    });&#10;};&#10;&#10;/** If trainingMode is true, then updated the correctValues. */&#10;exports.wrapup = function () {&#10;    if (this.getParameter('trainingMode')) {&#10;        this.setParameter('correctValues', trainingTokens);&#10;    } else {&#10;        if (initialized) {&#10;            if (!inputHandled) {&#10;                initialized = false;&#10;                throw new Error(this.accessorName + 'The input handler of this accessor was never invoked. ' +&#10;                                'Usually, this is an error indicating that ' +&#10;                                'starvation is occurring.');&#10;            }&#10;            var correctValuesValues = this.getParameter('correctValues');&#10;            if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;                throw new Error(this.accessorName + ': The test produced only ' +&#10;                                numberOfInputTokensSeen +&#10;                                ' tokens, yet the correctValues parameter was ' +&#10;                                'expecting ' +&#10;                                correctValuesValues.length +&#10;                                ' tokens');&#10;            }&#10;        }&#10;        initialized = false;&#10;    }&#10;    var name = this.accessorName&#10;    if (this.container) {&#10;	name = this.container.accessorName + &quot;.&quot; + name&#10;    }&#10;    console.log(&quot;TrainableTest.js: wrapup() finished: &quot; + name);&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TrainableTest.js">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[0.187,0.187,0.187,0.187,0.187,0.187,0.187,0.187,0.187,0.187]">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 545.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&lt;/p&gt;&#10;&lt;p&gt; This actor is based on the NonStrictTest actor, but currently only&#10; handles numeric and string input.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$">
-            </property>
-            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The input value">
-            </property>
-            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="False as long as there is data to compare against the input">
-            </property>
-        </property>
+        </port>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="JavaScriptStop4" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;}&#10;&#10;var handle;&#10;exports.initialize  = function() {&#10;  handle = this.addInputHandler('input', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;    var value = this.get('input');&#10;    if (value === true) {&#10;        console.log(&quot;JavaScriptStop: about to call stop().&quot;);&#10;        // stop() is defined for all accessors, though it might not actually do anything.&#10;        stop.call(this);&#10;        // An accessor host might not get to the next line.&#10;        console.log(&quot;JavaScriptStop: done calling stop() on container&quot;);&#10;    }&#10;}&#10; &#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptStop.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 545.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="TrainableTest5" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Compare the input with a known good input.&#10; *&#10; *  This actor is based on the NonStrictTest actor, but currently only&#10; *  handles numeric and string input.&#10; *  &#10; *  @accessor test/TrainableTest&#10; *  @input input The input value&#10; *  @output output False as long as there is data to compare against the input&#10; *  @param correctValues a JSON array of the correct values.&#10; *  @param trainingMode true if the input is being trained.&#10; *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee&#10; *  @version $$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals */&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;exports.setup = function () {&#10;    // FIXME: this only supports numbers and strings, unlike the Cape Code Test&#10;    // actor, which supports many types.&#10;    this.parameter('correctValues', {'type': 'JSON', 'value': '{0}'});&#10;    this.input('input');&#10;    this.output('output', {'type': 'boolean'});&#10;    this.parameter('tolerance', {'type': 'number', 'value': 0.000000001});&#10;    this.parameter('trainingMode', {'type': 'boolean', 'value': false});&#10;};&#10;&#10;// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java&#10;&#10;// Set to true if an input is handled.  If no inputs are handled, then&#10;// throw an exception in wrapup().&#10;var inputHandled = false;&#10;&#10;// Set to true when initialized() is called.&#10;var initialized = false;&#10;&#10;// The number of input tokens that have been read in.&#10;var numberOfInputTokensSeen = 0;&#10;&#10;// If trainingMode is true, then inputs that have been seen so far.&#10;var trainingTokens = [];&#10;&#10;/** Create an input handler to compare the input with the appropriate element(s) &#10; *  from correctValues.&#10; */&#10;exports.initialize = function () {&#10;    //console.log(&quot;Test initialize(): typeof correctValues: &quot; + typeof this.getParameter('correctValues'))&#10;    inputHandled = false;&#10;    initialized = true;&#10;    numberOfInputTokensSeen = 0;&#10;    trainingTokens = [];&#10;    &#10;    var self = this;&#10;    &#10;    this.addInputHandler('input', function() {&#10;        var inputValue = self.get('input');&#10;        inputHandled = true;&#10;        // If the input is not connected, then inputValue will be null.&#10;        if (self.getParameter('trainingMode')) {&#10;            trainingTokens.push(inputValue);&#10;            self.send('output', false);&#10;            return;&#10;        }&#10;        var correctValuesValues = self.getParameter('correctValues');&#10;&#10;        if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;            var referenceToken = correctValuesValues[numberOfInputTokensSeen];&#10;            //console.log(&quot;Test: &quot; + numberOfInputTokensSeen + &quot;, input: &quot; + inputValue&#10;            //+ &quot;, referenceToken: &quot; + referenceToken);&#10;            if (typeof inputValue !== 'number' &amp;&amp; typeof inputValue !== 'string' &amp;&amp; typeof inputValue !== 'object') {&#10;                if (inputValue === null) {&#10;                    throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the value of the input was null?  ' +&#10;                                    'Perhaps the input is not connected?'&#10;                                   );&#10;                }&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                cache = null; // Enable garbage collection&#10;&#10;&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the input &quot;' + inputValue +&#10;                                '&quot; is neither a number nor a string, it is a ' +&#10;                                typeof inputValue  + ' with value ' + inputValueValue);&#10;            }&#10;            if (typeof referenceToken === 'number') {&#10;                if (Math.abs(inputValue - referenceToken) &gt; self.getParameter('tolerance')) {&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is not within &quot;' +&#10;                                    self.getParameter('tolerance') +&#10;                                    '&quot; of the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'string') {&#10;                if (inputValue !== referenceToken) {&#10;                	console.log('typeof inputValue ' + typeof inputValue);&#10;                	console.log('typeof referenceToken ' + typeof referenceToken);&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is !== ' +&#10;                                    ' to the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'object') {&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                var cache = [];&#10;                var referenceTokenValue = JSON.stringify(referenceToken, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;&#10;                cache = null; // Enable garbage collection&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                if (referenceTokenValue.length &gt; 100) {&#10;                    referenceTokenValue = referenceTokenValue.substring(0,100) + '...';&#10;                }&#10;                if (inputValueValue !== referenceTokenValue) {&#10;                    throw new Error('The input &quot;' + inputValueValue + '&quot; is !== &quot;' +&#10;                                    '&quot; to the expected value &quot;' +&#10;                                    referenceTokenValue + '&quot;');&#10;                }&#10;            } else {&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the referenceToken &quot;' + referenceToken +&#10;                                '&quot; is not a number, it is a ' +&#10;                                typeof referenceToken);&#10;            }&#10;            numberOfInputTokensSeen++;&#10;            // If we are past the end of the expected inputs, then read&#10;            if (numberOfInputTokensSeen &gt;= correctValuesValues.length) {&#10;                self.send('output', true);&#10;            } else {&#10;                self.send('output', false);&#10;            }&#10;        } else {&#10;            self.send('output', true);&#10;        }&#10;    });&#10;};&#10;&#10;/** If trainingMode is true, then updated the correctValues. */&#10;exports.wrapup = function () {&#10;    if (this.getParameter('trainingMode')) {&#10;        this.setParameter('correctValues', trainingTokens);&#10;    } else {&#10;        if (initialized) {&#10;            if (!inputHandled) {&#10;                initialized = false;&#10;                throw new Error(this.accessorName + 'The input handler of this accessor was never invoked. ' +&#10;                                'Usually, this is an error indicating that ' +&#10;                                'starvation is occurring.');&#10;            }&#10;            var correctValuesValues = this.getParameter('correctValues');&#10;            if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;                throw new Error(this.accessorName + ': The test produced only ' +&#10;                                numberOfInputTokensSeen +&#10;                                ' tokens, yet the correctValues parameter was ' +&#10;                                'expecting ' +&#10;                                correctValuesValues.length +&#10;                                ' tokens');&#10;            }&#10;        }&#10;        initialized = false;&#10;    }&#10;    var name = this.accessorName&#10;    if (this.container) {&#10;	name = this.container.accessorName + &quot;.&quot; + name&#10;    }&#10;    console.log(&quot;TrainableTest.js: wrapup() finished: &quot; + name);&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TrainableTest.js">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[-0.2992,-0.2992,-0.2992,-0.2992,-0.2992,-0.2992,-0.2992,-0.2992,-0.2992,-0.2992]">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 635.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&lt;/p&gt;&#10;&lt;p&gt; This actor is based on the NonStrictTest actor, but currently only&#10; handles numeric and string input.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$">
-            </property>
-            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The input value">
-            </property>
-            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="False as long as there is data to compare against the input">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="JavaScriptStop5" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;}&#10;&#10;var handle;&#10;exports.initialize  = function() {&#10;  handle = this.addInputHandler('input', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;    var value = this.get('input');&#10;    if (value === true) {&#10;        console.log(&quot;JavaScriptStop: about to call stop().&quot;);&#10;        // stop() is defined for all accessors, though it might not actually do anything.&#10;        stop.call(this);&#10;        // An accessor host might not get to the next line.&#10;        console.log(&quot;JavaScriptStop: done calling stop() on container&quot;);&#10;    }&#10;}&#10; &#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptStop.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 635.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="TrainableTest6" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Compare the input with a known good input.&#10; *&#10; *  This actor is based on the NonStrictTest actor, but currently only&#10; *  handles numeric and string input.&#10; *  &#10; *  @accessor test/TrainableTest&#10; *  @input input The input value&#10; *  @output output False as long as there is data to compare against the input&#10; *  @param correctValues a JSON array of the correct values.&#10; *  @param trainingMode true if the input is being trained.&#10; *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee&#10; *  @version $$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals */&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;exports.setup = function () {&#10;    // FIXME: this only supports numbers and strings, unlike the Cape Code Test&#10;    // actor, which supports many types.&#10;    this.parameter('correctValues', {'type': 'JSON', 'value': '{0}'});&#10;    this.input('input');&#10;    this.output('output', {'type': 'boolean'});&#10;    this.parameter('tolerance', {'type': 'number', 'value': 0.000000001});&#10;    this.parameter('trainingMode', {'type': 'boolean', 'value': false});&#10;};&#10;&#10;// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java&#10;&#10;// Set to true if an input is handled.  If no inputs are handled, then&#10;// throw an exception in wrapup().&#10;var inputHandled = false;&#10;&#10;// Set to true when initialized() is called.&#10;var initialized = false;&#10;&#10;// The number of input tokens that have been read in.&#10;var numberOfInputTokensSeen = 0;&#10;&#10;// If trainingMode is true, then inputs that have been seen so far.&#10;var trainingTokens = [];&#10;&#10;/** Create an input handler to compare the input with the appropriate element(s) &#10; *  from correctValues.&#10; */&#10;exports.initialize = function () {&#10;    //console.log(&quot;Test initialize(): typeof correctValues: &quot; + typeof this.getParameter('correctValues'))&#10;    inputHandled = false;&#10;    initialized = true;&#10;    numberOfInputTokensSeen = 0;&#10;    trainingTokens = [];&#10;    &#10;    var self = this;&#10;    &#10;    this.addInputHandler('input', function() {&#10;        var inputValue = self.get('input');&#10;        inputHandled = true;&#10;        // If the input is not connected, then inputValue will be null.&#10;        if (self.getParameter('trainingMode')) {&#10;            trainingTokens.push(inputValue);&#10;            self.send('output', false);&#10;            return;&#10;        }&#10;        var correctValuesValues = self.getParameter('correctValues');&#10;&#10;        if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;            var referenceToken = correctValuesValues[numberOfInputTokensSeen];&#10;            //console.log(&quot;Test: &quot; + numberOfInputTokensSeen + &quot;, input: &quot; + inputValue&#10;            //+ &quot;, referenceToken: &quot; + referenceToken);&#10;            if (typeof inputValue !== 'number' &amp;&amp; typeof inputValue !== 'string' &amp;&amp; typeof inputValue !== 'object') {&#10;                if (inputValue === null) {&#10;                    throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the value of the input was null?  ' +&#10;                                    'Perhaps the input is not connected?'&#10;                                   );&#10;                }&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                cache = null; // Enable garbage collection&#10;&#10;&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the input &quot;' + inputValue +&#10;                                '&quot; is neither a number nor a string, it is a ' +&#10;                                typeof inputValue  + ' with value ' + inputValueValue);&#10;            }&#10;            if (typeof referenceToken === 'number') {&#10;                if (Math.abs(inputValue - referenceToken) &gt; self.getParameter('tolerance')) {&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is not within &quot;' +&#10;                                    self.getParameter('tolerance') +&#10;                                    '&quot; of the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'string') {&#10;                if (inputValue !== referenceToken) {&#10;                	console.log('typeof inputValue ' + typeof inputValue);&#10;                	console.log('typeof referenceToken ' + typeof referenceToken);&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is !== ' +&#10;                                    ' to the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'object') {&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                var cache = [];&#10;                var referenceTokenValue = JSON.stringify(referenceToken, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;&#10;                cache = null; // Enable garbage collection&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                if (referenceTokenValue.length &gt; 100) {&#10;                    referenceTokenValue = referenceTokenValue.substring(0,100) + '...';&#10;                }&#10;                if (inputValueValue !== referenceTokenValue) {&#10;                    throw new Error('The input &quot;' + inputValueValue + '&quot; is !== &quot;' +&#10;                                    '&quot; to the expected value &quot;' +&#10;                                    referenceTokenValue + '&quot;');&#10;                }&#10;            } else {&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the referenceToken &quot;' + referenceToken +&#10;                                '&quot; is not a number, it is a ' +&#10;                                typeof referenceToken);&#10;            }&#10;            numberOfInputTokensSeen++;&#10;            // If we are past the end of the expected inputs, then read&#10;            if (numberOfInputTokensSeen &gt;= correctValuesValues.length) {&#10;                self.send('output', true);&#10;            } else {&#10;                self.send('output', false);&#10;            }&#10;        } else {&#10;            self.send('output', true);&#10;        }&#10;    });&#10;};&#10;&#10;/** If trainingMode is true, then updated the correctValues. */&#10;exports.wrapup = function () {&#10;    if (this.getParameter('trainingMode')) {&#10;        this.setParameter('correctValues', trainingTokens);&#10;    } else {&#10;        if (initialized) {&#10;            if (!inputHandled) {&#10;                initialized = false;&#10;                throw new Error(this.accessorName + 'The input handler of this accessor was never invoked. ' +&#10;                                'Usually, this is an error indicating that ' +&#10;                                'starvation is occurring.');&#10;            }&#10;            var correctValuesValues = this.getParameter('correctValues');&#10;            if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;                throw new Error(this.accessorName + ': The test produced only ' +&#10;                                numberOfInputTokensSeen +&#10;                                ' tokens, yet the correctValues parameter was ' +&#10;                                'expecting ' +&#10;                                correctValuesValues.length +&#10;                                ' tokens');&#10;            }&#10;        }&#10;        initialized = false;&#10;    }&#10;    var name = this.accessorName&#10;    if (this.container) {&#10;	name = this.container.accessorName + &quot;.&quot; + name&#10;    }&#10;    console.log(&quot;TrainableTest.js: wrapup() finished: &quot; + name);&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TrainableTest.js">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[0.3922,0.3922,0.3922,0.3922,0.3922,0.3922,0.3922,0.3922,0.3922,0.3922]">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 725.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&lt;/p&gt;&#10;&lt;p&gt; This actor is based on the NonStrictTest actor, but currently only&#10; handles numeric and string input.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$">
-            </property>
-            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The input value">
-            </property>
-            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="False as long as there is data to compare against the input">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="JavaScriptStop6" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;}&#10;&#10;var handle;&#10;exports.initialize  = function() {&#10;  handle = this.addInputHandler('input', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;    var value = this.get('input');&#10;    if (value === true) {&#10;        console.log(&quot;JavaScriptStop: about to call stop().&quot;);&#10;        // stop() is defined for all accessors, though it might not actually do anything.&#10;        stop.call(this);&#10;        // An accessor host might not get to the next line.&#10;        console.log(&quot;JavaScriptStop: done calling stop() on container&quot;);&#10;    }&#10;}&#10; &#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptStop.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 725.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="TrainableTest7" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Compare the input with a known good input.&#10; *&#10; *  This actor is based on the NonStrictTest actor, but currently only&#10; *  handles numeric and string input.&#10; *  &#10; *  @accessor test/TrainableTest&#10; *  @input input The input value&#10; *  @output output False as long as there is data to compare against the input&#10; *  @param correctValues a JSON array of the correct values.&#10; *  @param trainingMode true if the input is being trained.&#10; *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee&#10; *  @version $$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals */&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;exports.setup = function () {&#10;    // FIXME: this only supports numbers and strings, unlike the Cape Code Test&#10;    // actor, which supports many types.&#10;    this.parameter('correctValues', {'type': 'JSON', 'value': '{0}'});&#10;    this.input('input');&#10;    this.output('output', {'type': 'boolean'});&#10;    this.parameter('tolerance', {'type': 'number', 'value': 0.000000001});&#10;    this.parameter('trainingMode', {'type': 'boolean', 'value': false});&#10;};&#10;&#10;// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java&#10;&#10;// Set to true if an input is handled.  If no inputs are handled, then&#10;// throw an exception in wrapup().&#10;var inputHandled = false;&#10;&#10;// Set to true when initialized() is called.&#10;var initialized = false;&#10;&#10;// The number of input tokens that have been read in.&#10;var numberOfInputTokensSeen = 0;&#10;&#10;// If trainingMode is true, then inputs that have been seen so far.&#10;var trainingTokens = [];&#10;&#10;/** Create an input handler to compare the input with the appropriate element(s) &#10; *  from correctValues.&#10; */&#10;exports.initialize = function () {&#10;    //console.log(&quot;Test initialize(): typeof correctValues: &quot; + typeof this.getParameter('correctValues'))&#10;    inputHandled = false;&#10;    initialized = true;&#10;    numberOfInputTokensSeen = 0;&#10;    trainingTokens = [];&#10;    &#10;    var self = this;&#10;    &#10;    this.addInputHandler('input', function() {&#10;        var inputValue = self.get('input');&#10;        inputHandled = true;&#10;        // If the input is not connected, then inputValue will be null.&#10;        if (self.getParameter('trainingMode')) {&#10;            trainingTokens.push(inputValue);&#10;            self.send('output', false);&#10;            return;&#10;        }&#10;        var correctValuesValues = self.getParameter('correctValues');&#10;&#10;        if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;            var referenceToken = correctValuesValues[numberOfInputTokensSeen];&#10;            //console.log(&quot;Test: &quot; + numberOfInputTokensSeen + &quot;, input: &quot; + inputValue&#10;            //+ &quot;, referenceToken: &quot; + referenceToken);&#10;            if (typeof inputValue !== 'number' &amp;&amp; typeof inputValue !== 'string' &amp;&amp; typeof inputValue !== 'object') {&#10;                if (inputValue === null) {&#10;                    throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the value of the input was null?  ' +&#10;                                    'Perhaps the input is not connected?'&#10;                                   );&#10;                }&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                cache = null; // Enable garbage collection&#10;&#10;&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the input &quot;' + inputValue +&#10;                                '&quot; is neither a number nor a string, it is a ' +&#10;                                typeof inputValue  + ' with value ' + inputValueValue);&#10;            }&#10;            if (typeof referenceToken === 'number') {&#10;                if (Math.abs(inputValue - referenceToken) &gt; self.getParameter('tolerance')) {&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is not within &quot;' +&#10;                                    self.getParameter('tolerance') +&#10;                                    '&quot; of the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'string') {&#10;                if (inputValue !== referenceToken) {&#10;                	console.log('typeof inputValue ' + typeof inputValue);&#10;                	console.log('typeof referenceToken ' + typeof referenceToken);&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is !== ' +&#10;                                    ' to the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'object') {&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                var cache = [];&#10;                var referenceTokenValue = JSON.stringify(referenceToken, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;&#10;                cache = null; // Enable garbage collection&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                if (referenceTokenValue.length &gt; 100) {&#10;                    referenceTokenValue = referenceTokenValue.substring(0,100) + '...';&#10;                }&#10;                if (inputValueValue !== referenceTokenValue) {&#10;                    throw new Error('The input &quot;' + inputValueValue + '&quot; is !== &quot;' +&#10;                                    '&quot; to the expected value &quot;' +&#10;                                    referenceTokenValue + '&quot;');&#10;                }&#10;            } else {&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the referenceToken &quot;' + referenceToken +&#10;                                '&quot; is not a number, it is a ' +&#10;                                typeof referenceToken);&#10;            }&#10;            numberOfInputTokensSeen++;&#10;            // If we are past the end of the expected inputs, then read&#10;            if (numberOfInputTokensSeen &gt;= correctValuesValues.length) {&#10;                self.send('output', true);&#10;            } else {&#10;                self.send('output', false);&#10;            }&#10;        } else {&#10;            self.send('output', true);&#10;        }&#10;    });&#10;};&#10;&#10;/** If trainingMode is true, then updated the correctValues. */&#10;exports.wrapup = function () {&#10;    if (this.getParameter('trainingMode')) {&#10;        this.setParameter('correctValues', trainingTokens);&#10;    } else {&#10;        if (initialized) {&#10;            if (!inputHandled) {&#10;                initialized = false;&#10;                throw new Error(this.accessorName + 'The input handler of this accessor was never invoked. ' +&#10;                                'Usually, this is an error indicating that ' +&#10;                                'starvation is occurring.');&#10;            }&#10;            var correctValuesValues = this.getParameter('correctValues');&#10;            if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;                throw new Error(this.accessorName + ': The test produced only ' +&#10;                                numberOfInputTokensSeen +&#10;                                ' tokens, yet the correctValues parameter was ' +&#10;                                'expecting ' +&#10;                                correctValuesValues.length +&#10;                                ' tokens');&#10;            }&#10;        }&#10;        initialized = false;&#10;    }&#10;    var name = this.accessorName&#10;    if (this.container) {&#10;	name = this.container.accessorName + &quot;.&quot; + name&#10;    }&#10;    console.log(&quot;TrainableTest.js: wrapup() finished: &quot; + name);&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TrainableTest.js">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[&quot;9096&quot;]">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 815.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&lt;/p&gt;&#10;&lt;p&gt; This actor is based on the NonStrictTest actor, but currently only&#10; handles numeric and string input.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$">
-            </property>
-            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The input value">
-            </property>
-            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="False as long as there is data to compare against the input">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="JavaScriptStop7" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;}&#10;&#10;var handle;&#10;exports.initialize  = function() {&#10;  handle = this.addInputHandler('input', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;    var value = this.get('input');&#10;    if (value === true) {&#10;        console.log(&quot;JavaScriptStop: about to call stop().&quot;);&#10;        // stop() is defined for all accessors, though it might not actually do anything.&#10;        stop.call(this);&#10;        // An accessor host might not get to the next line.&#10;        console.log(&quot;JavaScriptStop: done calling stop() on container&quot;);&#10;    }&#10;}&#10; &#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptStop.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 815.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="TrainableTest8" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Compare the input with a known good input.&#10; *&#10; *  This actor is based on the NonStrictTest actor, but currently only&#10; *  handles numeric and string input.&#10; *  &#10; *  @accessor test/TrainableTest&#10; *  @input input The input value&#10; *  @output output False as long as there is data to compare against the input&#10; *  @param correctValues a JSON array of the correct values.&#10; *  @param trainingMode true if the input is being trained.&#10; *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee&#10; *  @version $$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals */&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;exports.setup = function () {&#10;    // FIXME: this only supports numbers and strings, unlike the Cape Code Test&#10;    // actor, which supports many types.&#10;    this.parameter('correctValues', {'type': 'JSON', 'value': '{0}'});&#10;    this.input('input');&#10;    this.output('output', {'type': 'boolean'});&#10;    this.parameter('tolerance', {'type': 'number', 'value': 0.000000001});&#10;    this.parameter('trainingMode', {'type': 'boolean', 'value': false});&#10;};&#10;&#10;// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java&#10;&#10;// Set to true if an input is handled.  If no inputs are handled, then&#10;// throw an exception in wrapup().&#10;var inputHandled = false;&#10;&#10;// Set to true when initialized() is called.&#10;var initialized = false;&#10;&#10;// The number of input tokens that have been read in.&#10;var numberOfInputTokensSeen = 0;&#10;&#10;// If trainingMode is true, then inputs that have been seen so far.&#10;var trainingTokens = [];&#10;&#10;/** Create an input handler to compare the input with the appropriate element(s) &#10; *  from correctValues.&#10; */&#10;exports.initialize = function () {&#10;    //console.log(&quot;Test initialize(): typeof correctValues: &quot; + typeof this.getParameter('correctValues'))&#10;    inputHandled = false;&#10;    initialized = true;&#10;    numberOfInputTokensSeen = 0;&#10;    trainingTokens = [];&#10;    &#10;    var self = this;&#10;    &#10;    this.addInputHandler('input', function() {&#10;        var inputValue = self.get('input');&#10;        inputHandled = true;&#10;        // If the input is not connected, then inputValue will be null.&#10;        if (self.getParameter('trainingMode')) {&#10;            trainingTokens.push(inputValue);&#10;            self.send('output', false);&#10;            return;&#10;        }&#10;        var correctValuesValues = self.getParameter('correctValues');&#10;&#10;        if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;            var referenceToken = correctValuesValues[numberOfInputTokensSeen];&#10;            //console.log(&quot;Test: &quot; + numberOfInputTokensSeen + &quot;, input: &quot; + inputValue&#10;            //+ &quot;, referenceToken: &quot; + referenceToken);&#10;            if (typeof inputValue !== 'number' &amp;&amp; typeof inputValue !== 'string' &amp;&amp; typeof inputValue !== 'object') {&#10;                if (inputValue === null) {&#10;                    throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the value of the input was null?  ' +&#10;                                    'Perhaps the input is not connected?'&#10;                                   );&#10;                }&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                cache = null; // Enable garbage collection&#10;&#10;&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the input &quot;' + inputValue +&#10;                                '&quot; is neither a number nor a string, it is a ' +&#10;                                typeof inputValue  + ' with value ' + inputValueValue);&#10;            }&#10;            if (typeof referenceToken === 'number') {&#10;                if (Math.abs(inputValue - referenceToken) &gt; self.getParameter('tolerance')) {&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is not within &quot;' +&#10;                                    self.getParameter('tolerance') +&#10;                                    '&quot; of the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'string') {&#10;                if (inputValue !== referenceToken) {&#10;                	console.log('typeof inputValue ' + typeof inputValue);&#10;                	console.log('typeof referenceToken ' + typeof referenceToken);&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is !== ' +&#10;                                    ' to the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'object') {&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                var cache = [];&#10;                var referenceTokenValue = JSON.stringify(referenceToken, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;&#10;                cache = null; // Enable garbage collection&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                if (referenceTokenValue.length &gt; 100) {&#10;                    referenceTokenValue = referenceTokenValue.substring(0,100) + '...';&#10;                }&#10;                if (inputValueValue !== referenceTokenValue) {&#10;                    throw new Error('The input &quot;' + inputValueValue + '&quot; is !== &quot;' +&#10;                                    '&quot; to the expected value &quot;' +&#10;                                    referenceTokenValue + '&quot;');&#10;                }&#10;            } else {&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the referenceToken &quot;' + referenceToken +&#10;                                '&quot; is not a number, it is a ' +&#10;                                typeof referenceToken);&#10;            }&#10;            numberOfInputTokensSeen++;&#10;            // If we are past the end of the expected inputs, then read&#10;            if (numberOfInputTokensSeen &gt;= correctValuesValues.length) {&#10;                self.send('output', true);&#10;            } else {&#10;                self.send('output', false);&#10;            }&#10;        } else {&#10;            self.send('output', true);&#10;        }&#10;    });&#10;};&#10;&#10;/** If trainingMode is true, then updated the correctValues. */&#10;exports.wrapup = function () {&#10;    if (this.getParameter('trainingMode')) {&#10;        this.setParameter('correctValues', trainingTokens);&#10;    } else {&#10;        if (initialized) {&#10;            if (!inputHandled) {&#10;                initialized = false;&#10;                throw new Error(this.accessorName + 'The input handler of this accessor was never invoked. ' +&#10;                                'Usually, this is an error indicating that ' +&#10;                                'starvation is occurring.');&#10;            }&#10;            var correctValuesValues = this.getParameter('correctValues');&#10;            if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;                throw new Error(this.accessorName + ': The test produced only ' +&#10;                                numberOfInputTokensSeen +&#10;                                ' tokens, yet the correctValues parameter was ' +&#10;                                'expecting ' +&#10;                                correctValuesValues.length +&#10;                                ' tokens');&#10;            }&#10;        }&#10;        initialized = false;&#10;    }&#10;    var name = this.accessorName&#10;    if (this.container) {&#10;	name = this.container.accessorName + &quot;.&quot; + name&#10;    }&#10;    console.log(&quot;TrainableTest.js: wrapup() finished: &quot; + name);&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TrainableTest.js">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[100000,100000,100000,100000,100000,100000,100000,100000,100000,100000]">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 905.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&lt;/p&gt;&#10;&lt;p&gt; This actor is based on the NonStrictTest actor, but currently only&#10; handles numeric and string input.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$">
-            </property>
-            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The input value">
-            </property>
-            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="False as long as there is data to compare against the input">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="JavaScriptStop8" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;}&#10;&#10;var handle;&#10;exports.initialize  = function() {&#10;  handle = this.addInputHandler('input', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;    var value = this.get('input');&#10;    if (value === true) {&#10;        console.log(&quot;JavaScriptStop: about to call stop().&quot;);&#10;        // stop() is defined for all accessors, though it might not actually do anything.&#10;        stop.call(this);&#10;        // An accessor host might not get to the next line.&#10;        console.log(&quot;JavaScriptStop: done calling stop() on container&quot;);&#10;    }&#10;}&#10; &#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptStop.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 905.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-    </entity>
-    <entity name="TrainableTest9" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Compare the input with a known good input.&#10; *&#10; *  This actor is based on the NonStrictTest actor, but currently only&#10; *  handles numeric and string input.&#10; *  &#10; *  @accessor test/TrainableTest&#10; *  @input input The input value&#10; *  @output output False as long as there is data to compare against the input&#10; *  @param correctValues a JSON array of the correct values.&#10; *  @param trainingMode true if the input is being trained.&#10; *  @author Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee&#10; *  @version $$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals */&#10;/*jshint globalstrict: true*/&#10;/*jslint plusplus: true */&#10;'use strict';&#10;&#10;exports.setup = function () {&#10;    // FIXME: this only supports numbers and strings, unlike the Cape Code Test&#10;    // actor, which supports many types.&#10;    this.parameter('correctValues', {'type': 'JSON', 'value': '{0}'});&#10;    this.input('input');&#10;    this.output('output', {'type': 'boolean'});&#10;    this.parameter('tolerance', {'type': 'number', 'value': 0.000000001});&#10;    this.parameter('trainingMode', {'type': 'boolean', 'value': false});&#10;};&#10;&#10;// Input, parameter and variable names match those in $PTII/ptolemy/actor/lib/NonStrictTest.java&#10;&#10;// Set to true if an input is handled.  If no inputs are handled, then&#10;// throw an exception in wrapup().&#10;var inputHandled = false;&#10;&#10;// Set to true when initialized() is called.&#10;var initialized = false;&#10;&#10;// The number of input tokens that have been read in.&#10;var numberOfInputTokensSeen = 0;&#10;&#10;// If trainingMode is true, then inputs that have been seen so far.&#10;var trainingTokens = [];&#10;&#10;/** Create an input handler to compare the input with the appropriate element(s) &#10; *  from correctValues.&#10; */&#10;exports.initialize = function () {&#10;    //console.log(&quot;Test initialize(): typeof correctValues: &quot; + typeof this.getParameter('correctValues'))&#10;    inputHandled = false;&#10;    initialized = true;&#10;    numberOfInputTokensSeen = 0;&#10;    trainingTokens = [];&#10;    &#10;    var self = this;&#10;    &#10;    this.addInputHandler('input', function() {&#10;        var inputValue = self.get('input');&#10;        inputHandled = true;&#10;        // If the input is not connected, then inputValue will be null.&#10;        if (self.getParameter('trainingMode')) {&#10;            trainingTokens.push(inputValue);&#10;            self.send('output', false);&#10;            return;&#10;        }&#10;        var correctValuesValues = self.getParameter('correctValues');&#10;&#10;        if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;            var referenceToken = correctValuesValues[numberOfInputTokensSeen];&#10;            //console.log(&quot;Test: &quot; + numberOfInputTokensSeen + &quot;, input: &quot; + inputValue&#10;            //+ &quot;, referenceToken: &quot; + referenceToken);&#10;            if (typeof inputValue !== 'number' &amp;&amp; typeof inputValue !== 'string' &amp;&amp; typeof inputValue !== 'object') {&#10;                if (inputValue === null) {&#10;                    throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                    ' tokens, the value of the input was null?  ' +&#10;                                    'Perhaps the input is not connected?'&#10;                                   );&#10;                }&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                cache = null; // Enable garbage collection&#10;&#10;&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the input &quot;' + inputValue +&#10;                                '&quot; is neither a number nor a string, it is a ' +&#10;                                typeof inputValue  + ' with value ' + inputValueValue);&#10;            }&#10;            if (typeof referenceToken === 'number') {&#10;                if (Math.abs(inputValue - referenceToken) &gt; self.getParameter('tolerance')) {&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is not within &quot;' +&#10;                                    self.getParameter('tolerance') +&#10;                                    '&quot; of the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'string') {&#10;                if (inputValue !== referenceToken) {&#10;                	console.log('typeof inputValue ' + typeof inputValue);&#10;                	console.log('typeof referenceToken ' + typeof referenceToken);&#10;                    throw new Error('The input &quot;' + inputValue + '&quot; is !== ' +&#10;                                    ' to the expected value &quot;' +&#10;                                    referenceToken + '&quot;');&#10;                }&#10;            } else if (typeof referenceToken === 'object') {&#10;                var cache = [];&#10;                var inputValueValue = JSON.stringify(inputValue, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;                var cache = [];&#10;                var referenceTokenValue = JSON.stringify(referenceToken, function(key, value) {&#10;                    if (typeof value === 'object' &amp;&amp; value !== null) {&#10;                        if (cache.indexOf(value) !== -1) {&#10;                            // Circular reference found, discard key&#10;                            return;&#10;                        }&#10;                        // Store value in our collection&#10;                        cache.push(value);&#10;                    }&#10;                    return value;&#10;                });&#10;&#10;                cache = null; // Enable garbage collection&#10;                if (inputValueValue.length &gt; 100) {&#10;                    inputValueValue = inputValueValue.substring(0,100) + '...';&#10;                }&#10;                if (referenceTokenValue.length &gt; 100) {&#10;                    referenceTokenValue = referenceTokenValue.substring(0,100) + '...';&#10;                }&#10;                if (inputValueValue !== referenceTokenValue) {&#10;                    throw new Error('The input &quot;' + inputValueValue + '&quot; is !== &quot;' +&#10;                                    '&quot; to the expected value &quot;' +&#10;                                    referenceTokenValue + '&quot;');&#10;                }&#10;            } else {&#10;                throw new Error('After seeing ' + numberOfInputTokensSeen +&#10;                                ' tokens, the referenceToken &quot;' + referenceToken +&#10;                                '&quot; is not a number, it is a ' +&#10;                                typeof referenceToken);&#10;            }&#10;            numberOfInputTokensSeen++;&#10;            // If we are past the end of the expected inputs, then read&#10;            if (numberOfInputTokensSeen &gt;= correctValuesValues.length) {&#10;                self.send('output', true);&#10;            } else {&#10;                self.send('output', false);&#10;            }&#10;        } else {&#10;            self.send('output', true);&#10;        }&#10;    });&#10;};&#10;&#10;/** If trainingMode is true, then updated the correctValues. */&#10;exports.wrapup = function () {&#10;    if (this.getParameter('trainingMode')) {&#10;        this.setParameter('correctValues', trainingTokens);&#10;    } else {&#10;        if (initialized) {&#10;            if (!inputHandled) {&#10;                initialized = false;&#10;                throw new Error(this.accessorName + 'The input handler of this accessor was never invoked. ' +&#10;                                'Usually, this is an error indicating that ' +&#10;                                'starvation is occurring.');&#10;            }&#10;            var correctValuesValues = this.getParameter('correctValues');&#10;            if (numberOfInputTokensSeen &lt; correctValuesValues.length) {&#10;                throw new Error(this.accessorName + ': The test produced only ' +&#10;                                numberOfInputTokensSeen +&#10;                                ' tokens, yet the correctValues parameter was ' +&#10;                                'expecting ' +&#10;                                correctValuesValues.length +&#10;                                ' tokens');&#10;            }&#10;        }&#10;        initialized = false;&#10;    }&#10;    var name = this.accessorName&#10;    if (this.container) {&#10;	name = this.container.accessorName + &quot;.&quot; + name&#10;    }&#10;    console.log(&quot;TrainableTest.js: wrapup() finished: &quot; + name);&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TrainableTest.js">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[70,70,70,70,70,70,70,70,70,70]">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 995.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&lt;/p&gt;&#10;&lt;p&gt; This actor is based on the NonStrictTest actor, but currently only&#10; handles numeric and string input.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TrainableTest.js 940 2016-09-03 01:12:46Z cxh $$">
-            </property>
-            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The input value">
-            </property>
-            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="False as long as there is data to compare against the input">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="JavaScriptStop9" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;}&#10;&#10;var handle;&#10;exports.initialize  = function() {&#10;  handle = this.addInputHandler('input', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;    var value = this.get('input');&#10;    if (value === true) {&#10;        console.log(&quot;JavaScriptStop: about to call stop().&quot;);&#10;        // stop() is defined for all accessors, though it might not actually do anything.&#10;        stop.call(this);&#10;        // An accessor host might not get to the next line.&#10;        console.log(&quot;JavaScriptStop: done calling stop() on container&quot;);&#10;    }&#10;}&#10; &#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptStop.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
-            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
-                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
-                </property>
-                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
-                </property>
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{470.0, 995.0}">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
         </port>
     </entity>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.trigger&quot;,x=210.0,y=95.0}, tail={id=&quot;TestSpontaneousOnce.output&quot;,x=15.0,y=95.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.output&quot;,x=210.0,y=95.0}, tail={id=&quot;UDPSocketSender.toSend&quot;,x=395.0,y=85.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TestDisplay.input&quot;,x=325.0,y=190.0}, tail={id=&quot;Moto360GestureListener.message&quot;,x=95.0,y=250.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TrainableTest2.output&quot;,x=325.0,y=275.0}, tail={id=&quot;JavaScriptStop2.input&quot;,x=470.0,y=275.0}, points={} } }">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TrainableTest.output&quot;,x=325.0,y=365.0}, tail={id=&quot;JavaScriptStop.input&quot;,x=470.0,y=365.0}, points={} } }">
-        </property>
     </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Moto360GestureListener.accelerometerX&quot;,x=95.0,y=250.0}, tail={id=&quot;TrainableTest2.input&quot;,x=325.0,y=275.0}, points={260.0,210.0,260.0,275.0} } }">
-        </property>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Moto360GestureListener.accelerometerY&quot;,x=95.0,y=250.0}, tail={id=&quot;TrainableTest.input&quot;,x=325.0,y=365.0}, points={255.0,220.0,255.0,365.0} } }">
-        </property>
-    </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TrainableTest3.output&quot;,x=325.0,y=455.0}, tail={id=&quot;JavaScriptStop3.input&quot;,x=470.0,y=455.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Moto360GestureListener.accelerometerZ&quot;,x=95.0,y=250.0}, tail={id=&quot;TrainableTest3.input&quot;,x=325.0,y=455.0}, points={255.0,230.0,255.0,455.0} } }">
-        </property>
-    </relation>
-    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TrainableTest3.output&quot;,x=325.0,y=455.0}, tail={id=&quot;JavaScriptStop3.input&quot;,x=470.0,y=455.0}, points={} },{ head={id=&quot;TrainableTest4.output&quot;,x=325.0,y=545.0}, tail={id=&quot;JavaScriptStop4.input&quot;,x=470.0,y=545.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Moto360GestureListener.gyroscopeX&quot;,x=95.0,y=250.0}, tail={id=&quot;TrainableTest4.input&quot;,x=325.0,y=545.0}, points={250.0,240.0,250.0,545.0} } }">
-        </property>
-    </relation>
-    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TrainableTest3.output&quot;,x=325.0,y=455.0}, tail={id=&quot;JavaScriptStop3.input&quot;,x=470.0,y=455.0}, points={} },{ head={id=&quot;TrainableTest5.output&quot;,x=325.0,y=635.0}, tail={id=&quot;JavaScriptStop5.input&quot;,x=470.0,y=635.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Moto360GestureListener.gyroscopeY&quot;,x=95.0,y=250.0}, tail={id=&quot;TrainableTest5.input&quot;,x=325.0,y=635.0}, points={250.0,260.0,250.0,635.0} } }">
-        </property>
-    </relation>
-    <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TrainableTest3.output&quot;,x=325.0,y=455.0}, tail={id=&quot;JavaScriptStop3.input&quot;,x=470.0,y=455.0}, points={} },{ head={id=&quot;TrainableTest6.output&quot;,x=325.0,y=725.0}, tail={id=&quot;JavaScriptStop6.input&quot;,x=470.0,y=725.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Moto360GestureListener.gyroscopeZ&quot;,x=95.0,y=250.0}, tail={id=&quot;TrainableTest6.input&quot;,x=325.0,y=725.0}, points={245.0,270.0,245.0,725.0} } }">
-        </property>
-    </relation>
-    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TrainableTest3.output&quot;,x=325.0,y=455.0}, tail={id=&quot;JavaScriptStop3.input&quot;,x=470.0,y=455.0}, points={} },{ head={id=&quot;TrainableTest7.output&quot;,x=325.0,y=815.0}, tail={id=&quot;JavaScriptStop7.input&quot;,x=470.0,y=815.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Moto360GestureListener.watchID&quot;,x=95.0,y=250.0}, tail={id=&quot;TrainableTest7.input&quot;,x=325.0,y=815.0}, points={240.0,280.0,240.0,815.0} } }">
-        </property>
-    </relation>
-    <relation name="relation19" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TrainableTest3.output&quot;,x=325.0,y=455.0}, tail={id=&quot;JavaScriptStop3.input&quot;,x=470.0,y=455.0}, points={} },{ head={id=&quot;TrainableTest8.output&quot;,x=325.0,y=905.0}, tail={id=&quot;JavaScriptStop8.input&quot;,x=470.0,y=905.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Moto360GestureListener.ppg&quot;,x=95.0,y=250.0}, tail={id=&quot;TrainableTest8.input&quot;,x=325.0,y=905.0}, points={240.0,290.0,240.0,905.0} } }">
-        </property>
-    </relation>
-    <relation name="relation21" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TrainableTest3.output&quot;,x=325.0,y=455.0}, tail={id=&quot;JavaScriptStop3.input&quot;,x=470.0,y=455.0}, points={} },{ head={id=&quot;TrainableTest9.output&quot;,x=325.0,y=995.0}, tail={id=&quot;JavaScriptStop9.input&quot;,x=470.0,y=995.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Moto360GestureListener.heartRate&quot;,x=95.0,y=250.0}, tail={id=&quot;TrainableTest9.input&quot;,x=325.0,y=995.0}, points={235.0,300.0,235.0,995.0} } }">
-        </property>
-    </relation>
-    <link port="JavaScript.output" relation="relation2"/>
-    <link port="JavaScript.trigger" relation="relation5"/>
-    <link port="TestDisplay.input" relation="relation6"/>
+    <link port="JavaScriptWatchEmulator.output" relation="relation2"/>
+    <link port="JavaScriptWatchEmulator.trigger" relation="relation5"/>
     <link port="UDPSocketSender.toSend" relation="relation2"/>
     <link port="TestSpontaneousOnce.output" relation="relation5"/>
-    <link port="Moto360GestureListener.message" relation="relation6"/>
-    <link port="Moto360GestureListener.accelerometerX" relation="relation3"/>
-    <link port="Moto360GestureListener.accelerometerY" relation="relation8"/>
-    <link port="Moto360GestureListener.accelerometerZ" relation="relation10"/>
-    <link port="Moto360GestureListener.gyroscopeX" relation="relation12"/>
-    <link port="Moto360GestureListener.gyroscopeY" relation="relation14"/>
-    <link port="Moto360GestureListener.gyroscopeZ" relation="relation16"/>
-    <link port="Moto360GestureListener.watchID" relation="relation18"/>
-    <link port="Moto360GestureListener.ppg" relation="relation20"/>
-    <link port="Moto360GestureListener.heartRate" relation="relation22"/>
-    <link port="TrainableTest2.input" relation="relation3"/>
+    <link port="TrainableTest2.input" relation="relation4"/>
     <link port="TrainableTest2.output" relation="relation7"/>
     <link port="JavaScriptStop2.input" relation="relation7"/>
-    <link port="TrainableTest.input" relation="relation8"/>
-    <link port="TrainableTest.output" relation="relation4"/>
-    <link port="JavaScriptStop.input" relation="relation4"/>
-    <link port="TrainableTest3.input" relation="relation10"/>
-    <link port="TrainableTest3.output" relation="relation9"/>
-    <link port="JavaScriptStop3.input" relation="relation9"/>
-    <link port="TrainableTest4.input" relation="relation12"/>
-    <link port="TrainableTest4.output" relation="relation11"/>
-    <link port="JavaScriptStop4.input" relation="relation11"/>
-    <link port="TrainableTest5.input" relation="relation14"/>
-    <link port="TrainableTest5.output" relation="relation13"/>
-    <link port="JavaScriptStop5.input" relation="relation13"/>
-    <link port="TrainableTest6.input" relation="relation16"/>
-    <link port="TrainableTest6.output" relation="relation15"/>
-    <link port="JavaScriptStop6.input" relation="relation15"/>
-    <link port="TrainableTest7.input" relation="relation18"/>
-    <link port="TrainableTest7.output" relation="relation17"/>
-    <link port="JavaScriptStop7.input" relation="relation17"/>
-    <link port="TrainableTest8.input" relation="relation20"/>
-    <link port="TrainableTest8.output" relation="relation19"/>
-    <link port="JavaScriptStop8.input" relation="relation19"/>
-    <link port="TrainableTest9.input" relation="relation22"/>
-    <link port="TrainableTest9.output" relation="relation21"/>
-    <link port="JavaScriptStop9.input" relation="relation21"/>
+    <link port="Moto360GestureListener2.data" relation="relation6"/>
+    <link port="JavaScriptDeleteTimestamps.output" relation="relation4"/>
+    <link port="JavaScriptDeleteTimestamps.input" relation="relation6"/>
 </entity>
