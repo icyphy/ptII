@@ -219,6 +219,7 @@
 	    <!--ptp not shipped with 6.0 -->
             <!--input source="ptolemy/ptp/lib/ptpentities.xml"/-->
             <input source="ptolemy/actor/lib/python/python.xml"/>
+            <input source="ptolemy/domains/qss/lib/qssentities.xml"/>
             <input source="ptolemy/actor/lib/test.xml"/>
             <input source="ptolemy/domains/scr/scr.xml"/>
             <input source="ptolemy/actor/lib/security/security.xml"/>
