@@ -46,7 +46,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = 	WatchEmulator.xml
+OTHER_FILES_TO_BE_JARED = \
+	WatchEmulator.xml \
+	WatchListener.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
