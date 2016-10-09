@@ -1234,8 +1234,10 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
             // NOT differentiate between parameters from the URL and those from 
             // the body
             
+            // Use contains instead of equals since the type may include other 
+            // things, e.g. charset=UTF-8
             if (request.getContentType() != null && request.getContentType()
-                    .equalsIgnoreCase("application/x-www-form-urlencoded")) {
+                    .contains("application/x-www-form-urlencoded")) {
                 
                 // Form data:  application/x-www-form-urlencoded
                 // Use request.getParameterMap() which reads parameters from both 
