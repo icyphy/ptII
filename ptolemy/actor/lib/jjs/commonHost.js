@@ -695,6 +695,11 @@ Accessor.prototype.assignPriorities = function() {
 
 /** Assuming that the specified accessor has an assigned priority, follow its
  *  connections downstream and assign priorities to connected accessors.
+ *  Each downstream accessor gets a priority at least one greater than the
+ *  priority of the specified accessor, and each gets a unique priority.
+ *  Return the largest priority assigned to a downstream accessor, or if
+ *  no priorities are assigned to downstream accessor, then return the priority
+ *  of the specified accessor.
  *  @param accessor The contained accessor with a priority.
  *  @param cyclePriority If we encounter an accessor with this priority, then
  *   there is a causality loop.
@@ -728,20 +733,22 @@ Accessor.prototype.assignImpliedPrioritiesDownstream = function(accessor, cycleP
                     // Destination has no previously assigned priority. Give it one,
                     // and follow the implications.
 
-		    // We increment myPriority before use so that if
-		    // an output is connected to multiple inputs, the
-		    // inputs do not have the same priority.
-		    // To replicate this, run:
+                    // We increment myPriority before use so that if
+		            // an output is connected to multiple inputs, the
+		            // inputs do not have the same priority.
+		            // To replicate this, run:
 
-		    // (cd $PTII/org/terraswarm/accessor/accessors/web/hosts/node; node nodeHostInvoke -timeout 6000 test/auto/RampJSTestDisplay.js)
+		            // (cd $PTII/org/terraswarm/accessor/accessors/web/hosts/node; node nodeHostInvoke -timeout 6000 test/auto/RampJSTestDisplay.js)
 
-		    // If we don't increment the priority then either
-		    // the Display or the TrainableTest fails to get
-		    // inputs.
-
-		    destinationAccessor.priority = ++myPriority;
-                    // console.log('Assigned downstream priority to ' + destinationAccessor.accessorName + ' of ' + (myPriority + 1));
-                    this.assignImpliedPrioritiesDownstream(
+		            // If we don't increment the priority then either
+		            // the Display or the TrainableTest fails to get
+		            // inputs.
+		            destinationAccessor.priority = ++myPriority;
+                    // console.log('Assigned downstream priority to ' + destinationAccessor.accessorName + ' of ' + myPriority));
+                    
+                    // In case there are further assigned priorities further downstream,
+                    // update myPriority to the largest of those.
+                    myPriority = this.assignImpliedPrioritiesDownstream(
                             destinationAccessor, cyclePriority);
                 } else {
                     if (theirPriority > myPriority) {
@@ -750,15 +757,16 @@ Accessor.prototype.assignImpliedPrioritiesDownstream = function(accessor, cycleP
                     }
                     // Priority has to be adjusted.
 
-		    // See comment above for why we increment myPriority.
+		            // See comment above for why we increment myPriority.
                     destinationAccessor.priority = ++myPriority;
                     // console.log('Assigned downstream priority to ' + destinationAccessor.accessorName + ' of ' + (myPriority + 1));
-                    this.assignImpliedPrioritiesDownstream(
+                    myPriority = this.assignImpliedPrioritiesDownstream(
                             destinationAccessor, cyclePriority);
                 }
             }
         }
-    }        
+    }
+    return myPriority;
 };
 
 /** Assuming that the specified accessor has an assigned priority, follow its
@@ -1364,6 +1372,16 @@ Accessor.prototype.react = function(name) {
 			// if TrainableTest.wrapup() throws an Error because
 			// the input does not match the training data, then we 
 			// don't ignore the error in commonHost.error().
+
+                        // FIXME: If the exception was thrown because
+                        // of Java, we should get the Java stacktrace.
+                        //console.log("commonHost: inputHandler problem");
+                        //console.log(exception.printStackTrace());
+  
+                        // FIXME: We should probably subclass Error
+                        // and have a version that takes an exception
+                        // as an argument and reads the value of
+                        // exception.stack.
                         throw new Error('commonHost.js, react(), invoking a specific handler for \"' +
                                    name + '\": Exception occurred in input handler,' +
                                    ' which has now has been removed.  Exception was: ' +
@@ -1408,7 +1426,8 @@ Accessor.prototype.react = function(name) {
                             thiz.anyInputHandlers[j].handle);
                     thiz.error('commonHost.js, react() invoking handlers registered to handle any input: Exception occurred in input handler,' +
                                ' which has now has been removed.  Exception was: ' +
-                               exception);
+                               exception +
+                               ' Stacktrace was: ' + exception.stack);
                 }
             }
         }
