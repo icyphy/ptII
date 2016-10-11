@@ -322,6 +322,13 @@
         _loadedModules[canonizedFilename] = moduleInfo;
         var compiledWrapper = null;
         try {
+            // Uncomment the code below if you want to see what files
+            // are being required.
+            // try {
+            //     console.log("require.js: " + canonizedFilename);
+            // } catch (e) {
+            //     //Ignore
+            // }
             compiledWrapper = eval(code);
         } catch (e) {
             var message = e.message;
