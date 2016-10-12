@@ -37,6 +37,9 @@ import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
 
+import org.fortiss.de.structuralcoder.gxw.PtolemyFrontEnd;
+import org.fortiss.de.structuralcoder.gxw.exception.UnsupportedSpecException;
+
 import diva.gui.GUIUtilities;
 import g4ltl.SolverUtility;
 import g4ltl.Version;
@@ -91,9 +94,9 @@ public class ImportG4LTLAction extends AbstractAction {
      *  @param frame  The frame to which the import action is to be added.
      */
     public ImportG4LTLAction(Top frame) {
-        super("Import FSMActor using synthesis");
+        super("Import design using synthesis");
         _frame = frame;
-        putValue("tooltip", "Import an FSMActor using LTL synthesis (G4LTL)");
+        putValue("tooltip", "Import design using LTL synthesis (G4LTL, StructuralCoder)");
         putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_M));
     }
 
@@ -158,6 +161,30 @@ public class ImportG4LTLAction extends AbstractAction {
                 try {
                     file = ptFileChooser.getSelectedFile().getCanonicalFile();
 
+         
+
+                    // --2QBF=Java
+                    
+                    
+                    String controller = "";
+                    try{
+                        PtolemyFrontEnd pm = new PtolemyFrontEnd();
+                        controller = pm.synthesize(file);
+                        
+                        if (controller != null
+                                && !controller.equalsIgnoreCase("")
+                                && !controller.startsWith("ERROR")) {
+                            G4LTL.updateModel(controller,
+                                    basicGraphFrame.getModel());           
+                            return;
+                        } 
+                        
+                       
+                    } catch (UnsupportedSpecException ex){
+                        // StructuralCoder use UnsupportedSpecException as an indicator over improper specification shape
+                    }
+                    
+                    
                     // Step 1: Invoke the synthesis engine to generate a string in MoML format.
 
                     SolverUtility solver = new SolverUtility();
