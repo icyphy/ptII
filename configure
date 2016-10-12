@@ -652,6 +652,7 @@ PTWABA_DIR
 PTGIOTTO_DIR
 PTTINYOS_DIR
 PTTINI_DIR
+PTSTRUCTURALCODER_JAR
 PTSPACEDOMAIN_PACKAGES
 PTSPACEDOMAIN_JAR
 PTSPACE_DIR
@@ -7374,8 +7375,12 @@ PTG4LTL_DIR=
 # PTG4LTL_PACKAGES is used in doc/makefile
 PTG4LTL_PACKAGES=
 
-# The location of the protobuf jar file, typically $PTII/lib/g4ltl.jar
+# The location of the g4ltl jar file, typically $PTII/lib/g4ltl.jar
 PTG4LTL_JAR=
+
+# PTSTRUCTURALCODER_JAR is set if $PTII/lib/StructuralCoder.jar was found
+# and used in ptolemy/vergil/actor/g4ltl/makefile
+PTSTRUCTURALCODER_JAR=
 
 # We only need look for g4ltl if $PTII/ptolemy/vergil/basic/imprt/g4ltl exists
 G4LTL_USER_DIR="$PTII/ptolemy/vergil/basic/imprt/g4ltl"
@@ -7385,18 +7390,23 @@ $as_echo "$G4LTL_USER_DIR is not present, so we need not find G4LTL." >&6; }; fi
 else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking G4LTL" >&5
 $as_echo_n "checking G4LTL... " >&6; }
-    if test -f "$PTII/lib/g4ltl.jar"; then
+    if test -f "$PTII/lib/g4ltl.jar" -a -f "$PTII/lib/StructuralCoder.jar"; then
         if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTII/lib/g4ltl.jar" >&5
 $as_echo "$PTII/lib/g4ltl.jar" >&6; }; fi
 	PTG4LTL_JAR="$PTII/lib/g4ltl.jar"
+        updateClasspath "$PTG4LTL_JAR"
+
 	PTG4LTL_DIR=g4ltl
 	PTG4LTL_PACKAGES="ptolemy.vergil.basic.imprt.g4ltl"
-        updateClasspath "$PTG4LTL_JAR"
+
+        PTSTRUCTURALCODER_JAR="$PTII/lib/StructuralCoder.jar"
+        updateClasspath "$PTSTRUCTURALCODER_JAR"
+
     else
-        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/g4ltl.jar,
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/g4ltl.jar or $PTII/lib/StructuralCoder.jar,
 	which means that importing an FSMActor using LTL synthesis (G4LTL) will not be supported." >&5
-$as_echo "$as_me: WARNING: Failed to find $PTII/lib/g4ltl.jar,
+$as_echo "$as_me: WARNING: Failed to find $PTII/lib/g4ltl.jar or $PTII/lib/StructuralCoder.jar,
 	which means that importing an FSMActor using LTL synthesis (G4LTL) will not be supported." >&2;};
         updateExcludes "ptolemy/vergil/actor/g4ltl/"
     fi
@@ -14883,6 +14893,10 @@ fi
 
 # PTSPACEDOMAIN_PACKAGES is set if ojdbc6.jar was found and
 # used in ptII/doc/makefile
+
+
+# PTSTRUCTURALCODER_JAR is set if $PTII/lib/StructuralCoder.jar was found
+# and used in ptolemy/vergil/actor/g4ltl/makefile
 
 
 # Set to tini and used in
