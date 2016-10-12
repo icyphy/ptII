@@ -1,0 +1,51 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="AutomaticDoor" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1936, 1176}, maximized=true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1708, 1060]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1248088393215252">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{318.8359375, 438.3967811395759}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Follow the instructions to synthesize the SDF controller automatically:&#10;(1) Save the specification as a separate text file. &#10;(2) On the menu bar, choose &quot;Import -&gt; Import design using synthesis&quot;.&#10;(3) Select AutomaticDoorLTL.txt&#10;&#10;   ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 245.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Chih-Hong Cheng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 300.0]">
+        </property>
+    </property>
+    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.gif">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, 65.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example shows how to use reactive synthesis to automatically generate structured controllers in SDF/SR style. &#10;&#10;Input and output variables are as follows: &#10;- in0 is true when someone enters the sensing field; &#10;- in1 denotes a closing limit switch - it is true when two doors touch each other; &#10;- in2 denotes an opening limit switch - it is true when the door reaches the end; &#10;- out0 denotes the opening motor - when it is set to true the motor rotates clockwise, thereby triggering the door opening action; &#10;- out1 denotes closing motor - when it is set to true the motor rotates counter-clockwise, thereby triggering the door closing action. &#10;- The triggering of a timer t0 is modeled by means a (controllable) output variable t0start and the expiration of a timer is modele &#10;  using an (uncontrollable) input variable t0expire.&#10;&#10;The formal specification is in AutomaticDoorLTL.txt">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 75.0]">
+        </property>
+    </property>
+</entity>

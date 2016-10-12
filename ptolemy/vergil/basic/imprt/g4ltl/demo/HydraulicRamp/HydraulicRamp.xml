@@ -1,0 +1,51 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="HydraulicRamp" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1936, 1176}, maximized=true}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1708, 1060]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4694897365756996">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{271.7515683630397, 244.39187089587244}">
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Follow the instructions to synthesize the SDF controller automatically:&#10;(1) Save the specification as a separate text file. &#10;(2) On the menu bar, choose &quot;Import -&gt; Import design using synthesis&quot;.&#10;(3) Select HydraulicRampLTL.txt&#10;&#10;   ">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 205.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Chih-Hong Cheng">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 280.0]">
+        </property>
+    </property>
+    <property name="Image" class="ptolemy.vergil.kernel.attributes.ImageAttribute">
+        <property name="source" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.gif">
+        </property>
+        <property name="scale" class="ptolemy.data.expr.Parameter" value="70.0">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-285.0, 65.0}">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This example shows how to use reactive synthesis to automatically generate structured controllers in SDF/SR style. &#10;&#10;The system scenario is shown in the firgure: By pressing botton i2 (up), the motor enables upward movement of the&#10;platform by setting output variable k2 to true. Button i3 (stop) makes the leveling the same. i1 (down) triggers &#10;the lowering of the hub by setting output variable k1 to true. Sensors i5 and i4 are for detecting upper and lower &#10;limits. If i1 and i2 are simultaneously pressed, one needs to stop the movement. Lastly, it is disallowed to trigger &#10;the motor simultaneously in both directions (i.e., ALWAYS !(k1 &amp;&amp; k2)).&#10;&#10;The formal specification is in HydraulicRampLTL.txt">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 65.0]">
+        </property>
+    </property>
+</entity>

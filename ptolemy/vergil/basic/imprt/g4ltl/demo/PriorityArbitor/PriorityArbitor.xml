@@ -23,7 +23,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Follow the instructions to synthesize the FSMActor automatically:&#10;(1) Save the specification as a separate text file.&#10;(2) On the menu bar, choose &quot;Import -&gt; Import FSMActor using synthesis&quot;.&#10;      A file selection dialog will appear. Select the text file in step 1.&#10;(3) Select either Co-Buechi or Buechi solver. For Co-Buechi solver, select &#10;      unroll step to be 3.&#10;   ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Follow the instructions to synthesize the FSMActor automatically:&#10;(1) Save the specification as a separate text file.&#10;(2) On the menu bar, choose &quot;Import -&gt; Import design using synthesis&quot;.&#10;      A file selection dialog will appear. Select the text file in step 1.&#10;(3) Select either Co-Buechi or Buechi solver. For Co-Buechi solver, select &#10;      unroll step to be 3.&#10;   ">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 280.0]">
         </property>
