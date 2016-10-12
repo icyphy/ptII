@@ -2442,8 +2442,12 @@ PTG4LTL_DIR=
 # PTG4LTL_PACKAGES is used in doc/makefile
 PTG4LTL_PACKAGES=
 
-# The location of the protobuf jar file, typically $PTII/lib/g4ltl.jar
+# The location of the g4ltl jar file, typically $PTII/lib/g4ltl.jar
 PTG4LTL_JAR=
+
+# PTSTRUCTURALCODER_JAR is set if $PTII/lib/StructuralCoder.jar was found
+# and used in ptolemy/vergil/actor/g4ltl/makefile
+PTSTRUCTURALCODER_JAR=
 
 # We only need look for g4ltl if $PTII/ptolemy/vergil/basic/imprt/g4ltl exists
 G4LTL_USER_DIR="$PTII/ptolemy/vergil/basic/imprt/g4ltl"
@@ -2451,14 +2455,19 @@ if test ! -d "$G4LTL_USER_DIR"; then
     PT_MSG_STATUS([$G4LTL_USER_DIR is not present, so we need not find G4LTL.])
 else
     AC_MSG_CHECKING([G4LTL])
-    if test -f "$PTII/lib/g4ltl.jar"; then
+    if test -f "$PTII/lib/g4ltl.jar" -a -f "$PTII/lib/StructuralCoder.jar"; then
         PT_MSG_RESULT($PTII/lib/g4ltl.jar)
 	PTG4LTL_JAR="$PTII/lib/g4ltl.jar"
+        updateClasspath "$PTG4LTL_JAR"
+
 	PTG4LTL_DIR=g4ltl
 	PTG4LTL_PACKAGES="ptolemy.vergil.basic.imprt.g4ltl"
-        updateClasspath "$PTG4LTL_JAR"
+
+        PTSTRUCTURALCODER_JAR="$PTII/lib/StructuralCoder.jar"
+        updateClasspath "$PTSTRUCTURALCODER_JAR"
+
     else
-        AC_MSG_WARN([Failed to find $PTII/lib/g4ltl.jar,
+        AC_MSG_WARN([Failed to find $PTII/lib/g4ltl.jar or $PTII/lib/StructuralCoder.jar,
 	which means that importing an FSMActor using LTL synthesis (G4LTL) will not be supported.]);
         updateExcludes "ptolemy/vergil/actor/g4ltl/"
     fi
@@ -7373,6 +7382,10 @@ AC_SUBST(PTSPACEDOMAIN_JAR)
 # PTSPACEDOMAIN_PACKAGES is set if ojdbc6.jar was found and 
 # used in ptII/doc/makefile
 AC_SUBST(PTSPACEDOMAIN_PACKAGES)
+
+# PTSTRUCTURALCODER_JAR is set if $PTII/lib/StructuralCoder.jar was found
+# and used in ptolemy/vergil/actor/g4ltl/makefile
+AC_SUBST(PTSTRUCTURALCODER_JAR)
 
 # Set to tini and used in
 # $PTII/ptolemy/apps/makefile if TINI was found
