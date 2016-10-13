@@ -539,7 +539,8 @@ $(PTIIDIST):
 	# The $(PTIIDIST)/jar_dist rule updates the docs, so we need not do it here.
 	#@echo "Regenerate the documentation with comm, gr, JAI, JMF etc."
 	#(cd $(PTIIDIST)/doc; make JAVADOC=$(JAVADOC) install)
-
+	# Regenerate $PTII/build.xml
+	(cd $(PTII); ./configure)
 
 dist_jar_dist: $(PTIIDIST)/jar_dist
 $(PTIIDIST)/jar_dist:
