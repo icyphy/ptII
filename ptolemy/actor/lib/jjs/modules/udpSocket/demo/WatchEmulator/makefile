@@ -4,7 +4,7 @@
 #
 # @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2016 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -48,7 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	WatchEmulator.xml \
-	WatchListener.xml
+	WatchSensor.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
