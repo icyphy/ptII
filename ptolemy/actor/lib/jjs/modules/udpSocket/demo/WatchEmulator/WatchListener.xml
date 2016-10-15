@@ -16,13 +16,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[77.5, 40.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={151, 45, 949, 676}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={155, 131, 949, 676}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[715, 566]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1034027392486554">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{357.5, 283.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{343.46630859375, 263.4791472739362}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Read Moto Watch Gesture Data via UDP.">
@@ -61,9 +61,9 @@
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Edit the listeningPort parameter of the Moto360GestureListener actor.&#10;&#10;The listeningPort is a UDP port number that should match &#10;the port number programmed in to the Moto Watch App">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Edit the listeningPort parameter of the Moto360SensorListener actor.&#10;&#10;The listeningPort is a UDP port number that should match &#10;the port number programmed in to the Moto Watch App">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 210.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -116,34 +116,24 @@
             </property>
         </property>
     </property>
-    <entity name="Moto360GestureListener" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** &#10; * Read UDP gesture data from a Moto 360 watch.&#10; *  &#10; * See https://github.com/Zziwei/GestureUDP for software for the watch.&#10; *&#10; * See https://github.com/terraswarm/PackageSendTest for sample JavaScript drivers.&#10; *&#10; * @accessor devices/Moto360GestureListener&#10; * @output {string} message The received message.&#10; * @output {boolean} listening True to indicate that listening has begun, false to&#10; *   indicate that it has stopped.&#10; * @output {json} data The data from the watch.&#10; *&#10; * @input {string} listeningAddress The interface to listen on for incoming messages.&#10; *   This defaults to &quot;0.0.0.0&quot;, which means to listen on all network interfaces.&#10; * @input {int} listeningPort The port to listen on for incoming messages.&#10; *   This defaults to 4567, which is the value found in https://github.com/Zziwei/PackageSendTest&#10; *   &#10; * @parameter {string} receiveType See above.&#10; &#10; * @author Christopher Brooks&#10; * @version $$Id: Hue.js 748 2016-04-29 21:51:14Z cxh $$ &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearTimeout, console, error, exports, httpRequest, require, setTimeout  */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;// This accessor requires the optional 'udpSocket' module, which may or may&#10;// not be provided by an accessor host. Most hosts will provide this module.&#10;var UDPSocket = require('udpSocket');&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function () {&#10;    this.extend('net/UDPSocketListener');&#10;&#10;    // Override the value of listeningPort in the parent.&#10;    this.input('listeningPort', {&#10;        'value': 4567, // 4567 is the value found in https://github.com/Zziwei/PackageSendTest&#10;        'type': 'int'&#10;    });&#10;&#10;    &#10;    this.output('data', {'type': 'JSON'});&#10;&#10;    this.parameter('receiveType', {&#10;        type: 'string',&#10;        value: 'unsignedbyte',&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    exports.ssuper.initialize.call(this);&#10;};&#10;&#10;// Convert the 2 bytes data to a integer.&#10;function trans(a, b) {&#10;    var c = a * Math.pow(2, 8);&#10;    c = c + b;&#10;    if (c &gt; Math.pow(2, 15)) { &#10;        c = (Math.pow(2, 16) - c) * -1;&#10;    }&#10;    return c;&#10;}&#10;&#10;// Convert timestamp to time string.&#10;function timestamp2string(time_stamp) {&#10;    try {&#10;        // Python time is in seconds.  JavaScript milliseconds.&#10;        //d = datetime.fromtimestamp(time_stamp / 1000.0);&#10;        time_stamp = Math.round(time_stamp * 1000);&#10;        var d = new Date(time_stamp);&#10;        //str1 = d.strftime(&quot;%Y-%m-%d %H:%M:%S.%f&quot;);&#10;        var str1 = d.toISOString();&#10;        //console.log(&quot;timestamp2string(&quot; + time_stamp + &quot;)&quot; + d + &quot; &quot; + Date.now());&#10;        &#10;        // Python: 2015-08-28 16:43:37.283000&#10;        // JavaScript: 2016-10-05T03:21:09.617Z &#10;        return str1;&#10;    } catch (e) {&#10;        console.log(e);&#10;        return '';&#10;    }&#10;}&#10;&#10;// Convert the 8 bytes timestamp to float.&#10;function bytes2float(byte_array) {&#10;    var value = (byte_array[0] &amp; 0xff) | ((byte_array[1] &lt;&lt; 8) &amp; 0xff00) | ((byte_array[2] &lt;&lt; 16) &amp; 0xff0000) | ((byte_array[3] &lt;&lt; 24) &amp; 0xff000000);&#10;    value += ((((byte_array[4]) &amp; 0xff) | ((byte_array[5] &lt;&lt; 8) &amp; 0xff00)) / 1000);&#10;    return value;&#10;}&#10;&#10;var debug = false;&#10;&#10;exports.closeAndOpen = function () {&#10;&#10;    exports.ssuper.closeAndOpen.call(this);&#10;    var self = this;&#10;&#10;    exports.ssuper.socket.on('message', function (message) {&#10;        if (exports.ssuper.running) {&#10;            self.send('message', message);&#10;&#10;            // Here's where Moto360GestureListener differs from UDPSocketListener.&#10;            // See https://www.terraswarm.org/urbanheartbeat/wiki/Main/WatchSoftware#Package&#10;            if (debug) {&#10;                console.log(&quot;Moto360GestureListener.parseGestureData(): message: &quot; + message);&#10;            }&#10;            // Receive the data and parse them and print.&#10;            if (message[4] === &quot;w&quot;.charCodeAt(0)) {&#10;                var watchID = String.fromCharCode(message[0]) + String.fromCharCode(message[1]) +&#10;                            String.fromCharCode(message[2]) + String.fromCharCode(message[3]);&#10;&#10;                if (debug) {&#10;                    console.log(watchID);&#10;                    console.log(String.fromCharCode(message[4]));&#10;                }&#10;&#10;                for(var i = 0; i &lt; (message.length - 5)/20; i++) {&#10;                    var accelerometerX = trans(message[5 + i * 22 + 1], message[5 + i * 22]) / 10000.0;&#10;                    var accelerometerY = trans(message[5 + i * 22 + 3], message[5 + i * 22] + 2) / 10000.0;&#10;                    var accelerometerZ = trans(message[5 + i * 22 + 5], message[5 + i * 22] + 4) / 10000.0;&#10;                    var gyroscopeX = trans(message[5 + i * 22 + 7], message[5 + i * 22] + 6) / 10000.0;&#10;                    var gyroscopeY = trans(message[5 + i * 22 + 9], message[5 + i * 22] + 8) / 10000.0;&#10;                    var gyroscopeZ = trans(message[5 + i * 22 + 11], message[5 + i * 22] + 10) / 10000.0;&#10;                    var ppg = (message[5 + i * 22 + 12] | (message[5 + i * 22 + 13] &lt;&lt; 8) | (message[5 + i * 22 + 14] &lt;&lt; 16));&#10;                    var heartRate = message[5 + i * 22 + 15]; &#10;                    var timestamp = timestamp2string(bytes2float(message.slice(5 + i * 22 + 16, 5 + i * 22 + 22 + 1)));&#10;                    if (debug) {&#10;                        console.log(accelerometerX + &quot; &quot; +&#10;                                    accelerometerY + &quot; &quot; +&#10;                                    accelerometerZ + &quot; &quot; +&#10;                                    gyroscopeX + &quot; &quot; +&#10;                                    gyroscopeY + &quot; &quot; +&#10;                                    gyroscopeZ + &quot; &quot; +                                &#10;                                    ppg + &quot; &quot; +&#10;                                    heartRate + &quot; &quot; +&#10;                                    timestamp);&#10;                    }&#10;                    var json = JSON.stringify({watchID: watchID, accelerometerX: accelerometerX, accelerometerY: accelerometerY, accelerometerZ: accelerometerZ, gyroscopeX: gyroscopeX, gyroscopeY: gyroscopeY, gyroscopeZ: gyroscopeZ, ppg: ppg, heartRate: heartRate, timestamp: timestamp})&#10;                    self.send(&quot;data&quot;, json)&#10;                }&#10;            } else if (message.toString(&quot;utf-8&quot;, 4, 5) === &quot;g&quot;) {&#10;                console.log(message.toString(&quot;utf-8&quot;, 0, 4));&#10;                console.log(message.toString(&quot;utf-8&quot;, 4, 5));&#10;                for(var i = 0; i &lt; (message.length - 5) / 10; i++) {&#10;                    console.log(trans(message[5 + i * 10 + 1], message[5 + i * 10]) / 10000.0 + &quot; &quot; +&#10;                                trans(message[5 + i * 10 + 3], message[5 + i * 10 + 2]) / 10000.0 + &quot; &quot; +&#10;                                trans(message[5 + i * 10 + 5], message[5 + i * 10 + 4]) / 10000.0 + &quot; &quot; +&#10;                                ((message[5 + i * 10 + 6] | (message[5 + i * 10 + 7] &lt;&lt; 8) | (message[5 + i * 10 + 8] &lt;&lt; 16) | (message[5 + i * 10 + 9] &lt;&lt; 24)) &gt;&gt;&gt; 0)); // Use &gt;&gt;&gt; 0 to convert to unsigned.&#10;                }&#10;            } else if (message.toString(&quot;utf-8&quot;, 4, 5) === &quot;b&quot;) {&#10;                console.log(message.toString(&quot;utf-8&quot;, 0, 4));&#10;                console.log(message.toString(&quot;utf-8&quot;, 4, 5));&#10;                console.log(message[5]);&#10;            }&#10;            console.log(&quot;&quot;);&#10;&#10;&#10;        }&#10;    });&#10;};&#10;&#10;&#10;">
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={592, 85, 802, 413}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Accelerometer">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[310.0, 400.0]">
+        </property>
+    </entity>
+    <entity name="Moto360SensorListener" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** &#10; * Read sensor data from a Moto 360 watch that is broadcasting the data via&#10; * UDP on the local network.&#10; *&#10; * FIXME: Give the app that needs to be running on the watch.&#10; *&#10; * Each sensor has its own output port.  The outputs will be objects with&#10; * fields 'watchID', a four-character string, and 'timestamp' representing&#10; * FIXME: what information is this?&#10; *&#10; * See https://www.terraswarm.org/urbanheartbeat/wiki/Main/WatchSoftware&#10; * for details on the software that runs on the watch.&#10; *  &#10; * @accessor devices/Moto360SensorListener&#10; *&#10; * @output message The received message as a raw byte array.&#10; * @output {boolean} listening True to indicate that listening has begun, false to&#10; *   indicate that it has stopped.&#10; * @output accelerometer The accelerometer data from the watch. This is an object&#10; *   with fields x, y, z representing measured acceleration (or the earth's gravitational&#10; *   field, which is indistinguishable from acceleration). The 'z' field points into&#10; *   the watch face, so it will be roughly +1.0 (one g) when the watch is facing up.&#10; *   The 'x' field is transverse to the watch, where +1.0 occurs roughly is 9 o'clock&#10; *   is pointing straight down. The 'y' axis is along band axis, where +1.0 will occur&#10; *   roughly when the 12 o'clock is pointing straight up.&#10; *&#10; * @input {string} listeningAddress The interface to listen on for incoming messages.&#10; *   This defaults to &quot;0.0.0.0&quot;, which means to listen on all network interfaces.&#10; * @input {int} listeningPort The port to listen on for incoming messages.&#10; *   This defaults to 4567.&#10; *&#10; * @parameter accelerometerSensitivity If this is set to something other than zero,&#10; *   then this accessor will output accelerometer data only when the accelerometer&#10; *   reading differs in some axis by more than the specified sensitivity.&#10; *   A small number means high sensitivity (lots of outputs) and a larger number&#10; *   means low sensitivity (fewer outputs).&#10; *  &#10; * @author Christopher Brooks and Edward A. Lee&#10; * @version $$Id: Hue.js 748 2016-04-29 21:51:14Z cxh $$ &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearTimeout, console, error, exports, httpRequest, require, setTimeout  */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;// This accessor requires the optional 'udpSocket' module, which may or may&#10;// not be provided by an accessor host. Most hosts will provide this module.&#10;var UDPSocket = require('udpSocket');&#10;&#10;// FIXME: Use built in debug capability.&#10;var debug = true;&#10;&#10;// Initialize these to large numbers so that the first output always appears.&#10;// Accelerometer values.&#10;var previousX = -100.0;&#10;var previousY = -100.0;&#10;var previousZ = -100.0;&#10;// Gyro values.&#10;var previousGX = -100.0;&#10;var previousGY = -100.0;&#10;var previousGZ = -100.0;&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function () {&#10;    this.extend('net/UDPSocketListener');&#10;&#10;    // Override the value of listeningPort in the parent.&#10;    this.input('listeningPort', {&#10;        'value': 4567, // 4567 is the value found in https://github.com/Zziwei/PackageSendTest&#10;        'type': 'int'&#10;    });&#10;    &#10;    // Accelerometer output port.&#10;    this.output('accelerometer');&#10;    this.parameter('accelerometerSensitivity', {&#10;        type: 'number',&#10;        value: 0.0&#10;    });&#10;&#10;    // Gyro output port.&#10;    this.output('gyro');&#10;    this.parameter('gyroSensitivity', {&#10;        type: 'number',&#10;        value: 0.0&#10;    });&#10;&#10;    this.parameter('receiveType', {&#10;        type: 'string',&#10;        value: 'unsignedbyte',&#10;        visibility:'expert'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    // FIXME: Is this needed?&#10;    exports.ssuper.initialize.call(this);&#10;};&#10;&#10;// Convert the 2 bytes data to a integer.&#10;function trans(a, b) {&#10;	console.log('******** translating: ' + a + ', ' + b);&#10;    var c = a * Math.pow(2, 8);&#10;    c = c + b;&#10;    if (c &gt; Math.pow(2, 15)) { &#10;        c = (Math.pow(2, 16) - c) * -1;&#10;    }&#10;    return c;&#10;}&#10;&#10;// Convert timestamp to time string.&#10;function timestamp2string(time_stamp) {&#10;    try {&#10;        // Python time is in seconds.  JavaScript milliseconds.&#10;        //d = datetime.fromtimestamp(time_stamp / 1000.0);&#10;        time_stamp = Math.round(time_stamp * 1000);&#10;        var d = new Date(time_stamp);&#10;        //str1 = d.strftime(&quot;%Y-%m-%d %H:%M:%S.%f&quot;);&#10;        var str1 = d.toISOString();&#10;        //console.log(&quot;timestamp2string(&quot; + time_stamp + &quot;)&quot; + d + &quot; &quot; + Date.now());&#10;        &#10;        // Python: 2015-08-28 16:43:37.283000&#10;        // JavaScript: 2016-10-05T03:21:09.617Z &#10;        return str1;&#10;    } catch (e) {&#10;        console.log(e);&#10;        return '';&#10;    }&#10;}&#10;&#10;// Convert the 8 bytes timestamp to float.&#10;function bytes2float(byte_array) {&#10;    var value = (byte_array[0] &amp; 0xff) | ((byte_array[1] &lt;&lt; 8) &amp; 0xff00) | ((byte_array[2] &lt;&lt; 16) &amp; 0xff0000) | ((byte_array[3] &lt;&lt; 24) &amp; 0xff000000);&#10;    value += ((((byte_array[4]) &amp; 0xff) | ((byte_array[5] &lt;&lt; 8) &amp; 0xff00)) / 1000);&#10;    return value;&#10;}&#10;&#10;// Override the base class to attach a message listening function.&#10;exports.closeAndOpen = function () {&#10;&#10;    exports.ssuper.closeAndOpen.call(this);&#10;    var self = this;&#10;&#10;    exports.ssuper.socket.on('message', function (message) {&#10;        if (exports.ssuper.running) {&#10;            // Send out the raw message.&#10;            self.send('message', message);&#10;&#10;            var watchID = String.fromCharCode(message[0]) + String.fromCharCode(message[1]) +&#10;            		String.fromCharCode(message[2]) + String.fromCharCode(message[3]);&#10;            // Get the timestamp.&#10;            var timestamp = timestamp2string(bytes2float(message.slice(21, 28)));&#10;            &#10;            if (debug) {&#10;                console.log(&quot;Message received: &quot; + message);&#10;                console.log('Watch ID: ' + watchID);&#10;                console.log('Message type: ' + String.fromCharCode(message[4]));&#10;            }&#10;            // Check for accelerometer data.&#10;            if (message[4] == &quot;a&quot;.charCodeAt(0)) {&#10;            	// Received accelerometer data.&#10;            	// FIXME: 10000.0 is presumably a calibration parameter.&#10;            	// Document this.&#10;            	var x = trans(message[6], message[5]) / 10000.0;&#10;                var y = trans(message[8], message[7]) / 10000.0;&#10;                var z = trans(message[10], message[9]) / 10000.0;&#10;                &#10;                // Compare current data against previous data.&#10;                var sensitivity = self.getParameter('accelerometerSensitivity');&#10;                if (sensitivity == 0.0&#10;                        || Math.abs(x - previousX) &gt; sensitivity&#10;                        || Math.abs(y - previousY) &gt; sensitivity&#10;                        || Math.abs(z - previousZ) &gt; sensitivity) {&#10;                        &#10;                    // Output is to be produced.&#10;                    previousX = x;&#10;                    previousY = y;&#10;                    previousZ = z;&#10;                    &#10;                    var json = {&#10;                        watchID: watchID,&#10;                        'x': x,&#10;                        'y': y,&#10;                        'z': z,&#10;                        'timestamp': timestamp&#10;                    };&#10;                    if (debug) {&#10;                        console.log(&quot;Accelerometer output: &quot; + JSON.stringify(json));&#10;                    }&#10;                    self.send(&quot;accelerometer&quot;, json);&#10;                }&#10;            } else if (message[4] == &quot;g&quot;.charCodeAt(0)) {&#10;            	// Received gyro data.&#10;            	// FIXME: 10000.0 is presumably a calibration parameter.&#10;            	// Document this.&#10;            	var x = trans(message[6], message[5]) / 10000.0;&#10;                var y = trans(message[8], message[7]) / 10000.0;&#10;                var z = trans(message[10], message[9]) / 10000.0;&#10;                &#10;                // Compare current data against previous data.&#10;                var sensitivity = self.getParameter('gyroSensitivity');&#10;                if (sensitivity == 0.0&#10;                        || Math.abs(x - previousGX) &gt; sensitivity&#10;                        || Math.abs(y - previousGY) &gt; sensitivity&#10;                        || Math.abs(z - previousGZ) &gt; sensitivity) {&#10;                        &#10;                    // Output is to be produced.&#10;                    previousGX = x;&#10;                    previousGY = y;&#10;                    previousGZ = z;&#10;                    &#10;                    var json = {&#10;                        watchID: watchID,&#10;                        'x': x,&#10;                        'y': y,&#10;                        'z': z,&#10;                        'timestamp': timestamp&#10;                    };&#10;                    if (debug) {&#10;                        console.log(&quot;Gyro output: &quot; + JSON.stringify(json));&#10;                    }&#10;                    self.send(&quot;gyro&quot;, json);&#10;                }&#10;            }&#10;            console.log(&quot;---------&quot;);&#10;        }&#10;    });&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/devices/Moto360GestureListener.js">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Read UDP gesture data from a Moto 360 watch.&lt;/p&gt;&#10;&lt;p&gt;See https://github.com/Zziwei/GestureUDP for software for the watch.&lt;/p&gt;&#10;&lt;p&gt;See https://github.com/terraswarm/PackageSendTest for sample JavaScript drivers.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Hue.js 748 2016-04-29 21:51:14Z cxh $$">
-            </property>
-            <property name="listeningAddress (port)" class="ptolemy.kernel.util.StringAttribute" value="The interface to listen on for incoming messages.&#10;  This defaults to &quot;0.0.0.0&quot;, which means to listen on all network interfaces.">
-            </property>
-            <property name="listeningPort (port)" class="ptolemy.kernel.util.StringAttribute" value="The port to listen on for incoming messages.&#10;  This defaults to 4567, which is the value found in https://github.com/Zziwei/PackageSendTest">
-            </property>
-            <property name="message (port)" class="ptolemy.kernel.util.StringAttribute" value="The received message.">
-            </property>
-            <property name="listening (port)" class="ptolemy.kernel.util.StringAttribute" value="True to indicate that listening has begun, false to&#10;  indicate that it has stopped.">
-            </property>
-            <property name="receiveType (parameter)" class="ptolemy.kernel.util.StringAttribute" value="See above.">
-            </property>
-            <property name="data (port)" class="ptolemy.kernel.util.StringAttribute" value="The data from the watch.">
-            </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/devices/Moto360SensorListener.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -159,20 +149,19 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 385.0]">
+        <property name="listeningPort" class="ptolemy.actor.parameters.PortParameter" value="4568">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 390.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="listeningPort" class="ptolemy.actor.parameters.PortParameter" value="4568">
+        <property name="accelerometerSensitivity" class="ptolemy.data.expr.Parameter" value="0.1">
+        </property>
+        <property name="gyroSensitivity" class="ptolemy.data.expr.Parameter" value="0.1">
         </property>
         <port name="listeningAddress" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="listeningPort" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
@@ -183,50 +172,34 @@
         <port name="listening" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="data" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </port>
-    </entity>
-    <entity name="TestDisplay" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display data on the console.&#10;//&#10;// Copyright (c) 2016. The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Display data on the console.&#10; *&#10; *  @accessor test/TestDisplay&#10; *  @param input The output&#10; *  @author Christopher Brooks&#10; *  @version $$Id: TestDisplay.js 748 2016-04-29 21:51:14Z cxh $$&#10; */&#10;&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.output('output');&#10;};&#10;&#10;exports.initialize = function() {&#10;    this.addInputHandler('input', function() {&#10;        var inputValue = this.get('input');&#10;        console.log(inputValue);&#10;        this.send('output', inputValue);&#10;    });&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/test/TestDisplay.js">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data on the console.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TestDisplay.js 748 2016-04-29 21:51:14Z cxh $$">
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 395.0]">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
+        <port name="listeningPort" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
         </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
+        <port name="accelerometer" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
+        <port name="gyro" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
     </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={588, 501, 795, 378}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="title" class="ptolemy.data.expr.StringParameter" value="Gyroscope">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 450.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Moto360GestureListener.data" relation="relation"/>
-    <link port="TestDisplay.input" relation="relation"/>
+    <link port="Display.input" relation="relation3"/>
+    <link port="Moto360SensorListener.accelerometer" relation="relation3"/>
+    <link port="Moto360SensorListener.gyro" relation="relation"/>
+    <link port="Display2.input" relation="relation"/>
 </entity>
