@@ -20,14 +20,14 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[715, 566]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7859199646618721">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6989330767117955">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{438.8236408919739, 365.2568359375}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{524.1519933478776, 404.04828002397403}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Read Moto Watch Gesture Data via UDP.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Read Moto Watch Gesture Data via UDP &#10;and turn on and off a Philips Hue lightbulb.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 25.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -41,7 +41,7 @@
         </property>
         <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node nodeHostInvoke.js -timeout 12000 hosts/node/@modelName@">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 60.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -63,15 +63,15 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Edit the listeningPort parameter of the Moto360SensorListener actor.&#10;&#10;The listeningPort is a UDP port number that should match &#10;the port number programmed in to the Moto Watch App">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 245.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 250.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If you have a TerraSwarm account, click here to open up&#10;https://www.terraswarm.org/urbanheartbeat/wiki/Main/WatchAndroidStudioSetup">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 150.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://www.terraswarm.org/urbanheartbeat/wiki/Main/WatchAndroidStudioSetup#WatchSoftwareRepo#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://www.terraswarm.org/urbanheartbeat/wiki/Main/WatchAndroidStudioSetup#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -94,7 +94,7 @@
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo requires a Moto 360 Watch that has been programmed with the WearUDPDemo.&#10;Click here to open up https://github.com/terraswarm/WatchSoftware">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 90.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://github.com/terraswarm/WatchSoftware#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -134,6 +134,49 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Edit code and type in light IDs.&#10;Only ints supported currently (why?).">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[330.0, 615.0]">
+        </property>
+    </property>
+    <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click on AccessorCodeGenerator&#10;to create Node Accesso Host Code&#10;and run it locally.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 45.0]">
+        </property>
+    </property>
+    <property name="AccessorSSHCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator">
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="$PTII/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeout@">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 180.0]">
+        </property>
+    </property>
+    <property name="Annotation10" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click on AccessorSSHCodeGenerator&#10;to create Node Accesso Host Code&#10;and run it on a remote machine.&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 165.0]">
+        </property>
+    </property>
+    <property name="Annotation11" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run on a SwarmBox, you must have a TerraSwarm account.&#10;Click here to open up&#10;https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 225.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{265, 55}">
+            </property>
         </property>
     </property>
     <entity name="Moto360SensorListener" class="org.terraswarm.accessor.JSAccessor">
@@ -195,6 +238,10 @@
         </property>
         <property name="gyroSensitivity" class="ptolemy.data.expr.Parameter" value="0.0">
         </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
+        </property>
         <port name="listeningAddress" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -237,6 +284,10 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
+        </property>
         <port name="a" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -273,6 +324,10 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
+        </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -297,6 +352,10 @@
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
             </property>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
@@ -347,6 +406,10 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
+        </property>
         <port name="commands" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
@@ -377,6 +440,10 @@
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
             </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
