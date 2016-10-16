@@ -12,7 +12,7 @@ userHost=$1
 
 accessor=$2
 
-timeout=5000
+timeout=15000
 if [ $# -eq 3 ]; then
     timeout=$3
 fi
@@ -24,18 +24,24 @@ fi
 
 runDirectory=/tmp/accessorInvokeSSH.$$
 
+echo "### accessorInvokeSSH: Creating $runDirectory/node_modules on $userHost"
 ssh $userHost mkdir -p $runDirectory/node_modules
 
 # This assumes that npm is installed.
+echo "### accessorInvokeSSH: Running npm install @terraswarm/accessors"
+echo "### accessorInvokeSSH:   Ignore messages like: 'npm WARN enoent ENOENT: no such file or directory, open $runDirectory/package.json'"
 ssh $userHost "cd $runDirectory; npm install @terraswarm/accessors"
 
+echo "### accessorInvokeSSH: Creating $runDirectory/invoke.js"
 echo "require('@terraswarm/accessors');invoke(process.argv);" | ssh $userHost "cat > $runDirectory/invoke.js"
 
-remoteName="`basename $accessor .js``md5 $accessor | awk '{print $NF}'`.js"
+remoteName="`basename $accessor`"
 
+echo "### accessorInvokeSSH: Copying the accessor to $runDirectory"
 scp $accessor $userHost:$runDirectory/$remoteName
 
 # This assumes that node is installed.
+echo "### accessorInvokeSSH: Invoking the accessor with $userHost node $runDirectory/invoke.js -timeout $timeout $runDirectory/$remoteName" 
 ssh $userHost node $runDirectory/invoke.js -timeout $timeout $runDirectory/$remoteName 
 
 #ssh $userHost rm -rf $runDirectory
