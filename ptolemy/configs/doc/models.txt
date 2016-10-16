@@ -685,7 +685,9 @@ $CLASSPATH/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExample5.x
 $CLASSPATH/ptolemy/vergil/basic/export/html/demo/ExportExamples/ExportExamples.xml
 $CLASSPATH/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml
+$CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml
+$CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml
 $CLASSPATH/ptolemy/vergil/kernel/attributes/demo/AnimateVergil/AnimateVergil.xml
