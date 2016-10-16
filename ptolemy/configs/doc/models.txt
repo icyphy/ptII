@@ -55,8 +55,6 @@ $CLASSPATH/org/terraswarm/accessor/demo/Browser/Browser.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/Camera.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/CaptureOpenLoop.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Foscam/Foscam.xml
-$CLASSPATH/org/terraswarm/accessor/demo/HappySadStock/HappySadStock.xml
-$CLASSPATH/org/terraswarm/accessor/demo/HueToggle/HueToggle.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageAnnotate/ImageAnnotate.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Annotate.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Average.xml
