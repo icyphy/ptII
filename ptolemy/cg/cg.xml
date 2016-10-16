@@ -7,6 +7,7 @@
       <group>
         <doc>Template based code generator for C and Java.  Under active development</doc>
         <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator"/>
+        <property name="AccessorSSHCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator"/>
         <property name="CCodeGenerator" class="ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator"/>
         <entity name="CompiledCompositeActor" class="ptolemy.cg.lib.CompiledCompositeActor"/>
         <entity name="EmbeddedCodeActor" class="ptolemy.cg.lib.EmbeddedCodeActor">
