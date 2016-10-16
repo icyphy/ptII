@@ -69,6 +69,22 @@ import ptolemy.util.StringUtilities;
  *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js 
  *  </pre>
  *
+ *  <p>This actor runs $PTII/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH, which does the following:</p>
+ *  <ol>
+ *    <li>Creates a directory in <code>/tmp</code>, for example <code>/tmp/accessorInvokeSSH.18783</code></li>
+ *    <li>Installs the <code>@terraswarm/accessors</code> in <code>/tmp/accessorsInvokeSSH.nnnnn/node_modules</code>
+ *      Note that this means that to run a composite accessor with the latest accessors, the npm 
+ *      <code>@terraswarm/accessors</code> module must be updated.  See 
+ *      <a href="https://www.terraswarm.org/accessors/wiki/Main/NPMUpload#in_browser">https://www.terraswarm.org/accessors/wiki/Main/NPMUpload</a>.</li>
+ *    <li>Creates a small script to run the composite accessor.</li>
+ *    <li>Copies the composite accessor to the directory.</li>
+ *    <li>Invokes node</li>
+ *  </ol> 
+ *
+ *  <p>The <code>accessorInvokeSSH</code> script should work on any machine that has node and npm installed.</p>
+ * 
+ *  <p>To use a SwarmBox, add your <code>~/.ssh/id_rsa.pub</code> file to <code>swarmboxadmin/ansible/keys/sbuser_authorized_keys</code>.  See <a href="https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess#in_browser">https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess</a>.</p>
+ *
  *  <p>For more information, see <a href="https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#CodeGeneration#in_browser">https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
  * 
  *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
