@@ -22,12 +22,20 @@ if [ ! -f "$accessor" ]; then
     exit 4
 fi
 
-echo "require('@terraswarm/accessors');invoke(process.argv);" | ssh $userHost "cat > /tmp/invoke.js"
+runDirectory=/tmp/accessorInvokeSSH.$$
 
+ssh $userHost mkdir -p $runDirectory/node_modules
+
+# This assumes that npm is installed.
+ssh $userHost "cd $runDirectory; npm install @terraswarm/accessors"
+
+echo "require('@terraswarm/accessors');invoke(process.argv);" | ssh $userHost "cat > $runDirectory/invoke.js"
 
 remoteName="`basename $accessor .js``md5 $accessor | awk '{print $NF}'`.js"
 
-scp $accessor $userHost:/tmp/$remoteName
+scp $accessor $userHost:$runDirectory/$remoteName
 
-ssh $userHost node /tmp/invoke.js -timeout $timeout /tmp/$remoteName 
+# This assumes that node is installed.
+ssh $userHost node $runDirectory/invoke.js -timeout $timeout $runDirectory/$remoteName 
 
+#ssh $userHost rm -rf $runDirectory
