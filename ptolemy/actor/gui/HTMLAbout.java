@@ -620,7 +620,6 @@ public class HTMLAbout {
         }
 
         if (matches) {
-            System.out.println("HTMLAbout.writeLiveLinks: " + demo);
             Workspace workspace = new Workspace("MyWorkspace");
             MoMLParser parser = new MoMLParser();
             parser.resetAll();
