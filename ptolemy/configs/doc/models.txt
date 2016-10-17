@@ -55,6 +55,8 @@ $CLASSPATH/org/terraswarm/accessor/demo/Browser/Browser.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/Camera.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/CaptureOpenLoop.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Foscam/Foscam.xml
+$CLASSPATH/org/terraswarm/accessor/demo/HappySadStock/HappySadStock.xml
+$CLASSPATH/org/terraswarm/accessor/demo/HueToggle/HueToggle.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageAnnotate/ImageAnnotate.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Annotate.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Average.xml
@@ -100,6 +102,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketTwoClients.xml
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketUnsignedShort.xml
 $CLASSPATH/org/terraswarm/accessor/demo/UDPSocket/UDPSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/VertxBus/VertxBus.xml
+$CLASSPATH/org/terraswarm/accessor/demo/WatchHue/WatchHue.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Weather/Weather.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketChat/Client.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketChat/SecureClient.xml
