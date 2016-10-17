@@ -20,9 +20,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[715, 566]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0481277521846883">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0182675424694612">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{326.61865234375, 276.766093195922}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{336.4808988571167, 284.5439783894424}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
@@ -37,7 +37,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Listen for messages.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 450.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 335.0]">
         </property>
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
@@ -53,7 +53,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Christopher Brooks">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 495.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 380.0]">
         </property>
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
@@ -64,16 +64,10 @@
             <display name="Aspect ratio"/>
         </property>
     </property>
-    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Edit the listeningPort parameter of the Moto360SensorListener actor.&#10;The listeningPort is a UDP port number that should match &#10;the port number programmed in to the Moto Watch App">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 220.0]">
-        </property>
-    </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If you have a TerraSwarm account, click here to open up&#10;https://www.terraswarm.org/urbanheartbeat/wiki/Main/WatchAndroidStudioSetup">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 150.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://www.terraswarm.org/urbanheartbeat/wiki/Main/WatchAndroidStudioSetup#WatchSoftwareRepo#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -96,9 +90,9 @@
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo requires a Moto 360 Watch that has been programmed with the WearUDPDemo.&#10;Click here to open up https://github.com/terraswarm/WatchSoftware">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo requires a Moto 360 Watch that has been programmed to run the WatchSensorUDP&#10;watchlet. Click here to open up https://github.com/terraswarm/WatchSoftware">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 90.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 90.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://github.com/terraswarm/WatchSoftware#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -167,7 +161,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 265.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -209,7 +203,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Raised Hand Detector">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 265.0]">
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -225,7 +219,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[280.0, 390.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[285.0, 275.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -252,7 +246,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Accelerometer">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 490.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 375.0]">
         </property>
     </entity>
     <entity name="Hue" class="org.terraswarm.accessor.JSAccessor">
@@ -304,7 +298,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 465.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 350.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -322,8 +316,6 @@
         </port>
         <port name="lights" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -331,7 +323,7 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[215.0, 390.0]">
+        <vertex name="vertex1" value="[220.0, 275.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
