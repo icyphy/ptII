@@ -480,10 +480,10 @@ public class HTMLAbout {
         writeDemoURLs(demoFileName, outputFileName);
         try {
             Class clazz = Class.forName("ptolemy.actor.lib.jjs.VertxHelperBase");
-            Method method = clazz.getMethod("close");
+            Method method = clazz.getMethod("closeVertx");
             method.invoke(null);
         } catch (Throwable throwable) {
-            throw new IOException("Failed to invoke VertxHelperBase.close() during exit.  This can be ignored. " + throwable);
+            throw new IOException("Failed to invoke VertxHelperBase.closeVertx() during exit.  This can be ignored. " + throwable);
         }
 
     }
