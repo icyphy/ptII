@@ -114,7 +114,10 @@ public class VertxHelperBase extends HelperBase {
     /** Stop the global (unclustered instance of Vert.x.
      *  This method is typically called before exiting the JVM.
      */
-    public static void close() {
+    public static void closeVertx() {
+        // This method should probably be called close(),
+        // but WebSocketHelper already has close().
+        
         // ptolemy/actor/gui/HTMLAbout.java calls this
         // method to prevent HTMLAbout from hanging while
         // running.  To replicate:
