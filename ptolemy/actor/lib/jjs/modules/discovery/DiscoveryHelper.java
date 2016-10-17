@@ -117,6 +117,8 @@ public class DiscoveryHelper {
                     // Run pings concurrently, in separate processes
                     _processes = new ArrayList();
 
+                    // FIXME: this only works on a Class C network,
+                    // where the IP addresses are 0-255.
                     for (int i = 0; i <= 255; i++) {      
                         try {
                             Process process = Runtime.getRuntime().exec(
@@ -393,8 +395,14 @@ public class DiscoveryHelper {
      */
     private void nmap(String baseIP) {
         try {
-            Process process = Runtime.getRuntime().exec(
-                    _nmapCommand + baseIP + ".1/24");
+            // FIXME: This assumes that .1 is the correct
+            // network and /24 is the correct netmask.
+            String command = _nmapCommand + baseIP + ".1/24";
+            if (_debugging) {
+                System.out.println("Discovery: about to execute " + command);
+            }
+            Process process = Runtime.getRuntime().exec(command);
+                                                        
 
             BufferedReader stdOut = null;
 
