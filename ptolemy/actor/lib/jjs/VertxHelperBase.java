@@ -111,6 +111,25 @@ public class VertxHelperBase extends HelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                     public methods                        ////
 
+    /** Stop the global (unclustered instance of Vert.x.
+     *  This method is typically called before exiting the JVM.
+     */
+    public static void close() {
+        // ptolemy/actor/gui/HTMLAbout.java calls this
+        // method to prevent HTMLAbout from hanging while
+        // running.  To replicate:
+        // (cd ptolemy/configs/doc; rm models.txt; make models.txt)
+        // What happens is that the Hue demos have
+        // LiveLinks so the Hue demos are getting parsed,
+        // which is instantiating this class and instantiating
+        // _vertx.
+        // See http://vertx.io/docs/vertx-core/java/#_causing_vert_x_to_exit
+        if (_vertx != null) {
+            _vertx.close();
+        }
+        _vertx = null;
+    }
+
     /** Return an instance of this helper for the specified actor, if one
      *  has been created and not garbage collected. Return null otherwise.
      *  If this returns null, the client should create an instance of the appropriate

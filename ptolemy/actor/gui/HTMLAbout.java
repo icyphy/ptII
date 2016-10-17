@@ -31,6 +31,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
@@ -477,6 +478,14 @@ public class HTMLAbout {
             outputFileName = args[1];
         }
         writeDemoURLs(demoFileName, outputFileName);
+        try {
+            Class clazz = Class.forName("ptolemy.actor.lib.jjs.VertxHelperBase");
+            Method method = clazz.getMethod("close");
+            method.invoke(null);
+        } catch (Throwable throwable) {
+            throw new IOException("Failed to invoke VertxHelperBase.close() during exit.  This can be ignored. " + throwable);
+        }
+
     }
 
     /** Run all the local .xml files that are linked to from an HTML file.
@@ -611,6 +620,7 @@ public class HTMLAbout {
         }
 
         if (matches) {
+            System.out.println("HTMLAbout.writeLiveLinks: " + demo);
             Workspace workspace = new Workspace("MyWorkspace");
             MoMLParser parser = new MoMLParser();
             parser.resetAll();
