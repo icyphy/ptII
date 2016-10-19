@@ -978,7 +978,7 @@ public class Manager extends NamedObj implements Runnable {
 
             if (_state != IDLE) {
                 throw new IllegalActionException(this,
-                        "The model is already running.");
+                        "The model is not idle, it is " + _state.getDescription());
             }
 
             if (_container == null || _container.get() == null) {
