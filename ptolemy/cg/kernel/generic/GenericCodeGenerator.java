@@ -389,6 +389,12 @@ Decorator {
                 // This makes it difficult to test the Exit actor.
                 try {
                     long startTime = new Date().getTime();
+                    // FIXME: Ideally, we would like to only generate code
+                    // if wrapup() succeeded, but we also want to only generate
+                    // code between preinitializeAndResolveTypes() and wrapup()
+                    // Probably we should split up _generateCode into two phases,
+                    // one that generates the code, then call wrapup(), then
+                    // run the generated code.
                     manager.wrapup();
                     _printTimeAndMemory(startTime, "CodeGenerator: "
                             + "wrapup consumed: ");
