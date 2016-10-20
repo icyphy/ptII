@@ -34,7 +34,7 @@ ROOT = ../../../..
 
 DIRS = AprilTags Audio Browser Camera Foscam HappySadStock HueToggle \
 	IMUSensor ImageAnnotate ImageFilters KeyValueStoreClient \
-	MoC MockHueBridge MoodLights MotionDetector MotionLights \
+	MoC MockHueBridge MotionDetector MotionLights \
 	OccupancyLights Scarab SecureSocket StockTick \
 	SwarmAcousticService TCPSocket \
 	UDPSocket VertxBus \
