@@ -102,7 +102,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketTwoClients.xml
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketUnsignedShort.xml
 $CLASSPATH/org/terraswarm/accessor/demo/UDPSocket/UDPSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/VertxBus/VertxBus.xml
-$CLASSPATH/org/terraswarm/accessor/demo/WatchHue/WatchHue.xml
+$CLASSPATH/org/terraswarm/accessor/demo/WatchHandRaisingLight/WatchHandRaisingLight.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Weather/Weather.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketChat/Client.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketChat/SecureClient.xml
