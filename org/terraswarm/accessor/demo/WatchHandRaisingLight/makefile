@@ -3,7 +3,7 @@
 # @Version: $Id$
 # @Author: Christopher Brooks (makefile only)
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2016 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -35,7 +35,7 @@ ROOT = ../../../../..
 DIRS = 
 
 # $(ME) is used in ptdir.mk
-ME = org/terraswarm/accessor/demo/WatchHue
+ME = org/terraswarm/accessor/demo/WatchHandRaisingLight
 
 CLASSPATH =	$(ROOT)
 
@@ -47,14 +47,14 @@ CONFIG = $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = WatchHue
+PTPACKAGE = WatchHandRaisingLight
 PTCLASSJAR = $(PTPACKAGE).jar
 
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
 	TestHue.xml \
-	WatchHue.xml
+	WatchHandRaisingLight.xml
 
 EXTRA_SRCS = $(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

@@ -38,6 +38,7 @@ DIRS = AprilTags Audio Browser Camera Foscam HappySadStock HueToggle \
 	OccupancyLights Scarab SecureSocket StockTick \
 	SwarmAcousticService TCPSocket \
 	UDPSocket VertxBus \
+	WatchHandRaisingLight \
 	Weather WebSocketChat WebSocketClient WebSocketImage \
 	XBeeHelloWorld
 
@@ -78,6 +79,7 @@ PTCLASSALLJARS = \
 	TCPSocket/TCPSocket.jar \
 	UDPSocket/UDPSocket.jar \
 	VertxBus/VertxBus.jar \
+	WatchHandRaisingLight/WatchHandRaisingLight.jar \
 	Weather/Weather.jar \
 	WebSocketChat/WebSocketChat.jar \
 	WebSocketClient/WebSocketClient.jar \
