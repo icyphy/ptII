@@ -1472,56 +1472,62 @@ public class Manager extends NamedObj implements Runnable {
     }
 
     /** Wrap up the model by invoking the wrapup method of the toplevel
-     *  composite actor.  The state of the manager will be set to
-     *  WRAPPING_UP.
+     *  composite actor.  
+     *  At the end of this model, the state is set to idle.
      *  @exception KernelException If the model throws it.
      *  @exception IllegalActionException If the model is idle or already
      *   wrapping up, or if there is no container.
      */
     public void wrapup() throws KernelException, IllegalActionException {
-        // NOTE: This method used to be synchronized, but we cannot
-        // hold the lock on the director during wrapup because it
-        // will cause deadlock. Instead, we use a small barrier
-        // here to check and set the state.
-        synchronized (this) {
-            if (_state == IDLE || _state == WRAPPING_UP) {
-                throw new IllegalActionException(this,
-                        "Cannot wrap up. The current state is: "
-                                + _state.getDescription());
+        try {
+            // NOTE: This method used to be synchronized, but we cannot
+            // hold the lock on the director during wrapup because it
+            // will cause deadlock. Instead, we use a small barrier
+            // here to check and set the state.
+            synchronized (this) {
+                if (_state == IDLE || _state == WRAPPING_UP) {
+                    throw new IllegalActionException(this,
+                                                     "Cannot wrap up. The current state is: "
+                                                     + _state.getDescription());
+                }
+
+                if (_container == null || _container.get() == null) {
+                    throw new IllegalActionException(this, "No model to run!");
+                }
+
+                _setState(WRAPPING_UP);
             }
 
-            if (_container == null || _container.get() == null) {
-                throw new IllegalActionException(this, "No model to run!");
+            // Wrap up the topology
+            _container.get().wrapup();
+
+            // Process all change requests. If the model reaches this wrap up
+            // state due to the occurrence of an exception during execution,
+            // some change requests may be pending. If these requests
+            // are not processed, they will be left to the next execution.
+            // Also, wrapping up execution may cause change requests to be queued.
+            // Also, at the same time, re-enable immediate execution of
+            // change requests.
+            setDeferringChangeRequests(false);
+
+            // NOTE: This used to increment the workspace
+            // version, which would require that everything
+            // be re-done on subsequent runs. EAL 9/16/06
+            // _workspace.incrVersion();
+
+            if (_exitAfterWrapup) {
+                // If the ptolemy.ptII.exitAfterWrapup property is set,
+                // then we don't actually exit.
+                StringUtilities.exit(0);
             }
-
-            _setState(WRAPPING_UP);
+        } finally {
+            // We must set the state to IDLE here even if
+            // we entered wrapup() and the state was IDLE or WRAPPING_UP.
+            // If we don't set the state to IDLE, then if an accessor
+            // has an error in wrapup, the model will always be
+            // stuck in WRAPPING_UP.
+            _setState(IDLE);
         }
-
-        // Wrap up the topology
-        _container.get().wrapup();
-
-        // Process all change requests. If the model reaches this wrap up
-        // state due to the occurrence of an exception during execution,
-        // some change requests may be pending. If these requests
-        // are not processed, they will be left to the next execution.
-        // Also, wrapping up execution may cause change requests to be queued.
-        // Also, at the same time, re-enable immediate execution of
-        // change requests.
-        setDeferringChangeRequests(false);
-
-        // NOTE: This used to increment the workspace
-        // version, which would require that everything
-        // be re-done on subsequent runs. EAL 9/16/06
-        // _workspace.incrVersion();
-
-        if (_exitAfterWrapup) {
-            // If the ptolemy.ptII.exitAfterWrapup property is set,
-            // then we don't actually exit.
-            StringUtilities.exit(0);
-        }
-
-        // Wrapup completed successfully
-        _setState(IDLE);
     }
 
     ///////////////////////////////////////////////////////////////////
