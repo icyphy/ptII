@@ -483,7 +483,7 @@ public class HTMLAbout {
             Method method = clazz.getMethod("closeVertx");
             method.invoke(null);
         } catch (Throwable throwable) {
-            throw new IOException("Failed to invoke VertxHelperBase.closeVertx() during exit.  This can be ignored. " + throwable);
+            System.err.println("HTMLAbout: Failed to invoke VertxHelperBase.closeVertx() during exit.  This can be ignored. Error was: " + throwable);
         }
 
     }
