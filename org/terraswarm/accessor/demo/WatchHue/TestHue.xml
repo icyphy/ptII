@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 140.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 23, 1130, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={53, 269, 1130, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[896, 524]">
     </property>
@@ -31,7 +31,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Enter the IP address of Hue bridge.&#10;One way to find the IP address is to use nmap:&#10;  nmap 10.42.0.1/24&#10;Code generation does not currently support &#10;using a parameter value.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Enter the IP address of Hue bridge.&#10;One way to find the IP address is to use nmap:&#10;  nmap 10.0.0.1/24&#10;Code generation does not currently support &#10;using a parameter value.">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-150.0, -165.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Hue">
@@ -124,7 +124,7 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
             </property>
         </property>
-        <property name="lightID" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="lightID" class="ptolemy.data.expr.Parameter" value="2">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -198,11 +198,11 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="bridgeIP" class="ptolemy.data.expr.Parameter" value="10.0.0.29">
+        <property name="bridgeIP" class="ptolemy.data.expr.Parameter" value="10.0.0.235">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="userName" class="ptolemy.data.expr.Parameter" value="yTzFvYb2eYZHvb8HsDVDSXB-CiyCuGRou--7anFH">
+        <property name="userName" class="ptolemy.data.expr.Parameter" value="JZAIbciRlM2yHDXfnmZkrPZJgQNCyGx4YMOCzgVH">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>

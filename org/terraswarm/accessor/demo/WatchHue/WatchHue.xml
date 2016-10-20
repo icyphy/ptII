@@ -396,7 +396,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="bridgeIP" class="ptolemy.data.expr.Parameter" value="10.0.0.235">
+        <property name="bridgeIP" class="ptolemy.data.expr.Parameter" value="10.0.0.128">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -438,8 +438,6 @@
         </port>
         <port name="lights" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="TestDisplay2" class="org.terraswarm.accessor.JSAccessor">
