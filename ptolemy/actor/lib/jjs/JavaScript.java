@@ -2496,14 +2496,30 @@ public class JavaScript extends TypedAtomicActor {
      */
     private synchronized void _setTimeout(final Runnable function,
             int milliseconds, Integer id) throws IllegalActionException {
-        Time currentTime = getDirector().getModelTime();
+        Director director = getDirector();
+        Time currentTime = director.getModelTime();
         if (currentTime == null) {
             throw new IllegalActionException(this,
                     "Model is not running. Please set timeouts and intervals in initialize.");
         }
+        // If the director has a synchronizeToRealTime parameter, check that its
+        // value is true.
+        Attribute sync = director.getAttribute("synchronizeToRealTime");
+        if (sync instanceof Parameter) {
+            Token token = ((Parameter)sync).getToken();
+            if (token instanceof BooleanToken && !((BooleanToken)token).booleanValue()) {
+                try {
+                    MessageHandler.warning("Using a timeout in JavaScript, but the director's"
+                            + " synchronizeToRealTime parameter is set to false."
+                            + " To get real-time behavior, set it to true.");
+                } catch (CancelException e) {
+                    throw new IllegalActionException(this, "Execution cancelled");
+                }
+            }
+        }
         final Time callbackTime = currentTime.add(milliseconds * 0.001);
 
-        Time responseTime = getDirector().fireAt(this, callbackTime);
+        Time responseTime = director.fireAt(this, callbackTime);
         if (!responseTime.equals(callbackTime)) {
             throw new IllegalActionException(this,
                     "Director is unable to fire this actor at the requested time "
