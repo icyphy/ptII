@@ -28,21 +28,21 @@
 
 package ptolemy.actor.lib.jjs.modules.gdp;
 
+import java.io.File;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+
 import org.terraswarm.gdp.EP_TIME_SPEC;
 import org.terraswarm.gdp.GDP;
 import org.terraswarm.gdp.GDPException;
 import org.terraswarm.gdp.GDP_GCL;
 import org.terraswarm.gdp.GDP_NAME;
 
-
-import java.io.File;
-import java.io.IOException;
-import java.net.InetAddress;
-import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashMap;
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-
+import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.util.StringUtilities;
 
 /** Helper for the GDP JavaScript module for use by accessors.
@@ -53,7 +53,7 @@ import ptolemy.util.StringUtilities;
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */
-public class GDPHelper {
+public class GDPHelper extends HelperBase {
 
     /** Create a GDP Helper by opening a pre-existing GDP Log
      *  or creating one if necessary.
@@ -71,7 +71,10 @@ public class GDPHelper {
      *  @exception GDPException If the log does not exist or if the
      *  connection to the log server fails.
      */
-    public GDPHelper(String logName, int ioMode, String logdname) throws GDPException {
+    public GDPHelper(ScriptObjectMirror currentObj, String logName, int ioMode, String logdname) throws GDPException {
+        
+        super(currentObj);
+        
         // The GDP_GCL constructor calls the gdp_init() C function for us.
         System.out.println("GDPHelper.GDPHelper(" + logName + ", " + ioMode + ", " + logdname + "): ");
 
@@ -177,15 +180,14 @@ public class GDPHelper {
     }
 
     /** Subscribe to a log.
-     *  @param currentObj The handle   
+     *  FIXME: What is the meaning of the arguments? Make no sense for subscription.
      *  @param startRecord The index of the starting record.  The first 
      *  record in the log is record 1.
      *  @param numberOfRecords The number of records to read.
      *  @param timeout The timeout in milliseconds.
      *  @exception GDPException If there is a problem subscribing to the log.
      */
-    public void subscribe(final ScriptObjectMirror currentObj, int startRecord,
-            int numberOfRecords, int timeout) throws GDPException {
+    public void subscribe(int startRecord, int numberOfRecords, int timeout) throws GDPException {
         // FIXME timeout should be a long.
         EP_TIME_SPEC timeoutSpec = null;
         if (timeout != 0) {
@@ -199,28 +201,36 @@ public class GDPHelper {
         Runnable blocking = new Runnable() {
             public void run() {
                 while (_subscribed) {
-                    // Zero arg means no timeout. Wait forever.
-                    HashMap<String, Object> result = GDP_GCL.get_next_event(_gcl, 0);
-                    if (result != null) {
-                        System.out.println("GDPHelper.subscribe(): about to call handleResponse " + result.toString());
-                        currentObj.callMember("handleResponse", result.toString());
+                    // Last argument is a timeout in ms. When it expires, if there
+                    // is no data, then an empty HashMap is returned.
+                    // FIXME: Any way to set the timeout to wait forever?
+                    final HashMap<String, Object> gdpEvent = GDP_GCL.get_next_event(_gcl, 10000);
+                    if (gdpEvent != null) {
+                        if (gdpEvent.size() > 0) {
+                            // Issue the response in the director thread.
+                            _issueResponse(() -> {
+                                HashMap<String,Object> result = (HashMap<String,Object>)gdpEvent.get("datum");
+                                System.out.println("GDPHelper.subscribe(): about to call _notifyIncoming " + result.toString());
+                                _currentObj.callMember("_notifyIncoming", _datumToData(result));
+                            });
+                        }
                     } else {
                         _subscribed = false;
                     }
                 }
             }
         };
+        _subscribed = true;
         Thread thread = new Thread(blocking, "GDP subscriber thread: " + _logName);
         // Start this as a deamon thread so that it doesn't block exiting the process.
         thread.setDaemon(true);
         thread.start();
     }
     
-    /** Unsubscribe from a log.
-     *  @param currentObj The handle   
+    /** Unsubscribe from the log.
      */
-    public void unsubscribe(final ScriptObjectMirror currentObj) {
-        // FIXME: Properly close the C side.
+    public void unsubscribe() {
+        // FIXME: Properly close the C side.  How to do that?
         _subscribed = false;
     }
 
