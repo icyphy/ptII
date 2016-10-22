@@ -26,10 +26,8 @@
 // the copyright link on the splash page or see copyright.htm.
 
 /**
- * Module to access the Global Data Plane.
+ * Module to access the Global Data Plane (GDP).
  * 
- * This module is read by the Cape Code Accessor host.
- *
  * See <a href="https://www.terraswarm.org/accessors/wiki/Main/GDPWithAccessors">https://www.terraswarm.org/accessors/wiki/Main/GDPWithAccessors</a>
  *
  * @module GDP
@@ -44,16 +42,27 @@
 "use strict";
 
 var GDPHelper = Java.type('ptolemy.actor.lib.jjs.modules.gdp.GDPHelper');
+var EventEmitter = require('events').EventEmitter;
 
-/** Instantiate a GDPHelper.  Create the log if necessary.
- *  @param name The name of the GDP log.  Dot-separated reverse notation preferred: edu.berkeley.terraswarm.yourname.log00
- *  @param iomode Opening mode (0: for internal use only, 1: read-only, 2: read-append, 3: append-only)
- * @param logdName  Name of the log server where this should be placed if it does not yet exist.
+/** Open or create a log with the specified name and mode using the specified GDP logd server.
+ *  This function should be called using "new" to create a new object.
+ *  The returned object subclasses EventEmitter.
+ *  You can register handlers for event 'data'.
+ *  The event 'data' will be emitted with the body of a log entry whenever
+ *  data is published to the log. At this time, only string data is supported.
+ *  You can invoke the object's append() function to append data to the log.
+ *
+ *  FIXME: This function is misnamed. Should be Log.
+ *  FIXME: Follow the pattern of the WebSocket accessors and module to support more data types.
+ *
+ *  @param name The name of the GDP log.  Dot-separated reverse notation preferred, such as org.terraswarm.demo.DemoName.
+ *  @param iomode Opening mode (0: for internal use only, 1: read-only, 2: read-append, 3: append-only).
+ *  @param logdName  Name of the logd server that will handle the request.
  */
 exports.GDP = function (name, iomode, logdname) {
-    this.helper = new GDPHelper(name, iomode, logdname);
-    return this.helper;
+    this.helper = new GDPHelper(this, name, iomode, logdname);
 };
+util.inherits(exports.GDP, EventEmitter);
 
 /** Append data to the already open log. 
  *  @param {string} data The data to be appended
@@ -95,14 +104,49 @@ exports.GDP.prototype.setDebugLevel = function (debugLevel) {
     this.helper.setDebugLevel(debugLevel);
 }
 
-/** Subscribe.
+/** Subscribe to the log. This will cause 'data' events to start to be
+ *  emitted each time something is published to the log.
+ *
+ *  FIXME: What is the meaning of the arguments?  They make no sense for subscription.
+ *
  *  @param {int} startrec The starting record. The first record is record 1.
  *  @param {int} numrecs The number of records
  *  @param {int} timeout The timeout in milliseconds.
  */
 exports.GDP.prototype.subscribe = function (startrec, numrecs, timeout) {
     // FIXME: The timeout should be a long.
-    this.helper.subscribe(this, startrec, numrecs, timeout);
+    this.helper.subscribe(startrec, numrecs, timeout);
+};
+
+/** Unsubscribe from the log. This will cause 'data' events to stop being
+ *  emitted each time something is published to the log.
+ */
+exports.GDP.prototype.unsubscribe = function () {
+    this.helper.unsubscribe();
+};
+
+/** Notify this object of a received message from the socket.
+ *  This function attempts to interpret the message according to the
+ *  receiveType, and emits a "message" event with the message as an argument.
+ *  For example, with the default receiveType of 'application/json', it will
+ *  use JSON.parse() to parse the message and emit the result of the parse.
+ *  This function is called by the Java helper used by this particular
+ *  implementation and should not be normally called by the user.
+ *  @param message The incoming message.
+ */
+exports.GDP.prototype._notifyIncoming = function (data) {
+    /* FIXME: Maybe useful when supporting more data types.
+    if (this.receiveType == 'application/json') {
+        try {
+            message = JSON.parse(message);
+        } catch (error) {
+            this.emit('error', error);
+            return;
+        }
+    }
+    */
+    // Assume the helper has already provided the correct type.
+    this.emit("data", data);
 };
 
 
