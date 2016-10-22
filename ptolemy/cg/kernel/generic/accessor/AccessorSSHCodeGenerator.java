@@ -1,6 +1,6 @@
 /* Code generator for JavaScript Accessors that uses SSH to deploy Swarmlets.
 
-Copyright (c) 2009-2015 The Regents of the University of California.
+Copyright (c) 2009-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -75,10 +75,17 @@ import ptolemy.util.StringUtilities;
  *    <li>Installs the <code>@terraswarm/accessors</code> in <code>/tmp/accessorsInvokeSSH.nnnnn/node_modules</code>
  *      Note that this means that to run a composite accessor with the latest accessors, the npm 
  *      <code>@terraswarm/accessors</code> module must be updated.  See 
- *      <a href="https://www.terraswarm.org/accessors/wiki/Main/NPMUpload#in_browser">https://www.terraswarm.org/accessors/wiki/Main/NPMUpload</a>.</li>
+ *      <a href="https://www.terraswarm.org/accessors/wiki/Main/NPMUpload#in_browser">https://www.terraswarm.org/accessors/wiki/Main/NPMUpload</a>.
+ *      In addition, any modules listed in the <i>modules</i> parameter are also installed.
+ *    </li>
  *    <li>Creates a small script to run the composite accessor.</li>
  *    <li>Copies the composite accessor to the directory.</li>
- *    <li>Invokes node</li>
+ *    <li>Invokes node on the remote machine.  If the director of the
+ *    model has a <i>stopTime</i> parameter, then the value is
+ *    multiplied by 1000 and used as the value of the timeout
+ *    parameter on the remote machine. If the <i>stopTime</i>
+ *    parameter is not set, then a default value (currently 15000 ms.)
+ *    is used.</li>
  *  </ol> 
  *
  *  <p>The <code>accessorInvokeSSH</code> script should work on any machine that has node and npm installed.</p>
@@ -109,16 +116,31 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        modules = new StringParameter(this, "modules");
+        
 	userHost = new StringParameter(this, "userHost");
 	userHost.setExpression("sbuser@swarmnuc001.eecs.berkeley.edu");
 
 	// Invoke the accessoInvokeSSH script
-        runCommand.setExpression("@PTII@/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeout@");
+        runCommand.setExpression("@PTII@/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeoutFlagAndValue@ @modulesFlagAndValue@");
 
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
+
+    /** A comma separated list of modules to be installed
+     *  on the remote machine.
+     *  For to install the Global Data Plane module,
+     *  use <code>@terraswarm/gdp</code>.
+     *  Note that the <code>@terraswarm/accessors</code>
+     *  module is always installed and need not be
+     *  specified here.  The initial default value
+     *  is the empty string, which signifies that 
+     *  only the <code>@terraswarm/accessors</code> module
+     *  will be installed.
+     */
+    public StringParameter modules;
 
     /** The username and hostname that is used with ssh.
      *  The default value is "sbuser@swarmnuc001.eecs.berkeley.edu".
@@ -138,18 +160,33 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
 	substituteMap.put("@modelName@", _sanitizedModelName);
 	substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
 
+        // If stopTime is set in the director, then multiply it by
+        // 1000 and use it as the timeout of the accessor.
         if (_model instanceof CompositeActor) {
 	    String stopTime = ((CompositeActor) _model).getDirector().stopTime.getExpression();
-	    String timeout = "";
+	    String timeoutFlagAndValue = "";
 	    if (stopTime.length() > 0) {
 		try {
-		    timeout = Double.toString(Double.parseDouble(stopTime) * 1000.0);
+		    timeoutFlagAndValue = "-timeout " + Double.toString(Double.parseDouble(stopTime) * 1000.0);
 		} catch (NumberFormatException ex) {
 		    throw new IllegalActionException(_model, ex, "Could not parse " + stopTime);
 		}
 	    }
-	    substituteMap.put("@timeout@", timeout);
+	    substituteMap.put("@timeoutFlagAndValue@", timeoutFlagAndValue);
 	}
+
+        // The value of the modules parameter names one or more
+        // modules to be installed with npm.
+        String modulesFlagAndValue = "";
+        if (modules.getExpression().length() > 0) {
+            String modulesValue = modules.getExpression();
+            if (modulesValue.indexOf(" ") != -1) {
+                throw new IllegalActionException(this, "The value of the modules parameter (" + modulesValue
+                                                 + ") must not contain spaces.  Use commas to separate modules.");
+            }
+            modulesFlagAndValue = "-modules " + modulesValue;
+        }
+        substituteMap.put("@modulesFlagAndValue@", modulesFlagAndValue);
 
 	String command = CodeGeneratorUtilities
 	    .substitute(((StringToken) runCommand.getToken())
