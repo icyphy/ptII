@@ -4,13 +4,13 @@
 <entity name="WebSocketLog" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={150, 8, 1062, 660}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={274, 87, 1082, 755}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[834, 543]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[848, 645]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0524967230479882">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{380.26769085902316, 184.22497012508904}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.91854292032764, 232.68117800030785}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
@@ -43,7 +43,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Type in the IP address of your machine in the WebSocketServer hostInterface above.&#10;&#10;Next, enter the IP address of your machine on line 26 of:&#10;/accessors/web/hosts/browser/demo/WebSocketLog/WebSocketLog.html&#10;Save the file.&#10;&#10;On your machine, start the accessor testServer.&#10;See accessors/web/hosts/browser/test/README.&#10;&#10;Run this model.&#10;&#10;Point a browser to:&#10;http://YOUR_MACHINE_IP:8089/hosts/browser/demo/WebSocketLog/WebSocketLog.html&#10;e.g.:&#10;http://192.168.254.2:8089/hosts/browser/demo/WebSocketLog/WebSocketLog.html&#10;&#10;It would probably also work on terra.  &#10;Terra adds other stuff to the web page (e.g. header bar, menu bar).  Not sure how to avoid that?">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The above creates a web socket server on localhost that supplies data from TestSpontaneous.&#10;&#10;The web page defined here can access that data feed:&#10;/accessors/web/hosts/browser/demo/WebSocketLog/WebSocketLog.html&#10;&#10;The above web page assumes that accessor server is running on your local machine.&#10;On your machine, start the accessor testServer.&#10;See accessors/web/hosts/browser/test/README.&#10;&#10;Run this model.&#10;&#10;Point a browser to:&#10;http://localhost:8089/hosts/browser/demo/WebSocketLog/WebSocketLog.html&#10;&#10;It would probably also work on terra.  &#10;Terra adds other stuff to the web page (e.g. header bar, menu bar).  Not sure how to avoid that?">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-5.0, 210.0]">
         </property>
@@ -96,7 +96,7 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="192.168.254.2">
+        <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="localhost">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
