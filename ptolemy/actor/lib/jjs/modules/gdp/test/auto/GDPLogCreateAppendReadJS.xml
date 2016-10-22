@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -10.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={49, 23, 934, 790}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={251, 23, 934, 790}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 680]">
     </property>
@@ -273,7 +273,7 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="interval" class="ptolemy.data.expr.Parameter" value="1000.0">
+        <property name="interval" class="ptolemy.data.expr.Parameter" value="1100.0">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -326,7 +326,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[&quot;1&quot;,&quot;2&quot;,&quot;3&quot;,&quot;4&quot;]">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
@@ -338,7 +338,7 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&lt;/p&gt;&#10;&lt;p&gt; This actor is based on the NonStrictTest actor, but currently only&#10; handles numeric and string input.&lt;/p&gt;">
