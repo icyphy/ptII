@@ -4,13 +4,13 @@
 <entity name="WebSocketLog" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={274, 87, 1082, 755}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={247, 23, 988, 818}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[848, 645]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[754, 708]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0524967230479882">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{386.91854292032764, 232.68117800030785}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{377.0, 354.0}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
@@ -19,7 +19,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, -15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 45.0]">
         </property>
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
@@ -29,23 +29,88 @@
         </property>
         <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../hosts/node/nodeHostInvoke.js -timeout 16000 net/test/auto/@modelName@">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, -10.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
-        </property>
-        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Type in your machine's IP address&#10;for hostInterface&#10;">
-        </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[185.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 50.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The above creates a web socket server on localhost that supplies data from TestSpontaneous.&#10;&#10;The web page defined here can access that data feed:&#10;/accessors/web/hosts/browser/demo/WebSocketLog/WebSocketLog.html&#10;&#10;The above web page assumes that accessor server is running on your local machine.&#10;On your machine, start the accessor testServer.&#10;See accessors/web/hosts/browser/test/README.&#10;&#10;Run this model.&#10;&#10;Point a browser to:&#10;http://localhost:8089/hosts/browser/demo/WebSocketLog/WebSocketLog.html&#10;&#10;It would probably also work on terra.  &#10;Terra adds other stuff to the web page (e.g. header bar, menu bar).  Not sure how to avoid that?">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="It would probably also work on the TerraSwarm website&#10;TerraSwarm adds other stuff to the web page (e.g. header bar, menu bar), but if&#10;we serve pages from /src/ directories without decoration.&#10;&#10;Click here to open up&#10;https://www.terraswarm.org/accessors/hosts/duktape/duktape/src/duktape.h">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-5.0, 210.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 530.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://www.terraswarm.org/accessors/hosts/duktape/duktape/src/duktape.h#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 535}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="3. Click here to open&#10;http://localhost:8089/hosts/browser/demo/WebSocketLog/WebSocketLog.html&#10;in a browser.">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 465.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8089/hosts/browser/demo/WebSocketLog/WebSocketLog.html#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{265, 505}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The above creates a web socket server on localhost that supplies data from TestSpontaneous.&#10;&#10;The web page defined here can access that data feed:&#10;&#10;accessors/web/hosts/browser/demo/WebSocketLog/WebSocketLog.html&#10;&#10;The above web page assumes that accessor server is running on your local machine.&#10;&#10;1. On your machine, start the accessor testServer with:&#10;  cd accessors/web/host/browser/test&#10;  node testServer.js&#10;&#10;For more information,&#10;click here to view accessors/web/hosts/browser/test/README.txt&#10;">
+        </property>
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 185.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/org/terraswarm/accessor/accessors/web/hosts/browser/test/README.txt">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{285, 255}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="2. Run this model.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 435.0]">
         </property>
     </property>
     <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">
@@ -63,7 +128,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 135.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -90,7 +155,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 135.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -150,7 +215,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 145.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
