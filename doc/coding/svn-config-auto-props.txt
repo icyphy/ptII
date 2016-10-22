@@ -143,7 +143,10 @@ enable-auto-props	 = yes
 *.xlog = svn:eol-style=native;svn:keywords=Author Date Id Revision
 *.xls = svn:mime-type=application/excel
 *.xmap = svn:eol-style=native;svn:keywords=Author Date Id Revision
-*.xml = svn:eol-style=native;svn:keywords=Author Date Id Revision
+#
+# Set mime-type and avoid svn: E200009: Can't set 'svn:eol-style': file 'xxx.xml' has binary mime type property
+*.xml = svn:eol-style=native;svn:keywords=Author Date Id Revision;svn:mime-type=text/xml
+#
 *.xroles = svn:eol-style=native;svn:keywords=Author Date Id Revision
 *.xsamples = svn:eol-style=native;svn:keywords=Author Date Id Revision
 *.xsd = svn:eol-style=native;svn:keywords=Author Date Id Revision
