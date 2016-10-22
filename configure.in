@@ -3202,16 +3202,16 @@ else
         updateClasspath "$JNA_JAR"
         AC_MSG_CHECKING([for GDP jar file])
         AC_ARG_WITH(gdp-jar, [  --with-gdp-jar=JARFILE       use GDP from JARFILE,
-                          defaults to \$PTII/lib/gdp-0.7-0.jar],
+                          defaults to \$PTII/lib/gdp-0.7-2.jar],
    	    PTGDP_JAR=$withval,
-	    PTGDP_JAR=$PTII/lib/gdp-0.7-0.jar)
+	    PTGDP_JAR=$PTII/lib/gdp-0.7-2.jar)
         if test -f "$PTGDP_JAR"; then
              PT_MSG_RESULT($PTGDP_JAR)
 	     PTGDP_DIR=gdp
              updateClasspath "$PTGDP_JAR"
              PTGDP_PACKAGES=ptolemy.actor.lib.jjs.modules.gdp
         else
-             AC_MSG_WARN([Failed to find $PTII/lib/gdp-0.7-0.jar,
+             AC_MSG_WARN([Failed to find $PTII/lib/gdp-0.7-2.jar,
    which supplies an implementation of the Global Data Plane.
    The GDP is only necessary for use with the GDP Accessor.])
              updateExcludes "ptolemy/actor/lib/jjs/modules/gdp"
