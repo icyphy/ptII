@@ -7,21 +7,21 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -10.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 35.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={49, 23, 934, 790}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={179, 72, 934, 790}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 680]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.877049701273926">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8214569222424836">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{196.4140818154634, 344.14403057098383}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{377.9855046058768, 408.99365234375}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Each time the model is run, create a new log.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, 190.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 235.0]">
         </property>
     </property>
     <property name="logdname" class="ptolemy.data.expr.StringParameter" value="edu.berkeley.eecs.gdp-01.gdplogd">
@@ -40,51 +40,59 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-145.0, 85.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 130.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Read from the log. In the GDP, record numbers start at 1.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-175.0, 515.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 560.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Append to the end of the log.  Each time the model is run, a new log is created,&#10;so the append starts with record number 1.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, 370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 415.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="If logdname is blank, then the local hostname is used.&#10;To use the production servers, try:&#10;edu.berkeley.eecs.gdp-01.gdplogd&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-150.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 60.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create a new log, append, read and subscribe to it.&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Create a new Global Data Plane (GDP) log, append, read and subscribe to it.&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, -25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 20.0]">
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Subscribe to the log.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 675.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 720.0]">
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Unfortunately, running this model requires that a number of libraries be installed.&#10;To install these packages, invoke &#10;$PTII/org/terraswarm/accessor/accessors/web/gdp/adm/gdp-setup.sh&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 755.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.1}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 345.0]">
         </property>
     </entity>
     <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
         <property name="offsets" class="ptolemy.data.expr.Parameter" value="{0.2}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 455.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 500.0]">
         </property>
     </entity>
     <entity name="DisplayRead" class="ptolemy.actor.lib.gui.Display">
@@ -92,7 +100,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 475.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 520.0]">
         </property>
     </entity>
     <entity name="GDPLogRead" class="org.terraswarm.accessor.JSAccessor">
@@ -110,7 +118,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 475.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 520.0]">
         </property>
         <property name="debugLevel" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -122,6 +130,22 @@
         </property>
         <property name="logdname" class="ptolemy.actor.parameters.PortParameter" value="$logdname">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Read a log from the Global Data Plane (GDP).&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee, Nitesh Mor. Contributor: Christopher Brooks">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="debugLevel (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value of the GDP debug flag.&#10; See gdp/README-developers.md for a complete summary.  The value is&#10; typically &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To&#10; see the patterns, use the &quot;what&quot; command or strings&#10; $PTII/lib/libgdp* | grep '@(#)'.  Use &quot;*=40&quot; to set the debug&#10; level to 40 for all components. The value of level is not usually&#10; over 127.  Values over 100 may modify the behavior.">
+            </property>
+            <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="An input that triggers firing the reading of the data.">
+            </property>
+            <property name="recno (port)" class="ptolemy.kernel.util.StringAttribute" value="The record number to be read.  In the GDP,&#10; the first record is record 1.">
+            </property>
+            <property name="data (port)" class="ptolemy.kernel.util.StringAttribute" value="The data that is read from the log">
             </property>
         </property>
         <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
@@ -146,14 +170,14 @@
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 340.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 385.0]">
         </property>
     </entity>
     <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 495.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 540.0]">
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
@@ -161,12 +185,12 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 535.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 580.0]">
         </property>
     </entity>
     <entity name="RandomInteger2" class="ptolemy.actor.lib.RandomInteger">
         <doc>Create a sequence of integers that are uniformly sampled from the range 32-bit integers</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 185.0]">
         </property>
     </entity>
     <entity name="DiscreteClock4" class="ptolemy.actor.lib.DiscreteClock">
@@ -175,7 +199,7 @@
         <property name="stopTimeIsLocal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-125.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 185.0]">
         </property>
     </entity>
     <entity name="Expression" class="ptolemy.actor.lib.Expression">
@@ -189,7 +213,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 185.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -222,7 +246,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 270.0]">
         </property>
         <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -246,7 +270,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 625.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 670.0]">
         </property>
     </entity>
     <entity name="Test2" class="ptolemy.actor.lib.Test">
@@ -254,7 +278,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 695.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[605.0, 740.0]">
         </property>
     </entity>
     <entity name="GDPLogAppend2" class="org.terraswarm.accessor.JSAccessor">
@@ -284,7 +308,19 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 375.0]">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Append string data to a Global Data Plane (GDP) log.&#10; If a log with the specified name does not exist, it is automatically&#10; created.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks, Edward A. Lee, Nitesh Mor">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="debugLevel (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value of the GDP debug flag.&#10;  See gdp/README-developers.md for a complete summary.  The value is&#10;  typically &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To&#10;  see the patterns, use the &quot;what&quot; command or strings&#10;  $PTII/lib/libgdp* | grep '@(#)'.  Use &quot;*=40&quot; to set the debug&#10;  level to 40 for all components. The value of level is not usually&#10;  over 127.  Values over 100 may modify the behavior.">
+            </property>
+            <property name="data (port)" class="ptolemy.kernel.util.StringAttribute" value="The data to be written.">
+            </property>
         </property>
         <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -327,7 +363,29 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 625.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[450.0, 670.0]">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Subscribe to a Global Data Plane (GDP) log.&lt;/p&gt;&#10;&lt;p&gt; FIXME: What is the meaning of the startrec and numrec arguments? Makes no sense for subscription.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks, Edward A. Lee, Nitesh Mor">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="debugLevel (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value of the GDP debug flag.&#10; See gdp/README-developers.md for a complete summary.  The value is&#10; typically &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To&#10; see the patterns, use the &quot;what&quot; command or strings&#10; $PTII/lib/libgdp* | grep '@(#)'.  Use &quot;*=40&quot; to set the debug&#10; level to 40 for all components. The value of level is not usually&#10; over 127.  Values over 100 may modify the behavior.">
+            </property>
+            <property name="data (port)" class="ptolemy.kernel.util.StringAttribute" value="The data that is read from the log.">
+            </property>
+            <property name="logname (port)" class="ptolemy.kernel.util.StringAttribute" value="The GDP logname.  By convention, a log name should be &#10;  a reverse fully qualified name like &quot;org.terraswarm.accessor.demo.MyDemoName&quot;.&#10;  If this input is an empty string, then no subscription will&#10;  occur until a non-empty value is provided.&#10;  By default, this is empty.&#10;  Providing an empty string will unsubscribe from any previously subscribed-to log.">
+            </property>
+            <property name="logdname (port)" class="ptolemy.kernel.util.StringAttribute" value="The name of a logd server.  If empty,&#10;  then the hostname of the local machine is used. This server is&#10;  a gateway into the GDP.&#10;  FIXME: Shouldn't this be a parameter rather than input?">
+            </property>
+            <property name="numrec (port)" class="ptolemy.kernel.util.StringAttribute" value="The number of records to read.">
+            </property>
+            <property name="startrec (port)" class="ptolemy.kernel.util.StringAttribute" value="The record number to be read.  In the GDP,&#10; the first record is record 1.">
+            </property>
+            <property name="timeout (port)" class="ptolemy.kernel.util.StringAttribute" value="The timeout in milliseconds.">
+            </property>
         </property>
         <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -348,13 +406,13 @@
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[350.0, 475.0]">
+        <vertex name="vertex1" value="[545.0, 520.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[30.0, 455.0]">
+        <vertex name="vertex1" value="[225.0, 500.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -364,19 +422,19 @@
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[150.0, 175.0]">
+        <vertex name="vertex1" value="[345.0, 220.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[145.0, 275.0]">
+        <vertex name="vertex1" value="[340.0, 320.0]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[340.0, 625.0]">
+        <vertex name="vertex1" value="[535.0, 670.0]">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
