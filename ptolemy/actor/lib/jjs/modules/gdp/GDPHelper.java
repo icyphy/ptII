@@ -142,6 +142,12 @@ public class GDPHelper extends HelperBase {
         _gcl.append(bytes);
     }
 
+    /** Close the GCL.
+     */   
+    public void close() {
+        _gcl.close();
+    }
+    
     /** Get the next data.
      *  @param timeout The timeout in milliseconds.
      *  @return The next data.
@@ -232,6 +238,8 @@ public class GDPHelper extends HelperBase {
     public void unsubscribe() {
         // FIXME: Properly close the C side.  How to do that?
         _subscribed = false;
+        _gcl.close();
+        _gcl = null;
     }
 
     /** Given a datum, return the value of the "data" key as a String.
