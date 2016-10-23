@@ -220,6 +220,21 @@ public class GDPHelper extends HelperBase {
                                 _currentObj.callMember("_notifyIncoming", _datumToData(result));
                             });
                         }
+                        // FIXME: The code in GDPHelper should
+                        // probably call gdp_event_free()
+                        // vendors/gdp/gdp/doc/gdp-programmatic-api.html
+                        // says that for gdp_gcl_subscribe(), "It is
+                        // the responsibility of the callback function
+                        // to call gdp_event_free(gev)."
+
+                        // Also vendors/gdp/gdp/apps/gdp-reader.c defines the callback as:
+
+                        //   void
+                        //   multiread_cb(gdp_event_t *gev)
+                        //   {
+                        //       (void) print_event(gev, false);
+                        //       gdp_event_free(gev);
+                        //   }
                     } else {
                         _subscribed = false;
                     }
