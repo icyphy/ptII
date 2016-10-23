@@ -113,6 +113,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketServer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketFullDuplex/WebSocketFullDuplex.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketGraph/WebSocketGraph.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketImage/WebSocketImage.xml
+$CLASSPATH/org/terraswarm/accessor/demo/WebSocketLog/WebSocketLog.xml
 $CLASSPATH/org/terraswarm/accessor/demo/XBeeHelloWorld/XBeeDataTypes.xml
 $CLASSPATH/org/terraswarm/accessor/demo/XBeeHelloWorld/XBeeHelloWorld.xml
 $CLASSPATH/org/terraswarm/ros/demo/Ros/Ros.xml
