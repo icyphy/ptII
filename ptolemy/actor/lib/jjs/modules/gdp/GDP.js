@@ -71,6 +71,12 @@ exports.GDP.prototype.append = function (data) {
     this.helper.append(data);
 };
 
+/** Close the log.
+ */
+exports.GDP.prototype.close = function () {
+    this.helper.close();
+};
+
 /** Get the next data.
  *  @param {int} timeout The timeout in milliseconds.
  *  @return {string} the next data.
