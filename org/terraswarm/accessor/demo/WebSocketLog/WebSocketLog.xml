@@ -4,7 +4,7 @@
 <entity name="WebSocketLog" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 8, 982, 717}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 23, 988, 710}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[754, 600]">
     </property>
@@ -58,11 +58,11 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="3. Click here to open&#10;http://localhost:8089/hosts/browser/demo/WebSocketLog/WebSocketLog.html&#10;in a browser.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="3. Click here to open&#10;http://localhost:8089/hosts/browser/demo/src/WebSocketLog/WebSocketLog.html&#10;in a browser.">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 465.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8089/hosts/browser/demo/WebSocketLog/WebSocketLog.html#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8089/hosts/browser/demo/src/WebSocketLog/WebSocketLog.html#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
