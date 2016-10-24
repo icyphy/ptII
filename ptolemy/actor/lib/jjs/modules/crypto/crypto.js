@@ -40,12 +40,13 @@ var EventEmitter = require('events').EventEmitter;
 
 this.helper = new CryptoHelper(this);
 
-function arrayEquals(a, b) {
+function unsigendByteArrayEquals(a, b) {
     if (a.length != b.length) {
         return false;
     }
     for (var i = 0; i < a.length; i++) {
-        if (a[i] != b[i]) {
+        // to compare unsigned byte values
+        if ((a[i] & 0xff) != (b[i] & 0xff)) {
             return false;
         }
     }
@@ -123,7 +124,7 @@ exports.verifySignature = function(data, signature, publicKey, signAlgorithm) {
 
 exports.parseSymmetricCryptoSpec = function(cryptoSpec) {
     var cryptoSpecTokens = cryptoSpec.split(':');
-    return {cipher: cryptoSpecTokens[0], hash: cryptoSpecTokens[1]};
+    return {cipher: cryptoSpecTokens[0], mac: cryptoSpecTokens[1]};
 };
 
 /** Return a symmetric decrypted bytes.
@@ -132,17 +133,21 @@ exports.symmetricDecrypt = function(input, key, cipherAlgorithm) {
     return this.helper.symmetricDecrypt(input, key, cipherAlgorithm);
 };
 
-exports.symmetricDecryptWithHash = function(input, key, cryptoSpec) {
-    var cryptoSpec = exports.parseSymmetricCryptoSpec(cryptoSpec);
-    var decryptedInput = this.helper.symmetricDecrypt(input, key, cryptoSpec.cipher);
-    var hashLength = this.helper.getHashLength(cryptoSpec.hash);
-    if (decryptedInput.length < hashLength) {
+exports.symmetricDecryptWithHash = function(input, cipherKeyVal, macKeyVal,
+    cipherAlgorithm, macAlgorithm)
+{
+    var hashLength = this.helper.getMacLength(macAlgorithm);
+    if (input.length < hashLength) {
         return {data: null, hashOk: false};
     }
-    var data = decryptedInput.slice(0, decryptedInput.length - hashLength);
-    var hash = decryptedInput.slice(decryptedInput.length - hashLength);
-    var computedHash = this.helper.hash(data, cryptoSpec.hash);
-    var hashOk = arrayEquals(hash, computedHash);
+    var enc = input.slice(0, input.length - hashLength);
+    var receivedTag = input.slice(input.length - hashLength);
+    var computedTag = this.helper.hmac(enc, macKeyVal, macAlgorithm);
+    var hashOk = unsigendByteArrayEquals(receivedTag, computedTag);
+    if (!hashOk) {
+        return {data: null, hashOk: false};
+    }
+    var data = this.helper.symmetricDecrypt(enc, cipherKeyVal, cipherAlgorithm);
     return {data: data, hashOk: hashOk};
 };
 
@@ -152,8 +157,9 @@ exports.symmetricEncrypt = function(input, key, cipherAlgorithm) {
     return this.helper.symmetricEncrypt(input, key, cipherAlgorithm);
 };
 
-exports.symmetricEncryptWithHash = function(input, key, cryptoSpec) {
-    var cryptoSpec = exports.parseSymmetricCryptoSpec(cryptoSpec);
+exports.symmetricEncryptWithHash = function(input, cipherKeyVal, macKeyVal,
+    cipherAlgorithm, macAlgorithm)
+{
     if (typeof input === 'string') {
         var temp = [];
         if (input.startsWith('0x')) {
@@ -168,7 +174,7 @@ exports.symmetricEncryptWithHash = function(input, key, cryptoSpec) {
         }
         input = temp;
     }
-    var hash = this.helper.hash(input, cryptoSpec.hash);
-    var ret = this.helper.symmetricEncrypt(input.concat(hash), key, cryptoSpec.cipher);
-    return ret;
+    var enc = this.helper.symmetricEncrypt(input, cipherKeyVal, cipherAlgorithm);
+    var tag = this.helper.hmac(enc, macKeyVal, macAlgorithm);
+    return enc.concat(tag);
 };

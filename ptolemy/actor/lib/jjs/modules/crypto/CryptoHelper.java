@@ -86,7 +86,7 @@ public class CryptoHelper extends HelperBase {
         super(currentObj);
     }
 
-    /** Return the expected hash length for the given hash algorithm.
+    /** Return the hash length for the given hash algorithm.
      *  @param hashAlgorithm The name of the hash algorithm.
      *  @return The hash length for the hash algorithm.
      *  @throws IllegalActionException If the specified hash algorithm is not available.
@@ -96,7 +96,21 @@ public class CryptoHelper extends HelperBase {
             MessageDigest messageDigest = MessageDigest.getInstance(hashAlgorithm);
             return messageDigest.getDigestLength();
         } catch (NoSuchAlgorithmException e) {
-            throw new IllegalActionException(null, e, "Failed to initialize messageDigest.");
+            throw new IllegalActionException(null, e, "Failed to find MessageDigest algorithm.");
+        }
+    }
+
+    /** Return the MAC (Message Authentication Code) length for the given MAC algorithm.
+     *  @param macAlgorithm The name of the MAC algorithm.
+     *  @return The MAC length for the MAC algorithm
+     *  @throws IllegalActionException
+     */
+    public int getMacLength(String macAlgorithm) throws IllegalActionException {
+        try {
+            Mac mac = Mac.getInstance(macAlgorithm);
+            return mac.getMacLength();
+        } catch (NoSuchAlgorithmException e) {
+            throw new IllegalActionException(null, e, "Failed to find MAC algorithm.");
         }
     }
 
