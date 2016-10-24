@@ -117,9 +117,10 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
         super(container, name);
 
         modules = new StringParameter(this, "modules");
-        
+	modules.setExpression("@terraswarm/gdp");
+
 	userHost = new StringParameter(this, "userHost");
-	userHost.setExpression("sbuser@swarmnuc001.eecs.berkeley.edu");
+	userHost.setExpression("sbuser@10.0.0.1");
 
 	// Invoke the accessoInvokeSSH script
         runCommand.setExpression("@PTII@/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeoutFlagAndValue@ @modulesFlagAndValue@");
