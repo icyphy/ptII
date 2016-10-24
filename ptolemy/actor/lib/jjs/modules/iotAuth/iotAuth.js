@@ -71,7 +71,8 @@ exports.msgType = msgType;
 
 var AUTH_NONCE_SIZE = 8;					// used in parseAuthHello
 var SESSION_KEY_ID_SIZE = 8;
-var ABS_VALIDITY_SIZE = 6;
+var DIST_KEY_EXPIRATION_TIME_SIZE = 6;
+var SESSION_KEY_EXPIRATION_TIME_SIZE = 6;
 var REL_VALIDITY_SIZE = 6;
 var DIST_CIPHER_KEY_SIZE = 16;               // 256 bit key = 32 bytes
 var SESSION_CIPHER_KEY_SIZE = 16;            // 128 bit key = 16 bytes
@@ -173,40 +174,67 @@ var serializeSessionKeyReqWithDistributionKey = function(senderName,
 };
 
 var parseDistributionKey = function(buf) {
-    var absValidity = new Date(buf.readUIntBE(0, ABS_VALIDITY_SIZE));
-    var keyVal = buf.slice(ABS_VALIDITY_SIZE, ABS_VALIDITY_SIZE + DIST_CIPHER_KEY_SIZE);
-    return {val: keyVal, absValidity: absValidity};
+    var absValidity = new Date(buf.readUIntBE(0, DIST_KEY_EXPIRATION_TIME_SIZE));
+    var curIndex = DIST_KEY_EXPIRATION_TIME_SIZE;
+    var cipherKeySize = buf.readUInt8(curIndex);
+    curIndex += 1;
+    var cipherKeyVal = buf.slice(curIndex, curIndex + cipherKeySize);
+    curIndex += cipherKeySize;
+    var macKeySize = buf.readUInt8(curIndex);
+    curIndex += 1;
+    var macKeyVal = buf.slice(curIndex, curIndex + macKeySize);
+    return {
+        cipherKeyVal: cipherKeyVal,
+        macKeyVal: macKeyVal,
+        absValidity: absValidity
+    };
 };
 
 var parseSessionKey = function(buf) {
     var keyId = buf.readUIntBE(0, SESSION_KEY_ID_SIZE);
-    var absValidityValue = buf.readUIntBE(SESSION_KEY_ID_SIZE, ABS_VALIDITY_SIZE);
+    var curIndex = SESSION_KEY_ID_SIZE;
+    var absValidityValue = buf.readUIntBE(curIndex, SESSION_KEY_EXPIRATION_TIME_SIZE);
+    curIndex += SESSION_KEY_EXPIRATION_TIME_SIZE;
     var absValidity = new Date(absValidityValue);
-    var relValidity = buf.readUIntBE(SESSION_KEY_ID_SIZE + ABS_VALIDITY_SIZE, REL_VALIDITY_SIZE);
-    var curIndex =  SESSION_KEY_ID_SIZE + ABS_VALIDITY_SIZE + REL_VALIDITY_SIZE;
-    var keyVal = buf.slice(curIndex, curIndex + SESSION_CIPHER_KEY_SIZE);
-    return {id: keyId, val: keyVal, absValidity: absValidity, relValidity: relValidity};
+    var relValidity = buf.readUIntBE(curIndex, REL_VALIDITY_SIZE);
+    curIndex += REL_VALIDITY_SIZE;
+    var cipherKeySize = buf.readUInt8(curIndex);
+    curIndex += 1;
+    var cipherKeyVal = buf.slice(curIndex, curIndex + cipherKeySize);
+    curIndex += cipherKeySize;
+    var macKeySize = buf.readUInt8(curIndex);
+    curIndex += 1;
+    var macKeyVal = buf.slice(curIndex, curIndex + macKeySize);
+    curIndex += macKeySize;
+    var sessionKey = {
+        id: keyId,
+        cipherKeyVal: cipherKeyVal,
+        macKeyVal: macKeyVal,
+        absValidity: absValidity,
+        relValidity: relValidity
+    };
+    return {sessionKey: sessionKey, totalLen: curIndex};
 };
 
 var parseSessionKeyResp = function(buf) {
     var replyNonce = buf.slice(0, AUTH_NONCE_SIZE);
-    var bufIdx = AUTH_NONCE_SIZE;
+    var curIndex = AUTH_NONCE_SIZE;
     
-	var cryptoSpecLen = buf.readUInt8(bufIdx);
-	bufIdx += 1;
-	var cryptoSpecStr = buf.toString(bufIdx, bufIdx + cryptoSpecLen);
-	bufIdx += cryptoSpecLen;
+	var cryptoSpecLen = buf.readUInt8(curIndex);
+	curIndex += 1;
+	var cryptoSpecStr = buf.toString(curIndex, curIndex + cryptoSpecLen);
+	curIndex += cryptoSpecLen;
 	
-    var sessionKeyCount = buf.readUInt32BE(bufIdx);
+    var sessionKeyCount = buf.readUInt32BE(curIndex);
 
-    bufIdx += 4;
+    curIndex += 4;
     var sessionKeyList = [];
 
-    var SESSION_KEY_BUF_SIZE = SESSION_KEY_ID_SIZE + ABS_VALIDITY_SIZE + REL_VALIDITY_SIZE + SESSION_CIPHER_KEY_SIZE;
     for (var i = 0; i < sessionKeyCount; i++) {
-        var sessionKey = parseSessionKey(buf.slice(bufIdx));
+        var ret = parseSessionKey(buf.slice(curIndex));
+        var sessionKey = ret.sessionKey;
         sessionKeyList.push(sessionKey);
-        bufIdx += SESSION_KEY_BUF_SIZE;
+        curIndex += ret.totalLen;
     }
     return {replyNonce: replyNonce, sessionKeyList: sessionKeyList};
 };
@@ -295,6 +323,21 @@ exports.loadPrivateKey = function(path) {
     return crypto.loadPrivateKey(path);
 };
 
+function symmetricEncryptAuthenticate(buf, symmetricKey, cryptoSpec) {
+    var cryptoSpec = crypto.parseSymmetricCryptoSpec(cryptoSpec);
+    return crypto.symmetricEncryptWithHash(buf.getArray(), 
+        symmetricKey.cipherKeyVal.getArray(), symmetricKey.macKeyVal.getArray(),
+        cryptoSpec.cipher, cryptoSpec.mac);
+};
+
+function symmetricDecryptVerify(buf, symmetricKey, cryptoSpec) {
+    var cryptoSpec = crypto.parseSymmetricCryptoSpec(cryptoSpec);
+    return crypto.symmetricDecryptWithHash(buf.getArray(), 
+        symmetricKey.cipherKeyVal.getArray(), symmetricKey.macKeyVal.getArray(),
+        cryptoSpec.cipher, cryptoSpec.mac);
+
+};
+
 ///////////////////////////////////////////////////////////////////
 ////           Functions for accessing Auth service            ////
 
@@ -313,9 +356,8 @@ options = {
 }
 */
 // Helper function for common code in handing session key response
-function processSessionKeyResponse(options, sessionKeyRespBuf, distributionKeyValue, myNonce) {
-    var ret = crypto.symmetricDecryptWithHash(sessionKeyRespBuf.getArray(),
-        distributionKeyValue.getArray(), options.distributionCryptoSpec);
+function processSessionKeyResponse(options, sessionKeyRespBuf, distributionKey, myNonce) {
+    var ret = symmetricDecryptVerify(sessionKeyRespBuf, distributionKey, options.distributionCryptoSpec);
     if (!ret.hashOk) {
         return {error: 'Received hash for session key resp is NOT ok'};
     }
@@ -345,7 +387,7 @@ function handleSessionKeyResponse(options, obj, myNonce, sessionKeyResponseCallb
         distKeyBuf = new buffer.Buffer(
             crypto.privateDecrypt(pubEncData, options.entityPrivateKey, options.publicKeyCryptoSpec.cipher));
         var receivedDistKey = parseDistributionKey(distKeyBuf);
-        var ret = processSessionKeyResponse(options, sessionKeyRespBuf, receivedDistKey.val, myNonce);
+        var ret = processSessionKeyResponse(options, sessionKeyRespBuf, receivedDistKey, myNonce);
         if (ret.error) {
             sessionKeyResponseCallback({error: ret.error});
             return;
@@ -354,7 +396,7 @@ function handleSessionKeyResponse(options, obj, myNonce, sessionKeyResponseCallb
     }
     else if (obj.msgType == msgType.SESSION_KEY_RESP) {
         console.log('Received session key response encrypted with distribution key');
-        var ret = processSessionKeyResponse(options, obj.payload, options.distributionKey.val, myNonce);
+        var ret = processSessionKeyResponse(options, obj.payload, options.distributionKey, myNonce);
         if (ret.error) {
             sessionKeyResponseCallback({error: ret.error});
             return;
@@ -447,8 +489,7 @@ exports.sendSessionKeyRequest = function(options, sessionKeyResponseCallback, ca
                 reqMsgType = msgType.SESSION_KEY_REQ;
                 var sessionKeyReqBuf = serializeSessionKeyReq(sessionKeyReq);
    				var encryptedSessionKeyReqBuf = new buffer.Buffer(
-   					crypto.symmetricEncryptWithHash(sessionKeyReqBuf.getArray(), 
-   					options.distributionKey.val.getArray(), options.distributionCryptoSpec));
+   					symmetricEncryptAuthenticate(sessionKeyReqBuf, options.distributionKey, options.distributionCryptoSpec));
                 reqPayload = serializeSessionKeyReqWithDistributionKey(options.entityName,
                 		encryptedSessionKeyReqBuf)
             }
@@ -472,8 +513,8 @@ exports.sendSessionKeyRequest = function(options, sessionKeyResponseCallback, ca
 
 ///////////////////////////////////////////////////////////////////
 ////       List of available cryptography specifications       ////
-exports.symmetricCryptoSpecs = ['AES-128-CBC:SHA-256',
-'AES-192-CBC:SHA-256',
+exports.symmetricCryptoSpecs = ['AES-128-CBC:HmacSHA256',
+'AES-192-CBC:HmacSHA256',
 'AES-128-GCM'
 ];
 
@@ -516,8 +557,7 @@ IoTSecureSocket.prototype.send = function(data) {
         return false;
     }
     var buf = serializeSessionMessage({seqNum: this.writeSeqNum, data: new buffer.Buffer(data)});
-    var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
-        this.sessionKey.val.getArray(), this.sessionCryptoSpec));
+    var encBuf = new buffer.Buffer(symmetricEncryptAuthenticate(buf, this.sessionKey, this.sessionCryptoSpec));
     this.writeSeqNum++;
     var msg = {
         msgType: msgType.SECURE_COMM_MSG,
@@ -536,8 +576,7 @@ IoTSecureSocket.prototype.receive = function(payload) {
     if (!this.checkSessionKeyValidity()) {
         return {success: false, error: 'Session key expired!'};
     }
-    var ret = crypto.symmetricDecryptWithHash(payload.getArray(),
-        this.sessionKey.val.getArray(), this.sessionCryptoSpec);
+    var ret = symmetricDecryptVerify(payload, this.sessionKey, this.sessionCryptoSpec);
     if (!ret.hashOk) {
         return {success: false, error: 'Received hash for secure comm msg is NOT ok'};
     }
@@ -620,8 +659,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
         myNonce = new buffer.Buffer(crypto.randomBytes(HANDSHAKE_NONCE_SIZE));
         var handshake1 = {nonce: myNonce};
         var buf = serializeHandshake(handshake1);
-        var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
-            options.sessionKey.val.getArray(), options.sessionCryptoSpec));
+        var encBuf = new buffer.Buffer(symmetricEncryptAuthenticate(buf, options.sessionKey, options.sessionCryptoSpec));
         
         var keyIdBuf = new buffer.Buffer(SESSION_KEY_ID_SIZE);
         keyIdBuf.writeUIntBE(options.sessionKey.id, 0, SESSION_KEY_ID_SIZE);
@@ -670,8 +708,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
                 entityClientSocket.close();
                 return;
             }
-            var ret = crypto.symmetricDecryptWithHash(obj.payload.getArray(),
-                options.sessionKey.val.getArray(), options.sessionCryptoSpec);
+            var ret = symmetricDecryptVerify(obj.payload, options.sessionKey, options.sessionCryptoSpec);
             if (!ret.hashOk) {
                 eventHandlers.onError('Comm init failed: Received hash for handshake2 is NOT ok');
                 entityClientSocket.close();
@@ -688,8 +725,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
             var theirNonce = handshake2.nonce;
             var handshake3 = {replyNonce: theirNonce};
             buf = serializeHandshake(handshake3);
-            var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
-                options.sessionKey.val.getArray(), options.sessionCryptoSpec));
+            var encBuf = new buffer.Buffer(symmetricEncryptAuthenticate(buf, options.sessionKey, options.sessionCryptoSpec));
             var msg = {
                 msgType: msgType.SKEY_HANDSHAKE_3,
                 payload: encBuf
@@ -819,8 +855,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
             }
             var enc = handshake1Payload.slice(SESSION_KEY_ID_SIZE);
             entityServerSessionKey = sessionKey;
-            var ret = crypto.symmetricDecryptWithHash(enc.getArray(), entityServerSessionKey.val.getArray(),
-                options.sessionCryptoSpec);
+            var ret = symmetricDecryptVerify(enc, entityServerSessionKey, options.sessionCryptoSpec);
             if (!ret.hashOk) {
                 eventHandlers.onServerError('Error during comm init - received hash for handshake 1 is NOT ok');
                 serverSocket.close();
@@ -837,8 +872,8 @@ exports.initializeSecureServer = function(options, eventHandlers) {
             
             var handshake2 = {nonce: myNonce, replyNonce: theirNonce};
             
-            var encBuf = crypto.symmetricEncryptWithHash(serializeHandshake(handshake2).getArray(),
-                entityServerSessionKey.val.getArray(), options.sessionCryptoSpec);
+            var encBuf = symmetricEncryptAuthenticate(serializeHandshake(handshake2),
+                entityServerSessionKey, options.sessionCryptoSpec);
             var msg = {
                 msgType: msgType.SKEY_HANDSHAKE_2,
                 payload: new buffer.Buffer(encBuf)
@@ -927,8 +962,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
                     entityServerSocket.close();
                     return;
                 }
-                var ret = crypto.symmetricDecryptWithHash(obj.payload.getArray(), entityServerSessionKey.val.getArray(),
-                    options.sessionCryptoSpec);
+                var ret = symmetricDecryptVerify(obj.payload, entityServerSessionKey, options.sessionCryptoSpec);
                 if (!ret.hashOk) {
                     eventHandlers.onServerError('Error during comm init - received hash for handshake 3 is NOT ok, disconnecting...');
                     entityServerSocket.close();
@@ -1006,9 +1040,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
 exports.encryptSecureMessageToPublish = function(message, cryptoSpec, sessionKey) {
     var buf = serializeSessionMessage(
         {seqNum: message.sequenceNum, data: new buffer.Buffer(message.data)});
-    var encBuf = new buffer.Buffer(crypto.symmetricEncryptWithHash(buf.getArray(),
-        sessionKey.val.getArray(), cryptoSpec));
-
+    var encBuf = new buffer.Buffer(symmetricEncryptAuthenticate(buf, sessionKey, cryptoSpec));
 
     var keyIdBuf = new buffer.Buffer(SESSION_KEY_ID_SIZE);
     keyIdBuf.writeUIntBE(sessionKey.id, 0, SESSION_KEY_ID_SIZE);
@@ -1045,8 +1077,7 @@ exports.getKeyIdOfSecurePublishedMessage = function(rawData) {
     }
 */
 exports.decryptSecurePublishedMessage = function(encryptedMessage, cryptoSpec, sessionKey) {
-    var ret = crypto.symmetricDecryptWithHash(encryptedMessage.getArray(),
-        sessionKey.val.getArray(), cryptoSpec);
+    var ret = symmetricDecryptVerify(encryptedMessage, sessionKey, cryptoSpec);
     if (!ret.hashOk) {
         return {success: false, error: 'Received hash for secure comm msg is NOT ok'};
     }

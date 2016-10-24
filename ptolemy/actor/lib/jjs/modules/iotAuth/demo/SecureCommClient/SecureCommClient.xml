@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 210.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1198, 95, 1133, 657}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={307, 243, 1133, 657}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[899, 547]">
     </property>
@@ -187,7 +187,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="distributionCryptoSpec" class="ptolemy.data.expr.Parameter" value="AES-128-CBC:SHA-256">
+        <property name="distributionCryptoSpec" class="ptolemy.data.expr.Parameter" value="AES-128-CBC:HmacSHA256">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -195,7 +195,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="sessionCryptoSpec" class="ptolemy.data.expr.Parameter" value="AES-128-CBC:SHA-256">
+        <property name="sessionCryptoSpec" class="ptolemy.data.expr.Parameter" value="AES-128-CBC:HmacSHA256">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
