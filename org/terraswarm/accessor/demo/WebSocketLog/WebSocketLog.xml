@@ -4,7 +4,7 @@
 <entity name="WebSocketLog" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 23, 988, 710}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={258, 23, 982, 717}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[754, 600]">
     </property>
@@ -35,7 +35,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="It would probably also work on the TerraSwarm website&#10;TerraSwarm adds other stuff to the web page (e.g. header bar, menu bar), but if&#10;we serve pages from /src/ directories without decoration.&#10;&#10;Click here to open up&#10;https://www.terraswarm.org/accessors/hosts/duktape/duktape/src/duktape.h">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 530.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 575.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://www.terraswarm.org/accessors/hosts/duktape/duktape/src/duktape.h#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -60,7 +60,7 @@
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="3. Click here to open&#10;http://localhost:8089/hosts/browser/demo/src/WebSocketLog/WebSocketLog.html&#10;in a browser.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 465.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 510.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="http://localhost:8089/hosts/browser/demo/src/WebSocketLog/WebSocketLog.html#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -83,9 +83,9 @@
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The above creates a web socket server on localhost that supplies data from TestSpontaneous.&#10;&#10;The web page defined here can access that data feed:&#10;&#10;accessors/web/hosts/browser/demo/WebSocketLog/WebSocketLog.html&#10;&#10;The above web page assumes that accessor server is running on your local machine.&#10;&#10;1. On your machine, start the accessor testServer with:&#10;  cd accessors/web/host/browser/test&#10;  node testServer.js&#10;&#10;For more information,&#10;click here to view accessors/web/hosts/browser/test/README.txt&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="* Configured for terra.eecs.  If testing locally, use localhost for hostInterface and 443 for port *&#10;The above creates a web socket server on terra.eecs.berkeley.edu that supplies data from TestSpontaneous.&#10;&#10;The web page defined here can access that data feed:&#10;&#10;accessors/web/hosts/browser/demo/WebSocketLog/WebSocketLog.html&#10;&#10;The above web page assumes that accessor server is running on your local machine.&#10;&#10;1. On your machine, start the accessor testServer with:&#10;  cd accessors/web/host/browser/test&#10;  node testServer.js&#10;&#10;For more information,&#10;click here to view accessors/web/hosts/browser/test/README.txt&#10;">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 185.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 190.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/org/terraswarm/accessor/accessors/web/hosts/browser/test/README.txt">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -110,7 +110,7 @@
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="2. Run this model.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 435.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 480.0]">
         </property>
     </property>
     <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">
@@ -161,11 +161,11 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="localhost">
+        <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="terra.eecs.berkeley.edu">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="443">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8090">
         </property>
         <property name="pfxKeyCertPassword" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
