@@ -137,12 +137,16 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
+        npmInstall = new Parameter(this, "npmInstall");
+        npmInstall.setTypeEquals(BaseType.BOOLEAN);
+        npmInstall.setExpression("true");
+
         modules = new StringParameter(this, "modules");
 	modules.setExpression("@terraswarm/gdp,forever");
 
         runForever = new Parameter(this, "runForever");
         runForever.setTypeEquals(BaseType.BOOLEAN);
-        runForever.setExpression("true");
+        runForever.setExpression("false");
 
         stopForeverAccessors = new Parameter(this, "stopForeverAccessors");
         stopForeverAccessors.setTypeEquals(BaseType.BOOLEAN);
@@ -152,7 +156,7 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
 	userHost.setExpression("sbuser@10.0.0.1");
 
 	// Invoke the accessoInvokeSSH script
-        runCommand.setExpression("@PTII@/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeoutFlagAndValue@ @modulesFlagAndValue@ @stopForeverAccessors@ @runForever@");
+        runCommand.setExpression("@PTII@/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeoutFlagAndValue@ @modulesFlagAndValue@ @npmInstall@ @runForever@ @stopForeverAccessors@");
 
     }
 
@@ -171,6 +175,19 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
      *  will be installed.
      */
     public StringParameter modules;
+
+    /** If true, then use npm install to install the modules.
+     *  The reason to set this to false is if the remote host is
+     *  not connected to the internet or if the remote host already
+     *  has the modules installed in <code>~/cg/node_modules.</code>
+     *  Setting this to false means that the composite accessor
+     *  will be deployed more quickly because npm install will not
+     *  be run.
+     *  The default value is false, indicating that 
+     *  <code>npm install <i>modules</i></code>
+     *  should not be run.
+     */
+    public Parameter npmInstall;
 
     /** If true, then use npm forever to run the Node composite
      *  accessor forever.  If false, then run until <i>stopTime</i>
@@ -211,6 +228,14 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
 	substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
 	substituteMap.put("@modelName@", _sanitizedModelName);
 	substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
+
+        // If the value of the npmInstall parameter is true, then pass
+        // "npmInstall" as an argument to accessorInvokeSSH.
+        if (((BooleanToken) npmInstall.getToken()).booleanValue()) {
+            substituteMap.put("@npmInstall@", "npmInstall");
+        } else {
+            substituteMap.put("@npmInstall@", "");
+        }
 
         // If the value of the runForever parameter is true, then pass
         // "runForever" as an argument to accessorInvokeSSH.
