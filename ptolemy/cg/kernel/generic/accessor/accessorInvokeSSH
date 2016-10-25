@@ -10,7 +10,17 @@
 # 4. Copy the accessor to the remote machine
 # 5. Invoke the accessor on the remote machine using npm forever
 
-usage="$0: Usage: $0 remoteuser@remotehost compositeAccessor.js [-timeout timeoutInMs] [-modules \"module1[,module2...]\"] [stopForeverAccessors] [runForever]"
+usage="$0: Usage: $0 remoteuser@remotehost compositeAccessor.js [-timeout timeoutInMs] [-modules \"module1[,module2...]\"] [npmInstall] [runForever] [stopForeverAccessors]"
+
+# npmInstall - If present, then install the modules.  If not present,
+# then assume that ~/cg/node_modules is set. If not present and
+# ~/cg/node_modules/@terraswarm/accessors does not exist, then nothing
+# will work.
+
+# runForever - If present, then use npm forever.
+
+# stopForeverAccessors - If present, then use npm forever to stop
+# accessor(s) with the same name as the model.
 
 if [ $# -lt 2 ]; then
     echo $usage
@@ -23,8 +33,9 @@ accessor=$2
 
 
 modules=""
-runForever=
-stopForeverAccessors=
+npmInstall=""
+runForever=""
+stopForeverAccessors=""
 timeout=15000
 
 
@@ -53,6 +64,9 @@ do
             fi
             timeout=$2
             shift
+            ;;
+        npmInstall)
+            npmInstall=npmInstall
             ;;
         runForever)
             runForever=runForever
@@ -97,10 +111,12 @@ node_modules=$cg/node_modules
 echo "### accessorInvokeSSH: Creating $node_modules and $runDirectory on $userHost"
 ssh $userHost mkdir -p $node_modules $runDirectory
 
-# This assumes that npm is installed.
-echo "### accessorInvokeSSH: Running npm install @terraswarm/accessors forever $modules"
-echo "### accessorInvokeSSH:   Ignore messages like: 'npm WARN enoent ENOENT: no such file or directory, open $runDirectory/package.json'"
-ssh $userHost "cd $cg; npm install @terraswarm/accessors forever $modules"
+if [ ! -z "$npmInstall" ]; then
+    # This assumes that npm is installed.
+    echo "### accessorInvokeSSH: Running npm install @terraswarm/accessors forever $modules"
+    echo "### accessorInvokeSSH:   Ignore messages like: 'npm WARN enoent ENOENT: no such file or directory, open $runDirectory/package.json'"
+    ssh $userHost "cd $cg; npm install @terraswarm/accessors forever $modules"
+fi
 
 echo "### accessorInvokeSSH: Creating $runDirectory/invoke.js"
 echo "require('@terraswarm/accessors');invoke(process.argv);" | ssh $userHost "cat > $runDirectory/invoke.js"
