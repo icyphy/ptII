@@ -36,8 +36,10 @@ import ptolemy.actor.CompositeActor;
 import ptolemy.cg.kernel.generic.CodeGeneratorUtilities;
 import ptolemy.cg.kernel.generic.RunnableCodeGenerator;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
+import ptolemy.data.BooleanToken;
 import ptolemy.data.StringToken;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -69,24 +71,43 @@ import ptolemy.util.StringUtilities;
  *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js 
  *  </pre>
  *
- *  <p>This actor runs $PTII/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH, which does the following:</p>
+ *  <p>This actor runs $PTII/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH, which does the following on the remote machine:</p>
  *  <ol>
- *    <li>Creates a directory in <code>/tmp</code>, for example <code>/tmp/accessorInvokeSSH.18783</code></li>
- *    <li>Installs the <code>@terraswarm/accessors</code> in <code>/tmp/accessorsInvokeSSH.nnnnn/node_modules</code>
- *      Note that this means that to run a composite accessor with the latest accessors, the npm 
- *      <code>@terraswarm/accessors</code> module must be updated.  See 
- *      <a href="https://www.terraswarm.org/accessors/wiki/Main/NPMUpload#in_browser">https://www.terraswarm.org/accessors/wiki/Main/NPMUpload</a>.
- *      In addition, any modules listed in the <i>modules</i> parameter are also installed.
- *    </li>
- *    <li>Creates a small script to run the composite accessor.</li>
+ *
+ *    <li>Creates a directory in <code>~/cg/<i>ModelName</i></code>,
+ *    for example <code>~/cg/MyCompositeAccessor</code></li>
+ *
+ *    <li>Installs the <code>@terraswarm/accessors</code> and
+ *      <code>forever</code> modules in
+ *      <code>~/cg/<i>ModelName</i></code>. Note
+ *      that this means that to run a composite accessor with the
+ *      latest accessors, the npm <code>@terraswarm/accessors</code>
+ *      module must be updated.  See <a
+ *      href="https://www.terraswarm.org/accessors/wiki/Main/NPMUpload#in_browser">https://www.terraswarm.org/accessors/wiki/Main/NPMUpload</a>.
+ *      In addition, any modules listed in the <i>modules</i>
+ *      parameter are also installed.  </li>
+ *
+ *    <li>Creates a small node script called <code>invoke.js</code> to
+ *    run the composite accessor.</li>
+ *
  *    <li>Copies the composite accessor to the directory.</li>
- *    <li>Invokes node on the remote machine.  If the director of the
- *    model has a <i>stopTime</i> parameter, then the value is
- *    multiplied by 1000 and used as the value of the timeout
- *    parameter on the remote machine. If the <i>stopTime</i>
- *    parameter is not set, then a default value (currently 15000 ms.)
- *    is used.</li>
- *  </ol> 
+ *
+ *    <li>Creates a script called <code>runit</code> that uses npm
+ *    forever to stop any processes started with forever with the same
+ *    name and then invokes node on the remote machine using
+ *    <code>forever</code>.  If the director of the model has a
+ *    <i>stopTime</i> parameter, then the value is multiplied by 1000
+ *    and used as the value of the timeout parameter on the remote
+ *    machine. If the <i>stopTime</i> parameter is not set, then a
+ *    default value (currently 15000 ms.)  is used.</li>
+ *
+ *    <li>The output of the forever log, stderr and stdout are then
+ *    reported using tail</li>
+ *
+ *   </ol>
+ *
+ *  <p><a href="https://www.npmjs.com/package/forever#in_browser">npm forever</a>
+ *  is a facility that starts a process and restarts it as necesary.</p>
  *
  *  <p>The <code>accessorInvokeSSH</code> script should work on any machine that has node and npm installed.</p>
  * 
@@ -117,13 +138,21 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
         super(container, name);
 
         modules = new StringParameter(this, "modules");
-	modules.setExpression("@terraswarm/gdp");
+	modules.setExpression("@terraswarm/gdp,forever");
+
+        runForever = new Parameter(this, "runForever");
+        runForever.setTypeEquals(BaseType.BOOLEAN);
+        runForever.setExpression("true");
+
+        stopForeverAccessors = new Parameter(this, "stopForeverAccessors");
+        stopForeverAccessors.setTypeEquals(BaseType.BOOLEAN);
+        stopForeverAccessors.setExpression("false");
 
 	userHost = new StringParameter(this, "userHost");
 	userHost.setExpression("sbuser@10.0.0.1");
 
 	// Invoke the accessoInvokeSSH script
-        runCommand.setExpression("@PTII@/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeoutFlagAndValue@ @modulesFlagAndValue@");
+        runCommand.setExpression("@PTII@/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeoutFlagAndValue@ @modulesFlagAndValue@ @stopForeverAccessors@ @runForever@");
 
     }
 
@@ -143,6 +172,28 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
      */
     public StringParameter modules;
 
+    /** If true, then use npm forever to run the Node composite
+     *  accessor forever.  If false, then run until <i>stopTime</i>
+     *  ms. has passed.  Note that if true, then the process will be
+     *  restarted after <i>stopTime</i> ms. or until the code
+     *  generator is run with <i>stopForeverAccessors</i> is true or
+     *  the remote machine is rebooted.  The default value is true,
+     *  indicating that the process should be run forever.
+     */
+    public Parameter runForever;
+    
+    /** If true, then connect to the remote machine and stop any npm
+     *  forever processes with the same basename as the model.
+     *  Confusingly, to stop any remote processes that have been
+     *  previously invoked, <i>run</i> should be true so that the
+     *  <code>accessorInvokeSSH</code> script is invoked on the remote
+     *  machine with a <code>stop</code> argument.
+     *  The default value is false, indicating that 
+     *  the remote machine will invoke the Node accessor host
+     *  composite accessor.
+     */
+    public Parameter stopForeverAccessors;
+
     /** The username and hostname that is used with ssh.
      *  The default value is "sbuser@swarmnuc001.eecs.berkeley.edu".
      *  To get ssh access, see 
@@ -160,6 +211,22 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
 	substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
 	substituteMap.put("@modelName@", _sanitizedModelName);
 	substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
+
+        // If the value of the runForever parameter is true, then pass
+        // "runForever" as an argument to accessorInvokeSSH.
+        if (((BooleanToken) runForever.getToken()).booleanValue()) {
+            substituteMap.put("@runForever@", "runForever");
+        } else {
+            substituteMap.put("@runForever@", "");
+        }
+
+        // If the value of the stopForeverAccessors parameter is true, then pass
+        // "stopForeverAccessors" as an argument to accessorInvokeSSH.
+        if (((BooleanToken) stopForeverAccessors.getToken()).booleanValue()) {
+            substituteMap.put("@stopForeverAccessors@", "stopForeverAccessors");
+        } else {
+            substituteMap.put("@stopForeverAccessors@", "");
+        }
 
         // If stopTime is set in the director, then multiply it by
         // 1000 and use it as the timeout of the accessor.
