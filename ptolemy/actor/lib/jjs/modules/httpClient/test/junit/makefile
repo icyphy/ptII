@@ -5,7 +5,7 @@
 #
 # @Version: : mkpttest 72465 2015-06-01 15:58:40Z cxh $
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2015-2016 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -37,7 +37,7 @@ ME =		ptolemy/actor/lib/jjs/modules/httpClient/test/junit
 ROOT =		../../../../../../../..
 
 # JUNIT_JAR is searched for by /Users/cxh/ptII/configure and set in /Users/cxh/ptII/mk/ptII.mk
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJACL_JAR)$(CLASSPATHSEPARATOR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
