@@ -154,14 +154,14 @@ exports.Socket.prototype.send = function (data, port, hostname, callback) {
 };
 
 /** Set the receive type. If this is not called, the type defaults to "string".
- *  @type The name of the receive type.
+ *  @param type The name of the receive type.
  */
 exports.Socket.prototype.setReceiveType = function (type) {
     this.socket.setReceiveType(type);
 };
 
 /** Set the send type. If this is not called, the type defaults to "string".
- *  @type The name of the send type.
+ *  @param type The name of the send type.
  */
 exports.Socket.prototype.setSendType = function (type) {
     this.socket.setSendType(type);
