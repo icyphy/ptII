@@ -434,16 +434,16 @@ function convertFromToken(value, isJSON) {
     }
     if (value instanceof StringToken) {
         // NOTE: Used to always parse JSON here, but that is now handled in the common host
-    	// for most cases.
-    	if (isJSON) {
-    		// Attempt to parse the JSON.
-    		try {
-    			return JSON.parse(value.stringValue());
-    		} catch (err) {
-    			// Just return the string.
-    			return value.stringValue();
-    		}
-    	}
+            // for most cases.
+            if (isJSON) {
+                    // Attempt to parse the JSON.
+                    try {
+                            return JSON.parse(value.stringValue());
+                    } catch (err) {
+                            // Just return the string.
+                            return value.stringValue();
+                    }
+            }
         return value.stringValue();
     }
     if (value instanceof IntToken) {

@@ -88,11 +88,11 @@ var EventEmitter = require('events').EventEmitter;
  *  @param options The options.
  */
 exports.HttpServer = function (options) {
-	if (typeof options.port === 'undefined' || options.port === null) {
-		this.port = 80;
-	} else {
-		this.port = options.port;
-	}
+        if (typeof options.port === 'undefined' || options.port === null) {
+                this.port = 80;
+        } else {
+                this.port = options.port;
+        }
     this.hostInterface = options.hostInterface || 'localhost';
     this.helper = HttpServerHelper.createServer(
         this, this.hostInterface, this.port
@@ -134,10 +134,10 @@ exports.HttpServer.prototype.stop = function () {
  *  @param path The path of the request.
  */
 exports.HttpServer.prototype._request = function(requestID, method, path) {
-	var request = {
-		'requestID': requestID,
-		'method': method,
-		'path': path
-	}
+        var request = {
+                'requestID': requestID,
+                'method': method,
+                'path': path
+        }
     this.emit('request', request);
 };

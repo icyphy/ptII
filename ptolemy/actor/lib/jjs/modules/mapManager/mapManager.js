@@ -198,13 +198,13 @@ function _keyToStrings(key) {
 //REMOVED due to change of entity aliases as being stored with the entity
 
 // function _entityAliasKey(sourceEntity, destinationEntity ) {
-//  	if (! ((sourceEntity instanceof Entity) && (destinationEntity instanceof Entity))  ) {
-//  		throw "Incorrect arguments to _EntityAliasKey.";
-//  	}
+//          if (! ((sourceEntity instanceof Entity) && (destinationEntity instanceof Entity))  ) {
+//                  throw "Incorrect arguments to _EntityAliasKey.";
+//          }
 
-//  	var sourceString = sourceEntity.toString();
-//  	var destinationString = destinationEntity.toString();
-//  	return _stringsToKey([sourceString, destinationString ]);
+//          var sourceString = sourceEntity.toString();
+//          var destinationString = destinationEntity.toString();
+//          return _stringsToKey([sourceString, destinationString ]);
 // }
 
 function __coordinateTransformationKey(domainName, codomainName) {
@@ -546,34 +546,34 @@ exports.registerEntity = function (entity) {
 //Removed because EntityAliases no longer exists
 
 // exports.removeEntityAlias = function(sourceEntity, destinationEntity ) {
-//  	if (! ((sourceEntity instanceof Entity) && (destinationEntity instanceof Entity))  ) {
-//  		throw "Incorrect arguments to EntityAlias constructor.";
-//  	}
+//          if (! ((sourceEntity instanceof Entity) && (destinationEntity instanceof Entity))  ) {
+//                  throw "Incorrect arguments to EntityAlias constructor.";
+//          }
 
-// 	var key = _entityAliasKey(sourceEntity, destinationEntity)
+//         var key = _entityAliasKey(sourceEntity, destinationEntity)
 
-// 	if (entityAliases.hasOwnProperty(key)) {
-// 		delete entityAliases[key];
-// 		return true;
-// 	} else {
-// 		return false;
-// 	}
+//         if (entityAliases.hasOwnProperty(key)) {
+//                 delete entityAliases[key];
+//                 return true;
+//         } else {
+//                 return false;
+//         }
 // }
 
 //Removed because EntityAliases no longer exists
 
 // exports.entityAliasExists = function(sourceEntity, destinationEntity ) {
-//  	if (! ((sourceEntity instanceof Entity) && (destinationEntity instanceof Entity))  ) {
-//  		throw "Incorrect arguments to entityAliasExists.";
-//  	}
+//          if (! ((sourceEntity instanceof Entity) && (destinationEntity instanceof Entity))  ) {
+//                  throw "Incorrect arguments to entityAliasExists.";
+//          }
 
-//  	var key = _entityAliasKey(sourceEntity, destinationEntity)
+//          var key = _entityAliasKey(sourceEntity, destinationEntity)
 
-//  	if (entityAliases.hasOwnProperty(key)) {
-//  		return true;
-//  	} else {
-//  		return false;
-//  	}
+//          if (entityAliases.hasOwnProperty(key)) {
+//                  return true;
+//          } else {
+//                  return false;
+//          }
 // }
 
 //******************************************************************************************

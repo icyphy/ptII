@@ -568,7 +568,7 @@ function Accessor(
             if (typeof this.exports.wrapup === 'function') {
                 // Call with 'this' being the accessor instance, not the exports
                 // property.
-		this.exports.wrapup.call(this);
+                this.exports.wrapup.call(this);
             }
             this.emit('wrapup');
         };
@@ -734,16 +734,16 @@ Accessor.prototype.assignImpliedPrioritiesDownstream = function(accessor, cycleP
                     // and follow the implications.
 
                     // We increment myPriority before use so that if
-		            // an output is connected to multiple inputs, the
-		            // inputs do not have the same priority.
-		            // To replicate this, run:
+                            // an output is connected to multiple inputs, the
+                            // inputs do not have the same priority.
+                            // To replicate this, run:
 
-		            // (cd $PTII/org/terraswarm/accessor/accessors/web/hosts/node; node nodeHostInvoke -timeout 6000 test/auto/RampJSTestDisplay.js)
+                            // (cd $PTII/org/terraswarm/accessor/accessors/web/hosts/node; node nodeHostInvoke -timeout 6000 test/auto/RampJSTestDisplay.js)
 
-		            // If we don't increment the priority then either
-		            // the Display or the TrainableTest fails to get
-		            // inputs.
-		            destinationAccessor.priority = ++myPriority;
+                            // If we don't increment the priority then either
+                            // the Display or the TrainableTest fails to get
+                            // inputs.
+                            destinationAccessor.priority = ++myPriority;
                     // console.log('Assigned downstream priority to ' + destinationAccessor.accessorName + ' of ' + myPriority));
                     
                     // In case there are further assigned priorities further downstream,
@@ -757,7 +757,7 @@ Accessor.prototype.assignImpliedPrioritiesDownstream = function(accessor, cycleP
                     }
                     // Priority has to be adjusted.
 
-		            // See comment above for why we increment myPriority.
+                            // See comment above for why we increment myPriority.
                     destinationAccessor.priority = ++myPriority;
                     // console.log('Assigned downstream priority to ' + destinationAccessor.accessorName + ' of ' + (myPriority + 1));
                     myPriority = this.assignImpliedPrioritiesDownstream(
@@ -1354,9 +1354,9 @@ Accessor.prototype.react = function(name) {
     var invokeSpecificHandler = function(name) {
 
         if (thiz.inputHandlers[name] && thiz.inputHandlers[name].length > 0) {
-	    // When calling stop, there is a chance that "removed[0].react()" below
-	    // will fail with 'TypeError: Cannot read property 'length' of undefined',
-	    // so we check to see if thiz.inputHandlers[name] is defined.
+            // When calling stop, there is a chance that "removed[0].react()" below
+            // will fail with 'TypeError: Cannot read property 'length' of undefined',
+            // so we check to see if thiz.inputHandlers[name] is defined.
             for (var i = 0; thiz.inputHandlers[name] && i < thiz.inputHandlers[name].length; i++) {
                 if (typeof thiz.inputHandlers[name][i] === 'function') {
                     // Input handlers functions are bound to the exports object.
@@ -1364,14 +1364,14 @@ Accessor.prototype.react = function(name) {
                         thiz.inputHandlers[name][i]();
                     } catch (exception) {
                         // Remove the input handler.
-			if (thiz.inputHandlers && thiz.inputHandlers[name]) {
-			    thiz.removeInputHandler(
-						    thiz.inputHandlers[name][i].handle);
-			}
-			// Throw an Error here instead of calling error() so that
-			// if TrainableTest.wrapup() throws an Error because
-			// the input does not match the training data, then we 
-			// don't ignore the error in commonHost.error().
+                        if (thiz.inputHandlers && thiz.inputHandlers[name]) {
+                            thiz.removeInputHandler(
+                                                    thiz.inputHandlers[name][i].handle);
+                        }
+                        // Throw an Error here instead of calling error() so that
+                        // if TrainableTest.wrapup() throws an Error because
+                        // the input does not match the training data, then we 
+                        // don't ignore the error in commonHost.error().
 
                         // FIXME: If the exception was thrown because
                         // of Java, we should get the Java stacktrace.
@@ -1398,20 +1398,20 @@ Accessor.prototype.react = function(name) {
         invokeSpecificHandler(name);
     } else {
         // No specific input has been given.
-    	// Invoke pending inputHandlers.  An accessor might send to its own 
-    	// inputs, so repeat until there are no more pending handlers.
-    	var moreInputsPossiblyAvailable = true;
-    	while (moreInputsPossiblyAvailable) {
-    		moreInputsPossiblyAvailable = false;
-	        for (var i = 0; i < thiz.inputList.length; i++) {
-	            name = thiz.inputList[i];
-	            if (thiz.inputs[name].pendingHandler) {
-	                thiz.inputs[name].pendingHandler = false;
-	                moreInputsPossiblyAvailable = true;
-	                invokeSpecificHandler(name);
-	            }
-	        }
-    	}
+            // Invoke pending inputHandlers.  An accessor might send to its own 
+            // inputs, so repeat until there are no more pending handlers.
+            var moreInputsPossiblyAvailable = true;
+            while (moreInputsPossiblyAvailable) {
+                    moreInputsPossiblyAvailable = false;
+                for (var i = 0; i < thiz.inputList.length; i++) {
+                    name = thiz.inputList[i];
+                    if (thiz.inputs[name].pendingHandler) {
+                        thiz.inputs[name].pendingHandler = false;
+                        moreInputsPossiblyAvailable = true;
+                        invokeSpecificHandler(name);
+                    }
+                }
+            }
     }
     // Next, invoke handlers registered to handle any input.
     if (thiz.anyInputHandlers.length > 0) {
@@ -1462,7 +1462,7 @@ Accessor.prototype.react = function(name) {
         if (newCount > 1) {
             var deviation = duration - currentMean;
             var nextVar = (((newCount - 2)/(newCount - 1)) * currentVar) + 
-			  ((1/newCount) * (deviation * deviation));
+                          ((1/newCount) * (deviation * deviation));
             Accessor.activeAccessors[this.accessorClass][2] = nextVar;
         }        
     }

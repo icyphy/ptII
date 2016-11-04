@@ -12,7 +12,7 @@ var buf = new Buffer(array);
 console.log(buf.length);
 
 var origin = crypto.privateDecrypt(
-	{key: privateKey, padding: constants.RSA_PKCS1_PADDING}, buf);
+        {key: privateKey, padding: constants.RSA_PKCS1_PADDING}, buf);
 console.log('origin');
 console.log(origin);
 

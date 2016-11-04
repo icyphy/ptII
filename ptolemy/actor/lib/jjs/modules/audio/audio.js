@@ -100,28 +100,28 @@ exports.Player.prototype.stop = function () {
 /** Create a ClipPlayer.
  */
 exports.ClipPlayer = function() {
-	this.clip = null;
+        this.clip = null;
 };
 
 /** Load audio from the specified URL.
  * @param url  The URL to load audio from.
  */
 exports.ClipPlayer.prototype.load = function(url) {
-	try {
-		this.clip = new AudioClip(url);
+        try {
+                this.clip = new AudioClip(url);
 
-	} catch(err) {
-		error("Error connecting to audio URL " + url);
-	} 
+        } catch(err) {
+                error("Error connecting to audio URL " + url);
+        } 
 };
 
 /** Play the currently loaded audio clip.
  */
 exports.ClipPlayer.prototype.play = function() {
     if (this.clip !== null) {
-    	this.clip.play();
+            this.clip.play();
     } else {
-    	error("No audio clip to play.  Please load a url first.");
+            error("No audio clip to play.  Please load a url first.");
     }
 };
 
@@ -129,7 +129,7 @@ exports.ClipPlayer.prototype.play = function() {
  */
 exports.ClipPlayer.prototype.stop = function() {
     if (this.clip !== null) {
-    	this.clip.stop();
+            this.clip.stop();
     }
 };
 

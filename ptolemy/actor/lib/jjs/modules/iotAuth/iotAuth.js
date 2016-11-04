@@ -69,7 +69,7 @@ var authAlertCode = {
 
 exports.msgType = msgType;
 
-var AUTH_NONCE_SIZE = 8;					// used in parseAuthHello
+var AUTH_NONCE_SIZE = 8;                                        // used in parseAuthHello
 var SESSION_KEY_ID_SIZE = 8;
 var DIST_KEY_EXPIRATION_TIME_SIZE = 6;
 var SESSION_KEY_EXPIRATION_TIME_SIZE = 6;
@@ -220,11 +220,11 @@ var parseSessionKeyResp = function(buf) {
     var replyNonce = buf.slice(0, AUTH_NONCE_SIZE);
     var curIndex = AUTH_NONCE_SIZE;
     
-	var cryptoSpecLen = buf.readUInt8(curIndex);
-	curIndex += 1;
-	var cryptoSpecStr = buf.toString(curIndex, curIndex + cryptoSpecLen);
-	curIndex += cryptoSpecLen;
-	
+        var cryptoSpecLen = buf.readUInt8(curIndex);
+        curIndex += 1;
+        var cryptoSpecStr = buf.toString(curIndex, curIndex + cryptoSpecLen);
+        curIndex += cryptoSpecLen;
+        
     var sessionKeyCount = buf.readUInt32BE(curIndex);
 
     curIndex += 4;
@@ -426,7 +426,7 @@ function handleSessionKeyResponse(options, obj, myNonce, sessionKeyResponseCallb
 };
 
 exports.sendSessionKeyRequest = function(options, sessionKeyResponseCallback, callbackParameters) {
-	options.publicKeyCryptoSpec = crypto.parsePublicKeyCryptoSpec(options.publicKeyCryptoSpec);
+        options.publicKeyCryptoSpec = crypto.parsePublicKeyCryptoSpec(options.publicKeyCryptoSpec);
     var authClientSocket = new socket.SocketClient(options.authPort, options.authHost,
     {
         //'connectTimeout' : this.getParameter('connectTimeout'),
@@ -450,17 +450,17 @@ exports.sendSessionKeyRequest = function(options, sessionKeyResponseCallback, ca
         //'trustedCACertPath' : this.getParameter('trustedCACertPath')
     });
     authClientSocket.on('open', function() {
-    	console.log('connected to auth');
+            console.log('connected to auth');
     });
     var myNonce;
     authClientSocket.on('data', function(data) {
-    	console.log('data received from auth');
-		var buf = new buffer.Buffer(data);
-		var obj = exports.parseIoTSP(buf);
-		if (obj.msgType == msgType.AUTH_HELLO) {
-			var authHello = parseAuthHello(obj.payload);
-			myNonce = new buffer.Buffer(crypto.randomBytes(AUTH_NONCE_SIZE));
-		
+            console.log('data received from auth');
+                var buf = new buffer.Buffer(data);
+                var obj = exports.parseIoTSP(buf);
+                if (obj.msgType == msgType.AUTH_HELLO) {
+                        var authHello = parseAuthHello(obj.payload);
+                        myNonce = new buffer.Buffer(crypto.randomBytes(AUTH_NONCE_SIZE));
+                
             var sessionKeyReq = {
                 nonce: myNonce,
                 replyNonce: authHello.nonce,
@@ -478,37 +478,37 @@ exports.sendSessionKeyRequest = function(options, sessionKeyResponseCallback, ca
                     console.log('No distribution key yet, requesting new distribution key as well...');
                 }
                 reqMsgType = msgType.SESSION_KEY_REQ_IN_PUB_ENC;
-	            var sessionKeyReqBuf = serializeSessionKeyReq(sessionKeyReq);
-	            reqPayload = new buffer.Buffer(
-	            	crypto.publicEncryptAndSign(sessionKeyReqBuf.getArray(),
-	            	options.authPublicKey, options.entityPrivateKey,
-	            	options.publicKeyCryptoSpec.cipher, options.publicKeyCryptoSpec.sign));
+                    var sessionKeyReqBuf = serializeSessionKeyReq(sessionKeyReq);
+                    reqPayload = new buffer.Buffer(
+                            crypto.publicEncryptAndSign(sessionKeyReqBuf.getArray(),
+                            options.authPublicKey, options.entityPrivateKey,
+                            options.publicKeyCryptoSpec.cipher, options.publicKeyCryptoSpec.sign));
             }
             else {
                 console.log('distribution key available! ');
                 reqMsgType = msgType.SESSION_KEY_REQ;
                 var sessionKeyReqBuf = serializeSessionKeyReq(sessionKeyReq);
-   				var encryptedSessionKeyReqBuf = new buffer.Buffer(
-   					symmetricEncryptAuthenticate(sessionKeyReqBuf, options.distributionKey, options.distributionCryptoSpec));
+                                   var encryptedSessionKeyReqBuf = new buffer.Buffer(
+                                           symmetricEncryptAuthenticate(sessionKeyReqBuf, options.distributionKey, options.distributionCryptoSpec));
                 reqPayload = serializeSessionKeyReqWithDistributionKey(options.entityName,
-                		encryptedSessionKeyReqBuf)
+                                encryptedSessionKeyReqBuf)
             }
             var toSend = exports.serializeIoTSP({msgType: reqMsgType, payload: reqPayload}).getArray();
             authClientSocket.send(toSend);
-		}
-		else {
-	    	handleSessionKeyResponse(options, obj, myNonce, sessionKeyResponseCallback, callbackParameters);
-	    	authClientSocket.close();
-		}
+                }
+                else {
+                    handleSessionKeyResponse(options, obj, myNonce, sessionKeyResponseCallback, callbackParameters);
+                    authClientSocket.close();
+                }
     });
     authClientSocket.on('close', function() {
-    	console.log('disconnected from auth');
+            console.log('disconnected from auth');
     });
     authClientSocket.on('error', function(message) {
         sessionKeyResponseCallback({error: 'an error occurred in socket during session key request, details: ' + message});
         authClientSocket.close();
     });
-	authClientSocket.open();
+        authClientSocket.open();
 };
 
 ///////////////////////////////////////////////////////////////////
