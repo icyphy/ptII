@@ -52,11 +52,11 @@ var MockHueBridgeHelper = Java.type('ptolemy.actor.lib.jjs.modules.mockHueBridge
  *  
  *  <pre>
  *      var MockHueBridgeHelper = Java.type('ptolemy.actor.lib.jjs.modules.mockHueBridges.MockHueBridgeHelper');
- *  	var helper = MockHueBridgeHelper.getInstance();
- *		var connection = bridge.connect(get('bridgeID'));
- *		connection.initializeToDefault();  // Optional
+ *          var helper = MockHueBridgeHelper.getInstance();
+ *                var connection = bridge.connect(get('bridgeID'));
+ *                connection.initializeToDefault();  // Optional
  *
- *	    var response;
+ *            var response;
  *      response = connection.command(method, uri); // If no request body
  *      response = connection.command(method, uri, body);  // Request with body 
  *  </pre>
@@ -224,7 +224,7 @@ exports.MockHueBridge = (function () {
                 lightID = findLightID(URIpath);
 
                 // Parse body.  Contains {on, bri, hue, sat, transitiontime}
-                // Future enhancement:  Generate event when transition is complete?		  
+                // Future enhancement:  Generate event when transition is complete?                  
 
                 var state = JSON.parse(helper.getState(bridgeID));
 

@@ -55,14 +55,14 @@ var SensorStream = null;
  *  var imuSensor = require('IMUSensor');
  *  var stream = imuSensor.Stream();
  *  initialize: 
- *  	stream.start(bluetooth serialport #);
- *	setInterval(getSample, this.getParameter(samplingRate));
+ *          stream.start(bluetooth serialport #);
+ *        setInterval(getSample, this.getParameter(samplingRate));
  *  getSample: 
- *  	var sample = stream.getSample();
- *  	if (prevSample != sample) {
- *  		prevSample = sample;
- *  		this.send('stream', sample);
- *  	}
+ *          var sample = stream.getSample();
+ *          if (prevSample != sample) {
+ *                  prevSample = sample;
+ *                  this.send('stream', sample);
+ *          }
  */
 exports.Stream = function (sensorPort) {
     // Does not take options!

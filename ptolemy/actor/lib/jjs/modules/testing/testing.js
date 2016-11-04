@@ -43,27 +43,27 @@ var WindowMock = require('testing/window-mock/window-mock.js');
  *  results of the tests.
  */
 exports.Testing = function() {
-	EventEmitter.call(this);
+        EventEmitter.call(this);
 
-	// This version of the mocha library was designed for the browser and 
-	// expects and window object.  Create a mock window object.
-	// The WindowMock class exports itself as 'default' which has a special 
-	// meaning in ES6, but here, resolves to a property with the name 'default'.
+        // This version of the mocha library was designed for the browser and 
+        // expects and window object.  Create a mock window object.
+        // The WindowMock class exports itself as 'default' which has a special 
+        // meaning in ES6, but here, resolves to a property with the name 'default'.
     window = new WindowMock.default();
-		
+                
     // Requiring mocha.js creates a variable named mocha and loads content into it.
-	require('testing/mocha/mocha.js');
-	mocha.setup('bdd');
-	mocha.reporter('junit');
-	
-	// TODO:  Data structures to store the results
+        require('testing/mocha/mocha.js');
+        mocha.setup('bdd');
+        mocha.reporter('junit');
+        
+        // TODO:  Data structures to store the results
 };
 util.inherits(exports.Testing, EventEmitter);
 
 /** Load the given mocha test file.
  */
 exports.Testing.prototype.loadTestFile = function(filename) {
-	require(filename);
+        require(filename);
 };
 
 /** Run the loaded test file. run() assumes that a file has been loaded already.
@@ -71,11 +71,11 @@ exports.Testing.prototype.loadTestFile = function(filename) {
  *  results.
  */
 exports.Testing.prototype.run = function() {
-	var self = this;
-	
-	// Forward the done event from mocha on to listeners of this module.
-	mocha.run()
-		.on('done', function(result) {
-			self.emit('end', result);
-		});
+        var self = this;
+        
+        // Forward the done event from mocha on to listeners of this module.
+        mocha.run()
+                .on('done', function(result) {
+                        self.emit('end', result);
+                });
 };

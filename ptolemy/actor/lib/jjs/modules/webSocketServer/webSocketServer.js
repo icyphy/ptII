@@ -136,11 +136,11 @@ exports.supportedSendTypes = function () {
  *  @param options The options.
  */
 exports.Server = function (options) {
-	if (typeof options.port === 'undefined' || options.port === null) {
-		this.port = 80;
-	} else {
-		this.port = options.port;
-	}
+        if (typeof options.port === 'undefined' || options.port === null) {
+                this.port = 80;
+        } else {
+                this.port = options.port;
+        }
     this.hostInterface = options.hostInterface || 'localhost';
     this.sslTls = options.sslTls || false;
     this.pfxKeyCertPassword = options.pfxKeyCertPassword || '';
