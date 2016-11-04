@@ -1,0 +1,150 @@
+#!/bin/sh
+# Fix common problems in .java files
+#  $Id: fix-files 74463 2016-02-09 03:41:06Z cxh $
+#
+printonly=no
+
+while getopts nd-- opt
+do
+    case $opt in
+	d) 	set -x;;
+	n) 	printonly=yes;;
+	\?)	echo "$0: Usage: $0 [-p] [-x] [filenames . . .]"
+		echo " -n  Print only, do not modify any files "
+		echo " -d  debug"
+		exit 3;;
+    esac
+done
+shift `expr $OPTIND - 1`
+
+filesupdated=/tmp/rmtrailingspace_filesupdated.$$
+
+search() {
+topdir=`pwd`
+echo "************ $EGREPMATCH: $topdir"
+
+for fullfile in $@
+do
+    cd $topdir
+    echo "Now processing: $fullfile"
+    egrep "$EGREPMATCH" $fullfile
+    retval=$?
+    if [ $retval = 0 ]; then
+	# There was a difference, so we might want to check this sucker out
+	file=`basename $fullfile`
+	dirname=`dirname $fullfile`
+	cd $dirname
+	if [ -d SCCS -o -d RCS ]; then
+	    echo "Error: SCCS or RCS directory"
+	    exit 2
+	fi
+	doit
+	if [ "$printonly" = "no" ]; then
+	    cp /tmp/fix-files.tmp $file
+	    if [ -d .svn ]; then
+		echo "NOT doing a svn commit, did a copy"
+		#svn commit -m "$LOGMESSAGE" $file 
+	        echo $fullfile >> $filesupdated
+	    fi	
+	else
+	    echo "Would update and commit"
+	fi	
+    fi
+done
+rm -f /tmp/fix-files.tmp
+cd $topdir
+}
+
+doit() {
+    sed -e 's/for(/for (/' \
+	-e 's/){$/) {/' \
+	-e 's/if( /if (/' \
+	-e 's/if(/if (/' \
+	-e 's/}catch/} catch/g' \
+	-e 's/catch(/catch (/g' \
+	-e 's/do{/do {/' \
+	-e 's/}while/} while/' \
+	-e 's/while(/while (/' \
+	-e 's/try{/try {/' \
+	-e 's/else{/else {/' \
+	-e 's/)throws{/) throws/' \
+	-e 's/@authors /@author /' \
+	-e 's/@authors: /@author /' \
+        -e 's/= function(/= function (/' \
+	    $file > /tmp/fix-files.tmp
+	diff -c $file /tmp/fix-files.tmp
+}
+EGREPMATCH='for\(|if\(|}catch|do{|}while|while\(|\){$|try{|else{|\)throws|@authors'
+LOGMESSAGE='Added spaces in for, while, if, else, try, catch, throws'
+
+search $@
+
+doit() {
+    sed -e 's#@throws#@exception#g' \
+	    $file > /tmp/fix-files.tmp
+	diff -c $file /tmp/fix-files.tmp
+}
+EGREPMATCH='@throws'
+LOGMESSAGE='@throws -> @exception'
+
+search $@
+
+
+doit() {
+    
+	sed -e 's@^// *//////*$@///////////////////////////////////////////////////////////////////@g'  < $file | \
+	sed -e 's@^// // @//// @g' | \
+	sed -e 's@^    // *//////*$@    ///////////////////////////////////////////////////////////////////@g'  | \
+	sed -e 's@^    // *// *inner classes * ////$@    ////                         inner classes                     ////@g' |
+	sed -e 's@^    // *// *inner class * ////$@    ////                         inner class                       ////@g' |
+	sed -e 's@^    // *// *ports and parameters* ////$@////                     ports and parameters                  ////@g' |
+	sed -e 's@^    // *// *public methods * ////$@    ////                         public methods                    ////@g' |
+	sed -e 's@^    // *// *protected methods * ////$@    ////                         protected methods                 ////@g' |
+	sed -e 's@^    // *// *private methods * ////$@    ////                         private methods                   ////@g' |
+	sed -e 's@^    // *// *public variables * //// *$@    ////                         public variables                  ////@g' |
+	sed -e 's@^    // *// *protected variables * ////$@    ////                         protected variables               ////@g' |
+	sed -e 's@^    // *// *private variables * //// *$@    ////                         private variables                 ////@g' 	> /tmp/fix-files.tmp
+	diff $file /tmp/fix-files.tmp
+}
+
+EGREPMATCH="(^    ///////////////|// //)"
+LOGMESSAGE="section comment headers"
+
+search $@
+
+
+doit() {
+    awk '{ if ($0 !~ /@copyright/) {
+             print $0
+           }
+         }' $file > /tmp/fix-files.tmp
+	diff -c $file /tmp/fix-files.tmp
+}
+EGREPMATCH='@copyright'
+LOGMESSAGE='Remove @copyright lines'
+
+search $@
+
+doit() {
+    base=`basename -s .js $file`
+    if [ $file = $base ]; then
+        cp $file /tmp/fix-files.tmp
+        return
+    fi
+
+    sed 's/@version \$\([^$]*\)*\$ *$/@version $$\1$$/' \
+        $file > /tmp/fix-files.tmp
+    diff -c $file /tmp/fix-files.tmp
+}
+EGREPMATCH='@version'
+LOGMESSAGE='Use $$Id: fix-files 74463 2016-02-09 03:41:06Z cxh $$'
+
+search $@
+
+if [ "$printonly" = "no" ]; then
+    echo "Thes files should be checked in:"
+    cat $filesupdated
+fi
+
+rm -f $TMPFILE $filesupdated
+
