@@ -87,7 +87,7 @@
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 190.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$PTII/org/terraswarm/accessor/accessors/web/hosts/browser/test/README.txt">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/accessors/web/hosts/browser/test/README.txt">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
