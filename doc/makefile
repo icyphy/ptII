@@ -786,8 +786,8 @@ codeDoc/js/index.html:
 			echo "Creating $(ROOT)/vendors"; \
 			mkdir $(ROOT)/vendors; \
 	        fi; \
-		echo "Cloning https://github.com/jsdoc3/jsdoc.git"; \
-		(cd $(ROOT)/vendors; git clone https://github.com/jsdoc3/jsdoc.git); \
+		echo "Cloning https://github.com/terraswarm/jsdoc.git"; \
+		(cd $(ROOT)/vendors; git clone https://github.com/terraswarm/jsdoc.git); \
         fi
 	-if [ ! -f $(ROOT)/build.xml ]; then \
 		echo "$(ROOT)/build.xml does not exist, running ./configure"; \
@@ -800,7 +800,7 @@ codeDoc/js/index.html:
         else \
 		echo "Either $(ROOT)/vendors/jsdoc or $(ROOT)/build.xml do not exist."; \
 		echo "To set up $(ROOT)/vendors/jsdoc: "; \
-		echo '  cd $$PTII/vendors; git clone https://github.com/jsdoc3/jsdoc.git'; \
+		echo '  cd $$PTII/vendors; git clone https://github.com/terraswarm/jsdoc.git';\
 	fi
 
 #############################################################################
