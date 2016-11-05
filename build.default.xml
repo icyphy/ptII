@@ -782,6 +782,7 @@ For example:
   <target name="jsdoc-getFromWiki"
           description="Attempt to get an Accessors-specific page from the TerraSwarm wiki."
           >
+    <chmod file="doc/jsdoc/makeptjsdocREADME" perm="a+x"/>
     <exec executable="doc/jsdoc/makeptjsdocREADME"
       timeout="10000">
     </exec>
@@ -810,6 +811,7 @@ For example:
 	<patternset refid="ptII.js" />
       </fileset>
     </apply>
+    <chmod file="adm/bin/fixjshint" perm="a+x"/>
     <exec executable="adm/bin/fixjshint"
       output="reports/jshintFixed.xml">
       <arg value="reports/jshint.xml"/>
