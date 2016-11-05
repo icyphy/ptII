@@ -1385,11 +1385,22 @@ Accessor.prototype.react = function(name) {
 			// the input does not match the training data, then we 
 			// don't ignore the error in commonHost.error().
 
-                        // FIXME: If the exception was thrown because
-                        // of Java, we should get the Java stacktrace.
-                        //console.log("commonHost: inputHandler problem");
-                        //console.log(exception.printStackTrace());
-  
+                        // If the exception was thrown because of
+                        // Java, we should get the Java stacktrace.
+                        var stacktrace = exception.stack;
+                        if (typeof stacktrace === 'undefined' && accessorHost === accessorHostsEnum.CAPECODE) {
+                            try {
+                                // This code is Cape Code Host-specific because it uses Java.
+                                var StringWriter = java.io.StringWriter, PrintWriter = java.io.PrintWriter;
+                                var stringWriter = new StringWriter();
+                                var printWriter = new PrintWriter(stringWriter);
+                                exception.printStackTrace(printWriter)
+                                stacktrace = "\n" + stringWriter.toString()
+                            } catch (exception2) {
+                                stacktrace = "undefined and the exception was not a Java exception so exception.printStackTrace() failed with: " + exception2;
+                            }
+                        }
+
                         // FIXME: We should probably subclass Error
                         // and have a version that takes an exception
                         // as an argument and reads the value of
@@ -1398,7 +1409,7 @@ Accessor.prototype.react = function(name) {
                                    name + '\": Exception occurred in input handler,' +
                                    ' which has now has been removed.  Exception was: ' +
                                    exception +
-                                   ' Stacktrace was: ' + exception.stack);
+                                   ' Stacktrace was: ' + stacktrace);
                     }
                 }
             }
