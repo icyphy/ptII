@@ -1,6 +1,7 @@
 #!/bin/sh
 # Upload stats to coverity.
 
+echo "$PTII/adm/bin/coverity started at `date`"
 cd $PTII
 
 rm -rf reports/cov-int
@@ -25,3 +26,5 @@ curl --form token=Z11RGxhJDN81JVxPjgszbw \
   --form version="$VERSION" \
   --form description="nightly" \
   https://scan.coverity.com/builds?project=Ptolemy+II
+
+echo "$PTII/adm/bin/coverity ended at `date`"

@@ -36,6 +36,9 @@
 # Get rid of any previous lists of .java files etc.
 exec make clean
 
+# Use a different timeout so that we can detect when Coverity fails.
+set timeOutSeconds 10042
+
 # Load up the test definitions.
 if {[string compare test [info procs test]] == 1} then {
     source testDefs.tcl
