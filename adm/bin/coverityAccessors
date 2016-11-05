@@ -1,6 +1,8 @@
 #!/bin/sh
 # Upload stats to coverity for the coverity project
 
+echo "$PTII/adm/bin/coverityAccessors started at `date`"
+
 cd $PTII
 
 rm -rf reports/accessors/cov-int
@@ -23,3 +25,5 @@ curl --form token=zmkem_JmcyjWLZBXP1fhvw \
      --form version="Version" \
      --form description="Description" \
      https://scan.coverity.com/builds?project=accessors
+
+echo "$PTII/adm/bin/coverityAccessors ended at `date`"
