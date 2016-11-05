@@ -166,8 +166,9 @@ public class CameraHelper extends HelperBase implements WebcamListener {
         _webcamNames = new String[webcams.size() + 2];
         _webcamNames[0] = "default camera";
         _webcams.put("default camera", Webcam.getDefault());
-        _webcamNames[1] = "dummy camera";
-        _webcams.put("dummy camera", null);
+        String dummyCameraName = "default camera (selecting this may temporarily disable other cameras)";
+        _webcamNames[1] = dummyCameraName;
+        _webcams.put(dummyCameraName, null);
         int i = 2;
         for (Webcam webcam : webcams) {
             _webcams.put(webcam.getName(), webcam);
