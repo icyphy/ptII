@@ -145,6 +145,14 @@ public class CameraHelper extends HelperBase implements WebcamListener {
 
     /** Return an array of camera names that are available on this host.
      *  This method refreshes the list.
+     *
+     *  The dummy camera is for testing machine configurations that 
+     *  have no camera.
+     *
+     *  Note that selecting the dummy camera typically disables
+     *  any other cameras that may be present.  This is because
+     *  the WebcamDummyDriver is loaded and set as the default camera.
+     *
      *  @return A list of camera names, or null if there none.
      */
     public static String[] cameras() {
@@ -155,10 +163,12 @@ public class CameraHelper extends HelperBase implements WebcamListener {
             return null;
         }
         _webcams = new HashMap<String, Webcam>();
-        _webcamNames = new String[webcams.size() + 1];
+        _webcamNames = new String[webcams.size() + 2];
         _webcamNames[0] = "default camera";
         _webcams.put("default camera", Webcam.getDefault());
-        int i = 1;
+        _webcamNames[1] = "dummy camera";
+        _webcams.put("dummy camera", null);
+        int i = 2;
         for (Webcam webcam : webcams) {
             _webcams.put(webcam.getName(), webcam);
             _webcamNames[i++] = webcam.getName();
