@@ -781,14 +781,26 @@ all_packages:
 
 jsdoc: codeDoc/js/index.html
 codeDoc/js/index.html:
-	-if [ -d $(ROOT)/vendors/jsdoc -a -f $(ROOT)/build.xml ]; then \
+	-if [ ! -d $(ROOT)/vendors/jsdoc ]; then \
+		if [ ! -d $(ROOT)/vendors ]; then \
+			echo "Creating $(ROOT)/vendors"; \
+			mkdir $(ROOT)/vendors; \
+	        fi; \
+		echo "Cloning https://github.com/jsdoc3/jsdoc.git"; \
+		(cd $(ROOT)/vendors; git clone https://github.com/jsdoc3/jsdoc.git); \
+        fi
+	-if [ ! -f $(ROOT)/build.xml ]; then \
+		echo "$(ROOT)/build.xml does not exist, running ./configure"; \
+		(cd $(ROOT); ./configure); \
+	fi
+	if [ -d $(ROOT)/vendors/jsdoc -a $(ROOT)/build.xml ]; then \
 		echo "About to run ant jsdoc"; \
 		(cd $(ROOT); ant jsdoc); \
 		echo "The output appears in $(PTII)/doc/codeDoc/js/index.html"; \
         else \
 		echo "Either $(ROOT)/vendors/jsdoc or $(ROOT)/build.xml do not exist."; \
 		echo "To set up $(ROOT)/vendors/jsdoc: "; \
-		echo "  cd $PTII/vendors; git clone https://github.com/jsdoc3/jsdoc.git"; \
+		echo '  cd $$PTII/vendors; git clone https://github.com/jsdoc3/jsdoc.git'; \
 	fi
 
 #############################################################################
