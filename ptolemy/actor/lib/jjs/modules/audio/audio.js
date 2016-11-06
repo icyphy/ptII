@@ -33,7 +33,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, exports */
+/*globals Java, error, exports */
 /*jshint globalstrict: true*/
 "use strict";
 
@@ -99,37 +99,36 @@ exports.Player.prototype.stop = function () {
 
 /** Create a ClipPlayer.
  */
-exports.ClipPlayer = function() {
-        this.clip = null;
+exports.ClipPlayer = function () {
+    this.clip = null;
 };
 
 /** Load audio from the specified URL.
  * @param url  The URL to load audio from.
  */
-exports.ClipPlayer.prototype.load = function(url) {
-        try {
-                this.clip = new AudioClip(url);
-
-        } catch(err) {
-                error("Error connecting to audio URL " + url);
-        } 
+exports.ClipPlayer.prototype.load = function (url) {
+    try {
+        this.clip = new AudioClip(url);
+    } catch (err) {
+        error("Error connecting to audio URL " + url);
+    }
 };
 
 /** Play the currently loaded audio clip.
  */
-exports.ClipPlayer.prototype.play = function() {
+exports.ClipPlayer.prototype.play = function () {
     if (this.clip !== null) {
-            this.clip.play();
+        this.clip.play();
     } else {
-            error("No audio clip to play.  Please load a url first.");
+        error("No audio clip to play.  Please load a url first.");
     }
 };
 
 /** Stop playback. 
  */
-exports.ClipPlayer.prototype.stop = function() {
+exports.ClipPlayer.prototype.stop = function () {
     if (this.clip !== null) {
-            this.clip.stop();
+        this.clip.stop();
     }
 };
 
@@ -148,11 +147,13 @@ exports.ClipPlayer.prototype.stop = function() {
  *  <li> this.get(): Return an array of audio data.
  *  <li> stop(): Stop capture and free the audio resources.
  *  </ul>
- *  @param options A JSON object with fields 'FIXME' and 'FIXME' that give the
- *   FIXME properties of the audio such as sample rate, etc. Provide reasonable
- *   defaults.
  */
-exports.Capture = function (options) {
+exports.Capture = function () {
+    // FIXME: This method should process an options argument.
+    // @param options A JSON object with fields 'FIXME' and 'FIXME' that give the
+    // FIXME properties of the audio such as sample rate, etc. Provide reasonable
+    // defaults.
+
     LiveSound.setSampleRate(8000);
     // Start playback.
     LiveSound.startCapture(this);
@@ -161,7 +162,7 @@ exports.Capture = function (options) {
 /** Capture audio data.
  *  @return An array of numbers in the range -1 to 1 captured from the audio.
  */
-exports.Capture.prototype.get = function (data) {
+exports.Capture.prototype.get = function () {
     // NOTE: 2-D double[][] array returned by LiveSound.
     var inputData = LiveSound.getSamples(this);
     // Could use Nashorn-specific conversion to convert to a JavaScript array,
@@ -171,8 +172,7 @@ exports.Capture.prototype.get = function (data) {
 
     // Note that we return only channel 0.
     if (inputData.length >= 1) {
-        var channels = inputData[0];
-        return channels;
+        return inputData[0];
     }
     throw ("No audio data returned.");
 };
