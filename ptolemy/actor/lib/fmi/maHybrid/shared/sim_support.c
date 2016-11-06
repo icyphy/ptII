@@ -14,6 +14,8 @@
 /* See $PTII/ptolemy/actor/lib/fmi/ma2/fmusdk-license.htm for the complete FMUSDK License. */
 
 #include <stdio.h>
+#include <math.h>
+#include <limits.h>
 
 #ifdef __linux__
 /* Needed for strdup and mkdtemp under RHEL 6.1 */
@@ -170,6 +172,205 @@ static char* getTmpPath() {
   return strcat(results, "/");
 }
 #endif
+
+fmi2Status _getPreferredResolution(wrapperState* wrp,
+                            fmi2TimeResolutionExponent* n) {
+    FMU* fmu          = (*wrp).fmu;
+    fmi2Component c   = (*fmu).component;
+    fmi2Status status = fmi2Discard;
+    *n = LONG_MAX; // default value
+
+    // FMU-HC2 and FMU-HC4
+    if ((*fmu).canGetPreferredResolution) {
+        status = (*fmu).getPreferredResolution(c, n);
+    }
+
+    return status;
+}
+
+fmi2Status _setResolution(wrapperState* wrp,
+                          fmi2TimeResolutionExponent n) {
+    FMU* fmu          = (*wrp).fmu;
+    fmi2Component c   = (*fmu).component;
+    fmi2Status status = fmi2OK;
+
+    // FMU-HC0B
+    if (!(*fmu).canSetResolution &&
+        !(*fmu).canGetPreferredResolution) {
+        (*wrp).r = pow(10, n);
+        return status;
+    }
+    // FMU-HC2
+    if ((*fmu).canGetPreferredResolution &&
+        !(*fmu).canSetResolution) {
+        fmi2TimeResolutionExponent n_FMU;
+        status = (*fmu).getPreferredResolution(c, &n_FMU);
+        (*wrp).delta_r = pow(10, n_FMU - n);
+        return status;
+    }
+    // FMU-HC3 and FMU-HC4
+    if ((*fmu).canSetResolution) {
+        status = (*fmu).setResolution(c, n);
+        return status;
+    }
+
+    return fmi2Error;
+}
+
+// cat 0b
+fmi2Status _doStep0(wrapperState *wrp,
+    fmi2IntegerTime currentCommunicationPoint,
+    fmi2IntegerTime communicationStepSize,
+    fmi2Boolean noSetFMUStatePriorToCurrentPoint,
+    fmi2IntegerTime *performedStepSize) {
+
+    FMU *fmu            = (*wrp).fmu;
+    fmi2Component c     = (*fmu).component;
+    fmi2Status status   = fmi2OK;
+    fmi2Real resolution = (*wrp).r;
+    fmi2Real h_FMU      = 0;
+    fmi2Real t_FMU      = 0;
+
+    (*fmu).getRealStatus(c, fmi2LastSuccessfulTime, &t_FMU);
+    printf("_doStep0, step size: %llu\n", communicationStepSize);
+
+    h_FMU = (currentCommunicationPoint + communicationStepSize)
+        * resolution - t_FMU;
+    printf("_doStep0, computed step size: %g\n", h_FMU);
+
+    status = (*fmu).doStep(c, t_FMU, h_FMU,
+                noSetFMUStatePriorToCurrentPoint);
+
+    fmi2Real new_t_FMU;
+    (*fmu).getRealStatus(c, fmi2LastSuccessfulTime, &new_t_FMU);
+
+    *performedStepSize = ceil((new_t_FMU) / resolution)
+                            - currentCommunicationPoint;
+    printf("_doStep0, performed step size: %llu\n", *performedStepSize);
+
+    // Overwrite status in case of partial progress
+    if (*performedStepSize == communicationStepSize) status = fmi2OK;
+
+    return status;
+}
+
+// cat 1, 3, 4
+fmi2Status _doStep134(wrapperState *wrp,
+    fmi2IntegerTime currentCommunicationPoint,
+    fmi2IntegerTime communicationStepSize,
+    fmi2Boolean noSetFMUStatePriorToCurrentPoint,
+    fmi2IntegerTime *performedStepSize) {
+
+    FMU             *fmu    = (*wrp).fmu;
+    fmi2Component   c       = (*fmu).component;
+    fmi2Status      status  = fmi2OK;
+    printf("_doStep134, step size: %llu\n", communicationStepSize);
+
+    status = (*fmu).doHybridStep(c,
+                currentCommunicationPoint,
+                communicationStepSize,
+                noSetFMUStatePriorToCurrentPoint,
+                performedStepSize);
+    printf("_doStep134, performed step size: %llu\n", *performedStepSize);
+
+    return status;
+}
+
+// cat 2
+fmi2Status _doStep2(wrapperState *wrp,
+    fmi2IntegerTime currentCommunicationPoint,
+    fmi2IntegerTime communicationStepSize,
+    fmi2Boolean noSetFMUStatePriorToCurrentPoint,
+    fmi2IntegerTime *performedStepSize) {
+
+    FMU             *fmu    = (*wrp).fmu;
+    fmi2Component   c       = (*fmu).component;
+    fmi2Status      status  = fmi2OK;
+    fmi2IntegerTime delta_r = (*wrp).delta_r;
+    fmi2IntegerTime t_FMU   = (*wrp).t_FMU;
+    fmi2IntegerTime h_FMU;
+
+    h_FMU = (currentCommunicationPoint + communicationStepSize) / delta_r
+                - t_FMU;
+    printf("_doStep2, t_FMU: %llu, delta_r: %llu, communicationStepSize: %llu, computed step size: %llu, currentCommunicationPoint: %llu\n", (*wrp).t_FMU, delta_r, communicationStepSize, h_FMU, currentCommunicationPoint);
+    fmi2IntegerTime h_FMU_accepted;
+
+    status = (*fmu).doHybridStep(c, t_FMU, h_FMU,
+                noSetFMUStatePriorToCurrentPoint, &h_FMU_accepted);
+
+    if ((t_FMU + h_FMU_accepted) * delta_r < currentCommunicationPoint)
+        *performedStepSize = 0;
+    else
+        *performedStepSize = (t_FMU + h_FMU_accepted) * delta_r
+                - currentCommunicationPoint;
+    printf("_doStep2, accepted step size: %llu, performed step size: %llu\n", h_FMU_accepted, *performedStepSize);
+
+    (*wrp).t_FMU = t_FMU + h_FMU_accepted;
+
+    return status;
+}
+
+fmi2Status _getMaxStepSize0(wrapperState *wrp,
+    fmi2IntegerTime currentCommunicationPoint,
+    fmi2IntegerTime *maxStepSize) {
+
+    FMU *fmu            = (*wrp).fmu;
+    fmi2Component c     = (*fmu).component;
+    fmi2Status status   = fmi2OK;
+    fmi2Real resolution = (*wrp).r;
+    fmi2Real h_FMU;
+    fmi2Real t_FMU;
+
+    status = (*fmu).getMaxStepSize(c, &h_FMU);
+    (*fmu).getRealStatus(c, fmi2LastSuccessfulTime, &t_FMU);
+
+    *maxStepSize = ceil((h_FMU + t_FMU) / resolution)
+            - currentCommunicationPoint;
+
+    return status;
+}
+
+fmi2Status _getMaxStepSize134(wrapperState *wrp,
+    fmi2IntegerTime currentCommunicationPoint,
+    fmi2IntegerTime *maxStepSize) {
+
+    FMU             *fmu    = (*wrp).fmu;
+    fmi2Component   c       = (*fmu).component;
+    fmi2Status      status  = fmi2OK;
+
+    status = (*fmu).getHybridMaxStepSize(c, currentCommunicationPoint, maxStepSize);
+
+    return status;
+}
+
+fmi2Status _getMaxStepSize2(wrapperState* wrp,
+    fmi2IntegerTime currentCommunicationPoint,
+    fmi2IntegerTime* maxStepSize) {
+
+    FMU             *fmu    = (*wrp).fmu;
+    fmi2Component   c       = (*fmu).component;
+    fmi2Status      status  = fmi2OK;
+    fmi2IntegerTime delta_r = (*wrp).delta_r;
+    fmi2IntegerTime t_FMU   = (*wrp).t_FMU;
+    fmi2IntegerTime h_FMU;
+
+    status = (*fmu).getHybridMaxStepSize(c, currentCommunicationPoint, &h_FMU);
+
+    if ((h_FMU + t_FMU) * delta_r < currentCommunicationPoint)
+        *maxStepSize = 0;
+    else
+        *maxStepSize = (h_FMU + t_FMU) * delta_r - currentCommunicationPoint;
+
+    return status;
+}
+
+fmi2Status _setFMUState(wrapperState* wrp, fmi2FMUstate state, fmi2IntegerTime prevStepSize) {
+    FMU* fmu = (*wrp).fmu;
+    fmi2Component c = fmu->component;
+    if (fmu->canGetPreferredResolution && !fmu->canSetResolution && fmu->canHandleIntegerTime)
+        (*wrp).t_FMU -= prevStepSize;
+    return fmu->setFMUstate(c, state);
+}
 
 char *getTempResourcesLocation() {
     char *tempPath = getTmpPath();
@@ -684,8 +885,8 @@ void outputPtplot(FILE* fileSource, FILE* fileDest, char separator, const int in
             continue;
         }
         for (int i = 0; i < size; i++) {
-            char* time = getfield(tmp0, 1);
-            char* value = getfield(tmp1, indexes[i]);
+            const char* time = getfield(tmp0, 1);
+            const char* value = getfield(tmp1, indexes[i]);
             if (strcmp (value,"absent") != 0) {
                 if (row == 1)
                 fprintf(fileDest, "<m x=\"%s\" ", time);
@@ -710,4 +911,21 @@ void printHelp(const char *fmusim) {
     printf("   -l ............... activate logging,        optional, no parameter needed\n");
     printf("   -s<csvSeparator> . separator in csv file,   optional, c for ',', s for';', defaults to c\n");
     printf("   <logCategories> .. list of log categories,  optional, see modelDescription.xml for possible values\n");
+}
+
+void printInfo(WRAPPER* wrps, const char* namesOfFMUs[], int numberOfFMUs) {
+    for (int i = 0; i < numberOfFMUs; i++) {
+        FMU* fmu = wrps[i].component.fmu;
+        if (fmu->canHandleIntegerTime == fmi2False)
+            printf("FMU (%s) is Category 0B\n", namesOfFMUs[i]);
+        else if (!fmu->canGetPreferredResolution && !fmu->canSetResolution && fmu->canHandleIntegerTime)
+            printf("FMU (%s) is Category 1\n", namesOfFMUs[i]);
+        else if (fmu->canGetPreferredResolution && !fmu->canSetResolution && fmu->canHandleIntegerTime)
+            printf("FMU (%s) is Category 2\n", namesOfFMUs[i]);
+        else if (!fmu->canGetPreferredResolution && fmu->canSetResolution && fmu->canHandleIntegerTime)
+            printf("FMU (%s) is Category 3\n", namesOfFMUs[i]);
+        else if (fmu->canGetPreferredResolution && fmu->canSetResolution && fmu->canHandleIntegerTime)
+            printf("FMU (%s) is Category 4\n", namesOfFMUs[i]);
+
+    }
 }

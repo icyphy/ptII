@@ -132,4 +132,27 @@ typedef struct {
     fmi2ValueType sinkType;
 } portConnection;
 
+typedef struct {
+    FMU*            fmu;      // pointer to the FMU
+    fmi2Real        r;        // resolution
+    fmi2IntegerTime delta_r;  // resolution factor
+    fmi2IntegerTime t_FMU;    // local integer time
+} wrapperState;
+
+typedef struct {
+    wrapperState component;
+    fmi2Status  (*_doStep)(wrapperState*, fmi2IntegerTime,
+                            fmi2IntegerTime, fmi2Boolean,
+                            fmi2IntegerTime*);
+    fmi2Status  (*_setResolution)(wrapperState*, fmi2Integer);
+    fmi2Status  (*_getPreferredResolution)(wrapperState*,
+                                           fmi2Integer*);
+    fmi2Status  (*_getMaxStepSize)(wrapperState*,
+                                   fmi2IntegerTime,
+                                   fmi2IntegerTime*);
+    fmi2Status (*_setFMUState)(wrapperState*,
+                               fmi2FMUstate,
+                               fmi2IntegerTime);
+} WRAPPER;
+
 #endif // FMI_H

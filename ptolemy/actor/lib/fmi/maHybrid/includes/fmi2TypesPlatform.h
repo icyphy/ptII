@@ -108,6 +108,7 @@
    typedef char            fmi2Byte;
    // uint64_t is not available under RHEL without messing with includes, so we use unsigned long long int.
    typedef unsigned long long int fmi2IntegerTime;
+   typedef long fmi2TimeResolutionExponent;
 
 /* Values for fmi2Boolean  */
 #define fmi2True  1
