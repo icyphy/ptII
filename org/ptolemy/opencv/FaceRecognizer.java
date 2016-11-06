@@ -75,11 +75,15 @@
 package org.ptolemy.opencv;
 
 import java.awt.Color; 
+import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.awt.image.DataBufferInt;
+import java.awt.image.DataBuffer;
 import java.io.File;
 import java.io.IOException;
-
+import java.nio.ByteBuffer;
+import java.nio.IntBuffer;
 
 import java.net.URL;
 
@@ -127,14 +131,16 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Filter the source image, and if motion is detected, place a red circle at
-     *  the center of gravity of the motion. If the destination argument is null,
-     *  then the red circle is added directly to the source, and the source is
-     *  returned. Otherwise, the red circle is added to the destination image.
+    /** Filter the source image, and if a face is detected, place a
+     *  blue square at at the center of the face. If the destination
+     *  argument is null, then the blue square is added directly to
+     *  the source, and the source is returned. Otherwise, the blue
+     *  square is added to the destination image.
      *
      *  @param source The source image, on which motion is detected.
-     *  @param destination The destination image, on which the red circle is added,
-     *   or null to specify to add the circle to the source image.
+     *  @param destination The destination image, on which the blue
+     *   square is added, or null to specify to add the circle to the
+     *   source image.
      *  @return the filtered image.
      */
     @Override
@@ -145,7 +151,7 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         // Use a better loader that looks for the shared library for the Mac.
         OpenCVLoader.loadOpenCV(Core.NATIVE_LIBRARY_NAME);
 
-        // Get OpenCV image
+        // Get OpenCV image.
         Mat inputImage = bufferedImage2Mat(source); 
 
         // Detect faces in image.
@@ -156,11 +162,11 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
             // The super class throws no exceptions, so we can't throw IOException here.
             throw new RuntimeException(ex);
         }
-        // Draw rectangles around each detected face
-        
+
+        // Draw rectangles around each detected face.
         for (int i= 0; i < faceRectangles.length; i++) {
             Rect rect = faceRectangles[i];
-            // draw bounding rectangle around face
+            // Draw bounding rectangle around face.
             Imgproc.rectangle(inputImage, new Point(rect.x,rect.y), 
                     new Point(rect.x+rect.width,rect.y+rect.height),new Scalar(0,0,255));
         }
@@ -172,7 +178,7 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
     }
 
     /**
-     * Convert a BufferedImage object to OpenCV's Mat representation
+     * Convert a BufferedImage object to OpenCV's Mat representation.
      * @param source BufferedImage input
      * @return Mat matrix
      */
@@ -180,13 +186,32 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         int w = source.getWidth();
         int h = source.getHeight();  
         Mat outputImage = new Mat(h, w, CvType.CV_8UC3);
-        byte[] pixels = ((DataBufferByte) source.getRaster().getDataBuffer()).getData(); 
+        byte [] pixels = null;
+        DataBuffer dataBuffer = source.getRaster().getDataBuffer();
+        if (dataBuffer instanceof DataBufferByte) {
+            // Most of the time we get bytes.
+            pixels = ((DataBufferByte) source.getRaster().getDataBuffer()).getData(); 
+        } else {
+            // The WebcamDummyDriver will emit a TYPE_INT_RGB which
+            // uses a DataBufferInt so we convert the BufferImage to a
+            // TYPE_3BYTE_BGR.
+
+            // See http://stackoverflow.com/questions/33403526/how-to-match-the-color-models-of-bufferedimage-and-mat
+            BufferedImage greyImage = new BufferedImage(source.getWidth(),
+                                                        source.getHeight(),
+                                                        BufferedImage.TYPE_3BYTE_BGR);
+            Graphics g = greyImage.getGraphics();
+            g.drawImage(source, 0, 0, null);
+            g.dispose();
+
+            pixels = ((DataBufferByte) greyImage.getRaster().getDataBuffer()).getData();             
+        }
         outputImage.put(0, 0, pixels);  
         return outputImage;
     }
     
     /**
-     * Convert a Mat image into a BufferedImage
+     * Convert a Mat image into a BufferedImage.
      * @param matrix Mat input
      * @return BufferedImage output
      */
@@ -211,8 +236,6 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         }  
         return destination;
     }
-
-
 
     /** Detect faces.
      *  @param img The image containing faces
@@ -239,8 +262,8 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         return fbox;
     }
  
-    /** Return center of gravity of motion detected by the most recent invocation
-     *  of filter(), or null if no motion was detected.
+    /** Return center of gravity of motion detected by the most recent
+     *  invocation of filter(), or null if no motion was detected.
      *  @return The center of gravity of motion (in pixels).
      */
     public int getFaceCount() {
