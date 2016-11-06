@@ -26,7 +26,7 @@
  *  This implementation is attempting to be compatible with the console module in Node.js,
  *  http://nodejs.org/api/console.html.
  *  It requires the util module.
- * 
+ *
  *  @module console
  *  @author Edward A. Lee
  *  @version $$Id$$
@@ -36,6 +36,7 @@
 // space between the / and the * and global.
 /*globals actor, console, exports, require */
 /*jshint globalstrict: true */
+/*jslint nomen: true */
 "use strict";
 
 // Requires the util module.
@@ -44,15 +45,15 @@ var util = require('util');
 /** If the first argument is not "truthy", then throw an error that
  *  includes a (formatted) message given by the remaining arguments.
  *  @param assertion The value being asserted to be true.
- *  @param arguments One or more additional arguments to form an error message if
+ *  @param args One or more additional arguments to form an error message if
  *   the assertion is false, where the
  *   first argument is optionally a formatting specification string.
  */
-exports.assert = function (assertion, message) {
+exports.assert = function (assertion, args) {
     if (!assertion) {
         // Get an array of arguments excluding the first.
-        var tail = Array.prototype.slice.call(arguments, 1);
-        var formatted = util.format.apply(this, tail);
+        var tail = Array.prototype.slice.call(args, 1),
+            formatted = util.format.apply(this, tail);
         throw new Error('ASSERTION FAILED: ' + formatted);
     }
 };
@@ -127,7 +128,7 @@ exports.time = function (label) {
     _times[label] = Date.now();
 };
 
-/** Log the time elapsed since the last call to time() that 
+/** Log the time elapsed since the last call to time() that
  *  gave the same label (using the log() function).
  *  @param label The label for the starting time point.
  */

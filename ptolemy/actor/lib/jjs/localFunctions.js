@@ -29,9 +29,11 @@
  * @since Ptolemy II 11.0
  */
 
+/*jslint nomen: true */
+
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, actor, channel, clearInterval, clearTimeout, error, httpRequest, java, readURL, require, requireAccessor, setInterval, setAccessor, setTimeout, _accessorPath */
+/*globals Java, actor, channel, clearInterval, clearTimeout, error, getAccessorCode, getParameter, httpRequest, input, java, output, parameter, readURL, require, requireAccessor, send, setDefault, setInterval, setAccessor, setParameter, setTimeout, superSend, _accessorPath */
 /*jshint globalstrict: true*/
 "use strict";
 
@@ -89,16 +91,17 @@ function evaluateCode(accessorName, code) {
  *  @param name Fully qualified accessor name, e.g. 'net/REST'.
  */
 function getAccessorCode(name) {
-    var code;
+    var code,
+        i,
+        js = Java.type('ptolemy.actor.lib.jjs.JavaScript'),
+        location;
     // Append a '.js' to the name, if needed.
     if (name.indexOf('.js') !== name.length - 3) {
         name += '.js';
     }
-    var js = Java.type('ptolemy.actor.lib.jjs.JavaScript');
-
     // _accessorPath is defined in basicFunctions.js.
-    for (var i = 0; i < _accessorPath.length; i++) {
-        var location = _accessorPath[i].concat(name);
+    for (i = 0; i < _accessorPath.length; i++) {
+        location = _accessorPath[i].concat(name);
         try {
             code = js.getFileAsString(location);
         } catch (err) {
@@ -182,7 +185,7 @@ function output(name, options) {
     commonHost.Accessor.prototype.output.call(this, name, options);
 
     // Then invoke the Ptolemy functionality, which will create the input if it doesn't
-    // already exist. 
+    // already exist.
     // Nashorn bug if options is undefined, where it says:
     // Cannot cast jdk.nashorn.internal.runtime.Undefined to java.util.Map.
     // Replace with null.
@@ -251,9 +254,9 @@ function send(name, value, channel) {
          * A send() could overtake another.
          * So I've moved this invocation to the place in the helper where the
          * send via the port actually occurs.
-        
+
         this.superSend(name, value, channel);
-        
+
          */
 
         // Give channel a default value of 0.
@@ -434,16 +437,16 @@ function convertFromToken(value, isJSON) {
     }
     if (value instanceof StringToken) {
         // NOTE: Used to always parse JSON here, but that is now handled in the common host
-            // for most cases.
-            if (isJSON) {
-                    // Attempt to parse the JSON.
-                    try {
-                            return JSON.parse(value.stringValue());
-                    } catch (err) {
-                            // Just return the string.
-                            return value.stringValue();
-                    }
+        // for most cases.
+        if (isJSON) {
+            // Attempt to parse the JSON.
+            try {
+                return JSON.parse(value.stringValue());
+            } catch (err) {
+                // Just return the string.
+                return value.stringValue();
             }
+        }
         return value.stringValue();
     }
     if (value instanceof IntToken) {
@@ -541,7 +544,7 @@ function convertToToken(value, isJSON) {
         if (Array.isArray(value)) {
             // Using Nashorn-specific extension here to create Java array.
             if (value.length < 1) {
-                // FIXME:  Ptolemy requires a type to be specified for empty 
+                // FIXME:  Ptolemy requires a type to be specified for empty
                 // arrays.  Javascript does not, so there's no information as
                 // to what the type should be.  Currently, use a string.
                 return new ArrayToken(BaseType.STRING);

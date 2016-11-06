@@ -44,10 +44,11 @@
 // space between the / and the * and global.
 /*globals Java, actor, load */
 /*jshint globalstrict: true */
+/*jslint nomen: true */
 "use strict";
 
 // Flag that will cause debug output to the console if set to true.
-var _debug = false;
+var debug = false;
 
 /** Pop up a dialog with the specified message.
  *  NOTE: This function is not required by the accessor specification, so accessors
@@ -59,7 +60,7 @@ function alert(message) {
     MessageHandler.message(message);
 }
 
-/** Clear an interval timer with the specified handle. 
+/** Clear an interval timer with the specified handle.
  *  @param handle The handle
  *  @see setInterval().
  */
@@ -126,27 +127,35 @@ function getResource(uri, timeout) {
  *  @deprecated: Use the http module instead, which provides non-blocking requests.
  */
 function httpRequest(url, method, properties, body, timeout) {
-    if (_debug) {
+    var theURL = new (Java.type('java.net.URL'))(url),
+        protocol = theURL.getProtocol().toLowerCase(),
+        connection,
+        key,
+        writer;
+
+    if (debug) {
         console.log("httpRequest(" + (function (obj) {
             var result = [],
                 p;
             for (p in obj) {
-                result.push(JSON.stringify(obj[p]));
+                if (obj.hasOwnProperty(p)) {
+                    result.push(JSON.stringify(obj[p]));
+                }
             }
             return result;
         })(arguments) + ")");
     }
-    var theURL = new(Java.type('java.net.URL'))(url);
-    var protocol = theURL.getProtocol().toLowerCase();
     if (actor.isRestricted &&
-        !(protocol.equals("http") ||
-            protocol.equals("https"))) {
+            !(protocol.equals("http") ||
+                protocol.equals("https"))) {
         throw "Actor is restricted. Only HTTP(S) requests will be honored by httpRequest().";
     }
-    var connection = theURL.openConnection();
+    connection = theURL.openConnection();
 
-    for (var key in properties) {
-        connection.setRequestProperty(key, properties[key]);
+    for (key in properties) {
+        if (properties.hasOwnProperty(key)) {
+            connection.setRequestProperty(key, properties[key]);
+        }
     }
 
     connection.setRequestMethod(method);
@@ -160,7 +169,7 @@ function httpRequest(url, method, properties, body, timeout) {
     // Send body if applicable.
     if (body && !body.equals('')) {
         connection.setDoOutput(true);
-        var writer = new(Java.type('java.io.OutputStreamWriter'))(connection
+        writer = new (Java.type('java.io.OutputStreamWriter'))(connection
             .getOutputStream());
         writer.write(body);
         writer.flush();
@@ -169,7 +178,8 @@ function httpRequest(url, method, properties, body, timeout) {
 
     // Wait for response.
     return Java.type('ptolemy.actor.lib.jjs.JavaScript').readFromInputStream(
-        connection.getInputStream());
+        connection.getInputStream()
+    );
 }
 
 // Print a message to the console.
@@ -186,19 +196,21 @@ function readURL(url, timeout) {
     if (!timeout) {
         timeout = 3000;
     }
-    if (_debug) {
+    if (debug) {
         console.log("readURL('" + url + "')");
     }
-    var theURL = new(Java.type('java.net.URL'))(url);
+    var theURL = new (Java.type('java.net.URL'))(url),
+        request,
+        response;
     if (actor.isRestricted &&
-        !theURL.getProtocol().toLowerCase().equals("http") &&
-        !theURL.getProtocol().toLowerCase().equals("https")) {
+            !theURL.getProtocol().toLowerCase().equals("http") &&
+            !theURL.getProtocol().toLowerCase().equals("https")) {
         throw "Actor is restricted. Only HTTP and HTTPS requests will be honored by readURL().";
     }
-    var request = new(Java.type('org.ptolemy.ptango.lib.HttpRequest'))();
+    request = new (Java.type('org.ptolemy.ptango.lib.HttpRequest'))();
     request.setUrl(theURL);
     request.setTimeout(timeout); // In milliseconds.
-    var response = request.execute();
+    response = request.execute();
     if (!response.isSuccessful()) {
         throw "Failed to read URL: " + url + "\nResponse code: " +
             response.getResponseCode() + "\nResponse message: " +
@@ -208,14 +220,16 @@ function readURL(url, timeout) {
 }
 
 var __moduleFile = Java.type('ptolemy.util.FileUtilities').nameToFile(
-    '$CLASSPATH/ptolemy/actor/lib/jjs/', null);
+    '$CLASSPATH/ptolemy/actor/lib/jjs/',
+    null
+);
 
 /** A string giving the full path to the root directory for installed modules. */
 var _moduleRoot = __moduleFile.getAbsolutePath();
 
 // Check to see if _moduleFile is a Jar URL like
-// 
-if (_moduleRoot.indexOf("!/") != -1) {
+//
+if (_moduleRoot.indexOf("!/") !== -1) {
     _moduleRoot = "jar:" + __moduleFile.toString();
 }
 
@@ -224,11 +238,15 @@ var _modulePath = [_moduleRoot + '/', _moduleRoot + '/modules/', _moduleRoot + '
 
 /** A string giving the full path to the root directory for installed accessors. */
 var _accessorRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
-    '$CLASSPATH/org/terraswarm/accessor/accessors/web/', null).getAbsolutePath();
+    '$CLASSPATH/org/terraswarm/accessor/accessors/web/',
+    null
+).getAbsolutePath();
 
 /** A string giving the full path to the root directory for test accessors. */
 var _testAccessors = Java.type('ptolemy.util.FileUtilities').nameToFile(
-    '$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/', null).getAbsolutePath();
+    '$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/',
+    null
+).getAbsolutePath();
 
 /** An array that gives the search path for accessors to be extended. */
 var _accessorPath = [_accessorRoot + '/', _testAccessors + '/'].concat(_modulePath);
@@ -247,7 +265,7 @@ var _accessorPath = [_accessorRoot + '/', _testAccessors + '/'].concat(_modulePa
  *
  * <p>If the name does not begin with './' or '/', then it is assumed
  * to specify a module installed in this accessor host.</p>
- * 
+ *
  * <p>In both cases, this function returns an object that includes as
  * properties any properties that have been added to the 'exports'
  * property. For example, to export a function, the module JavaScript
@@ -278,7 +296,9 @@ var require = load(_moduleRoot + '/external/require.js')(
     //    - a root directory in which to look for modules.
     //    - an array of paths in which to look for modules.
     //    - an optional hook object that includes two callback functions for notification.
-    _moduleRoot, _modulePath);
+    _moduleRoot,
+    _modulePath
+);
 
 /**
  * Require the named accessor. This is a version of require() that looks
@@ -290,7 +310,9 @@ var requireAccessor = load(_moduleRoot + '/external/require.js')(
     //    - a root directory in which to look for accessors.
     //    - an array of paths in which to look for accessors.
     //    - an optional hook object that includes two callback functions for notification.
-    _accessorRoot, _accessorPath);
+    _accessorRoot,
+    _accessorPath
+);
 
 ////////////////////
 // Pull in the util and console modules.
@@ -330,16 +352,17 @@ var _timer;
  * @param milliseconds The interval in milliseconds.
  */
 function setInterval(func, milliseconds) {
-    var callback = func;
-    // If there are arguments to the callback, create a new function.
-    // Get an array of arguments excluding the first two.
-    var tail = Array.prototype.slice.call(arguments, 2);
+    var callback = func,
+        // If there are arguments to the callback, create a new function.
+        // Get an array of arguments excluding the first two.
+        tail = Array.prototype.slice.call(arguments, 2),
+        id;
     if (tail.length !== 0) {
         callback = function () {
             func.apply(this, tail);
         };
     }
-    var id = actor.setInterval(callback, milliseconds);
+    id = actor.setInterval(callback, milliseconds);
     return id;
 }
 
@@ -366,15 +389,16 @@ function setInterval(func, milliseconds) {
  * @param milliseconds The interval in milliseconds.
  */
 function setTimeout(func, milliseconds) {
-    var callback = func;
-    // If there are arguments to the callback, create a new function.
-    // Get an array of arguments excluding the first two.
-    var tail = Array.prototype.slice.call(arguments, 2);
+    var callback = func,
+        // If there are arguments to the callback, create a new function.
+        // Get an array of arguments excluding the first two.
+        tail = Array.prototype.slice.call(arguments, 2),
+        id;
     if (tail.length !== 0) {
         callback = function () {
             func.apply(this, tail);
         };
     }
-    var id = actor.setTimeout(callback, milliseconds);
+    id = actor.setTimeout(callback, milliseconds);
     return id;
 }
