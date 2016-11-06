@@ -70,14 +70,20 @@ var filter = new Filter();
  *  @return The filtered image.
  */
 exports.filter = function (image, options) {
+    var optionName, setter;
     image = image.asAWTImage();
     if (options) {
-        for (var optionName in options) {
-            // Look for a setter function for the option.
-            var setter = 'set' + optionName;
-            if (typeof filter[setter] === 'function') {
-                // Invoke the setter function.
-                filter[setter](options[optionName]);
+        for (optionName in options) {
+            // jslint: avoid "The body of a for in should be wrapped
+            // in an if statement to filter unwanted properties from
+            // the prototype."
+            if (options.hasOwnProperty(optionName)) {
+                // Look for a setter function for the option.
+                setter = 'set' + optionName;
+                if (typeof filter[setter] === 'function') {
+                    // Invoke the setter function.
+                    filter[setter](options[optionName]);
+                }
             }
         }
     }

@@ -64,7 +64,7 @@ var SensorStream = null;
  *                  this.send('stream', sample);
  *          }
  */
-exports.Stream = function (sensorPort) {
+exports.Stream = function () {
     // Does not take options!
     // Default is set by java code
     // Baud rate: 115200
