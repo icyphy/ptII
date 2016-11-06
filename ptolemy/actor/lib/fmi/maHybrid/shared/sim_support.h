@@ -78,3 +78,15 @@ void outputPtplot(FILE* fileSource, FILE* fileDest, char separator, const int in
 int error(const char *message);
 void printHelp(const char *fmusim);
 char *getTempResourcesLocation(); // caller has to free the result
+
+fmi2Status _doStep0(wrapperState *, fmi2IntegerTime, fmi2IntegerTime, fmi2Boolean, fmi2IntegerTime *);
+fmi2Status _doStep134(wrapperState *, fmi2IntegerTime, fmi2IntegerTime, fmi2Boolean, fmi2IntegerTime *);
+fmi2Status _doStep2(wrapperState *, fmi2IntegerTime, fmi2IntegerTime, fmi2Boolean, fmi2IntegerTime *);
+fmi2Status _getMaxStepSize0(wrapperState *, fmi2IntegerTime, fmi2IntegerTime*);
+fmi2Status _getMaxStepSize134(wrapperState *, fmi2IntegerTime, fmi2IntegerTime*);
+fmi2Status _getMaxStepSize2(wrapperState *, fmi2IntegerTime, fmi2IntegerTime*);
+fmi2Status _setResolution(wrapperState* , fmi2TimeResolutionExponent);
+fmi2Status _getPreferredResolution(wrapperState *, fmi2TimeResolutionExponent *);
+fmi2Status _setFMUState(wrapperState* , fmi2FMUstate , fmi2IntegerTime );
+
+void printInfo(WRAPPER* wrps, const char* [], int);
