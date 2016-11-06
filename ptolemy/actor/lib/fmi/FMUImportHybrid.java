@@ -351,7 +351,11 @@ public class FMUImportHybrid extends FMUImport {
     public boolean postfire() throws IllegalActionException {
         if (_debugging) {
             _debug("Postfire()");
-            _debug("* Time = (" + getDirector().getModelTime() + ", " + ((SuperdenseTimeDirector) getDirector()).getIndex() + "), _lastCommitTime = " + _lastCommitTime);
+            _debug("* Time = ("
+                    + getDirector().getModelTime() + ", "
+                    + ((SuperdenseTimeDirector) getDirector()).getIndex()
+                    + "), _lastCommitTime = "
+                    + _lastCommitTime);
         }
 
         Director director = getDirector();
@@ -365,8 +369,10 @@ public class FMUImportHybrid extends FMUImport {
         int expectedNewMicrostep = currentMicrostep;
         
         if (director instanceof ContinuousDirector) {
-            expectedNewTime = new Time(director, ((ContinuousDirector) director).suggestedStepSize());
-            expectedNewTime = expectedNewTime.add(currentTime);
+            double currentStepSize = ((ContinuousDirector) director).getCurrentStepSize();
+            double suggestedStepSize = ((ContinuousDirector) director).suggestedStepSize();
+            suggestedStepSize = currentStepSize < suggestedStepSize ? currentStepSize : suggestedStepSize;
+            expectedNewTime = new Time(director, suggestedStepSize).add(currentTime);
         } else if (director instanceof DEDirector) {
             expectedNewTime = ((DEDirector) director).getModelNextIterationTime();
         } else if (director instanceof FMIMADirector) {
@@ -446,7 +452,8 @@ public class FMUImportHybrid extends FMUImport {
         _refinedStepSize = -1.0;
         _firstFireInIteration = true;
         _proposedMicrostep = 0;
-
+        
+        _stepSizeRejected = false;
         return !_stopRequested;
     }
 
@@ -504,11 +511,22 @@ public class FMUImportHybrid extends FMUImport {
         if (_fmiGetMaxStepSize != null) {
             int fmiFlag = ((Integer) _fmiGetMaxStepSize.invokeInt(new Object[] {
                     _fmiComponent, stepSizeBuffer})).intValue();
-            if (fmiFlag >= FMILibrary.FMIStatus.fmiDiscard) {
+            if (fmiFlag > FMILibrary.FMIStatus.fmiError) {
                 if (_debugging) {
-                    _debug("** Error while getMaxStepSize()"
+                    _debug("** Fatal error while getMaxStepSize()"
                             + " at time " + director.getModelTime());
                 }
+            }
+            if (fmiFlag == FMILibrary.FMIStatus.fmiError) {
+                _stepSizeRejected = true;
+                if (_debugging) {
+                    _debug("** Inaccurate state"
+                            + " at time " + director.getModelTime());
+                }
+            }
+            if (fmiFlag == FMILibrary.FMIStatus.fmiOK) {
+                // Record the state.
+                _recordFMUState();
             }
             long stepSize = stepSizeBuffer.get(0);   
             if (stepSize >= 0) {

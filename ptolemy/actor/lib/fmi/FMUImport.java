@@ -4275,6 +4275,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      * state, or if restoring the state fails.
      */
     protected void _restoreFMUState() throws IllegalActionException {
+        if (_debugging) {
+            _debug(getFullName()
+                    + ": restoring previous FMU state");
+        }
         if (_fmiSetFMUstate != null) {
             if (_recordedState == null) {
                 throw new IllegalActionException(this, "No recorded FMU state.");
