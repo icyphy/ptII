@@ -123,7 +123,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
                 while (actors.hasNext()) {
                     Actor actorIter = (Actor) actors.next();
-                    if (actorIter instanceof FMUImportHybrid) {
+                    if (actorIter instanceof FMUImportHybrid || actorIter instanceof FMUImport) {
                         ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
                         // Add code for loading and initialize FMUs
                         code.append("printf(\"Loading FMU " + actor.getName()
@@ -134,10 +134,13 @@ public class Director extends FMIMACodeGeneratorAdapter {
                         code.append("fmuFileNames[" + actor.getName() + "] = strdup(\""
                                 + actor.fmuFile.asFile().toString().replace("\\","/") + "\");\n");
                         code.append("printf(\"Initializing FMU " + actor.getName()
-                        + "...\\n\");\n");
+                                + "...\\n\");\n");
                         code.append("fmus[" + actor.getName()
-                        + "].component = initializeFMU(&fmus[" + actor.getName()
-                        + "], visible, loggingOn, nCategories, &categories, NAMES_OF_FMUS[" + actor.getName() + "]);\n");
+                                + "].component = initializeFMU(&fmus[" + actor.getName()
+                                + "], &wrps[" + actor.getName()
+                                + "], visible, loggingOn, nCategories, &categories, NAMES_OF_FMUS["
+                                + actor.getName() + "]);\n");
+                        code.append("wrps[" + actor.getName() + "].component.fmu = &fmus[" + actor.getName() + "];\n");
                     }
                 }
 
@@ -154,7 +157,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
                 // Add all the nodes to the graph
                 while (actors.hasNext()) {
                     Actor actorIter = (Actor) actors.next();
-                    if (actorIter instanceof FMUImportHybrid) {
+                    if (actorIter instanceof FMUImportHybrid || actorIter instanceof FMUImport) {
                         ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
                         for (TypedIOPort port : actor.portList()) {
                             for (FMIScalarVariable scalar : actor.getScalarVariables()) {
@@ -183,7 +186,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
                     // FIXME: Check to see if the actor is something other than a
                     // FMUImport.
                     Actor actorIter = (Actor) actors.next();
-                    if (actorIter instanceof FMUImportHybrid) {
+                    if (actorIter instanceof FMUImportHybrid || actorIter instanceof FMUImport) {
                         ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
                         for (TypedIOPort output : actor.outputPortList()) {
                             FMIScalarVariable scalar = port2Scalar.get(output);
@@ -342,7 +345,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
                                     // Scan all the attached ports
                                     while (subactors.hasNext()) {
                                         Actor subactorIter = (Actor) subactors.next();
-                                        if (subactorIter instanceof FMUImportHybrid) {
+                                        if (subactorIter instanceof FMUImportHybrid || subactorIter instanceof FMUImport) {
                                             FMUImport subFmu = (FMUImport) subactorIter;
                                             List<FMIScalarVariable> subScalars = subFmu.getScalarVariables();
                                             boolean isIt = false;

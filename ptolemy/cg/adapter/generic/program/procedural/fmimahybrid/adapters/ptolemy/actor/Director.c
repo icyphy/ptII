@@ -18,6 +18,7 @@ fmi2Boolean visible = fmi2False;           // no simulator user interface
 
 // Create and allocate arrays for FMUs and port mapping
 FMU *fmus = calloc(NUMBER_OF_FMUS, sizeof(FMU));
+WRAPPER *wrps = calloc(NUMBER_OF_FMUS, sizeof(WRAPPER));
 portConnection* connections = calloc(NUMBER_OF_EDGES, sizeof(portConnection));
 
 printf("-> Parsing arguments...\n");
@@ -33,8 +34,8 @@ parseArguments(argc, argv, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, 
         printf("%s ", categories[i]);
     }
     printf("}\n");
-
-    simulate(fmus, connections, requiredResolution, loggingOn, csv_separator);
+	printInfo(wrps, NAMES_OF_FMUS, NUMBER_OF_FMUS);
+    simulate(wrps, fmus, connections, requiredResolution, loggingOn, csv_separator);
     printf("CSV file '%s' written\n", RESULT_FILE);
     // release FMUs
     #ifdef _MSC_VER
@@ -56,6 +57,7 @@ parseArguments(argc, argv, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, 
         free(fmuFileNames[i]);
     }
     free(fmus);
+    free(wrps);
 /**/
 
 /***mainGnuplot***/

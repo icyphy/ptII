@@ -40,6 +40,7 @@ import org.ptolemy.fmi.type.FMIStringType;
 import ptolemy.actor.Actor;
 import ptolemy.actor.CompositeActor;
 import ptolemy.actor.TypedIOPort;
+import ptolemy.actor.lib.fmi.FMUImport;
 import ptolemy.actor.lib.fmi.FMUImportHybrid;
 import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
@@ -193,7 +194,7 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         Iterator<?> actors = actorList.iterator();
         while (actors.hasNext()) {
             Actor actorIter = (Actor) actors.next();
-            if (actorIter instanceof FMUImportHybrid) {
+            if (actorIter instanceof FMUImportHybrid || actorIter instanceof FMUImport) {
                 ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
                 codeStream.append("#define " + actor.getName() + " " + fmuCount++
                         + "\n");
@@ -203,7 +204,7 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         actors = actorList.iterator();
         while (actors.hasNext()) {
             Actor actorIter = (Actor) actors.next();
-            if (actorIter instanceof FMUImportHybrid) {
+            if (actorIter instanceof FMUImportHybrid || actorIter instanceof FMUImport) {
                 ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
                 for (TypedIOPort input : actor.inputPortList()) {
                     List<TypedIOPort> connected_ports = input.connectedPortList();
@@ -224,7 +225,7 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         codeStream.append("const char* NAMES_OF_FMUS[] = {");
         while (actors.hasNext()) {            
             Actor actorIter = (Actor) actors.next();
-            if (actorIter instanceof FMUImportHybrid) {
+            if (actorIter instanceof FMUImportHybrid  || actorIter instanceof FMUImport) {
                 ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
                 codeStream.append("\"" + actor.getName() + "\"");
                 if (actors.hasNext())
@@ -247,7 +248,7 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         int i = 0;
         while (actors.hasNext()) {
             Actor actorIter = (Actor) actors.next();
-            if (actorIter instanceof FMUImportHybrid) {
+            if (actorIter instanceof FMUImportHybrid || actorIter instanceof FMUImport) {
                 ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;
                 codeStream.append("case(" + i + "): {\n");
                 int j = 0;
