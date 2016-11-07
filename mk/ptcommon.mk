@@ -633,6 +633,10 @@ test_fmima_cg:
 test_java_cg:
 	$(JTCLSH) $(ROOT)/util/testsuite/JavaCGAuto.tcl
 
+# Run JavaScript ptolemy/cg on all the xml files in the auto subdirectory.
+test_js_cg:
+	$(JTCLSH) $(ROOT)/util/testsuite/AccessorCGAuto.tcl
+
 # Run the junit tests
 test_junit:
 	if [ -d junit ]; then \
