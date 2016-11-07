@@ -167,7 +167,7 @@ exports.filters = function () {
         'ColorHalftone', 'Contour', 'Contrast', 'Crop',
         'Crystallize',
         'Gray', 'Invert', 'LensBlur', 'MotionDetector', 'Solarize', 'Threshold'
-    ];
+        ];
 };
 
 /** Invoke the named filter on the specified image with the specified
@@ -181,10 +181,14 @@ exports.filters = function () {
  */
 exports.filter = function (image, filterName, options) {
     image = image.asAWTImage();
-    var filter = filters[filterName];
+    var filter = filters[filterName],
+        Filter,
+        optionName,
+        root,
+        setter;
     if (!filter) {
-        var root = 'com.jhlabs.image.';
-        var Filter = null;
+        root = 'com.jhlabs.image.';
+        Filter = null;
         try {
             Filter = Java.type(root + filterName + 'Filter');
         } catch (ex) {
@@ -193,19 +197,20 @@ exports.filter = function (image, filterName, options) {
                 Filter = Java.type(root + 'svg.' + filterName + 'Filter');
             } catch (ex2) {
                 throw new Error('Cannot find filter: ' + filterName);
-                return image;
             }
         }
         filter = new Filter();
         filters[filterName] = filter;
     }
     if (options) {
-        for (var optionName in options) {
-            // Look for a setter function for the option.
-            var setter = 'set' + optionName;
-            if (typeof filter[setter] === 'function') {
-                // Invoke the setter function.
-                filter[setter](options[optionName]);
+        for (optionName in options) {
+            if (options.hasOwnProperty(optionName)) {
+                // Look for a setter function for the option.
+                setter = 'set' + optionName;
+                if (typeof filter[setter] === 'function') {
+                    // Invoke the setter function.
+                    filter[setter](options[optionName]);
+                }
             }
         }
     }
