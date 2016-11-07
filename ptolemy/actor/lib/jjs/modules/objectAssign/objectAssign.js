@@ -46,16 +46,18 @@ function ToObject(val) {
     return Object(val);
 }
 
-module.exports = Object.assign || function (target, source) {
-    var from;
-    var keys;
-    var to = ToObject(target);
+module.exports = Object.assign || function (target) {
+    var from,
+        i,
+        keys,
+        s,
+        to = ToObject(target);
 
-    for (var s = 1; s < arguments.length; s++) {
+    for (s = 1; s < arguments.length; s += 1) {
         from = arguments[s];
         keys = Object.keys(Object(from));
 
-        for (var i = 0; i < keys.length; i++) {
+        for (i = 0; i < keys.length; i += 1) {
             to[keys[i]] = from[keys[i]];
         }
     }

@@ -64,6 +64,7 @@
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
 /*globals actor, console, exports, Java, require, util */
+/*jslint nomen: true */
 /*jshint globalstrict: true */
 "use strict";
 
@@ -266,29 +267,33 @@ util.inherits(exports.SocketClient, EventEmitter);
 /** Open the client. Call this after setting up listeners. */
 exports.SocketClient.prototype.open = function () {
     this.helper.openClientSocket(this, this.port, this.host, this.options);
-}
+};
 
 /** This method will be called by the helper when a client's request to
  *  open a socket has been granted and the socket is open.
  *  This function should not be called by users of this module.
  *  It will emit an 'open' event with no arguments.
  *  @param netSocket The Vert.x NetSocket object.
- *  @param client The Vert.x NetClient object that opened the socket.
  */
-exports.SocketClient.prototype._opened = function (netSocket, client) {
+exports.SocketClient.prototype._opened = function (netSocket) {
     // For a client, this instance of SocketClient will be the event emitter.
 
     // Because we are creating an inner class, the first argument needs to be
     // the instance of the enclosing socketHelper class.
     this.wrapper = new SocketHelper.SocketWrapper(
-        this.helper, this, netSocket,
-        this.options.sendType, this.options.receiveType,
+        this.helper,
+        this,
+        netSocket,
+        this.options.sendType,
+        this.options.receiveType,
         this.options.rawBytes,
-        this.options.emitBatchDataAsAvailable);
+        this.options.emitBatchDataAsAvailable
+    );
     this.emit('open');
 
+    var i;
     // Send any pending data.
-    for (var i = 0; i < this.pendingSends.length; i++) {
+    for (i = 0; i < this.pendingSends.length; i += 1) {
         this.send(this.pendingSends[i]);
     }
     this.pendingSends = [];
@@ -328,7 +333,7 @@ exports.SocketClient.prototype.send = function (data) {
 exports.SocketClient.prototype.close = function () {
     if (this.wrapper) {
         this.wrapper.close();
-    } else {
+    //} else {
         // FIXME: Set a flag to close immediately upon opening.
     }
 };
@@ -498,7 +503,7 @@ util.inherits(exports.SocketServer, EventEmitter);
 /** Start the server. */
 exports.SocketServer.prototype.start = function () {
     this.helper.startServer(this, this.options);
-}
+};
 
 /** Stop the server and close all sockets. */
 exports.SocketServer.prototype.stop = function () {
@@ -528,10 +533,13 @@ exports.SocketServer.prototype._serverCreated = function (netServer) {
  */
 exports.SocketServer.prototype._socketCreated = function (netSocket) {
     var socket = new exports.Socket(
-        this.helper, netSocket,
-        this.options.sendType, this.options.receiveType,
+        this.helper,
+        netSocket,
+        this.options.sendType,
+        this.options.receiveType,
         this.options.rawBytes,
-        this.options.emitBatchDataAsAvailable);
+        this.options.emitBatchDataAsAvailable
+    );
     this.emit('connection', socket);
 };
 
@@ -566,7 +574,14 @@ exports.Socket = function (helper, netSocket, sendType, receiveType, rawBytes, e
     // Because we are creating an inner class, the first argument needs to be
     // the instance of the enclosing socketHelper class.
     this.wrapper = new SocketHelper.SocketWrapper(
-        helper, this, netSocket, sendType, receiveType, rawBytes, emitBatchDataAsAvailable);
+        helper,
+        this,
+        netSocket,
+        sendType,
+        receiveType,
+        rawBytes,
+        emitBatchDataAsAvailable
+    );
     this.netSocket = netSocket;
 };
 util.inherits(exports.Socket, EventEmitter);

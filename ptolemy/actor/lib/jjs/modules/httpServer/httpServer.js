@@ -33,6 +33,7 @@
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
 /*globals exports, Java, require, util */
+/*jslint nomen: true */
 /*jshint globalstrict: true */
 "use strict";
 
@@ -73,10 +74,10 @@ var EventEmitter = require('events').EventEmitter;
  * 
  *     var httpServer = require('httpServer');
  *     var server = new httpServer.HttpServer({'port':8082});
- *     server.on('listening', function() {
+ *     server.on('listening', function () {
  *         console.log('Server is listening.');
  *     });
- *     server.on('request', function(request) {
+ *     server.on('request', function (request) {
  *         console.log('Server received request: ' + util.inspect(request));
  *         server.respond(request.requestID, 'Hello World');
  *     });
@@ -88,14 +89,16 @@ var EventEmitter = require('events').EventEmitter;
  *  @param options The options.
  */
 exports.HttpServer = function (options) {
-        if (typeof options.port === 'undefined' || options.port === null) {
-                this.port = 80;
-        } else {
-                this.port = options.port;
-        }
+    if (options.port === undefined || options.port === null) {
+        this.port = 80;
+    } else {
+        this.port = options.port;
+    }
     this.hostInterface = options.hostInterface || 'localhost';
     this.helper = HttpServerHelper.createServer(
-        this, this.hostInterface, this.port
+        this,
+        this.hostInterface,
+        this.port
     );
 };
 util.inherits(exports.HttpServer, EventEmitter);
@@ -133,11 +136,11 @@ exports.HttpServer.prototype.stop = function () {
  *  @param method The HTTP method of the request.
  *  @param path The path of the request.
  */
-exports.HttpServer.prototype._request = function(requestID, method, path) {
-        var request = {
-                'requestID': requestID,
-                'method': method,
-                'path': path
-        }
+exports.HttpServer.prototype._request = function (requestID, method, path) {
+    var request = {
+        'requestID': requestID,
+        'method': method,
+        'path': path
+    };
     this.emit('request', request);
 };

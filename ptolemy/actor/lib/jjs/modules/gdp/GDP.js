@@ -37,7 +37,8 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, exports */
+/*globals Java, exports, util */
+/*jslint nomen: true */
 /*jshint globalstrict: true*/
 "use strict";
 
@@ -108,7 +109,7 @@ exports.GDP.prototype.read = function (recno) {
  */
 exports.GDP.prototype.setDebugLevel = function (debugLevel) {
     this.helper.setDebugLevel(debugLevel);
-}
+};
 
 /** Subscribe to the log. This will cause 'data' events to start to be
  *  emitted each time something is published to the log.
