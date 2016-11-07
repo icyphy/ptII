@@ -49,6 +49,7 @@ JSRCS = \
 
 TCL_SRCS = \
 	AccessorAuto.tcl \
+	AccessorCGAuto.tcl \
 	CGC.tcl \
 	CCGAuto.tcl \
 	FMIMAAuto.tcl \

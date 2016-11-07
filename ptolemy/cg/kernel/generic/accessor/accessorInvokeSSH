@@ -199,6 +199,9 @@ fi
 # used as arguments.
 if [ ! -z "\$stopForeverAccessors" -o ! -z "\$npmForever" ]; then
     echo "Here are the npm forever processes:"
+    if [ ! -z "\$stopForeverAccessors" ]; then
+        echo "(There should be no forever processes running)"
+    fi
     \$HOME/$node_modules/forever/bin/forever list
 fi
 
