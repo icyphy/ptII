@@ -13,18 +13,18 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 25.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 52.5]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={488, 566, 1024, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={231, 150, 1024, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[790, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0986958214289153">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{278.96630859375, 230.18516626602565}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{395.0, 261.0}">
     </property>
-    <property name="PROJECT_PATH" class="ptolemy.data.expr.Parameter" value="&quot;/Users/hokeunkim/Development/iotauth/&quot;">
+    <property name="PROJECT_PATH" class="ptolemy.data.expr.Parameter" value="&quot;$PTII/vendors/iotauth&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -40,13 +40,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 42.5]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To run this demo, an open-source local authorization entity (Auth) should be running.&#10;The Auth can be obtained in the github repository, https://github.com/iotauth/iotauth.&#10;&#10;NOTE2: The parameter PROJECT_PATH in this demo should be set to the repository directory of iotauth.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The AuthManager checks out the iotAuth repo from &#10;https://github.com/iotauth/iotauth.git&#10;and creates $PTII/vendors/iotautho&#10;.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 52.5]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -54,7 +54,11 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 397.5]">
+        </property>
+    </property>
+    <property name="AuthManager" class="ptolemy.actor.lib.jjs.modules.iotAuth.AuthManager">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 62.5]">
         </property>
     </property>
     <entity name="Listening" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -62,7 +66,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[550.0, 160.0]">
         </property>
     </entity>
     <entity name="Connection" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -70,7 +74,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[901, 347]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[545.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[615.0, 170.0]">
         </property>
     </entity>
     <entity name="Received" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -78,7 +82,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[887, 374]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 285.0]">
         </property>
     </entity>
     <entity name="Error" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -86,14 +90,14 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[2054, 227]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 260.0]">
         </property>
     </entity>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <property name="init" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
         <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 220.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[495.0, 345.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -109,7 +113,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 310.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -129,7 +133,7 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[887, 374]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[425.0, 260.0]">
         </property>
     </entity>
     <entity name="SecureCommServer" class="org.terraswarm.accessor.JSAccessor">
@@ -185,7 +189,7 @@
         </property>
         <property name="toSendID" class="ptolemy.actor.parameters.PortParameter" value="-1">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{200.0, 55.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 180.0]">
         </property>
         <property name="serverPort" class="ptolemy.data.expr.Parameter" value="21200">
         </property>
@@ -219,7 +223,7 @@
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[455.0, 155.0]">
+        <vertex name="vertex1" value="[525.0, 280.0]">
         </vertex>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
@@ -227,35 +231,35 @@
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[290.0, 105.0]">
+        <vertex name="vertex1" value="[360.0, 230.0]">
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{290.0, 160.0}">
+        <vertex name="vertex1" value="[360.0, 285.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="{120.0, 160.0}">
+        <vertex name="vertex1" value="[190.0, 285.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[455.0, 65.0]">
+        <vertex name="vertex1" value="[525.0, 190.0]">
         </vertex>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[120.0, 45.0]">
+        <vertex name="vertex1" value="[190.0, 170.0]">
         </vertex>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-30.0, 65.0]">
+        <vertex name="vertex1" value="[40.0, 190.0]">
         </vertex>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
