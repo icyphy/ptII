@@ -793,6 +793,7 @@ codeDoc/js/index.html:
 		echo "$(ROOT)/build.xml does not exist, running ./configure"; \
 		(cd $(ROOT); ./configure); \
 	fi
+	ls -l $(ROOT)/vendors/jsdoc
 	if [ -d $(ROOT)/vendors/jsdoc -a $(ROOT)/build.xml ]; then \
 		echo "About to run ant jsdoc"; \
 		(cd $(ROOT); ant jsdoc); \
