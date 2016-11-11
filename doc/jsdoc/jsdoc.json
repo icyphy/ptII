@@ -4,6 +4,6 @@
         "tags": ["accessor", "input", "output", "parameter"]
     },
     "source": {
-        "excludePattern": "(doc|browser/common|browser/modules|browser/test/lib|node_modules|vendors)"
+        "excludePattern": "(doc|browser/common|browser/modules|browser/test/lib|node_modules|rusteduk/duk|vendors)"
     }
 }
