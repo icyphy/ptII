@@ -134,16 +134,16 @@ public class JavaScriptApplication {
         }
 
 	// Evaluate the contents of basicFunctions.js
-	BufferReader bufferReader = null;
+	BufferedReader bufferedReader = null;
 	try {
-	    bufferReader = FileUtilities.openForReading(
+	    bufferedReader = FileUtilities.openForReading(
 							"$CLASSPATH/ptolemy/actor/lib/jjs/basicFunctions.js", null,
 							null);
-	    engine.eval(bufferReader);
+	    engine.eval(bufferedReader);
 	} finally {
-	    if (bufferReader != null) {
-		bufferReader.close();
-		bufferReader = null;
+	    if (bufferedReader != null) {
+		bufferedReader.close();
+		bufferedReader = null;
 	    }
 	}
 
