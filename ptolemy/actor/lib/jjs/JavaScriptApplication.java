@@ -28,7 +28,7 @@
 package ptolemy.actor.lib.jjs;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -123,7 +123,7 @@ public class JavaScriptApplication {
      *  @exception ScriptException If there is a problem evaluating a file.
      */
     public JavaScriptApplication(String [] args) throws IllegalActionException, IOException, ScriptException {
-	FileReader reader = null;
+
         ScriptEngineManager factory = new ScriptEngineManager();
         // Create a Nashorn script engine
         ScriptEngine engine = factory.getEngineByName("nashorn");
@@ -147,11 +147,14 @@ public class JavaScriptApplication {
 	    }
 	}
 
+
+	InputStreamReader reader = null;
 	// Evaluate the contentens of the files named by the args.
 	// FIXME: Support -timeout nnnn.
 	for (String arg: args) {
 	    try {
-		reader = new FileReader(arg);
+		// Avoid FindBugs: Internationalization  (FB.DM_DEFAULT_ENCODING)
+		reader =  new InputStreamReader(new FileInputStream(arg), "UTF-8");
 		engine.eval(reader);
 	    } finally {
 		if (reader != null) {
