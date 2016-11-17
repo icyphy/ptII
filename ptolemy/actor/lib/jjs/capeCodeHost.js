@@ -300,6 +300,14 @@ var require = load(_moduleRoot + '/external/require.js')(
     _modulePath
 );
 
+// If we are using Nashorn outside of Cape Code, then actor will be undefined or null.
+if (typeof actor === 'undefined') {
+    var actor = require('external/setTimeout-nashorn.js');
+} else if (actor === null) {
+    // FIXME: What we have a RestrictedJavaScriptInterface?
+    actor = require('external/setTimeout-nashorn.js');
+}
+
 /**
  * Require the named accessor. This is a version of require() that looks
  * in a different place for accessors.
@@ -399,6 +407,7 @@ function setTimeout(func, milliseconds) {
             func.apply(this, tail);
         };
     }
+    
     id = actor.setTimeout(callback, milliseconds);
     return id;
 }
@@ -520,13 +529,14 @@ function invoke(args) {
 
     // Process the -timeout argument.
     var i;
-    for(i = 1; i < argv.length; i = i+1) {
+
+    for(i = 0; i < argv.length; i = i+1) {
 	if (argv[i] === "-timeout") {
-	    timeout = argv[i+1];
+	    var timeout = argv[i+1];
 	    // Remove -timeout and the value.
 	    //argv.shift();
 	    //argv.shift();
-	    this.accessors = instantiateAndInitialize(argv.slice(i));
+	    this.accessors = instantiateAndInitialize(argv.slice(i+2));
 	    setTimeout(function () {
 		    // process.exit gets caught by exitHandler() in
 		    // nodeHost.js and invokes wrapup().
