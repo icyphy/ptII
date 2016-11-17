@@ -120,46 +120,61 @@ public class JavaScriptApplication {
      *  @param args An array of one or more file names.
      *  @exception IllegalActionException If the Nashorn engine cannot be found.
      *  @exception IOException If a file cannot be read or closed.
+     *  @exception NoSuchMethodException If evaluateCode() JavaScript method is not defined.
      *  @exception ScriptException If there is a problem evaluating a file.
      */
-    public JavaScriptApplication(String [] args) throws IllegalActionException, IOException, ScriptException {
+    public JavaScriptApplication(String [] args)
+	throws IllegalActionException, IOException, NoSuchMethodException, ScriptException {
 
-        ScriptEngineManager factory = new ScriptEngineManager();
-        // Create a Nashorn script engine
-        ScriptEngine engine = factory.getEngineByName("nashorn");
+        // Create a Nashorn script engine.
+        ScriptEngine engine = JavaScript.createEngine(null, false, false);
         if (engine == null) {
             // Coverity Scan is happier if we check for null here.
             throw new IllegalActionException(
                     "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
         }
 
-	// Evaluate the contents of basicFunctions.js
-	BufferedReader bufferedReader = null;
-	try {
-	    bufferedReader = FileUtilities.openForReading(
-							"$CLASSPATH/ptolemy/actor/lib/jjs/basicFunctions.js", null,
-							null);
-	    engine.eval(bufferedReader);
-	} finally {
-	    if (bufferedReader != null) {
-		bufferedReader.close();
-		bufferedReader = null;
-	    }
-	}
-
-
-	InputStreamReader reader = null;
-	// Evaluate the contentens of the files named by the args.
+	// Evaluate the contents of the files named by the args.
 	// FIXME: Support -timeout nnnn.
+	BufferedReader bufferedReader = null;
 	for (String arg: args) {
+	    System.out.println("About to read " + arg);
 	    try {
-		// Avoid FindBugs: Internationalization  (FB.DM_DEFAULT_ENCODING)
-		reader =  new InputStreamReader(new FileInputStream(arg), "UTF-8");
-		engine.eval(reader);
+		bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(arg), "UTF-8"));
+
+		StringBuilder stringBuilder = new StringBuilder();
+		String line = bufferedReader.readLine();
+
+		while (line != null) {
+		    stringBuilder.append(line);
+		    stringBuilder.append(System.lineSeparator());
+		    line = bufferedReader.readLine();
+		}
+		String name = arg;
+		// Get rid of everything after the trailing .
+		int index = arg.lastIndexOf('.');
+		if (index > 0) {
+		    name = name.substring(0, index);
+		}
+		index = arg.indexOf('/');
+		if (index > -1) {
+		    name = name.substring(index + 1);
+		} else {
+		    index = arg.indexOf('\\');
+		    if (index > -1) {
+			name = name.substring(index + 1);		
+		    }
+		}
+	    
+		/* _instance =*/ ((Invocable)engine)
+		    .invokeFunction(
+				    "evaluateCode",
+				    name,
+				    stringBuilder.toString());
 	    } finally {
-		if (reader != null) {
-		    reader.close();
-		    reader = null;
+		if (bufferedReader != null) {
+		    bufferedReader.close();
+		    bufferedReader = null;
 		}
 	    }
 	}
