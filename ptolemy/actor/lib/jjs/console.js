@@ -105,7 +105,11 @@ exports.info = exports.log;
  */
 exports.log = function () {
     var formatted = util.format.apply(this, arguments);
-    actor.log(formatted);
+    try {
+	actor.log(formatted);
+    } catch (error) {
+	print(formatted);
+    }
 };
 
 /** Same as console.log, but prefix the message with "WARNING: " and send to stderr

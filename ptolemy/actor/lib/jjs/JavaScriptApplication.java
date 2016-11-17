@@ -104,8 +104,7 @@ import ptolemy.util.StringUtilities;
  * 
  * <p>To invoke:</p>
  * <pre> 
- * cd $PTII/org/terraswarm/accessor/accessors/web/hosts
- * $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.JavaScriptApplication ../test/TestComposite.js
+ * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.JavaScriptApplication $PTII/ptolemy/actor/lib/jjs/capeCodeHostInvoke.js hosts/node/test/testNodeHost.js)
  * </pre>
  *
  * @author Christopher Brooks
@@ -136,48 +135,10 @@ public class JavaScriptApplication {
 
 	// Evaluate the contents of the files named by the args.
 	// FIXME: Support -timeout nnnn.
-	BufferedReader bufferedReader = null;
-	for (String arg: args) {
-	    System.out.println("About to read " + arg);
-	    try {
-		bufferedReader = new BufferedReader(new InputStreamReader(new FileInputStream(arg), "UTF-8"));
+	/* _instance =*/ ((Invocable)engine)
+	    .invokeFunction("invoke",
+			    (Object)args);
 
-		StringBuilder stringBuilder = new StringBuilder();
-		String line = bufferedReader.readLine();
-
-		while (line != null) {
-		    stringBuilder.append(line);
-		    stringBuilder.append(System.lineSeparator());
-		    line = bufferedReader.readLine();
-		}
-		String name = arg;
-		// Get rid of everything after the trailing .
-		int index = arg.lastIndexOf('.');
-		if (index > 0) {
-		    name = name.substring(0, index);
-		}
-		index = arg.indexOf('/');
-		if (index > -1) {
-		    name = name.substring(index + 1);
-		} else {
-		    index = arg.indexOf('\\');
-		    if (index > -1) {
-			name = name.substring(index + 1);		
-		    }
-		}
-	    
-		/* _instance =*/ ((Invocable)engine)
-		    .invokeFunction(
-				    "evaluateCode",
-				    name,
-				    stringBuilder.toString());
-	    } finally {
-		if (bufferedReader != null) {
-		    bufferedReader.close();
-		    bufferedReader = null;
-		}
-	    }
-	}
 	// FIXME: Should we close the engine in a finally block?
     }
 
