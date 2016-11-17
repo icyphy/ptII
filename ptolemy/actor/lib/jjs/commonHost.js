@@ -451,6 +451,9 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
         throw new Error('Host does not define required alert function.');
     }
 
+    // By default, the root property is this instance.
+    this.root = this;
+
     var wrapper = new Function('\
 alert, \
 error, \
@@ -481,9 +484,6 @@ setTimeout',
 
     ////////////////////////////////////////////////////////////////////
     //// Set up the prototype chain and ssuper properties.
-
-    // By default, the root property is this instance.
-    this.root = this;
 
     if (extendedBy) {
         // This accessor is being extended.
