@@ -23,7 +23,7 @@
 
 /** JavaScript functions for a Ptolemy II (Nashorn) accessor host.
  *
- *  <p>This file includes basic utility functions assumed by version 0
+ *  <p>This file includes basic utility functions assumed by version 1
  *  accessors.</p>
  *
  * <h2>References</h2>
@@ -402,3 +402,142 @@ function setTimeout(func, milliseconds) {
     id = actor.setTimeout(callback, milliseconds);
     return id;
 }
+
+/** Instantiate and return an accessor.
+ *  This will throw an exception if there is no such accessor class on the accessor
+ *  search path.
+ *  @param accessorName The name to give to the instance.
+ *  @param accessorClass Fully qualified accessor class name, e.g. 'net/REST'.
+ */
+function instantiate(accessorName, accessorClass) {
+    // FIXME: The bindings should be a bindings object where require == a requireLocal
+    // function that searches first for local modules.
+    var bindings = {
+        'require': require,
+    };
+    var instance = new commonHost.instantiateAccessor(
+            accessorName, accessorClass, getAccessorCode, bindings);
+    console.log('Instantiated accessor ' + accessorName + ' with class ' + accessorClass);
+    
+    accessors.push(instance);
+    return instance;
+};
+
+/** Instantiate and initialize the accessors named by the
+ *  accessorNames argument
+ *
+ * See invoke() for how this method is used.
+ *
+ * Sample usage:
+ *
+ * nodeHostInvoke.js contains:
+ * <pre>
+ * require('./nodeHost.js');
+ * invoke(process.argv);
+ * </pre>
+ *
+ * To invoke:
+ * <pre>
+ *   node nodeHostInvoke.js test/TestComposite
+ * </pre>
+ *
+ * @param accessorNames An array of accessor names in a format suitable
+ * for getAccessorCode(name).
+ */
+function instantiateAndInitialize(accessorNames) {
+    var accessors = [];
+    var length = accessorNames.length;
+    var index;
+    for (index = 0; index < length; ++index) {
+        // The name of the accessor is basename of the accessorClass.
+        var accessorClass = accessorNames[index];
+        // For example, if the accessorClass is
+        // test/TestComposite, then the accessorName will be
+        // TestComposite.
+
+        var startIndex = (accessorClass.indexOf('\\') >= 0 ? accessorClass.lastIndexOf('\\') : accessorClass.lastIndexOf('/'));
+        var accessorName = accessorClass.substring(startIndex);
+        if (accessorName.indexOf('\\') === 0 || accessorName.indexOf('/') === 0) {
+            accessorName = accessorName.substring(1);
+        }
+        // If the same accessorClass appears more than once in the
+        // list of arguments, then use different names.
+        // To replicate: node nodeHostInvoke.js test/TestComposite test/TestComposite
+        if (index > 0) {
+            accessorName += "_" + (index - 1);
+        }
+        var accessor = instantiate(accessorName, accessorClass);
+        // Push the top level accessor so that we can call wrapup later.
+        accessors.push(accessor);
+        accessor.initialize();
+    }
+    return accessors;
+};
+
+/** Invoke a composite accessor.
+ *
+ *  nodeHostInvoke.js uses invoke() as follows:
+ *  <pre>
+ *  require('./nodeHost.js');
+ *  invoke(process.argv);
+ *  </pre>
+ *  
+ *  If the accessors module is installed using npm with 
+ *  <pre>
+ *  npm install @terraswarm/gdp
+ *  </pre>
+ *  then a composite accessor may be invoked if a file invoke.js contains:
+ *  <pre>
+ *  require('@terraswarm/accessors');
+ *  invoke(process.argv);
+ *  </pre>
+ *  Then a composite accessor may be invoked with
+ *  <pre>
+ *  node invoke.js -timeout 4000 test/auto/RampJSTest.js
+ *  </pre>
+ *
+ *  @param argv An array of arguments, were the first argument is
+ *  typically "node", the second argument is the name of the script
+ *  that is invoked.  If the third argument is "-timeout", then the
+ *  fourth argument will be the timeout in ms.  The following
+ *  argument(s) are one or more .js files that define a setup() function
+ *  that builds a composite accessor.
+ */
+function invoke(args) {
+    // This function is in nodeHost.js so that we can easily invoke a
+    // composite accessor with a very small file.  See the comment for how to do this.
+
+    // Remove "node.js" from the array of command line arguments.
+    //argv.shift();
+    // Remove "nodeHostInvoke.js" from the array of command line arguments.
+    //argv.shift();
+
+    var argv = Java.from(args);
+    if (argv.length === 1) {
+	console.error("nodeHost.invoke(): Usage: node.js nodeHostInvoke.js [-timeout timeInMs] accessor.js [accessor2.js ...]");
+	//process.exit(3);
+    }
+
+    // Process the -timeout argument.
+    var i;
+    for(i = 1; i < argv.length; i = i+1) {
+	if (argv[i] === "-timeout") {
+	    timeout = argv[i+1];
+	    // Remove -timeout and the value.
+	    //argv.shift();
+	    //argv.shift();
+	    this.accessors = instantiateAndInitialize(argv.slice(i));
+	    setTimeout(function () {
+		    // process.exit gets caught by exitHandler() in
+		    // nodeHost.js and invokes wrapup().
+		    //process.exit(0);
+		}, timeout);
+	} else {
+	    // Handle multiple composite accessors on the command line.
+	    this.accessors = instantiateAndInitialize(argv.slice(i));
+	    // Prevent the script from exiting by repeating the empty function
+	    // every ~25 days.
+	    setInterval(function () {}, 2147483647);
+	}
+    }
+};

@@ -57,7 +57,7 @@ JSRCS = \
 	VertxHelperBase.java
 
 OTHER_FILES_TO_BE_JARED = \
-	basicFunctions.js \
+	capeCodeHost.js \
 	commonHost.js \
 	console.js \
 	JavaScriptIcon.xml \

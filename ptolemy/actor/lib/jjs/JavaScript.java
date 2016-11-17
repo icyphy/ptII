@@ -639,7 +639,7 @@ public class JavaScript extends TypedAtomicActor {
         } else {
             engine.put("_debug", false);
         }
-	System.out.println("About to read capeCodeHost.js");
+
         try {
             engine.eval(FileUtilities.openForReading(
                     "$CLASSPATH/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
@@ -648,7 +648,6 @@ public class JavaScript extends TypedAtomicActor {
             throw new IllegalActionException(actor, throwable,
                     "Failed to load capeCodeHost.js");
         }
-	System.out.println("About to read localFunctions.js");
 
         String localFunctionsPath = "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js";
         try {
