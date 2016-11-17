@@ -268,7 +268,7 @@ public class ThreadedComposite extends MirrorComposite {
      *  output events. This is a double that defaults to 0.0,
      *  indicating that outputs should have the same time stamps
      *  as the inputs that trigger them. If it has a value greater
-     *  than zero, then the outputs will have large time stamps
+     *  than zero, then the outputs will have larger time stamps
      *  by that amount. If it has the value <i>UNDEFINED</i>
      *  (or any negative number), then the output time stamp
      *  will be nondeterminate, and will depend on the current
