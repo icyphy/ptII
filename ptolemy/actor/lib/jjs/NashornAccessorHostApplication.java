@@ -1,4 +1,4 @@
-/* Execute a script in JavaScript using Nashorn.
+/* Instantiate and Invoke Accessors using Nashorn.
 
    Copyright (c) 2016 The Regents of the University of California.
    All rights reserved.
@@ -96,33 +96,59 @@ import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
-//// JavaScriptApplication
+//// NashornAccessorHostApplication
 
 /** 
+ * Instantiate and Invoke Accessors using Nashorn.
  * Evaluate the arguments, which are expected to be JavaScript files
- * that define Accessors. 
+ * that define Composite Accessors. 
  * 
+ * <p>The Nashorn and Cape Code Accessor hosts are similar in that they
+ * both use Nashorn as the underlying JavaScript engine.  They also
+ * both can invoke JavaScript accessors that use modules defined in
+ * $PTII/ptolemy/actor/lib/jjs/modules.  They also both share
+ * $PTII/ptolemy/actor/lib/jjs/capeCodeHost.js.</p>
+ * 
+ * <p>The Nashorn Accessor Host differs from the Cape Code Accessor
+ * Host in that Cape Code Accessor Host reads in Ptolemy II .xml MoML
+ * files and can invoke regular Ptolemy II actors written in Java such
+ * a ptolemy.actor.lib.Ramp.  The Nashorn Accessor Host reads in .js
+ * files that define CompositeAccessors.  The Nashorn Accessor Host is
+ * not intended to invoke regular Ptolemy II actors written in Java
+ * and it does not invoke the Ptolemy II actor execution semantics
+ * code implemented in Java.</p>
+ *
+ * <p>Note that by using code generation, Cape Code .xml MoML files
+ * can be converted in to .js Composite Accessor files provided that 
+ * the .xml file only uses JavaScript and JSAccessor actors.</p>
+ *
  * <p>To invoke:</p>
  * <pre> 
- * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.JavaScriptApplication $PTII/ptolemy/actor/lib/jjs/capeCodeHostInvoke.js hosts/node/test/testNodeHost.js)
+ * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.JavaScriptApplication -timeout 10000 hosts/node/test/testNodeHost.js)
+ * </pre>
+ *
+ * <p> The command line syntax is:</p>
+ * <pre>
+ * [-timeout timeoutInMilliseconds] compositeAccessor1.js [compositeAccessor2.js ...]
  * </pre>
  *
  * @author Christopher Brooks
  * @version $Id$
- * @since Ptolemy II 10.0
+ * @since Ptolemy II 11.0
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
  */
-public class JavaScriptApplication {
+public class NashornAccessorHostApplication {
 
     /** Evaluate the files named by the arguments.
-     *  @param args An array of one or more file names.
+     *  @param args An array of one or more file names.  See the class comment for 
+     *  the syntax.
      *  @exception IllegalActionException If the Nashorn engine cannot be found.
      *  @exception IOException If a file cannot be read or closed.
      *  @exception NoSuchMethodException If evaluateCode() JavaScript method is not defined.
      *  @exception ScriptException If there is a problem evaluating a file.
      */
-    public JavaScriptApplication(String [] args)
+    public NashornAccessorHostApplication(String [] args)
 	throws IllegalActionException, IOException, NoSuchMethodException, ScriptException {
 
         // Create a Nashorn script engine.
@@ -134,7 +160,6 @@ public class JavaScriptApplication {
         }
 
 	// Evaluate the contents of the files named by the args.
-	// FIXME: Support -timeout nnnn.
 	/* _instance =*/ ((Invocable)engine)
 	    .invokeFunction("invoke",
 			    (Object)args);
@@ -143,7 +168,8 @@ public class JavaScriptApplication {
     }
 
     /** Invoke one or more JavaScript files.
-     *  @param args One or more JavaScript files.
+     *  @param args One or more JavaScript files.  See the class
+     *  comment for the syntax.
      */
     public static void main(String[] args) {
 	try {

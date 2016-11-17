@@ -50,9 +50,9 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 # Keep this list alphabetized.
 JSRCS = \
 	HelperBase.java \
-	JavaScriptApplication.java \
 	JavaScript.java \
 	JSUtils.java \
+	NashornAccessorHostApplication.java \
 	RestrictedJavaScriptInterface.java \
 	VertxHelperBase.java
 
