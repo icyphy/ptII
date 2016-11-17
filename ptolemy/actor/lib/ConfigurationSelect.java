@@ -28,6 +28,7 @@
  */
 package ptolemy.actor.lib;
 
+import ptolemy.actor.Director;
 import ptolemy.actor.TypedAtomicActor;
 import ptolemy.actor.TypedIOPort;
 import ptolemy.data.BooleanToken;
@@ -192,7 +193,10 @@ public class ConfigurationSelect extends TypedAtomicActor {
                     trueInput_tokenConsumptionRate.setToken(_zero);
                     falseInput_tokenConsumptionRate.setToken(_one);
                 }
-                getDirector().invalidateSchedule();
+                Director director = getDirector();
+                if (director != null) {
+                    director.invalidateSchedule();
+                }
             }
         }
     }
