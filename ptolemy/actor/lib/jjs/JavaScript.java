@@ -596,6 +596,120 @@ public class JavaScript extends TypedAtomicActor {
         return newObject;
     }
 
+    /** Create a script engine and initialize it.
+     *  @param actor The JavaScript actor that is to use the script
+     *  engine.  If the actor parameter is null, then the restricted
+     *  parameter must be false.  The actor parameter is also used for
+     *  exception handling.  The JavaScriptApplication class typically passes
+     *  a null value for this parameter.
+     *  @param debugging True if the _debug JavaScript variable should be set to true.
+     *  @param restricted True if script engine should be restricted
+     *  so that it can execute unrusted code.  The default is typically false.
+     *  @return The JavaScript engine.
+     */
+    public static ScriptEngine createEngine(JavaScript actor, boolean debugging, boolean restricted)
+	throws IllegalActionException {
+        ScriptEngineManager factory = new ScriptEngineManager();
+        // Create a Nashorn script engine
+        ScriptEngine engine = factory.getEngineByName("nashorn");
+        if (engine == null) {
+            // Coverity Scan is happier if we check for null here.
+            throw new IllegalActionException(
+                    actor,
+                    "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
+        }
+        /* FIXME: The following should intercept errors, but if doesn't!
+         * Perhaps Thread.setUncaughtExceptionHandler()? How to get the thread?
+         * or Thread.setDefaultUncaughtExceptionHandler().
+         * This should be a top-level Ptolemy II thing...
+        ScriptContext context = engine.getContext();
+        context.setErrorWriter(new StringWriter() {
+            @Override
+            public void close() throws IOException {
+                super.close();
+                // FIXME: Request a firing that can then throw an exception so
+                // error port is handled correctly.
+                MessageHandler.error(toString());
+            }
+        });
+         */
+        if (debugging) {
+            // Set a global variable for debugging.
+            engine.put("_debug", true);
+        } else {
+            engine.put("_debug", false);
+        }
+	System.out.println("About to read capeCodeHost.js");
+        try {
+            engine.eval(FileUtilities.openForReading(
+                    "$CLASSPATH/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
+                    null));
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(actor, throwable,
+                    "Failed to load capeCodeHost.js");
+        }
+	System.out.println("About to read localFunctions.js");
+
+        String localFunctionsPath = "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js";
+        try {
+            engine.eval(FileUtilities.openForReading(localFunctionsPath, null, null));
+        } catch (Throwable throwable) {
+            // eval() can throw a ClassNotFoundException if a Ptolemy class is not found.
+
+            if (throwable instanceof ClassNotFoundException) {
+                // FIXME: Temporary code (2015-08-15)
+                
+                // Attempting to debug why, after 348 tests, these tests
+                // can't find the Ptolemy classes:
+
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[348] ptolemy/demo/Robot/RandomWalkIntruder.xml
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[350] ptolemy/demo/Robot/RobotChase.xml
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[351] ptolemy/demo/Robot/RobotCollaborativeChase.xml
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[353] ptolemy/demo/Robot/RobotMonitor.xml
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[360] ptolemy/demo/Robot/SmartIntruder6Teams.xml
+
+                String message =  "Parsing "
+                    + localFunctionsPath
+                    + " resulted in a ClassNotFoundException?"
+                    + " Checking ClassLoaders: "
+                    + " ClassLoader.getSystemClassLoader(): "
+                    + ClassLoader.getSystemClassLoader()
+                    + " Thread.currentThread().getContextClassLoader(): "
+                    + Thread.currentThread().getContextClassLoader();
+                Class<?> clazz = null;
+                try {
+                    clazz = Class.forName("ptolemy.data.ArrayToken");
+                } catch (ClassNotFoundException ex) {
+                    throw new IllegalActionException(actor, throwable, message
+                            + "???? Failed to get ptolemy.data.ArrayToken?"
+                            + ex);
+                }
+                throw new IllegalActionException(actor, throwable, message
+                        + " Class.forName(\"ptolemy.data.ArrayToken\"): "
+                        + clazz);
+                // FIXME: End of temporary code.
+            } else {
+                throw new IllegalActionException(actor, throwable,
+                        "Failed to load " + localFunctionsPath + ".");
+            }
+        }
+        // Define the actor and accessor variables.
+        if (!restricted) {
+            engine.put("accessor", actor);
+            engine.put("actor", actor);
+        } else {
+	    if (actor == null) {
+		throw new IllegalArgumentException("Restricted JavaScript sandboxes only supported with JavaScript container actors.");
+	    }
+            RestrictedJavaScriptInterface restrictedInterface = new RestrictedJavaScriptInterface(
+                    actor);
+            engine.put("accessor", restrictedInterface);
+            engine.put("actor", restrictedInterface);
+        }
+	return engine;
+    }
+
+
     /** Declare that any output that is marked as spontanous does does
      *  not depend on the input in a firing.
      *  @exception IllegalActionException If the causality interface
@@ -2023,98 +2137,8 @@ public class JavaScript extends TypedAtomicActor {
         // never is more than one thread trying to evaluate a script.
         // Note that an engine is recreated on each run. This ensures
         // that the JS context does not remember data from one run to the next.
-        ScriptEngineManager factory = new ScriptEngineManager();
-        // Create a Nashorn script engine
-        _engine = factory.getEngineByName("nashorn");
-        if (_engine == null) {
-            // Coverity Scan is happier if we check for null here.
-            throw new IllegalActionException(
-                    this,
-                    "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
-        }
-        /* FIXME: The following should intercept errors, but if doesn't!
-         * Perhaps Thread.setUncaughtExceptionHandler()? How to get the thread?
-         * or Thread.setDefaultUncaughtExceptionHandler().
-         * This should be a top-level Ptolemy II thing...
-        ScriptContext context = _engine.getContext();
-        context.setErrorWriter(new StringWriter() {
-            @Override
-            public void close() throws IOException {
-                super.close();
-                // FIXME: Request a firing that can then throw an exception so
-                // error port is handled correctly.
-                MessageHandler.error(toString());
-            }
-        });
-         */
-        if (_debugging) {
-            _debug("** Instantiated engine. Loading local and basic functions.");
-            // Set a global variable for debugging.
-            _engine.put("_debug", true);
-        } else {
-            _engine.put("_debug", false);
-        }
-        try {
-            _engine.eval(FileUtilities.openForReading(
-                    "$CLASSPATH/ptolemy/actor/lib/jjs/basicFunctions.js", null,
-                    null));
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable,
-                    "Failed to load basicFunctions.js");
-        }
-        String localFunctionsPath = "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js";
-        try {
-            _engine.eval(FileUtilities.openForReading(localFunctionsPath, null, null));
-        } catch (Throwable throwable) {
-            // eval() can throw a ClassNotFoundException if a Ptolemy class is not found.
 
-            if (throwable instanceof ClassNotFoundException) {
-                // FIXME: Temporary code (2015-08-15)
-                
-                // Attempting to debug why, after 348 tests, these tests
-                // can't find the Ptolemy classes:
-
-                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[348] ptolemy/demo/Robot/RandomWalkIntruder.xml
-                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[350] ptolemy/demo/Robot/RobotChase.xml
-                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[351] ptolemy/demo/Robot/RobotCollaborativeChase.xml
-                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[353] ptolemy/demo/Robot/RobotMonitor.xml
-                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[360] ptolemy/demo/Robot/SmartIntruder6Teams.xml
-
-                String message =  "Parsing "
-                    + localFunctionsPath
-                    + " resulted in a ClassNotFoundException?"
-                    + " Checking ClassLoaders: "
-                    + " ClassLoader.getSystemClassLoader(): "
-                    + ClassLoader.getSystemClassLoader()
-                    + " Thread.currentThread().getContextClassLoader(): "
-                    + Thread.currentThread().getContextClassLoader();
-                Class<?> clazz = null;
-                try {
-                    clazz = Class.forName("ptolemy.data.ArrayToken");
-                } catch (ClassNotFoundException ex) {
-                    throw new IllegalActionException(this, throwable, message
-                            + "???? Failed to get ptolemy.data.ArrayToken?"
-                            + ex);
-                }
-                throw new IllegalActionException(this, throwable, message
-                        + " Class.forName(\"ptolemy.data.ArrayToken\"): "
-                        + clazz);
-                // FIXME: End of temporary code.
-            } else {
-                throw new IllegalActionException(this, throwable,
-                        "Failed to load " + localFunctionsPath + ".");
-            }
-        }
-        // Define the actor and accessor variables.
-        if (!_restricted) {
-            _engine.put("accessor", this);
-            _engine.put("actor", this);
-        } else {
-            RestrictedJavaScriptInterface restrictedInterface = new RestrictedJavaScriptInterface(
-                    this);
-            _engine.put("accessor", restrictedInterface);
-            _engine.put("actor", restrictedInterface);
-        }
+	_engine = JavaScript.createEngine(this, _debugging, _restricted);
 
         // Create proxies for the port.
         // Note that additional proxies may need to be created in initialize(),
