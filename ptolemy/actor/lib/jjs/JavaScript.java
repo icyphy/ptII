@@ -640,6 +640,21 @@ public class JavaScript extends TypedAtomicActor {
             engine.put("_debug", false);
         }
 
+        // Define the actor and accessor variables.
+	// capeCodeHost.js refers to actor at eval-time, so set it now.
+        if (!restricted) {
+            engine.put("accessor", actor);
+            engine.put("actor", actor);
+        } else {
+	    if (actor == null) {
+		throw new IllegalArgumentException("Restricted JavaScript sandboxes only supported with JavaScript container actors.");
+	    }
+            RestrictedJavaScriptInterface restrictedInterface = new RestrictedJavaScriptInterface(
+                    actor);
+            engine.put("accessor", restrictedInterface);
+            engine.put("actor", restrictedInterface);
+        }
+	
         try {
             engine.eval(FileUtilities.openForReading(
                     "$CLASSPATH/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
@@ -692,19 +707,7 @@ public class JavaScript extends TypedAtomicActor {
                         "Failed to load " + localFunctionsPath + ".");
             }
         }
-        // Define the actor and accessor variables.
-        if (!restricted) {
-            engine.put("accessor", actor);
-            engine.put("actor", actor);
-        } else {
-	    if (actor == null) {
-		throw new IllegalArgumentException("Restricted JavaScript sandboxes only supported with JavaScript container actors.");
-	    }
-            RestrictedJavaScriptInterface restrictedInterface = new RestrictedJavaScriptInterface(
-                    actor);
-            engine.put("accessor", restrictedInterface);
-            engine.put("actor", restrictedInterface);
-        }
+
 	return engine;
     }
 
