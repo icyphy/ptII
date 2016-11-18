@@ -281,9 +281,10 @@ if (accessorHost === accessorHostsEnum.DUKTAPE) {
  *  The returned instance may also include the following properties:
  *
  *  * **accessorClass**: The class name of the accessor, if not anonymous.
+ *  * **containedAccessors**: A list of contained accessors, if this is a composite
+ *    accessor.
  *  * **container**: A reference to the containing accessor, if this instance is
- *    instantiated by such a container.  The Cape Code host does not set container,
- *    see [https://www.terraswarm.org/accessors/wiki/Version1/Container](https://www.terraswarm.org/accessors/wiki/Version1/Container)
+ *    instantiated by a composite accessor.
  *  * **extendedBy**: A reference to the accessor that this is extended by, if there is
  *    one.
  *  * **extending**: A reference to the accessor that this extends, if it extends one.
