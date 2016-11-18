@@ -67,7 +67,8 @@ import ptolemy.util.StringUtilities;
  *
  * <dl>
  * <dt><code>-js</code></dt>
- * <dd>The remaining arguments are regular JavaScript files that are
+ * <dd>Any arguments other than the optional
+ * <code>-timeout <i>NNNN</i></code> are regular JavaScript files that are
  * to be evaluated</dd>
  * <dt><code>-timeout</code></dt>
  * <dd>The next argument is the timeout in milliseconds.  The
@@ -82,7 +83,7 @@ import ptolemy.util.StringUtilities;
  *
  * <p> The command line syntax is:</p>
  * <pre>
- * [-js javascript.js ...] | [-timeout timeoutInMilliseconds] compositeAccessor1.js [compositeAccessor2.js ...]
+ * [-js javascript.js ...] [-timeout timeoutInMilliseconds] javaScriptOrcompositeAccessor1.js [javaScriptOrCompositeAccessor2.js ...]
  * </pre>
  *
  * @author Christopher Brooks
@@ -112,14 +113,31 @@ public class NashornAccessorHostApplication {
                     "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
         }
 
-	if (args[0].equals("-js")) {
+	if (args[0].equals("-js") || args[2].equals("-js")) {
+
+	    // Process the -timeout NNNN args.
+	    int argsStart = 1;
+	    int timeout = -1;
+	    if (args[1].equals("-timeout")) {
+		argsStart = 3;
+		timeout = Integer.parseInt(args[2]);
+	    } else if (args[0].equals("-timeout")) {
+		argsStart = 3;
+		timeout = Integer.parseInt(args[1]);
+	    }
+	    if (timeout > 0) {
+		Object instance = engine.eval("function() { print('NashornAccessorHostApplication done.');}");
+		((Invocable)engine).invokeFunction("setTimeout", instance, timeout);
+	    }
+
 	    // Evaluate the remaining arguments as JavaScript files.
 	    int i;
-	    for (i = 1; i < args.length; i++) {
+	    for (i = argsStart; i < args.length; i++) {
 		try (InputStreamReader reader = new InputStreamReader(new FileInputStream(args[i]), "UTF-8")) {
 		    engine.eval(reader);
 		}
 	    }
+
 	} else {
 	    // Process the optional -timeout ms args and then
 	    // instantiate and invoke the composite accessors named by
