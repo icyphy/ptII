@@ -34,7 +34,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals actor, console, exports, require */
+/*globals actor, console, exports, print, require */
 /*jshint globalstrict: true */
 /*jslint nomen: true */
 "use strict";

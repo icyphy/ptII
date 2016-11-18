@@ -198,7 +198,7 @@
 
 // Stop extra messages from jslint and jshint.
 // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint
-/*globals console, Duktape, exports, instance, Packages, process, require, setInterval, setTimeout, window */
+/*globals actor, alert, console, Duktape, exports, instance, java, Packages, process, require, setInterval, setTimeout, window */
 /*jshint globalstrict: true, multistr: true */
 'use strict';
 
@@ -1338,7 +1338,7 @@ function pushIfNotPresent(item, list) {
         }
     }
     list.push(item);
-};
+}
 
 /** Test function to query the accessor execution time statistics
  *  @return A mapping from accessor class to duration statistics for
@@ -1398,8 +1398,8 @@ Accessor.prototype.react = function(name) {
                                 var StringWriter = java.io.StringWriter, PrintWriter = java.io.PrintWriter;
                                 var stringWriter = new StringWriter();
                                 var printWriter = new PrintWriter(stringWriter);
-                                exception.printStackTrace(printWriter)
-                                stacktrace = "\n" + stringWriter.toString()
+                                exception.printStackTrace(printWriter);
+                                stacktrace = "\n" + stringWriter.toString();
                             } catch (exception2) {
                                 stacktrace = "undefined and the exception was not a Java exception so exception.printStackTrace() failed with: " + exception2;
                             }

@@ -42,7 +42,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, actor, load */
+/*globals Java, accessors, actor, commonHost, getAccessorCode, load */
 /*jshint globalstrict: true */
 /*jslint nomen: true */
 "use strict";
@@ -441,7 +441,7 @@ function instantiate(accessorName, accessorClass) {
     
     accessors.push(instance);
     return instance;
-};
+}
 
 /** Instantiate and initialize the accessors named by the
  *  accessorNames argument
@@ -492,7 +492,7 @@ function instantiateAndInitialize(accessorNames) {
         accessor.initialize();
     }
     return accessors;
-};
+}
 
 /** Invoke a composite accessor.
  *
@@ -561,4 +561,4 @@ function invoke(args) {
 	    setInterval(function () {}, 2147483647);
 	}
     }
-};
+}
