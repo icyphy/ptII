@@ -37,6 +37,10 @@
 
 	var phase = phaser.register();
 	var canceled = false;
+	// If you get
+	// "java.lang.IllegalStateException: Timer already cancelled."
+	// here, then it is because setTimeout( "function () {}", 99999)
+	// was not called after after loading bootstrap files.
 	timer.schedule(function() {
 	    if (canceled) {
 		return;
