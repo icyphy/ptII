@@ -27,72 +27,15 @@
  */
 package ptolemy.actor.lib.jjs;
 
-import java.io.BufferedReader;
 import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.InetAddress;
-import java.net.URI;
-import java.net.URL;
-import java.net.UnknownHostException;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
-import java.util.Arrays;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.Queue;
-import java.util.Set;
-import java.util.concurrent.ConcurrentLinkedQueue;
+import java.io.IOException;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
-import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
-import jdk.nashorn.api.scripting.ScriptObjectMirror;
-import ptolemy.actor.Director;
-import ptolemy.actor.IOPort;
-import ptolemy.actor.NoRoomException;
-import ptolemy.actor.TypeAttribute;
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.actor.lib.conversions.json.TokenToJSON;
-import ptolemy.actor.parameters.ParameterPort;
-import ptolemy.actor.parameters.PortParameter;
-import ptolemy.actor.util.Time;
-import ptolemy.data.BooleanToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.Token;
-import ptolemy.data.expr.Constants;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.expr.SingletonParameter;
-import ptolemy.data.expr.Variable;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
-import ptolemy.graph.Inequality;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.attributes.URIAttribute;
-import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.InternalErrorException;
-import ptolemy.kernel.util.KernelException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.kernel.util.NamedObj;
-import ptolemy.kernel.util.Settable;
-import ptolemy.kernel.util.SingletonAttribute;
-import ptolemy.kernel.util.StringAttribute;
-import ptolemy.kernel.util.Workspace;
-import ptolemy.moml.MoMLChangeRequest;
-import ptolemy.util.CancelException;
-import ptolemy.util.FileUtilities;
-import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -122,14 +65,24 @@ import ptolemy.util.StringUtilities;
  * can be converted in to .js Composite Accessor files provided that 
  * the .xml file only uses JavaScript and JSAccessor actors.</p>
  *
+ * <dl>
+ * <dt><code>-js</code></dt>
+ * <dd>The remaining arguments are regular JavaScript files that are
+ * to be evaluated</dd>
+ * <dt><code>-timeout</code></dt>
+ * <dd>The next argument is the timeout in milliseconds.  The
+ * remaining arguments are accessors that will be initialized and
+ * invoked.</dd>
+ * </dl>
+
  * <p>To invoke:</p>
  * <pre> 
- * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.JavaScriptApplication -timeout 10000 hosts/node/test/testNodeHost.js)
+ * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -timeout 10000 hosts/nashorn/test/testNashornHost.js)
  * </pre>
  *
  * <p> The command line syntax is:</p>
  * <pre>
- * [-timeout timeoutInMilliseconds] compositeAccessor1.js [compositeAccessor2.js ...]
+ * [-js javascript.js ...] | [-timeout timeoutInMilliseconds] compositeAccessor1.js [compositeAccessor2.js ...]
  * </pre>
  *
  * @author Christopher Brooks
@@ -159,11 +112,22 @@ public class NashornAccessorHostApplication {
                     "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
         }
 
-	// Evaluate the contents of the files named by the args.
-	/* _instance =*/ ((Invocable)engine)
-	    .invokeFunction("invoke",
-			    (Object)args);
-
+	if (args[0].equals("-js")) {
+	    // Evaluate the remaining arguments as JavaScript files.
+	    int i;
+	    for (i = 1; i < args.length; i++) {
+		try (InputStreamReader reader = new InputStreamReader(new FileInputStream(args[i]), "UTF-8")) {
+		    engine.eval(reader);
+		}
+	    }
+	} else {
+	    // Process the optional -timeout ms args and then
+	    // instantiate and invoke the composite accessors named by
+	    // the arguments.
+	    /* _instance =*/ ((Invocable)engine)
+		.invokeFunction("invoke",
+				(Object)args);
+	}
 	// FIXME: Should we close the engine in a finally block?
     }
 
@@ -173,7 +137,7 @@ public class NashornAccessorHostApplication {
      */
     public static void main(String[] args) {
 	try {
-	    new JavaScriptApplication(args);
+	    new NashornAccessorHostApplication(args);
 	} catch (Throwable throwable) {
 	    System.err.println("Command Failed: " + throwable);
 	    throwable.printStackTrace();
