@@ -210,7 +210,8 @@ var accessorHostsEnum = {
     CAPECODE: 2,
     DEFAULT: 3,
     DUKTAPE: 4,
-    NODE: 5
+    NODE: 5,
+    NASHORN: 6
 };
 exports.accessorHostsEnum = accessorHostsEnum;
 
@@ -219,10 +220,12 @@ var accessorHost = accessorHostsEnum.DEFAULT;
 // In alphabetical order.
 if (typeof window !== 'undefined' && window.hasOwnProperty('browserJSLoaded')) {
     accessorHost = accessorHostsEnum.BROWSER;
-} else if (typeof Packages !== 'undefined' && typeof Packages.java.util.Vector === 'function') {
+} else if (typeof Packages !== 'undefined' && typeof Packages.java.util.Vector === 'function' && actor !== null) {
     accessorHost = accessorHostsEnum.CAPECODE;
 } else if (typeof Duktape === 'object') {
     accessorHost = accessorHostsEnum.DUKTAPE;
+} else if (typeof Packages !== 'undefined' && typeof Packages.java.util.Vector === 'function' && actor === null) {
+    accessorHost = accessorHostsEnum.NASHORN;
 } else if (typeof process !== 'undefined' && typeof process.version === 'string') {
     accessorHost = accessorHostsEnum.NODE;
 }
