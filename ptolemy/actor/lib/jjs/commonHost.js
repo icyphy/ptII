@@ -1392,7 +1392,7 @@ Accessor.prototype.react = function(name) {
                         // If the exception was thrown because of
                         // Java, we should get the Java stacktrace.
                         var stacktrace = exception.stack;
-                        if (typeof stacktrace === 'undefined' && accessorHost === accessorHostsEnum.CAPECODE) {
+                        if (typeof stacktrace === 'undefined' && accessorHost === accessorHostsEnum.CAPECODE || accessorHost === accessorHostEnum.NASHORN) {
                             try {
                                 // This code is Cape Code Host-specific because it uses Java.
                                 var StringWriter = java.io.StringWriter, PrintWriter = java.io.PrintWriter;
@@ -1564,7 +1564,8 @@ Accessor.prototype.scheduleEvent = function(accessor) {
         thiz.reactRequestedAlready = true;
         setTimeout(function() { thiz.react(); }, 0);
     }
-    if (!queue || queue.length === 0) {
+    // In the Nashorn host, queue can be undefined.
+    if (typeof queue === 'undefined' || !queue || queue.length === 0) {
         // Use a simple array as an event queue because almost all
         // sorted insertions will be at the end, and all extractions
         // will be at the beginning.
