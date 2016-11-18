@@ -376,4 +376,5 @@
     };
     return _requireClosure(new java.io.File(rootDir));
     // last line deliberately has no semicolon!
-})
+});
+
