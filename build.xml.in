@@ -258,7 +258,7 @@
 	  description="Build Ptolemy II by compiling the .java files and possibly the scripts in $PTII/bin.  This is the default ant target.  Run 'ant build-all' to build everything."/>
 
   <target name="build-all"
-	  depends="build, build-lbnl"
+	  depends="build, build-lbnl, build-bin"
 	  description="Build Ptolemy II by compiling the .java files, the scripts in $PTII/bin and the .c files in $PTII/lbnl"/>
 
   <target name="build-bin"
@@ -367,7 +367,7 @@ For example:
     <bundleapp
        applicationCategory="public.app-category.developer-tools"
        name="Ptiny"
-       copyright="Copyright (c) 1995-2015 The Regents of the University of California. All rights reserved."
+       copyright="Copyright (c) 1995-2017 The Regents of the University of California. All rights reserved."
        displayname="Ptiny"
        identifier="ptole"
        mainclassname="ptolemy.vergil.VergilApplication"
@@ -665,6 +665,7 @@ For example:
       <arg value="doc/codeDoc/js" />
 
       <arg value="ptolemy/actor/lib/jjs"/>
+      <arg value="ptolemy/actor/lib/vertx/demo"/>
       <arg value="org/terraswarm/accessor"/>
     </exec>
   </target>

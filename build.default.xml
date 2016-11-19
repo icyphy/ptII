@@ -35,7 +35,7 @@
        that consume a lot of memory.  This will probably not work
        under 32-bit Windows.  See
        http://javarevisited.blogspot.jp/2013/04/what-is-maximum-heap-size-for-32-bit-64-JVM-Java-memory.html-->
-  <property name="java.maxmemory.large" value="5500m" />
+  <property name="java.maxmemory.large" value="8000m" />
 
   <!-- Packages to exclude from targets that call javadoc.
        Unfortunately, <fileset> results in a command line that is too long.
@@ -45,7 +45,7 @@
   <property name="javadoc.excludepackagenames" value="diva.util.java2d.svg,org.ptolemy.fmi,org.terraswarm.gdp,ptolemy.actor.corba,ptolemy.actor.lib.embeddedJava,ptolemy.actor.lib.excel,ptolemy.actor.lib.fmi,ptolemy.actor.lib.io.comm,ptolemy.actor.lib.jai,ptolemy.actor.lib.jmf,ptolemy.actor.lib.jni,ptolemy.actor.lib.jopio,ptolemy.actor.lib.joystick,ptolemy.actor.lib.jxta,ptolemy.actor.lib.jxta.*,ptolemy.actor.lib.mail,ptolemy.actor.lib.opencv,ptolemy.actor.lib.opencv.*,ptolemy.actor.lib.reactable,ptolemy.actor.lib.vertx,ptolemy.actor.lib.x10,ptolemy.actor.lib.xslt,ptolemy.actor.ptalon,ptolemy.apps.*,ptolemy.backtrack.eclipse.*,ptolemy.backtrack.test,ptolemy.calltrop,ptolemy.chic,ptolemy.copernicus,ptolemy.copernicus.kernel.fragment,ptolemy.distributed,ptolemy.domains.giotto,ptolemy.domains.gr,ptolemy.domains.gr.lib.experimental,ptolemy.domains.gr.lib.quicktime,ptolemy.domains.metroII.kernel,ptolemy.domains.metroII.kernel.util.ProtoBuf,ptolemy.domains.openmodelica.kernel,ptolemy.domains.openmodelica.lib,ptolemy.domains.pdf,ptolemy.domains.ptinyos.demo.Surge.output,ptolemy.domains.space,ptolemy.matlab,ptolemy.moml.jxta,ptolemy.plot.servlet,ptolemy.vergil.basic.export.html,ptolemy.vergil.basic.export.itextpdf,ptolemy.vergil.basic.imprt.g4ltl,ptserver.*,reports.*,src.*,target.*,thales.*,tmp.*,vendors.*,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
 
   <!-- Packages on which doccheck, javadoc and ojdcheck are run. -->
-  <property name="javadoc.packagenames" value="diva.*,lbnl.*,org.hlacerti.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
+  <property name="javadoc.packagenames" value="com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
 
   <!-- The location of the jsdoc distribution, used by the jsdoc target. -->
   <property name="jsdoc.home" value="vendors/jsdoc" />
@@ -100,7 +100,7 @@
 
   <!-- The timeout in seconds for longest running junit tests.
        See also the timeout= values in ptolemy/util/test/junit/*.java. -->
-  <property name="timeout.longest" value="18000000" />
+  <property name="timeout.longest" value="19000000" />
 
 
   <!-- Ant paths to optional jar files set by the configure script. -->
@@ -193,6 +193,7 @@
     </fileset>
   </path>
 
+  <!-- The Ptolemy II Classpath -->
   <path id="ptII.classpath">
     <pathelement location="${env.HOME}/.ptolemyII" />
     <!-- Java 1.6 and later: * in the classpath matches *.jar files -->
@@ -357,10 +358,38 @@
 	      excludes="**/vendors/**/*.js,**/node_modules/**/*.js,**/node/**/*.js,**/node/*.js"
 	      />
 
+  <!-- Path of JavaScript tests for Mocha -->
+  <fileset id="test.mocha.files" dir="${basedir}">
+    <include name="**/mocha/test*.js"/>
+    <exclude name="**/node_modules/**"/>
+    <patternset refid="ptII.excludes" />
+  </fileset>
+  
   <!-- Ant targets. Alphabetize and add a description, please.  -->
+
+  <!-- Targets that start with "-" are not meant to be run by users.
+       These targets typically check to see if files are present.
+  -->
+
+  <target name="-check-bin-vergil" unless="bin.vergil.exists">
+    <available property="bin.vergil.exists" file="bin/vergil"/>
+  </target>
 
   <target name="-check-jshint-executable" unless="jshint.executable.exists">
     <available property="jshint.executable.exists" file="${jshint.executable}"/>
+  </target>
+
+  <target name="-check-make-bin-vergil" unless="bin.vergil.exists">
+    <condition property="bin.vergil.makeable">
+      <and>
+	<not>
+	  <available file="bin/vergil"/>
+	</not>
+	<available file="mk/ptII.mk"/>
+	<available file="make"
+		   filepath="${env.PATH}"/>
+      </and>
+    </condition>
   </target>
 
   <target name="-check-ptII-mk-file" unless="ptII.mk..exists">
@@ -376,17 +405,17 @@
   </target>
 
   <target name="build"
-	  depends="build-message, build-subprojects, build-project"
-	  description="Build Ptolemy II by compiling the .java files.  This is the default ant target.  Run 'ant build-all' to build everything."/>
+	  depends="build-message, build-subprojects, build-project, build-bin"
+	  description="Build Ptolemy II by compiling the .java files and possibly the scripts in $PTII/bin.  This is the default ant target.  Run 'ant build-all' to build everything."/>
 
   <target name="build-all"
 	  depends="build, build-lbnl, build-bin"
-	  description="Build Ptolemy II by compiling the .java files, the .c files in $PTII/lbnl and the $PTII/bin scripts."/>
+	  description="Build Ptolemy II by compiling the .java files, the scripts in $PTII/bin and the .c files in $PTII/lbnl"/>
 
   <target name="build-bin"
-	  depends="-check-ptII-mk-file, build-bin-not"
+	  depends="-check-ptII-mk-file, -check-bin-vergil, -check-make-bin-vergil, build-bin-not, build-not-bin-vergil"
 	  description="Run make in $PTII/bin, which creates scripts like $PTII/bin/vergil."
-	  if="${ptII.mk.exists}">
+	  if="${bin.vergil.makeable}">
       <exec dir="${basedir}/bin" executable="make">
       </exec>
   </target>
@@ -395,6 +424,15 @@
 	  unless="${ptII.mk.exists}">
       <echo>
 	$PTII/mk/ptII.mk does not exist, perhaps (cd $PTII; ./configure) has not been run?
+      </echo>
+  </target>
+
+  <target name="build-not-bin-vergil"
+	  unless="${bin.vergil.exists}">
+      <echo>
+	$PTII/bin/vergil does not exist, perhaps (cd $PTII/bin; make) has not been run?
+	This can happen if the make binary cannot be found in the path or if $PTII/mk/ptII.mk
+	is not present.
 	Skipping running make in $PTII/bin, which creates scripts like $PTII/bin/vergil.
 	This is only an issue if you want to invoke "$PTII/bin/vergil" instead of "ant vergil".
 	However, $PTII/bin does include other scripts that may be of use.
@@ -477,7 +515,7 @@ For example:
     <bundleapp
        applicationCategory="public.app-category.developer-tools"
        name="Ptiny"
-       copyright="Copyright (c) 1995-2014 The Regents of the University of California. All rights reserved."
+       copyright="Copyright (c) 1995-2017 The Regents of the University of California. All rights reserved."
        displayname="Ptiny"
        identifier="ptole"
        mainclassname="ptolemy.vergil.VergilApplication"
@@ -1084,6 +1122,8 @@ For example:
       </batchtest>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+      <jvmarg value="-XX:+HeapDumpOnOutOfMemoryError"/>
+      <jvmarg value="-XX:HeapDumpPath=${env.HOME}/ptII.test.longest.hprof"/>
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
@@ -1118,6 +1158,8 @@ For example:
       <jvmarg value="-Dptolemy.ptII.exportHTML.linkToJNLP=true"/>
       <jvmarg value="-Dptolemy.ptII.exportHTML.usePtWebsite=true"/>
       <jvmarg value="-XX:MaxPermSize=256m"/>
+      <jvmarg value="-XX:+HeapDumpOnOutOfMemoryError"/>
+      <jvmarg value="-XX:HeapDumpPath=${env.HOME}/ptII.test.longest.hprof"/>
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
@@ -1416,8 +1458,58 @@ For example:
       <formatter type="plain" usefile="off" />
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+      <jvmarg value="-Dptolemy.ptII.exportHTML.linkToJNLP=true"/>
+      <jvmarg value="-Dptolemy.ptII.exportHTML.usePtWebsite=true"/>
       <jvmarg value="-XX:MaxPermSize=256m"/>
+      <jvmarg value="-XX:+HeapDumpOnOutOfMemoryError"/>
+      <jvmarg value="-XX:HeapDumpPath=${env.HOME}/ptII.test.longest.hprof"/>
     </junit>
+  </target>
+
+  <target name="test.mocha"
+          description="Use mocha to test node.js and generate output on stdout.">
+    <echo>
+      ==test.mocha==
+      This target uses mocha to test Node.js tests in **/mocha/test*.js files.
+      This target requires setup:
+        sudo npm install -g mocha
+        sudo npm install -g mocha-junit-reporter
+      See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSMocha
+    </echo>
+
+    <pathconvert refid="test.mocha.files"
+		 pathsep=" "
+		 property="converted"/>
+
+    <echo>Running test.mocha in ${converted}</echo>
+    <exec executable="mocha">
+      <arg line="${converted}"/>
+    </exec>
+  </target>
+  
+  <target name="test.mocha.xml"
+          description="Use mocha to test node.js and generate JUnit compatible xml output.">
+    <echo>
+      ==test.mocha.xml==
+      This target uses mocha to test Node.js tests in **/mocha/test*.js files.
+      This target requires setup:
+        sudo npm install -g mocha
+        sudo npm install -g mocha-junit-reporter
+      See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSMocha
+      The output will appear in reports/junit/mochaJUnit.xml
+    </echo>
+
+    <pathconvert refid="test.mocha.files"
+		 pathsep=" "
+		 property="converted"/>
+
+    <exec executable="mocha">
+      <arg value="--reporter"/>
+      <arg value="mocha-junit-reporter"/>
+      <arg value="--reporter-options"/>
+      <arg value="mochaFile=reports/junit/mochaJUnit.xml"/>
+      <arg line="${converted}"/>
+    </exec>
   </target>
 
   <target name="test.report" depends="build, initReports"
