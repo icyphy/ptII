@@ -379,8 +379,8 @@ $(PTIIDIST):
 	cp $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/gluegen.jar $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
 	#
 	# jsdoc
-	# Avoid "fatal: unable to access 'https://github.com/jsdoc3/jsdoc.git/': Protocol https not supported or disabled in libcurl"
-	cd $(PTIIDIST)/vendors; LD_LIBRARY_PATH="" git clone https://github.com/jsdoc3/jsdoc.git
+	# Avoid "fatal: unable to access 'https://github.com/jsdoc3/jsdoc.git': Protocol https not supported or disabled in libcurl"
+	cd $(PTIIDIST)/vendors; LD_LIBRARY_PATH="" git clone https://github.com/terraswarm/jsdoc.git
 	#
 	# Serial
 	mkdir -p $(PTIIDIST)/vendors/misc/rxtx/
