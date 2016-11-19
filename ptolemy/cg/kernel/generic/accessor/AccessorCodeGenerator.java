@@ -160,7 +160,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                 + INDENT1 + comment(" $PTII/bin/vergil -capecode " + modelURI)
                 + ((AccessorCodeGeneratorAdapter) getAdapter(toplevel()))
                 .generateAccessor()
-                + "}" + _eol);
+                + "};" + _eol);
 	} catch (IOException ex) {
 	    throw new IllegalActionException(_model, "Failed to get the canonical path of " + codeDirectory);
 	}
