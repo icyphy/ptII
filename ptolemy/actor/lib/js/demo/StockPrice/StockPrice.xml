@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="StockPrice" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
@@ -45,7 +45,7 @@
         </property>
     </property>
     <entity name="StockTick" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="function fire() {&#10;  var stock = valueOf(symbol);&#10;  var url = &quot;http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22&quot;&#10;    + stock&#10;    + &quot;%22)%0A%09%09&amp;env=http%3A%2F%2Fdatatables.org%2Falltables.env&amp;format=json&quot;;&#10;  var record = readURL(url);&#10;  var json = JSON.parse(record);&#10;  var tick = json.query.results.quote.BidRealtime;&#10;  send(tick, price);&#10;}">
+        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="function fire() {&#10;  var stock = valueOf(symbol);&#10;  var url = &quot;http://query.yahooapis.com/v1/public/yql?q=select%20*%20from%20yahoo.finance.quotes%20where%20symbol%20in%20(%22&quot;&#10;    + stock&#10;    + &quot;%22)%0A%09%09&amp;env=http%3A%2F%2Fdatatables.org%2Falltables.env&amp;format=json&quot;;&#10;  try {&#10;       var record = readURL(url);&#10;       var json = JSON.parse(record);&#10;       var tick = json.query.results.quote.BidRealtime;&#10;       if (tick === null) {&#10;           tick = json.query.results.quote.Bid;&#10;       }&#10;       send(tick, price);&#10;  } catch (error) {&#10;     //Ignore&#10;  }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -119,7 +119,7 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 475, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 475, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
