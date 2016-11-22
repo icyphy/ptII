@@ -30,6 +30,8 @@ package ptolemy.actor.lib.jjs;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.IOException;
+import java.nio.file.Paths;
+import java.util.Arrays;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
@@ -66,24 +68,37 @@ import ptolemy.util.StringUtilities;
  * the .xml file only uses JavaScript and JSAccessor actors.</p>
  *
  * <dl>
- * <dt><code>-js</code></dt>
- * <dd>Any arguments other than the optional
- * <code>-timeout <i>NNNN</i></code> are regular JavaScript files that are
- * to be evaluated</dd>
- * <dt><code>-timeout</code></dt>
- * <dd>The next argument is the timeout in milliseconds.  The
- * remaining arguments are accessors that will be initialized and
- * invoked.</dd>
+ * <dt><code>-accessor|--accessor</code>
+ * <dd>If present, then the files named as command line arguments are
+ * Composite Accessors and should be passed to
+ * instantiateAndInitialize(). If not present, then the files named
+ * as command line arguments are to be interpreted as regular
+ * JavaScript files.</dd>
+ * <dt><code>-echo|--echo</code></dt>
+ * <dd>Echo the command that would be run by hand to replicate the
+ * test. This is helpful for use under Ant apply.</dd>
+ * <dt><code>-h|--h|-help|--help</code></dt>
+ * <dd>Print a usage message</dd>
+ * <dt><code>-timeout|--timeout <i>milliseconds</i></code></dt>
+ * <dd>The minimum amount of time the script should run.</dd>
  * </dl>
+
+ * <p>After the flags, the one or more JavaScript files are present that
+ * name either or regular JavaScript files.</p>
 
  * <p>To invoke:</p>
  * <pre> 
- * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -timeout 10000 hosts/nashorn/test/testNashornHost.js)
+ * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -accessor -timeout 10000 hosts/nashorn/test/testNashornHost.js)
  * </pre>
  *
  * <p> The command line syntax is:</p>
  * <pre>
- * [-js javascript.js ...] [-timeout timeoutInMilliseconds] javaScriptOrcompositeAccessor1.js [javaScriptOrCompositeAccessor2.js ...]
+ * java -classpath $PTII ptolemy.actor.lib.jjs.NashornAccessorHostApplication \
+ *  [-accessor|--accessors] \
+ *  [-h|--h|-help|--help] \
+ *  [-echo|--echo] \
+ *  [-timeout|--timeout milliseconds] \
+ *  accessorOrRegularJavaScriptFile1.js [accessorOrRegularJavaScriptFile2.js ...]
  * </pre>
  *
  * @author Christopher Brooks
@@ -113,39 +128,71 @@ public class NashornAccessorHostApplication {
                     "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
         }
 
-	if (args[0].equals("-js") || args[2].equals("-js")) {
-
-	    // Process the -timeout NNNN args.
-	    int argsStart = 1;
-	    int timeout = -1;
-	    if (args[1].equals("-timeout")) {
-		argsStart = 3;
-		timeout = Integer.parseInt(args[2]);
-	    } else if (args[0].equals("-timeout")) {
-		argsStart = 3;
-		timeout = Integer.parseInt(args[1]);
+	boolean accessors = false, echo = false, help = false;
+	int timeout = -1;
+	int i;
+	for (i = 0; i < args.length; i++) {
+	    if (args[i].equals("-accessor")
+		|| args[i].equals("--accessor")) {
+		accessors = true;
+	    } else if (args[i].equals("-echo")
+		       || args[i].equals("--echo")) {
+		echo = true;
+	    } else if (args[i].equals("-h")
+		       || args[i].equals("--h")
+		       || args[i].equals("-help")
+		       || args[i].equals("--help")) {
+		help = true;		
+	    } else if (args[i].equals("-timeout")
+		       || args[i].equals("--timeout")) {
+		if (i+1 <= args.length) {
+		    timeout = Integer.parseInt(args[++i]);
+		}
+	    } else if (!args[i].substring(0,1).equals("-")) {
+		// All done with command line args.
+		break;
+	    } else {
+		_usage();
+		StringUtilities.exit(2);
 	    }
-	    if (timeout > 0) {
-		Object instance = engine.eval("function() { print('NashornAccessorHostApplication done.');}");
-		((Invocable)engine).invokeFunction("setTimeout", instance, timeout);
-	    }
+	}
 
-	    // Evaluate the remaining arguments as JavaScript files.
-	    int i;
-	    for (i = argsStart; i < args.length; i++) {
+	if (echo) {
+	    System.out.println("--------------- (cd "
+			     +  Paths.get(".").toAbsolutePath().normalize().toString()
+			     + "; java -classpath $PTII ptolemy.actor.lib.jjs.NashornAccessorHostApplication "
+			     + Arrays.toString(args)
+			     + ")");
+	    
+	}
+	if (help) {
+	    _usage();
+	    // Force a timeout so that we exit.
+	    timeout = 1;
+	}
+	if (timeout > 0) {
+	    Object instance = engine.eval("function() { print('NashornAccessorHostApplication done.'); var System = Java.type('java.lang.System'); System.exit(0);}");
+	    ((Invocable)engine).invokeFunction("setTimeout", instance, timeout);
+	}
+
+	if (accessors) {
+	    // Instantiate and invoke the composite accessors named by
+	    // the arguments.
+	    String [] shortArgs = new String[args.length - i];
+	    System.arraycopy(args, i, shortArgs, 0, args.length - i);
+	    /* _instance =*/ ((Invocable)engine)
+		.invokeFunction("instantiateAndInitialize",
+				(Object)shortArgs);
+
+	} else {
+	    // Evaluate each file.
+	    for (; i < args.length; i++) {
 		try (InputStreamReader reader = new InputStreamReader(new FileInputStream(args[i]), "UTF-8")) {
 		    engine.eval(reader);
 		}
 	    }
-
-	} else {
-	    // Process the optional -timeout ms args and then
-	    // instantiate and invoke the composite accessors named by
-	    // the arguments.
-	    /* _instance =*/ ((Invocable)engine)
-		.invokeFunction("invoke",
-				(Object)args);
 	}
+
 	// FIXME: Should we close the engine in a finally block?
     }
 
@@ -161,5 +208,14 @@ public class NashornAccessorHostApplication {
 	    throwable.printStackTrace();
 	    StringUtilities.exit(1);
 	}
+    }
+
+    private static void _usage() {
+	System.out.println("Usage: java -classpath $PTII ptolemy.actor.lib.jjs.NashornAccessorHostApplication \\\n"
+			   + "  [-accessor|--accessors] \\\n"
+			   + "  [-h|--h|-help|--help] \\\n"
+			   + "  [-echo|--echo] \\\n"
+			   + "  [-timeout|--timeout milliseconds] \\\n"
+			   + "  accessorOrRegularJavaScriptFile1.js [accessorOrRegularJavaScriptFile2.js ...]");
     }
 }
