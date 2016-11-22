@@ -17,76 +17,76 @@
 
     var timeoutStack = 0;
     function pushTimeout() {
-	timeoutStack++;
+        timeoutStack++;
     }
     function popTimeout() {
-	timeoutStack--;
-	if (timeoutStack > 0) {
-	    return;
-	}
-	timer.cancel();
-	phaser.forceTermination();
+        timeoutStack--;
+        if (timeoutStack > 0) {
+            return;
+        }
+        timer.cancel();
+        phaser.forceTermination();
     }
 
     var onTaskFinished = function() {
-	phaser.arriveAndDeregister();
+        phaser.arriveAndDeregister();
     };
 
     context.setTimeout = function(fn, millis /* [, args...] */) {
-	var args = [].slice.call(arguments, 2, arguments.length);
+        var args = [].slice.call(arguments, 2, arguments.length);
 
-	var phase = phaser.register();
-	var canceled = false;
-	// If you get
-	// "java.lang.IllegalStateException: Timer already cancelled."
-	// here, then it is because setTimeout( "function () {}", 99999)
-	// was not called after after loading bootstrap files.
-	timer.schedule(function() {
-	    if (canceled) {
-		return;
-	    }
-	    
-	    try {
-		fn.apply(context, args);
-	    } catch (e) {
-		print(e);
-	    } finally {
-		onTaskFinished();
-		popTimeout();
-	    }
-	}, millis);
+        var phase = phaser.register();
+        var canceled = false;
+        // If you get
+        // "java.lang.IllegalStateException: Timer already cancelled."
+        // here, then it is because setTimeout( "function () {}", 99999)
+        // was not called after after loading bootstrap files.
+        timer.schedule(function() {
+            if (canceled) {
+                return;
+            }
 
-	pushTimeout();
+            try {
+                fn.apply(context, args);
+            } catch (e) {
+                print(e);
+            } finally {
+                onTaskFinished();
+                popTimeout();
+            }
+        }, millis);
 
-	return function() {
-	    onTaskFinished();
-	    canceled = true;
-	    popTimeout();
-	};
+        pushTimeout();
+
+        return function() {
+            onTaskFinished();
+            canceled = true;
+            popTimeout();
+        };
     };
 
     context.clearTimeout = function(cancel) {
-	cancel();
+        cancel();
     };
 
     context.setInterval = function(fn, delay /* [, args...] */) {
-	var args = [].slice.call(arguments, 2, arguments.length);
+        var args = [].slice.call(arguments, 2, arguments.length);
 
-	var cancel = null;
+        var cancel = null;
 
-	var loop = function() {
-	    cancel = context.setTimeout(loop, delay);
-	    fn.apply(context, args);
-	};
+        var loop = function() {
+            cancel = context.setTimeout(loop, delay);
+            fn.apply(context, args);
+        };
 
-	cancel = context.setTimeout(loop, delay);
-	return function() {
-	    cancel();
-	};
+        cancel = context.setTimeout(loop, delay);
+        return function() {
+            cancel();
+        };
     };
 
     context.clearInterval = function(cancel) {
-	cancel();
+        cancel();
     };
 
 })(this);

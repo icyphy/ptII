@@ -95,10 +95,10 @@ var EventEmitter = require('events').EventEmitter;
  *            the server to issue the request to. This defaults to 'localhost'.
  *       <li> path: Request path as a string. This defaults to '/'. This can
  *            include a query string, e.g. '/index.html?page=12', or the query
- *            string can be specified as a separate field (see below). 
+ *            string can be specified as a separate field (see below).
  *            An exception is thrown if the request path contains illegal characters.
  *       <li> protocol: The protocol. This is a string that defaults to 'http'.
- *       <li> port: Port of remote server. This defaults to 80. 
+ *       <li> port: Port of remote server. This defaults to 80.
  *       <li> query: A query string to be appended to the path, such as '?page=12'.
  *       </ul>
  *  </ul>
@@ -111,13 +111,13 @@ exports.request = function (options, responseCallback) {
     return new ClientRequest(options, responseCallback);
 };
 
-// NOTE: Perhaps options should include a localAddress: A string giving a name or 
+// NOTE: Perhaps options should include a localAddress: A string giving a name or
 // IP address for the local network interface to use
 // for network connections. This defaults to 'localhost', but on machines with more than one
 //  network interface (e.g. WiFi and Ethernet), you may need to specify which one to use.
 // Marten, 05/21/2015: I'm not sure if I understand the problem (or solution) here.
 // Depending on the IP address, the host's routing table will
-// determine which device will be used. The name 'localhost' does not signify a 
+// determine which device will be used. The name 'localhost' does not signify a
 // network interface but a hostname.
 
 // NOTE: Node has keepAliveMsecs, but I don't see anything like it in Vert.x
@@ -135,7 +135,7 @@ exports.request = function (options, responseCallback) {
 // Agent object: explicitly use the passed in Agent.
 // false: opts out of connection pooling with an Agent, defaults request to Connection: close.
 
-// NOTE: This interface is attempting to follow principles in this module: 
+// NOTE: This interface is attempting to follow principles in this module:
 // https://github.com/request/request
 
 /** Convenience method to issue an HTTP GET.  This just calls request() and then
@@ -210,7 +210,7 @@ exports.put = function (options, responseCallback) {
 };
 
 // NOTE: The following events are produced by ClientRequest in Node.js
-// From: http.ClientRequest 
+// From: http.ClientRequest
 // Event: 'response'
 // Event: 'socket'
 // Event: 'connect'
@@ -263,7 +263,7 @@ function ClientRequest(options, responseCallback) {
     var urlSpec;
     if (util.isString(options)) {
         urlSpec = options;
-        options = {}; // If only URL is passed in, create new options object 
+        options = {}; // If only URL is passed in, create new options object
     } else if (util.isString(options.url)) {
         urlSpec = options.url;
     }
@@ -291,7 +291,7 @@ function ClientRequest(options, responseCallback) {
     options = util._extend(defaultOptions, options);
 
     // Attach the callback to be invoked when this object issues
-    // a 'response' event.  
+    // a 'response' event.
     if (responseCallback) {
         if (options.outputCompleteResponseOnly) {
             self.once('response', responseCallback);
@@ -335,11 +335,11 @@ ClientRequest.prototype.stop = function () {
     }
 };
 
-// FIXME:  Writing is currently implemented as part of ClientRequest().  The 
-// body is passed in as part of the options object, options.body.  
-// ClientRequest() both creates and sends the request; the request object is not 
+// FIXME:  Writing is currently implemented as part of ClientRequest().  The
+// body is passed in as part of the options object, options.body.
+// ClientRequest() both creates and sends the request; the request object is not
 // returned to httpClient.js.
-// We may need something different for multi-part requests? 
+// We may need something different for multi-part requests?
 ClientRequest.prototype.write = function (data, encoding) {
     throw ("Write is implemented as part of ClientRequest()");
 };

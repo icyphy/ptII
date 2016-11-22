@@ -25,15 +25,15 @@
 // Ptolemy II includes the work of others, to see those copyrights, follow
 // the copyright link on the splash page or see copyright.htm.
 /**  A device discovery library for the Javascript Nashorn engine.
- *  
- *  This library uses the "ping" and "arp" commands to discover devices 
- *  connected to the local network.  Command syntax is adjusted for OS 
+ *
+ *  This library uses the "ping" and "arp" commands to discover devices
+ *  connected to the local network.  Command syntax is adjusted for OS
  *  differences.
- *  
- *  It implements the discover(IPAddress) method required by the device 
+ *
+ *  It implements the discover(IPAddress) method required by the device
  *  discovery accessor, and returns a JSON object containing a list of device
  *  IP addresses, and names and MAC addresses when available.
- *  
+ *
  *  Accessors overview: https://www.terraswarm.org/accessors/
  *  Device discovery overview:  http://www.terraswarm.org/testbeds/wiki/Main/DiscoverEthernetMACs
  *
@@ -42,15 +42,15 @@
  */
 
 /**  A service discovery function for the Javascript Nashorn engine.
- *  
+ *
  *  The long term goal is to provide a discovery process based on a defined ontology
- *  for a particular category of services. Right now, the list of services are known a-priori 
- *  and specified as interfaces (e.g. GSNInterface.js) that context aware accessor can  include using the 
- *  'implement' function. 
- *  
+ *  for a particular category of services. Right now, the list of services are known a-priori
+ *  and specified as interfaces (e.g. GSNInterface.js) that context aware accessor can  include using the
+ *  'implement' function.
+ *
  *  The known services are obtained via the services() function which is implemented
  *  by the method availableServices() in the helper class.
- * 
+ *
  *  @module contextAware
  *  @author Anne H. Ngu
  */
@@ -68,8 +68,8 @@ var DiscoveryHelper = Java.type('ptolemy.actor.lib.jjs.modules.discovery.Discove
 
 exports.DiscoveryService = DiscoveryService;
 
-/** A DiscoveryService "class" that polls the local network for available 
- *  devices.  A device is considered available if it responds to a ping 
+/** A DiscoveryService "class" that polls the local network for available
+ *  devices.  A device is considered available if it responds to a ping
  *  request.  Emits an event once device polling is complete.
  */
 function DiscoveryService() {
@@ -78,7 +78,7 @@ function DiscoveryService() {
     var helper = new DiscoveryHelper();
 
     /** Discover devices on the local area network.
-     * 
+     *
      * @param IPAddress The IP address of the host machine.
      * @param discoveryMethod  Optional. The discovery method to use, e.g. nmap.
      */
@@ -92,7 +92,7 @@ function DiscoveryService() {
         }
 
         // Use JSON.parse() here, since discoverDevices() returns a string
-        // representation of a JSON array.  Problems occurred if a JSONArray 
+        // representation of a JSON array.  Problems occurred if a JSONArray
         // object was directly returned instead of a string.
         self.emit('discovered', JSON.parse(devices));
     };

@@ -22,10 +22,10 @@
 
 /**
  * Module to simulate selected functions of a Hue bridge.
- * 
+ *
  * The module creates a virtual bridge for each unique bridge ID (a string
- * provided by an accessor).  The module remembers configuration and state 
- * information for the bridge.  
+ * provided by an accessor).  The module remembers configuration and state
+ * information for the bridge.
  *
  * @module mockHueBridge
  * @author Elizabeth Osyk
@@ -43,13 +43,13 @@ var util = require('util');
 
 var MockHueBridgeHelper = Java.type('ptolemy.actor.lib.jjs.modules.mockHueBridges.MockHueBridgeHelper');
 
-////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ////Classes provided in this module.
 
 /** Construct an instance of a MockHueBridge object.
- * 
+ *
  *  To create a bridge, connect, and send commands, you can do this:
- *  
+ *
  *  <pre>
  *      var MockHueBridgeHelper = Java.type('ptolemy.actor.lib.jjs.modules.mockHueBridges.MockHueBridgeHelper');
  *          var helper = MockHueBridgeHelper.getInstance();
@@ -58,20 +58,20 @@ var MockHueBridgeHelper = Java.type('ptolemy.actor.lib.jjs.modules.mockHueBridge
  *
  *            var response;
  *      response = connection.command(method, uri); // If no request body
- *      response = connection.command(method, uri, body);  // Request with body 
+ *      response = connection.command(method, uri, body);  // Request with body
  *  </pre>
- * 
+ *
  *  An instance of this object type implements the following functions:
  *  <ul>
- *  <li> connect(bridgeID): Connect to the bridge with the given ID string. 
- *   Remembers the bridgeID so the caller doesn't have to specify it for every 
+ *  <li> connect(bridgeID): Connect to the bridge with the given ID string.
+ *   Remembers the bridgeID so the caller doesn't have to specify it for every
  *   command. </li>
- *  <li> MockHueBridgeConnection(bridgeID): Create a connection with the given 
+ *  <li> MockHueBridgeConnection(bridgeID): Create a connection with the given
  *   bridgeID string. </li>
  *  <li> MockHueBridgeConnection.command(method, URIpath, body): Issue a command
  *   to the bridge in the form of an HTTP request with the specified method
  *   (GET, POST, PUT), path and body (for POST and PUT). </li>
- *  <li> MockHueBridgeConnection.initializeToDefault(): Initialize bridge to 
+ *  <li> MockHueBridgeConnection.initializeToDefault(): Initialize bridge to
  *   default configuration of two lights. </li>
  *  </ul>
  */
@@ -151,7 +151,7 @@ exports.MockHueBridge = (function () {
         }
     };
 
-    ////////////////////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     //// Public functions of MockHueBridge
 
     /** Connect to the bridge, remembering the bridge ID.
@@ -167,8 +167,8 @@ exports.MockHueBridge = (function () {
         return new MockHueBridgeConnection(bridgeID);
     }
 
-    /** Construct an instance of a MockHueBridgeConnection object.  
-     *  This object remembers the bridgeID so the caller does not have to 
+    /** Construct an instance of a MockHueBridgeConnection object.
+     *  This object remembers the bridgeID so the caller does not have to
      *  provide it for every command.
      *  @param bridgeID A unique string identifying the bridge.
      */
@@ -176,7 +176,7 @@ exports.MockHueBridge = (function () {
         // Call the super constructor for EventEmitter
         EventEmitter.call(this);
 
-        // Store the bridgeID.  This variable is available to functions 
+        // Store the bridgeID.  This variable is available to functions
         // contained by MockHueBridgeConnection.
         var bridgeID = theBridgeID;
 
@@ -186,11 +186,11 @@ exports.MockHueBridge = (function () {
 
         /** Issue a command to the bridge.
          * @param method The HTTP request method.
-         * @param URIpath The path part of the HTTP request URI, 
+         * @param URIpath The path part of the HTTP request URI,
          * e.g. /api/username
-         * @param body The HTTP request body, if any.  Optional. 
-         * @returns The information requested (for GET) or information on 
-         * whether the command was successful or not (for POST and PUT). 
+         * @param body The HTTP request body, if any.  Optional.
+         * @returns The information requested (for GET) or information on
+         * whether the command was successful or not (for POST and PUT).
          */
         this.command = function (method, URIpath, body) {
             var prop; // loop counter
@@ -224,7 +224,7 @@ exports.MockHueBridge = (function () {
                 lightID = findLightID(URIpath);
 
                 // Parse body.  Contains {on, bri, hue, sat, transitiontime}
-                // Future enhancement:  Generate event when transition is complete?                  
+                // Future enhancement:  Generate event when transition is complete?
 
                 var state = JSON.parse(helper.getState(bridgeID));
 
@@ -249,7 +249,7 @@ exports.MockHueBridge = (function () {
                     helper.setTransitionTime(bridgeID, body.transitiontime);
                 }
 
-                // Emit an event on change.  The listening accessor will then 
+                // Emit an event on change.  The listening accessor will then
                 // produce an output.
                 this.emit('change', state);
 
@@ -371,7 +371,7 @@ exports.MockHueBridge = (function () {
 
         /** Given a URI, check if the username in the URI is an authorized user.
          * @param URIpath The URI potentially containing a username.
-         * @returns True if the user is authorized to access the URI or if 
+         * @returns True if the user is authorized to access the URI or if
          * authorization is not required; false otherwise.
          */
 

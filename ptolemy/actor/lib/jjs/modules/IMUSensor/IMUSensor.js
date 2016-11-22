@@ -44,7 +44,7 @@ var SensorStream = null;
 
 /** Construct an instance of a Controller object type.
  *  This starts a thread in the java code that constantly reads input on the serial port that
- *  was linked to the sensor. 
+ *  was linked to the sensor.
  *  If the code stops unexpectedly it is possible this serial port will remain open and
  *  ptolemy will need to be restarted.
  *  This code may be 'dumb' as it simply reads the input buffer
@@ -54,10 +54,10 @@ var SensorStream = null;
  *  Example:
  *  var imuSensor = require('IMUSensor');
  *  var stream = imuSensor.Stream();
- *  initialize: 
+ *  initialize:
  *          stream.start(bluetooth serialport #);
  *        setInterval(getSample, this.getParameter(samplingRate));
- *  getSample: 
+ *  getSample:
  *          var sample = stream.getSample();
  *          if (prevSample != sample) {
  *                  prevSample = sample;

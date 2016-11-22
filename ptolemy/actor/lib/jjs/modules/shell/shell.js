@@ -63,14 +63,14 @@ exports.Shell.prototype.write = function (data) {
     }
 };
 
-/** Starts up the process to execute the command. Call after all callbacks have 
+/** Starts up the process to execute the command. Call after all callbacks have
  *  been registered.
  */
 exports.Shell.prototype.start = function () {
     helper.start();
 };
 
-/** Wrap up the execution. Terminate the process and the reader thread and clean 
+/** Wrap up the execution. Terminate the process and the reader thread and clean
  *  up.
  */
 exports.Shell.prototype.wrapup = function () {

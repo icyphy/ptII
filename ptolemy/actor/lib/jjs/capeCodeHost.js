@@ -421,7 +421,7 @@ function setTimeout(func, milliseconds) {
             func.apply(this, tail);
         };
     }
-    
+
     id = actor.setTimeout(callback, milliseconds);
     return id;
 }
@@ -443,7 +443,7 @@ function instantiate(accessorName, accessorClass) {
     var instance = new commonHost.instantiateAccessor(
             accessorName, accessorClass, getAccessorCode, bindings);
     console.log('Instantiated accessor ' + accessorName + ' with class ' + accessorClass);
-    
+
     accessors.push(instance);
     return instance;
 }

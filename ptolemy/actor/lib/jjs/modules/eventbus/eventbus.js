@@ -43,7 +43,7 @@
  * sensor data using an address like 'org.terraswarm.sensor.accelerometer.onShoe'.
  * <p>
  * The published data can be any JavaScript object that has a string
- * JSON representation (using JSON.stringify()). 
+ * JSON representation (using JSON.stringify()).
  * <p>
  * If the host has more than one network interface (e.g. WiFi and wired),
  * then the one to use can be specified by name as an optional argument
@@ -54,7 +54,7 @@
  *
  * @module eventbus
  * @author Patricia Derler and Edward A. Lee
- * @version $$Id$$ 
+ * @version $$Id$$
  */
 
 // Stop extra messages from jslint.  Note that there should be no
@@ -71,7 +71,7 @@ var events = require('events');
  *     var eventbus = require('eventbus');
  *     var bus = new eventbus.VertxBus();
  *     bus.subscribe('topic');
- *     bus.on('topic', 
+ *     bus.on('topic',
  *      function(msg) {
  *        print(msg);
  *      }

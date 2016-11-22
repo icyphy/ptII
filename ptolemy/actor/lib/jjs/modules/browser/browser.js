@@ -53,7 +53,7 @@ exports.Browser = function() {
 exports.Browser.prototype.display = function(html) {
     // FIXME: Probably should provide an initialize() function to start the
     // server.
-        
+
         if (this.server === null) {
                 this.server = this.helper.createServer(this.port);
         }

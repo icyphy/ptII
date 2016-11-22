@@ -28,7 +28,7 @@
  * each message can have an arbitrary number of bytes. It also differs
  * from a TCP socket in that the connection is established through HTTP
  * and is supported by most web browsers.
- * 
+ *
  * This module defines one class, Client.
  * To make a connection to a server (see the webSocketServer module),
  * create an instance of Client (using new), set up listeners,
@@ -106,11 +106,11 @@ exports.supportedSendTypes = function () {
  *    on the host, and the image will be encoded as a byte stream in the specified
  *    format before sending.  A received byte stream will be decoded as an image,
  *    if possible. FIXME: What happens if decoding fails?
- *  
+ *
  *  The event 'close' will be emitted when the socket is closed, and 'error' if an
  *  an error occurs (with an error message as an argument).
  *  For example,
- *  
+ *
  *  <pre>
  *      var WebSocket = require('webSocketClient');
  *      var client = new WebSocket.Client({'host': 'localhost', 'port': 8080});
@@ -120,10 +120,10 @@ exports.supportedSendTypes = function () {
  *      });
  *      client.open();
  *  </pre>
- *  
+ *
  *  The above code may send a message even before the socket is opened. This module
  *  implementation will queue that message to be sent later when the socket is opened.
- *  
+ *
  *  The options argument is a JSON object that can contain the following properties:
  *  * host: The IP address or host name for the host. Defaults to 'localhost'.
  *  * port: The port on which the host is listening. Defaults to 80.

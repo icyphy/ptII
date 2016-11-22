@@ -145,7 +145,7 @@ var defaultClientOptions = {
  *  an error occurs (with an error message as an argument).
  *
  *  A simple example that sends a message, and closes the socket on receiving a reply.
- *  
+ *
  *      var socket = require('socket');
  *      var client = new socket.SocketClient();
  *      client.on('open', function() {
@@ -156,7 +156,7 @@ var defaultClientOptions = {
  *          client.close();
  *      });
  *      socket.open();
- *  
+ *
  *  The options argument is a JSON object that can include:
  *  * connectTimeout: The time to wait (in milliseconds) before declaring
  *    a connection attempt to have failed. This defaults to 6000.
@@ -235,10 +235,10 @@ var defaultClientOptions = {
  *  the receiving end (if it also has rawBytes set to false) will emit the entire
  *  message, and only the message, exactly once.  Otherwise, a message may get
  *  fragmented, emitted in pieces, or coalesced with subsequent messages.
- *  
+ *
  *  The meaning of the options is (partially) defined here:
  *     http://vertx.io/docs/vertx-core/java/
- *     
+ *
  *  After this SocketClient is constructed, it will have properties 'port'
  *  and 'host' equal to the port and host options passed to the constructor.
  *
@@ -371,7 +371,7 @@ var defaultServerOptions = {
 //// SocketServer
 
 /** Construct an instance of a socket server that listens for connection
- *  requests and opens sockets when it receives them. 
+ *  requests and opens sockets when it receives them.
  *  After invoking this constructor (using new), the user can set up
  *  listeners for the following events:
  *
@@ -388,7 +388,7 @@ var defaultServerOptions = {
  *    This will be passed an error message.
  *
  *  A typical usage pattern looks like this:
- * 
+ *
  *     var server = new socket.SocketServer();
  *     server.on('listening', function(port) {
  *         console.log('Server listening on port: ' + port);
@@ -403,19 +403,19 @@ var defaultServerOptions = {
  *         });
  *     });
  *     server.start();
- * 
+ *
  *  When the 'connection' event is emitted, it will be passed a Socket object,
  *  which has a this.send() function. For example, to send a reply to each incoming
  *  message, replace the above 'data' handler as follows:
- * 
+ *
  *     serverSocket.on('data', function(data) {
  *        socket.send('Reply message');
  *     });
- * 
+ *
  *  The Socket object also has a close() function that allows the server to close
  *  the connection.  The ServerSocket object has a close() function that will close
  *  all connections and shut down the server.
- * 
+ *
  *  An options argument can be passed to the SocketServer constructor above.
  *  This is a JSON object containing the following optional fields:
  *

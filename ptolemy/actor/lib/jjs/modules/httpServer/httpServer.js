@@ -47,7 +47,7 @@ var EventEmitter = require('events').EventEmitter;
  *  After invoking this constructor (using new), the user script should set up listeners
  *  and then invoke the start() function on this HttpServer.
  *  This will create an HTTP server on the local host.
- *  
+ *
  *  The options argument is a JSON object containing the following optional fields:
  *  * **hostInterface**: The IP address or name of the local interface for the server
  *    to listen on.  This defaults to "localhost", but if the host machine has more
@@ -61,17 +61,17 @@ var EventEmitter = require('events').EventEmitter;
  *   If this time expires before respond() is invoked, then this module
  *   will issue a generic timeout response to the HTTP request.
  *
- * 
+ *
  *  This subclasses EventEmitter, emitting events:
  *  * **listening**: Emitted when the server is listening.
  *  * **request**: Emitted when an HTTP request has been received.
- *  
- *  
+ *
+ *
  *  FIXME: Detail what is emitted with a request.
- *  
- *  
+ *
+ *
  *  A typical usage pattern looks like this:
- * 
+ *
  *     var httpServer = require('httpServer');
  *     var server = new httpServer.HttpServer({'port':8082});
  *     server.on('listening', function () {
@@ -82,10 +82,10 @@ var EventEmitter = require('events').EventEmitter;
  *         server.respond(request.requestID, 'Hello World');
  *     });
  *     server.start();
- * 
+ *
  *  where onListening is a handler for an event that this HttpServer emits
  *  when it is listening for requests.
- * 
+ *
  *  @param options The options.
  */
 exports.HttpServer = function (options) {

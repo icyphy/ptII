@@ -82,7 +82,7 @@
     //     var indexJsFile = new File( dir, './index.js' );
     //     if ( indexJsFile.exists() ) {
     //       return indexJsFile;
-    //     } else { 
+    //     } else {
     //       return null;
     //     }
     //   }
@@ -208,12 +208,12 @@
             }
         } else {
             // it's of the form ./path or ../path
-	    var startIndex = 2;
-	    var newParentDirectory = parentDir;
-	    if (moduleName.substr(0,3) === '../') {
-		startIndex = 3;
-		newParentDirectory = parentDir.getParent();
-	    }
+            var startIndex = 2;
+            var newParentDirectory = parentDir;
+            if (moduleName.substr(0,3) === '../') {
+                startIndex = 3;
+                newParentDirectory = parentDir.getParent();
+            }
             var classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(newParentDirectory + "/" + moduleName.substr(startIndex));
             if (classPathFile2 !== null && classPathFile2.isFile()) {
                 return classPathFile2;
@@ -230,7 +230,7 @@
                 }
             }
         }
-        // --- End of modified section.      
+        // --- End of modified section.
 
         // --- Modified from original by eal@berkeley.edu to search cwd last rather than first.
         // var file = new File(moduleName);
@@ -262,7 +262,7 @@
         //   file = new File( parentDir, moduleName );
         //   if ( file.exists() ) {
         //     return fileExists(file);
-        //   } else { 
+        //   } else {
         //     // try appending a .js to the end
         //     var pathWithJSExt = file.canonicalPath + '.js';
         //     file = new File( parentDir, pathWithJSExt);

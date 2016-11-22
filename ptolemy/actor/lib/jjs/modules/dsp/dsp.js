@@ -26,7 +26,7 @@
 // the copyright link on the splash page or see copyright.htm.
 /**
  * Module to access some signal processing methods.
- * 
+ *
  * The static methods defined in ptolemy.math.SignalProcessing are targeted.
  * This module is under development. Only the FFT method has been implemented.
  * @module dsp
@@ -41,11 +41,11 @@
 
 /** Construct an instance of a Signal object type. This should be instantiated in your
  *  JavaScript code as
- *  <pre> 
- *     var dsp = require("dsp");  
- *     var dspEngine = new dsp.Signal();  
+ *  <pre>
+ *     var dsp = require("dsp");
+ *     var dspEngine = new dsp.Signal();
  *  </pre>
- *  An instance of this object type implements the following functions: 
+ *  An instance of this object type implements the following functions:
  *  <ul>
  *  <li> fft(signal): Return an object containing the real and imaginary parts of the Fast Fourier Transform ( FFT) of the input.
  *  <li> (TODO) ifft(coef): Return an object containing the real and imaginary parts of the inverse FFT of the input sequence.
@@ -61,7 +61,7 @@ exports.Signal = function (options) {
 };
 
 /** Return an FFT.
- *  @param data An array of numbers. 
+ *  @param data An array of numbers.
  */
 exports.Signal.prototype.fft = function (data) {
     var outputReal = [];
