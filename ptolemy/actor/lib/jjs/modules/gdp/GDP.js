@@ -155,5 +155,3 @@ exports.GDP.prototype._notifyIncoming = function (data) {
     // Assume the helper has already provided the correct type.
     this.emit("data", data);
 };
-
-

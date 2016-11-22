@@ -333,7 +333,7 @@ exports.SocketClient.prototype.send = function (data) {
 exports.SocketClient.prototype.close = function () {
     if (this.wrapper) {
         this.wrapper.close();
-    //} else {
+        //} else {
         // FIXME: Set a flag to close immediately upon opening.
     }
 };

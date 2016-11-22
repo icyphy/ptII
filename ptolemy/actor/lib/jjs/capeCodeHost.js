@@ -127,7 +127,7 @@ function getResource(uri, timeout) {
  *  @deprecated: Use the http module instead, which provides non-blocking requests.
  */
 function httpRequest(url, method, properties, body, timeout) {
-    var theURL = new (Java.type('java.net.URL'))(url),
+    var theURL = new(Java.type('java.net.URL'))(url),
         protocol = theURL.getProtocol().toLowerCase(),
         connection,
         key,
@@ -146,8 +146,8 @@ function httpRequest(url, method, properties, body, timeout) {
         })(arguments) + ")");
     }
     if (actor.isRestricted &&
-            !(protocol.equals("http") ||
-                protocol.equals("https"))) {
+        !(protocol.equals("http") ||
+            protocol.equals("https"))) {
         throw "Actor is restricted. Only HTTP(S) requests will be honored by httpRequest().";
     }
     connection = theURL.openConnection();
@@ -169,7 +169,7 @@ function httpRequest(url, method, properties, body, timeout) {
     // Send body if applicable.
     if (body && !body.equals('')) {
         connection.setDoOutput(true);
-        writer = new (Java.type('java.io.OutputStreamWriter'))(connection
+        writer = new(Java.type('java.io.OutputStreamWriter'))(connection
             .getOutputStream());
         writer.write(body);
         writer.flush();
@@ -199,15 +199,15 @@ function readURL(url, timeout) {
     if (debug) {
         console.log("readURL('" + url + "')");
     }
-    var theURL = new (Java.type('java.net.URL'))(url),
+    var theURL = new(Java.type('java.net.URL'))(url),
         request,
         response;
     if (actor.isRestricted &&
-            !theURL.getProtocol().toLowerCase().equals("http") &&
-            !theURL.getProtocol().toLowerCase().equals("https")) {
+        !theURL.getProtocol().toLowerCase().equals("http") &&
+        !theURL.getProtocol().toLowerCase().equals("https")) {
         throw "Actor is restricted. Only HTTP and HTTPS requests will be honored by readURL().";
     }
-    request = new (Java.type('org.ptolemy.ptango.lib.HttpRequest'))();
+    request = new(Java.type('org.ptolemy.ptango.lib.HttpRequest'))();
     request.setUrl(theURL);
     request.setTimeout(timeout); // In milliseconds.
     response = request.execute();
@@ -441,7 +441,7 @@ function instantiate(accessorName, accessorClass) {
         'require': require,
     };
     var instance = new commonHost.instantiateAccessor(
-            accessorName, accessorClass, getAccessorCode, bindings);
+        accessorName, accessorClass, getAccessorCode, bindings);
     console.log('Instantiated accessor ' + accessorName + ' with class ' + accessorClass);
 
     accessors.push(instance);

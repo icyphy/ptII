@@ -38,10 +38,10 @@
 /*jshint globalstrict: true*/
 "use strict";
 
-exports.Browser = function() {
-        this.server = null;
-        this.helper = Java
-            .type('ptolemy.actor.lib.jjs.modules.browser.VertxBrowserHelper');
+exports.Browser = function () {
+    this.server = null;
+    this.helper = Java
+        .type('ptolemy.actor.lib.jjs.modules.browser.VertxBrowserHelper');
     // FIXME: Use a port selection algorithm here to avoid port conflicts.
     this.port = 8080;
     this.browserLauncher = Java.type('ptolemy.actor.gui.BrowserLauncher');
@@ -50,21 +50,21 @@ exports.Browser = function() {
 /** Display the specified HTML text.
  *  @param html The HTML to display.
  */
-exports.Browser.prototype.display = function(html) {
+exports.Browser.prototype.display = function (html) {
     // FIXME: Probably should provide an initialize() function to start the
     // server.
 
-        if (this.server === null) {
-                this.server = this.helper.createServer(this.port);
-        }
-        this.server.setResponse(html);
+    if (this.server === null) {
+        this.server = this.helper.createServer(this.port);
+    }
+    this.server.setResponse(html);
     this.browserLauncher.openURL('http://localhost:' + this.port);
 };
 
 /** Shut down the server.  To be called during wrapup().
-*/
-exports.Browser.prototype.shutdown = function() {
-        if (this.server !== null) {
-                this.server.shutdown();
-        }
+ */
+exports.Browser.prototype.shutdown = function () {
+    if (this.server !== null) {
+        this.server.shutdown();
+    }
 };
