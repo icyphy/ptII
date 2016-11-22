@@ -450,7 +450,7 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
     } else if (typeof alert !== 'undefined') {
         this.alert = alert;
     } else if (typeof console.log !== 'undefined') {
-    	this.alert = console.log;
+            this.alert = console.log;
     } else {
         throw new Error('Host does not define required alert function.');
     }
@@ -584,7 +584,7 @@ setTimeout',
             if (typeof this.exports.wrapup === 'function') {
                 // Call with 'this' being the accessor instance, not the exports
                 // property.
-		this.exports.wrapup.call(this);
+                this.exports.wrapup.call(this);
             }
             this.emit('wrapup');
         };
@@ -750,16 +750,16 @@ Accessor.prototype.assignImpliedPrioritiesDownstream = function(accessor, cycleP
                     // and follow the implications.
 
                     // We increment myPriority before use so that if
-		    // an output is connected to multiple inputs, the
-		    // inputs do not have the same priority.
-		    // To replicate this, run:
+                    // an output is connected to multiple inputs, the
+                    // inputs do not have the same priority.
+                    // To replicate this, run:
 
-		    // (cd $PTII/org/terraswarm/accessor/accessors/web/hosts/node; node nodeHostInvoke -timeout 6000 test/auto/RampJSTestDisplay.js)
+                    // (cd $PTII/org/terraswarm/accessor/accessors/web/hosts/node; node nodeHostInvoke -timeout 6000 test/auto/RampJSTestDisplay.js)
 
-		    // If we don't increment the priority then either
-		    // the Display or the TrainableTest fails to get
-		    // inputs.
-		    destinationAccessor.priority = ++myPriority;
+                    // If we don't increment the priority then either
+                    // the Display or the TrainableTest fails to get
+                    // inputs.
+                    destinationAccessor.priority = ++myPriority;
                     // console.log('Assigned downstream priority to ' + destinationAccessor.accessorName + ' of ' + myPriority));
 
                     // In case there are further assigned priorities further downstream,
@@ -773,7 +773,7 @@ Accessor.prototype.assignImpliedPrioritiesDownstream = function(accessor, cycleP
                     }
                     // Priority has to be adjusted.
 
-		    // See comment above for why we increment myPriority.
+                    // See comment above for why we increment myPriority.
                     destinationAccessor.priority = ++myPriority;
                     // console.log('Assigned downstream priority to ' + destinationAccessor.accessorName + ' of ' + (myPriority + 1));
                     myPriority = this.assignImpliedPrioritiesDownstream(
@@ -1360,6 +1360,7 @@ Accessor.queryActiveAccessors = function() {
  *  @param name The name of the input.
  */
 Accessor.prototype.react = function(name) {
+    //console.log("commonHost.js: react(" + name + "): start");
     // For monitoring, we want to time execution of this function.
     var startTime = Date.now();
     var thiz = this.root;
@@ -1370,9 +1371,9 @@ Accessor.prototype.react = function(name) {
     var invokeSpecificHandler = function(name) {
 
         if (thiz.inputHandlers[name] && thiz.inputHandlers[name].length > 0) {
-	    // When calling stop, there is a chance that "removed[0].react()" below
-	    // will fail with 'TypeError: Cannot read property 'length' of undefined',
-	    // so we check to see if thiz.inputHandlers[name] is defined.
+            // When calling stop, there is a chance that "removed[0].react()" below
+            // will fail with 'TypeError: Cannot read property 'length' of undefined',
+            // so we check to see if thiz.inputHandlers[name] is defined.
             for (var i = 0; thiz.inputHandlers[name] && i < thiz.inputHandlers[name].length; i++) {
                 if (typeof thiz.inputHandlers[name][i] === 'function') {
                     // Input handlers functions are bound to the exports object.
@@ -1380,14 +1381,14 @@ Accessor.prototype.react = function(name) {
                         thiz.inputHandlers[name][i]();
                     } catch (exception) {
                         // Remove the input handler.
-			if (thiz.inputHandlers && thiz.inputHandlers[name]) {
-			    thiz.removeInputHandler(
-				thiz.inputHandlers[name][i].handle);
-			}
-			// Throw an Error here instead of calling error() so that
-			// if TrainableTest.wrapup() throws an Error because
-			// the input does not match the training data, then we
-			// don't ignore the error in commonHost.error().
+                        if (thiz.inputHandlers && thiz.inputHandlers[name]) {
+                            thiz.removeInputHandler(
+                                thiz.inputHandlers[name][i].handle);
+                        }
+                        // Throw an Error here instead of calling error() so that
+                        // if TrainableTest.wrapup() throws an Error because
+                        // the input does not match the training data, then we
+                        // don't ignore the error in commonHost.error().
 
                         // If the exception was thrown because of
                         // Java, we should get the Java stacktrace.
@@ -1422,25 +1423,28 @@ Accessor.prototype.react = function(name) {
 
     if (name) {
         // Handling a specific input.
+        //console.log("commonHost.js: react(" + name + "): Handling a specific input.");
         invokeSpecificHandler(name);
     } else {
         // No specific input has been given.
-    	// Invoke pending inputHandlers.  An accessor might send to its own
-    	// inputs, so repeat until there are no more pending handlers.
-    	var moreInputsPossiblyAvailable = true;
-    	while (moreInputsPossiblyAvailable) {
-    	    moreInputsPossiblyAvailable = false;
-	    for (var i = 0; i < thiz.inputList.length; i++) {
-	        name = thiz.inputList[i];
-	        if (thiz.inputs[name].pendingHandler) {
-	            thiz.inputs[name].pendingHandler = false;
-	            moreInputsPossiblyAvailable = true;
-	            invokeSpecificHandler(name);
-	        }
-	    }
-    	}
+            // Invoke pending inputHandlers.  An accessor might send to its own
+            // inputs, so repeat until there are no more pending handlers.
+        //console.log("commonHost.js: react(" + name + "): no specific input has been given.");
+            var moreInputsPossiblyAvailable = true;
+            while (moreInputsPossiblyAvailable) {
+                moreInputsPossiblyAvailable = false;
+            for (var i = 0; i < thiz.inputList.length; i++) {
+                name = thiz.inputList[i];
+                if (thiz.inputs[name].pendingHandler) {
+                    thiz.inputs[name].pendingHandler = false;
+                    moreInputsPossiblyAvailable = true;
+                    invokeSpecificHandler(name);
+                }
+            }
+            }
     }
     // Next, invoke handlers registered to handle any input.
+    //console.log("commonHost.js: react(" + name + "): invoke handlers registered to handle any input");
     if (thiz.anyInputHandlers.length > 0) {
         for (var j = 0; j < thiz.anyInputHandlers.length; j++) {
             if (typeof thiz.anyInputHandlers[j] === 'function') {
@@ -1462,7 +1466,7 @@ Accessor.prototype.react = function(name) {
 
     // Next, invoke react() on any contained accessors.
     if (thiz.containedAccessors && thiz.containedAccessors.length > 0) {
-        // console.log('Composite is reacting with ' + thiz.eventQueue.length + ' events.');
+        //console.log('commonHost.js react(' + name + '): Composite is reacting with ' + thiz.eventQueue.length + ' events.');
         while (thiz.eventQueue && thiz.eventQueue.length > 0) {
             // Remove from the event queue the first accessor, which will now react.
             // It may add itself back in, if it sends to its own input. But in that
@@ -1474,6 +1478,7 @@ Accessor.prototype.react = function(name) {
 
     // Next, invoke the fire() function.
     if (typeof this.exports.fire === 'function') {
+        //console.log('commonHost.js react(' + name + '): invoking fire');
         this.exports.fire.call(this);
     }
 
@@ -1489,7 +1494,7 @@ Accessor.prototype.react = function(name) {
         if (newCount > 1) {
             var deviation = duration - currentMean;
             var nextVar = (((newCount - 2)/(newCount - 1)) * currentVar) +
-		((1/newCount) * (deviation * deviation));
+                ((1/newCount) * (deviation * deviation));
             Accessor.activeAccessors[this.accessorClass][2] = nextVar;
         }
     }
