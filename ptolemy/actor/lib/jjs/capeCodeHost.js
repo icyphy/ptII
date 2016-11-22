@@ -338,6 +338,9 @@ var requireAccessor = load(_moduleRoot + '/external/require.js')(
 var util = require('util');
 var console = require('console');
 
+// Locally defined modules.
+var commonHost = require('commonHost.js');
+
 ////////////////////
 // Use a single Timer object for all timeout functions
 // (since they all have to execute in the same thread anyway).
@@ -423,6 +426,8 @@ function setTimeout(func, milliseconds) {
     return id;
 }
 
+var accessors = [];
+
 /** Instantiate and return an accessor.
  *  This will throw an exception if there is no such accessor class on the accessor
  *  search path.
@@ -448,24 +453,10 @@ function instantiate(accessorName, accessorClass) {
  *
  * See invoke() for how this method is used.
  *
- * Sample usage:
- *
- * nodeHostInvoke.js contains:
- * <pre>
- * require('./nodeHost.js');
- * invoke(process.argv);
- * </pre>
- *
- * To invoke:
- * <pre>
- *   node nodeHostInvoke.js test/TestComposite
- * </pre>
- *
  * @param accessorNames An array of accessor names in a format suitable
  * for getAccessorCode(name).
  */
 function instantiateAndInitialize(accessorNames) {
-    var accessors = [];
     var length = accessorNames.length;
     var index;
     for (index = 0; index < length; ++index) {
@@ -494,71 +485,24 @@ function instantiateAndInitialize(accessorNames) {
     return accessors;
 }
 
-/** Invoke a composite accessor.
- *
- *  nodeHostInvoke.js uses invoke() as follows:
- *  <pre>
- *  require('./nodeHost.js');
- *  invoke(process.argv);
- *  </pre>
- *  
- *  If the accessors module is installed using npm with 
- *  <pre>
- *  npm install @terraswarm/gdp
- *  </pre>
- *  then a composite accessor may be invoked if a file invoke.js contains:
- *  <pre>
- *  require('@terraswarm/accessors');
- *  invoke(process.argv);
- *  </pre>
- *  Then a composite accessor may be invoked with
- *  <pre>
- *  node invoke.js -timeout 4000 test/auto/RampJSTest.js
- *  </pre>
- *
- *  @param argv An array of arguments, were the first argument is
- *  typically "node", the second argument is the name of the script
- *  that is invoked.  If the third argument is "-timeout", then the
- *  fourth argument will be the timeout in ms.  The following
- *  argument(s) are one or more .js files that define a setup() function
- *  that builds a composite accessor.
- */
-function invoke(args) {
-    // This function is in nodeHost.js so that we can easily invoke a
-    // composite accessor with a very small file.  See the comment for how to do this.
+// Make the Accessor constructor visible so that we may use it in the
+// Cape Code Accessor Code Generator.
+var Accessor = commonHost.Accessor;
 
-    // Remove "node.js" from the array of command line arguments.
-    //argv.shift();
-    // Remove "nodeHostInvoke.js" from the array of command line arguments.
-    //argv.shift();
+// Define additional functions that should appear in the global scope
+// so that they can be invoked on the command line.
+//provideInput = commonHost.provideInput;
+//setParameter = commonHost.setParameter;
 
-    var argv = Java.from(args);
-    if (argv.length === 1) {
-	console.error("nodeHost.invoke(): Usage: node.js nodeHostInvoke.js [-timeout timeInMs] accessor.js [accessor2.js ...]");
-	//process.exit(3);
-    }
+// In case this gets used a module, create an exports object.
+var exports = {
+    'Accessor': Accessor,
+    //'getAccessorCode': getAccessorCode,
+    'instantiate': instantiate,
+    'instantiateAndInitialize': instantiateAndInitialize,
+    //'invoke': invoke,
+    'provideInput': commonHost.provideInput,
+    'setParameter': commonHost.setParameter,
+};
 
-    // Process the -timeout argument.
-    var i;
-
-    for(i = 0; i < argv.length; i = i+1) {
-	if (argv[i] === "-timeout") {
-	    var timeout = argv[i+1];
-	    // Remove -timeout and the value.
-	    //argv.shift();
-	    //argv.shift();
-	    this.accessors = instantiateAndInitialize(argv.slice(i+2));
-	    setTimeout(function () {
-		    // process.exit gets caught by exitHandler() in
-		    // nodeHost.js and invokes wrapup().
-		    //process.exit(0);
-		}, timeout);
-	} else {
-	    // Handle multiple composite accessors on the command line.
-	    this.accessors = instantiateAndInitialize(argv.slice(i));
-	    // Prevent the script from exiting by repeating the empty function
-	    // every ~25 days.
-	    setInterval(function () {}, 2147483647);
-	}
-    }
-}
+// FIXME: Handle exit calls like how we do in nodeHost?

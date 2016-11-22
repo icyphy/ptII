@@ -164,8 +164,16 @@
         return "" + file.canonicalPath.replaceAll("\\\\", "/");
     };
 
+    /**
+     *  Find the file that corresponds with a module.
+     *
+     *  @param moduleName the name of the module to be loaded.  'foo',
+     *  'foo.js', './foo/bar.js' and '../foo.js' should all work.
+     *  @param the parent directory, which is of type java.io.File.
+     *  @param modulePaths An array of fully qualified directories to search
+     *  @return the file that corresponds with the module.
+     */
     var resolveModuleToFile = function (moduleName, parentDir, modulePaths) {
-
         // --- Modified from original by cxh@eecs.berkeley.edu to search in the classpath.
         var JNLPUtilities = Java.type('ptolemy.actor.gui.JNLPUtilities');
         var moduleFilePath = Java.type('ptolemy.util.FileUtilities').nameToFile(
@@ -199,13 +207,19 @@
                 }
             }
         } else {
-            // it's of the form ./path
-            var classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(parentDir + "/" + moduleName.substr(2));
+            // it's of the form ./path or ../path
+	    var startIndex = 2;
+	    var newParentDirectory = parentDir;
+	    if (moduleName.substr(0,3) === '../') {
+		startIndex = 3;
+		newParentDirectory = parentDir.getParent();
+	    }
+            var classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(newParentDirectory + "/" + moduleName.substr(startIndex));
             if (classPathFile2 !== null && classPathFile2.isFile()) {
                 return classPathFile2;
             } else {
                 // try appending a .js to the end
-                classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(parentDir + "/" + moduleName + ".js");
+                classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(newParentDirectory + "/" + moduleName + ".js");
                 if (classPathFile2 !== null && classPathFile2.isFile()) {
                     return classPathFile2;
                 } else {
