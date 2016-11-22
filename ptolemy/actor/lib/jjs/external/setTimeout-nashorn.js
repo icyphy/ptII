@@ -6,7 +6,7 @@
 //  or Nashorn will run forever
 // preferably, put a timeout 0 after your code bootstrap
 
-(function(context) {
+(function (context) {
     'use strict';
 
     var Timer = Java.type('java.util.Timer');
@@ -16,9 +16,11 @@
     var phaser = new Phaser();
 
     var timeoutStack = 0;
+
     function pushTimeout() {
         timeoutStack++;
     }
+
     function popTimeout() {
         timeoutStack--;
         if (timeoutStack > 0) {
@@ -28,11 +30,11 @@
         phaser.forceTermination();
     }
 
-    var onTaskFinished = function() {
+    var onTaskFinished = function () {
         phaser.arriveAndDeregister();
     };
 
-    context.setTimeout = function(fn, millis /* [, args...] */) {
+    context.setTimeout = function (fn, millis /* [, args...] */ ) {
         var args = [].slice.call(arguments, 2, arguments.length);
 
         var phase = phaser.register();
@@ -41,7 +43,7 @@
         // "java.lang.IllegalStateException: Timer already cancelled."
         // here, then it is because setTimeout( "function () {}", 99999)
         // was not called after after loading bootstrap files.
-        timer.schedule(function() {
+        timer.schedule(function () {
             if (canceled) {
                 return;
             }
@@ -58,34 +60,34 @@
 
         pushTimeout();
 
-        return function() {
+        return function () {
             onTaskFinished();
             canceled = true;
             popTimeout();
         };
     };
 
-    context.clearTimeout = function(cancel) {
+    context.clearTimeout = function (cancel) {
         cancel();
     };
 
-    context.setInterval = function(fn, delay /* [, args...] */) {
+    context.setInterval = function (fn, delay /* [, args...] */ ) {
         var args = [].slice.call(arguments, 2, arguments.length);
 
         var cancel = null;
 
-        var loop = function() {
+        var loop = function () {
             cancel = context.setTimeout(loop, delay);
             fn.apply(context, args);
         };
 
         cancel = context.setTimeout(loop, delay);
-        return function() {
+        return function () {
             cancel();
         };
     };
 
-    context.clearInterval = function(cancel) {
+    context.clearInterval = function (cancel) {
         cancel();
     };
 

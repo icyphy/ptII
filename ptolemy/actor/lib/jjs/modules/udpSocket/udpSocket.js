@@ -166,4 +166,3 @@ exports.Socket.prototype.setReceiveType = function (type) {
 exports.Socket.prototype.setSendType = function (type) {
     this.socket.setSendType(type);
 };
-

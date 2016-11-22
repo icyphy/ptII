@@ -210,7 +210,7 @@
             // it's of the form ./path or ../path
             var startIndex = 2;
             var newParentDirectory = parentDir;
-            if (moduleName.substr(0,3) === '../') {
+            if (moduleName.substr(0, 3) === '../') {
                 startIndex = 3;
                 newParentDirectory = parentDir.getParent();
             }
@@ -391,4 +391,3 @@
     return _requireClosure(new java.io.File(rootDir));
     // last line deliberately has no semicolon!
 });
-

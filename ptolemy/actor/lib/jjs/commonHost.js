@@ -450,7 +450,7 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
     } else if (typeof alert !== 'undefined') {
         this.alert = alert;
     } else if (typeof console.log !== 'undefined') {
-            this.alert = console.log;
+        this.alert = console.log;
     } else {
         throw new Error('Host does not define required alert function.');
     }
@@ -468,17 +468,17 @@ readURL, \
 require, \
 setInterval, \
 setTimeout',
-                               code);
+        code);
     wrapper.call(this,
-                 this.alert,
-                 this.error,
-                 this.exports,
-                 this.getResource,
-                 this.httpRequest,
-                 this.readURL,
-                 this.require,
-                 this.setInterval,
-                 this.setTimeout);
+        this.alert,
+        this.error,
+        this.exports,
+        this.getResource,
+        this.httpRequest,
+        this.readURL,
+        this.require,
+        this.setInterval,
+        this.setTimeout);
 
     // Mark that the accessor has not been initialized
     this.initialized = false;
@@ -605,7 +605,8 @@ util.inherits(Accessor, EventEmitter);
  *  @return An ID that can be passed to this.removeInputHandler().
  */
 Accessor.prototype.addInputHandler = function (name, func) {
-    var argCount = 2, callback, id, tail;
+    var argCount = 2,
+        callback, id, tail;
     if (name && typeof name !== 'string') {
         // Tolerate a single argument, a function.
         if (typeof name === 'function') {
@@ -647,7 +648,7 @@ Accessor.prototype.addInputHandler = function (name, func) {
     // that can be used by removeInputHandler.
     var index;
     if (name) {
-        if (! thiz.inputHandlers[name]) {
+        if (!thiz.inputHandlers[name]) {
             thiz.inputHandlers[name] = [];
         }
         index = thiz.inputHandlers[name].length;
@@ -705,7 +706,7 @@ Accessor.prototype.assignPriorities = function () {
         // Any remaining accessors without priorities are in one or more independent
         // connected subgraphs. To ensure that the next set of priorities does not
         // overlap those already assigned, we start with a sufficiently higher number.
-        startingPriority = 2*(accessors.length - i);
+        startingPriority = 2 * (accessors.length - i);
     }
 };
 
@@ -743,7 +744,7 @@ Accessor.prototype.assignImpliedPrioritiesDownstream = function (accessor, cycle
                 var theirPriority = destinationAccessor.priority;
                 if (theirPriority === cyclePriority) {
                     throw new Error('Causality loop found including at least: ' +
-                                    destinationAccessor.accessorName);
+                        destinationAccessor.accessorName);
                 }
                 if (theirPriority === null) {
                     // Destination has no previously assigned priority. Give it one,
@@ -813,7 +814,7 @@ Accessor.prototype.assignImpliedPrioritiesUpstream = function (accessor, cyclePr
             var theirPriority = source.priority;
             if (theirPriority === cyclePriority) {
                 throw new Error('Causality loop found including at least: ' +
-                                accessor.accessorName);
+                    accessor.accessorName);
             }
             if (theirPriority === null) {
                 // Source has no previously assigned priority. Give it one,
@@ -889,7 +890,10 @@ Accessor.prototype.connect = function (a, b, c, d) {
             if (!b.inputs[c]) {
                 throw new Error('connect(): Destination has no such input: ' + c);
             }
-            myInput.destinations.push({'accessor': b, 'inputName': c});
+            myInput.destinations.push({
+                'accessor': b,
+                'inputName': c
+            });
             b.inputs[c].source = a;
         }
     } else {
@@ -907,14 +911,23 @@ Accessor.prototype.connect = function (a, b, c, d) {
                 throw new Error('connect(): No such output: ' + b);
             }
             myOutput.destinations.push(c);
-            thiz.outputs[c].source = {'accessor': a, 'outputName': b};
+            thiz.outputs[c].source = {
+                'accessor': a,
+                'outputName': b
+            };
         } else {
             // form 1.
             if (!c.inputs[d]) {
                 throw new Error('connect(): Destination has no such input: ' + d);
             }
-            myOutput.destinations.push({'accessor': c, 'inputName': d});
-            c.inputs[d].source = {'accessor': a, 'outputName': b};
+            myOutput.destinations.push({
+                'accessor': c,
+                'inputName': d
+            });
+            c.inputs[d].source = {
+                'accessor': a,
+                'outputName': b
+            };
         }
     }
 };
@@ -927,7 +940,7 @@ Accessor.prototype.connect = function (a, b, c, d) {
  *  @param name The name of the input, output, or parameter (for error reporting).
  */
 function convertType(value, destination, name) {
-    if (!destination.type || destination.type === typeof value  || value === null) {
+    if (!destination.type || destination.type === typeof value || value === null) {
         // Type is unspecified or a match, or value is null. Use value as given.
     } else if (destination.type === 'string') {
         if (typeof value !== 'string') {
@@ -936,9 +949,9 @@ function convertType(value, destination, name) {
                 value = JSON.stringify(value);
             } catch (error) {
                 throw new Error('Object provided to ' +
-                                name +
-                                ' does not have a string representation: ' +
-                                error);
+                    name +
+                    ' does not have a string representation: ' +
+                    error);
             }
         }
     } else if (typeof value === 'string') {
@@ -955,11 +968,11 @@ function convertType(value, destination, name) {
                 value = JSON.parse(value);
             } catch (error) {
                 throw new Error('Failed to convert value to destination type: ' +
-                                name +
-                                ' expected a ' +
-                                destination.type +
-                                ' but received: ' +
-                                value);
+                    name +
+                    ' expected a ' +
+                    destination.type +
+                    ' but received: ' +
+                    value);
             }
         }
     } else if (destination.type === 'boolean' && typeof value !== 'boolean') {
@@ -973,9 +986,9 @@ function convertType(value, destination, name) {
         // value is not a string. Needs to be a number.
         if (typeof value !== 'number') {
             throw new Error(name + ' expected an int, but got a ' +
-                            (typeof value) +
-                            ': ' +
-                            value);
+                (typeof value) +
+                ': ' +
+                value);
         }
         // If type is int, need the value to be an integer.
         if (destination.type === 'int' && value % 1 !== 0) {
@@ -989,9 +1002,9 @@ function convertType(value, destination, name) {
             JSON.stringify(value);
         } catch (err) {
             throw new Error('Object provided to ' +
-                            name +
-                            ' does not have a JSON representation: ' +
-                            err);
+                name +
+                ' does not have a JSON representation: ' +
+                err);
         }
     }
     return value;
@@ -1254,7 +1267,9 @@ function mergeObjects(first, second) {
  *  Hence, we set a default id to 'unspecified', with the expectation that the
  *  code passed in will override that, and possibly the uri property.
  */
-Accessor.prototype.module = {'id': 'unspecified'};
+Accessor.prototype.module = {
+    'id': 'unspecified'
+};
 
 /** Default empty function to use if the function argument to
  *  addInputHandler is null.
@@ -1396,7 +1411,8 @@ Accessor.prototype.react = function (name) {
                         if (typeof stacktrace === 'undefined' && accessorHost === accessorHostsEnum.CAPECODE || accessorHost === accessorHostEnum.NASHORN) {
                             try {
                                 // This code is Cape Code Host-specific because it uses Java.
-                                var StringWriter = java.io.StringWriter, PrintWriter = java.io.PrintWriter;
+                                var StringWriter = java.io.StringWriter,
+                                    PrintWriter = java.io.PrintWriter;
                                 var stringWriter = new StringWriter();
                                 var printWriter = new PrintWriter(stringWriter);
                                 exception.printStackTrace(printWriter);
@@ -1411,10 +1427,10 @@ Accessor.prototype.react = function (name) {
                         // as an argument and reads the value of
                         // exception.stack.
                         throw new Error('commonHost.js, react(), invoking a specific handler for \"' +
-                                        name + '\": Exception occurred in input handler,' +
-                                        ' which has now has been removed.  Exception was: ' +
-                                        exception +
-                                        ' Stacktrace was: ' + stacktrace);
+                            name + '\": Exception occurred in input handler,' +
+                            ' which has now has been removed.  Exception was: ' +
+                            exception +
+                            ' Stacktrace was: ' + stacktrace);
                     }
                 }
             }
@@ -1427,12 +1443,12 @@ Accessor.prototype.react = function (name) {
         invokeSpecificHandler(name);
     } else {
         // No specific input has been given.
-            // Invoke pending inputHandlers.  An accessor might send to its own
-            // inputs, so repeat until there are no more pending handlers.
+        // Invoke pending inputHandlers.  An accessor might send to its own
+        // inputs, so repeat until there are no more pending handlers.
         //console.log("commonHost.js: react(" + name + "): no specific input has been given.");
-            var moreInputsPossiblyAvailable = true;
-            while (moreInputsPossiblyAvailable) {
-                moreInputsPossiblyAvailable = false;
+        var moreInputsPossiblyAvailable = true;
+        while (moreInputsPossiblyAvailable) {
+            moreInputsPossiblyAvailable = false;
             for (var i = 0; i < thiz.inputList.length; i++) {
                 name = thiz.inputList[i];
                 if (thiz.inputs[name].pendingHandler) {
@@ -1441,7 +1457,7 @@ Accessor.prototype.react = function (name) {
                     invokeSpecificHandler(name);
                 }
             }
-            }
+        }
     }
     // Next, invoke handlers registered to handle any input.
     //console.log("commonHost.js: react(" + name + "): invoke handlers registered to handle any input");
@@ -1456,9 +1472,9 @@ Accessor.prototype.react = function (name) {
                     thiz.removeInputHandler(
                         thiz.anyInputHandlers[j].handle);
                     thiz.error('commonHost.js, react() invoking handlers registered to handle any input: Exception occurred in input handler,' +
-                               ' which has now has been removed.  Exception was: ' +
-                               exception +
-                               ' Stacktrace was: ' + exception.stack);
+                        ' which has now has been removed.  Exception was: ' +
+                        exception +
+                        ' Stacktrace was: ' + exception.stack);
                 }
             }
         }
@@ -1488,17 +1504,16 @@ Accessor.prototype.react = function (name) {
         // Update mean and variance for duration of react execution
         var newCount = Accessor.activeAccessors[this.accessorClass][0] + 1;
         var currentMean = Accessor.activeAccessors[this.accessorClass][1];
-        var currentVar =  Accessor.activeAccessors[this.accessorClass][2];
+        var currentVar = Accessor.activeAccessors[this.accessorClass][2];
         Accessor.activeAccessors[this.accessorClass][0] = newCount;
-        Accessor.activeAccessors[this.accessorClass][1] = currentMean + ((duration - currentMean)/newCount);
+        Accessor.activeAccessors[this.accessorClass][1] = currentMean + ((duration - currentMean) / newCount);
         if (newCount > 1) {
             var deviation = duration - currentMean;
-            var nextVar = (((newCount - 2)/(newCount - 1)) * currentVar) +
-                ((1/newCount) * (deviation * deviation));
+            var nextVar = (((newCount - 2) / (newCount - 1)) * currentVar) +
+                ((1 / newCount) * (deviation * deviation));
             Accessor.activeAccessors[this.accessorClass][2] = nextVar;
         }
-    }
-    else {
+    } else {
         Accessor.activeAccessors[this.accessorClass] = [1, duration, 0];
     }
 
@@ -1567,7 +1582,9 @@ Accessor.prototype.scheduleEvent = function (accessor) {
     // schedule it now.
     if (!thiz.reactRequestedAlready) {
         thiz.reactRequestedAlready = true;
-        setTimeout(function () { thiz.react(); }, 0);
+        setTimeout(function () {
+            thiz.react();
+        }, 0);
     }
     // In the Nashorn host, queue can be undefined.
     if (typeof queue === 'undefined' || !queue || queue.length === 0) {
@@ -1581,8 +1598,8 @@ Accessor.prototype.scheduleEvent = function (accessor) {
     var myPriority = accessor.priority;
     if (typeof myPriority !== 'number') {
         throw new Error('Accessor does not have a priority: ' +
-                        accessor.accessorName +
-                        '. Perhaps initialize() is overridden?');
+            accessor.accessorName +
+            '. Perhaps initialize() is overridden?');
     }
     // Recall that a higher priority number means a lower priority.
     var theirPriority = queue[queue.length - 1].priority;
@@ -1604,7 +1621,7 @@ Accessor.prototype.scheduleEvent = function (accessor) {
         theirPriority = queue[i].priority;
         if (myPriority > theirPriority) {
             // Insert at location i+1, removing 0 elements.
-            queue.splice(i+1, 0, accessor);
+            queue.splice(i + 1, 0, accessor);
             return;
         }
         if (myPriority == theirPriority) {

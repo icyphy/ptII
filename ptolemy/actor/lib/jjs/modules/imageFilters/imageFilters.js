@@ -167,7 +167,7 @@ exports.filters = function () {
         'ColorHalftone', 'Contour', 'Contrast', 'Crop',
         'Crystallize',
         'Gray', 'Invert', 'LensBlur', 'MotionDetector', 'Solarize', 'Threshold'
-        ];
+    ];
 };
 
 /** Invoke the named filter on the specified image with the specified

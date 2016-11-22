@@ -57,49 +57,52 @@ function unsigendByteArrayEquals(a, b) {
 ///////////////////////////////////////////////////////////////////
 ////                        Secure Hash                        ////
 
-exports.getHashLength = function(hashAlgorithm) {
+exports.getHashLength = function (hashAlgorithm) {
     return this.helper.getHashLength(hashAlgorithm);
 }
 
-exports.getKeySize = function(key) {
+exports.getKeySize = function (key) {
     return this.helper.getKeySize(key);
 }
 
 /** Calculate hash value using a secure hash function.
  */
-exports.hash = function(input, hashAlgorithm) {
+exports.hash = function (input, hashAlgorithm) {
     return this.helper.hash(input, hashAlgorithm);
 };
 
-exports.hmac = function(input, key, hashAlgorithm) {
+exports.hmac = function (input, key, hashAlgorithm) {
     return this.helper.hmac(input, key, hashAlgorithm);
 };
 
 ///////////////////////////////////////////////////////////////////
 ////                 Public key cryptography                   ////
 
-exports.parsePublicKeyCryptoSpec = function(cryptoSpec) {
+exports.parsePublicKeyCryptoSpec = function (cryptoSpec) {
     var cryptoSpecTokens = cryptoSpec.split(':');
-    return {cipher: cryptoSpecTokens[0], sign: cryptoSpecTokens[1]};
+    return {
+        cipher: cryptoSpecTokens[0],
+        sign: cryptoSpecTokens[1]
+    };
 };
 
-exports.loadPrivateKey = function(filePath) {
+exports.loadPrivateKey = function (filePath) {
     return this.helper.loadPrivateKey(filePath);
 }
 
-exports.loadPublicKey = function(filePath) {
+exports.loadPublicKey = function (filePath) {
     return this.helper.loadPublicKey(filePath);
 }
 
-exports.privateDecrypt = function(input, privateKey, cipherAlgorithm) {
+exports.privateDecrypt = function (input, privateKey, cipherAlgorithm) {
     return this.helper.privateDecrypt(input, privateKey, cipherAlgorithm);
 }
 
-exports.publicEncrypt = function(input, publicKey, cipherAlgorithm) {
+exports.publicEncrypt = function (input, publicKey, cipherAlgorithm) {
     return this.helper.publicEncrypt(input, publicKey, cipherAlgorithm);
 }
 
-exports.publicEncryptAndSign = function(input, publicKey, privateKey, cipherAlgorithm, signAlgorithm) {
+exports.publicEncryptAndSign = function (input, publicKey, privateKey, cipherAlgorithm, signAlgorithm) {
     var encryptedData = exports.publicEncrypt(input, publicKey, cipherAlgorithm);
     var signature = exports.signWithPrivateKey(encryptedData, privateKey, signAlgorithm);
     return encryptedData.concat(signature);
@@ -111,63 +114,72 @@ exports.randomBytes = function (size) {
     return this.helper.randomBytes(size);
 };
 
-exports.signWithPrivateKey = function(input, privateKey, signAlgorithm) {
+exports.signWithPrivateKey = function (input, privateKey, signAlgorithm) {
     return this.helper.signWithPrivateKey(input, privateKey, signAlgorithm);
 }
 
-exports.verifySignature = function(data, signature, publicKey, signAlgorithm) {
+exports.verifySignature = function (data, signature, publicKey, signAlgorithm) {
     return this.helper.verifySignature(data, signature, publicKey, signAlgorithm);
 }
 
 ///////////////////////////////////////////////////////////////////
 ////                   Symmetric Cryptography                  ////
 
-exports.parseSymmetricCryptoSpec = function(cryptoSpec) {
+exports.parseSymmetricCryptoSpec = function (cryptoSpec) {
     var cryptoSpecTokens = cryptoSpec.split(':');
-    return {cipher: cryptoSpecTokens[0], mac: cryptoSpecTokens[1]};
+    return {
+        cipher: cryptoSpecTokens[0],
+        mac: cryptoSpecTokens[1]
+    };
 };
 
 /** Return a symmetric decrypted bytes.
  */
-exports.symmetricDecrypt = function(input, key, cipherAlgorithm) {
+exports.symmetricDecrypt = function (input, key, cipherAlgorithm) {
     return this.helper.symmetricDecrypt(input, key, cipherAlgorithm);
 };
 
-exports.symmetricDecryptWithHash = function(input, cipherKeyVal, macKeyVal,
-    cipherAlgorithm, macAlgorithm)
-{
+exports.symmetricDecryptWithHash = function (input, cipherKeyVal, macKeyVal,
+    cipherAlgorithm, macAlgorithm) {
     var hashLength = this.helper.getMacLength(macAlgorithm);
     if (input.length < hashLength) {
-        return {data: null, hashOk: false};
+        return {
+            data: null,
+            hashOk: false
+        };
     }
     var enc = input.slice(0, input.length - hashLength);
     var receivedTag = input.slice(input.length - hashLength);
     var computedTag = this.helper.hmac(enc, macKeyVal, macAlgorithm);
     var hashOk = unsigendByteArrayEquals(receivedTag, computedTag);
     if (!hashOk) {
-        return {data: null, hashOk: false};
+        return {
+            data: null,
+            hashOk: false
+        };
     }
     var data = this.helper.symmetricDecrypt(enc, cipherKeyVal, cipherAlgorithm);
-    return {data: data, hashOk: hashOk};
+    return {
+        data: data,
+        hashOk: hashOk
+    };
 };
 
 /** Return a symmetric encrypted bytes.
  */
-exports.symmetricEncrypt = function(input, key, cipherAlgorithm) {
+exports.symmetricEncrypt = function (input, key, cipherAlgorithm) {
     return this.helper.symmetricEncrypt(input, key, cipherAlgorithm);
 };
 
-exports.symmetricEncryptWithHash = function(input, cipherKeyVal, macKeyVal,
-    cipherAlgorithm, macAlgorithm)
-{
+exports.symmetricEncryptWithHash = function (input, cipherKeyVal, macKeyVal,
+    cipherAlgorithm, macAlgorithm) {
     if (typeof input === 'string') {
         var temp = [];
         if (input.startsWith('0x')) {
             for (var i = 2; i < (input.length - 1); i += 2) {
                 temp.push(parseInt(input.substring(i, i + 2), 16));
             }
-        }
-        else {
+        } else {
             for (var i = 0; i < input.length; i++) {
                 temp.push(input.charCodeAt(i));
             }

@@ -287,11 +287,11 @@ exports.Client.prototype._notifyIncoming = function (message) {
  *  @param options The options.
  */
 exports.Server = function (options) {
-        if (typeof options.port === 'undefined' || options.port === null) {
-                this.port = 80;
-        } else {
-                this.port = options.port;
-        }
+    if (typeof options.port === 'undefined' || options.port === null) {
+        this.port = 80;
+    } else {
+        this.port = options.port;
+    }
     this.hostInterface = options.hostInterface || 'localhost';
     this.receiveType = options.receiveType || 'application/json';
     this.sendType = options.sendType || 'application/json';

@@ -11,8 +11,10 @@ var array = [-66, 8, -115, 73, -49, 42, 23, -36, 43, -108, 22, -28, -84, 57, -21
 var buf = new Buffer(array);
 console.log(buf.length);
 
-var origin = crypto.privateDecrypt(
-        {key: privateKey, padding: constants.RSA_PKCS1_PADDING}, buf);
+var origin = crypto.privateDecrypt({
+    key: privateKey,
+    padding: constants.RSA_PKCS1_PADDING
+}, buf);
 console.log('origin');
 console.log(origin);
 
