@@ -106,9 +106,9 @@ exports.info = exports.log;
 exports.log = function () {
     var formatted = util.format.apply(this, arguments);
     try {
-	actor.log(formatted);
+        actor.log(formatted);
     } catch (error) {
-	print(formatted);
+        print(formatted);
     }
 };
 

@@ -27,7 +27,7 @@
 
 /**
  * Module to access the Global Data Plane (GDP).
- * 
+ *
  * See <a href="https://www.terraswarm.org/accessors/wiki/Main/GDPWithAccessors">https://www.terraswarm.org/accessors/wiki/Main/GDPWithAccessors</a>
  *
  * @module GDP
@@ -65,7 +65,7 @@ exports.GDP = function (name, iomode, logdname) {
 };
 util.inherits(exports.GDP, EventEmitter);
 
-/** Append data to the already open log. 
+/** Append data to the already open log.
  *  @param {string} data The data to be appended
  */
 exports.GDP.prototype.append = function (data) {

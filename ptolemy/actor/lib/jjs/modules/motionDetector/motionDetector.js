@@ -29,7 +29,7 @@
  *  taken from the webcam-capture package by Bartosz Firyn (SarXos), available from:
  *  [https://github.com/sarxos/webcam-capture](https://github.com/sarxos/webcam-capture).
  *  The webcam-capture package is licensed under the MIT License.
- * 
+ *
  *  The filter architecture follows the pattern defined by Jerry Huxtable
  *  in the JH Labs Java Image Processing library, available from:
  *    http://www.jhlabs.com/ip/filters

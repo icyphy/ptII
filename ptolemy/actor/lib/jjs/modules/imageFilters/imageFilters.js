@@ -29,7 +29,7 @@
  * each realized by calling the {@link filter} function, passing it an input
  * image, a filter name, and optional filter options.
  * The list of available filters is provided by the {@link filters()} function.
- *  
+ *
  * This implementation uses code by Jerry Huxtable, licensed under
  * the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
  * The code is available at [http://www.jhlabs.com/ip/filters](http://www.jhlabs.com/ip/filters).
@@ -129,14 +129,14 @@
  *   * _UpperThreshold_: The threshold above which pixels become _White_. This is an int that defaults to 127.
  *   * _Black_: The color produced for pixels below _LowerThreshold_. This is color (see below) that defaults to black.
  *   * _White_: The color produced for pixels above _UpperThreshold_. This is color (see below) that defaults to white.
- * 
+ *
  * For options that specify a color, the color may be given as an integer where bits 24-31
  * represent alpha, bits 16-23 represent red, bits 8-15 represent green, and bits 0-7 represent blue.
  * Alternatively, the color may be given as a string of the form of a hexadecimal number,
  * e.g. "0xff0000" for red, a standard color name, e.g. "red", or a CSS-style color specification,
  * e.g. "#FF0000" for red. The color names supported are black, blue, cyan, darkGray, gray, green,
  * lightGray, magenta, orange, pink, red, white, and yellow.
- * 
+ *
  * @module imageFilters
  * @author Edward A. Lee
  * @version $$Id$$

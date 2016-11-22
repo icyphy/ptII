@@ -30,7 +30,7 @@
  * each message can have an arbitrary number of bytes. It also differs
  * from a TCP socket in that the connection is established through HTTP
  * and is supported by most web browsers.
- * 
+ *
  * This module defines three classes, Client, Server, and Socket.
  * To make a connection, create an instance of Server, set up event listeners,
  * and start the server. On another machine (or the same machine), create
@@ -113,11 +113,11 @@ exports.supportedSendTypes = function () {
  *    on the host, and the image will be encoded as a byte stream in the specified
  *    format before sending.  A received byte stream will be decoded as an image,
  *    if possible. FIXME: What happens if decoding fails?
- *  
+ *
  *  The event 'close' will be emitted when the socket is closed, and 'error' if an
  *  an error occurs (with an error message as an argument).
  *  For example,
- *  
+ *
  *  <pre>
  *      var WebSocket = require('webSocket');
  *      var client = new WebSocket.Client({'host': 'localhost', 'port': 8080});
@@ -127,10 +127,10 @@ exports.supportedSendTypes = function () {
  *      });
  *      client.open();
  *  </pre>
- *  
+ *
  *  The above code may send a message even before the socket is opened. This module
  *  implementation will queue that message to be sent later when the socket is opened.
- *  
+ *
  *  The options argument is a JSON object that can contain the following properties:
  *  * host: The IP address or host name for the host. Defaults to 'localhost'.
  *  * port: The port on which the host is listening. Defaults to 80.
@@ -249,17 +249,17 @@ exports.Client.prototype._notifyIncoming = function (message) {
  *    See the Client documentation for supported types.
  *  * sendType: The MIME type for outgoing messages, which defaults to 'application/json'.
  *    See the Client documentation for supported types.
- * 
+ *
  *  This subclasses EventEmitter, emitting events 'listening' and 'connection'.
  *  A typical usage pattern looks like this:
- * 
+ *
  *  <pre>
  *     var server = new WebSocket.Server({'port':8082});
  *     server.on('listening', onListening);
  *     server.on('connection', onConnection);
  *     server.start();
  *  </pre>
- * 
+ *
  *  where onListening is a handler for an event that this Server emits
  *  when it is listening for connections, and onConnection is a handler
  *  for an event that this Server emits when a client requests a websocket
@@ -267,7 +267,7 @@ exports.Client.prototype._notifyIncoming = function (message) {
  *  When the 'connection' event is emitted, it will be passed a Socket object,
  *  and the onConnection handler can register a listener for 'message' events
  *  on that Socket object, as follows:
- * 
+ *
  *  <pre>
  *    server.on('connection', function(socket) {
  *        socket.on('message', function(message) {
@@ -276,10 +276,10 @@ exports.Client.prototype._notifyIncoming = function (message) {
  *        });
  *     });
  *  </pre>
- * 
+ *
  *  The Socket object also has a close() function that allows the server to close
  *  the connection.
- * 
+ *
  *  FIXME: Should provide a mechanism to validate the "Origin" header during the
  *    connection establishment process on the serverside (against the expected origins)
  *    to avoid Cross-Site WebSocket Hijacking attacks.

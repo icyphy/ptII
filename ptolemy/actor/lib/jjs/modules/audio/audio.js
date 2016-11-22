@@ -40,7 +40,7 @@
 // Reference to the Java class documented at:
 //    http://terra.eecs.berkeley.edu:8080/job/ptII/javadoc/ptolemy/media/javasound/LiveSound.html
 var LiveSound = Java.type('ptolemy.media.javasound.LiveSound');
-// Clip playback uses javafx instead of Ptolemy SoundReader since javafx supports mp3 
+// Clip playback uses javafx instead of Ptolemy SoundReader since javafx supports mp3
 var AudioClip = Java.type('javafx.scene.media.AudioClip');
 
 /** Construct an instance of an Player object type. This should be instantiated in your
@@ -124,7 +124,7 @@ exports.ClipPlayer.prototype.play = function () {
     }
 };
 
-/** Stop playback. 
+/** Stop playback.
  */
 exports.ClipPlayer.prototype.stop = function () {
     if (this.clip !== null) {

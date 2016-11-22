@@ -26,7 +26,7 @@
 // the copyright link on the splash page or see copyright.htm.
 
 /**
- * 
+ *
  * @module objectAssign
  * @author Edward A. Lee
  * @version $$Id$$

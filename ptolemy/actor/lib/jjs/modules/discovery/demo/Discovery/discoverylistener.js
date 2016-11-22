@@ -24,20 +24,20 @@
 //
 // Ptolemy II includes the work of others, to see those copyrights, follow
 // the copyright link on the splash page or see copyright.htm.
-/**  A device discovery listener for Node.js.  
- * 
+/**  A device discovery listener for Node.js.
+ *
  *   This program should be executed on the terra server.
- * 
- *   This program starts a web server and listens for POSTs containing info 
- *   about devices connected to a particular host.  It prints the info to the 
+ *
+ *   This program starts a web server and listens for POSTs containing info
+ *   about devices connected to a particular host.  It prints the info to the
  *   screen and stores the info in a variable.  It does not currently persist
  *   the data.
- *   
+ *
  *   To test locally, see instructions at the bottom of the file.
- *   
+ *
  *   Accessors: https://www.terraswarm.org/accessors/
  *   Discovery:  https://www.terraswarm.org/accessors/wiki/Version0/Discovery
- *  
+ *
  *   Author: Elizabeth Latronico
  */
 
@@ -56,7 +56,7 @@ console.log('Listening on port ' + port);
 
 var hostMap = {};
 
-// GET /hosts/:hostname/devices  Print a list of devices connected to swarmbox 
+// GET /hosts/:hostname/devices  Print a list of devices connected to swarmbox
 // ":hostname"
 app.get('/hosts/:hostname/devices', function (req, res) {
     // console.log("Looking up devices for " + req.params.hostname);
@@ -68,7 +68,7 @@ app.get('/hosts/:hostname/devices', function (req, res) {
     }
 });
 
-// POST /hosts/(hostname)/devices  Submit a list of devices 
+// POST /hosts/(hostname)/devices  Submit a list of devices
 // {IPAddress, MAC address, name}} connected to swarmbox ":hostname"
 app.post('/hosts/:hostname/devices', function (req, res) {
     // The Express body-parser will automatically parse the JSON into a Javascript object

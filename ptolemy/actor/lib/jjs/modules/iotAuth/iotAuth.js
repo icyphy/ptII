@@ -25,9 +25,9 @@
  * Module supporting authorization (Auth) service for the Internet of Things (IoT).
  * This module includes common functions for communication with IoT Auth service
  * and communication with other registered entities.
- * 
+ *
  * The authorization service is provided by a local authorization entity, Auth,
- * whose open-source Java implementation can be found on a GitHub repository 
+ * whose open-source Java implementation can be found on a GitHub repository
  * (https://github.com/iotauth/iotauth).
  *
  * @module iotAuth
@@ -219,12 +219,12 @@ var parseSessionKey = function(buf) {
 var parseSessionKeyResp = function(buf) {
     var replyNonce = buf.slice(0, AUTH_NONCE_SIZE);
     var curIndex = AUTH_NONCE_SIZE;
-    
+
         var cryptoSpecLen = buf.readUInt8(curIndex);
         curIndex += 1;
         var cryptoSpecStr = buf.toString(curIndex, curIndex + cryptoSpecLen);
         curIndex += cryptoSpecLen;
-        
+
     var sessionKeyCount = buf.readUInt32BE(curIndex);
 
     curIndex += 4;
@@ -325,14 +325,14 @@ exports.loadPrivateKey = function(path) {
 
 function symmetricEncryptAuthenticate(buf, symmetricKey, cryptoSpec) {
     var cryptoSpec = crypto.parseSymmetricCryptoSpec(cryptoSpec);
-    return crypto.symmetricEncryptWithHash(buf.getArray(), 
+    return crypto.symmetricEncryptWithHash(buf.getArray(),
         symmetricKey.cipherKeyVal.getArray(), symmetricKey.macKeyVal.getArray(),
         cryptoSpec.cipher, cryptoSpec.mac);
 };
 
 function symmetricDecryptVerify(buf, symmetricKey, cryptoSpec) {
     var cryptoSpec = crypto.parseSymmetricCryptoSpec(cryptoSpec);
-    return crypto.symmetricDecryptWithHash(buf.getArray(), 
+    return crypto.symmetricDecryptWithHash(buf.getArray(),
         symmetricKey.cipherKeyVal.getArray(), symmetricKey.macKeyVal.getArray(),
         cryptoSpec.cipher, cryptoSpec.mac);
 
@@ -460,7 +460,7 @@ exports.sendSessionKeyRequest = function(options, sessionKeyResponseCallback, ca
                 if (obj.msgType == msgType.AUTH_HELLO) {
                         var authHello = parseAuthHello(obj.payload);
                         myNonce = new buffer.Buffer(crypto.randomBytes(AUTH_NONCE_SIZE));
-                
+
             var sessionKeyReq = {
                 nonce: myNonce,
                 replyNonce: authHello.nonce,
@@ -583,7 +583,7 @@ IoTSecureSocket.prototype.receive = function(payload) {
     console.log('Received hash for secure comm msg is ok');
     var buf = new buffer.Buffer(ret.data);
     ret = parseSessionMessage(buf);
-    
+
     if (ret.seqNum != this.readSeqNum) {
         return {success: false, error: 'seqNum does not match! expected: ' + this.readSeqNum + ' received: ' + ret.seqNum};
     }
@@ -652,7 +652,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
         //'trustAll' : this.getParameter('trustAll'),
         //'trustedCACertPath' : this.getParameter('trustedCACertPath')
     });
-    
+
     var myNonce;
     entityClientSocket.on('open', function() {
         console.log('connected to server');
@@ -660,7 +660,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
         var handshake1 = {nonce: myNonce};
         var buf = serializeHandshake(handshake1);
         var encBuf = new buffer.Buffer(symmetricEncryptAuthenticate(buf, options.sessionKey, options.sessionCryptoSpec));
-        
+
         var keyIdBuf = new buffer.Buffer(SESSION_KEY_ID_SIZE);
         keyIdBuf.writeUIntBE(options.sessionKey.id, 0, SESSION_KEY_ID_SIZE);
         var msg = {
@@ -696,7 +696,7 @@ exports.initializeSecureCommunication = function(options, eventHandlers) {
                     + ' expected: ' + obj.payloadLen);
             }
         }
-        
+
         if (expectingMoreData) {
             // do not process the packet yet
             return;
@@ -824,7 +824,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
     entityServer.on('error', function(message) {
         eventHandlers.onServerError(message);
     });
-        
+
     entityServer.on('listening', function(listeningPort) {
         eventHandlers.onServerListening(listeningPort);
     });
@@ -863,15 +863,15 @@ exports.initializeSecureServer = function(options, eventHandlers) {
             }
             console.log('received hash for handshake 1 is ok');
             var buf = new buffer.Buffer(ret.data);
-            
+
             var handshake1 = parseHandshake(buf);
-            
+
             myNonce = new buffer.Buffer(crypto.randomBytes(HANDSHAKE_NONCE_SIZE));
-            
+
             var theirNonce = handshake1.nonce;
-            
+
             var handshake2 = {nonce: myNonce, replyNonce: theirNonce};
-            
+
             var encBuf = symmetricEncryptAuthenticate(serializeHandshake(handshake2),
                 entityServerSessionKey, options.sessionCryptoSpec);
             var msg = {
@@ -882,13 +882,13 @@ exports.initializeSecureServer = function(options, eventHandlers) {
 
             console.log('switching to HANDSHAKE_2_SENT state.');
             entityServerState = entityServerCommState.HANDSHAKE_2_SENT;
-            
+
             serverSocket.send(toSend);
         };
 
         console.log('A client connected from ' +
             entityServerSocket.remoteHost() + ':' + entityServerSocket.remotePort());
-        
+
         entityServerSocket.on('close', function() {
             if (entityServerState == entityServerCommState.IN_COMM) {
                 eventHandlers.onClose(socketID);
@@ -901,7 +901,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
                 return;
             }
         });
-        
+
         entityServerSocket.on('error', function(message) {
             if (entityServerState == entityServerCommState.IN_COMM) {
                 eventHandlers.onError(message, socketID);
@@ -913,7 +913,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
                 return;
             }
         });
-        
+
         var expectingMoreData = false;
         var obj;
         var iotSecureSocket = null;
@@ -938,7 +938,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
                         + ' expected: ' + obj.payloadLen);
                 }
             }
-            
+
             if (expectingMoreData) {
                 // do not process the packet yet
                 return;
@@ -977,7 +977,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
                     return;
                 }
                 console.log('client nonce verified');
-                
+
                 console.log('switching to IN_COMM state.');
                 entityServerState = entityServerCommState.IN_COMM;
                 iotSecureSocket = new IoTSecureSocket(entityServerSocket, entityServerSessionKey,
@@ -1010,7 +1010,7 @@ exports.initializeSecureServer = function(options, eventHandlers) {
             }
         });
     });
-    
+
     // Open the server after setting up all the handlers.
     entityServer.start();
     return entityServer;
