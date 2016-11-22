@@ -138,14 +138,6 @@
             </property>
         </property>
     </property>
-    <property name="AccessorSSHCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator">
-        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="$PTII/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeout@">
-        </property>
-        <property name="userHost" class="ptolemy.data.expr.StringParameter" value="sbuser@10.0.0.1">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{665.0, 120.0}">
-        </property>
-    </property>
     <property name="Annotation9" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Click on AccessorSSHCodeGenerator&#10;to create Node Accesso Host Code&#10;and run it on a remote machine.&#10;">
         </property>
@@ -227,6 +219,16 @@
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{265, 55}">
             </property>
+        </property>
+    </property>
+    <property name="AccessorSSHCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator">
+        <property name="npmInstall" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="runForever" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="stopForeverAccessors" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{640, 120}">
         </property>
     </property>
     <entity name="Moto360SensorListener" class="org.terraswarm.accessor.JSAccessor">
@@ -352,11 +354,11 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="bridgeIP" class="ptolemy.data.expr.Parameter" value="10.0.0.29">
+        <property name="bridgeIP" class="ptolemy.data.expr.Parameter" value="10.0.0.234">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="userName" class="ptolemy.data.expr.Parameter" value="HhekgsYEMo3V1xTsAKQEvy-m4rfGuV6Sv7oosipL">
+        <property name="userName" class="ptolemy.data.expr.Parameter" value="EJjyWWrE5qDOqs301OarqVSqp3jfJvaOqiObxMYR">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -389,7 +391,7 @@
         </port>
     </entity>
     <entity name="JavaScript2" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('a');&#10;	this.parameter('lightID', {type: 'string', value: 1});&#10;	this.output('light');&#10;}&#10;exports.initialize = function () {&#10;	var self = this;&#10;	var raised = false;&#10;	this.addInputHandler('a', function() {&#10;		var a = this.get('a');&#10;		if (!raised &amp;&amp; a.x &gt; 9.0) {&#10;			raised = true;&#10;			self.send('light', {id: self.getParameter('lightID'), on: true});&#10;		} else if (raised &amp;&amp; a.x &lt; 5.0) {&#10;			raised = false;&#10;			self.send('light', {id: self.getParameter('lightID'), on: false});&#10;		}&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('a');&#10;	this.parameter('lightID', {type: 'string', value: 1});&#10;	this.output('light');&#10;	this.output('hand', {type: 'string'});&#10;}&#10;exports.initialize = function () {&#10;	var self = this;&#10;	var raised = false;&#10;	this.addInputHandler('a', function() {&#10;		var a = this.get('a');&#10;		if (!raised &amp;&amp; a.x &gt; 9.0) {&#10;			raised = true;&#10;			self.send('light', {id: self.getParameter('lightID'), on: true});&#10;			self.send('hand', 'Hand raised');&#10;		} else if (raised &amp;&amp; a.x &lt; 5.0) {&#10;			raised = false;&#10;			self.send('light', {id: self.getParameter('lightID'), on: false});&#10;            self.send('hand', 'Hand lowered');&#10;		}&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -401,7 +403,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[290.0, 275.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 275.0}">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -411,7 +413,7 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
             </property>
         </property>
-        <property name="lightID" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="lightID" class="ptolemy.data.expr.Parameter" value="4">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -421,13 +423,87 @@
         <port name="light" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
+        <port name="hand" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="GDPLogAppend" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/* Append to a Global Data Plane (GDP) log. */&#10;&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** Append string data to a Global Data Plane (GDP) log.&#10; *  If a log with the specified name does not exist, it is automatically&#10; *  created.&#10; *&#10; *  @input {string} data The data to be written.&#10; *&#10; *  @param {string} logname The GDP logname.  By convention, use &#10; *   a reverse fully qualified name like&#10; *   &quot;org.terraswarm.accessors.demo.MyDemoName&quot;&#10; *&#10; *  @param {string} logdname The name of a logd server.  If empty,&#10; *   then the hostname of the local machine is used. The logd server&#10; *   is a gateway into the GDP.&#10; *&#10; *  @parameter {string} debugLevel The value of the GDP debug flag.&#10; *   See gdp/README-developers.md for a complete summary.  The value is&#10; *   typically &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To&#10; *   see the patterns, use the &quot;what&quot; command or strings&#10; *   $PTII/lib/libgdp* | grep '@(#)'.  Use &quot;*=40&quot; to set the debug&#10; *   level to 40 for all components. The value of level is not usually&#10; *   over 127.  Values over 100 may modify the behavior.&#10; *&#10; *  @accessor gdp/GDPLogAppend&#10; *  @author Christopher Brooks, Edward A. Lee, Nitesh Mor&#10; *  @version $$Id$$ &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, addInputParameter, console, exports, get, getParameter, input, parameter, removeInputHandler, require */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var GDP = require('gdp');&#10;var handle = null;&#10;var log = null;&#10;var oldLogname = null;&#10;&#10;exports.setup = function () {&#10;    console.log(&quot;GDPLogAppend.js: setup()&quot;);&#10;    this.input('data', {'type': 'string'});&#10;    this.input('logname', {'type': 'string', 'value': 'org.terraswarm.accessors.myLog'});&#10;    this.input('logdname', {'type': 'string', 'value': 'edu.berkeley.eecs.gdp-01.gdplogd'});&#10;    this.parameter('debugLevel', {'type': 'string'});&#10;};&#10;&#10;/** Append data from the input port 'data' to the log.&#10; *  If necessary, first create the log.&#10; */&#10;exports.append = function () {&#10;    var logname = this.get('logname'), logdname, dataValues;&#10;    if (logname === '') {&#10;        throw new Error('The logname parameter cannot be empty.');&#10;    }&#10;    console.log('Append to log named: ' + logname);&#10;    if (logname !== oldLogname) {&#10;        logdname = this.get('logdname');&#10;        log = new GDP.GDP(logname, 2, logdname);&#10;        log.setDebugLevel(this.getParameter('debugLevel'));&#10;        oldLogname = logname;&#10;    }&#10;    dataValues = this.get('data');&#10;    console.log('Append data: ' + dataValues);&#10;    log.append(dataValues);&#10;};&#10;&#10;/** Add an input handler that will append data. */&#10;exports.initialize = function () {&#10;    console.log(&quot;GDPLogAppend.js: initialize()&quot;);&#10;    oldLogname = null;&#10;    handle = this.addInputHandler('data', this.exports.append.bind(this));&#10;};&#10;&#10;/** Remove the input handler. */&#10;exports.wrapup = function () {&#10;    if (log) {&#10;        log.close();&#10;    }&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/gdp/GDPLogAppend.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Append string data to a Global Data Plane (GDP) log.&#10; If a log with the specified name does not exist, it is automatically&#10; created.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks, Edward A. Lee, Nitesh Mor">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="data (port)" class="ptolemy.kernel.util.StringAttribute" value="The data to be written.">
+            </property>
+            <property name="debugLevel (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value of the GDP debug flag.&#10;  See gdp/README-developers.md for a complete summary.  The value is&#10;  typically &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To&#10;  see the patterns, use the &quot;what&quot; command or strings&#10;  $PTII/lib/libgdp* | grep '@(#)'.  Use &quot;*=40&quot; to set the debug&#10;  level to 40 for all components. The value of level is not usually&#10;  over 127.  Values over 100 may modify the behavior.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="watch">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logdname" class="ptolemy.actor.parameters.PortParameter" value="edu.berkeley.eecs.gdp-03.gdplogd">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="debugLevel" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{485, 380}">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
+        </property>
+        <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="logdname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[400.0, 265.0]">
+        </vertex>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="Moto360SensorListener.accelerometer" relation="relation"/>
-    <link port="Hue.commands" relation="relation2"/>
+    <link port="Hue.commands" relation="relation3"/>
     <link port="JavaScript2.a" relation="relation"/>
-    <link port="JavaScript2.light" relation="relation2"/>
+    <link port="JavaScript2.light" relation="relation3"/>
+    <link port="JavaScript2.hand" relation="relation2"/>
+    <link port="GDPLogAppend.data" relation="relation2"/>
 </entity>

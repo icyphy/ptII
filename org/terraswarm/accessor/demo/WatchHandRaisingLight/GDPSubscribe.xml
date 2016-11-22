@@ -53,7 +53,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="org.terraswarm.accessors.demo.WatchHandRaisingLightGDP">
+        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="watch">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>

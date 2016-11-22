@@ -173,6 +173,7 @@ public class AccessorLibrary extends EntityLibrary {
                                     String moml = JSAccessor.accessorToMoML(newConfigureSource, false);
                                     parser.clearTopObjectsList();
                                     parser.parse(accessorURL, moml);
+
                                     List<NamedObj> created = parser.topObjectsCreated();
                                     for (NamedObj toplevel : created) {
                                         if (toplevel instanceof JavaScript) {
