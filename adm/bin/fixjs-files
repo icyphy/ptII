@@ -70,11 +70,11 @@ doit() {
 	-e 's/)throws{/) throws/' \
 	-e 's/@authors /@author /' \
 	-e 's/@authors: /@author /' \
-        -e 's/= function(/= function (/' \
+        -e 's/function(/function (/' \
 	    $file > /tmp/fix-files.tmp
 	diff -c $file /tmp/fix-files.tmp
 }
-EGREPMATCH='for\(|if\(|}catch|do{|}while|while\(|\){$|try{|else{|\)throws|@authors'
+EGREPMATCH='for\(|if\(|}catch|do{|}while|while\(|\){$|try{|else{|\)throws|@authors|function\('
 LOGMESSAGE='Added spaces in for, while, if, else, try, catch, throws'
 
 search $@

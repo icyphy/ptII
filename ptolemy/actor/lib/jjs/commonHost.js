@@ -193,7 +193,7 @@
  *
  *  @module commonHost
  *  @authors: Edward A. Lee and Chris Shaver
- *  @version: $$Id$$
+ *  @version $$Id$$
  */
 
 // Stop extra messages from jslint and jshint.

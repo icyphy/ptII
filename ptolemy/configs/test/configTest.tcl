@@ -47,7 +47,7 @@ if {[string compare test [info procs test]] == 1} then {
 
     set loader [[$parser getClass] getClassLoader]
 
-set URL [$loader getResource ptolemy/configs/ptiny/configuration.xml]
+set URL [$loader getResource ptolemy/configs/capecode/configuration.xml]
 puts "Checking [$URL toString]"
 set object [$parser {parse java.net.URL java.net.URL} $URL $URL]
 set configuration [java::cast ptolemy.kernel.CompositeEntity $object]
@@ -56,6 +56,8 @@ $configuration description
 puts "Done expanding"
 set results [[java::cast ptolemy.actor.gui.Configuration $configuration] check]
 puts $results
+
+puts [$configuration exportMoML]
 
 # The list of filters is static, so we reset it
 java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
