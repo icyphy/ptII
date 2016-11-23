@@ -297,6 +297,11 @@
     <exclude name="**/junit/JUnitAuto32Test.*" />
   </patternset>
 
+  <!-- Tests for Cape Code. -->
+  <patternset id="test.capeCode.includes">
+    <include name="**/ptolemy/actor/lib/jjs/**/junit/JUnitTclTest.*" />
+  </patternset>
+  
   <!-- Tests that we want to exclude because they don't work or are called by AllTests. -->
   <patternset id="test.excludes">
     <exclude name="**/HTMLAboutJUnitTest.*" />
@@ -971,6 +976,38 @@ For example:
 	</fileset>
       </batchtest>
       <formatter type="plain" usefile="off" />
+      <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
+      <jvmarg value="-Dptolemy.ptII.batchMode=true" />
+    </junit>
+  </target>
+
+  <target name="test.capeCode.xml"
+	  description="Run the Cape Code test.">
+    <!-- fork="yes" is need so that javchdir can cd to the test/ directory -->
+    <!-- printsummary = on, off, and withOutAndErr. withOutAndErr prints stdout and stderr -->
+    <echo>
+      ==test.capeCode ==
+      This target runs the Cape Code accessors tests and generates JUnit xml output.
+      timeout = ${timeout.long} milliseconds
+    </echo>
+    <junit fork="yes" 
+	   jvm="ptolemy/util/test/junit/javachdir"
+	   printsummary="withOutAndErr"
+	   showoutput="yes"
+	   timeout="${timeout.long}">
+      <classpath>
+	<path refid="ptII.classpath" />
+	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
+      </classpath>
+      <!-- Set filtertrace to off so that we see the junit stackframes -->
+      <batchtest filtertrace="off">
+	<fileset defaultexcludes="yes"
+		 dir="${basedir}">
+	  <!-- Include the long running tests. -->
+	  <patternset refid="test.capeCode.includes" />
+	</fileset>
+      </batchtest>
+      <formatter type="${junit.formatter}"/>
       <jvmarg value="-Dptolemy.ptII.dir=${basedir}" />
       <jvmarg value="-Dptolemy.ptII.batchMode=true" />
     </junit>
