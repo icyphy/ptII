@@ -36,6 +36,10 @@
  * @version $$Id$$
  */
 
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals console, error, exports, require */
+/*jshint globalstrict: true*/
 "use strict";
 
 var buffer = require('buffer');
@@ -98,22 +102,22 @@ function numToVarLenInt(num) {
     extraBuf.writeUInt8(num);
     buf = buffer.concat([buf, extraBuf]);
     return buf;
-};
+}
 
 function varLenIntToNum(buf, offset) {
     var num = 0;
     for (var i = 0; i < buf.length && i < 5; i++) {
         num |= (buf.get(offset + i) & 127) << (7 * i);
-        if ((buf.get(offset + i) & 128) == 0) {
+        if ((buf.get(offset + i) & 128) === 0) {
             return {
                 num: num,
                 bufLen: i + 1
             };
-            break;
+            //break;
         }
     }
     return null;
-};
+}
 
 /*
     IoTSP (IoT Secure Protocol) Message
@@ -124,7 +128,7 @@ function varLenIntToNum(buf, offset) {
     }
 */
 exports.serializeIoTSP = function (obj) {
-    if (obj.msgType == undefined || obj.payload == undefined) {
+    if (typeof obj.msgType === 'undefined' || typeof obj.payload === 'undefined') {
         console.log('Error: IoTSP msgType or payload is missing.');
         return;
     }
@@ -159,8 +163,9 @@ var parseAuthHello = function (buf) {
 };
 
 var serializeSessionKeyReq = function (obj) {
-    if (obj.nonce == undefined || obj.replyNonce == undefined || obj.sender == undefined ||
-        obj.purpose == undefined || obj.numKeysPerRequest == undefined) {
+    if (typeof obj.nonce === 'undefined' || typeof obj.replyNonce === 'undefined' ||
+	typeof obj.sender === 'undefined' || typeof obj.purpose === 'undefined' ||
+	typeof obj.numKeysPerRequest === 'undefined') {
         console.log('Error: SessionKeyReq nonce or replyNonce ' +
             'or purpose or numKeysPerRequest is missing.');
         return;
@@ -273,7 +278,7 @@ var parseAuthAlert = function (buf) {
     }
 */
 var serializeHandshake = function (obj) {
-    if (obj.nonce == undefined && obj.replyNonce == undefined) {
+    if (typeof obj.nonce === 'undefined' && typeof obj.replyNonce === 'undefined') {
         console.log('Error: handshake should include at least on nonce.');
         return;
     }
@@ -317,7 +322,7 @@ var parseHandshake = function (buf) {
     }
 */
 var serializeSessionMessage = function (obj) {
-    if (obj.seqNum == undefined || obj.data == undefined) {
+    if (typeof obj.seqNum === 'undefined' || typeof obj.data === 'undefined') {
         console.log('Error: Secure session message seqNum or data is missing.');
         return;
     }
