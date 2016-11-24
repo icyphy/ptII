@@ -851,8 +851,7 @@ For example:
 	<path refid="ptII.classpath" />
 	<pathelement location="lib/lib/JUnitParams-0.3.0.jar"/>
       </classpath>
-      <!-- Set filtertrace to off so that we see the junit stackframes -->
-      <batchtest filtertrace="off">
+      <batchtest todir="${junit.output.dir}">
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
 	  <!-- Include the long running tests. -->
