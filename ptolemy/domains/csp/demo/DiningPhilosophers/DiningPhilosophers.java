@@ -52,15 +52,15 @@ import ptolemy.kernel.util.NameDuplicationException;
    <p>
    The Dining Philosophers problem was first dreamt up by Edsger W. Dijkstra
    in 1965. It is a classic concurrent programming problem that illustrates
-   the two basic properties of concurrent programming:
-   <LI>
-   <B>Liveness</B>. How can we design the program to avoid deadlock, where
+   the two basic properties of concurrent programming:</p>
+   <ol>
+   <li>  <b>Liveness</b>. How can we design the program to avoid deadlock, where
    none of the the philosophers can make progress because each is waiting
-   for someone else to do something?
-   <LI>
-   <B>Fairness</B>. How can we design the program to avoid starvation, where
+   for someone else to do something?</li>
+   <li> <b>Fairness</b>. How can we design the program to avoid starvation, where
    one of the philosoph ers could make progress but does not because others
-   always go first?
+   always go first?</li>
+   </ol>
    <p>
    This demo uses an algorithm that lets each philosopher randomly chose
    which chopstick to pick up first, and all philosophers eat and think at the
@@ -69,8 +69,8 @@ import ptolemy.kernel.util.NameDuplicationException;
    succeeding. However this algorithm does not guarantee the absence of
    deadlock, and if it is let run long enough this will eventually occur.
    The probability that deadlock occurs sooner increases as he thinking
-   times are decreased relative to the eating times.
-   <p>
+   times are decreased relative to the eating times.</p>
+
    @author Neil Smyth
    @version $Id$
    @since Ptolemy II 0.3

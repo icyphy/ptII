@@ -436,7 +436,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @return the value of this variable as Token.
-     *  @see #setBooleanHybrid(Pointer, boolean)
+     *  @see #setBooleanHybrid(Pointer, boolean, boolean)
      */
     public Token getBooleanHybrid(Pointer fmiComponent) {
         IntBuffer valueBuffer = IntBuffer.allocate(1);
@@ -453,7 +453,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @return the value of this variable as Token.
-     *  @see #setDoubleHybrid(Pointer, double)
+     *  @see #setDoubleHybrid(Pointer, Double, boolean)
      */
     public Token getDoubleHybrid(Pointer fmiComponent) {
         double result;
@@ -484,7 +484,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @return the value of this variable as a Token.
-     *  @see #setIntHybrid(Pointer, int)
+     *  @see #setIntHybrid(Pointer, Integer, boolean)
      */
     public Token getIntHybrid(Pointer fmiComponent) {
         IntBuffer valueBuffer = IntBuffer.allocate(1);
@@ -499,7 +499,7 @@ public class FMIScalarVariable {
      *  @param fmiComponent The Functional Mock-up Interface (FMI)
      *  component that contains a reference to the variable.
      *  @return the value of this variable as a Token.
-     *  @see #setStringHybrid(Pointer, String)
+     *  @see #setStringHybrid(Pointer, String, boolean)
      */
     public Token getStringHybrid(Pointer fmiComponent) {
         LongBuffer isAbsentBuffer = LongBuffer.allocate(1);

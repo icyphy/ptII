@@ -422,7 +422,7 @@ public class DatagramReader extends TypedAtomicActor {
      *  <i>blockAwaitingDatagram</i> is false.  If blocking were true,
      *  the actor would simply stall in fire() until a datagram
      *  arrives.  Type is defined by the expression entered.  Default
-     *  type & value is the integer 0.
+     *  type and value is the integer 0.
      */
     public Parameter defaultOutput;
 

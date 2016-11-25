@@ -87,7 +87,6 @@ import ptolemy.util.MessageHandler;
 
    @author Edward A. Lee, Contributor: Hokeun Kim
    @version $Id$
-   @see SocketServerHelper
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (eal)

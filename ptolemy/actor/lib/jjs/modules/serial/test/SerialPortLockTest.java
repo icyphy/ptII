@@ -52,8 +52,10 @@ public class SerialPortLockTest {
      * <pre>
      * java -classpath ${PTII}:${PTII}/lib/nrjavaserial-3.11.0.devel.jar ptolemy.actor.lib.jjs.modules.serial.test.SerialPortLockTest
      * </pre>
+     * @param args Ignored
+     * @exception Exception Not thrown
      */
-    public static void main(String [] args) {
+    public static void main(String [] args) throws Exception {
         try {
             System.out.println("Opening Port 1");
             CommPort port1 = SerialPortLockTest.openPort();

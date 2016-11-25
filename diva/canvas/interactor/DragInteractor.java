@@ -72,11 +72,12 @@ public class DragInteractor extends AbstractInteractor {
     private boolean _selectiveEnabled;
 
     ///////////////////////////////////////////////////////////////////
-    //// public methods
+    ////              public methods                              ////
 
     /** Add the given layer listener to this interactor.  Any event that is
      * received by this interactor will be passed on to the listener after
      * it is handled by this interactor.
+     * @param l The listener
      */
     public void addLayerListener(LayerListener l) {
         _layerListener = LayerEventMulticaster.add(_layerListener, l);
@@ -84,6 +85,7 @@ public class DragInteractor extends AbstractInteractor {
 
     /** Append a constraint to the list of constraints on
      * this interactor.
+     * @param constraint The constraint.
      */
     public void appendConstraint(PointConstraint constraint) {
         if (_constraints == null) {
@@ -99,6 +101,7 @@ public class DragInteractor extends AbstractInteractor {
      * events. The caller must be careful to make a copy of the passed
      * point if it is not guaranteed that changing the point will not
      * affect other objects with a reference to it.
+     * @param p The point
      */
     public void constrainPoint(Point2D p) {
         if (_constraints != null) {
@@ -110,6 +113,7 @@ public class DragInteractor extends AbstractInteractor {
     }
 
     /** Fire a layer event.
+     *  @param event The event
      */
     public void fireLayerEvent(LayerEvent event) {
         if (_layerListener != null) {
@@ -134,24 +138,30 @@ public class DragInteractor extends AbstractInteractor {
     /** Get the flag that says that the interactor responds only
      * if the figure being moused on is selected. By default, this
      * flag is false.
+     * @return True if selective is enabled.
+     * @see #setSelectiveEnabled(boolean)
      */
     public boolean getSelectiveEnabled() {
         return _selectiveEnabled;
     }
 
     /** Get the target array.
+     * @return the target array
+     * @see #setTargetArray(Object[])
      */
     public Object[] getTargetArray() {
         return _targetArray;
     }
 
-    /** Get the current value of the X coordinate
+    /** Get the current value of the X coordinate.
+     *  @return The x value
      */
     public double getX() {
         return _prevX;
     }
 
-    /** Get the current value of the Y coordinate
+    /** Get the current value of the Y coordinate.
+     *  @return the y value
      */
     public double getY() {
         return _prevY;
@@ -162,6 +172,7 @@ public class DragInteractor extends AbstractInteractor {
      * method, which can be overridden to change the behaviour.
      * Nothing happens if the interactor is not enabled, or if it
      * is "selective enabled" but not in the selection.
+     * @param e the event
      */
     @Override
     public void mouseDragged(LayerEvent e) {
@@ -202,6 +213,7 @@ public class DragInteractor extends AbstractInteractor {
      * constrain the point and remember it.
      * Nothing happens if the interactor is not enabled, or if it
      * is "selective enabled" but not in the selection.
+     * @param e the event
      */
     @Override
     public void mousePressed(LayerEvent e) {
@@ -241,6 +253,7 @@ public class DragInteractor extends AbstractInteractor {
     /** Handle a mouse released event.
      * Nothing happens if the interactor is not enabled, if if it
      * is "selective enabled" but not in the selection.
+     * @param e The event
      */
     @Override
     public void mouseReleased(LayerEvent e) {
@@ -262,6 +275,7 @@ public class DragInteractor extends AbstractInteractor {
 
     /** Prepend a constraint to the list of constraints on
      * this interactor.
+     * @param constraint The constraint
      */
     public void prependConstraint(PointConstraint constraint) {
         if (_constraints == null) {
@@ -272,6 +286,7 @@ public class DragInteractor extends AbstractInteractor {
     }
 
     /** Remove the given layer listener from this interactor.
+     * @param l the listener
      */
     public void removeLayerListener(LayerListener l) {
         _layerListener = LayerEventMulticaster.remove(_layerListener, l);
@@ -282,6 +297,9 @@ public class DragInteractor extends AbstractInteractor {
      * flag is false; if set true, then the mouse methods check that
      * the figure is contained in the selection model of that
      * figure's selection interactor (if it has one).
+     * @param s The value of selective enable
+     * @return The value of the selective enabled flag
+     * @see #getSelectiveEnabled()
      */
     public boolean setSelectiveEnabled(boolean s) {
         return _selectiveEnabled = s;
@@ -291,6 +309,9 @@ public class DragInteractor extends AbstractInteractor {
      * By default, this will be the figure obtained from
      * the event, but this method can be used to set it to
      * something else.
+     * @param arr The array
+     * @return The target array
+     * @see #getTargetArray()
      */
     public void setTargetArray(Object[] arr) {
         _targetArray = arr;
@@ -300,12 +321,14 @@ public class DragInteractor extends AbstractInteractor {
      * processed. This default implementation
      * does nothing, but clients can override to cause it to
      * perform some action, such as setting up constraints.
+     * @param e The event
      */
     public void setup(LayerEvent e) {
         // do nothing
     }
 
     /** Get an iterator over the target figures.
+     * @return An iterator
      */
     public Iterator targets() {
         return new ArrayIterator(_targetArray);
@@ -315,6 +338,9 @@ public class DragInteractor extends AbstractInteractor {
      * is the figure that was moused one. Any overriding methods should
      * be aware that the interactor may in general be operating on
      * multiple figures, and use the targets() method to get them.
+     * @param e The event
+     * @param x the x distance
+     * @param y the y distance
      */
     public void translate(LayerEvent e, double x, double y) {
         Iterator<?> i = targets();

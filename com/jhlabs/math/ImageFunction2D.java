@@ -133,7 +133,7 @@ public class ImageFunction2D implements Function2D {
 
     /** Set the edgeAction.
      *  @param edgeAction one of ZERO, CLAMP or WRAP.
-     *  @set #getEdgeAction()
+     *  @see #getEdgeAction()
      */   
     public void setEdgeAction(int edgeAction) {
         this.edgeAction = edgeAction;

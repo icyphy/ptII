@@ -40,6 +40,7 @@ import diva.canvas.event.LayerEvent;
  */
 public class ArcInteractor extends ConnectorInteractor {
     /** Create a new interactor to be used with the given manipulator.
+     *  @param m The given manipulator	
      */
     public ArcInteractor(ArcManipulator m) {
         super(m);

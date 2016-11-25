@@ -74,10 +74,10 @@ import ptolemy.verification.lib.BoundedBufferTimedDelay;
  * would only happen in the TimedDelay or NondeterministicTimedDelay actor.
  * <p>
  * For a successful conversion, we simply disallow a system to
- * have super dense time tag with the format (\tau, i), where i>0.
+ * have super dense time tag with the format (\tau, i), where i&gt;0.
  * In our context this only happens when there is a TimedDelay actor with its
  * parameter equals to zero. For systems with super dense time tag with the
- * format (\tau, i), where i>0, the system can still be converted. However,
+ * format (\tau, i), where i&gt;0, the system can still be converted. However,
  * please note that the semantics might no longer be preserved.
  * <p>
  * One important feature in our converted model is the use of "complementary"

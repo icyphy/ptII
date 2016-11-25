@@ -43,7 +43,7 @@ import ptolemy.moml.MoMLParser;
  and writes the names of the deadlock states to stdout.
  The usage is:
  <pre>
- java ptolemy.domains.modal.kernel.test.DeadlockStates <automaton.xml>
+ java ptolemy.domains.modal.kernel.test.DeadlockStates <i>automaton.xml</i>
  </pre>
 
  @author Yuhong Xiong

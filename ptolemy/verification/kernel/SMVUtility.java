@@ -129,9 +129,9 @@ public class SMVUtility {
      * <br>2) <code>XX_value</code>: indicating the value of the signal.
      *
      * <p>Therefore, now in the guard expression, it may be possible to have
-     * <br>1) <code>XX_isPresent</code> (in Ptolemy) ==>  <code>XX_isPresent</code> (in SMV)
-     * <br>2) <code>XX == 0</code> (in Ptolemy) ==>  <code>XX_isPresent && XX_value == 0</code> (in SMV)
-     * <br>3) <code>XX == 1</code> (in Ptolemy) ==>  <code>XX_isPresent && XX_value == 1</code> (in SMV)
+     * <br>1) <code>XX_isPresent</code> (in Ptolemy) ==&gt; <code>XX_isPresent</code> (in SMV)
+     * <br>2) <code>XX == 0</code> (in Ptolemy) ==&gt; <code>XX_isPresent &amp;&amp; XX_value == 0</code> (in SMV)
+     * <br>3) <code>XX == 1</code> (in Ptolemy) ==&gt; <code>XX_isPresent &amp;&amp; XX_value == 1</code> (in SMV)
      *
      * <p> If XX_isPresent is false, then the value of XX_value is not valid.
      *

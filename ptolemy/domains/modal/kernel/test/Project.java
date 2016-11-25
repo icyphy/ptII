@@ -42,7 +42,7 @@ import ptolemy.util.StringUtilities;
  of the first one to the second, then writes the MoML description of the
  projection to stdout. The usage is:
  <pre>
- java ptolemy.domains.modal.kernel.test.Project <first_automaton.xml> <second_automaton.xml>
+ java ptolemy.domains.modal.kernel.test.Project <i>first_automaton.xml</i> <i>second_automaton.xml</i>
  </pre>
 
  @author Yuhong Xiong

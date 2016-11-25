@@ -355,23 +355,23 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     * @param timeSample Simulation time.
     * @param stateVariablesSample The vector of state variables at <code>timeSample</code>.
     * @param inputVariablesSample The vector of input variables at <code>timeSample</code>.
-    * @param dtSample The delta between <timeSample> and  <code>time</code>.
+    * @param dtSample The delta between <code>timeSample</code> and  <code>time</code>.
     * @param timeSample2 Simulation time.
     * @param stateVariablesSample2 The vector of state variables at <code>timeSample2</code>.
     * @param inputVariablesSample2 The vector of input variables at <code>timeSample2</code>.
-    * @param dtSample2 The delta between <timeSample2> and  <code>time</code>.
+    * @param dtSample2 The delta between <code>timeSample2</code> and  <code>time</code>.
     * @param timeSample3 Simulation time.
     * @param stateVariablesSample3 The vector of state variables at <code>timeSample3</code>.
     * @param inputVariablesSample3 The vector of input variables at <code>timeSample3</code>.
-    * @param dtSample3 The delta between <timeSample3> and  <code>time</code>.
+    * @param dtSample3 The delta between <code>timeSample3</code> and  <code>time</code>.
     * @param timeSample4 Simulation time.
     * @param stateVariablesSample4 The vector of state variables at <code>timeSample4</code>.
     * @param inputVariablesSample4 The vector of input variables at <code>timeSample4</code>.
-    * @param dtSample4 The delta between <timeSample4> and  <code>time</code>.
+    * @param dtSample4 The delta between <code>timeSample4</code> and  <code>time</code>.
     * @param timeSample5 Simulation time.
     * @param stateVariablesSample5 The vector of state variables at <code>timeSample5</code>.
     * @param inputVariablesSample5 The vector of input variables at <code>timeSample5</code>.
-    * @param dtSample5 The delta between <timeSample4> and  <code>time</code>.
+    * @param dtSample5 The delta between <code>timeSample4</code> and  <code>time</code>.
     * @param stateModelOrder The model order.
     * @return Success (0 for success, else user-defined error code).
     * @exception IllegalActionException If an error occurred.

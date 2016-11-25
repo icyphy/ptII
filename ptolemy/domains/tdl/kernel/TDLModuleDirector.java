@@ -120,7 +120,7 @@ public class TDLModuleDirector extends ModalDirector {
     /**
      * Select all actions that can be fired at the current model time. After
      * executing an action, schedule actions that are executed next according to the schedule. If an
-     * action with a WCET > 0 was started, schedule a refiring and return.
+     * action with a WCET &gt; 0 was started, schedule a refiring and return.
      */
     @Override
     public void fire() throws IllegalActionException {

@@ -42,11 +42,11 @@ import ptolemy.util.StringUtilities;
 
  <p>This class is used to test loading and unlooading a model.
  When used with a memory profiler like JProfiler, we can
- look for leaks.  To run the test, use:
+ look for leaks.  To run the test, use:</p>
  <pre>
 java -classpath $PTII ptolemy.moml.test.UnloadModelTest ../demo/test.xml
  </pre>
- </p>
+
 
  @author Brian Hudson, Christopher Brooks
  @version $Id$

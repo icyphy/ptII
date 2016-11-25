@@ -42,7 +42,7 @@ import ptolemy.moml.MoMLParser;
  combine internal transitions, then writes the MoML description of the
  new automata to stdout. The usage is:
  <pre>
- java ptolemy.domains.modal.kernel.test.CombineInternalTransitions <automaton1.xml
+ java ptolemy.domains.modal.kernel.test.CombineInternalTransitions <i>automaton1.xml</i>
  </pre>
 
  @author Yuhong Xiong

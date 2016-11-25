@@ -46,7 +46,7 @@ import ptolemy.util.StringUtilities;
  sub automaton to the super one, then lists all the state pairs in the relation
  to stdout. The usage is:
  <pre>
- java ptolemy.domains.modal.kernel.test.AlternatingSimulation <-reacheable> <super_automaton.xml> <sub_automaton.xml>
+ java ptolemy.domains.modal.kernel.test.AlternatingSimulation [-reacheable] <i>super_automaton.xml</i> <i>sub_automaton.xml</i>
  </pre>
  -reacheable indicates to only list the reacheable alternating simulation state
  pairs. This flag is optional.

@@ -182,7 +182,7 @@ public class Dataflow extends AbstractDDI {
      * satisfied---the amount of "prechecking" depends on the model of
      * computation ddi. (FIXMELATER)
      *
-     * @return The action number that was selected, a value <0 if no
+     * @return The action number that was selected, a value &lt;0 if no
      * action was selected.
      */
     protected int _selectAction() {

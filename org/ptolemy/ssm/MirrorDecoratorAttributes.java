@@ -251,8 +251,6 @@ implements MirrorDecoratorListener{
 
     /**
      * Add all decorated ports and necessary parameters to the container.
-     * @exception NameDuplicationException
-     * @exception IllegalActionException
      */
     public void decorateContainer() {
         if (this._decorator != null) {

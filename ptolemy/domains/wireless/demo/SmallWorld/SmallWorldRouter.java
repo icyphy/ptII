@@ -71,21 +71,21 @@ import ptolemy.vergil.kernel.attributes.EllipseAttribute;
  to the destination from its connected node set.
 
  <p> We assume that the actor are connected to nodes inside a
- particular range, specified by the <i>sureRange<i> parameter, for
+ particular range, specified by the <i>sureRange</i> parameter, for
  sure. Outside this range, it may connected to a node with
  probability propotional to the r-th inverse power of the distance
  between them. Whether it is connected to a particular node is
- independent of whether it is connected to any other node.
+ independent of whether it is connected to any other node.</p>
 
  <p> For convenience, a variable named "distance" is available and
  equal to the distance between this actor and other actors. The loss
  probability can be given as an expression that depends on this
- distance.
+ distance.</p>
 
  <p> The distance between the transmitter and receiver is determined
  by the protected method _distanceBetween(), which is also used to
  set the value of the <i>distance</i> variable that can be used in
- the expression for loss probability.
+ the expression for loss probability.</p>
 
  @author Yang Zhao
  @version $Id$

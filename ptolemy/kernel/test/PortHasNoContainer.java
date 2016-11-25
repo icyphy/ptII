@@ -66,7 +66,7 @@ public class PortHasNoContainer extends Entity {
      * of the actor.
      *
      * <P>This port is activated by the hasTrigger parameter. Double-click on
-     * the actor to enable. <I>Please enable it <i>ONLY</I> when the actor has
+     * the actor to enable. Please enable it <i>ONLY</I> when the actor has
      * no input and it is required for scheduling of the actor.
      */
     public Port startTrigger;

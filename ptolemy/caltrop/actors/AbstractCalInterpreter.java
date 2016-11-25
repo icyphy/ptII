@@ -89,7 +89,7 @@ import ptolemy.kernel.util.Workspace;
  <p> For further documentation on CAL, see the
  <a href = "http://embedded.eecs.berkeley.edu/caltrop/docs/LanguageReport">Language Report</a>.
 
- @author J&#246;rn W. Janneck <jwj@acm.org>, Christopher Chang, Steve Neuendorffer
+ @author J&#246;rn W. Janneck, Christopher Chang, Steve Neuendorffer
  @version $Id$
  @since Ptolemy II 4.1
  @Pt.ProposedRating Yellow (neuendor)

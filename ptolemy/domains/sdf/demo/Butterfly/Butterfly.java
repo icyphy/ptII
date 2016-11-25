@@ -71,8 +71,7 @@ public class Butterfly extends TypedCompositeActor {
      *  local director initially, and its executive director will be simply
      *  the director of the container.
      *
-     *  @param container The container.
-     *  @param name The name of this actor.
+     *  @param workspace The workspace in which to create the Butterfly.
      *  @exception IllegalActionException If the container is incompatible
      *   with this actor.
      *  @exception NameDuplicationException If the name coincides with

@@ -44,6 +44,7 @@ public interface Connector extends Figure {
     // SketchConnector isn't smart enough to understand labels.
 
     /** Get the site that marks the "head" of the connector.
+     *  @return the "head" site.
      */
     public Site getHeadSite();
 
@@ -53,6 +54,7 @@ public interface Connector extends Figure {
 
     //   public LabelFigure getLabelFigure ();
     /** Get the site that marks the "tail" of the connector.
+     *  @return The "tail" site
      */
     public Site getTailSite();
 
@@ -74,10 +76,12 @@ public interface Connector extends Figure {
     public void route();
 
     /** Set the site that marks the "head" of the connector.
+     *  @param s The "head" site
      */
     public void setHeadSite(Site s);
 
     /** Set the site that marks the "tail" of the connector.
+     *  @param s The "tail" site
      */
     public void setTailSite(Site s);
 

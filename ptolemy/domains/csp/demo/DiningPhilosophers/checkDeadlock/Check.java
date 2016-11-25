@@ -44,8 +44,9 @@ import ptolemy.moml.MoMLParser;
 /**
  Check the dining philosopher model.
  <p>Construct the interface automata model for the dining philosopher demo
- and check for deadlock.
- <br/>The primitive components in the model are: CSPReceiver, ConditionalSend,
+ and check for deadlock.</p>
+
+ <p>The primitive components in the model are: CSPReceiver, ConditionalSend,
  ConditionalBranchController, Philosopher, and Chopstick. It is assumed
  that the MoML files for these models are in the current directory.</p>
  <p>

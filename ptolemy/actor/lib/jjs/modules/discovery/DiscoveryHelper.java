@@ -63,8 +63,6 @@ public class DiscoveryHelper {
     ////                         public methods                    ////
 
     /** Construct a new DiscoveryHelper.
-     *
-     * @return A new DiscoveryHelper.
      */
     public DiscoveryHelper() {
         _ipMap = new HashMap<String, JSONObject>();

@@ -82,7 +82,7 @@ import ptolemy.math.DoubleMatrixMath;
  <pre>
      -----------
      |  -----  |
-     -->| g |---
+     --&gt;| g |---
      x  -----
  </pre>
  where <i>x</i> is initially the vector of values corresponding to input
@@ -93,7 +93,7 @@ import ptolemy.math.DoubleMatrixMath;
  <pre>
      -----------
      |  -----  |
-     -->| g |---
+     --&gt;| g |---
      x  -----
  </pre>
  where <i>x</i> is initially the vector of values corresponding to input

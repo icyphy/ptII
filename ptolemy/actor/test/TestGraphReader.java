@@ -43,7 +43,7 @@ import ptolemy.moml.MoMLParser;
  <p>
  Usage: <code>java ptolemy.actor.test <em>xmlFileName</em></code>,
  <p>
- where <code><em>xmlFileName</code></em> is the name of a MoML file that
+ where <code><em>xmlFileName</em></code> is the name of a MoML file that
  contains a Ptolemy II specification. This application converts the
  specification into a weighted graph representation, and prints out information
  about this weighted graph.

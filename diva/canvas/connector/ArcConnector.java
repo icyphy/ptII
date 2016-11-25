@@ -418,7 +418,7 @@ public class ArcConnector extends AbstractConnector {
      * Not, however, that this method should only be called when the
      * arc changes, otherwise manipulation won't work properly. Use
      * getSelfLoop() to test the current state of this flag.
-     * @param true if this is a self-loop.
+     * @param selfloop true if this is a self-loop.
      * @see #getSelfLoop()
      */
     public void setSelfLoop(boolean selfloop) {

@@ -1,25 +1,3 @@
-package org.ptolemy.optimization;
-
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleMatrixToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.IntToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.expr.Parameter;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-import ptolemy.math.DoubleArrayMath;
-import ptolemy.math.DoubleMatrixMath;
-
 /* 
  Copyright (c) 2014-2015 The Regents of the University of California.
  All rights reserved.
@@ -47,6 +25,29 @@ import ptolemy.math.DoubleMatrixMath;
 
  */
 
+package org.ptolemy.optimization;
+
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleMatrixToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.IntToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.expr.Parameter;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.math.DoubleArrayMath;
+import ptolemy.math.DoubleMatrixMath;
+
+
 /**
 The class for calculation of constraints of Swarm-Robots.
 
@@ -55,12 +56,12 @@ The number of functions is N X H, where N is the number of reference trajectorie
 N and H are obtained from the length of "referenceTrajectories" and "trajectory", respectively.
 The output array consists of {f0_0, f0_1, ... , f0_t, f1_0, ... , f1_t, ... ,fi_t}.
 If i is "robotID", constraint functions is 
-fi_t = - (Px_t - Pi_t) * CovP^-1 * (Px_t - Pi_t) + 1.0 > 0,
+fi_t = - (Px_t - Pi_t) * CovP^-1 * (Px_t - Pi_t) + 1.0 &gt; 0,
 where Px_t is a position of robot at time t obtained from "trajectory",
 Pi_t is a position of the robot predicted in previous control step obtained from "referenceTrajectories",
 and CovP is the covariance of Pi at time t.
 If i is not "robotID", constraint functions is
-fi_t = g(Pi) - sqrt(CovR) = |Px_t - Pi_t|^2 - D^2 - sqrt(CovR) > 0,
+fi_t = g(Pi) - sqrt(CovR) = |Px_t - Pi_t|^2 - D^2 - sqrt(CovR) &gt; 0,
 CovR = (dg/dPi) * CovPi * (dg/dPi)T,
 where D is "DistanceLimit" parameter and Pi_t is a position of other robot or obstacle obtained from "referenceTrajectories".
 This class outputs not only the results of constraints function, but also gradients of fi_t.
