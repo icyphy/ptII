@@ -512,9 +512,9 @@ public class MACActorBase extends NetworkActorBase {
 
     protected static final int DataCh = 1;
 
-    /** Check whether this has a <i>id<i> attribute. If yes, return
+    /** Check whether this has a <i>id</i> attribute. If yes, return
      *  the value of it; if no, return the default value -2.
-     *  @return return the value of the <i>id<i> attribute of -2 if no
+     *  @return return the value of the <i>id</i> attribute of -2 if no
      *  such an attribute.
      *
      */

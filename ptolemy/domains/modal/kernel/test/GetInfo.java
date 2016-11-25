@@ -43,7 +43,7 @@ import ptolemy.moml.MoMLParser;
  InterfaceAutomaton.
  The usage is:
  <pre>
- java ptolemy.domains.modal.kernel.test.GetInfo <automaton1.xml> <automaton2.xml> ...
+ java ptolemy.domains.modal.kernel.test.GetInfo <i>automaton1.xml</i> <i>automaton2.xml</i> ...
  </pre>
 
  @author Yuhong Xiong

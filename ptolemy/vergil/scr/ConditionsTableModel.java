@@ -153,7 +153,6 @@ public class ConditionsTableModel extends AbstractTableModel {
     }
 
     /** Save the model.
-     *  @exception IllegalActionException  If thrown while saving the model.
      *  @exception NameDuplicationException  If thrown while saving the model.
      */
     public void saveModel() throws NameDuplicationException {

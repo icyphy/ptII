@@ -65,7 +65,7 @@ import ptolemy.math.DoubleMatrixMath;
     V_{t+1} = V_t + Acc_t
  C_{t+1} = A*C_t*AT
  </pre>
- where X is the state vector(P: position, V: velocity),  Acc is an acceleration input vector, 
+ <p>where X is the state vector(P: position, V: velocity),  Acc is an acceleration input vector, 
  C is the covariance matrix of X, and A is the jacobian of transition function f(X).
  If the length of control_inputs is shorter than prediction horizon, 
  the last value of cotrol_inputs is used until the step of prediction horizon.

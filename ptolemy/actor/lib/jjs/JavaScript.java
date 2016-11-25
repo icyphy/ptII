@@ -167,7 +167,7 @@ import ptolemy.util.StringUtilities;
    <pre>
       var handle = this.addInputHandler(portName, function);
    </pre>
-   Normally you would do this in initialize().
+   <p>Normally you would do this in initialize().
    The returned handle can be used to call this.removeInputHandler().
    Handlers will be automatically
    unregistered upon wrapup(), so unless you want to cancel a handler earlier,
@@ -235,8 +235,8 @@ import ptolemy.util.StringUtilities;
    <li> require(string): load and return a CommonJS module by name. See
         <a href="https://www.terraswarm.org/accessors">https://www.terraswarm.org/accessors</a> for
         supported modules. See
-        <a href="http://wiki.commonjs.org/wiki/Modules">http://wiki.commonjs.org/wiki/Modules</a></li>
-        for what a CommonJS module is.
+        <a href="http://wiki.commonjs.org/wiki/Modules">http://wiki.commonjs.org/wiki/Modules</a>
+        for what a CommonJS module is.</li>
    <li> setInterval(function, int): set the function to execute after specified time and then periodically and return handle.</li>
    <li> setTimeout(function, int): set the function to execute after specified time and return handle.</li>
    </ul>
@@ -258,11 +258,11 @@ import ptolemy.util.StringUtilities;
    }
    exports.fire = function() {
        var value = this.get('input');
-       if (value < 0) {
+       if (value &lt; 0) {
            error("Input must be greater than or equal to 0.");
        } else {
            var total = 1;
-           while (value > 1) {
+           while (value &gt; 1) {
                total *= value;
                value--;
            }

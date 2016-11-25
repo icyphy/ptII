@@ -253,7 +253,7 @@ public class ParticleMutualInformation extends TypedAtomicActor {
     /**
      * Index of the robot which is optimizing location.
      * Jacobian of mutual information will be dMI/dRob_i, where Rob_i is the location of robotID.
-     * If robotID < 0, Jacobian will be dMI/dRob_all.
+     * If robotID &lt; 0, Jacobian will be dMI/dRob_all.
      */
     public Parameter robotID;
 

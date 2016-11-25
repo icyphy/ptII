@@ -41,7 +41,7 @@ import ptolemy.moml.MoMLParser;
  computes their composition, then writes the MoML description of the
  composition to stdout. The usage is:
  <pre>
- java ptolemy.domains.modal.kernel.test.Compose <automaton1.xml> <automaton2.xml> ...
+ java ptolemy.domains.modal.kernel.test.Compose <i>automaton1.xml</i> <i>automaton2.xml</i> ...
  </pre>
 
  @author Yuhong Xiong

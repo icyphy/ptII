@@ -65,23 +65,31 @@ import ptolemy.util.StringUtilities;
  This attribute is a visible attribute that when configured (by double
  clicking on it), displays a dialog box asking the user to select a
  directory. Once the user selects and has clicked on the "Generate Files"
- button, the attribute does two things<DL>
- <DT>1. Generates the Giotto code for the model and stores it in
- "selected_directory/model_name/model_name.giotto".</DT>
- <DT>2. Generates the Emachine framework code files and stores them in
+ button, the attribute does two things
+
+ <ol>
+ <li>Generates the Giotto code for the model and stores it in
+ "selected_directory/model_name/model_name.giotto".</li>
+ <li>Generates the Emachine framework code files and stores them in
  "selected_directory/model_name/c_functionality/fcode". This particular
  directory structure is chosen to reflect the Emachine directory
- structure.</DT>
- <DT>The framework code consists of</DT>
- <DT><DD>f_code.c : This contains the driver code for the model, including the
+ structure.</li>
+ </ol>
+ <p>The framework code consists of</p>
+ <dl>
+ <dt>f_code.c</dt>
+ <dd> This contains the driver code for the model, including the
  output driver initialization code, and memory allocation
- for array data types.</DD>
- <DD>f_code.h : Header file for the previous file. Simply contains the
- driver function declarations, and the task frequency definitions
- <DD>task_code.h : Contains the function declarations for the task codes.</DD>
+ for array data types.</dd>
+ <dt>f_code.h</dt>
+ <dd> Header file for the previous file. Simply contains the
+ driver function declarations, and the task frequency definitions</dd>
+ <dt>task_code.h</dt>
+ <dd>Contains the function declarations for the task codes.
  this is simply provided as a convenience to the user as he
  does not need to worry about the exact syntax of the
- functions, and can simply copy them from here.</DD></DT></DL>
+ functions, and can simply copy them from here.</dd>
+ </dl>
 
  @author Edward A. Lee, Vinay Krishnan
  @version $Id$

@@ -64,12 +64,9 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
      *  @param helping The object that this is helping (XBee).
      *  @param portName The name of the port to open.
      *  @param options Serial port options.
-     *  @throws NoSuchPortException If there is no such port.
-     *  @throws PortInUseException If the port is in use.
-     *  @throws TooManyListenersException If there are too many listeners to
-     *   the port (this should not occur).
-     *  @throws IOException If we can't get an input or output stream for the port.
-     * @throws XBeeException 
+     *  @exception XBeeException If there is no such port, if the port
+     *  is in use, if there are too many listeners or if we can't get
+     *  an input or output stream for the port.
      */
     public XBeeHelper(
             ScriptObjectMirror helping,

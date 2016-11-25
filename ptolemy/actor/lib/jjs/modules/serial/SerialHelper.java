@@ -66,11 +66,6 @@ public class SerialHelper extends HelperBase {
      *  @param ownerName The name of the owner assigned to this port, if opening is successful.
      *  @param timeout Time in milliseconds before failing.
      *  @param options Serial port options (FIXME: define).
-     *  @throws NoSuchPortException If there is no such port.
-     *  @throws PortInUseException If the port is in use.
-     *  @throws TooManyListenersException If there are too many listeners to
-     *   the port (this should not occur).
-     *  @throws IOException If we can't get an input or output stream for the port.
      */
     public SerialHelper(
             ScriptObjectMirror helping,

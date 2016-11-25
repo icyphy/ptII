@@ -57,8 +57,8 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  * <p>An implementing class should enforce:</p>
  * <ul>
- * <li>The count of state variables <i>Nx > 0</i>.</li>
- * <li>The count of input variables <i>Nu >= 0</i>.</li>
+ * <li>The count of state variables <i>Nx &gt; 0</i>.</li>
+ * <li>The count of input variables <i>Nu &gt;= 0</i>.</li>
  * </ul>
  *
  * @author David M. Lorenzetti, Contributor: Thierry S. Nouidui
@@ -150,24 +150,24 @@ public interface DerivativeFunction {
     * @param timeSample Simulation time.
     * @param xxSample The vector of state variables at <code>timeSample</code>.
     * @param uuSample The vector of input variables at <code>timeSample</code>.
-    * @param dtSample The delta between <timeSample> and  <code>time</code>.
+    * @param dtSample The delta between <code>timeSample</code> and  <code>time</code>.
     * @param timeSample2 Simulation time.
     * @param xxSample2 The vector of state variables at <code>timeSample2</code>.
     * @param uuSample2 The vector of input variables at <code>timeSample2</code>.
-    * @param dtSample2 The delta between <timeSample2> and  <code>time</code>.
+    * @param dtSample2 The delta between <code>timeSample2</code> and  <code>time</code>.
     * @param timeSample3 Simulation time.
     * @param xxSample3 The vector of state variables at <code>timeSample3</code>.
     * @param uuSample3 The vector of input variables at <code>timeSample3</code>.
-    * @param dtSample3 The delta between <timeSample3> and  <code>time</code>.
+    * @param dtSample3 The delta between <code>timeSample3</code> and  <code>time</code>.
     * @param timeSample4 Simulation time.
     * @param xxSample4 The vector of state variables at <code>timeSample4</code>.
     * @param uuSample4 The vector of input variables at <code>timeSample4</code>.
-    * @param dtSample4 The delta between <timeSample4> and  <code>time</code>.
+    * @param dtSample4 The delta between <code>timeSample4</code> and  <code>time</code>.
     * variables at <code>time</code>.
     * @param timeSample5 Simulation time.
     * @param xxSample5 The vector of state variables at <code>timeSample5</code>.
     * @param uuSample5 The vector of input variables at <code>timeSample5</code>.
-    * @param dtSample5 The delta between <timeSample5> and  <code>time</code>.
+    * @param dtSample5 The delta between <code>timeSample5</code> and  <code>time</code>.
     * variables at <code>time</code>.
     * @param stateModelOrder The order of the model.
     * @return Success (0 for success, else user-defined error code).

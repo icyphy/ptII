@@ -382,7 +382,7 @@ public abstract class QSSBase {
      * Alternately, the user could acquire the model, via
      * method {@link #getStateModel(int)}, and evaluate that model directly.</p>
      *
-     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @param stateIdx The state index, 0 &lt;= stateIdx &lt; this.getStateCt().
      * @param simTime Global simulation time.
      * @return Value of the state model at <code>simTime</code>.
      */
@@ -395,7 +395,7 @@ public abstract class QSSBase {
      *
      * <p>Evaluate the internal, continuous state model at a specified time.</p>
      *
-     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @param stateIdx The state index, 0 &lt;= stateIdx &lt; this.getStateCt().
      * @param simTime Global simulation time.
      * @return Value of the state model at <code>simTime</code>.
      */
@@ -445,7 +445,7 @@ public abstract class QSSBase {
      * If, on the other hand, the two models don't agree, then there will be a
      * quantization-event, which will trigger a new call of this method.</p>
      *
-     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @param stateIdx The state index, 0 &lt;= stateIdx &lt; this.getStateCt().
      * @return Quantum for the state variable.
      */
     public final double findQuantum(final int stateIdx) {
@@ -857,7 +857,7 @@ public abstract class QSSBase {
      * TODO: Put under unit test.</p>
      *
      * @return Index of a state that needs a quantization-event,
-     *   0 <= idx < this.getStateCt().  Return -1 if all external, quantized
+     *   0 &lt;= idx &lt; this.getStateCt().  Return -1 if all external, quantized
      *   state models are valid.
      */
     public final int needQuantizationEventIndex() {
@@ -904,10 +904,10 @@ public abstract class QSSBase {
      *
      * TODO: Get this method under unit test.
      *
-     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @param stateIdx The state index, 0 &lt;= stateIdx &lt; this.getStateCt().
      * @return Next time at which, in the absence of other events, the
      *   external state model must be re-formed,
-     *   0 <= time <= Time.POSITIVE_INFINITY.
+     *   0 &lt;= time &lt;= Time.POSITIVE_INFINITY.
      */
     public final Time predictQuantizationEventTime(final int stateIdx) {
 
@@ -1201,7 +1201,7 @@ public abstract class QSSBase {
      * However, doing so prevents the integrator from making the appropriate
      * internal adjustments to the change in state.</p>
      *
-     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @param stateIdx The state index, 0 &lt;= stateIdx &lt; this.getStateCt().
      * @param newValue The new value of x[stateIdx].
      */
     public final void setStateValue(final int stateIdx, final double newValue) {
@@ -1258,7 +1258,7 @@ public abstract class QSSBase {
      * Just report need to trigger a quantization-event before the next step.</p>
      *
      * @param nextSimTime Global simulation time to which to step,
-     *   nextSimTime > this.getCurrSimTime().
+     *   nextSimTime &gt; this.getCurrSimTime().
      * @exception Exception If the simulation time must advance or if
      * there are state models waiting to be quantized,
      */
@@ -1307,7 +1307,7 @@ public abstract class QSSBase {
     * Just report need to trigger a quantization-event before the next step.</p>
     *
     * @param nextSimTime Global simulation time to which to step,
-    *   nextSimTime > this.getCurrSimTime().
+    *   nextSimTime &gt; this.getCurrSimTime().
     * @param numberEventIndicators The number of event indicators.
     * @exception Exception If the simulation time must advance or if
     * there are state models waiting to be quantized,
@@ -1357,7 +1357,7 @@ public abstract class QSSBase {
      * <p>Invoke method ModelPoly.toString() on the
      * external, quantized state model.</p>
      *
-     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @param stateIdx The state index, 0 &lt;= stateIdx &lt; this.getStateCt().
      * @return a string representation of the model for a state.
      */
     public final String stringifyStateModel(final int stateIdx) {
@@ -1369,7 +1369,7 @@ public abstract class QSSBase {
      * <p>Invoke method ModelPoly.toString() on the
      * internal, continuous state model.</p>
      *
-     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @param stateIdx The state index, 0 &lt;= stateIdx &lt; this.getStateCt().
      * @return a string representation of the internal model for a state.
      */
     public final String stringifyStateModelContinuous(final int stateIdx) {
@@ -1406,7 +1406,7 @@ public abstract class QSSBase {
      * Also, after triggering a rate event, get the new predicted quantization time.
      * TODO: Write up a higher-level description of the problem.</p>
      *
-     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @param stateIdx The state index, 0 &lt;= stateIdx &lt; this.getStateCt().
      */
     public final void triggerQuantizationEvent(final int stateIdx) {
 
@@ -1557,9 +1557,10 @@ public abstract class QSSBase {
     * <p>Force the QSS integrator to form new internal, continuous state models
     * (i.e., to experience a rate-event).
     * The rate models also get updated.</p>
-    * This method is similar to method {@link #triggerRateEvent()}.
-    * Th only difference is that it calls 
-    * method {@link #triggerRateEventWorkerEventDetection() 
+    *
+    * <p>This method is similar to method {@link #triggerRateEvent()}.
+    * The only difference is that it calls 
+    * method {@link #_triggerRateEventWorkerEventDetection()} 
     * to detect and handle state events.</p>
     * 
     * @param numberEventIndicators The number of event indicators.
@@ -1656,18 +1657,18 @@ public abstract class QSSBase {
      *
      * <p>The method should not alter any instance variables.</p>
      *
-     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCt().
+     * @param stateIdx The state index, 0 &lt;= stateIdx &lt; this.getStateCt().
      * @param quantEvtTimeMax The maximum time for the return value.  May be
      *   Time.POSITIVE_INFINITY.
      * @return Next time at which, in the absence of other events, the
-     *   external state model must be re-formed, time <= quantEvtTimeMax.
+     *   external state model must be re-formed, time &lt;= quantEvtTimeMax.
      */
     protected abstract Time _predictQuantizationEventTimeWorker(
             final int stateIdx, final Time quantEvtTimeMax);
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS2.
      *
-     * <p>Utility method for use by {@link #_predictQuantizationEventTimeWorker()}.</p>
+     * <p>Utility method for use by {@link #_predictQuantizationEventTimeWorker(int, Time)}.</p>
      *
      * <p>Find the time step, from the most recent quantization-event time, of the
      * predicted quantization-event for a state under QSS2.
@@ -1676,7 +1677,7 @@ public abstract class QSSBase {
      * the quantization-event time.</p>
      *
      * <p>TODO: Put this method under direct unit test.
-     * Currently tested indirectly, through method {@link #_predictQuantizationEventTimeWorker()}
+     * Currently tested indirectly, through method {@link #_predictQuantizationEventTimeWorker(int, Time)}
      * of each solver.
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>
@@ -1689,7 +1690,7 @@ public abstract class QSSBase {
      * If true, then do not fall back to QSS1.
      * @return dt The delta-time at which, in the absence of other events, the
      *   external state model must be re-formed.
-     *   Note 0 <= dt <= Double.POSITIVE_INFINITY.
+     *   Note 0 &lt;= dt &lt;= Double.POSITIVE_INFINITY.
      *   A value of 0 means need a quantization-event as soon as possible.
      * @param exactInputs True if exact inputs are expected.
      */
@@ -1739,7 +1740,7 @@ public abstract class QSSBase {
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS2.
      *
-     * <p>Utility method for use by {@link #_predictQuantizationEventTimeWork()}.</p>
+     * <p>Utility method for use by {@link #_predictQuantizationEventTimeWorker(int, Time)}.</p>
      *
      * <p>Find the time step, from the most recent state-event time, of the
      * predicted quantization-event for a state under QSS2.
@@ -1747,7 +1748,7 @@ public abstract class QSSBase {
      * to the continuous state model.</p>
      *
      * <p>TODO: Put this method under direct unit test.
-     * Currently tested indirectly, through method {@link #_predictQuantizationEventTimeWork()}
+     * Currently tested indirectly, through method {@link #_predictQuantizationEventTimeWorker(int, Time)}
      * of each solver.
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>
@@ -1827,7 +1828,7 @@ public abstract class QSSBase {
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS3.
      *
-     * <p>Utility method for use by {@link #_predictQuantizationEventTimeWork()}.</p>
+     * <p>Utility method for use by {@link #_predictQuantizationEventTimeWorker(int, Time)}.</p>
      *
      * <p>Find the time step, from the most recent quantization-event time, of the
      * predicted quantization-event for a state under QSS3.
@@ -1836,7 +1837,7 @@ public abstract class QSSBase {
      * second derivative at the quantization-event time.</p>
      *
      * <p>TODO: Put this method under direct unit test.
-     * Currently tested indirectly, through method {@link #_predictQuantizationEventTimeWork()}
+     * Currently tested indirectly, through method {@link #_predictQuantizationEventTimeWorker(int, Time)}
      * of each solver.
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>
@@ -1847,7 +1848,7 @@ public abstract class QSSBase {
      *   which the external state model must be re-formed.
      * @return dt The delta-time at which, in the absence of other events, the
      *   external state model must be re-formed.
-     *   Note 0 <= dt <= Double.POSITIVE_INFINITY.
+     *   Note 0 &lt;= dt &lt;= Double.POSITIVE_INFINITY.
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS3QFromC(
@@ -1882,7 +1883,7 @@ public abstract class QSSBase {
 
     /** Get the delta-time to the predicted quantization-event for a state under QSS3.
      *
-     * <p>Utility method for use by {@link #_predictQuantizationEventTimeWork()}.</p>
+     * <p>Utility method for use by {@link #_predictQuantizationEventTimeWorker(int, Time)}.</p>
      *
      * <p>Find the time step, from the most recent state-event time, of the
      * predicted quantization-event for a state under QSS3.
@@ -1890,7 +1891,7 @@ public abstract class QSSBase {
      * to the continuous state model.</p>
      *
      * <p>TODO: Put this method under direct unit test.
-     * Currently tested indirectly, through method {@link #_predictQuantizationEventTimeWork()}
+     * Currently tested indirectly, through method {@link #_predictQuantizationEventTimeWorker(int, Time)}
      * of each solver.
      * Testing directly will make it easier to check results, and will make it
      * easier to add testing for slope-aware quant-evt predictions.</p>
@@ -1901,7 +1902,7 @@ public abstract class QSSBase {
      *   which the external state model must be re-formed.
      * @return dt The delta-time at which, in the absence of other events, the
      *   external state model must be re-formed.
-     *   Note 0 <= dt <= Double.POSITIVE_INFINITY.
+     *   Note 0 &lt;= dt &lt;= Double.POSITIVE_INFINITY.
      *   A value of 0 means need a quantization-event as soon as possible.
      */
     protected final static double _predictQuantizationEventDeltaTimeQSS3General(
@@ -1968,7 +1969,7 @@ public abstract class QSSBase {
      * <p>The implementation of this "worker" method depends on the
      * specific member of the QSS family.</p>
      *
-     * @param stateIdx The state index, 0 <= stateIdx < this.getStateCount().
+     * @param stateIdx The state index, 0 &lt;= stateIdx &lt; this.getStateCount().
      */
     protected abstract void _triggerQuantizationEventWorker(final int stateIdx);
 

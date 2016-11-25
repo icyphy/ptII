@@ -528,7 +528,7 @@ public class PHY extends NetworkActorBase {
         return timer;
     }
 
-    /** Remove the timer that matches with the <i>timerToCancel<i> argument
+    /** Remove the timer that matches with the <i>timerToCancel</i> argument
      *  from the timers set. If no match is found, do nothing.
      */
     protected void cancelTimer2(ExtendedTimer timerToCancel)
@@ -547,11 +547,11 @@ public class PHY extends NetworkActorBase {
     }
 
     /** Get the timer with expiration time that matches the current time.
-     *  Remove the timer from the timers set and return the <i>kind<i>
+     *  Remove the timer from the timers set and return the <i>kind</i>
      *  parameter of the timer to the caller method. If there are multiple
      *  timers with expiration time matching the current time, return the
      *  first one from the iterator list.
-     *  @return return the i>kind<i> parameter of the timeout timer.
+     *  @return return the <i>kind</i> parameter of the timeout timer.
      *  @exception IllegalActionException If thrown by
      *  getDirector().getCurrentTime().
      */

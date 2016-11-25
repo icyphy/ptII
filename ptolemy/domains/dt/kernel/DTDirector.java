@@ -72,16 +72,16 @@ import ptolemy.kernel.util.Workspace;
 
  <h1>DT overview</h1>
 
- The Discrete Time (DT) domain is a timed extension of the Synchronous
+ <p>The Discrete Time (DT) domain is a timed extension of the Synchronous
  Dataflow (SDF) domain.  Like SDF, it has static scheduling of the
  dataflow graph model. Similarly, DT requires that the data rates on
  the ports of all actors be known beforehand and fixed. DT handles
  feedback systems in the same way that SDF does, but with additional
- constraints on initial tokens.  <p>
+ constraints on initial tokens.</p>
 
  <h1>Local and Global Time</h1>
 
- Because of the inherent concurrency occurring within SDF models, there
+ <p> Because of the inherent concurrency occurring within SDF models, there
  are two notions of time in DT -- global time and local time.  Global
  time increases steadily as execution progresses.  Moreover, global
  time increases by fixed discrete amounts given by the <i>period</i>
@@ -90,72 +90,70 @@ import ptolemy.kernel.util.Workspace;
  an iteration proceeds. The local time of a receiver during an
  iteration depends on the global time, period, firing count, port
  rates, and the schedule. These local times obey the following
- constraint:
+ constraint:</p>
 
- <center>Global Time  <=  Local Time <= (Global Time + period)</center>
+  <center>Global Time  &lt;=  Local Time &lt;= (Global Time + period)</center>
 
- The exact way that local time increments during an iteration is described in
- detail in the DTReceiver documentation.
- <p>
+ <p>The exact way that local time increments during an iteration is described in
+ detail in the DTReceiver documentation.</p>n
+
  <h1> Period Parameter </h1><p>
 
- The DT director has a <i>period</i> parameter which specifies the
+ <p>The DT director has a <i>period</i> parameter which specifies the
  amount of time per iteration. For hierarchical DT, this period
  parameter only makes sense on the top-level. The user cannot
  explicitly set the period parameter for a DT subsystem inside another
  DT system. For heterogeneous hierarchies (e.g. DT inside DE or DT
  inside CT), the period parameter specifies the time interval between
  firings of the DT subsystem. The DT subsystem will not fire on times
- that are not integer multiples of the period parameter.
+ that are not integer multiples of the period parameter.</p>
 
- <p>.
  <h1>DT Features</h1>
- The design of the DT domain is motivated by the following criteria:
- <OL>
+ <p>The design of the DT domain is motivated by the following criteria:</p>
+ <ol>
 
- <LI>) Uniform Token Flow: The time interval between tokens should be
+ <li>) Uniform Token Flow: The time interval between tokens should be
  regular and unchanging.  This conforms to the idea of having sampled
  systems with fixed rates. Although the tokens flowing in DT do not
  keep internal time stamps, each actor can query the DT director for
  its own local time.  This local time is uniformly increasing by a
  constant fraction of the director's <i>period</I>.  Local time is
- incremented every time the get() method is called to obtain a token.
+ incremented every time the get() method is called to obtain a token.</li>
 
- <LI>) Causality: Tokens produced by an actor should only depend on
+ <li>) Causality: Tokens produced by an actor should only depend on
  tokens produced or consumed in the past. This makes sense because we
  don't expect an actor to produce a token before it can calculate the
  token's value.  For example, if an actor needs three tokens A, B, and
  C to compute token D, then the time when tokens A, B, and C are
  consumed should be earlier than or equal to the time when token D is
  produced.  Note that in DT, time does not get incremented due to
- computation.  <LI>) SDF-style semantics: Ideally, we want DT to be a
+ computation.</li>
+
+ <li>) SDF-style semantics: Ideally, we want DT to be a
  timed-superset of SDF with compatible token flow and scheduling.
  However, we can only approximate this behavior. It is not possible to
  have uniform token flow, causality, and SDF-style semantics at the
  same time.  Causality breaks for non-homogeneous actors in a feedback
  system when fully-compatible SDF-style semantics is adopted.  To
  remedy this situation, every actor in DT that has non-homogeneous
- input ports should produce initial tokens at each of its output ports.
+ input ports should produce initial tokens at each of its output ports.</li>
 
- </OL>
- </p>
- <p>
+ </oL>
  <h1> Design Notes</h1>
- DT (Discrete Time) is a timed model of computation.  In order
+ <p>DT (Discrete Time) is a timed model of computation.  In order
  to benefit from the internal time-keeping mechanism of DT, one should
  use actors aware of time. For example, one should use TimedPlotter or
- TimedScope instead of SequencePlotter or SequenceScope.
- <p>
- Top-level DT Directors have a <i>period</i> parameter that can be set by the
+ TimedScope instead of SequencePlotter or SequenceScope.</p>
+
+ <p> Top-level DT Directors have a <i>period</i> parameter that can be set by the
  user.  Setting the period parameter of a non-top-level DT Director
- under hierarchical DT has no meaning; and hence will be ignored.
- <p>
+ under hierarchical DT has no meaning; and hence will be ignored.</p>
 
  <p> Domain-polymorphic actors that want to take advantage of the
  multi-rate timing capabilities of DT should call
  getCurrentTime(channel_number) for every
  get(channel_number). Moreover, the call sequence should be ordered as
- follows: getCurrentTime(channel_number) before get(channel_number).
+ follows: getCurrentTime(channel_number) before get(channel_number). <p>
 
  Known bugs:
  <pre>

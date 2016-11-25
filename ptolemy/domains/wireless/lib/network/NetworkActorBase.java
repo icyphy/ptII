@@ -68,7 +68,7 @@ public class NetworkActorBase extends TypedAtomicActor {
         super(container, name);
     }
 
-    /** Initialize the <i>_timersSet<i> variable.
+    /** Initialize the <i>_timersSet</i> variable.
      *  @exception IllegalActionException If thrown by the base class.
      */
     @Override
@@ -163,8 +163,8 @@ public class NetworkActorBase extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** Construct a timer object with the specified <i>kink<i> and
-     *  <i>expirationTime<i> and add the timer to the timers set.
+    /** Construct a timer object with the specified <i>kind</i> and
+     *  <i>expirationTime</i> and add the timer to the timers set.
      *  @return return the created timer to the caller method
      *  (make it easy for it to cancel the timer).
      *  @exception IllegalActionException If thrown by
@@ -182,7 +182,7 @@ public class NetworkActorBase extends TypedAtomicActor {
         return timer;
     }
 
-    /** Remove the timer that matches with the <i>timerToCancel<i> argument
+    /** Remove the timer that matches with the <i>timerToCancel</i> argument
      *  from the timers set. If no match is found, do nothing.
      */
     protected void cancelTimer(Timer timerToCancel)
@@ -201,11 +201,11 @@ public class NetworkActorBase extends TypedAtomicActor {
     }
 
     /** Get the timer with expiration time that matches the current time.
-     *  Remove the timer from the timers set and return the <i>kind<i>
+     *  Remove the timer from the timers set and return the <i>kind</i>
      *  parameter of the timer to the caller method. If there are multiple
      *  timers with expiration time matching the current time, return the
      *  first one from the iterator list.
-     *  @return return the i>kind<i> parameter of the timeout timer.
+     *  @return return the <i>kind</i> parameter of the timeout timer.
      *  @exception IllegalActionException If thrown by
      *  getDirector().getCurrentTime().
      */

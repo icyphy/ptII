@@ -159,7 +159,7 @@ public class FMUModelExchange extends Transformer {
 
     /** Update an attribute.
      *  @param attribute The attribute that changed.
-     *  @exception IllegalActionException If <i>init<i> cannot be evaluated
+     *  @exception IllegalActionException If <i>init</i> cannot be evaluated
      *   or cannot be converted to the output type, or if the superclass
      *   throws it.
      */

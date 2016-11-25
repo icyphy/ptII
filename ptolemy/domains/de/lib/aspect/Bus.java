@@ -75,7 +75,7 @@ import ptolemy.kernel.util.Workspace;
  *  tokens), and then delays for an additional amount given by
  *  <i>serviceTimeMultiplicationFactor</i> * <i>messageLength</i>.
  *  In the default case of the <i>messageLength</i> = 1, the behavior is similar to
- *  the {@link Server} actor.
+ *  the {@link ptolemy.domains.de.lib.Server} actor.
  *  Tokens are processed in FIFO order.
  *  <p>
  *  To use this communication aspect, drag an instance of this Bus

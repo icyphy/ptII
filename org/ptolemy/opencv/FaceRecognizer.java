@@ -108,7 +108,7 @@ import com.jhlabs.image.AbstractBufferedImageOp;
 
 /** A face recognition image filter.
  *  This filter detects faces in the given frame that lie in a square of 
- *  dimensions [x,x], where _minFaceSize <= x <= _maxFaceSize.
+ *  dimensions [x,x], where _minFaceSize &lt;= x &gt;= _maxFaceSize.
  *
  *  The parameters of the filter are:
  *  <ul>

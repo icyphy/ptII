@@ -49,9 +49,9 @@ import ptolemy.kernel.util.NamedObj;
 /**
  Read parameters in the containers of a remote port.
 
- <p>If we have a model CompositeA -> CompositeB and CompositeA
+ <p>If we have a model CompositeA -&gt; CompositeB and CompositeA
 has a parameter Foo and CompositeB has this actor in it, then
-this actor reads the value of the Foo parameter in CompositeA.
+this actor reads the value of the Foo parameter in CompositeA.</p>
 
  @author Christopher Brooks
  @version $Id$

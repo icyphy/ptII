@@ -120,7 +120,7 @@ public class LoggableOp {
      * it prints the detail information.
      * @param id The error id
      * @param msg The infor message
-     * @para detail The detail information
+     * @param detail The detail information
      */
     public void logError(String id, String msg, String detail) {
         int linenum = getLineNumber();

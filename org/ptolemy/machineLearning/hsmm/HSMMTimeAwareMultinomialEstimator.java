@@ -290,7 +290,8 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
 
     /** Completion strategy for A set to interpolation, that is, a uniform distribuition
      * on all states that have
-     * Hamming distance <= 1 to the binary representation of the source state. */
+     * Hamming distance &lt;= 1 to the binary representation of the source state.
+     */
     protected static final String INTERPOLATE = "Interpolate";
     /** Completion strategy for A set to forcing a self-transition. */
     protected static final String FORCE_SELF = "Force self-transition";

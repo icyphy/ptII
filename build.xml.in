@@ -43,7 +43,7 @@
        Grab the packages from ptII.excludes, put them in a file called /tmp/e and run
        awk -F '"' '{print $2}' /tmp/e | sed 's@/$@@' | sed 's@/@.@g' | sort | awk '{printf("%s.*,", $1)}'
        (Lame) -->
-  <property name="javadoc.excludepackagenames" value="@ANT_JAVADOC_EXCLUDEPACKAGENAMES@,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
+  <property name="javadoc.excludepackagenames" value="@ANT_JAVADOC_EXCLUDEPACKAGENAMES@,org.terraswarm.accessor.accessors.web.node_modules.*,ptolemy.actor.ptalon.demo.ptinyos.SendAndReceiveCnt.output,ptolemy.actor.ptalon.demo.ptinyos.SenseToLeds.output,ptolemy.domains.ptinyos.demo.CntToLedsAndRfm.output,ptolemy.domains.ptinyos.demo.RfmToLeds.output,ptolemy.domains.ptinyos.demo.SendAndReceiveCnt.output,ptolemy.domains.ptinyos.demo.SenseToLeds.output" />
 
   <!-- Packages on which doccheck, javadoc and ojdcheck are run. -->
   <property name="javadoc.packagenames" value="com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />

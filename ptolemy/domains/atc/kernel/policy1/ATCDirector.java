@@ -267,7 +267,6 @@ public class ATCDirector extends AbstractATCDirector {
     /** Return status of the track.
      *  @param trackId The track Id.
      *  @return The status
-     *  @exception IllegalActionException If thrown while getting the track Id.
      */
     public boolean returnTrackStatus(Token trackId)  {
         int id = ((IntToken)trackId).intValue();

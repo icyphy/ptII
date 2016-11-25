@@ -95,7 +95,6 @@ public abstract class AbstractATCDirector extends DEDirector {
     /** Return status of the track.
      *  @param trackId The trackid.
      *  @return The status of the track.
-     *  @exception IllegalActionException Not thrown in this base class.
      */
     public abstract boolean returnTrackStatus(Token trackId);
       

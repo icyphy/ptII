@@ -126,7 +126,7 @@ import ptolemy.kernel.util.Workspace;
  * For example, if you send tokens with values 1, 2, 3, 4, 5, 6
  * using a pattern [x=3, y=2], then the array is filled as
  * follows (assuming base=[x=0, y=0]):
- * <table>
+ * <table summary="Array contents for [x=3, y=2]">
  * <tr> <td> x </td> <td> y </td> <td> value </td></tr>
  * <tr> <td> 0 </td> <td> 0 </td> <td> 1 </td></tr>
  * <tr> <td> 1 </td> <td> 0 </td> <td> 2 </td></tr>
@@ -138,7 +138,7 @@ import ptolemy.kernel.util.Workspace;
  * If on the other hand you specify a pattern
  * [y=2, x=3], then an array of the same shape is used,
  * but it is now filled as follows:
- * <table>
+ * <table summary="Array contents for [y=2, x=3]">
  * <tr> <td> x </td> <td> y </td> <td> value </td></tr>
  * <tr> <td> 0 </td> <td> 0 </td> <td> 1 </td></tr>
  * <tr> <td> 0 </td> <td> 1 </td> <td> 2 </td></tr>

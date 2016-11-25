@@ -42,21 +42,21 @@ import ptolemy.kernel.util.NameDuplicationException;
 
 /**
  An actor that distribute its input data to different outputs.
- Its output ports <i>queue1<i> and <i>queue2<i> is connected
- to two <i>queue<i> actors respectively. The lengh of the two
- queue are fed back to its input ports <i>q1Length<i> and
- <i>q2Length<i>. The input token at <i>input<i> is distributed
+ Its output ports <i>queue1</i> and <i>queue2</i> is connected
+ to two <i>queue</i> actors respectively. The lengh of the two
+ queue are fed back to its input ports <i>q1Length</i> and
+ <i>q2Length</i>. The input token at <i>input</i> is distributed
  according to the following policy: if the total length of queue1
  and queue2 is less than threshold1, specified by the <i>minMark</i>
- parameter, the input token is send to <i>queue1<i> if queue1's
- length is less than queue2's, otherwise send to <i>queue2<i>; if
+ parameter, the input token is send to <i>queue1</i> if queue1's
+ length is less than queue2's, otherwise send to <i>queue2</i>; if
  the total length is greater than threshold1 but less than
  threshold2, specified by the <i>minMark</i> parameter, the
  input token may be dropped randomly(with a probability
  proportional to the amount larger than threshold1) or
  send to queues shorter; if the total length is greater than
  threshold2, then drop the input token. If the input token is
- dropped, it is send to the <i>dropped<i> output so that it can
+ dropped, it is send to the <i>dropped</i> output so that it can
  be catched or monitored when necessary.
 
  @author Xiaojun Liu
@@ -138,9 +138,9 @@ public class QueueControl extends TypedAtomicActor {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** update _q1Length if <i>q1Length<i> has token,
-     *  or update _q2Length if <i>q2Length<i> has token.
-     *  No output it produced if <i>input<i> doesn't has
+    /** update _q1Length if <i>q1Length</i> has token,
+     *  or update _q2Length if <i>q2Length</i> has token.
+     *  No output it produced if <i>input</i> doesn't has
      *  token, otherwise, distribute the input data to
      *  corresponding output.
      *  @exception IllegalActionException Not thrown in this base class */
@@ -191,9 +191,9 @@ public class QueueControl extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    //length of the queue that <i>queue1<i> connected to.
+    //length of the queue that <i>queue1</i> connected to.
     private int _q1Length;
 
-    //length of the queue that <i>queue2<i> connected to.
+    //length of the queue that <i>queue2</i> connected to.
     private int _q2Length;
 }

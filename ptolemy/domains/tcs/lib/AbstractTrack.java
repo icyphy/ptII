@@ -65,7 +65,7 @@ import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
  *  This track can have no more than one Train in transit.
  *  If there is one in transit, then it rejects all inputs.
  *  @author Maryam Bagheri
- *  @versionr $Id$
+ *  @version $Id$
  *  @since Ptolemy II 11.0
  */
 public class AbstractTrack extends  TypedAtomicActor implements Rejecting {

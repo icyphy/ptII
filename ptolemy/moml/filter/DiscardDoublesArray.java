@@ -48,7 +48,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  replace the plotters that have inputs of type double array.</p>
 
  @see ptolemy.actor.lib.Discard
- @see ptolemy.actor.lib.DiscardDoubles
+ @see ptolemy.moml.filter.DiscardDoubles
  @author Christopher Brooks
  @version $Id$
  @since Ptolemy II 1.0

@@ -56,8 +56,7 @@ public class ObjectiveFunctionWithSoftConstraints extends ObjectiveFunction {
     }
     /**
      * Objective function called in optimization class.
-     * @param x : input variables
-     * @param s : extended input variables
+     * @param x input variables
      */
     public void calcFuncInternal(double[] x) {
         if (_source.stopRequested) {

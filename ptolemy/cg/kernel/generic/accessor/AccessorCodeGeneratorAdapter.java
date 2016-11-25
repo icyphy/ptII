@@ -99,8 +99,8 @@ public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter 
     /** Given a Ptolemy expression, return an Accessor-compatibile
      *  expression.  For example, strings are quoted, ints and doubles
      *  and JSON are not.  Note that this method incorrectly double
-     *  quotes JSON expressions.  To avoid this, use {@link
-     *  #targetExpression(parameter)}.
+     *  quotes JSON expressions.  To avoid this, use 
+     *  {@link #targetExpression(Parameter)}.
      * 
      *  @param expression the Ptolemy expression.
      *  @param ptType The Ptolemy Type.

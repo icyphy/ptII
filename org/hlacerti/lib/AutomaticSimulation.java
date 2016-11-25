@@ -310,8 +310,9 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * only close when he answers "yes".
      * @param vergil An instance of vergil.
      * @param modelPath The path to the model you want to run.
-     * @param propertyLine The xml line of the parameter that we want to change. 
+     * @param propertyLines The xml line of the parameter that we want to change. 
      * @param values The values the new property will assume.
+     * @param solver The Runge-Kutta solver order number.
      **/
     public static void changeParameters(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String[] propertyLines, double[][] values, int solver){
         if(propertyLines.length!= values.length){

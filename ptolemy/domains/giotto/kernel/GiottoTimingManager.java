@@ -103,7 +103,7 @@ import ptolemy.kernel.util.SingletonAttribute;
  * and does not execute the model. Second, during execution the attribute randomly varies
  * the execution time of the actors. The attribute then compares (b) the sum of the
  * actors execution times to (a) the sum of the actors worst case execution
- * times. If (a) > (b) then the attribute calls
+ * times. If (a) &lt; (b) then the attribute calls
  * {@link ptolemy.kernel.util.NamedObj#handleModelError(NamedObj, IllegalActionException)},
  *  which throws a model error .
  *

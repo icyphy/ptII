@@ -63,12 +63,12 @@ import ptolemy.kernel.util.Workspace;
  The list representing the schedule for this CompositeActor looks as follows:
  <pre>
  +-------+                         +-------+
- | | | --------------------------->| | |nil|
+ | | | ---------------------------&gt;| | |nil|
  +-|-----+                         +-|-----+
  |                                 |
  V                                 V
  +-------+  +-------+  +-------+   +-------+
- | | | ---->| | | ---->| | |nil|   | | |nil|
+ | | | ----&gt;| | | ----&gt;| | |nil|   | | |nil|
  +-|-----+  +-|-----+  +-|-----+   +-|-----+
  |          |          |           |
  V          V          V           V

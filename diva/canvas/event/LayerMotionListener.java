@@ -34,14 +34,17 @@ package diva.canvas.event;
  */
 public interface LayerMotionListener extends java.util.EventListener {
     /** Invoked when the mouse enters a layer or figure.
+     *  @param e The event
      */
     public void mouseEntered(LayerEvent e);
 
     /** Invoked when the mouse exits a layer or figure.
+     *  @param e The event
      */
     public void mouseExited(LayerEvent e);
 
     /** Invoked when the mouse moves while over a layer or figure.
+     *  @param e The event
      */
     public void mouseMoved(LayerEvent e);
 }

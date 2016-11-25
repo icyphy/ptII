@@ -321,7 +321,6 @@ public class TCSDirector extends DEDirector {
      *  @param  inTransit inTransit is the moving train.
      *  @param  id Id is the id of the track or station.
      *  @return Return time of traveling.
-     *  @throws IllegalActionException 
      */
     public double movingTimeOfTrain(Token inTransit, Token id) {
         // FIXME: Determine time of traveling based on speed.

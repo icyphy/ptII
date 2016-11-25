@@ -69,7 +69,7 @@ import ptserver.util.ServerUtility;
  *
  *  <p>To run:
  *  <pre>
- *  /usr/local/sbin/mosquitto &
+ *  /usr/local/sbin/mosquitto &amp;
  *  (cd $PTII/ptserver/test/junit/; java -classpath ${PTII}:${PTII}/lib/ptjacl.jar:${PTII}/lib/junit-4.8.2.jar:${PTII}/ptserver/lib/hessian-4.0.7.jar:${PTII}/lib/jetty-all-8.1.5-v20120716.jar:${PTII}/lib/javax.servlet-api-3.0.1.jar:${PTII}/ptserver/lib/wmqtt.jar org.junit.runner.JUnitCore ptserver.test.junit.RemoteModelTest)
  *  </pre>
  *
