@@ -482,8 +482,8 @@ public class StringUtilities {
 
                         // FIXME: How do we get from a URL to a pathname?
                         if (namedObjFileName.startsWith("file:")) {
-                            if (namedObjFileName.startsWith("file:/")
-                                    || namedObjFileName.startsWith("file:\\")) {
+                            if (namedObjFileName.startsWith("file://")
+                                    || namedObjFileName.startsWith("file:\\\\")) {
                                 // We get rid of either file:/ or file:\
                                 namedObjFileName = namedObjFileName
                                         .substring(6);

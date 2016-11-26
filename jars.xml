@@ -51,6 +51,7 @@
     <include name="org/ptolemy/qss/demo/demo.jar" />
     <include name="org/ptolemy/ssm/ssm.jar" />
     <include name="org/terraswarm/accessor/accessor.jar" />
+    <include name="org/terraswarm/accessor/accessors/accessors.jar" />
     <include name="org/terraswarm/accessor/demo/demo.jar" />
     <include name="org/terraswarm/ros/demo/demo.jar" />
     <include name="ptolemy/actor/gt/demo/demo.jar" />
@@ -113,6 +114,7 @@
     <include name="ptolemy/caltrop/caltrop.jar" />
     <include name="ptolemy/caltrop/demo/demo.jar" />
     <include name="ptolemy/cg/cg.jar" />
+    <include name="ptolemy/cg/cgAccessors.jar" />
     <include name="ptolemy/chic/chic.jar" />
     <include name="ptolemy/copernicus/copernicus.jar" />
     <include name="ptolemy/data/ontologies/ontologies.jar" />
@@ -1789,6 +1791,7 @@
 	<include name="ptolemy/actor/lib/jjs/modules/*/*.class"/>
 	<include name="ptolemy/actor/lib/jjs/modules/*/*.js"/>
 	<include name="ptolemy/actor/lib/jjs/modules/*/*.json"/>
+	<include name="ptolemy/actor/lib/jjs/modules/*/*.xml"/>
       </fileset>
     </jar>
 
@@ -3236,441 +3239,221 @@
       </fileset>
     </jar>
 
+
     <!-- ptolemy/cg/cg.jar -->
-    <!-- Updated with $PTII/adm/bin/tree2ant -->
+    <!-- Updated with cd ptolemy/cg; ~/ptII/adm/bin/tree2ant | sed 's@XXXChangeMeXXX@ptolemy/cg@' -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/cg/cg.jar"
 	 >
       <fileset dir="${basedir}">
         <include name="ptolemy/cg/*.html"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/accessor/adapters/org/terraswarm/accessor/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/*.class"/>
         <include name="ptolemy/cg/adapter/generic/adapters/ptolemy/actor/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/html/adapters/ptolemy/actor/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/html/demo/HierarchicalModel/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/org/terraswarm/accessor/*.class"/>
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/conversions/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/fmi/*.class"/>
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/gui/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/hoc/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/jjs/*.class"/>
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/logic/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/string/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/sched/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/de/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/giotto/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/modal/kernel/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/modal/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/modal/kernel/*.j"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/modal/modal/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/modal/modal/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/modal/modal/*.j"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/modal/modal/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/vergil/actor/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/org/terraswarm/accessor/*.class"/>
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/*.h"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/conversions/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/gui/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/logic/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/actor/lib/string/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/cg/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/kernel/*.h"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/de/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/kernel/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/kernel/*.h"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/modal/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/modal/modal/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/kernel/*.h"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/ptides/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/kernel/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/kernel/*.h"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/ptolemy/domains/sdf/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/*.in"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/actor/lib/gui/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/actor/lib/gui/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Blink/*.in"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Blink/*.xml"/>
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Life/*.in"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Life/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Life/ledTankTop/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
-        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Life/ledTankTop/*.h"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Ultrasonic/*.c"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Ultrasonic/*.in"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/arduino/adapters/ptolemy/vergil/actor/lib/demo/Ultrasonic/*.xml"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/*.in"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/org/terraswarm/accessor/*.c"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/org/terraswarm/accessor/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib/gui/*.c"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib/gui/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib/jjs/*.c"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib/jjs/*.class"/>
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/actor/lib/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/actor/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/kernel/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/lib/luminary/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/ptides/lib/luminary/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/luminary/adapters/ptolemy/domains/sdf/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/mbed/*.in"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/mbed/K64F/*.in"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/mbed/KL25Z/*.in"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/actor/lib/gui/*.c"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/actor/lib/gui/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/actor/lib/mbed/*.c"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/actor/lib/mbed/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/vergil/actor/lib/*.c"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/mbed/adapters/ptolemy/vergil/actor/lib/demo/mbed/*.xml"/>
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy/actor/lib/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy/actor/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy/domains/de/lib/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy/domains/de/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy/domains/ptides/kernel/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy/domains/ptides/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy/domains/ptides/lib/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/renesas/adapters/ptolemy/domains/ptides/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/xmos/adapters/ptolemy/actor/lib/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/xmos/adapters/ptolemy/actor/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/xmos/adapters/ptolemy/domains/de/lib/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/xmos/adapters/ptolemy/domains/de/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/xmos/adapters/ptolemy/domains/ptides/kernel/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/xmos/adapters/ptolemy/domains/ptides/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/xmos/adapters/ptolemy/domains/ptides/lib/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/xmos/adapters/ptolemy/domains/ptides/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/*.c"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/lib/fmi/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/fmimahybrid/adapters/ptolemy/actor/*.c"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/fmimahybrid/adapters/ptolemy/actor/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/fmimahybrid/adapters/ptolemy/actor/lib/fmi/*.class"/>
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/*.j"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/colt/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/colt/*.j"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/conversions/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/conversions/*.j"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/gui/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/gui/*.j"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/jopio/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/jopio/*.j"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/logic/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/logic/*.j"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/string/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/actor/lib/string/*.j"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/cg/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/modal/modal/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/adapters/ptolemy/domains/sdf/lib/*.j"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/modular/adapters/ptolemy/cg/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/adapter/generic/program/procedural/java/modular/adapters/ptolemy/domains/sdf/kernel/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/gui/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/kernel/generic/accessor/*.class"/>
+        <include name="ptolemy/cg/kernel/generic/accessor/*.html"/>
+        <include name="ptolemy/cg/kernel/generic/accessor/demo/TestComposite/*.xml"/>
         <include name="ptolemy/cg/kernel/generic/html/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/c/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/c/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/c/*.in"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/c/ptidyos/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/c/structures/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/c/structures/*.h"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/c/type/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/c/type/parameterizedTemplates/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/c/type/polymorphic/*.c"/>
-      </fileset>
-      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/kernel/generic/program/procedural/fmima/*.class"/>
+        <include name="ptolemy/cg/kernel/generic/program/procedural/fmima/*.in"/>
+        <include name="ptolemy/cg/kernel/generic/program/procedural/fmimahybrid/*.in"/>
         <include name="ptolemy/cg/kernel/generic/program/procedural/java/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/java/*.in"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/java/*.j"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/java/modular/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/java/modular/*.in"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/java/type/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/java/type/*.j"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/program/procedural/java/type/polymorphic/*.j"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/syntactic/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/kernel/generic/syntactic/demo/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/lib/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/lib/demo/CompiledCompositeActor/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/lib/demo/DECG/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/lib/demo/ModularCG/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/lib/demo/ModularCGPubSub/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/lib/demo/Scale/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
         <include name="ptolemy/cg/lib/syntactic/*.class"/>
       </fileset>
+    </jar>
 
+    <!-- ptolemy/cg/cgAccessor.jar -->
+    <!-- Updated with (cd ptolemy/cg; ~/ptII/adm/bin/tree2ant | sed 's@XXXChangeMeXXX@ptolemy/cg@' | sort) -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/cg/cgAccessor.jar"
+	 >
+      <fileset dir="${basedir}">
+        <include name="ptolemy/cg/adapter/generic/accessor/adapters/org/terraswarm/accessor/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/org/terraswarm/accessor/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/*.in"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/org/terraswarm/accessor/*.c"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/org/terraswarm/accessor/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib/gui/*.c"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib/gui/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib/jjs/*.c"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/ptolemy/actor/lib/jjs/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/program/procedural/c/adapters/org/terraswarm/accessor/*.class"/>
+        <include name="ptolemy/cg/kernel/generic/accessor/*.class"/>
+        <include name="ptolemy/cg/kernel/generic/accessor/*.html"/>
+        <include name="ptolemy/cg/kernel/generic/accessor/demo/TestComposite/*.xml"/>
+        <include name="ptolemy/cg/gui/*.class"/>
+        <include name="ptolemy/cg/kernel/generic/*.class"/>
+      </fileset>
     </jar>
 
     <!-- ptolemy/chic/chic.jar -->
@@ -4263,6 +4046,56 @@
         <include name="org/terraswarm/accessor/*.xslt"/>
       </fileset>
     </jar>
+
+  <!-- org/terraswarm/accessor/accessors/accessors.jar -->
+  <!-- Updated with
+       (cd $PTII/org/terraswarm/accessor/accessors; ~/ptII/adm/bin/tree2ant | sed 's@XXXChangeMeXXX@org/terraswarm/accessor/accessors@')
+       -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/org/terraswarm/accessor/accessors/accessors.jar"
+	 >
+      <fileset dir="${basedir}">
+        <include name="org/terraswarm/accessor/accessors/web/*.htm"/>
+        <include name="org/terraswarm/accessor/accessors/web/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/audio/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/cameras/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/devices/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/devices/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/geodesy/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/browser/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/browser/*.htm"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/browser/demo/WebSocketGraph/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/browser/demo/src/WebSocketLog/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/.idea/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/.idea/copyright/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/www/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/duktape/*.h"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/duktape/examples/cmdline/*.c"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/duktape/examples/eventloop/*.c"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/duktape/src/*.c"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/duktape/src/*.h"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/eduk/*.c"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/eduk/*.h"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/ptolemy/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/image/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/library/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/library/*.htm"/>
+        <include name="org/terraswarm/accessor/accessors/web/library/website/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/localization/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/localization/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/net/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/net/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/obsolete/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/obsolete/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/robotics/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/services/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/services/*.xml"/>
+      </fileset>
+    </jar>
+
 
   <!-- org/terraswarm/accessor/demo/demo.jar -->
     <jar defaultexcludes="yes"
@@ -5238,11 +5071,7 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/colt/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/colt/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/colt/*.xml"/>
       </fileset>
     </jar>
