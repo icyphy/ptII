@@ -15,7 +15,9 @@ findit "*.class" >> $includes
 findit "*.h" >> $includes
 findit "*.in" >> $includes
 findit "*.html" >> $includes
+findit "*.htm" >> $includes
 findit "*.j" >> $includes
+findit "*.js" >> $includes
 findit "*.pdf" >> $includes
 findit "*.xml" >> $includes
 
