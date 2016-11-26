@@ -313,11 +313,15 @@ clean:	full_clean_setup
 	rm -rf $(HYVISUAL_SRC_JAR)
 	rm -rf $(VIPTOS_SRC_JAR)
 	rm -rf $(PTZIPRELEASE)
-	rm -rf $(PTSETUP)_64.xml $(PTSETUP).jar $(PTSETUP).exe test/installerTest test/ptII$(VERSION)
+	rm -rf $(PTSETUP)_64.exe $(PTSETUP)_64.jar $(PTSETUP)_64.xml $(PTSETUP).jar $(PTSETUP).exe test/installerTest test/ptII$(VERSION)
+	rm -rf $(CAPECODE_SRC_JAR) $(CAPECODE_SRC_TAR)
 	rm -rf $(CAPECODE_SETUP_64).xml $(CAPECODE_SETUP).jar $(CAPECODE_SETUP_64).exe
-	rm -rf $(CAPECODE_SETUP_MAC).xml $(CAPECODE_SETUP_MAC).xml $(CAPECODE_SETUP_MAC).app $(CAPECODE_SETUP_MAC).dmg $(CAPECODE_SETUP_MAC).app.tar.gz
-	rm -rf $(PTSETUP_MAC).xml $(PTSETUP_MAC).jar $(PTSETUP_MAC).app $(PTSETUP_MAC).dmg $(PTSETUP_MAC).app.tar.gz
-	rm -rf dmg
+	rm -rf $(CAPECODE_SETUP_MAC).app $(CAPECODE_SETUP_MAC).app.tar.gz $(CAPECODE_SETUP_MAC).dmg $(CAPECODE_SETUP_MAC).jar $(CAPECODE_SETUP_MAC).xml
+	rm -rf $(CAPECODE_SETUP).exe $(CAPECODE_SETUP).jar
+	rm -rf $(CAPECODE_SETUP_64).exe $(CAPECODE_SETUP_64).jar
+	rm -rf capeCodeNonGUI.tar.gz
+	rm -rf $(PTSETUP_MAC).jar $(PTSETUP_MAC).app $(PTSETUP_MAC).app.tar.gz $(PTSETUP_MAC).dmg $(PTSETUP_MAC).jar $(PTSETUP_MAC).xml
+	rm -rf $(PTII_FULL) $(PTII_FULL_ZIP) $(PTII_SRC) $(PTII_SRC_JAR)
 
 FINDCLEAN = $(GENDIR)/findclean
 
