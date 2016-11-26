@@ -33,6 +33,8 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -159,7 +161,6 @@ public class JNLPUtilities {
      *  @exception IOException If the jar URL cannot be saved as a temporary file.
      */
     public static File getResourceSaveJarURLAsTempFile(String spec) throws IOException {
-	System.out.println("JNLPUtilities.get...(" + spec);
         // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec);
         // If the spec is not a jar URL, then check in file system.
         // This method is used by CapeCode to find .js file resources with require().
@@ -231,7 +232,6 @@ public class JNLPUtilities {
                 }
             } 
             try {
-		System.out.println("JNLPUtilities.get...(" + spec + " url: " + url);
                 String temporaryFileName = saveJarURLAsTempFile(url.toString(), 
                         prefix, suffix, null /*directory*/);
                 results =  new File(temporaryFileName);
@@ -341,7 +341,6 @@ public class JNLPUtilities {
     public static String saveJarURLAsTempFile(String jarURLName, String prefix,
             String suffix, File directory) throws IOException {
         URL jarURL = _lookupJarURL(jarURLName);
-	System.out.println("JNLPUtilities.saveJarURLAsTempFile: " + jarURLName + " " + jarURL.getClass());
         jarURLName = jarURL.toString();
 
         // File.createTempFile() does the bulk of the work for us,
@@ -359,11 +358,25 @@ public class JNLPUtilities {
         File temporaryFile = File.createTempFile(prefix, suffix, directory);
         temporaryFile.deleteOnExit();
 
-        // The resource pointed to might be a pdf file, which
-        // is binary, so we are careful to read it byte by
-        // byte and not do any conversions of the bytes.
-        FileUtilities.binaryCopyURLToFile(jarURL, temporaryFile);
-
+	try {
+	    // The resource pointed to might be a pdf file, which
+	    // is binary, so we are careful to read it byte by
+	    // byte and not do any conversions of the bytes.
+	    FileUtilities.binaryCopyURLToFile(jarURL, temporaryFile);
+	} catch (Throwable throwable) {
+	    // Hmm, jarURL could be referring to a directory.
+	    if (temporaryFile.delete()) {
+		throw new IOException("Copying \"" + jarURL + "\" to \""
+				      + temporaryFile + "\" failed: " + throwable
+				      + "  Then deleting \"" + temporaryFile
+				      + "\" failed?");
+	    }
+	    Path directoryPath = directory.toPath();
+	    Path temporaryDirectory = Files.createTempDirectory(directoryPath, prefix);
+	    temporaryFile = temporaryDirectory.toFile();
+	    temporaryFile.deleteOnExit();
+	    FileUtilities.binaryCopyURLToFile(jarURL, temporaryFile);
+	}
         return temporaryFile.toString();
     }
 

@@ -37,6 +37,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URI;
@@ -45,6 +46,7 @@ import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.util.zip.ZipEntry;
 import java.net.JarURLConnection;
 
 // Avoid importing any packages from ptolemy.* here so that we
@@ -122,7 +124,20 @@ public class FileUtilities {
 	    if (sourceURLInputStream == null) {
 		throw new IOException("Failed to open a stream on " + sourceURLConnection);
 	    }
-	    _binaryCopyStream(sourceURLInputStream, destinationFile);
+
+	    if (! (sourceURLConnection instanceof JarURLConnection)) {
+		_binaryCopyStream(sourceURLInputStream, destinationFile);
+	    } else {
+		JarURLConnection jarURLConnection = (JarURLConnection)sourceURLConnection;
+		JarEntry jarEntry = jarURLConnection.getJarEntry();
+		if (!jarEntry.isDirectory()) {
+		    // Simply copying a file.
+		    _binaryCopyStream(sourceURLInputStream, destinationFile);
+		} else {
+		    // It is a directory.
+		    _binaryCopyDirectory(jarURLConnection, destinationFile);
+		}
+	    }
 	} finally {
 	    if (sourceURLConnection != null) {
 		// Work around
@@ -726,6 +741,56 @@ public class FileUtilities {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Copy a directory in a jar file to a physical directory.
+     *  @param jarURLConnection the connection to the jar file
+     *  @param destinationDirectory The destination directory, which must already exist.
+     *  @exception IOException If there are problems reading, writing or closing.
+     */
+    private static void _binaryCopyDirectory(JarURLConnection jarURLConnection,
+					     File destinationDirectory) throws IOException {
+	// Get the path of the resource in the jar file
+	String entryBaseName = jarURLConnection.getEntryName();
+	JarFile jarFile = jarURLConnection.getJarFile();
+	Enumeration<?extends ZipEntry> jarEntries = jarFile.entries();
+	while( jarEntries.hasMoreElements() ) {
+	    ZipEntry zipEntry = jarEntries.nextElement();
+	    String name = zipEntry.getName();
+	    if (!name.startsWith(entryBaseName) ) {
+		continue;
+	    }
+
+	    String entryFileName = name.substring(entryBaseName.length());
+	    File fileOrDirectory = new File(destinationDirectory, entryFileName );
+	    if (zipEntry.isDirectory() ) {
+		if (!fileOrDirectory.mkdir()) {
+		    throw new IOException("Could not create \"" + fileOrDirectory + "\"");
+		}
+	    } else {
+		InputStream inputStream = null;
+		OutputStream outputStream = null;
+		try {
+		    inputStream = jarFile.getInputStream(zipEntry);
+		    outputStream =  new BufferedOutputStream( new FileOutputStream(fileOrDirectory ) );
+		    byte buffer[] = new byte[4096];
+		    int readCount;
+		    while( (readCount = inputStream.read(buffer)) > 0 ) {
+			outputStream.write(buffer, 0, readCount);
+		    }
+		} finally {
+		    try {
+			if (outputStream != null) {
+			    outputStream.close();
+			}
+		    } finally {
+			if (inputStream != null) {
+			    inputStream.close();
+			}
+		    }
+		}
+	    }
+	}
+    }
 
     /** Copy files safely.  If there are problems, the streams are
      *  close appropriately.
