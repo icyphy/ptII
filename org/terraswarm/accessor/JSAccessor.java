@@ -937,17 +937,21 @@ public class JSAccessor extends JavaScript {
         if (urlSpec.matches("https*://(www\\.)*terraswarm.org/accessors/.*")) {
             String target = "terraswarm.org/accessors/";
             String urlSpecTailPath = urlSpec.substring(urlSpec.indexOf(target) + target.length());
-            File urlSpecLocalFile = new File(_accessorDirectory(), "accessors/web/" + urlSpecTailPath);
-            if (urlSpecLocalFile.exists()) {
-                if (urlSpecLocalFile.length() == 0) {
-                    System.out.println("JSAccessor: urlSpec is " + urlSpec
-                            + ", but " + urlSpecLocalFile + " has length 0, so the former is being read");
-                } else {
-                    System.out.println("JSAccessor: urlSpec is " + urlSpec
-                            + ", but " + urlSpecLocalFile + " exists, so the latter is being read.");
-                    accessorOrPtDocURL = urlSpecLocalFile.toURI().toURL();
-                }
-            }
+	    try {
+		File urlSpecLocalFile = new File(_accessorDirectory(), "accessors/web/" + urlSpecTailPath);
+		if (urlSpecLocalFile.exists()) {
+		    if (urlSpecLocalFile.length() == 0) {
+			System.out.println("JSAccessor: urlSpec is " + urlSpec
+					   + ", but " + urlSpecLocalFile + " has length 0, so the former is being read");
+		    } else {
+			System.out.println("JSAccessor: urlSpec is " + urlSpec
+					   + ", but " + urlSpecLocalFile + " exists, so the latter is being read.");
+			accessorOrPtDocURL = urlSpecLocalFile.toURI().toURL();
+		    }
+		} 
+            } catch (IOException ex) {
+		System.out.println("JSAccessor: Could not look up the local accessor directory: " + ex);
+	    }
         }
         return accessorOrPtDocURL;
     }

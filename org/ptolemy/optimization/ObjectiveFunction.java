@@ -303,8 +303,7 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
     }
     /**
      * Objective function called in Phase I. (Searching for feasible initial point)
-     * @param x : input variables
-     * @param s : extended input variables
+     * @param input variables
      */
     public void calcFuncInternal(double[] x) {
         if (_source.stopRequested) {
@@ -346,8 +345,8 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
     }
 
     /**
-     * check the termination criteria in phase I
-     * @return : true if all of constraints are negative and Phase I should finish.
+     * Check the termination criteria in phase I.
+     * @return true if all of constraints are negative and Phase I should finish.
      */
     public boolean checkPhaseICriteria() {
         boolean areAllNegative = true;
@@ -357,8 +356,8 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
         return areAllNegative;
     }
     /**
-     * set current searching point X
-     * @param x : current point which is to be set.
+     * Set current searching point X.
+     * @param x current point which is to be set.
      */
     public void setCurrentPoint(double[] x) {
         for (int i=0; i<currentX.length; i++) {
@@ -370,7 +369,7 @@ class ObjectiveFunctionForPhaseI extends ObjectiveFunction{
     }
 
     /**
-     * set initial residual value s
+     * Set initial residual value s.
      * @param tolerance : the value which defines margin from constraints.
      * @return true if initial value is already feasible.
      */

@@ -109,7 +109,7 @@ public class PlaySound extends TypedAtomicActor implements ControllerListener {
     public TypedIOPort onOff;
 
     /** The gain (in percent).  This has as its value a record of the form
-     *  {min = m, max = M, current = c}, where min <= c <= max.
+     *  {min = m, max = M, current = c}, where min &lt;= c &lt;= max.
      */
     public IntRangeParameter percentGain;
 

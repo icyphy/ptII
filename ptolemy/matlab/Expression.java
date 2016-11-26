@@ -135,7 +135,7 @@ import ptolemy.matlab.Engine.ConversionParameters;
  bash-3.2$ which matlab
  /usr/bin/matlab
  bash-3.2$ ls -l /usr/bin/matlab
- lrwxr-xr-x  1 root  wheel  42 Jan 15 20:57 /usr/bin/matlab -> /Applications/MATLAB_R2009b.app/bin/matlab
+ lrwxr-xr-x  1 root  wheel  42 Jan 15 20:57 /usr/bin/matlab -&gt; /Applications/MATLAB_R2009b.app/bin/matlab
  bash-3.2$
  </pre>
 
@@ -155,7 +155,6 @@ import ptolemy.matlab.Engine.ConversionParameters;
        matlab.exe to your path)</dt>
  <dd><code>Be sure that the matlab binary is in your path</code></dd>
  </dl>
- </p>
 
  @author Zoltan Kemenczy and Sean Simmons, Research in Motion Limited
  @version $Id$

@@ -310,7 +310,6 @@ public class DragInteractor extends AbstractInteractor {
      * the event, but this method can be used to set it to
      * something else.
      * @param arr The array
-     * @return The target array
      * @see #getTargetArray()
      */
     public void setTargetArray(Object[] arr) {
