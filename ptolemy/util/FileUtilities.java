@@ -41,9 +41,11 @@ import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.URI;
 import java.net.URL;
+import java.net.URLConnection;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
+import java.net.JarURLConnection;
 
 // Avoid importing any packages from ptolemy.* here so that we
 // can ship Ptplot.
@@ -109,7 +111,36 @@ public class FileUtilities {
             }
         }
 
-        _binaryCopyStream(sourceURL.openStream(), destinationFile);
+	URLConnection sourceURLConnection = null;
+	InputStream sourceURLInputStream = null;
+	try {
+	    sourceURLConnection = sourceURL.openConnection();
+	    if (sourceURLConnection == null) {
+		throw new IOException("Failed to open a connection on " + sourceURL);
+	    }
+	    sourceURLInputStream = sourceURLConnection.getInputStream();
+	    if (sourceURLInputStream == null) {
+		throw new IOException("Failed to open a stream on " + sourceURLConnection);
+	    }
+	    _binaryCopyStream(sourceURLInputStream, destinationFile);
+	} finally {
+	    if (sourceURLConnection != null) {
+		// Work around
+		// "JarUrlConnection.getInputStream().close() throws
+		// NPE when entry is a directory"
+		// https://bugs.openjdk.java.net/browse/JDK-8080094
+		if (sourceURLConnection instanceof JarURLConnection) {
+		    JarURLConnection jar = (JarURLConnection) sourceURLConnection;
+		    if (jar.getUseCaches()) {
+			jar.getJarFile().close();
+		    }
+		} else {
+		    if (sourceURLInputStream != null) {
+			sourceURLInputStream.close();
+		    }
+		}
+	    }
+	}
 
         return true;
     }
@@ -712,6 +743,13 @@ public class FileUtilities {
         try {
             input = new BufferedInputStream(inputStream);
 
+	    if (input == null) {
+		throw new IOException("Could not create a BufferedInputStream from \""
+				      + inputStream + "\".  This can happen if the input "
+				      + "is a JarURL entry that refers to a directory "
+				      + "in the jar file.");
+	    }
+
             BufferedOutputStream output = null;
 
             try {
@@ -728,9 +766,20 @@ public class FileUtilities {
 
                 int c;
 
-                while ((c = input.read()) != -1) {
-                    output.write(c);
-                }
+		try {
+		    while ((c = input.read()) != -1) {
+			output.write(c);
+		    }
+		} catch (NullPointerException ex) {
+		    NullPointerException npe =
+			new NullPointerException("While reading from \"" + input
+						 + "\" and writing to \"" + output
+						 + "\", a NullPointerException occurred.  "
+						 + "This can happen when attempting to read "
+						 + "from a JarURL entry that points to a directory.");
+		    npe.initCause(ex);
+		    throw npe;
+		}
             } finally {
                 if (output != null) {
                     try {
@@ -741,12 +790,18 @@ public class FileUtilities {
                 }
             }
         } finally {
-            if (input != null) {
-                try {
-                    input.close();
-                } catch (Throwable throwable) {
-                    throw new RuntimeException(throwable);
-                }
+	    if (input != null) {
+		try {
+		    input.close();
+		} catch (NullPointerException npe) {
+		    // Ignore, see
+		    // Work around
+		    // "JarUrlConnection.getInputStream().close() throws
+		    // NPE when entry is a directory"
+		    // https://bugs.openjdk.java.net/browse/JDK-8080094
+		} catch (Throwable throwable) {
+		    throw new RuntimeException(throwable);
+		}
             }
         }
     }

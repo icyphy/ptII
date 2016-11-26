@@ -194,12 +194,15 @@ CORE_NONGUI_JARS = \
 	ptolemy/domains/domains.jar \
 	$(PTMATLAB_JARS)
 
-CORE_JNLP_JARS = \
-	$(CORE_NONGUI_JARS) \
+CORE_JNLP_GUI_JARS = \
 	lib/kieler.jar \
 	ptolemy/vergil/basic/layout/layout.jar \
 	ptolemy/vergil/vergil.jar \
 	ptolemy/actor/parameters/demo/demo.jar
+
+CORE_JNLP_JARS = \
+	$(CORE_NONGUI_JARS) \
+	$(CORE_JNLP_GUI_JARS)
 
 #######
 # DSP - The smallest runtime
@@ -247,6 +250,7 @@ CAPECODE_ONLY_JNLP_JARS = \
 	edu/umich/eecs/april/april.jar \
 	org/json/json.jar \
 	org/terraswarm/accessor/accessor.jar \
+	org/terraswarm/accessor/accessors/accessors.jar \
 	org/terraswarm/accessor/demo/demo.jar \
 	org/terraswarm/ros/demo/demo.jar \
 	org/ptolemy/ssm/ssm.jar \
@@ -263,6 +267,7 @@ CAPECODE_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/js/demo/demo.jar \
 	ptolemy/actor/lib/mail/mail.jar \
 	ptolemy/vergil/basic/imprt/accessor/accessor.jar \
+	ptolemy/cg/cgAccessor.jar \
 	$(PTDATABASE_JNLP_JARS) \
 	$(PTJAVAMAIL_JARS) \
 	$(PTJAVASCRIPT_JARS) \
@@ -291,9 +296,9 @@ CAPECODE_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/CapeCodeApplication.jar
 
 CAPECODE_JNLP_JARS = \
-	$(CORE_JNLP_JARS) \
 	$(CAPECODE_NONGUI_JARS) \
 	$(CAPECODE_MAIN_JAR) \
+	$(CORE_JNLP_GUI_JARS) \
 	$(DOC_CODEDOC_JAR) \
 	$(EXPORT_JARS) \
 	$(PDFRENDERER_JARS) \
@@ -1906,7 +1911,7 @@ echo_plist_jars:
 
 # make echo_classpath_jars JARS=PTINY_JNLP_JARS
 echo_classpath_jars:
-	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" | awk '{for(i=1;i<=NF;i++) {printf("${CLASSPATHSEPARATOR}"); if ($$i !~ /^\//) {printf("${PTII}/")} printf("%s", $$i)} printf("${CLASSPATHSEPARATOR}\n")}'
+	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" | awk '{for(i=1;i<=NF;i++) { printf("${CLASSPATHSEPARATOR}"); if ($$i !~ /^\// && $$i !~ /^:/ ) {printf("${PTII}/")} printf("%s", $$i)} printf("${CLASSPATHSEPARATOR}\n")}'
 
 # How to run from the jars:
 # make vergil_run_full

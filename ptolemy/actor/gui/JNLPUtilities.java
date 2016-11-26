@@ -159,6 +159,7 @@ public class JNLPUtilities {
      *  @exception IOException If the jar URL cannot be saved as a temporary file.
      */
     public static File getResourceSaveJarURLAsTempFile(String spec) throws IOException {
+	System.out.println("JNLPUtilities.get...(" + spec);
         // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec);
         // If the spec is not a jar URL, then check in file system.
         // This method is used by CapeCode to find .js file resources with require().
@@ -230,6 +231,7 @@ public class JNLPUtilities {
                 }
             } 
             try {
+		System.out.println("JNLPUtilities.get...(" + spec + " url: " + url);
                 String temporaryFileName = saveJarURLAsTempFile(url.toString(), 
                         prefix, suffix, null /*directory*/);
                 results =  new File(temporaryFileName);
@@ -339,6 +341,7 @@ public class JNLPUtilities {
     public static String saveJarURLAsTempFile(String jarURLName, String prefix,
             String suffix, File directory) throws IOException {
         URL jarURL = _lookupJarURL(jarURLName);
+	System.out.println("JNLPUtilities.saveJarURLAsTempFile: " + jarURLName + " " + jarURL.getClass());
         jarURLName = jarURL.toString();
 
         // File.createTempFile() does the bulk of the work for us,
