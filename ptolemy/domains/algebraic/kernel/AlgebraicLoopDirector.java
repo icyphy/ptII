@@ -1529,7 +1529,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
 
         ///////////////////////////////////////////////////////////////////
         ////             protected variables                           ////
-        /** Maximum contraction rate in corrector step, 0 < ctmax < 1. */
+        /** Maximum contraction rate in corrector step, 0 &lt; ctmax &lt; 1. */
         protected double _ctmax; // See also algorithm 7.2.13 in Allgower and Georg
 
         /** Maximal norm for H */

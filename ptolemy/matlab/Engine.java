@@ -145,8 +145,8 @@ import ptolemy.math.Complex;
  <td>'double', mxREAL, 1x1
  </table>
  <p>
- Debug statements to stdout are enabled by calling {@link
- #setDebugging} with a byte parameter > 0. 1 enables basic tracing,
+ Debug statements to stdout are enabled by calling 
+ {@link #setDebugging} with a byte parameter &gt; 0. 1 enables basic tracing,
  2 includes traces from the dll as well.
 
  <p>{@link #evalString(long[], String)} send a string to the matlab
