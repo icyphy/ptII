@@ -90,6 +90,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.CancelException;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -1058,10 +1059,22 @@ public class JavaScript extends TypedAtomicActor {
      *  @throws IOException If the file cannot be read.
      */
     public static String getFileAsString(String path) throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
+	byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, Charset.defaultCharset());
     }
 
+    /** Return the string contents of the file from the classpath
+     *  @param path The location.  This is used in localFunctions.js.
+     *  The path should be a relative path.
+     *  @return The contents as a string, assuming the default encoding of
+     *   this JVM (probably utf-8).
+     *  @throws IOException If the file cannot be read.
+     */
+    public static String getFileFromClasspathAsString(String path) throws IOException {
+	URL url = FileUtilities.nameToURL(path, null, null);
+	byte[] encoded = FileUtilities.binaryReadURLToByteArray(url);
+        return new String(encoded, Charset.defaultCharset());
+    }
     /** If this actor has been initialized, return the JavaScript engine,
      *  otherwise return null.
      *  @return The JavaScript engine for this actor.

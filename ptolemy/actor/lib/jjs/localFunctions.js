@@ -110,7 +110,18 @@ function getAccessorCode(name) {
         }
     }
     if (!code) {
-        throw ('Accessor ' + name + ' not found on path: ' + _accessorPath);
+	for (i = 0; i < _accessorClasspath.length; i++) {
+	    location = _accessorClasspath[i].concat(name);
+	    try {
+		code = js.getFileFromClasspathAsString(location);
+		break;
+	    } catch (err) {
+		continue;
+	    }
+	}
+    }
+    if (!code) {
+        throw ('Accessor ' + name + ' not found on path: ' + _accessorPath + ' or relative path: ' + _accessorClasspath);
     }
     return code;
 }

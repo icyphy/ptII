@@ -269,9 +269,13 @@ CAPECODE_ONLY_JNLP_JARS = \
 	ptolemy/vergil/basic/imprt/accessor/accessor.jar \
 	ptolemy/cg/cgAccessor.jar \
 	$(PTDATABASE_JNLP_JARS) \
+	$(PTGDP_JAR) \
+	$(JNA_JAR) \
 	$(PTJAVAMAIL_JARS) \
 	$(PTJAVASCRIPT_JARS) \
 	$(PTNRJAVASERIAL_JAR) \
+	org/ptolemy/opencv/opencv.jar \
+	$(OPENCV_JAR) \
 	$(PTPAHO_MQTT_JAR) \
 	$(PTSLF4J_API_JAR) \
 	$(PTSLF4J_NOP_JAR) \

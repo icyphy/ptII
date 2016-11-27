@@ -246,7 +246,19 @@ if (_accessorRoot.indexOf("!/") !== -1) {
 }
 
 /** An array that gives the search path for modules to be required. */
-var _modulePath = [_moduleRoot + '/', _moduleRoot + '/modules/', _moduleRoot + '/node/', _moduleRoot + '/node_modules/', _accessorRoot + '/hosts/'];
+var _modulePath = [_moduleRoot + '/',
+		   _moduleRoot + '/modules/',
+		   _moduleRoot + '/node/',
+		   _moduleRoot + '/node_modules/',
+		   _accessorRoot + '/hosts/',
+		   _accessorRoot + '/'];
+
+/** An array that gives the search path for modules to be required relative to the classpath. */
+var _moduleClasspath = ['$CLASSPATH/ptolemy/actor/lib/jjs/modules/',
+			   '$CLASSPATH/ptolemy/actor/lib/jjs/node/',
+			   '$CLASSPATH/ptolemy/actor/lib/jjs/node_modules/',
+			   '$CLASSPATH/org/terraswarm/accessor/accessors/web/hosts/',
+			   '$CLASSPATH/org/terraswarm/accessor/accessors/web/'];
 
 /** A string giving the full path to the root directory for installed accessors. */
 var _accessorRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
@@ -262,6 +274,9 @@ var _testAccessors = Java.type('ptolemy.util.FileUtilities').nameToFile(
 
 /** An array that gives the search path for accessors to be extended. */
 var _accessorPath = [_accessorRoot + '/', _testAccessors + '/'].concat(_modulePath);
+
+/** An array that gives the search path for accessors to be extended. */
+var _accessorClasspath = ['$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/'].concat(_moduleClasspath);
 
 /**
  * Require the named module. This function imports modules formatted
