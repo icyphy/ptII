@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- $Id
+<!-- $Id$
      This file is used to generate jar files for Ptolemy II:
      ant -f jars.xml jars
   -->
@@ -1783,18 +1783,26 @@
       </fileset>
     </jar>
 
-        <!-- ptolemy/actor/lib/jjs/modules/modules.jar -->
+    <!-- ptolemy/actor/lib/jjs/modules/modules.jar -->
+    <!-- Updated with
+	 (cd ptolemy/actor/lib/jjs/modules; ~/ptII/adm/bin/tree2ant | sed 's@XXXChangeMeXXX@ptolemy/actor/lib/jjs/modules@' | sed -e 's@modules/[^/]*/\*@modules/*/*@' -e 's@modules/[^/]*/demo/[^/]*/\*@modules/*/demo/*@' | sort | uniq)
+    -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/ptolemy/actor/lib/jjs/modules/modules.jar"
 	 >
       <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/jjs/modules/*/*.class"/>
-	<include name="ptolemy/actor/lib/jjs/modules/*/*.js"/>
-	<include name="ptolemy/actor/lib/jjs/modules/*/*.json"/>
-	<include name="ptolemy/actor/lib/jjs/modules/*/*.xml"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/*.class"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/*.js"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/*.json"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/*.xml"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.html"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.js"/>
+        <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.xml"/>
+        <include name="ptolemy/actor/lib/jjs/modules/testing/chai/*.js"/>
+        <include name="ptolemy/actor/lib/jjs/modules/testing/mocha/*.js"/>
+        <include name="ptolemy/actor/lib/jjs/modules/testing/window-mock/*.js"/>
       </fileset>
     </jar>
-
 
     <!-- ptolemy/actor/lib/jmf/jmf.jar -->
     <jar defaultexcludes="yes"
@@ -3439,6 +3447,7 @@
         <include name="ptolemy/cg/adapter/generic/accessor/adapters/org/terraswarm/accessor/*.class"/>
         <include name="ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/*.class"/>
         <include name="ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/*.class"/>
+        <include name="ptolemy/cg/adapter/generic/adapters/ptolemy/actor/*.class"/>
         <include name="ptolemy/cg/adapter/generic/program/procedural/adapters/org/terraswarm/accessor/*.class"/>
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/*.in"/>
         <include name="ptolemy/cg/adapter/generic/program/procedural/c/duktape/adapters/org/terraswarm/accessor/*.c"/>
@@ -3451,6 +3460,8 @@
         <include name="ptolemy/cg/kernel/generic/accessor/*.class"/>
         <include name="ptolemy/cg/kernel/generic/accessor/*.html"/>
         <include name="ptolemy/cg/kernel/generic/accessor/demo/TestComposite/*.xml"/>
+        <include name="ptolemy/cg/kernel/generic/*.class"/>
+        <include name="ptolemy/cg/kernel/generic/program/*.class"/>
         <include name="ptolemy/cg/gui/*.class"/>
         <include name="ptolemy/cg/kernel/generic/*.class"/>
       </fileset>
@@ -4049,77 +4060,105 @@
 
   <!-- org/terraswarm/accessor/accessors/accessors.jar -->
   <!-- Updated with
-       (cd $PTII/org/terraswarm/accessor/accessors; ~/ptII/adm/bin/tree2ant | sed 's@XXXChangeMeXXX@org/terraswarm/accessor/accessors@')
+       (cd $PTII/org/terraswarm/accessor/accessors; ~/ptII/adm/bin/tree2ant | sed 's@XXXChangeMeXXX@org/terraswarm/accessor/accessors@' | sed -e 's@web/[^/]*/\*@web/*/*@' -e 's@web/[^/]*/demo/[^/]*/\*@web/*/demo/*@' | sort | uniq)
        -->
     <jar defaultexcludes="yes"
 	 destfile="${basedir}/org/terraswarm/accessor/accessors/accessors.jar"
 	 >
       <fileset dir="${basedir}">
         <include name="org/terraswarm/accessor/accessors/web/*.htm"/>
+        <include name="org/terraswarm/accessor/accessors/web/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/*.json"/>
+        <include name="org/terraswarm/accessor/accessors/web/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/*/*.htm"/>
+        <include name="org/terraswarm/accessor/accessors/web/*/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/*/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/*/*.json"/>
+        <include name="org/terraswarm/accessor/accessors/web/*/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/doc/jsdoc/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/doc/jsdoc/scripts/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/doc/jsdoc/scripts/prettify/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/browser/*.htm"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/browser/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/browser/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/browser/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/browser/demo/WebSocketGraph/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/browser/demo/src/WebSocketLog/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/browser/modules/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/common/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/common/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/common/modules/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/common/modules/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/.idea/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/.idea/copyright/*.xml"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/plugins/*.json"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/www/*.html"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/www/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/www/*.xml"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/www/jxcore/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/www/jxcore/node_modules/json-nice/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/cordova/DemoApp/www/jxcore/node_modules/json-nice/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/*.xml"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/duktape/*.h"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/duktape/examples/cmdline/*.c"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/duktape/examples/eventloop/*.c"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/duktape/examples/eventloop/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/duktape/src/*.c"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/duktape/src/*.h"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/duktape/src/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/eduk/*.c"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/eduk/*.h"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/eduk/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/duktape/rusteduk/examples/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/*.html"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/*.xml"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/assertion-error/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/assertion-error/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/audio-io/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/audio-io/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/lib/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/lib/chai/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/lib/chai/core/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/lib/chai/interface/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/chai/lib/chai/utils/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/deep-eql/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/deep-eql/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/deep-eql/lib/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/deep-eql/node_modules/type-detect/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/deep-eql/node_modules/type-detect/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/deep-eql/node_modules/type-detect/lib/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/gdp/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/gdp/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/httpClient/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/httpClient/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/inherits/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/inherits/*.json"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/options/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/options/lib/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/type-detect/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/type-detect/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/type-detect/lib/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/udpSocket/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/udpSocket/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/ultron/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/ultron/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/webSocketClient/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/webSocketClient/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/webSocketServer/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/webSocketServer/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/ws/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/ws/*.json"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/node/node_modules/ws/lib/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/hosts/ptolemy/*.html"/>
-        <include name="org/terraswarm/accessor/accessors/web/image/*.js"/>
-        <include name="org/terraswarm/accessor/accessors/web/image/*.xml"/>
         <include name="org/terraswarm/accessor/accessors/web/jsdoc/plugins/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/jsdoc/templates/ptdoc/*.js"/>
-        <include name="org/terraswarm/accessor/accessors/web/library/*.htm"/>
-        <include name="org/terraswarm/accessor/accessors/web/library/*.html"/>
         <include name="org/terraswarm/accessor/accessors/web/library/website/*.html"/>
         <include name="org/terraswarm/accessor/accessors/web/library/website/*.js"/>
-        <include name="org/terraswarm/accessor/accessors/web/localization/*.html"/>
-        <include name="org/terraswarm/accessor/accessors/web/localization/*.js"/>
-        <include name="org/terraswarm/accessor/accessors/web/localization/*.xml"/>
-        <include name="org/terraswarm/accessor/accessors/web/net/*.html"/>
-        <include name="org/terraswarm/accessor/accessors/web/net/*.js"/>
-        <include name="org/terraswarm/accessor/accessors/web/net/*.xml"/>
-        <include name="org/terraswarm/accessor/accessors/web/obsolete/*.html"/>
-        <include name="org/terraswarm/accessor/accessors/web/obsolete/*.js"/>
-        <include name="org/terraswarm/accessor/accessors/web/obsolete/*.xml"/>
-        <include name="org/terraswarm/accessor/accessors/web/robotics/*.js"/>
-        <include name="org/terraswarm/accessor/accessors/web/robotics/*.xml"/>
-        <include name="org/terraswarm/accessor/accessors/web/services/*.html"/>
-        <include name="org/terraswarm/accessor/accessors/web/services/*.js"/>
-        <include name="org/terraswarm/accessor/accessors/web/services/*.xml"/>
-        <include name="org/terraswarm/accessor/accessors/web/signals/*.js"/>
-        <include name="org/terraswarm/accessor/accessors/web/utilities/*.js"/>
       </fileset>
     </jar>
 
