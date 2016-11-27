@@ -268,6 +268,8 @@ CAPECODE_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/mail/mail.jar \
 	ptolemy/vergil/basic/imprt/accessor/accessor.jar \
 	ptolemy/cg/cgAccessor.jar \
+	org/ptolemy/ptango/ptango.jar \
+	$(PTANGO_JAR_FILES) \
 	$(PTDATABASE_JNLP_JARS) \
 	$(PTGDP_JAR) \
 	$(JNA_JAR) \
@@ -283,6 +285,7 @@ CAPECODE_ONLY_JNLP_JARS = \
 	$(PTWEBCAMCAPTURE_JARS) \
 	$(PTXBEE_JARS)
 
+
 CAPECODE_NONGUI_JARS = \
 	$(CORE_NONGUI_JARS) \
 	$(CAPECODE_ONLY_JNLP_JARS) \
@@ -290,11 +293,6 @@ CAPECODE_NONGUI_JARS = \
 	ptolemy/actor/lib/colt/colt.jar \
 	lib/ptcolt.jar \
 	$(JSOUP_JARS)
-
-#	org/ptolemy/ptango/ptango.jar \
-#	$(PTANGO_JAR_FILES) \
-
-
 
 CAPECODE_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/CapeCodeApplication.jar
