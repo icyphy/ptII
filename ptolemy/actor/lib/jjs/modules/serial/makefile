@@ -66,7 +66,9 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	$(PTCLASSJAR) \
-	'SocketHelper$$1.class'
+	'SocketHelper$$1.class' \
+	'SerialHelper$$SerialReader.class' \
+	'SerialHelper$$SerialWriter.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

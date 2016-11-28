@@ -66,7 +66,9 @@ OPTIONAL_FILES = \
 	demo \
 	doc \
 	$(PTCLASSJAR) \
-	'SocketHelper$$1.class'
+	'SocketHelper$$1.class' \
+	'SocketHelper$$ByteArrayBackedInputStream.class' \
+	'SocketHelper$$SocketWrapper.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 

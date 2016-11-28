@@ -1,10 +1,10 @@
-# Makefile for Nashorn-based Ptolemy II JavaScript modules
+# Makefile for Ptolemy II AutomaticDoor demo
 #
-# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
+# @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
 #
-# @Copyright (c) 2014 The Regents of the University of California.
+# @Copyright (c) 2016 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,51 +29,61 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/external
-
-DIRS = 		webSocket localStorage
+ME =		ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor
 
 # Root of the Java directory
-ROOT =		../../../../..
+ROOT =		../../../../../../../
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	external
+PTPACKAGE = 	AutomaticDoor
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
-# Keep this list alphabetized.
-JSRCS = \
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	require.js \
-	require.js-license.htm \
-	require.js.LICENSE.txt \
-	require.js.README.md \
-	setTimeout-nashorn.js
+	AutomaticDoor.gif \
+	AutomaticDoor.xml \
+	AutomaticDoorLTL.txt
 
-EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	#test
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make distclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
-	demo \
-	$(PTCLASSJAR) 
+# make realclean removes OPTIONAL_FILES
+OPTIONAL_FILES = 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-
+# Don't include all or install rules here, we want the user
+# to run 'make demos' to run the tests.
 all: jclass
-install: jclass jars
+	@echo "To run all the demos, run 'make demo'"
 
+install: all $(PTCLASSJAR)
+
+demo: demo_ptolemy demo_vergil
+
+#demo_applet:
+#	CLASSPATH="$(CLASSPATH)" appletviewer AutomaticDoor.htm
+
+#demo_applet_vergil:
+#	CLASSPATH="$(CLASSPATH)" appletviewer .htm
+
+demo_ptolemy:
+	"$(PTII)/bin/ptolemy" AutomaticDoor.xml
+
+demo_vergil:
+	"$(PTII)/bin/vergil" AutomaticDoor.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
+

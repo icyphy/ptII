@@ -51,10 +51,8 @@ JSRCS = \
 	XBeeHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
+	package.json \
 	xbee.js
-
-	#	package.json
-
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

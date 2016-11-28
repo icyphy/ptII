@@ -50,8 +50,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-	mocha.js\
-	mochalicense.js
+	mocha.js \
+	mochalicense.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

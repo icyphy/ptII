@@ -68,7 +68,14 @@ OPTIONAL_FILES = \
 	$(PTCLASSJAR) \
 	'UDPSocketHelper$$1.class' \
 	'UDPSocketHelper$$1$$1.class' \
-	'UDPSocketHelper$$2.class'
+	'UDPSocketHelper$$2.class' \
+	'UDPSocketHelper$$UDPSocket$$1$$1.class' \
+	'UDPSocketHelper$$UDPSocket$$1$$2.class' \
+	'UDPSocketHelper$$UDPSocket$$1$$3.class' \
+	'UDPSocketHelper$$UDPSocket$$1.class' \
+	'UDPSocketHelper$$UDPSocket$$2.class' \
+	'UDPSocketHelper$$UDPSocket.class' \
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 

@@ -48,6 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	Browser.xml \
+	BrowserRamp.xml \
 	Geolocation.html
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
