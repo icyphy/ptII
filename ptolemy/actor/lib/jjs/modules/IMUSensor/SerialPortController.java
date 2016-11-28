@@ -1,6 +1,6 @@
 /* SerialPortController class that handles a serial port - base class for module (addon) IMUSensor for the PTII accessor host
 
-// Copyright (c) 2015 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 
 // Permission is hereby granted, without written agreement and without

@@ -1,6 +1,6 @@
 /* Strategy to be able to switch class loading mechanisms, depending on the needs for a runtime environment.
 
-Copyright (c) 2015 The Regents of the University of California; iSencia Belgium NV.
+Copyright (c) 2015-2016 The Regents of the University of California; iSencia Belgium NV.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

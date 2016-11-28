@@ -1,6 +1,6 @@
 /* An attribute for displaying a note instead of a parameter value.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this

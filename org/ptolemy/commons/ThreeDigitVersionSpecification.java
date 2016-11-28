@@ -1,6 +1,6 @@
 /* A simple implementation of a 3-digit version specification.
 
-   Copyright (c) 2015 The Regents of the University of California; iSencia Belgium NV.
+   Copyright (c) 2015-2016 The Regents of the University of California; iSencia Belgium NV.
    All rights reserved.
 
    Permission is hereby granted, without written agreement and without

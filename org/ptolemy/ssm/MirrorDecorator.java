@@ -2,7 +2,7 @@
 /* A decorator that, when enabled, populates the container with its ports
  * and parameters.
 
- Copyright (c) 2014-2015 The Regents of the University of California.
+ Copyright (c) 2014-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
