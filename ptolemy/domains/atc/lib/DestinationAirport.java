@@ -85,7 +85,7 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
         delay= new Parameter(this, "delay");
         delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("1");
-		
+                
         EditorIcon node_icon = new EditorIcon(this, "_icon");
         
         //rectangle
@@ -152,7 +152,7 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
             output.send(0, _inTransit);
             //Set icon to white color
             _setIcon(-1);
-				
+                                
             _inTransit = null;
             _called=false;
             return;
@@ -161,7 +161,7 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
         for (int i=0; i< input.getWidth();i++)
             if (input.hasNewToken(i)) {
                 _inTransit=input.get(i);
-		//Set icon to color of the airplane
+                //Set icon to color of the airplane
                 int id=((IntToken)((RecordToken)_inTransit).get("aircraftId")).intValue();
                 _setIcon(id);
                 //
@@ -200,7 +200,7 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
         } 
         _shape.fillColor.setToken(color);
     }
-	
+        
     //to change color of the icon
     private ResizablePolygonAttribute _shape;
     private RectangleAttribute _rectangle;
@@ -208,7 +208,7 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
     private Token[] _white = {_one, _one, _one, _one};
     private ArrayToken _noAircraftColor = new ArrayToken(_white);
     //
-	
+        
     private Token _inTransit;
     private Time _transitExpires;
     private boolean _called;

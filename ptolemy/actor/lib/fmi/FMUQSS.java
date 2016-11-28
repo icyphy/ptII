@@ -573,17 +573,17 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
     @Override
     public final int getEventIndicatorCount() {
         try {
-			if (((BooleanToken) eventDetection.getToken()).booleanValue()) {
-			return _fmiModelDescription.numberOfEventIndicators;
-			}
-			else{
-				return 0;
-			}
-		} catch (IllegalActionException e) {
+                        if (((BooleanToken) eventDetection.getToken()).booleanValue()) {
+                        return _fmiModelDescription.numberOfEventIndicators;
+                        }
+                        else{
+                                return 0;
+                        }
+                } catch (IllegalActionException e) {
             new Exception(
                     "Failed to get the number of event indicators.")
                     .printStackTrace();
-		}  
+                }  
         return 0;
     }
 
@@ -975,7 +975,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 // determine the time. Another approach will be to check
                 // the event indicator model only but this will increase 
                 // the number of steps. Here we just have to select a quantum
-                // which is small enough so we can still catch state events.	
+                // which is small enough so we can still catch state events.        
                 if (_checkStateEvents(possibleFireAtTime)) {
                     final Time possibleNextStateEventTime = _zcSolver
                             .predictQuantizationEventTimeEarliest();
@@ -2217,17 +2217,17 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                     for (int i = 1; i <= ivMdlOrder; i++) {
                         if (derivatives == null || derivatives.length < i) {
                             // Derivative not provided. Set it to zero.
-                        	ivMdl.coeffs[i] = 0.0;
+                                ivMdl.coeffs[i] = 0.0;
                         } else {
-                        	ivMdl.coeffs[i] = derivatives[i-1]/factorial;
+                                ivMdl.coeffs[i] = derivatives[i-1]/factorial;
                             factorial = factorial * i;
                         }
                     }         
                 } else if (token instanceof DoubleToken) {
                     initialValue = ((DoubleToken) token).doubleValue();
                     for (int i = 1; i <= ivMdlOrder; i++) {
-                    	// Derivative not provided. Set it to zero.
-                    	ivMdl.coeffs[i] = 0.0;
+                            // Derivative not provided. Set it to zero.
+                            ivMdl.coeffs[i] = 0.0;
                     }
                 } else {
                     throw new IllegalActionException(this, String.format(
@@ -2244,8 +2244,8 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 initialValue = input.start;
                 for (int i = 1; i <= ivMdlOrder; i++) {
                     // Derivative not provided. Set it to zero.
-                	ivMdl.coeffs[i] = 0.0;
-                	}
+                        ivMdl.coeffs[i] = 0.0;
+                        }
                 if (_debugging) {
                     _debugToStdOut(String
                             .format("-- Id{%d} set initial value of input %d to default value of %g",
@@ -2388,25 +2388,25 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
             // since since higher order terms are zero at quantization time.
             _sendModel(val, prt, time, isState);
             /*if (_firstRound) {
-            	_sendModel(val, prt, time, isState );
+                    _sendModel(val, prt, time, isState );
                 _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = val[0];
                 _fmiModelDescription.continuousStates.get(index).quantum = 
-                		_qssSolver.findQuantum(index) /_quantumScaleFactor;
+                                _qssSolver.findQuantum(index) /_quantumScaleFactor;
                 // Update model variable hasChanged field.
                 //_updateModelVariableAttribute(modVarIdx, true);
             } else {
-            	 double lastqSta = _fmiModelDescription.continuousStates.get(index).lastDoubleOutput;
+                     double lastqSta = _fmiModelDescription.continuousStates.get(index).lastDoubleOutput;
                 if (Math.abs(val[0] - lastqSta) <= Math.abs(_fmiModelDescription.continuousStates.get(index).quantum)) {
                     // Update model variable hasChanged field.
                     //_updateModelVariableAttribute(modVarIdx, false);
                     return;
                 } else {
-                	_sendModel(val, prt, time, isState );
+                        _sendModel(val, prt, time, isState );
                     // Update model variable hasChanged field.
                     //_updateModelVariableAttribute(modVarIdx, true);
                     _fmiModelDescription.continuousStates.get(index).lastDoubleOutput = val[0];
                     _fmiModelDescription.continuousStates.get(index).quantum = 
-                    		_qssSolver.findQuantum(index) /_quantumScaleFactor;
+                                    _qssSolver.findQuantum(index) /_quantumScaleFactor;
                 }
             }*/
         }
@@ -2418,14 +2418,14 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                 _sendModel(val, prt, time, isState);
                 _outputs.get(index).lastOutputPortValue = val[0];
             }
-            /*	        
+            /*                
               if (_firstRound) {
-                	_sendModel(val, prt, time, isState);
+                        _sendModel(val, prt, time, isState);
                     _outputs.get(index).lastOutputPortValue = val[0];
                     _outputs.get(index).quantum = Math.abs(_threshold 
-                    		* _outputs.get(index).lastOutputPortValue);
+                                    * _outputs.get(index).lastOutputPortValue);
                 } else {
-                	double lastDblOut = _outputs.get(index).lastOutputPortValue;
+                        double lastDblOut = _outputs.get(index).lastOutputPortValue;
                     if (Math.abs(val[0] - lastDblOut) > Math.abs(_outputs.get(index).quantum)) {
                         // Check if any of output dependents has changed.
                         // If not then do not commit any changes. This is particularly
@@ -2442,7 +2442,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                         _sendModel(val, prt, time, isState);
                         _outputs.get(index).lastOutputPortValue = val[0];
                         _outputs.get(index).quantum = Math.abs(_threshold 
-                        		* _outputs.get(index).lastOutputPortValue);
+                                        * _outputs.get(index).lastOutputPortValue);
                     }
                 }
                 */
@@ -2587,11 +2587,11 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * return sum The sum of the input vector elements.
      */
     private double _sumOfVector (double array []){
-    	double sum = 0;
-    	for(int i = 0; i < array.length; i++) {
-    	    sum += array[i];
-    	}
-    	return sum;
+            double sum = 0;
+            for(int i = 0; i < array.length; i++) {
+                sum += array[i];
+            }
+            return sum;
     }
 
     /**

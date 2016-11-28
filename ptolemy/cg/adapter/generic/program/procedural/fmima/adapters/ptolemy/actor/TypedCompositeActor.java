@@ -227,15 +227,15 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
                                 codeStream.append("fmi2Boolean tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
                                 codeStream.append("fmu->setBoolean(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
                         } else if (scalar.type instanceof FMIIntegerType) {
-                        		codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
+                                        codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
                                 codeStream.append("fmi2Integer tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
                                 codeStream.append("fmu->setInteger(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
                         } else if (scalar.type instanceof FMIRealType) {
-                        		codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
+                                        codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
                                 codeStream.append("fmi2Real tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
                                 codeStream.append("fmu->setReal(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
                         } else if (scalar.type instanceof FMIStringType) {
-                        		codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
+                                        codeStream.append("const fmi2ValueReference _vr" + i + "_" + j + " = " + scalar.valueReference + ";\n");
                                 codeStream.append("fmi2String tmp_" + i + "_" + j + " = " + parameter.getToken() + ";\n");
                                 codeStream.append("fmu->setString(fmu->component, &_vr" + i + "_" + j + ", 1, &tmp_" + i + "_" + j + ");" + _eol);
                         }

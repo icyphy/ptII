@@ -96,11 +96,11 @@ public class MarbleTexFilter extends PointFilter {
         ny /= scale;
 
         if (colormap != null) {
-            //			float f = Noise.turbulence2(nx, ny, turbulence);
-            //			f = 3*turbulenceFactor*f+ny;
-            //			f = Math.sin(f*Math.PI);
+            //                        float f = Noise.turbulence2(nx, ny, turbulence);
+            //                        f = 3*turbulenceFactor*f+ny;
+            //                        f = Math.sin(f*Math.PI);
             float chaos = turbulenceFactor * Noise.turbulence2(nx, ny, turbulence);
-            //			float f = Math.sin(Math.sin(8.*chaos + 7*nx +3.*ny));
+            //                        float f = Math.sin(Math.sin(8.*chaos + 7*nx +3.*ny));
             float f = 3 * turbulenceFactor * chaos + ny;
             f = (float) Math.sin(f * Math.PI);
             float perturb = (float) Math.sin(40. * chaos);

@@ -129,19 +129,19 @@ public class GLineSegment2D implements Serializable
         c=line.getLineCoordinate(pclosest);
 
         if (c<a && c<b)
-	    {
+            {
             if (a<b)
                 return p1;
             else
                 return p2;
-	    }
+            }
         if (c>a && c>b)
-	    {
+            {
             if (a>b)
                 return p1;
             else
                 return p2;
-	    }
+            }
 
         return pclosest;
     }
@@ -192,7 +192,7 @@ public class GLineSegment2D implements Serializable
         l1 = Math.max(acmin, l1);
         l1 = Math.min(acmax, l1);
 
-        //	System.out.print(Math.abs(l1-l0)+" ");
+        //        System.out.print(Math.abs(l1-l0)+" ");
         return Math.abs(l1-l0);
     }
 

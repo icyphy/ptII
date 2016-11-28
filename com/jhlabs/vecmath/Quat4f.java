@@ -64,22 +64,22 @@ public class Quat4f extends Tuple4f {
     }
 
     /*
-    	public void EulerToQuaternion(float roll, float pitch, float yaw)
-    	{
-    		float cr, cp, cy, sr, sp, sy, cpcy, spsy;
-    		cr = cos(roll/2);
-    		cp = cos(pitch/2);
-    		cy = cos(yaw/2);
-    		sr = sin(roll/2);
-    		sp = sin(pitch/2);
-    		sy = sin(yaw/2);
-    		cpcy = cp * cy;
-    		spsy = sp * sy;
-    		w = cr * cpcy + sr * spsy;
-    		x = sr * cpcy - cr * spsy;
-    		y = cr * sp * cy + sr * cp * sy;
-    		z = cr * cp * sy - sr * sp * cy;
-    	}
+            public void EulerToQuaternion(float roll, float pitch, float yaw)
+            {
+                    float cr, cp, cy, sr, sp, sy, cpcy, spsy;
+                    cr = cos(roll/2);
+                    cp = cos(pitch/2);
+                    cy = cos(yaw/2);
+                    sr = sin(roll/2);
+                    sp = sin(pitch/2);
+                    sy = sin(yaw/2);
+                    cpcy = cp * cy;
+                    spsy = sp * sy;
+                    w = cr * cpcy + sr * spsy;
+                    x = sr * cpcy - cr * spsy;
+                    y = cr * sp * cy + sr * cp * sy;
+                    z = cr * cp * sy - sr * sp * cy;
+            }
     */
 
     public void normalize() {
@@ -91,27 +91,27 @@ public class Quat4f extends Tuple4f {
     }
 
     /*
-    	public void mul( Quat4f q ) {
-    		Quat4f q3 = new Quat4f();
-    		Vector3f vectorq1 = new Vector3f( x, y, z );
-    		Vector3f vectorq2 = new Vector3f( q.x, q.y, q.z );
+            public void mul( Quat4f q ) {
+                    Quat4f q3 = new Quat4f();
+                    Vector3f vectorq1 = new Vector3f( x, y, z );
+                    Vector3f vectorq2 = new Vector3f( q.x, q.y, q.z );
     
-    		Vector3f tempvec1 = new Vector3f( vectorq1 );
-    		Vector3f tempvec2;
-    		Vector3f tempvec3;
-    		q3.w = (w*q.w) - tempvec1.dot(vectorq2);
-    		tempvec1.cross(vectorq2);
-    		tempvec2.x = w * q.x;
-    		tempvec2.y = w * q.y;
-    		tempvec2.z = w * q.z;
-    		tempvec3.x = q.w * x;
-    		tempvec3.y = q.w * y;
-    		tempvec3.z = q.w * z;
-    		q3.x = tempvec1.x + tempvec2.x + tempvec3.x;
-    		q3.y = tempvec1.y + tempvec2.y + tempvec3.y;
-    		q3.z = tempvec1.z + tempvec2.z + tempvec3.z;
-    		set(q3);
-    	}
+                    Vector3f tempvec1 = new Vector3f( vectorq1 );
+                    Vector3f tempvec2;
+                    Vector3f tempvec3;
+                    q3.w = (w*q.w) - tempvec1.dot(vectorq2);
+                    tempvec1.cross(vectorq2);
+                    tempvec2.x = w * q.x;
+                    tempvec2.y = w * q.y;
+                    tempvec2.z = w * q.z;
+                    tempvec3.x = q.w * x;
+                    tempvec3.y = q.w * y;
+                    tempvec3.z = q.w * z;
+                    q3.x = tempvec1.x + tempvec2.x + tempvec3.x;
+                    q3.y = tempvec1.y + tempvec2.y + tempvec3.y;
+                    q3.z = tempvec1.z + tempvec2.z + tempvec3.z;
+                    set(q3);
+            }
     */
 
     public void set(Matrix4f m) {

@@ -446,7 +446,7 @@ public class FloatImage {
     }
 
     public static float[] imageToFloats(BufferedImage im) {
-        //	return imageToFloats(im, 8); // green channel.
+        //        return imageToFloats(im, 8); // green channel.
 
         int width = im.getWidth(), height = im.getHeight();
         float f[] = new float[width * height];

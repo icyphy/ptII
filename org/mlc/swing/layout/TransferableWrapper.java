@@ -64,7 +64,7 @@ public class TransferableWrapper implements java.awt.datatransfer.Transferable {
 
     /** Return true if the data flavor is supported.
      *  @param flavor the flavor to be checked.
-     *  @return true if the data flavor is supported.	
+     *  @return true if the data flavor is supported.        
      */
     @Override
     public boolean isDataFlavorSupported(DataFlavor flavor) {

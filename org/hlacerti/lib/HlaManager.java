@@ -874,7 +874,7 @@ TimeRegulator {
             _debug("starting updateHlaAttribute() - current status t_ptII = " + _printTimes(currentTime) + "; t_hla = "
                                 + _federateAmbassador.logicalTimeHLA +" - A HLA value from ptolemy has been"
                                 + " encoded as CERTI MessageBuffer");
-        }	
+        }        
         SuppliedAttributes suppAttributes = null;
         try {
             suppAttributes = RtiFactoryFactory.getRtiFactory()
@@ -1446,7 +1446,7 @@ TimeRegulator {
                     }if (!verify){
                         throw new Exception();
                     }System.out.println(name);
-                    return file;	
+                    return file;        
                 }catch(Exception e){
                     System.out.println("Couldn't create the file.");
                     return null;
@@ -1482,7 +1482,7 @@ TimeRegulator {
                     }if (!verify){
                         throw new Exception();
                     }System.out.println(name);
-                    return file;	
+                    return file;        
                 }catch(Exception e){
                     System.out.println("Couldn't create the file.");
                     return null;
@@ -2052,7 +2052,7 @@ TimeRegulator {
      * Time-stepped federates advance with a fixed step in time. In order to complete the
      * advancement, they have to ask the federation's permission to do so using a TAR call.
      */
-    private int _numberOfTARs;	
+    private int _numberOfTARs;        
 
     private double _runtime;
 
@@ -2184,7 +2184,7 @@ TimeRegulator {
                 byte[] rfspTag = EncodingHelpers
                         .encodeString(_synchronizationPointName);
                 _rtia.registerFederationSynchronizationPoint(
-                        _synchronizationPointName, rfspTag);	        
+                        _synchronizationPointName, rfspTag);                
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
             }

@@ -239,10 +239,10 @@ public class LightFilter extends WholeImageFilter {
                 int[] tmpPixels = new int[bumpWidth * bumpHeight];
                 int[] softPixels = new int[bumpWidth * bumpHeight];
                 /*
-                				for (int i = 0; i < 3; i++ ) {
-                					BoxBlurFilter.blur( bumpPixels, tmpPixels, bumpWidth, bumpHeight, (int)bumpSoftness );
-                					BoxBlurFilter.blur( tmpPixels, softPixels, bumpHeight, bumpWidth, (int)bumpSoftness );
-                				}
+                                                for (int i = 0; i < 3; i++ ) {
+                                                        BoxBlurFilter.blur( bumpPixels, tmpPixels, bumpWidth, bumpHeight, (int)bumpSoftness );
+                                                        BoxBlurFilter.blur( tmpPixels, softPixels, bumpHeight, bumpWidth, (int)bumpSoftness );
+                                                }
                 */
                 Kernel kernel = GaussianFilter.makeKernel(bumpSoftness);
                 GaussianFilter.convolveAndTranspose(kernel, bumpPixels, tmpPixels, bumpWidth, bumpHeight, true, false,
@@ -261,7 +261,7 @@ public class LightFilter extends WholeImageFilter {
                             float v = original.evaluate(x, y);
                             switch (bumpShape) {
                             case 1:
-                                //				v = v > 0.5f ? 0.5f : v;
+                                //                                v = v > 0.5f ? 0.5f : v;
                                 v *= ImageMath.smoothStep(0.45f, 0.55f, v);
                                 break;
                             case 2:
@@ -470,7 +470,7 @@ public class LightFilter extends WholeImageFilter {
                 if (rDotV < 0.0)
                     rv = 0.0f;
                 else
-                    //					rv = (float)Math.pow(rDotV, material.highlight);
+                    //                                        rv = (float)Math.pow(rDotV, material.highlight);
                     rv = rDotV / (material.highlight - material.highlight * rDotV + rDotV); // Fast approximation to pow
 
                 // Spotlight

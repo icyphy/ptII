@@ -2321,28 +2321,28 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                         manager.setWaitingThread(Thread.currentThread());
                                         _eventQueueLock.wait(timeToWait);
                                     } catch (InterruptedException ex) {
-                                    	// Ignore and circulate around the loop.
-                                    	// The interrupt could be due to a change request,
-                                    	// which we will want to process.
-                                    	// This used to do the following with flawed reasoning:
-                                    	/*
+                                            // Ignore and circulate around the loop.
+                                            // The interrupt could be due to a change request,
+                                            // which we will want to process.
+                                            // This used to do the following with flawed reasoning:
+                                            /*
                                         throw new IllegalActionException(
                                                 this,
                                                 ex,
                                                 "Thread interrupted when waiting for"
                                                         + " real time to match model time.");
                                         */
-                                    	// The reasoning was:
+                                            // The reasoning was:
                                         // Continue executing?
                                         // No, because this could be a problem if any
                                         // actor assumes that model time always exceeds
                                         // real time when synchronizeToRealTime is set.
-                                    	//
-                                    	// But this is flawed because we are in a while loop
-                                    	// that will check again for matching to real time.
-                                    	// EAL 10/27/15.
+                                            //
+                                            // But this is flawed because we are in a while loop
+                                            // that will check again for matching to real time.
+                                            // EAL 10/27/15.
                                     } finally {
-                                    	setDeferringChangeRequests(true);
+                                            setDeferringChangeRequests(true);
                                         manager.setWaitingThread(null);
                                     }
                                 }

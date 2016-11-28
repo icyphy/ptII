@@ -73,7 +73,7 @@ public class SerialPortReader extends Thread {
     ////                     public methods                        ////
 
 
-    /**	Initialize the serial port and connect a BufferedInputStream to the serialPort.
+    /**        Initialize the serial port and connect a BufferedInputStream to the serialPort.
      *  @return 1 if the initialization was successfull, -1 otherwise.
      *  @param portNumber The number of theport   
      */
@@ -82,7 +82,7 @@ public class SerialPortReader extends Thread {
         try {
             _communicationID = CommPortIdentifier.getPortIdentifier(portName);
         } catch (NoSuchPortException exception) {
-            // If port not found, return -1 and print exception			
+            // If port not found, return -1 and print exception                        
             exception.printStackTrace();
             return -1;
         }
@@ -121,9 +121,9 @@ public class SerialPortReader extends Thread {
     }
 
     /** Run method for this class. Starts a thread that constantly
-     *	reads in from serial port stream A BufferedInputStream
-     *	connected to the serial port is read into a
-     *	LinkedBlockingQueue.
+     *        reads in from serial port stream A BufferedInputStream
+     *        connected to the serial port is read into a
+     *        LinkedBlockingQueue.
      */
     @Override
     public void run() {
@@ -148,8 +148,8 @@ public class SerialPortReader extends Thread {
     }
 
     /** Takes the next single value from the buffer of Characters read
-     *	from the input stream.
-     *	@return the character read from serial port as a String
+     *        from the input stream.
+     *        @return the character read from serial port as a String
     */
     public String readFromPort() {
         String returnVal = "";
@@ -162,8 +162,8 @@ public class SerialPortReader extends Thread {
         return returnVal;
     }
 
-    /**	Closes the serial port connection.
-     *	Called by class that owns this object to stop serial port connection
+    /**        Closes the serial port connection.
+     *        Called by class that owns this object to stop serial port connection
      */
     public void closePort() {
         stopThread();
@@ -182,8 +182,8 @@ public class SerialPortReader extends Thread {
     ////                     private methods                       ////
 
     /** Sets the boolean controlling the main reader thread's while
-     *	loop to false Called when we wish to close the program's
-     *	connection to the serial port.
+     *        loop to false Called when we wish to close the program's
+     *        connection to the serial port.
     */
     private void stopThread() {
         _threadIsActive = false;

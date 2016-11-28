@@ -677,7 +677,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @see #setWaitingThread(Thread)
      */
     public Thread getWaitingThread() {
-    	return _waitingThread;
+            return _waitingThread;
     }
 
     /** Initialize the model.  This calls the preinitialize() method of
@@ -1288,7 +1288,7 @@ public class Manager extends NamedObj implements Runnable {
      *  @see #getWaitingThread()
      */
     public void setWaitingThread(Thread thread) {
-    	_waitingThread = thread;
+            _waitingThread = thread;
     }
 
     /** Return a short description of the throwable.

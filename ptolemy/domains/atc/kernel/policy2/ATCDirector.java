@@ -112,7 +112,7 @@ public class ATCDirector extends AbstractATCDirector {
         int airportId=((IntToken)airport.airportId.getToken()).intValue();
 //        if (airportId==-1)
 //            throw new IllegalActionException("invalid id for airplane");
-//		if (_airplanesId.contains(airplaneId))
+//                if (_airplanesId.contains(airplaneId))
 //            throw new IllegalActionException("duplication in  airplanes id");
 //        _airplanesId.add(airplaneId);
         if (airportId==-1) {
@@ -149,7 +149,7 @@ public class ATCDirector extends AbstractATCDirector {
         _airportsId.add(airportId);
         
     }
-	
+        
 
     /** Update _stormyTracks array because of a change in condition of a track.
      *  @param track The track
@@ -308,7 +308,7 @@ public class ATCDirector extends AbstractATCDirector {
         Token currentTrack=flightMap.getElement(0);// this is the rejecting track
         Token destination=flightMap.getElement(flightMap.length()-1);
         int route=-1;
-	boolean baseOnDestination=false;
+        boolean baseOnDestination=false;
         boolean neighborChoosed=false;
         ArrayToken neighborsOfPriorTrack=_neighbors.get(priorTrack);
         
@@ -319,7 +319,7 @@ public class ATCDirector extends AbstractATCDirector {
             {
                 route=i;
                 neighborChoosed=true;
-		baseOnDestination=true;
+                baseOnDestination=true;
                 break;
             }
             if ( tempId!=-1 && !_airportsId.contains(tempId) &&  !temp.equals(currentTrack) && !_inTransit.get(tempId) &&
@@ -364,7 +364,7 @@ public class ATCDirector extends AbstractATCDirector {
     ////                     private fields                        ////
 
     // private variables which show situation of tracks 
-	 
+         
     private Random _random=new Random();
     
     /**  Which track is stormy:first element is
@@ -387,7 +387,7 @@ public class ATCDirector extends AbstractATCDirector {
     
     /** The id of the airplane. */
     private ArrayList<Integer> _airplanesId = new ArrayList<>();
-	
+        
     /** A color for each airplane. */
     private Map<Integer,ArrayToken> _airplanesColor = new HashMap<Integer,ArrayToken>();
 }

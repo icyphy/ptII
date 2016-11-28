@@ -64,9 +64,9 @@ public class HelperBase {
      *  @param helping The object that this is helping.
      */
     public HelperBase(Object helping) {
-    	Object actorOrWrapper = helping;
-    	if (helping instanceof ScriptObjectMirror) {
-    		// Helping a JavaScript object.
+            Object actorOrWrapper = helping;
+            if (helping instanceof ScriptObjectMirror) {
+                    // Helping a JavaScript object.
             _currentObj = (ScriptObjectMirror) helping;
             
             // Find the actor associated with the object.
@@ -75,7 +75,7 @@ public class HelperBase {
                 actorOrWrapper = ScriptObjectMirror.unwrap(actorOrWrapper,
                         ScriptContext.ENGINE_SCOPE);
             }
-    	}
+            }
         if (actorOrWrapper instanceof RestrictedJavaScriptInterface) {
             _actor = ((RestrictedJavaScriptInterface) actorOrWrapper)
                     ._getActor();
@@ -236,9 +236,9 @@ public class HelperBase {
                 NativeArray nativeArray = (NativeArray)object;
                 values = nativeArray.values();
             } else {
-		// FindBugs: Avoid a possibly NPE when dereferencing values.
-		throw new InternalErrorException("The object argument must be an instance of either ScriptObjectMirror or NativeArray.  It was a " + object.getClass().getName());
-	    }
+                // FindBugs: Avoid a possibly NPE when dereferencing values.
+                throw new InternalErrorException("The object argument must be an instance of either ScriptObjectMirror or NativeArray.  It was a " + object.getClass().getName());
+            }
 
             byte[] result = new byte[values.size()];
             int i = 0;

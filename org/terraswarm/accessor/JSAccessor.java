@@ -383,20 +383,20 @@ public class JSAccessor extends JavaScript {
                             + _commands + "\n"
                             + "The output was: " + exec.buffer);
                 } else {
-		    String message = "Could not update the accessors repository. Using local version.";
-		    if (exec.buffer.toString().indexOf("Unable to conect to a repository") != -1
-			|| exec.buffer.toString().indexOf("No more credentials or we tried too many times.") != -1) {
-			String osName = StringUtilities.getProperty("os.name");
-			if (osName.startsWith("Mac OS X")) {
-			    message += "  Under Mac OS X, this can occur if the svn " +
-				"command does not have access to your keychain. " +
-				"One possible solution is reboot and run the command " +
-				"by hand.  A dialog will pop up asking if the svn " +
-				"command should have access to the keychain. " +
-				"Select 'Always' and rerun the demo.";
-			}
-		    } 
-		    MessageHandler.status(message);
+                    String message = "Could not update the accessors repository. Using local version.";
+                    if (exec.buffer.toString().indexOf("Unable to conect to a repository") != -1
+                        || exec.buffer.toString().indexOf("No more credentials or we tried too many times.") != -1) {
+                        String osName = StringUtilities.getProperty("os.name");
+                        if (osName.startsWith("Mac OS X")) {
+                            message += "  Under Mac OS X, this can occur if the svn " +
+                                "command does not have access to your keychain. " +
+                                "One possible solution is reboot and run the command " +
+                                "by hand.  A dialog will pop up asking if the svn " +
+                                "command should have access to the keychain. " +
+                                "Select 'Always' and rerun the demo.";
+                        }
+                    } 
+                    MessageHandler.status(message);
                 }
             }
         } catch (Throwable throwable) {
@@ -937,21 +937,21 @@ public class JSAccessor extends JavaScript {
         if (urlSpec.matches("https*://(www\\.)*terraswarm.org/accessors/.*")) {
             String target = "terraswarm.org/accessors/";
             String urlSpecTailPath = urlSpec.substring(urlSpec.indexOf(target) + target.length());
-	    try {
-		File urlSpecLocalFile = new File(_accessorDirectory(), "accessors/web/" + urlSpecTailPath);
-		if (urlSpecLocalFile.exists()) {
-		    if (urlSpecLocalFile.length() == 0) {
-			System.out.println("JSAccessor: urlSpec is " + urlSpec
-					   + ", but " + urlSpecLocalFile + " has length 0, so the former is being read");
-		    } else {
-			System.out.println("JSAccessor: urlSpec is " + urlSpec
-					   + ", but " + urlSpecLocalFile + " exists, so the latter is being read.");
-			accessorOrPtDocURL = urlSpecLocalFile.toURI().toURL();
-		    }
-		} 
+            try {
+                File urlSpecLocalFile = new File(_accessorDirectory(), "accessors/web/" + urlSpecTailPath);
+                if (urlSpecLocalFile.exists()) {
+                    if (urlSpecLocalFile.length() == 0) {
+                        System.out.println("JSAccessor: urlSpec is " + urlSpec
+                                           + ", but " + urlSpecLocalFile + " has length 0, so the former is being read");
+                    } else {
+                        System.out.println("JSAccessor: urlSpec is " + urlSpec
+                                           + ", but " + urlSpecLocalFile + " exists, so the latter is being read.");
+                        accessorOrPtDocURL = urlSpecLocalFile.toURI().toURL();
+                    }
+                } 
             } catch (IOException ex) {
-		System.out.println("JSAccessor: Could not look up the local accessor directory: " + ex);
-	    }
+                System.out.println("JSAccessor: Could not look up the local accessor directory: " + ex);
+            }
         }
         return accessorOrPtDocURL;
     }

@@ -251,7 +251,7 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmi2Boolea
         // Set connection values
         for (int i = 0; i < NUMBER_OF_EDGES; i++) {
             setValue(&connections[i]);
-			setDerivatives(&connections[i]);
+                        setDerivatives(&connections[i]);
         }
         outputRow(fmus, NUMBER_OF_FMUS, NAMES_OF_FMUS, time, file, separator, FALSE);
         // Compute the maximum step size
@@ -282,14 +282,14 @@ static int simulate(FMU *fmus, portConnection* connections, double h, fmi2Boolea
                     return ERROR;
                 }
                 if (currentStatus >= fmi2Discard) {
-                	fmi2Real lastSuccessfulTime;
-                	currentStatus = fmus[i].getRealStatus(fmus[i].component, fmi2LastSuccessfulTime, &lastSuccessfulTime);
-                	if (currentStatus > fmi2Warning) {
-            			terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
-            			return ERROR;
-                	}
-                	fmi2Real maxStepSize = lastSuccessfulTime - time;
-                	stepSize = min(stepSize, maxStepSize);
+                        fmi2Real lastSuccessfulTime;
+                        currentStatus = fmus[i].getRealStatus(fmus[i].component, fmi2LastSuccessfulTime, &lastSuccessfulTime);
+                        if (currentStatus > fmi2Warning) {
+                                    terminateSimulation(fmus, ERROR, file, stepSize, nSteps);
+                                    return ERROR;
+                        }
+                        fmi2Real maxStepSize = lastSuccessfulTime - time;
+                        stepSize = min(stepSize, maxStepSize);
                 }
             }
         }

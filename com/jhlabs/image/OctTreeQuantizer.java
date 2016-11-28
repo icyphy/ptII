@@ -147,7 +147,7 @@ public class OctTreeQuantizer implements Quantizer {
 
         OctTreeNode node = root;
 
-        //		System.out.println("insertColor="+Integer.toHexString(rgb));
+        //                System.out.println("insertColor="+Integer.toHexString(rgb));
         for (int level = 0; level <= MAX_LEVEL; level++) {
             OctTreeNode child;
             int bit = 0x80 >> level;

@@ -50,7 +50,7 @@ void decodeHwNsec(
                 }
 
         }
-	}
+        }
 
 }
 
@@ -72,7 +72,7 @@ void* read_loop(void* data)
                  fprintf(stderr, "Error reading status, %d\n", num);
                  exit(1);
              }
-	 //    } while ((status & TIMEBOMB_0_FIRE) == 0); // Got it!
+         //    } while ((status & TIMEBOMB_0_FIRE) == 0); // Got it!
       } while ((status & TIMESTAMP_0_RCV) == 0); // Got it!
 
     // Read all available timestamps
@@ -91,15 +91,15 @@ void* read_loop(void* data)
 
          // Stop when empty
          if (fpgaGetTimestamp.seqNum == 0 &&
-	     fpgaGetTimestamp.timeVal.secs == 0 &&
+             fpgaGetTimestamp.timeVal.secs == 0 &&
              fpgaGetTimestamp.timeVal.hwNsec == 0) break; // done
 
          // Decode
          decodeHwNsec( &fpgaGetTimestamp.timeVal, &secs, &nsecs);
-	 //	 printf("\n  Trig IN on %s: %.9d.%9.9d\n", (char *)data, secs, nsecs);
-	 //         printf("Timestamp: %4d %.9d.%9.9d\n", fpgaGetTimestamp.seqNum, secs, nsecs);
+         //         printf("\n  Trig IN on %s: %.9d.%9.9d\n", (char *)data, secs, nsecs);
+         //         printf("Timestamp: %4d %.9d.%9.9d\n", fpgaGetTimestamp.seqNum, secs, nsecs);
 
-	printf("\n UP time: %.9d.%9.9d\n", secs, nsecs);
+        printf("\n UP time: %.9d.%9.9d\n", secs, nsecs);
 
          lastSeqNum = fpgaGetTimestamp.seqNum;
 
@@ -171,7 +171,7 @@ int main(int argc, char* argv[])
                  fprintf(stderr, "Error reading status, %d\n", num);
                  exit(1);
              }
-	 //    } while ((status & TIMEBOMB_0_FIRE) == 0); // Got it!
+         //    } while ((status & TIMEBOMB_0_FIRE) == 0); // Got it!
       } while ((status & TIMESTAMP_0_RCV) == 0); // Got it!
 
       // Read the current time from the IEEE1588 clock
@@ -181,7 +181,7 @@ int main(int argc, char* argv[])
            fprintf(stderr, "ioctl to get time failed: %d, %d\n", rtn, errno);
            perror("error from ioctl");
        //         exit(1);
-	   continue;
+           continue;
         }
 
       decodeHwNsec( &fpgaGetTime.timeVal, &secs1, &nsecs1);
@@ -204,15 +204,15 @@ int main(int argc, char* argv[])
 
          // Stop when empty
          if (fpgaGetTimestamp.seqNum == 0 &&
-	     fpgaGetTimestamp.timeVal.secs == 0 &&
+             fpgaGetTimestamp.timeVal.secs == 0 &&
              fpgaGetTimestamp.timeVal.hwNsec == 0) break; // done
 
          // Decode
          decodeHwNsec( &fpgaGetTimestamp.timeVal, &secs, &nsecs);
-	 //	 printf("\n  Trig IN on %s: %.9d.%9.9d\n", (char *)data, secs, nsecs);
-	 //         printf("Timestamp: %4d %.9d.%9.9d\n", fpgaGetTimestamp.seqNum, secs, nsecs);
+         //         printf("\n  Trig IN on %s: %.9d.%9.9d\n", (char *)data, secs, nsecs);
+         //         printf("Timestamp: %4d %.9d.%9.9d\n", fpgaGetTimestamp.seqNum, secs, nsecs);
 
-	printf(" TS time: %.9d.%9.9d\n", secs, nsecs);
+        printf(" TS time: %.9d.%9.9d\n", secs, nsecs);
 
          lastSeqNum = fpgaGetTimestamp.seqNum;
 

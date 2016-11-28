@@ -107,7 +107,7 @@ public class ImageToString extends Converter {
         final RenderedImage im = getRenderedImage(
                 ((AWTImageToken) input.get(0)).getValue());
         try {
-        	OutputStream enc = Base64.getUrlEncoder().wrap(os);
+                OutputStream enc = Base64.getUrlEncoder().wrap(os);
             ImageIO.write(im, "png", enc); // FIXME: Use parameter instead.
             enc.close(); // Important, flushes the output buffer.
             StringToken tk = new StringToken(os.toString(StandardCharsets.US_ASCII.name()));

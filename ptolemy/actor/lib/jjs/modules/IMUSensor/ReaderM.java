@@ -28,14 +28,14 @@ package ptolemy.actor.lib.jjs.modules.IMUSensor;
 ///// ReaderM
 
 /**
- *	Start a SerialPortreader and interpret the incoming bytes from
- *	the serial port.
+ *        Start a SerialPortreader and interpret the incoming bytes from
+ *        the serial port.
  *
- *	@author Hunter Massey and Rajesh Kuni
- *	@version $Id$
- *	@see SerialPortController
- *	@Pt.ProposedRating Yellow Hunter
- *	@Pt.AcceptedRating
+ *        @author Hunter Massey and Rajesh Kuni
+ *        @version $Id$
+ *        @see SerialPortController
+ *        @Pt.ProposedRating Yellow Hunter
+ *        @Pt.AcceptedRating
 */
 
 public class ReaderM extends Thread {
@@ -128,7 +128,7 @@ public class ReaderM extends Thread {
     }
 
     /** Grab the individual raw sensor (accelerometer and gyroscope) values and
-     *	store them into the circular sample buffer as a 6 integer array.
+     *        store them into the circular sample buffer as a 6 integer array.
      *  @param raw The integer array containing all the sensor values (ADC values)
      */
     public void preProcess(int[] raw) {

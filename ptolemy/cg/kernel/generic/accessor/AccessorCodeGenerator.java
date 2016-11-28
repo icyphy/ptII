@@ -136,7 +136,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
     protected int _generateCode(StringBuffer code) throws KernelException {
         URI uri = URIAttribute.getModelURI(toplevel());
         String modelURI = "";
-	String PTII = StringUtilities.getProperty("ptolemy.ptII.dir");
+        String PTII = StringUtilities.getProperty("ptolemy.ptII.dir");
 
         if (uri != null) {
             modelURI = uri.toString();
@@ -148,12 +148,12 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
             }
         }
                                        
-	try {
-	    code.append("exports.setup = function() {" + _eol
+        try {
+            code.append("exports.setup = function() {" + _eol
                 + INDENT1 + comment(" This composite accessor was created by Cape Code.")
-	        + INDENT1 + comment(" To run the code, run: ")
-		    + INDENT1 + comment(" (cd " + codeDirectory.asFile().getCanonicalPath().replace(PTII, "$PTII") + "; "
-				    + _runCommand() + ")")
+                + INDENT1 + comment(" To run the code, run: ")
+                    + INDENT1 + comment(" (cd " + codeDirectory.asFile().getCanonicalPath().replace(PTII, "$PTII") + "; "
+                                    + _runCommand() + ")")
                 + INDENT1 + comment(" To regenerate this composite accessor, run:")
                 + INDENT1 + comment(" java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor " + modelURI)
                 + INDENT1 + comment(" to edit the model, run:")
@@ -161,9 +161,9 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                 + ((AccessorCodeGeneratorAdapter) getAdapter(toplevel()))
                 .generateAccessor()
                 + "};" + _eol);
-	} catch (IOException ex) {
-	    throw new IllegalActionException(_model, "Failed to get the canonical path of " + codeDirectory);
-	}
+        } catch (IOException ex) {
+            throw new IllegalActionException(_model, "Failed to get the canonical path of " + codeDirectory);
+        }
         super._generateCode(code);
         return _executeCommands();
     }

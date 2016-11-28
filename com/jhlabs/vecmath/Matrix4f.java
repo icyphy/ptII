@@ -339,10 +339,10 @@ public class Matrix4f {
         m33 = 1.0f;
     }
     /*
-    	void rotate(float angle, float x, float y, float z) {
-    		Matrix4f m = new Matrix4f();//FIXME
-    		m.MatrixFromAxisAngle(Vector3f(x, y, z), angle);
-    		Multiply(m);
-    	}
+            void rotate(float angle, float x, float y, float z) {
+                    Matrix4f m = new Matrix4f();//FIXME
+                    m.MatrixFromAxisAngle(Vector3f(x, y, z), angle);
+                    Multiply(m);
+            }
     */
 }

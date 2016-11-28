@@ -39,34 +39,34 @@ import ptolemy.actor.util.TimedEvent;
 public class OriginatedEvent extends TimedEvent{
 
 
-	/**
-	 * Constructs an OriginatedEvent object.
-	 *
-	 * @param time      a Time object
-	 * @param obj       an Object ...
-	 * @param federate  an int specifying ...
-	 */
-	public OriginatedEvent(Time time, Object obj,int federate) {
-		super(time, obj);
-		objectID = federate;
-	}
+        /**
+         * Constructs an OriginatedEvent object.
+         *
+         * @param time      a Time object
+         * @param obj       an Object ...
+         * @param federate  an int specifying ...
+         */
+        public OriginatedEvent(Time time, Object obj,int federate) {
+                super(time, obj);
+                objectID = federate;
+        }
 
-	/** The object id which is responsible for the UAV. */
-	public int objectID;
+        /** The object id which is responsible for the UAV. */
+        public int objectID;
 
-	@Override
-	public boolean equals(Object originatedEvent) {
-		if (!super.equals(originatedEvent)) {
-			return false;
-		} else {
-			//at this point this and originatedEvent are the same class
-			// and originatedEvent is not null (checks done in super.equals)
-			OriginatedEvent event = (OriginatedEvent) originatedEvent;
-			if (objectID == event.objectID) {
-				return true;
-			} else {
-				return false;
-			}
-		}
-	}
+        @Override
+        public boolean equals(Object originatedEvent) {
+                if (!super.equals(originatedEvent)) {
+                        return false;
+                } else {
+                        //at this point this and originatedEvent are the same class
+                        // and originatedEvent is not null (checks done in super.equals)
+                        OriginatedEvent event = (OriginatedEvent) originatedEvent;
+                        if (objectID == event.objectID) {
+                                return true;
+                        } else {
+                                return false;
+                        }
+                }
+        }
 }

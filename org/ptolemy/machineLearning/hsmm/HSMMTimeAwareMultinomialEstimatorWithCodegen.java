@@ -217,7 +217,7 @@ HSMMTimeAwareMultinomialEstimator {
 
     /** 
      * The default value is true.
-     */	
+     */        
     public Parameter testPreset;
 
     public TypedIOPort optvals;
@@ -432,8 +432,8 @@ HSMMTimeAwareMultinomialEstimator {
                                 propertyFile.getExpression(), "-const", paramValues.toString(),
                                 "-prop", ""+(hour+1), "-exportresults", "stdout:csv");
                         pb.directory(new File(_uri));
-			BufferedReader in = null;
-			BufferedReader err = null;
+                        BufferedReader in = null;
+                        BufferedReader err = null;
                         try {
                             Process pr = pb.start();
                             in = new BufferedReader(
@@ -460,29 +460,29 @@ HSMMTimeAwareMultinomialEstimator {
                         } catch (IOException ex) {
                             throw new IllegalActionException(null, ex, "Failed to run prism");
                         } finally {
-			    if (in != null) {
-				try {
-				    in.close();
-				} catch (IOException ex) {
-				    throw new IllegalActionException(null, ex, "Failed to close input stream to prism: " + pb);
-				} finally {
-				    if (err != null) {
-					try {
-					    err.close();
-					} catch (IOException ex) {
-					    throw new IllegalActionException(null, ex, "Failed to close error stream from prism: " + pb);					    
-					}
-				    }
-				}
-			    }
-			    if (err != null) {
-				try {
-				    err.close();
-				} catch (IOException ex) {
-				    throw new IllegalActionException(null, ex, "Failed to close error stream to prism: " + pb);
-				}
-			    }
-			}
+                            if (in != null) {
+                                try {
+                                    in.close();
+                                } catch (IOException ex) {
+                                    throw new IllegalActionException(null, ex, "Failed to close input stream to prism: " + pb);
+                                } finally {
+                                    if (err != null) {
+                                        try {
+                                            err.close();
+                                        } catch (IOException ex) {
+                                            throw new IllegalActionException(null, ex, "Failed to close error stream from prism: " + pb);                                            
+                                        }
+                                    }
+                                }
+                            }
+                            if (err != null) {
+                                try {
+                                    err.close();
+                                } catch (IOException ex) {
+                                    throw new IllegalActionException(null, ex, "Failed to close error stream to prism: " + pb);
+                                }
+                            }
+                        }
                     }
                     return 0;
                 }

@@ -119,7 +119,7 @@ public class SparkleFilter extends PointFilter {
             float g = length * length / (distance + 0.0001f);
             g = (float) Math.pow(g, (100 - amount) / 50.0);
             f -= 0.5f;
-            //			f *= amount/50.0f;
+            //                        f *= amount/50.0f;
             f = 1 - f * f;
             f *= g;
         }

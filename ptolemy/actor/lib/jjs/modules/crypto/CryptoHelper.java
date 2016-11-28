@@ -172,7 +172,7 @@ public class CryptoHelper extends HelperBase {
      *  @throws IllegalActionException If there is a problem with loading the public key.
      */
     public PublicKey loadPublicKey(String filePath) throws IllegalActionException {
-	FileInputStream inStream = null;
+        FileInputStream inStream = null;
         try {
             CertificateFactory certFactory = CertificateFactory.getInstance("X.509");
             File file = FileUtilities.nameToFile(filePath, null);
@@ -182,14 +182,14 @@ public class CryptoHelper extends HelperBase {
         } catch (CertificateException | FileNotFoundException e) {
             throw new IllegalArgumentException("Problem loading public key " + filePath, e);
         } finally {
-	    if (inStream != null) {
-		try {
-		    inStream.close();
-		} catch (IOException ex) {
-		    throw new IllegalActionException(null, ex, "Failed to close " + filePath);
-		}
-	    }
-	}
+            if (inStream != null) {
+                try {
+                    inStream.close();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(null, ex, "Failed to close " + filePath);
+                }
+            }
+        }
     }
 
     /** Decrypt the input with an asymmetric cipher private key and return the decrypted result.

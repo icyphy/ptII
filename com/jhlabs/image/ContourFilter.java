@@ -117,7 +117,7 @@ public class ContourFilter extends WholeImageFilter {
 
                     if (nw != ne || nw != sw || ne != se || sw != se) {
                         v = (int)(scale * (Math.abs(nwb - neb) + Math.abs(nwb - swb) + Math.abs(neb - seb) + Math.abs(swb - seb)));
-                        //						v /= 255;
+                        //                                                v /= 255;
                         if (v > 255)
                             v = 255;
                     }
@@ -125,7 +125,7 @@ public class ContourFilter extends WholeImageFilter {
 
                 if ( v != 0 )
                     outPixels[index] = PixelUtils.combinePixels( inPixels[index], contourColor, PixelUtils.NORMAL, v );
-                //					outPixels[index] = PixelUtils.combinePixels( (contourColor & 0xff)|(v << 24), inPixels[index], PixelUtils.NORMAL );
+                //                                        outPixels[index] = PixelUtils.combinePixels( (contourColor & 0xff)|(v << 24), inPixels[index], PixelUtils.NORMAL );
                 else
                     outPixels[index] = inPixels[index];
                 index++;

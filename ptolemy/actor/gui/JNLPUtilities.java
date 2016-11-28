@@ -358,25 +358,25 @@ public class JNLPUtilities {
         File temporaryFile = File.createTempFile(prefix, suffix, directory);
         temporaryFile.deleteOnExit();
 
-	try {
-	    // The resource pointed to might be a pdf file, which
-	    // is binary, so we are careful to read it byte by
-	    // byte and not do any conversions of the bytes.
-	    FileUtilities.binaryCopyURLToFile(jarURL, temporaryFile);
-	} catch (Throwable throwable) {
-	    // Hmm, jarURL could be referring to a directory.
-	    if (temporaryFile.delete()) {
-		throw new IOException("Copying \"" + jarURL + "\" to \""
-				      + temporaryFile + "\" failed: " + throwable
-				      + "  Then deleting \"" + temporaryFile
-				      + "\" failed?");
-	    }
-	    Path directoryPath = directory.toPath();
-	    Path temporaryDirectory = Files.createTempDirectory(directoryPath, prefix);
-	    temporaryFile = temporaryDirectory.toFile();
-	    temporaryFile.deleteOnExit();
-	    FileUtilities.binaryCopyURLToFile(jarURL, temporaryFile);
-	}
+        try {
+            // The resource pointed to might be a pdf file, which
+            // is binary, so we are careful to read it byte by
+            // byte and not do any conversions of the bytes.
+            FileUtilities.binaryCopyURLToFile(jarURL, temporaryFile);
+        } catch (Throwable throwable) {
+            // Hmm, jarURL could be referring to a directory.
+            if (temporaryFile.delete()) {
+                throw new IOException("Copying \"" + jarURL + "\" to \""
+                                      + temporaryFile + "\" failed: " + throwable
+                                      + "  Then deleting \"" + temporaryFile
+                                      + "\" failed?");
+            }
+            Path directoryPath = directory.toPath();
+            Path temporaryDirectory = Files.createTempDirectory(directoryPath, prefix);
+            temporaryFile = temporaryDirectory.toFile();
+            temporaryFile.deleteOnExit();
+            FileUtilities.binaryCopyURLToFile(jarURL, temporaryFile);
+        }
         return temporaryFile.toString();
     }
 

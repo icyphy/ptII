@@ -121,7 +121,7 @@ public class VrmlLoad extends GRPickActor {
 //             loadUrl = new URL(locString);
 //         } catch (MalformedURLException ex) {
 //             throw new IllegalActionException(this, ex, "Bad URL: \"" + locString
-// 					     + "\"" );
+//                                              + "\"" );
 //         }
 
         try {
@@ -131,13 +131,13 @@ public class VrmlLoad extends GRPickActor {
             //scene = loader.load(loadUrl);
         } catch (FileNotFoundException ex) {
             throw new IllegalActionException(this, ex, "File \"" + locString
-					     + "\" not found!");
+                                             + "\" not found!");
         } catch (ParsingErrorException ex) {
             throw new IllegalActionException(this, ex, "File \"" + locString
-					     + "\" is not a valid 3D OBJ file");
+                                             + "\" is not a valid 3D OBJ file");
         } catch (IncorrectFormatException ex) {
             throw new IllegalActionException(this, ex, "File \"" + locString
-					     + "\" is not a valid 3D OBJ file");
+                                             + "\" is not a valid 3D OBJ file");
         }
 
         obj = scene;

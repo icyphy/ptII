@@ -706,7 +706,7 @@ public class FMIModelDescription {
         public TypedIOPort port;
         
         /** The quantum value of the state. */
-		public double quantum;
+                public double quantum;
 
         /** The FMI scalar variable for this state. */
         public FMIScalarVariable scalarVariable;

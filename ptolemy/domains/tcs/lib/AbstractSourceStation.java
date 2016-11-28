@@ -119,7 +119,7 @@ public class AbstractSourceStation extends TypedAtomicActor{
                         ",-39.0,45.0,-21.0,46.0,-10.0,46.0,10.0,33.0,10.0,33.0,-10.0,32.0," +
                         "-21.0,25.0,-31.0,-25.0,-31.0,-32.0,-21.0,-33.0,-10.0,-33.0,10.0," +
                         "-32.0,21.0,-25.0,31.0,25.0,31.0,32.0,21.0,33.0,10.0}");
-		
+                
     // This part of the icon shows id of the station.
        _valueIdInSource=new AttributeValueAttribute(node_icon, "_IdInSourceStation");
        _valueIdInSource.textSize.setToken("15");

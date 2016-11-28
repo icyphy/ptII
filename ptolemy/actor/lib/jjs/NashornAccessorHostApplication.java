@@ -118,7 +118,7 @@ public class NashornAccessorHostApplication {
      *  @exception ScriptException If there is a problem evaluating a file.
      */
     public NashornAccessorHostApplication(String [] args)
-	throws IllegalActionException, IOException, NoSuchMethodException, ScriptException {
+        throws IllegalActionException, IOException, NoSuchMethodException, ScriptException {
 
         // Create a Nashorn script engine.
         ScriptEngine engine = JavaScript.createEngine(null, false, false);
@@ -128,72 +128,72 @@ public class NashornAccessorHostApplication {
                     "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
         }
 
-	boolean accessors = false, echo = false, help = false;
-	int timeout = -1;
-	int i;
-	for (i = 0; i < args.length; i++) {
-	    if (args[i].equals("-accessor")
-		|| args[i].equals("--accessor")) {
-		accessors = true;
-	    } else if (args[i].equals("-echo")
-		       || args[i].equals("--echo")) {
-		echo = true;
-	    } else if (args[i].equals("-h")
-		       || args[i].equals("--h")
-		       || args[i].equals("-help")
-		       || args[i].equals("--help")) {
-		help = true;		
-	    } else if (args[i].equals("-timeout")
-		       || args[i].equals("--timeout")) {
-		if (i+1 <= args.length) {
-		    timeout = Integer.parseInt(args[++i]);
-		}
-	    } else if (!args[i].substring(0,1).equals("-")) {
-		// All done with command line args.
-		break;
-	    } else {
-		_usage();
-		StringUtilities.exit(2);
-	    }
-	}
+        boolean accessors = false, echo = false, help = false;
+        int timeout = -1;
+        int i;
+        for (i = 0; i < args.length; i++) {
+            if (args[i].equals("-accessor")
+                || args[i].equals("--accessor")) {
+                accessors = true;
+            } else if (args[i].equals("-echo")
+                       || args[i].equals("--echo")) {
+                echo = true;
+            } else if (args[i].equals("-h")
+                       || args[i].equals("--h")
+                       || args[i].equals("-help")
+                       || args[i].equals("--help")) {
+                help = true;                
+            } else if (args[i].equals("-timeout")
+                       || args[i].equals("--timeout")) {
+                if (i+1 <= args.length) {
+                    timeout = Integer.parseInt(args[++i]);
+                }
+            } else if (!args[i].substring(0,1).equals("-")) {
+                // All done with command line args.
+                break;
+            } else {
+                _usage();
+                StringUtilities.exit(2);
+            }
+        }
 
-	if (echo) {
-	    System.out.println("--------------- (cd "
-			     +  Paths.get(".").toAbsolutePath().normalize().toString()
-			     + "; java -classpath $PTII ptolemy.actor.lib.jjs.NashornAccessorHostApplication "
-			     + Arrays.toString(args)
-			     + ")");
-	    
-	}
-	if (help) {
-	    _usage();
-	    // Force a timeout so that we exit.
-	    timeout = 1;
-	}
-	if (timeout > 0) {
-	    Object instance = engine.eval("function() { print('NashornAccessorHostApplication done.'); var System = Java.type('java.lang.System'); System.exit(0);}");
-	    ((Invocable)engine).invokeFunction("setTimeout", instance, timeout);
-	}
+        if (echo) {
+            System.out.println("--------------- (cd "
+                             +  Paths.get(".").toAbsolutePath().normalize().toString()
+                             + "; java -classpath $PTII ptolemy.actor.lib.jjs.NashornAccessorHostApplication "
+                             + Arrays.toString(args)
+                             + ")");
+            
+        }
+        if (help) {
+            _usage();
+            // Force a timeout so that we exit.
+            timeout = 1;
+        }
+        if (timeout > 0) {
+            Object instance = engine.eval("function() { print('NashornAccessorHostApplication done.'); var System = Java.type('java.lang.System'); System.exit(0);}");
+            ((Invocable)engine).invokeFunction("setTimeout", instance, timeout);
+        }
 
-	if (accessors) {
-	    // Instantiate and invoke the composite accessors named by
-	    // the arguments.
-	    String [] shortArgs = new String[args.length - i];
-	    System.arraycopy(args, i, shortArgs, 0, args.length - i);
-	    /* _instance =*/ ((Invocable)engine)
-		.invokeFunction("instantiateAndInitialize",
-				(Object)shortArgs);
+        if (accessors) {
+            // Instantiate and invoke the composite accessors named by
+            // the arguments.
+            String [] shortArgs = new String[args.length - i];
+            System.arraycopy(args, i, shortArgs, 0, args.length - i);
+            /* _instance =*/ ((Invocable)engine)
+                .invokeFunction("instantiateAndInitialize",
+                                (Object)shortArgs);
 
-	} else {
-	    // Evaluate each file.
-	    for (; i < args.length; i++) {
-		try (InputStreamReader reader = new InputStreamReader(new FileInputStream(args[i]), "UTF-8")) {
-		    engine.eval(reader);
-		}
-	    }
-	}
+        } else {
+            // Evaluate each file.
+            for (; i < args.length; i++) {
+                try (InputStreamReader reader = new InputStreamReader(new FileInputStream(args[i]), "UTF-8")) {
+                    engine.eval(reader);
+                }
+            }
+        }
 
-	// FIXME: Should we close the engine in a finally block?
+        // FIXME: Should we close the engine in a finally block?
     }
 
     /** Invoke one or more JavaScript files.
@@ -201,21 +201,21 @@ public class NashornAccessorHostApplication {
      *  comment for the syntax.
      */
     public static void main(String[] args) {
-	try {
-	    new NashornAccessorHostApplication(args);
-	} catch (Throwable throwable) {
-	    System.err.println("Command Failed: " + throwable);
-	    throwable.printStackTrace();
-	    StringUtilities.exit(1);
-	}
+        try {
+            new NashornAccessorHostApplication(args);
+        } catch (Throwable throwable) {
+            System.err.println("Command Failed: " + throwable);
+            throwable.printStackTrace();
+            StringUtilities.exit(1);
+        }
     }
 
     private static void _usage() {
-	System.out.println("Usage: java -classpath $PTII ptolemy.actor.lib.jjs.NashornAccessorHostApplication \\\n"
-			   + "  [-accessor|--accessors] \\\n"
-			   + "  [-h|--h|-help|--help] \\\n"
-			   + "  [-echo|--echo] \\\n"
-			   + "  [-timeout|--timeout milliseconds] \\\n"
-			   + "  accessorOrRegularJavaScriptFile1.js [accessorOrRegularJavaScriptFile2.js ...]");
+        System.out.println("Usage: java -classpath $PTII ptolemy.actor.lib.jjs.NashornAccessorHostApplication \\\n"
+                           + "  [-accessor|--accessors] \\\n"
+                           + "  [-h|--h|-help|--help] \\\n"
+                           + "  [-echo|--echo] \\\n"
+                           + "  [-timeout|--timeout milliseconds] \\\n"
+                           + "  accessorOrRegularJavaScriptFile1.js [accessorOrRegularJavaScriptFile2.js ...]");
     }
 }

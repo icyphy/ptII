@@ -609,7 +609,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @return The JavaScript engine.
      */
     public static ScriptEngine createEngine(JavaScript actor, boolean debugging, boolean restricted)
-	throws IllegalActionException {
+        throws IllegalActionException {
         ScriptEngineManager factory = new ScriptEngineManager();
         // Create a Nashorn script engine
         ScriptEngine engine = factory.getEngineByName("nashorn");
@@ -642,20 +642,20 @@ public class JavaScript extends TypedAtomicActor {
         }
 
         // Define the actor and accessor variables.
-	// capeCodeHost.js refers to actor at eval-time, so set it now.
+        // capeCodeHost.js refers to actor at eval-time, so set it now.
         if (!restricted) {
             engine.put("accessor", actor);
             engine.put("actor", actor);
         } else {
-	    if (actor == null) {
-		throw new IllegalArgumentException("Restricted JavaScript sandboxes only supported with JavaScript container actors.");
-	    }
+            if (actor == null) {
+                throw new IllegalArgumentException("Restricted JavaScript sandboxes only supported with JavaScript container actors.");
+            }
             RestrictedJavaScriptInterface restrictedInterface = new RestrictedJavaScriptInterface(
                     actor);
             engine.put("accessor", restrictedInterface);
             engine.put("actor", restrictedInterface);
         }
-	
+        
         try {
             engine.eval(FileUtilities.openForReading(
                     "$CLASSPATH/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
@@ -709,7 +709,7 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
 
-	return engine;
+        return engine;
     }
 
 
@@ -1059,7 +1059,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @throws IOException If the file cannot be read.
      */
     public static String getFileAsString(String path) throws IOException {
-	byte[] encoded = Files.readAllBytes(Paths.get(path));
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, Charset.defaultCharset());
     }
 
@@ -1071,8 +1071,8 @@ public class JavaScript extends TypedAtomicActor {
      *  @throws IOException If the file cannot be read.
      */
     public static String getFileFromClasspathAsString(String path) throws IOException {
-	URL url = FileUtilities.nameToURL(path, null, null);
-	byte[] encoded = FileUtilities.binaryReadURLToByteArray(url);
+        URL url = FileUtilities.nameToURL(path, null, null);
+        byte[] encoded = FileUtilities.binaryReadURLToByteArray(url);
         return new String(encoded, Charset.defaultCharset());
     }
     /** If this actor has been initialized, return the JavaScript engine,
@@ -2153,7 +2153,7 @@ public class JavaScript extends TypedAtomicActor {
         // Note that an engine is recreated on each run. This ensures
         // that the JS context does not remember data from one run to the next.
 
-	_engine = JavaScript.createEngine(this, _debugging, _restricted);
+        _engine = JavaScript.createEngine(this, _debugging, _restricted);
 
         // Create proxies for the port.
         // Note that additional proxies may need to be created in initialize(),
@@ -2318,7 +2318,7 @@ public class JavaScript extends TypedAtomicActor {
      */
     private synchronized void _runThenReschedule(final Runnable function,
             final int milliseconds, final Integer id) {
-    	// Invoke the function.
+            // Invoke the function.
         function.run();
         
         // If the above function does not cancel the interval, reschedule it.
@@ -2901,12 +2901,12 @@ public class JavaScript extends TypedAtomicActor {
      */
     public class DeferredSend implements Runnable {
 
-    	/** Construct an object that defers a send operation.
-    	 * @param proxy A proxy corresponding to the port or parameter. 
-    	 * @param channelIndex The channel to send data on.
-    	 * @param data The data token to send through the port or update the parameter with.
+            /** Construct an object that defers a send operation.
+             * @param proxy A proxy corresponding to the port or parameter. 
+             * @param channelIndex The channel to send data on.
+             * @param data The data token to send through the port or update the parameter with.
          * @param value The JavaScript value to pass back when the send actually occurs.
-    	 */
+             */
         public DeferredSend(
                 PortOrParameterProxy proxy, int channelIndex, Token data, Object value) {
            _proxy = proxy;
@@ -2935,5 +2935,5 @@ public class JavaScript extends TypedAtomicActor {
         private PortOrParameterProxy _proxy;
         /** The JavaScript value to pass back. */
         private Object _value;
-	}
+        }
 }

@@ -142,7 +142,7 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
         npmInstall.setExpression("true");
 
         modules = new StringParameter(this, "modules");
-	modules.setExpression("@terraswarm/gdp,forever");
+        modules.setExpression("@terraswarm/gdp,forever");
 
         runForever = new Parameter(this, "runForever");
         runForever.setTypeEquals(BaseType.BOOLEAN);
@@ -152,10 +152,10 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
         stopForeverAccessors.setTypeEquals(BaseType.BOOLEAN);
         stopForeverAccessors.setExpression("false");
 
-	userHost = new StringParameter(this, "userHost");
-	userHost.setExpression("sbuser@10.0.0.1");
+        userHost = new StringParameter(this, "userHost");
+        userHost.setExpression("sbuser@10.0.0.1");
 
-	// Invoke the accessoInvokeSSH script
+        // Invoke the accessoInvokeSSH script
         runCommand.setExpression("@PTII@/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeoutFlagAndValue@ @modulesFlagAndValue@ @npmInstall@ @runForever@ @stopForeverAccessors@");
 
     }
@@ -224,10 +224,10 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
      *  substituting the @..@ tags.
      */
     protected String _runCommand() throws IllegalActionException {
-	Map<String, String> substituteMap = CodeGeneratorUtilities.newMap(this);
-	substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
-	substituteMap.put("@modelName@", _sanitizedModelName);
-	substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
+        Map<String, String> substituteMap = CodeGeneratorUtilities.newMap(this);
+        substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
+        substituteMap.put("@modelName@", _sanitizedModelName);
+        substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
 
         // If the value of the npmInstall parameter is true, then pass
         // "npmInstall" as an argument to accessorInvokeSSH.
@@ -256,17 +256,17 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
         // If stopTime is set in the director, then multiply it by
         // 1000 and use it as the timeout of the accessor.
         if (_model instanceof CompositeActor) {
-	    String stopTime = ((CompositeActor) _model).getDirector().stopTime.getExpression();
-	    String timeoutFlagAndValue = "";
-	    if (stopTime.length() > 0) {
-		try {
-		    timeoutFlagAndValue = "-timeout " + Double.toString(Double.parseDouble(stopTime) * 1000.0);
-		} catch (NumberFormatException ex) {
-		    throw new IllegalActionException(_model, ex, "Could not parse " + stopTime);
-		}
-	    }
-	    substituteMap.put("@timeoutFlagAndValue@", timeoutFlagAndValue);
-	}
+            String stopTime = ((CompositeActor) _model).getDirector().stopTime.getExpression();
+            String timeoutFlagAndValue = "";
+            if (stopTime.length() > 0) {
+                try {
+                    timeoutFlagAndValue = "-timeout " + Double.toString(Double.parseDouble(stopTime) * 1000.0);
+                } catch (NumberFormatException ex) {
+                    throw new IllegalActionException(_model, ex, "Could not parse " + stopTime);
+                }
+            }
+            substituteMap.put("@timeoutFlagAndValue@", timeoutFlagAndValue);
+        }
 
         // The value of the modules parameter names one or more
         // modules to be installed with npm.
@@ -281,10 +281,10 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
         }
         substituteMap.put("@modulesFlagAndValue@", modulesFlagAndValue);
 
-	String command = CodeGeneratorUtilities
-	    .substitute(((StringToken) runCommand.getToken())
-			.stringValue(), substituteMap);
-	return command;
+        String command = CodeGeneratorUtilities
+            .substitute(((StringToken) runCommand.getToken())
+                        .stringValue(), substituteMap);
+        return command;
     }
 
 }
