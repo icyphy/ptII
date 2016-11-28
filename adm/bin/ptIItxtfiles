@@ -27,7 +27,9 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
         | egrep -v '\.idl$' \
         | egrep -v '\.ilk$' \
         | egrep -v '\.isj$' \
-	| egrep -v '\.jar$' |egrep -v '\.jnilib$' \
+	| egrep -v '\.jar$' \
+	| egrep -v '\.jks$' \
+	| egrep -v '\.jnilib$' \
         | egrep -v '\.jpg$' \
         | egrep -v '\.JPG$' \
 	| egrep -v '\.kar$' \
@@ -50,6 +52,8 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.nqc$' \
         | egrep -v '\.o$' \
         | egrep -v '\.opt$' \
+	| egrep -v '\.pem$' \
+	| egrep -v '\.pfx$' \
 	| egrep -v 'PkgInfo$' \
 	| egrep -v '\.png$' \
 	| egrep -v '\.PNG$' \
