@@ -198,7 +198,7 @@ public class ImageTokenEffigy extends Effigy {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     // The image token.
     private ImageToken _token;
 

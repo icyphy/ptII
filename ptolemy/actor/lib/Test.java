@@ -294,7 +294,7 @@ public class Test extends NonStrictTest {
                                     + " possible: " + possibleIndex
                                     + " token: " + token
                                     + "ref[" + i + "]: " + reference[i]);
-                        }                            
+                        }
 
                         if (_isClose(token, reference[i], _tolerance)) {
                             if (!sawMatch) {
@@ -360,7 +360,7 @@ public class Test extends NonStrictTest {
      */
     private Token[] _getReference(int index, int width)
             throws IllegalActionException {
-        Token[] reference;        
+        Token[] reference;
         Token referenceToken = ((ArrayToken) correctValues.getToken())
             .getElement(index);
 
@@ -390,11 +390,11 @@ public class Test extends NonStrictTest {
         }
         return reference;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
-    // /** Set the input port greater than or equal to the type of elements 
+
+    // /** Set the input port greater than or equal to the type of elements
     //  *  in the correctValues array in case backward type inference is
     //  *  enabled and the input port has no type declared.
     //  *
@@ -427,7 +427,7 @@ public class Test extends NonStrictTest {
     //                             ((ArrayToken) correctValuesToken.getElement(0)).getElementType());
     //                 }
     //             }
-    //             result.add( new Inequality(typeConstant, 
+    //             result.add( new Inequality(typeConstant,
     //                             input.getTypeTerm()));
     //         } catch (IllegalActionException ex) {
     //             throw new InternalErrorException(this, ex, "Failed to set the type constraint.");
@@ -435,5 +435,5 @@ public class Test extends NonStrictTest {
     //     }
     //     return result;
     // }
-    
+
 }

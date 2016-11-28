@@ -55,7 +55,7 @@ import ptolemy.kernel.util.Workspace;
  *
  * <p>The file is specified by the <i>fileName</i> attribute
  * using any form acceptable to {@link FileParameter}.</p>
- * 
+ *
  * @see FileParameter
  * @see ExpressionWriter
  * @author Maryam Bagheri
@@ -67,7 +67,7 @@ import ptolemy.kernel.util.Workspace;
 public class TrackWriter extends TypedAtomicActor {
     // FIXME: TrackWriter seems to be a copy of CSVWriter. Can we
     // avoid code duplication here?
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -79,7 +79,7 @@ public class TrackWriter extends TypedAtomicActor {
     public TrackWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         fileName=new FileParameter(this, "fileName");
         fileName.setExpression("System.out");
     }
@@ -90,7 +90,7 @@ public class TrackWriter extends TypedAtomicActor {
      *  @see FilePortParameter
      */
     public FileParameter fileName;
-    
+
     /** If the specified attribute is <i>fileName</i> and there is an
      *  open file being written, then close that file.  The new file will
      *  be opened or created when it is next written to.
@@ -139,7 +139,7 @@ public class TrackWriter extends TypedAtomicActor {
         super.preinitialize();
         _flushValue = true;
     }
-    
+
     /** Initialize this actor.  Derived classes override this method
      *  to perform actions that should occur once at the beginning of
      *  an execution, but after type resolution.  Derived classes can
@@ -160,7 +160,7 @@ public class TrackWriter extends TypedAtomicActor {
         fileName.close();
         _writer = null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -169,7 +169,7 @@ public class TrackWriter extends TypedAtomicActor {
      *  @param token The token to write.
      *  @exception IllegalActionException Not thrown in this base class.
      */
-    
+
     protected void _writeToken(Token token) throws IllegalActionException {
         RecordToken record = (RecordToken) token;
         String eol = "\n";
@@ -214,7 +214,7 @@ public class TrackWriter extends TypedAtomicActor {
      *  @param param The token
      *  @exception IllegalActionException If thrown while opening the file or
      *  writing to it.
-     */   
+     */
     protected void _writingToFile(Token param) throws IllegalActionException{
         // FIXME: Is "writing" the best name for the method?  How about _writeToFile()?
         if (_writer == null) {
@@ -248,10 +248,10 @@ public class TrackWriter extends TypedAtomicActor {
 
     /** Indicator for first firing. */
     private boolean _firstFiring;
-    
+
     /** Previous value of fileName parameter. */
     private String _previousFileName;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
@@ -260,9 +260,9 @@ public class TrackWriter extends TypedAtomicActor {
 
     /** The current writer. */
     protected PrintWriter _writer;
-    
 
 
- 
-    
+
+
+
 }

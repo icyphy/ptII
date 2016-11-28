@@ -492,7 +492,7 @@ EventAcceptor {
     }
 
     /** Repaint all figures that intersect the given rectangle.
-     *  @param region The given rectangle   
+     *  @param region The given rectangle
      */
     public void repaint(Rectangle2D region) {
         repaint(DamageRegion.createDamageRegion(getTransformContext(), region));

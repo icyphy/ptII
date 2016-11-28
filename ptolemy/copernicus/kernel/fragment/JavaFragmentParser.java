@@ -124,7 +124,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
         _body.getUnits().insertBefore(stmt, _insertPoint);
     }
 
-    /** 
+    /**
      */
     private Value _processInstanceMethod(Value baseValue, String name,
             List argList) {
@@ -133,7 +133,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
         if (lastDotPosition == -1) {
             SootClass refClass;
             if (baseValue == null) {
-                // No required baseValue..  If method is not static, then 
+                // No required baseValue..  If method is not static, then
                 // We can use the thisLocal as the baseValue.
                 refClass = _body.getMethod().getDeclaringClass();
                 if (!_body.getMethod().isStatic()) {
@@ -174,7 +174,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
         }
     }
 
-    /** 
+    /**
      */
     private Value _processInstanceField(Value baseValue, String name) {
         int lastDotPosition = name.lastIndexOf(".");
@@ -187,7 +187,7 @@ public class JavaFragmentParser implements JavaFragmentParserConstants {
 
             SootClass refClass;
             if (baseValue == null) {
-                // No required baseValue..  If method is not static, then 
+                // No required baseValue..  If method is not static, then
                 // We can use the thisLocal as the baseValue.
                 refClass = _body.getMethod().getDeclaringClass();
                 if (!_body.getMethod().isStatic()) {

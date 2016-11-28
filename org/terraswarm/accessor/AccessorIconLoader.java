@@ -52,7 +52,7 @@ import ptolemy.moml.MoMLParser;
  that the accessor is stored. It looks first on the local disk
  in the location that mirrors the accessor repository, and then
  looks online if that fails.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 6.1
@@ -60,7 +60,7 @@ import ptolemy.moml.MoMLParser;
  @Pt.AcceptedRating Red (cxh)
  */
 public class AccessorIconLoader implements IconLoader {
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -83,15 +83,15 @@ public class AccessorIconLoader implements IconLoader {
         }
         // Do this as a change request because the accessorSource attribute
         // of the accessor will not have been set yet when this is called.
-        
+
         ChangeRequest request = new ChangeRequest(this, "AccessorIconLoader") {
-            
+
             @Override
             protected void _execute() throws Exception {
                 // Note that this duplicates some code in MoMLParser._loadFileInContext(),
                 // but there seems to be no way to prevent that without breaking
                 // Kepler.
-                
+
                 // Don't invoke attributeList on the Configuration or
                 // an EntityLibrary, it will try to load packages that
                 // might not exist.
@@ -112,9 +112,9 @@ public class AccessorIconLoader implements IconLoader {
                         }
                     }
                 }
-                
+
                 boolean foundAnIcon = false;
-                
+
                 // First, if the context is an instance JSAccessor, proceed.
                 if (context instanceof JSAccessor) {
                     JSAccessor accessor = (JSAccessor)context;
@@ -123,7 +123,7 @@ public class AccessorIconLoader implements IconLoader {
 
                     // BluetoothDistance in org/terraswarm/accessor/demo/c4po/c4po.xml
                     // does not set accessorSource URL.  To trigger this, run
-                    // "ant javadoc.actorIndex" and look for NPEs in the output. 
+                    // "ant javadoc.actorIndex" and look for NPEs in the output.
                     URL accessorSourceURL = null;
                     try {
                         accessorSourceURL = accessor.accessorSource.asURL();
@@ -148,7 +148,7 @@ public class AccessorIconLoader implements IconLoader {
                                 // Mark the parser to keep track of objects created.
                                 newParser.clearTopObjectsList();
                                 newParser.setContext(context);
-                                
+
                                 // This is quite a hack, but the icon may refer to external resources
                                 // such as images at locations relative to the accessor location.
                                 // Temporarily create a URI attribute to use while loading the icon.
@@ -210,7 +210,7 @@ public class AccessorIconLoader implements IconLoader {
                         newParser.clearTopObjectsList();
                         newParser.setContext(context);
                         newParser.parse(xmlFile, fileName, input);
-                        
+
                         // Have to mark the contents derived objects, so that
                         // the icon is not exported with the MoML export.
                         List<NamedObj> icons = newParser.topObjectsCreated();
@@ -237,10 +237,10 @@ public class AccessorIconLoader implements IconLoader {
         context.requestChange(request);
         return false;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     // NOTE: The following method is largely duplicated from MoMLParser,
     // but exposing that method is not a good idea.
 

@@ -20,7 +20,7 @@ jobject _jobject;
 //jclass _cls;
 
 
-  JNIEXPORT void JNICALL 
+  JNIEXPORT void JNICALL
           Java_ptolemy_domains_wireless_lib_tinyOS_VirtualTinyOS_initMote
           (JNIEnv *jni, jobject obj) {
       _jniEnv = (JNIEnv*) malloc(sizeof(JNIEnv));
@@ -30,11 +30,11 @@ jobject _jobject;
       _jobject = obj;
       //_cls = (*_jniEnv)->GetObjectClass(_jniEnv, _jobject);
       initialize();
-      start();        
+      start();
   }
 
 //extern "C"
-  JNIEXPORT jint JNICALL 
+  JNIEXPORT jint JNICALL
           Java_ptolemy_domains_wireless_lib_tinyOS_VirtualTinyOS_signalTimerEvent
           (JNIEnv *jni, jobject obj) {
     _jniEnv = jni;
@@ -42,7 +42,7 @@ jobject _jobject;
     Timer_Timer_fired();
     return 1;
   }
-  
+
   void setupTimer(int period) {
     jclass cls = (*_jniEnv)->GetObjectClass(_jniEnv, _jobject);
     jmethodID mid = (*_jniEnv)->GetMethodID(_jniEnv, cls, "setupTimer", "(I)V");
@@ -52,7 +52,7 @@ jobject _jobject;
     printf("get the method id with name setupTimer.\n");
     (*_jniEnv)->CallVoidMethod(_jniEnv, _jobject, mid, period);
   }
-   
+
   void ledBlink(int x) {
     jclass cls = (*_jniEnv)->GetObjectClass(_jniEnv, _jobject);
     printf("call ledBlink of VirtualTinyOS.c and get the jclass. \n");

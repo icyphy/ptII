@@ -88,7 +88,7 @@ import ptolemy.kernel.util.Workspace;
 
 /**
  * Download, build, start and stop the Global Data Plane (GDP).
- * 
+ *
  * <p>This class requires read access to the GDP.  As of June, 2016,
  * the GDP repos are not publicly available.</p>
  *
@@ -133,7 +133,7 @@ public class GDPManager extends AbstractInitializableAttribute {
         buildGDP = new Parameter(this, "buildGDP");
         buildGDP.setTypeEquals(BaseType.BOOLEAN);
         buildGDP.setExpression("true");
-        
+
         cleanGDP = new Parameter(this, "cleanGDP");
         cleanGDP.setTypeEquals(BaseType.BOOLEAN);
         cleanGDP.setExpression("false");
@@ -145,7 +145,7 @@ public class GDPManager extends AbstractInitializableAttribute {
         deleteAllGCLsInWrapup = new Parameter(this, "deleteAllGCLsInWrapup");
         deleteAllGCLsInWrapup.setTypeEquals(BaseType.BOOLEAN);
         deleteAllGCLsInWrapup.setExpression("true");
-        
+
         gdpSourceDirectory = new FileParameter(this, "gdpSourceDirectory");
         new Parameter(gdpSourceDirectory, "allowFiles", BooleanToken.FALSE);
         new Parameter(gdpSourceDirectory, "allowDirectories", BooleanToken.TRUE);
@@ -168,13 +168,13 @@ public class GDPManager extends AbstractInitializableAttribute {
      *  The default value is the value true;
      */
     public Parameter buildGDP;
-    
+
     /** If true then remove the contents of the <i>gdpSourceDirectory</i>
-     *  at the start of initialization.  
+     *  at the start of initialization.
      *  The default value is the value false.
      */
     public Parameter cleanGDP;
-    
+
     /** If true, then create a new log with a random number
      *  appended to the value of <i>logName</i>.  This parameter
      *  can be used instead of <i>deleteAllGCLsIWrapup.</i>.
@@ -191,7 +191,7 @@ public class GDPManager extends AbstractInitializableAttribute {
      *  in /var/swarm/gdp/gcls and this parameter has no effect.
      *  For a safer way to create a new log each time, use the
      *  <i>createNewLog</i> parameter
-     */ 
+     */
     public Parameter deleteAllGCLsInWrapup;
 
     /** The path to the GDP sources.  The default value is
@@ -203,29 +203,29 @@ public class GDPManager extends AbstractInitializableAttribute {
      *  meaning that the GDP will be downloaded, built, started and stopped.
      */
     public Parameter isLocalGDP;
-    
+
     /** If true, then stop the GDP daemons in wrapup().  The default
      *  value is true, meaning that the daemons are stopped.  If
      *  deleteAllGCLsInWrapup is true, the the value of this parameter
      *  is ignored and the GDP daemons are always stopped in wrapup.
      *  Set this parameter to true to debug the daemons after running
      *  a model.
-     */ 
+     */
     public Parameter stopGDPDaemonsInWrapup;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
- 
+
     /** Download and build the gdp and gdp_router.
      *  @param gdpSourceDirectoryParameter The path to the gdp sources.
      *  @param cleanGDP True if the gdp should be cleaned before installing
      *  @param buildGDP True if the gdp should be built and installed
      *  @exception IllegalActionException If there are problems accessing the parameter.
      *  @exception IOException If there are problems accessing or build the repositories.
-     */   
+     */
     public static void downloadAndBuild(FileParameter gdpSourceDirectoryParameter,
             boolean cleanGDP,
-            boolean buildGDP) 
+            boolean buildGDP)
             throws IllegalActionException, IOException {
         // This method is static to make it easier to test.
         File gdpSourceDirectory = gdpSourceDirectoryParameter.asFile();
@@ -297,7 +297,7 @@ public class GDPManager extends AbstractInitializableAttribute {
                         + "cd " + _gdp + "; " + makeCommand + "\n"
                         + exec.buffer
                         + "See " + _gdp + "/README.md and run " + _gdp + "/adm/gdp-setup.sh"
-                        + "Also, see " + _gdpRouter + "/README.md."); 
+                        + "Also, see " + _gdpRouter + "/README.md.");
             }
 
             // Copy the gdp jar file to $PTII/lib
@@ -315,7 +315,7 @@ public class GDPManager extends AbstractInitializableAttribute {
                     }
                     jarFileName = "";
                 }
-            }    
+            }
             File jarFile = new File(_gdp + File.separator + "lang/java" + File.separator + jarFileName);
             System.out.println("Checking for jar file " + jarFile);
 
@@ -333,7 +333,7 @@ public class GDPManager extends AbstractInitializableAttribute {
                             + "and then restart Ptolemy.");
                 }
                 if (!destination.delete()) {
-                    throw new IOException("Could not delete " + destination 
+                    throw new IOException("Could not delete " + destination
                             + "before renaming " + jarFile + " to that location.");
                 }
                 String message = "Renaming " + jarFile + " to " + destination;
@@ -351,7 +351,7 @@ public class GDPManager extends AbstractInitializableAttribute {
             }
 
             // Copy the shared library file to $PTII/lib.
-   
+
             // FIXME: Ideally all the shared libraries would be in the jar
             // file where JNA can find them.
             String sharedLibraryFileName = "";
@@ -369,7 +369,7 @@ public class GDPManager extends AbstractInitializableAttribute {
                     }
                     sharedLibraryFileName = "";
                 }
-            }    
+            }
             File sharedLibraryFile = new File(_gdp + File.separator + "gdp" + File.separator + sharedLibraryFileName);
             System.out.println("Checking for shared library file " + sharedLibraryFile);
 
@@ -416,7 +416,7 @@ public class GDPManager extends AbstractInitializableAttribute {
             if (! _gclsDirectory.isDirectory()) {
                 if (!_gclsDirectory.mkdirs()) {
                     System.err.println("/var/swarm/gdp/gcls does not exist.  "
-                            + "To create this directory, do: " 
+                            + "To create this directory, do: "
                             + "sudo mkdir /var/swarm/gdp/gcls; sudo chown $USER /var/swarm/gdp/gcls");
                 }
             }
@@ -449,7 +449,7 @@ public class GDPManager extends AbstractInitializableAttribute {
     }
 
     /** Initializes the GDPManager attribute.
-     *  The gdp and gdp_router processes are started.   
+     *  The gdp and gdp_router processes are started.
      */
     @Override
     public void initialize() throws IllegalActionException {
@@ -484,7 +484,7 @@ public class GDPManager extends AbstractInitializableAttribute {
                 ? "-U " + userName
                 : "";
 
-            // FIXME: We should use pkill -f 'python ./src/gdp_router.py', but 
+            // FIXME: We should use pkill -f 'python ./src/gdp_router.py', but
             // passing arguments with spaces does not work here.
             gdpRouterCommands.add("pkill " + pkillUserFlag + " python");
             _gdpRouterExec.setCommands(gdpRouterCommands);
@@ -554,7 +554,7 @@ public class GDPManager extends AbstractInitializableAttribute {
      *  and configuration files are created.
      *  @exception IllegalActionException If there are problems checking
      *  out the repositories, building the gdp or creating the configuration files.
-     * 
+     *
      */
     @Override
     public void preinitialize() throws IllegalActionException {
@@ -578,7 +578,7 @@ public class GDPManager extends AbstractInitializableAttribute {
      */
     public static void setGdpConfigurationFile(String userHome, String settings)
         throws IOException {
-        // Create ~/.ep_adm_params/ 
+        // Create ~/.ep_adm_params/
         _epAdmParamsDirectory = new File(userHome, ".ep_adm_params");
         if (!_epAdmParamsDirectory.exists()) {
             if (!_epAdmParamsDirectory.mkdirs()) {
@@ -612,7 +612,7 @@ public class GDPManager extends AbstractInitializableAttribute {
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        if (((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue() 
+        if (((BooleanToken) deleteAllGCLsInWrapup.getToken()).booleanValue()
                 || ((BooleanToken) stopGDPDaemonsInWrapup.getToken()).booleanValue()) {
             MessageHandler.status("Stopping the GDP daemons.");
             try {
@@ -712,10 +712,10 @@ public class GDPManager extends AbstractInitializableAttribute {
     private static String _badFileMessage = " is a file, it must either be a directory or not exist.";
 
     private boolean _calledWrapupOnce = false;
-    
+
     /** The ep_adm_params directory, which is read by the gdplogd process. */
     private static File _epAdmParamsDirectory;
-    
+
     /** The location of the gcls directory, which contains the log.
      *  Wrapup optionally deletes this directory.
      */
@@ -723,13 +723,13 @@ public class GDPManager extends AbstractInitializableAttribute {
 
     /** The location of the gdp repository. */
     private static File _gdp;
-    
+
     /** The gdplogd process. */
     private StringBufferExec _gdpLogdExec;
 
     /** True if the gdpLogd process is running. */
     private static boolean _gdpLogdRunning;
-    
+
     /** The location of the gdp_router repository. */
     private static File _gdpRouter;
 
@@ -741,7 +741,7 @@ public class GDPManager extends AbstractInitializableAttribute {
 
     /** The hostname. */
     private String _hostName;
-    
+
     /** Last time of gdp repository update. */
     private static long _lastGDPRepoUpdateTime = -1L;
 

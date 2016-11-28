@@ -17,7 +17,7 @@
  *
  * For a list of all SWT example snippets see
  * http://www.eclipse.org/swt/snippets/
- * 
+ *
  * @since 3.0
  */
 
@@ -73,7 +73,7 @@ import diva.canvas.event.LayerEvent;
 import diva.graph.GraphPane;
 import diva.graph.JGraph;
 
-/** 
+/**
  * Display a Vergil model inside an Eclipse SWT window.
  * <p>This class is a very rough proof of concept.
  * <p>Not much works here.
@@ -84,7 +84,7 @@ import diva.graph.JGraph;
 public class SWTVergilApplication {
 
     /** Display a model inside an Eclipse SWT window.
-     * 
+     *
      * @param args  Currently ignored
      * @exception Exception If there is a problem opening the configuration or model.
      */
@@ -408,14 +408,14 @@ public class SWTVergilApplication {
     }
 
     /** Display a model inside an Eclipse SWT window.
-     * 
+     *
      * @param args  Currently ignored
      * @exception Exception If there is a problem opening the configuration or model.
      */
     public static void main(final String[] args) {
         // Note that because we are using SWT, we don't run this
         // in the SwingEvent thread like we do in VergilApplication.
-        // If we do run this in the SwingEvent thread, then the 
+        // If we do run this in the SwingEvent thread, then the
         // actor graph pane will not render.
         try {
             new SWTVergilApplication(args);
@@ -429,7 +429,7 @@ public class SWTVergilApplication {
 
     /** Set the JGraph instance that this view uses to represent the
      *  ptolemy model.
-     *  
+     *
      *  @param jgraph The JGraph.
      *  @see ptolemy.vergil.basic.BasicGraphFrame#setJGraph(JGraph)
      */

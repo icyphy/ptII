@@ -99,7 +99,7 @@ Connector {
     }
 
     /** Get the bounding box of this connector.
-     *  @return the bounding box   
+     *  @return the bounding box
      */
     @Override
     public Rectangle2D getBounds() {
@@ -144,7 +144,7 @@ Connector {
     }
 
     /** Get the site that marks the "head" of the connector.
-     * @return the head site.   
+     * @return the head site.
      * @see #setHeadSite(Site)
      */
     @Override
@@ -184,7 +184,7 @@ Connector {
     }
 
     /** Get the stroke of this connector.
-     *  @return the stroke.   
+     *  @return the stroke.
      *  @see #setStroke(Stroke)
      */
     public Stroke getStroke() {
@@ -285,7 +285,7 @@ Connector {
     }
 
     /** Paint the connector.
-     *  @param g The Graphics contexts   
+     *  @param g The Graphics contexts
      */
     @Override
     public void paint(Graphics2D g) {
@@ -415,7 +415,7 @@ Connector {
     }
 
     /** Set the stroke of this connector.
-     *  @param s The stroke    
+     *  @param s The stroke
      *  @see #getStroke()
      */
     public void setStroke(Stroke s) {

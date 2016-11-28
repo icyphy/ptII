@@ -158,10 +158,10 @@ public class RemoveIconAction extends FigureAction {
     public void setConfiguration(Configuration configuration) {
         // Do nothing.
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     // NOTE: The following method is largely duplicated from MoMLParser,
     // but exposing that method is not a good idea.
 

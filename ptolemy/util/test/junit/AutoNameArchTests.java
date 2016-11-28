@@ -48,7 +48,7 @@ import ptolemy.util.StringUtilities;
  * spaces have been removed and the results converted to lower case.
  * The value of the os.arch property is not modified.  Valid directory
  * names are macosx-x86_64 and linux-amd64.</p>
- * 
+ *
  * <p>
  * This test must be run from the directory that contains the auto/os.name directory,
  * for example:
@@ -92,7 +92,7 @@ public class AutoNameArchTests extends AutoTests {
         // from the command line.  See the class comment for the command line.
         super.RunModel(fullPath);
     }
-    
+
     /**
      * Return a two dimensional array of arrays of strings that name the model
      * to be executed. If auto/ does not exist, or does not contain files that

@@ -179,16 +179,16 @@ Actor, FiringsRecordable {
         // Instead, save this instance's lists here and restore them after
         // call super.clone().
         LinkedList<ActorFiringListener> oldActorFiringListeners = _actorFiringListeners;
-        _actorFiringListeners = null;        
+        _actorFiringListeners = null;
         Set<Initializable> oldInitializables = _initializables;
-        _initializables = null;        
-        
+        _initializables = null;
+
         @SuppressWarnings("unchecked")
         AtomicActor<T> newObject = (AtomicActor<T>) super.clone(workspace);
-        
+
         _initializables = oldInitializables;
         _actorFiringListeners = oldActorFiringListeners;
-        
+
         // Reset to force reinitialization of cache.
         newObject._inputPortsVersion = -1;
         newObject._outputPortsVersion = -1;

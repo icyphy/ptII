@@ -65,7 +65,7 @@ import ptolemy.vergil.kernel.attributes.ResizablePolygonAttribute;
  *  @version $Id$
  *  @since Ptolemy II 11.0
  */
-public class AbstractSourceStation extends TypedAtomicActor{ 
+public class AbstractSourceStation extends TypedAtomicActor{
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -82,31 +82,31 @@ public class AbstractSourceStation extends TypedAtomicActor{
    public AbstractSourceStation(CompositeEntity container, String name)
            throws IllegalActionException, NameDuplicationException {
        super(container, name);
-       
+
        input = new TypedIOPort(this, "input", true, false);
        input.setTypeEquals(BaseType.RECORD);
-               
+
        output = new TypedIOPort(this, "Output", false, true);
        output.setTypeEquals(BaseType.RECORD);
-       
+
        delay= new Parameter(this, "delay");
        delay.setTypeEquals(BaseType.DOUBLE);
        delay.setExpression("1");
-       
+
        takeOff= new Parameter(this, "takeOff");
        takeOff.setTypeEquals(BaseType.DOUBLE);
        takeOff.setExpression("1");
-       
+
        stationId= new Parameter(this, "stationId");
        stationId.setTypeEquals(BaseType.INT);
        stationId.setExpression("-1");
-       
+
        lineSymbol= new Parameter(this, "lineSymbol");
        lineSymbol.setTypeEquals(BaseType.STRING);
-       
-       
+
+
        EditorIcon node_icon = new EditorIcon(this, "_icon");
-       
+
        // This part of the icon shows border of the station.
        _sourceStationBorder=new ResizablePolygonAttribute(node_icon, "_stationBorder");
        _sourceStationBorder.centered.setToken("true");
@@ -119,7 +119,7 @@ public class AbstractSourceStation extends TypedAtomicActor{
                         ",-39.0,45.0,-21.0,46.0,-10.0,46.0,10.0,33.0,10.0,33.0,-10.0,32.0," +
                         "-21.0,25.0,-31.0,-25.0,-31.0,-32.0,-21.0,-33.0,-10.0,-33.0,10.0," +
                         "-32.0,21.0,-25.0,31.0,25.0,31.0,32.0,21.0,33.0,10.0}");
-                
+
     // This part of the icon shows id of the station.
        _valueIdInSource=new AttributeValueAttribute(node_icon, "_IdInSourceStation");
        _valueIdInSource.textSize.setToken("15");
@@ -127,7 +127,7 @@ public class AbstractSourceStation extends TypedAtomicActor{
        l1.setLocation(new double[]{-10.0, -2.0});
        _valueIdInSource.textColor.setToken("{0.0, 0.0, 0.0, 1.0}");
        _valueIdInSource.attributeName.setExpression("stationId");
-       
+
     // This part of the icon shows symbol of the station.
        _valueSymbolInSource=new AttributeValueAttribute(node_icon, "_SymbolInSourceStation");
        _valueSymbolInSource.textSize.setToken("15");
@@ -135,12 +135,12 @@ public class AbstractSourceStation extends TypedAtomicActor{
        l2.setLocation(new double[]{-12.0, -16.0});
        _valueSymbolInSource.textColor.setToken("{0.0, 0.0, 0.0, 1.0}");
        _valueSymbolInSource.attributeName.setExpression("lineSymbol");
-       
+
    }
-   
+
    //////////////////////////////////////////////////////////////////
    ////                       ports and parameters                ////
-   
+
     /** The input port. */
    public TypedIOPort input;
 
@@ -159,10 +159,10 @@ public class AbstractSourceStation extends TypedAtomicActor{
 
     /** The line symbol.  The default type is that of String. */
     public Parameter lineSymbol;
-   
+
    ///////////////////////////////////////////////////////////////////
    ////                         public methods                    ////
-   
+
    /** This method handles changing in the symbol parameter of the
     * source station.  Symbol parameter shows the symbol of the line.
     * @param attribute The attribute that is changing.
@@ -177,12 +177,12 @@ public class AbstractSourceStation extends TypedAtomicActor{
            if(_symbol.length()>1)
                throw new IllegalActionException("Inappropriate line symbol");
            ArrayToken color=((TCSDirector)director).getColor(_symbol);
-           _sourceStationBorder.fillColor.setToken(color); 
+           _sourceStationBorder.fillColor.setToken(color);
        } else {
            super.attributeChanged(attribute);
        }
    }
-   
+
    @Override
    public void fire() throws IllegalActionException {
        super.fire();
@@ -214,7 +214,7 @@ public class AbstractSourceStation extends TypedAtomicActor{
                        _director.fireAt(this, _transitExpires);
                        return;
                    }
-                  
+
                    if(_inTransit==null &&  _trains.size()!=0){
                        _inTransit=_trains.get(0);
                        double additionalDelay = ((DoubleToken)takeOff.getToken()).doubleValue();
@@ -225,9 +225,9 @@ public class AbstractSourceStation extends TypedAtomicActor{
                        _director.fireAt(this, _transitExpires);
                    }
                }
-           
+
        if(input.hasToken(0))
-       { 
+       {
           RecordToken train=(RecordToken) input.get(0);
           if(train.get("trainSymbol").equals(lineSymbol.getToken())){
               Map<String, Token> tempTrain=new TreeMap<String, Token>();
@@ -240,7 +240,7 @@ public class AbstractSourceStation extends TypedAtomicActor{
               tempTrain.put("arrivalTimeToStation",new DoubleToken(arrivalTime));
               tempTrain.put("dipartureTimeFromStation", new DoubleToken(arrivalTime));
               _trains.add(new RecordToken(tempTrain));
-              
+
               if(_inTransit==null)
               {
                   double additionalDelay = ((DoubleToken)takeOff.getToken()).doubleValue();
@@ -254,7 +254,7 @@ public class AbstractSourceStation extends TypedAtomicActor{
           }
        }
    }
-   
+
    @Override
    public void initialize() throws IllegalActionException {
        super.initialize();
@@ -262,12 +262,12 @@ public class AbstractSourceStation extends TypedAtomicActor{
       ((TCSDirector)_director).handleInitializedSourceStation(this);
       _inTransit=null;
        _trains=new ArrayList<RecordToken>();
-       
+
    }
-   
+
    ///////////////////////////////////////////////////////////////////
    ////                         private variables                 ////
-   
+
    private Director _director;
    private Token _inTransit;
    private String _symbol;
@@ -275,6 +275,6 @@ public class AbstractSourceStation extends TypedAtomicActor{
    private Time _transitExpires;
    private ArrayList<RecordToken> _trains;
    private AttributeValueAttribute _valueSymbolInSource;
-   private AttributeValueAttribute _valueIdInSource;   
-   
+   private AttributeValueAttribute _valueIdInSource;
+
 }

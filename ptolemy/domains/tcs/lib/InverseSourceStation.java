@@ -38,13 +38,13 @@ import ptolemy.kernel.util.StringAttribute;
 ///////////////////////////////////////////////////////////////////
 ////InverseSourceStation
 
-/** This actor models reverse shape of the source station. 
+/** This actor models reverse shape of the source station.
  *  Input is in east side and output in west side.
  *  @author Maryam Bagheri
  *  @version $Id$
  *  @since Ptolemy II 11.0
  */
-public class InverseSourceStation extends AbstractSourceStation{ 
+public class InverseSourceStation extends AbstractSourceStation{
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception
@@ -61,10 +61,10 @@ public class InverseSourceStation extends AbstractSourceStation{
    public InverseSourceStation(CompositeEntity container, String name)
            throws IllegalActionException, NameDuplicationException {
        super(container, name);
-       
+
        StringAttribute cardinality = new StringAttribute(input, "_cardinal");
        cardinality.setExpression("EAST");
-               
+
        cardinality = new StringAttribute(output, "_cardinal");
        cardinality.setExpression("WEST");
    }

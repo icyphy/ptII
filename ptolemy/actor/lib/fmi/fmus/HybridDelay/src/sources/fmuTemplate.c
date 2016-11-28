@@ -570,7 +570,7 @@ fmi2Status fmi2SetReal (fmi2Component c, const fmi2ValueReference vr[], size_t n
     return fmi2OK;
 }
 
-fmi2Status fmi2SetHybridReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Real value[], const fmi2Integer hybridValue[]) {    
+fmi2Status fmi2SetHybridReal (fmi2Component c, const fmi2ValueReference vr[], size_t nvr, const fmi2Real value[], const fmi2Integer hybridValue[]) {
     int i;
     ModelInstance *comp = (ModelInstance *)c;
     if (invalidState(comp, "fmi2SetHybridReal", MASK_fmi2SetReal))

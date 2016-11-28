@@ -42,7 +42,7 @@ import java.util.*;
 
 import gnu.io.*;
 
-/** 
+/**
 
  */
 public class SerialWriter extends TypedAtomicActor {

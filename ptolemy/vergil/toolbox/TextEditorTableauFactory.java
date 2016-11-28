@@ -91,7 +91,7 @@ public class TextEditorTableauFactory extends TableauFactory
         rowsDisplayed = new Parameter(this, "rowsDisplayed");
         rowsDisplayed.setTypeEquals(BaseType.INT);
         rowsDisplayed.setExpression("40");
-        
+
         syntaxStyle = new StringAttribute(this, "syntaxStyle");
     }
 
@@ -115,13 +115,13 @@ public class TextEditorTableauFactory extends TableauFactory
      *  supported. If the package "org.fife.ui.rsyntaxtextarea" is found in
      *  the classpath, then the supported styles include
      *  "text/plain", "text/c", "text/clojure", "text/cpp", "text/cs",
-     *  "text/css", "text/dtd", "text/fortran", 
-     *  "text/groovy", "text/html", "text/java", 
-     *  "text/javascript", "text/json", "text/jsp", 
-     *  "text/latex", "text/makefile", 
-     *  "text/perl", "text/php", 
-     *  "text/properties", "text/python", "text/ruby", "text/sas", 
-     *  "text/scala", "text/sql", "text/tcl", "text/unix", "text/vb", 
+     *  "text/css", "text/dtd", "text/fortran",
+     *  "text/groovy", "text/html", "text/java",
+     *  "text/javascript", "text/json", "text/jsp",
+     *  "text/latex", "text/makefile",
+     *  "text/perl", "text/php",
+     *  "text/properties", "text/python", "text/ruby", "text/sas",
+     *  "text/scala", "text/sql", "text/tcl", "text/unix", "text/vb",
      *  "text/bat", and "text/xml".
      */
     public StringAttribute syntaxStyle;
@@ -269,7 +269,7 @@ public class TextEditorTableauFactory extends TableauFactory
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Create a text effigy to be contained by the specified host
      *  effigy for the specified text.
      *  @param effigy The host effigy.
@@ -287,7 +287,7 @@ public class TextEditorTableauFactory extends TableauFactory
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     /** Keep track of an open editor so that it isn't opened more than
      *  once.
      */

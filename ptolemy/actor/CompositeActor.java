@@ -2030,7 +2030,7 @@ FiringsRecordable {
         if (getManager() != null && change.isStructuralChange()) {
             stopFire();
         }
-        
+
         // If there is a waiting thread (e.g. synchronizeToRealTime),
         // then interrupt it so it can handle change requests.
         Manager manager = getManager();

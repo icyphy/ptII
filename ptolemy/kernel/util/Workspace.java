@@ -255,7 +255,7 @@ public final class Workspace implements Nameable {
      *  read access to the workspace), then notify all threads that are
      *  waiting to get read/write access to this
      *  workspace so that they may contend for access.
-     *  
+     *
      *  @exception InvalidStateException If this method is called
      *   before a corresponding call to getReadAccess() by the same thread.
      *  @see #getReadAccess()
@@ -1077,7 +1077,7 @@ public final class Workspace implements Nameable {
 
     private transient AccessRecord _lastReaderRecord = null;
 
-    /** A WeakHashMap of threads to AccessRecords. 
+    /** A WeakHashMap of threads to AccessRecords.
      *  A WeakHashMap is used because otherwise getting the effigy
      *  adds Manager._thread to the Map and if it is a regular
      *  HashMap, then when the window containing the model is closed,

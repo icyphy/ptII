@@ -48,7 +48,7 @@ public class DitherFilter extends PointFilter {
             27, 16, 6, 2, 5, 13, 26, 25, 15, 10, 14, 21, 31, 33, 25, 24, 23, 33, 36 };
 
     /*
-     * The following dithering matrices are taken from "Digital Halftoning" 
+     * The following dithering matrices are taken from "Digital Halftoning"
      * by Robert Ulichney, MIT Press, ISBN 0-262-21009-6.
      */
 

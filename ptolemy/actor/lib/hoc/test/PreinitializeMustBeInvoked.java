@@ -40,7 +40,7 @@ import ptolemy.kernel.util.Workspace;
  * <p>Test for problems similar to what we see in Matlab Engine, where wrapup()
  * closes the connection.  If this actor is used in a RunComposite, preinitialize()
  * must be called before the other action methods.</p>
- * 
+ *
  * <p>See ptolemy/matlab/test/MatlabRunComposite.xml.</p>
  *
  * @author Christopher Brooks
@@ -73,7 +73,7 @@ public class PreinitializeMustBeInvoked extends Ramp {
             throw new IllegalActionException("fire()" + _ERROR_MESSAGE);
         }
     }
-    
+
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();

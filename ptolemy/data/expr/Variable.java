@@ -1465,7 +1465,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
     public String stringRepresentation() {
         return getExpression();
     }
-    
+
     /** Return a string representation of the current evaluated variable value.
      *  @return A string representing the class and the current token.
      */
@@ -1885,7 +1885,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
                     || (!(ex instanceof UndefinedConstantOrIdentifierException))
                     && !(ex instanceof CircularDependencyError)) {
                 throw new IllegalActionException(this, ex,
-                        "Error evaluating expression:\n" 
+                        "Error evaluating expression:\n"
                                 + StringUtilities.truncateString(_currentExpression, 80, 1));
             }
         } finally {
@@ -2599,7 +2599,7 @@ public class Variable extends AbstractSettableAttribute implements Typeable,
 
     // Flag indicating that _propagate() is in progress.
     private boolean _propagating;
-    
+
     // The token contained by this variable.
     private ptolemy.data.Token _token;
 

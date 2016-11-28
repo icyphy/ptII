@@ -101,7 +101,7 @@ public abstract class ShapeAttribute extends VisibleAttribute {
 
         dashArray = new Parameter(this, "dashArray");
         dashArray.setTypeEquals(new ArrayType(BaseType.DOUBLE));
-        
+
         rotation = new Parameter(this, "rotation");
         rotation.setTypeEquals(BaseType.DOUBLE);
         rotation.setExpression("0.0");
@@ -128,7 +128,7 @@ public abstract class ShapeAttribute extends VisibleAttribute {
     /** The line width.  This is a double that defaults to 1.0.
      */
     public Parameter lineWidth;
-    
+
     /** The angle of rotation in radians. This is a double that
      *  defaults to 0.0.
      */

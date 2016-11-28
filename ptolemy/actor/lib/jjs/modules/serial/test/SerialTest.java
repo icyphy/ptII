@@ -52,8 +52,8 @@ import ptolemy.util.StringUtilities;
  @Pt.AcceptedRating red (cxh)
  */
 public class SerialTest {
-    /** 
-     * Read and write to a port.   
+    /**
+     * Read and write to a port.
      *
      * <p>Usage:  To see what ports are available:</p>
      * <pre>
@@ -85,7 +85,7 @@ public class SerialTest {
         } else {
             port = args[0];
         }
-    
+
         int baudRate = 9600;
         NRSerialPort serialPort = new NRSerialPort(port, baudRate);
         serialPort.connect();

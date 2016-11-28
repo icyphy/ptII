@@ -172,9 +172,9 @@ fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
 fmi2Integer computeStepSize(ModelInstance *comp) {
     fmi2Integer communicationStepSize;
     if (comp->eventInfo.nextEventTimeDefined ||
-            (getEventIndicator(comp) < 0)) {        
+            (getEventIndicator(comp) < 0)) {
         communicationStepSize = 0;
-    } else {        
+    } else {
         communicationStepSize = 2;
     }
     return communicationStepSize;

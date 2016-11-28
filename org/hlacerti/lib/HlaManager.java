@@ -138,7 +138,7 @@ import ptolemy.kernel.util.Workspace;
  * This class implements a HLA Manager which allows a Ptolemy model to
  * cooperate with a HLA/CERTI Federation. The main goal is to allow a Ptolemy
  * simulation as Federate of a Federation.
- * 
+ *
  * <p>The High Level Architecture (HLA) [1][2] is a standard for distributed
  * discrete-event simulation. A complex simulation in HLA is called a HLA
  * Federation. A Federation is a collection of Federates (e.g. simpler simulators),
@@ -182,7 +182,7 @@ import ptolemy.kernel.util.Workspace;
  *
  * <p>Parameters, <i>hlaStepTime</i> and <i>hlaLookAHead</i>
  * are used to specify Hla Timing attributes of a Federate.</p>
- * 
+ *
  * <p>Parameters <i>requireSynchronization</i>, <i>synchronizationPointName</i>
  * and <i>isCreatorSyncPt</i> are used to configure HLA synchronization point.
  * This mechanism is usually used to synchronize the Federates, during their
@@ -205,7 +205,7 @@ import ptolemy.kernel.util.Workspace;
  * <pre>
  * CERTI_HOME="/absolute/path/to/certi/"
  * </pre>
- * 
+ *
  * <p>Otherwise, the current implementation is not able to find the CERTI
  * environment, the RTIG binary and to perform its execution. See also
  * the {@link CertiRtig} class.</p>
@@ -215,7 +215,7 @@ import ptolemy.kernel.util.Workspace;
  * </p>
  *
  * <p><b>References</b>:</p>
- * 
+ *
  * <p>[1] Dpt. of Defense (DoD) Specifications, "High Level Architecture Interface
  *     Specification, Version 1.3", DOD/DMSO HLA IF 1.3, Tech. Rep., Apr 1998.</p>
  * <p>[2] IEEE, "IEEE standard for modeling and simulation High Level Architecture
@@ -227,7 +227,7 @@ import ptolemy.kernel.util.Workspace;
  *     Mar 2009.</p>
  * <p>[5] Y. Li, J. Cardoso, and P. Siron, "A distributed Simulation Environment for
  *     Cyber-Physical Systems", Sept 2015.</p>
- *     
+ *
  *
  *  @author Gilles Lasnier, Contributors: Patricia Derler, Edward A. Lee, David Come, Yanxuan LI
  *  @version $Id$
@@ -374,7 +374,7 @@ TimeRegulator {
 
     /**
      * Double value for representing how much is a unit of time in the simulation.
-     * Has an impact on TAR/NER/RAV/UAV. 
+     * Has an impact on TAR/NER/RAV/UAV.
      */
     public Parameter hlaTimeUnit;
 
@@ -417,7 +417,7 @@ TimeRegulator {
     public enum ETimeManagementService {
         /** The federate uses next event request calls to advance in time.
          */
-        NextEventRequest, 
+        NextEventRequest,
         /** The federate uses time advance request calls to advance in time.
          */
         TimeAdvancementRequest;
@@ -734,7 +734,7 @@ TimeRegulator {
                 _debug("starting proposeTime("+proposedTimeInString+")) - current status - " +
             "t_ptII = " +_printTimes(_director.getModelTime())+ "; t_hla = " + _federateAmbassador.logicalTimeHLA);
             }
-        }  
+        }
         Time currentTime = _getModelTime();
         proposedTime =new Time(_director, Double.parseDouble(proposedTimeInString));
 
@@ -742,7 +742,7 @@ TimeRegulator {
             if (_debugging) {
                 _debug("    proposeTime("+proposedTimeInString+") -"
                         + " called but the proposedTime is bigger than the stopTime -> SKIP RTI -> returning stopTime");
-            }   
+            }
             return _stopTime;
         }
         // This test is used to avoid exception when the RTIG subprocess is
@@ -799,7 +799,7 @@ TimeRegulator {
                     } else {
                         if(_debugging){
                             _debug("    proposeTime("+proposedTimeInString+") - calling _timeSteppedBasedTimeAdvance("+proposedTimeInString+")");
-                        }                    
+                        }
                         return _timeSteppedBasedTimeAdvance(proposedTime);
                     }
                 } catch (InvalidFederationTime e) {
@@ -874,7 +874,7 @@ TimeRegulator {
             _debug("starting updateHlaAttribute() - current status t_ptII = " + _printTimes(currentTime) + "; t_hla = "
                                 + _federateAmbassador.logicalTimeHLA +" - A HLA value from ptolemy has been"
                                 + " encoded as CERTI MessageBuffer");
-        }        
+        }
         SuppliedAttributes suppAttributes = null;
         try {
             suppAttributes = RtiFactoryFactory.getRtiFactory()
@@ -889,7 +889,7 @@ TimeRegulator {
 
         // Create a representation of uav-event timestamp for CERTI.
         // HLA implies to send event in the future when using NER or TAR services with lookahead > 0.
-        // Let us recall the lookahead rule: a federate promises that no events will be sent 
+        // Let us recall the lookahead rule: a federate promises that no events will be sent
         // before hlaCurrentTime + lookahead.
         // To avoid CERTI exception when calling UAV service
         // with condition: uav(tau) tau >= hlaCurrentTime + lookahead.
@@ -898,7 +898,7 @@ TimeRegulator {
             // In the NER case, we have the equality currentTime = hlaCurrentTime.
             // So, we chose tau <- currentTime + lookahead and we respect the condition
             // above.
-            uavTimeStamp = currentTime.add(_hlaLookAHead);   
+            uavTimeStamp = currentTime.add(_hlaLookAHead);
         } else {
             // In the TAR case, currentTime >= hlaCurrentTime.
             // So, we have two possible cases:
@@ -938,8 +938,8 @@ TimeRegulator {
             String pUAVTimeStamp=ct.getTime()+";";;
             String preUAVTimeStamp="("+ _printTimes(currentTime)+","+microstep+");";
             _storeTimes("UAV "+ _getPortFromTab(tObj).getContainer().getName());
-            
-            if(_numberOfUAVs>0 &&(_preUAVsTimes.length() - _preUAVsTimes.lastIndexOf(preUAVTimeStamp))==preUAVTimeStamp.length() && 
+
+            if(_numberOfUAVs>0 &&(_preUAVsTimes.length() - _preUAVsTimes.lastIndexOf(preUAVTimeStamp))==preUAVTimeStamp.length() &&
                         (_pUAVsTimes.length() - _pUAVsTimes.lastIndexOf(pUAVTimeStamp))==pUAVTimeStamp.length()){
                 //System.out.println(_UAVsValues[indexOfAttribute].toString().substring(_UAVsValues.length-2, _UAVsValues.length));
                 _UAVsValues[indexOfAttribute].replace(_UAVsValues[indexOfAttribute].length()-2,_UAVsValues[indexOfAttribute].length(),in.toString()+";");
@@ -973,7 +973,7 @@ TimeRegulator {
         super.wrapup();
         _strucuralInformation.clear();
         _registeredObject.clear();
-        _debug("Data" + 
+        _debug("Data" +
                 "\n number of TARs: " + _numberOfTARs +
                 "\n number of NERs: " + _numberOfNERs +
                 "\n number of TAGs: " + _numberOfTAGs);
@@ -1079,7 +1079,7 @@ TimeRegulator {
     }
 
 
-    /** Return the total number of time advance grants that this federate has received. 
+    /** Return the total number of time advance grants that this federate has received.
      * @return The number of time advance grants that this federate has received.
      * @see #_numberOfTAGs
      * @see #setNumberOfTAGs
@@ -1188,7 +1188,7 @@ TimeRegulator {
             writeInTextFile(_UAVsValuesFile,String.valueOf(info));
         }
     }
-    
+
     public void writeRAVsInformations(){
         if(_numberOfRAVs>0){
             StringBuffer header = new StringBuffer("LookAhead;TimeStep;StopTime;Information;");
@@ -1196,7 +1196,7 @@ TimeRegulator {
             for (int i = 0; i < count; i++) {
                 header.append("RAV"+i+";");
             }
-            
+
             StringBuffer info = new StringBuffer(_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";" + "pRAV TimeStamp:;"+_pRAVsTimes+"\n"+
                     ";;;"+"folRAV TimeStamp:;"+_folRAVsTimes +"\n");
             for (int i = 0; i < _numberOfAttributesSubscribedTo; i++){
@@ -1209,7 +1209,7 @@ TimeRegulator {
 
     /** Write the number of HLA calls of each federate, along with informations about the
      * time step and the runtime, in a file.
-     * The name and location of this file are specified in the initialization of the 
+     * The name and location of this file are specified in the initialization of the
      * variable file.
      */
     public void writeNumberOfHLACalls(){
@@ -1222,7 +1222,7 @@ TimeRegulator {
             String path = fedFile.asFile().getPath();
             path = path.substring(0,path.lastIndexOf("/") +1);
             File file = new File(path+nameOfTheFile);
-           
+
 
             StringBuffer info = new StringBuffer("Federate "+ getDisplayName() +" in the model "+nameOfTheFile);
             RKSolver = AutomaticSimulation.findParameterValue(file, RKSolver, 0);
@@ -1234,13 +1234,13 @@ TimeRegulator {
                 info = new StringBuffer( "SP register -> " + info) ;
             }
             if(_timeStepped){
-                info.append("    Time Step: "  + _hlaTimeStep + "\n" 
+                info.append("    Time Step: "  + _hlaTimeStep + "\n"
                         + "Number of TARs: " +_numberOfTARs);
             }else if (_eventBased){
-        
+
                 info.append("\nNumber of NERs: " +_numberOfNERs) ;
             }
-            info.append("    Number of UAVs:" +_numberOfUAVs+"\nNumber of TAGs: " + _numberOfTAGs + "    Number of RAVs:" +_numberOfRAVs+ "\n" 
+            info.append("    Number of UAVs:" +_numberOfUAVs+"\nNumber of TAGs: " + _numberOfTAGs + "    Number of RAVs:" +_numberOfRAVs+ "\n"
                     +"Runtime: " +_runtime+"\n");
             writeInTextFile(_file,info.toString());
         }catch(Exception e){
@@ -1248,7 +1248,7 @@ TimeRegulator {
         }
 
     }
-    /** Write a report containing(in a .csv file {@link #_csvFile}), among other informations, 
+    /** Write a report containing(in a .csv file {@link #_csvFile}), among other informations,
      * the number of ticks, the delay between a NER or a TAR and its respective TAG, the number of UAVs and RAVs.
      */
     public void writeDelays(){
@@ -1294,12 +1294,12 @@ TimeRegulator {
             header.append("Average;");
             if(_timeStepped){
                 _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+"TAR"+".csv","date;timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
-                writeInTextFile(_reportFile, _date +";"+_hlaTimeStep + ";"+_hlaLookAHead + ";" + 
+                writeInTextFile(_reportFile, _date +";"+_hlaTimeStep + ";"+_hlaLookAHead + ";" +
                         _runtime +";" + totalNumberOfHLACalls+";"+_numberOfTARs+";"+ _numberOfTAGs+
                         ";"+_numberOfRAVs+";"+_numberOfUAVs+";"+ _numberOfTicks2+";"+averageDelay );
             }else{
                 _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+"NER"+".csv","date;lookahead;runtime;total number of calls;NERs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
-                writeInTextFile(_reportFile,_date +";" +_hlaLookAHead + ";" + 
+                writeInTextFile(_reportFile,_date +";" +_hlaLookAHead + ";" +
                         _runtime +";" + totalNumberOfHLACalls+";"+_numberOfNERs+";"+ _numberOfTAGs+
                         ";"+_numberOfRAVs+";"+_numberOfUAVs+";"+ _numberOfTicks2+";"+averageDelay );
             }
@@ -1334,8 +1334,8 @@ TimeRegulator {
             return false;
         }
     }
-    
-    
+
+
     public void writeTimes(){
         File timesFile = _createTextFile("times.csv");
         writeInTextFile(timesFile,_date +";Reason:;" + _reasonsToPrintTheTime +"\nt_ptII:;"+_tPTII+"\nt_hla:;" +_tHLA);
@@ -1394,9 +1394,9 @@ TimeRegulator {
         return new Time(_director,_roundDoubles( ct.getTime()/_hlaTimeUnitValue));
     }
 
-    /**Verify the existence of a folder, if it doesn't exist, the function tries 
+    /**Verify the existence of a folder, if it doesn't exist, the function tries
      * to create it.
-     * 
+     *
      * @param folderName The name of the folder that will be created.
      * @return The full address of the folder in a string.
      * @exception IOException If the folder cannot be created.
@@ -1413,17 +1413,17 @@ TimeRegulator {
                     System.out.println("Folder "+ folderName +" created.");
                 }
                 return folderName;
-            } 
+            }
             catch(SecurityException se){
                 throw new IOException("Could not create the folder "+ folderName +".");
-            }        
+            }
         }else{
             return folderName;
         }
     }
 
-    /** Associate the object file with a file in the computer, creating it, if it doesn't 
-     * already exist. 
+    /** Associate the object file with a file in the computer, creating it, if it doesn't
+     * already exist.
      * @param name the name to of the file
      */
     private File _createTextFile(String name){
@@ -1446,7 +1446,7 @@ TimeRegulator {
                     }if (!verify){
                         throw new Exception();
                     }System.out.println(name);
-                    return file;        
+                    return file;
                 }catch(Exception e){
                     System.out.println("Couldn't create the file.");
                     return null;
@@ -1457,8 +1457,8 @@ TimeRegulator {
         }
     }
 
-    /** Associate the object file with a file in the computer, creating it, if it doesn't 
-     * already exist. 
+    /** Associate the object file with a file in the computer, creating it, if it doesn't
+     * already exist.
      * @param name the name to of the file
      */
     private File _createTextFile(String name, String header){
@@ -1482,7 +1482,7 @@ TimeRegulator {
                     }if (!verify){
                         throw new Exception();
                     }System.out.println(name);
-                    return file;        
+                    return file;
                 }catch(Exception e){
                     System.out.println("Couldn't create the file.");
                     return null;
@@ -1508,7 +1508,7 @@ TimeRegulator {
             SpecifiedSaveLabelDoesNotExist {
 
         CertiLogicalTime certiProposedTime = _convertToCertiLogicalTime(proposedTime);
-        
+
         String proposedTimeInString=_printTimes(proposedTime);
         proposedTime =new Time(_director, Double.parseDouble(proposedTimeInString));
         _storeTimes("NER("+proposedTimeInString+")");
@@ -1632,12 +1632,12 @@ TimeRegulator {
             if (_hlaLookAHead > 0) {
                 // Time-stepped + lookahead > 0 => TAR.
                 // LastFoundEvent is the earlist event in calendar queue,
-                // We'd like to see if it is still the earlist one after 
+                // We'd like to see if it is still the earlist one after
                 // a registration of a rav-event.
 
                 // There are two cases:
-                // case 1: 
-                // WHILE time stamp of LastFoundEvent(proposedTime) > hlaNextPointInTime, 
+                // case 1:
+                // WHILE time stamp of LastFoundEvent(proposedTime) > hlaNextPointInTime,
                 // THEN TAR(hlaNextPointInTime) service is called.
                 //      Tick() doesn't stop Until it receives a TAG(hlaNextPointInTime),
                 //      At the end of tick,
@@ -1812,7 +1812,7 @@ TimeRegulator {
 
         Iterator<Entry<String, LinkedList<TimedEvent>>> it = _fromFederationEvents
                 .entrySet().iterator();
-        
+
         if(_debugging){
             _debug("starting _putReflectedAttributesOnHlaSubscribers() - current status - " +
         "t_ptII = " + _printTimes(_director.getModelTime())+ "; t_hla = " + _federateAmbassador.logicalTimeHLA );
@@ -1826,7 +1826,7 @@ TimeRegulator {
             while (events.size() > 0) {
 
                 TimedEvent ravevent = events.get(0);
-                
+
                 // All rav-events received by HlaSubscriber actors, RAV(tau) with tau < hlaCurrentTime
                 // are put in the event queue with timestamp hlaCurrentTime
                 if (_timeStepped) {
@@ -1834,8 +1834,8 @@ TimeRegulator {
                 }
                 // If any rav-event received by HlaSubscriber actors, RAV(tau) with tau < ptolemy startTime
                 // are put in the event queue with timestamp startTime
-                //FIXME: Or should it be an exception because there is something wrong with 
-                //the overall simulation ?? 
+                //FIXME: Or should it be an exception because there is something wrong with
+                //the overall simulation ??
                 if (ravevent.timeStamp.compareTo(_director.getModelStartTime()) < 0) {
                     ravevent.timeStamp = _director.getModelStartTime();
                 }
@@ -1847,7 +1847,7 @@ TimeRegulator {
                 HlaSubscriber hs = (HlaSubscriber) tiop.getContainer();
 
                 hs.putReflectedHlaAttribute(ravevent);
-                
+
                 if (_debugging) {
                     _debug("    _putReflectedAttributesOnHlaSubscribers() - put Event: folRAV( Hla attribute = "+hs.getDisplayName()
                             +", timestamp = "+ _printTimes(ravevent.timeStamp) +") "+ " in the Hla Subscriber"
@@ -1864,7 +1864,7 @@ TimeRegulator {
     /**
      * Get hlaNextPointInTime in HLA to advance to when TAR is used.
      * hlaNextPointInTime = hlaCurrentTime + Ts.
-     * @return next point in time to advance to. 
+     * @return next point in time to advance to.
      * @throws IllegalActionException if hlaTimeStep is NULL.
      */
     private Time _getHlaNextPointInTime() throws IllegalActionException {
@@ -1885,8 +1885,8 @@ TimeRegulator {
     }
 
     /**
-     * Initialize the variables that are going to be used to create the reports 
-     * in the files {@link #_file} and {@link #_csvFile} 
+     * Initialize the variables that are going to be used to create the reports
+     * in the files {@link #_file} and {@link #_csvFile}
      */
     private void _initializeReportVariables(){
         _numberOfTARs=0;
@@ -1898,11 +1898,11 @@ TimeRegulator {
         _numberOfOtherTicks=0;
         _numberOfAttributesToPublish=_hlaAttributesToPublish.size();
         _nameOfTheAttributesToPublish= new String[_numberOfAttributesToPublish];
-        Object attributesToPublish[]= _hlaAttributesToPublish.keySet().toArray();  
+        Object attributesToPublish[]= _hlaAttributesToPublish.keySet().toArray();
         System.out.println("Attributes to publish: ");
         _UAVsValues=new StringBuffer[_numberOfAttributesToPublish];
         _RAVsValues=null;
-        for(int i = 0; i < _numberOfAttributesToPublish; i ++){        
+        for(int i = 0; i < _numberOfAttributesToPublish; i ++){
             _nameOfTheAttributesToPublish[i]=attributesToPublish[i].toString();
             _UAVsValues[i]=new StringBuffer("");
             System.out.println(_nameOfTheAttributesToPublish[i]);
@@ -1919,22 +1919,22 @@ TimeRegulator {
         _numberOfRAVs=0;
         _numberOfUAVs=0;
     }
-    /**This function was created with the sole purpose of solving the 
-     * java problem with mathematical operations of real numbers. 
+    /**This function was created with the sole purpose of solving the
+     * java problem with mathematical operations of real numbers.
      * In time stepped systems, we used to have a situation where instead of,
      * for example, TAR(0.001), we had TAR(0.0010000001) or TAR(0.0009999999).
      * In order to prevent that, as we already know that a time value can't have
-     * more decimal digits than the time step + lookAhead, we round it 
-     * to this number of digits. 
+     * more decimal digits than the time step + lookAhead, we round it
+     * to this number of digits.
      * @param value The time value that is going to be rounded.
      * @return A double representing a rounded time value.
      */
     private double _roundDoubles(double value){
-        //Forcing the number to have the same amount of decimal digits 
+        //Forcing the number to have the same amount of decimal digits
         //than the time step;
         return Double.parseDouble(_printFormatedNumbers(value));
     }
-    
+
     private String _printFormatedNumbers(double value){
         DecimalFormat df = new DecimalFormat(_decimalFormat);
         df.setRoundingMode(RoundingMode.HALF_DOWN);
@@ -1955,7 +1955,7 @@ TimeRegulator {
             return _director.getModelTime();
         }
     }
-    
+
     private SuperdenseTime _getModelSuperdenseTime(){
         double currentTime = _director.getModelTime().getDoubleValue();
         currentTime = _roundDoubles(currentTime);
@@ -1967,7 +1967,7 @@ TimeRegulator {
             return new SuperdenseTime(_director.getModelTime(),_director.getMicrostep());
         }
     }
-    
+
     private void _storeTimes(String reason){
         try {
             String tHLA= _printTimes(_getHlaCurrentTime());
@@ -1975,15 +1975,15 @@ TimeRegulator {
             _tPTII.append(tPTII+";");
             _tHLA.append(tHLA+";");
             _reasonsToPrintTheTime.append(reason+";");
-            
+
         } catch (IllegalActionException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
         }
-        
+
     }
-    
-    
+
+
 
 
     ///////////////////////////////////////////////////////////////////
@@ -2033,37 +2033,37 @@ TimeRegulator {
     private Time _stopTime;
 
     /** Represents the number of next event request this federate has made.
-     * 
+     *
      * Event driven federates advance to the time-stamp of the next event. In order to complete the
      * advancement, they have to ask the federation's permission to do so using a NER call.
      */
     private int _numberOfNERs;
 
     /** Represents the number of time advance grants this federate has received.
-     * 
+     *
      * Federates have to ask permission to the federation in order to advance in time.
-     * If there is no events happening in an inferior time to the proposed one, the 
+     * If there is no events happening in an inferior time to the proposed one, the
      * federation sends a TAG to the federate and this last one advances in time.
      */
     private int _numberOfTAGs;
 
     /** Represents the number of time advance requests(TAR) this federate has made.
-     * 
+     *
      * Time-stepped federates advance with a fixed step in time. In order to complete the
      * advancement, they have to ask the federation's permission to do so using a TAR call.
      */
-    private int _numberOfTARs;        
+    private int _numberOfTARs;
 
     private double _runtime;
 
     private int _numberOfTicks2;
 
     private String _testsFolder;
-    
+
     private StringBuffer _tPTII;
-    
+
     private StringBuffer _tHLA;
-    
+
     private StringBuffer _reasonsToPrintTheTime;
 
     /** Represents a text file that is going to keep track of the number of HLA calls of the
@@ -2099,7 +2099,7 @@ TimeRegulator {
     private StringBuffer[] _RAVsValues;
     private StringBuffer _pRAVsTimes;
     private StringBuffer _folRAVsTimes;
-    /** Represents the instant when the simulation is fully started 
+    /** Represents the instant when the simulation is fully started
      * (when the last federate starts running).
      */
     private static double _startTime;
@@ -2184,7 +2184,7 @@ TimeRegulator {
                 byte[] rfspTag = EncodingHelpers
                         .encodeString(_synchronizationPointName);
                 _rtia.registerFederationSynchronizationPoint(
-                        _synchronizationPointName, rfspTag);                
+                        _synchronizationPointName, rfspTag);
             } catch (RTIexception e) {
                 throw new IllegalActionException(this, e, e.getMessage());
             }
@@ -2475,7 +2475,7 @@ TimeRegulator {
                 format.append("#");
             }
             _decimalFormat=format.toString();
-            
+
             _numberOfTicks.add(0);
 
 
@@ -2586,7 +2586,7 @@ TimeRegulator {
                                 }
                                 done = true;
                                 String attributeName = hs.getParameterName();
-                                
+
                                 String pRAVTimeStamp =_printTimes(te.timeStamp)+";";
                                 if(_numberOfRAVs>0 && (_pRAVsTimes.length() -_pRAVsTimes.lastIndexOf(pRAVTimeStamp))== pRAVTimeStamp.length()){
                                     int indexOfAttribute=0;
@@ -2602,16 +2602,16 @@ TimeRegulator {
                                     if(_numberOfRAVs<1){
                                         _numberOfAttributesSubscribedTo=_hlaAttributesSubscribedTo.size();
                                         _nameOfTheAttributesSubscribedTo= new String[_numberOfAttributesSubscribedTo];
-                                        Object attributesSubscribedTo[]= _hlaAttributesSubscribedTo.keySet().toArray(); 
+                                        Object attributesSubscribedTo[]= _hlaAttributesSubscribedTo.keySet().toArray();
                                         System.out.println("Attributes subscribed to: ");
                                         _RAVsValues= new StringBuffer[_numberOfAttributesSubscribedTo];
-                                        for(int y = 0; y < _numberOfAttributesSubscribedTo; y ++){        
+                                        for(int y = 0; y < _numberOfAttributesSubscribedTo; y ++){
                                             _nameOfTheAttributesSubscribedTo[y]=attributesSubscribedTo[y].toString();
                                            _RAVsValues[y]=new StringBuffer("");
                                             System.out.println(_nameOfTheAttributesSubscribedTo[y]);
                                         }
                                     }
-                                    
+
                                     int indexOfAttribute=0;
                                     for(int j = 0; j<_numberOfAttributesSubscribedTo;j++){
                                         if(_nameOfTheAttributesSubscribedTo[j].substring(_nameOfTheAttributesSubscribedTo[j].lastIndexOf("-"+attributeName)+1).equals(attributeName)){
@@ -2631,8 +2631,8 @@ TimeRegulator {
                                 }
                                 _numberOfRAVs++;
                                 //_RAVsValues=_RAVsValues + value.toString()+";";
-                                        
-            
+
+
                             } catch (IllegalActionException e) {
                                 e.printStackTrace();
                             }

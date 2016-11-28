@@ -91,7 +91,7 @@ public class ApplyLayoutRequest extends ChangeRequest {
         _connectionEntries.add(new ConnectionEntry(relation, head, tail,
                 bendPoints));
     }
-    
+
     /**
      * Add a new connection routing change to the request.
      *
@@ -157,7 +157,7 @@ public class ApplyLayoutRequest extends ChangeRequest {
             undoLayoutAction.addCurve(new CurveEntry(entry._transition, token
                     .doubleValue()));
             exitAngleParam.setExpression(Double.toString(entry._exitAngle));
-            
+
             Attribute attribute = entry._transition.getAttribute("_layoutHint");
             if (attribute != null) {
                 // FIXME undo from arcs to splines does not work
@@ -220,7 +220,7 @@ public class ApplyLayoutRequest extends ChangeRequest {
             this._bendPoints = bendPoints;
             this._labelLocation = labelLocation;
         }
-        
+
         ConnectionEntry(Relation relation, NamedObj head, NamedObj tail,
                 double[] bendPoints) {
             this(relation, head, tail, bendPoints, null);

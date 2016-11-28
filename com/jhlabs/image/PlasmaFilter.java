@@ -55,7 +55,7 @@ public class PlasmaFilter extends WholeImageFilter {
     /** Set the scaling.
      *  @param scaling The scaling.
      *  @see #getScaling()
-     */   
+     */
     public void setScaling(float scaling) {
         this.scaling = scaling;
     }

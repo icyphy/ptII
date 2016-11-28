@@ -704,7 +704,7 @@ public class FMIModelDescription {
 
         /** The Ptolemy state port for this state. */
         public TypedIOPort port;
-        
+
         /** The quantum value of the state. */
                 public double quantum;
 

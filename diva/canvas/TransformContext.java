@@ -235,7 +235,7 @@ public class TransformContext {
     }
 
     /** Pre-concatenate this transform context with the given transform.
-     *  @param at The given transform   
+     *  @param at The given transform
      */
     public void preConcatenate(AffineTransform at) {
         _transform.preConcatenate(at);

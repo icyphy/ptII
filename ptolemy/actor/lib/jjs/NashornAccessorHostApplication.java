@@ -43,17 +43,17 @@ import ptolemy.util.StringUtilities;
 ///////////////////////////////////////////////////////////////////
 //// NashornAccessorHostApplication
 
-/** 
+/**
  * Instantiate and Invoke Accessors using Nashorn.
  * Evaluate the arguments, which are expected to be JavaScript files
- * that define Composite Accessors. 
- * 
+ * that define Composite Accessors.
+ *
  * <p>The Nashorn and Cape Code Accessor hosts are similar in that they
  * both use Nashorn as the underlying JavaScript engine.  They also
  * both can invoke JavaScript accessors that use modules defined in
  * $PTII/ptolemy/actor/lib/jjs/modules.  They also both share
  * $PTII/ptolemy/actor/lib/jjs/capeCodeHost.js.</p>
- * 
+ *
  * <p>The Nashorn Accessor Host differs from the Cape Code Accessor
  * Host in that Cape Code Accessor Host reads in Ptolemy II .xml MoML
  * files and can invoke regular Ptolemy II actors written in Java such
@@ -64,7 +64,7 @@ import ptolemy.util.StringUtilities;
  * code implemented in Java.</p>
  *
  * <p>Note that by using code generation, Cape Code .xml MoML files
- * can be converted in to .js Composite Accessor files provided that 
+ * can be converted in to .js Composite Accessor files provided that
  * the .xml file only uses JavaScript and JSAccessor actors.</p>
  *
  * <dl>
@@ -87,7 +87,7 @@ import ptolemy.util.StringUtilities;
  * name either or regular JavaScript files.</p>
 
  * <p>To invoke:</p>
- * <pre> 
+ * <pre>
  * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -accessor -timeout 10000 hosts/nashorn/test/testNashornHost.js)
  * </pre>
  *
@@ -110,7 +110,7 @@ import ptolemy.util.StringUtilities;
 public class NashornAccessorHostApplication {
 
     /** Evaluate the files named by the arguments.
-     *  @param args An array of one or more file names.  See the class comment for 
+     *  @param args An array of one or more file names.  See the class comment for
      *  the syntax.
      *  @exception IllegalActionException If the Nashorn engine cannot be found.
      *  @exception IOException If a file cannot be read or closed.
@@ -142,7 +142,7 @@ public class NashornAccessorHostApplication {
                        || args[i].equals("--h")
                        || args[i].equals("-help")
                        || args[i].equals("--help")) {
-                help = true;                
+                help = true;
             } else if (args[i].equals("-timeout")
                        || args[i].equals("--timeout")) {
                 if (i+1 <= args.length) {
@@ -163,7 +163,7 @@ public class NashornAccessorHostApplication {
                              + "; java -classpath $PTII ptolemy.actor.lib.jjs.NashornAccessorHostApplication "
                              + Arrays.toString(args)
                              + ")");
-            
+
         }
         if (help) {
             _usage();

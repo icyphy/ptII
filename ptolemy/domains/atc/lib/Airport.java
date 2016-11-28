@@ -51,14 +51,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 /** This actor receives a record token which shows an airplane decides to fly.
  * Therefore, this actor just sends that to a proper direction based on the neighbors (of the airport)
  * If the destination track (first track in the airplane's flight map is unavailable,
- * then airport try to send it after a period of time. 
+ * then airport try to send it after a period of time.
  *  @author Maryam Bagheri
  *  @version $Id$
  *  @since Ptolemy II 10.0
  *  @Pt.ProposedRating Red (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */
-public class Airport extends TypedAtomicActor{ 
+public class Airport extends TypedAtomicActor{
 
     /** Construct an actor with the given container and name.
      *  @param container The container.
@@ -71,32 +71,32 @@ public class Airport extends TypedAtomicActor{
     public Airport(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-       
+
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(BaseType.RECORD);
-               
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.RECORD);
         output.setMultiport(true);
-       
+
         delay= new Parameter(this, "delay");
         delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("1");
-       
+
         takeOff= new Parameter(this, "takeOff");
         takeOff.setTypeEquals(BaseType.DOUBLE);
         takeOff.setExpression("1");
-       
+
         airportId= new Parameter(this, "airportId");
         airportId.setTypeEquals(BaseType.INT);
         airportId.setExpression("-1");
-       
+
         connectedTracks = new Parameter(this, "connectedTracks");
         connectedTracks.setExpression("{}");
         connectedTracks.setTypeEquals(new ArrayType(BaseType.INT));
-       
+
     }
-   
+
     /** The input port, which is of type record token. */
     public TypedIOPort input;
 
@@ -114,8 +114,8 @@ public class Airport extends TypedAtomicActor{
 
     /** A double with the initial default value of 1. */
     public Parameter takeOff;
-   
-   
+
+
     /** Fire the actor.
      *  @exception IllegalActionException If thrown by the baseclass
      *  or if there is a problem accessing the ports or parameters.
@@ -151,7 +151,7 @@ public class Airport extends TypedAtomicActor{
                 _transitExpires = _transitExpires.add(additionalDelay);
                 _director.fireAt(this, _transitExpires);
             }
-                  
+
             if (_inTransit==null &&  _airplanes.size()!=0) {
                 _inTransit=_airplanes.get(0);
                 double additionalDelay = ((DoubleToken)takeOff.getToken()).doubleValue();
@@ -162,9 +162,9 @@ public class Airport extends TypedAtomicActor{
                 _director.fireAt(this, _transitExpires);
             }
         }
-           
+
         if (input.hasToken(0))
-            { 
+            {
                 RecordToken airplane=(RecordToken) input.get(0);
                 Map<String, Token> Aircraft=new TreeMap<String, Token>();
                 Aircraft.put("aircraftId", airplane.get("aircraftId"));
@@ -178,7 +178,7 @@ public class Airport extends TypedAtomicActor{
                 Aircraft.put("dipartureTimeFromAirport", new DoubleToken(arrivalTime));
                 //end of new added...
                 _airplanes.add(new RecordToken(Aircraft));
-          
+
                 if (_inTransit==null)
                     {
                         double additionalDelay = ((DoubleToken)takeOff.getToken()).doubleValue();
@@ -191,7 +191,7 @@ public class Airport extends TypedAtomicActor{
                     }
             }
     }
-   
+
     /** Initialize this actor.  Derived classes override this method
      *  to perform actions that should occur once at the beginning of
      *  an execution, but after type resolution.  Derived classes can
@@ -208,9 +208,9 @@ public class Airport extends TypedAtomicActor{
         if (_Tracks.length()==0)
             throw new IllegalActionException("there is no connected track to the airport in the airport's parameters ");
         _airplanes=new ArrayList<RecordToken>();
-       
+
     }
-   
+
 
     private int _findDirection(RecordToken airplane) throws IllegalActionException{
         ArrayToken flightMap=(ArrayToken)airplane.get("flightMap");
@@ -223,7 +223,7 @@ public class Airport extends TypedAtomicActor{
         }
         throw new IllegalActionException("There is no route from the airport to the first track in flightMap");
     }
-   
+
     private Token _inTransit;
     private Time _transitExpires;
     private Director _director;

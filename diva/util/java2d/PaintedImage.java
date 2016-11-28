@@ -57,7 +57,7 @@ public class PaintedImage implements PaintedObject, ImageObserver {
     /** Construct a painted image.
      *  @param image The image
      *  @param bounds The bounds
-     */   
+     */
     public PaintedImage(Image image, Rectangle2D bounds) {
         _image = image;
         _bounds = bounds;

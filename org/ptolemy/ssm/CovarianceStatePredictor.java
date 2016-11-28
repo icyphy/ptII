@@ -1,4 +1,4 @@
-/* 
+/*
  Copyright (c) 1998-2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -55,7 +55,7 @@ import ptolemy.math.DoubleMatrixMath;
  Implementation of StatePredictor witch uses acceleration control input.
 
  <p>
- This actor reads a single record(x, y, vx, vy, covariance) from the port <i>current_state</i> 
+ This actor reads a single record(x, y, vx, vy, covariance) from the port <i>current_state</i>
  and an array of vector(acc_x, acc_y) from the port "control_inputs".
  Output is an array of states(x, y, vx, vy, covariance) whose length is <i>prediction horizon</i>.
  Output states are calculated using a state space model given by
@@ -65,9 +65,9 @@ import ptolemy.math.DoubleMatrixMath;
     V_{t+1} = V_t + Acc_t
  C_{t+1} = A*C_t*AT
  </pre>
- <p>where X is the state vector(P: position, V: velocity),  Acc is an acceleration input vector, 
+ <p>where X is the state vector(P: position, V: velocity),  Acc is an acceleration input vector,
  C is the covariance matrix of X, and A is the jacobian of transition function f(X).
- If the length of control_inputs is shorter than prediction horizon, 
+ If the length of control_inputs is shorter than prediction horizon,
  the last value of cotrol_inputs is used until the step of prediction horizon.
  </p>
 
@@ -75,7 +75,7 @@ import ptolemy.math.DoubleMatrixMath;
  @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (shuhei)
- @Pt.AcceptedRating 
+ @Pt.AcceptedRating
 
  */
 public class CovarianceStatePredictor extends TypedAtomicActor {
@@ -108,13 +108,13 @@ public class CovarianceStatePredictor extends TypedAtomicActor {
         }
         _labels[names.length()-1] =  ((StringToken) names.getElement(names.length()-1)).stringValue();
         _types[names.length()-1] = BaseType.DOUBLE_MATRIX; // preset to be double
-        
+
         currentState.setTypeEquals(new RecordType(_labels, _types));
 
         // an array of predicted states of a robot
         predictedStates = new TypedIOPort(this, "predicted_states", false, true);
         predictedStates.setTypeEquals(new ArrayType(new RecordType(_labels, _types)));
-         
+
         _timeHorizon = 1;
         timeHorizon = new PortParameter(this, "predictionHorizon");
         timeHorizon.setExpression("1");
@@ -123,7 +123,7 @@ public class CovarianceStatePredictor extends TypedAtomicActor {
         .setExpression("SOUTH");
         new Parameter(timeHorizon.getPort(), "_showName").setExpression("true");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
@@ -142,7 +142,7 @@ public class CovarianceStatePredictor extends TypedAtomicActor {
      */
     public TypedIOPort predictedStates;
 
-    /** 
+    /**
      * The time-horizon which defines the number of steps of prediction.
      */
     public PortParameter timeHorizon;
@@ -188,11 +188,11 @@ public class CovarianceStatePredictor extends TypedAtomicActor {
         predictedStates.send(0, new ArrayToken(_predictedStates));
     }
 
-    
+
     @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
-        
+
         if (!controlInput.hasToken(0) || !currentState.hasToken(0)) {
             return false;
         }
@@ -207,7 +207,7 @@ public class CovarianceStatePredictor extends TypedAtomicActor {
     private int  _timeHorizon;
     private Type[] _types;
     private double[][] _uValue;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
     private void _calcPredict() throws IllegalActionException {
@@ -235,7 +235,7 @@ public class CovarianceStatePredictor extends TypedAtomicActor {
         _currentCovariance = DoubleMatrixMath.multiply(transitionMatrix, _currentCovariance);
         result_values[4] = new DoubleMatrixToken(_currentCovariance);
         _predictedStates[predict_step] = new RecordToken(_labels, result_values);
-        
+
         for (predict_step = 1; predict_step < _timeHorizon; predict_step++) {
             int control_step = Math.min(_uValue.length-1, predict_step);
             //If array length of _uValue is shorter than TimeHorizon, the last _uValue is held until the last of prediction step.

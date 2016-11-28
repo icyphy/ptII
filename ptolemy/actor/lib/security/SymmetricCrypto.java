@@ -78,7 +78,7 @@ public class SymmetricCrypto extends TypedAtomicActor {
     public SymmetricCrypto(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);
-        
+
         input = new TypedIOPort(this, "input", true, false);
         input.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
 
@@ -92,17 +92,17 @@ public class SymmetricCrypto extends TypedAtomicActor {
         operationMode.addChoice("encrypt");
         operationMode.addChoice("decrypt");
         operationMode.setExpression("encrypt");
-        
+
         algorithm = new StringParameter(this, "algorithm");
         algorithm.addChoice("AES");
         algorithm.addChoice("DES");
         algorithm.setExpression("AES");
-        
+
         cipherMode = new StringParameter(this, "cipherMode");
         cipherMode.addChoice("CBC");
         cipherMode.addChoice("CFB");
         cipherMode.setExpression("CBC");
-        
+
         padding = new StringParameter(this, "padding");
         padding.addChoice("NoPadding");
         padding.addChoice("PKCS5Padding");
@@ -114,7 +114,7 @@ public class SymmetricCrypto extends TypedAtomicActor {
         macAlgorithm.addChoice("SHA-1");
         macAlgorithm.addChoice("SHA-256");
         macAlgorithm.setExpression("SHA-256");
-        
+
         key = new PortParameter(this, "key");
         key.setExpression("{0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub,0ub}");
         key.setTypeEquals(new ArrayType(BaseType.UNSIGNED_BYTE));
@@ -126,7 +126,7 @@ public class SymmetricCrypto extends TypedAtomicActor {
     /** The key to be used by this actor to encrypt/decrypt the data.
      */
     public PortParameter key;
-    
+
     /** The operation mode of the cipher, either encrypt or decrypt.
      */
     public StringParameter operationMode;
@@ -142,20 +142,20 @@ public class SymmetricCrypto extends TypedAtomicActor {
     /** The padding to be used for the cipher.
      */
     public StringParameter padding;
-    
+
     /** The secure hash algorithm for message authentication code (MAC)
      *  to be used for this actor.
      */
     public StringParameter macAlgorithm;
-    
+
     /** The input data (for encrypt mode) or encrypted data (for decrypt mode).
      */
     public TypedIOPort input;
-    
+
     /** The encrypted data (for encrypt mode) or decrypted data (for decrypt mode).
      */
     public TypedIOPort output;
-    
+
     /** The error (e.g. integrity check error for MAC)
      */
     public TypedIOPort error;
@@ -216,7 +216,7 @@ public class SymmetricCrypto extends TypedAtomicActor {
     public void fire() throws IllegalActionException {
         // AES block size - 128bit = 16byte
         // DES block size - 64bit - 8byte
-        
+
         int blockSize = 0;
 
         if (_algorithm.equals("AES")) {
@@ -229,19 +229,19 @@ public class SymmetricCrypto extends TypedAtomicActor {
         byte[] initVector;
         if (_isEncryption) {
             int opmode = Cipher.ENCRYPT_MODE;
-        
+
             // generate initialization vector
             SecureRandom random = new SecureRandom();
             byte seed[] = random.generateSeed(blockSize);
             random.setSeed(seed);
             initVector = new byte[blockSize];
             random.nextBytes(initVector);
-            
+
             IvParameterSpec ivspec = new IvParameterSpec(initVector);
             byte[] keyBytes = ArrayToken
                     .arrayTokenToUnsignedByteArray((ArrayToken)key.getToken());
             SecretKeySpec secretKeySpec = new SecretKeySpec(keyBytes, _algorithm);
-            
+
             _initCipher(opmode, ivspec, secretKeySpec);
             super.fire(); // super.fire() will print out debugging messages.
 
@@ -249,13 +249,13 @@ public class SymmetricCrypto extends TypedAtomicActor {
                 if (input.hasToken(0)) {
                     byte[] dataBytes = ArrayToken
                             .arrayTokenToUnsignedByteArray((ArrayToken) input.get(0));
-                    
+
                     if (_messageDigest != null) {
                         byte[] digestedBytes = _messageDigest.digest(dataBytes);
-                        
+
                         dataBytes = _concatByteArrays(dataBytes, digestedBytes);
                     }
-                    
+
                     dataBytes = _process(dataBytes);
                     byte[] outputBytes = _concatByteArrays(initVector, dataBytes);
                     output.send(0,
@@ -268,7 +268,7 @@ public class SymmetricCrypto extends TypedAtomicActor {
         }
         else {
             int opmode = Cipher.DECRYPT_MODE;
-            
+
             if (input.hasToken(0)) {
                 byte[] inputBytes = ArrayToken
                         .arrayTokenToUnsignedByteArray((ArrayToken) input.get(0));
@@ -280,10 +280,10 @@ public class SymmetricCrypto extends TypedAtomicActor {
                 byte[] keyBytes = ArrayToken
                         .arrayTokenToUnsignedByteArray((ArrayToken)key.getToken());
                 SecretKeySpec secretKeySpec = new SecretKeySpec(keyBytes, _algorithm);
-                
+
                 _initCipher(opmode, ivspec, secretKeySpec);
                 super.fire(); // super.fire() will print out debugging messages.
-                
+
                 byte[] decryptedBytes = _process(encryptedBytes);
 
                 if (_messageDigest == null) {
@@ -310,11 +310,11 @@ public class SymmetricCrypto extends TypedAtomicActor {
                         }
                     }
                 }
-                
+
             }
         }
     }
-    
+
     /** Override the base class to initialize the index.
      *  @exception IllegalActionException If the parent class throws it,
      *   or if the <i>values</i> parameter is not a row vector, or if the
@@ -340,7 +340,7 @@ public class SymmetricCrypto extends TypedAtomicActor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                    Private Variables                    //// 
+    ////                    Private Variables                    ////
 
     /** The cipher that will be used to process the data.
      */
@@ -358,7 +358,7 @@ public class SymmetricCrypto extends TypedAtomicActor {
     private MessageDigest _messageDigest;
     /** Whether encrypt or decrypt the input data. */
     private boolean _isEncryption;
-    
+
 
     ///////////////////////////////////////////////////////////////////
     ////                    Private  Methods                      ////
@@ -393,7 +393,7 @@ public class SymmetricCrypto extends TypedAtomicActor {
             throw new IllegalActionException(this, e1,
                     "Failed to get instance of cipher");
         }
-        
+
         try {
             _cipher.init(opmode, secretKeySpec, ivspec);
         }
@@ -407,7 +407,7 @@ public class SymmetricCrypto extends TypedAtomicActor {
                     "Failed to initialize crypto");
         }
     }
-    
+
     private byte[] _concatByteArrays(byte[] firstArray, byte[] secondArray) {
         byte[] resultArray = Arrays.copyOf(firstArray, firstArray.length + secondArray.length);
         System.arraycopy(secondArray, 0, resultArray, firstArray.length, secondArray.length);

@@ -1,7 +1,7 @@
 /* Timer.c - Java Native Interface to the blink app.
 
 
-Authors: 
+Authors:
 Version $$
 */
 void Ledc_StdControl_init();

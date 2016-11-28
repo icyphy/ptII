@@ -62,7 +62,7 @@ public class ReloadAccessors {
      *  <pre>
      *  $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors $PTII/org/terraswarm/accessor/demo/Audio/Audio.xml
      *  </pre>
-     * 
+     *
      *  <p>To reload all the accessors, use
      *  <code>$PTII/bin/reloadAllAccessors</code>.  </p>
      *
@@ -124,13 +124,13 @@ public class ReloadAccessors {
     }
 
     static {
-        try { 
+        try {
             Class accessorClass = Class.forName("org.terraswarm.accessor.JSAccessor");
             _accessorReloader = accessorClass.getDeclaredMethod("reloadAllAccessors", new Class [] {CompositeEntity.class});
         } catch (ClassNotFoundException ex) {
-            throw new ExceptionInInitializerError(ex); 
+            throw new ExceptionInInitializerError(ex);
         } catch (NoSuchMethodException ex2) {
-            throw new ExceptionInInitializerError(ex2); 
+            throw new ExceptionInInitializerError(ex2);
         }
     }
 

@@ -42,7 +42,7 @@ import java.io.File;
  */
 public class OpenCVLoader {
     /** Load the OpenCV Shared library.
-     *  @param nativeLibraryName The name of the library, without a 
+     *  @param nativeLibraryName The name of the library, without a
      *  leading "lib" or a trailing . suffix. Typically
      *  Core.NATIVE_LIBRARY_NAME.
      *  @return the library that was loaded if any.

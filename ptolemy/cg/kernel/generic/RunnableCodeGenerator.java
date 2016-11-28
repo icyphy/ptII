@@ -240,7 +240,7 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
-    
+
     /** The initial default value of the <i>runCommand</i> parameter.
      *  The constructor of a derived class may compare the value of <i>runCommand</i>
      *  and this variable and decide to override the value of the <i>runCommand</i>

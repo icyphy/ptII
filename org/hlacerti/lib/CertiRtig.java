@@ -259,8 +259,8 @@ public class CertiRtig extends NamedObj {
             System.out.println("CertiRtig: " + _hlaManager.getFullName() + ": About to terminate rtig.");
             try {
                 // Close the stdin of the subprocess.
-                _process.getOutputStream().close();                
-                
+                _process.getOutputStream().close();
+
             } catch (NullPointerException ex) {
                 // Ignore, _process was set to null elsewhere.
             } catch (IOException io) {

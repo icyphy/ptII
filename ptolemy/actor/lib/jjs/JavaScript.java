@@ -438,7 +438,7 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (bilung)
  */
 public class JavaScript extends TypedAtomicActor {
-    
+
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the <i>error</i> port and the <i>script</i> port parameter.
@@ -472,7 +472,7 @@ public class JavaScript extends TypedAtomicActor {
         // Causes no end of headaches, and anyway, the script should
         // reference parameters using getParameter('name');
         script.setSuppressVariableSubstitution(true);
-        
+
         ParameterPort scriptIn = script.getPort();
         cardinal = new StringAttribute(scriptIn, "_cardinal");
         cardinal.setExpression("SOUTH");
@@ -655,7 +655,7 @@ public class JavaScript extends TypedAtomicActor {
             engine.put("accessor", restrictedInterface);
             engine.put("actor", restrictedInterface);
         }
-        
+
         try {
             engine.eval(FileUtilities.openForReading(
                     "$CLASSPATH/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
@@ -673,7 +673,7 @@ public class JavaScript extends TypedAtomicActor {
 
             if (throwable instanceof ClassNotFoundException) {
                 // FIXME: Temporary code (2015-08-15)
-                
+
                 // Attempting to debug why, after 348 tests, these tests
                 // can't find the Ptolemy classes:
 
@@ -861,7 +861,7 @@ public class JavaScript extends TypedAtomicActor {
         // the JavaScript functions in a separate thread, for some reason.
         // Need to ensure this is atomic w.r.t. callbacks.
         super.fire();
-        
+
         if (_debugging) {
             // Set a global variable for debugging.
             _engine.put("_debug", true);
@@ -969,7 +969,7 @@ public class JavaScript extends TypedAtomicActor {
                 }
             }
         }
-        
+
         // Mark that we are in the fire() method, enabling outputs to be
         // sent immediately.
         _inFire = true;
@@ -1051,7 +1051,7 @@ public class JavaScript extends TypedAtomicActor {
             _inFire = false;
         }
     }
-    
+
     /** Return the string contents of the file at the specified location.
      *  @param path The location.  This is used in localFunctions.js.
      *  @return The contents as a string, assuming the default encoding of
@@ -1094,7 +1094,7 @@ public class JavaScript extends TypedAtomicActor {
         }
         return null;
     }
-    
+
     /** Get a resource, which may be a file name or a URL, and return the
      *  value of the resource as a string. If this instance of JavaScript
      *  is restricted (e.g., it is an accessor), then restrict relative file
@@ -1138,7 +1138,7 @@ public class JavaScript extends TypedAtomicActor {
             }
             baseDirectory = URIAttribute.getModelURI(this);
         }
-        
+
         try {
             URL url = FileUtilities.nameToURL(uri, baseDirectory, getClass().getClassLoader());
             BufferedReader in = null;
@@ -1172,7 +1172,7 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         _directorThread = Thread.currentThread();
 
         // Create proxy for ports that don't already have one.
@@ -1254,12 +1254,12 @@ public class JavaScript extends TypedAtomicActor {
      *  Otherwise, null will be returned.
      *  If a Parameter already exists with the same name, then convert
      *  it to a PortParameter and preserve and return its value.
-     *  
+     *
      *  The options can also include a field
      *  "visibility" with one of the values "none", "expert",
      *  "noteditable" or "full" (the default). This is a hint
      *  to restrict visibility that a user has of the port.
-     *  
+     *
      *  @param name The name of the port.
      *  @param options The options, or null to accept the defaults.
      *   To give options, this argument must implement the Map interface.
@@ -1354,7 +1354,7 @@ public class JavaScript extends TypedAtomicActor {
                 }
             }
         }
-        
+
         if (options instanceof Map) {
             // If the port has its own type already (a TypeAttribute),
             // do not override it.
@@ -1430,7 +1430,7 @@ public class JavaScript extends TypedAtomicActor {
         port.setInput(true);
         return result;
     }
-    
+
     /** Invoke the specified function in the fire() method as soon as possible.
      *  If this is called within the director thread and we are currently inside the
      *  fire() function, then invoke the function immediately. Otherwise, defer it using
@@ -1856,7 +1856,7 @@ public class JavaScript extends TypedAtomicActor {
         _setTimeout(function, milliseconds, id);
         return id;
     }
-    
+
     /** Convert the specified array into a native JavaScript array.
      *  @param array The array to convert.
      *  @return The native JavaScript array.
@@ -1902,7 +1902,7 @@ public class JavaScript extends TypedAtomicActor {
             // The instance version removes input handlers, invokes wrapup
             // on contained accessors, and invokes exports.wrapup(), if defined.
             _invokeMethodInContext(_instance, "wrapup");
-            
+
             if (_pendingTimeoutIDs.size() > 0) {
                 String message = "WARNING: "
                         + getName()
@@ -2054,7 +2054,7 @@ public class JavaScript extends TypedAtomicActor {
 
     /** The exports object defined in the script that is evaluated. */
     protected Object _exports;
-    
+
     /** Initial script as a token. */
     protected static StringToken _INITIAL_SCRIPT = new StringToken(
             "// Put your JavaScript program here.\n"
@@ -2271,7 +2271,7 @@ public class JavaScript extends TypedAtomicActor {
     /** If the second argument is true, mark the first argument
      *  as requiring its value to be JSON. The mark has the form
      *  of a (non-persistent) singleton parameter named "_JSON".
-     *  
+     *
      *  @param typeable The object to mark.
      *  @param JSONmode Whether to mark it.
      *  @throws NameDuplicationException Not thrown.
@@ -2292,7 +2292,7 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
     }
-    
+
     /** Provide an input value (a token) to the specified input name.
      *  This will convert the token to a suitable form.
      *  @param name The input name.
@@ -2320,7 +2320,7 @@ public class JavaScript extends TypedAtomicActor {
             final int milliseconds, final Integer id) {
             // Invoke the function.
         function.run();
-        
+
         // If the above function does not cancel the interval, reschedule it.
         if (_pendingTimeoutFunctions.get(id) == null) {
             // The callback function itself may cancel the interval.
@@ -2406,7 +2406,7 @@ public class JavaScript extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Set the port spontaneity if the options argument includes a
      *  "spontaneous" field with one of the values "true" or "false".
      *  @param options The options map.
@@ -2445,7 +2445,7 @@ public class JavaScript extends TypedAtomicActor {
         if (visibility instanceof String) {
             String generic = ((String) visibility).trim().toLowerCase();
             boolean hide = false;
-    
+
             switch (generic) {
             case "none":
                 if (parameter != null) {
@@ -2625,7 +2625,7 @@ public class JavaScript extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                        Private Variables                  ////
-    
+
     /** The director thread. This is set in initialize() and unset in wrapup. */
     private Thread _directorThread;
 
@@ -2636,7 +2636,7 @@ public class JavaScript extends TypedAtomicActor {
      *  method as soon as possible.
      */
     private ConcurrentLinkedQueue<Runnable> _pendingCallbacks = new ConcurrentLinkedQueue<Runnable>();
-    
+
     /** Map from timeout ID to pending timeout functions. */
     private Map<Integer, Runnable> _pendingTimeoutFunctions = new HashMap<Integer, Runnable>();
 
@@ -2648,7 +2648,7 @@ public class JavaScript extends TypedAtomicActor {
 
     /** Map of proxies for ports and parameters by name */
     private HashMap<String, PortOrParameterProxy> _proxiesByName;
-    
+
     /** Flag indicating that timeoutID should be removed. */
     private boolean _removePendingIntervalFunction = true;
 
@@ -2702,7 +2702,7 @@ public class JavaScript extends TypedAtomicActor {
                 return (_port.getAttribute("_JSON") != null);
             }
         }
-        
+
         /** Get the current value of the input port or a parameter.
          *  If it is a ParameterPort, then retrieve the value
          *  from the corresponding parameter instead (the fire() method
@@ -2818,9 +2818,9 @@ public class JavaScript extends TypedAtomicActor {
                     // The JavaScript actor handles that.
                     _invokeMethodInContext(_instance, "superSend", _port.getName(), value, channelIndex);
                 } else {
-                    // Not currently firing. 
+                    // Not currently firing.
                     // Enqueue runnable object to be invoked upon the next firing.
-                    
+
                     // Request a firing at the current time.
                     // If the director is synchronized to real time, that will be real
                     // time, not the current model time. This allows the director to advance
@@ -2834,7 +2834,7 @@ public class JavaScript extends TypedAtomicActor {
                     final Time now = getDirector().fireAtCurrentTime(JavaScript.this);
                     final Integer id = Integer.valueOf(_timeoutCount++);
                     final Runnable function = new DeferredSend(this, channelIndex, data, value);
-                    
+
                     // Record the callback function indexed by ID.
                     _pendingTimeoutFunctions.put(id, function);
 
@@ -2894,7 +2894,7 @@ public class JavaScript extends TypedAtomicActor {
         /** The port that is proxied, or null if it's a parameter. */
         protected TypedIOPort _port;
     }
-    
+
     /** Runnable object intended to be run inside of the fire method to
      *  send out a token that was attempted to be send out at an earlier
      *  time, asynchronous with fire.
@@ -2902,7 +2902,7 @@ public class JavaScript extends TypedAtomicActor {
     public class DeferredSend implements Runnable {
 
             /** Construct an object that defers a send operation.
-             * @param proxy A proxy corresponding to the port or parameter. 
+             * @param proxy A proxy corresponding to the port or parameter.
              * @param channelIndex The channel to send data on.
              * @param data The data token to send through the port or update the parameter with.
          * @param value The JavaScript value to pass back when the send actually occurs.
@@ -2916,7 +2916,7 @@ public class JavaScript extends TypedAtomicActor {
         }
 
         /** Invoke send on the port or parameter proxy.
-         */ 
+         */
         public void run() {
             try {
                 _proxy.send(_channelIndex, _token, _value);

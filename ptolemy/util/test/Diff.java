@@ -43,7 +43,7 @@ public class Diff {
     public static String diff(String aString, String bString) {
         String systemEol = System.getProperty("line.separator");
         // since a string my be loaded from a file
-        // that was saved on a different platform we must 
+        // that was saved on a different platform we must
         // allow any valid line separator to split the string
         String eol = "\r\n?|\n";
         String[] aStringSplit = aString.split(eol);

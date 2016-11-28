@@ -159,7 +159,7 @@ public class JSONToToken extends Converter {
                         double result = Double.parseDouble(input);
                         return new DoubleToken(result);
                     } catch (NumberFormatException e) {
-                        throw new IllegalActionException("Invalid JSON: " + input); 
+                        throw new IllegalActionException("Invalid JSON: " + input);
                     }
                 }
             }

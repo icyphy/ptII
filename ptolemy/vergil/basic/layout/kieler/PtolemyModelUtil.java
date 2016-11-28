@@ -244,8 +244,8 @@ public final class PtolemyModelUtil {
         return state.isInitialState.getValueAsString()
                 .equals(Boolean.TRUE.toString());
     }
-    
-    /** 
+
+    /**
      * Return true if the state is a final state.
      * @param state a {@link State} to test
      * @return whether the passed state has the isFinalState parameter set to true.

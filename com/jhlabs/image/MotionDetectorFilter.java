@@ -202,7 +202,7 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
             return null;
         }
     }
-    
+
     /** Return whether the filter will modify the provided image with a visual
      *  indication of the amount and location of the motion.
      *  @return True if the image will be modified (the default).
@@ -210,7 +210,7 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
     public boolean getModifyImage() {
         return _modify;
     }
-    
+
     /** Return the motion strength (0 = no motion, 100 = full image covered by motion).
      *  @return The motion area percentage.
      */
@@ -250,7 +250,7 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
         }
         _areaThreshold = threshold;
     }
-    
+
     /** Specify whether to modify the image with a visual indication of the amount
      *  and location of the motion.
      *  @param modify True to modify the image.
@@ -362,7 +362,7 @@ public class MotionDetectorFilter extends AbstractBufferedImageOp {
 
     /** Gray filter instance. */
     private final GrayFilter _gray = new GrayFilter();
-    
+
     /** True to modify the provided image. */
     private boolean _modify = true;
 

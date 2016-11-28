@@ -75,14 +75,14 @@ public class SerialPortReader extends Thread {
 
     /**        Initialize the serial port and connect a BufferedInputStream to the serialPort.
      *  @return 1 if the initialization was successfull, -1 otherwise.
-     *  @param portNumber The number of theport   
+     *  @param portNumber The number of theport
      */
     public int init(int portNumber) {
         portName += portNumber;
         try {
             _communicationID = CommPortIdentifier.getPortIdentifier(portName);
         } catch (NoSuchPortException exception) {
-            // If port not found, return -1 and print exception                        
+            // If port not found, return -1 and print exception
             exception.printStackTrace();
             return -1;
         }
@@ -193,27 +193,27 @@ public class SerialPortReader extends Thread {
     ////                     private variables                     ////
 
     /** A boolean stating whether the read thread is active. */
-    private boolean _threadIsActive; 
+    private boolean _threadIsActive;
 
     /** An InputStream connected to serialPort. */
-    private BufferedInputStream _inputStream; 
+    private BufferedInputStream _inputStream;
 
     /**  The communication port identifier used to open _serialPort. */
-    private CommPortIdentifier _communicationID; 
+    private CommPortIdentifier _communicationID;
 
     /**  A concurrent Queue implementation for storing read
      *  characters.
      */
-    private LinkedBlockingQueue<Character> _characterBuffer; 
+    private LinkedBlockingQueue<Character> _characterBuffer;
 
     /** The _serialPort object referencing the incoming serial
      * connection.
      */
-    private SerialPort _serialPort; 
+    private SerialPort _serialPort;
 
     /** The name of the serial port that _serialPort is to connect to -
      * varies by OS.
      */
-    private String portName; 
+    private String portName;
 
 }

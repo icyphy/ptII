@@ -74,14 +74,14 @@ public class ImageToString extends Converter {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-                
+
         // Set the type of the input port.
         input.setTypeEquals(BaseType.GENERAL); // FIXME: No image type available...
         input.setMultiport(false);
         // Set the type of the output port.
         output.setTypeEquals(BaseType.STRING);
         output.setMultiport(false);
-        
+
         compression = new StringParameter(this, "compression");
         compression.setExpression("png");
     }
@@ -93,11 +93,11 @@ public class ImageToString extends Converter {
      * 'png', 'jpg').
      */
     public StringParameter compression;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** 
+    /**
      *  @exception IllegalActionException If the conversion fails.
      */
     @Override
@@ -118,7 +118,7 @@ public class ImageToString extends Converter {
         }
 
     }
-    
+
     /** Return false if the input port has no token, otherwise return
      *  what the superclass returns (presumably true).
      *  @exception IllegalActionException If there is no director.
@@ -134,8 +134,8 @@ public class ImageToString extends Converter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
-    /** Convert an AWT Image object to a BufferedImage. 
+
+    /** Convert an AWT Image object to a BufferedImage.
      *  @param in An AWT Image object.
      *  @return a BufferedImage.
      */

@@ -200,10 +200,10 @@ public class SingleWindowConfiguration extends Configuration {
     private void catchTableau(Tableau tableau) throws IllegalActionException {
         if (SingleWindowApplication._mainFrame == null) {
             SingleWindowHTMLViewer mainView = new SingleWindowHTMLViewer();
-            
+
             NamedObj container = tableau.getContainer();
             if (container instanceof PtolemyEffigy) {
-                // Handle $PTII/bin/vergil -single ptolemy/domains/de/demo/DateDemo/DateDemo.xml  
+                // Handle $PTII/bin/vergil -single ptolemy/domains/de/demo/DateDemo/DateDemo.xml
                 NamedObj model = ((PtolemyEffigy)tableau.getContainer()).getModel();
                 SizeAttribute size = (SizeAttribute) model.getAttribute(
                            "_vergilSize", SizeAttribute.class);
@@ -215,13 +215,13 @@ public class SingleWindowConfiguration extends Configuration {
                     sizeMatrix[0][1]+= 100;
                     size.setToken(new IntMatrixToken(sizeMatrix));
                     size.setSize(mainView);
-                } 
+                }
             } else {
-                // Handle $PTII/bin/vergil -single $PTII/ptolemy/configs/full/intro.htm 
+                // Handle $PTII/bin/vergil -single $PTII/ptolemy/configs/full/intro.htm
                 mainView.setSize(new Dimension(800, 600));
             }
             mainView.setConfiguration(this);
-            
+
             mainView.show();
         }
 

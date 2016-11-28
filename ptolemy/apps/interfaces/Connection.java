@@ -1,5 +1,5 @@
 /** Representation of a connection between two ports.
- * 
+ *
  */
 package ptolemy.apps.interfaces;
 
@@ -10,13 +10,13 @@ import ptolemy.actor.IOPort;
 import ptolemy.kernel.Relation;
 
 /** Representation of a connection between two ports.
- * 
+ *
  *  @author Ben Lickly
  */
 public class Connection {
     /** Construct a connection from the given output port
      *  to the given input port.
-     *  @param outputPort The name of the output port. 
+     *  @param outputPort The name of the output port.
      *  @param inputPort The name of the input port.
      */
     Connection(final String outputPort, final String inputPort) {
@@ -25,10 +25,10 @@ public class Connection {
     }
 
     /** Return the set of connections represented by a relation.
-     * 
+     *
      *  This is a set because relations can connect multiple ports,
      *  but a connection is between two ports only.
-     *  
+     *
      *  @param r The relation to convert.
      *  @return The set of connections that r represents.
      */
@@ -58,7 +58,7 @@ public class Connection {
 
     /** Return the contract specifying the equality caused by a set of
      *  connections.
-     *  
+     *
      *  @param connections The set of connections.
      *  @return The contract.
      */
@@ -69,10 +69,10 @@ public class Connection {
         }
         return LispExpression.conjunction(contracts);
     }
-    
+
     /** Return the string representation of the connection.
-     * i.e "(port1, port2)" 
-     * 
+     * i.e "(port1, port2)"
+     *
      * @return The string representation.
      */
     public String toString() {

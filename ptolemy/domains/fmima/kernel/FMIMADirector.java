@@ -45,7 +45,7 @@ import ptolemy.kernel.util.Workspace;
  * We don't really know if we need it or not.
  * The idea is to have a director that coordinates the execution
  * of a model based on Co-simulation FMI
- * 
+ *
  * @author Fabio Cremona
  * @version $Id: FMIMADirector.java$
  * @since Ptolemy II 11.0
@@ -108,7 +108,7 @@ public class FMIMADirector extends SRDirector {
         _defaultPeriod.setTypeEquals(BaseType.DOUBLE);
         _defaultPeriod.setExpression(period.getValueAsString());
     }
-    
+
     /** Fire FMUs according to a given scheduler until the iteration
      *  converges.
      *  An iteration converges when a pass through the schedule does
@@ -118,11 +118,11 @@ public class FMIMADirector extends SRDirector {
      */
     @SuppressWarnings("deprecation")
     @Override
-    public void fire() throws IllegalActionException {        
+    public void fire() throws IllegalActionException {
         if (_debugging) {
             _debug("FMIMADirector: invoking fire().");
         }
-        
+
         if (getModelTime().getDoubleValue() > getStopTime()) {
             stop();
         }
@@ -131,8 +131,8 @@ public class FMIMADirector extends SRDirector {
         // When super.fire() returns we reached a fixed point:
         // all FMUs propagated I/O signals.
         super.fire();
-    } 
-    
+    }
+
     /** Request a firing of the given actor at the given absolute
      *  time, and return the time at which the specified will be
      *  fired. If the <i>period</i> is 0.0 and there is no enclosing
@@ -165,18 +165,18 @@ public class FMIMADirector extends SRDirector {
         Time currentTime = getModelTime();
         Time hypoteticFutureTime = currentTime.add(periodValue());
         Time stepSize = newTime.subtract(currentTime);
-        
+
         if (newTime.compareTo(hypoteticFutureTime) < 0 && !time.isZero()) {
             String newPeriod = stepSize.toString();
             period.setExpression(newPeriod);
         }
-        
+
         if (_debugging) {
             _debug("* New period: " + periodValue());
         }
         return newTime;
     }
-    
+
     /** Initialize the director and all deeply contained actors by calling
      *  the super.initialize() method.
      *  If the <i>period</i> parameter is greater than zero, then
@@ -189,15 +189,15 @@ public class FMIMADirector extends SRDirector {
         super.initialize();
         _defaultPeriod.setExpression(period.getValueAsString());
     }
-    
+
 //        // We can now compute the step size of the FMU
 //        // Consult all actors that implement TimeRegulator interface.
 //        // FMUs for example, can implement TimeRegulator interface
 //        // to check the acceptance of a step size.
-//         
-//        
+//
+//
 //        Time proposedFmiTime = getModelTime().add(1E-8);//Time.POSITIVE_INFINITY;
-//        
+//
 //        Nameable container = getContainer();
 //        Iterator<?> actors = ((CompositeActor) container).deepEntityList()
 //                .iterator();
@@ -220,7 +220,7 @@ public class FMIMADirector extends SRDirector {
 //            _debug("Computed future time: " + proposedFmiTime);
 //        }
 //    }
-    
+
     /** Call postfire() on all contained FMUs that were fired in the current
      *  iteration.  Return false if the model
      *  has finished executing, either by reaching the iteration limit, or if
@@ -243,14 +243,14 @@ public class FMIMADirector extends SRDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                       protected variables                 ////
-    
+
     /**
      * A boolean variable used to flag the first fire() execution.
      * It is true before the first fire. It is set to true in postfire.
      * It is set to false before returning in fire.
      */
     protected boolean _isFirstFire;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       private variables                   ////
 

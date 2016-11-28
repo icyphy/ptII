@@ -58,7 +58,7 @@ void setStartValues(ModelInstance *comp) {
 // if setStartValues or environment set new values through fmi2SetXXX.
 // Lazy set values for all variable that are computed from other variables.
 void calculateValues(ModelInstance *comp) {
-    if (comp->state == modelInitializationMode) { 
+    if (comp->state == modelInitializationMode) {
         comp->eventInfo.nextEventTimeDefined   = fmi2True;
         comp->eventInfo.nextEventTime          = comp->time;
         comp->time                             = 0;
@@ -121,7 +121,7 @@ fmi2Status fmi2GetMaxStepSize (fmi2Component c, fmi2Real *value) {
 
 fmi2Integer computeStepSize(ModelInstance *comp) {
     fmi2Integer communicationStepSize;
-    communicationStepSize = comp->eventInfo.nextEventTime - comp->time;    
+    communicationStepSize = comp->eventInfo.nextEventTime - comp->time;
     return communicationStepSize;
 }
 

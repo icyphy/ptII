@@ -198,9 +198,9 @@ abstract public class GRPickActor extends GRShadedShape {
         }
 
         /** If the user presses the left button (button 3), then process the callback.
-         *  @param xPosition The X position of the event   
-         *  @param yPosition The Y position of the event   
-         */   
+         *  @param xPosition The X position of the event
+         *  @param yPosition The Y position of the event
+         */
         public void updateScene(int xPosition, int yPosition) {
             pickCanvas.setShapeLocation(xPosition, yPosition);
 

@@ -73,11 +73,11 @@ import ptolemy.kernel.util.IllegalActionException;
  *
  *  <pre>
  *  cd /tmp
- *  jar -xf $PTII/lib/webcam-capture-0.3.10.jar 
+ *  jar -xf $PTII/lib/webcam-capture-0.3.10.jar
  *  ldd ./com/github/sarxos/webcam/ds/buildin/lib/linux_x64/OpenIMAJGrabber.so
  *  </pre>
  *
- *  <p>Note that the webcam-capture jar contains both 32-bit and 64-bit shared 
+ *  <p>Note that the webcam-capture jar contains both 32-bit and 64-bit shared
  *  libraries, be sure to run the ldd command on the version appropriate for your
  *  JVM.</p>
  *
@@ -146,7 +146,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
     /** Return an array of camera names that are available on this host.
      *  This method refreshes the list.
      *
-     *  The dummy camera is for testing machine configurations that 
+     *  The dummy camera is for testing machine configurations that
      *  have no camera.
      *
      *  Note that selecting the dummy camera typically disables
@@ -278,7 +278,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
             Dimension previous = _webcam.getViewSize();
             Dimension newDimension = new Dimension(width, height);
             if (!newDimension.equals(previous)) {
-                _webcam.setViewSize(newDimension);                
+                _webcam.setViewSize(newDimension);
             }
         }
     }
@@ -366,7 +366,7 @@ public class CameraHelper extends HelperBase implements WebcamListener {
 
     /** The latest image obtained. */
     private BufferedImage _image;
-    
+
     /** Open cameras, indexed by camera name. */
     private static Map<String, WeakReference<JavaScript>> _openCameras;
 

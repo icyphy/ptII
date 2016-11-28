@@ -319,10 +319,10 @@ public final class LIQSS1 extends QSSBase {
         // Execute the code block below if we have event indicators.
         if (_evtIndCt > 0) {
 
-            // For state event detection, we need to approximation 
+            // For state event detection, we need to approximation
             // the time rate of change of the event indicators.
             // This is achieved by computing the event indicators at two
-            // different time instant and using finite difference 
+            // different time instant and using finite difference
             // the time rate of changes of the event indicator.
             final double dtSample = 1e-8
                     * Math.max(1, Math.abs(_currSimTime.getDoubleValue()));
@@ -390,7 +390,7 @@ public final class LIQSS1 extends QSSBase {
         }
 
         // Update the internal, continuous state models.
-        // This also updates the rate model, which is just 
+        // This also updates the rate model, which is just
         // the derivative of the state model.
         for (int ii = 0; ii < _stateCt; ++ii) {
             final ModelPolynomial cStateMdl = _cStateMdls[ii];

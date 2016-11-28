@@ -122,7 +122,7 @@ public class UserDialog extends JPanel {
             public void run() {
                 _responseTextArea.append(text + "\n");
                 // Scroll down as we generate text.
-                _responseTextArea.setCaretPosition(_responseTextArea.getText().length());                    
+                _responseTextArea.setCaretPosition(_responseTextArea.getText().length());
             }
         };
         SwingUtilities.invokeLater(doAppendJTextArea);
@@ -211,7 +211,7 @@ public class UserDialog extends JPanel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     // Evaluate the command.
     // NOTE: This must be called in the swing event thread.
     private void _evalCommand() {
@@ -241,7 +241,7 @@ public class UserDialog extends JPanel {
 
     /** The scroll pane containing the output text. */
     private JScrollPane _jScrollPane;
-    
+
     // The initial message, if there is one.
     private String _initialMessage = null;
 
@@ -256,7 +256,7 @@ public class UserDialog extends JPanel {
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     // The key listener
     private class ShellKeyListener extends KeyAdapter {
         @Override

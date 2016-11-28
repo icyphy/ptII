@@ -256,7 +256,7 @@ public final class QSS2Fd extends QSSBase {
                 * Math.max(1, Math.abs(_currSimTime.getDoubleValue()));
 
         final Time tSample = minimumTime(_currSimTime.addUnchecked(dtSample),
-                _quantEvtTimeMax); 
+                _quantEvtTimeMax);
 
         // Get values, at {tSample}, of arguments to derivative function.
         //   Note that here, know all continous state models have same time.

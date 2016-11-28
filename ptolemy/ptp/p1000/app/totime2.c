@@ -138,7 +138,7 @@ int main(int argc, char* argv[])
   unsigned int nsecs1;
   int rtn;
 
-    
+
   char *hostName = argv[2];
 
   char *devFile = argv[1];

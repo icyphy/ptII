@@ -58,7 +58,7 @@ import ptolemy.vergil.toolbox.TextEditorForStringAttributes;
  */
 @SuppressWarnings("serial")
 public class SyntaxTextEditorForStringAttributes extends TextEditorForStringAttributes {
-    
+
     /** Create a annotation text editor for the specified attribute.
      *  @param factory The factory that created this editor.
      *  @param attributeToEdit The string attribute to edit.
@@ -112,14 +112,14 @@ public class SyntaxTextEditorForStringAttributes extends TextEditorForStringAttr
         document = text.getDocument();
         document.addDocumentListener(this);
         _scrollPane = new RTextScrollPane(text, true);
-        
+
         // To get bookmarking, do this:
         //        Gutter gutter = ((RTextScrollPane)_scrollPane).getGutter();
         //        gutter.setBookmarkingEnabled(true);
         //        URL url = getClass().getClassLoader().getResource("img/bookmark.png");
         //        gutter.setBookmarkIcon(new ImageIcon(url));
         // Will need to copy the img/bookmark.png from the rsyntaxtextarea_demo_2.5.1_Source dir.
-        
+
         ErrorStrip errorStrip = new ErrorStrip((RSyntaxTextArea)text);
         getContentPane().add(errorStrip, BorderLayout.LINE_END);
 

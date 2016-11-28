@@ -150,7 +150,7 @@ public class JSAccessor extends JavaScript {
                 "true");
         checkoutOrUpdateAccessorsRepository.setTypeEquals(BaseType.BOOLEAN);
     }
-    
+
     // Upon loading this class, change the icon loader to look for accessor icons.
     static {
         // To prevent overriding some other icon loader (e.g. Kepler),
@@ -318,7 +318,7 @@ public class JSAccessor extends JavaScript {
      *  @exception IOException If the repository cannot be checked out.
      */
     public static void getAccessorsRepository() throws IOException {
-        boolean updateNeeded = 
+        boolean updateNeeded =
                 _checkoutOrUpdateAccessorsRepository
                 && !_checkoutOrUpdateFailed
                 && (_lastRepoUpdateTime < 0
@@ -395,7 +395,7 @@ public class JSAccessor extends JavaScript {
                                 "command should have access to the keychain. " +
                                 "Select 'Always' and rerun the demo.";
                         }
-                    } 
+                    }
                     MessageHandler.status(message);
                 }
             }
@@ -711,7 +711,7 @@ public class JSAccessor extends JavaScript {
                 && urlSpec.indexOf("terraswarm.org/accessors") < 0) {
             return FileUtilities.nameToURL(urlSpec, null, null);
         }
-    
+
         URL accessorURL = null;
         try {
             JSAccessor.getAccessorsRepository();
@@ -726,7 +726,7 @@ public class JSAccessor extends JavaScript {
         } catch(IOException ex) {
             // Note that if we get an exception, we try to get the repository
             // no matter what the value of updateRepository is.
-            
+
             // If the urlSpec could be in the accessors repo, then try
             // to either check out or update the repo.
             if (urlSpec.indexOf("org/terraswarm/accessor/accessors") != -1) {
@@ -749,10 +749,10 @@ public class JSAccessor extends JavaScript {
         }
 
         if (accessorURL == null) {
-            throw new IOException("Failed to find accessor file: " + urlSpec.trim() 
+            throw new IOException("Failed to find accessor file: " + urlSpec.trim()
                     + "\nWhich is converted to: " + accessorURL);
         }
-    
+
         // Use the local file if possible.  See the method comment for
         // details.
         accessorURL = _getLocalURL(urlSpec, accessorURL);
@@ -833,7 +833,7 @@ public class JSAccessor extends JavaScript {
         // https://www.terraswarm.org/accessors/wiki/Main/TestAPtolemyAccessorImport
 
         URL accessorURL = _sourceToURL(urlSpec, updateRepository);
-        
+
         final URL url = accessorURL;
         BufferedReader in = null;
         try {
@@ -948,7 +948,7 @@ public class JSAccessor extends JavaScript {
                                            + ", but " + urlSpecLocalFile + " exists, so the latter is being read.");
                         accessorOrPtDocURL = urlSpecLocalFile.toURI().toURL();
                     }
-                } 
+                }
             } catch (IOException ex) {
                 System.out.println("JSAccessor: Could not look up the local accessor directory: " + ex);
             }
@@ -978,7 +978,7 @@ public class JSAccessor extends JavaScript {
         // Look for a local version of the PtDoc file.
         // This assumes that getAccessorsRepository() was previously invoked.
         url = _getLocalURL(ptDocSpec, url);
-        
+
         // Check that the URL is readable, and import without docs if not.
         // This will throw IOException if not.
         InputStream stream = url.openStream();
@@ -1024,7 +1024,7 @@ public class JSAccessor extends JavaScript {
         */
     }
 
-    
+
     /** Return true if the ptII tree was checked out with svn
      *  read/write access.  Return false if the ptII tree was not
      *  checked out of svn or if the ptII tree was checked out with
@@ -1073,7 +1073,7 @@ public class JSAccessor extends JavaScript {
         if (index2 != 1) {
             return true;
         }
-                
+
         return false;
     }
 
@@ -1083,7 +1083,7 @@ public class JSAccessor extends JavaScript {
     private static boolean _checkoutOrUpdateAccessorsRepository = true;
 
     /** True if the checkout or update of the accessors repository failed.
-     */   
+     */
     private static boolean _checkoutOrUpdateFailed = false;
 
     /** Commands that were run to check out or update the repo. */
@@ -1098,15 +1098,15 @@ public class JSAccessor extends JavaScript {
      *  only once per directory.
      */
     private static boolean _invokedReloadAllAccessorsOnce = false;
-    
+
     /** Last time of accessor respository update. */
     private static long _lastRepoUpdateTime = -1L;
-    
+
     /** Previous value of the script parameter, or null if it has
      *  not been set.
      */
     private StringToken _previousScript = null;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 

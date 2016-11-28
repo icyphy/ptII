@@ -42,16 +42,16 @@ package diva.util;
  */
 public abstract class FilteredArrayIterator extends NullArrayIterator {
     /** Construct a filtered array iterator.
-     *  @param array The array   
-     */   
+     *  @param array The array
+     */
     public FilteredArrayIterator(Object[] array) {
         super(array);
     }
 
     /** Construct a filtered array iterator.
-     *  @param array The array   
+     *  @param array The array
      *  @param length The length
-     */   
+     */
     public FilteredArrayIterator(Object[] array, int length) {
         super(array, length);
     }

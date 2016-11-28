@@ -147,7 +147,7 @@ typedef struct {
     fmi2Integer *hb;
     fmi2Integer *hs;
     fmi2Integer microstep;
-    
+
     fmi2Real time;
     fmi2Real communicationStepSize;
     fmi2String instanceName;

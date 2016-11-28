@@ -135,7 +135,7 @@ public class RestrictedJavaScriptInterface {
     public String getResource(String uri, int timeout) throws IllegalActionException {
         return _actor.getResource(uri, timeout);
     }
-    
+
     /** Create a new input port if it does not already exist.
      *  Leave the type unspecified so that it will be inferred.
      *  @param name The name of the port.

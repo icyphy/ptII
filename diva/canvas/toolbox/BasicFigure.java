@@ -79,7 +79,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
     /** The paint for the fill.
      */
     private Paint _fillPaint;
-    
+
     /** The angle of rotation of the figure. */
     private double _rotation = 0.0;
 
@@ -215,7 +215,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
             return point;
         }
     }
-    
+
     /** Get the angle of rotation of the figure.
      *  @return The cumulative rotation angle.
      *  @see #setRotation(double)
@@ -296,7 +296,7 @@ public class BasicFigure extends AbstractFigure implements ShapedFigure {
             g.draw(_shape);
         }
     }
-    
+
     /** Specify whether the figure should be centered on its origin.
      *  By default, it is.
      *  @param centered False to make the origin of the figure, as

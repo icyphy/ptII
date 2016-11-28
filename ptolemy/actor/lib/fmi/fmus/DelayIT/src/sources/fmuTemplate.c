@@ -907,7 +907,7 @@ fmi2Status fmi2SetFMUstate (fmi2Component c, fmi2FMUstate FMUstate) {
 
     dest->timeResolution = source->timeResolution;
     dest->timeResolutionExponent = source->timeResolutionExponent;
-    
+
     return fmi2OK;
 }
 

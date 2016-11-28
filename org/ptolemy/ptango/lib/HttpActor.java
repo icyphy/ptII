@@ -170,10 +170,10 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
 
         postCookies = new TypedIOPort(this, "postCookies", false, true);
         new Parameter(postCookies, "_showName").setExpression("true");
-        
+
         postBody = new TypedIOPort(this, "postBody", false, true);
         new Parameter(postBody, "_showName").setExpression("true");
-        
+
         putRequestURI = new TypedIOPort(this, "putRequestURI", false, true);
         putRequestURI.setTypeEquals(BaseType.STRING);
         new Parameter(putRequestURI, "_showName").setExpression("true");
@@ -184,7 +184,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
 
         putCookies = new TypedIOPort(this, "putCookies", false, true);
         new Parameter(putCookies, "_showName").setExpression("true");
-        
+
         putBody = new TypedIOPort(this, "putBody", false, true);
         new Parameter(putBody, "_showName").setExpression("true");
 
@@ -248,10 +248,10 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  then it is undefined which one gets the request.
      */
     public StringParameter path;
-    
+
     /** An output that sends the body of the request, if any.
-     *  HTTPActor only offers a body output for POST and PUT requests.  While it 
-     *  is technically possible for a GET request to have a body, this is 
+     *  HTTPActor only offers a body output for POST and PUT requests.  While it
+     *  is technically possible for a GET request to have a body, this is
      *  discouraged since GET requests are supposed to be idempotent.
      */
     public TypedIOPort postBody;
@@ -280,10 +280,10 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
      *  This has type string.
      */
     public TypedIOPort postRequestURI;
-    
+
     /** An output that sends the body of the request, if any.
-     *  HTTPActor only offers a body output for POST and PUT requests.  While it 
-     *  is technically possible for a GET request to have a body, this is 
+     *  HTTPActor only offers a body output for POST and PUT requests.  While it
+     *  is technically possible for a GET request to have a body, this is
      *  discouraged since GET requests are supposed to be idempotent.
      */
     public TypedIOPort putBody;
@@ -965,7 +965,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                 IOException {
             _handleRequest(request, response, 1);
         }
-        
+
         /** Handle an HTTP put request by creating a web page as the HTTP
          *  response.
          *  NOTE: This method is synchronized, and the lock is _not_ released
@@ -1033,10 +1033,10 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                     // Note that each parameter name may have more than one value,
                     // hence the array of strings.
                     RecordToken content = _readContent(request);
-                    _request.parameters = 
+                    _request.parameters =
                             (RecordToken) content.get("parameters");
                     _request.body = content.get("body");
-                            
+
 
                     // Figure out what time to request a firing for.
                     long elapsedRealTime = System.currentTimeMillis()
@@ -1223,120 +1223,120 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
          */
         private RecordToken _readContent(HttpServletRequest request)
                 throws IllegalActionException {
-            
+
             RecordToken parameters;
             Token body;
-            
+
             // Handle the request according to the Content-Type
             // Note that request.getParameterMap() and request.
             // BOTH read and consume the request body.  getParameterMap()
-            // additionally reads the URL.  Note that getParameterMap() does 
-            // NOT differentiate between parameters from the URL and those from 
+            // additionally reads the URL.  Note that getParameterMap() does
+            // NOT differentiate between parameters from the URL and those from
             // the body
-            
-            // Use contains instead of equals since the type may include other 
+
+            // Use contains instead of equals since the type may include other
             // things, e.g. charset=UTF-8
             if (request.getContentType() != null && request.getContentType()
                     .contains("application/x-www-form-urlencoded")) {
-                
+
                 // Form data:  application/x-www-form-urlencoded
-                // Use request.getParameterMap() which reads parameters from both 
+                // Use request.getParameterMap() which reads parameters from both
                 // the URL and from the body
                 // These will be emitted on a "parameters" output port, regardless
                 // of whether the content was from the URL or the body
-                
+
                 parameters = _readParameterMap(request.getParameterMap());
                 body = new Token();
-                    
-            } else if (request.getContentType() != null && 
+
+            } else if (request.getContentType() != null &&
                     request.getContentType().startsWith("image")) {
-                
+
                 // Images.  Supported: bmp, gif, jpg, png, and wbmp
                 // See:  https://docs.oracle.com/javase/tutorial/2d/images/loadimage.html
 
                try {
-                   
+
                    BufferedImage image = ImageIO.read(request.getInputStream());
-                   
+
                    if (image != null) {
                        body = new AWTImageToken(image);
                    } else {
                        body = Token.NIL;
-                   }                 
-                    
+                   }
+
                     // Read any remaining URL parameters
                     parameters = _readParameterMap(request.getParameterMap());
-                    
+
                } catch(IOException e){
                    throw new IllegalActionException("Can't read body of "
                            + " HTTP request");
-               } 
-            } else { 
-                
+               }
+            } else {
+
                 // Anything else - Read as string
                 // Includes (among others) application/json, text/*
 
                 // TODO:  Parse JSON object from JSON?
-                
+
                 StringBuffer content = new StringBuffer();
-                
-                // Text or JSON - return StringToken                   
+
+                // Text or JSON - return StringToken
                     try {
-                        BufferedReader reader = new BufferedReader(new 
+                        BufferedReader reader = new BufferedReader(new
                             InputStreamReader(request.getInputStream()));
-                        
+
                         String line;
                         while ((line = reader.readLine()) != null) {
                             content.append(line);
                         }
-                    } catch(IOException e) { 
+                    } catch(IOException e) {
                         throw new IllegalActionException("Can't read body of "
                                 + " HTTP request");
                     }
-                  
-                
+
+
                 body = new StringToken(content.toString());
-                
+
                 // Read any remaining URL parameters
                 parameters = _readParameterMap(request.getParameterMap());
-                
+
             }
-            
+
             // TODO:  Audio and video
             // Audio capture outputs an array of doubles - use that?
             // for images and audio?
             // Content-types audio/* or video/*
-            
+
             // TODO:  Handle binary data - what is corresponding Ptolemy type?
             // Array of integers?
-            
+
             // TODO:  Handle multi-part requests
-           
+
             String[] labels = new String[2];
             labels[0] = "parameters";
             labels[1] = "body";
-    
+
             Token[] fields = new Token[2];
             fields[0] = parameters;
             fields[1] = body;
-            
+
             RecordToken content = new RecordToken(labels, fields);
             return content;
         }
-        
 
-        /** Read the parameters from the parameter map, construct a RecordToken 
+
+        /** Read the parameters from the parameter map, construct a RecordToken
          *  containing the parameters, and return that record token.
-         *  @param parameterMap  The HttpServletRequest's parameter map.  
-         *   Contains parameters passed as part of the URL, and may contain 
+         *  @param parameterMap  The HttpServletRequest's parameter map.
+         *   Contains parameters passed as part of the URL, and may contain
          *   parameters from the body if the body was not previously processed.
          *   HttpServletRequest can be of any type - i.e. both GET and POST
          *   requests are allowed to have parameters.
          *  @return A RecordToken of parameters.
          *  @exception IllegalActionException If construction of the record token fails.
          */
-        
-        private RecordToken _readParameterMap(Map<String, 
+
+        private RecordToken _readParameterMap(Map<String,
                 String[]> parameterMap) throws IllegalActionException {
             // FIXME:  This currently treats all values as StringTokens,
             // which they may not be.  How to either 1) correctly determine
@@ -1457,7 +1457,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
     protected static class HttpRequestItems {
         /** The body of the request. **/
         public Token body;
-        
+
         /** Cookies associated with the request. */
         public RecordToken cookies;
 

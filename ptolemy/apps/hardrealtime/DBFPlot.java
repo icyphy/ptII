@@ -45,7 +45,7 @@ import ptolemy.plot.Plot;
 
 /**
  * A plotter for the demand bound function of periodic and multiframe tasks.
- * 
+ *
  * @author Patricia Derler
  * @version $Id$
  * @Pt.ProposedRating Red (chster)
@@ -63,12 +63,12 @@ public class DBFPlot extends Plot {
     // /////////////////////////////////////////////////////////////////
     // // public methods ////
 
-    
+
 
     /**
      * Add the release time and deadline of a job in the execution being drawn,
      * and redraw the plot.
-     * 
+     *
      * @param job
      *            The job to be plotted.
      */
@@ -105,7 +105,7 @@ public class DBFPlot extends Plot {
         }
     }
 
-    
+
     protected void finalize() {
         TreeSet<Double> set = new TreeSet<Double>();
         set.addAll(_executionTimesAndDeadlines.keySet());
@@ -123,11 +123,11 @@ public class DBFPlot extends Plot {
         }
         fillPlot();
         repaint();
-        
+
         _executionTimesAndDeadlines.clear();
         _jobs.clear();
     }
-    
+
     /** Clear the state associated with the plotter. */
     public void clear() {
         _executionTimesAndDeadlines.clear();

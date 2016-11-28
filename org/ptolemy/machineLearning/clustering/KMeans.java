@@ -55,10 +55,10 @@ import ptolemy.math.DoubleArrayMath;
 
 /**
 <p>This actor performs the k-means clustering algorithm to cluster the elements
-of a set of observations into k clusters. 
+of a set of observations into k clusters.
 
 K-Means is a heuristic multi-way classification algorithm that is often used for
-exploratory data analysis. 
+exploratory data analysis.
 
 @author Ilge Akkaya
  @version $Id$
@@ -77,7 +77,7 @@ public class KMeans extends TypedAtomicActor {
         clusters = new TypedIOPort(this, "clusters", false, true);
         clusters.setTypeEquals(new ArrayType(BaseType.INT));
 
-        clusterCenters = new TypedIOPort(this, "clusterCenters", false, true); 
+        clusterCenters = new TypedIOPort(this, "clusterCenters", false, true);
 
         numClusters = new Parameter(this, "numClusters");
         numClusters.setExpression("2");
@@ -114,25 +114,25 @@ public class KMeans extends TypedAtomicActor {
         } else if (attribute == distanceMeasure) {
             String distMeasure = ((StringToken) distanceMeasure.getToken()).stringValue();
             switch (distMeasure.toLowerCase()) {
-            case "euclidean": 
-                _distanceMeasure = Metric.EUCLIDEAN; 
+            case "euclidean":
+                _distanceMeasure = Metric.EUCLIDEAN;
                 break;
-            default: 
-                throw new IllegalActionException(this, 
+            default:
+                throw new IllegalActionException(this,
                         "Selected distance measure not supported.");
             }
         } else {
             super.attributeChanged(attribute);
         }
     }
-    
+
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         KMeans newObject = (KMeans) super
                 .clone(workspace);
         newObject._clusterCenters = null;
         newObject._prevClusterAssignment = null;
-        newObject._clusterAssignment = null; 
+        newObject._clusterAssignment = null;
         newObject._trainingData = null;
         return newObject;
     }
@@ -198,12 +198,12 @@ public class KMeans extends TypedAtomicActor {
                     for (int k=0; k < _featureLength; k++) {
                         cToken[k] = new DoubleToken(clusterCenter[k]);
                     }
-                    clusterCentersToken[i] = new ArrayToken(cToken); 
+                    clusterCentersToken[i] = new ArrayToken(cToken);
                 }
-                clusterCenters.send(0, new ArrayToken(clusterCentersToken)); 
+                clusterCenters.send(0, new ArrayToken(clusterCentersToken));
             }
 
-        } 
+        }
     }
 
 
@@ -229,7 +229,7 @@ public class KMeans extends TypedAtomicActor {
         case EUCLIDEAN: return Math.sqrt(DoubleArrayMath.
                 l2norm(DoubleArrayMath.subtract(sample, center)));
         default: return Double.NaN;
-        } 
+        }
     }
 
 
@@ -252,19 +252,19 @@ public class KMeans extends TypedAtomicActor {
                         _clusterAssignment.length);
             }
         }
-        return false;   
+        return false;
     }
 
 
     /**
      * Pick k random cluster centers given the range of input data.
-     * This implementation uses the Random Partition method for initialization, 
-     * that is, it assigns a cluster at random to each data point, and computes 
-     * initial cluster centers. 
-     * @throws IllegalActionException 
+     * This implementation uses the Random Partition method for initialization,
+     * that is, it assigns a cluster at random to each data point, and computes
+     * initial cluster centers.
+     * @throws IllegalActionException
      *
      */
-    private void _initializeClusterCenters() 
+    private void _initializeClusterCenters()
             throws IllegalActionException {
         //TODO: Forgy initialization algorithm to be added as an option
         Random clusterIndex = new Random();
@@ -272,27 +272,27 @@ public class KMeans extends TypedAtomicActor {
         for (int k = 0; k < _trainingData.length; k++) {
             _clusterAssignment[k] = clusterIndex.nextInt(_numClusters);
         }
-        _updateClusterCenters(); 
+        _updateClusterCenters();
     }
 
     /**
      * Compute the new cluster centers, that is, the centroid of the data points
-     * that belong to this cluster. For the Euclidean distance measure, this is 
+     * that belong to this cluster. For the Euclidean distance measure, this is
      * simply the average of the points in the cluster.
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
-    private void _updateClusterCenters() 
+    private void _updateClusterCenters()
             throws IllegalActionException {
         _clusterCenters.clear();
 
         switch (_distanceMeasure) {
-        case EUCLIDEAN: 
+        case EUCLIDEAN:
             double [][] newClusterCenters = new double[_numClusters][_featureLength];
             int[] samplesInCluster = new int[_numClusters];
             for (int i=0; i < _trainingData.length; i++) {
                 for (int j = 0 ; j < _featureLength; j++) {
-                    newClusterCenters[_clusterAssignment[i]][j] += _trainingData[i][j]; 
-                }   
+                    newClusterCenters[_clusterAssignment[i]][j] += _trainingData[i][j];
+                }
                 samplesInCluster[_clusterAssignment[i]] ++;
             }
 
@@ -308,11 +308,11 @@ public class KMeans extends TypedAtomicActor {
                     _clusterCenters.add(newClusterCenters[i]);
                 } else {
                     _clusterCenters.add(newClusterCenters[i][0]);
-                } 
+                }
             }
             break;
         default: throw new IllegalActionException(this, "Distance measure not supported.");
-        }  
+        }
     }
     @Override
     public void wrapup() throws IllegalActionException {
@@ -320,7 +320,7 @@ public class KMeans extends TypedAtomicActor {
         _clusterAssignment = null;
         _prevClusterAssignment = null;
         _trainingData = null;
-        super.wrapup();  
+        super.wrapup();
     }
     private double[][] _trainingData;
     private int[] _clusterAssignment;

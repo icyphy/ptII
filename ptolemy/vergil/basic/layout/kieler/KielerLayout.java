@@ -225,7 +225,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      */
     @Override
     public void layout(Object composite) {
-        
+
         KielerLayoutConnector.setLayoutInProgress(true);
         KielerLayoutArcConnector.setLayoutInProgress(true);
 
@@ -236,7 +236,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         long graphOverhead = overallTime;
 
         _graphModel = getLayoutTarget().getGraphModel();
-        
+
         // Create a KGraph for the KIELER layout algorithm.
         KNode parentNode = KimlUtil.createInitializedNode();
         KShapeLayout parentLayout = parentNode.getData(KShapeLayout.class);
@@ -246,7 +246,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             parentLayout.setHeight(contentSize.height);
         }
 
-        // Some layouts (such as FSM) may build a skeleton 
+        // Some layouts (such as FSM) may build a skeleton
         // of hierarchical nodes to separate certain elements
         // of the diagram from each other
         // The 'mainModelNode' is the node that is supposed
@@ -258,7 +258,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             mainModelNode = _createFsmSkeleton(parentNode);
             mainModelLayout = mainModelNode.getData(KShapeLayout.class);
         }
-        
+
         try {
             // Configure the layout algorithm by annotating the graph.
             Parameters parameters = new Parameters(_compositeEntity);
@@ -272,13 +272,13 @@ public class KielerLayout extends AbstractGlobalLayout {
             // Create the layout provider which performs the actual layout algorithm.
             InstancePool<AbstractLayoutProvider> layouterPool = _getLayouterPool();
             AbstractLayoutProvider layoutProvider = layouterPool.fetch();
-            
+
             // Create a progress monitor for execution time measurement.
             IKielerProgressMonitor progressMonitor = new BasicProgressMonitor();
 
             // Perform layout on the created graph.
             _recursivelyLayout(parentNode, layoutProvider, progressMonitor);
-            
+
             // Write to XML file for debugging layout (requires XMI resource factory).
             if (DEBUG) {
                 KimlUtil.persistDataElements(parentNode);
@@ -295,10 +295,10 @@ public class KielerLayout extends AbstractGlobalLayout {
             // Create a special change request to apply the computed layout to the model.
             ApplyLayoutRequest layoutRequest = new ApplyLayoutRequest(
                     _compositeEntity);
-            
+
             // Apply layout to ptolemy model.
             _recursivelyApplyLayout(parentNode, layoutRequest);
-            
+
             // Let the composite actor execute the actual changes.
             _compositeEntity.requestChange(layoutRequest);
 
@@ -367,18 +367,18 @@ public class KielerLayout extends AbstractGlobalLayout {
 
     /**
      * Performs a recursive layout inside-out (if necessary).
-     * 
+     *
      * @param parentNode
      *          a node for which to apply the layout
      * @param layoutProvider
      *          the layout provider to execute the layout
-     * @param progressMonitor 
+     * @param progressMonitor
      *          a progress monitor to measure execution time
      */
     private void _recursivelyLayout(KNode parentNode,
             AbstractLayoutProvider layoutProvider,
             IKielerProgressMonitor progressMonitor) {
-        
+
         for (KNode child : parentNode.getChildren()) {
             if(!child.getChildren().isEmpty())
             layoutProvider.doLayout(child, progressMonitor.subTask(1));
@@ -388,9 +388,9 @@ public class KielerLayout extends AbstractGlobalLayout {
     }
 
     /**
-     * Recusively applies {@link #_applyLayout(KNode)} to any {@link KNode} 
+     * Recusively applies {@link #_applyLayout(KNode)} to any {@link KNode}
      * that has further children.
-     * 
+     *
      * @param parentNode The KIELER graph object containing all layout information
      *            to apply to the Ptolemy model
      * @param layoutRequest the common layout request for the current layout run
@@ -399,7 +399,7 @@ public class KielerLayout extends AbstractGlobalLayout {
     private void _recursivelyApplyLayout(KNode parentNode, ApplyLayoutRequest layoutRequest)
             throws IllegalActionException {
 
-        // the _applyLayout method applies positions to the 
+        // the _applyLayout method applies positions to the
         // children of a node
         if (!parentNode.getChildren().isEmpty()) {
             _applyLayout(parentNode, layoutRequest);
@@ -411,7 +411,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             }
         }
     }
-    
+
     /**
      * Traverse a composite KNode containing corresponding KIELER nodes, ports
      * and edges for the Ptolemy model and apply all layout information
@@ -458,10 +458,10 @@ public class KielerLayout extends AbstractGlobalLayout {
                         entry.getSecond(), layoutRequest);
             }
         } else if (graphModel instanceof FSMGraphModel) {
-            
+
             // apply edge layout - one single point for specifying a curve
             for (Pair<KEdge, Link> entry : _edgeList) {
-                
+
                 if (parentNode.getData(KLayoutData.class)
                         .getProperty(Parameters.SPLINES)) {
                     _applyEdgeLayoutBendPointAnnotation(entry.getFirst(),
@@ -493,7 +493,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             ApplyLayoutRequest layoutRequest) throws IllegalActionException {
         List<KPoint> bendPoints = kedge.getData(KEdgeLayout.class)
                 .getBendPoints();
-        
+
         // Translate bend points into an array of doubles for the layout hint attribute.
         double[] layoutHintBendPoints = new double[bendPoints.size() * 2];
         int index = 0;
@@ -506,18 +506,18 @@ public class KielerLayout extends AbstractGlobalLayout {
             KVector kpoint = relativeKPoint.createVector();
             KimlUtil.toAbsolute(kpoint, parentNode);
 
-            // calculate the snap-to-grid coordinates unless we route 
+            // calculate the snap-to-grid coordinates unless we route
             // edges as splines. With splines the snap to grid feature would
             // drastically deform the spline routes
             if (parentNode.getData(KLayoutData.class)
                     .getProperty(LayoutOptions.EDGE_ROUTING) != EdgeRouting.SPLINES) {
-                
+
                 double[] snapToGridBendPoint = SnapConstraint
                         .constrainPoint(kpoint.x, kpoint.y);
                 layoutHintBendPoints[index] = snapToGridBendPoint[0];
                 layoutHintBendPoints[index + 1] = snapToGridBendPoint[1];
             } else {
-                
+
                 layoutHintBendPoints[index] = kpoint.x;
                 layoutHintBendPoints[index + 1] = kpoint.y;
             }
@@ -535,7 +535,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             labelLocation.y = pos.y;
             break;
         }
-        
+
         Relation relation = link.getRelation();
         NamedObj head = (NamedObj) link.getHead();
         NamedObj tail = (NamedObj) link.getTail();
@@ -547,7 +547,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             layoutRequest.addConnection(relation, head, tail,
                     layoutHintBendPoints, labelLocation);
         }
-        
+
     }
 
     private void _applyEdgeLayoutCurve(KEdge kedge, Link link,
@@ -584,12 +584,12 @@ public class KielerLayout extends AbstractGlobalLayout {
             // Determine a reference point for drawing the curve.
             double exitAngle = 0;
             double refx = 0, refy = 0;
-            
+
             // 1) if the edge has a label, we use the label's center
             //    as reference
-            // 2) if there are no bend points, use the the center of 
+            // 2) if there are no bend points, use the the center of
             //    a straight line between source and target
-            // 3) if there are bend points, we use the center 
+            // 3) if there are bend points, we use the center
             //    between the two "middle" bend points
             if (!kedge.getLabels().isEmpty()) {
                 KLabel label = kedge.getLabels().get(0);
@@ -737,7 +737,7 @@ public class KielerLayout extends AbstractGlobalLayout {
 
                 // Now do some common bookkeeping for all kinds of nodes.
                 if (knode != null) {
-                    // some nodes, such as FSM's ports may already 
+                    // some nodes, such as FSM's ports may already
                     // be assigned to a node other than the parent node
                     if (knode.getParent() == null) {
                         knode.setParent(parentNode);
@@ -797,25 +797,25 @@ public class KielerLayout extends AbstractGlobalLayout {
 
     /**
      * Creates a skeleton for placing elements of FSMs.
-     * 
-     * An {@link FSMGraphModel} can have input, output, and inputoutput 
-     * ports. Since the diagram is a state diagram the ports are 
-     * not connected to any other diagram element. To create a 
-     * clear visual experience, we place all inputs on the left 
-     * side of the actual diagram, all outputs on the right, and all 
-     * inputoutputs above the diagram. 
-     * 
-     * Inputs and outputs are stacked from top to bottom. Inputoutputs 
+     *
+     * An {@link FSMGraphModel} can have input, output, and inputoutput
+     * ports. Since the diagram is a state diagram the ports are
+     * not connected to any other diagram element. To create a
+     * clear visual experience, we place all inputs on the left
+     * side of the actual diagram, all outputs on the right, and all
+     * inputoutputs above the diagram.
+     *
+     * Inputs and outputs are stacked from top to bottom. Inputoutputs
      * are placed left to right. The user can change the order
      * of ports to move related ports close to each other.
-     * 
+     *
      * @param root
      *          the root node of the layout graph
      * @return
      *          a node which should contain the actual diagram's elements
      */
     private KNode _createFsmSkeleton(KNode root) {
-        
+
         _fsmInputOutput = KimlUtil.createInitializedNode();
         // hopefully no diagram gets this large
         _fsmInputOutput.getData(KShapeLayout.class).setPos(0, 100000);
@@ -825,7 +825,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                 CrossingMinimizationStrategy.INTERACTIVE);
         _fsmInputOutput.getData(KLayoutData.class)
             .setProperty(LayoutOptions.DIRECTION, Direction.DOWN);
-        
+
         _fsmInput = KimlUtil.createInitializedNode();
         _fsmInput.getData(KLayoutData.class)
                 .setProperty(LayoutOptions.SEPARATE_CC, false);
@@ -840,13 +840,13 @@ public class KielerLayout extends AbstractGlobalLayout {
 
         KNode newRoot = KimlUtil.createInitializedNode();
         newRoot.getData(KShapeLayout.class).setPos(0, 0);
-        
+
         // add the skeleton to the root node
         root.getChildren().add(_fsmInputOutput);
         root.getChildren().add(_fsmInput);
         root.getChildren().add(_fsmOutput);
         root.getChildren().add(newRoot);
-        
+
         // add edges to guarantee proper placement
         KEdge dummyEdge = KimlUtil.createInitializedEdge();
         dummyEdge.setSource(_fsmInput);
@@ -861,7 +861,7 @@ public class KielerLayout extends AbstractGlobalLayout {
         dummyEdge = KimlUtil.createInitializedEdge();
         dummyEdge.setSource(_fsmInputOutput);
         dummyEdge.setTarget(_fsmOutput);
-        
+
         KLayoutData rootLayout = root.getData(KLayoutData.class);
         // assure that the inputoutput port container is placed above the actual diagram
         rootLayout.setProperty(Properties.CROSS_MIN,
@@ -872,7 +872,7 @@ public class KielerLayout extends AbstractGlobalLayout {
 
         return newRoot;
     }
-    
+
     /**
      * Create a KIELER edge for a Ptolemy Diva edge object. The KEdge will be
      * setup between either two ports or relation vertices or mixed. Hence the
@@ -959,7 +959,7 @@ public class KielerLayout extends AbstractGlobalLayout {
                 .setYpos((edgeLayout.getSourcePoint().getY() + edgeLayout
                         .getTargetPoint().getY()) / 2);
                 kedge.getLabels().add(label);
-                
+
                 // remember it
                 _divaLabel.put(label, labelFigure);
             }
@@ -1066,7 +1066,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             nodeLayout.setProperty(LayoutOptions.PORT_CONSTRAINTS,
                     PortConstraints.FIXED_POS);
         }
-        
+
         // set the node label
         KLabel label = KimlUtil.createInitializedLabel(knode);
         label.setText(semanticNode.getDisplayName());
@@ -1232,7 +1232,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             nodeLayout.setProperty(Properties.LAYER_CONSTRAINT,
                     LayerConstraint.LAST);
         }
-        
+
         KLabel label = KimlUtil.createInitializedLabel(knode);
         label.setText(state.getDisplayName());
         KShapeLayout labelLayout = label.getData(KShapeLayout.class);
@@ -1700,7 +1700,7 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Mapping of KIELER labels to corresponding diva labels.
      */
     private Map<KLabel, LabelFigure> _divaLabel;
-    
+
     /**
      * List of KIELER edges and corresponding Diva links.
      */
@@ -1721,11 +1721,11 @@ public class KielerLayout extends AbstractGlobalLayout {
      * Pointer to Top in order to report the current status.
      */
     private Top _top;
-    
+
     /** The graph model that is about to be laid out. */
     private GraphModel _graphModel;
-    
-    /** 
+
+    /**
      * When layouting FSMs, we use the following nodes to separate
      * ports from the actual model.
      */

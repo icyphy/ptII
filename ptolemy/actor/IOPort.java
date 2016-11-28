@@ -1789,7 +1789,7 @@ public class IOPort extends ComponentPort {
             if (!isOutput()) {
                 return _EMPTY_RECEIVER_ARRAY;
             }
-            
+
             int width = getWidth();
 
             if (width <= 0) {
@@ -4139,7 +4139,7 @@ public class IOPort extends ComponentPort {
                             if (receiver[j] != null) {
                                 result.append(receiver[j].getClass().getName());
                             }
-                            
+
                             result.append("}\n");
                         }
                     }

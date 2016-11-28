@@ -170,7 +170,7 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         }
         output.send(0, new DoubleToken(Hz()));
         jacobianOfMutualInformation.send(0, new DoubleMatrixToken(_jacobian));
-        
+
         /////////////////////////////////////
         // check result
         /////////////////////////////////////
@@ -191,7 +191,7 @@ public class ParticleMutualInformation extends TypedAtomicActor {
 //            // verify
 //            double[] dMI = DoubleMatrixMath.multiply(change_val, tempJacobian);
 //            double approximatedMI = mutualInformation + dMI[0];
-//            
+//
 //            //print out
 //            System.out.println("MI = "+mutualInformation + ", newMI = " + newMI + ", appNewMI = " + approximatedMI);
 //            System.out.println("jacobian = ");
@@ -204,9 +204,9 @@ public class ParticleMutualInformation extends TypedAtomicActor {
 //            System.out.println("error prop = " + verify);
 //            System.out.println();
 //        }
-//        
+//
     }
-    
+
     @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
@@ -248,7 +248,7 @@ public class ParticleMutualInformation extends TypedAtomicActor {
      * Jacobian of the mutual information
      */
     public TypedIOPort jacobianOfMutualInformation;
-    
+
 
     /**
      * Index of the robot which is optimizing location.
@@ -259,11 +259,11 @@ public class ParticleMutualInformation extends TypedAtomicActor {
 
 //    /**
 //     * Index list of the robots which are optimizing location.
-//     * Jacobian of mutual information will be [0 ... dMI/dRob_i ... 0], 
+//     * Jacobian of mutual information will be [0 ... dMI/dRob_i ... 0],
 //     * where i is a part of robotIDList.
 //     */
 //    public Parameter robotIdList;
-    
+
     private void _addMatrix(double[][] dist, double[][] val){
         for(int row = 0; row < dist.length; row++) {
             for(int col = 0; col < dist[0].length; col++) {
@@ -271,7 +271,7 @@ public class ParticleMutualInformation extends TypedAtomicActor {
             }
         }
     }
-    
+
     /**
      * code for computing the mutual information between particle sets and measurements
      * This function also calculate a jacobian matrix of the mutual information
@@ -291,7 +291,7 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         if(_robotId >= 0) numOfVariable = 2;
         double[][][] dMeansDpos = new double[N][_nRobots][numOfVariable];
         for (int i = 0; i < N; i++) {
-            //To be modified: This equation must refer to the measurement equation of sensors 
+            //To be modified: This equation must refer to the measurement equation of sensors
             //defined by StateSpaceModel.
             // gmi = { |Rob0 - Pi|, ..., |Robj - Pi|, ... , |RobM - Pi|}
             for (int j = 0; j < _nRobots; j++) {
@@ -337,7 +337,7 @@ public class ParticleMutualInformation extends TypedAtomicActor {
                 logSums[i] += _weights[j] * mvnpdf_ij;
             }
         }
-        // d_logSum/d_gm 
+        // d_logSum/d_gm
         // = [SUM(wj*d_mvnpdf(gm0, gmj)/dgm0), w1*d_mvnpdf(gm0, gm1)/dgm1, ..., wN*d_mvnpdf(gm0, gmN)/dgmN;
         //    w0*d_mvnpdf(gm1, gm0)/d_gm0, SUM(wj*d_mvnpdf(gm1, gmj)/dgm1), ..., ...                      ;
         //     ....
@@ -359,19 +359,19 @@ public class ParticleMutualInformation extends TypedAtomicActor {
                 _addMatrix(dlogSum_dgm[row][row], weightedMatrix);
             }
         }
-        
+
         double Hz = 0;
         // Hz = - w0*log(logSum0) - w1*log(logSum1) - ... - wN*log(logSumN)
         for (int k = 0; k < N; k++) {
             Hz -= _weights[k] * Math.log(logSums[k]);
         }
-        
+
         double[][] dHz_dL = new double[1][N];
         // d_Hz/d_logsum = [-w0/logSum0, -w1/logSum1, ..., -wN/logSumN]
         for (int col = 0; col < N; col++) {
             dHz_dL[0][col] = -_weights[col]/logSums[col];
         }
-        
+
 
         // compute jacobian of mutual information
         // J = dHz/dRob = d_Hz/d_logSum * d_logSum/d_gm * d_gm/d_rob
@@ -419,14 +419,14 @@ public class ParticleMutualInformation extends TypedAtomicActor {
 
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(BaseType.DOUBLE);
-        
+
         jacobianOfMutualInformation = new TypedIOPort(this, "jacobianOfMI", false, true);
         jacobianOfMutualInformation.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
         _firstStep = true;
 
         _covariance = 2.0; //This parameter should be defined by StateSpaceModel.
-        
+
         _robotId = -1;
         robotID  = new Parameter(this, "robot id");
         robotID.setExpression("-1");
@@ -477,7 +477,7 @@ public class ParticleMutualInformation extends TypedAtomicActor {
                 DoubleMatrixMath.multiply(x_mu, invSigma), x_mu);
         double mvnpdfVal = multiplier * Math.exp(-0.5 * exponent);
 
-        // d[multiplier * exp(-0.5 * exponent)]/dx 
+        // d[multiplier * exp(-0.5 * exponent)]/dx
         // = multiplier * exp(-0.5 * exponent) * d[-0.5*exponent]/dx
         // = multiplier * exp(-0.5 * exponent) * -0.5 * [2*x_mu*invSigma] * d[x_mu]/dx
         // = mvnpdfVal * -1.0 *[x_mu*invSigma]*I   /// (d[x_mu]/dx is identity matrix)

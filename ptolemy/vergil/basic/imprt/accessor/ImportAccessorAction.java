@@ -137,7 +137,7 @@ public class ImportAccessorAction extends AbstractAction {
 
         if (dialog.buttonPressed().equals("OK")) {
             String accessorFileName = query.getStringValue("accessor");
-            
+
             // If a sublibrary is selected instead of an accessor, re-open the dialog.
             if (!accessorFileName.endsWith(".js") && !accessorFileName.endsWith(".xml")) {
                 // Assume a sublibrary has been selected.

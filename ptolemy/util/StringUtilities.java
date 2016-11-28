@@ -99,7 +99,7 @@ public class StringUtilities {
      *  looks for native shared libraries.  It is typically read once
      *  when the JVM is started and no longer read after that.
      *  <p>This code may only work on certain JVMs</p>
-     * 
+     *
      *  <p>Based on code from http://forums.sun.com/thread.jspa?threadID=707176
      *  and http://stackoverflow.com/questions/5419039/is-djava-library-path-equivalent-to-system-setpropertyjava-library-path</p>
      *
@@ -117,7 +117,7 @@ public class StringUtilities {
             ArrayList<String> libraryPaths = new ArrayList<String>(Arrays.asList(libraryPathsArray));
             if (libraryPaths.contains(directoryName)) {
                 return;
-            } 
+            }
             libraryPaths.add(directoryName);
             usrPathsField.set(null, libraryPaths.toArray(new String[libraryPaths.size()]));
             System.setProperty("java.library.path", System.getProperty("java.library.path") + File.pathSeparator + directoryName);
@@ -153,7 +153,7 @@ public class StringUtilities {
                     + "could not get the value of the " + ptIIProperty
                     + ".  This means that loading shared libraries like the Serial I/O "
                     + "interface could fail. ");
-        }                   
+        }
     }
 
     /** Return a string with a maximum line length of <i>length</i>

@@ -1,5 +1,5 @@
 /* A model of a destination airport in air traffic control systems.
- 
+
    Copyright (c) 2015 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
@@ -71,23 +71,23 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
     public DestinationAirport(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        
+
         output = new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new RecordType(_lables, _types));
-        
+
         airportId= new Parameter(this, "airportId");
         airportId.setTypeEquals(BaseType.INT);
         airportId.setExpression("-1");
-        
+
         delay= new Parameter(this, "delay");
         delay.setTypeEquals(BaseType.DOUBLE);
         delay.setExpression("1");
-                
+
         EditorIcon node_icon = new EditorIcon(this, "_icon");
-        
+
         //rectangle
         _rectangle=new RectangleAttribute(node_icon, "_rectangleShape");
         _rectangle.centered.setToken("true");
@@ -96,7 +96,7 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
         _rectangle.rounding.setToken("10");
         _rectangle.lineColor.setToken("{0.0, 0.0, 0.0, 1.0}");
         _rectangle.fillColor.setToken("{0.8,0.8,1.0,1.0}");
-        
+
         //inner triangle of the icon
         _shape = new ResizablePolygonAttribute(node_icon, "_triangleShape");
         _shape.centered.setToken("true");
@@ -104,9 +104,9 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
         _shape.height.setToken("40");
         _shape.vertices.setExpression("{0.0,1.0,0.0,-1.0,2.0,0.0}");
         _shape.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
-        
+
     }
-    
+
     /** The input port, which is a multiport. */
     public TypedIOPort input;
 
@@ -118,8 +118,8 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
 
     /** The delay. */
     public Parameter delay;
-    
-    
+
+
     /** Return true if the token cannot be accepted at the specified port.
      *  @param token The token that may be rejected.
      *  @param port The port.
@@ -129,7 +129,7 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
     public boolean reject(Token token, IOPort port) {
         if (_inTransit != null)
             return true;
-        
+
         if (_called==false) {
             _called=true;
             return (_inTransit != null);
@@ -138,7 +138,7 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
             return true;
         }
     }
-    
+
     /** Fire the actor.
      *  @exception IllegalActionException If thrown by the baseclass
      *  or if there is a problem accessing the ports or parameters.
@@ -152,12 +152,12 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
             output.send(0, _inTransit);
             //Set icon to white color
             _setIcon(-1);
-                                
+
             _inTransit = null;
             _called=false;
             return;
         }
-       
+
         for (int i=0; i< input.getWidth();i++)
             if (input.hasNewToken(i)) {
                 _inTransit=input.get(i);
@@ -169,7 +169,7 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
                 director.fireAt(this, _transitExpires);
             }
     }
-    
+
     /** Initialize this actor.  Derived classes override this method
      *  to perform actions that should occur once at the beginning of
      *  an execution, but after type resolution.  Derived classes can
@@ -185,7 +185,7 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
         _called=false;
         _setIcon(-1);
     }
-    
+
     /** Set the visual indication of the icon for the specified ID.
      *  @param id The aircraft ID or -1 to indicate no aircraft.
      *  @exception IllegalActionException
@@ -197,10 +197,10 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
             color = ((AbstractATCDirector)_director).handleAirplaneColor(id);
             if (color==null)
                 throw new IllegalActionException("Color for the airplane "+id+" has not been set");
-        } 
+        }
         _shape.fillColor.setToken(color);
     }
-        
+
     //to change color of the icon
     private ResizablePolygonAttribute _shape;
     private RectangleAttribute _rectangle;
@@ -208,12 +208,12 @@ public class DestinationAirport extends TypedAtomicActor implements Rejecting{
     private Token[] _white = {_one, _one, _one, _one};
     private ArrayToken _noAircraftColor = new ArrayToken(_white);
     //
-        
+
     private Token _inTransit;
     private Time _transitExpires;
     private boolean _called;
     private String[] _lables={"aircraftId","aircraftSpeed","flightMap","priorTrack","fuel","arrivalTimeToAirport","dipartureTimeFromAirport"};
     private Type[] _types={BaseType.INT,BaseType.INT,new ArrayType(BaseType.INT),BaseType.INT,BaseType.DOUBLE,BaseType.DOUBLE,BaseType.DOUBLE};
 
-   
+
 }

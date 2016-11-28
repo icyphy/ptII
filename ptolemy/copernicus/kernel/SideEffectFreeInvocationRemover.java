@@ -79,14 +79,14 @@ public class SideEffectFreeInvocationRemover extends SceneTransformer {
 
     /** Return the default options.
      *  @return The default options, which in this case is the empty string.
-     */        
+     */
     public String getDefaultOptions() {
         return "";
     }
 
     /** Return the declared options.
      *  @return The declared options, which in this case is the empty string.
-     */        
+     */
     public String getDeclaredOptions() {
         return "";
     }

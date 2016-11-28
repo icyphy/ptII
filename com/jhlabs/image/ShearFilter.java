@@ -83,10 +83,10 @@ public class ShearFilter extends TransformFilter {
                             consumer.imageComplete(status);
                             return;
                     }
-    
+
                     int width = originalSpace.width;
                     int height = originalSpace.height;
-    
+
                     float tangent = Math.tan(angle);
                     if (tangent < 0.0)
                             tangent = -tangent;
@@ -103,7 +103,7 @@ public class ShearFilter extends TransformFilter {
                             int iNewCol = (int)newCol;
                             float f = newCol - iNewCol;
                             f = 1.0 - f;
-    
+
                             int outIndex = yOffset+iNewCol;
                             int lastRGB = inPixels[inIndex];
                             for (int x = 0; x < width; x++) {

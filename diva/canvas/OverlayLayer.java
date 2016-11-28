@@ -91,7 +91,7 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
     }
 
     /** Add a new shape to the list of shapes in this layer.
-     *  @param s The shape to be added   
+     *  @param s The shape to be added
      */
     public void add(Shape s) {
         _shapes.add(s);
@@ -104,7 +104,7 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
     }
 
     /** Get the current paint stroke.
-     *  @return The stroke   
+     *  @return The stroke
      *  @see #setStroke(Stroke)
      */
     public Stroke getStroke() {
@@ -112,7 +112,7 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
     }
 
     /** Get the current paint.
-     *  @return the Paint   
+     *  @return the Paint
      *  @see #setPaint(Paint)
      */
     public Paint getPaint() {
@@ -177,7 +177,7 @@ public class OverlayLayer extends CanvasLayer implements VisibleComponent {
     }
 
     /** Remove a shape from the list of shapes in this layer.
-     *  @param s The Shape to be removed   
+     *  @param s The Shape to be removed
      */
     public void remove(Shape s) {
         _shapes.remove(s);

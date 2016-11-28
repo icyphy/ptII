@@ -129,7 +129,7 @@ public class Constants {
     public static ptolemy.data.Token get(String name) {
         return (ptolemy.data.Token) _table.get(name);
     }
-    
+
     /** Given a name defining a type, return the type, or null if
      *  there is no such type.
      *  @param name The type name.

@@ -72,7 +72,7 @@ InferenceActor {
         _decorator = null;
         _measurementDecorators = new HashMap<>();
     }
-      
+
 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
@@ -158,7 +158,7 @@ InferenceActor {
                     _mapDecorator = (Map) d;
                     mapExists = true;
                 }
-            } 
+            }
         }
         if (!mapExists) {
             _mapDecorator = null;
@@ -213,7 +213,7 @@ InferenceActor {
         }
     }
 
-    /** The state space model of the target 
+    /** The state space model of the target
      * being tracked by this particle filter. */
     private StateSpaceModel _decorator;
 
@@ -263,5 +263,5 @@ InferenceActor {
             return true;
         }
     }
-    private Map _mapDecorator; 
+    private Map _mapDecorator;
 }

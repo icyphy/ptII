@@ -81,7 +81,7 @@ public class MqttHelper extends HelperBase {
         }
         return _mqttHelper;
     }
-    
+
     /**
      * Generate a default client ID randomly.
      *
@@ -105,7 +105,7 @@ public class MqttHelper extends HelperBase {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public classes                    ////
-    
+
     public class MqttClientWrapper {
         /**
          * This constructor creates one Paho MQTT client inside using given parameters.
@@ -119,19 +119,19 @@ public class MqttHelper extends HelperBase {
         public MqttClientWrapper(ScriptObjectMirror currentObj,
                 int port, String host, String clientId, boolean rawBytes) throws MqttException {
             _currentObj = currentObj;
-    
+
             MemoryPersistence persistence = new MemoryPersistence();
             String hostUrl = "tcp://" + host + ":" + port;
-    
+
             _mqttClient = new MqttAsyncClient(hostUrl, clientId, persistence);
             _rawBytes = rawBytes;
             _connOpts = new MqttConnectOptions();
             _connOpts.setCleanSession(true);
         }
-    
+
         ///////////////////////////////////////////////////////////////////
         ////                         public methods                    ////
-    
+
         /**
          * Start connection between the client and the broker server.
          * @exception MqttSecurityException
@@ -139,20 +139,20 @@ public class MqttHelper extends HelperBase {
          */
         public void start() throws MqttSecurityException, MqttException {
             _mqttClient.connect(_connOpts, null, new IMqttActionListener() {
-    
+
                 @Override
                 public void onSuccess(IMqttToken arg0) {
                     _currentObj.callMember("emit", "connect");
                 }
-    
+
                 @Override
                 public void onFailure(IMqttToken arg0, Throwable arg1) {
                     _error(_currentObj, "Connection refused.");
                 }
             });
-    
+
             _mqttClient.setCallback(new MqttCallback() {
-    
+
                 @Override
                 public void messageArrived(String topic, MqttMessage message)
                         throws Exception {
@@ -166,20 +166,20 @@ public class MqttHelper extends HelperBase {
                     }
                     _currentObj.callMember("emit", "message", topic, messageObject);
                 }
-    
+
                 @Override
                 public void deliveryComplete(IMqttDeliveryToken arg0) {
                     _currentObj.callMember("emit", "published");
                 }
-    
+
                 @Override
                 public void connectionLost(Throwable arg0) {
                     _currentObj.callMember("emit", "close");
                 }
             });
-    
+
         }
-    
+
         /**
          * Publish an MQTT message to subscribers listening to the topic.
          *
@@ -189,7 +189,7 @@ public class MqttHelper extends HelperBase {
          *  @param retain Whether the sever should hold on the message after it has been delivered to
          *  current subscribers so that a newly incoming subscriber can receive the message later.
          *  @exception MqttException If the publish fails.
-         *  @throws IllegalActionException 
+         *  @throws IllegalActionException
          */
         public void publish(String topic, Object message, Integer qos,
                 boolean retain) throws MqttException, IllegalActionException {
@@ -200,14 +200,14 @@ public class MqttHelper extends HelperBase {
             else {
                 payload = ((String)message).getBytes();
             }
-            
+
             MqttMessage mqttMessage = new MqttMessage(payload);
-    
+
             mqttMessage.setQos(qos);
             mqttMessage.setRetained(retain);
             _mqttClient.publish(topic, mqttMessage);
         }
-    
+
         /**
          * Subscribe a topic using the given maximum QoS level. Start getting messages on the topic.
          *
@@ -220,7 +220,7 @@ public class MqttHelper extends HelperBase {
         public void subscribe(String topic, int qos) throws MqttException {
             _mqttClient.subscribe(topic, qos);
         }
-    
+
         /**
          * Unsubscribe a topic. Stop getting messages on the topic.
          *
@@ -230,7 +230,7 @@ public class MqttHelper extends HelperBase {
         public void unsubscribe(String topic) throws MqttException {
             _mqttClient.unsubscribe(topic);
         }
-    
+
         /**
          * Disconnect from the broker server and close (i.e. return all allocated resources) the client.
          *
@@ -242,7 +242,7 @@ public class MqttHelper extends HelperBase {
             }
             _mqttClient.close();
         }
-    
+
         /**
          * Return whether the client is connected to a broker server.
          *
@@ -251,10 +251,10 @@ public class MqttHelper extends HelperBase {
         public boolean isConnected() {
             return _mqttClient.isConnected();
         }
-    
+
         ///////////////////////////////////////////////////////////////////
         ////                         private methods                   ////
-    
+
         /**
          * Private constructor for WebSocketHelper with a server-side web socket.
          * The server-side web socket is given from the web socket server.
@@ -262,13 +262,13 @@ public class MqttHelper extends HelperBase {
 
         /** Whether to use raw bytes or string for data to be published. */
         private boolean _rawBytes;
-        
+
         /** The current instance of the JavaScript module. */
         private ScriptObjectMirror _currentObj;
-    
+
         /** The internal MQTT client created in Java */
         private MqttAsyncClient _mqttClient = null;
-    
+
         /** Connection options for the current MQTT connection */
         MqttConnectOptions _connOpts = null;
     }

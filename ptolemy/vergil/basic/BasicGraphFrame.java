@@ -3596,7 +3596,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
 
     /** The action for reloading accessors. */
     protected Action _reloadAccessorsAction;
-    
+
     /** The right component for this editor. */
     protected JComponent _rightComponent;
 
@@ -4907,15 +4907,15 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         @Override
         public void actionPerformed(ActionEvent e) {
             NamedObj model = getModel();
-            
+
             Attribute attribute = model.getAttribute("_layoutConfiguration");
             if (attribute == null) {
-                
+
                 String layoutConfiguration = "ptolemy.vergil.basic.layout.ActorLayoutConfiguration";
                 if (_getGraphModel() instanceof FSMGraphModel) {
                     layoutConfiguration = "ptolemy.vergil.basic.layout.ModalLayoutConfiguration";
                 }
-                
+
                 String momlChange = "<property name=\"_layoutConfiguration\" class=\"" + layoutConfiguration + "\"/>";
                 model.requestChange(new MoMLChangeRequest(this, model,
                         momlChange, false));

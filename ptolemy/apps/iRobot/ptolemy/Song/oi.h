@@ -28,7 +28,7 @@
 
 
 // Sensor byte indices - offsets in packets 0, 5 and 6
-#define SenBumpDrop     0            
+#define SenBumpDrop     0
 #define SenWall         1
 #define SenCliffL       2
 #define SenCliffFL      3

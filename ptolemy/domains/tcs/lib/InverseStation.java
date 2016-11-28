@@ -1,5 +1,5 @@
 /* A model of a Station in train control systems.
- 
+
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -59,12 +59,12 @@ public class InverseStation extends AbstractStation {
     public InverseStation(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         StringAttribute cardinality = new StringAttribute(input, "_cardinal");
         cardinality.setExpression("EAST");
         cardinality = new StringAttribute(output, "_cardinal");
         cardinality.setExpression("WEST");
     }
 
-   
+
 }

@@ -66,7 +66,7 @@ import javax.vecmath.*;
    <p>To install, download and untar:
    <pre>
    wget --no-check-certificate https://j3d-vrml97.dev.java.net/files/documents/2124/3
-   tar -zxf j3d-vrml97-06-04-20.tar.gz 
+   tar -zxf j3d-vrml97-06-04-20.tar.gz
    </pre>
 
    <p>To install on the Mac:

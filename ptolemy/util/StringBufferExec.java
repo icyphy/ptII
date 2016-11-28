@@ -45,7 +45,7 @@ package ptolemy.util;
  exec.setCommands(execCommands);
 
  exec.start();
- 
+
  String result = exec.buffer.toString();
  </pre>
 

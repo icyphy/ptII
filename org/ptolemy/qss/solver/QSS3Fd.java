@@ -90,7 +90,7 @@ public final class QSS3Fd extends QSSBase {
             _ivValsSample3_xx = new double[_ivCt];
             _ivValsSample4_xx = new double[_ivCt];
             _ivValsSample5_xx = new double[_ivCt];
-            
+
         }
 
     }
@@ -342,8 +342,8 @@ public final class QSS3Fd extends QSSBase {
             for (int ii = 0; ii < _ivCt; ++ii) {
                 _ivValsSample3_xx[ii] = _ivMdls[ii].evaluate(dtSample3);
             }
-            
-            
+
+
             // Choose a sample time, different from {_currSimTime} and different from {tSample3}.
             //   For estimating third derivatives.
             final double dtSample4 = dtSample + dtSample2 + Math.sqrt(dtSample);
@@ -359,7 +359,7 @@ public final class QSS3Fd extends QSSBase {
             for (int ii = 0; ii < _ivCt; ++ii) {
                 _ivValsSample4_xx[ii] = _ivMdls[ii].evaluate(dtSample4);
             }
-                 
+
             // Choose a sample time, different from {_currSimTime} and different from {tSample2}.
             //   For estimating third derivatives.
             final double dtSample5 = dtSample + dtSample4;
@@ -375,7 +375,7 @@ public final class QSS3Fd extends QSSBase {
             for (int ii = 0; ii < _ivCt; ++ii) {
                 _ivValsSample5_xx[ii] = _ivMdls[ii].evaluate(dtSample5);
             }
-            
+
 
             // Provide inputs to evaluate derivative function at {_currSimTime}.
             retVal = _derivFcn.eventIndicatorDerivativeInputs(_currSimTime,
@@ -425,7 +425,7 @@ public final class QSS3Fd extends QSSBase {
 
         // Evaluate derivative function at {_currSimTime}.
         int retVal = _derivFcn.evaluateDerivatives(_currSimTime, dtSample,
-                _stateDerivs_xx, _stateDerivs2_xx, _stateDerivs3_xx, 
+                _stateDerivs_xx, _stateDerivs2_xx, _stateDerivs3_xx,
                 getStateModelOrder());
 
         if (0 != retVal) {
@@ -455,7 +455,7 @@ public final class QSS3Fd extends QSSBase {
             _rtDerivs_xx[ii] = rtDeriv;
             _cStateMdls[ii].coeffs[2] = 0.5 * rtDeriv;
         }
-        
+
         // Update the internal, continuous state models.
         final double oneOverThreeDtSampleSq = 1.0 / (3 * dtSample[2] * dtSample[2]);
         for (int ii = 0; ii < _stateCt; ++ii) {

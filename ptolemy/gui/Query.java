@@ -315,7 +315,7 @@ public class Query extends JPanel {
     public JTextArea addDisplay(String name, String label, String theValue) {
         return addDisplay(name, label, theValue, null, null);
     }
-    
+
     /** Create a simple one-line text display, a non-editable value that
      *  is set externally using the setDisplay() method.
      *  @param name The name used to identify the entry (when calling get).

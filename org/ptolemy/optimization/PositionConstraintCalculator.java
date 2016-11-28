@@ -1,4 +1,4 @@
-/* 
+/*
  Copyright (c) 2014-2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -55,7 +55,7 @@ This class computes following constraint functions used in an optimization class
 The number of functions is N X H, where N is the number of reference trajectories and H is prediction time horizon.
 N and H are obtained from the length of "referenceTrajectories" and "trajectory", respectively.
 The output array consists of {f0_0, f0_1, ... , f0_t, f1_0, ... , f1_t, ... ,fi_t}.
-If i is "robotID", constraint functions is 
+If i is "robotID", constraint functions is
 fi_t = - (Px_t - Pi_t) * CovP^-1 * (Px_t - Pi_t) + 1.0 &gt; 0,
 where Px_t is a position of robot at time t obtained from "trajectory",
 Pi_t is a position of the robot predicted in previous control step obtained from "referenceTrajectories",
@@ -129,7 +129,7 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
         ScalefactorOfVariance.setVisibility(Parameter.EXPERT);
 
         //the index of the robot in referenceTrajectories array.
-        _robotId = -1; 
+        _robotId = -1;
         RobotId = new Parameter(this, "robot id");
         RobotId.setExpression("-1");
         RobotId.setTypeEquals(BaseType.INT);
@@ -168,7 +168,7 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
         }
 
         // Copy input tokens to _objectX, _objectY, and _objectCovariances.
-        // If an input array is shorter than _robotX, 
+        // If an input array is shorter than _robotX,
         // the last value of the input token is copied.
         if (referenceTrajectories.hasToken(0)) {
             ArrayToken objArrays = ((ArrayToken) referenceTrajectories.get(0));
@@ -220,7 +220,7 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
         super.prefire();
 
         if (
-                (trajectory.hasToken(0)) 
+                (trajectory.hasToken(0))
                 && (referenceTrajectories.hasToken(0))
                 && (jacobianOfTrajectory.hasToken(0))
                 )
@@ -266,10 +266,10 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
                     for(int i=0; i<2; i++) {
                         gradient[0][i] = jacobianOfFi[i];
                     }
-                    _gradientOfConstraints[indexOfObject] 
+                    _gradientOfConstraints[indexOfObject]
                             = new DoubleMatrixToken(DoubleMatrixMath.multiply(gradient, _jacobianOfTrajectory[k]));
                 } else {
-                    // Constraint function is 
+                    // Constraint function is
                     // fi_t = g(Pi) - sqrt(CovR) = |Px_t - Pi_t|^2 - D^2 - sqrt(CovR) > 0,
                     // CovR = (dg/dPi) * CovPi * (dg/dPi)T
                     double gXk = dP[0] * dP[0] + dP[1] * dP[1] - _distanceLimit*_distanceLimit;
@@ -298,7 +298,7 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
                     for(int i=0; i<2; i++) {
                         gradient[0][i] = jacobianOfFi[i];
                     }
-                    _gradientOfConstraints[indexOfObject] 
+                    _gradientOfConstraints[indexOfObject]
                             = new DoubleMatrixToken(DoubleMatrixMath.multiply(gradient, _jacobianOfTrajectory[k]));
                 }
             }

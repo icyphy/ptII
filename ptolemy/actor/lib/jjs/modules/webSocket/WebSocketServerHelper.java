@@ -190,13 +190,13 @@ public class WebSocketServerHelper extends VertxHelperBase {
 
     /** The host interface. */
     private String _hostInterface;
-    
+
     /** Whether the server runs on SSL/TLS. */
     private boolean _sslTls;
 
     /** The password for pfx key-cert file. */
     private String _pfxKeyCertPassword;
-    
+
     /** The path for pfx key-cert file. */
     private String _pfxKeyCertPath;
 

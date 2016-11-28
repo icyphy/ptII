@@ -63,7 +63,7 @@ import ptolemy.gui.UndoListener;
  */
 @SuppressWarnings("serial")
 public class SyntaxTextEditor extends TextEditor {
-    
+
     /** Construct an empty text editor with no name.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -152,14 +152,14 @@ public class SyntaxTextEditor extends TextEditor {
         document = text.getDocument();
         document.addDocumentListener(this);
         _scrollPane = new RTextScrollPane(text, true);
-        
+
         // To get bookmarking, do this:
         //        Gutter gutter = ((RTextScrollPane)_scrollPane).getGutter();
         //        gutter.setBookmarkingEnabled(true);
         //        URL url = getClass().getClassLoader().getResource("img/bookmark.png");
         //        gutter.setBookmarkIcon(new ImageIcon(url));
         // Will need to copy the img/bookmark.png from the rsyntaxtextarea_demo_2.5.1_Source dir.
-        
+
         ErrorStrip errorStrip = new ErrorStrip((RSyntaxTextArea)text);
         getContentPane().add(errorStrip, BorderLayout.LINE_END);
 

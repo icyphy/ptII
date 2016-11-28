@@ -1,4 +1,4 @@
-/* ------------------------------------------------------------------------- 
+/* -------------------------------------------------------------------------
  * fmi.h
  * Struct with the corresponding function pointers for FMI 2.0.
  * Copyright QTronic GmbH. All rights reserved.

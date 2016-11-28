@@ -1,5 +1,5 @@
 /* A director for modeling Train control system.
- 
+
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -78,7 +78,7 @@ public class TCSDirector extends DEDirector {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Return a new receiver of the type TCSReceiver.
      *  @return A new TCSReceiver.
      */
@@ -86,7 +86,7 @@ public class TCSDirector extends DEDirector {
     public Receiver newReceiver() {
         return new TCSReceiver();
     }
-    
+
     /** Initialize all the contained actors by invoke the initialize() method
      *  of the super class.
      */
@@ -98,8 +98,8 @@ public class TCSDirector extends DEDirector {
         _trainsColor=new HashMap<>();
         super.initialize();
     }
-        
-    
+
+
     /** Return the color of the line.
      *  @param symbol symbol of the line.
      *  @return Return color of a line in form of ArrayToken.
@@ -120,7 +120,7 @@ public class TCSDirector extends DEDirector {
         // FIXME: what value should be returned here?
         return 1.0;
     }
-    
+
     /** Return an additional delay for a Station to keep a Train in transit.
      *  @param station The station
      *  @return An additional delay, or -1.0 to indicate that a rerouting is possible.
@@ -130,8 +130,8 @@ public class TCSDirector extends DEDirector {
     public double handleRejectionWithDelayStation(AbstractStation station) throws IllegalActionException{
         // TODO Auto-generated method stub
         return 1.0;
-    }  
-    
+    }
+
     /** Put an entry into _brokenTracks for the initialized track.
      *  @param track The track
      *  @throws IllegalActionException If thrown while putting the entry into _brokenTracks.
@@ -158,8 +158,8 @@ public class TCSDirector extends DEDirector {
             _brokenTracks.put(symbol, track.broken.getToken());
         }
     }
-     
-    /** Put an entry into _brokenStations for the initialized station. 
+
+    /** Put an entry into _brokenStations for the initialized station.
      *  @param station The station
      *  @throws IllegalActionException If the entry cannot be put in to _brokenStations
      */
@@ -169,7 +169,7 @@ public class TCSDirector extends DEDirector {
             throw new IllegalActionException("Invalid id for station (-1)");
         }
         if (station.lineSymbol.getToken()==null) {
-            throw new IllegalActionException("Fill Symbol of station " + stationId); 
+            throw new IllegalActionException("Fill Symbol of station " + stationId);
         }
         String symbol=((StringToken)(station.lineSymbol.getToken())).stringValue();
         if (symbol.length() > 1 || symbol.length() == 0) {
@@ -188,9 +188,9 @@ public class TCSDirector extends DEDirector {
             if (station.neighbors.getToken()==null || ((ArrayToken)station.neighbors.getToken()).length()==0) {
                 throw new IllegalActionException("Fill the neighbors of the statoin " + symbol);
             }
-        }        
+        }
     }
-    
+
     /** Update the _brokenTracks array because of a change in condition of a track.
      *  @param track The track
      *  @throws IllegalActionException If the track id is invalid or
@@ -208,12 +208,12 @@ public class TCSDirector extends DEDirector {
             if (_brokenTracks.containsKey(symbol)) {
                 _brokenTracks.put(symbol, track.broken.getToken());
             } else {
-                throw new IllegalActionException("The entry for this track has not been set in brokenTrack array "); 
+                throw new IllegalActionException("The entry for this track has not been set in brokenTrack array ");
             }
         }
     }
-    
-    
+
+
     /** Update _brokenStations array because of a change in condition of a station.
      *  @param station The station
      *  @throws IllegalActionException If the station id is invalid or
@@ -225,25 +225,25 @@ public class TCSDirector extends DEDirector {
         if (id == -1) {
             throw new IllegalActionException("Invalid id for station (-1)");
         }
-        
+
         String symbol = ((StringToken)(station.lineSymbol.getToken())).stringValue();
         symbol = symbol + id;
         if (_brokenStations.size()!=0) {
             if (_brokenStations.containsKey(symbol)) {
                 _brokenStations.put(symbol, station.broken.getToken());
             } else {
-                throw new IllegalActionException("The entry for this station " + symbol + " has not been set in brokenStations array "); 
+                throw new IllegalActionException("The entry for this station " + symbol + " has not been set in brokenStations array ");
             }
         }
     }
-    
-    
+
+
     /** Handle initializing of a SourceStation.
      *  @param abstractSourceStation The Abstract Source state
      *  @throws IllegalActionException If the line symbol cannot be obtained or if the stationID is -1.
      */
     public void handleInitializedSourceStation(AbstractSourceStation abstractSourceStation) throws IllegalActionException{
-       
+
         int stationId = ((IntToken)abstractSourceStation.stationId.getToken()).intValue();
         if (abstractSourceStation.lineSymbol.getToken()==null) {
             throw new IllegalActionException("Fill Symbol of sourceStation " + stationId);
@@ -257,10 +257,10 @@ public class TCSDirector extends DEDirector {
         if (_brokenStations.containsKey(symbol)) {
             throw new IllegalActionException("Duplication in station id");
         }
-        
-        _brokenStations.put(symbol,(Token)(new BooleanToken(false)));  
+
+        _brokenStations.put(symbol,(Token)(new BooleanToken(false)));
     }
-    
+
      /** Return color of the train.
      *  @param id Id of the train.
      *  @return the color of the train.
@@ -269,7 +269,7 @@ public class TCSDirector extends DEDirector {
      */
     public ArrayToken handleTrainColor(int id) throws IllegalActionException{
         ArrayToken color = _trainsColor.get(id);
-        
+
         while(color == null) {
             Token[] colorSpec = new DoubleToken[4];
             colorSpec[0] = new DoubleToken(_random.nextDouble());
@@ -291,10 +291,10 @@ public class TCSDirector extends DEDirector {
             }
             color=null;
         }
-        
+
         return color;
     }
-    
+
     /** Set color of the lines in Metro.
      *  @throws IllegalActionException If there is a problem
      *  adding the lines to the set of line colors.
@@ -314,7 +314,7 @@ public class TCSDirector extends DEDirector {
         _lineColor.put("Z", new ArrayToken("{0.6,0.0,0.6,1.0}"));
         _lineColor.put("N", new ArrayToken("{0.0,1.0,0.8,1.0}"));
         _lineColor.put("F", new ArrayToken("{0.8235294,0.4117647,0.11764706,0.84705883}"));
-            
+
         }
 
     /** Return moving time of a train in a track or station.
@@ -327,7 +327,7 @@ public class TCSDirector extends DEDirector {
         return 1.0;
     }
 
-    
+
     /** Routing a train in a station with more than one output channel
     *   which is in the junction and by using the moving map of the
     *   train.  MovingMap of the train is an array in form of
@@ -337,12 +337,12 @@ public class TCSDirector extends DEDirector {
     *  current station, an array in form of "symbolId".
     *  @param token token shows the train.
     *  @return Returns a new train packet and the out channel.
-    *  @throws IllegalActionException 
+    *  @throws IllegalActionException
     */
     public Map<String, Token> routing(ArrayToken lines, Token token) throws IllegalActionException {
         ArrayToken movingMap=(ArrayToken)((RecordToken)token).get("movingMap");
         int outRout=0;
-        if (movingMap.length()!=0) { 
+        if (movingMap.length()!=0) {
             Token first=movingMap.getElement(0);
             if (movingMap.length()==1) {
                 movingMap=new ArrayToken("{}");
@@ -356,7 +356,7 @@ public class TCSDirector extends DEDirector {
                 }
             }
         }
-        
+
       Map<String, Token> newTrain=new TreeMap<String, Token>();
       newTrain.put("trainId",((RecordToken)token).get("trainId"));
       newTrain.put("trainSymbol",((RecordToken)token).get("trainSymbol"));
@@ -365,39 +365,39 @@ public class TCSDirector extends DEDirector {
       newTrain.put("fuel",((RecordToken)token).get("fuel"));
       newTrain.put("arrivalTimeToStation", ((RecordToken)token).get("arrivalTimeToStation"));
       newTrain.put("dipartureTimeFromStation", ((RecordToken)token).get("dipartureTimeFromStation"));
-      
+
       Map<String, Token> temp=new TreeMap<>();
       temp.put("outputChannel", (Token)new IntToken(outRout));
       temp.put("train",(Token)(new RecordToken(newTrain)));
       return temp;
-        
+
     }
 
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private Random _random=new Random();
-    
+
     /**  _brokenTracks stores which track has broken. First element is
      *  in form of "symbolId" in which symbol is symbol of the track
      *  (line) and id is id of the track, and last is a boolean
      *  token.
      */
     private Map<String, Token> _brokenTracks=new TreeMap<>();
-    
+
     /**  _brokenStations stores which station has broken. First
      *  element is in form of "symbolId" in which symbol is symbol of
      *  the station (line) and id is id of the station, and last is a
      *  boolean token.
      */
     private Map<String, Token> _brokenStations=new TreeMap<>();
-    
+
     /** _lineColor stors color of the lines. First element is symbol
      * of the line and last is its color.
      */
     private Map<String,ArrayToken> _lineColor=new HashMap<String,ArrayToken>();
-    
+
     /** _trainsColor stores a color for each train. */
     private Map<Integer,ArrayToken> _trainsColor = new HashMap<Integer,ArrayToken>();
 }

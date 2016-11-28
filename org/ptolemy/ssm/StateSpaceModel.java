@@ -50,7 +50,7 @@ import ptolemy.kernel.util.Workspace;
 ///////////////////////////////////////////////////////////////////
 //// StateSpaceModel
 
-/** 
+/**
  * A decorator that implements a State Space Model.
  * @author Ilge Akkaya
  * @version $Id$
@@ -211,7 +211,7 @@ public class StateSpaceModel extends MirrorDecorator {
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
             NameDuplicationException {
-        
+
         //create parameters for the initial state variable names here.
         String[] names = {"x", "y"};
         for (int i=0; i < names.length; i++) {
@@ -219,12 +219,12 @@ public class StateSpaceModel extends MirrorDecorator {
             Parameter y = new Parameter(this, stateName);
             y.setExpression("0.0");
             Parameter yUpdate = new Parameter(this, stateName.concat("_update"));
-            yUpdate.setExpression(stateName); 
+            yUpdate.setExpression(stateName);
         }
 
         stateVariableNames = new Parameter(this, "stateVariableNames");
         stateVariableNames.setExpression("{\"x\",\"y\"}");
-        stateVariableNames.setTypeEquals(new ArrayType(BaseType.STRING)); 
+        stateVariableNames.setTypeEquals(new ArrayType(BaseType.STRING));
 
         prior = new Parameter(this, "prior");
         prior.setExpression("{random()*200-100,random()*200-100}");
@@ -244,7 +244,7 @@ public class StateSpaceModel extends MirrorDecorator {
         color.setExpression("{1.0,0.4,0.0,1.0}");
 
 
-        _cachedStateVariableNames = new ArrayList<>(); 
+        _cachedStateVariableNames = new ArrayList<>();
     }
 
     private List<String> _cachedStateVariableNames;

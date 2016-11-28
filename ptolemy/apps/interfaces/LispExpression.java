@@ -1,5 +1,5 @@
 /** Helper functions for building Lisp-style S-expressions.
- * 
+ *
  */
 package ptolemy.apps.interfaces;
 

@@ -2,7 +2,7 @@
 Ledc component. But it illustrates the similiar structure for our experiments now.
 
 
-Authors: 
+Authors:
 Version $Id$
 */
 

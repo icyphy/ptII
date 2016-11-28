@@ -538,7 +538,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
 
-     
+
     /**
      * Constrain particles within a map region if applicable.
      */
@@ -549,7 +549,7 @@ public abstract class AbstractParticleFilter extends TypedCompositeActor impleme
             }
         }
     }
-    
+
     private void _createRandomGenerator() throws IllegalActionException {
 
         _seed = ((LongToken) seed.getToken()).longValue();

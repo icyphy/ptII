@@ -49,13 +49,13 @@ import ptolemy.kernel.util.IllegalActionException;
  *  fields, a value, which is a Java long, and a calendar, which is
  *  a java.util.Calendar.  The Calendar class only support milliseconds,
  *  it does not support microseconds and nanoseconds.  When
- *  operations are performed, it is essential that 
+ *  operations are performed, it is essential that
  *  {@link #setTimeInMilliseconds(long)} be called so that
  *  both fields are updated.</p>
  *
  *  <p>Note: Java 8 provides a much improved implementation of dates and times.
  *  This implementation should be upgraded eventually.</p>
- * 
+ *
  *  @author Patricia Derler, Christopher  based on DateToken in Kepler by Daniel Crawl and Christopher Brooks
  *  @version $Id$
  *  @since Ptolemy II 10.0
@@ -598,7 +598,7 @@ public class DateToken extends AbstractConvertibleToken implements
         }
         _calendar.setTimeInMillis(newValue);
     }
-    
+
     /** Return the value of the token as a String.
      *  @return The string value, which is the same as
      *  the value returned by {@link #toString()}, except

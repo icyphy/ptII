@@ -179,7 +179,7 @@ public class JCanvas extends JComponent implements Printable {
     }
 
     /** Get the canvas pane contained by this component.
-     * @return The canvas pane.   
+     * @return The canvas pane.
      */
     public final CanvasPane getCanvasPane() {
         return _canvasPane;
@@ -505,7 +505,7 @@ public class JCanvas extends JComponent implements Printable {
 
         // The fix is to always call super.processMouseEvent(e)
         // See https://chess.eecs.berkeley.edu/ptolemy/wiki/Ptolemy/ToolTips
-        
+
         // The below call *should* be extranneous, but at least on the
         // Macintosh, it prevents popup menus from being created...
         //if (!e.isConsumed()) {

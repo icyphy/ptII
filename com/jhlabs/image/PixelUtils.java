@@ -67,7 +67,7 @@ public class PixelUtils {
      *  @param v2 The second value
      *  @param f The amount of interpolation, typically between 0 and 1.
      *  @return the interpolated value, clamped to 0..255.
-     */   
+     */
     public static int interpolate(int v1, int v2, float f) {
         return clamp((int) (v1 + f * (v2 - v1)));
     }
@@ -108,7 +108,7 @@ public class PixelUtils {
      *  @param rgb2 The second pixel.
      *  @param op The operation as defined by this class.
      *  @return the combined pixel.
-     */   
+     */
     public static int combinePixels(int rgb1, int rgb2, int op) {
         return combinePixels(rgb1, rgb2, op, 0xff);
     }
@@ -120,7 +120,7 @@ public class PixelUtils {
      *  @param extraAlpha The extra alpha.
      *  @param channelMask The channel mask.
      *  @return the combined pixel.
-     */   
+     */
     public static int combinePixels(int rgb1, int rgb2, int op, int extraAlpha, int channelMask) {
         return (rgb2 & ~channelMask) | combinePixels(rgb1 & channelMask, rgb2, op, extraAlpha);
     }
@@ -131,7 +131,7 @@ public class PixelUtils {
      *  @param op The operation as defined by this class.
      *  @param extraAlpha The extra alpha.
      *  @return the combined pixel.
-     */   
+     */
     public static int combinePixels(int rgb1, int rgb2, int op, int extraAlpha) {
         if (op == REPLACE)
             return rgb1;

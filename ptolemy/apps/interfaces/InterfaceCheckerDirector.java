@@ -46,18 +46,18 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Nameable;
 
 /** A director that checks the interfaces of its contained actors.
- * 
+ *
  *  For each actor it checks first for a parameter named _interfaceExpr,
  *  which is interpreted as a boolean-valued Ptolemy expression
  *  representing the interface of the actor.
- * 
+ *
  *  If that is not present, it checks for a parameter named _interfaceStr,
  *  which is interpreted as a string in the Yices expression language
  *  representing the interface.
  *
  *  If neither of these are present, it labels the given actor defective
  *  and raises an exception.
- * 
+ *
  *  @author Ben Lickly
  *  @version $Id$
  *  @since Ptolemy II 8.1
@@ -68,7 +68,7 @@ public class InterfaceCheckerDirector extends Director {
 
     /** Construct a new InterfaceCheckerDirector, with the given container
      *  and name.
-     *  
+     *
      *  @param container The container.
      *  @param name The name of this director.
      *  @throws IllegalActionException If the superclass throws it.
@@ -83,7 +83,7 @@ public class InterfaceCheckerDirector extends Director {
     ////                       public methods                      ////
 
     /** Check that the interfaces in the model are valid.
-     * 
+     *
      *  @throws IllegalActionException If the interfaces of any actors in
      *    the model cannot be determined.
      */
@@ -129,11 +129,11 @@ public class InterfaceCheckerDirector extends Director {
     ////                       private methods                     ////
 
     /** Check that the interface of the given actor are valid.
-     * 
+     *
      *  In this first implementation, this is only a check of
      *  satisfiability, although we could potentially also check
      *  for other properties.
-     * 
+     *
      *  @param actor Actor whose interface is to be checked
      *  @return A string representing the result of the SMT check
      *  @throws IllegalActionException If the interface of the actor
@@ -147,7 +147,7 @@ public class InterfaceCheckerDirector extends Director {
     }
 
     /** Infer the interface of a composite actor from its contained actors.
-     * 
+     *
      *  @param container The composite actor whose interface we are querying.
      *  @return The inferred interface.
      *  @throws IllegalActionException If no interface can be inferred.
@@ -179,7 +179,7 @@ public class InterfaceCheckerDirector extends Director {
         }
         // Deal with contained actors
         List<Entity> actors = container.entityList();
-        if (actors.size() == 1) { 
+        if (actors.size() == 1) {
             // Feedback Composition
             final Actor actor = (Actor) actors.get(0);
             Set<Connection> connections = _getConnectionsBetween(actor, actor);
@@ -190,7 +190,7 @@ public class InterfaceCheckerDirector extends Director {
             }
             newConstraints.add(actorInterface.getContract());
             outputNames.addAll(actorInterface.getVariables());
-            
+
         } else if (actors.size() == 2) {
             // Cascade/Parallel Composition
             Set<Connection> selfLoop1 = _getConnectionsBetween((Actor) actors.get(0), (Actor) actors.get(0));
@@ -216,7 +216,7 @@ public class InterfaceCheckerDirector extends Director {
                 actor0 = (Actor) actors.get(1); actor1 = (Actor) actors.get(0);
                 connections = connection2;
             }
-            
+
             RelationalInterface compositeInterface;
             if (connections.isEmpty()) {
                 compositeInterface = _getInterface(actor0).
@@ -227,7 +227,7 @@ public class InterfaceCheckerDirector extends Director {
             }
             newConstraints.add(compositeInterface.getContract());
             outputNames.addAll(compositeInterface.getVariables());
-            
+
         } else if (actors.size() > 2) { // Not handled
             throw new IllegalActionException(container,
                     "Composition of more than two actors not yet supported");
@@ -247,7 +247,7 @@ public class InterfaceCheckerDirector extends Director {
         final List<IOPort> outputPorts = actor1.outputPortList();
         for (final IOPort outputPort : outputPorts) {
             final List<IOPort> inputPorts =
-                (List<IOPort>) outputPort.connectedPortList(); 
+                (List<IOPort>) outputPort.connectedPortList();
             for (final IOPort inputPort : inputPorts) {
                 if (inputPort.getContainer() == actor2) {
                     connections.add(new Connection(outputPort.getName(),
@@ -259,7 +259,7 @@ public class InterfaceCheckerDirector extends Director {
     }
 
     /** Return the interface of a given actor.
-     * 
+     *
      *  To find the contract, this method first checks for a parameter
      *  named _interfaceExpr that is a Ptolemy expression.
      *  If that doesn't exist, it looks for a parameter named
@@ -267,7 +267,7 @@ public class InterfaceCheckerDirector extends Director {
      *  In the case that neither of those two options work, and
      *  the given actor is a CompositeActor, we can try to infer
      *  the interface from those of the contained actors.
-     * 
+     *
      *  @param actor The actor whose interface we are querying.
      *  @return The overall interface.
      *  @throws IllegalActionException If an interface doesn't exist and

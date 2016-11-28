@@ -111,7 +111,7 @@ void parseSequence(ModelInstance *comp) {
         return;
     }
     char * pEnd;
-    if (sizeof(*sequence) > 0) { 
+    if (sizeof(*sequence) > 0) {
         long t = strtol(sequence, &pEnd, 10);
         double v = strtod(pEnd, &pEnd);
         addEvent(v, t);

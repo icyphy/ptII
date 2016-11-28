@@ -1,4 +1,4 @@
-/* 
+/*
  Copyright (c) 1998-2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -122,7 +122,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
 
     /** State estimate output. A record token with one field per state variable */
 
-    public TypedIOPort stateEstimate; 
+    public TypedIOPort stateEstimate;
 
     /** The value of current time. This parameter is not visible in
      *  the expression screen except in expert mode. Its value initially
@@ -163,7 +163,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
             // do not reinitialize.
             TypedIOPort port = (TypedIOPort) getPort(attribute.getName());
 
-            if (port == null || !port.isInput()) { 
+            if (port == null || !port.isInput()) {
                 _requestInitialization();
             }
         }
@@ -198,13 +198,13 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
         // The Sequential Unscented Kalman Filter algorithm
         try {
             if (_firstIteration) {
-                _initializeStateVariables(); 
+                _initializeStateVariables();
                 _firstIteration = false;
             } else {
-                _predictStateVariables(); 
+                _predictStateVariables();
             }
             _correctStateVariables();
-            
+
             _sendStateEstimate();
             _generateOutputSigmaPoints();
         } catch (NameDuplicationException e) {
@@ -223,12 +223,12 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
         if (_upToDate) {
             super.preinitialize();
             return;
-        } 
+        }
 
         // Make sure all necessary parameters are provided.
         _checkParameters();
 
-        _stateSpaceSize = _stateNames.length(); 
+        _stateSpaceSize = _stateNames.length();
         _stateVariables = new String[_stateSpaceSize];
         _NSigmaPoints = _stateSpaceSize*2+1;
 
@@ -249,8 +249,8 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
                         varPar = new Parameter(this, variableName);
                         varPar.setTypeEquals(BaseType.DOUBLE);
                         varPar.setExpression("0.0");
-                    } 
-                    ((Parameter)varPar).setVisibility(Settable.NONE); 
+                    }
+                    ((Parameter)varPar).setVisibility(Settable.NONE);
                 } catch (NameDuplicationException e) {
                     throw new InternalErrorException(e);
                 }
@@ -268,7 +268,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
                     _sigmaPointLabels, _sigmaPointTypes));
             stateEstimate.setTypeEquals(new RecordType(_stateLabels,
                     _stateTypes));
-        } 
+        }
 
         try {
             _workspace.getWriteAccess();
@@ -281,7 +281,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
             // Inputs-make connections
             int m = inputPortList().size(); // number of inputs
             String[] inputs = new String[m];
-            _inputRelations = new IORelation[m];  
+            _inputRelations = new IORelation[m];
             _parameterInputs = new LinkedList<String>();
 
             // get all the inputs and classify according to them
@@ -322,13 +322,13 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
                 zm.variableName.setExpression(inputName);
                 zm.input.link(_inputRelations[inputIndex]);
                 inputIndex++;
-                // FIXME: different noise for all inputs 
+                // FIXME: different noise for all inputs
             }
 
             // Connect state feedback expressions.
-            for (int i = 0; i < _stateVariables.length; i++) { 
+            for (int i = 0; i < _stateVariables.length; i++) {
                 for (int k = 0; k < m; k++) {
-                    Parameter stateUpdateSpec = 
+                    Parameter stateUpdateSpec =
                             (Parameter) getUserDefinedParameter(_stateVariables[i]
                                     + UPDATE_POSTFIX);
                     Set<String> freeIdentifiers = stateUpdateSpec
@@ -337,8 +337,8 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
                     if (freeIdentifiers.contains(inputs[k])) {
                         TypedIOPort port = new TypedIOPort(
                                 _updateEquations.get(_stateVariables[i]),
-                                inputs[k], 
-                                true, 
+                                inputs[k],
+                                true,
                                 false);
 
                         port.link(_inputRelations[k]);
@@ -374,21 +374,21 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
     /** Check the dimensions of all parameters and ports.
      *  @exception IllegalActionException If the dimensions are illegal.
      */
-    protected abstract void _checkParameters() throws IllegalActionException; 
+    protected abstract void _checkParameters() throws IllegalActionException;
 
     /**
      * Return the expression for a user-defined parameter.
      * @param parameterName Name of parameter
      * @return parameter expression
      * @throws IllegalActionException
-     */ 
-    protected String getUserDefinedParameterExpression(String parameterName) 
+     */
+    protected String getUserDefinedParameterExpression(String parameterName)
             throws IllegalActionException {
         Parameter param = getUserDefinedParameter(parameterName);
         if (param != null) {
             return param.getExpression();
         } else {
-            throw new IllegalActionException("Parameter " 
+            throw new IllegalActionException("Parameter "
                     + parameterName + " value is null.");
         }
     }
@@ -398,7 +398,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
      * @return Parameter object
      * @throws IllegalActionException
      */
-    protected abstract Parameter getUserDefinedParameter(String parameterName) 
+    protected abstract Parameter getUserDefinedParameter(String parameterName)
             throws IllegalActionException;
 
     protected String getMeasurementParameterExpression(String fullName)  throws IllegalActionException {
@@ -406,7 +406,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
         if (param != null) {
             return param.getExpression();
         } else {
-            throw new IllegalActionException("Parameter " 
+            throw new IllegalActionException("Parameter "
                     + fullName + " value is null.");
         }
     }
@@ -462,7 +462,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
 
     /** Initialize the class. */
     private void _init() throws IllegalActionException,
-    NameDuplicationException { 
+    NameDuplicationException {
 
         sigmaPointOutput = new TypedIOPort(this, "sigmaPointOutput", false, true);
         sigmaPointOutput.setTypeEquals(RecordType.EMPTY_RECORD);
@@ -485,7 +485,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
         processNoiseCovariance.setTypeEquals(BaseType.DOUBLE_MATRIX);
 
         _measurementParameters = new HashMap<String, Parameter>();
-        _measurementValues = new HashMap<String, Token>(); 
+        _measurementValues = new HashMap<String, Token>();
         _parser = new PtParser();
         _measurementTypes = new HashMap<>();
         _updateEquations = new HashMap<>();
@@ -619,7 +619,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
         for (int i = 0; i < sigmaPoints.length; i++) {
             sigmaPoints[i] = new SigmaPoint(_stateSpaceSize, i);
         }
-        _setSigmaPoints(sigmaPoints, _priorMeanStates, _priorCovariance); 
+        _setSigmaPoints(sigmaPoints, _priorMeanStates, _priorCovariance);
     }
 
     /** Propagate sigma points according to the state update equations
@@ -661,7 +661,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
         // Recalculate sigma-points
         _setSigmaPoints(sigmaPoints, currentStates, currentCovariance);
     }
-    
+
 //    private void printVector(double[] array, String label) {
 //        System.out.print(label);
 //        for (int col=0; col<array.length; col++) {
@@ -696,7 +696,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
                 Y_hat[row] += sigmaPoints[i]._weight*sigmaPoints[i]._y_hat[row];
             }
         }
-      
+
         // Covariance of mean state in measurement space (added measurement noise)
         double[][] cov_innovation = new double[Y_hat.length][Y_hat.length];
         for (int row = 0; row < Y_hat.length; row++) {
@@ -707,10 +707,10 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
         // Covariance between state-space and measurement-space
         double[][] cov_X_Y = new double[_stateSpaceSize][Y_hat.length];
         clearMatrix(cov_X_Y);
-        
+
         /// calculate cov_innovation and cov_X_Y
-        double[] diff_yi = new double[Y_hat.length]; 
-        double[] w_diff_yi = new double[Y_hat.length]; 
+        double[] diff_yi = new double[Y_hat.length];
+        double[] w_diff_yi = new double[Y_hat.length];
         double[] diff_xi = new double[_stateSpaceSize];
         for (int i = 0; i < _NSigmaPoints; i++) {
             for (int row = 0; row < Y_hat.length; row++) {
@@ -725,7 +725,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
             }
             for (int row = 0; row < _stateSpaceSize; row++) {
                 diff_xi[row] = sigmaPoints[i]._x_hat[row] - currentStates[row]; //diff_xi = (sigmaPoint_i - meanState);
-            } 
+            }
             // Covariance is SUM(weight * (diff_xi x (diff_yi)T))
             for (int row = 0; row < _stateSpaceSize; row++) {
                 for (int col = 0; col < Y_hat.length; col++) {
@@ -733,22 +733,22 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
                 }
             }
         }
-        
+
         // calculate Kalman gain
         double[][] inv_innovation = DoubleMatrixMath.inverse(cov_innovation);
         double[][] K_gain = DoubleMatrixMath.multiply(cov_X_Y, inv_innovation);
-        
+
         // calculate correction
         double[][] diff_y_yh = new double[Y_hat.length][1];
         for (int row=0; row < Y_hat.length; row++) {
             diff_y_yh[row][0] = Y_hat[row] - sigmaPoints[0]._y_actual[row];
         }
-        
+
         double[][] state_correction = DoubleMatrixMath.multiply(K_gain, diff_y_yh);
-        
+
         double[][] trans_cov_X_Y = DoubleMatrixMath.transpose(cov_X_Y);
         double[][] cov_correction = DoubleMatrixMath.multiply(K_gain, trans_cov_X_Y);
-        
+
         // correct state and covariance
         for (int row=0; row < _stateSpaceSize; row++) {
             currentStates[row] -= state_correction[row][0];
@@ -784,7 +784,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
         stateEstimate.send(0, new RecordToken(_stateLabels, stateTokens));
     }
 
-    private void _setMeasurementEquations(String inputName) 
+    private void _setMeasurementEquations(String inputName)
             throws IllegalActionException, NameDuplicationException {
         Expression measurementEquation = new Expression(this,
                 inputName + "_equation");
@@ -800,10 +800,10 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
         measurementNoise.expression
         .setExpression(getNoiseParameter(inputName).getExpression());
         _noiseEquations.put(inputName, measurementNoise);
-        _measurementTypes.put(inputName, measurementEquation.output.getType()); 
-    } 
+        _measurementTypes.put(inputName, measurementEquation.output.getType());
+    }
 
-    private void _setUpdateEquations() 
+    private void _setUpdateEquations()
             throws NameDuplicationException, IllegalActionException {
         for (int i = 0; i < _stateSpaceSize; i++) {
             _stateVariables[i] = ((StringToken) _stateNames.getElement(i))
@@ -868,7 +868,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
     private String[] _stateVariables;
 
     /** State update equations, hashed by state variable name */
-    private HashMap<String, Expression> _updateEquations; 
+    private HashMap<String, Expression> _updateEquations;
 
     /** Names of the PortParameter inputs */
     private List<String> _parameterInputs;
@@ -887,7 +887,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
     private HashMap<String, Type> _measurementTypes;
 
     protected static final String STATE_VARIABLE_NAMES = "stateVariableNames";
-    protected static final String MEASUREMENT_NOISE = "noiseCovariance"; 
+    protected static final String MEASUREMENT_NOISE = "noiseCovariance";
     protected static final String UPDATE_POSTFIX = "_update";
     protected static final String MEASUREMENT_POSTFIX = "_m";
 
@@ -907,7 +907,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
          * Assign a weight to the sigma point.
          */
         private void assignWeight(int id) {
-            if (id==0) { 
+            if (id==0) {
                 this._weight = _kai/(_stateSpaceSize + _kai);
             } else {
                 this._weight = 1/(2*(_stateSpaceSize + _kai));
@@ -948,7 +948,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
                             .generateParseTree(measurementEquation.expression
                                     .getExpression());
                     predictedValues[count] = _parseTreeEvaluator.evaluateParseTree(
-                            _parseTree, _scope); 
+                            _parseTree, _scope);
                     if (predictedValues[count] == null) {
                         throw new IllegalActionException(
                                 "Expression yields a null result: "
@@ -959,12 +959,12 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
                     Expression noiseEq = _noiseEquations.get(inputName);
                     _parseTree = _parser
                             .generateParseTree(noiseEq.expression
-                                    .getExpression()); 
+                                    .getExpression());
                     measurementNoiseList[count] = _parseTreeEvaluator.evaluateParseTree(
                             _parseTree, _scope);
-                    
+
                     // TODO: Do not do this for every particle!
-                    inputTypeList[count] = _measurementTypes.get(inputName);    
+                    inputTypeList[count] = _measurementTypes.get(inputName);
                     if (inputTypeList[count].equals(BaseType.UNKNOWN)) {
                         inputTypeList[count] = predictedValues[count].getType();
                         _measurementTypes.put(inputName, inputTypeList[count]);
@@ -975,10 +975,10 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
                         inputDimensions[count] = ((DoubleMatrixToken)predictedValues[count]).getRowCount();
                     }
                     actualMeasurementList[count] = _measurementValues.get(inputName);
-                    
+
                     count++;
                 }
-                
+
                 // concatenate all values into single vector.
                 int measurementDim = 0;
                 for (int i=0; i<predictedValues.length; i++) {
@@ -1001,7 +1001,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
                     }
                     it += inputDimensions[i];
                 }
-                
+
                 // concatenate all noise settings into single matrix
                 _measurementNoiseAll = new double[measurementDim][measurementDim];
                 for (int row=0; row<measurementDim; row++) {
@@ -1061,22 +1061,22 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
                     p.setExpression(((Double) _x_hat[i]).toString());
                 }
                 _tokenMap.put(_stateVariables[i], new DoubleToken(
-                        _x_hat[i])); 
-                // set the control input values in scope 
+                        _x_hat[i]));
+                // set the control input values in scope
             }
 
             double[] newState = new double[this.getSize()];
-            for (int i = 0; i < _stateSpaceSize; i++) { 
+            for (int i = 0; i < _stateSpaceSize; i++) {
                 _parseTree = _updateTrees.get(_stateVariables[i]);
                 _result = _parseTreeEvaluator.evaluateParseTree(_parseTree,
-                        _scope); 
+                        _scope);
 
                 if (_result == null) {
                     throw new IllegalActionException(
                             "Expression yields a null result: "
                                     + _updateEquations.get(_stateVariables[i]).expression
                                     .getExpression());
-                } 
+                }
                 newState[i] = ((DoubleToken) _result.add(new DoubleToken(0.0))).doubleValue();
             }
             this.setValue(newState);
@@ -1106,7 +1106,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
          * Weight of the sigma-point
          */
         private double _weight;
-        
+
         /**
          * Value of the sigma-point in measurement space
          */
@@ -1116,7 +1116,7 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
          * Measurement noise setting for all measurement inputs
          */
         private double[][] _measurementNoiseAll;
-        
+
         /**
          * Actual measurement
          */

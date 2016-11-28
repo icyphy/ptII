@@ -186,8 +186,8 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
         codeStream.append("fmi2IntegerTime tEnd   = " + endTime + ";\n");
         codeStream.append("#define DEFAULT_COMM_STEP_SIZE " + (long) (Double.parseDouble(stepSize) / timeRes) + "\n");
         codeStream.append("#define DEFAULT_RESOLUTION " + (long) (1/timeRes) + "\n");
-        
-        
+
+
         int fmuCount = 0;
         int connectionsCount = 0;
 
@@ -223,7 +223,7 @@ public class TypedCompositeActor extends FMIMACodeGeneratorAdapter {
 
         actors = actorList.iterator();
         codeStream.append("const char* NAMES_OF_FMUS[] = {");
-        while (actors.hasNext()) {            
+        while (actors.hasNext()) {
             Actor actorIter = (Actor) actors.next();
             if (actorIter instanceof FMUImportHybrid  || actorIter instanceof FMUImport) {
                 ptolemy.actor.lib.fmi.FMUImport actor = (ptolemy.actor.lib.fmi.FMUImport) actorIter;

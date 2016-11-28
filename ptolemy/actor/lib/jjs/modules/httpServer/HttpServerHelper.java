@@ -91,7 +91,7 @@ public class HttpServerHelper extends VertxHelperBase {
         return new HttpServerHelper(
                 currentObj, hostInterface, port);
     }
-    
+
     /** Respond to the request with the specified ID by sending the specified text.
      *  @param requestID The request ID.
      *  @param responseText The text with which to respond.
@@ -102,7 +102,7 @@ public class HttpServerHelper extends VertxHelperBase {
             HttpServerRequest request = _pendingRequests.remove(requestID);
             // The request ID is the timeoutID.
             _actor.clearTimeout(requestID);
-            
+
             HttpServerResponse response = request.response();
             // Response code 200 is "OK".
             response.setStatusCode(200);
@@ -133,7 +133,7 @@ public class HttpServerHelper extends VertxHelperBase {
 
                         final String method = request.method().toString();
                         final String path = request.path();
-                        
+
                     // For POST, wait until full body arrives before issuing request.
                     if(request.method() == HttpMethod.POST) {
                         request.bodyHandler(new Handler<Buffer>() {
@@ -168,7 +168,7 @@ public class HttpServerHelper extends VertxHelperBase {
                 });
         });
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     private constructors                   ////
 
@@ -195,7 +195,7 @@ public class HttpServerHelper extends VertxHelperBase {
 
     /** The host interface. */
     private String _hostInterface;
-    
+
     /** Pending requests to timeout ID map. */
     private HashMap<Integer,HttpServerRequest> _pendingRequests
             = new HashMap<Integer,HttpServerRequest>();

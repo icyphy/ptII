@@ -504,7 +504,7 @@ public class BarrierMethod  {
 //        }
 //        return ret;
 //    }
-    
+
     /**
      * Compute phase1 or 2 of Barrier method. Which phase will be executed is defined by argument "phase".
      * @param objective : Objective Function class which defines objective functions.

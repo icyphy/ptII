@@ -177,7 +177,7 @@ public class ModifyDate extends TypedAtomicActor {
                 throw new IllegalActionException(this, "The unit " + unitString
                         + " is not supported");
             }
-            
+
             // If units are greater than milliseonds
             if (setUsingCalendar) {
                 // Update _value and _calendar in DateToken.

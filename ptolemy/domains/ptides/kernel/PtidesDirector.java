@@ -825,7 +825,7 @@ public class PtidesDirector extends DEDirector implements Decorator {
                 return;
             }
         }
-        
+
         int depth = _getDepthOfIOPort(ioPort);
 
         if (_debugging) {

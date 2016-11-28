@@ -83,10 +83,10 @@ public class HMMGaussianClassifier extends ObservationClassifier {
         StringAttribute cardinality = new StringAttribute(mean.getPort(),
                 "_cardinal");
         cardinality.setExpression("SOUTH");
- 
+
         covariance = new PortParameter(this, "covariance");
-        covariance.setExpression("{10E-3,50E-3}"); 
-        cardinality = new StringAttribute(covariance.getPort(), 
+        covariance.setExpression("{10E-3,50E-3}");
+        cardinality = new StringAttribute(covariance.getPort(),
                 "_cardinal");
         cardinality.setExpression("SOUTH");
 

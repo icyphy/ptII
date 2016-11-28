@@ -54,7 +54,7 @@ import ptolemy.util.MessageHandler;
  Output a token when the actor is fired.
  This actor customizes its interaction to request a firing
  whenever the icon is double clicked.
- 
+
  By default, the value of the output is a boolean true.
  To change this, Alt-click on the icon.
 
@@ -77,21 +77,21 @@ public class EventButton extends TypedAtomicActor {
     public EventButton(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         output = new TypedIOPort(this, "output", false, true);
-        
+
         value = new Parameter(this, "value");
         value.setExpression("true");
-        
+
         output.setTypeAtLeast(value);
-        
+
         new DoubleClickHandler(this, "_doubleClickHandler");
-        
+
         buttonPressed = new Parameter(this, "buttonPressed");
         buttonPressed.setTypeEquals(BaseType.BOOLEAN);
         buttonPressed.setExpression("false");
         buttonPressed.setVisibility(Settable.NONE);
-        
+
         pressDuration = new Parameter(this, "pressDuration");
         pressDuration.setExpression("0.2");
         pressDuration.setTypeEquals(BaseType.DOUBLE);
@@ -99,7 +99,7 @@ public class EventButton extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////        public variables and parameters                    ////
-    
+
     /** Hidden parameter controlling the visual rendition of the button.
      */
     public Parameter buttonPressed;
@@ -108,13 +108,13 @@ public class EventButton extends TypedAtomicActor {
      *  the value parameter.
      */
     public TypedIOPort output;
-    
+
     /** Amount of time to keep the button depressed, in seconds.
      *  Additional button presses during this time will be ignored.
      *  This is a double with default value 0.2.
      */
     public Parameter pressDuration;
-    
+
     /** The value produced. This is a boolean true by default.
      */
     public Parameter value;
@@ -124,7 +124,7 @@ public class EventButton extends TypedAtomicActor {
 
     /** Clone the actor into the specified workspace.
      *  This method sets the type constraint of the output
-     *  to be at least the type of the value. 
+     *  to be at least the type of the value.
      *  @param workspace The workspace for the new object.
      *  @return A new actor.
      *  @exception CloneNotSupportedException If a derived class contains
@@ -144,7 +144,7 @@ public class EventButton extends TypedAtomicActor {
     @Override
     public synchronized void fire() throws IllegalActionException {
         super.fire();
-        
+
         // Do not produce an output if the purpose of the firing is
         // to restore the button.
         // Here, we assume that firings occur _only_ in response
@@ -155,10 +155,10 @@ public class EventButton extends TypedAtomicActor {
             _bounceBackTime = null;
         } else {
             output.broadcast(value.getToken());
-            
+
             Director director = getDirector();
             Time currentTime = director.getModelTime();
-            
+
             double pressDurationValue = ((DoubleToken)pressDuration.getToken()).doubleValue();
             // Mark that the button is depressed.
             _bounceBackTime = currentTime.add(pressDurationValue);
@@ -169,8 +169,8 @@ public class EventButton extends TypedAtomicActor {
             _setButtonPressed(true);
         }
     }
-    
-    /** Mark that the model is now executing. 
+
+    /** Mark that the model is now executing.
      *  @throws IllegalActionException If the superclass throws it.
      */
     @Override
@@ -180,7 +180,7 @@ public class EventButton extends TypedAtomicActor {
         _bounceBackTime = null;
     }
 
-    /** Mark that the model is no longer executing. 
+    /** Mark that the model is no longer executing.
      *  @throws IllegalActionException If the superclass throws it.
      */
     @Override
@@ -193,7 +193,7 @@ public class EventButton extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Set whether the button is pressed.
      *  @param pressed True to be pressed.
      */
@@ -208,16 +208,16 @@ public class EventButton extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private members                   ////
-    
+
     /** Time at which the button should revert to full size. */
     private Time _bounceBackTime;
-    
+
     /** Indicator that the model is running. */
     private boolean _running;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
-    
+
     /** Class to respond to double click. */
     class DoubleClickHandler extends EditorFactory {
 

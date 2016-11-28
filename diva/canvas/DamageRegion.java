@@ -105,7 +105,7 @@ public abstract class DamageRegion {
     public abstract Rectangle2D getBounds();
 
     /** Get the transform context in which this damage region was created.
-     *  @return The transformContext.   
+     *  @return The transformContext.
      */
     public TransformContext getContext() {
         return _context;

@@ -42,7 +42,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @version $Id$
  *  @since Ptolemy II 11.0
  */
-public class SourceStation extends AbstractSourceStation{ 
+public class SourceStation extends AbstractSourceStation{
 
     /** Create a new actor in the specified container with the specified
      *  name.  The name must be unique within the container or an exception

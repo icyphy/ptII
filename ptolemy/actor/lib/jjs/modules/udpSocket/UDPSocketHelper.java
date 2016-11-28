@@ -120,14 +120,14 @@ public class UDPSocketHelper extends VertxHelperBase {
         // as well.
         return VertxHelperBase.supportedSendTypes();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     inner classes                         ////
 
     /** Socket helper for individual sockets.
      */
     public class UDPSocket {
-        
+
         /** Construct a socket.
          *  @param currentObj The corresponding JavaScript Socket object.
          */
@@ -136,7 +136,7 @@ public class UDPSocketHelper extends VertxHelperBase {
             _isOpen = false;
             _socket = _vertx.createDatagramSocket();
         }
-        
+
         /** Listen for datagram messages on the specified port and optional address.
          *  Once binding is complete, a 'listening' event is emitted and the
          *  optional callback function is called.
@@ -155,7 +155,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                     public void handle(AsyncResult<DatagramSocket> asyncResult) {
                         if (asyncResult.succeeded()) {
                             _isOpen = true;
-                            
+
                             _socket.handler(new Handler<DatagramPacket>() {
                                 public void handle(final DatagramPacket packet) {
                                     // Emit the message in the director thread.
@@ -193,9 +193,9 @@ public class UDPSocketHelper extends VertxHelperBase {
          */
         public void close() {
             if (_isOpen) {
-                _isOpen = false; // Assign here, instead of in callback, since 
-                                 // more calls to close() may occur before 
-                                 // callback completes.  Assumes success.          
+                _isOpen = false; // Assign here, instead of in callback, since
+                                 // more calls to close() may occur before
+                                 // callback completes.  Assumes success.
                 _socket.close((AsyncResult<Void> result) -> {
                     _currentObj.callMember("emit", "close");
                 });
@@ -267,7 +267,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                 });
             });
         }
-        
+
         /** Set the receive type. If this is not called, the type defaults to "string".
          *  @param type The name of the receive type.
          */
@@ -278,7 +278,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                 _error(_currentObj, "Invalid receive data type: " + type);
             }
         }
-        
+
         /** Set the send type. If this is not called, the type defaults to "string".
          *  @param type The name of the send type.
          */
@@ -347,7 +347,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                             _currentObj.callMember("emit", "message", _actor.toJSArray(result));
                         } catch (Exception e) {
                             _error(_currentObj, "Failed to convert to a JavaScript array: "
-                                    + e);                    
+                                    + e);
                             _currentObj.callMember("emit", "message", result);
                         }
                     } else if (numberOfElements <= 0) {
@@ -359,7 +359,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                 }
             }
         }
-        
+
         /** True if the socket is open, false otherwise.  Vert.x does not seem
          * to offer a way to check the socket status.  Needed to prevent calling
          * close() on a closed socket - doing so causes multiple close events
@@ -369,13 +369,13 @@ public class UDPSocketHelper extends VertxHelperBase {
 
         /** The receive type. */
         private DATA_TYPE _receiveType = DATA_TYPE.STRING;
-        
+
         /** If an image, the send image type. */
         private String _sendImageType;
 
         /** The send type. */
         private DATA_TYPE _sendType = DATA_TYPE.STRING;
-        
+
         /** The current instance of the Vert.x UDP socket. */
         private DatagramSocket _socket;
 

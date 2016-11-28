@@ -161,15 +161,15 @@ public class HttpClientHelper extends VertxHelperBase {
     public void stop() {
         reset();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     public fields                         ////
-    
+
     /** The threshold of number of pending requests before further
      *  requests introduce a delay.
      */
     public static int PENDING_REQUESTS_THRESHOLD = 20;
-    
+
     /** The scale factor (in milliseconds) by which requests are
      *  delayed when PENDING_REQUESTS_THRESHOLD is exceeded.
      */
@@ -183,14 +183,14 @@ public class HttpClientHelper extends VertxHelperBase {
      */
     protected HttpClientHelper(Object actor) {
         super(actor);
-    }            
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
     /** The number of pending requests. */
     private int _pendingRequests = 0;
-    
+
     /** The sequence number of this request. */
     private long _sequenceNumber = 0L;
 
@@ -271,7 +271,7 @@ public class HttpClientHelper extends VertxHelperBase {
                       System.out.println("The total body: " + body.toString());
                     }
                   });
-                
+
                 // True argument indicates that this request is done.
                 // System.err.println("****** Received an error code for request " + _requestNumber + ", " + status);
                 _issueOrDeferResponse(_requestNumber, true, new Runnable() {
@@ -507,14 +507,14 @@ public class HttpClientHelper extends VertxHelperBase {
         protected ScriptObjectMirror _requestObj;
 
         public StartHttpRequest(
-                ScriptObjectMirror requestObj, 
+                ScriptObjectMirror requestObj,
                 Map<String, Object> options,
                 long sequenceNumber) {
             _options = options;
             _requestObj = requestObj;
             _requestNumber = sequenceNumber;
             _pendingRequests++;
-            
+
             // If there are too many pending requests, stall the
             // calling thread. Do that here to not block vertx.
             // Note unsynchronized access to _pendingRequests, so time
@@ -616,10 +616,10 @@ public class HttpClientHelper extends VertxHelperBase {
 
                 if (image instanceof BufferedImage)
                 {
-                    bufferedImage = (BufferedImage) image; 
+                    bufferedImage = (BufferedImage) image;
                 } else {
                     // Create a buffered image with transparency
-                    bufferedImage = new BufferedImage(image.getWidth(null), 
+                    bufferedImage = new BufferedImage(image.getWidth(null),
                             image.getHeight(null), BufferedImage.TYPE_INT_ARGB);
 
                     // Draw the image on to the buffered image
@@ -634,7 +634,7 @@ public class HttpClientHelper extends VertxHelperBase {
                 ByteArrayOutputStream os = new ByteArrayOutputStream();
                 try {
                     ImageIO.write(bufferedImage, imageType, os);
-                    request.putHeader("Content-Length", 
+                    request.putHeader("Content-Length",
                             Integer.toString(os.toByteArray().length));
                     request.write(Buffer.buffer(os.toByteArray()));
                 } catch (IOException e) {

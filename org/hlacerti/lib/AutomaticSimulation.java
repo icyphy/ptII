@@ -55,10 +55,10 @@ import ptolemy.vergil.VergilApplication;
 /**Implement an automatic simulation of any model chosen by the user.
  * It allows the change of any parameter, making the values go from a start value
  * to an end value with a fixed increment.
- * 
+ *
  * The user will be able to choose the models, the parameter and the range during
- * the execution. The parameter to be changed must be specified with exactly the 
- * same name in an item parameter in the ptolemy model, otherwise this automatic 
+ * the execution. The parameter to be changed must be specified with exactly the
+ * same name in an item parameter in the ptolemy model, otherwise this automatic
  * simulation will not work.
  * @author Tarciana Cabral de Brito Guerra
  * @version $Id$
@@ -78,7 +78,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
     }
 
     /**
-     * 
+     *
      * @param file The file whose content is going to be turned into String.
      * @return ArrayList
      */
@@ -100,7 +100,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         }
 
     }
-    
+
     private static ArrayList<String> _readFile(File file){
         ArrayList<String> lines= new ArrayList<String>();
         try{
@@ -118,15 +118,15 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             return null;
         }
     }
-    
+
     private static ArrayList<String> _changeRKSolver(ArrayList<String> file, int newSolver){
         if(newSolver >0 ){
             String oldParameter="<property name=\"solver\" class=\"ptolemy.data.expr.StringParameter\" value=\"RK";
             String newParameter="<property name=\"solver\" class=\"ptolemy.data.expr.StringParameter\" value=\"RK"+newSolver+"\">";
             String oldPropertyLine ="<property name=\"ODESolver\" class=\"ptolemy.data.expr.StringParameter\" value=\"ExplicitRK";
-            String newPropertyLine ="<property name=\"ODESolver\" class=\"ptolemy.data.expr.StringParameter\" value=\"ExplicitRK"+newSolver+"Solver\">"; 
-            
-            return _findAndChangePropertyLines(file, new String[]{oldPropertyLine, oldParameter}, new String[]{newPropertyLine, newParameter});   
+            String newPropertyLine ="<property name=\"ODESolver\" class=\"ptolemy.data.expr.StringParameter\" value=\"ExplicitRK"+newSolver+"Solver\">";
+
+            return _findAndChangePropertyLines(file, new String[]{oldPropertyLine, oldParameter}, new String[]{newPropertyLine, newParameter});
         }else{
             return file;
         }
@@ -159,18 +159,18 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         }
         return value;
     }
- 
-    
 
-    /**Change a parameter in the .xml, making it assume previously chosen values. Run a ptolemy simulation for each value that the 
+
+
+    /**Change a parameter in the .xml, making it assume previously chosen values. Run a ptolemy simulation for each value that the
      * parameter has to assume.
-     * @param waitingTime The time the system will wait to close all the windows of a federation, after its execution has finished. 
-     * This parameter is intended to give the user the ability to choose how long he will have to look at the simulation's results. 
-     * If the variable is given a negative value, the user will be asked repetedly if he havalued time to look at the models and they will 
+     * @param waitingTime The time the system will wait to close all the windows of a federation, after its execution has finished.
+     * This parameter is intended to give the user the ability to choose how long he will have to look at the simulation's results.
+     * If the variable is given a negative value, the user will be asked repetedly if he havalued time to look at the models and they will
      * only close when he answers "yes".
      * @param vergil An instance of vergil.
      * @param modelPath The path to the model you want to run.
-     * @param propertyLine The xml line of the parameter that we want to change. 
+     * @param propertyLine The xml line of the parameter that we want to change.
      * @param values The values the new property will assume.
      **/
     public static void changeParameter(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String propertyLine, double[] values , int solver){
@@ -178,17 +178,17 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         File[] file = new File[numberOfFederates];
         String[][] data = new String[numberOfFederates][3];
 
-        for(int i=0;i<numberOfFederates;i++){   
+        for(int i=0;i<numberOfFederates;i++){
             file[i] = new File(modelPath[i]);
             ArrayList<String> content= _readFile(file[i]);
             content=_changeRKSolver(content, solver);
             String[] info=  _findPropertyLine(content, propertyLine);
             data[i][0]=info[0];
             data[i][1]=info[1];
-            data[i][2]=info[2];  
+            data[i][2]=info[2];
         }
         int numberOfInteractions = values.length;
-        for(int i=0;i<numberOfInteractions;i++){   
+        for(int i=0;i<numberOfInteractions;i++){
             double x = values[i];
             final CompositeEntity[] model= new CompositeEntity[numberOfFederates];
             for(int j=0;j<numberOfFederates;j++){
@@ -227,14 +227,14 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
     }
 
     /**Change a parameter in the .xml, making it vary within an interval defined by the
-     * parameters start and end. Run a ptolemy simulation for each step between the interval. 
-     * @param waitingTime The time the system will wait to close all the windows of a federation, after its execution has finished. 
-     * This parameter is intended to give the user the ability to choose how long he will have to look at the simulation's results. 
-     * If the variable is given a negative value, the user will be asked repetedly if he had time to look at the models and they will 
+     * parameters start and end. Run a ptolemy simulation for each step between the interval.
+     * @param waitingTime The time the system will wait to close all the windows of a federation, after its execution has finished.
+     * This parameter is intended to give the user the ability to choose how long he will have to look at the simulation's results.
+     * If the variable is given a negative value, the user will be asked repetedly if he had time to look at the models and they will
      * only close when he answers "yes".
      * @param vergil An instance of vergil.
      * @param modelPath The path to the model you want to run.
-     * @param propertyLine The xml line of the parameter that we want to change. 
+     * @param propertyLine The xml line of the parameter that we want to change.
      * @param start The value of the parameter.
      * @param end The end value of the parameter.
      * @param step The increment of the parameter value.
@@ -251,17 +251,17 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         s= s.substring(s.indexOf("."));
         int numberOfDecimalDigits = s.length();
 
-        for(int i=0;i<numberOfFederates;i++){   
+        for(int i=0;i<numberOfFederates;i++){
             file[i] = new File(modelPath[i]);
             ArrayList<String> content= _readFile(file[i]);
             content=_changeRKSolver(content, solver);
             String[] info=  _findPropertyLine(content, propertyLine);
             data[i][0]=info[0];
             data[i][1]=info[1];
-            data[i][2]=info[2];  
+            data[i][2]=info[2];
         }
         int numberOfInteractions = Math.round(((end -start)/step) +1);
-        for(int i=0;i<numberOfInteractions;i++){   
+        for(int i=0;i<numberOfInteractions;i++){
             //Changing the file
             //To avoid precision errors
             float x = start + i*step;
@@ -303,14 +303,14 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
     }
 
     /**Change a parameter in the .xml, making it vary within an interval defined by the
-     * parameters start and end. Run a ptolemy simulation for each step between the interval. 
-     * @param waitingTime The time the system will wait to close all the windows of a federation, after its execution has finished. 
-     * This parameter is intended to give the user the ability to choose how long he will have to look at the simulation's results. 
-     * If the variable is given a negative value, the user will be asked repetedly if he had time to look at the models and they will 
+     * parameters start and end. Run a ptolemy simulation for each step between the interval.
+     * @param waitingTime The time the system will wait to close all the windows of a federation, after its execution has finished.
+     * This parameter is intended to give the user the ability to choose how long he will have to look at the simulation's results.
+     * If the variable is given a negative value, the user will be asked repetedly if he had time to look at the models and they will
      * only close when he answers "yes".
      * @param vergil An instance of vergil.
      * @param modelPath The path to the model you want to run.
-     * @param propertyLines The xml line of the parameter that we want to change. 
+     * @param propertyLines The xml line of the parameter that we want to change.
      * @param values The values the new property will assume.
      * @param solver The Runge-Kutta solver order number.
      **/
@@ -325,14 +325,14 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         File[] file = new File[numberOfFederates];
         String[][][] data = new String[numberOfFederates][numberOfParameters+1][2];
 
-        for(int i=0;i<numberOfFederates;i++){   
+        for(int i=0;i<numberOfFederates;i++){
             file[i] = new File(modelPath[i]);
             ArrayList<String> content= _readFile(file[i]);
             content=_changeRKSolver(content, solver);
-            data[i]=_findPropertyLines(content, propertyLines); 
+            data[i]=_findPropertyLines(content, propertyLines);
         }
         int numberOfInteractions = values[0].length;
-        for(int i=0;i<numberOfInteractions;i++){   
+        for(int i=0;i<numberOfInteractions;i++){
             final CompositeEntity[] model= new CompositeEntity[numberOfFederates];
             for(int j=0;j<numberOfFederates;j++){
                 StringBuffer info = new StringBuffer();
@@ -381,7 +381,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 //            String[] modelPath = {"TestModels/sender.xml","TestModels/receiver.xml"};
 //            String[] modelPath2 = {"TestModels/f14Aircraft.xml",
 //                    "TestModels/f14AutoPilot.xml","TestModels/f14PilotStick.xml"};
-            
+
 //            File file = new File("toto.xml");
 //            String toPrint[]= _readFile(file);
 //            File file2 = new File("toto2.xml");
@@ -392,7 +392,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 //                content.append(s + "\n");
 //            }
 //            _writeInFile(file2, content.toString());
-            
+
 
             AutomaticSimulation vergil = new AutomaticSimulation(args);
             Scanner input = new Scanner(System.in);
@@ -479,8 +479,8 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 
     }
 
-    /**Verify if the model is initializing, changing the variable _wait to false if 
-     * this execution phase has been achieved. 
+    /**Verify if the model is initializing, changing the variable _wait to false if
+     * this execution phase has been achieved.
      * @see ExecutionListener
      * @param manager The manager.
      */
@@ -494,7 +494,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
     }
 
     public static boolean runAllModels(AutomaticSimulation vergil){
-        Runnable runModels = new Runnable() { 
+        Runnable runModels = new Runnable() {
             @Override
             public void run() {
                 try {
@@ -502,7 +502,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     vergil.waitForFinish();
                 } catch (Throwable e) {
                     e.printStackTrace();
-                }  
+                }
             }
         };
 
@@ -518,7 +518,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
     private static boolean _closeModel(CompositeEntity model){
         final Effigy eff = Configuration.findEffigy(model.toplevel());
         System.out.println("Closing the model " + model.getDisplayName() + ".");
-        Runnable run = new Runnable() { 
+        Runnable run = new Runnable() {
             @Override
             public void run() {
                 try {
@@ -530,7 +530,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     e.printStackTrace();
                     _killRTIG();
                     System.exit(0);
-                }  
+                }
             }
         };
 
@@ -547,7 +547,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             return false;
         }
     }
-    
+
     private static ArrayList<String> _findAndChangePropertyLines(ArrayList<String> file, String[] oldPropertyLines, String[] newPropertyLines){
         ArrayList<String> newContent = new ArrayList<String>();
         for(String s: file){
@@ -563,13 +563,13 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                 newContent.add(s);
             }
         }return newContent;
-       
+
     }
 
     /** Find some property line in a file.
      * @param file The file that is going to be searched.
      * @param propertyLine The line that is going be be found.
-     * @return An array with 3 strings in the respective order: the data before the propertyLine, 
+     * @return An array with 3 strings in the respective order: the data before the propertyLine,
      * the propertyLine with the indentation it possesses in the file, and the data after it.
      * it
      */
@@ -595,7 +595,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                         }else{
                             dataBefore = dataBefore+ "\n"+ content;
                         }
-                    }     
+                    }
                 }else if(!lineFound){
                     if(dataBefore.isEmpty()){
                         dataBefore=content;
@@ -623,10 +623,10 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
     /** Find some property lines in a file.
      * @param file The file that is going to be searched.
      * @param propertyLines The line that is going be be found.
-     * @return A two-dimensional array with the length of the @param propertyLines increased by 1 and 2 columns. The first one 
-     * represents the information written on the file after the one property line and before the next one. The second column 
-     * represents the property lines with the same indentation as they were found on the file. The second column of the last 
-     * line contains nothing but "", as there's no property left to be written. 
+     * @return A two-dimensional array with the length of the @param propertyLines increased by 1 and 2 columns. The first one
+     * represents the information written on the file after the one property line and before the next one. The second column
+     * represents the property lines with the same indentation as they were found on the file. The second column of the last
+     * line contains nothing but "", as there's no property left to be written.
      */
     private static String[][] _findPropertyLines(ArrayList<String> file, String[] propertyLines){
         //number of the line
@@ -646,7 +646,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     line = line.substring(line.lastIndexOf("\"")+1);
                     try{
                         Double.valueOf(line);
-                        result[linesFound][1]=content.substring(0,content.indexOf(line));                                        
+                        result[linesFound][1]=content.substring(0,content.indexOf(line));
                         linesFound++;
                         result[linesFound][0]="";
                     }catch(Exception e){
@@ -654,7 +654,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                             content = "\n" + content;
                         }
                         result[linesFound][0] = result[linesFound][0] + content;
-                    }     
+                    }
                 }else{
                     if(!result[linesFound][0].equals("")){
                         content = "\n" + content;
@@ -690,7 +690,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 
     private static CompositeEntity _openModel(String  modelPath){
         CompositeEntity[] model=new CompositeEntity[1];
-        Runnable openModel = new Runnable() { 
+        Runnable openModel = new Runnable() {
             @Override
             public void run() {
                 try {
@@ -701,7 +701,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     // TODO Auto-generated catch block
                     e.printStackTrace();
                     System.exit(0);
-                }  
+                }
             }
         };
         try {
@@ -715,8 +715,8 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 
     }
 
-    /**Run all the models opened in different threads, waiting for the initialization 
-     * of the current one to start executing a following one. 
+    /**Run all the models opened in different threads, waiting for the initialization
+     * of the current one to start executing a following one.
      * @throws KernelException
      */
     private void _runModels() throws KernelException{
@@ -772,7 +772,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
     }
 
     /** Write some information in a file.
-     * 
+     *
      * @param file The file were the information is going to be written.
      * @param data The information that is going to be written.
      */

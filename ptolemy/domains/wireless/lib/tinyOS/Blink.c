@@ -31,7 +31,7 @@ void Blink_Timer_start(int period) {
 }
 
 void Blink_Timer_fired() {
-    Ledc_Led_blink(); 
+    Ledc_Led_blink();
 }
 
 void Blink_Timer_stop() {

@@ -62,7 +62,7 @@ public class ImageMath {
     public static float gain(float a, float b) {
         /*
                         float p = (float)Math.log(1.0 - b) / (float)Math.log(0.5);
-        
+
                         if (a < .001)
                                 return 0.0f;
                         else if (a > .999)

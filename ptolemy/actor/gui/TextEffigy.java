@@ -100,7 +100,7 @@ public class TextEffigy extends Effigy {
         case "clj":
             return "text/clojure";
         case "cpp":
-            return "text/cpp"; 
+            return "text/cpp";
         case "cs":
             return "text/cs";
         case "css":
@@ -115,7 +115,7 @@ public class TextEffigy extends Effigy {
         case "gy":
             return "text/groovy";
         case "h":
-            return "text/cpp"; 
+            return "text/cpp";
         case "htm":
         case "html":
             return "text/html";
@@ -173,7 +173,7 @@ public class TextEffigy extends Effigy {
     public Document getDocument() {
         return _doc;
     }
-    
+
     /** Return the syntax style for the document, if one has been identified,
      *  and null otherwise.
      *  @return A syntax style or null.
@@ -219,7 +219,7 @@ public class TextEffigy extends Effigy {
             String text) throws Exception {
         return newTextEffigy(container, text, null);
     }
-    
+
     /** Create a new effigy in the given container containing the specified
      *  text.  The new effigy will have a new instance of
      *  DefaultStyledDocument associated with it.
@@ -433,7 +433,7 @@ public class TextEffigy extends Effigy {
             }
         }
     }
-    
+
     /** Write the text of the document to the specified file.
      *  @param file The file to write to.
      *  @exception IOException If the write fails.
@@ -491,10 +491,10 @@ public class TextEffigy extends Effigy {
 
     /** The document associated with this effigy. */
     private Document _doc;
-    
+
     /** The original text, to determine whether it has been modified. */
     private String _originalText;
-    
+
     /** The syntax style, if one has been identified. */
     private String _syntaxStyle;
 

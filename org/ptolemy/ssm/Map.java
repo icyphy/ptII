@@ -56,7 +56,7 @@ import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 
-/** 
+/**
  * An occupancy grid map.
  *
  * @author Ilge Akkaya
@@ -123,7 +123,7 @@ public class Map extends TypedAtomicActor implements Decorator {
                 for (int j = 0; j < _width; j++) {
                     int index = j + i*_width;
                     _occupancyGrid[i][j] = ((IntToken)gridContent[index]).intValue();
-                } 
+                }
             }
         } else if (attribute == origin) {
             _origin[0] = ((DoubleToken)((ArrayToken)origin.getToken()).
@@ -146,9 +146,9 @@ public class Map extends TypedAtomicActor implements Decorator {
     @Override
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         Map newObject = (Map) super
-                .clone(workspace); 
+                .clone(workspace);
         newObject._origin = new double[2];
-        newObject._occupancyGrid = null; 
+        newObject._occupancyGrid = null;
         return newObject;
     }
 
@@ -171,22 +171,22 @@ public class Map extends TypedAtomicActor implements Decorator {
     }
 
     /**
-     * Check if queried (x,y) position is within the valid map area. 
+     * Check if queried (x,y) position is within the valid map area.
      * @param xCoord
      * @param yCoord
      * @return True if the position is within the valid map area.
      */
     public boolean withinValidMapArea(double xCoord, double yCoord) {
-        
+
         int gridX = (int) Math.floor(xCoord/_resolution);
         int gridY = (int) Math.floor(yCoord/_resolution);
 
-        if (gridX >= 0 && gridY >=0 
-                && gridY < _occupancyGrid.length 
+        if (gridX >= 0 && gridY >=0
+                && gridY < _occupancyGrid.length
                 && gridX < _occupancyGrid[0].length) {
             return ( _occupancyGrid[gridY][gridX] == VALID_MAP_INTENSITY );
-        } 
-        
+        }
+
         return false;
     }
 
@@ -200,11 +200,11 @@ public class Map extends TypedAtomicActor implements Decorator {
 
         resolution = new Parameter(this, "resolution");
         resolution.setExpression("0.05");
-        resolution.setTypeEquals(BaseType.DOUBLE); 
+        resolution.setTypeEquals(BaseType.DOUBLE);
 
         origin = new Parameter(this, "origin");
         origin.setExpression("{0.0,0.0}");
-        origin.setTypeEquals(new ArrayType(BaseType.DOUBLE));  
+        origin.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         map = new PortParameter(this,"map");
         map.setExpression("{width = 2, height=1, grid={0,0}}");
@@ -215,7 +215,7 @@ public class Map extends TypedAtomicActor implements Decorator {
 
         _origin = new double[2];
 
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
@@ -225,7 +225,7 @@ public class Map extends TypedAtomicActor implements Decorator {
     private int[][] _occupancyGrid;
     private double[] _origin;
     private double _resolution;
-    
+
     private static final int VALID_MAP_INTENSITY = 255;
 
     @Override
@@ -269,14 +269,14 @@ public class Map extends TypedAtomicActor implements Decorator {
     }
 
     @Override
-    public boolean isGlobalDecorator() throws IllegalActionException { 
+    public boolean isGlobalDecorator() throws IllegalActionException {
         return false;
-    } 
-    
+    }
+
     /** Cached list of decorated objects. */
     protected List<NamedObj> _decoratedObjects;
 
     /** Version for _decoratedObjects. */
     protected long _decoratedObjectsVersion = -1L;
- 
+
 }

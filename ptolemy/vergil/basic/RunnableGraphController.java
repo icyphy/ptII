@@ -281,7 +281,7 @@ implements ExecutionListener {
 
         return manager;
     }
-    
+
     /** If there is an associated BasicGraphFrame, use it to report a message.
      *  Otherwise, report to standard output.
      *  @param message The message.

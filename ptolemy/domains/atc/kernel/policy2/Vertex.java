@@ -1,5 +1,5 @@
-/* Nodes of a graph in DijkstraAlgorithm. 
- 
+/* Nodes of a graph in DijkstraAlgorithm.
+
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -49,9 +49,9 @@ public class Vertex {
     public int getId() {
       return _id;
     }
-    
+
     /** Return the hashcode.
-     *  @return The hashcode   
+     *  @return The hashcode
      */
     @Override
     public int hashCode() {
@@ -60,7 +60,7 @@ public class Vertex {
       result = prime * result + ((_id == -1) ? 0 :1);
       return result;
     }
-    
+
     /** Return true if this object is equal to the argument of
      *  of this method.
      *  @param obj The object to which to compare
