@@ -39,7 +39,8 @@ DIRS = AprilTags Audio Browser Camera Foscam HappySadStock HueToggle \
 	SwarmAcousticService TCPSocket \
 	UDPSocket VertxBus \
 	WatchHandRaisingLight \
-	Weather WebSocketChat WebSocketClient WebSocketImage \
+	Weather WebSocketChat WebSocketClient \
+	WebSocketGraph WebSocketImage WebSocketLog \
 	XBeeHelloWorld
 
 # $(ME) is used in ptdir.mk
@@ -83,7 +84,9 @@ PTCLASSALLJARS = \
 	Weather/Weather.jar \
 	WebSocketChat/WebSocketChat.jar \
 	WebSocketClient/WebSocketClient.jar \
-	WebSocketImage/WebSocketImage.jar
+	WebSocketGraph/WebSocketGraph.jar \
+	WebSocketImage/WebSocketImage.jar \
+	WebSocketLog/WebSocketLog.jar
 
 JSRCS = 
 

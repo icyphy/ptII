@@ -67,7 +67,11 @@ OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR) \
 	'MqttHelper$$1.class' \
-	'MqttHelper$$2.class'
+	'MqttHelper$$2.class' \
+	'MqttHelper$$MqttClientWrapper$$1.class' \
+	'MqttHelper$$MqttClientWrapper$$2.class' \
+	'MqttHelper$$MqttClientWrapper.class'
+
 
 JCLASS = $(JSRCS:%.java=%.class)
 

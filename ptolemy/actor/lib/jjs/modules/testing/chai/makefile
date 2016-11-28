@@ -51,7 +51,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	chai.js \
-	chailicense.js
+	chailicense.txt
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

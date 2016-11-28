@@ -47,7 +47,12 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	AsymmetricEncrypt.xml
+	AsymmetricEncrypt.xml \
+	DemoCert.pem \
+	DemoKey.der \
+	DemoKey.pem \
+	README \
+	test.js
 
 EXTRA_SRCS = \
 	$(JSRCS) \

@@ -55,6 +55,7 @@ OTHER_FILES_TO_BE_JARED = \
 	window-document-mock.js \
 	window-fragment-mock.js \
 	window-local-storage-mock.js \
+	window-location-mock.js \
 	window-mock-license.txt \
 	window-mock.js \
 	window-navigator-mock.js \

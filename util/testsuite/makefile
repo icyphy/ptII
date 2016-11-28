@@ -67,6 +67,7 @@ TCL_SRCS = \
 	properties.tcl \
 	removeGraphicalClasses.tcl \
 	tclshrc.tcl \
+	testAccessorCG.tcl \
 	testDefs.tcl \
 	testEnums.tcl \
 	testJavaCG.tcl \

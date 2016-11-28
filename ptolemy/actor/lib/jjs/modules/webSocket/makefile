@@ -70,6 +70,8 @@ OPTIONAL_FILES = \
 	'WebSocketHelper$$1.class' \
 	'WebSocketHelper$$2.class' \
 	'WebSocketHelper$$3.class' \
+	'WebSocketHelper$$4.class' \
+	'WebSocketHelper$$WebSocketDrainHandler.class' \
 	'WebSocketHelper$$DataHandler.class' \
 	'WebSocketHelper$$EndHandler.class' \
 	'WebSocketHelper$$ExceptionHandler.class' \

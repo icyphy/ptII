@@ -72,7 +72,15 @@ OPTIONAL_FILES = \
 	'HttpClientHelper$$HttpClientResponseHandler.class' \
 	'HttpClientHelper$$HttpClientResponseHandler$$1.class' \
 	'HttpClientHelper$$HttpClientResponseHandler$$2.class' \
-	'HttpClientHelper$$HttpClientResponseHandler$$3.class'
+	'HttpClientHelper$$HttpClientResponseHandler$$3.class' \
+	'HttpClientHelper$$HttpClientExceptionHandler$$1.class' \
+	'HttpClientHelper$$HttpClientResponseHandler$$4$$1.class' \
+	'HttpClientHelper$$HttpClientResponseHandler$$4.class' \
+	'HttpClientHelper$$HttpClientResponseHandler$$5$$1.class' \
+	'HttpClientHelper$$HttpClientResponseHandler$$5.class' \
+	'HttpClientHelper$$HttpClientResponseHandler$$6$$1.class' \
+	'HttpClientHelper$$HttpClientResponseHandler$$6.class' \
+	'HttpClientHelper$$StartHttpRequest.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
