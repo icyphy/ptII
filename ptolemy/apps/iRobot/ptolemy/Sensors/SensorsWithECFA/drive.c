@@ -20,12 +20,12 @@ NOTE: Internal and environmental restrictions may prevent
 Create from accurately carrying out some drive commands.
 For example, it may not be possible for Create to drive at
 full speed in an arc with a large radius of curvature.
-• Serial sequence: [137] [Velocity high byte] [Velocity low byte]
+* Serial sequence: [137] [Velocity high byte] [Velocity low byte]
 [Radius high byte] [Radius low byte]
-• Available in modes: Safe or Full
-• Changes mode to: No Change
-• Drive data byte 1: Velocity (-500 – 500 mm/s)
-• Drive data byte 2: Radius (-2000 – 2000 mm)
+* Available in modes: Safe or Full
+* Changes mode to: No Change
+* Drive data byte 1: Velocity (-500 - 500 mm/s)
+* Drive data byte 2: Radius (-2000 - 2000 mm)
 Special cases:
 Straight = 32768 or 32767 = hex 8000 or 7FFF
 Turn in place clockwise = hex FFFF
