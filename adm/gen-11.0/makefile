@@ -263,6 +263,9 @@ release_mac:
 
 # To install gnutar, use: sudo -i port install gnutar
 release_mac2:
+	@if [ -z `which -z` ]; then \
+		echo "7z does not exist, install it with: sudo port install p7zip"; \
+	fi
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
 
 release_mac_setup:
@@ -2949,7 +2952,7 @@ indent_all:
 IZPACKDIR=$(PTIIHOME)/vendors/izpack
 IZPACK_COMPILE=$(IZPACKDIR)/bin/compile
 IZPACK_COMMAND=IZPACK_OPTS=-Djava.util.logging.config.file=$(GENDIR)/izpackLogging.txt sh "$(IZPACK_COMPILE)" -o
-IZPACK_JAR=izpack-dist-5.0.6.jar
+IZPACK_JAR=izpack-dist-5.0.10.jar
 
 # If you get "makefile:2660: *** target pattern contains no `%'.
 # Stop.", then the problem is that $PTII has a semicolon in it and you
@@ -2966,8 +2969,8 @@ $(IZPACK_COMPILE): $(PTIIHOME)/vendors/izpack
 $(PTIIHOME)/vendors/izpack:
 	mkdir $(PTIIHOME)/vendors/izpack
 	cd $(PTIIHOME)/vendors/izpack; \
-		wget https://oss.sonatype.org/content/repositories/releases/org/codehaus/izpack/izpack-dist/5.0.6/$(IZPACK_JAR); \
-		$(JAVA) -jar $(IZPACK_TAR)
+		wget https://oss.sonatype.org/content/repositories/releases/org/codehaus/izpack/izpack-dist/5.0.10/izpack-dist-5.0.10.jar; \
+		java -jar $(IZPACK_TAR)
 
 # It is necessary to this before create the Windows and Mac setup jar files.
 cleanSrc:

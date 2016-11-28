@@ -1,9 +1,9 @@
-<userInput>
+<izpack:userinput version="5.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:izpack="http://izpack.org/schema/userinput" xsi:schemaLocation="http://izpack.org/schema/userinput http://izpack.org/schema/5.0/izpack-userinput-5.0.xsd">
 
   <panel id="startApplicationPanelCapeCode">
+    <!-- createForUnselectedPack name="Full" / -->
+    <!-- createForUnselectedPack name="Ptiny" / -->
     <field type="check" variable="startCapeCode">
-      <createForUnselectedPack name="Full" />
-      <createForUnselectedPack name="Ptiny" />
       <spec txt="Would you like to start CapeCode next?" true="true" false="false"
 	    id="startCapeCodeCheck"
 	    set="true"/>
@@ -11,8 +11,8 @@
   </panel>
 
   <panel id="startApplicationPanelFull">
+    <createForPack name="Full" />
     <field type="check" variable="startVergil">
-      <createForPack name="Full" />
       <spec txt="Would you like to start Ptolemy next?" true="true" false="false"
 	    id="startVergilCheck"
 	    set="true"/>
@@ -20,7 +20,7 @@
   </panel>
 
   <panel id="startApplicationPanelPtiny">
-    <createForUnselectedPack name="Full" />
+    <!-- createForUnselectedPack name="Full" / -->
     <field type="check" variable="startPtiny">
       <spec txt="Would you like to start Ptiny Ptolemy next?" true="true" false="false"
 	    id="startPtinyCheck"
@@ -28,4 +28,4 @@
     </field>
   </panel>
 
-</userInput>
+</izpack:userinput>
