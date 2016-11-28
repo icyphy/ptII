@@ -82,9 +82,9 @@ public class ConvolveFilter extends AbstractBufferedImageOp {
 
     /**
      * Construct a filter with the given kernel.
-     * @param rows	the number of rows in the kernel
-     * @param cols	the number of columns in the kernel
-     * @param matrix	an array of rows*cols floats containing the kernel
+     * @param rows        the number of rows in the kernel
+     * @param cols        the number of columns in the kernel
+     * @param matrix        an array of rows*cols floats containing the kernel
      */
     public ConvolveFilter(int rows, int cols, float[] matrix) {
         this(new Kernel(cols, rows, matrix));

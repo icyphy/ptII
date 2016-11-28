@@ -145,20 +145,20 @@ abstract public class GRPickActor extends GRShadedShape {
      *   ViewScreen3D or if an invalid texture is specified.
      */
     protected void _setViewScreen(GRActor actor) throws IllegalActionException {
-	super._setViewScreen(actor);
-	BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
-						       100.0);
-	Canvas3D canvas = _viewScreen.getCanvas();
-	BranchGroup branchGroup = _viewScreen.getBranchGroup();
-	branchGroup = _getBranchGroup();
+        super._setViewScreen(actor);
+        BoundingSphere bounds = new BoundingSphere(new Point3d(0.0, 0.0, 0.0),
+                                                       100.0);
+        Canvas3D canvas = _viewScreen.getCanvas();
+        BranchGroup branchGroup = _viewScreen.getBranchGroup();
+        branchGroup = _getBranchGroup();
 
-	// FIXME: this is one big fat hack!
-	//if (pick!=null) pick.setEnable(false);
-	try {
-	    pick = new PickCallback(this, canvas, branchGroup, bounds);
-	} catch (Exception ex) {
-	    throw new IllegalActionException(this, ex, "Failed to create PickCallback");
-	}
+        // FIXME: this is one big fat hack!
+        //if (pick!=null) pick.setEnable(false);
+        try {
+            pick = new PickCallback(this, canvas, branchGroup, bounds);
+        } catch (Exception ex) {
+            throw new IllegalActionException(this, ex, "Failed to create PickCallback");
+        }
     }
 
     abstract protected BranchGroup _getBranchGroup();
@@ -197,23 +197,23 @@ abstract public class GRPickActor extends GRShadedShape {
             pickCanvas.setMode(PickTool.BOUNDS);
         }
 
-	/** If the user presses the left button (button 3), then process the callback.
-	 *  @param xPosition The X position of the event   
-	 *  @param yPosition The Y position of the event   
-	 */   
+        /** If the user presses the left button (button 3), then process the callback.
+         *  @param xPosition The X position of the event   
+         *  @param yPosition The Y position of the event   
+         */   
         public void updateScene(int xPosition, int yPosition) {
             pickCanvas.setShapeLocation(xPosition, yPosition);
 
             PickResult pickResult = pickCanvas.pickClosest();
 
-	    System.out.println("GRPickActor.updateScene(" + xPosition
-			       + yPosition + "): " + callbackActor.getFullName() + " " + (pickResult == null) + " " + mevent.getModifiers());
+            System.out.println("GRPickActor.updateScene(" + xPosition
+                               + yPosition + "): " + callbackActor.getFullName() + " " + (pickResult == null) + " " + mevent.getModifiers());
             if (pickResult != null) {
                 if (mevent.getModifiers() == InputEvent.BUTTON3_MASK) {
-		    Shape3D shape = (Shape3D) pickResult.getNode(PickResult.SHAPE3D);
+                    Shape3D shape = (Shape3D) pickResult.getNode(PickResult.SHAPE3D);
                     System.out.println("GRPickActor" + callbackActor.getFullName() + " "
-				       + InputEvent.getModifiersExText(mevent.getModifiersEx())
-				       + " the result " + shape + " "
+                                       + InputEvent.getModifiersExText(mevent.getModifiersEx())
+                                       + " the result " + shape + " "
                         + callbackActor);
                     callbackActor.processCallback();
                 }

@@ -479,7 +479,7 @@ public class CellularFilter extends WholeImageFilter implements Function2D, Clon
         ny += 1000; // Reduce artifacts around 0,0
         float f = turbulence == 1.0f ? evaluate(nx, ny) : turbulence2(nx, ny, turbulence);
         // Normalize to 0..1
-        //		f = (f-min)/(max-min);
+        //                f = (f-min)/(max-min);
         f *= 2;
         f *= amount;
         int a = 0xff000000;
@@ -506,9 +506,9 @@ public class CellularFilter extends WholeImageFilter implements Function2D, Clon
 
     @Override
     protected int[] filterPixels(int width, int height, int[] inPixels, Rectangle transformedSpace) {
-        //		float[] minmax = Noise.findRange(this, null);
-        //		min = minmax[0];
-        //		max = minmax[1];
+        //                float[] minmax = Noise.findRange(this, null);
+        //                min = minmax[0];
+        //                max = minmax[1];
 
         int index = 0;
         int[] outPixels = new int[width * height];
@@ -527,8 +527,8 @@ public class CellularFilter extends WholeImageFilter implements Function2D, Clon
         f.coefficients = coefficients.clone();
         f.results = results.clone();
         f.random = new Random();
-        //		if (colormap != null)
-        //			f.colormap = (Colormap)colormap.clone();
+        //                if (colormap != null)
+        //                        f.colormap = (Colormap)colormap.clone();
         return f;
     }
 

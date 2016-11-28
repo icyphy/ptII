@@ -247,22 +247,22 @@ public class ShadeFilter extends WholeImageFilter {
                 }
 
                 /* For testing - generate a sphere bump map
-                				double dx = x-120;
-                				double dy = y-80;
-                				double r2 = dx*dx+dy*dy;
-                //				double r = Math.sqrt( r2 );
-                //				double t = Math.atan2( dy, dx );
-                				if ( r2 < 80*80 ) {
-                					double z = Math.sqrt( 80*80 - r2 );
-                					normal.x = (float)dx;
-                					normal.y = (float)dy;
-                					normal.z = (float)z;
-                					normal.normalize();
-                				} else {
-                					normal.x = 0;
-                					normal.y = 0;
-                					normal.z = 1;
-                				}
+                                                double dx = x-120;
+                                                double dy = y-80;
+                                                double r2 = dx*dx+dy*dy;
+                //                                double r = Math.sqrt( r2 );
+                //                                double t = Math.atan2( dy, dx );
+                                                if ( r2 < 80*80 ) {
+                                                        double z = Math.sqrt( 80*80 - r2 );
+                                                        normal.x = (float)dx;
+                                                        normal.y = (float)dy;
+                                                        normal.z = (float)z;
+                                                        normal.normalize();
+                                                } else {
+                                                        normal.x = 0;
+                                                        normal.y = 0;
+                                                        normal.z = 1;
+                                                }
                 */
 
                 if (invertBumps) {

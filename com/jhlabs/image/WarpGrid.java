@@ -88,8 +88,8 @@ public class WarpGrid {
         int i = 0;
         int j = 0;
         for (int row = 0; row < rows; row++) {
-            //			int i = row*(cols-1);
-            //			int j = row*cols;
+            //                        int i = row*(cols-1);
+            //                        int j = row*cols;
             for (int col = 0; col < cols; col++) {
                 if (col == before) {
                     x[j] = (xGrid[i] + xGrid[i - 1]) / 2;

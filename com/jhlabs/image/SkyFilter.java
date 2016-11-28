@@ -289,13 +289,13 @@ public class SkyFilter extends PointFilter {
         if (dst == null)
             dst = createCompatibleDestImage(src, null);
         int t = (int) (63 * time);
-        //		skyPixels = getRGB( skyColors, t, 0, 1, 64, skyPixels );
+        //                skyPixels = getRGB( skyColors, t, 0, 1, 64, skyPixels );
         Graphics2D g = dst.createGraphics();
         g.drawImage(skyColors, 0, 0, dst.getWidth(), dst.getHeight(), t, 0, t + 1, 64, null);
         g.dispose();
         super.filter(dst, dst);
-        //		g.drawRenderedImage( clouds, null );
-        //		g.dispose();
+        //                g.drawRenderedImage( clouds, null );
+        //                g.dispose();
         long finish = System.currentTimeMillis();
         System.out.println(mn + " " + mx + " " + (finish - start) * 0.001f);
         exponents = null;
@@ -333,7 +333,7 @@ public class SkyFilter extends PointFilter {
         //y += 20*Math.sin( fx*Math.PI*0.5 );
         float fy = y / height;
         float haze = (float) Math.pow(haziness, 100 * fy * fy);
-        //		int argb = skyPixels[(int)fy];
+        //                int argb = skyPixels[(int)fy];
         float r = ((rgb >> 16) & 0xff) * r255;
         float g = ((rgb >> 8) & 0xff) * r255;
         float b = (rgb & 0xff) * r255;
@@ -347,7 +347,7 @@ public class SkyFilter extends PointFilter {
         nx = (fx - 0.5f) * (1 + ny);
         ny += t * windSpeed;// Wind towards the camera
 
-        //		float xscale = scale/(1+y*bias*0.1f);
+        //                float xscale = scale/(1+y*bias*0.1f);
         nx /= scale;
         ny /= scale * stretch;
         float f = evaluate(nx, ny);
@@ -363,7 +363,7 @@ public class SkyFilter extends PointFilter {
         float cloudAlpha = 1 - (float) Math.pow(cloudSharpness, c);
         //cloudAlpha *= amount;
         //if ( cloudAlpha > 1 )
-        //	cloudAlpha = 1;
+        //        cloudAlpha = 1;
         mn = Math.min(mn, cloudAlpha);
         mx = Math.max(mx, cloudAlpha);
 
@@ -373,34 +373,34 @@ public class SkyFilter extends PointFilter {
         float dx = x - centreX;
         float dy = y - centreY;
         float distance2 = dx * dx + dy * dy;
-        //		float sun = 0;
+        //                float sun = 0;
         //distance2 = (float)Math.sqrt(distance2);
         distance2 = (float) Math.pow(distance2, glowFalloff);
         float sun = /*amount**/10 * (float) Math.exp(-distance2 * glow * 0.1f);
-        //		sun = glow*10*(float)Math.exp(-distance2);
+        //                sun = glow*10*(float)Math.exp(-distance2);
 
         // Sun glow onto sky
         r += sun * sunR;
         g += sun * sunG;
         b += sun * sunB;
 
-        //		float cloudColor = cloudAlpha *sun;
+        //                float cloudColor = cloudAlpha *sun;
         // Bump map
         /*
-        		float nnx = x-cx;
-        		float nny = y-1;
-        		nnx /= xscale;
-        		nny /= xscale * stretch;
-        		float gf = evaluate(nnx, nny);
-        		float gradient = fg-gf;
+                        float nnx = x-cx;
+                        float nny = y-1;
+                        nnx /= xscale;
+                        nny /= xscale * stretch;
+                        float gf = evaluate(nnx, nny);
+                        float gradient = fg-gf;
         if (y == 100)System.out.println(fg+" "+gf+gradient);
-        		cloudColor += amount * gradient;
+                        cloudColor += amount * gradient;
         */
         // ...
         /*
-        		r += (cloudColor-r) * cloudAlpha;
-        		g += (cloudColor-g) * cloudAlpha;
-        		b += (cloudColor-b) * cloudAlpha;
+                        r += (cloudColor-r) * cloudAlpha;
+                        g += (cloudColor-g) * cloudAlpha;
+                        b += (cloudColor-b) * cloudAlpha;
         */
         // Clouds get darker as they get thicker
         float ca = (1 - cloudAlpha * cloudAlpha * cloudAlpha * cloudAlpha) /** (1 + sun)*/

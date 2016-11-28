@@ -137,28 +137,28 @@ public class Image3D extends GRPickActor {
         String fileName = (String) ((StringToken) filename.getToken())
                     .stringValue();
 
-	ImageComponent2D image = null;
-	try {
-	    TextureLoader loader = new TextureLoader(fileName,
-						     _viewScreen.getCanvas());
-	    image = loader.getImage();
-	    System.out.println("image " + image);
-	} catch (Throwable throwable) {
-	    throw new IllegalActionException(this, throwable, "Failed to load texture \""
-						 + fileName + "\"");
-	}
+        ImageComponent2D image = null;
+        try {
+            TextureLoader loader = new TextureLoader(fileName,
+                                                     _viewScreen.getCanvas());
+            image = loader.getImage();
+            System.out.println("image " + image);
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(this, throwable, "Failed to load texture \""
+                                                 + fileName + "\"");
+        }
 
-	// can't use parameterless constuctor
-	Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA,
-					      image.getWidth(), image.getHeight());
-	texture.setImage(0, image);
+        // can't use parameterless constuctor
+        Texture2D texture = new Texture2D(Texture.BASE_LEVEL, Texture.RGBA,
+                                              image.getWidth(), image.getHeight());
+        texture.setImage(0, image);
 
-	//texture.setEnable(false);
+        //texture.setEnable(false);
         Appearance appear = new Appearance();
-	appear.setTexture(texture);
-	    
-	appear.setTransparencyAttributes(new TransparencyAttributes(
-									TransparencyAttributes.FASTEST, 0.1f));
+        appear.setTexture(texture);
+            
+        appear.setTransparencyAttributes(new TransparencyAttributes(
+                                                                        TransparencyAttributes.FASTEST, 0.1f));
 
         QuadArray plane = new QuadArray(4,
                 GeometryArray.COORDINATES | QuadArray.NORMALS
@@ -183,11 +183,11 @@ public class Image3D extends GRPickActor {
         plane.setTextureCoordinate(0, 2, new TexCoord2f(qq[2]));
         plane.setTextureCoordinate(0, 3, new TexCoord2f(qq[3]));
 
-	_containedNode = new Shape3D(plane, appear);
+        _containedNode = new Shape3D(plane, appear);
 
-	top = new BranchGroup();
-	top.addChild(_containedNode);
-	//_containedNode = new Shape3D(cube);
+        top = new BranchGroup();
+        top.addChild(_containedNode);
+        //_containedNode = new Shape3D(cube);
     }
 
     ///////////////////////////////////////////////////////////////////

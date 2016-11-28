@@ -107,11 +107,11 @@ public class FadeFilter extends PointFilter {
 
     public float symmetry(float x, float b) {
         /*
-        		int d = (int)(x / b);
-        		x = ImageMath.mod(x, b);
-        		if ((d & 1) == 1)
-        			return b-x;
-        		return x;
+                        int d = (int)(x / b);
+                        x = ImageMath.mod(x, b);
+                        if ((d & 1) == 1)
+                                return b-x;
+                        return x;
         */
         x = ImageMath.mod(x, 2 * b);
         if (x > b)
@@ -120,14 +120,14 @@ public class FadeFilter extends PointFilter {
     }
 
     /*
-    	public float star(float x, float y, int sides, float rMin, float rMax) {
-    		float sideAngle = 2*Math.PI / sides;
-    		float angle = Math.atan2(y, x);
-    		float r = Math.sqrt(x*x + y*y);
-    		float t = ImageMath.mod(angle, sideAngle) / sideAngle;
-    		if (t > 0.5)
-    			t = 1.0-t;
-    	}
+            public float star(float x, float y, int sides, float rMin, float rMax) {
+                    float sideAngle = 2*Math.PI / sides;
+                    float angle = Math.atan2(y, x);
+                    float r = Math.sqrt(x*x + y*y);
+                    float t = ImageMath.mod(angle, sideAngle) / sideAngle;
+                    if (t > 0.5)
+                            t = 1.0-t;
+            }
     */
 
     @Override

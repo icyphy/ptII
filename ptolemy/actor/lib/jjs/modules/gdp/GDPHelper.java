@@ -109,25 +109,25 @@ public class GDPHelper extends HelperBase {
             System.out.println("GDPHelper: Updated jna.library.path to " + jnaLibraryPath);
         }
 
-	// Update ~/.ep_adm_params/gdp according to the value of logdname.
-	String swarmGdpRouters = "swarm.gdp.routers=gdp-03.eecs.berkeley.edu; gdp-02.eecs.berkeley.edu";
-	if (logdname.length() == 0) {
-	    try {
-		logdname = InetAddress.getLocalHost().getHostName();
-		swarmGdpRouters = "swarm.gdp.routers=Localhost";
-	    } catch (Throwable throwable) {
-		throw new GDPException("Could not get the local host name.", throwable);
-	    }
-	}
+        // Update ~/.ep_adm_params/gdp according to the value of logdname.
+        String swarmGdpRouters = "swarm.gdp.routers=gdp-03.eecs.berkeley.edu; gdp-02.eecs.berkeley.edu";
+        if (logdname.length() == 0) {
+            try {
+                logdname = InetAddress.getLocalHost().getHostName();
+                swarmGdpRouters = "swarm.gdp.routers=Localhost";
+            } catch (Throwable throwable) {
+                throw new GDPException("Could not get the local host name.", throwable);
+            }
+        }
         String userHome = StringUtilities.getProperty("user.home");
-	if (userHome.length() == 0) {
-	    throw new GDPException("Could not get the user.home JVM property?  This is necessary so that ~/.ep_adm_params/gdp can be created to configure the hostname of the gdp router.");
-	}
-	try {
-	    GDPManager.setGdpConfigurationFile(userHome, swarmGdpRouters);
-	} catch (IOException ex) {
-	    throw new GDPException("Could not update ~/.ep_adm_params/gdp with the GDP router name(s).");
-	}
+        if (userHome.length() == 0) {
+            throw new GDPException("Could not get the user.home JVM property?  This is necessary so that ~/.ep_adm_params/gdp can be created to configure the hostname of the gdp router.");
+        }
+        try {
+            GDPManager.setGdpConfigurationFile(userHome, swarmGdpRouters);
+        } catch (IOException ex) {
+            throw new GDPException("Could not update ~/.ep_adm_params/gdp with the GDP router name(s).");
+        }
         _gcl = GDP_GCL.newGCL(new GDP_NAME(logName), ioMode, new GDP_NAME(logdname));
         _logName = logName;    
     }
@@ -153,7 +153,7 @@ public class GDPHelper extends HelperBase {
      *  @return The next data.
      */
     public String getNextData(int timeout) {
-	// FIXME: timeout should be a long.
+        // FIXME: timeout should be a long.
         HashMap<String, Object> gdp_event = GDP_GCL.get_next_event(_gcl, timeout);
         System.out.println("GDPHelper.getNextData(" + timeout + "): " + gdp_event);
         return _datumToData((HashMap<String, Object>)gdp_event.get("datum"));

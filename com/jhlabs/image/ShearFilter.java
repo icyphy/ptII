@@ -77,53 +77,53 @@ public class ShearFilter extends TransformFilter {
     }
 
     /*
-    	public void imageComplete(int status) {
+            public void imageComplete(int status) {
     try {
-    		if (status == IMAGEERROR || status == IMAGEABORTED) {
-    			consumer.imageComplete(status);
-    			return;
-    		}
+                    if (status == IMAGEERROR || status == IMAGEABORTED) {
+                            consumer.imageComplete(status);
+                            return;
+                    }
     
-    		int width = originalSpace.width;
-    		int height = originalSpace.height;
+                    int width = originalSpace.width;
+                    int height = originalSpace.height;
     
-    		float tangent = Math.tan(angle);
-    		if (tangent < 0.0)
-    			tangent = -tangent;
-    		int newWidth = (int)(height * tangent + width + 0.999999);
-    		int[] outPixels = new int[height*newWidth];
-    		int inIndex = 0;
-    		int yOffset = 0;
-    		for (int y = 0; y < height; y++) {
-    			float newCol;
-    			if (angle >= 0.0)
-    				newCol = y * tangent;
-    			else
-    				newCol = (height-y) * tangent;
-    			int iNewCol = (int)newCol;
-    			float f = newCol - iNewCol;
-    			f = 1.0 - f;
+                    float tangent = Math.tan(angle);
+                    if (tangent < 0.0)
+                            tangent = -tangent;
+                    int newWidth = (int)(height * tangent + width + 0.999999);
+                    int[] outPixels = new int[height*newWidth];
+                    int inIndex = 0;
+                    int yOffset = 0;
+                    for (int y = 0; y < height; y++) {
+                            float newCol;
+                            if (angle >= 0.0)
+                                    newCol = y * tangent;
+                            else
+                                    newCol = (height-y) * tangent;
+                            int iNewCol = (int)newCol;
+                            float f = newCol - iNewCol;
+                            f = 1.0 - f;
     
-    			int outIndex = yOffset+iNewCol;
-    			int lastRGB = inPixels[inIndex];
-    			for (int x = 0; x < width; x++) {
-    				int rgb = inPixels[inIndex];
-    				outPixels[outIndex] = ImageMath.mixColors(f, lastRGB, rgb);
-    				lastRGB = rgb;
-    				inIndex++;
-    				outIndex++;
-    			}
-    			outPixels[outIndex] = ImageMath.mixColors(f, lastRGB, 0);
-    			yOffset += newWidth;
-    		}
-    		consumer.setPixels(0, 0, newWidth, height, defaultRGBModel, outPixels, 0, newWidth);
-    		consumer.imageComplete(status);
-    		inPixels = null;
+                            int outIndex = yOffset+iNewCol;
+                            int lastRGB = inPixels[inIndex];
+                            for (int x = 0; x < width; x++) {
+                                    int rgb = inPixels[inIndex];
+                                    outPixels[outIndex] = ImageMath.mixColors(f, lastRGB, rgb);
+                                    lastRGB = rgb;
+                                    inIndex++;
+                                    outIndex++;
+                            }
+                            outPixels[outIndex] = ImageMath.mixColors(f, lastRGB, 0);
+                            yOffset += newWidth;
+                    }
+                    consumer.setPixels(0, 0, newWidth, height, defaultRGBModel, outPixels, 0, newWidth);
+                    consumer.imageComplete(status);
+                    inPixels = null;
     }
     catch (Exception e) {
-    	e.printStackTrace();
+            e.printStackTrace();
     }
-    	}
+            }
     */
 
     @Override

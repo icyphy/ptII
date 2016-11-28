@@ -72,8 +72,8 @@ public class MathUtil {
             v = mod2pi_pos(vin);
 
         // Validation test:
-        //	if (v < -Math.PI || v > Math.PI)
-        //		System.out.printf("%10.3f -> %10.3f\n", vin, v);
+        //        if (v < -Math.PI || v > Math.PI)
+        //                System.out.printf("%10.3f -> %10.3f\n", vin, v);
 
         return v;
     }
@@ -204,7 +204,7 @@ public class MathUtil {
     // returns reasonable answers for |x|<=1.
     protected static final double atan_mag1(double x) {
         // accuracy = 0.26814 degrees
-        //	return x/(1+0.28087207802773*x*x);
+        //        return x/(1+0.28087207802773*x*x);
 
         if (true) {
             if (Math.abs(x) > 1)
@@ -255,7 +255,7 @@ public class MathUtil {
             double v1 = Math.atan2(y, x);
             double v2 = atan2(y, x);
 
-            //		System.out.println(x+" "+y);
+            //                System.out.println(x+" "+y);
             double thiserr = Math.abs(v1 - v2);
             if (thiserr > .1)
                 System.out.println(x + "\t" + y + "\t" + v1 + "\t" + v2);

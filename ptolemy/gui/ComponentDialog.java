@@ -372,9 +372,9 @@ public class ComponentDialog extends JDialog {
                 }
 
                 // The value of JOptionPane is reset.
-		// Resetting is required, otherwise when
-		// the button is pressed again, a property
-		// change event will not be fired.
+                // Resetting is required, otherwise when
+                // the button is pressed again, a property
+                // change event will not be fired.
                 // Note that this seems to trigger the listener
                 // again, so the previous line is essential.
                 _optionPane.setValue(JOptionPane.UNINITIALIZED_VALUE);

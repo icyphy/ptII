@@ -300,10 +300,10 @@ public class GLine2D implements Cloneable, Serializable
 
         // parallel lines?
         if (Math.abs(det)<0.0000000001)
-	    {
-            //		System.out.println("GLine2D.intersectionWith error: Parallel lines");
+            {
+            //                System.out.println("GLine2D.intersectionWith error: Parallel lines");
             return null;
-	    }
+            }
 
         // inverse of m
         i00=m11/det;
@@ -316,7 +316,7 @@ public class GLine2D implements Cloneable, Serializable
 
         double x00, x10;
         x00=i00*b00+i01*b10;
-        //	x10=i10*b00+i11*b10;
+        //        x10=i10*b00+i11*b10;
 
         return new double[] {dx*x00+p[0], dy*x00+p[1]};
     }

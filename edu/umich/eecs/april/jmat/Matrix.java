@@ -65,7 +65,7 @@ public class Matrix {
             return new DenseVec(length);
 
         return new CSRVec(length);
-        //	return new HashVec(length);
+        //        return new HashVec(length);
     }
 
     ////////////////////////////////////////////

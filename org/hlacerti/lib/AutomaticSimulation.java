@@ -380,7 +380,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         try {
 //            String[] modelPath = {"TestModels/sender.xml","TestModels/receiver.xml"};
 //            String[] modelPath2 = {"TestModels/f14Aircraft.xml",
-//            	"TestModels/f14AutoPilot.xml","TestModels/f14PilotStick.xml"};
+//                    "TestModels/f14AutoPilot.xml","TestModels/f14PilotStick.xml"};
             
 //            File file = new File("toto.xml");
 //            String toPrint[]= _readFile(file);
@@ -646,7 +646,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     line = line.substring(line.lastIndexOf("\"")+1);
                     try{
                         Double.valueOf(line);
-                        result[linesFound][1]=content.substring(0,content.indexOf(line));					
+                        result[linesFound][1]=content.substring(0,content.indexOf(line));                                        
                         linesFound++;
                         result[linesFound][0]="";
                     }catch(Exception e){

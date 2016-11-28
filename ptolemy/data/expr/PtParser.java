@@ -1742,33 +1742,33 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
 
     /*void element() #void :
     {
-    	boolean hasName = false;
-    	boolean hasCall = false;
-    	String name = null;
+            boolean hasName = false;
+            boolean hasCall = false;
+            String name = null;
     }
     {
         (
-          	(
-            	primaryElement()
+                  (
+                    primaryElement()
 
-    			[
-    				<PERIOD> <ID>
-    				{
-    					name = token.image;
-    					hasName = true;
-    				}
-    			]
+                            [
+                                    <PERIOD> <ID>
+                                    {
+                                            name = token.image;
+                                            hasName = true;
+                                    }
+                            ]
 
-    			[
-    			        <OPENPAREN> [ expression() ( <COMMA> expression() )* ] <CLOSEPAREN>
-    				{
-    					hasCall = true;
-    				}
-    			]
-    			{
-    				jjtThis._methodName = name;
-    			}
-    		) #PtMethodCallNode(hasName)
+                            [
+                                    <OPENPAREN> [ expression() ( <COMMA> expression() )* ] <CLOSEPAREN>
+                                    {
+                                            hasCall = true;
+                                    }
+                            ]
+                            {
+                                    jjtThis._methodName = name;
+                            }
+                    ) #PtMethodCallNode(hasName)
         ) #PtFunctionApplicationNode(!hasName && hasCall)
     }*/
     final public void element() throws ParseException {

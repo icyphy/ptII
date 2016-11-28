@@ -254,11 +254,11 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
         if(_isBroken==null)
             _isBroken=(Token)(new BooleanToken(false));
        ((TCSDirector)_director).handleInitializedTrack(this);
-	   if(lineSymbol.getToken()==null)
+           if(lineSymbol.getToken()==null)
            _symbol="";
        else
            _symbol=((StringToken)lineSymbol.getToken()).stringValue();
-		   
+                   
        _changeIcon(_symbol);
     }
     

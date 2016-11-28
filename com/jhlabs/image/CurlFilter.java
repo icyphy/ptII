@@ -65,10 +65,10 @@ public class CurlFilter extends TransformFilter {
 
     /*
     public BufferedImage filter( BufferedImage src, BufferedImage dst ) {
-    		this.width = src.getWidth();
-    		this.height = src.getHeight();
-    		return super.filter( src, dst );
-    	}
+                    this.width = src.getWidth();
+                    this.height = src.getHeight();
+                    return super.filter( src, dst );
+            }
     */
 
     static class Sampler {
@@ -221,19 +221,19 @@ public class CurlFilter extends TransformFilter {
     @Override
     protected void transformInverse(int x, int y, float[] out) {
         /*Fisheye
-        		float mirrorDistance = width*centreX;
-        		float mirrorRadius = width*centreY;
-        		float cx = width*.5f;
-        		float cy = height*.5f;
-        		float dx = x-cx;
-        		float dy = y-cy;
-        		float r2 = dx*dx+dy*dy;
-        		float r = (float)Math.sqrt( r2 );
-        		float phi = (float)(Math.PI*.5-Math.asin( Math.sqrt( mirrorRadius*mirrorRadius-r2 )/mirrorRadius ));
-        		r = r > mirrorRadius ? width : mirrorDistance * (float)Math.tan( phi );
-        		phi = (float)Math.atan2( dy, dx );
-        		out[0] = cx + r*(float)Math.cos( phi );
-        		out[1] = cy + r*(float)Math.sin( phi );
+                        float mirrorDistance = width*centreX;
+                        float mirrorRadius = width*centreY;
+                        float cx = width*.5f;
+                        float cy = height*.5f;
+                        float dx = x-cx;
+                        float dy = y-cy;
+                        float r2 = dx*dx+dy*dy;
+                        float r = (float)Math.sqrt( r2 );
+                        float phi = (float)(Math.PI*.5-Math.asin( Math.sqrt( mirrorRadius*mirrorRadius-r2 )/mirrorRadius ));
+                        r = r > mirrorRadius ? width : mirrorDistance * (float)Math.tan( phi );
+                        phi = (float)Math.atan2( dy, dx );
+                        out[0] = cx + r*(float)Math.cos( phi );
+                        out[1] = cy + r*(float)Math.sin( phi );
         */
         float t = transition;
         float px = x, py = y;

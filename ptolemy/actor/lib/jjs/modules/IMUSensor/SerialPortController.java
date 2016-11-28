@@ -61,8 +61,8 @@ public class SerialPortController {
     }
 
     /** Grab the latest unread sample from the buffer and return
-     *	it. Returns latest sample upon call if read index has caught
-     *	up to write index.
+     *        it. Returns latest sample upon call if read index has caught
+     *        up to write index.
      *  @return The latest unread sample, or the latest read sample if
      *  write index = read index in buffer
     */

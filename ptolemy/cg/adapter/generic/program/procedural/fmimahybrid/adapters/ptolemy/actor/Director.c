@@ -34,7 +34,7 @@ parseArguments(argc, argv, &tEnd, &h, &loggingOn, &csv_separator, &nCategories, 
         printf("%s ", categories[i]);
     }
     printf("}\n");
-	printInfo(wrps, NAMES_OF_FMUS, NUMBER_OF_FMUS);
+        printInfo(wrps, NAMES_OF_FMUS, NUMBER_OF_FMUS);
     simulate(wrps, fmus, connections, requiredResolution, loggingOn, csv_separator);
     printf("CSV file '%s' written\n", RESULT_FILE);
     // release FMUs

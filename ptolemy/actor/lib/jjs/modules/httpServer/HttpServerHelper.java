@@ -69,13 +69,13 @@ public class HttpServerHelper extends VertxHelperBase {
      *  asynchronously. The server may not be closed when this returns.
      */
     public void closeServer() {
-    	// Ask the verticle to perform the close.
-    	submit(() -> {
-    	    if (_server != null) {
-    	        _server.close();
-    	        _server = null;
-    	    }
-    	});
+            // Ask the verticle to perform the close.
+            submit(() -> {
+                if (_server != null) {
+                    _server.close();
+                    _server = null;
+                }
+            });
     }
 
     /** Create a HttpServerHelper instance to help a JavaScript HttpServer instance.
@@ -119,21 +119,21 @@ public class HttpServerHelper extends VertxHelperBase {
      *  of the associated JavaScript HttpServer object.
      */
     public void startServer() {
-    	// Ask the verticle to start the server.
-    	submit(() -> {
-    	    _server = _vertx.createHttpServer();
-    	    _server.requestHandler(new Handler<HttpServerRequest>() {
-    	        @Override
-    	        public void handle(final HttpServerRequest request) {
-    	            request.exceptionHandler((throwable) -> {
-    	                _error("Request failed.", throwable);
-    	            });
-    	            // FIXME: Get request.headers(), a MultiMap.
+            // Ask the verticle to start the server.
+            submit(() -> {
+                _server = _vertx.createHttpServer();
+                _server.requestHandler(new Handler<HttpServerRequest>() {
+                    @Override
+                    public void handle(final HttpServerRequest request) {
+                        request.exceptionHandler((throwable) -> {
+                            _error("Request failed.", throwable);
+                        });
+                        // FIXME: Get request.headers(), a MultiMap.
                     // FIXME: Get request.params(), a MultiMap.
 
-    	            final String method = request.method().toString();
-    	            final String path = request.path();
-    	            
+                        final String method = request.method().toString();
+                        final String path = request.path();
+                        
                     // For POST, wait until full body arrives before issuing request.
                     if(request.method() == HttpMethod.POST) {
                         request.bodyHandler(new Handler<Buffer>() {
@@ -146,26 +146,26 @@ public class HttpServerHelper extends VertxHelperBase {
                         // Make this callback in the director thread instead of
                         // the verticle thread so that all outputs associated with
                         // a request are emitted simultaneously.
-    	                _issueResponse(() -> {
-    	                    // Set up a timeout handler.
+                            _issueResponse(() -> {
+                                // Set up a timeout handler.
                             // FIXME: timeout 10000 needs to be an option given in JS constructor.
                             TimeoutResponse timeoutResponse = new TimeoutResponse(request, 10000);
                             _currentObj.callMember(
                                     "_request", timeoutResponse.getTimeoutID(), method, path);
-    	                });
-    	            }
-    	        }
-    	    });
-    	    _server.listen(_port, _hostInterface,
-    	            new Handler<AsyncResult<HttpServer>>() {
-    	        @Override
-    	        public void handle(AsyncResult<HttpServer> result) {
-    	            // Do this in the vertx thread, not the director thread, so that the
-    	            // listening event is assured of occurring before any requests are
-    	            // emitted.
-    	            _currentObj.callMember("emit", "listening");
-    	        }
-    	    });
+                            });
+                        }
+                    }
+                });
+                _server.listen(_port, _hostInterface,
+                        new Handler<AsyncResult<HttpServer>>() {
+                    @Override
+                    public void handle(AsyncResult<HttpServer> result) {
+                        // Do this in the vertx thread, not the director thread, so that the
+                        // listening event is assured of occurring before any requests are
+                        // emitted.
+                        _currentObj.callMember("emit", "listening");
+                    }
+                });
         });
     }
     
@@ -180,8 +180,8 @@ public class HttpServerHelper extends VertxHelperBase {
      *  @param port The port on which to create the server.
      */
     private HttpServerHelper(ScriptObjectMirror currentObj, String hostInterface, int port) {
-    	// NOTE: Really should have only one of these per actor,
-    	// and the argument below should be the actor.
+            // NOTE: Really should have only one of these per actor,
+            // and the argument below should be the actor.
         super(currentObj);
         _hostInterface = hostInterface;
         if (hostInterface == null) {

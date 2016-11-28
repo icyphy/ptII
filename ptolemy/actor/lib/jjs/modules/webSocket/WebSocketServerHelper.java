@@ -68,13 +68,13 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  asynchronously. The server may not be closed when this returns.
      */
     public void closeServer() {
-    	// Ask the verticle to perform the close.
-    	submit(() -> {
-    	    if (_server != null) {
-    	        _server.close();
-    	        _server = null;
-    	    }
-    	});
+            // Ask the verticle to perform the close.
+            submit(() -> {
+                if (_server != null) {
+                    _server.close();
+                    _server = null;
+                }
+            });
     }
 
     /** Create a WebSocketServerHelper instance to help a JavaScript Server instance.
@@ -105,11 +105,11 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  socket as an argument.
      */
     public void startServer() {
-    	// Ask the verticle to start the server.
-    	submit(() -> {
-    	    HttpServerOptions serverOptions = new HttpServerOptions();
-    	    serverOptions.setSsl(_sslTls);
-    	    if (serverOptions.isSsl()) {
+            // Ask the verticle to start the server.
+            submit(() -> {
+                HttpServerOptions serverOptions = new HttpServerOptions();
+                serverOptions.setSsl(_sslTls);
+                if (serverOptions.isSsl()) {
                 PfxOptions pfxOptions = new PfxOptions();
                 File pfxKeyCertFile = FileUtilities.nameToFile(_pfxKeyCertPath, null);
                 if (pfxKeyCertFile == null) {
@@ -124,34 +124,34 @@ public class WebSocketServerHelper extends VertxHelperBase {
                 }
                 pfxOptions.setPassword(_pfxKeyCertPassword);
                 serverOptions.setPfxKeyCertOptions(pfxOptions);
-    	    }
-    	    _server = _vertx.createHttpServer(serverOptions);
-    	    _server.websocketHandler(new Handler<ServerWebSocket>() {
-    	        @Override
-    	        public void handle(ServerWebSocket serverWebSocket) {
-    	            // Notify of a new connection by emitting a 'connection' event.
-    	            // This will have the side effect of creating a new JS Socket
-    	            // object, which is an event emitter.
-    	            // This has to be done in the verticle thread, not later in the
-    	            // director thread, because it will set up listeners to the socket.
-    	            // If that is deferred, then the server could miss messages that are
-    	            // sent after the connection is established.
-    	            // Pass this helper to ensure that the verticle and event bus handler
-    	            // of this verticle is used rather than creating a new one.
-    	            _currentObj.callMember(
-    	                    "_socketCreated", serverWebSocket, WebSocketServerHelper.this);
-    	        }
-    	    });
-    	    _server.listen(_port, _hostInterface,
-    	            new Handler<AsyncResult<HttpServer>>() {
-    	        @Override
-    	        public void handle(AsyncResult<HttpServer> result) {
-    	            // Do this in the vertx thread, not the director thread, so that the
-    	            // listening event is assured of occurring before the 'connection'
-    	            // event, which is emitted above by _socketCreated().
-    	            _currentObj.callMember("emit", "listening");
-    	        }
-    	    });
+                }
+                _server = _vertx.createHttpServer(serverOptions);
+                _server.websocketHandler(new Handler<ServerWebSocket>() {
+                    @Override
+                    public void handle(ServerWebSocket serverWebSocket) {
+                        // Notify of a new connection by emitting a 'connection' event.
+                        // This will have the side effect of creating a new JS Socket
+                        // object, which is an event emitter.
+                        // This has to be done in the verticle thread, not later in the
+                        // director thread, because it will set up listeners to the socket.
+                        // If that is deferred, then the server could miss messages that are
+                        // sent after the connection is established.
+                        // Pass this helper to ensure that the verticle and event bus handler
+                        // of this verticle is used rather than creating a new one.
+                        _currentObj.callMember(
+                                "_socketCreated", serverWebSocket, WebSocketServerHelper.this);
+                    }
+                });
+                _server.listen(_port, _hostInterface,
+                        new Handler<AsyncResult<HttpServer>>() {
+                    @Override
+                    public void handle(AsyncResult<HttpServer> result) {
+                        // Do this in the vertx thread, not the director thread, so that the
+                        // listening event is assured of occurring before the 'connection'
+                        // event, which is emitted above by _socketCreated().
+                        _currentObj.callMember("emit", "listening");
+                    }
+                });
         });
     }
 
@@ -172,8 +172,8 @@ public class WebSocketServerHelper extends VertxHelperBase {
             String pfxKeyCertPassword, String pfxKeyCertPath,
             int port, String receiveType,
             String sendType) {
-    	// NOTE: Really should have only one of these per actor,
-    	// and the argument below should be the actor.
+            // NOTE: Really should have only one of these per actor,
+            // and the argument below should be the actor.
         super(currentObj);
         _hostInterface = hostInterface;
         if (hostInterface == null) {

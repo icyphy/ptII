@@ -155,7 +155,7 @@ public class ShapeFilter extends WholeImageFilter {
             for (int x = 0; x < width; x++) {
                 int offset = x + y * width;
                 int b = useAlpha ? (pixels[offset] >> 24) & 0xff : PixelUtils.brightness(pixels[offset]);
-                //				map[offset] = b * one;
+                //                                map[offset] = b * one;
                 map[offset] = b * one / 10;
             }
         }

@@ -152,7 +152,7 @@ public class ShatterFilter extends AbstractBufferedImageOp {
         float[] rz = new float[numTiles];
 
         Graphics2D g = dst.createGraphics();
-        //		g.drawImage( src, null, null );
+        //                g.drawImage( src, null, null );
 
         Random random = new Random(0);
         /*
@@ -162,16 +162,16 @@ public class ShatterFilter extends AbstractBufferedImageOp {
         float y = cy + height*(float)Math.sin(angle);
         g.setColor( Color.black );
         g.setColor( Color.getHSBColor( (float)angle, 1, 1 ) );
-        	if ( i != 0 ) {
-        		rz[i-1] = tile*(2*random.nextFloat()-1);
-        		ry[i-1] = tile*random.nextFloat();
-        		rz[i-1] = tile*random.nextFloat();
+                if ( i != 0 ) {
+                        rz[i-1] = tile*(2*random.nextFloat()-1);
+                        ry[i-1] = tile*random.nextFloat();
+                        rz[i-1] = tile*random.nextFloat();
         GeneralPath p = new GeneralPath();
         p.moveTo( cx, cy );
         p.lineTo( lastx, lasty );
         p.lineTo( x, y );
         p.closePath();
-        		shapes[i-1] = p;
+                        shapes[i-1] = p;
         //                Rectangle r = p.getBounds();
         //                r.intersect( r, new Rectangle( (int)width, (int)height ), r );
         }
@@ -215,10 +215,10 @@ public class ShatterFilter extends AbstractBufferedImageOp {
             x = tile.x + transition * tile.vx;
             y = tile.y + transition * tile.vy;
             g.translate(x, y);
-            //			g.translate( tile.w*0.5f, tile.h*0.5f );
+            //                        g.translate( tile.w*0.5f, tile.h*0.5f );
             g.rotate(transition * rz[i]);
-            //			g.scale( (float)Math.cos( transition * rx[i] ), (float)Math.cos( transition * ry[i] ) );
-            //			g.translate( -tile.w*0.5f, -tile.h*0.5f );
+            //                        g.scale( (float)Math.cos( transition * rx[i] ), (float)Math.cos( transition * ry[i] ) );
+            //                        g.translate( -tile.w*0.5f, -tile.h*0.5f );
             g.setColor(Color.getHSBColor(h, 1, 1));
             Shape clip = g.getClip();
             g.clip(tile.shape);

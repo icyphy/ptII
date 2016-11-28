@@ -111,7 +111,7 @@ public class ATCDirector extends AbstractATCDirector {
         int airportId = ((IntToken)airport.airportId.getToken()).intValue();
 //        if (airportId == -1)
 //            throw new IllegalActionException("invalid id for airplane");
-//		if (_airplanesId.contains(airplaneId))
+//                if (_airplanesId.contains(airplaneId))
 //            throw new IllegalActionException("duplication in  airplanes id");
 //        _airplanesId.add(airplaneId);
         if (airportId == -1) {
@@ -148,7 +148,7 @@ public class ATCDirector extends AbstractATCDirector {
         }
         _airportsId.add(airportId);
     }
-	
+        
     /** Put an entry for neighbors, stormyTrack and inTransit for the initialized track.
      *  @param track The track.
      *  @exception IllegalActionException If there track is invalid.
@@ -306,7 +306,7 @@ public class ATCDirector extends AbstractATCDirector {
             
         Token choosedNeighbor = null;
         int route = -1;
-		boolean baseOnDestination = false;
+                boolean baseOnDestination = false;
         boolean neighborChoosed = false;
         int priorTrack = ((IntToken)airplane.get("priorTrack")).intValue();
         Token currentTrack = flightMap.getElement(0);
@@ -319,8 +319,8 @@ public class ATCDirector extends AbstractATCDirector {
             if (temp.equals(destination)) {
                 route = i;
                 neighborChoosed = true;
-		choosedNeighbor = temp;
-		baseOnDestination = true;
+                choosedNeighbor = temp;
+                baseOnDestination = true;
                 break;
             }
             if ( tempId != -1 && !_airportsId.contains(tempId) &&  !temp.equals(currentTrack) && !_inTransit.get(tempId) &&
@@ -397,7 +397,7 @@ public class ATCDirector extends AbstractATCDirector {
     
     /** The id of the airplane. */
     private ArrayList<Integer> _airplanesId = new ArrayList<>();
-	
+        
     /** A color for each airplane. */
     private Map<Integer,ArrayToken> _airplanesColor = new HashMap<Integer,ArrayToken>();
 }

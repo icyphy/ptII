@@ -113,49 +113,49 @@ public class FileUtilities {
             }
         }
 
-	URLConnection sourceURLConnection = null;
-	InputStream sourceURLInputStream = null;
-	try {
-	    sourceURLConnection = sourceURL.openConnection();
-	    if (sourceURLConnection == null) {
-		throw new IOException("Failed to open a connection on " + sourceURL);
-	    }
-	    sourceURLInputStream = sourceURLConnection.getInputStream();
-	    if (sourceURLInputStream == null) {
-		throw new IOException("Failed to open a stream on " + sourceURLConnection);
-	    }
+        URLConnection sourceURLConnection = null;
+        InputStream sourceURLInputStream = null;
+        try {
+            sourceURLConnection = sourceURL.openConnection();
+            if (sourceURLConnection == null) {
+                throw new IOException("Failed to open a connection on " + sourceURL);
+            }
+            sourceURLInputStream = sourceURLConnection.getInputStream();
+            if (sourceURLInputStream == null) {
+                throw new IOException("Failed to open a stream on " + sourceURLConnection);
+            }
 
-	    if (! (sourceURLConnection instanceof JarURLConnection)) {
-		_binaryCopyStream(sourceURLInputStream, destinationFile);
-	    } else {
-		JarURLConnection jarURLConnection = (JarURLConnection)sourceURLConnection;
-		JarEntry jarEntry = jarURLConnection.getJarEntry();
-		if (!jarEntry.isDirectory()) {
-		    // Simply copying a file.
-		    _binaryCopyStream(sourceURLInputStream, destinationFile);
-		} else {
-		    // It is a directory.
-		    _binaryCopyDirectory(jarURLConnection, destinationFile);
-		}
-	    }
-	} finally {
-	    if (sourceURLConnection != null) {
-		// Work around
-		// "JarUrlConnection.getInputStream().close() throws
-		// NPE when entry is a directory"
-		// https://bugs.openjdk.java.net/browse/JDK-8080094
-		if (sourceURLConnection instanceof JarURLConnection) {
-		    JarURLConnection jar = (JarURLConnection) sourceURLConnection;
-		    if (jar.getUseCaches()) {
-			jar.getJarFile().close();
-		    }
-		} else {
-		    if (sourceURLInputStream != null) {
-			sourceURLInputStream.close();
-		    }
-		}
-	    }
-	}
+            if (! (sourceURLConnection instanceof JarURLConnection)) {
+                _binaryCopyStream(sourceURLInputStream, destinationFile);
+            } else {
+                JarURLConnection jarURLConnection = (JarURLConnection)sourceURLConnection;
+                JarEntry jarEntry = jarURLConnection.getJarEntry();
+                if (!jarEntry.isDirectory()) {
+                    // Simply copying a file.
+                    _binaryCopyStream(sourceURLInputStream, destinationFile);
+                } else {
+                    // It is a directory.
+                    _binaryCopyDirectory(jarURLConnection, destinationFile);
+                }
+            }
+        } finally {
+            if (sourceURLConnection != null) {
+                // Work around
+                // "JarUrlConnection.getInputStream().close() throws
+                // NPE when entry is a directory"
+                // https://bugs.openjdk.java.net/browse/JDK-8080094
+                if (sourceURLConnection instanceof JarURLConnection) {
+                    JarURLConnection jar = (JarURLConnection) sourceURLConnection;
+                    if (jar.getUseCaches()) {
+                        jar.getJarFile().close();
+                    }
+                } else {
+                    if (sourceURLInputStream != null) {
+                        sourceURLInputStream.close();
+                    }
+                }
+            }
+        }
 
         return true;
     }
@@ -748,48 +748,48 @@ public class FileUtilities {
      *  @exception IOException If there are problems reading, writing or closing.
      */
     private static void _binaryCopyDirectory(JarURLConnection jarURLConnection,
-					     File destinationDirectory) throws IOException {
-	// Get the path of the resource in the jar file
-	String entryBaseName = jarURLConnection.getEntryName();
-	JarFile jarFile = jarURLConnection.getJarFile();
-	Enumeration<?extends ZipEntry> jarEntries = jarFile.entries();
-	while( jarEntries.hasMoreElements() ) {
-	    ZipEntry zipEntry = jarEntries.nextElement();
-	    String name = zipEntry.getName();
-	    if (!name.startsWith(entryBaseName) ) {
-		continue;
-	    }
+                                             File destinationDirectory) throws IOException {
+        // Get the path of the resource in the jar file
+        String entryBaseName = jarURLConnection.getEntryName();
+        JarFile jarFile = jarURLConnection.getJarFile();
+        Enumeration<?extends ZipEntry> jarEntries = jarFile.entries();
+        while( jarEntries.hasMoreElements() ) {
+            ZipEntry zipEntry = jarEntries.nextElement();
+            String name = zipEntry.getName();
+            if (!name.startsWith(entryBaseName) ) {
+                continue;
+            }
 
-	    String entryFileName = name.substring(entryBaseName.length());
-	    File fileOrDirectory = new File(destinationDirectory, entryFileName );
-	    if (zipEntry.isDirectory() ) {
-		if (!fileOrDirectory.mkdir()) {
-		    throw new IOException("Could not create \"" + fileOrDirectory + "\"");
-		}
-	    } else {
-		InputStream inputStream = null;
-		OutputStream outputStream = null;
-		try {
-		    inputStream = jarFile.getInputStream(zipEntry);
-		    outputStream =  new BufferedOutputStream( new FileOutputStream(fileOrDirectory ) );
-		    byte buffer[] = new byte[4096];
-		    int readCount;
-		    while( (readCount = inputStream.read(buffer)) > 0 ) {
-			outputStream.write(buffer, 0, readCount);
-		    }
-		} finally {
-		    try {
-			if (outputStream != null) {
-			    outputStream.close();
-			}
-		    } finally {
-			if (inputStream != null) {
-			    inputStream.close();
-			}
-		    }
-		}
-	    }
-	}
+            String entryFileName = name.substring(entryBaseName.length());
+            File fileOrDirectory = new File(destinationDirectory, entryFileName );
+            if (zipEntry.isDirectory() ) {
+                if (!fileOrDirectory.mkdir()) {
+                    throw new IOException("Could not create \"" + fileOrDirectory + "\"");
+                }
+            } else {
+                InputStream inputStream = null;
+                OutputStream outputStream = null;
+                try {
+                    inputStream = jarFile.getInputStream(zipEntry);
+                    outputStream =  new BufferedOutputStream( new FileOutputStream(fileOrDirectory ) );
+                    byte buffer[] = new byte[4096];
+                    int readCount;
+                    while( (readCount = inputStream.read(buffer)) > 0 ) {
+                        outputStream.write(buffer, 0, readCount);
+                    }
+                } finally {
+                    try {
+                        if (outputStream != null) {
+                            outputStream.close();
+                        }
+                    } finally {
+                        if (inputStream != null) {
+                            inputStream.close();
+                        }
+                    }
+                }
+            }
+        }
     }
 
     /** Copy files safely.  If there are problems, the streams are
@@ -808,12 +808,12 @@ public class FileUtilities {
         try {
             input = new BufferedInputStream(inputStream);
 
-	    if (input == null) {
-		throw new IOException("Could not create a BufferedInputStream from \""
-				      + inputStream + "\".  This can happen if the input "
-				      + "is a JarURL entry that refers to a directory "
-				      + "in the jar file.");
-	    }
+            if (input == null) {
+                throw new IOException("Could not create a BufferedInputStream from \""
+                                      + inputStream + "\".  This can happen if the input "
+                                      + "is a JarURL entry that refers to a directory "
+                                      + "in the jar file.");
+            }
 
             BufferedOutputStream output = null;
 
@@ -831,20 +831,20 @@ public class FileUtilities {
 
                 int c;
 
-		try {
-		    while ((c = input.read()) != -1) {
-			output.write(c);
-		    }
-		} catch (NullPointerException ex) {
-		    NullPointerException npe =
-			new NullPointerException("While reading from \"" + input
-						 + "\" and writing to \"" + output
-						 + "\", a NullPointerException occurred.  "
-						 + "This can happen when attempting to read "
-						 + "from a JarURL entry that points to a directory.");
-		    npe.initCause(ex);
-		    throw npe;
-		}
+                try {
+                    while ((c = input.read()) != -1) {
+                        output.write(c);
+                    }
+                } catch (NullPointerException ex) {
+                    NullPointerException npe =
+                        new NullPointerException("While reading from \"" + input
+                                                 + "\" and writing to \"" + output
+                                                 + "\", a NullPointerException occurred.  "
+                                                 + "This can happen when attempting to read "
+                                                 + "from a JarURL entry that points to a directory.");
+                    npe.initCause(ex);
+                    throw npe;
+                }
             } finally {
                 if (output != null) {
                     try {
@@ -855,18 +855,18 @@ public class FileUtilities {
                 }
             }
         } finally {
-	    if (input != null) {
-		try {
-		    input.close();
-		} catch (NullPointerException npe) {
-		    // Ignore, see
-		    // Work around
-		    // "JarUrlConnection.getInputStream().close() throws
-		    // NPE when entry is a directory"
-		    // https://bugs.openjdk.java.net/browse/JDK-8080094
-		} catch (Throwable throwable) {
-		    throw new RuntimeException(throwable);
-		}
+            if (input != null) {
+                try {
+                    input.close();
+                } catch (NullPointerException npe) {
+                    // Ignore, see
+                    // Work around
+                    // "JarUrlConnection.getInputStream().close() throws
+                    // NPE when entry is a directory"
+                    // https://bugs.openjdk.java.net/browse/JDK-8080094
+                } catch (Throwable throwable) {
+                    throw new RuntimeException(throwable);
+                }
             }
         }
     }

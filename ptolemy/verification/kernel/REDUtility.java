@@ -125,7 +125,7 @@ public class REDUtility {
      */
     public static CompositeActor generateEquivalentSystemWithoutHierarchy(
             CompositeActor originalCompositeActor)
-	throws CloneNotSupportedException, IllegalActionException, NameDuplicationException {
+        throws CloneNotSupportedException, IllegalActionException, NameDuplicationException {
 
         ArrayList<FSMActor> list = new ArrayList<FSMActor>();
 
@@ -179,7 +179,7 @@ public class REDUtility {
     public static StringBuffer generateREDDescription(CompositeActor PreModel,
             String pattern, FormulaType choice, int span,
             int bufferSizeDelayActor) throws IllegalActionException,
-					     NameDuplicationException, CloneNotSupportedException {
+                                             NameDuplicationException, CloneNotSupportedException {
 
         StringBuffer returnREDFormat = new StringBuffer("");
 

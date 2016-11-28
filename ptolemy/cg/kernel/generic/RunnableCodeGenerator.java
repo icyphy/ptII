@@ -182,11 +182,11 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
     protected int _executeCommands() throws IllegalActionException {
         List<String> commands = new LinkedList<String>();
 
-	String command = "";
+        String command = "";
         // The run command.
         if (_isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
-		command = _runCommand();
+                command = _runCommand();
                 commands.add(command);
             }
         }
@@ -195,9 +195,9 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
             return -1;
         }
 
-	System.out.println("RunnableCodeGenerator: run command: (cd "
-			   + codeDirectory.asFile() + "; "
-			   + command + ")");
+        System.out.println("RunnableCodeGenerator: run command: (cd "
+                           + codeDirectory.asFile() + "; "
+                           + command + ")");
 
         _executeCommands.setCommands(commands);
         _executeCommands.setWorkingDirectory(codeDirectory.asFile());
@@ -223,19 +223,19 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
      *  substituting the @..@ tags.
      */
     protected String _runCommand() throws IllegalActionException {
-	Map<String, String> substituteMap = CodeGeneratorUtilities.newMap(this);
-	substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
-	substituteMap.put("@modelName@", _sanitizedModelName);
-	substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
+        Map<String, String> substituteMap = CodeGeneratorUtilities.newMap(this);
+        substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
+        substituteMap.put("@modelName@", _sanitizedModelName);
+        substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
 
         if (_model instanceof CompositeActor) {
-	    substituteMap.put("@stopTime@", ((CompositeActor) _model).getDirector().stopTime.getExpression());
-	}
+            substituteMap.put("@stopTime@", ((CompositeActor) _model).getDirector().stopTime.getExpression());
+        }
 
-	String command = CodeGeneratorUtilities
-	    .substitute(((StringToken) runCommand.getToken())
-			.stringValue(), substituteMap);
-	return command;
+        String command = CodeGeneratorUtilities
+            .substitute(((StringToken) runCommand.getToken())
+                        .stringValue(), substituteMap);
+        return command;
     }
 
     ///////////////////////////////////////////////////////////////////

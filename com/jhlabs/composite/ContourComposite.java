@@ -103,13 +103,13 @@ class ContourCompositeContext implements CompositeContext {
                     dstOutPix[k] = dstInPix[k];
                     dstOutPix[k + 1] = dstInPix[k + 1];
                     dstOutPix[k + 2] = dstInPix[k + 2];
-                    //					if ( dstOut == dstIn )
+                    //                                        if ( dstOut == dstIn )
                     dstOutPix[k] = 0xff;
                     dstOutPix[k + 1] = 0;
                     dstOutPix[k + 2] = 0;
                     dstOutPix[k + 3] = 0;
-                    //					else
-                    //						dstOutPix[k+3] = dstInPix[k+3];
+                    //                                        else
+                    //                                                dstOutPix[k+3] = dstInPix[k+3];
                 }
 
                 lastAlpha = alpha;

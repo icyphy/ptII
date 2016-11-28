@@ -126,13 +126,13 @@ public class Track extends TrackWriter implements Rejecting {
         // Create an icon for this sensor node.
         EditorIcon node_icon = new EditorIcon(this, "_icon");
 
-	_circle = new EllipseAttribute(node_icon, "_circleShap");
+        _circle = new EllipseAttribute(node_icon, "_circleShap");
         _circle.centered.setToken("true");
         _circle.width.setToken("40");
         _circle.height.setToken("40");
         _circle.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
         _circle.lineColor.setToken("{0.0, 0.0, 0.0, 0.0}");
-		
+                
         _shape = new ResizablePolygonAttribute(node_icon, "_trackShape");
         _shape.centered.setToken("true");
         _shape.width.setToken("40");
@@ -207,7 +207,7 @@ public class Track extends TrackWriter implements Rejecting {
         if (attribute == stormy) {
             if (stormy.getToken()!=null) {
                 _isStormy = stormy.getToken();
-		//change color of the storm zone
+                //change color of the storm zone
                 if (((BooleanToken)_isStormy).booleanValue()==true) {
                     _circle.fillColor.setToken("{1.0,0.2,0.2,1.0}");
                 } else {

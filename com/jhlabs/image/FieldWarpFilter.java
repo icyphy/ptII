@@ -152,8 +152,8 @@ public class FieldWarpFilter extends TransformFilter {
             totalWeight += weight;
         }
 
-        //		out[0] = ImageMath.clamp(x + sumX / totalWeight + 0.5f, 0, width-1);
-        //		out[1] = ImageMath.clamp(y + sumY / totalWeight + 0.5f, 0, height-1);
+        //                out[0] = ImageMath.clamp(x + sumX / totalWeight + 0.5f, 0, width-1);
+        //                out[1] = ImageMath.clamp(y + sumY / totalWeight + 0.5f, 0, height-1);
         out[0] = x + sumX / totalWeight + 0.5f;
         out[1] = y + sumY / totalWeight + 0.5f;
     }

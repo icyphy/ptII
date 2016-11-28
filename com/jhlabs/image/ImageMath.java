@@ -49,7 +49,7 @@ public class ImageMath {
      * @return the output value
      */
     public static float bias(float a, float b) {
-        //		return (float)Math.pow(a, Math.log(b) / Math.log(0.5));
+        //                return (float)Math.pow(a, Math.log(b) / Math.log(0.5));
         return a / ((1.0f / b - 2) * (1.0f - a) + 1);
     }
 
@@ -61,16 +61,16 @@ public class ImageMath {
      */
     public static float gain(float a, float b) {
         /*
-        		float p = (float)Math.log(1.0 - b) / (float)Math.log(0.5);
+                        float p = (float)Math.log(1.0 - b) / (float)Math.log(0.5);
         
-        		if (a < .001)
-        			return 0.0f;
-        		else if (a > .999)
-        			return 1.0f;
-        		if (a < 0.5)
-        			return (float)Math.pow(2 * a, p) / 2;
-        		else
-        			return 1.0f - (float)Math.pow(2 * (1. - a), p) / 2;
+                        if (a < .001)
+                                return 0.0f;
+                        else if (a > .999)
+                                return 1.0f;
+                        if (a < 0.5)
+                                return (float)Math.pow(2 * a, p) / 2;
+                        else
+                                return 1.0f - (float)Math.pow(2 * (1. - a), p) / 2;
         */
         float c = (1.0f / b - 2.0f) * (1.0f - 2.0f * a);
         if (a < 0.5)
@@ -564,7 +564,7 @@ public class ImageMath {
             while (out[i + 1] < j)
                 i++;
             in[j] = i + (j - out[i]) / (out[i + 1] - out[i]);
-            //			in[j] = ImageMath.clamp( in[j], 0, length-1 );
+            //                        in[j] = ImageMath.clamp( in[j], 0, length-1 );
         }
         in[length] = length;
         in[length + 1] = length;

@@ -266,7 +266,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
         Time currentTime = director.getModelTime();
         if (currentTime.equals(_transitExpires) && _inTransit != null) {
             try{
-		// Station has more than one output channel and output channel of the train has not been determined.
+                // Station has more than one output channel and output channel of the train has not been determined.
                 if(output.getWidth()>1 && _outRoute==-1)
                 {
                     Map<String, Token> temp=new TreeMap<>();
@@ -276,7 +276,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
                         throw new IllegalActionException("Output port has not this channel "+_outRoute);
                     _inTransit=temp.get("train");
                 }
-		// Station has one output channel.
+                // Station has one output channel.
                 else if(output.getWidth()==1 || output.getWidth()==0)
                 {
                     _outRoute=0;
@@ -284,7 +284,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
                 
                  output.send(_outRoute, _inTransit);  
             } catch (NoRoomException ex){
-		// Train has been rejected by the next track.
+                // Train has been rejected by the next track.
                 double additionalDelay = ((TCSDirector)_director).handleRejectionWithDelayStation(this);
                 if (additionalDelay < 0.0) 
                 {
