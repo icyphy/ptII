@@ -366,8 +366,8 @@ public class AWTVergilApplication {
         return new ActorGraphPane(_controller, graphModel, entity);
     }
 
-    // /////////////////////////////////////////////////////////////////
-    // // protected variables ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
 
     /** Create the component that goes to the right of the library.
      *  @param entity The entity to display in the component.

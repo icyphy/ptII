@@ -105,7 +105,7 @@ public class MockHueBridgeHelper {
       * @return  The MockHueBridge instance.
       */
       public static MockHueBridgeHelper getInstance() {
-          if(_instance == null) {
+          if (_instance == null) {
              _instance = new MockHueBridgeHelper();
           }
           return _instance;
@@ -197,7 +197,7 @@ public class MockHueBridgeHelper {
       * @see #getState(String)
       */
      public void setState(String bridgeID, String state) {
-         if (!_bridges.containsKey(bridgeID)){
+         if (!_bridges.containsKey(bridgeID)) {
              addBridge(bridgeID);
          }
 
@@ -220,7 +220,7 @@ public class MockHueBridgeHelper {
      }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
      /** A map of bridge IDs to usernames that have access to this bridge.
       */
@@ -232,7 +232,7 @@ public class MockHueBridgeHelper {
     private static MockHueBridgeHelper _instance = null;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** An inner class to hold information for a bridge. */
     private static class BridgeInfo {

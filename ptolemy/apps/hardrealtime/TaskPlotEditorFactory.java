@@ -42,7 +42,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// TaskPlotEditorFactory
 
 /**
@@ -58,9 +58,9 @@ public class TaskPlotEditorFactory extends EditorFactory {
     /** Construct a factory with the specified container and name.
      *  @param container The container.
      *  @param name The name of the factory.
-     *  @throws IllegalActionException If the factory is not of an
+     *  @exception IllegalActionException If the factory is not of an
      *   acceptable attribute for the container.
-     *  @throws NameDuplicationException If the name coincides with
+     *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
     public TaskPlotEditorFactory(NamedObj container, String name)
@@ -109,7 +109,7 @@ public class TaskPlotEditorFactory extends EditorFactory {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     private TaskPlot _plot;
     private Tableau _plotTableau;

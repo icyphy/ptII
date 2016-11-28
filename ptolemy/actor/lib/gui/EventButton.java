@@ -171,7 +171,7 @@ public class EventButton extends TypedAtomicActor {
     }
 
     /** Mark that the model is now executing.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     @Override
     public void initialize() throws IllegalActionException {
@@ -181,7 +181,7 @@ public class EventButton extends TypedAtomicActor {
     }
 
     /** Mark that the model is no longer executing.
-     *  @throws IllegalActionException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
      */
     @Override
     public void wrapup() throws IllegalActionException {

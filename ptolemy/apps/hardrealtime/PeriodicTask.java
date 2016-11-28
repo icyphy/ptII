@@ -59,9 +59,9 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
      *
      *  @param container The container.
      *  @param name The name of the actor.
-     *  @throws IllegalActionException If the entity cannot be contained
+     *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container.
-     *  @throws NameDuplicationException If the name coincides with
+     *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container.
      */
     public PeriodicTask(CompositeEntity container, String name)
@@ -105,7 +105,7 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
 
     /** Update the properties of the jobs released when the task parameters change.
      *  @param attribute The attribute that changed.
-     *  @throws IllegalActionException If getting the tokens from parameters
+     *  @exception IllegalActionException If getting the tokens from parameters
      *   throws it.
      */
     @Override
@@ -124,7 +124,7 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
     }
 
     /** Release a job if the next fire time of the task is equal to the current time.
-     *  @throws IllegalActionException If accessing the next fire time or releasing the
+     *  @exception IllegalActionException If accessing the next fire time or releasing the
      *  job throws it.
      */
     @Override
@@ -156,7 +156,7 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
 
     /** Return the next time the periodic will release a new job.
      *  @return The next time a job will be released.
-     *  @throws IllegalActionException If creating the Time objects throws it.
+     *  @exception IllegalActionException If creating the Time objects throws it.
      */
     @Override
     public Time nextFireTime() throws IllegalActionException {
@@ -178,7 +178,7 @@ public class PeriodicTask extends TypedAtomicActor implements Task {
     }
 
     /** Release a job to the scheduler and update the last release time.
-     *  @throws IllegalActionException If creating a new job throws it.
+     *  @exception IllegalActionException If creating a new job throws it.
      */
     public void releaseJob() throws IllegalActionException {
         _scheduler.releaseJob(new Job(_scheduler, _deadline, _executionTime,

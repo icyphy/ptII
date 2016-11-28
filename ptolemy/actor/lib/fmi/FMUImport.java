@@ -1094,7 +1094,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             if (_firstFire || Math.abs(result - _outputs.get(index).lastOutputPortValue) > _threshold ) {
                                     _outputs.get(index).lastOutputPortValue = result;
                             }
-                            else{
+                            else {
                                     continue;
                             }
                      /*
@@ -4588,7 +4588,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
     /** Return true if we use the QSSDirector.
      *  @return true if we use the QSS Director.
      */
-    protected boolean _hasQSSDirector(){
+    protected boolean _hasQSSDirector() {
         // Initialize parameters used for the case where the QSS director is used.
         // This will be used to determine whether outputs need to be quantized.
         boolean useQSS = false;

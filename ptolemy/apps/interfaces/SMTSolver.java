@@ -25,7 +25,7 @@ import java.lang.reflect.Method;
 public class SMTSolver {
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Check the satisfiability of the given formula.
      *
@@ -61,7 +61,7 @@ public class SMTSolver {
     /** Test that the SMT Solver works correctly.
      *
      *  @param args Ignored.
-     *  @throws AssertionError If the test fails.
+     *  @exception AssertionError If the test fails.
      */
     public static void main(String[] args) {
         final SMTSolver ytm = new SMTSolver();
@@ -73,7 +73,7 @@ public class SMTSolver {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private methods                      ////
+    ////                         private methods                   ////
     /** Invoke the Yices SMT solver on the given formula, saving the
      *  results in the given file.
      *  This method attempts to interface with the solver using the

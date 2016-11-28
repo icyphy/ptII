@@ -152,7 +152,7 @@ public class Parameters {
      *          the layout of the parent node
      * @param abstractConfiguration
      *          the container with user-specified options, may be null
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *          thrown if one of the parameters has the wrong type
      */
     private void _applyAbstractConfiguration(KLayoutData parentLayout,
@@ -210,7 +210,7 @@ public class Parameters {
      *          the layout of the parent node
      * @param actorConfiguration
      *          the container with user-specified options, may be null
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *          thrown if one of the parameters has the wrong type
      */
     private void _applyActorConfiguration(KLayoutData parentLayout,
@@ -245,7 +245,7 @@ public class Parameters {
      *          the layout of the parent node
      * @param modalConfiguration
      *          the container with user-specified options, may be null
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *          thrown if one of the parameters has the wrong type
      */
     private void _applyModalConfiguration(KLayoutData parentLayout,

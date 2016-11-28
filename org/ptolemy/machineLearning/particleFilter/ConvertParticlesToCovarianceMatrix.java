@@ -99,12 +99,12 @@ public class ConvertParticlesToCovarianceMatrix extends TypedAtomicActor {
 
         super.fire();
 
-        for(int ch=0; ch<particleInput.getWidth(); ch++) {
+        for (int ch=0; ch<particleInput.getWidth(); ch++) {
             /// parsing input
             if (particleInput.hasToken(ch)) {
                 ArrayToken incoming = (ArrayToken) particleInput.get(ch);
                 _particles = new double[incoming.length()][5];
-                for(int i=0; i<_particles.length; i++) {
+                for (int i=0; i<_particles.length; i++) {
                     RecordToken inputParticle = (RecordToken)incoming.getElement(i);
                     _particles[i][0] = ((DoubleToken) inputParticle.get("x")).doubleValue();
                     _particles[i][1] = ((DoubleToken) inputParticle.get("y")).doubleValue();
@@ -115,21 +115,21 @@ public class ConvertParticlesToCovarianceMatrix extends TypedAtomicActor {
             }
             //calculate average of particles
             _meanState = new double[4];
-            for(int i=0; i<_particles.length; i++) {
-                for(int j=0; j<_meanState.length; j++) {
+            for (int i=0; i<_particles.length; i++) {
+                for (int j=0; j<_meanState.length; j++) {
                     _meanState[j] += _particles[i][j]*_particles[i][4];
                 }
             }
 
             //calculate covariance of current state.
             _covariance = new double[4][4];
-            for(int i=0; i<_particles.length; i++) {
+            for (int i=0; i<_particles.length; i++) {
                 double[] diff = new double[4];
-                for(int it=0; it<_meanState.length; it++) {
+                for (int it=0; it<_meanState.length; it++) {
                     diff[it] = _particles[i][it]-_meanState[it];
                 }
-                for(int row =0; row<4; row++) {
-                    for(int col =0; col<4; col++) {
+                for (int row =0; row<4; row++) {
+                    for (int col =0; col<4; col++) {
                         _covariance[row][col] += (diff[row]*diff[col]*_particles[i][4]);
                     }
                 }
@@ -141,7 +141,7 @@ public class ConvertParticlesToCovarianceMatrix extends TypedAtomicActor {
     @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
-        if(particleInput.hasToken(0)) return true;
+        if (particleInput.hasToken(0)) return true;
         return false;
     }
     /**

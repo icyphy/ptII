@@ -122,7 +122,7 @@ public class UDPSocketHelper extends VertxHelperBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** Socket helper for individual sockets.
      */
@@ -302,7 +302,7 @@ public class UDPSocketHelper extends VertxHelperBase {
          *  @param buffer The buffer containing the message.
          */
         protected void _emitMessage(Buffer buffer) {
-            if(_receiveType == DATA_TYPE.STRING) {
+            if (_receiveType == DATA_TYPE.STRING) {
                 _currentObj.callMember("emit", "message", buffer.getString(0, buffer.length()));
             } else if (_receiveType == DATA_TYPE.IMAGE) {
                 try {

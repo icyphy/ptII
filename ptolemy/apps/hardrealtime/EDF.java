@@ -77,9 +77,9 @@ public class EDF extends Director {
      *  empty string. Increment the version number of the workspace.
      *  @param container Container of the director.
      *  @param name Name of this director.
-     *  @throws IllegalActionException If the
+     *  @exception IllegalActionException If the
      *   director is not compatible with the specified container.
-     *  @throws NameDuplicationException If the container not a
+     *  @exception NameDuplicationException If the container not a
      *   CompositeActor and the name collides with an entity in the container.
      */
     public EDF(CompositeEntity container, String name)
@@ -114,7 +114,7 @@ public class EDF extends Director {
     }
 
     /** Fire the schedulable tasks contained in the real-time system.
-     *  @throws IllegalActionException If the fire of one of the tasks contained by the platform
+     *  @exception IllegalActionException If the fire of one of the tasks contained by the platform
      *  throws it.
      */
     @Override
@@ -129,7 +129,7 @@ public class EDF extends Director {
 
     /** Check that contained actors are periodic tasks or multiframe tasks and create a task plot
      *  to display the system's execution.
-     *  @throws IllegalActionException If the composite actor contains actors that are not
+     *  @exception IllegalActionException If the composite actor contains actors that are not
      *  periodic tasks or multiframe tasks, if the top level effigy cannot be found, or if
      *  getting the model stop time throws it.
      */
@@ -184,7 +184,7 @@ public class EDF extends Director {
      *  or the current job finishes executing.
      *  @return False if a deadline has been missed or
      *  time has advanced beyond the simulation end time.
-     *  @throws IllegalActionException If the Time constructor, getting the next release times,
+     *  @exception IllegalActionException If the Time constructor, getting the next release times,
      *  or setting model throw it.
      */
     @Override
@@ -271,7 +271,7 @@ public class EDF extends Director {
     }
 
     /** Clear current job, released jobs, and schedulable tasks.
-     *  @throws IllegalActionException If the preinitialize() method of
+     *  @exception IllegalActionException If the preinitialize() method of
      *  one of the associated actors throws it.
      */
     @Override

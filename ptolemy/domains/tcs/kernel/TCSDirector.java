@@ -103,7 +103,7 @@ public class TCSDirector extends DEDirector {
     /** Return the color of the line.
      *  @param symbol symbol of the line.
      *  @return Return color of a line in form of ArrayToken.
-     *  @throws IllegalActionException If thrown while coloring the lines.
+     *  @exception IllegalActionException If thrown while coloring the lines.
      */
     public ArrayToken getColor(String symbol) throws IllegalActionException {
         lineColoring();
@@ -114,7 +114,7 @@ public class TCSDirector extends DEDirector {
      *  @param track The track
      *  @return An additional delay, or -1.0 to indicate that a rerouting is possible.
      *  This base class returns 1.0.
-     *  @throws IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public double handleRejectionWithDelay(AbstractTrack track) throws IllegalActionException {
         // FIXME: what value should be returned here?
@@ -125,7 +125,7 @@ public class TCSDirector extends DEDirector {
      *  @param station The station
      *  @return An additional delay, or -1.0 to indicate that a rerouting is possible.
      *  This base class returns 1.0.
-     *  @throws IllegalActionException Not thrown in this base class.
+     *  @exception IllegalActionException Not thrown in this base class.
      */
     public double handleRejectionWithDelayStation(AbstractStation station) throws IllegalActionException{
         // TODO Auto-generated method stub
@@ -134,7 +134,7 @@ public class TCSDirector extends DEDirector {
 
     /** Put an entry into _brokenTracks for the initialized track.
      *  @param track The track
-     *  @throws IllegalActionException If thrown while putting the entry into _brokenTracks.
+     *  @exception IllegalActionException If thrown while putting the entry into _brokenTracks.
      */
     public void handleInitializedTrack(AbstractTrack track) throws IllegalActionException{
         int id = ((IntToken)track.trackId.getToken()).intValue();
@@ -161,7 +161,7 @@ public class TCSDirector extends DEDirector {
 
     /** Put an entry into _brokenStations for the initialized station.
      *  @param station The station
-     *  @throws IllegalActionException If the entry cannot be put in to _brokenStations
+     *  @exception IllegalActionException If the entry cannot be put in to _brokenStations
      */
     public void handleInitializedStation(AbstractStation station) throws IllegalActionException {
         int stationId=((IntToken)station.stationId.getToken()).intValue();
@@ -193,7 +193,7 @@ public class TCSDirector extends DEDirector {
 
     /** Update the _brokenTracks array because of a change in condition of a track.
      *  @param track The track
-     *  @throws IllegalActionException If the track id is invalid or
+     *  @exception IllegalActionException If the track id is invalid or
      *  the entry for the track has not been set in the array of
      *  broken tracks.
      */
@@ -216,7 +216,7 @@ public class TCSDirector extends DEDirector {
 
     /** Update _brokenStations array because of a change in condition of a station.
      *  @param station The station
-     *  @throws IllegalActionException If the station id is invalid or
+     *  @exception IllegalActionException If the station id is invalid or
      *  if the entry for the station has not been set in the array of
      *  broken stations.
      */
@@ -240,7 +240,7 @@ public class TCSDirector extends DEDirector {
 
     /** Handle initializing of a SourceStation.
      *  @param abstractSourceStation The Abstract Source state
-     *  @throws IllegalActionException If the line symbol cannot be obtained or if the stationID is -1.
+     *  @exception IllegalActionException If the line symbol cannot be obtained or if the stationID is -1.
      */
     public void handleInitializedSourceStation(AbstractSourceStation abstractSourceStation) throws IllegalActionException{
 
@@ -264,13 +264,13 @@ public class TCSDirector extends DEDirector {
      /** Return color of the train.
      *  @param id Id of the train.
      *  @return the color of the train.
-     *  @throws IllegalActionException If thrown while creating an ArrayToken
+     *  @exception IllegalActionException If thrown while creating an ArrayToken
      *  from the color specification.
      */
     public ArrayToken handleTrainColor(int id) throws IllegalActionException{
         ArrayToken color = _trainsColor.get(id);
 
-        while(color == null) {
+        while (color == null) {
             Token[] colorSpec = new DoubleToken[4];
             colorSpec[0] = new DoubleToken(_random.nextDouble());
             colorSpec[1] = new DoubleToken(_random.nextDouble());
@@ -278,14 +278,14 @@ public class TCSDirector extends DEDirector {
             colorSpec[3] = new DoubleToken(1.0);
             color = new ArrayToken(colorSpec);
             Boolean colorExist=false;
-            for(Entry<String, ArrayToken> entry : _lineColor.entrySet()){
+            for (Entry<String, ArrayToken> entry : _lineColor.entrySet()) {
                 if (entry.getValue().equals(color))
                     {
                     colorExist=true;
                         break;
                     }
             }
-            if (colorExist==false){
+            if (colorExist==false) {
                 _trainsColor.put(id, color);
                 break;
             }
@@ -296,7 +296,7 @@ public class TCSDirector extends DEDirector {
     }
 
     /** Set color of the lines in Metro.
-     *  @throws IllegalActionException If there is a problem
+     *  @exception IllegalActionException If there is a problem
      *  adding the lines to the set of line colors.
      */
     public void lineColoring() throws IllegalActionException  {
@@ -337,7 +337,7 @@ public class TCSDirector extends DEDirector {
     *  current station, an array in form of "symbolId".
     *  @param token token shows the train.
     *  @return Returns a new train packet and the out channel.
-    *  @throws IllegalActionException
+    *  @exception IllegalActionException
     */
     public Map<String, Token> routing(ArrayToken lines, Token token) throws IllegalActionException {
         ArrayToken movingMap=(ArrayToken)((RecordToken)token).get("movingMap");

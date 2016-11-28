@@ -83,10 +83,10 @@ public class MultiFrameTask extends TypedCompositeActor implements Task {
      *  NullPointerException will be thrown.
      *  @param container The container.
      *  @param name The name of the actor.
-     *  @throws IllegalActionException If the entity cannot be contained
+     *  @exception IllegalActionException If the entity cannot be contained
      *   by the proposed container, if the construction of the director throws it,
      *   or if hiding the director fails.
-     *  @throws NameDuplicationException If the name coincides with
+     *  @exception NameDuplicationException If the name coincides with
      *   an actor already in the container, or if the director constructor throws it.
      */
     public MultiFrameTask(CompositeEntity container, String name)
@@ -110,7 +110,7 @@ public class MultiFrameTask extends TypedCompositeActor implements Task {
 
     /** If it is time, release a new job with the deadline and execution time of the
      *  current task frame.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     @Override
     public void fire() throws IllegalActionException {
@@ -128,7 +128,7 @@ public class MultiFrameTask extends TypedCompositeActor implements Task {
     /** Initialize the task frames contained by the multiframe task by calling the base class
      *   initialize, set the current frame to the task frame that is set to be initial,
      *   and register this actor as a schedulable task to the director.
-     *  @throws IllegalActionException If the director's initialize throws it, since it is
+     *  @exception IllegalActionException If the director's initialize throws it, since it is
      *   guaranteed that a director is contained, or if more than one task frames are declared
      *   initial.
      */
@@ -167,7 +167,7 @@ public class MultiFrameTask extends TypedCompositeActor implements Task {
 
     /** Clear the task frames, the initial frame, get a reference to the toplevel scheduler,
      *  and set the next fire time to be zero.
-     *  @throws IllegalActionException If the superclass preinitialize() throws it.
+     *  @exception IllegalActionException If the superclass preinitialize() throws it.
      */
     @Override
     public void preinitialize() throws IllegalActionException {

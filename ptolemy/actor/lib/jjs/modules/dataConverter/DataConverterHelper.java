@@ -61,7 +61,7 @@ public class DataConverterHelper extends HelperBase {
      * Convert AWTImageToken to JavaScript array.
      * @param imageToken The image token (AWTImageToken) to be converted.
      * @return JavaScript array converted from the image token.
-     * @throws IllegalActionException If the conversion fails.
+     * @exception IllegalActionException If the conversion fails.
      */
     public Object imageToJSArray(AWTImageToken imageToken) throws IllegalActionException {
         Image image = imageToken.getValue();
@@ -83,7 +83,7 @@ public class DataConverterHelper extends HelperBase {
     /** Convert JavaScript array to AWTImageToken.
      *  @param object The JavaScript array to be converted to a image token.
      *  @return The image token converted from JavaScript array.
-     *  @throws IllegalActionException If the conversion fails..
+     *  @exception IllegalActionException If the conversion fails..
      */
     public AWTImageToken jsArrayToImage(Object object) throws IllegalActionException {
         byte[] bytes = _toJavaBytes(object);

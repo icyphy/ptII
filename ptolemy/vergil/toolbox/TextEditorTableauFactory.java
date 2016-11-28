@@ -275,7 +275,7 @@ public class TextEditorTableauFactory extends TableauFactory
      *  @param effigy The host effigy.
      *  @param text The text.
      *  @return the TextEffigy.
-     *  @throws Exception If the text effigy cannot be contained
+     *  @exception Exception If the text effigy cannot be contained
      *   by the specified container, or if the specified text cannot
      *   be inserted into the document.
      */

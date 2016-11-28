@@ -116,7 +116,7 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
     @Override
     public void dataReceived(XBeeMessage message) {
 
-        if(_receiveType == DATA_TYPE.STRING) {
+        if (_receiveType == DATA_TYPE.STRING) {
             _currentObj.callMember("emit", "data", message.getDataString());
         } else {
             // Assume a numeric type.

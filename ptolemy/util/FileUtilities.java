@@ -753,7 +753,7 @@ public class FileUtilities {
         String entryBaseName = jarURLConnection.getEntryName();
         JarFile jarFile = jarURLConnection.getJarFile();
         Enumeration<?extends ZipEntry> jarEntries = jarFile.entries();
-        while( jarEntries.hasMoreElements() ) {
+        while ( jarEntries.hasMoreElements() ) {
             ZipEntry zipEntry = jarEntries.nextElement();
             String name = zipEntry.getName();
             if (!name.startsWith(entryBaseName) ) {
@@ -774,7 +774,7 @@ public class FileUtilities {
                     outputStream =  new BufferedOutputStream( new FileOutputStream(fileOrDirectory ) );
                     byte buffer[] = new byte[4096];
                     int readCount;
-                    while( (readCount = inputStream.read(buffer)) > 0 ) {
+                    while ( (readCount = inputStream.read(buffer)) > 0 ) {
                         outputStream.write(buffer, 0, readCount);
                     }
                 } finally {

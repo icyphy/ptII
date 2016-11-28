@@ -4291,7 +4291,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
      * For example, a miss-scaled circle will look circular afterwords.
      * @author Dirk Bueche
      */
-    public synchronized void zoomEqual(){
+    public synchronized void zoomEqual() {
 
       double temp = _padding;
       _padding = 0;
@@ -4903,7 +4903,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
          *  @param event The event
          */
         public void mousePressed(MouseEvent event) {
-            if (event.getButton() == event.BUTTON3){
+            if (event.getButton() == event.BUTTON3) {
                 _movex = event.getX();  // starting point for moving
                 _movey = event.getY();
                 _moving = true;         // flag for moving is on
@@ -4963,7 +4963,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
         /** Ignored.
          *  @param event Ignored.
          */
-        public void mouseMoved(MouseEvent event){
+        public void mouseMoved(MouseEvent event) {
         }
 
     }

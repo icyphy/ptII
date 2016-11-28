@@ -88,7 +88,7 @@ public class HelperBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Handle an error by emitting an error event, or if there is no
      *  error event handler registered, by invoking the error() method
@@ -209,7 +209,7 @@ public class HelperBase {
     /** Convert a Java byte array into the JavaScript integer array.
      *  @param buffer The input Java byte array to be converted.
      *  @return The resulting JavaScript integer array.
-     *  @throws IllegalActionException If the conversion fails.
+     *  @exception IllegalActionException If the conversion fails.
      */
     protected Object _toJSArray(byte[] buffer) throws IllegalActionException {
         Object[] result = new Object[buffer.length];
@@ -224,7 +224,7 @@ public class HelperBase {
      *  @param object The input in JavaScript object, either a JavaScrypt integer array or
      *    a JavaScript string. If the string starts with "0x", it is interpreted as hex bytes.
      *  @return The Java byte array.
-     *  @throws IllegalActionException If the conversion fails.
+     *  @exception IllegalActionException If the conversion fails.
      */
     protected static byte[] _toJavaBytes(Object object) throws IllegalActionException {
         if (object instanceof ScriptObjectMirror || object instanceof NativeArray) {

@@ -77,9 +77,9 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
      *  entity.
      *  @param container The container.
      *  @param name The name of this attributed.
-     *  @throws IllegalActionException If the attribute is not of an
+     *  @exception IllegalActionException If the attribute is not of an
      *   acceptable class for the container, or if the name contains a period.
-     *  @throws NameDuplicationException If the name coincides with
+     *  @exception NameDuplicationException If the name coincides with
      *   an attribute already in the container.
      */
     public PtidesToMultiFrame(NamedObj container, String name)
@@ -132,10 +132,10 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
      *  container Ptides system.
      *  @param directorClass The class of the director that will control the execution of the multiframe task system.
      *  @return A multiframe task system that has the same execution profile as the container Ptides system.
-     *  @throws IllegalActionException If preinitializing the Ptides platform, if adding task frames,
+     *  @exception IllegalActionException If preinitializing the Ptides platform, if adding task frames,
      *    or if accessing the minimum interarrival time of a Ptides input port throws it, or
      *    if the minimum interarrival time is not sufficiently large.
-     * @throws NameDuplicationException If creating a multiframe task throws it.
+     * @exception NameDuplicationException If creating a multiframe task throws it.
      */
     public TypedCompositeActor generateMultiFrameSystem(
             Class<? extends Director> directorClass)
@@ -235,9 +235,9 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
      *  the transformation algorithm.
      *  @param inputChannel The input channel of the Ptides platform that the multiframe
      *    task will model.
-     *  @throws IllegalActionException If the constructor of the MultiFrameTask throws it
+     *  @exception IllegalActionException If the constructor of the MultiFrameTask throws it
      *    or if _getInputPortFromInputChannel throws it.
-     *  @throws NameDuplicationException If the constructor of the MultiFrameTask throws it.
+     *  @exception NameDuplicationException If the constructor of the MultiFrameTask throws it.
      */
     private void _addMultiFrameTask(Channel inputChannel)
             throws IllegalActionException, NameDuplicationException {
@@ -253,7 +253,7 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
      * @param separation
      * @param executionTime
      * @param relativeDeadline
-     * @throws IllegalActionException If attributedChanged throws it.
+     * @exception IllegalActionException If attributedChanged throws it.
      */
     private void _addTaskFrame(Actor actor, double separation,
             double executionTime, double relativeDeadline)
@@ -373,7 +373,7 @@ public class PtidesToMultiFrame extends Attribute implements Decorator {
      *  @param channel The input channel of the actor.
      *  @param pathDelay The delay of the path that the input event follows to reach the actor.
      *  @return The relative release time of the actor.s
-     *  @throws IllegalActionException If getting the delay offset of the port of the channel throws it.
+     *  @exception IllegalActionException If getting the delay offset of the port of the channel throws it.
      */
     private double _getChannelPathReleaseTime(Channel channel, double pathDelay) {
         try {

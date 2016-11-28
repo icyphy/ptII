@@ -381,7 +381,7 @@ public class WebSocketHelper extends VertxHelperBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Send the specified message over the websocket.
      *  @param message The message.

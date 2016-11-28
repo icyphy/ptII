@@ -24,7 +24,7 @@
 */
 package ptolemy.actor.lib.jjs.modules.IMUSensor;
 
-/////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ///// SerialPortController
 
 /**
@@ -47,7 +47,7 @@ public class SerialPortController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Starts a serial port connection with comm port with number x
      *  (ex: COM8).
@@ -89,7 +89,7 @@ public class SerialPortController {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     // Parameters for the program.
     private static int baudrate = 115200;

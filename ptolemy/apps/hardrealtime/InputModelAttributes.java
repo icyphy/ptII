@@ -62,8 +62,8 @@ public class InputModelAttributes extends DecoratorAttributes {
     /** Constructor to use when editing a model.
      *  @param target The object being decorated.
      *  @param decorator The decorator.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public InputModelAttributes(NamedObj target, Decorator decorator)
             throws IllegalActionException, NameDuplicationException {
@@ -74,8 +74,8 @@ public class InputModelAttributes extends DecoratorAttributes {
     /** Constructor to use when parsing a MoML file.
      *  @param target The object being decorated.
      *  @param name The name of this attribute.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public InputModelAttributes(NamedObj target, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -95,7 +95,7 @@ public class InputModelAttributes extends DecoratorAttributes {
     /** React to a change in an attribute. If the attribute is
      *  <i>minimumInterarrivalTime</i>, check that it is non-negative.
      * @param attribute The attribute that changed.
-     * @throws IllegalActionException If thrown by the superclass
+     * @exception IllegalActionException If thrown by the superclass
      *   attributeChanged() method, if the value of the minimum inter-arrival
      *   parameter cannot be read, or if that value is negative.
      */
@@ -137,8 +137,8 @@ public class InputModelAttributes extends DecoratorAttributes {
         }
     }
 
-    /////////////////////////////////////////////////////////////////////
-    ////                         private variables                   ////
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private double _minimumInterarrivalTime = -1;
 }

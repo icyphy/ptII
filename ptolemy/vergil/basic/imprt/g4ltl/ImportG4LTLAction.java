@@ -167,7 +167,7 @@ public class ImportG4LTLAction extends AbstractAction {
 
 
                     String controller = "";
-                    try{
+                    try {
                         PtolemyFrontEnd pm = new PtolemyFrontEnd();
                         controller = pm.synthesize(file);
 
@@ -180,7 +180,7 @@ public class ImportG4LTLAction extends AbstractAction {
                         }
 
 
-                    } catch (UnsupportedSpecException ex){
+                    } catch (UnsupportedSpecException ex) {
                         // StructuralCoder use UnsupportedSpecException as an indicator over improper specification shape
                     }
 

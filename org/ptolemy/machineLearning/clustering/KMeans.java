@@ -214,7 +214,7 @@ public class KMeans extends TypedAtomicActor {
 
 
         for ( int k = 0; k < _numClusters; k++) {
-            for (int j = 0; j < _trainingData.length; j++){
+            for (int j = 0; j < _trainingData.length; j++) {
                 double [] sample = _trainingData[j];
                 double distanceToCluster = distance(sample, (double[])_clusterCenters.get(k));
                 if (distanceToCluster < minDistance[j]) {
@@ -261,7 +261,7 @@ public class KMeans extends TypedAtomicActor {
      * This implementation uses the Random Partition method for initialization,
      * that is, it assigns a cluster at random to each data point, and computes
      * initial cluster centers.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      *
      */
     private void _initializeClusterCenters()
@@ -279,7 +279,7 @@ public class KMeans extends TypedAtomicActor {
      * Compute the new cluster centers, that is, the centroid of the data points
      * that belong to this cluster. For the Euclidean distance measure, this is
      * simply the average of the points in the cluster.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _updateClusterCenters()
             throws IllegalActionException {

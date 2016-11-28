@@ -58,7 +58,7 @@ import ptolemy.kernel.util.IllegalActionException;
 public interface Task extends Actor {
     /** Return the next time that the task will fire, or release a new job.
      *  @return The next time that the task releases a job.
-     *  @throws IllegalActionException If the next time cannot be computed.
+     *  @exception IllegalActionException If the next time cannot be computed.
      */
     public Time nextFireTime() throws IllegalActionException;
 

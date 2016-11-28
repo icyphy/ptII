@@ -34,7 +34,7 @@ import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
 
-/////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ///// SerialPortReader
 
 /**
@@ -70,7 +70,7 @@ public class SerialPortReader extends Thread {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
 
     /**        Initialize the serial port and connect a BufferedInputStream to the serialPort.
@@ -179,7 +179,7 @@ public class SerialPortReader extends Thread {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Sets the boolean controlling the main reader thread's while
      *        loop to false Called when we wish to close the program's
@@ -190,7 +190,7 @@ public class SerialPortReader extends Thread {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     /** A boolean stating whether the read thread is active. */
     private boolean _threadIsActive;

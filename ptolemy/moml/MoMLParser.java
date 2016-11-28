@@ -4175,7 +4175,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
      *
      * @param version in some text format, e.g. 11.0.1
      * @return the parsed version specification
-     * @throws XmlException if the version string is not in a supported format
+     * @exception XmlException if the version string is not in a supported format
      */
     private VersionSpecification _buildVersionSpecification(String version) throws XmlException {
       VersionSpecification versionSpec = null;
@@ -6359,7 +6359,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
         return _defaultClassLoadingStrategy.loadJavaClass(className, _vSpec);
       } catch (ClassNotFoundException e) {
   //      System.out.println("Did not find "+className+" "+_vSpec + " via " + _defaultClassLoadingStrategy);
-        if(_classLoader!=null) {
+        if (_classLoader!=null) {
           return _classLoader.loadClass(className);
         } else {
           throw e;

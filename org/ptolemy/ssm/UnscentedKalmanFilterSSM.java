@@ -118,7 +118,7 @@ implements InferenceActor {
      * Check if the Actor is associated with a unique enabled StateSpaceModel. Ideally,
      * here, we would also be checking whether the enabled decorator provides the parameters
      * expected by the actor.
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     @Override
     public boolean validDecoratorAssociationExists() throws IllegalActionException {
@@ -162,7 +162,7 @@ implements InferenceActor {
      * Return the first encountered value for now.
      * @param fullName The name of the measurement parameter.
      * @return The parameter
-     * @throws IllegalActionException If the attribute cannot be
+     * @exception IllegalActionException If the attribute cannot be
      * found.
      */
     @Override

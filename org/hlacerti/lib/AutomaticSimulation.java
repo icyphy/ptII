@@ -82,28 +82,28 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * @param file The file whose content is going to be turned into String.
      * @return ArrayList
      */
-    public static ArrayList<String> convertFileToString(File file){
+    public static ArrayList<String> convertFileToString(File file) {
         String content ="";
         ArrayList<String> lines = new ArrayList<String>();
-        try{
+        try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             content=br.readLine();
-            while(content != null) {
+            while (content != null) {
                 lines.add(content);
                 content=br.readLine();
             }
             br.close();
             return lines;
-        }catch(IOException e){
+        } catch (IOException e) {
             e.printStackTrace();
             return null;
         }
 
     }
 
-    private static ArrayList<String> _readFile(File file){
+    private static ArrayList<String> _readFile(File file) {
         ArrayList<String> lines= new ArrayList<String>();
-        try{
+        try {
             BufferedReader br = new BufferedReader(new FileReader(file));
             String content=br.readLine();
             while (content != null) {
@@ -112,22 +112,22 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             }
             br.close();
             return lines;
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Couldn't read the file.");
             System.exit(0);
             return null;
         }
     }
 
-    private static ArrayList<String> _changeRKSolver(ArrayList<String> file, int newSolver){
-        if(newSolver >0 ){
+    private static ArrayList<String> _changeRKSolver(ArrayList<String> file, int newSolver) {
+        if (newSolver >0 ) {
             String oldParameter="<property name=\"solver\" class=\"ptolemy.data.expr.StringParameter\" value=\"RK";
             String newParameter="<property name=\"solver\" class=\"ptolemy.data.expr.StringParameter\" value=\"RK"+newSolver+"\">";
             String oldPropertyLine ="<property name=\"ODESolver\" class=\"ptolemy.data.expr.StringParameter\" value=\"ExplicitRK";
             String newPropertyLine ="<property name=\"ODESolver\" class=\"ptolemy.data.expr.StringParameter\" value=\"ExplicitRK"+newSolver+"Solver\">";
 
             return _findAndChangePropertyLines(file, new String[]{oldPropertyLine, oldParameter}, new String[]{newPropertyLine, newParameter});
-        }else{
+        }else {
             return file;
         }
     }
@@ -138,21 +138,21 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * @param type The type of the data. 0 for String, 1 for int, 2 for float.
      * @return The parameter value.
      */
-    public static String findParameterValue(File file, String propertyLine, int type){
+    public static String findParameterValue(File file, String propertyLine, int type) {
         ArrayList<String> fileContent = _readFile(file);
         String value="UNDEFINED";
-        for(String s: fileContent){
-            if(s.contains(propertyLine)){
-                try{
+        for (String s: fileContent) {
+            if (s.contains(propertyLine)) {
+                try {
                     value=s.substring(s.lastIndexOf("value=\"")+7, s.lastIndexOf("\""));
-                    if(type == 1){
+                    if (type == 1) {
                         Integer.parseInt(value);
-                    }else if(type==2){
+                    }else if (type==2) {
                         Float.parseFloat(value);
                     }
                     break;
                 }
-                catch(Exception e){
+                catch (Exception e) {
                     value ="UNDEFINED";
                 }
             }
@@ -173,12 +173,12 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * @param propertyLine The xml line of the parameter that we want to change.
      * @param values The values the new property will assume.
      **/
-    public static void changeParameter(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String propertyLine, double[] values , int solver){
+    public static void changeParameter(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String propertyLine, double[] values , int solver) {
         int numberOfFederates = modelPath.length;
         File[] file = new File[numberOfFederates];
         String[][] data = new String[numberOfFederates][3];
 
-        for(int i=0;i<numberOfFederates;i++){
+        for (int i=0;i<numberOfFederates;i++) {
             file[i] = new File(modelPath[i]);
             ArrayList<String> content= _readFile(file[i]);
             content=_changeRKSolver(content, solver);
@@ -188,10 +188,10 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             data[i][2]=info[2];
         }
         int numberOfInteractions = values.length;
-        for(int i=0;i<numberOfInteractions;i++){
+        for (int i=0;i<numberOfInteractions;i++) {
             double x = values[i];
             final CompositeEntity[] model= new CompositeEntity[numberOfFederates];
-            for(int j=0;j<numberOfFederates;j++){
+            for (int j=0;j<numberOfFederates;j++) {
                 System.out.println("Reading file "+j +".");
                 String line = data[j][1] + x + "\">";
                 _writeInFile(file[j], data[j][0] +"\n" + line +"\n" + data[j][2]);
@@ -200,16 +200,16 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             }
             //Executing the file
             runAllModels(vergil);
-            if(waitingTime<0){
-                while(true){
+            if (waitingTime<0) {
+                while (true) {
                     Scanner input = new Scanner(System.in);
                     System.out.println("Have you had enough time to see the graphics?");
                     String answer = input.next();
-                    if(answer.equalsIgnoreCase("yes"))
+                    if (answer.equalsIgnoreCase("yes"))
                         break;
                 }
                 _sleep(2000);
-            }else if(waitingTime>0){
+            }else if (waitingTime>0) {
                 _sleep(waitingTime);
             }
             for (int j = 0; j < numberOfFederates; j++) {
@@ -239,7 +239,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * @param end The end value of the parameter.
      * @param step The increment of the parameter value.
      */
-    public static void changeParameter(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String propertyLine, float start, float end, float step, int solver){
+    public static void changeParameter(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String propertyLine, float start, float end, float step, int solver) {
         int numberOfFederates = modelPath.length;
         File[] file = new File[numberOfFederates];
         String[][] data = new String[numberOfFederates][3];
@@ -251,7 +251,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         s= s.substring(s.indexOf("."));
         int numberOfDecimalDigits = s.length();
 
-        for(int i=0;i<numberOfFederates;i++){
+        for (int i=0;i<numberOfFederates;i++) {
             file[i] = new File(modelPath[i]);
             ArrayList<String> content= _readFile(file[i]);
             content=_changeRKSolver(content, solver);
@@ -261,13 +261,13 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             data[i][2]=info[2];
         }
         int numberOfInteractions = Math.round(((end -start)/step) +1);
-        for(int i=0;i<numberOfInteractions;i++){
+        for (int i=0;i<numberOfInteractions;i++) {
             //Changing the file
             //To avoid precision errors
             float x = start + i*step;
             x = (float) (Math.round(x*Math.pow(10,numberOfDecimalDigits ))/Math.pow(10,numberOfDecimalDigits));
             final CompositeEntity[] model= new CompositeEntity[numberOfFederates];
-            for(int j=0;j<numberOfFederates;j++){
+            for (int j=0;j<numberOfFederates;j++) {
                 System.out.println("Reading file "+j +".");
                 String line = data[j][1] + x + "\">";
                 _writeInFile(file[j], data[j][0] +"\n" + line +"\n" + data[j][2]);
@@ -276,16 +276,16 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             }
             //Executing the file
             runAllModels(vergil);
-            if(waitingTime<0){
-                while(true){
+            if (waitingTime<0) {
+                while (true) {
                     Scanner input = new Scanner(System.in);
                     System.out.println("Have you had enough time to see the graphics?");
                     String answer = input.next();
-                    if(answer.equalsIgnoreCase("yes"))
+                    if (answer.equalsIgnoreCase("yes"))
                         break;
                 }
                 _sleep(2000);
-            }else if(waitingTime>0){
+            }else if (waitingTime>0) {
                 _sleep(waitingTime);
             }
             for (int j = 0; j < numberOfFederates; j++) {
@@ -314,8 +314,8 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * @param values The values the new property will assume.
      * @param solver The Runge-Kutta solver order number.
      **/
-    public static void changeParameters(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String[] propertyLines, double[][] values, int solver){
-        if(propertyLines.length!= values.length){
+    public static void changeParameters(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String[] propertyLines, double[][] values, int solver) {
+        if (propertyLines.length!= values.length) {
             System.out.println("The variable #propertyLines must have the number of elements equal to the number of lines of the variable #values.");
             return;
         }
@@ -325,16 +325,16 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         File[] file = new File[numberOfFederates];
         String[][][] data = new String[numberOfFederates][numberOfParameters+1][2];
 
-        for(int i=0;i<numberOfFederates;i++){
+        for (int i=0;i<numberOfFederates;i++) {
             file[i] = new File(modelPath[i]);
             ArrayList<String> content= _readFile(file[i]);
             content=_changeRKSolver(content, solver);
             data[i]=_findPropertyLines(content, propertyLines);
         }
         int numberOfInteractions = values[0].length;
-        for(int i=0;i<numberOfInteractions;i++){
+        for (int i=0;i<numberOfInteractions;i++) {
             final CompositeEntity[] model= new CompositeEntity[numberOfFederates];
-            for(int j=0;j<numberOfFederates;j++){
+            for (int j=0;j<numberOfFederates;j++) {
                 StringBuffer info = new StringBuffer();
                 for (int y = 0; y < numberOfParameters; y++) {
                     info.append("\n" + data[j][y][0] +"\n"+ data[j][y][1]+values[y][i]+ "\">");
@@ -347,16 +347,16 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             }
             //Executing the file
             runAllModels(vergil);
-            if(waitingTime<0){
-                while(true){
+            if (waitingTime<0) {
+                while (true) {
                     Scanner input = new Scanner(System.in);
                     System.out.println("Have you had enough time to see the graphics?");
                     String answer = input.next();
-                    if(answer.equalsIgnoreCase("yes"))
+                    if (answer.equalsIgnoreCase("yes"))
                         break;
                 }
                 _sleep(2000);
-            }else if(waitingTime>0){
+            }else if (waitingTime>0) {
                 _sleep(waitingTime);
             }
             for (int j = 0; j < numberOfFederates; j++) {
@@ -387,7 +387,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 //            File file2 = new File("toto2.xml");
 //            file2.createNewFile();
 //            StringBuffer content= new StringBuffer("");
-//            for(String s:toPrint){
+//            for (String s:toPrint) {
 //                System.out.println(s);
 //                content.append(s + "\n");
 //            }
@@ -413,7 +413,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             int solver=input.nextInt();
             System.out.println("How many parameterers would you like to change in the models?");
             int numberOfParameters = input.nextInt();
-            if(numberOfParameters==1){
+            if (numberOfParameters==1) {
                 System.out.println("What is the name of this parameter(remember that the ptolemy model must have a variable 'parameter'(that can be found on "
                         + "the library utilities/Parameters) with exacly the same name for this simulation to work.)?");
                 String parameter= input.next();
@@ -421,7 +421,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                 System.out.println("Would you like to:\n1 - Type all the values your parameter will assume, or\n"
                         + "2 - Make it vary within a range that you are going to be requested to choose?");
                 int answer = input.nextInt();
-                if(answer == 2){
+                if (answer == 2) {
                     System.out.println("What is the start value of the parameter?");
                     float startValue = input.nextFloat();
                     System.out.println("What is the final value of the parameter?");
@@ -430,7 +430,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     float stepValue = input.nextFloat();
                     System.out.println("The simulation is about to start...");
                     changeParameter(waitingTime, vergil, modelPath, parameter, startValue, endValue, stepValue, solver);
-                }else{
+                }else {
                     System.out.println("How many values would you like the parameter to assume ?");
                     int numberOfValues = input.nextInt();
                     double[] values = new double[numberOfValues];
@@ -442,7 +442,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     changeParameter(waitingTime, vergil, modelPath, parameter, values, solver);
                 }
 
-            }else{
+            }else {
                 String[] parameters = new String[numberOfParameters];
                 System.out.println("You will now e requested to type the name of the parameters. "
                         + "Remember that the ptolemy model must have a variable 'parameter'(that can be found on "
@@ -487,13 +487,13 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
     @Override
     public void managerStateChanged(Manager manager) {
         String state = manager.getState().toString();
-        if(state.contains("The model is initializing")){
+        if (state.contains("The model is initializing")) {
             _wait = false;
         }
         System.out.println(manager.getFullName() +" "+ manager.getState());
     }
 
-    public static boolean runAllModels(AutomaticSimulation vergil){
+    public static boolean runAllModels(AutomaticSimulation vergil) {
         Runnable runModels = new Runnable() {
             @Override
             public void run() {
@@ -506,16 +506,16 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             }
         };
 
-        try{
+        try {
             SwingUtilities.invokeAndWait(runModels);
             return true;
-        }catch(Throwable e){
+        } catch (Throwable e) {
             _killRTIG();
             return false;
         }
     }
 
-    private static boolean _closeModel(CompositeEntity model){
+    private static boolean _closeModel(CompositeEntity model) {
         final Effigy eff = Configuration.findEffigy(model.toplevel());
         System.out.println("Closing the model " + model.getDisplayName() + ".");
         Runnable run = new Runnable() {
@@ -548,18 +548,18 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         }
     }
 
-    private static ArrayList<String> _findAndChangePropertyLines(ArrayList<String> file, String[] oldPropertyLines, String[] newPropertyLines){
+    private static ArrayList<String> _findAndChangePropertyLines(ArrayList<String> file, String[] oldPropertyLines, String[] newPropertyLines) {
         ArrayList<String> newContent = new ArrayList<String>();
-        for(String s: file){
+        for (String s: file) {
             boolean lineFound=false;
-            for(int i=0;i<oldPropertyLines.length;i++){
-                if(s.contains(oldPropertyLines[i])){
+            for (int i=0;i<oldPropertyLines.length;i++) {
+                if (s.contains(oldPropertyLines[i])) {
                     String identation = s.substring(0, s.lastIndexOf(oldPropertyLines[i]));
                     newContent.add(identation+newPropertyLines[i]);
                     lineFound=true;
                     break;
                 }
-            }if(!lineFound){
+            }if (!lineFound) {
                 newContent.add(s);
             }
         }return newContent;
@@ -573,46 +573,46 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * the propertyLine with the indentation it possesses in the file, and the data after it.
      * it
      */
-    private static String[] _findPropertyLine(ArrayList<String> file, String propertyLine){
+    private static String[] _findPropertyLine(ArrayList<String> file, String propertyLine) {
         //number of the line
         boolean lineFound = false;
         String dataBefore="";
         String dataAfter="";
         String line="";
-        for(String content: file){
-            if(!content.isEmpty()||!(content.equals("\n"))||!(content.equals(" "))){
-                if(content.contains(propertyLine) && !lineFound){
+        for (String content: file) {
+            if (!content.isEmpty()||!(content.equals("\n"))||!(content.equals(" "))) {
+                if (content.contains(propertyLine) && !lineFound) {
                     line = content.substring(0,content.length()-2);
                     line = line.substring(line.lastIndexOf("\"")+1);
-                    try{
+                    try {
                         Double.valueOf(line);
                         line=content.substring(0,content.indexOf(line));
                         lineFound=true;
                         System.out.println(true);
-                    }catch(Exception e){
-                        if(dataBefore.isEmpty()){
+                    } catch (Exception e) {
+                        if (dataBefore.isEmpty()) {
                             dataBefore=content;
-                        }else{
+                        }else {
                             dataBefore = dataBefore+ "\n"+ content;
                         }
                     }
-                }else if(!lineFound){
-                    if(dataBefore.isEmpty()){
+                }else if (!lineFound) {
+                    if (dataBefore.isEmpty()) {
                         dataBefore=content;
-                    }else{
+                    }else {
                         dataBefore = dataBefore+ "\n"+ content;
                     }
-                }else{
-                    if(dataAfter.isEmpty()){
+                }else {
+                    if (dataAfter.isEmpty()) {
                         dataAfter=content;
-                    }else{
+                    }else {
                         dataAfter = dataAfter+ "\n"+ content;
                     }
                 }
             }
         }
         String[] data={dataBefore,line,dataAfter};
-        if(line.equals("")){
+        if (line.equals("")) {
             System.out.println("Could not find the parameter.");
             System.exit(0);
             return null;
@@ -628,7 +628,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * represents the property lines with the same indentation as they were found on the file. The second column of the last
      * line contains nothing but "", as there's no property left to be written.
      */
-    private static String[][] _findPropertyLines(ArrayList<String> file, String[] propertyLines){
+    private static String[][] _findPropertyLines(ArrayList<String> file, String[] propertyLines) {
         //number of the line
 
 
@@ -640,35 +640,35 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         result[0][0]="";
         for (int i = 0; i < numberOfLines; i++) {
             content=file.get(i);
-            if(linesFound<numberOfProperties){
-                if(content.contains(propertyLines[linesFound])){
+            if (linesFound<numberOfProperties) {
+                if (content.contains(propertyLines[linesFound])) {
                     String line = content.substring(0,content.length()-2);
                     line = line.substring(line.lastIndexOf("\"")+1);
-                    try{
+                    try {
                         Double.valueOf(line);
                         result[linesFound][1]=content.substring(0,content.indexOf(line));
                         linesFound++;
                         result[linesFound][0]="";
-                    }catch(Exception e){
-                        if(!result[linesFound][0].equals("")){
+                    } catch (Exception e) {
+                        if (!result[linesFound][0].equals("")) {
                             content = "\n" + content;
                         }
                         result[linesFound][0] = result[linesFound][0] + content;
                     }
-                }else{
-                    if(!result[linesFound][0].equals("")){
+                }else {
+                    if (!result[linesFound][0].equals("")) {
                         content = "\n" + content;
                     }
                     result[linesFound][0] = result[linesFound][0] + content;
                 }
-            }else{
-                if(!result[linesFound][0].equals("")){
+            }else {
+                if (!result[linesFound][0].equals("")) {
                     content = "\n" + content;
                 }
                 result[linesFound][0]=result[linesFound][0] + content;
             }
         }result[linesFound][1]="";
-        if(result[numberOfProperties][0]==null ||result[numberOfProperties][0].equals("")){
+        if (result[numberOfProperties][0]==null ||result[numberOfProperties][0].equals("")) {
             System.out.println("Could not find all the parameters.");
             System.exit(0);
         }
@@ -677,7 +677,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 
 
 
-    private static void _killRTIG(){
+    private static void _killRTIG() {
         try {
             Process p = Runtime.getRuntime().exec("pkill rtig");
             p.waitFor();
@@ -688,7 +688,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         }
     }
 
-    private static CompositeEntity _openModel(String  modelPath){
+    private static CompositeEntity _openModel(String  modelPath) {
         CompositeEntity[] model=new CompositeEntity[1];
         Runnable openModel = new Runnable() {
             @Override
@@ -717,7 +717,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 
     /**Run all the models opened in different threads, waiting for the initialization
      * of the current one to start executing a following one.
-     * @throws KernelException
+     * @exception KernelException
      */
     private void _runModels() throws KernelException{
         Iterator<NamedObj> models = super.models().iterator();
@@ -726,7 +726,7 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
         _wait = false;
 
         while (models.hasNext()) {
-            if(!_wait){
+            if (!_wait) {
                 model = (NamedObj) models.next();
                 if (model instanceof CompositeActor) {
                     CompositeActor actor = (CompositeActor) model;
@@ -754,14 +754,14 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     System.out.println("Executing the model " + model.getDisplayName() + ".");
 
                 }
-            }else{
+            }else {
                 System.out.println("Waiting for initialization of the model " + model.getDisplayName()+".");
                 _sleep(50);
             }
         }
     }
 
-    private static void _sleep(int miliSeconds){
+    private static void _sleep(int miliSeconds) {
         try {
             Thread.sleep(miliSeconds);
         } catch (InterruptedException e) {
@@ -776,13 +776,13 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * @param file The file were the information is going to be written.
      * @param data The information that is going to be written.
      */
-    private static void _writeInFile(File file,String data){
-        try{
+    private static void _writeInFile(File file,String data) {
+        try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(data);
             writer.flush();
             writer.close();
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Couldn't write in the file.");
         }
     }

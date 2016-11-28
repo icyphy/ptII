@@ -56,7 +56,7 @@ public class ContextAwareGUI  {
         JPanel panel = new JPanel();
         textFields = new ArrayList<JTextField>();
         labels = new ArrayList<JLabel>();
-        for(int i=0; i<= list.length; i++ ) {
+        for (int i=0; i<= list.length; i++ ) {
             labels.add(new JLabel());
             textFields.add(new JTextField(10));
             labels.get(i).setVisible(false);
@@ -147,7 +147,7 @@ public class ContextAwareGUI  {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public variables                      ////
+    ////                         public variables                  ////
 
     /** The search button. */
     public JButton searchButton;
@@ -165,7 +165,7 @@ public class ContextAwareGUI  {
     public JList<String> servicesList;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private variables                     ////
+    ////                         private variables                 ////
 
     private GroupLayout _groupLayout;
 }

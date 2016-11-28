@@ -72,7 +72,7 @@ public class DragInteractor extends AbstractInteractor {
     private boolean _selectiveEnabled;
 
     ///////////////////////////////////////////////////////////////////
-    ////              public methods                              ////
+    ////                         public methods                    ////
 
     /** Add the given layer listener to this interactor.  Any event that is
      * received by this interactor will be passed on to the listener after

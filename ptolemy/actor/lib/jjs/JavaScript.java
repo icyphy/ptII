@@ -984,7 +984,7 @@ public class JavaScript extends TypedAtomicActor {
             // and then lost.
             Runnable callback = _pendingCallbacks.poll();
             List<Runnable> callbacks = new LinkedList<Runnable>();
-            while(callback != null) {
+            while (callback != null) {
                 callbacks.add(callback);
                 callback = _pendingCallbacks.poll();
             }
@@ -1056,7 +1056,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @param path The location.  This is used in localFunctions.js.
      *  @return The contents as a string, assuming the default encoding of
      *   this JVM (probably utf-8).
-     *  @throws IOException If the file cannot be read.
+     *  @exception IOException If the file cannot be read.
      */
     public static String getFileAsString(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
@@ -1068,7 +1068,7 @@ public class JavaScript extends TypedAtomicActor {
      *  The path should be a relative path.
      *  @return The contents as a string, assuming the default encoding of
      *   this JVM (probably utf-8).
-     *  @throws IOException If the file cannot be read.
+     *  @exception IOException If the file cannot be read.
      */
     public static String getFileFromClasspathAsString(String path) throws IOException {
         URL url = FileUtilities.nameToURL(path, null, null);
@@ -1104,7 +1104,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @param uri A specification for the resource.
      *  @param timeout The timeout in milliseconds.
      *  @return The resource
-     *  @throws IllegalActionException If the uri specifies any protocol other
+     *  @exception IllegalActionException If the uri specifies any protocol other
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".
      */
@@ -1436,7 +1436,7 @@ public class JavaScript extends TypedAtomicActor {
      *  fire() function, then invoke the function immediately. Otherwise, defer it using
      *  the director's fireAtCurrentTime() function.
      *  @param function The function to invoke.
-     *  @throws IllegalActionException If the director cannot respect the request.
+     *  @exception IllegalActionException If the director cannot respect the request.
      */
     public void invokeCallback(final Runnable function) throws IllegalActionException {
         if (Thread.currentThread().equals(_directorThread)) {
@@ -1860,7 +1860,7 @@ public class JavaScript extends TypedAtomicActor {
     /** Convert the specified array into a native JavaScript array.
      *  @param array The array to convert.
      *  @return The native JavaScript array.
-     *  @throws IllegalActionException If the conversion fails.
+     *  @exception IllegalActionException If the conversion fails.
      */
     public Object toJSArray(Object[] array) throws IllegalActionException {
         try {
@@ -2105,7 +2105,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @param portOrParameter A port or parameter.
      *  @param valueToken The value as a Ptolemy II token.
      *  @return A JavaScript object of the form {'value': value}.
-     *  @throws IllegalActionException If conversion fails and the user
+     *  @exception IllegalActionException If conversion fails and the user
      *   responds "Cancel" to the warning.
      */
     private Object _constructOptionsObject(NamedObj portOrParameter, Token valueToken)
@@ -2274,8 +2274,8 @@ public class JavaScript extends TypedAtomicActor {
      *
      *  @param typeable The object to mark.
      *  @param JSONmode Whether to mark it.
-     *  @throws NameDuplicationException Not thrown.
-     *  @throws IllegalActionException If adding the mark fails.
+     *  @exception NameDuplicationException Not thrown.
+     *  @exception IllegalActionException If adding the mark fails.
      */
     private void _markJSONmode(NamedObj typeable, boolean JSONmode)
             throws NameDuplicationException, IllegalActionException {
@@ -2411,9 +2411,9 @@ public class JavaScript extends TypedAtomicActor {
      *  "spontaneous" field with one of the values "true" or "false".
      *  @param options The options map.
      *  @param port The port of which to set the spontaneity.
-     *  @throws IllegalActionException If there is a problem accessing
+     *  @exception IllegalActionException If there is a problem accessing
      *  the spontaneous argument or setting the SingletonParameter.
-     *  @throws NameDuplicationException Should not be thrown.
+     *  @exception NameDuplicationException Should not be thrown.
      */
     private void _setPortSpontaneity(Map<String,Object> options, TypedIOPort port)
             throws IllegalActionException, NameDuplicationException {
@@ -2435,8 +2435,8 @@ public class JavaScript extends TypedAtomicActor {
      *  @param options The options map.
      *  @param port The port set restrict visibility of.
      *  @param parameter The parameter, if this is a port-parameter.
-     *  @throws IllegalActionException If setting fails.
-     *  @throws NameDuplicationException Should not be thrown.
+     *  @exception IllegalActionException If setting fails.
+     *  @exception NameDuplicationException Should not be thrown.
      */
     private void _setPortVisibility(Map<String,Object> options, TypedIOPort port,
             PortParameter parameter) throws IllegalActionException,
@@ -2490,7 +2490,7 @@ public class JavaScript extends TypedAtomicActor {
      *  parameter in string mode. Otherwise, do nothing.
      *  @param typeable A Parameter or ParameterPort.
      *  @param JSONmode True to indicate that the string needs to be JSON.
-     *  @throws IllegalActionException If the marker attribute cannot be added.
+     *  @exception IllegalActionException If the marker attribute cannot be added.
      */
     private void _setStringMode(NamedObj typeable, boolean JSONmode)
             throws NameDuplicationException, IllegalActionException {

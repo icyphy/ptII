@@ -87,7 +87,7 @@ public class TaskPlot extends PlotBox {
      *  @param start The start time of the allocation interval.
      *  @param end The end time of the allocation interval.
      *  @param task The task that the processor is allocated to.
-     *  @throws IllegalArgumentException If the task whose execution is added
+     *  @exception IllegalArgumentException If the task whose execution is added
      *  has not released a job yet.
      */
     public void addExecution(double start, double end, Actor task)

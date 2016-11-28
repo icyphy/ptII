@@ -84,7 +84,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>implements Queue<
      * Constructor that creates a queue with the specified size.
      *
      * @param size  the size of the queue (cannot be changed)
-     * @throws IllegalArgumentException  if the size is &lt; 1
+     * @exception IllegalArgumentException  if the size is &lt; 1
      */
     @SuppressWarnings("unchecked")
     public CircularFifoQueue(final int size) {
@@ -100,7 +100,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>implements Queue<
      * The collection size also sets the queue size.
      *
      * @param coll  the collection to copy into the queue, may not be null
-     * @throws NullPointerException if the collection is null
+     * @exception NullPointerException if the collection is null
      */
     public CircularFifoQueue(final Collection<? extends E> coll) {
         this(coll.size());
@@ -112,7 +112,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>implements Queue<
      * Write the queue out using a custom routine.
      *
      * @param out  the output stream
-     * @throws IOException if an I/O error occurs while writing to the output stream
+     * @exception IOException if an I/O error occurs while writing to the output stream
      */
     private void writeObject(final ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
@@ -126,8 +126,8 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>implements Queue<
      * Read the queue in using a custom routine.
      *
      * @param in  the input stream
-     * @throws IOException if an I/O error occurs while writing to the output stream
-     * @throws ClassNotFoundException if the class of a serialized object can not be found
+     * @exception IOException if an I/O error occurs while writing to the output stream
+     * @exception ClassNotFoundException if the class of a serialized object can not be found
      */
     @SuppressWarnings("unchecked")
     private void readObject(final ObjectInputStream in) throws IOException, ClassNotFoundException {
@@ -219,7 +219,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>implements Queue<
      *
      * @param element  the element to add
      * @return true, always
-     * @throws NullPointerException  if the given element is null
+     * @exception NullPointerException  if the given element is null
      */
     @Override
     public boolean add(final E element) {
@@ -249,7 +249,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>implements Queue<
      *
      * @param index the position of the element in the queue
      * @return the element at position {@code index}
-     * @throws NoSuchElementException if the requested position is outside the range [0, size)
+     * @exception NoSuchElementException if the requested position is outside the range [0, size)
      */
     public E get(final int index) {
         final int sz = size();
@@ -271,7 +271,7 @@ public class CircularFifoQueue<E> extends AbstractCollection<E>implements Queue<
      *
      * @param element  the element to add
      * @return true, always
-     * @throws NullPointerException  if the given element is null
+     * @exception NullPointerException  if the given element is null
      */
     @Override
     public boolean offer(E element) {

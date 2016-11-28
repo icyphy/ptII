@@ -101,7 +101,7 @@ public class KielerJUnitTest {
     /** Save the previous value of the ptolemy.ptII.doNotExit property
      * and set it to true while running this test.
      *
-     * @throws Exception If there is a problem opening the model
+     * @exception Exception If there is a problem opening the model
      */
     @BeforeClass
     public static void openSentinelModel() throws Exception {

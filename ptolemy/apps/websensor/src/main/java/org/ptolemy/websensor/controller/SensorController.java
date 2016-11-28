@@ -98,7 +98,7 @@ public class SensorController
             Iterator sensorsIterator = sensors.iterator();
             String typeName = "";
             String unit = "";
-            while(sensorsIterator.hasNext()) {
+            while (sensorsIterator.hasNext()) {
                 Sensor sensor = (Sensor) sensorsIterator.next();
                 if (sensor.getType().equalsIgnoreCase(type)) {
                     // Set the displayed type name according to what is
@@ -220,7 +220,7 @@ public class SensorController
      *
      * @param sensors  The sensors associated with this sensor controller.
      */
-    public void setSensors(Sensor[] sensors){
+    public void setSensors(Sensor[] sensors) {
         this.sensors = new HashSet();
         for (int i = 0; i < sensors.length; i++) {
             this.sensors.add(sensors[i]);

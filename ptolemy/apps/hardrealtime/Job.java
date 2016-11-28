@@ -35,7 +35,7 @@ import ptolemy.actor.Director;
 import ptolemy.actor.util.Time;
 import ptolemy.kernel.util.IllegalActionException;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// Job
 
 /**
@@ -57,7 +57,7 @@ public class Job {
      *  @param relativeDeadline The relative deadline of the job.
      *  @param executionTime The execution time of the job.
      *  @param task The task that released the job.
-     *  @throws IllegalActionException If the Time constructor throws it.
+     *  @exception IllegalActionException If the Time constructor throws it.
      */
     public Job(Director director, double relativeDeadline,
             double executionTime, Actor task) throws IllegalActionException {
@@ -71,7 +71,7 @@ public class Job {
      *  @param executionTime The execution time of the job.
      *  @param task The task that released the job.
      *  @param parentTask The parent of the task that released the job.
-     *  @throws IllegalActionException If the Time constructor throws it.
+     *  @exception IllegalActionException If the Time constructor throws it.
      */
     public Job(Director director, double relativeDeadline,
             double executionTime, Actor task, Actor parentTask)
