@@ -109,7 +109,7 @@ import ptolemy.util.StringUtilities;
 public class VertxHelperBase extends HelperBase {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Stop the global (unclustered instance of Vert.x.
      *  This method is typically called before exiting the JVM.
@@ -355,7 +355,7 @@ public class VertxHelperBase extends HelperBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Append a numeric instance of the specified type to a buffer.
      *  @param buffer The buffer to which to append
@@ -731,7 +731,7 @@ public class VertxHelperBase extends HelperBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Indicate that the expected type cannot be extracted from the buffer.
      *  @param ex The exception that occurred.
@@ -774,7 +774,7 @@ public class VertxHelperBase extends HelperBase {
     private static WeakHashMap<JavaScript, WeakReference<VertxHelperBase>> _vertxHelpers = new WeakHashMap<JavaScript, WeakReference<VertxHelperBase>>();
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** Verticle to handle requests.
      */

@@ -192,7 +192,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////              protected methods                           ////
+    ////                         protected methods                 ////
     /**
      * Register an additional extension to accept.
      *
@@ -208,7 +208,7 @@ public class ExtensionFilenameFilter extends PtFilenameFilter {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                  private methods                          ////
+    ////                         private methods                   ////
     /**
      * Return the extension of the given file.
      * <p>

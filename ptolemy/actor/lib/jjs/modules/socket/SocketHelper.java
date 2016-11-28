@@ -828,7 +828,7 @@ public class SocketHelper extends VertxHelperBase {
             // producing multiple outputs, then all those outputs appear simultaneously
             // (with the same time stamp) on the accessor output.
             _issueResponse(() -> {
-                if(_receiveType == DATA_TYPE.STRING) {
+                if (_receiveType == DATA_TYPE.STRING) {
                     _eventEmitter.callMember("emit", "data", finalBuffer.getString(0, finalBuffer.length()));
                 } else if (_receiveType == DATA_TYPE.IMAGE) {
                     try {

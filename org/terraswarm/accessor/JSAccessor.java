@@ -695,9 +695,9 @@ public class JSAccessor extends JavaScript {
      *   find the local file.
      *  @return The local version of the URL, or the URL given by the specification
      *   if the local version cannot be found.
-     * @throws IllegalActionException If no urlSpec is given.
-     * @throws IOException If the URL cannot be found.
-     * @throws MalformedURLException If the URL specification is malformed.
+     * @exception IllegalActionException If no urlSpec is given.
+     * @exception IOException If the URL cannot be found.
+     * @exception MalformedURLException If the URL specification is malformed.
      */
     protected static URL _sourceToURL(
             final String urlSpec, final boolean updateRepository)

@@ -555,7 +555,7 @@ public class FMUImportHybrid extends FMUImport {
      * one of the inputs is unknown. If an FMU has no inputs it also
      * returns true.
      * @return true if all the inputs are known.
-     * @throws IllegalActionException If throw while getting the width
+     * @exception IllegalActionException If throw while getting the width
      * of an input port or checking if an input port is known.
      */
     protected boolean _allInputsAreKnown() throws IllegalActionException {
@@ -912,7 +912,7 @@ public class FMUImportHybrid extends FMUImport {
      * (all the dependent inputs are known) than we get this value, we
      * create a Token and we send the token on the correspondent output port.
      *
-     * @throws IllegalActionException If thrown while getting the inputs, determining
+     * @exception IllegalActionException If thrown while getting the inputs, determining
      * if the inputs are known or have a token
      */
     protected void _getFmuOutputs() throws IllegalActionException {
@@ -1056,7 +1056,7 @@ public class FMUImportHybrid extends FMUImport {
      * Iterate through the scalarVariables and set all the inputs
      * that are known.
      *
-     * @throws IllegalActionException If thrown while getting the inputs, determining
+     * @exception IllegalActionException If thrown while getting the inputs, determining
      * if the inputs are known or have a token
      */
     protected void _setFmuInputs() throws IllegalActionException {

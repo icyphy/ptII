@@ -189,7 +189,7 @@ public class MqttHelper extends HelperBase {
          *  @param retain Whether the sever should hold on the message after it has been delivered to
          *  current subscribers so that a newly incoming subscriber can receive the message later.
          *  @exception MqttException If the publish fails.
-         *  @throws IllegalActionException
+         *  @exception IllegalActionException
          */
         public void publish(String topic, Object message, Integer qos,
                 boolean retain) throws MqttException, IllegalActionException {

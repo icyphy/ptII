@@ -155,9 +155,9 @@ public class PGMReader extends Source {
                                 } else {
                                     continue;
                                 }
-                            } else if( intVal > _levels[i-1] && intVal <= _levels[i]) {
+                            } else if (intVal > _levels[i-1] && intVal <= _levels[i]) {
                                 index = i;
-                            } else if( intVal > _levels[i] && i >= _levels.length -1) {
+                            } else if (intVal > _levels[i] && i >= _levels.length -1) {
                                 index = i;
                             }
                         }

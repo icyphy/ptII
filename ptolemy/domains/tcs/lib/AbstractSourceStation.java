@@ -172,9 +172,9 @@ public class AbstractSourceStation extends TypedAtomicActor{
    @Override
    public void attributeChanged(Attribute attribute) throws IllegalActionException {
        Director director=getDirector();
-       if(attribute==lineSymbol && lineSymbol.getToken()!=null){
+       if (attribute==lineSymbol && lineSymbol.getToken()!=null) {
            _symbol=((StringToken)lineSymbol.getToken()).stringValue();
-           if(_symbol.length()>1)
+           if (_symbol.length()>1)
                throw new IllegalActionException("Inappropriate line symbol");
            ArrayToken color=((TCSDirector)director).getColor(_symbol);
            _sourceStationBorder.fillColor.setToken(color);
@@ -188,7 +188,7 @@ public class AbstractSourceStation extends TypedAtomicActor{
        super.fire();
        Time currentTime = _director.getModelTime();
        if (currentTime.equals(_transitExpires) && _inTransit!=null ) {
-                   try{
+                   try {
                      //When source station decides to send out a train, it should set it's departure time.
                      //For this purpose, we make a new recordtoken.
                       double departureTime=currentTime.getDoubleValue()-((DoubleToken)takeOff.getToken()).doubleValue();
@@ -205,7 +205,7 @@ public class AbstractSourceStation extends TypedAtomicActor{
                        output.send(0, _trains.get(0));
                        _trains.remove(0);
                        _inTransit=null;
-                   } catch(NoRoomException ex){
+                   } catch (NoRoomException ex) {
                        double additionalDelay = ((DoubleToken)delay.getToken()).doubleValue();
                        if (additionalDelay < 0.0) {
                            throw new IllegalActionException(this, "Unable to handle rejection.");
@@ -215,7 +215,7 @@ public class AbstractSourceStation extends TypedAtomicActor{
                        return;
                    }
 
-                   if(_inTransit==null &&  _trains.size()!=0){
+                   if (_inTransit==null &&  _trains.size()!=0) {
                        _inTransit=_trains.get(0);
                        double additionalDelay = ((DoubleToken)takeOff.getToken()).doubleValue();
                        if (additionalDelay < 0.0) {
@@ -226,10 +226,10 @@ public class AbstractSourceStation extends TypedAtomicActor{
                    }
                }
 
-       if(input.hasToken(0))
+       if (input.hasToken(0))
        {
           RecordToken train=(RecordToken) input.get(0);
-          if(train.get("trainSymbol").equals(lineSymbol.getToken())){
+          if (train.get("trainSymbol").equals(lineSymbol.getToken())) {
               Map<String, Token> tempTrain=new TreeMap<String, Token>();
               tempTrain.put("trainId", train.get("trainId"));
               tempTrain.put("trainSymbol",train.get("trainSymbol"));
@@ -241,7 +241,7 @@ public class AbstractSourceStation extends TypedAtomicActor{
               tempTrain.put("dipartureTimeFromStation", new DoubleToken(arrivalTime));
               _trains.add(new RecordToken(tempTrain));
 
-              if(_inTransit==null)
+              if (_inTransit==null)
               {
                   double additionalDelay = ((DoubleToken)takeOff.getToken()).doubleValue();
                   if (additionalDelay < 0.0) {

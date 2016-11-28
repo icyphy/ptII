@@ -60,9 +60,9 @@ public class TaskFrame extends Transformer {
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
-     *  @throws IllegalActionException If the actor cannot be contained
+     *  @exception IllegalActionException If the actor cannot be contained
      *   by the proposed container.
-     *  @throws NameDuplicationException If the container already has an
+     *  @exception NameDuplicationException If the container already has an
      *   actor with this name.
      */
     public TaskFrame(CompositeEntity container, String name)
@@ -98,12 +98,12 @@ public class TaskFrame extends Transformer {
     public Parameter initial;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Update the deadline, the execution time, or the initial predicate, if the
      *  corresponding attributes change and redraw the icon of the frame.
      *  @param attribute The attribute that changed.
-     *  @throws IllegalActionException If getting a token of a parameter throws it.
+     *  @exception IllegalActionException If getting a token of a parameter throws it.
      */
     @Override
     public void attributeChanged(Attribute attribute)
@@ -135,7 +135,7 @@ public class TaskFrame extends Transformer {
 
     /** Set the parent multiframe task that contains this frame,
      *  the next frame, and the separation time between this and the next frame,
-     *  @throws IllegalActionException If the container is not a multiframe task,
+     *  @exception IllegalActionException If the container is not a multiframe task,
      *   if the frame is not connected to exactly one upstream and one downstream frame,
      *   if the separation time is not set or is not an integer.
      */
@@ -208,7 +208,7 @@ public class TaskFrame extends Transformer {
     private int _separationUntilNextFrame;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     private void _drawIcon() {
         String textFormat = "<text x=\"%d\" y=\"%d\" style=\"font-size:16; font-family:SansSerif; fill:blue\">%s</text>";

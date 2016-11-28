@@ -726,11 +726,11 @@ TimeRegulator {
         //This variable is used to avoid rounding the Time more than once
         String proposedTimeInString=_printTimes(proposedTime);
         if (_debugging) {
-            if(_eventBased){
+            if (_eventBased) {
                 _debug("starting proposeTime(t(lastFoundEvent)="+proposedTimeInString+") - current status - " +
             "t_ptII = " + _printTimes(_director.getModelTime())+ "; t_hla = " + _federateAmbassador.logicalTimeHLA);
             }
-            else{
+            else {
                 _debug("starting proposeTime("+proposedTimeInString+")) - current status - " +
             "t_ptII = " +_printTimes(_director.getModelTime())+ "; t_hla = " + _federateAmbassador.logicalTimeHLA);
             }
@@ -738,7 +738,7 @@ TimeRegulator {
         Time currentTime = _getModelTime();
         proposedTime =new Time(_director, Double.parseDouble(proposedTimeInString));
 
-        if(proposedTime.compareTo(_stopTime) > 0){
+        if (proposedTime.compareTo(_stopTime) > 0) {
             if (_debugging) {
                 _debug("    proposeTime("+proposedTimeInString+") -"
                         + " called but the proposedTime is bigger than the stopTime -> SKIP RTI -> returning stopTime");
@@ -770,9 +770,9 @@ TimeRegulator {
             }
             try {
                 _rtia.tick();
-                if(_timeOfTheLastAdvanceRequest>0){
+                if (_timeOfTheLastAdvanceRequest>0) {
                     _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
-                }else{
+                }else {
                     _numberOfOtherTicks++;
                 }
             } catch (ConcurrentAccessAttempted e) {
@@ -792,12 +792,12 @@ TimeRegulator {
                 // Call the corresponding HLA Time Management service.
                 try {
                     if (_eventBased) {
-                        if(_debugging){
+                        if (_debugging) {
                             _debug("    proposeTime(t(lastFoudEvent)=("+proposedTimeInString+") - calling _eventsBasedTimeAdvance("+proposedTimeInString+")");
                         }
                         return _eventsBasedTimeAdvance(proposedTime);
                     } else {
-                        if(_debugging){
+                        if (_debugging) {
                             _debug("    proposeTime("+proposedTimeInString+") - calling _timeSteppedBasedTimeAdvance("+proposedTimeInString+")");
                         }
                         return _timeSteppedBasedTimeAdvance(proposedTime);
@@ -870,7 +870,7 @@ TimeRegulator {
 
         // Encode the value to be sent to the CERTI.
         byte[] valAttribute = MessageProcessing.encodeHlaValue(hp, in);
-        if(_debugging){
+        if (_debugging) {
             _debug("starting updateHlaAttribute() - current status t_ptII = " + _printTimes(currentTime) + "; t_hla = "
                                 + _federateAmbassador.logicalTimeHLA +" - A HLA value from ptolemy has been"
                                 + " encoded as CERTI MessageBuffer");
@@ -909,12 +909,12 @@ TimeRegulator {
             //         tau <- hlaCurrentTime + lookahead
             CertiLogicalTime certiCurrentTime = (CertiLogicalTime) _federateAmbassador.logicalTimeHLA;
             Time hlaCurrentTime = _convertToPtolemyTime(certiCurrentTime);
-/*            if(currentTime.compareTo(hlaCurrentTime.add(_hlaTimeStep))==0){
+/*            if (currentTime.compareTo(hlaCurrentTime.add(_hlaTimeStep))==0) {
                 hlaCurrentTime= hlaCurrentTime.add(_hlaTimeStep);
             }*/
-            if (hlaCurrentTime.add(_hlaLookAHead).compareTo(currentTime) > 0){
+            if (hlaCurrentTime.add(_hlaLookAHead).compareTo(currentTime) > 0) {
                 uavTimeStamp = hlaCurrentTime.add(_hlaLookAHead);
-            }else{
+            }else {
                 uavTimeStamp = currentTime;
             }
         }
@@ -929,8 +929,8 @@ TimeRegulator {
             int id = _registeredObject.get(_federateName + " " + senderName);
             int indexOfAttribute=0;
             String attributeName = _getPortFromTab(tObj).getContainer().getName();
-            for(int i = 0; i<_numberOfAttributesToPublish;i++){
-                if(attributeName.equals(_nameOfTheAttributesToPublish[i])){
+            for (int i = 0; i<_numberOfAttributesToPublish;i++) {
+                if (attributeName.equals(_nameOfTheAttributesToPublish[i])) {
                     indexOfAttribute=i;
                     break;
                 }
@@ -939,17 +939,17 @@ TimeRegulator {
             String preUAVTimeStamp="("+ _printTimes(currentTime)+","+microstep+");";
             _storeTimes("UAV "+ _getPortFromTab(tObj).getContainer().getName());
 
-            if(_numberOfUAVs>0 &&(_preUAVsTimes.length() - _preUAVsTimes.lastIndexOf(preUAVTimeStamp))==preUAVTimeStamp.length() &&
-                        (_pUAVsTimes.length() - _pUAVsTimes.lastIndexOf(pUAVTimeStamp))==pUAVTimeStamp.length()){
+            if (_numberOfUAVs>0 &&(_preUAVsTimes.length() - _preUAVsTimes.lastIndexOf(preUAVTimeStamp))==preUAVTimeStamp.length() &&
+                        (_pUAVsTimes.length() - _pUAVsTimes.lastIndexOf(pUAVTimeStamp))==pUAVTimeStamp.length()) {
                 //System.out.println(_UAVsValues[indexOfAttribute].toString().substring(_UAVsValues.length-2, _UAVsValues.length));
                 _UAVsValues[indexOfAttribute].replace(_UAVsValues[indexOfAttribute].length()-2,_UAVsValues[indexOfAttribute].length(),in.toString()+";");
-            }else{
+            }else {
                 _preUAVsTimes.append(preUAVTimeStamp);
                 _pUAVsTimes.append(pUAVTimeStamp);
-                for(int i = 0; i<_numberOfAttributesToPublish;i++){
-                    if(i==indexOfAttribute){
+                for (int i = 0; i<_numberOfAttributesToPublish;i++) {
+                    if (i==indexOfAttribute) {
                         _UAVsValues[i].append(in.toString()+";");
-                    }else{
+                    }else {
                         _UAVsValues[i].append("-;");
                     }
                 }
@@ -1166,14 +1166,14 @@ TimeRegulator {
     /** Calculate the duration of the execution of the federation.
      * Uses the static value of the startTime of the execution.
      */
-    public void calculateRuntime(){
+    public void calculateRuntime() {
         double duration  = System.nanoTime() - _startTime;
         duration = duration/(Math.pow(10, 9));
         _runtime =duration;
     }
 
-    public void writeUAVsInformations(){
-        if(_numberOfUAVs>0){
+    public void writeUAVsInformations() {
+        if (_numberOfUAVs>0) {
             StringBuffer header = new StringBuffer("LookAhead;TimeStep;StopTime;Information;");
             int count = String.valueOf(_UAVsValues[0]).split(";").length;
             for (int i = 0; i < count; i++) {
@@ -1181,7 +1181,7 @@ TimeRegulator {
             }
             StringBuffer info = new StringBuffer(_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";" + "preUAV TimeStamp:;"+_preUAVsTimes+"\n"+
                     ";;;"+"pUAV TimeStamp:;"+_pUAVsTimes +"\n");
-            for (int i = 0; i < _numberOfAttributesToPublish; i++){
+            for (int i = 0; i < _numberOfAttributesToPublish; i++) {
                 info.append(";;;"+ _nameOfTheAttributesToPublish[i] +";"+ _UAVsValues[i]+ "\n");
             }
             _UAVsValuesFile=_createTextFile("uav"+getDisplayName()+".csv");
@@ -1189,8 +1189,8 @@ TimeRegulator {
         }
     }
 
-    public void writeRAVsInformations(){
-        if(_numberOfRAVs>0){
+    public void writeRAVsInformations() {
+        if (_numberOfRAVs>0) {
             StringBuffer header = new StringBuffer("LookAhead;TimeStep;StopTime;Information;");
             int count = _RAVsValues[0].toString().split(";").length;
             for (int i = 0; i < count; i++) {
@@ -1199,7 +1199,7 @@ TimeRegulator {
 
             StringBuffer info = new StringBuffer(_date.toString()+"\n"+header+"\n"+_hlaLookAHead +";"+ _hlaTimeStep +";"+ _stopTime+";" + "pRAV TimeStamp:;"+_pRAVsTimes+"\n"+
                     ";;;"+"folRAV TimeStamp:;"+_folRAVsTimes +"\n");
-            for (int i = 0; i < _numberOfAttributesSubscribedTo; i++){
+            for (int i = 0; i < _numberOfAttributesSubscribedTo; i++) {
                 info.append(";;;"+ _nameOfTheAttributesSubscribedTo[i] +";"+ _RAVsValues[i]+ "\n");
             }
             _RAVsValuesFile=_createTextFile("rav"+getDisplayName()+".csv");
@@ -1212,8 +1212,8 @@ TimeRegulator {
      * The name and location of this file are specified in the initialization of the
      * variable file.
      */
-    public void writeNumberOfHLACalls(){
-        try{
+    public void writeNumberOfHLACalls() {
+        try {
             String fullName=federateName.toString();
             //String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
             String nameOfTheFile= fullName.substring(fullName.indexOf('{')+1,  fullName.lastIndexOf('.'));
@@ -1230,20 +1230,20 @@ TimeRegulator {
 
             info.append("\n" +"stopTime: " +_stopTime
                     + "    hlaTimeUnit: "+_hlaTimeUnitValue + "    lookAhead: " + _hlaLookAHead);
-            if(_isCreator){
+            if (_isCreator) {
                 info = new StringBuffer( "SP register -> " + info) ;
             }
-            if(_timeStepped){
+            if (_timeStepped) {
                 info.append("    Time Step: "  + _hlaTimeStep + "\n"
                         + "Number of TARs: " +_numberOfTARs);
-            }else if (_eventBased){
+            }else if (_eventBased) {
 
                 info.append("\nNumber of NERs: " +_numberOfNERs) ;
             }
             info.append("    Number of UAVs:" +_numberOfUAVs+"\nNumber of TAGs: " + _numberOfTAGs + "    Number of RAVs:" +_numberOfRAVs+ "\n"
                     +"Runtime: " +_runtime+"\n");
             writeInTextFile(_file,info.toString());
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Couldn't write in the txt file." );
         }
 
@@ -1251,17 +1251,17 @@ TimeRegulator {
     /** Write a report containing(in a .csv file {@link #_csvFile}), among other informations,
      * the number of ticks, the delay between a NER or a TAR and its respective TAG, the number of UAVs and RAVs.
      */
-    public void writeDelays(){
-        try{
+    public void writeDelays() {
+        try {
             String fullName=federateName.toString();
             String nameOfTheFile= fullName.substring(fullName.indexOf('{')+1,  fullName.lastIndexOf('.'));
             nameOfTheFile = nameOfTheFile.substring(1, nameOfTheFile.lastIndexOf('.')) + ".xml";
             String nameOfTheFederate = fullName.substring(fullName.indexOf('"'));
             String info= "\nFederate: "+ nameOfTheFederate + ";in the model:;"+ nameOfTheFile
                     +"\nhlaTimeUnit: ;"+ _hlaTimeUnitValue + ";lookAhead: ;"+ _hlaLookAHead +  ";runtime: ;"+ _runtime+ "\nApproach:;";
-            if(_timeStepped){
+            if (_timeStepped) {
                 info = info + "TAR;Time step:;"+ _hlaTimeStep +";Number of TARs:;"+ _numberOfTARs+"\n";
-            }else if(_eventBased){
+            }else if (_eventBased) {
                 info = info + "NER;Number of NERs:;" + _numberOfNERs +"\n";
             }
             info = info + "Number of UAVs:;"+_numberOfUAVs+ ";Number of RAVs:;" + _numberOfRAVs +";Number of TAGs:;" + _numberOfTAGs ;
@@ -1272,13 +1272,13 @@ TimeRegulator {
             StringBuffer header= new StringBuffer("\nInformation :;");
             String delayPerTick="\nDelay per tick;";
             for (int i = 0; i < _numberOfTAGs; i++) {
-                if(i<10){
+                if (i<10) {
                     header.append((i+1) + ";");
                     numberOfTicks=numberOfTicks+_numberOfTicks.get(i) +";";
                     delay = delay + _TAGDelay.get(i) +  ";";
-                    if(_numberOfTicks.get(i)>0){
+                    if (_numberOfTicks.get(i)>0) {
                         delayPerTick= delayPerTick + (_TAGDelay.get(i)/_numberOfTicks.get(i)) + ";";
-                    }else{
+                    }else {
                         delayPerTick= delayPerTick + "0;";
                     }
                 }
@@ -1292,12 +1292,12 @@ TimeRegulator {
             delay = delay + averageDelay + ";";
             delayPerTick = delayPerTick + ";";
             header.append("Average;");
-            if(_timeStepped){
+            if (_timeStepped) {
                 _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+"TAR"+".csv","date;timeStep;lookahead;runtime;total number of calls;TARs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
                 writeInTextFile(_reportFile, _date +";"+_hlaTimeStep + ";"+_hlaLookAHead + ";" +
                         _runtime +";" + totalNumberOfHLACalls+";"+_numberOfTARs+";"+ _numberOfTAGs+
                         ";"+_numberOfRAVs+";"+_numberOfUAVs+";"+ _numberOfTicks2+";"+averageDelay );
-            }else{
+            }else {
                 _reportFile=_createTextFile(nameOfTheFederate.substring(1, nameOfTheFederate.length() -1)+"NER"+".csv","date;lookahead;runtime;total number of calls;NERs;TAGs;RAVs;UAVs;Ticks2;inactive Time");
                 writeInTextFile(_reportFile,_date +";" +_hlaLookAHead + ";" +
                         _runtime +";" + totalNumberOfHLACalls+";"+_numberOfNERs+";"+ _numberOfTAGs+
@@ -1311,7 +1311,7 @@ TimeRegulator {
             delay = delay + averageDelay + ";";
 
             writeInTextFile(_csvFile,info + header +delay + numberOfTicks+ delayPerTick+"\nOther ticks:;"+_numberOfOtherTicks +"\nTotal number of HLA Calls:;"+ totalNumberOfHLACalls);
-        }catch(Exception e){
+        } catch (Exception e) {
             System.out.println("Couldn't write in the csv file.");
         }
 
@@ -1322,21 +1322,21 @@ TimeRegulator {
      * @param file The file in which you want to write.
      * @return Return true if the information was successfully written in the file.
      */
-    public boolean writeInTextFile(File file,String data){
-        try{
+    public boolean writeInTextFile(File file,String data) {
+        try {
             BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
             writer.write(data);
             writer.newLine();
             writer.flush();
             writer.close();
             return true;
-        }catch(Exception e){
+        } catch (Exception e) {
             return false;
         }
     }
 
 
-    public void writeTimes(){
+    public void writeTimes() {
         File timesFile = _createTextFile("times.csv");
         writeInTextFile(timesFile,_date +";Reason:;" + _reasonsToPrintTheTime +"\nt_ptII:;"+_tPTII+"\nt_hla:;" +_tHLA);
     }
@@ -1387,7 +1387,7 @@ TimeRegulator {
      * Make a conversion from certi logical time to ptolemy time
      * @param ct certi logical time
      * @return ptolemy time
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private Time _convertToPtolemyTime(CertiLogicalTime ct)
             throws IllegalActionException {
@@ -1406,7 +1406,7 @@ TimeRegulator {
         folderName= homeDirectory + "/" +folderName;
         File folder = new File(folderName);
         if (!folder.exists()) {
-            try{
+            try {
                 if (!folder.mkdir()) {
                     throw new IOException("Failed to create " + folder + " directory.");
                 } else {
@@ -1414,10 +1414,10 @@ TimeRegulator {
                 }
                 return folderName;
             }
-            catch(SecurityException se){
+            catch (SecurityException se) {
                 throw new IOException("Could not create the folder "+ folderName +".");
             }
-        }else{
+        }else {
             return folderName;
         }
     }
@@ -1426,33 +1426,33 @@ TimeRegulator {
      * already exist.
      * @param name the name to of the file
      */
-    private File _createTextFile(String name){
-        if(_testsFolder!= null){
+    private File _createTextFile(String name) {
+        if (_testsFolder!= null) {
             name = _testsFolder + "/"+ name;
-            if(name.equals(null) || name.length()<3){
+            if (name.equals(null) || name.length()<3) {
                 System.out.println("Choose a valid name for the txt file.");
                 return null;
-            }else{
-                if(!(name.endsWith(".txt")||name.endsWith(".csv"))){
+            }else {
+                if (!(name.endsWith(".txt")||name.endsWith(".csv"))) {
                     name = name.concat(".txt");
                 }
-                try{
+                try {
                     File file = new File(name);
                     boolean verify = false;
-                    if(!file.exists()){
+                    if (!file.exists()) {
                         verify = file.createNewFile();
                     }else {
                         verify = true;
-                    }if (!verify){
+                    }if (!verify) {
                         throw new Exception();
                     }System.out.println(name);
                     return file;
-                }catch(Exception e){
+                } catch (Exception e) {
                     System.out.println("Couldn't create the file.");
                     return null;
                 }
             }
-        }else{
+        }else {
             return null;
         }
     }
@@ -1461,34 +1461,34 @@ TimeRegulator {
      * already exist.
      * @param name the name to of the file
      */
-    private File _createTextFile(String name, String header){
-        if(_testsFolder!= null){
+    private File _createTextFile(String name, String header) {
+        if (_testsFolder!= null) {
             name = _testsFolder + "/"+ name;
-            if(name.equals(null) || name.length()<3){
+            if (name.equals(null) || name.length()<3) {
                 System.out.println("Choose a valid name for the txt file.");
                 return null;
-            }else{
-                if(!(name.endsWith(".txt")||name.endsWith(".csv"))){
+            }else {
+                if (!(name.endsWith(".txt")||name.endsWith(".csv"))) {
                     name = name.concat(".txt");
                 }
-                try{
+                try {
                     File file = new File(name);
                     boolean verify = false;
-                    if(!file.exists()){
+                    if (!file.exists()) {
                         verify = file.createNewFile();
                         writeInTextFile(file,header);
                     }else {
                         verify = true;
-                    }if (!verify){
+                    }if (!verify) {
                         throw new Exception();
                     }System.out.println(name);
                     return file;
-                }catch(Exception e){
+                } catch (Exception e) {
                     System.out.println("Couldn't create the file.");
                     return null;
                 }
             }
-        }else{
+        }else {
             return null;
         }
     }
@@ -1683,7 +1683,7 @@ TimeRegulator {
                             _numberOfTicks2++;
                             cntTick++;
                         } catch (RTIexception e) {
-                            if(_debugging){
+                            if (_debugging) {
                                 _debug("        proposeTime("+proposedTimeInString+") - _timeSteppedBasedTimeAdvance("+proposedTimeInString+") - Failed to make "
                                         + "tick2() - there is a problem with the RTIambassador");
                             }
@@ -1813,7 +1813,7 @@ TimeRegulator {
         Iterator<Entry<String, LinkedList<TimedEvent>>> it = _fromFederationEvents
                 .entrySet().iterator();
 
-        if(_debugging){
+        if (_debugging) {
             _debug("starting _putReflectedAttributesOnHlaSubscribers() - current status - " +
         "t_ptII = " + _printTimes(_director.getModelTime())+ "; t_hla = " + _federateAmbassador.logicalTimeHLA );
         }
@@ -1853,7 +1853,7 @@ TimeRegulator {
                             +", timestamp = "+ _printTimes(ravevent.timeStamp) +") "+ " in the Hla Subscriber"
                             );
                 }
-                if(_folRAVsTimes.lastIndexOf("*")>=0){
+                if (_folRAVsTimes.lastIndexOf("*")>=0) {
                     _folRAVsTimes.replace(_folRAVsTimes.lastIndexOf("*"),_folRAVsTimes.length(),ravevent.timeStamp+";");
                 }
                 events.removeFirst();
@@ -1865,7 +1865,7 @@ TimeRegulator {
      * Get hlaNextPointInTime in HLA to advance to when TAR is used.
      * hlaNextPointInTime = hlaCurrentTime + Ts.
      * @return next point in time to advance to.
-     * @throws IllegalActionException if hlaTimeStep is NULL.
+     * @exception IllegalActionException if hlaTimeStep is NULL.
      */
     private Time _getHlaNextPointInTime() throws IllegalActionException {
         Double time = _getHlaCurrentTime().add(_hlaTimeStep).getDoubleValue();
@@ -1888,7 +1888,7 @@ TimeRegulator {
      * Initialize the variables that are going to be used to create the reports
      * in the files {@link #_file} and {@link #_csvFile}
      */
-    private void _initializeReportVariables(){
+    private void _initializeReportVariables() {
         _numberOfTARs=0;
         _numberOfTicks2=0;
         _numberOfNERs=0;
@@ -1902,7 +1902,7 @@ TimeRegulator {
         System.out.println("Attributes to publish: ");
         _UAVsValues=new StringBuffer[_numberOfAttributesToPublish];
         _RAVsValues=null;
-        for(int i = 0; i < _numberOfAttributesToPublish; i ++){
+        for (int i = 0; i < _numberOfAttributesToPublish; i ++) {
             _nameOfTheAttributesToPublish[i]=attributesToPublish[i].toString();
             _UAVsValues[i]=new StringBuffer("");
             System.out.println(_nameOfTheAttributesToPublish[i]);
@@ -1929,23 +1929,23 @@ TimeRegulator {
      * @param value The time value that is going to be rounded.
      * @return A double representing a rounded time value.
      */
-    private double _roundDoubles(double value){
+    private double _roundDoubles(double value) {
         //Forcing the number to have the same amount of decimal digits
         //than the time step;
         return Double.parseDouble(_printFormatedNumbers(value));
     }
 
-    private String _printFormatedNumbers(double value){
+    private String _printFormatedNumbers(double value) {
         DecimalFormat df = new DecimalFormat(_decimalFormat);
         df.setRoundingMode(RoundingMode.HALF_DOWN);
         return df.format(value);
     }
 
-    private String _printTimes(Time time){
+    private String _printTimes(Time time) {
         return _printFormatedNumbers(time.getDoubleValue());
     }
 
-    private Time _getModelTime(){
+    private Time _getModelTime() {
         double currentTime = _director.getModelTime().getDoubleValue();
         currentTime = _roundDoubles(currentTime);
         try {
@@ -1956,7 +1956,7 @@ TimeRegulator {
         }
     }
 
-    private SuperdenseTime _getModelSuperdenseTime(){
+    private SuperdenseTime _getModelSuperdenseTime() {
         double currentTime = _director.getModelTime().getDoubleValue();
         currentTime = _roundDoubles(currentTime);
         try {
@@ -1968,7 +1968,7 @@ TimeRegulator {
         }
     }
 
-    private void _storeTimes(String reason){
+    private void _storeTimes(String reason) {
         try {
             String tHLA= _printTimes(_getHlaCurrentTime());
             String tPTII=_printTimes(_director.getModelTime());
@@ -2195,9 +2195,9 @@ TimeRegulator {
                 try {
                     _rtia.tick2();
                     _numberOfTicks2++;
-                    if(_timeOfTheLastAdvanceRequest>0){
+                    if (_timeOfTheLastAdvanceRequest>0) {
                         _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);;
-                    }else{
+                    }else {
                         _numberOfOtherTicks++;
                     }
                 } catch (RTIexception e) {
@@ -2216,9 +2216,9 @@ TimeRegulator {
             try {
                 _rtia.tick2();
                 _numberOfTicks2++;
-                if(_timeOfTheLastAdvanceRequest>0){
+                if (_timeOfTheLastAdvanceRequest>0) {
                     _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
-                }else{
+                }else {
                     _numberOfOtherTicks++;
                 }
             } catch (RTIexception e) {
@@ -2233,7 +2233,7 @@ TimeRegulator {
                 _debug("_doInitialSynchronization() - initialize() - Synchronisation point "
                         + _synchronizationPointName + " satisfied !");
             }
-        } catch(RTIexception e) {
+        } catch (RTIexception e) {
             throw new IllegalActionException(this, e, e.getMessage());
         }
 
@@ -2246,9 +2246,9 @@ TimeRegulator {
             try {
                 _rtia.tick2();
                 _numberOfTicks2++;
-                if(_timeOfTheLastAdvanceRequest >0 ){
+                if (_timeOfTheLastAdvanceRequest >0 ) {
                     _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
-                }else{
+                }else {
                     _numberOfOtherTicks++;
                 }
             } catch (RTIexception e) {
@@ -2261,7 +2261,7 @@ TimeRegulator {
      * Will enable all time regulating aspect for the federate. After this call
      * the federate as stated to the RTI if it time regulating and/or time regulator
      * and has enable asynchronous delivery for RO messages
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void _initializeTimeAspects() throws IllegalActionException {
 
@@ -2296,9 +2296,9 @@ TimeRegulator {
                 try {
                     _rtia.tick2();
                     _numberOfTicks2++;
-                    if(_timeOfTheLastAdvanceRequest>0){
+                    if (_timeOfTheLastAdvanceRequest>0) {
                         _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
-                    }else{
+                    }else {
                         _numberOfOtherTicks++;
                     }
                 } catch (RTIexception e) {
@@ -2310,9 +2310,9 @@ TimeRegulator {
                 try {
                     _rtia.tick2();
                     _numberOfTicks2++;
-                    if(_timeOfTheLastAdvanceRequest>0){
+                    if (_timeOfTheLastAdvanceRequest>0) {
                         _numberOfTicks.set(_numberOfTAGs, _numberOfTicks.get(_numberOfTAGs)+1);
-                    }else{
+                    }else {
                         _numberOfOtherTicks++;
                     }
                 } catch (RTIexception e) {
@@ -2449,12 +2449,12 @@ TimeRegulator {
             _initializeReportVariables();
             _stopTime = _director.getModelStopTime();
             _date = new Date();
-            if(_isCreator){
+            if (_isCreator) {
                writeInTextFile(_csvFile,"\n" + _date.toString() + "\nSTART OF THE FEDERATION;");
                writeInTextFile(_file,"------------------\n"+ _date.toString() + "\nSTART OF THE FEDERATION");
             }
             int numberOfDecimalDigits;
-            if(_timeStepped){
+            if (_timeStepped) {
                 System.out.println(_hlaTimeStep);
                 String s = _hlaTimeStep.toString();
                 s= s.substring(s.indexOf(".")+1);
@@ -2462,16 +2462,16 @@ TimeRegulator {
                 s = _hlaLookAHead.toString();
                 s= s.substring(s.indexOf(".")+1);
                 int n2 = s.length();
-                if(n1>n2){
+                if (n1>n2) {
                     numberOfDecimalDigits=n1;
-                }else{
+                }else {
                     numberOfDecimalDigits=n2;
                 }
-            }else{
+            }else {
                 numberOfDecimalDigits=10;
             }
             StringBuffer format=new StringBuffer("#.#");
-            for(int i=1;i<numberOfDecimalDigits;i++){
+            for (int i=1;i<numberOfDecimalDigits;i++) {
                 format.append("#");
             }
             _decimalFormat=format.toString();
@@ -2495,10 +2495,10 @@ TimeRegulator {
          *  @param timeStep The time step of the Federate.
          *  @param lookAHead The contract value used by HLA/CERTI to synchronize
          *  the Federates and to order TSO events.
-         *  @throws IllegalActionException
+         *  @exception IllegalActionException
          */
         public void initializeTimeValues(Double startTime, Double lookAHead) throws IllegalActionException{
-            if(lookAHead <= 0){
+            if (lookAHead <= 0) {
                 throw new IllegalActionException(null, null, null, "LookAhead field in HLAManager must be greater than 0.");
             }
             logicalTimeHLA = new CertiLogicalTime(startTime);
@@ -2526,7 +2526,7 @@ TimeRegulator {
                         FederateOwnsAttributes, InvalidFederationTime,
                         FederateInternalError {
             boolean done = false;
-            if(_debugging){
+            if (_debugging) {
                 _debug("starting reflectAttributeValues() - current status - " +
             "t_ptII = " + _printTimes(_director.getModelTime())+ "; t_hla = " + _federateAmbassador.logicalTimeHLA );
             }
@@ -2588,24 +2588,24 @@ TimeRegulator {
                                 String attributeName = hs.getParameterName();
 
                                 String pRAVTimeStamp =_printTimes(te.timeStamp)+";";
-                                if(_numberOfRAVs>0 && (_pRAVsTimes.length() -_pRAVsTimes.lastIndexOf(pRAVTimeStamp))== pRAVTimeStamp.length()){
+                                if (_numberOfRAVs>0 && (_pRAVsTimes.length() -_pRAVsTimes.lastIndexOf(pRAVTimeStamp))== pRAVTimeStamp.length()) {
                                     int indexOfAttribute=0;
-                                    for(int j = 0; j<_numberOfAttributesSubscribedTo;j++){
-                                        if(_nameOfTheAttributesSubscribedTo[j].substring(_nameOfTheAttributesSubscribedTo[j].lastIndexOf("-"+attributeName)+1).equals(attributeName)){
+                                    for (int j = 0; j<_numberOfAttributesSubscribedTo;j++) {
+                                        if (_nameOfTheAttributesSubscribedTo[j].substring(_nameOfTheAttributesSubscribedTo[j].lastIndexOf("-"+attributeName)+1).equals(attributeName)) {
                                             indexOfAttribute=j;
                                             break;
                                         }
                                     }
                                     _RAVsValues[indexOfAttribute].replace(_RAVsValues[indexOfAttribute].length()-2,_RAVsValues[indexOfAttribute].length(),value.toString()+";");
                                    //_UAVsValues[indexOfAttribute].replace(_UAVsValues[indexOfAttribute].length()-2,_UAVsValues[indexOfAttribute].length(),in.toString()+";");
-                                }else{
-                                    if(_numberOfRAVs<1){
+                                }else {
+                                    if (_numberOfRAVs<1) {
                                         _numberOfAttributesSubscribedTo=_hlaAttributesSubscribedTo.size();
                                         _nameOfTheAttributesSubscribedTo= new String[_numberOfAttributesSubscribedTo];
                                         Object attributesSubscribedTo[]= _hlaAttributesSubscribedTo.keySet().toArray();
                                         System.out.println("Attributes subscribed to: ");
                                         _RAVsValues= new StringBuffer[_numberOfAttributesSubscribedTo];
-                                        for(int y = 0; y < _numberOfAttributesSubscribedTo; y ++){
+                                        for (int y = 0; y < _numberOfAttributesSubscribedTo; y ++) {
                                             _nameOfTheAttributesSubscribedTo[y]=attributesSubscribedTo[y].toString();
                                            _RAVsValues[y]=new StringBuffer("");
                                             System.out.println(_nameOfTheAttributesSubscribedTo[y]);
@@ -2613,18 +2613,18 @@ TimeRegulator {
                                     }
 
                                     int indexOfAttribute=0;
-                                    for(int j = 0; j<_numberOfAttributesSubscribedTo;j++){
-                                        if(_nameOfTheAttributesSubscribedTo[j].substring(_nameOfTheAttributesSubscribedTo[j].lastIndexOf("-"+attributeName)+1).equals(attributeName)){
+                                    for (int j = 0; j<_numberOfAttributesSubscribedTo;j++) {
+                                        if (_nameOfTheAttributesSubscribedTo[j].substring(_nameOfTheAttributesSubscribedTo[j].lastIndexOf("-"+attributeName)+1).equals(attributeName)) {
                                             indexOfAttribute=j;
                                             break;
                                         }
                                     }
                                     _folRAVsTimes.append("*");
                                     _pRAVsTimes.append(pRAVTimeStamp);
-                                    for(int j = 0; j<_numberOfAttributesSubscribedTo;j++){
-                                        if(j==indexOfAttribute){
+                                    for (int j = 0; j<_numberOfAttributesSubscribedTo;j++) {
+                                        if (j==indexOfAttribute) {
                                             _RAVsValues[j].append(value.toString()+";");
-                                        }else{
+                                        }else {
                                             _RAVsValues[j].append("-;");
                                         }
                                     }

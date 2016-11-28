@@ -166,21 +166,21 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         Director director=getDirector();
         if (attribute == broken) {
-             if(broken.getToken()!=null){
+             if (broken.getToken()!=null) {
                 _isBroken=broken.getToken();
 
                 //Change color of the storm zone.
-                if(((BooleanToken)_isBroken).booleanValue()==true){
+                if (((BooleanToken)_isBroken).booleanValue()==true) {
                     _circle.fillColor.setToken("{1.0,0.2,0.2,1.0}");
                 }
-                else{
+                else {
                     _circle.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
                 }
                 ((TCSDirector)director).handleTrackAttributeChanged(this);
             }
-        } else if(attribute==lineSymbol && lineSymbol.getToken()!=null){
+        } else if (attribute==lineSymbol && lineSymbol.getToken()!=null) {
             _symbol=((StringToken)lineSymbol.getToken()).stringValue();
-            if(_symbol.length()>1)
+            if (_symbol.length()>1)
                 throw new IllegalActionException("Inappropriate line symbol");
             _color=((TCSDirector)director).getColor(_symbol);
             _rectangle.fillColor.setToken(_color);
@@ -201,10 +201,10 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
         super.fire();
         Time currentTime = _director.getModelTime();
         if (currentTime.equals(_transitExpires) && _inTransit != null) {
-            try{
+            try {
                     output.send(0, _inTransit);
             }
-            catch (NoRoomException ex){
+            catch (NoRoomException ex) {
              // Token rejected by the destination.
                 if (!(_director instanceof TCSDirector)) {
                     throw new IllegalActionException(this, "Track must be used with an TCSDirector.");
@@ -224,10 +224,10 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
         }
         // Handle any input that have been accepted.
 
-            if(input.hasNewToken(0))
+            if (input.hasNewToken(0))
             {
                 // This if is used for checking safety. Instead of throwing exception we can write a record to the file.
-                if(_inTransit!=null)
+                if (_inTransit!=null)
                 {
                     throw new IllegalActionException("two train in one track");
                 }
@@ -235,7 +235,7 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
                 _inTransit=input.get(0);
                 _setIconForTrain(((RecordToken)_inTransit).get("trainId"));
                 double movingTime=((TCSDirector)_director).movingTimeOfTrain(_inTransit,_id);
-                if(movingTime<=0.0)
+                if (movingTime<=0.0)
                     throw new IllegalActionException("Minstake in calculating moving time of Train");
                 _transitExpires=currentTime.add(movingTime);
                 _director.fireAt(this, _transitExpires);
@@ -251,10 +251,10 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
         _inTransit = null;
         _id=trackId.getToken();
         _isBroken=broken.getToken();
-        if(_isBroken==null)
+        if (_isBroken==null)
             _isBroken=(Token)(new BooleanToken(false));
        ((TCSDirector)_director).handleInitializedTrack(this);
-           if(lineSymbol.getToken()==null)
+           if (lineSymbol.getToken()==null)
            _symbol="";
        else
            _symbol=((StringToken)lineSymbol.getToken()).stringValue();
@@ -267,17 +267,17 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
 
     /** Change icon of the track from train shape to rectangle.
      *  @param symbol The symbol of the line.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected void _changeIcon(String symbol) throws IllegalActionException {
         _shape.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
         _shape.lineColor.setToken("{0.0, 0.0, 0.0, 0.0}");
-        if(symbol.equals(""))
+        if (symbol.equals(""))
         {
             _rectangle.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
             _rectangle.lineColor.setToken("{0.0, 0.0, 0.0, 1.0}");
         }
-        else{
+        else {
             _color=((TCSDirector)_director).getColor(symbol);
             _rectangle.fillColor.setToken(_color);
             _rectangle.lineColor.setToken(_color);
@@ -286,7 +286,7 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
 
     /** Change icon of the track from rectangle to icon of the train.
     *  @param idOfTrain The id of the train .
-    *  @throws IllegalActionException
+    *  @exception IllegalActionException
     */
     protected void _setIconForTrain(Token idOfTrain) throws IllegalActionException {
         int id=((IntToken)idOfTrain).intValue();
@@ -298,7 +298,7 @@ public class AbstractTrack extends  TypedAtomicActor implements Rejecting {
 
     /** Determine the color of the track/train .
      *  @param id The train ID or -1 to indicate no train.
-     *  @throws IllegalActionException If thrown while getting the director.
+     *  @exception IllegalActionException If thrown while getting the director.
      *  @return The color.
      */
     protected ArrayToken _setIcon(int id) throws IllegalActionException {

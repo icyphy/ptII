@@ -71,8 +71,8 @@ public class InterfaceCheckerDirector extends Director {
      *
      *  @param container The container.
      *  @param name The name of this director.
-     *  @throws IllegalActionException If the superclass throws it.
-     *  @throws NameDuplicationException If the superclass throws it.
+     *  @exception IllegalActionException If the superclass throws it.
+     *  @exception NameDuplicationException If the superclass throws it.
      */
     public InterfaceCheckerDirector(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -80,11 +80,11 @@ public class InterfaceCheckerDirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       public methods                      ////
+    ////                         public methods                    ////
 
     /** Check that the interfaces in the model are valid.
      *
-     *  @throws IllegalActionException If the interfaces of any actors in
+     *  @exception IllegalActionException If the interfaces of any actors in
      *    the model cannot be determined.
      */
     @Override
@@ -126,7 +126,7 @@ public class InterfaceCheckerDirector extends Director {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private methods                     ////
+    ////                         private methods                   ////
 
     /** Check that the interface of the given actor are valid.
      *
@@ -136,7 +136,7 @@ public class InterfaceCheckerDirector extends Director {
      *
      *  @param actor Actor whose interface is to be checked
      *  @return A string representing the result of the SMT check
-     *  @throws IllegalActionException If the interface of the actor
+     *  @exception IllegalActionException If the interface of the actor
      *    cannot be determined.
      */
     private String _checkInterface(Actor actor) throws IllegalActionException {
@@ -150,7 +150,7 @@ public class InterfaceCheckerDirector extends Director {
      *
      *  @param container The composite actor whose interface we are querying.
      *  @return The inferred interface.
-     *  @throws IllegalActionException If no interface can be inferred.
+     *  @exception IllegalActionException If no interface can be inferred.
      */
     private RelationalInterface _getCompositeInterface(CompositeActor container)
             throws IllegalActionException {
@@ -270,7 +270,7 @@ public class InterfaceCheckerDirector extends Director {
      *
      *  @param actor The actor whose interface we are querying.
      *  @return The overall interface.
-     *  @throws IllegalActionException If an interface doesn't exist and
+     *  @exception IllegalActionException If an interface doesn't exist and
      *    cannot be inferred.
      */
     private RelationalInterface _getInterface(Actor actor)

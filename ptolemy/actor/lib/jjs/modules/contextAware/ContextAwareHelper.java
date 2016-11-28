@@ -71,13 +71,13 @@ public class ContextAwareHelper {
      * @return the json formatted data in an array
      */
     public ArrayList  convertXMLtoJSON(String response) {
-        try{
+        try {
             JSONObject xmlJson = XML.toJSONObject(response);
             String prettyString = xmlJson.toString(4);
             System.out.println(prettyString);
             Iterator x = xmlJson.keys();
             ArrayList jsonArray=new ArrayList();
-            while(x.hasNext()){
+            while (x.hasNext()) {
                 String key=(String)x.next();
                 jsonArray.add(xmlJson.get(key));
             }
@@ -109,7 +109,7 @@ public class ContextAwareHelper {
      * process
      * @return The list of data type to be extracted from Firebase.
      */
-    public String[] getFirebaseOutput(){
+    public String[] getFirebaseOutput() {
         return _firebaseOutputPort;
     }
 

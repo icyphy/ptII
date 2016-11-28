@@ -499,8 +499,8 @@ public class BarrierMethod  {
 //    }
 //    private double maxValue(double[] array, int from_id, int check_num) {
 //        double ret = array[from_id];
-//        for(int i=from_id; i<from_id+check_num; i++) {
-//            if(ret<array[i]) ret = array[i];
+//        for (int i=from_id; i<from_id+check_num; i++) {
+//            if (ret<array[i]) ret = array[i];
 //        }
 //        return ret;
 //    }

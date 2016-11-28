@@ -68,7 +68,7 @@ public class Matrix {
         //        return new HashVec(length);
     }
 
-    ////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // Constructors
     public Matrix(double v) {
         this(new double[][] { { v } });
@@ -232,7 +232,7 @@ public class Matrix {
         return M;
     }
 
-    ////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // Basic Accessors
     public int getRowDimension() {
         return m;
@@ -318,7 +318,7 @@ public class Matrix {
         return (getNz()) / mn;
     }
 
-    ////////////////////////////////////////////
+    ///////////////////////////////////////////////////////////////////
     // Operations
     public void clear() {
         for (int i = 0; i < m; i++)

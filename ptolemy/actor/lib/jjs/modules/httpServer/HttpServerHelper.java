@@ -135,7 +135,7 @@ public class HttpServerHelper extends VertxHelperBase {
                         final String path = request.path();
 
                     // For POST, wait until full body arrives before issuing request.
-                    if(request.method() == HttpMethod.POST) {
+                    if (request.method() == HttpMethod.POST) {
                         request.bodyHandler(new Handler<Buffer>() {
                             @Override
                             public void handle(Buffer buffer) {
@@ -207,7 +207,7 @@ public class HttpServerHelper extends VertxHelperBase {
     private HttpServer _server = null;
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** A task to execute when no response has been received by the user of this class
      *  after a timeout has expired. To use this class, specify an HTTP request and a

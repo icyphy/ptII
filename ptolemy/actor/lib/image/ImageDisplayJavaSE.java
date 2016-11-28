@@ -89,7 +89,7 @@ ImageDisplayInterface {
     /** Display the specified token. This must be called in the Swing
      *  event thread.
      *  @param in The token to display
-     *  @throws IllegalActionException If the input is not an ImageToken
+     *  @exception IllegalActionException If the input is not an ImageToken
      */
     @Override
     public void display(final Token in) throws IllegalActionException {

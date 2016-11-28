@@ -592,7 +592,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                                 getParameters.getType(), "cookies");
                     }
                 }
-            } else if (_request.requestType == 1){
+            } else if (_request.requestType == 1) {
                 if (_debugging) {
                     _debug("Sending post request URI: " + _request.requestURI);
                     _debug("Sending post request parameters: "
@@ -1267,7 +1267,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                     // Read any remaining URL parameters
                     parameters = _readParameterMap(request.getParameterMap());
 
-               } catch(IOException e){
+               } catch (IOException e) {
                    throw new IllegalActionException("Can't read body of "
                            + " HTTP request");
                }
@@ -1289,7 +1289,7 @@ public class HttpActor extends TypedAtomicActor implements HttpService,
                         while ((line = reader.readLine()) != null) {
                             content.append(line);
                         }
-                    } catch(IOException e) {
+                    } catch (IOException e) {
                         throw new IllegalActionException("Can't read body of "
                                 + " HTTP request");
                     }

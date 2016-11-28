@@ -66,7 +66,7 @@ public class RelationalInterface {
      *  the original interface. We should change this.
      *
      *  @param connections The feedback connections.
-     *  @throws InterfaceCompositionException If there feedback connection
+     *  @exception InterfaceCompositionException If there feedback connection
      *   is invalid.  This can only be because the input port is non-Moore.
      */
     public void addFeedback(final Set<Connection> connections)
@@ -243,7 +243,7 @@ public class RelationalInterface {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
 
     /** The set of input variables.
      */

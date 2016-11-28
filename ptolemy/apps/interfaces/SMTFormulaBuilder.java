@@ -166,11 +166,11 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      protected methods                    ////
+    ////                         protected methods                 ////
     /** Recurse into the children of the given node.
      *
      *  @param node The node to be explored.
-     *  @throws IllegalActionException If there is a problem displaying
+     *  @exception IllegalActionException If there is a problem displaying
      *   the children.
      */
     protected void _visitChildren(ASTPtRootNode node)
@@ -185,7 +185,7 @@ public class SMTFormulaBuilder extends AbstractParseTreeVisitor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                      private variables                    ////
+    ////                         private variables                 ////
     /** The intermediate state of the LISP-expression.
      */
     private StringBuffer _smtFormula;

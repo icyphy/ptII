@@ -576,7 +576,7 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
                         if (((BooleanToken) eventDetection.getToken()).booleanValue()) {
                         return _fmiModelDescription.numberOfEventIndicators;
                         }
-                        else{
+                        else {
                                 return 0;
                         }
                 } catch (IllegalActionException e) {
@@ -2586,9 +2586,9 @@ public class FMUQSS extends FMUImport implements DerivativeFunction {
      * @param array The input vector.
      * return sum The sum of the input vector elements.
      */
-    private double _sumOfVector (double array []){
+    private double _sumOfVector (double array []) {
             double sum = 0;
-            for(int i = 0; i < array.length; i++) {
+            for (int i = 0; i < array.length; i++) {
                 sum += array[i];
             }
             return sum;

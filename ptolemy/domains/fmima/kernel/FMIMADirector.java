@@ -242,7 +242,7 @@ public class FMIMADirector extends SRDirector {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                       protected variables                 ////
+    ////                         protected variables               ////
 
     /**
      * A boolean variable used to flag the first fire() execution.
@@ -252,7 +252,7 @@ public class FMIMADirector extends SRDirector {
     protected boolean _isFirstFire;
 
     ///////////////////////////////////////////////////////////////////
-    ////                       private variables                   ////
+    ////                         private variables                 ////
 
     Parameter _defaultPeriod;
 }

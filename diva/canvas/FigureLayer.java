@@ -568,7 +568,7 @@ EventAcceptor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Return the figure pointed to by the given LayerEvent.  If
      * there is no figure, then return null.
@@ -746,7 +746,7 @@ EventAcceptor {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                     ////
+    ////                         private methods                   ////
 
     /** Dispatch a layer event up the tree. Proceed up the hierarchy
      * looking for a figure that has an interactor that is

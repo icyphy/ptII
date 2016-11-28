@@ -515,7 +515,7 @@ public class SWTVergilApplication {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected variables                   ////
+    ////                         protected variables               ////
 
     /** The graph controller. This is created in _createGraphPane(). */
     protected ActorEditorGraphController _controller;

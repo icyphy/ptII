@@ -353,7 +353,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
      *  <li> perimeter: An array with four arrays, each of which gives the x and y coordinates of
      *   a corner of the AprilTag, listed in a counter-clockwise direction.
      *  </ul>
-     *  @throws IllegalActionException If the array cannot be constructed.
+     *  @exception IllegalActionException If the array cannot be constructed.
      */
     public ArrayToken tags() throws IllegalActionException {
         if (_tags == null || _tags.size() == 0) {
@@ -411,7 +411,7 @@ public class AprilTagFilter extends AbstractBufferedImageOp {
 
     /** Produce debugging output. If the debugging code annoys you (or
      * makes porting harder) you can delete all of the code in an
-     * if(debug) block.
+     * if (debug) block.
      * NOTE: Most of the debugging code is disabled in this implementation.
      **/
     public boolean debug = false;

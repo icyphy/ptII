@@ -41,7 +41,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.vergil.icon.EditorIcon;
 import ptolemy.vergil.kernel.attributes.EllipseAttribute;
 
-//////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 //// VirtualTinyOS
 
 /** Provide a virtual enviorment to run tinyOS code directly...

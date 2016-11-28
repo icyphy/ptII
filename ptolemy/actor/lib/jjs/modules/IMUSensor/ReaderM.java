@@ -24,7 +24,7 @@
 */
 package ptolemy.actor.lib.jjs.modules.IMUSensor;
 
-/////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////
 ///// ReaderM
 
 /**
@@ -55,7 +55,7 @@ public class ReaderM extends Thread {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Read the packets from the IMU and decode them. */
     @Override
@@ -187,7 +187,7 @@ public class ReaderM extends Thread {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public variables                      ////
+    ////                         public variables                  ////
 
     /** True when the thread has been started. */
     public boolean isStart = false;

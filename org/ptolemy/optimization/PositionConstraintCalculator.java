@@ -141,9 +141,9 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
             throws IllegalActionException {
         if (attribute == DistanceLimit) {
             _distanceLimit = ((DoubleToken) DistanceLimit.getToken()).doubleValue();
-        } else if(attribute == ScalefactorOfVariance) {
+        } else if (attribute == ScalefactorOfVariance) {
             _scalefactorOfStdDeviation = ((DoubleToken) ScalefactorOfVariance.getToken()).doubleValue();
-        } else if(attribute == RobotId) {
+        } else if (attribute == RobotId) {
             _robotId = ((IntToken) RobotId.getToken()).intValue();
         } else {
             super.attributeChanged(attribute);
@@ -177,15 +177,15 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
             _objectX = new double[_robotX.length * _objectNum];
             _objectY = new double[_robotX.length * _objectNum];
             _objectCovariances = new double[_robotX.length * _objectNum][2][2];
-            for(int j = 0; j < objArrays.length(); j++) {
+            for (int j = 0; j < objArrays.length(); j++) {
                 objArray = (ArrayToken) objArrays.getElement(j);
                 for (int i = 0; i < _robotX.length; i++) {
                     RecordToken objectState = (RecordToken) objArray.getElement(Math.min(i, objArray.length() - 1));
                     _objectX[i + j*_robotX.length] = ((DoubleToken) objectState.get("x")).doubleValue();
                     _objectY[i + j*_robotX.length] = ((DoubleToken) objectState.get("y")).doubleValue();
                     double[][] matrix = ((DoubleMatrixToken) objectState.get("covariance")).doubleMatrix();
-                    for(int row=0; row<2; row++) {
-                        for(int col=0; col<2; col++) {
+                    for (int row=0; row<2; row++) {
+                        for (int col=0; col<2; col++) {
                             _objectCovariances[i + j*_robotX.length][row][col] = matrix[row][col];
                         }
                     }
@@ -200,8 +200,8 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
             for (int i = 0; i < jacobiArray.length(); i++) {
                 DoubleMatrixToken jacobian = (DoubleMatrixToken) jacobiArray.getElement(i);
                 double[][] matrix = jacobian.doubleMatrix();
-                for(int row=0; row<_jacobianOfTrajectory[0].length; row++) {
-                    for(int col=0; col<_jacobianOfTrajectory[0][0].length; col++) {
+                for (int row=0; row<_jacobianOfTrajectory[0].length; row++) {
+                    for (int col=0; col<_jacobianOfTrajectory[0][0].length; col++) {
                         _jacobianOfTrajectory[i][row][col] = matrix[row][col];
                     }
                 }
@@ -253,7 +253,7 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
                 double[] dP = new double[2];
                 dP[0] = _robotX[k] - _objectX[indexOfObject];
                 dP[1] = _robotY[k] - _objectY[indexOfObject];
-                if(_robotId == objIt) {
+                if (_robotId == objIt) {
                     //constraint function is fi_t = - dpT * CovP^-1 * dp + sigmaScale > 0
                     double[][] inverseCov = DoubleMatrixMath.inverse(_objectCovariances[indexOfObject]); //inverse of covariance
                     double[] invC_dP = DoubleMatrixMath.multiply(dP, inverseCov);
@@ -263,7 +263,7 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
 
                     _positionConstraints[indexOfObject] = new DoubleToken(fi);
                     double[][] gradient = new double[1][2];
-                    for(int i=0; i<2; i++) {
+                    for (int i=0; i<2; i++) {
                         gradient[0][i] = jacobianOfFi[i];
                     }
                     _gradientOfConstraints[indexOfObject]
@@ -295,7 +295,7 @@ public class PositionConstraintCalculator extends TypedAtomicActor {
                     _positionConstraints[indexOfObject] = new DoubleToken(fi);
 
                     double[][] gradient = new double[1][2];
-                    for(int i=0; i<2; i++) {
+                    for (int i=0; i<2; i++) {
                         gradient[0][i] = jacobianOfFi[i];
                     }
                     _gradientOfConstraints[indexOfObject]

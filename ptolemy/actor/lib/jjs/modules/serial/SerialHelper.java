@@ -129,13 +129,13 @@ public class SerialHelper extends HelperBase {
      *  it possible to have models that will open the first N serial
      *  ports.  </p>
      *
-     *  @throws IllegalActionException If there is no such port, if
+     *  @exception IllegalActionException If there is no such port, if
      *  the port is owned by another user, if the port does not
      *  support the specified paramters or if the input or output
      *  fails.
      */
     public synchronized void open() throws IllegalActionException {
-        if(_serialPort != null) {
+        if (_serialPort != null) {
             _serialPort.close();
         }
         CommPortIdentifier portID = null;

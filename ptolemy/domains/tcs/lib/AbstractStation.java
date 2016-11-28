@@ -211,10 +211,10 @@ public class AbstractStation extends StationWriter implements Rejecting{
     @Override
     public boolean reject(Token token, IOPort port) {
         boolean unavailable=(_inTransit!=null || ((BooleanToken)_isBroken).booleanValue());
-        if(unavailable==true)
+        if (unavailable==true)
             return true;
-        else{
-            if(_called==false){
+        else {
+            if (_called==false) {
                 _called=true;
                 return unavailable;
             }
@@ -229,19 +229,19 @@ public class AbstractStation extends StationWriter implements Rejecting{
     @Override
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         Director director=getDirector();
-        if(attribute==lineSymbol && lineSymbol.getToken()!=null){
+        if (attribute==lineSymbol && lineSymbol.getToken()!=null) {
             _symbol=((StringToken)lineSymbol.getToken()).stringValue();
-            if(_symbol.length()>1)
+            if (_symbol.length()>1)
                 throw new IllegalActionException("Inappropriate line symbol");
             ArrayToken color=((TCSDirector)director).getColor(_symbol);
             _border.fillColor.setToken(color);
 
         }
-        else if(attribute == broken) {
-             if(broken.getToken()!=null){
+        else if (attribute == broken) {
+             if (broken.getToken()!=null) {
                 _isBroken=broken.getToken();
                 //Change color of the storm zone.
-                if(((BooleanToken)_isBroken).booleanValue()==true)
+                if (((BooleanToken)_isBroken).booleanValue()==true)
                     _circle.fillColor.setToken("{1.0,0.2,0.2,1.0}");
                 else
                     _circle.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
@@ -265,25 +265,25 @@ public class AbstractStation extends StationWriter implements Rejecting{
         Director director=getDirector();
         Time currentTime = director.getModelTime();
         if (currentTime.equals(_transitExpires) && _inTransit != null) {
-            try{
+            try {
                 // Station has more than one output channel and output channel of the train has not been determined.
-                if(output.getWidth()>1 && _outRoute==-1)
+                if (output.getWidth()>1 && _outRoute==-1)
                 {
                     Map<String, Token> temp=new TreeMap<>();
                     temp=((TCSDirector)_director).routing(_neighbors,_inTransit);
                     _outRoute=((IntToken)temp.get("outputChannel")).intValue();
-                    if(_outRoute>=output.getWidth())
+                    if (_outRoute>=output.getWidth())
                         throw new IllegalActionException("Output port has not this channel "+_outRoute);
                     _inTransit=temp.get("train");
                 }
                 // Station has one output channel.
-                else if(output.getWidth()==1 || output.getWidth()==0)
+                else if (output.getWidth()==1 || output.getWidth()==0)
                 {
                     _outRoute=0;
                 }
 
                  output.send(_outRoute, _inTransit);
-            } catch (NoRoomException ex){
+            } catch (NoRoomException ex) {
                 // Train has been rejected by the next track.
                 double additionalDelay = ((TCSDirector)_director).handleRejectionWithDelayStation(this);
                 if (additionalDelay < 0.0)
@@ -301,15 +301,15 @@ public class AbstractStation extends StationWriter implements Rejecting{
             _setIcon(-1);
             return;
         }
-        for(int i=0;i<input.getWidth();i++){
-            if(input.hasNewToken(i))
+        for (int i=0;i<input.getWidth();i++) {
+            if (input.hasNewToken(i))
             {
                 _inTransit=input.get(i);
                 int id=((IntToken)(((RecordToken)_inTransit).get("trainId"))).intValue();
                 _setIcon(id);
                 double time=((DoubleToken)settlingTime.getToken()).doubleValue();
                 double movingTime=((TCSDirector)_director).movingTimeOfTrain(_inTransit,_id);
-                if(movingTime<=0.0)
+                if (movingTime<=0.0)
                     throw new IllegalActionException("Minstake in calculating moving time of Train");
 
                  _transitExpires = currentTime.add(time+movingTime);
@@ -330,7 +330,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
         _called=false;
         _setIcon(-1);
         _isBroken=broken.getToken();
-        if(_isBroken==null)
+        if (_isBroken==null)
             _isBroken=(Token)(new BooleanToken(false));
         _neighbors=(ArrayToken)neighbors.getToken();
         _outRoute=-1;
@@ -341,7 +341,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
 
     /** Change the color of the inner box in station to show the moving train.
      *  @param id The train ID or -1 to indicate no train.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     protected void _setIcon(int id) throws IllegalActionException {
         ArrayToken color = _noTrainColor;
@@ -349,7 +349,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
             {
                 Director _director=getDirector();
                 color = ((TCSDirector)_director).handleTrainColor(id);
-                if(color==null)
+                if (color==null)
                     throw new IllegalActionException("Color for the train "+id+" has not been set");
             }
         _trainColor.fillColor.setToken(color);

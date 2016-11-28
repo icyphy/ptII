@@ -90,13 +90,13 @@ public class ContextAwareHelperTest {
      * @return the json formatted data in an array
      */
     public ArrayList  convertXMLtoJSON(String response) {
-        try{
+        try {
             JSONObject xmlJson = XML.toJSONObject(response);
             String prettyString = xmlJson.toString(4);
             System.out.println(prettyString);
             Iterator x = xmlJson.keys();
             ArrayList jsonArray=new ArrayList();
-            while(x.hasNext()){
+            while (x.hasNext()) {
                 String key=(String)x.next();
                 jsonArray.add(xmlJson.get(key));
             }
@@ -136,7 +136,7 @@ public class ContextAwareHelperTest {
      * process
      * @return The list of data type to be extracted from Firebase.
      */
-    public String[] getFirebaseOutput(){
+    public String[] getFirebaseOutput() {
         return firebaseOutputPort;
     }
 
@@ -168,7 +168,7 @@ public class ContextAwareHelperTest {
      * @param selectedService The name of the service that was selected.
      * @return An array of service parameters. Not used now
      */
-    public String getSelectedServiceParameter(String selectedService){
+    public String getSelectedServiceParameter(String selectedService) {
         //return GUI.textFields.get(index).getText();
         if (selectedService.equals("GSN")) {
             return "pluto.cs.txstate.edu";}
@@ -202,8 +202,8 @@ public class ContextAwareHelperTest {
 
         int length = Array.getLength(parameters);
 
-        for(int i = 0; i < _GUI.labels.size(); i++) {
-            if(i < length) {
+        for (int i = 0; i < _GUI.labels.size(); i++) {
+            if (i < length) {
                 _GUI.labels.get(i).setText(parameters[i]);
                 _GUI.labels.get(i).setVisible(true);
                 _GUI.textFields.get(i).setVisible(true);

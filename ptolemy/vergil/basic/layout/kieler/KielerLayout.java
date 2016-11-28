@@ -380,7 +380,7 @@ public class KielerLayout extends AbstractGlobalLayout {
             IKielerProgressMonitor progressMonitor) {
 
         for (KNode child : parentNode.getChildren()) {
-            if(!child.getChildren().isEmpty())
+            if (!child.getChildren().isEmpty())
             layoutProvider.doLayout(child, progressMonitor.subTask(1));
         }
 

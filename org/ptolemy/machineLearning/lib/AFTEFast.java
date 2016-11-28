@@ -294,7 +294,7 @@ public class AFTEFast extends Transformer {
      * Multithreaded FIR Gammatone filtering.
      * @param input
      * @return
-     * @throws IllegalActionException
+     * @exception IllegalActionException
      */
     private void multithreadedFeatureExtraction() throws IllegalActionException {
 
@@ -404,7 +404,7 @@ public class AFTEFast extends Transformer {
 <<<<<<< .mine
      * Do FFTs on all channels for this block and save to the array
      * @param startIndex Chunk Index
-     * @throws IllegalActionException
+     * @exception IllegalActionException
 =======
      * Convert to Equivalent Rectangular Bandwidth (ERB) scale from Hz.
      * @param frequencyInHz Frequency in Hz

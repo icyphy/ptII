@@ -112,7 +112,7 @@ public class Sensor {
      *
      * @param interval The time interval between sensor readings
      */
-    public void setInterval(String interval){
+    public void setInterval(String interval) {
         _interval = interval;
     }
 

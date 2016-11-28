@@ -225,7 +225,7 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         for (int x = 0; x < h; x++) {
             for (int y = 0; y < w; y++) {
                 double[] color = matrix.get(x, y);
-                if ( color.length  > 1 ){
+                if ( color.length  > 1 ) {
                     int r = (int) color[0]; int g = (int) color[1]; int b = (int) color[2];
                     destination.setRGB(y, x, new Color(r,g,b).getRGB());
                 } else {

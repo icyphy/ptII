@@ -209,7 +209,7 @@ public class HlaPublisher extends TypedAtomicActor {
      *  buffer API.
      *  @return true if the HLA publisher actor uses the CERTI message and false if
      *  it doesn't.
-     *  @throws IllegalActionException
+     *  @exception IllegalActionException
      */
     public boolean useCertiMessageBuffer() throws IllegalActionException {
         return _useCertiMessageBuffer;
