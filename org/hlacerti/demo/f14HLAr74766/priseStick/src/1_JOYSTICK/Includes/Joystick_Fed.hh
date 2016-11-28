@@ -7,7 +7,7 @@
 #include <iostream>
 #include <memory>
 #include <string>
-#include <string.h>
+#include <string.h>
 /*
  * <RTI.hh>
  * This header is the necessary include for using HLA RunTime Infrastructure
