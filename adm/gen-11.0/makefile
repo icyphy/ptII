@@ -263,7 +263,7 @@ release_mac:
 
 # To install gnutar, use: sudo -i port install gnutar
 release_mac2:
-	@if [ -z `which -z` ]; then \
+	@if [ -z `which 7z` ]; then \
 		echo "7z does not exist, install it with: sudo port install p7zip"; \
 	fi
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar clean all src.jar setup
