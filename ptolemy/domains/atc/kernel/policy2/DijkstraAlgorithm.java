@@ -25,7 +25,7 @@
    COPYRIGHTENDKEY
 
 */
-     
+
 package ptolemy.domains.atc.kernel.policy2;
 
 import java.util.ArrayList;
@@ -89,8 +89,8 @@ public class DijkstraAlgorithm {
      *  @param destination The destination
      *  @param stormyTracks The map of storm tracks.
      *  @param inTransit the map of in transit objects.
-     *  @return an array of tokens   
-     */   
+     *  @return an array of tokens
+     */
     public Token[] callDijkstra(Map<Integer, ArrayToken> neighbors, ArrayList<Integer> airportsId,
             int source, int destination, Map<Integer, Token> stormyTracks, Map<Integer, Boolean> inTransit) {
         int k=0;
@@ -111,14 +111,14 @@ public class DijkstraAlgorithm {
                             weight+=5;
                     _addLane(k++,node,id,weight);
                 }
-            }      
+            }
         }
 
         for (int i = 0; i < airportsId.size(); i++) {
             Vertex location = new Vertex(airportsId.get(i));
             _nodes.add(location);
         }
-  
+
         execute(new Vertex(source));
         LinkedList<Vertex> path = getPath(new Vertex(destination));
         if (path==null) {
@@ -131,11 +131,11 @@ public class DijkstraAlgorithm {
             // ArrayToken flightMap=new ArrayToken(BaseType.INT, newFlightMap);
             return newFlightMap;
         }
- 
+
     }
 
     /** Return the path from the source to the selected target.  Return null
-     *  if no path exists.   
+     *  if no path exists.
      *  @param target The target.
      *  @return the path to the target or null.
      */
@@ -155,7 +155,7 @@ public class DijkstraAlgorithm {
         Collections.reverse(path);
         return path;
     }
-  
+
 
     ///////////////////////////////////////////////////////////////////
     ////                     private method                        ////
@@ -236,4 +236,4 @@ public class DijkstraAlgorithm {
     private Set<Vertex> _unsettledNodes;
     private Map<Vertex, Vertex> _predecessors;
     private Map<Vertex, Integer> _distance;
-} 
+}

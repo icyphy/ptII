@@ -1053,7 +1053,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
 
 fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
     ModelInstance *comp = (ModelInstance *)c;
-    
+
     fmi2Integer communicationStepSize = computeStepSize(comp);
 
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2HybridGetMaxStepSize: "

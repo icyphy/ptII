@@ -318,7 +318,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                         .getElement(0)).length();
                 _obsDimension = observationDimension;
                 _observations = new double[_observationLength][_obsDimension];
-                for (int i = 0; i < _observationLength; i++) { 
+                for (int i = 0; i < _observationLength; i++) {
                     for (int j = 0; j < observationDimension; j++) {
                         _observations[i][j] = ((DoubleToken)((ArrayToken) ((ArrayToken) observationArray)
                                 .getElement(i)).getElement(j)).doubleValue();
@@ -350,14 +350,14 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
             if (success) {
                 break;
             } else {
-                //did not converge yet. 
+                //did not converge yet.
                 _updateEstimates();
                 likelihoodOut.send(0, new DoubleToken(likelihood));
                 System.out.println(likelihood);
                 _likelihood = likelihood;
             }
         }
-        System.out.println("======="); 
+        System.out.println("=======");
         return success;
     }
 
@@ -432,12 +432,12 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
         int nObservations = y.length;
         int obsDimension = _obsDimension;
 
-        /** 
+        /**
          * alpha(q_t) is the probability of emitting a partial observation sequence up to time
          * t that ends up in state q_t, given by
          * alpha(q_{t+1}) := p(y_0,....y_{t+1},q_{t+1} */
         double[][] alphas = new double[nObservations][nStates];
-        
+
         /**
          * Additional definition: beta(q_t): Probability of emitting a partial observation sequence
          * from time t+1 up to time T, where the state at time t is q_t.
@@ -445,7 +445,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
          * gamma(q_t): The Posterior probability p(q_t | y) := alpha(q_t)*beta(q_t)/p(y)
          */
         double[][] gamma = new double[nObservations][nStates];
-        
+
         /**
          * Probability matrix of state cooccurence: xi(q_t, q_{t+1}) := p(q_t,q_{t+1} | y)
          */
@@ -453,26 +453,26 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
 
         /** Transition probability matrix estimate. */
         double[][] A_hat = new double[nStates][nStates];
-        
+
         /** Mean estimate. */
         double[][] mu_hat = new double[nStates][obsDimension];
-        
+
         /** Covariance estimate. */
         double[][][] s_hat = new double[nStates][obsDimension][obsDimension];
-        
+
         /** Prior state distribution estimate. */
         double[] pi_hat = new double[nStates];
-        
+
         /** State emission distribution estimate. */
         double[][] eta_hat = new double[nStates][nCategories];
 
         /** Alpha sequence normalization factors. */
         double[] alphaNormalizers = new double[nObservations];
-        
+
         /** Sum of alphas over all states. */
         double alphaSum = 0.0;
-        
-        
+
+
         // The forward pass.
         for (int t = 0; t < y.length; t++) {
             alphaSum = 0.0;
@@ -494,11 +494,11 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
                 alphaNormalizers[t] = alphaSum;
             }
         }
-        
+
         //The backward pass.
         for (int t = y.length - 1; t >= 0; t--) {
             for (int qt = 0; qt < nStates; qt++) {
-                if (t == y.length - 1) { 
+                if (t == y.length - 1) {
                     //initialize gamma at the last time step to be the alpha at the same time step.
                     gamma[t][qt] = alphas[t][qt];
                 } else {
@@ -516,7 +516,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
         }
 
         // Once the forward-backward passes are completed, we move onto estimating the parameters.
-        
+
         // Calculate the xi's ( for the transition matrix)
         for (int next = 0; next < nStates; next++) {
             for (int now = 0; now < nStates; now++) {
@@ -550,9 +550,9 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
             }
             for (int j = 0; j < nStates; j++) {
                 A_hat[i][j] /= rowsum[i];
-            } 
+            }
         }
-        for (int j = 0; j < nStates; j++) {  
+        for (int j = 0; j < nStates; j++) {
             for (int t = 0; t < y.length; t++) {
                 gammasum[j] += gamma[t][j];
                 // computing over all dimensions of the observation.

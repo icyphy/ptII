@@ -205,7 +205,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                     "Parameter guess vectors must have equal lengths.");
         }
 
-        _EMParameterEstimation(); 
+        _EMParameterEstimation();
         Token[] mTokens = new Token[_nStates];
         Token[] sTokens = new Token[_nStates];
         Token[] pTokens = new Token[_nStates];
@@ -242,20 +242,20 @@ public class HMMGaussianEstimator extends ParameterEstimator {
         double[] m = _mu[hiddenState];
         if (DoubleMatrixMath.determinant(s) < SignalProcessing.EPSILON) {
             return 0.0;
-        } 
+        }
         return Algorithms.mvnpdf(y, m, s);
     }
 
     @Override
-    protected boolean _checkForConvergence(int iterations) { 
+    protected boolean _checkForConvergence(int iterations) {
 
 //        double normMatrix = DoubleArrayMath.l2norm(DoubleMatrixMath.fromMatrixToArray(m_new));
 //        if (DoubleMatrixMath.within(_mu, m_new, 0.01*normMatrix)) {
 //            return true;
-//        } 
+//        }
         if (Math.abs(likelihood - _likelihood) < _likelihoodThreshold) {
             return true;
-        } else { 
+        } else {
             return false;
         }
     }
@@ -318,8 +318,8 @@ public class HMMGaussianEstimator extends ParameterEstimator {
                 // sort arrays
                 ///Arrays.sort(m_new);
                 prior_new = _priors;
-            } 
-        } else { 
+            }
+        } else {
             _transitionMatrix = A_new;
             _sigma = s_new;
             _mu = m_new;
@@ -336,7 +336,7 @@ public class HMMGaussianEstimator extends ParameterEstimator {
     /**  Standard deviation guess. */
     private double[][][] _sigma0 = null;
 
-    
+
     // // if no convergence in 10 iterations, issue warning message.
 //    if ((iterations >= _nIterations - 1)) {
 //        // return the guess parameters

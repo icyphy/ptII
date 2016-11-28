@@ -1559,10 +1559,10 @@ public abstract class QSSBase {
     * The rate models also get updated.</p>
     *
     * <p>This method is similar to method {@link #triggerRateEvent()}.
-    * The only difference is that it calls 
-    * method {@link #_triggerRateEventWorkerEventDetection()} 
+    * The only difference is that it calls
+    * method {@link #_triggerRateEventWorkerEventDetection()}
     * to detect and handle state events.</p>
-    * 
+    *
     * @param numberEventIndicators The number of event indicators.
     * @exception Exception If thrown while triggering the rate event.
     */
@@ -2313,7 +2313,7 @@ public abstract class QSSBase {
         return (null);
     }
     ///////////////////////////////////////////////////////////////////
-    ////                         protected variables 
+    ////                         protected variables
 
     /** Maximum Time for predicted quantization-event times. */
     protected Time _quantEvtTimeMax = Time.POSITIVE_INFINITY;

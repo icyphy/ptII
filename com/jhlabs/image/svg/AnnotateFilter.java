@@ -134,7 +134,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
             } catch (Exception e) {
                 // FIXME Auto-generated catch block
                 e.printStackTrace();
-                
+
                 // If all else fails, paint default graphic.
                 Graphics2D g = destination.createGraphics();
                 g.setStroke(new BasicStroke(2));
@@ -145,7 +145,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
         }
         */
         Graphics2D g = destination.createGraphics();
-        
+
         // Set offsets and rotation.
         AffineTransform transform = new AffineTransform();
         transform.setToScale(_scale, _scale);
@@ -154,7 +154,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
         translation.setToTranslation(_xOffset, _yOffset);
         transform.preConcatenate(translation);
         g.transform(transform);
-                
+
         icon.paintIcon(null, g, 0, 0);
 
         g.dispose();
@@ -178,7 +178,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
     public String getGraphicURI() {
         return _graphicURI;
     }
-    
+
     /** Get the rotation for the graphic in degrees, which defaults to 0.0.
      *  @return The rotation for the graphic.
      *  @see #setRotation(double)
@@ -194,7 +194,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
     public double getScale() {
         return _scale;
     }
-    
+
     /** Get the horizontal offset for the graphic, in pixels.
      *  @return The horizontal offset for the graphic, in pixels.
      *  @see #setXOffset(double)
@@ -217,9 +217,9 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
      */
     public void setGraphic(String graphic) {
         if (!_graphic.equals(graphic)) {
-            // Use the current date and time for the version to guarantee a 
-            // unique new version number.  A counter is insufficient 
-            // if a user edits a non-running model.  (I.e., the counter starts 
+            // Use the current date and time for the version to guarantee a
+            // unique new version number.  A counter is insufficient
+            // if a user edits a non-running model.  (I.e., the counter starts
             // at "1", the user stops the model, edits the svg, runs the model
             // and the counter is reset to "1" again).
             _graphicVersion = (int) (new Date().getTime()/1000);
@@ -279,7 +279,7 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-    
+
     /** The relative URI of the default graphic. */
     // public static String DEFAULT_GRAPHIC_URI = "$CLASSPATH/com/jhlabs/image/svg/CapeCodOutline.svg";
 
@@ -291,19 +291,19 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
 
     /** The URI for the graphic, if one has been given. */
     private String _graphicURI = null;
-    
+
     /** The version for the graphic. This gets incremented each time _graphic changes. */
     private int _graphicVersion = 0;
-    
+
     /** The rotation for the graphic in radians. */
     private double _rotation = 0.0;
-    
+
     /** The scale factor for the graphic. */
     private double _scale = 1.0;
-    
+
     /** The horizontal location for the graphic. */
     private double _xOffset = 0;
-    
+
     /** The vertical location for the graphic. */
     private double _yOffset = 0;
 }

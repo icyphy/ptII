@@ -54,14 +54,14 @@ import ptolemy.math.SignalProcessing;
 ////AFTEFast
 
 /**
- * This actor calculates the Auditory Filterbank Temporal Envelope (AFTE) 
- * features of a given audio signal. 
+ * This actor calculates the Auditory Filterbank Temporal Envelope (AFTE)
+ * features of a given audio signal.
  *
  * @author Ilge Akkaya
  * @version $Id$
  * @since Ptolemy II 11.0
- * @Pt.ProposedRating  
- * @Pt.AcceptedRating  
+ * @Pt.ProposedRating
+ * @Pt.AcceptedRating
  */
 public class AFTEDiscriminant extends Transformer {
     /** Construct an actor with the given container and name.
@@ -80,32 +80,32 @@ public class AFTEDiscriminant extends Transformer {
         output.setTypeEquals(new ArrayType(BaseType.DOUBLE));
 
         centerFrequencies = new Parameter(this, "centerFrequencies");
-        centerFrequencies.setTypeEquals(new ArrayType(BaseType.INT)); 
-        centerFrequencies.setExpression("{2000}"); 
-        
+        centerFrequencies.setTypeEquals(new ArrayType(BaseType.INT));
+        centerFrequencies.setExpression("{2000}");
+
         outputFeatureIndices = new Parameter(this,"outputFeatureIndices");
         outputFeatureIndices.setExpression("{0}");
-        outputFeatureIndices.setTypeEquals(new ArrayType(BaseType.INT)); 
-        
+        outputFeatureIndices.setTypeEquals(new ArrayType(BaseType.INT));
+
         normalize = new Parameter(this,"normalize");
         normalize.setTypeEquals(BaseType.BOOLEAN);
         normalize.setExpression("true");
-        
+
         normalizeByDc = new Parameter(this,"normalizeByDc");
         normalizeByDc.setTypeEquals(BaseType.BOOLEAN);
         normalizeByDc.setExpression("true");
-        
+
         useEnergyBands = new Parameter(this,"useEnergyBands");
         useEnergyBands.setTypeEquals(BaseType.BOOLEAN);
         useEnergyBands.setExpression("false");
-        
+
         fs = new Parameter(this, "fs");
         fs.setExpression("48000");
         fs.setTypeEquals(BaseType.INT);
 
         fmodspec = new Parameter(this, "fmodspec");
         fmodspec.setExpression("100");
-        fmodspec.setTypeEquals(BaseType.INT); 
+        fmodspec.setTypeEquals(BaseType.INT);
 
         windowSize = new Parameter(this, "transferSize");
         windowSize.setExpression("16000");
@@ -114,24 +114,24 @@ public class AFTEDiscriminant extends Transformer {
         nOverlap  = new Parameter(this, "nOverlap");
         nOverlap.setExpression("3200");
         nOverlap.setTypeEquals(BaseType.INT);
-         
-        
-        _fftLength = 64; 
+
+
+        _fftLength = 64;
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
-  
-    /** 
+
+    /**
      * The array of filterbank center frequencies.
-     */ 
+     */
     public Parameter centerFrequencies;
-    
+
     /**
      * FFT Feature indices to be output.
      */
     public Parameter outputFeatureIndices;
-    
+
     /**
      * Boolean option to specify whether the output feature array should be normalized to have an L-2 norm of 1.
      */
@@ -139,29 +139,29 @@ public class AFTEDiscriminant extends Transformer {
 
     /**
      * Boolean option to specify whether the selected output features should be normalized by the DC term. If set
-     * to true together with normalize, this option is applied first. 
+     * to true together with normalize, this option is applied first.
      */
     public Parameter normalizeByDc;
-    
+
     /**
      * The output features become log-sum of energies within certain FFT bands. Currently, the bin width is set t
      * 4 FFT samples per bin, and the FFT length is set to 64. Only computed for the nonnegative frequencies and DC term
      * is output as a separate feature. In the current setting, 9 features per channel is output.
      */
     public Parameter useEnergyBands;
-    /** 
+    /**
      * Input sampling frequency.
-     */ 
+     */
     public Parameter fs;
- 
-    /** 
+
+    /**
      * Mod spec sampling frequency.
-     */ 
+     */
     public Parameter fmodspec;
 
     /**
      * Transfer size.
-     * 
+     *
      */
     public Parameter windowSize;
 
@@ -190,7 +190,7 @@ public class AFTEDiscriminant extends Transformer {
             if (_fs <= 0) {
                 throw new IllegalActionException(this, "Sampling frequency was "
                         + _fs + " but must be greater than zero.");
-            } 
+            }
         } else if (attribute == centerFrequencies) {
             Token[] cfs = ((ArrayToken)centerFrequencies.getToken()).arrayValue();
 
@@ -198,7 +198,7 @@ public class AFTEDiscriminant extends Transformer {
 
             for (int i = 0; i< cfs.length; i++) {
                 _centerFrequencies[i] = ((IntToken)cfs[i]).intValue();
-            } 
+            }
             _numChannels = cfs.length;
         } else if (attribute == outputFeatureIndices) {
             Token[] indices = ((ArrayToken)outputFeatureIndices.getToken()).arrayValue();
@@ -207,11 +207,11 @@ public class AFTEDiscriminant extends Transformer {
 
             for (int i = 0; i< indices.length; i++) {
                 _featureIndices[i] = ((IntToken)indices[i]).intValue();
-            } 
+            }
         } else if (attribute == fs) {
-            _fs = ((IntToken) fs.getToken()).intValue(); 
-        } else if (attribute == fmodspec) { 
-            _fmod = ((IntToken) fmodspec.getToken()).intValue();   
+            _fs = ((IntToken) fs.getToken()).intValue();
+        } else if (attribute == fmodspec) {
+            _fmod = ((IntToken) fmodspec.getToken()).intValue();
         } else if (attribute == windowSize) {
             _windowSize = ((IntToken) windowSize.getToken()).intValue();
         } else if (attribute == nOverlap) {
@@ -228,28 +228,28 @@ public class AFTEDiscriminant extends Transformer {
 
     /**
      * Initialize the actor.
-     * Sets up impulse responses for gammatone filters 
+     * Sets up impulse responses for gammatone filters
      */
     @Override
     public void initialize() throws IllegalActionException {
-        super.initialize(); 
-        _initializeGammatoneFilterbankTaps(); 
-        _envelopes = new double[_numChannels][_transferSize/(_fs/_fmod)];   
-        _filterResult = new double[_numChannels][_transferSize];  
+        super.initialize();
+        _initializeGammatoneFilterbankTaps();
+        _envelopes = new double[_numChannels][_transferSize/(_fs/_fmod)];
+        _filterResult = new double[_numChannels][_transferSize];
         _fftChunks = _windowSize / _transferSize;
         _convolutionLength = _transferSize + _impulseResponses[0].length - 1;
 
-        _inArray = new double[_windowSize];   
+        _inArray = new double[_windowSize];
         _loadFilterFFTs();
         _convolutionChunks = new double[_numChannels][_fftChunks][_convolutionLength];
         _envelopeFFT = new double[_numChannels][_fftLength];
-    } 
+    }
     /** Consume the inputs and produce the outputs of the FFT filter.
      *  @exception IllegalActionException If a runtime type error occurs.
      */
     @Override
     public void fire() throws IllegalActionException {
-        super.fire(); 
+        super.fire();
         _inArray = new double[_transferSize];
         Token inTokenArray = input.get(0);
         for (int j = 0; j < _transferSize; j++) {
@@ -266,13 +266,13 @@ public class AFTEDiscriminant extends Transformer {
         if (_framePointer >= _fftChunks) {
 
             // multithreaded gammatone filtering and subsampling
-            multithreadedFeatureExtraction();  
+            multithreadedFeatureExtraction();
 
             _framePointer = _fftChunks-1;
             boolean normalizeDC = ((BooleanToken)normalizeByDc.getToken()).booleanValue();
             if (_energyFeatures) {
               //right now, using a feature for DC and binds of width, 6.25Hz from there on
-               double [] flatFeatures = new double[_featuresPerChannel*_numChannels]; 
+               double [] flatFeatures = new double[_featuresPerChannel*_numChannels];
                int index = 0;
                for (int i = 0 ; i < _numChannels;i++) {
                    double DC = _envelopeFFT[i][0];
@@ -284,15 +284,15 @@ public class AFTEDiscriminant extends Transformer {
                            sum += Math.pow(_envelopeFFT[i][k++],2);
                        }
                        flatFeatures[index++] = Math.log(sum);
-                   } 
+                   }
                }
                Token[] features = new Token[_featureIndices.length];
-               for (int i = 0; i < features.length; i++) { 
+               for (int i = 0; i < features.length; i++) {
                    features[i] = new DoubleToken(flatFeatures[_featureIndices[i]]);
                }
                output.send(0, new ArrayToken(features));
             } else {
-               
+
                 double[] flatFeatures = new double[33*_numChannels];
                 int index = 0;
                 for (int i = 0 ; i < _numChannels;i++) {
@@ -300,10 +300,10 @@ public class AFTEDiscriminant extends Transformer {
                     for ( int f=0; f < 33; f++) {
                         if (f ==0) {
                             flatFeatures[index++] = _envelopeFFT[i][f];
-                        } else { 
+                        } else {
                             flatFeatures[index++] = normalizeDC ? _envelopeFFT[i][f]/DC : _envelopeFFT[i][f];
                         }
-                    } 
+                    }
                 }
                 if ( ((BooleanToken)normalize.getToken()).booleanValue()) {
                     // normalize each channel in itself
@@ -315,33 +315,33 @@ public class AFTEDiscriminant extends Transformer {
                     }
                 }
                 Token[] features = new Token[_featureIndices.length];
-                for (int i = 0; i < features.length; i++) { 
+                for (int i = 0; i < features.length; i++) {
                     features[i] = new DoubleToken(flatFeatures[_featureIndices[i]]);
                 }
-                output.send(0, new ArrayToken(features));   
+                output.send(0, new ArrayToken(features));
             }
-        }  
+        }
     }
-    
+
     @Override
     public void wrapup() throws IllegalActionException {
         super.wrapup();
-        _framePointer = 0; 
+        _framePointer = 0;
     }
 
     /**
      * Multithreaded FIR Gammatone filtering.
      * @param input
      * @return
-     * @throws IllegalActionException 
+     * @throws IllegalActionException
      */
     private void multithreadedFeatureExtraction() throws IllegalActionException {
 
         ExecutorService executor = Executors.newFixedThreadPool(_numChannels);
 
-        for (int i = 0; i < _numChannels; i++) { 
-            executor.execute(new GammatoneFilter(i)); 
-        } 
+        for (int i = 0; i < _numChannels; i++) {
+            executor.execute(new GammatoneFilter(i));
+        }
 
         executor.shutdown();
         try {
@@ -349,30 +349,30 @@ public class AFTEDiscriminant extends Transformer {
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             throw new IllegalActionException(this, "Could not shut down threadpool in 1 second.");
-        } 
+        }
     }
 
     //TODO: Think about speeding this up.
-    private double[] _firEnvelope(double[] signal) { 
-        int convLength = signal.length + env_fir.length -1; 
+    private double[] _firEnvelope(double[] signal) {
+        int convLength = signal.length + env_fir.length -1;
         Complex[] signalFFT = SignalProcessing.FFTComplexOut(signal,SignalProcessing.order(convLength));
-        double[] result = SignalProcessing.IFFTRealOut(ComplexArrayMath.multiply(env_fft, signalFFT)); 
-        return Arrays.copyOfRange(result, env_fir.length/2, signal.length+env_fir.length/2); 
-        
+        double[] result = SignalProcessing.IFFTRealOut(ComplexArrayMath.multiply(env_fft, signalFFT));
+        return Arrays.copyOfRange(result, env_fir.length/2, signal.length+env_fir.length/2);
+
     }
-    
+
     private double[] _hilbertEnvelope(double[] signal) {
 
         /** x[n] ---DTFT----> X(w)
            u[n] = hilbertTransform(x[n]) ---- DTFT ---> -2*i*sgn[w]*X(w) where sgn is the sign function
          */
-        Complex[] fftOut = SignalProcessing.FFTComplexOut(signal); 
+        Complex[] fftOut = SignalProcessing.FFTComplexOut(signal);
         int fftLength = fftOut.length;
         for (int i = 0 ; i < fftOut.length; i++) {
             Complex old = fftOut[i];
             if (i > fftLength/2) {
                 fftOut[i] = new Complex(0,0);
-            } else { 
+            } else {
                 fftOut[i] = new Complex(-2*old.imag, 2*old.real);
             }
         }
@@ -380,17 +380,17 @@ public class AFTEDiscriminant extends Transformer {
         double [] hilbertEnvelope = ComplexArrayMath.
                 magnitude(SignalProcessing.IFFT(fftOut));
 
-        // removing zero padding. 
-        return Arrays.copyOfRange(hilbertEnvelope,0,signal.length); 
+        // removing zero padding.
+        return Arrays.copyOfRange(hilbertEnvelope,0,signal.length);
     }
 
 
 
-    private double[] _decimateSignal( 
-            double[] timeSignal, 
-            int factor) { 
+    private double[] _decimateSignal(
+            double[] timeSignal,
+            int factor) {
         double[] lowpasstime = SignalProcessing.downsample(timeSignal, factor);
-        return lowpasstime; 
+        return lowpasstime;
 
     }
     private void _initializeGammatoneFilterbankTaps() {
@@ -398,50 +398,50 @@ public class AFTEDiscriminant extends Transformer {
 
         int a = (int)(0.128*_fs); // minimum 128 ms window
         int nextPowerOf2 = SignalProcessing.order(a);
-        int filterLength = (int) Math.pow(2,nextPowerOf2); 
+        int filterLength = (int) Math.pow(2,nextPowerOf2);
         double tpt = 2*Math.PI/_fs;
 
         _impulseResponses = new double[_numChannels][filterLength];
         for (int i = 0; i < _numChannels; i++) {
             double cfreq = _centerFrequencies[i];
-            double b = 1.019*24.7*(4.37*cfreq/1000+1); // bandwidth 
-            double gain = Math.pow((1.019*b*tpt),_filterOrder)/6; 
+            double b = 1.019*24.7*(4.37*cfreq/1000+1); // bandwidth
+            double gain = Math.pow((1.019*b*tpt),_filterOrder)/6;
             for (int j =0; j < filterLength; j++) {
                 double tstep = j*1.0/_fs;
                 _impulseResponses[i][j] = gain*Math.pow(_fs,3)*Math.pow(tstep,_filterOrder-1)
                         *Math.exp(-2*Math.PI*b*tstep)*Math.cos(2*Math.PI*cfreq*tstep);
-            } 
+            }
         }
-        
+
         int convLength = _windowSize + env_fir.length -1;
         env_fft = SignalProcessing.FFTComplexOut(env_fir,SignalProcessing.order(convLength));
-    } 
+    }
     /**
      * Overlap and output when frame ready to go.
-     * TODO: Don't need to do this triple sum every time we will output. 
+     * TODO: Don't need to do this triple sum every time we will output.
      * We will already have summed up the previous 5, so substract the first channle
      * and add in the new one at the end.
      */
     private void overlapAndAdd(int filterIndex) {
-        synchronized (_convolutionChunks[filterIndex]) { 
+        synchronized (_convolutionChunks[filterIndex]) {
             _filterResult[filterIndex] = new double[_windowSize];
             for ( int j = 0; j<_fftChunks; j++) {
                 int maxIndex = Math.min (_windowSize - j*_transferSize, _convolutionLength );
                 for (int k = 0 ; k < maxIndex ; k++) {
                     _filterResult[filterIndex][j*_transferSize + k] += _convolutionChunks[filterIndex][j][k];
                 }
-            } 
-        }
-    } 
-    private void shiftChunks(int filterIndex) {
-
-        synchronized (_convolutionChunks[filterIndex]) { 
-            for ( int j=1; j<_fftChunks; j++) {
-                _convolutionChunks[filterIndex][j-1] = _convolutionChunks[filterIndex][j];
-            } 
+            }
         }
     }
- 
+    private void shiftChunks(int filterIndex) {
+
+        synchronized (_convolutionChunks[filterIndex]) {
+            for ( int j=1; j<_fftChunks; j++) {
+                _convolutionChunks[filterIndex][j-1] = _convolutionChunks[filterIndex][j];
+            }
+        }
+    }
+
     /**
 <<<<<<< .mine
      * Do FFTs on all channels for this block and save to the array
@@ -456,16 +456,16 @@ public class AFTEDiscriminant extends Transformer {
     private void doBlockFFT(int startIndex) throws IllegalActionException {
         // can be done in parallel for multiple filters
         ExecutorService executor = Executors.newFixedThreadPool(_numChannels);
-        for (int i = 0; i < _numChannels; i++) { 
-            executor.execute(new FFTWorker(i, startIndex)); 
-        }  
+        for (int i = 0; i < _numChannels; i++) {
+            executor.execute(new FFTWorker(i, startIndex));
+        }
         executor.shutdown();
         try {
             executor.awaitTermination(1, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             throw new IllegalActionException(this, "Could not shut down threadpool in 1 second.");
-        } 
+        }
     }
 
     private double[] blockFFT(double[] chunk, int filterIndex) {
@@ -473,29 +473,29 @@ public class AFTEDiscriminant extends Transformer {
         Complex[] inputFFT = SignalProcessing.FFTComplexOut(chunk, fftOrder);
         Complex[] result = ComplexArrayMath.multiply(inputFFT, _gammatoneImpulseResponseFFTs[filterIndex]);
         return Arrays.copyOfRange(SignalProcessing.IFFTRealOut(result),0,_convolutionLength);
-        // place convolution result into the appropriate segment of result.        
+        // place convolution result into the appropriate segment of result.
     }
     /**
      * Compute the FFTs of the impulse responses and save.
      * Do this once in initialization.
      */
-    private void _loadFilterFFTs() { 
+    private void _loadFilterFFTs() {
         _gammatoneImpulseResponseFFTs = new Complex[_numChannels]
                 [SignalProcessing.nextPowerOfTwo(_convolutionLength)];
         for (int i=0; i < _numChannels; i++) {
-            _gammatoneImpulseResponseFFTs[i] = 
+            _gammatoneImpulseResponseFFTs[i] =
                     SignalProcessing.FFTComplexOut(_impulseResponses[i], SignalProcessing.order(_convolutionLength));
-        } 
+        }
     }
 
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private int[] _featureIndices; 
+    private int[] _featureIndices;
     /**
      * Number of FFT chunks per window that are used for overlap-and-add convolution.
-     */ 
+     */
     private int _fftChunks;
 
     /**
@@ -511,7 +511,7 @@ public class AFTEDiscriminant extends Transformer {
     /**
      * Modulation band sampling frequency.
      */
-    private int _fmod; 
+    private int _fmod;
 
     /**
      * Gammatone filterbank center frequencies.
@@ -531,15 +531,15 @@ public class AFTEDiscriminant extends Transformer {
     /**
      * Convolution chunk frame index.
      */
-    private int _framePointer; 
-    
+    private int _framePointer;
+
     private boolean _energyFeatures;
 
     /**
      * Input transfer size.
      */
     private int _transferSize;
-    
+
     private int _featuresPerChannel = 9;
 
     /**
@@ -563,14 +563,14 @@ public class AFTEDiscriminant extends Transformer {
     private double[][] _impulseResponses;
 
     /**
-     * Result of gammatone filtering. 
+     * Result of gammatone filtering.
      */
     private double[][] _filterResult;
 
     /**
      * Modulation band envelopes of Gammatone filter outputs.
      */
-    private double[][] _envelopes;  
+    private double[][] _envelopes;
 
     /**
      * FFTs of the envelopes.
@@ -595,19 +595,19 @@ public class AFTEDiscriminant extends Transformer {
     /**
      * Private class that implements GammatoneFiltering threads. These are done in parallel
      * for a given input frame.
-     * @author ilgea    
+     * @author ilgea
      *
      */
     private class GammatoneFilter implements Runnable
-    { 
+    {
         /** The index of the filter in the Gammatone filterbank. */
         private final int filterIndex;
         GammatoneFilter( int index) {
-            this.filterIndex = index; 
-        } 
+            this.filterIndex = index;
+        }
         @Override
         public void run()
-        { 
+        {
             overlapAndAdd(filterIndex);
             shiftChunks(filterIndex);
             synchronized (_envelopes[filterIndex]) {
@@ -617,12 +617,12 @@ public class AFTEDiscriminant extends Transformer {
                 _envelopes[filterIndex] = _decimateSignal(
                         _firEnvelope(
                                 _hilbertEnvelope(
-                        _filterResult[filterIndex])), (int)Math.floor(_fs/_fmod)); 
+                        _filterResult[filterIndex])), (int)Math.floor(_fs/_fmod));
             }
             synchronized (_envelopeFFT[filterIndex]) {
                 // obtain FFT of the decimated signal and return magnitude.
                 _envelopeFFT[filterIndex] = ComplexArrayMath.magnitude(
-                        SignalProcessing.FFTComplexOut(_envelopes[filterIndex], 
+                        SignalProcessing.FFTComplexOut(_envelopes[filterIndex],
                                 SignalProcessing.order(_fftLength)));
 
             }
@@ -630,22 +630,22 @@ public class AFTEDiscriminant extends Transformer {
     }
 
     private class FFTWorker implements Runnable
-    { 
+    {
         private final int filterIndex;
         private final int blockIndex;
         FFTWorker( int filterIndex, int blockIndex) {
-            this.filterIndex = filterIndex; 
+            this.filterIndex = filterIndex;
             this.blockIndex = blockIndex;
-        } 
+        }
         @Override
         public void run()
-        { 
+        {
             synchronized ( _convolutionChunks[filterIndex][blockIndex]) {
-                _convolutionChunks[filterIndex][blockIndex] = 
+                _convolutionChunks[filterIndex][blockIndex] =
                         blockFFT(_inArray, filterIndex);
             }
         }
-    } 
+    }
 
 }
 

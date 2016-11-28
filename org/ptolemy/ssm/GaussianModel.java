@@ -28,10 +28,10 @@
 package org.ptolemy.ssm;
 
 public interface GaussianModel {
-    
+
     /** Get model mean. */
     public double[] getMean ();
-    
+
     /** Get model covariance. */
     public double[][] getCovariance();
 

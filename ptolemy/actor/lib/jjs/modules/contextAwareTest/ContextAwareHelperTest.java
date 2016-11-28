@@ -48,7 +48,7 @@ import ptolemy.actor.lib.jjs.modules.contextAware.ContextAwareGUI;
 ///////////////////////////////////////////////////////////////////
 //// ContextAwareHelperTest
 /** Set up the parameters with the details of the specific REST service.
- *  
+ *
  * <p>This is a test version of ContextAwareHelper that
  * is used for experimentation.</p>
  *
@@ -70,8 +70,8 @@ public class ContextAwareHelperTest {
     public  String[] availableServices() {
         return iotServiceList;
     }
-   
-    /** Dialog Box to select a service the accessor mimics. 
+
+    /** Dialog Box to select a service the accessor mimics.
      *  @param sensors The names of the sensors.
      */
     public void chooseSensor(String[] sensors) {
@@ -82,12 +82,12 @@ public class ContextAwareHelperTest {
                 null, sensors,
                 "1");
     }
-        
+
     /** Convert an XML data format to JSON data format using the XML
      * class from org.json.xml.
-     * 
+     *
      * @param response is the input in xml format
-     * @return the json formatted data in an array 
+     * @return the json formatted data in an array
      */
     public ArrayList  convertXMLtoJSON(String response) {
         try{
@@ -119,7 +119,7 @@ public class ContextAwareHelperTest {
         this.setSelectedService(iotServiceList);
         return _selectedServiceParam;
     }
-    
+
 
     /** Return the list of output choices of GSN service. Currently,
      * the list of choices is hard coded. Eventually, this list should
@@ -149,8 +149,8 @@ public class ContextAwareHelperTest {
     public String[] getParaimpuOutput() {
         return paraimpuOutputPort;
     }
-    
-    /** Return the name of the selected service. 
+
+    /** Return the name of the selected service.
      * Currently, this method returns the string "GSN".
      * Eventually, this method will return data from the GUI.
      * @return The name of the service chosen by the user.
@@ -162,7 +162,7 @@ public class ContextAwareHelperTest {
     }
 
     //FIXME:retrieve data entered by a user from a text field in the GUI
-  
+
     /** Return the parameters associated with the selected
      *  service. Currently just return a hard wired url for testing.
      * @param selectedService The name of the service that was selected.
@@ -174,14 +174,14 @@ public class ContextAwareHelperTest {
             return "pluto.cs.txstate.edu";}
         else return "";
     }
-        
+
     /** Get the name of a particular sensor in a service.
-     * @return The name of the service.   
-     */   
+     * @return The name of the service.
+     */
     public String getService() {
         return _sensorService;
     }
-        
+
 
     /** Initializes the list of available iot REST services and
      *  creates a GUI for a user to make the selection. Not used
@@ -199,9 +199,9 @@ public class ContextAwareHelperTest {
      * @param parameters The names of the parameters.
      */
     public void setParameters(String[] parameters) {
-            
+
         int length = Array.getLength(parameters);
-            
+
         for(int i = 0; i < _GUI.labels.size(); i++) {
             if(i < length) {
                 _GUI.labels.get(i).setText(parameters[i]);
@@ -215,14 +215,14 @@ public class ContextAwareHelperTest {
             _GUI.textFields.get(i).setText(null);
         }
     }
- 
-    
+
+
     /** The search button. */
     public JButton searchButton;
 
     /** The default parameters. */
     public String[] defaultParamList =  {"username", "password","ipAddress", "port"};
-        
+
     /** The output choices of the FireBase service. */
     public String[] firebaseOutputPort = {"microwave", "microwaveStatus", "pastValues"};
 
@@ -240,7 +240,7 @@ public class ContextAwareHelperTest {
 
     /** The GUI. */
     protected ContextAwareGUI _GUI;
-        
+
     /** The service that was selected. */
     protected String _selectedServiceParam;
 
@@ -270,22 +270,22 @@ public class ContextAwareHelperTest {
         // FIXME: use a complete sentence below.
         //when ever the type of REST service changes, get the parameters required
         _GUI.servicesList.addListSelectionListener(new ListSelectionListener() {
-                @Override        
+                @Override
                 public void valueChanged(ListSelectionEvent e) {
-                    _selectedServiceParam = _GUI.servicesList.getSelectedValue();               
+                    _selectedServiceParam = _GUI.servicesList.getSelectedValue();
                     try {
                         System.out.println("getParameters" + _selectedServiceParam);
                         setParameters(defaultParamList);
                         for (int i = 0; i< defaultParamList.length; i++) {
                             System.out.println( _GUI.textFields.get(i).getText());
-                    
+
                         }
                         // ((Invocable)_engine).invokeFunction("getParameters", MW);
                     } catch (Exception e1) {
                         e1.printStackTrace();
                     }
-                    
-                    
+
+
                 }
             });
     }

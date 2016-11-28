@@ -2112,9 +2112,9 @@ public class UtilityFunctions {
                                 + shortLibraryName;
                     }
                 } else {
-                    // Needed to find $PTII/lib/libJNIFMU.jnilib if 
+                    // Needed to find $PTII/lib/libJNIFMU.jnilib if
                     // actor/lib/fmi/jni/libJNIFMU.jnilib does not exist
-                    // $PTII/bin/vergil $PTII/ptolemy/actor/lib/fmi/jni/test/auto/EightFourInFourOutsJNI.xml 
+                    // $PTII/bin/vergil $PTII/ptolemy/actor/lib/fmi/jni/test/auto/EightFourInFourOutsJNI.xml
                     library = library.substring(index + 1);
                     shortLibraryName = library;
                 }

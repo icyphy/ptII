@@ -44,7 +44,7 @@ import ptolemy.moml.MoMLParser;
  * <p>To update a model, try:</p>
  * <pre>
  * $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors model.xml
- * </pre> 
+ * </pre>
  *
  * To update all the models that contain JavaScript actors:
  * <pre>
@@ -56,18 +56,18 @@ import ptolemy.moml.MoMLParser;
  *
  * # Generate a list of all the .xml files that contain the JavaScript actor.
  * cat /tmp/x | xargs egrep 'ptolemy.actor.lib.jjs.JavaScript' | awk -F ':' '{print $1}' | sort | uniq &lt; /tmp/javascriptx
- * 
+ *
  * # Reload the accessors on all the .xml files that contain the JavaScript actor,
  * # which as a side effect runs the Backward Compatibility script
  * cat /tmp/jsaccessorx | xargs $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors
  * </pre>
- * 
+ *
  * <p>We use <code>ptinvoke</code> to set the classpath.</p>
- * 
+ *
  * <p>ReloadAccessors, opens a model, reloads all the accessors (if any) and
  * saves the model.  While opening the model, the BackwardCompatibility MoML
  * filters are run.  This class can be one of those filters.</p>
- * 
+ *
  * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 11.0
@@ -96,7 +96,7 @@ public class JavaScriptThisUpdate extends MoMLFilterSimple {
     }
 
     /** If the container is a property named "script" contained
-     *  by the JavaScript actor, then add "this." to certain 
+     *  by the JavaScript actor, then add "this." to certain
      *  function calls.
      *  @param container The object defined by the element that this
      *   is the end of.
@@ -176,7 +176,7 @@ public class JavaScriptThisUpdate extends MoMLFilterSimple {
         "setParameter"};
 
     static {
-        try { 
+        try {
             Class diffClass = Class.forName("ptolemy.util.test.Diff");
             _diff = diffClass.getDeclaredMethod("diff", new Class [] {String.class, String.class});
         } catch (ClassNotFoundException ex) {

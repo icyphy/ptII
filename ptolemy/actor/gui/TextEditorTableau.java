@@ -130,7 +130,7 @@ public class TextEditorTableau extends Tableau {
             editor.text.setEditable(flag);
         }
     }
-    
+
     /** Make this tableau visible by calling setVisible(true), and
      *  raising or deiconifying its window.
      *  If no frame has been set, then do nothing.
@@ -223,13 +223,13 @@ public class TextEditorTableau extends Tableau {
          *  supported. If the package "org.fife.ui.rsyntaxtextarea" is found in
          *  the classpath, then the supported styles include
          *  "text/plain", "text/c", "text/clojure", "text/cpp", "text/cs",
-         *  "text/css", "text/dtd", "text/fortran", 
-         *  "text/groovy", "text/html", "text/java", 
-         *  "text/javascript", "text/json", "text/jsp", 
-         *  "text/latex", "text/makefile", 
-         *  "text/perl", "text/php", 
-         *  "text/properties", "text/python", "text/ruby", "text/sas", 
-         *  "text/scala", "text/sql", "text/tcl", "text/unix", "text/vb", 
+         *  "text/css", "text/dtd", "text/fortran",
+         *  "text/groovy", "text/html", "text/java",
+         *  "text/javascript", "text/json", "text/jsp",
+         *  "text/latex", "text/makefile",
+         *  "text/perl", "text/php",
+         *  "text/properties", "text/python", "text/ruby", "text/sas",
+         *  "text/scala", "text/sql", "text/tcl", "text/unix", "text/vb",
          *  "text/bat", and "text/xml".
          */
         public StringAttribute syntaxStyle;

@@ -95,7 +95,7 @@ public class UndoListener implements UndoableEditListener {
                 .getDefaultToolkit().getMenuShortcutKeyMask()), "redo");
         actionMap.put("redo", _redoAction);
     }
-    
+
     /** End a compound edit. */
     public synchronized void endCompoundEdit() {
         if (_compoundEdit != null) {
@@ -114,7 +114,7 @@ public class UndoListener implements UndoableEditListener {
     public synchronized void redo() throws CannotUndoException {
         _undo.redo();
     }
-    
+
     /** Start a compound undo edit. */
     public synchronized void startCompoundEdit() {
         _compoundEdit = new CompoundEdit();
@@ -150,7 +150,7 @@ public class UndoListener implements UndoableEditListener {
 
     /** A compound undo edit, or null if none is progress. */
     protected CompoundEdit _compoundEdit;
-    
+
     /** The undo action. */
     protected UndoAction _undoAction = new UndoAction();
 

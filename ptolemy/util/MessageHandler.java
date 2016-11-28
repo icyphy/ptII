@@ -150,7 +150,7 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
     public static boolean isNonInteractive() {
         // This method is necessary because Ptolemy can download models
         // and files from websites. It is a best practice to prompt the user
-        // and ask them if they actually want to download the resource.  
+        // and ask them if they actually want to download the resource.
         // However, code like the nightly build and the actor indexing code
         // should run without user interaction, so we set a property
         // when running non-interactive, batch mode code.
@@ -164,7 +164,7 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
 
         return false;
     }
-    
+
     /** Defer to the set message handler to show the specified
      *  message.  An implementation may block, for example with a modal dialog.
      *  @param info The message.
@@ -194,7 +194,7 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
     public static void setStatusHandler(StatusHandler handler) {
         _statusHandler = new WeakReference<StatusHandler>(handler);
     }
-    
+
     /** Return a short description of the throwable.
      *  @param throwable The throwable
      *  @return If the throwable is an Exception, return "Exception",
@@ -214,7 +214,7 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
 
         return throwableType;
     }
-    
+
     /** Display a status message to the user.
      *  This method is intended for keeping users informed of what is being done.
      *  The message may be displayed for a very short time and may be cleared after some time.
@@ -481,10 +481,10 @@ public class MessageHandler implements Thread.UncaughtExceptionHandler {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** The message handler. */
     private static MessageHandler _handler = new MessageHandler();
-    
+
     /** The status handlers, if any. */
     private static transient WeakReference<StatusHandler> _statusHandler;
 }

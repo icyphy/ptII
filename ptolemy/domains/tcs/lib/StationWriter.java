@@ -77,7 +77,7 @@ public class StationWriter extends TypedAtomicActor {
     public StationWriter(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         fileName=new FileParameter(this, "fileName");
         fileName.setExpression("System.out");
     }
@@ -88,7 +88,7 @@ public class StationWriter extends TypedAtomicActor {
      *  @see FilePortParameter
      */
     public FileParameter fileName;
-    
+
     /** If the specified attribute is <i>fileName</i> and there is an
      *  open file being written, then close that file.  The new file will
      *  be opened or created when it is next written to.
@@ -138,7 +138,7 @@ public class StationWriter extends TypedAtomicActor {
         super.preinitialize();
         _flushValue = true;
     }
-    
+
     /** Initialize this actor.  Derived classes override this method
      *  to perform actions that should occur once at the beginning of
      *  an execution, but after type resolution.  Derived classes can
@@ -159,7 +159,7 @@ public class StationWriter extends TypedAtomicActor {
         fileName.close();
         _writer = null;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
@@ -246,10 +246,10 @@ public class StationWriter extends TypedAtomicActor {
 
     /** Indicator for first firing. */
     private boolean _firstFiring;
-    
+
     /** Previous value of fileName parameter. */
     private String _previousFileName;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected members                 ////
 
@@ -258,9 +258,9 @@ public class StationWriter extends TypedAtomicActor {
 
     /** The current writer. */
     protected PrintWriter _writer;
-    
 
 
- 
-    
+
+
+
 }

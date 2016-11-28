@@ -300,7 +300,7 @@ public class ComponentDialog extends JDialog {
         // Close the window.
         setVisible(false);
         dispose();
-    
+
         if (contents instanceof CloseListener && !_doneHandleClosing) {
             _doneHandleClosing = true;
             ((CloseListener) contents).windowClosed(this, _buttonPressed);
@@ -349,7 +349,7 @@ public class ComponentDialog extends JDialog {
     }
 
     /** Listen for property changes.
-     *  This inner class is derived from 
+     *  This inner class is derived from
      *  https://docs.oracle.com/javase/tutorial/uiswing/examples/components/DialogDemoProject/src/components/CustomDialog.java
      *  See the top of this file for the CustomDialog.java license.
      */

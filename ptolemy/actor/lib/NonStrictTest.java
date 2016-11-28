@@ -146,7 +146,7 @@ public class NonStrictTest extends Sink {
         requireOrderedValues = new Parameter(this, "requireOrderedValues");
         requireOrderedValues.setExpression("true");
         requireOrderedValues.setTypeEquals(BaseType.BOOLEAN);
-            
+
         trainingMode = new SharedParameter(this, "trainingMode", getClass(),
                 "false");
         trainingMode.setTypeEquals(BaseType.BOOLEAN);
@@ -187,7 +187,7 @@ public class NonStrictTest extends Sink {
      *  is true.
      */
     public Parameter requireOrderedValues;
-    
+
     /** If true, then do not check inputs, but rather collect them into
      *  the <i>correctValues</i> array.  This parameter is a boolean,
      *  and it defaults to false. It is a shared parameter, meaning
@@ -558,8 +558,8 @@ public class NonStrictTest extends Sink {
         return result;
     }
 
-    /** Test whether the value of the first token is close to the 
-     *  the value of the second token.   
+    /** Test whether the value of the first token is close to the
+     *  the value of the second token.
      *  Arrays and Records are handled specially, see
      *  {@link #_isCloseToIfNilArrayElement(Token, Token, double)} and
      *  {@link #_isCloseToIfNilRecordElement(Token, Token, double)}.
@@ -587,7 +587,7 @@ public class NonStrictTest extends Sink {
         //             epsilon));
 
         try {
-            boolean isClose;        
+            boolean isClose;
             isClose = token1.isCloseTo(token2, epsilon)
                     .booleanValue()
                     || token1.isNil()

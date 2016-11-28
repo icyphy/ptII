@@ -39,8 +39,8 @@ import javax.swing.JTextField;
 import javax.swing.LayoutStyle.ComponentPlacement;
 
 
-/** A GUI for the Context Aware accessor. 
- * @author Anne H. Ngu (angu@txstate.edu) 
+/** A GUI for the Context Aware accessor.
+ * @author Anne H. Ngu (angu@txstate.edu)
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)

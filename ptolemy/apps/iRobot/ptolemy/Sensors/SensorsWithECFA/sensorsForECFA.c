@@ -3,8 +3,8 @@
  *  FIXME: Can't have more than one of this actor.
  *  E.g.,
  *    - distance: An integer giving the total accumulated travel distance.
- *    - angle: 
- */   
+ *    - angle:
+ */
 /***preinitBlock***/
 volatile int16_t distance = 0;
 volatile int16_t angle = 0;
@@ -32,8 +32,8 @@ volatile uint8_t sensors[Sen0Size];
   }
 
   // Output aggregated data for wheel drops and bumps.
-  $ref(wheelDrop) = sensors[SenBumpDrop] & WheelDropAll;            
-  $ref(bump) = sensors[SenBumpDrop] & BumpEither; 
+  $ref(wheelDrop) = sensors[SenBumpDrop] & WheelDropAll;
+  $ref(bump) = sensors[SenBumpDrop] & BumpEither;
   $ref(wall) = sensors[SenWall];
   $ref(cliffLeft) = sensors[SenCliffL];
   $ref(cliffFrontLeft) = sensors[SenCliffFL];

@@ -65,13 +65,13 @@ public class NoteStyle extends ParameterEditorStyle {
     public NoteStyle(NamedObj container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         note = new StringAttribute(this, "note");
     }
 
     ///////////////////////////////////////////////////////////////////
     ////                         parameters                        ////
-    
+
     /** The note to display. */
     public StringAttribute note;
 

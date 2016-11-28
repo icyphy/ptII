@@ -194,8 +194,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(null, throwable,
-                    "Error parsing expression:\n\"" 
-                            + StringUtilities.truncateString(stringIn, 80, 1) 
+                    "Error parsing expression:\n\""
+                            + StringUtilities.truncateString(stringIn, 80, 1)
                             + "\"");
         }
         ASTPtRootNode primary = (ASTPtRootNode) rootNode.jjtGetChild(0);
@@ -224,8 +224,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
                 rootNode.displayParseTree(" ");
         } catch (Throwable throwable) {
             throw new IllegalActionException(null, throwable,
-                    "Error parsing expression:\n\"" 
-                            + StringUtilities.truncateString(stringIn, 80, 1) 
+                    "Error parsing expression:\n\""
+                            + StringUtilities.truncateString(stringIn, 80, 1)
                             + "\"");
         }
         ASTPtRootNode primary = (ASTPtRootNode) rootNode.jjtGetChild(0);
@@ -258,8 +258,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             }
         } catch (Throwable throwable) {
             throw new IllegalActionException(null, throwable,
-                    "Error parsing expression:\n\"" 
-                            + StringUtilities.truncateString(stringIn, 80, 1) 
+                    "Error parsing expression:\n\""
+                            + StringUtilities.truncateString(stringIn, 80, 1)
                             + "\"");
         } finally {
             token_source.SwitchTo(DEFAULT);
@@ -291,8 +291,8 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
             map = startAssignmentList();
         } catch (Throwable throwable) {
             throw new IllegalActionException(null, throwable,
-                    "Error parsing expression:\n\"" 
-                            + StringUtilities.truncateString(stringIn, 80, 1) 
+                    "Error parsing expression:\n\""
+                            + StringUtilities.truncateString(stringIn, 80, 1)
                             + "\"");
         }
         return map;
@@ -1728,10 +1728,10 @@ public class PtParser/*@bgen(jjtree)*/implements PtParserTreeConstants,
 
     /*
     void element() #void :
-    {  
+    {
       boolean isMethodCall = false;
     }
-    { 
+    {
       // Note that omitting the parens is possible for a record...
       ( primaryElement()
         [ <PERIOD> <ID> {jjtThis._methodName = token.image; isMethodCall = true;}

@@ -53,7 +53,7 @@ public class CloneTest {
     public static void main(String[] args) throws Throwable {
         Workspace workspace = new Workspace();
         CompositeEntity compositeEntity = new CompositeEntity(workspace);
-        
+
         // Use ArrayContains because it has few type constraints.
         TypedAtomicActor actor = new ArrayContains(compositeEntity, "myActor");
         TypedAtomicActor clone = (TypedAtomicActor)actor.clone(workspace);
@@ -80,7 +80,7 @@ public class CloneTest {
             System.out.println(inequality);
         }
         System.out.println("\n\n");
-        
+
         if (masterConstraints.size() != cloneConstraints.size()) {
             throw new Exception("The number of type constraints in the master (" + masterConstraints.size()
                     + ") is not equal to the number of type constraints in the clone (" + cloneConstraints.size() + ")");

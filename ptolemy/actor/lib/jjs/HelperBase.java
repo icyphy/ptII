@@ -68,7 +68,7 @@ public class HelperBase {
             if (helping instanceof ScriptObjectMirror) {
                     // Helping a JavaScript object.
             _currentObj = (ScriptObjectMirror) helping;
-            
+
             // Find the actor associated with the object.
             actorOrWrapper = _currentObj.eval("actor");
             if (actorOrWrapper instanceof ScriptObjectMirror) {
@@ -86,7 +86,7 @@ public class HelperBase {
                     + actorOrWrapper.toString());
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected methods                     ////
 
@@ -262,10 +262,10 @@ public class HelperBase {
                     result[i] = ((Double) value).byteValue();
                 }
                 else {
-                    throw new IllegalActionException("Cannot interpret the input array element type: " 
+                    throw new IllegalActionException("Cannot interpret the input array element type: "
                             + value.getClass().getName());
                 }
-                
+
                 i++;
             }
             return result;
@@ -282,7 +282,7 @@ public class HelperBase {
         throw new IllegalActionException("Cannot interpret the input, the input should be either"
                 + "JavaScript int array or string.");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected fields                      ////
 

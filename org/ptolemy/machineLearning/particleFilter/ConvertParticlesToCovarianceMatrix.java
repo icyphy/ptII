@@ -1,4 +1,4 @@
-/* 
+/*
  Copyright (c) 1998-2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -49,7 +49,7 @@ The class which convert input particles to covariance matrix.
     average of (x, y) and following 2x2 matrix,
     (Cxx, Cxy)
     (Cyx, Cyy),
-    where Cxx and Cyy are variance of x and y, respectively, 
+    where Cxx and Cyy are variance of x and y, respectively,
     and Cxy and Cyx are covariance between x and y (Cxy = Cyx).
 </p>
 
@@ -82,7 +82,7 @@ public class ConvertParticlesToCovarianceMatrix extends TypedAtomicActor {
             _labels[i] = stateName;
             _types[i] = BaseType.DOUBLE; // preset to be double
         }
-        
+
         // initialize input port.
         particleInput = new TypedIOPort(this, "particles", true, false);
         particleInput.setMultiport(true);
@@ -153,11 +153,11 @@ public class ConvertParticlesToCovarianceMatrix extends TypedAtomicActor {
      */
     public TypedIOPort covarianceOfStates;
 
-    
+
     /*
      * private variables
      */
-    
+
     private double[][] _particles;
     private double[] _meanState;
     private double[][] _covariance;

@@ -66,10 +66,10 @@ public class UndoLayoutAction implements UndoAction {
     ////                         public methods                    ////
 
     /**
-     * Add a connection.  
+     * Add a connection.
      * @param container The container in which to add the connection
      * @param layoutHint to be added.
-     */ 
+     */
     public void addConnection(NamedObj container, LayoutHint layoutHint) {
         _connAddEntries.add(new ConnectionHintEntry(container, layoutHint));
     }
@@ -149,7 +149,7 @@ public class UndoLayoutAction implements UndoAction {
     public void removeConnection(LayoutHint layoutHint) {
         _connRemoveEntries.add(layoutHint);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

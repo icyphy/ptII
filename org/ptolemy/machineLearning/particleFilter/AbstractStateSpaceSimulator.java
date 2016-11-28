@@ -433,12 +433,12 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor im
         }
         if (!satisfiesMapConstraints(_currentState)) {
             StringBuffer currentStateString = new StringBuffer("(");
-            
+
             for (int i = 0; i < _stateSpaceSize; i++) {
                 currentStateString.append(_currentState[i] + " , ");
             }
-            
-            throw new IllegalActionException(this.getName() 
+
+            throw new IllegalActionException(this.getName()
                     + ": Initial state "+ currentStateString.toString().substring(0,currentStateString.length()-3) + ")"
                     + " does not satisfy map constraints!");
         }
@@ -490,7 +490,7 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor im
                 _parseTree = _updateTrees.get(_stateVariables[i]);
                 _result = _parseTreeEvaluator.evaluateParseTree(_parseTree,
                         _scope);
-    
+
                 if (_result == null) {
                     throw new IllegalActionException(
                             "Expression yields a null result: "
@@ -506,7 +506,7 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor im
             }
             trials ++;
         } while (! satisfiesMapConstraints(newState) && trials < MAX_TRIALS);
-        
+
         if (! satisfiesMapConstraints(newState)) {
             throw new IllegalActionException( this.getName() + ": Could not find a feasible state propagation that satisfies"
                     + " current map constraints.");
@@ -600,7 +600,7 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor im
     private ParseTreeEvaluator _parseTreeEvaluator;
     private VariableScope _scope;
     private boolean _firstIteration;
-    
+
     /** Maximum number of allowable trials to propagate state given map constraints. */
     protected int MAX_TRIALS = 100;
 

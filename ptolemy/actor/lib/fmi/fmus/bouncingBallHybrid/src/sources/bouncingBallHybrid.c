@@ -167,7 +167,7 @@ fmi2Boolean doStep(ModelInstance* comp, fmi2Real hLocal) {
         r(vr) += hLocal * getReal(comp, vr + 1); // forward Euler step
     }
 
-    
+
 
     fmi2Boolean is_zero = (r(h_) - EPS_INDICATORS) < 0 && (r(h_) + EPS_INDICATORS) > 0;
     fmi2Boolean is_pos  = (r(h_) - EPS_INDICATORS) > 0 && !is_zero;

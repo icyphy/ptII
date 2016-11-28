@@ -50,7 +50,7 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /**
  Helper for the serial module.
- 
+
  @author Edward A. Lee
  @version $Id$
  @since Ptolemy II 11.0
@@ -58,7 +58,7 @@ import ptolemy.kernel.util.IllegalActionException;
  @Pt.AcceptedRating red (winthrop)
  */
 public class SerialHelper extends HelperBase {
-    
+
     /** Open a serial port.
      *  The argument is an instance of the JavaScript SerialPort object.
      *  @param helping The object that this is helping (SerialPort).
@@ -70,7 +70,7 @@ public class SerialHelper extends HelperBase {
     public SerialHelper(
             ScriptObjectMirror helping,
             String portName,
-            String ownerName, 
+            String ownerName,
             int timeout,
             Object options) {
         super(helping);
@@ -118,7 +118,7 @@ public class SerialHelper extends HelperBase {
             _actor.log("Serial port closed.");
         }
     }
-    
+
     /** Open the serial port. If there is already a serial port open,
      *  close it first.
      *
@@ -191,7 +191,7 @@ public class SerialHelper extends HelperBase {
                             }
                         }
                     }
-                }                
+                }
                 if (!openedPort) {
                     throw ex;
                 }
@@ -202,21 +202,21 @@ public class SerialHelper extends HelperBase {
                 return;
             }
             _serialPort = (SerialPort) port;
-            
+
             // FIXME: Set the options.
             _serialPort.setSerialPortParams(9600,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
-            
+
             // FIXME: Uncomment the next line to avoid jjs/modules/serial/test/auto/SerialHelloWorld.xml hanging.
             _serialPort.enableReceiveTimeout(_timeout);
             _inputStream = _serialPort.getInputStream();
             _outputStream = _serialPort.getOutputStream();
-            
+
             _open = true;
 
             // The RXTX event listener mechanism does not work under OS X.
             // It causes the JVM to crash.
             // _serialPort.addEventListener(this);
-            
+
             (new Thread(new SerialReader())).start();
             (new Thread(new SerialWriter())).start();
         } catch (NoSuchPortException e) {
@@ -235,13 +235,13 @@ public class SerialHelper extends HelperBase {
 
     /** Input stream. */
     private InputStream _inputStream;
-    
+
     /** Output stream. */
     private OutputStream _outputStream;
-    
+
     /** The name of the serial port. */
     private String _portName;
-    
+
     /** Indicator of whether the port is open. */
     private boolean _open;
 
@@ -252,19 +252,19 @@ public class SerialHelper extends HelperBase {
 
     /** The name of the owner. */
     private String _ownerName;
-    
+
     /** The timeout for opening. */
     private int _timeout;
 
     /** The serial port. */
     private SerialPort _serialPort;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
 
     /** Read from the serial port and emit data.
      */
-    public class SerialReader implements Runnable {        
+    public class SerialReader implements Runnable {
         public void run () {
             byte[] buffer = new byte[1024];
             int length = -1;
@@ -300,7 +300,7 @@ public class SerialHelper extends HelperBase {
                     } catch (InterruptedException e) {
                         break;
                     }
-                }                
+                }
             } catch ( IOException e ) {
                 _error("Exception occurred reading from serial port.", e);
             }

@@ -40,7 +40,7 @@ import ptolemy.kernel.util.*;
 
 import com.sun.j3d.utils.geometry.*;
 
-import java.awt.Color; 
+import java.awt.Color;
 import javax.media.j3d.*;
 import javax.vecmath.*;
 

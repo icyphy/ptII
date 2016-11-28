@@ -121,7 +121,7 @@ public class GenerateCopyrights {
 
         _addIfClassPresent(copyrightsMap, "com.jhlabs.image.AbstractBufferedImageOp",
                 "com/jhlabs/jhlabs-license.htm");
-            
+
         _addIfClassPresent(copyrightsMap, "com.microstar.xml.XmlParser",
                 "com/microstar/xml/aelfred-license.htm");
 
@@ -137,7 +137,7 @@ public class GenerateCopyrights {
         _addIfFilePresent(copyrightsMap,
                 "$CLASSPATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub",
                 "bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub-license.html");
-        
+
         _addIfClassPresent(copyrightsMap, "edu.umich.eecs.april.image.AprilTagFilter",
                 "edu/umich/eecs/april/april-license.htm");
 
@@ -243,7 +243,7 @@ public class GenerateCopyrights {
                 "ptolemy.actor.lib.fmi.fmipp.FMUModelExchange",
                 "ptolemy/actor/lib/fmi/fmipp/fmipp-license.htm");
         /* ptolemy.actor.lib.io.comm.SerialComm */
-        _addIfClassPresent(copyrightsMap, "gnu.io.SerialPort", 
+        _addIfClassPresent(copyrightsMap, "gnu.io.SerialPort",
                 "lib/nrjavaserial-license.htm");
         _addIfClassPresent(copyrightsMap, "ptolemy.actor.lib.jai.JAIImageToken",
                 "ptolemy/actor/lib/jai/jai-copyright.htm");

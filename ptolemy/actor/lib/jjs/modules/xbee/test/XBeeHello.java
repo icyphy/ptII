@@ -34,7 +34,7 @@ import com.digi.xbee.api.XBeeDevice;
 
 import gnu.io.CommPortIdentifier;
 import ptolemy.util.StringUtilities;
-/** 
+/**
  * Generate "Hello XBee World!" on a XBee radio connected to a serial port.
  *
  * <p>Based on <a href="https://docs.digi.com/display/XBJLIB/Building+your+first+XBee+Java+application#in_browser" target="_top">https://docs.digi.com/display/XBJLIB/Building+your+first+XBee+Java+application</a>.</p>
@@ -76,7 +76,7 @@ public class XBeeHello {
      */
     public static void main(String[] args) {
         if (args.length != 1) {
-            System.err.println("java -classpath ... ptolemy.actor.lib.jjs.modules.xbee.XBeeHello /dev/xxyy"); 
+            System.err.println("java -classpath ... ptolemy.actor.lib.jjs.modules.xbee.XBeeHello /dev/xxyy");
             System.err.println("Available ports are:");
             Enumeration ports = CommPortIdentifier.getPortIdentifiers();
             while (ports.hasMoreElements()) {
@@ -91,16 +91,16 @@ public class XBeeHello {
         XBeeDevice xBeeDevice = new XBeeDevice(args[0], baudRate);
         String dataToSend = "Hello XBee World";
         byte[] dataToSendBytes = dataToSend.getBytes();
-         
+
         try {
             xBeeDevice.open();
 
             System.out.println("Sending broadcast data \"" + dataToSend + "\"");
-             
+
             xBeeDevice.sendBroadcastData(dataToSendBytes);
-             
+
             System.out.println("Successfully sent broadcast data");
-             
+
         } catch (Throwable throwable) {
             throwable.printStackTrace();
             StringUtilities.exit(1);

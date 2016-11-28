@@ -107,7 +107,7 @@ public class ImageFunction2D implements Function2D {
      *  @param x The x value
      *  @param y The y value
      *  @return The value
-     */   
+     */
     @Override
     public float evaluate(float x, float y) {
         int ix = (int) x;
@@ -134,7 +134,7 @@ public class ImageFunction2D implements Function2D {
     /** Set the edgeAction.
      *  @param edgeAction one of ZERO, CLAMP or WRAP.
      *  @see #getEdgeAction()
-     */   
+     */
     public void setEdgeAction(int edgeAction) {
         this.edgeAction = edgeAction;
     }

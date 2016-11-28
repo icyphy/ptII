@@ -88,7 +88,7 @@ public class EDF extends Director {
         _jobs = new ArrayList<Job>();
         _taskPlotEditorFactory = new TaskPlotEditorFactory(this,
                 this.uniqueName("_taskPlotEditorFactory"));
-        _dbfPlotEditorFactor = new DBFPlotEditorFactory(this, 
+        _dbfPlotEditorFactor = new DBFPlotEditorFactory(this,
                 this.uniqueName("_dbfPlotEditorFactory"));
         _schedulableTasks = new ArrayList<Task>();
         createPlot = new Parameter(this, "Create Plot");
@@ -173,7 +173,7 @@ public class EDF extends Director {
         if (_taskPlotEditorFactory.getTaskPlot() != null) {
             _taskPlotEditorFactory.getTaskPlot().clear();
         }
-        
+
         if (_dbfPlotEditorFactor.getTaskPlot() != null) {
             _dbfPlotEditorFactor.getTaskPlot().clear();
         }
@@ -304,7 +304,7 @@ public class EDF extends Director {
         super.wrapup();
         _dbfPlotEditorFactor.getTaskPlot().finalize();
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
 

@@ -119,7 +119,7 @@ import ptolemy.util.MessageHandler;
  the model designer has taken special care to ensure sequential
  execution of the actor, inputs from the serial port may be
  nondeterministically received by any of the actors.
- 
+
  @author Winthrop Williams, Joern Janneck, Xiaojun Liu, Edward A. Lee
  (Based on my RxDatagram, and on the IRLink class written by Xiaojun Liu)
  @version $Id$
@@ -576,10 +576,10 @@ public class SerialComm extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     /** Indicator that firing has already been requested. */
     private boolean _firingRequested = false;
-    
+
     /** The serial port. */
     private SerialPort _serialPort;
 

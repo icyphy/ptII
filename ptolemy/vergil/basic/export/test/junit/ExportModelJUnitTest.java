@@ -323,7 +323,7 @@ public class ExportModelJUnitTest {
                 "HierarchyFlattening.xml", // gt
                 "IMUSensor.xml", // Uses the serial port.
                 "actor/lib/io", // Don't run the demos in actor/lib/io, some read from stdin and never exit.
-                "ImageFilters.xml", // Has links to other demos.                          
+                "ImageFilters.xml", // Has links to other demos.
                 "iRobotCreateVerification.xml", // Annotation says that it does not simulate.
                 "JMFJAI.xml", // Requires a video camera
                 "KarplusStrong.xml", // "Audio Device Unavailable"
@@ -346,7 +346,7 @@ public class ExportModelJUnitTest {
                 "TokenTransmissionTime/Sender.xml", // Requires that Receiver be running.
                 "RecordManipulation", // Python demo pops up a dialog.
                 "ptolemy/demo/Robot/Robot.xml", // Has links to other demos.
-                "ros/demo/Ros", // Need a robot.          
+                "ros/demo/Ros", // Need a robot.
                 "RobotOnCircleKV.xml", // Needs the KeyValue model running.
                 "RobotPFChase.xml", // Needs the KeyValue model running.
                 "Ros.xml", // This demo has links to the demo that are to run
@@ -383,7 +383,7 @@ public class ExportModelJUnitTest {
                 "// ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBusServer.xml", // Requires that other demos run.
                 "UnitSystemExample.xml", // Has links to other models.
                 "VideoCapture.xml", // Requires a video camera.
-                "Weather.xml", // Skip because it requires a key          
+                "Weather.xml", // Skip because it requires a key
                 "WebSocketChat.xml", // Has links to other models.
                 "WebSocketClient.xml", // Times out unless the server is running.
                 "MatlabWirelessSoundDetection.xml", // If it takes more than 30 seconds to start up, then killing it causes an infinite loop because killing this is difficult when inside a native call.

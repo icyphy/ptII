@@ -78,7 +78,7 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
     public Object clone(Workspace workspace) throws CloneNotSupportedException {
         StateSpaceSimulator newObject = (StateSpaceSimulator) super
                 .clone(workspace);
-        newObject._decorator = null; 
+        newObject._decorator = null;
         return newObject;
     }
 
@@ -149,11 +149,11 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
                                 + "at a time.");
                     }
                 }
-            } 
+            }
             if (d instanceof Map) {
                 Parameter isEnabled = (Parameter) this.getDecoratorAttribute(d, "enable");
-                if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) { 
-                    _mapDecorator = (Map) d; 
+                if ( ((BooleanToken)isEnabled.getToken()).booleanValue()) {
+                    _mapDecorator = (Map) d;
                     mapExists = true;
                 }
             }
@@ -196,5 +196,5 @@ public class StateSpaceSimulator extends AbstractStateSpaceSimulator implements 
         }
     }
 
-    private Map _mapDecorator;   
+    private Map _mapDecorator;
 }

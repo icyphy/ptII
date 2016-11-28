@@ -32,7 +32,7 @@ package ptolemy.util;
 
 /**
  Interface for objects that can display status messages.
- 
+
  @see MessageHandler
 
  @author  Edward A. Lee

@@ -1037,7 +1037,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2IntegerTime currentCommunicatio
 
     if (inBetween == 0 && comp->eventInfo.nextEventTimeDefined && (comp->time  == comp->eventInfo.nextEventTime))
         FILTERED_LOG(comp, fmi2OK, LOG_EVENT, "fmi2HybridDoStep: time event detected at %llu", comp->time)
-        
+
     fmi2IntegerTime prevTime = comp->time;
     doStep(comp, hLocal, inBetween);
 

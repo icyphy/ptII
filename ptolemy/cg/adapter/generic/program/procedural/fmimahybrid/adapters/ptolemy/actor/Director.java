@@ -117,7 +117,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
                 codeStream.appendCodeBlock("mainStartBlock");
                 code.append(processCode(codeStream.toString()));
-                
+
                 actors = ((CompositeActor) adapter.getComponent().getContainer())
                                 .deepEntityList().iterator();
 
@@ -174,7 +174,7 @@ public class Director extends FMIMACodeGeneratorAdapter {
                         }
                     }
                 }
-                
+
                 actors = ((CompositeActor) adapter.getComponent().getContainer())
                                 .deepEntityList().iterator();
 
@@ -314,16 +314,16 @@ public class Director extends FMIMACodeGeneratorAdapter {
 
                 codeStream.appendCodeBlock("mainEndBlock");
                 code.append(processCode(codeStream.toString()));
-                
+
                 // Generate ptplot
                 actors = ((CompositeActor) adapter.getComponent().getContainer())
                         .deepEntityList().iterator();
                 Integer plotterIndex = 0;
-                
+
                 codeStream.clear();
                 codeStream.appendCodeBlock("mainPtplot");
                 code.append(processCode(codeStream.toString()));
-                
+
                 while (actors.hasNext()) {
                     Actor actorIter = (Actor) actors.next();
                     if (actorIter instanceof TimedPlotter) {
@@ -336,12 +336,12 @@ public class Director extends FMIMACodeGeneratorAdapter {
                                     FMUImport fmu = (FMUImport) output.getContainer();
                                     Node outputNode = port2Node.get(output);
                                     FMIScalarVariable outputScalar = node2Scalar.get(outputNode);
-                                    
+
                                     Iterator<?> subactors = ((CompositeActor) adapter.getComponent().getContainer())
                                             .deepEntityList().iterator();
-                                    
+
                                     int varIndex = 1;
-                                    
+
                                     // Scan all the attached ports
                                     while (subactors.hasNext()) {
                                         Actor subactorIter = (Actor) subactors.next();
@@ -386,9 +386,9 @@ public class Director extends FMIMACodeGeneratorAdapter {
                         plotterIndex++;
                     }
                 }
-                
+
                 code.append("fclose(source);\n");
-                
+
                 code.append(getCodeGenerator()
                         .comment(
                                 "ptolemy/cg/adapter/generic/program/procedural/fmima/adapters/ptolemy/actor/Director.java end"));

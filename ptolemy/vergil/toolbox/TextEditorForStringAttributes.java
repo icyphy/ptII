@@ -49,7 +49,7 @@ import ptolemy.util.StringUtilities;
  */
 @SuppressWarnings("serial")
 public class TextEditorForStringAttributes extends TextEditor {
-    
+
     /** Create a annotation text editor for the specified attribute.
      *  @param factory The factory that created this editor.
      *  @param attributeToEdit The string attribute to edit.
@@ -61,7 +61,7 @@ public class TextEditorForStringAttributes extends TextEditor {
             Attribute attributeToEdit, int rows, int columns, String title) {
         this(factory, attributeToEdit, rows, columns, title, null);
     }
-    
+
     /** Create a annotation text editor for the specified attribute.
      *  @param factory The factory that created this editor.
      *  @param attributeToEdit The string attribute to edit.

@@ -1,5 +1,5 @@
 /* A model of a Station in train control systems.
- 
+
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -90,39 +90,39 @@ public class AbstractStation extends StationWriter implements Rejecting{
     public AbstractStation(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-        
-        output=new TypedIOPort(this, "output", false, true); 
+
+        output=new TypedIOPort(this, "output", false, true);
         output.setTypeEquals(new RecordType(_labels, _types));
         output.setMultiport(true);
-        
+
         stationId = new Parameter(this, "stationId");
         stationId.setTypeEquals(BaseType.INT);
         stationId.setExpression("-1");
-        
+
         settlingTime = new Parameter(this, "settlingTime");
         settlingTime.setTypeEquals(BaseType.DOUBLE);
         settlingTime.setExpression("1");
-        
+
         lineSymbol = new Parameter(this, "lineSymbol");
         lineSymbol.setTypeEquals(BaseType.STRING);
-        
+
         inJunction = new Parameter(this,"inJunction");
         inJunction.setTypeEquals(BaseType.BOOLEAN);
-        
+
         neighbors = new Parameter(this,"neighbors");
         neighbors.setDisplayName("idOfNeighborStationOrJunction");
         neighbors.setExpression("{}");
         neighbors.setTypeEquals(new ArrayType(BaseType.STRING));
-        
+
         broken =new Parameter(this, "broken");
         broken.setTypeEquals(BaseType.BOOLEAN);
-        
+
         EditorIcon node_icon = new EditorIcon(this, "_icon");
-        
-        
+
+
       //This part of icon is used to show the broken zone.
         _circle = new EllipseAttribute(node_icon, "_circleShapOfStation");
         _circle.centered.setToken("true");
@@ -130,7 +130,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
         _circle.height.setToken("40");
         _circle.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
         _circle.lineColor.setToken("{0.0, 0.0, 0.0, 0.0}");
-        
+
         // This part of icon shows border of the station.
         _border=new ResizablePolygonAttribute(node_icon, "_borderShape");
         _border.centered.setToken("true");
@@ -143,7 +143,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
                         ",-39.0,45.0,-21.0,46.0,-10.0,46.0,10.0,33.0,10.0,33.0,-10.0,32.0," +
                         "-21.0,25.0,-31.0,-25.0,-31.0,-32.0,-21.0,-33.0,-10.0,-33.0,10.0," +
                         "-32.0,21.0,-25.0,31.0,25.0,31.0,32.0,21.0,33.0,10.0}");
-        
+
        // This part of the icon is used as an inner box for showing color of train.
         _trainColor= new RectangleAttribute(node_icon, "_trainColor");
         _trainColor.centered.setToken("true");
@@ -151,7 +151,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
         _trainColor.height.setToken("20");
         _trainColor.lineColor.setToken("{0.0, 0.0, 0.0, 0.0}");
         _trainColor.fillColor.setToken("{0.0,0.0,0.0,0.0}");
-     
+
      // This part of the icon shows id of the station.
         _valueId=new AttributeValueAttribute(node_icon, "_IdInStation");
         _valueId.textSize.setToken("15");
@@ -159,7 +159,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
         l1.setLocation(new double[]{-10.0, -2.0});
         _valueId.textColor.setToken("{0.0, 0.0, 0.0, 1.0}");
         _valueId.attributeName.setExpression("stationId");
-        
+
      // This part of the icon shows symbol of the station.
         _valueSymbol=new AttributeValueAttribute(node_icon, "_SymbolInStation");
         _valueSymbol.textSize.setToken("15");
@@ -167,13 +167,13 @@ public class AbstractStation extends StationWriter implements Rejecting{
         l2.setLocation(new double[]{-12.0, -16.0});
         _valueSymbol.textColor.setToken("{0.0, 0.0, 0.0, 1.0}");
         _valueSymbol.attributeName.setExpression("lineSymbol");
-        
-        
+
+
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                       ports and parameters                ////
-    
+
     /** The input port, which is a multiport. */
     public TypedIOPort input;
 
@@ -184,7 +184,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
     public Parameter stationId;
 
 
-    /** The settling time.  The initial value is an integer with 
+    /** The settling time.  The initial value is an integer with
      *  the value 1.
      */
     public Parameter settlingTime;
@@ -204,10 +204,10 @@ public class AbstractStation extends StationWriter implements Rejecting{
      *  followed by the close curly bracket: "{}"
      */
     public Parameter neighbors;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     @Override
     public boolean reject(Token token, IOPort port) {
         boolean unavailable=(_inTransit!=null || ((BooleanToken)_isBroken).booleanValue());
@@ -222,7 +222,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
                 return true;
         }
     }
-    
+
     /**This method handles changing in the broken and symbol parameter of the station.
      * Symbol is the symbol of the line.
      */
@@ -235,7 +235,7 @@ public class AbstractStation extends StationWriter implements Rejecting{
                 throw new IllegalActionException("Inappropriate line symbol");
             ArrayToken color=((TCSDirector)director).getColor(_symbol);
             _border.fillColor.setToken(color);
-            
+
         }
         else if(attribute == broken) {
              if(broken.getToken()!=null){
@@ -253,12 +253,12 @@ public class AbstractStation extends StationWriter implements Rejecting{
             super.attributeChanged(attribute);
         }
     }
-    
+
     @Override
     public void declareDelayDependency() throws IllegalActionException {
-        _declareDelayDependency(input, output, 0.0);         
+        _declareDelayDependency(input, output, 0.0);
     }
-    
+
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
@@ -281,12 +281,12 @@ public class AbstractStation extends StationWriter implements Rejecting{
                 {
                     _outRoute=0;
                 }
-                
-                 output.send(_outRoute, _inTransit);  
+
+                 output.send(_outRoute, _inTransit);
             } catch (NoRoomException ex){
                 // Train has been rejected by the next track.
                 double additionalDelay = ((TCSDirector)_director).handleRejectionWithDelayStation(this);
-                if (additionalDelay < 0.0) 
+                if (additionalDelay < 0.0)
                 {
                     throw new IllegalActionException(this, "Unable to handle rejection.");
                 }
@@ -311,14 +311,14 @@ public class AbstractStation extends StationWriter implements Rejecting{
                 double movingTime=((TCSDirector)_director).movingTimeOfTrain(_inTransit,_id);
                 if(movingTime<=0.0)
                     throw new IllegalActionException("Minstake in calculating moving time of Train");
-                
+
                  _transitExpires = currentTime.add(time+movingTime);
-                 _director.fireAt(this, _transitExpires);         
+                 _director.fireAt(this, _transitExpires);
             }
         }
-        
+
     }
-    
+
 
     @Override
     public void initialize() throws IllegalActionException {
@@ -332,13 +332,13 @@ public class AbstractStation extends StationWriter implements Rejecting{
         _isBroken=broken.getToken();
         if(_isBroken==null)
             _isBroken=(Token)(new BooleanToken(false));
-        _neighbors=(ArrayToken)neighbors.getToken(); 
+        _neighbors=(ArrayToken)neighbors.getToken();
         _outRoute=-1;
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Change the color of the inner box in station to show the moving train.
      *  @param id The train ID or -1 to indicate no train.
      *  @throws IllegalActionException
@@ -351,13 +351,13 @@ public class AbstractStation extends StationWriter implements Rejecting{
                 color = ((TCSDirector)_director).handleTrainColor(id);
                 if(color==null)
                     throw new IllegalActionException("Color for the train "+id+" has not been set");
-            } 
+            }
         _trainColor.fillColor.setToken(color);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     private ResizablePolygonAttribute _border;
     private EllipseAttribute _circle;
     private Boolean _called;
@@ -374,5 +374,5 @@ public class AbstractStation extends StationWriter implements Rejecting{
     private Type[] _types={BaseType.INT,BaseType.STRING,new ArrayType(BaseType.STRING), BaseType.INT,BaseType.DOUBLE,BaseType.DOUBLE,BaseType.DOUBLE};
     private RectangleAttribute _trainColor;
     private AttributeValueAttribute _valueSymbol;
-    private AttributeValueAttribute _valueId;   
+    private AttributeValueAttribute _valueId;
 }

@@ -904,7 +904,7 @@ fmi2Status fmi2SetFMUstate (fmi2Component c, fmi2FMUstate FMUstate) {
             dest->r[i] = source->r[i];
         }
     }
-    
+
     FILTERED_LOG(dest, fmi2OK, LOG_FMI_CALL, "fmi2SetFMUState: "
         "currentCommunicationPoint = (%llu, %d), ",
         source->time, source->microstep)

@@ -56,15 +56,15 @@ import ptolemy.util.StringUtilities;
  *
  *  <p>To generate an Accessor version of a model, use:</p>
  *  <pre>
- *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $PTII/ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml; cat $PTII/org/terraswarm/accessor/accessors/web/hosts/node/TestComposite.js 
+ *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $PTII/ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml; cat $PTII/org/terraswarm/accessor/accessors/web/hosts/node/TestComposite.js
  *  </pre>
  *  which is shorthand for:
  *  <pre>
- *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js 
+ *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js
  *  </pre>
  *
  *  <p>For more information, see <a href="https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#in_browser">https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
- * 
+ *
  *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
  *  @version $Id$
  *  @since Ptolemy II 11.0
@@ -147,7 +147,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                 modelURI = modelURI.substring(5).replace(PTII, "$PTII");
             }
         }
-                                       
+
         try {
             code.append("exports.setup = function() {" + _eol
                 + INDENT1 + comment(" This composite accessor was created by Cape Code.")

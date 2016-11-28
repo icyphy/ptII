@@ -80,11 +80,11 @@ public class Parameters {
     /**
      * Configure the KIELER layout using a property holder.
      *
-     * @param parentLayout 
+     * @param parentLayout
      *          the layout of the parent node
-     * @param graphModel 
+     * @param graphModel
      *          the graph model of the current diagram
-     * @exception IllegalActionException 
+     * @exception IllegalActionException
      *          if one of the parameters has the wrong type
      */
     public void configureLayout(KShapeLayout parentLayout, GraphModel graphModel)
@@ -93,7 +93,7 @@ public class Parameters {
         // Configuration values specified by user.
         List<AbstractLayoutConfiguration> configAttributes = _compositeEntity
                 .attributeList(AbstractLayoutConfiguration.class);
-        
+
         AbstractLayoutConfiguration layoutConfiguration = null;
         if (!configAttributes.isEmpty()) {
             layoutConfiguration = configAttributes.get(0);
@@ -101,10 +101,10 @@ public class Parameters {
 
         // Note that when the layout configuration dialog of a model has never been opened,
         // there is no configuration element
-        // Otherwise subsequently applied layout options override each other 
+        // Otherwise subsequently applied layout options override each other
         // in the following calls, with the user-specified, diagram-specific
         // options being the strongest
-        
+
         // 1. default values
         _applyDefault(parentLayout);
 
@@ -121,14 +121,14 @@ public class Parameters {
         }
 
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /**
      * An initial, default layout configuration applied to every graph.
-     * 
-     * @param parentLayout 
+     *
+     * @param parentLayout
      *          the layout of the parent node
      */
     private void _applyDefault(KLayoutData parentLayout) throws IllegalActionException {
@@ -141,13 +141,13 @@ public class Parameters {
         parentLayout.setProperty(LayoutOptions.SPACING, SPACING.getDefault());
         parentLayout.setProperty(LayoutOptions.ASPECT_RATIO,
                 ASPECT_RATIO.getDefault());
-        
+
     }
-    
+
     /**
-     * This applies user-specified layout options the graph, 
+     * This applies user-specified layout options the graph,
      * if they exist.
-     *  
+     *
      * @param parentLayout
      *          the layout of the parent node
      * @param abstractConfiguration
@@ -164,19 +164,19 @@ public class Parameters {
             BooleanToken decorationsToken = BooleanToken
                     .convert(abstractConfiguration.includeDecorations.getToken());
             parentLayout.setProperty(DECORATIONS, decorationsToken.booleanValue());
-    
+
             // Spacing between diagram elements
             DoubleToken spacingToken = DoubleToken
                     .convert(abstractConfiguration.spacing.getToken());
             parentLayout.setProperty(SPACING, (float) spacingToken.doubleValue());
-    
+
             // Target aspect ratio for the diagram
             DoubleToken logAspectToken = DoubleToken
                     .convert(abstractConfiguration.logAspectRatio.getToken());
             parentLayout.setProperty(ASPECT_RATIO,
                     (float) Math.pow(10, logAspectToken.doubleValue()));
-    
-            
+
+
             // The interaction mode (constraints the layout according to what the
             // diagram currently looks like)
             InteractionMode interactionMode = (InteractionMode) abstractConfiguration.interactionMode
@@ -198,14 +198,14 @@ public class Parameters {
                 }
             }
         }
-        
+
     }
-    
+
     /**
-     * This applies default layout options for actor models 
-     * as well as user-specified layout options specific to actor models, 
+     * This applies default layout options for actor models
+     * as well as user-specified layout options specific to actor models,
      * if they exist.
-     *  
+     *
      * @param parentLayout
      *          the layout of the parent node
      * @param actorConfiguration
@@ -220,7 +220,7 @@ public class Parameters {
         // Set default values for actor models.
         parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
                 EdgeRouting.ORTHOGONAL);
-        
+
         // User-specified properties
         if (actorConfiguration != null) {
             // The node placement algorithm to use
@@ -235,12 +235,12 @@ public class Parameters {
             }
         }
     }
-    
+
     /**
-     * This applies default layout options for FSM models 
-     * as well as user-specified layout options specific to FSM models, 
+     * This applies default layout options for FSM models
+     * as well as user-specified layout options specific to FSM models,
      * if they exist.
-     *  
+     *
      * @param parentLayout
      *          the layout of the parent node
      * @param modalConfiguration
@@ -261,22 +261,22 @@ public class Parameters {
         float spacing = parentLayout.getProperty(SPACING);
         parentLayout.setProperty(SPACING, spacing / 2f);
         parentLayout.setProperty(Properties.OBJ_SPACING_IN_LAYER_FACTOR, 8f);
-        
+
         // The node placement algorithm to use
         parentLayout.setProperty(Properties.NODE_PLACER,
                 NodePlacementStrategy.BRANDES_KOEPF);
         parentLayout.setProperty(Properties.FIXED_ALIGNMENT,
                 FixedAlignment.BALANCED);
-        
+
         // User-specified
         if (modalConfiguration != null) {
-            
+
             // For FSMs the user can choose whether he wants to use splines
             // or not. Depending on the choice we have to adapt the layout options
             BooleanToken useSplines = BooleanToken
                     .convert(modalConfiguration.drawSplines.getToken());
             parentLayout.setProperty(SPLINES, useSplines.booleanValue());
-            
+
             if (useSplines.booleanValue()) {
                 // spline routing
                 parentLayout.setProperty(LayoutOptions.EDGE_ROUTING,
@@ -287,7 +287,7 @@ public class Parameters {
                 parentLayout.setProperty(
                         Properties.OBJ_SPACING_IN_LAYER_FACTOR, 20f);
             }
-            
+
             // direction
             Direction dir = (Direction) modalConfiguration.direction.getChosenValue();
             parentLayout.setProperty(LayoutOptions.DIRECTION, dir);
@@ -307,7 +307,7 @@ public class Parameters {
     public static final IProperty<Float> ASPECT_RATIO = new Property<Float>(
             LayoutOptions.ASPECT_RATIO,
             (float) AbstractLayoutConfiguration.DEF_ASPECT_RATIO);
-    
+
     /** Layout option that determines whether splines should be used for FSMs. */
     public static final IProperty<Boolean> SPLINES = new Property<Boolean>(
             "ptolemy.vergil.basic.layout.splines",

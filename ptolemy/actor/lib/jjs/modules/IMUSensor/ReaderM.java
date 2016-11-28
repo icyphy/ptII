@@ -196,17 +196,17 @@ public class ReaderM extends Thread {
     ////                     package protected variables           ////
 
     /** The current count of data bytes that have been read in from a packet. */
-    char dataCount = 0; 
+    char dataCount = 0;
 
     /** The communication port number. */
-    int com; 
+    int com;
 
     /** The baud rate of the serial port. */
     int baudRate;
-    
+
     /** SerialPortReader takes care of serial port communication on a lower level. */
     SerialPortReader portReader = null;
-    
+
     /** "Data Link Escape" character, signals that next value is a control value. */
     static final char DLE = 0x10;
 
@@ -221,12 +221,12 @@ public class ReaderM extends Thread {
 
     /** The window size of the circular buffer. */
     private int _window = 0;
-    
+
     /** Holds the current index in circular buffer to which next sample will be placed. */
     private int _bufferIndex = 0;
-    
+
     /** Holds the current index from which the next unread sample is located. */
-    private int _nextReadBufferIndex = 0; 
+    private int _nextReadBufferIndex = 0;
 
     /** Holds six integer arrays of sample values - [accX, accY, accZ, gyroX, gyroY, gyroZ]. */
     private CircularFifoQueue<int[]> _buffer;

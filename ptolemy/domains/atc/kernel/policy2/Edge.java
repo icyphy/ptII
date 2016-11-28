@@ -36,7 +36,7 @@ public class Edge  {
 
     /** Create an edge.
      * @param id an int specifying an identifier
-     * @param source a source 
+     * @param source a source
      * @param destination  a destination
      * @param weight a weight.
      */
@@ -46,7 +46,7 @@ public class Edge  {
         _destination = destination;
         _weight = weight;
     }
-    
+
     /** Get the id.
      *  @return The id.
      */
@@ -78,8 +78,8 @@ public class Edge  {
     ///////////////////////////////////////////////////////////////////
     ////                     private fields                        ////
 
-    private final int _id; 
+    private final int _id;
     private final Vertex _source;
     private final Vertex _destination;
-    private final int _weight; 
-} 
+    private final int _weight;
+}

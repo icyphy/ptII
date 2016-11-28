@@ -1,5 +1,5 @@
 /** An interface to an SMT solver.
- * 
+ *
  */
 
 package ptolemy.apps.interfaces;
@@ -11,14 +11,14 @@ import java.io.IOException;
 import java.lang.reflect.Method;
 
 /** An interface to an SMT solver.
- * 
+ *
  *  Its behavior is encapsulated in a single method,
  *  <pre>check</pre>, which takes in a list of constraints
  *  and returns a satisfying assignment if one exists,
  *  and "unsat" if no such assignment exists.
  *  Currently, the argument and return value are strings in
  *  the form accepted by the Yices SMT solver.
- * 
+ *
  *  @author Ben Lickly
  *
  */
@@ -28,7 +28,7 @@ public class SMTSolver {
     ////                       public methods                      ////
 
     /** Check the satisfiability of the given formula.
-     * 
+     *
      *  @param formula A formula to be checked.
      *  @return A satisfying assignment if it exists, "unsat" if it does not,
      *   and the empty string if no assertion can be made.
@@ -59,7 +59,7 @@ public class SMTSolver {
     }
 
     /** Test that the SMT Solver works correctly.
-     * 
+     *
      *  @param args Ignored.
      *  @throws AssertionError If the test fails.
      */
@@ -81,7 +81,7 @@ public class SMTSolver {
      *  will compile even without Yices installed. If we encounter a
      *  problem here, we assume it is because Yices is not installed
      *  and notify the user accordingly.
-     *  
+     *
      *  @param formula The formula to be checked for satisfiability.
      *  @param tmpfile The file to save the results in.
      */
@@ -100,7 +100,7 @@ public class SMTSolver {
             //    yicesLite.yicesl_set_output_file(fileName);
             //    yicesLite.yicesl_read(ctx, formula);
             //    yicesLite.yicesl_del_context(ctx);
-            
+
             // Reflect an instance of the Yices Java API
             ClassLoader myClassLoader = ClassLoader.getSystemClassLoader();
             Class<?> yicesClass = myClassLoader.loadClass("yices.YicesLite");

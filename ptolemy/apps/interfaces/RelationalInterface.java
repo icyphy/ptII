@@ -1,5 +1,5 @@
 /** Representation of an interface that relates its inputs and outputs.
- * 
+ *
  */
 package ptolemy.apps.interfaces;
 
@@ -13,17 +13,17 @@ import ptolemy.kernel.util.IllegalActionException;
 
 /** Representation of an interface that relates its inputs and outputs,
  *  in the style of the EMSOFT 2009 paper "On Relational Interfaces."
- *  
+ *
  *  @author Ben Lickly
  *
  */
 public class RelationalInterface {
 
     /** Construct a new interface given lists of ports and a contract.
-     * 
+     *
      *  This is a convenience method that simply extracts the names of
      *  ports and uses then uses the other constructor strategy.
-     *  
+     *
      *  @param inputPortList The input ports.
      *  @param outputPortList The output ports.
      *  @param contract The contract.
@@ -47,7 +47,7 @@ public class RelationalInterface {
 
     /** Construct a new interface given a set of input variables, a set of
      *  output variables, and a contract.
-     *  
+     *
      *  @param inputs The input variables.
      *  @param outputs The output variables.
      *  @param contract The contract.
@@ -61,10 +61,10 @@ public class RelationalInterface {
     ////                         public methods                    ////
 
     /** Add a the given feedback connection to this interface.
-     * 
+     *
      *  FIXME: This the only type of composition that modifies
      *  the original interface. We should change this.
-     * 
+     *
      *  @param connections The feedback connections.
      *  @throws InterfaceCompositionException If there feedback connection
      *   is invalid.  This can only be because the input port is non-Moore.
@@ -89,10 +89,10 @@ public class RelationalInterface {
 
     /** Return an interface that results from the cascade composition of
      *  this interface and the given interface.
-     *  
+     *
      *  Note that this is not commutative.  The outputs of this
      *  interface must be connected to the inputs of the given interface.
-     * 
+     *
      *  @param rhs The interface to compose with.
      *  @param connections The connections from this to rhs.
      *  @return The comosition's interface.
@@ -137,13 +137,13 @@ public class RelationalInterface {
     }
 
     /** Return a string representation of the interface contract.
-     * 
+     *
      *  @return The contract.
      */
     public String getContract() {
         return _contract;
     }
-    
+
     /** Return a set of variables in the interface.
      *  @return A set of all variables used in the interface.
      */
@@ -155,7 +155,7 @@ public class RelationalInterface {
     }
 
     /** Return a string that Yices can check for satisfiability.
-     * 
+     *
      *  @return A string in the yices input expression language.
      */
     public String getYicesInput() {
@@ -175,7 +175,7 @@ public class RelationalInterface {
 
     /** Return an interface that results from the parallel composition of
      *  this interface and the given interface.
-     * 
+     *
      *  @param rhs The interface to compose with.
      *  @return The comosition's interface.
      */
@@ -195,7 +195,7 @@ public class RelationalInterface {
     ////                         private methods                   ////
 
     /** Return the contract of the input assumption of this interface.
-     * 
+     *
      *  @return The input assumption.
      */
     private String _inContract() {
@@ -206,10 +206,10 @@ public class RelationalInterface {
         result.append(") " + _contract + ")");
         return result.toString();
     }
-    
+
     /** Construct a RelationalInterface with the given inputs port names,
      *  output port names, and contract.
-     *  
+     *
      *  @param inputs A set of the names of input variables.
      *  @param outputs A set of the names of output variables.
      *  @param contract A Yices-compatible string of the contract.
@@ -227,7 +227,7 @@ public class RelationalInterface {
 
     /** Return the subset of the input variables that are Moore.
      *  These are just the input variables that do not appear in the contract.
-     *  
+     *
      *  @return The Moore inputs.
      */
     private Set<String> _mooreInputs() {

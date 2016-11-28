@@ -58,7 +58,7 @@ import ptolemy.actor.lib.jjs.VertxHelperBase;
  * @Pt.AcceptedRating red (cxh)
  */
 public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener {
-    
+
     /** Create an XBee device.
      *  The first argument is an instance of the JavaScript XBee object.
      *  @param helping The object that this is helping (XBee).
@@ -74,14 +74,14 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
             Map<String,Object> options)
                     throws XBeeException {
         super(helping);
-        
+
         Integer baudRate = (Integer)options.get("baudRate");
-        
+
         // FIXME: Configure using SerialPortParameters argument.
         _device = new XBeeDevice(portName, baudRate);
         _device.open();
         _device.addDataListener(this);
-        
+
         // Set the send and receive types.
         // First, make sure the arrays are populated.
         supportedSendTypes();
@@ -105,7 +105,7 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
+
     /** Close the port, if it is open. */
     public void close() {
         if (_device != null && _device.isOpen()) {
@@ -115,7 +115,7 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
 
     @Override
     public void dataReceived(XBeeMessage message) {
-        
+
         if(_receiveType == DATA_TYPE.STRING) {
             _currentObj.callMember("emit", "data", message.getDataString());
         } else {
@@ -144,7 +144,7 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
                 try {
                     _currentObj.callMember("emit", "data", _actor.toJSArray(result));
                 } catch (Exception e) {
-                    _error("Failed to convert to a JavaScript array: " + e);                    
+                    _error("Failed to convert to a JavaScript array: " + e);
                     _currentObj.callMember("emit", "data", result);
                 }
             } else if (numberOfElements <= 0) {
@@ -156,7 +156,7 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
             }
         }
     }
-    
+
     /** Send data over the radio.
      *  @param data The data to send.
      */
@@ -194,7 +194,7 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
             _error(_actor.getFullName() + ": Failed to send data.", e);
         }
     }
-    
+
     /** Return an array of the types supported by the current host for
      *  receiveType arguments.
      *  @return an array of the types supported by the current host for
@@ -203,7 +203,7 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
     public static String[] supportedReceiveTypes() {
         // Formerly, we checked to see if _types was null outside of the syncronized block
 
-        // However, Coverity Scan warns: 
+        // However, Coverity Scan warns:
         // "CID 1349633 (#1 of 1): Check of thread-shared field evades
         // lock acquisition
         // (LOCK_EVASION)5. thread2_checks_field_early: Thread2 checks
@@ -246,7 +246,7 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
 
     /** The device. */
     XBeeDevice _device;
-    
+
     /** The receive type for this instance of XBee. */
     private DATA_TYPE _receiveType;
 
@@ -255,7 +255,7 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
 
     /** A mutex used when creating _types. */
     private static Object _typesMutex = new Object();
-    
+
     /** The send type for this instance of XBee. */
     private DATA_TYPE _sendType;
 }

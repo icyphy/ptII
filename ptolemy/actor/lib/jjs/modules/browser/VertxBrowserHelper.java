@@ -68,27 +68,27 @@ public class VertxBrowserHelper {
     /** A http server that gets and sets responses.
      */
     public static class Server {
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                     public methods                        ////
-        
+
         /** Instantiate a http server that listens only on localhost.
          *  @param port The port number
          */
         public Server(int port) {
             boolean firstStart = false;
-            
+
             if (_server == null) {
                 _server = _vertx.createHttpServer();
 
-                // Serve static content.  This assumes the accessors repo is 
+                // Serve static content.  This assumes the accessors repo is
                 // installed locally at $PTII/org/terraswarm/accessor
                 _router = Router.router(_vertx);
                 _router.route("/accessors/*").handler(StaticHandler.create("org/terraswarm/accessor/accessors/web"));
-                
+
                 // new Exception("Start of Server(" + port + ")").printStackTrace();
-                
-                // Handle dynamic content (requests to / ).  
+
+                // Handle dynamic content (requests to / ).
                 _router.route().handler(routingContext -> {
                     HttpServerResponse response = routingContext.response();
                     response.putHeader("content-type", "text/html");
@@ -96,9 +96,9 @@ public class VertxBrowserHelper {
                     response.write(_getResponse());
                     response.end();
                 });
-               
+
                 _server.requestHandler(_router::accept);
-                
+
                 firstStart = true;
             }
 
@@ -130,7 +130,7 @@ public class VertxBrowserHelper {
             System.err.println("setResponse(" + response + ")");
             _response = response;
         }
-        
+
         /** Shut down the server, if running.
          */
         public void shutdown() {
@@ -140,7 +140,7 @@ public class VertxBrowserHelper {
             }
             // FIXME:  Wait for callback to ensure no shutdown errors?
         }
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                     private methods                       ////
 
@@ -151,23 +151,23 @@ public class VertxBrowserHelper {
             System.err.println("getResponse(): " + _response);
             return _response;
         }
-        
+
         ///////////////////////////////////////////////////////////////////
         ////                     private fields                        ////
 
         /** The port that the server is listening on.
          */
         private int _port = 8080;
-        
-        /** The server's response.  
+
+        /** The server's response.
          */
         private String _response = "No data yet";
-        
-        /** The HTTP server.  Currently, only a single server at a time is 
+
+        /** The HTTP server.  Currently, only a single server at a time is
          * supported.
          */
         private HttpServer _server = null;
-        
+
         /** A router to route incoming requests to the appropriate handlers.
          */
         private Router _router = null;

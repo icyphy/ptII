@@ -1,5 +1,5 @@
 /* A director for modeling air traffic control systems.
- 
+
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -63,7 +63,7 @@ public abstract class AbstractATCDirector extends DEDirector {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
     }
-        
+
     /** Return an additional delay for a track to keep an aircraft in
      *  transit.
      *  @param track The track.
@@ -71,19 +71,19 @@ public abstract class AbstractATCDirector extends DEDirector {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public abstract double handleRejectionWithDelay(Track track) throws IllegalActionException;
-    
+
     /** Update _stormyTracks array because of a change in condition of a track.
      *  @param track The track.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public abstract void handleTrackAttributeChanged(Track track) throws IllegalActionException;
-    
+
     /** Put an entry into _neighbors , _stormyTrack  and _inTransit for the initialized track.
      *  @param track The track.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public abstract void handleInitializedTrack(Track track) throws IllegalActionException;
-    
+
     /** Routing an aircraft based on its flight map.
      *  @param aircraft (this token is a record of "aircraftId","aircraftSpeed","flightMap" and "priorTrack"and ...)
      *  @param trackId The trackid.
@@ -91,13 +91,13 @@ public abstract class AbstractATCDirector extends DEDirector {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public abstract RecordToken routing(Token aircraft, Token trackId) throws IllegalActionException;
-    
+
     /** Return status of the track.
      *  @param trackId The trackid.
      *  @return The status of the track.
      */
     public abstract boolean returnTrackStatus(Token trackId);
-      
+
     /** Update inTransit status of a track.
      *  @param trackId The trackid
      *  @param trackStatus The status
@@ -105,7 +105,7 @@ public abstract class AbstractATCDirector extends DEDirector {
      */
     public abstract void setInTransitStatusOfTrack(Token trackId, boolean trackStatus)
             throws IllegalActionException;
-    
+
     /** Reroute an aircraft.
      *  @param aircraft The aircraft
      *  @return a Map of rerouted aircraft.
@@ -113,8 +113,8 @@ public abstract class AbstractATCDirector extends DEDirector {
      */
     public abstract Map<String, Token> rerouteUnacceptedAircraft(Token aircraft)
             throws IllegalActionException;
-                
-    /** Return airplane's color. If the airplane has not color, set a color for that and store it.  
+
+    /** Return airplane's color. If the airplane has not color, set a color for that and store it.
      *  @param id id of the airplane
      *  @return The color of the airplane.
      *  @exception IllegalActionException Not thrown in this base class.
@@ -126,8 +126,8 @@ public abstract class AbstractATCDirector extends DEDirector {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     public abstract void handleInitializedAirport(Airport airport) throws IllegalActionException;
-    
-    /** Handle initializing of a destination airport. This function stores airport id in _airportsId 
+
+    /** Handle initializing of a destination airport. This function stores airport id in _airportsId
      *  @param destinationAirport The destination.
      *  @exception IllegalActionException Not thrown in this base class.
      */

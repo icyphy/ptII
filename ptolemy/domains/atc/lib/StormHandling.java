@@ -1,5 +1,5 @@
 /* Handle a storm.
- 
+
    Copyright (c) 2015 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
@@ -87,7 +87,7 @@ public class StormHandling extends TypedAtomicActor {
 
     /** The number of tracks. */
     public Parameter numberOfTracks;
-        
+
     /** Initialize this actor.  Derived classes override this method
      *  to perform actions that should occur once at the beginning of
      *  an execution, but after type resolution.  Derived classes can
@@ -117,8 +117,8 @@ public class StormHandling extends TypedAtomicActor {
                 trackNumber=((IntToken)selectedTrack.get(0)).intValue();
                 _temp[trackNumber-1]=value;
             }
-                    
-        } 
+
+        }
         trackStatus.send(0, (Token)(new ArrayToken(BaseType.BOOLEAN, _temp)));
     }
 

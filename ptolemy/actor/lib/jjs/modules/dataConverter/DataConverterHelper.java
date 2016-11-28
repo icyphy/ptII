@@ -1,4 +1,4 @@
-/* Helper for the dataConverter JavaScript module. 
+/* Helper for the dataConverter JavaScript module.
 
  Copyright (c) 2016 The Regents of the University of California.
  All rights reserved.
@@ -41,7 +41,7 @@ import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.data.AWTImageToken;
 import ptolemy.kernel.util.IllegalActionException;
 
-/** Helper for the dataConverter JavaScript module. 
+/** Helper for the dataConverter JavaScript module.
  *  @author Hokeun Kim
  *  @version $Id$
  *  @since Ptolemy II 11.0
@@ -70,7 +70,7 @@ public class DataConverterHelper extends HelperBase {
         Graphics2D gr2D = bufferedImage.createGraphics();
         gr2D.drawImage(image, 0, 0, null);
         gr2D.dispose();
-        
+
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             ImageIO.write(bufferedImage, "jpg", baos);
@@ -79,7 +79,7 @@ public class DataConverterHelper extends HelperBase {
         }
         return _toJSArray(baos.toByteArray());
     }
-    
+
     /** Convert JavaScript array to AWTImageToken.
      *  @param object The JavaScript array to be converted to a image token.
      *  @return The image token converted from JavaScript array.

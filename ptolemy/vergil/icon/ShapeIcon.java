@@ -427,7 +427,7 @@ public class ShapeIcon extends DynamicEditorIcon {
 
     // The specified line width.
     private float _lineWidth = 1f;
-    
+
     // The rotation.
     private double _rotation = 0.0;
 

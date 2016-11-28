@@ -153,7 +153,7 @@ public class AutoTests extends ModelTests {
                     try {
                         Thread.sleep(5000);
                     } catch (InterruptedException ex) {
-                        System.err.println("Sleep before reloading of accessors was interrupted: " + ex); 
+                        System.err.println("Sleep before reloading of accessors was interrupted: " + ex);
                     }
                 }
                 Object toplevel = _applicationToplevelMethod.invoke(instance, (Object[]) null);
@@ -189,11 +189,11 @@ public class AutoTests extends ModelTests {
             return false;
         }
         return true;
-    } 
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected fields                  ////
-    
+
     /** The org.terraswarm.accessor.JSAccessor class, which is tested
      * by reloading Accessors.
      */
@@ -221,7 +221,7 @@ public class AutoTests extends ModelTests {
             _jsAccessorReloadAllAccessorsMethod = null;
         }
     }
-    
+
     private static void _delay(String fullPath) {
         String accessorTests = "org/terraswarm/accessor";
         int delay = 5000;
@@ -234,7 +234,7 @@ public class AutoTests extends ModelTests {
             try {
                 Thread.sleep(5000);
             } catch (InterruptedException ex) {
-                System.err.println("Sleep before reloading of accessors was interrupted: " + ex); 
+                System.err.println("Sleep before reloading of accessors was interrupted: " + ex);
             }
         }
     }

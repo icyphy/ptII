@@ -46,7 +46,7 @@ import ptolemy.util.StringUtilities;
 
  <p> See ptolemy.moml.filter.RemoveGraphicalClassesApplication for
  an application that will remove graphical classes from a file.</p>
- 
+
  @author  Edward A. Lee, Christopher Hylands
  @version $Id$
  @since Ptolemy II 2.0

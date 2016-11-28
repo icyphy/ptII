@@ -99,7 +99,7 @@ public class JavaScript extends AccessorCodeGeneratorAdapter {
      *  @param namedObj The object
      *  @return The JavaScript definitions for the parameters.
      *  @exception IllegalActionException If there is a problem getting the parameters.
-     */   
+     */
     protected StringBuffer _generateJavaScriptParameters(NamedObj namedObj)
             throws IllegalActionException {
         StringBuffer code = new StringBuffer();

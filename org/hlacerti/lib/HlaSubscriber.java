@@ -397,7 +397,7 @@ public class HlaSubscriber extends TypedAtomicActor {
 
         /** Indicate if the HLA subscriber actor uses the CERTI message
          *  buffer API.
-         *  @return true if the HLA publisher actor uses the CERTI message and false if 
+         *  @return true if the HLA publisher actor uses the CERTI message and false if
      *  it doesn't.
      *  @throws IllegalActionException
          */

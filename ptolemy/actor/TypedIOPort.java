@@ -1036,7 +1036,7 @@ public class TypedIOPort extends IOPort implements Typeable {
             }
             return false;
         }
-        
+
         /** Return this TypedIOPort.
          *  @return A TypedIOPort.
          */
@@ -1068,7 +1068,7 @@ public class TypedIOPort extends IOPort implements Typeable {
 
             return new InequalityTerm[0];
         }
-        
+
         /** Return a hashcode for this object that matches equals().
          */
         @Override

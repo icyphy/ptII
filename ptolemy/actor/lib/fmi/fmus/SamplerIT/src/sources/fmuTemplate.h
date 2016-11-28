@@ -158,7 +158,7 @@ typedef struct {
     fmi2IntegerTime time;
     fmi2Integer microstep;
     fmi2IntegerTime resMagnitude;
-    fmi2Integer requestedResolution;    
+    fmi2Integer requestedResolution;
     #else
     fmi2Real time;
     fmi2Integer microstep;

@@ -147,7 +147,7 @@ import ptolemy.util.StringUtilities;
  */
 @SuppressWarnings("serial")
 public abstract class Top extends JFrame implements WindowFocusListener, StatusHandler {
-    
+
     /** Construct an empty top-level frame with the default status
      *  bar.  After constructing this, it is necessary to call
      *  pack() to have the menus added, and then setVisible(true)
@@ -191,7 +191,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
         if (PtGUIUtilities.macOSLookAndFeel()) {
             _macInitializer();
         }
-        
+
         addWindowFocusListener(this);
     }
 
@@ -339,7 +339,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
         // Avoid a leak under RHEL and Java 1.8.0_55
         // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#LinuxBltSubRegion
         // http://oracle.developer-works.com/article/5359339/How+to+realy+unregister+listeners+%28or+how+%22great%22+swing+leaks+memory%29
-        focusManager.setGlobalCurrentFocusCycleRoot(null); 
+        focusManager.setGlobalCurrentFocusCycleRoot(null);
 
         // Set any AbstractActions to null.  This is not strictly necessary,
         // but it helps free up memory more quickly.  By doing this here,
@@ -392,7 +392,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
         // Sigh.  Under Mac OS X, we need to deal with the peers by hand.
         // This code is left commented out because it is Mac-specific and
         // accessing ComponentPeer produces a warning.
-        
+
         // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/MemoryLeaks#CPlatformWindow
         // See http://stackoverflow.com/questions/19781877/mac-os-java-7-jdialog-dispose-memory-leak
 
@@ -613,7 +613,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
 
         deferIfNecessary(doShow);
     }
-    
+
     /** Display the specified message in the status bar.
      *  This message will be displayed for a maximum of MAXIMUM_STATUS_MESSAGE_TIME
      *  (default 30 seconds).
@@ -636,7 +636,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
                         _lastStatusMessageClearingTask.cancel();
                     }
                     _statusBar.setMessage(message);
-                    
+
                     // If the message is non-empty, schedule a clearing message.
                     if (!message.trim().equals("")) {
                         _lastStatusMessageClearingTask = new TimerTask() {
@@ -646,7 +646,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
                             }
                         };
                         _statusMessageTimer.schedule(_lastStatusMessageClearingTask,
-                                MAXIMUM_STATUS_MESSAGE_TIME);  
+                                MAXIMUM_STATUS_MESSAGE_TIME);
                     }
                 }
             });
@@ -662,7 +662,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
     public void windowGainedFocus(WindowEvent event) {
         MessageHandler.setStatusHandler(this);
     }
-    
+
     /** Unregister with the global message handler to receive status messages.
      *  @see MessageHandler#status(String)
      *  @param event The window event.
@@ -670,7 +670,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
     public void windowLostFocus(WindowEvent event) {
         MessageHandler.setStatusHandler(null);
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public fields                     ////
 
@@ -1337,7 +1337,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
 
     /** Indicator that a file save failed. */
     protected static final int _FAILED = 3;
-    
+
     /** Indicator that a file is saved. */
     protected static final int _SAVED = 0;
 
@@ -2211,7 +2211,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
 
     /** The most recently entered URL in Open URL. */
     private String _lastURL = "http://ptolemy.eecs.berkeley.edu/xml/models/";
-    
+
     /** Last status message clearing task. */
     private TimerTask _lastStatusMessageClearingTask = null;
 
@@ -2220,7 +2220,7 @@ public abstract class Top extends JFrame implements WindowFocusListener, StatusH
 
     /** Indicator that the data represented in the window has been modified. */
     private boolean _modified = false;
-    
+
     /** True if we have printed the securityException message. */
     private static boolean _printedSecurityExceptionMessage = false;
 

@@ -65,16 +65,16 @@ public class GDPHelper extends HelperBase {
      *  org.ptolemy.claudius.myLog01.
      *  @param ioMode The i/o mode for the log (0: for internal use
      *  only, 1: read-only, 2: read-append, 3: append-only).
-     *  @param logdname  Name of the log server where this should be 
+     *  @param logdname  Name of the log server where this should be
      *  placed if it does not yet exist.  If the string is of length
      *  zero, then the hostname is used.
      *  @exception GDPException If the log does not exist or if the
      *  connection to the log server fails.
      */
     public GDPHelper(ScriptObjectMirror currentObj, String logName, int ioMode, String logdname) throws GDPException {
-        
+
         super(currentObj);
-        
+
         // The GDP_GCL constructor calls the gdp_init() C function for us.
         System.out.println("GDPHelper.GDPHelper(" + logName + ", " + ioMode + ", " + logdname + "): ");
 
@@ -99,7 +99,7 @@ public class GDPHelper extends HelperBase {
         if (new File("/etc/redhat-release").exists()) {
             String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
             String gdpLibraryPath = ptII + "/lib/linux-x86-64-rhel/";
-            String jnaLibraryPath = StringUtilities.getProperty("jna.library.path").trim(); 
+            String jnaLibraryPath = StringUtilities.getProperty("jna.library.path").trim();
             if (jnaLibraryPath.length() > 0) {
                 jnaLibraryPath += File.pathSeparator + gdpLibraryPath;
             } else {
@@ -129,13 +129,13 @@ public class GDPHelper extends HelperBase {
             throw new GDPException("Could not update ~/.ep_adm_params/gdp with the GDP router name(s).");
         }
         _gcl = GDP_GCL.newGCL(new GDP_NAME(logName), ioMode, new GDP_NAME(logdname));
-        _logName = logName;    
+        _logName = logName;
     }
 
     /** Append a string to the log.
      *  @param data The string to be appended, which assumed to be UTF-8.
      *  @exception GDPException If there is a problem appending the string.
-     */   
+     */
     public void append(String data) throws GDPException {
         byte [] bytes = data.getBytes(StandardCharsets.UTF_8);
         System.out.println("GDPHelper.append(" + data + ")");
@@ -143,11 +143,11 @@ public class GDPHelper extends HelperBase {
     }
 
     /** Close the GCL.
-     */   
+     */
     public void close() {
         _gcl.close();
     }
-    
+
     /** Get the next data.
      *  @param timeout The timeout in milliseconds.
      *  @return The next data.
@@ -158,7 +158,7 @@ public class GDPHelper extends HelperBase {
         System.out.println("GDPHelper.getNextData(" + timeout + "): " + gdp_event);
         return _datumToData((HashMap<String, Object>)gdp_event.get("datum"));
     }
-    
+
     /** Read a record.
      *  @param recordNumber The record number to be read.  The first record
      *  in the log is record 1.
@@ -187,7 +187,7 @@ public class GDPHelper extends HelperBase {
 
     /** Subscribe to a log.
      *  FIXME: What is the meaning of the arguments? Make no sense for subscription.
-     *  @param startRecord The index of the starting record.  The first 
+     *  @param startRecord The index of the starting record.  The first
      *  record in the log is record 1.
      *  @param numberOfRecords The number of records to read.
      *  @param timeout The timeout in milliseconds.
@@ -247,7 +247,7 @@ public class GDPHelper extends HelperBase {
         thread.setDaemon(true);
         thread.start();
     }
-    
+
     /** Unsubscribe from the log.
      */
     public void unsubscribe() {

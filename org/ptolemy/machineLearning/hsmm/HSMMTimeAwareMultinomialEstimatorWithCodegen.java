@@ -199,7 +199,7 @@ HSMMTimeAwareMultinomialEstimator {
     /** The property file. */
     public FilePortParameter propertyFile;
 
-    /** The maximum number of function evaluations before terminating. 
+    /** The maximum number of function evaluations before terminating.
      *  The default value is 10.
      */
     public Parameter optStep;
@@ -215,9 +215,9 @@ HSMMTimeAwareMultinomialEstimator {
      */
     public Parameter modelChecking;
 
-    /** 
+    /**
      * The default value is true.
-     */        
+     */
     public Parameter testPreset;
 
     public TypedIOPort optvals;
@@ -470,7 +470,7 @@ HSMMTimeAwareMultinomialEstimator {
                                         try {
                                             err.close();
                                         } catch (IOException ex) {
-                                            throw new IllegalActionException(null, ex, "Failed to close error stream from prism: " + pb);                                            
+                                            throw new IllegalActionException(null, ex, "Failed to close error stream from prism: " + pb);
                                         }
                                     }
                                 }
@@ -969,7 +969,7 @@ HSMMTimeAwareMultinomialEstimator {
         }
         return str.toString();
     }
-    
+
     private String _getStepCountAutomaton() {
         return INDENT1 + "module nMod " + _eol +
                 // number of outputs produced;

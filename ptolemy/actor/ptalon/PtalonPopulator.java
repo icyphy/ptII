@@ -33,7 +33,7 @@ import antlr.NoViableAltException;
 import antlr.RecognitionException;
 import antlr.collections.AST;
 
-/** 
+/**
   PtalonPopulator.java generated from populator.g by ANTLR.
 
   @author Adam Cataldo, Elaine Cheong, Thomas Huining Feng
@@ -53,15 +53,15 @@ public class PtalonPopulator extends antlr.TreeParser       implements PtalonPop
     public PtalonEvaluator getCodeManager() {
         return info;
     }
-    
+
     private String scopeName;
-    
+
 public PtalonPopulator() {
         tokenNames = _tokenNames;
 }
 
         public final void port_declaration(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST port_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
@@ -102,7 +102,7 @@ public PtalonPopulator() {
                 PtalonAST q_AST = null;
                 PtalonAST r = null;
                 PtalonAST r_AST = null;
-                
+
                 try {      // for error handling
                         if (_t==null) _t=ASTNULL;
                         switch ( _t.getType()) {
@@ -130,11 +130,11 @@ public PtalonPopulator() {
                                         astFactory.addASTChild(currentAST, a_AST);
                                         match(_t,ID);
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady() && !info.isCreated(a.getText())) {
                                         info.addPort(a.getText());
                                         }
-                                        
+
                                         break;
                                 }
                                 case DYNAMIC_NAME:
@@ -165,7 +165,7 @@ public PtalonPopulator() {
                                         currentAST = __currentAST4;
                                         _t = __t4;
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady()) {
                                         String value = info.evaluateString(h.getText());
                                         if (value != null) {
@@ -178,7 +178,7 @@ public PtalonPopulator() {
                                         }
                                         }
                                         }
-                                        
+
                                         break;
                                 }
                                 default:
@@ -217,11 +217,11 @@ public PtalonPopulator() {
                                         astFactory.addASTChild(currentAST, b_AST);
                                         match(_t,ID);
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady() && !info.isCreated(b.getText())) {
                                         info.addInPort(b.getText());
                                         }
-                                        
+
                                         break;
                                 }
                                 case DYNAMIC_NAME:
@@ -252,7 +252,7 @@ public PtalonPopulator() {
                                         currentAST = __currentAST7;
                                         _t = __t7;
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady()) {
                                         String value = info.evaluateString(j.getText());
                                         if (value != null) {
@@ -265,7 +265,7 @@ public PtalonPopulator() {
                                         }
                                         }
                                         }
-                                        
+
                                         break;
                                 }
                                 default:
@@ -304,11 +304,11 @@ public PtalonPopulator() {
                                         astFactory.addASTChild(currentAST, c_AST);
                                         match(_t,ID);
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady() && !info.isCreated(c.getText())) {
                                         info.addOutPort(c.getText());
                                         }
-                                        
+
                                         break;
                                 }
                                 case DYNAMIC_NAME:
@@ -339,7 +339,7 @@ public PtalonPopulator() {
                                         currentAST = __currentAST10;
                                         _t = __t10;
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady()) {
                                         String value = info.evaluateString(l.getText());
                                         if (value != null) {
@@ -352,7 +352,7 @@ public PtalonPopulator() {
                                         }
                                         }
                                         }
-                                        
+
                                         break;
                                 }
                                 default:
@@ -391,11 +391,11 @@ public PtalonPopulator() {
                                         astFactory.addASTChild(currentAST, d_AST);
                                         match(_t,ID);
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady() && !info.isCreated(d.getText())) {
                                         info.addPort(d.getText());
                                         }
-                                        
+
                                         break;
                                 }
                                 case DYNAMIC_NAME:
@@ -426,7 +426,7 @@ public PtalonPopulator() {
                                         currentAST = __currentAST13;
                                         _t = __t13;
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady()) {
                                         String value = info.evaluateString(n.getText());
                                         if (value != null) {
@@ -439,7 +439,7 @@ public PtalonPopulator() {
                                         }
                                         }
                                         }
-                                        
+
                                         break;
                                 }
                                 default:
@@ -478,11 +478,11 @@ public PtalonPopulator() {
                                         astFactory.addASTChild(currentAST, e_AST);
                                         match(_t,ID);
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady() && !info.isCreated(e.getText())) {
                                         info.addInPort(e.getText());
                                         }
-                                        
+
                                         break;
                                 }
                                 case DYNAMIC_NAME:
@@ -513,7 +513,7 @@ public PtalonPopulator() {
                                         currentAST = __currentAST16;
                                         _t = __t16;
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady()) {
                                         String value = info.evaluateString(p.getText());
                                         if (value != null) {
@@ -526,7 +526,7 @@ public PtalonPopulator() {
                                         }
                                         }
                                         }
-                                        
+
                                         break;
                                 }
                                 default:
@@ -565,11 +565,11 @@ public PtalonPopulator() {
                                         astFactory.addASTChild(currentAST, f_AST);
                                         match(_t,ID);
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady() && !info.isCreated(f.getText())) {
                                         info.addOutPort(f.getText());
                                         }
-                                        
+
                                         break;
                                 }
                                 case DYNAMIC_NAME:
@@ -600,7 +600,7 @@ public PtalonPopulator() {
                                         currentAST = __currentAST19;
                                         _t = __t19;
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady()) {
                                         String value = info.evaluateString(r.getText());
                                         if (value != null) {
@@ -613,7 +613,7 @@ public PtalonPopulator() {
                                         }
                                         }
                                         }
-                                        
+
                                         break;
                                 }
                                 default:
@@ -635,16 +635,16 @@ public PtalonPopulator() {
                         }
                 }
                 catch (PtalonScopeException excep) {
-                        
+
                         throw new PtalonRuntimeException("", excep);
-                        
+
                 }
                 returnAST = port_declaration_AST;
                 _retTree = _t;
         }
-        
+
         public final void parameter_declaration(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST parameter_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
@@ -657,7 +657,7 @@ public PtalonPopulator() {
                 PtalonAST d_AST = null;
                 PtalonAST b = null;
                 PtalonAST b_AST = null;
-                
+
                 try {      // for error handling
                         if (_t==null) _t=ASTNULL;
                         switch ( _t.getType()) {
@@ -685,11 +685,11 @@ public PtalonPopulator() {
                                         astFactory.addASTChild(currentAST, a_AST);
                                         match(_t,ID);
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady() && !info.isCreated(a.getText())) {
                                         info.addParameter(a.getText());
                                         }
-                                        
+
                                         break;
                                 }
                                 case DYNAMIC_NAME:
@@ -720,7 +720,7 @@ public PtalonPopulator() {
                                         currentAST = __currentAST23;
                                         _t = __t23;
                                         _t = _t.getNextSibling();
-                                        
+
                                         if (info.isReady()) {
                                         String value = info.evaluateString(d.getText());
                                         if (value != null) {
@@ -733,7 +733,7 @@ public PtalonPopulator() {
                                         }
                                         }
                                         }
-                                        
+
                                         break;
                                 }
                                 default:
@@ -767,11 +767,11 @@ public PtalonPopulator() {
                                 astFactory.addASTChild(currentAST, b_AST);
                                 match(_t,ID);
                                 _t = _t.getNextSibling();
-                                
+
                                 if (info.isReady() && !info.isCreated(b.getText())) {
                                 info.addActorParameter(b.getText());
                                 }
-                                
+
                                 currentAST = __currentAST24;
                                 _t = __t24;
                                 _t = _t.getNextSibling();
@@ -785,16 +785,16 @@ public PtalonPopulator() {
                         }
                 }
                 catch (PtalonScopeException excep) {
-                        
+
                         throw new PtalonRuntimeException("", excep);
-                        
+
                 }
                 returnAST = parameter_declaration_AST;
                 _retTree = _t;
         }
-        
+
         public final void assigned_parameter_declaration(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST assigned_parameter_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
@@ -811,10 +811,10 @@ public PtalonPopulator() {
                 PtalonAST b_AST = null;
                 PtalonAST q_AST = null;
                 PtalonAST q = null;
-                
+
                 boolean dynamic_name = false;
-                
-                
+
+
                 try {      // for error handling
                         if (_t==null) _t=ASTNULL;
                         switch ( _t.getType()) {
@@ -883,9 +883,9 @@ public PtalonPopulator() {
                                         currentAST = __currentAST29;
                                         _t = __t29;
                                         _t = _t.getNextSibling();
-                                        
+
                                         dynamic_name = true;
-                                        
+
                                         break;
                                 }
                                 default:
@@ -903,7 +903,7 @@ public PtalonPopulator() {
                                 astFactory.addASTChild(currentAST, e_AST);
                                 match(_t,EXPRESSION);
                                 _t = _t.getNextSibling();
-                                
+
                                 if (dynamic_name) {
                                 if (info.isReady()) {
                                 String value = info.evaluateString(d.getText());
@@ -922,7 +922,7 @@ public PtalonPopulator() {
                                 info.addParameter(a.getText(), e.getText());
                                 }
                                 }
-                                
+
                                 currentAST = __currentAST26;
                                 _t = __t26;
                                 _t = _t.getNextSibling();
@@ -967,11 +967,11 @@ public PtalonPopulator() {
                                 _t = _retTree;
                                 q_AST = (PtalonAST)returnAST;
                                 astFactory.addASTChild(currentAST, returnAST);
-                                
+
                                 if (info.isReady() && !info.isCreated(b.getText())) {
                                 info.addActorParameter(b.getText(), q.getText());
                                 }
-                                
+
                                 currentAST = __currentAST30;
                                 _t = __t30;
                                 _t = _t.getNextSibling();
@@ -985,21 +985,21 @@ public PtalonPopulator() {
                         }
                 }
                 catch (PtalonScopeException excep) {
-                        
+
                         throw new PtalonRuntimeException("", excep);
-                        
+
                 }
                 returnAST = assigned_parameter_declaration_AST;
                 _retTree = _t;
         }
-        
+
         public final void qualified_identifier(AST _t) throws RecognitionException {
-                
+
                 PtalonAST qualified_identifier_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST qualified_identifier_AST = null;
-                
+
                 PtalonAST tmp21_AST = null;
                 PtalonAST tmp21_AST_in = null;
                 tmp21_AST = (PtalonAST)astFactory.create((PtalonAST)_t);
@@ -1011,9 +1011,9 @@ public PtalonPopulator() {
                 returnAST = qualified_identifier_AST;
                 _retTree = _t;
         }
-        
+
         public final void relation_declaration(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST relation_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
@@ -1024,7 +1024,7 @@ public PtalonPopulator() {
                 PtalonAST c_AST = null;
                 PtalonAST d = null;
                 PtalonAST d_AST = null;
-                
+
                 try {      // for error handling
                         AST __t33 = _t;
                         PtalonAST tmp22_AST = null;
@@ -1048,11 +1048,11 @@ public PtalonPopulator() {
                                 astFactory.addASTChild(currentAST, a_AST);
                                 match(_t,ID);
                                 _t = _t.getNextSibling();
-                                
+
                                 if (info.isReady() && !info.isCreated(a.getText())) {
                                 info.addRelation(a.getText());
                                 }
-                                
+
                                 break;
                         }
                         case DYNAMIC_NAME:
@@ -1083,7 +1083,7 @@ public PtalonPopulator() {
                                 currentAST = __currentAST35;
                                 _t = __t35;
                                 _t = _t.getNextSibling();
-                                
+
                                 if (info.isReady()) {
                                 String value = info.evaluateString(d.getText());
                                 if (value != null) {
@@ -1096,7 +1096,7 @@ public PtalonPopulator() {
                                 }
                                 }
                                 }
-                                
+
                                 break;
                         }
                         default:
@@ -1111,16 +1111,16 @@ public PtalonPopulator() {
                         relation_declaration_AST = (PtalonAST)currentAST.root;
                 }
                 catch (PtalonScopeException excep) {
-                        
+
                         throw new PtalonRuntimeException("", excep);
-                        
+
                 }
                 returnAST = relation_declaration_AST;
                 _retTree = _t;
         }
-        
+
         public final void transparent_relation_declaration(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST transparent_relation_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
@@ -1131,7 +1131,7 @@ public PtalonPopulator() {
                 PtalonAST c_AST = null;
                 PtalonAST d = null;
                 PtalonAST d_AST = null;
-                
+
                 try {      // for error handling
                         AST __t37 = _t;
                         PtalonAST tmp24_AST = null;
@@ -1155,11 +1155,11 @@ public PtalonPopulator() {
                                 astFactory.addASTChild(currentAST, a_AST);
                                 match(_t,ID);
                                 _t = _t.getNextSibling();
-                                
+
                                 if (info.isReady() && !info.isCreated(a.getText())) {
                                 info.addTransparentRelation(a.getText());
                                 }
-                                
+
                                 break;
                         }
                         case DYNAMIC_NAME:
@@ -1190,7 +1190,7 @@ public PtalonPopulator() {
                                 currentAST = __currentAST39;
                                 _t = __t39;
                                 _t = _t.getNextSibling();
-                                
+
                                 if (info.isReady()) {
                                 String value = info.evaluateString(d.getText());
                                 if (value != null) {
@@ -1203,7 +1203,7 @@ public PtalonPopulator() {
                                 }
                                 }
                                 }
-                                
+
                                 break;
                         }
                         default:
@@ -1218,16 +1218,16 @@ public PtalonPopulator() {
                         transparent_relation_declaration_AST = (PtalonAST)currentAST.root;
                 }
                 catch (PtalonScopeException excep) {
-                        
+
                         throw new PtalonRuntimeException("", excep);
-                        
+
                 }
                 returnAST = transparent_relation_declaration_AST;
                 _retTree = _t;
         }
-        
+
         public final void assignment(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST assignment_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
@@ -1246,11 +1246,11 @@ public PtalonPopulator() {
                 PtalonAST e_AST = null;
                 PtalonAST p = null;
                 PtalonAST p_AST = null;
-                
+
                 boolean addAssignment = false;
                 String name = "";
-                
-                
+
+
                 try {      // for error handling
                         AST __t42 = _t;
                         PtalonAST tmp26_AST = null;
@@ -1302,7 +1302,7 @@ public PtalonPopulator() {
                                 astFactory.addASTChild(currentAST, leftExp_AST);
                                 match(_t,EXPRESSION);
                                 _t = _t.getNextSibling();
-                                
+
                                 if (info.isReady()) {
                                 String value = info.evaluateString(leftExp.getText());
                                 if (value != null) {
@@ -1310,7 +1310,7 @@ public PtalonPopulator() {
                                 addAssignment = true;
                                 }
                                 }
-                                
+
                                 currentAST = __currentAST44;
                                 _t = __t44;
                                 _t = _t.getNextSibling();
@@ -1333,11 +1333,11 @@ public PtalonPopulator() {
                                 astFactory.addASTChild(currentAST, b_AST);
                                 match(_t,ID);
                                 _t = _t.getNextSibling();
-                                
+
                                 if (addAssignment) {
                                 info.addPortAssign(name, b.getText());
                                 }
-                                
+
                                 break;
                         }
                         case DYNAMIC_NAME:
@@ -1364,11 +1364,11 @@ public PtalonPopulator() {
                                 astFactory.addASTChild(currentAST, e_AST);
                                 match(_t,EXPRESSION);
                                 _t = _t.getNextSibling();
-                                
+
                                 if (addAssignment) {
                                 info.addPortAssign(name, i.getText(), e.getText());
                                 }
-                                
+
                                 currentAST = __currentAST46;
                                 _t = __t46;
                                 _t = _t.getNextSibling();
@@ -1389,11 +1389,11 @@ public PtalonPopulator() {
                                 astFactory.addASTChild(currentAST, p_AST);
                                 match(_t,EXPRESSION);
                                 _t = _t.getNextSibling();
-                                
+
                                 if (addAssignment) {
                                 info.addParameterAssign(name, p.getText());
                                 }
-                                
+
                                 break;
                         }
                         default:
@@ -1408,20 +1408,20 @@ public PtalonPopulator() {
                         assignment_AST = (PtalonAST)currentAST.root;
                 }
                 catch (PtalonScopeException excep) {
-                        
+
                         throw new PtalonRuntimeException("", excep);
-                        
+
                 }
                 returnAST = assignment_AST;
                 _retTree = _t;
         }
-        
+
 /**
  * In this case we do not add any actors, but rather
  * defer this decision to any generated actors.
  */
         public final void nested_actor_declaration(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST nested_actor_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
@@ -1430,7 +1430,7 @@ public PtalonPopulator() {
                 PtalonAST a_AST = null;
                 PtalonAST b_AST = null;
                 PtalonAST b = null;
-                
+
                 AST __t55 = _t;
                 a = _t==ASTNULL ? null :(PtalonAST)_t;
                 PtalonAST a_AST_in = null;
@@ -1441,9 +1441,9 @@ public PtalonPopulator() {
                 currentAST.child = null;
                 match(_t,ACTOR_DECLARATION);
                 _t = _t.getFirstChild();
-                
+
                 info.enterActorDeclaration(a.getText());
-                
+
                 {
                 _loop57:
                 do {
@@ -1458,12 +1458,12 @@ public PtalonPopulator() {
                         else {
                                 break _loop57;
                         }
-                        
+
                 } while (true);
                 }
-                
+
                 info.exitActorDeclaration();
-                
+
                 currentAST = __currentAST55;
                 _t = __t55;
                 _t = _t.getNextSibling();
@@ -1471,14 +1471,14 @@ public PtalonPopulator() {
                 returnAST = nested_actor_declaration_AST;
                 _retTree = _t;
         }
-        
+
 /**
- * This is for a top level actor declaration, which 
+ * This is for a top level actor declaration, which
  * requires separate treatment from a nested actor
  * declaration.
  */
         public final void actor_declaration(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST actor_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
@@ -1489,11 +1489,11 @@ public PtalonPopulator() {
                 PtalonAST b_AST = null;
                 PtalonAST c = null;
                 PtalonAST c_AST = null;
-                
+
                 boolean oldEvalBool = false;
                 String name = null;
-                
-                
+
+
                 AST __t48 = _t;
                 a = _t==ASTNULL ? null :(PtalonAST)_t;
                 PtalonAST a_AST_in = null;
@@ -1504,9 +1504,9 @@ public PtalonPopulator() {
                 currentAST.child = null;
                 match(_t,ACTOR_DECLARATION);
                 _t = _t.getFirstChild();
-                
+
                 info.enterActorDeclaration(a.getText());
-                
+
                 {
                 if (_t==null) _t=ASTNULL;
                 switch ( _t.getType()) {
@@ -1534,7 +1534,7 @@ public PtalonPopulator() {
                                 astFactory.addASTChild(currentAST, c_AST);
                                 match(_t,EXPRESSION);
                                 _t = _t.getNextSibling();
-                                
+
                                         if (info.isReady()) {
                                                     String value = info.evaluateString(c.getText());
                                                     if (value != null) {
@@ -1543,7 +1543,7 @@ public PtalonPopulator() {
                                                 } else {
                                                         name = null;
                                                 }
-                                
+
                                 break;
                         }
                         case 3:
@@ -1584,15 +1584,15 @@ public PtalonPopulator() {
                         else {
                                 break _loop53;
                         }
-                        
+
                 } while (true);
                 }
-                
+
                 if (info.isActorReady()) {
                 info.addActor(name);
                 }
                 info.exitActorDeclaration();
-                
+
                 currentAST = __currentAST48;
                 _t = __t48;
                 _t = _t.getNextSibling();
@@ -1600,14 +1600,14 @@ public PtalonPopulator() {
                 returnAST = actor_declaration_AST;
                 _retTree = _t;
         }
-        
+
         public final void atomic_statement(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST atomic_statement_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST atomic_statement_AST = null;
-                
+
                 {
                 if (_t==null) _t=ASTNULL;
                 switch ( _t.getType()) {
@@ -1680,9 +1680,9 @@ public PtalonPopulator() {
                 returnAST = atomic_statement_AST;
                 _retTree = _t;
         }
-        
+
         public final void transformation_declaration(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST transformation_declaration_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
@@ -1711,12 +1711,12 @@ public PtalonPopulator() {
                 PtalonAST m_AST = null;
                 PtalonAST n = null;
                 PtalonAST n_AST = null;
-                
+
                         String id;
                         String expr = null;
                         int type = -1;
-                
-                
+
+
                 {
                 if (_t==null) _t=ASTNULL;
                 switch ( _t.getType()) {
@@ -2006,7 +2006,7 @@ public PtalonPopulator() {
                 }
                 }
                 }
-                
+
                                 if (expr != null) {
                         String value = info.evaluateString(expr);
                         if (value != null) {
@@ -2026,14 +2026,14 @@ public PtalonPopulator() {
                                 info.preserveObject(id);
                         }
                 }
-                
+
                 transformation_declaration_AST = (PtalonAST)currentAST.root;
                 returnAST = transformation_declaration_AST;
                 _retTree = _t;
         }
-        
+
         public final void conditional_statement(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST conditional_statement_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
@@ -2042,10 +2042,10 @@ public PtalonPopulator() {
                 PtalonAST a_AST = null;
                 PtalonAST e = null;
                 PtalonAST e_AST = null;
-                
+
                 boolean ready;
-                
-                
+
+
                 AST __t75 = _t;
                 a = _t==ASTNULL ? null :(PtalonAST)_t;
                 PtalonAST a_AST_in = null;
@@ -2056,21 +2056,21 @@ public PtalonPopulator() {
                 currentAST.child = null;
                 match(_t,IF);
                 _t = _t.getFirstChild();
-                
+
                 info.enterIfScope(a.getText());
                 ready = info.isIfReady();
-                
+
                 e = (PtalonAST)_t;
                 PtalonAST e_AST_in = null;
                 e_AST = (PtalonAST)astFactory.create(e);
                 astFactory.addASTChild(currentAST, e_AST);
                 match(_t,EXPRESSION);
                 _t = _t.getNextSibling();
-                
+
                 if (ready) {
                 info.setActiveBranch(info.evaluateBoolean(e.getText()));
                 }
-                
+
                 AST __t76 = _t;
                 PtalonAST tmp37_AST = null;
                 PtalonAST tmp37_AST_in = null;
@@ -2082,11 +2082,11 @@ public PtalonPopulator() {
                 currentAST.child = null;
                 match(_t,TRUEBRANCH);
                 _t = _t.getFirstChild();
-                
+
                 if (ready) {
                 info.setCurrentBranch(true);
                 }
-                
+
                 {
                 _loop78:
                 do {
@@ -2150,11 +2150,11 @@ public PtalonPopulator() {
                 currentAST.child = null;
                 match(_t,FALSEBRANCH);
                 _t = _t.getFirstChild();
-                
+
                 if (ready) {
                 info.setCurrentBranch(false);
                 }
-                
+
                 {
                 _loop81:
                 do {
@@ -2210,16 +2210,16 @@ public PtalonPopulator() {
                 currentAST = __currentAST75;
                 _t = __t75;
                 _t = _t.getNextSibling();
-                
+
                 info.exitIfScope();
-                
+
                 conditional_statement_AST = (PtalonAST)currentAST.root;
                 returnAST = conditional_statement_AST;
                 _retTree = _t;
         }
-        
+
         public final void iterative_statement(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST iterative_statement_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
@@ -2234,11 +2234,11 @@ public PtalonPopulator() {
                 PtalonAST c_AST = null;
                 PtalonAST n = null;
                 PtalonAST n_AST = null;
-                
+
                 boolean ready;
                 PtalonAST inputAST = (PtalonAST)_t;
-                
-                
+
+
                 AST __t83 = _t;
                 f = _t==ASTNULL ? null :(PtalonAST)_t;
                 PtalonAST f_AST_in = null;
@@ -2309,14 +2309,14 @@ public PtalonPopulator() {
                 currentAST = __currentAST86;
                 _t = __t86;
                 _t = _t.getNextSibling();
-                
+
                 info.enterForScope(f.getText(), inputAST, this);
                 ready = info.isForReady();
                 if (ready) {
                 info.setActiveBranch(true);
                 info.setCurrentBranch(false);
                 }
-                
+
                 {
                 _loop88:
                 do {
@@ -2389,19 +2389,19 @@ public PtalonPopulator() {
                 currentAST = __currentAST83;
                 _t = __t83;
                 _t = _t.getNextSibling();
-                
+
                 if (ready) {
                 info.evaluateForScope();
                 }
                 info.exitForScope();
-                
+
                 iterative_statement_AST = (PtalonAST)currentAST.root;
                 returnAST = iterative_statement_AST;
                 _retTree = _t;
         }
-        
+
         public final void iterative_statement_evaluator(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST iterative_statement_evaluator_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
@@ -2416,7 +2416,7 @@ public PtalonPopulator() {
                 PtalonAST c_AST = null;
                 PtalonAST n = null;
                 PtalonAST n_AST = null;
-                
+
                 AST __t91 = _t;
                 f = _t==ASTNULL ? null :(PtalonAST)_t;
                 PtalonAST f_AST_in = null;
@@ -2563,17 +2563,17 @@ public PtalonPopulator() {
                 returnAST = iterative_statement_evaluator_AST;
                 _retTree = _t;
         }
-        
+
         public final void transformation(AST _t) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST transformation_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST transformation_AST = null;
-                
+
                 boolean incremental = false;
-                
-                
+
+
                 AST __t99 = _t;
                 PtalonAST tmp47_AST = null;
                 PtalonAST tmp47_AST_in = null;
@@ -2629,9 +2629,9 @@ public PtalonPopulator() {
                 }
                 }
                 }
-                
+
                 info.enterTransformation(incremental);
-                
+
                 {
                 _loop102:
                 do {
@@ -2684,29 +2684,29 @@ public PtalonPopulator() {
                 currentAST = __currentAST99;
                 _t = __t99;
                 _t = _t.getNextSibling();
-                
+
                 info.exitTransformation();
-                
+
                 transformation_AST = (PtalonAST)currentAST.root;
                 returnAST = transformation_AST;
                 _retTree = _t;
         }
-        
+
         public final void actor_definition(AST _t,
                 PtalonEvaluator info
         ) throws RecognitionException, PtalonRuntimeException {
-                
+
                 PtalonAST actor_definition_AST_in = (_t == ASTNULL) ? null : (PtalonAST)_t;
                 returnAST = null;
                 ASTPair currentAST = new ASTPair();
                 PtalonAST actor_definition_AST = null;
                 PtalonAST a = null;
                 PtalonAST a_AST = null;
-                
+
                 this.info = info;
                 this.info.startAtTop();
-                
-                
+
+
                 AST __t104 = _t;
                 a = _t==ASTNULL ? null :(PtalonAST)_t;
                 PtalonAST a_AST_in = null;
@@ -2806,9 +2806,9 @@ public PtalonPopulator() {
                 }
                 }
                 }
-                
+
                 this.info.setActiveBranch(true);
-                
+
                 {
                 _loop108:
                 do {
@@ -2885,8 +2885,8 @@ public PtalonPopulator() {
                 returnAST = actor_definition_AST;
                 _retTree = _t;
         }
-        
-        
+
+
         public static final String[] _tokenNames = {
                 "<0>",
                 "EOF",
@@ -2964,6 +2964,6 @@ public PtalonPopulator() {
                 "LINE_COMMENT",
                 "COMMENT"
         };
-        
+
         }
-        
+

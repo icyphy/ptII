@@ -64,11 +64,11 @@ import ptolemy.util.StringUtilities;
  *
  *  <p>To generate an Accessor version of a model, use:</p>
  *  <pre>
- *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator -language accessor $PTII/ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml; cat $PTII/org/terraswarm/accessor/accessors/web/hosts/node/TestComposite.js 
+ *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator -language accessor $PTII/ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml; cat $PTII/org/terraswarm/accessor/accessors/web/hosts/node/TestComposite.js
  *  </pre>
  *  which is shorthand for:
  *  <pre>
- *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js 
+ *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js
  *  </pre>
  *
  *  <p>This actor runs $PTII/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH, which does the following on the remote machine:</p>
@@ -110,11 +110,11 @@ import ptolemy.util.StringUtilities;
  *  is a facility that starts a process and restarts it as necesary.</p>
  *
  *  <p>The <code>accessorInvokeSSH</code> script should work on any machine that has node and npm installed.</p>
- * 
+ *
  *  <p>To use a SwarmBox, add your <code>~/.ssh/id_rsa.pub</code> file to <code>swarmboxadmin/ansible/keys/sbuser_authorized_keys</code>.  See <a href="https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess#in_browser">https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess</a>.</p>
  *
  *  <p>For more information, see <a href="https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#in_browser">https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
- * 
+ *
  *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
  *  @version $Id: AccessorSSHCodeGenerator.java 75087 2016-08-27 01:05:39Z cxh $
  *  @since Ptolemy II 11.0
@@ -170,7 +170,7 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
      *  Note that the <code>@terraswarm/accessors</code>
      *  module is always installed and need not be
      *  specified here.  The initial default value
-     *  is the empty string, which signifies that 
+     *  is the empty string, which signifies that
      *  only the <code>@terraswarm/accessors</code> module
      *  will be installed.
      */
@@ -183,7 +183,7 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
      *  Setting this to false means that the composite accessor
      *  will be deployed more quickly because npm install will not
      *  be run.
-     *  The default value is false, indicating that 
+     *  The default value is false, indicating that
      *  <code>npm install <i>modules</i></code>
      *  should not be run.
      */
@@ -198,14 +198,14 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
      *  indicating that the process should be run forever.
      */
     public Parameter runForever;
-    
+
     /** If true, then connect to the remote machine and stop any npm
      *  forever processes with the same basename as the model.
      *  Confusingly, to stop any remote processes that have been
      *  previously invoked, <i>run</i> should be true so that the
      *  <code>accessorInvokeSSH</code> script is invoked on the remote
      *  machine with a <code>stop</code> argument.
-     *  The default value is false, indicating that 
+     *  The default value is false, indicating that
      *  the remote machine will invoke the Node accessor host
      *  composite accessor.
      */
@@ -213,7 +213,7 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
 
     /** The username and hostname that is used with ssh.
      *  The default value is "sbuser@swarmnuc001.eecs.berkeley.edu".
-     *  To get ssh access, see 
+     *  To get ssh access, see
      *  <a href="https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess#in_browser">https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess</a>.
      */
     public StringParameter userHost;

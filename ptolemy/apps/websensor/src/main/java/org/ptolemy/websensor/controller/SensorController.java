@@ -45,54 +45,54 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.view.json.MappingJacksonJsonView;
 
 /**
- * Models a sensor with a web server.  The sensor supplies temperature, 
+ * Models a sensor with a web server.  The sensor supplies temperature,
  * humidity and pressure readings.  It sends this information back as either
  * a web page or as a JSON object.
- * 
+ *
  * @author ltrnc
  */
 
 @RequestMapping(value = "/{type}")
-public class SensorController 
+public class SensorController
     extends org.springframework.web.servlet.mvc.AbstractController {
-    
+
     /** Generate a web page or JSON response for the given sensor type,
      *  if the controller contains sensors of this type.  If the type contains
      *  .json, return a JSON response; otherwise, return a web page.
-     *  
+     *
      * @param request  The HTTP request.  The requestURI from the request
      *  is used to determine whether to return an HTML page or JSON
      * @param type  The sensor type
      * @return  A web page or JSON response for the current sensor type
      */
-    
+
     @RequestMapping(method = RequestMethod.GET)
     public ModelAndView getReading(HttpServletRequest request,
             @PathVariable String type) {
-        
-        // Create a ModelAndView object to return, using 
+
+        // Create a ModelAndView object to return, using
         // /src/main/webapp/presentation/views/sensorReading.jsp
-        // as a template.      
+        // as a template.
         ModelAndView modelAndView = new ModelAndView("sensorReading");
-        
+
         if (type != null && !type.isEmpty()) {
-          
+
             // Check for .json, case-insensitive
-            // The "type" parameter will not contain the extension (e.g. .html 
-            // or .json) since this is automatically stripped by Spring 
+            // The "type" parameter will not contain the extension (e.g. .html
+            // or .json) since this is automatically stripped by Spring
             // Get the original request URI to check if the request is for
             // .html or .json
             String requestURI = request.getRequestURI();
-          
+
             Pattern pattern = Pattern.compile("(?i).json");
             Matcher matcher = pattern.matcher(requestURI);
-            
+
             boolean isJSON = matcher.find();
-            
+
             // Check for all sensors of this type and save the first readings
             // For HTML view
             StringBuffer readingsString = new StringBuffer();
-            // For JSON view.  
+            // For JSON view.
             ArrayList readingsList = new ArrayList();
 
             Iterator sensorsIterator = sensors.iterator();
@@ -101,13 +101,13 @@ public class SensorController
             while(sensorsIterator.hasNext()) {
                 Sensor sensor = (Sensor) sensorsIterator.next();
                 if (sensor.getType().equalsIgnoreCase(type)) {
-                    // Set the displayed type name according to what is 
+                    // Set the displayed type name according to what is
                     // stored in the sensor, for e.g. proper capitalization,
-                    // and the units.  
+                    // and the units.
                     typeName = sensor.getType();
                     // Assumes all sensors of the same type use the same units
                     unit = sensor.getUnit();
-                    
+
                     if (sensor.getReadings().size() > 0) {
                         for (int i = 0; i < sensor.getReadings().size(); i++) {
                             readingsString.append(sensor.getReadings().get(i) + " ");
@@ -117,12 +117,12 @@ public class SensorController
                     }
                 }
             }
-            
-            // If any sensors found of this type, assemble readings into a 
+
+            // If any sensors found of this type, assemble readings into a
             // string
             if (readingsString.length() > 0) {
                 // Display the results
-                
+
                 if (isJSON) {
                     // For JSON, specification is to return unit and value, e.g.
                     // { "unit":"%", "value": 26.82}
@@ -136,7 +136,7 @@ public class SensorController
                     modelAndView.addObject("type", typeName);
                     modelAndView.addObject("readings", readingsString);
                 }
-                
+
             } else {
                 // Return not found, if there are no sensors of this type
                 // TODO:  Need a test for this
@@ -152,42 +152,42 @@ public class SensorController
         }
       return modelAndView;
     }
-   
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-    
-    /** Adds the given sensor to the set of sensors associated with this 
+
+    /** Adds the given sensor to the set of sensors associated with this
      * sensor controller.  If it is a duplicate, it will not be added.
-     * 
+     *
      * @param sensor  The sensor to add to the controller's set of sensors
      */
     public void addSensor(Sensor sensor) {
         sensors.add(sensor);
     }
-    
+
     /** Returns the geographical location of this sensor controller.
      *  (Assumes that all of its sensors are co-located).
-     * 
+     *
      * @return  The location of this sensor controller
      */
     public String getLocation() {
         return _location;
     }
-    
+
     /** Returns the set of sensors associated with this sensor controller.
-     * This returns an array, since the return type of the getter must match 
-     * the parameter of the setter in order to use the setters in the Spring 
+     * This returns an array, since the return type of the getter must match
+     * the parameter of the setter in order to use the setters in the Spring
      * configuration file.
-     * 
+     *
      * @return  The set of sensors associated with this sensor controller.
      */
     public Sensor[] getSensors() {
         // Avoid FindBugs BC_IMPOSSIBLE_CAST
         return sensors.toArray(new Sensor[sensors.size()]);
     }
-    
+
     /** Removes the given sensor from the sensor controller's set, if present.
-     * 
+     *
      * @param sensor  The sensor to remove
      */
     // FIXME:  Will this work?  Will the object really be the same or have
@@ -195,30 +195,30 @@ public class SensorController
     public void removeSensor(Sensor sensor) {
         // TODO
     }
-    
+
     /** Removes all sensors of the given type from the sensor controller's set,
      *  if any.
-     *  
+     *
      * @param type  The type of sensor to remove
      */
     public void removeSensors(String type) {
         // TODO
     }
-    
+
     /** Set the geographical location of this sensor controller.
-     * 
+     *
      * @param location  The geographical location of this sensor controller.
      */
     public void setLocation(String location) {
         _location = location;
     }
-    
+
     /** Set the sensors associated with this sensor controller.  The input array
-     * will be checked for duplicates.  If any duplicates occur, they will be 
-     * removed. This accepts an array so that it can be set in the Spring 
+     * will be checked for duplicates.  If any duplicates occur, they will be
+     * removed. This accepts an array so that it can be set in the Spring
      * configuration file. (I don't think Spring will allow a List or Set?)
-     * 
-     * @param sensors  The sensors associated with this sensor controller.  
+     *
+     * @param sensors  The sensors associated with this sensor controller.
      */
     public void setSensors(Sensor[] sensors){
         this.sensors = new HashSet();
@@ -226,25 +226,25 @@ public class SensorController
             this.sensors.add(sensors[i]);
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
-    
+
     // These can be changed to protected variables if subclasses are introduced
 
-    /** The geographical location of the sensor.  For example, "Pittsburgh", 
+    /** The geographical location of the sensor.  For example, "Pittsburgh",
      *  "Edward's desk", ...
      */
     private String _location;
-    
-    /** The set of sensors associated with this sensor controller.  This is a 
-     *  set, since a controller cannot have multiple instances of the same 
+
+    /** The set of sensors associated with this sensor controller.  This is a
+     *  set, since a controller cannot have multiple instances of the same
      *  sensor object.  (It could, however, have multiple sensors of the same
      *  type - for example, three temperature sensors.)
      */
     private HashSet<Sensor> sensors = null;
 
-    /** 
+    /**
      * Required by AbstractController, but doesn't do anything in this example.
      */
     @Override

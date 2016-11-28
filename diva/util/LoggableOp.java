@@ -74,7 +74,7 @@ public class LoggableOp {
     }
 
     /** Get the stream to which errors are printed.
-     * @return The error stream   
+     * @return The error stream
      * @see #setErrorStream(PrintStream)
      */
     public PrintStream getErrorStream() {

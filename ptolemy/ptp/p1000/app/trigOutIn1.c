@@ -127,7 +127,7 @@ int main(int argc, char* argv[])
   pthread_t  p_thread;
   const double fromHwNsec = pow(2,30)/1e9;
   unsigned int status;
-    
+
   char *hostName = argv[2];
 
   char *devFile = argv[1];

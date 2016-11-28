@@ -1,5 +1,5 @@
 /* A model of a track in Train control systems.
- 
+
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -35,7 +35,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////Track
 
 /** A model of a track in Train  control systems.
- * It extends AbstractTrack. Input is in west side and output in east side. 
+ * It extends AbstractTrack. Input is in west side and output in east side.
  *  @author Maryam Bagheri
  *  @version $Id$
  *  @since Ptolemy II 11.0
@@ -57,8 +57,8 @@ public class Track extends  AbstractTrack {
     public Track(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
-       
+
+
         _shape.vertices.setExpression("{50.0,-10.0,50.0,0.0,-48.0,0.0,-48.0,-27.0,-40.01484104004581,-27.321614804199694,-40.0,-20.0," +
                         "-32.0,-20.0,-32.002033150772704,-27.464700659365285,-24.27539697183078,-27.464700659365285,-24.0," +
                         "-20.0,-16.0,-20.0,-15.976417372226495,-27.464700659365285,-8.0,-27.4647,-8.0,-20.02424,0.0,-20.0," +

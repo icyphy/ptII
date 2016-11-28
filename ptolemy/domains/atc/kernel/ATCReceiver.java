@@ -1,5 +1,5 @@
 /* A receiver for modeling air traffic control systems.
- 
+
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -50,7 +50,7 @@ public class ATCReceiver extends DEReceiver {
     }
 
     /** Create a new receiver in the specified container with the specified
-     *  name. 
+     *  name.
      *  @param container The container.
      *  @exception IllegalActionException If this actor cannot be contained
      *   by the proposed container (see the setContainer() method).
@@ -58,7 +58,7 @@ public class ATCReceiver extends DEReceiver {
     public ATCReceiver(IOPort container) throws IllegalActionException {
         super(container);
     }
-    
+
     /** Put the token.
      *  @param token The token
      *  @exception IllegalActionException If the token cannot be put

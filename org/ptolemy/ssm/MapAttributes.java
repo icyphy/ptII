@@ -46,7 +46,7 @@ import ptolemy.kernel.util.NamedObj;
 Container for decorator attributes that are provided to actors by
 a Map aspect. This class is based on ExecutionAttributes.java
 
- @author  Ilge Akkaya 
+ @author  Ilge Akkaya
  @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (eal)

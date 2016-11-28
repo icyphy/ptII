@@ -53,7 +53,7 @@ import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
 
 /**
- * Deals with message processing. 
+ * Deals with message processing.
  * @author david
  */
 public class MessageProcessing {

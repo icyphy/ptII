@@ -328,9 +328,9 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             super.attributeChanged(attribute);
         }
     }
-    
+
     /**
-    * Evaluate the derivative function for event detection. 
+    * Evaluate the derivative function for event detection.
     * Ignored in this base class.
     *
     * @param time Simulation time.
@@ -346,8 +346,8 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
     public int evaluateDerivatives(Time time, double[] dtSample, double[] xdot,
             double[] xdotSample, double[] xdotSample2, int stOrd) throws IllegalActionException {
         return 0;
-    }    
-    
+    }
+
     /** Set the derivative equal to the input.
      *  @param time The time.
      *  @param xx The values.
@@ -382,9 +382,9 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             double[] uu_dot) throws IllegalActionException {
         return 0;
     }
-    
-    /** Evaluate input for event indicators derivative. 
-     * Ignored in this base class. 
+
+    /** Evaluate input for event indicators derivative.
+     * Ignored in this base class.
     * @param time Simulation time.
     * @param xx The vector of state variables at <code>time</code>.
     * @param uu The vector of input variables at <code>time</code>.
@@ -419,8 +419,8 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
             double dtSample, Time timeSample2, double[] xxSample2,
             double[] uuSample2, double dtSample2, Time timeSample3,
             double[] xxSample3, double[] uuSample3, double dtSample3,
-            Time timeSample4,double[] xxSample4, double[] uuSample4, 
-            double dtSample4,  Time timeSample5,double[] xxSample5, double[] uuSample5, 
+            Time timeSample4,double[] xxSample4, double[] uuSample4,
+            double dtSample4,  Time timeSample5,double[] xxSample5, double[] uuSample5,
             double dtSample5, int stateModelOrder) throws IllegalActionException {
         return 0;
     }
@@ -527,9 +527,9 @@ public class QSSIntegrator extends TypedAtomicActor implements DerivativeFunctio
         // that no output depends on any input.
         return new BreakCausalityInterface(this, defaultDependency);
     }
-    
+
     /** Return the number of event indicators.
-     * 
+     *
      *  @return 0.
      */
     @Override

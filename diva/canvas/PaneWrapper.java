@@ -92,7 +92,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
     }
 
     /** Get the background figure.
-     * @return The background figure.   
+     * @return The background figure.
      * @see #setBackground(Figure)
      */
     public Figure getBackground() {
@@ -125,7 +125,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
     }
 
     /** Get the clipping enabled flag.
-     * @return True if clipping is enabled.   
+     * @return True if clipping is enabled.
      * @see #setClipEnabled(boolean)
      */
     public boolean isClipEnabled() {
@@ -277,7 +277,7 @@ public class PaneWrapper extends AbstractFigure implements EventAcceptor {
     }
 
     /** Set the background figure.
-     * @param background The background figure   
+     * @param background The background figure
      * @see #getBackground()
      */
     public void setBackground(Figure background) {

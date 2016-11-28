@@ -105,7 +105,7 @@ public class TokenToJSON extends Converter {
             // The 'L' suffix is not supported in JSON.
             String result = input.toString();
             return result.substring(0, result.length() - 1);
-        } else if (input instanceof ScalarToken 
+        } else if (input instanceof ScalarToken
                 || input instanceof StringToken
                 || input instanceof DateToken) {
             return input.toString();

@@ -37,7 +37,7 @@ import gnu.io.CommPortIdentifier;
 
 /**
  Test the Serial Port locking
- 
+
  @author Christopher Brooks
  @version $Id: SerialHelper.java 74187 2015-12-27 21:32:38Z cxh $
  @since Ptolemy II 11.0
@@ -84,7 +84,7 @@ public class SerialPortLockTest {
         while (ports.hasMoreElements()) {
             CommPortIdentifier identifier = (CommPortIdentifier) ports
                 .nextElement();
-            if (identifier.getName().indexOf("/dev/cu.") != -1 
+            if (identifier.getName().indexOf("/dev/cu.") != -1
                 || identifier.getName().indexOf("Bluetooth") != -1) {
                 System.out.println("Skipping " + identifier.getName());
             } else {

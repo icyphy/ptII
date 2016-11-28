@@ -311,10 +311,10 @@ public class TypeTest extends Discard {
             }
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Do not participate in backward type inference, return null.
      *  @return A set of inequalities.
      */
@@ -323,5 +323,5 @@ public class TypeTest extends Discard {
         return null;
     }
 
-    
+
 }

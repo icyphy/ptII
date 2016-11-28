@@ -56,7 +56,7 @@ import ptolemy.kernel.util.Workspace;
  argument is NaN, then the returned value is NaN.
  </li>
  <li> <b>asin</b>: The arc sine of an angle.  The returned value
- is between -pi/2 through pi/2. 
+ is between -pi/2 through pi/2.
  If the absolute value of the argument is greater than one or if the
  argument is NaN, then the returned value is NaN.
  If the argument is positive zero, then the returned value is positive

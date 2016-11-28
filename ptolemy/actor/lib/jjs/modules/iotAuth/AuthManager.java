@@ -52,7 +52,7 @@ import ptolemy.util.StringBufferExec;
 
 /**
  * Download, build, start and stop the local authorization entity, Auth.
- * 
+ *
  * <p>This class requires access to the github repository for Auth.</p>
  *
  * <p>The primary purpose of this class is to make it easy to download,
@@ -90,11 +90,11 @@ public class AuthManager extends AbstractInitializableAttribute {
         buildAuth = new Parameter(this, "buildAuth");
         buildAuth.setTypeEquals(BaseType.BOOLEAN);
         buildAuth.setExpression("true");
-        
+
         cleanAuth = new Parameter(this, "cleanAuth");
         cleanAuth.setTypeEquals(BaseType.BOOLEAN);
         cleanAuth.setExpression("false");
-        
+
         authSourceDirectory = new FileParameter(this, "authSourceDirectory");
         new Parameter(authSourceDirectory, "allowFiles", BooleanToken.FALSE);
         new Parameter(authSourceDirectory, "allowDirectories", BooleanToken.TRUE);
@@ -118,13 +118,13 @@ public class AuthManager extends AbstractInitializableAttribute {
      *  The default value is the value true;
      */
     public Parameter buildAuth;
-    
+
     /** If true then remove the contents of the <i>authSourceDirectory</i>
-     *  at the start of initialization.  
+     *  at the start of initialization.
      *  The default value is the value false.
      */
     public Parameter cleanAuth;
-    
+
     /** The path to the Auth sources.  The default value is
      * "$PTII/vendors/iotauth".
      */
@@ -134,29 +134,29 @@ public class AuthManager extends AbstractInitializableAttribute {
      *  meaning that the Auth will be downloaded, built, started and stopped.
      */
     public Parameter isLocalAuth;
-    
+
     /** If true, then stop Auth processes in wrapup().  The default
      *  value is true, meaning that the daemons are stopped.  If
      *  deleteAllGCLsInWrapup is true, the the value of this parameter
      *  is ignored and the Auth processes are always stopped in wrapup.
      *  Set this parameter to true to debug the daemons after running
      *  a model.
-     */ 
+     */
     public Parameter stopAuthInWrapup;
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
- 
+
     /** Download and build Auth.
      *  @param authSourceDirectoryParameter The path to the Auth sources.
      *  @param cleanAuth True if Auth should be cleaned before installing
      *  @param buildAuth True if Auth should be built and installed
      *  @exception IllegalActionException If there are problems accessing the parameter.
      *  @exception IOException If there are problems accessing or build the repositories.
-     */   
+     */
     public static void downloadAndBuild(FileParameter authSourceDirectoryParameter,
             boolean cleanAuth,
-            boolean buildAuth) 
+            boolean buildAuth)
             throws IllegalActionException, IOException {
         // This method is static to make it easier to test.
         File authSourceDirectory = authSourceDirectoryParameter.asFile();
@@ -167,14 +167,14 @@ public class AuthManager extends AbstractInitializableAttribute {
                 _lastAuthRepoPullTime);
 
         _auth = new File(authSourceDirectory, "iotauth");
-        
+
         if (_needToGenerateCredentials) {
             AuthManager._generateCredentials(authSourceDirectory, "examples");
         }
     }
 
     /** Initializes the AuthManager attribute.
-     *  The auth processes are started.   
+     *  The auth processes are started.
      */
     @Override
     public void initialize() throws IllegalActionException {
@@ -184,7 +184,7 @@ public class AuthManager extends AbstractInitializableAttribute {
     /** Preinitialze the AuthManager attribute.
      *  @exception IllegalActionException If there are problems checking
      *  out the repositories while building and initializing Auth.
-     * 
+     *
      */
     @Override
     public void preinitialize() throws IllegalActionException {
@@ -232,7 +232,7 @@ public class AuthManager extends AbstractInitializableAttribute {
         String commands = "";
         System.out.println("AuthManager._cloneOrPull(" + directory
                 + ", " + repository + ", " + lastRepoPullTime);
-        
+
         if (!directory.exists()) {
             if (!directory.exists()) {
                 if (!directory.mkdirs()) {
@@ -283,7 +283,7 @@ public class AuthManager extends AbstractInitializableAttribute {
         }
         _lastAuthRepoPullTime = lastRepoPullTime;
     }
-    
+
     private static void _generateCredentials(File directory, String subdirectory) throws IOException {
 
         if (directory.isFile()) {
@@ -299,17 +299,17 @@ public class AuthManager extends AbstractInitializableAttribute {
     }
 
     private static String _badFileMessage = " is a file, it must either be a directory or not exist.";
-    
+
 
     /** The location of the Auth repository. */
     private static File _auth;
 
     /** The hostname. */
     private String _hostName;
-        
+
     /** True if credentials need to be generated for Auth and entities */
     private static boolean _needToGenerateCredentials;
-    
+
     /** Last time of Auth repository update. */
     private static long _lastAuthRepoPullTime = -1L;
 }

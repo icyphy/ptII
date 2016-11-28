@@ -230,9 +230,9 @@ public class JNLPUtilities {
                     prefix = spec.substring(lastIndexOfSlash + 1, lastIndexOfDot);
                     suffix = "." + spec.substring(lastIndexOfDot + 1);
                 }
-            } 
+            }
             try {
-                String temporaryFileName = saveJarURLAsTempFile(url.toString(), 
+                String temporaryFileName = saveJarURLAsTempFile(url.toString(),
                         prefix, suffix, null /*directory*/);
                 results =  new File(temporaryFileName);
                 // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 1.5 reslts: " + results + " exists: " + results.exists());
@@ -249,7 +249,7 @@ public class JNLPUtilities {
                 } else {
                     results = null;
                 }
-            } 
+            }
             if (_jarURITemporaryFiles == null) {
                 _jarURITemporaryFiles = new HashMap<URI, File>();
             }

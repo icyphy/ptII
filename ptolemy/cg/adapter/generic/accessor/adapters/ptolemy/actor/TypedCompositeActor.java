@@ -107,7 +107,7 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
 
         code.append(_eol + _INDENT1 + "// Connections: " + getComponent().getName()
                 + ": ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/TypedCompositeActor.java" + _eol);
-        
+
         // Generate Accessor for the toplevel input ports to actors or other ports.
         List<Port> inputPorts = ((CompositeActor) getComponent()).inputPortList();
         for (Port port : inputPorts) {
@@ -155,7 +155,7 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
                         + " is not an IOPort." + _eol);
             }
         }
-        
+
         // Generate Accessor for the toplevel actor to actor connections.
         actors = ((CompositeActor) getComponent()).entityList().iterator();
         while (actors.hasNext()) {
@@ -181,11 +181,11 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
     }
 
     /** Generate the JavaScript initialize for the ports.
-     *  @param ports The ports.   
+     *  @param ports The ports.
      *  @return The JavaScript initialization code for the ports.
      *  @exception IllegalActionException If thrown while reading the
      *  value of the defaultValue parameter.
-     */   
+     */
     private StringBuffer _generatePorts(List<TypedIOPort> ports) throws IllegalActionException {
         StringBuffer code = new StringBuffer();
         for (TypedIOPort port : ports) {

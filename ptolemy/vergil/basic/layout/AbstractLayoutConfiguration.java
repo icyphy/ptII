@@ -140,7 +140,7 @@ public abstract class AbstractLayoutConfiguration extends Attribute {
 
     /** Mode of user interaction: whether user positioning is allowed to affect the layout. */
     public ChoiceParameter interactionMode;
-    
+
     /** Customized help file to be displayed by the layout configuration dialog. */
     public StringParameter helpURL;
 
@@ -155,7 +155,7 @@ public abstract class AbstractLayoutConfiguration extends Attribute {
 
     /** Default value for aspectRatio (non-logarithmic). */
     public static final double DEF_ASPECT_RATIO = 1.6;
-    
+
     /** Default value for interaction mode. */
     public static final InteractionMode DEF_INTERACTION_MODE = InteractionMode.None;
 

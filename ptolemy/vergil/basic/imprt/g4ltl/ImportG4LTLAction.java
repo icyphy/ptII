@@ -161,30 +161,30 @@ public class ImportG4LTLAction extends AbstractAction {
                 try {
                     file = ptFileChooser.getSelectedFile().getCanonicalFile();
 
-         
+
 
                     // --2QBF=Java
-                    
-                    
+
+
                     String controller = "";
                     try{
                         PtolemyFrontEnd pm = new PtolemyFrontEnd();
                         controller = pm.synthesize(file);
-                        
+
                         if (controller != null
                                 && !controller.equalsIgnoreCase("")
                                 && !controller.startsWith("ERROR")) {
                             G4LTL.updateModel(controller,
-                                    basicGraphFrame.getModel());           
+                                    basicGraphFrame.getModel());
                             return;
-                        } 
-                        
-                       
+                        }
+
+
                     } catch (UnsupportedSpecException ex){
                         // StructuralCoder use UnsupportedSpecException as an indicator over improper specification shape
                     }
-                    
-                    
+
+
                     // Step 1: Invoke the synthesis engine to generate a string in MoML format.
 
                     SolverUtility solver = new SolverUtility();

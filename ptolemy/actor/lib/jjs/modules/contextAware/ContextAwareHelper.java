@@ -39,7 +39,7 @@ import org.json.XML;
  * specific REST service. The context includes the required input to
  * the service and the expected response from the service. No dialog
  * is implemented yet!!
- * @author Anne H. Ngu (angu@txstate.edu) 
+ * @author Anne H. Ngu (angu@txstate.edu)
  * @version $Id$
  * @Pt.ProposedRating Red (cxh)
  * @Pt.AcceptedRating Red (cxh)
@@ -63,12 +63,12 @@ public class ContextAwareHelper {
     public String[] availableServices() {
         return _iotServiceList;
     }
-    
+
     /** Convert an XML data format to JSON data format using the XML
      * class from org.json.xml.
-     * 
+     *
      * @param response is the input in xml format
-     * @return the json formatted data in an array 
+     * @return the json formatted data in an array
      */
     public ArrayList  convertXMLtoJSON(String response) {
         try{
@@ -102,7 +102,7 @@ public class ContextAwareHelper {
         setSelectedService(_iotServiceList);
         return "pluto.cs.txstate.edu:22001";
     }
-    
+
     /** Return the list of output choices of Firebase
      * service. Currently, the list of choices is hard
      * coded. Eventually, this list should come from a discovery
@@ -122,7 +122,7 @@ public class ContextAwareHelper {
     public String[] getGsnOutput() {
         return _gsnOutputPort;
     }
-    
+
     /** Return the list of output choices of Paraimpu
      * service. Currently, the list of choices is hard
      * coded. Eventually, this list should come from a discovery
@@ -133,7 +133,7 @@ public class ContextAwareHelper {
         return _paraimpuOutputPort;
     }
 
-    /** Return the name of the selected service. 
+    /** Return the name of the selected service.
      * Currently, this method returns the string "GSN".
      * Eventually, this method will return data from the GUI.
      * @return The name of the service chosen by the user.

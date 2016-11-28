@@ -47,14 +47,14 @@ public abstract class FigureWrapper extends AbstractFigure {
     private Figure _child = null;
 
     /** Construct a new figure with the given child figure.
-     * @param f The figure   
+     * @param f The figure
      */
     public FigureWrapper(Figure f) {
         setChild(f);
     }
 
     /** Get the bounds of the child figure.
-     * @return The bounds   
+     * @return The bounds
      */
     @Override
     public Rectangle2D getBounds() {
@@ -66,7 +66,7 @@ public abstract class FigureWrapper extends AbstractFigure {
     }
 
     /** Get the child figure, or null if there isn't one.
-     * @return the child figure   
+     * @return the child figure
      * @see #setChild(Figure)
      */
     public Figure getChild() {
@@ -74,7 +74,7 @@ public abstract class FigureWrapper extends AbstractFigure {
     }
 
     /** Get the outline shape of the child figure.
-     * @return The shape.   
+     * @return The shape.
      */
     @Override
     public Shape getShape() {
@@ -86,7 +86,7 @@ public abstract class FigureWrapper extends AbstractFigure {
     }
 
     /** Paint the child if this figure is visible.
-     * @param g The graphics context   
+     * @param g The graphics context
      */
     @Override
     public void paint(Graphics2D g) {
@@ -117,7 +117,7 @@ public abstract class FigureWrapper extends AbstractFigure {
     }
 
     /** Transform the child figure with the supplied transform.
-     * @param at The transform   
+     * @param at The transform
      */
     @Override
     public void transform(AffineTransform at) {

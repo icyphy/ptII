@@ -95,12 +95,12 @@ public class EditIconAction extends FigureAction {
                     icon = new EditorIcon(object, "_icon");
                 } else if (icon.getDerivedLevel() < Integer.MAX_VALUE
                         || !icon.isPersistent()) {
-                    
+
                     // The icon is either implied by the class
                     // or is not persistent (XMLIcon will not be
                     // persistent as it is derived from the
                     // _iconDescription parameter).
-                    
+
                     // There is an icon currently that is not custom.
                     // Without trashing the _iconDescription, we can remove
                     // this icon and replace it.

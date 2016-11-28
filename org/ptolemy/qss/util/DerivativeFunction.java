@@ -73,23 +73,23 @@ public interface DerivativeFunction {
     ////                         public methods
 
     /**
-    * Evaluate the derivative function for event indicator. 
-    * An implementation of this function is expected to fill 
-    * in the xdot and xdotSample array with derivatives values. 
-    * 
+    * Evaluate the derivative function for event indicator.
+    * An implementation of this function is expected to fill
+    * in the xdot and xdotSample array with derivatives values.
+    *
     * @param time The time.
     * @param dtSample The delta time used to approximate first derivative.
     * @param xdot The vector of time rates of change of the state variables at <code>time</code>.
-    * @param xdotSample The vector of time rates of change of the state variables 
+    * @param xdotSample The vector of time rates of change of the state variables
     * at a sample time.
-    * @param xdotSample2 The vector of time rates of change of the state variables 
+    * @param xdotSample2 The vector of time rates of change of the state variables
     * at a sample time.
     * @param stOrd The state model order.
     * @return Success (0 for success, else user-defined error code).
     * @exception IllegalActionException If derivatives cannot be evaluated.
     */
-    public int evaluateDerivatives(final Time time, final double [] dtSample, 
-            final double[] xdot, final double[] xdotSample, final double[] xdotSample2, 
+    public int evaluateDerivatives(final Time time, final double [] dtSample,
+            final double[] xdot, final double[] xdotSample, final double[] xdotSample2,
             final int stOrd) throws IllegalActionException;
 
     /**
@@ -137,11 +137,11 @@ public interface DerivativeFunction {
             double[] uu_dot) throws IllegalActionException;
 
     /**
-    * Provide inputs to evaluate the derivative 
-    * function using finite difference methods. 
-    * An implementation of this function is expected 
-    * to use the input parameters time, xx, 
-    * uu input, timeSample, xxSample, and uuSample arrays 
+    * Provide inputs to evaluate the derivative
+    * function using finite difference methods.
+    * An implementation of this function is expected
+    * to use the input parameters time, xx,
+    * uu input, timeSample, xxSample, and uuSample arrays
     * to compute the derivatives for event indicators.
     *
     * @param time Simulation time.

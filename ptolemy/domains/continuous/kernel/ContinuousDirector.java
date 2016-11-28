@@ -1925,12 +1925,12 @@ ContinuousStatefulDirector, ContinuousStepSizeController {
                 _commitIsPending = false;
                 rollBackToCommittedState();
             }
-            
+
             // We should set current time to the environment time and set
             // the step size to zero.
             this.localClock.setLocalTime(localClock
                     .getLocalTimeForCurrentEnvironmentTime());
-            
+
             if (_debugging) {
                 _debug("-- Setting current time to match enclosing non-ContinuousDirector: "
                         + currentTime + ", and step size to 0.0.");

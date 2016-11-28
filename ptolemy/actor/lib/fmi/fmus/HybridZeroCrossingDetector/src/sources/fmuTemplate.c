@@ -948,7 +948,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
                     fmi2Integer communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint) {
     ModelInstance *comp = (ModelInstance *)c;
     fmi2Integer h = communicationStepSize;
-    
+
     // printf("HybridZeroCrossingDetector-fmi2HybridDoStep, time: %ld, h: %ld\n", currentCommunicationPoint, communicationStepSize);
     int k;
 #if NUMBER_OF_EVENT_INDICATORS>0 || NUMBER_OF_REALS>0
@@ -980,7 +980,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
         FILTERED_LOG(comp, fmi2Error, LOG_ERROR,
             "fmi2HybridDoStep: communication step size must be >= 0. Fount %u.", communicationStepSize)
         printf("Error: communicationStepSize < 0\n");
-        comp->state = modelError;        
+        comp->state = modelError;
         return fmi2Error;
     }
 

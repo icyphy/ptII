@@ -1,5 +1,5 @@
 /* A model of a track in air traffic control systems.
- 
+
    Copyright (c) 2015 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
@@ -80,39 +80,39 @@ public class Track extends TrackWriter implements Rejecting {
     public Track(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         input = new TypedIOPort(this, "input", true, false);
         input.setMultiport(true);
-                
+
         northOutput = new TypedIOPort(this, "northOutput", false, true);
         northOutput.setTypeEquals(new RecordType(_labels, _types));
         StringAttribute cardinality = new StringAttribute(northOutput, "_cardinal");
         cardinality.setExpression("NORTH");
-                
 
-        eastOutput =new TypedIOPort(this, "eastOutput", false, true); 
+
+        eastOutput =new TypedIOPort(this, "eastOutput", false, true);
         eastOutput.setTypeEquals(new RecordType(_labels, _types));
         cardinality = new StringAttribute(eastOutput, "_cardinal");
         cardinality.setExpression("EAST");
-        
-                
+
+
         southOutput = new TypedIOPort(this, "southOutput", false, true);
         southOutput.setTypeEquals(new RecordType(_labels, _types));
         cardinality = new StringAttribute(southOutput, "_cardinal");
         cardinality.setExpression("SOUTH");
-        
+
         trackId = new Parameter(this, "trackId");
         trackId.setTypeEquals(BaseType.INT);
         trackId.setExpression("-1");
-        
+
         neighbors = new Parameter(this, "neighbors");
         neighbors.setDisplayName("neighbors{North,East,South");
         neighbors.setExpression("{-1,-1,-1}");
         neighbors.setTypeEquals(new ArrayType(BaseType.INT));
-        
+
         stormy=new Parameter(this, "stormy");
         stormy.setTypeEquals(BaseType.BOOLEAN);
-        
+
         _attachText("_iconDescription", "<svg> <path d=\"M 194.67321,2.8421709e-14 L 70.641958,53.625 "
                 + "C 60.259688,46.70393 36.441378,32.34961 31.736508,30.17602 C -7.7035221,11.95523 "
                 + "-5.2088921,44.90709 11.387258,54.78122 C 15.926428,57.48187 39.110778,71.95945 "
@@ -132,7 +132,7 @@ public class Track extends TrackWriter implements Rejecting {
         _circle.height.setToken("40");
         _circle.fillColor.setToken("{0.0, 0.0, 0.0, 0.0}");
         _circle.lineColor.setToken("{0.0, 0.0, 0.0, 0.0}");
-                
+
         _shape = new ResizablePolygonAttribute(node_icon, "_trackShape");
         _shape.centered.setToken("true");
         _shape.width.setToken("40");
@@ -146,7 +146,7 @@ public class Track extends TrackWriter implements Rejecting {
                 + "119.67321,84.43749, 217.36071,12.25, 194.67321,2.8421709e-14}");
         _shape.fillColor.setToken("{1.0, 1.0, 1.0, 1.0}");
     }
-    
+
     /** The input, which is a multiport. */
     public TypedIOPort input;
 
@@ -172,7 +172,7 @@ public class Track extends TrackWriter implements Rejecting {
 
     /** A boolean indicating if it is stormy. */
     public Parameter stormy;
-    
+
     /** Return true if the token cannot be accepted at the specified port.
      *  @param token The token that may be rejected.
      *  @param port The port.
@@ -191,8 +191,8 @@ public class Track extends TrackWriter implements Rejecting {
             return true;
         }
     }
-    
-    
+
+
     /** If the specified attribute is <i>stormy</i> and there is an
      *  open file being written, then close that file.  The new file will
      *  be opened or created when it is next written to.
@@ -220,14 +220,14 @@ public class Track extends TrackWriter implements Rejecting {
             super.attributeChanged(attribute);
         }
     }
-    
+
     @Override
     public void declareDelayDependency() throws IllegalActionException {
         _declareDelayDependency(input, northOutput, 0.0);
         _declareDelayDependency(input, eastOutput, 0.0);
-        _declareDelayDependency(input, southOutput, 0.0);         
+        _declareDelayDependency(input, southOutput, 0.0);
     }
-    
+
     @Override
     public void fire() throws IllegalActionException {
         super.fire();
@@ -287,7 +287,7 @@ public class Track extends TrackWriter implements Rejecting {
                         _OutRoute = ((IntToken)temp.get("route")).intValue();
                         _director.fireAt(this, _transitExpires);
                     }//end of else
-                return; 
+                return;
             }
             // Token has been sent successfully
             _inTransit = null;
@@ -310,9 +310,9 @@ public class Track extends TrackWriter implements Rejecting {
                     ///////////////////////////////////*************write to file
                     _valuesForFile[0] = _id;
                     _valuesForFile[1] = ((RecordToken)inputAircraft).get("aircraftId");
-                
+
                     _setIcon(((IntToken)_valuesForFile[1]).intValue());
-                
+
                     _valuesForFile[2] = new DoubleToken(currentTime.getDoubleValue());
                     _valuesForFile[3] = new IntToken(_counter);
                     _valuesForFile[4] = new DoubleToken(_delayOfEachAirplanes);
@@ -324,7 +324,7 @@ public class Track extends TrackWriter implements Rejecting {
                     _transitExpires = currentTime.add(((DoubleToken)aircraftWithInformation.get("delay")).doubleValue());
                     _OutRoute = ((IntToken)aircraftWithInformation.get("route")).intValue();
                     _delayOfEachAirplanes+=((DoubleToken)aircraftWithInformation.get("delay")).doubleValue();
-                
+
                     //creating a new aircraft to sent to output from aircraftWighInformation
                     Map<String, Token> newAircraft = new TreeMap<String, Token>();
                     newAircraft.put("aircraftId", aircraftWithInformation.get("aircraftId"));
@@ -340,7 +340,7 @@ public class Track extends TrackWriter implements Rejecting {
                     _director.fireAt(this, _transitExpires);
 
                 }
-  
+
     }
 
     /** Initialize this actor.  Derived classes override this method
@@ -363,7 +363,7 @@ public class Track extends TrackWriter implements Rejecting {
         _delayOfEachAirplanes = 0.0;
         _setIcon(-1);
     }
-    
+
     /** Set the visual indication of the icon for the specified ID.
      *  @param id The aircraft ID or -1 to indicate no aircraft.
      *  @exception IllegalActionException
@@ -375,13 +375,13 @@ public class Track extends TrackWriter implements Rejecting {
         }
         _shape.fillColor.setToken(color);
     }
-    
+
     private EllipseAttribute _circle;
     private ResizablePolygonAttribute _shape;
     private DoubleToken _one = new DoubleToken(1.0);
     private Token[] _white = {_one, _one, _one, _one};
     private ArrayToken _noAircraftColor = new ArrayToken(_white);
-   
+
     //** New added variables to measure some parameters
     private int _counter;
     private double _delayOfEachAirplanes;
@@ -398,5 +398,5 @@ public class Track extends TrackWriter implements Rejecting {
     private Token[] _valuesForFile = {null,null,null,null,null};
     private String[] _labels = {"aircraftId","aircraftSpeed","flightMap","priorTrack","fuel","arrivalTimeToAirport","dipartureTimeFromAirport"};
     private Type[] _types = {BaseType.INT,BaseType.INT,new ArrayType(BaseType.INT),BaseType.INT,BaseType.DOUBLE,BaseType.DOUBLE,BaseType.DOUBLE};
-    
+
 }

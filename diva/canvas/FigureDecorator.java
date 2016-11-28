@@ -107,7 +107,7 @@ public abstract class FigureDecorator extends AbstractFigureContainer {
     }
 
     /** Get the child figure, or null if there isn't one.
-     *  @return The child figure   
+     *  @return The child figure
      */
     public Figure getChild() {
         return _child;

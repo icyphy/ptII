@@ -596,7 +596,7 @@ public class Manager extends NamedObj implements Runnable {
     public NamedObj getContainer() {
         if (_container == null) {
             return null;
-        } 
+        }
         return _container.get();
     }
 
@@ -1280,7 +1280,7 @@ public class Manager extends NamedObj implements Runnable {
     public void setStatusMessage(String message) {
         _statusMessage = message;
     }
-    
+
     /** Indicate that the specified thread is waiting and can be
      *  interrupted in the event that a change request is made.
      *  @param thread The thread that is waiting, or null to indicate
@@ -1472,7 +1472,7 @@ public class Manager extends NamedObj implements Runnable {
     }
 
     /** Wrap up the model by invoking the wrapup method of the toplevel
-     *  composite actor.  
+     *  composite actor.
      *  At the end of this model, the state is set to idle.
      *  @exception KernelException If the model throws it.
      *  @exception IllegalActionException If the model is idle or already
@@ -1692,7 +1692,7 @@ public class Manager extends NamedObj implements Runnable {
         // then have a version of doneReading that cleans up?
         // FIXME: Should we check to see if the Manager is idle here?
         _thread = null;
-        
+
         // FIXME: Should this be synchronized?
         if (_shutdownThread != null) {
             Runtime.getRuntime().removeShutdownHook(_shutdownThread);
@@ -1771,7 +1771,7 @@ public class Manager extends NamedObj implements Runnable {
 
     // The thread that is passed to Runtime.addShutdowHook().
     private Thread _shutdownThread = null;
-    
+
     // The state of the execution.
     private volatile State _state = IDLE;
 
@@ -1788,7 +1788,7 @@ public class Manager extends NamedObj implements Runnable {
 
     // An indicator of whether type resolution needs to be done.
     private boolean _typesResolved = false;
-    
+
     /** A thread that is waiting, e.g. synchronized to real time, or null if there is none. */
     private Thread _waitingThread;
 

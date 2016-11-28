@@ -95,7 +95,7 @@ public class DiscoveryHelper {
         }
         _ipMap.clear();
         _hostIP = IPAddress;
-        
+
         String baseIP;
 
         if (IPAddress.lastIndexOf(".") > 0) {
@@ -117,22 +117,22 @@ public class DiscoveryHelper {
 
                     // FIXME: this only works on a Class C network,
                     // where the IP addresses are 0-255.
-                    for (int i = 0; i <= 255; i++) {      
+                    for (int i = 0; i <= 255; i++) {
                         try {
                             Process process = Runtime.getRuntime().exec(
                                 _pingWindowsCommand + baseIP + "." + i);
                             _processes.add(process);
                         } catch (IOException e) {
-                            System.err.println("Error executing ping for " + 
+                            System.err.println("Error executing ping for " +
                                     baseIP + "." + i);
-                        }                  
+                        }
                     }
 
                     // Read all data
                     for (int i = 0; i < _processes.size(); i++) {
                         readPingWindows(_processes.get(i), baseIP + "." + i);
                     }
-                    
+
                     // Wait for all processes to finish
                     for (int i = 0; i < _processes.size(); i++) {
                         try {
@@ -153,17 +153,17 @@ public class DiscoveryHelper {
                     // Run pings concurrently, in separate processes
                     _processes = new ArrayList();
 
-                    for (int i = 0; i <= 255; i++) {      
+                    for (int i = 0; i <= 255; i++) {
                         try {
                             Process process = Runtime.getRuntime().exec(
                                 _pingLinuxCommand + baseIP + "." + i);
                             _processes.add(process);
                         } catch (IOException e) {
-                            System.err.println("Error executing ping for " + 
+                            System.err.println("Error executing ping for " +
                                     baseIP + "." + i);
-                        }                  
-                    } 
-                    
+                        }
+                    }
+
                     // Read all data
                     for (int i = 0; i < _processes.size(); i++) {
                         readPingLinux(_processes.get(i), baseIP + "." + i);
@@ -211,7 +211,7 @@ public class DiscoveryHelper {
         // Based on:
         // http://stackoverflow.com/questions/9481865/getting-the-ip-address-of-the-current-machine-using-java
         // Ignore loopback (127.*) and broadcast (255.*)
-        // Others could be private (site-local) (192.*, 10.*, 172.16.* 
+        // Others could be private (site-local) (192.*, 10.*, 172.16.*
         // through 172.31.*), link local (169.254.*), or multicast
         // (224.* through 239.*)
         String hostAddress = "Unknown";
@@ -220,13 +220,13 @@ public class DiscoveryHelper {
 
         try {
             // Coverity Scan: "getNetworkInterfaces returns null".
-            Enumeration<NetworkInterface> interfaces = 
+            Enumeration<NetworkInterface> interfaces =
                 NetworkInterface.getNetworkInterfaces();
             if (interfaces == null) {
                 return "Unknown";
             }
             Enumeration<InetAddress> addresses;
-       
+
             while (interfaces.hasMoreElements()) {
                 iface = interfaces.nextElement();
                 addresses = iface.getInetAddresses();
@@ -234,8 +234,8 @@ public class DiscoveryHelper {
                     address = addresses.nextElement();
                     hostAddress = address.getHostAddress();
                     // Break at first non-loopback, non-multicast address
-                    if (!address.isLoopbackAddress() && 
-                            !address.isMulticastAddress() && 
+                    if (!address.isLoopbackAddress() &&
+                            !address.isMulticastAddress() &&
                             // Avoid addresses such as fe80:0:0:0:0:5efe:c0a8:3801%net3
                             // Assumes IPv4 address
                             !hostAddress.contains(":")) {
@@ -246,7 +246,7 @@ public class DiscoveryHelper {
         } catch(SocketException e) {
             return "Unknown";
         }
-        
+
         return hostAddress;
     }
 
@@ -400,7 +400,7 @@ public class DiscoveryHelper {
                 System.out.println("Discovery: about to execute " + command);
             }
             Process process = Runtime.getRuntime().exec(command);
-                                                        
+
 
             BufferedReader stdOut = null;
 
@@ -590,14 +590,14 @@ public class DiscoveryHelper {
                 }
             }
         }
-        
+
         // Lock _ipMap?  No two devices will have same IP address, so no
         // collisions.
         if (device != null) {
             _ipMap.put(testIP, device);
         }
-        
-        
+
+
     }
 
     /** Read device information from a stream of Nmap output and save to _ipMap.
@@ -676,10 +676,10 @@ public class DiscoveryHelper {
 
     /** Flag for debugging mode. */
     private final boolean _debugging = false;
-    
+
     /** The IP address of the host machine.  Used to label it as such in list.*/
     private String _hostIP;
-    
+
     /** A map storing IP address to JSON objects with device info. */
     private HashMap<String, JSONObject> _ipMap;
 
@@ -695,7 +695,7 @@ public class DiscoveryHelper {
 
     /** Command to ping an IP address under Windows, followed by a trailing space. */
     private String _pingWindowsCommand = "ping -n 2 -a ";
-    
+
     /** Set of processes started, so that we can wait for them to finish. */
     private ArrayList<Process> _processes;
 }

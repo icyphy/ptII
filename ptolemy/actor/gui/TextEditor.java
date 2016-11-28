@@ -100,7 +100,7 @@ import ptolemy.util.StringUtilities;
 @SuppressWarnings("serial")
 public class TextEditor extends TableauFrame
         implements DocumentListener, ImageExportable, Printable, QueryListener {
-    
+
     /** Construct an empty text editor with no name.
      *  After constructing this, it is necessary
      *  to call setVisible(true) to make the frame appear.
@@ -197,7 +197,7 @@ public class TextEditor extends TableauFrame
                     int firstMatch = location;
                     // Highlight the first match.
                     int end = location + search.length();
-                    Highlighter.HighlightPainter painter = 
+                    Highlighter.HighlightPainter painter =
                             new DefaultHighlighter.DefaultHighlightPainter(Color.YELLOW);
                     try {
                         highlighter.addHighlight(location, end, painter);
@@ -235,7 +235,7 @@ public class TextEditor extends TableauFrame
                         }
                         location = textValue.indexOf(search, end);
                     }
-                    _query.set("Result", "Found " + count + 
+                    _query.set("Result", "Found " + count +
                             ((count > 1)? " matches" : " match"));
                 } else {
                     _query.set("Result", "Not found");
@@ -267,7 +267,7 @@ public class TextEditor extends TableauFrame
         if (_debugClosing) {
             System.out.println("TextEditor.dispose() : " + this.getName());
         }
-    
+
         super.dispose();
     }
 
@@ -527,19 +527,19 @@ public class TextEditor extends TableauFrame
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
-    
+
     /** Create an edit menu.
      */
     protected void _addMenus() {
         super._addMenus();
-        
+
         _editMenu = new JMenu("Edit");
         _editMenu.setMnemonic(KeyEvent.VK_E);
         _menubar.add(_editMenu);
 
         GUIUtilities.addMenuItem(_editMenu, new UndoAction());
         GUIUtilities.addMenuItem(_editMenu, new RedoAction());
-        
+
         _editMenu.addSeparator();
 
         GUIUtilities.addMenuItem(_editMenu, new CutAction());
@@ -547,7 +547,7 @@ public class TextEditor extends TableauFrame
         GUIUtilities.addMenuItem(_editMenu, new PasteAction());
 
         _editMenu.addSeparator();
-        
+
         GUIUtilities.addMenuItem(_editMenu, _findAction);
 
     }
@@ -599,14 +599,14 @@ public class TextEditor extends TableauFrame
 
         return fileMenuItems;
     }
-    
+
     /** Find and replace. */
     protected void _find() {
         _query = new Query();
         _query.addLine("Find", "Find", _previousSearch);
         _query.addLine("Replacement", "Replacement", _previousReplacement);
         _query.addDisplay("Result", "", "");
-        
+
         // If there was a previous search, perform that search now.
         if (_previousSearch != null && _previousSearch.length() > 0) {
             changed("Find");
@@ -707,7 +707,7 @@ public class TextEditor extends TableauFrame
         // FIXME: What should we print?
         super._print();
     }
-    
+
     /** Redo the last undo action.
      */
     protected void _redo() {
@@ -746,7 +746,7 @@ public class TextEditor extends TableauFrame
 
     /** The scroll pane containing the text area. */
     protected JScrollPane _scrollPane;
-    
+
     /** The undo listener. */
     protected UndoListener _undo;
 
@@ -773,13 +773,13 @@ public class TextEditor extends TableauFrame
     private int _print(Graphics2D graphics2D, int index, int linesPerPage,
             double lineHeight, int lineXPosition, int linePosition,
             double bottomLinePosition) {
-    
+
         int startLine = linesPerPage * index;
-    
+
         if (startLine > text.getLineCount()) {
             return NO_SUCH_PAGE;
         }
-    
+
         int endLine = startLine + linesPerPage;
         for (int line = startLine; line < endLine; line++) {
             try {
@@ -791,7 +791,7 @@ public class TextEditor extends TableauFrame
             } catch (BadLocationException e) {
                 // Ignore. Never a bad location.
             }
-    
+
             linePosition += lineHeight;
             if (linePosition > bottomLinePosition) {
                 break;
@@ -805,10 +805,10 @@ public class TextEditor extends TableauFrame
 
     /** Action to find and replace. */
     private Action _findAction = new FindAction();
-    
+
     /** Find and replace query, or null if there is none. */
     private Query _query;
-    
+
     /** Previous replacement string, if any. */
     private String _previousReplacement;
 

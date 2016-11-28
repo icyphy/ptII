@@ -1,5 +1,5 @@
 /* A model of a Station in train control systems.
- 
+
  Copyright (c) 2015 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
@@ -60,5 +60,5 @@ public class Station extends AbstractStation {
         super(container, name);
     }
 
-   
+
 }

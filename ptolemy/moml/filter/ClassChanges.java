@@ -544,8 +544,8 @@ public class ClassChanges extends MoMLFilterSimple {
                         "org.hlacerti.lib."+hlaPt2Classes[i]);
             }
         }
-        
-        // KIELER LayoutHint was moved 
+
+        // KIELER LayoutHint was moved
         _classChanges.put("ptolemy.vergil.basic.layout.kieler.LayoutHint",
                 "ptolemy.vergil.actor.LayoutHint");
 

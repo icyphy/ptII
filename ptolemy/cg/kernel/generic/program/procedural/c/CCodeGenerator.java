@@ -436,7 +436,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
             // ptolemy.cg.lib.CompiledCompositeActor.fire().  The
             // EmbeddedComposite actor defines another fire() method
             // that is invoked by the code below.
-            
+
             // Define the C fire() method that is invoked from Java.
             String escapeName = _sanitizedModelName.replaceAll("_", "_1");
             mainEntryCode.append(_eol + _eol + "JNIEXPORT jobjectArray JNICALL"
@@ -444,7 +444,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                     + "JNIEnv *env, jobject obj");
 
             // Generate the remaining arguments.
-            // Iterate through the input ports and add an argument for each port.        
+            // Iterate through the input ports and add an argument for each port.
             Iterator<?> inputPorts = ((Actor) getContainer()).inputPortList()
                     .iterator();
             while (inputPorts.hasNext()) {
@@ -453,7 +453,7 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
                         + "_glob");
             }
 
-            // Generate the body.  
+            // Generate the body.
             mainEntryCode.append("){" + _eol);
             inputPorts = ((Actor) getContainer()).inputPortList().iterator();
             while (inputPorts.hasNext()) {

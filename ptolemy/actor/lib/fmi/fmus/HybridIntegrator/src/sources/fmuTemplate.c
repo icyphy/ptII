@@ -1032,7 +1032,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
 
         // terminate simulation, if requested by the model in the previous step
         if (comp->eventInfo.terminateSimulation) {
-            FILTERED_LOG(comp, fmi2Discard, LOG_ALL, "fmi2HybridDoStep: model requested termination at t=%g", comp->time)            
+            FILTERED_LOG(comp, fmi2Discard, LOG_ALL, "fmi2HybridDoStep: model requested termination at t=%g", comp->time)
             comp->state = modelStepFailed;
             return fmi2Discard; // enforce termination of the simulation loop
         }

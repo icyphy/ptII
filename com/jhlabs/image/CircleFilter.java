@@ -99,7 +99,7 @@ public class CircleFilter extends TransformFilter {
 
     /**
      * Set the radius of the effect.
-     * @param radius the radius, min-value 0, 
+     * @param radius the radius, min-value 0,
      * @see #getRadius
      */
     public void setRadius(float radius) {

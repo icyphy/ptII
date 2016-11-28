@@ -392,7 +392,7 @@ fmi2Status fmi2GetHybridReal (fmi2Component c, const fmi2ValueReference vr[], si
     int i;
 #endif
     ModelInstance *comp = (ModelInstance *)c;
- 
+
     if (invalidState(comp, "fmi2GetHybridReal", MASK_fmi2GetReal))
         return fmi2Error;
     if (nvr > 0 && nullPointer(comp, "fmi2GetHybridReal", "vr[]", vr))
@@ -982,7 +982,7 @@ fmi2Status fmi2DoStep(fmi2Component c, fmi2Real currentCommunicationPoint,
 fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoint,
                     fmi2Integer communicationStepSize, fmi2Boolean noSetFMUStatePriorToCurrentPoint) {
     ModelInstance *comp = (ModelInstance *)c;
-    
+
     int stateEvent = 0;
     int timeEvent = 0;
 
@@ -1003,7 +1003,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
     if (communicationStepSize < 0) {
         FILTERED_LOG(comp, fmi2Error, LOG_ERROR,
             "fmi2HybridDoStep: communication step size must be >= 0. Fount %u.", communicationStepSize)
-        comp->state = modelError;        
+        comp->state = modelError;
         return fmi2Error;
     }
 
@@ -1061,7 +1061,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
                                   (r(input_) + epsilon) > 0;
     fmi2Integer is_pos      = (r(input_) + epsilon) > 0 && !is_zero;
     fmi2Integer is_neg      = (r(input_) - epsilon) < 0 && !is_zero;
-    
+
     if (communicationStepSize > 0) {
         b(was_zero_t_e_)    = is_zero;
         b(was_pos_t_e_)     = is_pos;
@@ -1084,7 +1084,7 @@ fmi2Status fmi2HybridDoStep(fmi2Component c, fmi2Integer currentCommunicationPoi
 
 fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
     ModelInstance *comp = (ModelInstance *)c;
-    
+
     fmi2Integer communicationStepSize = computeStepSize(comp);
 
     FILTERED_LOG(comp, fmi2OK, LOG_FMI_CALL, "fmi2HybridGetMaxStepSize: "

@@ -193,7 +193,7 @@ public class StatePredictorWithAccControl extends TypedAtomicActor {
     @Override
     public boolean prefire() throws IllegalActionException {
         super.prefire();
-        
+
         if (!controlInput.hasToken(0) || !currentState.hasToken(0)) {
             return false;
         }

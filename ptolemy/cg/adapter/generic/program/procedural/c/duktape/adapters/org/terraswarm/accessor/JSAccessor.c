@@ -29,7 +29,7 @@
 /* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, */
 /* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN */
 /* THE SOFTWARE. */
-        
+
 int interactive_mode = 0;
 
 static int get_stack_raw(duk_context *ctx) {
@@ -210,7 +210,7 @@ static int handle_eval(duk_context *ctx, char *code) {
         return retval;
 }
 
-// Load the script 
+// Load the script
 void evaluateJavaScript(char * javascript) {
     duk_context *ctx = duk_create_heap_default();
     if (handle_eval(ctx, javascript) != 0) {

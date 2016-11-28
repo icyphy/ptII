@@ -74,7 +74,7 @@ import ptolemy.util.MessageHandler;
    associated with any actor. This ensures that all the socket
    actions and callbacks managed by this instance execute in
    a single verticle.
-   
+
    This class supports transmission of strings, images, and binary
    numerical data of type byte, double, float, int, long, short,
    unsigned byte, unsigned int, and unsigned short, and arrays of
@@ -114,7 +114,7 @@ public class SocketHelper extends VertxHelperBase {
      *    This will not be passed any arguments.
      *  * error: Emitted when an error occurs. This will be passed
      *    an error message.
-     * 
+     *
      *  @param socketClient The JavaScript SocketClient instance.
      *  @param port The remote port to connect to.
      *  @param host The remote host to connect to.
@@ -155,7 +155,7 @@ public class SocketHelper extends VertxHelperBase {
 
             String caCertPath = (String)options.get("trustedCACertPath");
             File caCertFile = FileUtilities.nameToFile(caCertPath, null);
-            
+
             if (caCertFile == null) {
                 _error(socketClient, "Empty trustedCACertPath option. Can't find the trusted CA certificate.");
                 return;
@@ -169,14 +169,14 @@ public class SocketHelper extends VertxHelperBase {
                 return;
             }
         }
-        
+
         String pfxKeyCertPath = (String)options.get("pfxKeyCertPath");
         File pfxKeyCertFile = FileUtilities.nameToFile(pfxKeyCertPath, null);
 
-        // If the client has its own certificate 
+        // If the client has its own certificate
         if (pfxKeyCertFile != null) {
             PfxOptions pfxOptions = new PfxOptions();
-            
+
             try {
                 pfxOptions.setPath(pfxKeyCertFile.getCanonicalPath());
             } catch (IOException e) {
@@ -184,11 +184,11 @@ public class SocketHelper extends VertxHelperBase {
                 return;
             }
             String pfxKeyCertPassword = (String)options.get("pfxKeyCertPassword");
-            
+
             pfxOptions.setPassword(pfxKeyCertPassword);
             clientOptions.setPfxKeyCertOptions(pfxOptions);
         }
-        
+
         // NOTE: Find out the (undocumented) default in Vert.x.
         // System.err.println("TcpNoDelay: " + clientOptions.isTcpNoDelay());
 
@@ -219,7 +219,7 @@ public class SocketHelper extends VertxHelperBase {
                         message = message + "\n" + cause.getMessage();
                         cause = cause.getCause();
                     }
-                    
+
                     String errorMessage = "Failed to connect: " + message;
                     _error(socketClient, errorMessage, cause);
                 }
@@ -310,15 +310,15 @@ public class SocketHelper extends VertxHelperBase {
                 .setSendBufferSize((Integer)options.get("sendBufferSize"))
                 .setSsl((Boolean)options.get("sslTls"))
                 .setTcpNoDelay((Boolean)options.get("noDelay"));
-        
-        
+
+
         // If SSL/TLS is enabled, it has to be configured.
         if (serverOptions.isSsl()) {
             PfxOptions pfxOptions = new PfxOptions();
-            
+
             String pfxKeyCertPath = (String)options.get("pfxKeyCertPath");
             File pfxKeyCertFile = FileUtilities.nameToFile(pfxKeyCertPath, null);
-            
+
             if (pfxKeyCertFile == null) {
                 _error(socketServer, "Empty pemCertPath option. Can't find the server key-certificate.");
                 return;
@@ -329,19 +329,19 @@ public class SocketHelper extends VertxHelperBase {
                 _error(socketServer, "Failed to find the server key-certificate at " + pfxKeyCertFile);
                 return;
             }
-            
+
             String pfxKeyCertPassword = (String)options.get("pfxKeyCertPassword");
-            
+
             pfxOptions.setPassword(pfxKeyCertPassword);
             serverOptions.setPfxKeyCertOptions(pfxOptions);
-            
+
             // if the server requests/requires a certificate for the client
             if (serverOptions.getClientAuth() != ClientAuth.NONE) {
                 PemTrustOptions pemTrustOptions = new PemTrustOptions();
 
                 String caCertPath = (String)options.get("trustedCACertPath");
                 File caCertFile = FileUtilities.nameToFile(caCertPath, null);
-                
+
                 if (caCertFile == null) {
                     _error(socketServer, "Empty trustedCACertPath option. Can't find the trusted CA certificate.");
                     return;
@@ -388,8 +388,8 @@ public class SocketHelper extends VertxHelperBase {
                 _error(socketServer, "Failed to start server listening: " + ex);
             }
         });
-    }    
-        
+    }
+
     ///////////////////////////////////////////////////////////////////
     ////                     public classes                        ////
 
@@ -446,7 +446,7 @@ public class SocketHelper extends VertxHelperBase {
             }
             int firstCopyLength = Math.min(length, current.length - _position);
             System.arraycopy(current, _position, bytes, offset, firstCopyLength);
-            
+
             _position += firstCopyLength;
             if (_position >= current.length) {
                 if (_array < _list.size()) {
@@ -499,7 +499,7 @@ public class SocketHelper extends VertxHelperBase {
      *  short messages, then if the length of the message is less than 255 bytes,
      *  the length is encoded in a single byte. Otherwise, it is encoded as a
      *  byte with value 255 followed by an int (four bytes).
-     *  
+     *
      *  This will only work if both
      *  ends of the socket connection are using this same protocol (e.g.
      *  if both ends are implemented using this same class).
@@ -536,7 +536,7 @@ public class SocketHelper extends VertxHelperBase {
             _rawBytes = rawBytes;
             _emitBatchDataAsAvailable = emitBatchDataAsAvailable;
             _socket = (NetSocket)socket;
-            
+
             try {
                 _sendType = Enum.valueOf(DATA_TYPE.class, sendType.trim().toUpperCase());
             } catch (Exception ex) {
@@ -556,7 +556,7 @@ public class SocketHelper extends VertxHelperBase {
             }
 
             // System.out.println("registering _socket.handler");
-            
+
             // Set up handlers for data, errors, etc.
             // Here we are assuming we are in the verticle thread, so we don't call submit().
             _socket.closeHandler((Void) -> {
@@ -636,7 +636,7 @@ public class SocketHelper extends VertxHelperBase {
                             send(data);
                         }
                     });
-                    // The send has been either completed or deferred, depending on which 
+                    // The send has been either completed or deferred, depending on which
                     // thread calls this.
                     return;
                 }
@@ -895,7 +895,7 @@ public class SocketHelper extends VertxHelperBase {
                                 _eventEmitter.callMember("emit", "data", _actor.toJSArray(result));
                             } catch (Exception e) {
                                 _error(_eventEmitter, "Failed to convert to a JavaScript array: "
-                                        + e);                    
+                                        + e);
                                 _eventEmitter.callMember("emit", "data", result);
                             }
                         }
@@ -907,8 +907,8 @@ public class SocketHelper extends VertxHelperBase {
                     }
                 }
             });
-            if (_partialBuffer != null 
-                    && _expectedLength > 0 
+            if (_partialBuffer != null
+                    && _expectedLength > 0
                     && _partialBuffer.length() >= _expectedLength) {
                 // There is at least one more complete message in the buffer.
                 // In the following, the null argument indicates that there no

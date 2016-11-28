@@ -133,7 +133,7 @@ void eventUpdate(ModelInstance* comp, fmi2EventInfo* eventInfo, int isTimeEvent)
     }
 
     i(microstep_) = 0;
-    
+
     i(was_zero_)    = is_zero;
     i(was_neg_)     = is_neg;
     i(was_pos_)     = is_pos;
@@ -162,10 +162,10 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
     ModelInstance *comp = (ModelInstance *)c;
     fmi2Integer max_step_size;
     // printf("HZC: getMaxStepSize\n");
-    if (comp->eventInfo.nextEventTimeDefined || (getEventIndicator(comp, 0) < 0 && i(microstep_) == 0)) {        
+    if (comp->eventInfo.nextEventTimeDefined || (getEventIndicator(comp, 0) < 0 && i(microstep_) == 0)) {
         max_step_size = 0;
         // printf("- zero\n");
-    } else {        
+    } else {
         max_step_size = 2;
         // printf("- two\n");
     }

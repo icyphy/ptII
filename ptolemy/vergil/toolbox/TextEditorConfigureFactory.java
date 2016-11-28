@@ -91,7 +91,7 @@ TextEditorFactory {
         rowsDisplayed = new Parameter(this, "rowsDisplayed");
         rowsDisplayed.setTypeEquals(BaseType.INT);
         rowsDisplayed.setExpression("40");
-        
+
         syntaxStyle = new StringAttribute(this, "syntaxStyle");
 
     }
@@ -111,18 +111,18 @@ TextEditorFactory {
      *  integer, and defaults to 10.
      */
     public Parameter rowsDisplayed;
-    
+
     /** The style of the text to be edited. This may or may not be
      *  supported. If the package "org.fife.ui.rsyntaxtextarea" is found in
      *  the classpath, then the supported styles include
      *  "text/plain", "text/c", "text/clojure", "text/cpp", "text/cs",
-     *  "text/css", "text/dtd", "text/fortran", 
-     *  "text/groovy", "text/html", "text/java", 
-     *  "text/javascript", "text/json", "text/jsp", 
-     *  "text/latex", "text/makefile", 
-     *  "text/perl", "text/php", 
-     *  "text/properties", "text/python", "text/ruby", "text/sas", 
-     *  "text/scala", "text/sql", "text/tcl", "text/unix", "text/vb", 
+     *  "text/css", "text/dtd", "text/fortran",
+     *  "text/groovy", "text/html", "text/java",
+     *  "text/javascript", "text/json", "text/jsp",
+     *  "text/latex", "text/makefile",
+     *  "text/perl", "text/php",
+     *  "text/properties", "text/python", "text/ruby", "text/sas",
+     *  "text/scala", "text/sql", "text/tcl", "text/unix", "text/vb",
      *  "text/bat", and "text/xml".
      */
     public StringAttribute syntaxStyle;
@@ -156,12 +156,12 @@ TextEditorFactory {
                         .intValue();
                 int numberOfColumns = ((IntToken) columnsDisplayed.getToken())
                         .intValue();
-                
+
                 String style = syntaxStyle.getExpression();
                 if (style != null && !style.trim().equals("")) {
                     // Attempt to specify a syntax-aware text editor.
                     try {
-                        
+
                         Document doc = null;
                         try {
                             // Attempt to create a styled document.
@@ -189,7 +189,7 @@ TextEditorFactory {
                                             numberOfRows, numberOfColumns,
                                             "Editor for " + attributeName.getExpression() + " of "
                                                     + getContainer().getFullName(), doc});
-                            
+
                             _editor.text.append(TextEditorTableauFactory.getTextToEdit(attributeToEdit));
                             // The above will mark the text object modified. Reverse this.
                             _editor.setModified(false);

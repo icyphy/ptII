@@ -179,7 +179,7 @@ public class WebSocketHelper extends VertxHelperBase {
         }
         return _wsIsOpen;
     }
-    
+
     /** Open the web socket. This will be deferred to a vertx event loop.
      */
     public void open() {
@@ -285,10 +285,10 @@ public class WebSocketHelper extends VertxHelperBase {
             }
             return;
         }
-        
+
         // Socket is open. Ready to send.
         final Object finalMessage = message;
-        
+
         // First, create the task that will perform the send.
         final Runnable sendTask = new Runnable() {
             public void run() {
@@ -320,7 +320,7 @@ public class WebSocketHelper extends VertxHelperBase {
                 }
             }
         };
-        
+
         // Block if the send buffer is full.
         // Note that this should be called in the director thread, not
         // in the Vert.x thread, so blocking is OK. We need to stall
@@ -342,7 +342,7 @@ public class WebSocketHelper extends VertxHelperBase {
                 }
                 submit(sendTask);
             });
-            // The send has been either completed or deferred, depending on which 
+            // The send has been either completed or deferred, depending on which
             // thread calls this.
             return;
         }
@@ -420,7 +420,7 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param connectTimeout The time to wait before giving up on a connection.
      *  @param numberOfRetries The maximum number of retries if a connect attempt fails.
      *  @param timeBetweenRetries The time between retries, in milliseconds.
-     *  @param discardMessagesBeforeOpen True to discard messages before the socket is open, 
+     *  @param discardMessagesBeforeOpen True to discard messages before the socket is open,
      *   false to queue them.
      *  @param throttleFactor The number of milliseconds to stall for each queued item
      *   waiting to be sent.
@@ -602,7 +602,7 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** The time to wait before giving up on a connection. */
     private int _connectTimeout = 5000;
-    
+
     /** Verbose debug flag. */
     private final static boolean _DEBUG = false;
 
@@ -611,7 +611,7 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** The host IP or name. */
     private String _host;
-    
+
     /** Whether the client connects to secure web server through SSL/TLS. */
     private boolean _sslTls;
 
@@ -626,7 +626,7 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** The host port. */
     private int _port;
-    
+
     /** The received buffer, used to collect messages if spread over multiple frames. */
     private Buffer _receivedBuffer;
 
@@ -734,7 +734,7 @@ public class WebSocketHelper extends VertxHelperBase {
             _wsIsOpen = false;
         }
     }
-    
+
     /** The event handler that is triggered when a full send buffer
      *  has been half emptied.
      */

@@ -40,7 +40,7 @@ A  special decorator that defines a Gaussian measurement model.
 @Pt.ProposedRating Red (ilgea)
 @Pt.AcceptedRating
  */
-public class GaussianMeasurementModel extends MeasurementModel 
+public class GaussianMeasurementModel extends MeasurementModel
 implements TrainableGaussianModel {
 
     public GaussianMeasurementModel(CompositeEntity container, String name)

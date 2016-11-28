@@ -43,7 +43,7 @@ void setStartValues(ModelInstance *comp) {
     hr(output_)                     = present_;
     hr(value_)                      = present_;
     hi(period_)                     = present_;
-    hi(n_)                          = present_;  
+    hi(n_)                          = present_;
 }
 
 // called by fmi2GetReal, fmi2GetInteger, fmi2GetBoolean, fmi2GetString, fmi2ExitInitialization
@@ -130,7 +130,7 @@ fmi2Status fmi2HybridGetMaxStepSize (fmi2Component c, fmi2Integer *value) {
     }
     else {
         max_step_size = 0;
-    }    
+    }
     *value = max_step_size;
     return fmi2OK;
 }

@@ -1096,8 +1096,8 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                             }
                             else{
                                     continue;
-                            }                        
-                     /*                      
+                            }
+                     /*
                      if (_firstFire) {
                             _outputs.get(index).lastOutputPortValue = result;
                             _outputs.get(index).quantum = Math.abs(_threshold * result);
@@ -1512,7 +1512,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         _numberOfStateEvents = 0;
         _numberOfStepEvents = 0;
         _numberOfTimeEvents = 0;
-        
+
         // Check if the QSS director is used at the top level.
         // This call initialize the _threshold as well as
         // the flag which indicates that QSS director is used here.
@@ -2355,7 +2355,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         _fmiEnterEventModeJNI();
                 }
         }
- 
+
     /**
      * Print the debug message to stdout and flush stdout. This is useful for
      * tracking down segfault problems. To use this, right click on the
@@ -2487,7 +2487,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             _enterEventModeJNI = true;
         }
     }
-    
+
     /**
      * Advance from the last firing time or last commit time to the specified
      * time and microstep by calling fmiDoStep(), if necessary. This method is
@@ -2771,7 +2771,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 0, 0.0, 0, 0, null, null, null, null, null, null, null, null, 0,
                 null, null, null, null, null, null, null, null);
     }
-    
+
     /**
      * Enter event mode of the FMU.
      *
@@ -2781,7 +2781,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 0.0, 0, 0, null, null, null, null, null, null, null, null, 0,
                 null, null, null, null, null, null, null, null);
     }
-    
+
     /**
      * Free the instance of the FMU.
      *
@@ -2805,7 +2805,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             _fmiFreeInstanceFunction.invoke(new Object[] { _fmiComponent });
         }
     }
-    
+
     /**
      * For model exchange, Get the continuous states of the FMU to the specified
      * array.
@@ -2848,7 +2848,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 }
 
         }
-    
+
     /**
      * Get the continuous states of the FMU to the specified
      * array.
@@ -2888,7 +2888,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
         return _derivatives;
     }
-    
+
     /**
      * Get the derivatives of the FMU to the specified
      * array.
@@ -2900,7 +2900,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 0, 0.0, 0, 0, null, values, null, null, null, null, null, null,
                 0, null, null, null, null, null, null, null, null);
     }
-    
+
     /**
      * Get the event indicators.
      *
@@ -2924,7 +2924,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 0, 0.0, 0, 1, null, null, null, null, null, null, values,
                 valueReferences, 0, null, null, null, null, null, null, null, null);
     }
-    
+
     /**
      * Invoke _fmiInitialize() (for model exchange) or _fmiInitializeSlave()
      * (for co-simulation) on the FMU. In the case of model exchange, this
@@ -3120,7 +3120,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
         }
         _modelInitialized = true;
     }
-    
+
 
     /**
      * Initialize the FMU
@@ -3131,7 +3131,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 0, 0.0, 0, 0, null, null, null, null, null, null, null, null, 0,
                 null, null, null, null, null, null, null, null);
     }
-    
+
     /**
      * Instantiate the FMU
      * array.
@@ -3163,7 +3163,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 null, null, null, null, null, null, 0, null, null, null, null,
                 null, eventIndicators, null, null);
     }
-    
+
     /**
      * Enter discrete states of the FMU
      * array.
@@ -3183,7 +3183,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 terminateSimulation, nominalsOfContinuousStatesChanged,
                 valuesOfContinuousStatesChanged, nextEventTimeDefined,
                 nextEventTime);
-        
+
         runNativeFMU(_fmiJNIComponent, 2, null, null, null, 0.0, 0.0, 0.0, 0,
                 0.0, 0, 0, null, null, null, null, null, null, null, null, 0,
                 null, null, null, null, null, null, nextEventTimeArr, null);
@@ -3232,7 +3232,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         _fmiSetContinuousStatesJNI(values);
                 }
         }
-    
+
     /**
      * For model exchange, set the continuous states of the FMU to the specified
      * array.
@@ -3257,7 +3257,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                 0, 0.0, 0, 0, null, null, null, null, values, valueReferences,
                 null, null, 0, null, null, null, null, null, null, null, null);
     }
-    
+
     /**
      * Set the time of the FMU to the specified time.
      *
@@ -3281,7 +3281,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
                         _fmiSetTimeJNI(time.getDoubleValue());
                 }
     }
-    
+
     /**
      * Set the time in the FMU.
      *
@@ -4124,7 +4124,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      *  set a new discrete state.
      */
     protected boolean _newDiscreteStatesNeeded(
-                    
+
         FMI20EventInfo.ByReference fmi20EventInfo) throws IllegalActionException {
                 if (!_useRawJNI()) {
                         fmi20EventInfo.newDiscreteStatesNeeded = 1;
@@ -4601,10 +4601,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
             //        ((QSSDirector) getDirector()).getRelativeQuantum(),
             //        ((QSSDirector) getDirector()).getAbsoluteQuantum());
             _useQSS = true;
-        }           
+        }
         return (useQSS);
     }
-    
+
     /** Return true if we use use raw JNI instead of JNA.
      *  @return true if raw JNI should be used.
      *  @exception IllegalActionException If there is a problem
@@ -4639,10 +4639,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
      * we assume it is.
      */
     protected FMI20CallbackFunctions _callbacks20;
-    
+
     /** The eventInfo. */
     protected FMI20EventInfo _eventInfoJNI;
-    
+
     /**
      * The FMI component created by the modelIdentifier_fmiInstantiateSlave()
      * method.
@@ -4695,7 +4695,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** Function to get the event indicators of the FMU for model exchange. */
     protected Function _fmiGetEventIndicatorsFunction;
-    
+
     /**
      * Flag identifying the first invocation of fire() after initialize.
      */
@@ -4709,7 +4709,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** The fmiGetRealStatus() function. */
     protected Function _fmiGetRealStatusFunction;
-    
+
     /** The fmiGetIntegerStatus() function. */
     protected Function _fmiGetIntegerStatusFunction;
 
@@ -5056,7 +5056,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** The workspace version at which the _inputs variable was last updated. */
     private long _inputsVersion = -1;
-    
+
     /** Flag to enter event mode. */
     private boolean _enterEventModeJNI = false;
 
@@ -5076,10 +5076,10 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
     /** Only load the library once. */
     private static boolean _rawJNILibraryLoaded = false;
-    
+
     /** The latest recorded state of the FMU. */
     private PointerByReference _recordedState = null;
-    
+
     /** Boolean indicating that QSS is used */
     private boolean _useQSS = false;
 
@@ -5092,7 +5092,7 @@ public class FMUImport extends TypedAtomicActor implements Advanceable,
 
         /** The flag which indicates that input changed. */
         public boolean hasChanged;
-        
+
         /** The last input double variable. */
                 public double lastInputModelValue;
 

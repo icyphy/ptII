@@ -49,7 +49,7 @@ public class CrystallizeFilter extends CellularFilter {
     public void setEdgeColor(int edgeColor) {
         this.edgeColor = edgeColor;
     }
-    
+
     public void setEdgeColor(String edgeColor) {
         this.edgeColor = stringToColor(edgeColor, 0);
     }

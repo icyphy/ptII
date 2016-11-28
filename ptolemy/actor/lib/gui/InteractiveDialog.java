@@ -87,7 +87,7 @@ import ptolemy.util.MessageHandler;
  */
 public class InteractiveDialog extends TypedAtomicActor implements Placeable,
         ShellInterpreter, UsesInvokeAndWait {
-    
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor.
@@ -99,7 +99,7 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
     public InteractiveDialog(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
-        
+
         terminateWithNewline = new Parameter(this, "terminateWithNewline");
         terminateWithNewline.setTypeEquals(BaseType.BOOLEAN);
         terminateWithNewline.setExpression("false");
@@ -141,12 +141,12 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
      *  quotes before displaying the value.
      */
     public TypedIOPort input;
-    
+
     /** If true, append a newline to each output string.
      *  This is a boolean that defaults to false.
      */
     public Parameter terminateWithNewline;
-    
+
     /** The output port. */
     public TypedIOPort output;
 
@@ -245,7 +245,7 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
                 userDialog.appendText(value);
             }
         }
-        
+
         synchronized(this) {
             // For some reason, getExpression() returns an escaped string, "\\n",
             // so I need to fix that here.
@@ -586,7 +586,7 @@ public class InteractiveDialog extends TypedAtomicActor implements Placeable,
         public DialogFrame(DialogTableau tableau)
                 throws IllegalActionException, NameDuplicationException {
             super(tableau);
-            
+
             JPanel component = new JPanel();
             component.setLayout(new BoxLayout(component, BoxLayout.Y_AXIS));
             component.add(tableau.dialog);

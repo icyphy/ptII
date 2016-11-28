@@ -32,7 +32,7 @@ void defineSongs(void);
 
 
 
-int main (void) 
+int main (void)
 {
   uint8_t create_play_button = 0;
   uint8_t module_button = 0;
@@ -158,7 +158,7 @@ int main (void)
           LED1Off;
         }
       }
-    }   
+    }
   }
 }
 

@@ -156,7 +156,7 @@ public class Image3D extends GRPickActor {
         //texture.setEnable(false);
         Appearance appear = new Appearance();
         appear.setTexture(texture);
-            
+
         appear.setTransparencyAttributes(new TransparencyAttributes(
                                                                         TransparencyAttributes.FASTEST, 0.1f));
 
@@ -217,7 +217,7 @@ public class Image3D extends GRPickActor {
     ////                         private variables                 ////
     private Shape3D _containedNode;
     private static final float[] verts = {
-            
+
             // front face
             1.0f,
             -1.0f,

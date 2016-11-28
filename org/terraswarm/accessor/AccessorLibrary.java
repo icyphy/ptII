@@ -104,7 +104,7 @@ public class AccessorLibrary extends EntityLibrary {
             }
 
             _populating = true;
-            
+
             // Upon populating this library, change the icon loader to look for accessor icons.
             // To prevent overriding some other icon loader (e.g. Kepler),
             // set the custom icon loader only if there isn't one already.
@@ -139,7 +139,7 @@ public class AccessorLibrary extends EntityLibrary {
                     }
                     // Second argument specifies to update the repository.
                     URL source = JSAccessor._sourceToURL(_configureSource + "index.json", true);
-                    
+
                     // Get the index file at the specified location.
                     URL indexFile = new URL(source, "index.json");
                     BufferedReader in = null;
@@ -234,7 +234,7 @@ public class AccessorLibrary extends EntityLibrary {
 
                 if (_configureText != null && !_configureText.equals("")) {
                     /* FIXME: What to do with included text?
-                    
+
                     // NOTE: Regrettably, the XML parser we are using cannot
                     // deal with having a single processing instruction at the
                     // outer level.  Thus, we have to strip it.

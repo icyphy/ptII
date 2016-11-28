@@ -4286,27 +4286,27 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
         _zoomxn = _zoomyn = _zoomx = _zoomy = -1;
     }
 
-    /** 
+    /**
      * Zoom to that equal interval widths are on x and y axis.
-     * For example, a miss-scaled circle will look circular afterwords. 
+     * For example, a miss-scaled circle will look circular afterwords.
      * @author Dirk Bueche
      */
     public synchronized void zoomEqual(){
-      
+
       double temp = _padding;
       _padding = 0;
       double rx = (1.0*_xMax-_xMin)/(_lrx-_ulx);   // delta x per pixel
       double ry = (1.0*_yMax-_yMin)/(_lry-_uly);   // delta y per pixel
-      
+
       if (ry > rx)
         _xMax = _xMin + ry/rx*(_xMax - _xMin);
       if (rx > ry)
         _yMax = _yMin + rx/ry*(_yMax - _yMin);
       zoom(_xMin, _yMin, _xMax, _yMax);
       _padding = temp;
-    }  
-    
-    
+    }
+
+
     /*
      *  Draw a box for an interactive zoom box.  The starting point (the
      *  upper left corner of the box) is taken
@@ -4584,7 +4584,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
 
     // A button for filling the plot
     private transient JButton _fillButton = null;
-    
+
     // Dirk: a button for equal axis scaling
     private transient JButton _eqAxButton = null;
 
@@ -4646,7 +4646,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
     private transient boolean _drawn = false;
 
     private transient boolean _zooming = false;
-    
+
     private transient boolean _moving = false;
 
     // NOTE: It is unfortunate to have to include the DTD here, but there
@@ -4899,7 +4899,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
         }
 
         /** If the third button is pressed, then
-         *  save the X and Y values.   
+         *  save the X and Y values.
          *  @param event The event
          */
         public void mousePressed(MouseEvent event) {
@@ -4917,24 +4917,24 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
           _moving = false;            // flag for moving is off
         }
     }
-    
+
     /** Track how the mouse with button 3 pressed is moved. */
     public class MoveMotionListener implements MouseMotionListener {
         // Author: Dirk Bueche.
 
         /** If the mouse is dragged after clicking the third
-         *  button, then shift what is displayed.   
+         *  button, then shift what is displayed.
          *  @param event Ignored.
          */
         public void mouseDragged(MouseEvent event) {
-          
+
             if (_moving == false) {
                 return;
-            }            
+            }
 
             double dx = _xMax - _xMin;  // actual x range shown in plot
             double dy = _yMax - _yMin;  // actual y range shown in plot
-            
+
             // pixel
             int px = event.getX();   // current position
             int py = event.getY();
@@ -4951,7 +4951,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
 
             _movex = px;
             _movey = py;
-            
+
             // plot new condition
             double temp = _padding;  // no padding for this zooming
             _padding = 0;
@@ -4968,7 +4968,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
 
     }
 
-    
+
     /** Zoom with the mouse wheel. */
     public class ZoomListener2 implements MouseWheelListener {
         // Author: Dirk Bueche.
@@ -5006,7 +5006,7 @@ public class PlotBox extends JPanel implements Printable, PlotBoxInterface {
 
                 double dx = _xMax - _xMin;  // actual x range shown in plot
                 double dy = _yMax - _yMin;  // actual y range shown in plot
-            
+
                 // do zooming around center for zooming
                 _xMin = _xMin + dx * (cx-_ulx)/(_lrx-_ulx)*factor;
                 _xMax = _xMax - dx * (_lrx-cx)/(_lrx-_ulx)*factor;

@@ -1,12 +1,12 @@
 /* light.c
  * Designed to run on the Create module
  *
- * The basic architecture of this program can be re-used to easily 
+ * The basic architecture of this program can be re-used to easily
  * write a wide variety of Create control programs.  All sensor values
- * are polled in the background (using the serial rx interrupt) and 
- * stored in the sensors array as long as the function 
+ * are polled in the background (using the serial rx interrupt) and
+ * stored in the sensors array as long as the function
  * delayAndUpdateSensors() is called periodically.  Users can send commands
- * directly a byte at a time using byteTx() or they can use the 
+ * directly a byte at a time using byteTx() or they can use the
  * provided functions, such as baud() and drive().
  */
 
@@ -49,7 +49,7 @@ void defineSongs(void);
 
 
 
-int main (void) 
+int main (void)
 {
   int16_t turn_angle = 0;
   uint8_t turn_dir = 1;
@@ -100,7 +100,7 @@ int main (void)
       light_start = ADC;
 
       // drive around while no alarm and until cliff detected, plugged in, or button pressed
-      while(!alarm 
+      while(!alarm
             && (!UserButtonPressed)
             && (!sensors[SenCliffL])
             && (!sensors[SenCliffFL])

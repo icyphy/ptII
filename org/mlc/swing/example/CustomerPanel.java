@@ -96,7 +96,7 @@ public class CustomerPanel extends javax.swing.JPanel {
     javax.swing.JScrollPane orderTable = new javax.swing.JScrollPane(
             orderTableControl);
 
-    /** Instantiate the CustomerPanel. */ 
+    /** Instantiate the CustomerPanel. */
     public CustomerPanel() {
         super();
         java.io.InputStream is = this.getClass().getResourceAsStream(

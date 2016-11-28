@@ -56,7 +56,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  *  @version $Id$
  *  @since Ptolemy II 11.0
  *  @Pt.ProposedRating Red (ilgea)
- *  @Pt.AcceptedRating 
+ *  @Pt.AcceptedRating
  */
 public class PGMReader extends Source {
     /** Construct an actor with the given container and name.
@@ -70,7 +70,7 @@ public class PGMReader extends Source {
      */
     public PGMReader(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
-        super(container, name); 
+        super(container, name);
 
         fileOrURL = new FileParameter(this, "fileOrURL");
 
@@ -89,9 +89,9 @@ public class PGMReader extends Source {
      *  any form accepted by File Attribute.
      *  @see FileParameter
      */
-    public FileParameter fileOrURL; 
+    public FileParameter fileOrURL;
 
-    /** A mapping between image input and output values to generate a quantized output. 
+    /** A mapping between image input and output values to generate a quantized output.
      * Set this parameter to empty array for no quantization. Empty array means no quantization*/
     public Parameter levelMap;
 
@@ -121,15 +121,15 @@ public class PGMReader extends Source {
         Scanner scan = null;
         FileInputStream fileInputStream = null;
         DataInputStream dis = null;
-        try { 
+        try {
             scan = new Scanner(new FileInputStream(fileOrURL.asFile()));
             fileInputStream = new FileInputStream(fileOrURL.asFile());
             dis = new DataInputStream(fileInputStream);
             scan.next(); // the magic number: used to determine the PGM format.
             _width = scan.nextInt();
             _height = scan.nextInt();
-             
-            // Skip header. 
+
+            // Skip header.
             int lines = 0;
             while (lines < 4) {
                 char c;
@@ -138,14 +138,14 @@ public class PGMReader extends Source {
                 } while (c != '\n');
                 lines ++;
             }
-                
+
             _grid = new int[_height*_width];
 
-            for (int col = 0; col < _width; col++) { 
+            for (int col = 0; col < _width; col++) {
                 for (int row = 0; row < _height; row++) {
                     int intVal = dis.readUnsignedByte();
                     if (!_quantize) {
-                        _grid[row*_width + col] = intVal; 
+                        _grid[row*_width + col] = intVal;
                     } else {
                         int index=0;
                         for (int i = 0; i < _levels.length; i ++) {
@@ -159,13 +159,13 @@ public class PGMReader extends Source {
                                 index = i;
                             } else if( intVal > _levels[i] && i >= _levels.length -1) {
                                 index = i;
-                            } 
+                            }
                         }
-                        _grid[row + col*_height] = _levels[index];   
+                        _grid[row + col*_height] = _levels[index];
 
                     }
                 }
-            } 
+            }
         } catch (IOException e) {
             throw new IllegalActionException(this, e, "Failed to read " + fileOrURL);
         } finally {
@@ -192,7 +192,7 @@ public class PGMReader extends Source {
             }
         }
 
-        return super.prefire(); 
+        return super.prefire();
     }
 
     /** Output the data read in the prefire.
@@ -206,10 +206,10 @@ public class PGMReader extends Source {
         for (int i = 0 ; i < _grid.length; i++) {
             grid[i] = new IntToken(_grid[i]);
         }
-        String[] labels = {"width","height","grid"}; 
+        String[] labels = {"width","height","grid"};
         Token[] tokens = {new IntToken(_width),
                 new IntToken(_height),
-                new ArrayToken(grid)};  
+                new ArrayToken(grid)};
         RecordToken outputToken = new RecordToken(labels, tokens);
         output.broadcast(outputToken);
     }
@@ -220,7 +220,7 @@ public class PGMReader extends Source {
     /** Image width. */
     private int _width;
     /** Image height. */
-    private int _height; 
+    private int _height;
 
     private int[] _levels;
 

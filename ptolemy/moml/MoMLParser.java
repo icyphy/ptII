@@ -258,7 +258,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     /** Construct a parser that creates entities in the specified workspace
-     *  with a default verisoin specification.   
+     *  with a default verisoin specification.
      *  If the workspace argument is null, then
      *  create a new workspace with an empty name. Classes will be
      *  created using the classloader that created this class.
@@ -2108,7 +2108,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
     }
 
     /** Get the the current static _defaultClassLoadingStrategy instance.
-     * 
+     *
      * @return the current static _defaultClassLoadingStrategy instance.
      * @see #setDefaultClassLoadingStrategy(ClassLoadingStrategy)
      */
@@ -7704,7 +7704,7 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
 
     // True if we have printed the message about backtrack.xml being skipped.
     private static boolean _printedMacOSSkippingMessage = false;
-    
+
     // If greater than zero, skipping an element.
     private int _skipElement = 0;
 

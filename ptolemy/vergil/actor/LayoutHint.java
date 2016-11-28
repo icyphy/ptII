@@ -413,7 +413,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
         item.setBendpoints(bendPoints);
 
         item.setLabelLocation(labelLocation);
-        
+
         if (_valueListeners != null) {
             Iterator listeners = _valueListeners.iterator();
 
@@ -553,7 +553,7 @@ public class LayoutHint extends SingletonAttribute implements Settable {
                     labelLocation.x = ((DoubleToken) labelRecord.get("x")).doubleValue();
                     labelLocation.y = ((DoubleToken) labelRecord.get("y")).doubleValue();
                 }
-                
+
                 // The LayoutHintItem record contains a points entry, containing
                 // an array of bend points.
                 ArrayToken bendPoints = (ArrayToken) layoutItem.get("points");
@@ -784,11 +784,11 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             }
             return list;
         }
-        
+
         /**
-         * A {@link Point2D} representing the position where a label of an 
+         * A {@link Point2D} representing the position where a label of an
          * edge should be positioned.
-         * 
+         *
          * @return the label location.
          * @see #setLabelLocation(Point2D.Double)
          */
@@ -919,11 +919,11 @@ public class LayoutHint extends SingletonAttribute implements Settable {
             _bendPoints = bendPoints;
             _updateHeadTailLocations();
         }
-        
+
         /**
-         * Sets the position a label should be placed at. 
-         * 
-         * @param labelLocation a {@link Point2D} with the position, may be null. 
+         * Sets the position a label should be placed at.
+         *
+         * @param labelLocation a {@link Point2D} with the position, may be null.
          * @see #getLabelLocation()
          */
         public void setLabelLocation(Point2D.Double labelLocation) {

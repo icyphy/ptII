@@ -229,7 +229,7 @@ public class ImageIcon extends DynamicEditorIcon implements ImageObserver {
             }
         };
         Top.deferIfNecessary(action);
-        
+
         if ((infoflags & ImageObserver.ALLBITS) != 0) {
             // The image is now fully loaded.
             return false;
