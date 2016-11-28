@@ -55,7 +55,7 @@ import ptolemy.kernel.util.StringAttribute;
  Convert an AWT Image to a base-64 String.
 
  @author Marten Lohstroh
- @version $Id: ImageToBase64.java 70398 2014-10-22 23:44:32Z cxh $
+ @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (liuj)
  @Pt.AcceptedRating Red (liuj)
