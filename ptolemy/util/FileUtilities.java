@@ -40,6 +40,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
+import java.net.JarURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
@@ -47,7 +48,6 @@ import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
-import java.net.JarURLConnection;
 
 // Avoid importing any packages from ptolemy.* here so that we
 // can ship Ptplot.
@@ -81,8 +81,7 @@ public class FileUtilities {
      *  same file.
      *  @exception IOException If the source file does not exist.
      */
-    public static boolean binaryCopyURLToFile(URL sourceURL,
-            File destinationFile) throws IOException {
+    public static boolean binaryCopyURLToFile(URL sourceURL, File destinationFile) throws IOException {
         URL destinationURL = destinationFile.getCanonicalFile().toURI().toURL();
 
         if (sourceURL.sameFile(destinationURL)) {
@@ -95,19 +94,15 @@ public class FileUtilities {
         // If the sourceURL is not a jar URL, then check to see if we
         // have the same file.
         // FIXME: should we check for !/ and !\ everywhere?
-        if (sourceFile.getPath().indexOf("!/") == -1
-                && sourceFile.getPath().indexOf("!\\") == -1) {
+        if (sourceFile.getPath().indexOf("!/") == -1 && sourceFile.getPath().indexOf("!\\") == -1) {
             try {
-                if (sourceFile.getCanonicalFile().toURI().toURL()
-                        .sameFile(destinationURL)) {
+                if (sourceFile.getCanonicalFile().toURI().toURL().sameFile(destinationURL)) {
                     return false;
                 }
             } catch (IOException ex) {
                 // JNLP Jar urls sometimes throw an exception here.
                 // IOException constructor does not take a cause
-                IOException ioException = new IOException(
-                        "Cannot find canonical file name of '" + sourceFile
-                        + "'");
+                IOException ioException = new IOException("Cannot find canonical file name of '" + sourceFile + "'");
                 ioException.initCause(ex);
                 throw ioException;
             }
@@ -125,16 +120,16 @@ public class FileUtilities {
                 throw new IOException("Failed to open a stream on " + sourceURLConnection);
             }
 
-            if (! (sourceURLConnection instanceof JarURLConnection)) {
+            if (!(sourceURLConnection instanceof JarURLConnection)) {
                 _binaryCopyStream(sourceURLInputStream, destinationFile);
             } else {
-                JarURLConnection jarURLConnection = (JarURLConnection)sourceURLConnection;
+                JarURLConnection jarURLConnection = (JarURLConnection) sourceURLConnection;
                 JarEntry jarEntry = jarURLConnection.getJarEntry();
-                if (!jarEntry.isDirectory()) {
+                if (jarEntry != null && !jarEntry.isDirectory()) {
                     // Simply copying a file.
                     _binaryCopyStream(sourceURLInputStream, destinationFile);
                 } else {
-                    // It is a directory.
+                    // It is a directory if jarEntry == null, a Jar file.
                     _binaryCopyDirectory(jarURLConnection, destinationFile);
                 }
             }
@@ -165,8 +160,7 @@ public class FileUtilities {
      *  @return The array of bytes read from the URL.
      *  @exception IOException If the source URL does not exist.
      */
-    public static byte[] binaryReadURLToByteArray(URL sourceURL)
-            throws IOException {
+    public static byte[] binaryReadURLToByteArray(URL sourceURL) throws IOException {
         return _binaryReadStream(sourceURL.openStream());
     }
 
@@ -191,8 +185,7 @@ public class FileUtilities {
                 if (files != null) {
                     for (int i = 0; i < files.length; i++) {
                         if (files[i].isDirectory()) {
-                            FileUtilities.deleteDirectory(files[i]
-                                    .getAbsolutePath());
+                            FileUtilities.deleteDirectory(files[i].getAbsolutePath());
                             if (!files[i].delete()) {
                                 returnValue = false;
                             }
@@ -216,28 +209,24 @@ public class FileUtilities {
      *  @exception IOException If the jar file cannot be opened, or
      *  if there are problems extracting the contents of the jar file
      */
-    public static void extractJarFile(String jarFileName, String directoryName)
-            throws IOException {
+    public static void extractJarFile(String jarFileName, String directoryName) throws IOException {
         JarFile jarFile = null;
         try {
             jarFile = new JarFile(jarFileName);
             Enumeration entries = jarFile.entries();
             while (entries.hasMoreElements()) {
                 JarEntry jarEntry = (JarEntry) entries.nextElement();
-                File destinationFile = new File(directoryName,
-                        jarEntry.getName());
+                File destinationFile = new File(directoryName, jarEntry.getName());
                 if (jarEntry.isDirectory()) {
-                    if (!destinationFile.isDirectory()
-                            && !destinationFile.mkdirs()) {
-                        throw new IOException("Warning, failed to create "
-                                + "directory for \"" + destinationFile + "\".");
+                    if (!destinationFile.isDirectory() && !destinationFile.mkdirs()) {
+                        throw new IOException(
+                                "Warning, failed to create " + "directory for \"" + destinationFile + "\".");
                     }
                 } else {
                     InputStream jarInputStream = null;
                     try {
                         jarInputStream = jarFile.getInputStream(jarEntry);
-                        _binaryCopyStream(jarInputStream,
-                                destinationFile);
+                        _binaryCopyStream(jarInputStream, destinationFile);
                     } finally {
                         if (jarInputStream != null) {
                             jarInputStream.close();
@@ -284,11 +273,9 @@ public class FileUtilities {
      */
     public static void main(String[] args) {
         if (args.length < 1 || args.length > 2) {
-            System.err.println("Usage: java -classpath $PTII "
-                    + "ptolemy.util.FileUtilities jarFile [directory]\n"
+            System.err.println("Usage: java -classpath $PTII " + "ptolemy.util.FileUtilities jarFile [directory]\n"
                     + "where jarFile is the name of the jar file\n"
-                    + "and directory is the optional directory in which to "
-                    + "extract.");
+                    + "and directory is the optional directory in which to " + "extract.");
             StringUtilities.exit(2);
         }
         String jarFileName = args[0];
@@ -371,13 +358,11 @@ public class FileUtilities {
             if (base != null) {
                 // Need to replace \ with /, otherwise resolve would fail even
                 // if invoked in a windows OS. -- tfeng (02/27/2009)
-                URI newURI = base.resolve(StringUtilities.substitute(name, " ",
-                        "%20").replace('\\', '/'));
+                URI newURI = base.resolve(StringUtilities.substitute(name, " ", "%20").replace('\\', '/'));
 
                 //file = new File(newURI);
                 String urlString = newURI.getPath();
-                file = new File(StringUtilities.substitute(urlString, "%20",
-                        " "));
+                file = new File(StringUtilities.substitute(urlString, "%20", " "));
             }
         }
         return file;
@@ -413,8 +398,7 @@ public class FileUtilities {
      *   the name specification cannot be parsed.
      *  @see #nameToFile(String, URI)
      */
-    public static URL nameToURL(String name, URI baseDirectory,
-            ClassLoader classLoader) throws IOException {
+    public static URL nameToURL(String name, URI baseDirectory, ClassLoader classLoader) throws IOException {
         if (name == null || name.trim().equals("")) {
             return null;
         }
@@ -422,8 +406,7 @@ public class FileUtilities {
         if (name.startsWith(_CLASSPATH_VALUE) || name.startsWith("$CLASSPATH")) {
             URL result = _searchClassPath(name, classLoader);
             if (result == null) {
-                throw new IOException("Cannot find file '"
-                        + _trimClassPath(name) + "' in classpath");
+                throw new IOException("Cannot find file '" + _trimClassPath(name) + "' in classpath");
             }
 
             return result;
@@ -468,13 +451,9 @@ public class FileUtilities {
                 }
 
                 if (!file.canRead()) {
-                    throw new IOException("Cannot read file '"
-                            + name
-                            + "' or '"
-                            + StringUtilities.substitute(name, "%20", " ")
-                            + "'"
-                            + (possibleJarURL == null ? "" : " or '"
-                                    + possibleJarURL.getFile() + ""));
+                    throw new IOException(
+                            "Cannot read file '" + name + "' or '" + StringUtilities.substitute(name, "%20", " ") + "'"
+                                    + (possibleJarURL == null ? "" : " or '" + possibleJarURL.getFile() + ""));
                 }
             }
 
@@ -502,19 +481,10 @@ public class FileUtilities {
                         newURI = baseDirectory.resolve(name2);
                         name = name2;
                     } catch (Exception ex2) {
-                        IOException io = new IOException(
-                                "Problem with URI format in '"
-                                        + name
-                                        + "'. "
-                                        + "and '"
-                                        + name2
-                                        + "' "
-                                        + "This can happen if the file name "
-                                        + "is not absolute "
-                                        + "and is not present relative to the "
-                                        + "directory in which the specified model "
-                                        + "was read (which was '"
-                                        + baseDirectory + "')");
+                        IOException io = new IOException("Problem with URI format in '" + name + "'. " + "and '" + name2
+                                + "' " + "This can happen if the file name " + "is not absolute "
+                                + "and is not present relative to the " + "directory in which the specified model "
+                                + "was read (which was '" + baseDirectory + "')");
                         io.initCause(ex2);
                         throw io;
                     }
@@ -524,8 +494,7 @@ public class FileUtilities {
 
                 try {
                     // Adding another '/' for remote execution.
-                    if (newURI.getScheme() != null
-                            && newURI.getAuthority() == null) {
+                    if (newURI.getScheme() != null && newURI.getAuthority() == null) {
                         // Change from Efrat:
                         // "I made these change to allow remote
                         // execution of a workflow from within a web
@@ -541,8 +510,7 @@ public class FileUtilities {
                         // good idea to also make sure first that the
                         // url string actually represents the file
                         // protocol."
-                        urlString = urlString.substring(0, 6) + "//"
-                                + urlString.substring(6);
+                        urlString = urlString.substring(0, 6) + "//" + urlString.substring(6);
 
                         //} else {
                         // urlString = urlString.substring(0, 6) + "/"
@@ -567,23 +535,15 @@ public class FileUtilities {
                         try {
                             // Under Webstart, ptalon, EightChannelFFT
                             // requires this.
-                            return new URL(baseDirectory.toURL(),
-                                    newURI.toString());
+                            return new URL(baseDirectory.toURL(), newURI.toString());
                         } catch (Exception ex5) {
                             // Ignore
                         }
 
-                        IOException io = new IOException(
-                                "Problem with URI format in '"
-                                        + urlString
-                                        + "'. "
-                                        + "This can happen if the '"
-                                        + urlString
-                                        + "' is not absolute"
-                                        + " and is not present relative to the directory"
-                                        + " in which the specified model was read"
-                                        + " (which was '" + baseDirectory
-                                        + "')");
+                        IOException io = new IOException("Problem with URI format in '" + urlString + "'. "
+                                + "This can happen if the '" + urlString + "' is not absolute"
+                                + " and is not present relative to the directory"
+                                + " in which the specified model was read" + " (which was '" + baseDirectory + "')");
                         io.initCause(ex3);
                         throw io;
                     }
@@ -599,8 +559,7 @@ public class FileUtilities {
             // This change suggested by Dan Higgins and Kevin Kruland
             // See kepler/src/util/URLToLocalFile.java
             try {
-                String fixedURLAsString = url.toString().replaceFirst(
-                        "(https?:)//?", "$1//");
+                String fixedURLAsString = url.toString().replaceFirst("(https?:)//?", "$1//");
                 url = new URL(fixedURLAsString);
             } catch (Exception e) {
                 // Ignore
@@ -624,11 +583,10 @@ public class FileUtilities {
      *   to load this class.
      *  @return If the name is null or the empty string,
      *  then null is returned, otherwise a buffered reader is returned.
-
+    
      *  @exception IOException If the file cannot be opened.
      */
-    public static BufferedReader openForReading(String name, URI base,
-            ClassLoader classLoader) throws IOException {
+    public static BufferedReader openForReading(String name, URI base, ClassLoader classLoader) throws IOException {
         if (name == null || name.trim().equals("")) {
             return null;
         }
@@ -645,8 +603,7 @@ public class FileUtilities {
         URL url = nameToURL(name, base, classLoader);
 
         if (url == null) {
-            throw new IOException("Could not convert \"" + name
-                    + "\" with base \"" + base + "\" to a URL.");
+            throw new IOException("Could not convert \"" + name + "\" with base \"" + base + "\" to a URL.");
         }
 
         InputStreamReader inputStreamReader = null;
@@ -656,11 +613,9 @@ public class FileUtilities {
             // Try it as a jar url.
             // WebStart ptalon MapReduce needs this.
             try {
-                URL possibleJarURL = ClassUtilities.jarURLEntryResource(url
-                        .toString());
+                URL possibleJarURL = ClassUtilities.jarURLEntryResource(url.toString());
                 if (possibleJarURL != null) {
-                    inputStreamReader = new InputStreamReader(
-                            possibleJarURL.openStream());
+                    inputStreamReader = new InputStreamReader(possibleJarURL.openStream());
                 }
                 // If possibleJarURL is null, this throws an exception,
                 // which we ignore and report the first exception (ex)
@@ -677,8 +632,7 @@ public class FileUtilities {
                 } catch (IOException ex3) {
                     // Ignore
                 }
-                IOException ioException = new IOException("Failed to open \""
-                        + url + "\".");
+                IOException ioException = new IOException("Failed to open \"" + url + "\".");
                 ioException.initCause(ex);
                 throw ioException;
             }
@@ -708,8 +662,7 @@ public class FileUtilities {
      *  @exception IOException If the file cannot be opened
      *   or created.
      */
-    public static Writer openForWriting(String name, URI base, boolean append)
-            throws IOException {
+    public static Writer openForWriting(String name, URI base, boolean append) throws IOException {
         if (name == null || name.trim().equals("")) {
             return null;
         }
@@ -747,22 +700,22 @@ public class FileUtilities {
      *  @param destinationDirectory The destination directory, which must already exist.
      *  @exception IOException If there are problems reading, writing or closing.
      */
-    private static void _binaryCopyDirectory(JarURLConnection jarURLConnection,
-                                             File destinationDirectory) throws IOException {
+    private static void _binaryCopyDirectory(JarURLConnection jarURLConnection, File destinationDirectory)
+            throws IOException {
         // Get the path of the resource in the jar file
         String entryBaseName = jarURLConnection.getEntryName();
         JarFile jarFile = jarURLConnection.getJarFile();
-        Enumeration<?extends ZipEntry> jarEntries = jarFile.entries();
-        while ( jarEntries.hasMoreElements() ) {
+        Enumeration<? extends ZipEntry> jarEntries = jarFile.entries();
+        while (jarEntries.hasMoreElements()) {
             ZipEntry zipEntry = jarEntries.nextElement();
             String name = zipEntry.getName();
-            if (!name.startsWith(entryBaseName) ) {
+            if (!name.startsWith(entryBaseName)) {
                 continue;
             }
 
             String entryFileName = name.substring(entryBaseName.length());
-            File fileOrDirectory = new File(destinationDirectory, entryFileName );
-            if (zipEntry.isDirectory() ) {
+            File fileOrDirectory = new File(destinationDirectory, entryFileName);
+            if (zipEntry.isDirectory()) {
                 if (!fileOrDirectory.mkdir()) {
                     throw new IOException("Could not create \"" + fileOrDirectory + "\"");
                 }
@@ -771,10 +724,10 @@ public class FileUtilities {
                 OutputStream outputStream = null;
                 try {
                     inputStream = jarFile.getInputStream(zipEntry);
-                    outputStream =  new BufferedOutputStream( new FileOutputStream(fileOrDirectory ) );
+                    outputStream = new BufferedOutputStream(new FileOutputStream(fileOrDirectory));
                     byte buffer[] = new byte[4096];
                     int readCount;
-                    while ( (readCount = inputStream.read(buffer)) > 0 ) {
+                    while ((readCount = inputStream.read(buffer)) > 0) {
                         outputStream.write(buffer, 0, readCount);
                     }
                 } finally {
@@ -800,8 +753,7 @@ public class FileUtilities {
      *  or read, or * if there is a problem writing to the destination
      *  file.
      */
-    private static void _binaryCopyStream(InputStream inputStream,
-            File destinationFile) throws IOException {
+    private static void _binaryCopyStream(InputStream inputStream, File destinationFile) throws IOException {
         // Copy the source file.
         BufferedInputStream input = null;
 
@@ -809,10 +761,9 @@ public class FileUtilities {
             input = new BufferedInputStream(inputStream);
 
             if (input == null) {
-                throw new IOException("Could not create a BufferedInputStream from \""
-                                      + inputStream + "\".  This can happen if the input "
-                                      + "is a JarURL entry that refers to a directory "
-                                      + "in the jar file.");
+                throw new IOException("Could not create a BufferedInputStream from \"" + inputStream
+                        + "\".  This can happen if the input " + "is a JarURL entry that refers to a directory "
+                        + "in the jar file.");
             }
 
             BufferedOutputStream output = null;
@@ -821,13 +772,11 @@ public class FileUtilities {
                 File parent = destinationFile.getParentFile();
                 if (parent != null && !parent.exists()) {
                     if (!parent.mkdirs()) {
-                        throw new IOException("Failed to create directories "
-                                + "for \"" + parent + "\".");
+                        throw new IOException("Failed to create directories " + "for \"" + parent + "\".");
                     }
                 }
 
-                output = new BufferedOutputStream(new FileOutputStream(
-                        destinationFile));
+                output = new BufferedOutputStream(new FileOutputStream(destinationFile));
 
                 int c;
 
@@ -836,12 +785,10 @@ public class FileUtilities {
                         output.write(c);
                     }
                 } catch (NullPointerException ex) {
-                    NullPointerException npe =
-                        new NullPointerException("While reading from \"" + input
-                                                 + "\" and writing to \"" + output
-                                                 + "\", a NullPointerException occurred.  "
-                                                 + "This can happen when attempting to read "
-                                                 + "from a JarURL entry that points to a directory.");
+                    NullPointerException npe = new NullPointerException("While reading from \"" + input
+                            + "\" and writing to \"" + output + "\", a NullPointerException occurred.  "
+                            + "This can happen when attempting to read "
+                            + "from a JarURL entry that points to a directory.");
                     npe.initCause(ex);
                     throw npe;
                 }
@@ -876,8 +823,7 @@ public class FileUtilities {
      *  @param inputStream The input stream.
      *  @exception IOException If the input stream cannot be read.
      */
-    private static byte[] _binaryReadStream(InputStream inputStream)
-            throws IOException {
+    private static byte[] _binaryReadStream(InputStream inputStream) throws IOException {
         // Copy the source file.
         BufferedInputStream input = null;
 
@@ -929,8 +875,7 @@ public class FileUtilities {
      *  @return null if name does not start with "$CLASSPATH"
      *  or _CLASSPATH_VALUE or if name cannot be found.
      */
-    private static URL _searchClassPath(String name, ClassLoader classLoader)
-            throws IOException {
+    private static URL _searchClassPath(String name, ClassLoader classLoader) throws IOException {
 
         URL result = null;
 
@@ -955,8 +900,7 @@ public class FileUtilities {
                 } catch (Exception ex) {
                     // IOException constructor does not take a cause
                     IOException ioException = new IOException(
-                            "Cannot look up class \"" + referenceClassName
-                            + "\" or get its ClassLoader.");
+                            "Cannot look up class \"" + referenceClassName + "\" or get its ClassLoader.");
                     ioException.initCause(ex);
                     throw ioException;
                 }
