@@ -47,7 +47,7 @@ met:
     from this software without specific prior written permission.
 
 This software is provided by the copyright holders and contributors
-“as is” and any express or implied warranties, including, but not
+"as is" and any express or implied warranties, including, but not
 limited to, the implied warranties of merchantability and fitness for
 a particular purpose are disclaimed. In no event shall copyright
 holders or contributors be liable for any direct, indirect,
