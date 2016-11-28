@@ -2,7 +2,7 @@
 #
 # @Author: Christopher Brooks
 #
-# @Version: $Id: Ramp.tcl 70488 2014-11-03 17:00:09Z hudson@moog.eecs.berkeley.edu $
+# @Version: $Id$
 #
 # @Copyright (c) 2015 The Regents of the University of California.
 # All rights reserved.

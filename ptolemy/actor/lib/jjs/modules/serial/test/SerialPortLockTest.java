@@ -39,7 +39,7 @@ import gnu.io.CommPortIdentifier;
  Test the Serial Port locking
 
  @author Christopher Brooks
- @version $Id: SerialHelper.java 74187 2015-12-27 21:32:38Z cxh $
+ @version $Id$
  @since Ptolemy II 11.0
  @Pt.ProposedRating red (cxh)
  @Pt.AcceptedRating red (cxh)

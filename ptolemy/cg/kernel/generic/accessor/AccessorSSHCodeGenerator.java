@@ -116,7 +116,7 @@ import ptolemy.util.StringUtilities;
  *  <p>For more information, see <a href="https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#in_browser">https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
  *
  *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
- *  @version $Id: AccessorSSHCodeGenerator.java 75087 2016-08-27 01:05:39Z cxh $
+ *  @version $Id$
  *  @since Ptolemy II 11.0
  *  @Pt.ProposedRating red (cxh)
  *  @Pt.AcceptedRating red (cxh)

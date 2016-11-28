@@ -18,7 +18,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
 //
-// $Id: my_timer.hh,v 1.1  2007/03/29 16:51:35 ausbourg Exp $
+// $Id$
 // ---------------------------------------------------------------------------
 #ifndef FC_TIMER_HH
 #define FC_TIMER_HH
@@ -95,4 +95,4 @@ extern int rtElapsedOk;                               /* time elapsed ok      */
 extern Timer T;                                       /* The real timer       */
 
 #endif // FC_TIMER_HH
-// $Id: my_timer.hh,v 1.1  2007/03/29 16:51:35 ausbourg Exp $
+// $Id$
