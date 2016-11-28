@@ -84,7 +84,6 @@ $CLASSPATH/org/terraswarm/accessor/demo/IMUSensor/IMUSensor.xml
 $CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreClient.xml
 $CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreServer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MoC/MoC.xml
-$CLASSPATH/org/terraswarm/accessor/demo/MockHueBridge/MockHueBridge.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MotionDetector/MotionDetector.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MotionLights/MotionLights.xml
 $CLASSPATH/org/terraswarm/accessor/demo/OccupancyLights/OccupancyLights.xml
@@ -208,7 +207,6 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommClient/SecureCom
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServer/SecureCommServer.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecurePubSub/SecurePubSub.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/localStorage/demo/LocalStorage/LocalStorage.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/mockHueBridges/demo/MockHueBridges/MockHueBridges.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub/MQTTPubSub.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/SocketDoubleArrayBatched.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage.xml
