@@ -1409,7 +1409,7 @@ Accessor.prototype.react = function (name) {
                         // If the exception was thrown because of
                         // Java, we should get the Java stacktrace.
                         var stacktrace = exception.stack;
-                        if (typeof stacktrace === 'undefined' && accessorHost === accessorHostsEnum.CAPECODE || accessorHost === accessorHostEnum.NASHORN) {
+                        if (typeof stacktrace === 'undefined' && accessorHost === accessorHostsEnum.CAPECODE || accessorHost === accessorHostsEnum.NASHORN) {
                             try {
                                 // This code is Cape Code Host-specific because it uses Java.
                                 var StringWriter = java.io.StringWriter,
