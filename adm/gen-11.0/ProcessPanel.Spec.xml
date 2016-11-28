@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="iso-8859-1" standalone="yes" ?>
 
-<processing>
+<izpack:processing version="5.0"
+		   xmlns:izpack="http://izpack.org/schema/processing" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+		   xsi:schemaLocation="http://izpack.org/schema/processing http://izpack.org/schema/5.0/izpack-processing-5.0.xsd">
+
   <job name="Execute CapeCode.app" condition="startCapeCode">
     <os family="mac" />
       <executefile name="/usr/bin/open">
@@ -39,5 +42,5 @@
     </executefile>
   </job>
 
-</processing>
+</izpack:processing>
 

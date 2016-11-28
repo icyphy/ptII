@@ -153,7 +153,7 @@
 		 # Copy the section below to /tmp/p0, then
 		 
 		 grep src= /tmp/p0 | sort > /tmp/p0a
-		 (cd $PTII; make echo_jars JARS=PTINY_JNLP_JARS) > /tmp/p1
+		 (cd $PTII; make echo_jars JARS=CAPECODE_JNLP_JARS) > /tmp/p1
 		 grep src= /tmp/p1 | sort > /tmp/p1a
 		 diff /tmp/p0a /tmp/p1a
 
@@ -337,6 +337,31 @@
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html/jsoup"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/gdp-0.7-2.jar"
+		  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/javax.servlet-api-3.0.1.jar"
+		  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/jetty-all-8.1.5-v20120716.jar"
+		  targetdir="$INSTALL_PATH/lib"/>
+	    <file src="../dists/ptII11.0.devel/jar_dist/lib/jna-4.0.0-variadic.jar"
+		  targetdir="$INSTALL_PATH/lib"/>
+	    <file src="../dists/ptII11.0.devel/jar_dist/lib/jsoup-1.8.2.jar"
+		  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/opencv-310.jar"
+		  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/smack.jar"
+		  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/smackx.jar"
+		  targetdir="$INSTALL_PATH/lib"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/org/ptolemy/opencv/opencv.jar"
+		  targetdir="$INSTALL_PATH/org/ptolemy/opencv"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/org/terraswarm/accessor/accessors/accessors.jar"
+		  targetdir="$INSTALL_PATH/org/terraswarm/accessor/accessors"/>
+            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/conversions/json/json.jar"
+		  targetdir="$INSTALL_PATH/ptolemy/actor/lib/conversions/json"/>
+   	    <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/cg/cgAccessor.jar"
+		  targetdir="$INSTALL_PATH/ptolemy/cg"/>
+
 <!--/MacOSInclude-->
             <file src="../dists/ptII11.0.devel/ptolemy/matlab/ptmatlab.dll"
                   targetdir="$INSTALL_PATH/ptolemy/matlab"

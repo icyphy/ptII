@@ -71,8 +71,10 @@
         <langpack iso3="eng"/>
     </locale>
 
-    <native type="izpack" name="ShellLink.dll"/>
-
+    <natives>
+      <native type="izpack" name="ShellLink.dll"/>
+    </natives>
+    
     <!-- 
         The resources section.
         The ids must be these ones if you want to use the LicencePanel and/or the InfoPanel.
