@@ -1,6 +1,6 @@
 /* An interface for listeners that are invoked when a menu item is created.
 
-@Copyright (c) 2008 The Regents of the University of California.
+@Copyright (c) 2008-2016 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without

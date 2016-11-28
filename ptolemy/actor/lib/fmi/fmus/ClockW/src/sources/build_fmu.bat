@@ -4,7 +4,7 @@ rem $Id$
 rem This batch builds an FMU of the FMU SDK
 rem Usage: build_fmu  <fmu_dir_name> 
 
-rem Copyright (c) 2013-2015 The Regents of the University of California.
+rem Copyright (c) 2013-2016 The Regents of the University of California.
 rem All rights reserved.
 rem 
 rem Permission is hereby granted, without written agreement and without

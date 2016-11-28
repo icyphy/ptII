@@ -4,7 +4,7 @@
 
  @Version: $Id$
 
- @Copyright (c) 1997-2014 The Regents of the University of California.
+ @Copyright (c) 1997-2016 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -156,7 +156,7 @@ public class PlotMLApplication extends PlotApplication {
                         + ", Build: $Id$\n\n"
                         + "For more information, see\n"
                         + "http://ptolemy.eecs.berkeley.edu/java/ptplot\n\n"
-                        + "Copyright (c) 1997-2014, "
+                        + "Copyright (c) 1997-2016, "
                         + "The Regents of the University of California.",
                         "About Ptolemy Plot", JOptionPane.INFORMATION_MESSAGE);
     }

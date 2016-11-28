@@ -1,6 +1,6 @@
 /* An interface for factories that create menu items.
 
- Copyright (c) 2000-2005 The Regents of the University of California.
+ Copyright (c) 2000-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
