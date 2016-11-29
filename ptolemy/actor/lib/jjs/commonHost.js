@@ -1254,7 +1254,11 @@ Accessor.prototype.latestOutput = function (name) {
  *  -v|--v|-version|--version: Print out the version number
  *
  *  The flags are followed by one or more filenames that are either
- *  composite accessors ore plain JavaScript.
+ *  composite accessors or plain JavaScript.  If --accessors is
+ *  present, then the argument(s) are assumed to be composite
+ *  accessors.  If it --accessors is not present, then the arguments
+ *  are passed to getAccessor(), which looks for the file and returns
+ *  the content.
  *
  *  @param argv An array of arguments, see above.
  *  @return 0 if there were no problems, 3 if there was a command line argument issue.
@@ -1263,7 +1267,18 @@ function main(argv) {
     var usage = "Usage: [-accessor|--accessor] [-h|--h|-help|--help] [-e|--e|-echo|--echo] [-timeout|--timeout milliseconds] [-v|--v|-version|--version]  accessorOrRegularJavaScriptFile1.js [accessorOrRegularJavaScriptFile2.js ...]",
 	i,
 	sawAccessor = false,
+	sawFiles = false,
 	timeout = -1;
+
+    try {
+	// Under Nashorn, argv is a Java Array of Strings, so
+	// we use the Nashorn Java.from().
+	argv = Java.from(argv);
+    } catch (error) {
+	// Ignore
+    }
+
+
     if (argv.length === 0) {
         console.error(usage);
 	return 3;
@@ -1282,7 +1297,7 @@ function main(argv) {
 	case '--e':
 	case '-echo':
 	case '--echo':
-	    console.log(argv);
+	    console.log(argv)
 	    break;
 
 	case '-h':
@@ -1294,12 +1309,13 @@ function main(argv) {
 
 	case '-timeout':
 	case '--timeout':
+	    i += 1;
 	    if (i >= argv.length) {
 		console.error("Argument " + i + "  was " + argv[i] + " but there is no argument for milliseconds.  Args were: " + argv);
 		return 3;
 	    }
-	    i += 1;
 	    timeout = argv[i];
+
             setTimeout(function () {
                 // Under node, process.exit gets caught by exitHandler() in
                 // nodeHost.js and invokes wrapup().
@@ -1316,6 +1332,7 @@ function main(argv) {
 	    return 0;
 
 	default:
+	    sawFiles = true;
 	    if (timeout === -1) {
 		// Prevent the script from exiting by repeating the empty function
 		// every ~25 days.
@@ -1327,20 +1344,19 @@ function main(argv) {
 		accessors = instantiateAndInitialize(argv.slice(i));
 		return 0;
 	    } else {
-		// FIXME: Need to read the file and evaluate it.
-		var contents = "";
 		try {
-		    // Node
-		    contents = fs.readFileSync(argv[i]);
-		    eval(contents);
+		    eval(getAccessorCode(argv[i]));
 		} catch (error) {
-		    // Nashorn
-		    load(contents);
+		    throw new Error('Failed to eval "' + argv[i] + '": ' + error);
 		}
 	    }
 	}
     }
-};
+    if ( !sawFiles) {
+	throw new Error("No file arguments were present?  Args were: " + argv);
+    }
+    return 0;
+}
 
 /** Merge the specified objects. If the two have common properties, the merged object
  *  will have the properties of the second argument. If the first argument is null,
