@@ -1,6 +1,6 @@
 // JavaScript functions to be shared among accessor hosts.
 //
-// Copyright (c) 2016-2016 The Regents of the University of California.
+// Copyright (c) 2015-2016 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -202,6 +202,11 @@
 /*globals actor, alert, console, Duktape, exports, instance, java, Packages, process, require, setInterval, setTimeout, window */
 /*jshint globalstrict: true, multistr: true */
 'use strict';
+
+// All the accessors that were instantiated.
+var accessors = [];
+
+exports.accessors = accessors;
 
 // Determine which accessor host is in use.
 // See https://www.terraswarm.org/accessors/wiki/Main/ResourcesForHostAuthors#Differentiating
@@ -1228,6 +1233,115 @@ Accessor.prototype.latestOutput = function (name) {
     return this.outputs[name].latestOutput;
 };
 
+/** Process command line arguments and evaluate accesors or plain JavaScript.
+ *
+ *  Below is a description of the command line arguments
+ *
+ *  -accessor|--accessor: If present, then the files named as command
+ *  line arguments are Composite Accessors and should be passed to
+ *  instantiateAndInitialize(). If not present, then the files named
+ *  as command line arguments are to be interpreted as regular
+ *  JavaScript files.
+ * 
+ *  -e|--e|-echo|--echo: Echo the command that would be run by hand to
+ *  replicate the test. This is helpful for use under Ant apply.
+ *  
+ *  -h|--h|-help|--help: Print a usage message 
+ *
+ *  -timeout|--timeout milliseconds: The minimum amount of time the
+ *  script should run.
+ *
+ *  -v|--v|-version|--version: Print out the version number
+ *
+ *  The flags are followed by one or more filenames that are either
+ *  composite accessors ore plain JavaScript.
+ *
+ *  @param argv An array of arguments, see above.
+ *  @return 0 if there were no problems, 3 if there was a command line argument issue.
+ */
+function main(argv) {
+    var usage = "Usage: [-accessor|--accessor] [-h|--h|-help|--help] [-e|--e|-echo|--echo] [-timeout|--timeout milliseconds] [-v|--v|-version|--version]  accessorOrRegularJavaScriptFile1.js [accessorOrRegularJavaScriptFile2.js ...]",
+	i,
+	sawAccessor = false,
+	timeout = -1;
+    if (argv.length === 0) {
+        console.error(usage);
+	return 3;
+    }
+
+    for (i = 0; i < argv.length; i++) {
+	switch (argv[i]) {
+	case '-accessor':
+	case '--accessor':
+	case '-accessors':
+	case '--accessors':
+	    sawAccessor = true;
+	    break;
+
+	case '-e':
+	case '--e':
+	case '-echo':
+	case '--echo':
+	    console.log(argv);
+	    break;
+
+	case '-h':
+	case '--h':
+	case '-help':
+	case '--help':
+	    console.log(usage);
+	    return 0;
+
+	case '-timeout':
+	case '--timeout':
+	    if (i >= argv.length) {
+		console.error("Argument " + i + "  was " + argv[i] + " but there is no argument for milliseconds.  Args were: " + argv);
+		return 3;
+	    }
+	    i += 1;
+	    timeout = argv[i];
+            setTimeout(function () {
+                // Under node, process.exit gets caught by exitHandler() in
+                // nodeHost.js and invokes wrapup().
+		// FIXME: what about platforms that do not have exit?
+                process.exit(0);
+            }, timeout);
+	    break;
+
+	case '-v':
+	case '--v':
+	case '-version':
+	case '--version':
+	    console.log("Accessors 1.0, commonHost.js: $Id$");
+	    return 0;
+
+	default:
+	    if (timeout === -1) {
+		// Prevent the script from exiting by repeating the empty function
+		// every ~25 days.
+		setInterval(function () {}, 2147483647);
+	    }
+	    if (sawAccessor) {
+		// FIXME: we need to keep a list of the accessors that are created.
+		// FIXME: accessors is a global, is that right?
+		accessors = instantiateAndInitialize(argv.slice(i));
+		return 0;
+	    } else {
+		// FIXME: Need to read the file and evaluate it.
+		var contents = "";
+		try {
+		    // Node
+		    contents = fs.readFileSync(argv[i]);
+		    eval(contents);
+		} catch (error) {
+		    // Nashorn
+		    load(contents);
+		}
+	    }
+	}
+    }
+};
+
 /** Merge the specified objects. If the two have common properties, the merged object
  *  will have the properties of the second argument. If the first argument is null,
  *  then the returned object will equal the second argument, unless it too is null,
@@ -1712,7 +1826,7 @@ Accessor.prototype.setDefault = function (name, value) {
 
 /** Set a parameter of the specified accessor to the specified value.
  *  @param name The name of the parameter to set.
- * @param value The value to set the parameter to.
+ *  @param value The value to set the parameter to.
  */
 Accessor.prototype.setParameter = function (name, value) {
     var parameter = this.parameters[name];
@@ -1749,3 +1863,4 @@ var _accessorInstanceTable = {};
 
 exports.Accessor = Accessor;
 exports.instantiateAccessor = instantiateAccessor;
+exports.main = main;
