@@ -23,7 +23,7 @@ cat $modelsFile | grep /demo/ | awk -F / '{for (i=2;i<=NF;i++) {printf("%s/", $i
 
 # Look for demo directories that are not listed in completeDemos
 demos2=/tmp/missingDemos.demos2.$$
-(cd $PTII; find . -name demo -type d | egrep -v '(adm|reports|signed|vendors)' | sed 's@^\./@@' | sed 's@demo/$@demo@' | sort ) | egrep -v '(com/microstar/xml/demo|diva/canvas/demo|doc/codeDoc/.*/demo|doc/doccheck/diva/canvas/demo|org/terraswarm/gdp/src/gdp.*/demo|ptolemy/apps|ptolemy/actor/lib/jjs/modules/contextAwareTest/demo|org/terraswarm/accessor/accessors/web/hosts/browser/demo)' > $demos2
+(cd $PTII; find . -name demo -type d | egrep -v '(adm|reports|signed|vendors)' | sed 's@^\./@@' | sed 's@demo/$@demo@' | sort ) | egrep -v '(com/microstar/xml/demo|diva/canvas/demo|doc/codeDoc/.*/demo|doc/doccheck/diva/canvas/demo|org/terraswarm/gdp/src/gdp.*/demo|ptolemy/apps|ptolemy/actor/lib/jjs/modules/contextAwareTest/demo|org/terraswarm/accessor/demo|org/terraswarm/accessor/accessors/web/hosts/browser/demo)' > $demos2
 
 if [ $verbose = "yes" ]; then 
     echo "### Demo directories that are not listed in $PTII/ptolemy/configs/doc/completeDemos.htm"
@@ -34,7 +34,7 @@ comm -3 $demos1 $demos2 | awk '{print $1}' > $demos3
 
 for demo in `cat $demos3`
 do
-    grep "<!--.*$demo" $PTII/ptolemy/configs/doc/completeDemos.htm >& /dev/null
+    grep "$demo" $PTII/ptolemy/configs/doc/completeDemos.htm >& /dev/null
     status=$?
     if [ $status -eq 1 ]; then
         echo "The $demo directory is not found in completeDemo.htm" >&2
