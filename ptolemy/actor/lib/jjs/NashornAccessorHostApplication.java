@@ -81,11 +81,13 @@ import ptolemy.util.StringUtilities;
  * <dd>Print a usage message</dd>
  * <dt><code>-timeout|--timeout <i>milliseconds</i></code></dt>
  * <dd>The minimum amount of time the script should run.</dd>
+ * <dt><code>-v|--v|-version|--version</code></dt>
+ * <dd>Print out the version number</dd>
  * </dl>
-
+ *
  * <p>After the flags, the one or more JavaScript files are present that
  * name either or regular JavaScript files.</p>
-
+ *
  * <p>To invoke:</p>
  * <pre>
  * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -accessor -timeout 10000 hosts/nashorn/test/testNashornHost.js)
@@ -98,6 +100,7 @@ import ptolemy.util.StringUtilities;
  *  [-h|--h|-help|--help] \
  *  [-echo|--echo] \
  *  [-timeout|--timeout milliseconds] \
+ *  [-v|--v|-version|--version] \
  *  accessorOrRegularJavaScriptFile1.js [accessorOrRegularJavaScriptFile2.js ...]
  * </pre>
  *
@@ -112,12 +115,13 @@ public class NashornAccessorHostApplication {
     /** Evaluate the files named by the arguments.
      *  @param args An array of one or more file names.  See the class comment for
      *  the syntax.
+     *  @return 0 for success, 3 for argument problems.  See main() in commonHost.js.
      *  @exception IllegalActionException If the Nashorn engine cannot be found.
      *  @exception IOException If a file cannot be read or closed.
      *  @exception NoSuchMethodException If evaluateCode() JavaScript method is not defined.
      *  @exception ScriptException If there is a problem evaluating a file.
      */
-    public NashornAccessorHostApplication(String [] args)
+    public static int evaluate(String [] args)
         throws IllegalActionException, IOException, NoSuchMethodException, ScriptException {
 
         // Create a Nashorn script engine.
@@ -127,73 +131,15 @@ public class NashornAccessorHostApplication {
             throw new IllegalActionException(
                     "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
         }
-
-        boolean accessors = false, echo = false, help = false;
-        int timeout = -1;
-        int i;
-        for (i = 0; i < args.length; i++) {
-            if (args[i].equals("-accessor")
-                || args[i].equals("--accessor")) {
-                accessors = true;
-            } else if (args[i].equals("-echo")
-                       || args[i].equals("--echo")) {
-                echo = true;
-            } else if (args[i].equals("-h")
-                       || args[i].equals("--h")
-                       || args[i].equals("-help")
-                       || args[i].equals("--help")) {
-                help = true;
-            } else if (args[i].equals("-timeout")
-                       || args[i].equals("--timeout")) {
-                if (i+1 <= args.length) {
-                    timeout = Integer.parseInt(args[++i]);
-                }
-            } else if (!args[i].substring(0,1).equals("-")) {
-                // All done with command line args.
-                break;
-            } else {
-                _usage();
-                StringUtilities.exit(2);
-            }
-        }
-
-        if (echo) {
-            System.out.println("--------------- (cd "
-                             +  Paths.get(".").toAbsolutePath().normalize().toString()
-                             + "; java -classpath $PTII ptolemy.actor.lib.jjs.NashornAccessorHostApplication "
-                             + Arrays.toString(args)
-                             + ")");
-
-        }
-        if (help) {
-            _usage();
-            // Force a timeout so that we exit.
-            timeout = 1;
-        }
-        if (timeout > 0) {
-            Object instance = engine.eval("function() { print('NashornAccessorHostApplication done.'); var System = Java.type('java.lang.System'); System.exit(0);}");
-            ((Invocable)engine).invokeFunction("setTimeout", instance, timeout);
-        }
-
-        if (accessors) {
-            // Instantiate and invoke the composite accessors named by
-            // the arguments.
-            String [] shortArgs = new String[args.length - i];
-            System.arraycopy(args, i, shortArgs, 0, args.length - i);
-            /* _instance =*/ ((Invocable)engine)
-                .invokeFunction("instantiateAndInitialize",
-                                (Object)shortArgs);
-
-        } else {
-            // Evaluate each file.
-            for (; i < args.length; i++) {
-                try (InputStreamReader reader = new InputStreamReader(new FileInputStream(args[i]), "UTF-8")) {
-                    engine.eval(reader);
-                }
-            }
-        }
-
+	Object returnValue = ((Invocable)engine)
+	    .invokeFunction("main",
+			    (Object)args);
         // FIXME: Should we close the engine in a finally block?
+	if (returnValue == null) {
+	    System.err.println("NashornAccessorHostApplication.evaluate(" + Arrays.toString(args) + ") returned null?");
+	    return -1;
+	}
+	return ((Integer)returnValue).intValue();
     }
 
     /** Invoke one or more JavaScript files.
@@ -202,7 +148,8 @@ public class NashornAccessorHostApplication {
      */
     public static void main(String[] args) {
         try {
-            new NashornAccessorHostApplication(args);
+	    int returnValue = NashornAccessorHostApplication.evaluate(args);
+            StringUtilities.exit(returnValue);
         } catch (Throwable throwable) {
             System.err.println("Command Failed: " + throwable);
             throwable.printStackTrace();

@@ -478,6 +478,7 @@ function instantiateAndInitialize(accessorNames) {
     for (index = 0; index < length; ++index) {
         // The name of the accessor is basename of the accessorClass.
         var accessorClass = accessorNames[index];
+
         // For example, if the accessorClass is
         // test/TestComposite, then the accessorName will be
         // TestComposite.
@@ -510,6 +511,8 @@ var Accessor = commonHost.Accessor;
 //provideInput = commonHost.provideInput;
 //setParameter = commonHost.setParameter;
 
+var main = commonHost.main;
+
 // In case this gets used a module, create an exports object.
 var exports = {
     'Accessor': Accessor,
@@ -517,6 +520,7 @@ var exports = {
     'instantiate': instantiate,
     'instantiateAndInitialize': instantiateAndInitialize,
     //'invoke': invoke,
+    'main': main,
     'provideInput': commonHost.provideInput,
     'setParameter': commonHost.setParameter,
 };
