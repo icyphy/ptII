@@ -442,6 +442,66 @@ function setTimeout(func, milliseconds) {
     return id;
 }
 
+var accessors = [];
+
+/** Instantiate and return an accessor.
+ *  This will throw an exception if there is no such accessor class on the accessor
+ *  search path.
+ *  @param accessorName The name to give to the instance.
+ *  @param accessorClass Fully qualified accessor class name, e.g. 'net/REST'.
+ */
+function instantiate(accessorName, accessorClass) {
+    // FIXME: The bindings should be a bindings object where require == a requireLocal
+    // function that searches first for local modules.
+    var bindings = {
+        'require': require,
+    };
+    var instance = new commonHost.instantiateAccessor(
+        accessorName, accessorClass, getAccessorCode, bindings);
+    console.log('Instantiated accessor ' + accessorName + ' with class ' + accessorClass);
+
+    accessors.push(instance);
+    return instance;
+}
+
+/** Instantiate and initialize the accessors named by the
+ *  accessorNames argument
+ *
+ * See invoke() for how this method is used.
+ *
+ * @param accessorNames An array of accessor names in a format suitable
+ * for getAccessorCode(name).
+ */
+function instantiateAndInitialize(accessorNames) {
+    var length = accessorNames.length;
+    var index;
+    for (index = 0; index < length; ++index) {
+        // The name of the accessor is basename of the accessorClass.
+        var accessorClass = accessorNames[index];
+
+        // For example, if the accessorClass is
+        // test/TestComposite, then the accessorName will be
+        // TestComposite.
+
+        var startIndex = (accessorClass.indexOf('\\') >= 0 ? accessorClass.lastIndexOf('\\') : accessorClass.lastIndexOf('/'));
+        var accessorName = accessorClass.substring(startIndex);
+        if (accessorName.indexOf('\\') === 0 || accessorName.indexOf('/') === 0) {
+            accessorName = accessorName.substring(1);
+        }
+        // If the same accessorClass appears more than once in the
+        // list of arguments, then use different names.
+        // To replicate: node nodeHostInvoke.js test/TestComposite test/TestComposite
+        if (index > 0) {
+            accessorName += "_" + (index - 1);
+        }
+        var accessor = instantiate(accessorName, accessorClass);
+        // Push the top level accessor so that we can call wrapup later.
+        accessors.push(accessor);
+        accessor.initialize();
+    }
+    return accessors;
+}
+
 // Make the Accessor constructor visible so that we may use it in the
 // Cape Code Accessor Code Generator.
 var Accessor = commonHost.Accessor;
@@ -456,6 +516,10 @@ var main = commonHost.main;
 // In case this gets used a module, create an exports object.
 var exports = {
     'Accessor': Accessor,
+    //'getAccessorCode': getAccessorCode,
+    'instantiate': instantiate,
+    'instantiateAndInitialize': instantiateAndInitialize,
+    //'invoke': invoke,
     'main': main,
     'provideInput': commonHost.provideInput,
     'setParameter': commonHost.setParameter,
