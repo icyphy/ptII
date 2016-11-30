@@ -193,7 +193,7 @@
  *
  *
  *  @module commonHost
- *  @author Edward A. Lee and Chris Shaver.  Contributor: Christopher Brooks
+ *  @author Edward A. Lee and Chris Shaver
  *  @version $$Id$$
  */
 
@@ -1221,79 +1221,6 @@ function instantiateAccessor(
     return instance;
 }
 
-/** Instantiate and return an accessor.
- *  This will throw an exception if there is no such accessor class on the accessor
- *  search path.
- *  @param accessorName The name to give to the instance.
- *  @param accessorClass Fully qualified accessor class name, e.g. 'net/REST'.
- */
-function instantiate(accessorName, accessorClass) {
-    // FIXME: The bindings should be a bindings object where require == a requireLocal
-    // function that searches first for local modules.
-    var bindings = {
-        'require': require,
-    };
-    var instance = new instantiateAccessor(
-        accessorName, accessorClass, getAccessorCode, bindings);
-    console.log('Instantiated accessor ' + accessorName + ' with class ' + accessorClass);
-
-    accessors.push(instance);
-    return instance;
-};
-
-/** Instantiate and initialize the accessors named by the
- *  accessorNames argument.
- *
- * See commonHost.main() for how this method is used.
- *
- * Sample usage:
- *
- * nodeHostInvoke.js contains:
- * <pre>
- * require('./nodeHost.js');
- * invoke(process.argv.slice(2));
- * </pre>
- *
- * To invoke:
- * <pre>
- *   node nodeHostInvoke.js test/TestComposite
- * </pre>
- *
- * @param accessorNames An array of accessor names in a format suitable
- * for getAccessorCode(name).
- */
-function instantiateAndInitialize (accessorNames) {
-    var accessors = [],
-	index,
-	length = accessorNames.length;
-    for (index = 0; index < length; ++index) {
-        // The name of the accessor is basename of the accessorClass.
-        var accessorClass = accessorNames[index];
-        // For example, if the accessorClass is
-        // test/TestComposite, then the accessorName will be
-        // TestComposite.
-
-        var startIndex = (accessorClass.indexOf('\\') >= 0 ? accessorClass.lastIndexOf('\\') : accessorClass.lastIndexOf('/'));
-        var accessorName = accessorClass.substring(startIndex);
-        if (accessorName.indexOf('\\') === 0 || accessorName.indexOf('/') === 0) {
-            accessorName = accessorName.substring(1);
-        }
-        // If the same accessorClass appears more than once in the
-        // list of arguments, then use different names.
-        // To replicate: node nodeHostInvoke.js test/TestComposite test/TestComposite
-        if (index > 0) {
-            accessorName += "_" + (index - 1);
-        }
-        var accessor = instantiate(accessorName, accessorClass);
-
-        // Push the top level accessor so that we can call wrapup later.
-        accessors.push(accessor);
-        accessor.initialize();
-    }
-    return accessors;
-};
-
-
 /** Return the latest value produced on this output, or null if no
  *  output has been produced.
  *  @param name The name of the output.
@@ -1393,7 +1320,6 @@ function main(argv) {
                 // Under node, process.exit gets caught by exitHandler() in
                 // nodeHost.js and invokes wrapup().
 		// FIXME: what about platforms that do not have exit?
-		// FIXME: Calling exit is not a good idea, how do we test this?
                 process.exit(0);
             }, timeout);
 	    break;
@@ -1952,6 +1878,5 @@ var _accessorInstanceTable = {};
 //// Exports
 
 exports.Accessor = Accessor;
-exports.accessors = accessors;
 exports.instantiateAccessor = instantiateAccessor;
 exports.main = main;
