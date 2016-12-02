@@ -64,18 +64,18 @@ public class HelperBase {
      *  @param helping The object that this is helping.
      */
     public HelperBase(Object helping) {
-    	Object actorOrWrapper = helping;
-    	if (helping instanceof ScriptObjectMirror) {
-    		// Helping a JavaScript object.
+            Object actorOrWrapper = helping;
+            if (helping instanceof ScriptObjectMirror) {
+                    // Helping a JavaScript object.
             _currentObj = (ScriptObjectMirror) helping;
-            
+
             // Find the actor associated with the object.
             actorOrWrapper = _currentObj.eval("actor");
             if (actorOrWrapper instanceof ScriptObjectMirror) {
                 actorOrWrapper = ScriptObjectMirror.unwrap(actorOrWrapper,
                         ScriptContext.ENGINE_SCOPE);
             }
-    	}
+            }
         if (actorOrWrapper instanceof RestrictedJavaScriptInterface) {
             _actor = ((RestrictedJavaScriptInterface) actorOrWrapper)
                     ._getActor();
@@ -86,9 +86,9 @@ public class HelperBase {
                     + actorOrWrapper.toString());
         }
     }
-    
+
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Handle an error by emitting an error event, or if there is no
      *  error event handler registered, by invoking the error() method
@@ -209,7 +209,7 @@ public class HelperBase {
     /** Convert a Java byte array into the JavaScript integer array.
      *  @param buffer The input Java byte array to be converted.
      *  @return The resulting JavaScript integer array.
-     *  @throws IllegalActionException If the conversion fails.
+     *  @exception IllegalActionException If the conversion fails.
      */
     protected Object _toJSArray(byte[] buffer) throws IllegalActionException {
         Object[] result = new Object[buffer.length];
@@ -224,7 +224,7 @@ public class HelperBase {
      *  @param object The input in JavaScript object, either a JavaScrypt integer array or
      *    a JavaScript string. If the string starts with "0x", it is interpreted as hex bytes.
      *  @return The Java byte array.
-     *  @throws IllegalActionException If the conversion fails.
+     *  @exception IllegalActionException If the conversion fails.
      */
     protected static byte[] _toJavaBytes(Object object) throws IllegalActionException {
         if (object instanceof ScriptObjectMirror || object instanceof NativeArray) {
@@ -236,9 +236,9 @@ public class HelperBase {
                 NativeArray nativeArray = (NativeArray)object;
                 values = nativeArray.values();
             } else {
-		// FindBugs: Avoid a possibly NPE when dereferencing values.
-		throw new InternalErrorException("The object argument must be an instance of either ScriptObjectMirror or NativeArray.  It was a " + object.getClass().getName());
-	    }
+                // FindBugs: Avoid a possibly NPE when dereferencing values.
+                throw new InternalErrorException("The object argument must be an instance of either ScriptObjectMirror or NativeArray.  It was a " + object.getClass().getName());
+            }
 
             byte[] result = new byte[values.size()];
             int i = 0;
@@ -262,10 +262,10 @@ public class HelperBase {
                     result[i] = ((Double) value).byteValue();
                 }
                 else {
-                    throw new IllegalActionException("Cannot interpret the input array element type: " 
+                    throw new IllegalActionException("Cannot interpret the input array element type: "
                             + value.getClass().getName());
                 }
-                
+
                 i++;
             }
             return result;
@@ -282,7 +282,7 @@ public class HelperBase {
         throw new IllegalActionException("Cannot interpret the input, the input should be either"
                 + "JavaScript int array or string.");
     }
-    
+
     ///////////////////////////////////////////////////////////////////
     ////                     protected fields                      ////
 

@@ -109,7 +109,7 @@ import ptolemy.util.StringUtilities;
 public class VertxHelperBase extends HelperBase {
 
     ///////////////////////////////////////////////////////////////////
-    ////                     public methods                        ////
+    ////                         public methods                    ////
 
     /** Stop the global (unclustered instance of Vert.x.
      *  This method is typically called before exiting the JVM.
@@ -117,7 +117,7 @@ public class VertxHelperBase extends HelperBase {
     public static void closeVertx() {
         // This method should probably be called close(),
         // but WebSocketHelper already has close().
-        
+
         // ptolemy/actor/gui/HTMLAbout.java calls this
         // method to prevent HTMLAbout from hanging while
         // running.  To replicate:
@@ -197,7 +197,7 @@ public class VertxHelperBase extends HelperBase {
         EventBus eventBus = _vertx.eventBus();
         eventBus.publish(_address, "submit");
     }
-    
+
     /** Return a set of informal image type names that can be sent.
      *  @return A set of image type names.
      */
@@ -210,7 +210,7 @@ public class VertxHelperBase extends HelperBase {
             return _sendImageTypes;
         }
     };
-    
+
     /** Return an array of the types supported by the current host for
      *  receiveType arguments, which are the types that can be extracted from buffers.
      *  @return An array of types.
@@ -320,9 +320,9 @@ public class VertxHelperBase extends HelperBase {
      *   a RestrictedJavaScriptInterface proxy for that actor.
      */
     protected VertxHelperBase(Object actor) {
-        this(actor, null);             
+        this(actor, null);
     }
-    
+
     /** Construct a helper for the specified JavaScript actor and
      *  create a verticle that can execute submitted jobs atomically.
      *  This is protected to help prevent applications from creating
@@ -333,7 +333,7 @@ public class VertxHelperBase extends HelperBase {
      *   handler, or null to create a new verticle and event handler.
      */
     protected VertxHelperBase(Object actor, VertxHelperBase helper) {
-        super(actor);             
+        super(actor);
 
         // If no verticle is specified, then create one. Also register
         // this helper as the helper for the actor. If a verticle is specified,
@@ -355,7 +355,7 @@ public class VertxHelperBase extends HelperBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     protected methods                     ////
+    ////                         protected methods                 ////
 
     /** Append a numeric instance of the specified type to a buffer.
      *  @param buffer The buffer to which to append
@@ -398,7 +398,7 @@ public class VertxHelperBase extends HelperBase {
                 break;
             default:
                 _error("Unsupported type for buffer: "
-                        + type.toString()); 
+                        + type.toString());
             }
         } else if (data instanceof LongToken) {
             // JavaScript has no long data type, and long is not convertible to
@@ -691,7 +691,7 @@ public class VertxHelperBase extends HelperBase {
 
     /** Queue of pending jobs. */
     private ConcurrentLinkedQueue<Runnable> _pendingJobs = new ConcurrentLinkedQueue<Runnable>();
-    
+
     /** The array of receive type names. */
     private static String[] _receiveTypes;
 
@@ -700,7 +700,7 @@ public class VertxHelperBase extends HelperBase {
 
     /** The set of informal image type names that can be sent. */
     private static TreeSet<String> _sendImageTypes;
-    
+
     /** The array of send type names. */
     private static String[] _sendTypes;
 
@@ -718,7 +718,7 @@ public class VertxHelperBase extends HelperBase {
                     directory = new File(StringUtilities.getProperty("user.home"),  ".vertxPt");
                     System.setProperty("vertx.cacheDirBase", directory.getCanonicalPath());
                 } catch (Throwable throwable) {
-                    System.err.println("Could not set the vertx.cacheDirBase property to " + directory 
+                    System.err.println("Could not set the vertx.cacheDirBase property to " + directory
                             + ".  This means that a .vertx directory will be created in the current directory.");
                 }
             }
@@ -731,7 +731,7 @@ public class VertxHelperBase extends HelperBase {
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                     private methods                       ////
+    ////                         private methods                   ////
 
     /** Indicate that the expected type cannot be extracted from the buffer.
      *  @param ex The exception that occurred.
@@ -774,7 +774,7 @@ public class VertxHelperBase extends HelperBase {
     private static WeakHashMap<JavaScript, WeakReference<VertxHelperBase>> _vertxHelpers = new WeakHashMap<JavaScript, WeakReference<VertxHelperBase>>();
 
     ///////////////////////////////////////////////////////////////////
-    ////                     inner classes                         ////
+    ////                         inner classes                     ////
 
     /** Verticle to handle requests.
      */

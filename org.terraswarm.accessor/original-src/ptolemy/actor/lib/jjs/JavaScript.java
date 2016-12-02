@@ -90,6 +90,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.util.CancelException;
+import ptolemy.util.ClassUtilities;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
@@ -167,7 +168,7 @@ import ptolemy.util.StringUtilities;
    <pre>
       var handle = this.addInputHandler(portName, function);
    </pre>
-   Normally you would do this in initialize().
+   <p>Normally you would do this in initialize().
    The returned handle can be used to call this.removeInputHandler().
    Handlers will be automatically
    unregistered upon wrapup(), so unless you want to cancel a handler earlier,
@@ -235,8 +236,8 @@ import ptolemy.util.StringUtilities;
    <li> require(string): load and return a CommonJS module by name. See
         <a href="https://www.terraswarm.org/accessors">https://www.terraswarm.org/accessors</a> for
         supported modules. See
-        <a href="http://wiki.commonjs.org/wiki/Modules">http://wiki.commonjs.org/wiki/Modules</a></li>
-        for what a CommonJS module is.
+        <a href="http://wiki.commonjs.org/wiki/Modules">http://wiki.commonjs.org/wiki/Modules</a>
+        for what a CommonJS module is.</li>
    <li> setInterval(function, int): set the function to execute after specified time and then periodically and return handle.</li>
    <li> setTimeout(function, int): set the function to execute after specified time and return handle.</li>
    </ul>
@@ -258,11 +259,11 @@ import ptolemy.util.StringUtilities;
    }
    exports.fire = function() {
        var value = this.get('input');
-       if (value < 0) {
+       if (value &lt; 0) {
            error("Input must be greater than or equal to 0.");
        } else {
            var total = 1;
-           while (value > 1) {
+           while (value &gt; 1) {
                total *= value;
                value--;
            }
@@ -437,7 +438,7 @@ import ptolemy.util.StringUtilities;
    @Pt.AcceptedRating Red (bilung)
  */
 public class JavaScript extends TypedAtomicActor {
-    
+
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
      *  the <i>error</i> port and the <i>script</i> port parameter.
@@ -471,7 +472,7 @@ public class JavaScript extends TypedAtomicActor {
         // Causes no end of headaches, and anyway, the script should
         // reference parameters using getParameter('name');
         script.setSuppressVariableSubstitution(true);
-        
+
         ParameterPort scriptIn = script.getPort();
         cardinal = new StringAttribute(scriptIn, "_cardinal");
         cardinal.setExpression("SOUTH");
@@ -595,6 +596,122 @@ public class JavaScript extends TypedAtomicActor {
         newObject._proxiesByName = null;
         return newObject;
     }
+
+    /** Create a script engine and initialize it.
+     *  @param actor The JavaScript actor that is to use the script
+     *  engine.  If the actor parameter is null, then the restricted
+     *  parameter must be false.  The actor parameter is also used for
+     *  exception handling.  The JavaScriptApplication class typically passes
+     *  a null value for this parameter.
+     *  @param debugging True if the _debug JavaScript variable should be set to true.
+     *  @param restricted True if script engine should be restricted
+     *  so that it can execute unrusted code.  The default is typically false.
+     *  @return The JavaScript engine.
+     */
+    public static ScriptEngine createEngine(JavaScript actor, boolean debugging, boolean restricted)
+        throws IllegalActionException {
+        ScriptEngineManager factory = new ScriptEngineManager();
+        // Create a Nashorn script engine
+        ScriptEngine engine = factory.getEngineByName("nashorn");
+        if (engine == null) {
+            // Coverity Scan is happier if we check for null here.
+            throw new IllegalActionException(
+                    actor,
+                    "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
+        }
+        /* FIXME: The following should intercept errors, but if doesn't!
+         * Perhaps Thread.setUncaughtExceptionHandler()? How to get the thread?
+         * or Thread.setDefaultUncaughtExceptionHandler().
+         * This should be a top-level Ptolemy II thing...
+        ScriptContext context = engine.getContext();
+        context.setErrorWriter(new StringWriter() {
+            @Override
+            public void close() throws IOException {
+                super.close();
+                // FIXME: Request a firing that can then throw an exception so
+                // error port is handled correctly.
+                MessageHandler.error(toString());
+            }
+        });
+         */
+        if (debugging) {
+            // Set a global variable for debugging.
+            engine.put("_debug", true);
+        } else {
+            engine.put("_debug", false);
+        }
+
+        // Define the actor and accessor variables.
+        // capeCodeHost.js refers to actor at eval-time, so set it now.
+        if (!restricted) {
+            engine.put("accessor", actor);
+            engine.put("actor", actor);
+        } else {
+            if (actor == null) {
+                throw new IllegalArgumentException("Restricted JavaScript sandboxes only supported with JavaScript container actors.");
+            }
+            RestrictedJavaScriptInterface restrictedInterface = new RestrictedJavaScriptInterface(
+                    actor);
+            engine.put("accessor", restrictedInterface);
+            engine.put("actor", restrictedInterface);
+        }
+
+        try {
+            engine.eval(FileUtilities.openForReading(
+                    "C:/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
+                    null));
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(actor, throwable,
+                    "Failed to load capeCodeHost.js");
+        }
+
+        String localFunctionsPath = "C:/ptolemy/actor/lib/jjs/localFunctions.js";
+        try {
+            engine.eval(FileUtilities.openForReading(localFunctionsPath, null, null));
+        } catch (Throwable throwable) {
+            // eval() can throw a ClassNotFoundException if a Ptolemy class is not found.
+
+            if (throwable instanceof ClassNotFoundException) {
+                // FIXME: Temporary code (2015-08-15)
+
+                // Attempting to debug why, after 348 tests, these tests
+                // can't find the Ptolemy classes:
+
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[348] ptolemy/demo/Robot/RandomWalkIntruder.xml
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[350] ptolemy/demo/Robot/RobotChase.xml
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[351] ptolemy/demo/Robot/RobotCollaborativeChase.xml
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[353] ptolemy/demo/Robot/RobotMonitor.xml
+                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[360] ptolemy/demo/Robot/SmartIntruder6Teams.xml
+
+                String message =  "Parsing "
+                    + localFunctionsPath
+                    + " resulted in a ClassNotFoundException?"
+                    + " Checking ClassLoaders: "
+                    + " ClassLoader.getSystemClassLoader(): "
+                    + ClassLoader.getSystemClassLoader()
+                    + " Thread.currentThread().getContextClassLoader(): "
+                    + Thread.currentThread().getContextClassLoader();
+                Class<?> clazz = null;
+                try {
+                    clazz = Class.forName("ptolemy.data.ArrayToken");
+                } catch (ClassNotFoundException ex) {
+                    throw new IllegalActionException(actor, throwable, message
+                            + "???? Failed to get ptolemy.data.ArrayToken?"
+                            + ex);
+                }
+                throw new IllegalActionException(actor, throwable, message
+                        + " Class.forName(\"ptolemy.data.ArrayToken\"): "
+                        + clazz);
+                // FIXME: End of temporary code.
+            } else {
+                throw new IllegalActionException(actor, throwable,
+                        "Failed to load " + localFunctionsPath + ".");
+            }
+        }
+
+        return engine;
+    }
+
 
     /** Declare that any output that is marked as spontanous does does
      *  not depend on the input in a firing.
@@ -744,7 +861,7 @@ public class JavaScript extends TypedAtomicActor {
         // the JavaScript functions in a separate thread, for some reason.
         // Need to ensure this is atomic w.r.t. callbacks.
         super.fire();
-        
+
         if (_debugging) {
             // Set a global variable for debugging.
             _engine.put("_debug", true);
@@ -852,7 +969,7 @@ public class JavaScript extends TypedAtomicActor {
                 }
             }
         }
-        
+
         // Mark that we are in the fire() method, enabling outputs to be
         // sent immediately.
         _inFire = true;
@@ -867,7 +984,7 @@ public class JavaScript extends TypedAtomicActor {
             // and then lost.
             Runnable callback = _pendingCallbacks.poll();
             List<Runnable> callbacks = new LinkedList<Runnable>();
-            while(callback != null) {
+            while (callback != null) {
                 callbacks.add(callback);
                 callback = _pendingCallbacks.poll();
             }
@@ -934,18 +1051,30 @@ public class JavaScript extends TypedAtomicActor {
             _inFire = false;
         }
     }
-    
+
     /** Return the string contents of the file at the specified location.
      *  @param path The location.  This is used in localFunctions.js.
      *  @return The contents as a string, assuming the default encoding of
      *   this JVM (probably utf-8).
-     *  @throws IOException If the file cannot be read.
+     *  @exception IOException If the file cannot be read.
      */
     public static String getFileAsString(String path) throws IOException {
         byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, Charset.defaultCharset());
     }
 
+    /** Return the string contents of the file from the classpath
+     *  @param path The location.  This is used in localFunctions.js.
+     *  The path should be a relative path.
+     *  @return The contents as a string, assuming the default encoding of
+     *   this JVM (probably utf-8).
+     *  @exception IOException If the file cannot be read.
+     */
+    public static String getFileFromClasspathAsString(String path) throws IOException {
+        URL url = FileUtilities.nameToURL(path, null, null);
+        byte[] encoded = FileUtilities.binaryReadURLToByteArray(url);
+        return new String(encoded, Charset.defaultCharset());
+    }
     /** If this actor has been initialized, return the JavaScript engine,
      *  otherwise return null.
      *  @return The JavaScript engine for this actor.
@@ -965,7 +1094,7 @@ public class JavaScript extends TypedAtomicActor {
         }
         return null;
     }
-    
+
     /** Get a resource, which may be a file name or a URL, and return the
      *  value of the resource as a string. If this instance of JavaScript
      *  is restricted (e.g., it is an accessor), then restrict relative file
@@ -975,7 +1104,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @param uri A specification for the resource.
      *  @param timeout The timeout in milliseconds.
      *  @return The resource
-     *  @throws IllegalActionException If the uri specifies any protocol other
+     *  @exception IllegalActionException If the uri specifies any protocol other
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".
      */
@@ -1009,7 +1138,7 @@ public class JavaScript extends TypedAtomicActor {
             }
             baseDirectory = URIAttribute.getModelURI(this);
         }
-        
+
         try {
             URL url = FileUtilities.nameToURL(uri, baseDirectory, getClass().getClassLoader());
             BufferedReader in = null;
@@ -1043,7 +1172,7 @@ public class JavaScript extends TypedAtomicActor {
     @Override
     public void initialize() throws IllegalActionException {
         super.initialize();
-        
+
         _directorThread = Thread.currentThread();
 
         // Create proxy for ports that don't already have one.
@@ -1125,12 +1254,12 @@ public class JavaScript extends TypedAtomicActor {
      *  Otherwise, null will be returned.
      *  If a Parameter already exists with the same name, then convert
      *  it to a PortParameter and preserve and return its value.
-     *  
+     *
      *  The options can also include a field
      *  "visibility" with one of the values "none", "expert",
      *  "noteditable" or "full" (the default). This is a hint
      *  to restrict visibility that a user has of the port.
-     *  
+     *
      *  @param name The name of the port.
      *  @param options The options, or null to accept the defaults.
      *   To give options, this argument must implement the Map interface.
@@ -1225,7 +1354,7 @@ public class JavaScript extends TypedAtomicActor {
                 }
             }
         }
-        
+
         if (options instanceof Map) {
             // If the port has its own type already (a TypeAttribute),
             // do not override it.
@@ -1301,13 +1430,13 @@ public class JavaScript extends TypedAtomicActor {
         port.setInput(true);
         return result;
     }
-    
+
     /** Invoke the specified function in the fire() method as soon as possible.
      *  If this is called within the director thread and we are currently inside the
      *  fire() function, then invoke the function immediately. Otherwise, defer it using
      *  the director's fireAtCurrentTime() function.
      *  @param function The function to invoke.
-     *  @throws IllegalActionException If the director cannot respect the request.
+     *  @exception IllegalActionException If the director cannot respect the request.
      */
     public void invokeCallback(final Runnable function) throws IllegalActionException {
         if (Thread.currentThread().equals(_directorThread)) {
@@ -1727,11 +1856,11 @@ public class JavaScript extends TypedAtomicActor {
         _setTimeout(function, milliseconds, id);
         return id;
     }
-    
+
     /** Convert the specified array into a native JavaScript array.
      *  @param array The array to convert.
      *  @return The native JavaScript array.
-     *  @throws IllegalActionException If the conversion fails.
+     *  @exception IllegalActionException If the conversion fails.
      */
     public Object toJSArray(Object[] array) throws IllegalActionException {
         try {
@@ -1773,7 +1902,7 @@ public class JavaScript extends TypedAtomicActor {
             // The instance version removes input handlers, invokes wrapup
             // on contained accessors, and invokes exports.wrapup(), if defined.
             _invokeMethodInContext(_instance, "wrapup");
-            
+
             if (_pendingTimeoutIDs.size() > 0) {
                 String message = "WARNING: "
                         + getName()
@@ -1925,7 +2054,7 @@ public class JavaScript extends TypedAtomicActor {
 
     /** The exports object defined in the script that is evaluated. */
     protected Object _exports;
-    
+
     /** Initial script as a token. */
     protected static StringToken _INITIAL_SCRIPT = new StringToken(
             "// Put your JavaScript program here.\n"
@@ -1976,7 +2105,7 @@ public class JavaScript extends TypedAtomicActor {
      *  @param portOrParameter A port or parameter.
      *  @param valueToken The value as a Ptolemy II token.
      *  @return A JavaScript object of the form {'value': value}.
-     *  @throws IllegalActionException If conversion fails and the user
+     *  @exception IllegalActionException If conversion fails and the user
      *   responds "Cancel" to the warning.
      */
     private Object _constructOptionsObject(NamedObj portOrParameter, Token valueToken)
@@ -2023,98 +2152,8 @@ public class JavaScript extends TypedAtomicActor {
         // never is more than one thread trying to evaluate a script.
         // Note that an engine is recreated on each run. This ensures
         // that the JS context does not remember data from one run to the next.
-        ScriptEngineManager factory = new ScriptEngineManager();
-        // Create a Nashorn script engine
-        _engine = factory.getEngineByName("nashorn");
-        if (_engine == null) {
-            // Coverity Scan is happier if we check for null here.
-            throw new IllegalActionException(
-                    this,
-                    "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
-        }
-        /* FIXME: The following should intercept errors, but if doesn't!
-         * Perhaps Thread.setUncaughtExceptionHandler()? How to get the thread?
-         * or Thread.setDefaultUncaughtExceptionHandler().
-         * This should be a top-level Ptolemy II thing...
-        ScriptContext context = _engine.getContext();
-        context.setErrorWriter(new StringWriter() {
-            @Override
-            public void close() throws IOException {
-                super.close();
-                // FIXME: Request a firing that can then throw an exception so
-                // error port is handled correctly.
-                MessageHandler.error(toString());
-            }
-        });
-         */
-        if (_debugging) {
-            _debug("** Instantiated engine. Loading local and basic functions.");
-            // Set a global variable for debugging.
-            _engine.put("_debug", true);
-        } else {
-            _engine.put("_debug", false);
-        }
-        try {
-            _engine.eval(FileUtilities.openForReading(
-                    "$CLASSPATH/ptolemy/actor/lib/jjs/basicFunctions.js", null,
-                    null));
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(this, throwable,
-                    "Failed to load basicFunctions.js");
-        }
-        String localFunctionsPath = "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js";
-        try {
-            _engine.eval(FileUtilities.openForReading(localFunctionsPath, null, null));
-        } catch (Throwable throwable) {
-            // eval() can throw a ClassNotFoundException if a Ptolemy class is not found.
 
-            if (throwable instanceof ClassNotFoundException) {
-                // FIXME: Temporary code (2015-08-15)
-                
-                // Attempting to debug why, after 348 tests, these tests
-                // can't find the Ptolemy classes:
-
-                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[348] ptolemy/demo/Robot/RandomWalkIntruder.xml
-                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[350] ptolemy/demo/Robot/RobotChase.xml
-                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[351] ptolemy/demo/Robot/RobotCollaborativeChase.xml
-                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[353] ptolemy/demo/Robot/RobotMonitor.xml
-                // ptolemy.vergil.basic.export.test.junit.ExportModelJUnitTest.[360] ptolemy/demo/Robot/SmartIntruder6Teams.xml
-
-                String message =  "Parsing "
-                    + localFunctionsPath
-                    + " resulted in a ClassNotFoundException?"
-                    + " Checking ClassLoaders: "
-                    + " ClassLoader.getSystemClassLoader(): "
-                    + ClassLoader.getSystemClassLoader()
-                    + " Thread.currentThread().getContextClassLoader(): "
-                    + Thread.currentThread().getContextClassLoader();
-                Class<?> clazz = null;
-                try {
-                    clazz = Class.forName("ptolemy.data.ArrayToken");
-                } catch (ClassNotFoundException ex) {
-                    throw new IllegalActionException(this, throwable, message
-                            + "???? Failed to get ptolemy.data.ArrayToken?"
-                            + ex);
-                }
-                throw new IllegalActionException(this, throwable, message
-                        + " Class.forName(\"ptolemy.data.ArrayToken\"): "
-                        + clazz);
-                // FIXME: End of temporary code.
-            } else {
-                throw new IllegalActionException(this, throwable,
-                        "Failed to load " + localFunctionsPath + ".");
-            }
-        }
-        // Define the actor and accessor variables.
-        if (!_restricted) {
-            _engine.put("accessor", this);
-            _engine.put("actor", this);
-        } else {
-            RestrictedJavaScriptInterface restrictedInterface = new RestrictedJavaScriptInterface(
-                    this);
-            _engine.put("accessor", restrictedInterface);
-            _engine.put("actor", restrictedInterface);
-        }
+        _engine = JavaScript.createEngine(this, _debugging, _restricted);
 
         // Create proxies for the port.
         // Note that additional proxies may need to be created in initialize(),
@@ -2232,11 +2271,11 @@ public class JavaScript extends TypedAtomicActor {
     /** If the second argument is true, mark the first argument
      *  as requiring its value to be JSON. The mark has the form
      *  of a (non-persistent) singleton parameter named "_JSON".
-     *  
+     *
      *  @param typeable The object to mark.
      *  @param JSONmode Whether to mark it.
-     *  @throws NameDuplicationException Not thrown.
-     *  @throws IllegalActionException If adding the mark fails.
+     *  @exception NameDuplicationException Not thrown.
+     *  @exception IllegalActionException If adding the mark fails.
      */
     private void _markJSONmode(NamedObj typeable, boolean JSONmode)
             throws NameDuplicationException, IllegalActionException {
@@ -2253,7 +2292,7 @@ public class JavaScript extends TypedAtomicActor {
             }
         }
     }
-    
+
     /** Provide an input value (a token) to the specified input name.
      *  This will convert the token to a suitable form.
      *  @param name The input name.
@@ -2279,9 +2318,9 @@ public class JavaScript extends TypedAtomicActor {
      */
     private synchronized void _runThenReschedule(final Runnable function,
             final int milliseconds, final Integer id) {
-    	// Invoke the function.
+            // Invoke the function.
         function.run();
-        
+
         // If the above function does not cancel the interval, reschedule it.
         if (_pendingTimeoutFunctions.get(id) == null) {
             // The callback function itself may cancel the interval.
@@ -2367,14 +2406,14 @@ public class JavaScript extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-    
+
     /** Set the port spontaneity if the options argument includes a
      *  "spontaneous" field with one of the values "true" or "false".
      *  @param options The options map.
      *  @param port The port of which to set the spontaneity.
-     *  @throws IllegalActionException If there is a problem accessing
+     *  @exception IllegalActionException If there is a problem accessing
      *  the spontaneous argument or setting the SingletonParameter.
-     *  @throws NameDuplicationException Should not be thrown.
+     *  @exception NameDuplicationException Should not be thrown.
      */
     private void _setPortSpontaneity(Map<String,Object> options, TypedIOPort port)
             throws IllegalActionException, NameDuplicationException {
@@ -2396,8 +2435,8 @@ public class JavaScript extends TypedAtomicActor {
      *  @param options The options map.
      *  @param port The port set restrict visibility of.
      *  @param parameter The parameter, if this is a port-parameter.
-     *  @throws IllegalActionException If setting fails.
-     *  @throws NameDuplicationException Should not be thrown.
+     *  @exception IllegalActionException If setting fails.
+     *  @exception NameDuplicationException Should not be thrown.
      */
     private void _setPortVisibility(Map<String,Object> options, TypedIOPort port,
             PortParameter parameter) throws IllegalActionException,
@@ -2406,7 +2445,7 @@ public class JavaScript extends TypedAtomicActor {
         if (visibility instanceof String) {
             String generic = ((String) visibility).trim().toLowerCase();
             boolean hide = false;
-    
+
             switch (generic) {
             case "none":
                 if (parameter != null) {
@@ -2451,7 +2490,7 @@ public class JavaScript extends TypedAtomicActor {
      *  parameter in string mode. Otherwise, do nothing.
      *  @param typeable A Parameter or ParameterPort.
      *  @param JSONmode True to indicate that the string needs to be JSON.
-     *  @throws IllegalActionException If the marker attribute cannot be added.
+     *  @exception IllegalActionException If the marker attribute cannot be added.
      */
     private void _setStringMode(NamedObj typeable, boolean JSONmode)
             throws NameDuplicationException, IllegalActionException {
@@ -2586,7 +2625,7 @@ public class JavaScript extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////                        Private Variables                  ////
-    
+
     /** The director thread. This is set in initialize() and unset in wrapup. */
     private Thread _directorThread;
 
@@ -2597,7 +2636,7 @@ public class JavaScript extends TypedAtomicActor {
      *  method as soon as possible.
      */
     private ConcurrentLinkedQueue<Runnable> _pendingCallbacks = new ConcurrentLinkedQueue<Runnable>();
-    
+
     /** Map from timeout ID to pending timeout functions. */
     private Map<Integer, Runnable> _pendingTimeoutFunctions = new HashMap<Integer, Runnable>();
 
@@ -2609,7 +2648,7 @@ public class JavaScript extends TypedAtomicActor {
 
     /** Map of proxies for ports and parameters by name */
     private HashMap<String, PortOrParameterProxy> _proxiesByName;
-    
+
     /** Flag indicating that timeoutID should be removed. */
     private boolean _removePendingIntervalFunction = true;
 
@@ -2663,7 +2702,7 @@ public class JavaScript extends TypedAtomicActor {
                 return (_port.getAttribute("_JSON") != null);
             }
         }
-        
+
         /** Get the current value of the input port or a parameter.
          *  If it is a ParameterPort, then retrieve the value
          *  from the corresponding parameter instead (the fire() method
@@ -2779,9 +2818,9 @@ public class JavaScript extends TypedAtomicActor {
                     // The JavaScript actor handles that.
                     _invokeMethodInContext(_instance, "superSend", _port.getName(), value, channelIndex);
                 } else {
-                    // Not currently firing. 
+                    // Not currently firing.
                     // Enqueue runnable object to be invoked upon the next firing.
-                    
+
                     // Request a firing at the current time.
                     // If the director is synchronized to real time, that will be real
                     // time, not the current model time. This allows the director to advance
@@ -2795,7 +2834,7 @@ public class JavaScript extends TypedAtomicActor {
                     final Time now = getDirector().fireAtCurrentTime(JavaScript.this);
                     final Integer id = Integer.valueOf(_timeoutCount++);
                     final Runnable function = new DeferredSend(this, channelIndex, data, value);
-                    
+
                     // Record the callback function indexed by ID.
                     _pendingTimeoutFunctions.put(id, function);
 
@@ -2855,19 +2894,19 @@ public class JavaScript extends TypedAtomicActor {
         /** The port that is proxied, or null if it's a parameter. */
         protected TypedIOPort _port;
     }
-    
+
     /** Runnable object intended to be run inside of the fire method to
      *  send out a token that was attempted to be send out at an earlier
      *  time, asynchronous with fire.
      */
     public class DeferredSend implements Runnable {
 
-    	/** Construct an object that defers a send operation.
-    	 * @param proxy A proxy corresponding to the port or parameter. 
-    	 * @param channelIndex The channel to send data on.
-    	 * @param data The data token to send through the port or update the parameter with.
+            /** Construct an object that defers a send operation.
+             * @param proxy A proxy corresponding to the port or parameter.
+             * @param channelIndex The channel to send data on.
+             * @param data The data token to send through the port or update the parameter with.
          * @param value The JavaScript value to pass back when the send actually occurs.
-    	 */
+             */
         public DeferredSend(
                 PortOrParameterProxy proxy, int channelIndex, Token data, Object value) {
            _proxy = proxy;
@@ -2877,7 +2916,7 @@ public class JavaScript extends TypedAtomicActor {
         }
 
         /** Invoke send on the port or parameter proxy.
-         */ 
+         */
         public void run() {
             try {
                 _proxy.send(_channelIndex, _token, _value);
@@ -2896,5 +2935,5 @@ public class JavaScript extends TypedAtomicActor {
         private PortOrParameterProxy _proxy;
         /** The JavaScript value to pass back. */
         private Object _value;
-	}
+        }
 }

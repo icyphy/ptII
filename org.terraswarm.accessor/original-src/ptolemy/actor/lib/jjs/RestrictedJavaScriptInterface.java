@@ -1,6 +1,6 @@
 /* Restricted interface to the JavaScript actor.
 
-   Copyright (c) 2014-2015 The Regents of the University of California.
+   Copyright (c) 2014-2016 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -128,14 +128,14 @@ public class RestrictedJavaScriptInterface {
      *  @param uri A specification for the resource.
      *  @param timeout The timeout in milliseconds.
      *  @return The resource
-     *  @throws IllegalActionException If the uri specifies any protocol other
+     *  @exception IllegalActionException If the uri specifies any protocol other
      *   than "http" or "https", or if the uri contains any "../", or if the uri
      *   begins with "/".
      */
     public String getResource(String uri, int timeout) throws IllegalActionException {
         return _actor.getResource(uri, timeout);
     }
-    
+
     /** Create a new input port if it does not already exist.
      *  Leave the type unspecified so that it will be inferred.
      *  @param name The name of the port.
