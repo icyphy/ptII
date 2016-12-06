@@ -193,7 +193,7 @@
  *
  *
  *  @module commonHost
- *  @author Edward A. Lee and Chris Shaver
+ *  @author Edward A. Lee and Chris Shaver.  Contributor: Christopher Brooks
  *  @version $$Id$$
  */
 
@@ -1320,6 +1320,7 @@ function main(argv) {
                 // Under node, process.exit gets caught by exitHandler() in
                 // nodeHost.js and invokes wrapup().
 		// FIXME: what about platforms that do not have exit?
+		// FIXME: Calling exit is not a good idea, how do we test this?
                 process.exit(0);
             }, timeout);
 	    break;
@@ -1878,5 +1879,6 @@ var _accessorInstanceTable = {};
 //// Exports
 
 exports.Accessor = Accessor;
+exports.accessors = accessors;
 exports.instantiateAccessor = instantiateAccessor;
 exports.main = main;
