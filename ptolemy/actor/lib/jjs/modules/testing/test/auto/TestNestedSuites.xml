@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 75, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 75, 928, 639}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
     </property>
@@ -24,12 +24,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test that nested suites are handled properly.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{165.0, 10.0}">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use  a substring so that we don't have to update this test each time the .js files change.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 170.0]">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -79,18 +73,11 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;\n &lt;testsuites&gt;\n &lt;testsuite name=\&quot;Root Suite\&quot; tests=\&quot;0\&quot;&gt;\n &lt;testsuite name=\&quot;Outer suite\&quot; tests=\&quot;2\&quot;&gt;\n &lt;testcase name=\&quot;Passing outer\&quot; &gt; &lt;/testcase&gt;\n &lt;testcase name=\&quot;Failing outer\&quot; &gt; &lt;failure message=\&quot;AssertionError: expected 0 to equal 1\n\tat &lt;anonymous&gt;&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;?xml version=\&quot;1.0\&quot; encoding=\&quot;UTF-8\&quot;?&gt;\n &lt;testsuites&gt;\n &lt;testsuite name=\&quot;Root Suite\&quot; tests=\&quot;0\&quot;&gt;\n &lt;testsuite name=\&quot;Outer suite\&quot; tests=\&quot;2\&quot;&gt;\n &lt;testcase name=\&quot;Passing outer\&quot; &gt; &lt;/testcase&gt;\n &lt;testcase name=\&quot;Failing outer\&quot; &gt; &lt;failure message=\&quot;AssertionError: expected 0 to equal 1\&quot;/&gt; &lt;/testcase&gt;\n &lt;testsuite name=\&quot;Inner suite 1\&quot; tests=\&quot;2\&quot;&gt;\n &lt;testcase name=\&quot;Passing inner 1\&quot; &gt; &lt;/testcase&gt;\n &lt;testcase name=\&quot;Failing inner 1\&quot; &gt; &lt;failure message=\&quot;AssertionError: expected 0 to equal 1\&quot;/&gt; &lt;/testcase&gt;\n &lt;testsuite name=\&quot;Inner suite 1.1\&quot; tests=\&quot;2\&quot;&gt;\n &lt;testcase name=\&quot;Passing inner 1.1\&quot; &gt; &lt;/testcase&gt;\n &lt;testcase name=\&quot;Failing inner 1.1\&quot; &gt; &lt;failure message=\&quot;AssertionError: expected 0 to equal 1\&quot;/&gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\&quot;Inner suite 1.2\&quot; tests=\&quot;2\&quot;&gt;\n &lt;testcase name=\&quot;Passing inner 1.2\&quot; &gt; &lt;/testcase&gt;\n &lt;testcase name=\&quot;Failing inner 1.2\&quot; &gt; &lt;failure message=\&quot;AssertionError: expected 0 to equal 1\&quot;/&gt; &lt;/testcase&gt;\n &lt;testsuite name=\&quot;Inner suite 1.2.1\&quot; tests=\&quot;2\&quot;&gt;\n &lt;testcase name=\&quot;Passing inner 1.2.1\&quot; &gt; &lt;/testcase&gt;\n &lt;testcase name=\&quot;Failing inner 1.2.1\&quot; &gt; &lt;failure message=\&quot;AssertionError: expected 0 to equal 1\&quot;/&gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;/testsuite&gt;\n &lt;/testsuite&gt;\n &lt;testsuite name=\&quot;Inner suite 2\&quot; tests=\&quot;2\&quot;&gt;\n &lt;testcase name=\&quot;Passing inner 2\&quot; &gt; &lt;/testcase&gt;\n &lt;testcase name=\&quot;Failing inner 2\&quot; &gt; &lt;failure message=\&quot;AssertionError: expected 0 to equal 1\&quot;/&gt; &lt;/testcase&gt;\n &lt;/testsuite&gt;\n &lt;/testsuite&gt;\n &lt;/testsuite&gt;\n &lt;/testsuites&gt;\n&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 115.0]">
-        </property>
-    </entity>
-    <entity name="StringSubstring" class="ptolemy.actor.lib.string.StringSubstring">
-        <property name="stop" class="ptolemy.actor.parameters.PortParameter" value="287">
-        </property>
-        <doc>Output a substring of an input string</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 105.0]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -99,14 +86,10 @@
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <link port="Const.output" relation="relation4"/>
     <link port="Const.trigger" relation="relation3"/>
     <link port="SingleEvent.output" relation="relation3"/>
     <link port="MochaTest.testFile" relation="relation4"/>
     <link port="MochaTest.result" relation="relation"/>
-    <link port="Test.input" relation="relation2"/>
-    <link port="StringSubstring.input" relation="relation"/>
-    <link port="StringSubstring.output" relation="relation2"/>
+    <link port="Test.input" relation="relation"/>
 </entity>

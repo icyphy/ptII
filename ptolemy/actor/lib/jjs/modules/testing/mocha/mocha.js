@@ -3396,9 +3396,24 @@ require.register("reporters/junit.js", function(module, exports, require) {
 			*/
 			self.xmlOutput.push("name=\"" + test.title + "\" >");
 			
-			self.xmlOutput.push("<failure message=\"" + 
+			// Only print the message, not the entire stack trace, to allow
+			// regression tests with failing tests to test failure reporting.
+			// The stack trace contains machine-specific file paths, and also
+			// line numbers of source code which will differ upon code changes.
+			// The stack trace isn't very useful anyway.  
+			// It just points to require.js.
+			var endOfMessage = err.stack.indexOf('\n');
+			
+			if (endOfMessage > 0) {
+				self.xmlOutput.push("<failure message=\"" + 
+					self.removeInvalidCharacters(err.stack.substring(0, endOfMessage)) +
+					"\"/>");
+			} else {
+				self.xmlOutput.push("<failure message=\"" + 
 					self.removeInvalidCharacters(err.stack) +
 					"\"/>");
+			}
+
 			
 			self.xmlOutput.push("</testcase>\n");
 			
