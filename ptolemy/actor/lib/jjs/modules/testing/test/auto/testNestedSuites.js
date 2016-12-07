@@ -1,6 +1,6 @@
-// Test commonHost accessor functionality.
+// This file is an input to /ptolemy/actor/lib/jjs/modules/testing/test/auto/TestNestedSuites.xml
 
-// This file requires mocha and chai.  The Test accessor handles the requires().
+// This file requires mocha and chai.  The MochaTest accessor handles the mocha require()
 // Note that chai's expect() does not work in strict mode; assert() and should() do.
 var code, instance, a, b, c, d, e, f, g;
 
