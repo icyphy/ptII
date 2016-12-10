@@ -100,6 +100,13 @@ function getAccessorCode(name) {
     if (name.indexOf('.js') !== name.length - 3) {
         name += '.js';
     }
+
+    // Handle absolute pathnames.
+    if (name[0] === '/' || name[0] === '\\') {
+        code = js.getFileAsString(name);
+	return code;
+    }
+
     // _accessorPath is defined in basicFunctions.js.
     for (i = 0; i < _accessorPath.length; i++) {
         location = _accessorPath[i].concat(name);
