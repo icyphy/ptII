@@ -1316,12 +1316,14 @@ function main(argv) {
 	    }
 	    timeout = argv[i];
 
+	    console.log("commonHost.js: main(): About to call setTimeout(, " + timeout);
             setTimeout(function () {
                 // Under node, process.exit gets caught by exitHandler() in
                 // nodeHost.js and invokes wrapup().
 		// FIXME: what about platforms that do not have exit?
 		// FIXME: Calling exit is not a good idea, how do we test this?
-                process.exit(0);
+		console.log("commonHost.js: main(): setTimeout(" + timeout + "): about to call stop.");
+		stop();
             }, timeout);
 	    break;
 
@@ -1856,13 +1858,54 @@ Accessor.prototype.setParameter = function (name, value) {
     parameter.currentValue = value;
 };
 
-/** Stop execution of the composite accessor.  In the commonHost, do
- *  nothing.  Other hosts may invoke wrapup() on adjacent accessors
- *  and stop execution.
+// FIXME: While factoring common code out of nodeHost.js, it seemed
+// like moving stop() from nodeHost.js to commonHost.js is right
+// because commonHost.js main() needs to call stop() instead of
+// something like node-specific process.exit().
+
+// FIXME: Delete this old version of stop():
+// /** Stop execution of the composite accessor.  In the commonHost, do
+//  *  nothing.  Other hosts may invoke wrapup() on adjacent accessors
+//  *  and stop execution.
+//  */
+// function stop() {
+//     console.log("commonHost.js: stop() invoked, stop() does nothing.");
+// }
+
+// FIXME: Here's the new version
+/** Stop execution.
+ *
+ *  Accessors such as JavaScriptStop would invoke stop as
+ *  <pre>
+ *  stop.call(this);
+ *  </pre>
+ *  In the nodeHost.js exitHandler() function, exit() is caught and wrapup() is invoked.
  */
-function stop() {
-    console.log("commonHost.js: stop() invoked, stop() does nothing.");
-}
+var stop = function () {
+    var accessor,
+        composite,
+        i,
+        initialThrowable = null;
+
+    for (composite in accessors) {
+        for (i in accessors[composite].containedAccessors) {
+	    try {
+                accessor = accessors[composite].containedAccessors[i];
+                console.log('commonHost.js: invoking wrapup() for accessor: ' + accessor.accessorName);
+                if (accessor) {
+		    accessor.wrapup();
+                }
+	    } catch (error) {
+                if (initialThrowable === null) {
+		    initialThrowable = error;
+                }
+	    }
+	}
+    }
+    if (initialThrowable !== null) {
+	throw new Error("commonHost.js: stop(): while invoking wrapup() of all accessors, an exception was thrown: " + initialThrowable + ":" + initialThrowable.stack);
+    }
+};
 
 ///////////////////////////////////////////////////////////////////
 //// Module variables.
@@ -1879,6 +1922,6 @@ var _accessorInstanceTable = {};
 //// Exports
 
 exports.Accessor = Accessor;
-exports.accessors = accessors;
 exports.instantiateAccessor = instantiateAccessor;
 exports.main = main;
+exports.stop = stop;
