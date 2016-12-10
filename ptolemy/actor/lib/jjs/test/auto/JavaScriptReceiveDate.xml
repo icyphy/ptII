@@ -69,7 +69,7 @@
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 190.0]">
         </property>
     </entity>
     <entity name="DateConstructor" class="ptolemy.actor.lib.DateConstructor">
@@ -89,6 +89,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 140.0]">
         </property>
     </entity>
+    <entity name="Test2" class="ptolemy.actor.lib.Test">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{date(&quot;Tue Jan 01 00:00:00.000000000 -0800 1957&quot;)}">
+        </property>
+        <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 285.0]">
+        </property>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -96,7 +104,7 @@
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{240.0, 190.0}">
+        <vertex name="vertex1" value="[240.0, 190.0]">
         </vertex>
     </relation>
     <link port="JavaScript.output" relation="relation"/>
@@ -105,4 +113,5 @@
     <link port="DateConstructor.output" relation="relation4"/>
     <link port="DateConstructor.year" relation="relation3"/>
     <link port="Const.output" relation="relation3"/>
+    <link port="Test2.input" relation="relation4"/>
 </entity>
