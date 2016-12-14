@@ -1110,7 +1110,7 @@ vergilCapeCode.jnlp: vergilCapeCode.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MAN
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(CAPECODE_MAIN_JAR)" "$(KEYALIAS)"
 	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
 	sleep 15
@@ -1150,7 +1150,7 @@ vergilCyPhySim.jnlp: vergilCyPhySim.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MAN
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(CYPHYSIM_MAIN_JAR)" "$(KEYALIAS)"
 	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
 	sleep 15
@@ -1190,7 +1190,7 @@ vergilBCVTB.jnlp: vergilBCVTB.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(BCVTB_MAIN_JAR)" "$(KEYALIAS)"
 	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
 	sleep 15
@@ -1230,7 +1230,7 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(DSP_MAIN_JAR)" "$(KEYALIAS)"
 	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
 	sleep 15
@@ -1272,7 +1272,7 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MAN
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)" "$(KEYALIAS)"
 	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
 	sleep 15
@@ -1310,7 +1310,7 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(PTINY_MAIN_JAR)" "$(KEYALIAS)"
 	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
 	sleep 15
@@ -1348,7 +1348,7 @@ vergilPtinyKepler.jnlp: vergilPtinyKepler.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JN
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(PTINY_KEPLER_MAIN_JAR)" "$(KEYALIAS)"
 	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
 	sleep 15
@@ -1388,7 +1388,7 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)" "$(KEYALIAS)"
 	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
 	sleep 15
@@ -1430,7 +1430,7 @@ vergilSpace.jnlp: vergilSpace.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(SPACE_MAIN_JAR)" "$(KEYALIAS)"
 	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
 	sleep 15
@@ -1471,7 +1471,7 @@ vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JN
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)" "$(KEYALIAS)"
 	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
 	sleep 15
@@ -1513,7 +1513,7 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST) $(JNLP_MA
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(FULL_MAIN_JAR)" "$(KEYALIAS)"
 	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
 	sleep 15
@@ -1544,10 +1544,10 @@ jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS) $(JNLP_MANIFEST)
 			-keystore "$(KEYSTORE)" \
 			$(STOREPASSWORD) \
 			$(KEYPASSWORD) \
-			$(TSA_ARGUMENT) \
+			$(TSA_ARGUMENTS) \
 			$(SIGNED_DIR)/$$jarfile $(KEYALIAS); \
-		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
-		sleep 15
+		echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		sleep 15; \
 	done;
 
 sign_jar: 
@@ -1555,7 +1555,7 @@ sign_jar:
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		"$(JARFILE)" "$(KEYALIAS)"
 
 # The jnlp_test rule can be used to build, copy, and sign a jar file.
@@ -2295,7 +2295,7 @@ $(JNLP_FILE_FIXED): $(JNLP_FILE) $(JNLP_MANIFEST)
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		$(JNLP_JAR) "$(KEYALIAS)"
 	#"$(JARSIGNER)" -verify -verbose -certs $(JNLP_JAR)
 
@@ -2466,7 +2466,7 @@ sign_j3d: $(JAVA3D) $(JNLP_J3D_MANIFEST)
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		$$x $(KEYALIAS); \
 	done
 
@@ -2497,7 +2497,7 @@ sign_jai: $(JAI) $(JNLP_JAI_MANIFEST)
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		$$x $(KEYALIAS); \
 	done
 
@@ -2527,7 +2527,7 @@ sign_jogl: $(JOGL) $(JNLP_JOGL_MANIFEST)
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		$$x $(KEYALIAS); \
 	done
 
@@ -2569,7 +2569,7 @@ sign_gluegen-rt: $(GLUEGEN_RT) $(JNLP_GLUEGEN-RT_MANIFEST)
 		-keystore "$(KEYSTORE)" \
 		$(STOREPASSWORD) \
 		$(KEYPASSWORD) \
-		$(TSA_ARGUMENT) \
+		$(TSA_ARGUMENTS) \
 		$$x $(KEYALIAS); \
 	done
 
