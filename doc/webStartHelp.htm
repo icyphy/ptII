@@ -256,6 +256,22 @@ Help for developers:
     lists what JREs are installed.</li>
 </ul>
 
+<h4><a name="WebStartProblemsWithMacOSX">Web Start Problems with Mac OS X:</a></h4>
+
+<p>Under recent versions of Mac OS X, clicking a Web Start JNLP file
+results in a dialog that states that the application is from an
+  unsigned developer.</p>
+
+<p><img src="img/MacJNLPUnsignedApp.png" width="400" alt="Mac Dialog: Unsigned App"/></p>
+
+<p>There are at least three workarounds:</p>
+<ol>
+  <li> Click on the question mark in the lower left and follow the suggestions (which are repeated below).</li>
+  <li>Save the <code>.jnlp</code> file and then in the Mac OS X Finder, right click on the file and select Open With -> Java Web Start.  Unfortunately, many of the Ptolemy Web Start models use a button that invokes some JavaScript, so there is no direct link to the <code>.jnlp</code> file.  For most models, the name of the <code>.jnlp</code> file is the same as the name of the directory, so one can try entering the name in the location bar.</li>
+  <li>Use the Security Preference to either allow unsigned applications or open the recently downloaded unsigned application.</li>
+</ol>
+
+
 <h4><a name="WebStartProblemsWithMacOSXFireFox">Web Start Problems with Mac OS X Firefox</a></h4>
 <p>The summary is that Java is not very well supported under Firefox on the Mac.</p>
 <p><b>Under Mac OS X, if you have problems with Web Start under Firefox, try using Safari.</b></p>

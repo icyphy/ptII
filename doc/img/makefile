@@ -120,6 +120,7 @@ OTHER_FILES_TO_BE_JARED = \
 	next.gif \
 	Helen256x256.png  \
 	Helen.png  \
+	MacJNLPUnsignedApp.png \
 	pt_cover_online.png \
 	PtolemyII256x256.png \
 	ptIIplanet.gif \
