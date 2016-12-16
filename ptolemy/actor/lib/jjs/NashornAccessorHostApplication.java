@@ -27,17 +27,16 @@
  */
 package ptolemy.actor.lib.jjs;
 
-import java.io.FileInputStream;
-import java.io.InputStreamReader;
 import java.io.IOException;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
+import javax.script.ScriptEngineManager;
 import javax.script.ScriptException;
 
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -70,8 +69,8 @@ import ptolemy.util.StringUtilities;
  * <dl>
  * <dt><code>-accessor|--accessor</code>
  * <dd>If present, then the files named as command line arguments are
- * Composite Accessors and should be passed to
- * instantiateAndInitialize(). If not present, then the files named
+ * Composite Accessors to be instantiated and initialized.
+ * If not present, then the files named
  * as command line arguments are to be interpreted as regular
  * JavaScript files.</dd>
  * <dt><code>-echo|--echo</code></dt>
@@ -122,21 +121,38 @@ public class NashornAccessorHostApplication {
      *  @exception ScriptException If there is a problem evaluating a file.
      */
     public static int evaluate(String [] args)
-        throws IllegalActionException, IOException, NoSuchMethodException, ScriptException {
+            throws Throwable {
 
         // Create a Nashorn script engine.
-        ScriptEngine engine = JavaScript.createEngine(null, false, false);
+        // NOTE: This is somewhat similar to JavaScript.createEngine().
+        ScriptEngineManager factory = new ScriptEngineManager();
+        ScriptEngine engine = factory.getEngineByName("nashorn");
         if (engine == null) {
             // Coverity Scan is happier if we check for null here.
-            throw new IllegalActionException(
-                    "Could not get the nashorn engine from the javax.script.ScriptEngineManager.  Nashorn present in JDK 1.8 and later.");
+            throw new Exception(
+                    "Could not get the nashorn engine from the javax.script.ScriptEngineManager."
+                    + " Nashorn is present in JDK 1.8 and later.");
         }
+        
+        // Load capeCodeHost.js, which provides top-level functions.
+        engine.eval(FileUtilities.openForReading(
+                "$CLASSPATH/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
+                null));
+
+        // Load localFunctions.js, which loads commonHost.js and
+        // provides more top-level functions.
+        String localFunctionsPath = "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js";
+        engine.eval(FileUtilities.openForReading(localFunctionsPath, null, null));
+
+        // Evaluate the command-line arguments. This will either instantiate and
+        // initialize accessors or evaluate specified JavaScript code.
 	Object returnValue = ((Invocable)engine)
-	    .invokeFunction("main",
-			    (Object)args);
+	        .invokeFunction("evaluateArguments", (Object)args);
+	
         // FIXME: Should we close the engine in a finally block?
 	if (returnValue == null) {
-	    System.err.println("NashornAccessorHostApplication.evaluate(" + Arrays.toString(args) + ") returned null?");
+	    System.err.println("NashornAccessorHostApplication.evaluate(" 
+	            + Arrays.toString(args) + ") returned null?");
 	    return -1;
 	}
 	return ((Integer)returnValue).intValue();
@@ -155,14 +171,5 @@ public class NashornAccessorHostApplication {
             throwable.printStackTrace();
             StringUtilities.exit(1);
         }
-    }
-
-    private static void _usage() {
-        System.out.println("Usage: java -classpath $PTII ptolemy.actor.lib.jjs.NashornAccessorHostApplication \\\n"
-                           + "  [-accessor|--accessors] \\\n"
-                           + "  [-h|--h|-help|--help] \\\n"
-                           + "  [-echo|--echo] \\\n"
-                           + "  [-timeout|--timeout milliseconds] \\\n"
-                           + "  accessorOrRegularJavaScriptFile1.js [accessorOrRegularJavaScriptFile2.js ...]");
     }
 }
