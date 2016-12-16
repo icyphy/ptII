@@ -995,7 +995,9 @@ KEYPASSWORD = -keypass this.is.the.keyPassword,change.it
 #
 # Comodo asks that we sleep 15 seconds between calls
 # See https://support.comodo.com/index.php?/Knowledgebase/Article/View/68/0/time-stamping-server
-TSA_ARGUMENTS=-tsa http://timestamp.comodoca.com/rfc3161
+TSA_ARGUMENTS=
+#Don't use -tsa for nightly builds because it takes too long.
+#TSA_ARGUMENTS=-tsa http://timestamp.comodoca.com/rfc3161
 
 # The keytool binary is found by configure, it will be in $(PTJAVA_DIR)/bin/keytool
 # or $(PTJAVA_DIR)/Commands/keytool
@@ -1112,8 +1114,10 @@ vergilCapeCode.jnlp: vergilCapeCode.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MAN
 		$(KEYPASSWORD) \
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(CAPECODE_MAIN_JAR)" "$(KEYALIAS)"
-	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
-	sleep 15
+	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
+		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		sleep 15; \
+	fi
 
 # Web Start: CyPhySim version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
@@ -1152,8 +1156,10 @@ vergilCyPhySim.jnlp: vergilCyPhySim.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MAN
 		$(KEYPASSWORD) \
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(CYPHYSIM_MAIN_JAR)" "$(KEYALIAS)"
-	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
-	sleep 15
+	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
+		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		sleep 15; \
+	fi
 
 # Web Start: BCVTB version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
@@ -1192,8 +1198,10 @@ vergilBCVTB.jnlp: vergilBCVTB.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		$(KEYPASSWORD) \
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(BCVTB_MAIN_JAR)" "$(KEYALIAS)"
-	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
-	sleep 15
+	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
+		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		sleep 15; \
+	fi
 
 # Web Start: DSP version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
@@ -1232,8 +1240,10 @@ vergilDSP.jnlp: vergilDSP.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		$(KEYPASSWORD) \
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(DSP_MAIN_JAR)" "$(KEYALIAS)"
-	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
-	sleep 15
+	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
+		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		sleep 15; \
+	fi
 
 
 # Web Start: HyVisual version of Vergil - No sources or build env.
@@ -1274,8 +1284,10 @@ vergilHyVisual.jnlp: vergilHyVisual.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MAN
 		$(KEYPASSWORD) \
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(HYBRID_SYSTEMS_MAIN_JAR)" "$(KEYALIAS)"
-	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
-	sleep 15
+	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
+		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		sleep 15; \
+	fi
 
 # Web Start: Ptiny version of Vergil - No sources or build env.
 vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
@@ -1312,8 +1324,10 @@ vergilPtiny.jnlp: vergilPtiny.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		$(KEYPASSWORD) \
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(PTINY_MAIN_JAR)" "$(KEYALIAS)"
-	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
-	sleep 15
+	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
+		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		sleep 15; \
+	fi
 
 # Web Start: Ptiny version of Vergil for Kepler
 vergilPtinyKepler.jnlp: vergilPtinyKepler.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
@@ -1350,9 +1364,10 @@ vergilPtinyKepler.jnlp: vergilPtinyKepler.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JN
 		$(KEYPASSWORD) \
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(PTINY_KEPLER_MAIN_JAR)" "$(KEYALIAS)"
-	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
-	sleep 15
-
+	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
+		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		sleep 15; \
+	fi
 
 # Web Start: Ptiny version of Vergil - No sources or build env., in a sandbox
 vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_SANDBOX_MANIFEST)
@@ -1390,9 +1405,10 @@ vergilPtinySandbox.jnlp: vergilPtinySandbox.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(
 		$(KEYPASSWORD) \
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(PTINY_SANDBOX_MAIN_JAR)" "$(KEYALIAS)"
-	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
-	sleep 15
-
+	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
+		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		sleep 15; \
+	fi
 
 # Web Start: Space version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
@@ -1432,8 +1448,10 @@ vergilSpace.jnlp: vergilSpace.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST)
 		$(KEYPASSWORD) \
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(SPACE_MAIN_JAR)" "$(KEYALIAS)"
-	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
-	sleep 15
+	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
+		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		sleep 15; \
+	fi
 
 # Web Start: VisualSense version of Vergil - No sources or build env.
 # In the sed statement, we use # instead of % as a delimiter in case
@@ -1473,8 +1491,10 @@ vergilVisualSense.jnlp: vergilVisualSense.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JN
 		$(KEYPASSWORD) \
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(VISUAL_SENSE_MAIN_JAR)" "$(KEYALIAS)"
-	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
-	sleep 15
+	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
+		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		sleep 15; \
+	fi
 
 # Web Start: Full Runtime version of Vergil - No sources or build env.
 vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST) $(JNLP_MANIFEST)
@@ -1515,9 +1535,10 @@ vergil.jnlp: vergil.jnlp.in $(SIGNED_DIR) $(KEYSTORE) $(JNLP_MANIFEST) $(JNLP_MA
 		$(KEYPASSWORD) \
 		$(TSA_ARGUMENTS) \
 		"$(SIGNED_DIR)/$(FULL_MAIN_JAR)" "$(KEYALIAS)"
-	@echo "Comodo asks that we sleep 15 seconds before using -tsa again"
-	sleep 15
-	ls -l $@
+	if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
+		@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+		sleep 15; \
+	fi
 
 # We first copy the jars, then sign them so as to avoid
 # problems with cvs and applets.
@@ -1546,8 +1567,10 @@ jnlp_sign1: $(SIGNED_DIR) $(NATIVE_SIGNED_LIB_JARS) $(JNLP_MANIFEST)
 			$(KEYPASSWORD) \
 			$(TSA_ARGUMENTS) \
 			$(SIGNED_DIR)/$$jarfile $(KEYALIAS); \
-		echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
-		sleep 15; \
+		if [ ! -z "$(TSA_ARGUMENTS)" ]; then \
+			@echo "Comodo asks that we sleep 15 seconds before using -tsa again"; \
+			sleep 15; \
+		fi; \
 	done;
 
 sign_jar: 
