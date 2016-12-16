@@ -513,7 +513,18 @@ var Accessor = commonHost.Accessor;
 
 var main = commonHost.main;
 
+/** Evaluate command-line arguments by first converting the arguments
+ *  from a Java array to a JavaScript array, and then invoking main()
+ *  in commonHost.js.
+ *  @param argv Command-line arguments.
+ */
+function evaluateArguments(argv) {
+	return this.main(Java.from(argv));
+}
+
 // In case this gets used a module, create an exports object.
+// FIXME: This looks completely wrong. Should not be "var"
+// and should be module.exports = ...
 var exports = {
     'Accessor': Accessor,
     //'getAccessorCode': getAccessorCode,
