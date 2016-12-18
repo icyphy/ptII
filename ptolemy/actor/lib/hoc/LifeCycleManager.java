@@ -164,7 +164,10 @@ public class LifeCycleManager extends TypedCompositeActor {
         }
     }
 
-    /** Override the base class to not delegate to the container.
+    /** Override the base class to not delegate up the hierarchy and to
+     *  indicate only whether this composite is locally deferring change requests.
+     *  Note that even if this returns false, change requests may be deferred
+     *  because the container is deferring change requests.
      *  @return True if change requests are being deferred.
      *  @see #setDeferringChangeRequests(boolean)
      *  @see Changeable
@@ -204,7 +207,12 @@ public class LifeCycleManager extends TypedCompositeActor {
         }
     }
 
-    /** Override the base class to not delegate up the hierarchy.
+    /** Override the base class to delegate up the hierarchy only if this
+     *  composite is not deferring change requests, but the
+     *  the container is. Otherwise, if this
+     *  composite is deferring change requests, the defer the change,
+     *  regardless of what the container is doing. Otherwise, execute
+     *  the change.
      *  @param change The requested change.
      *  @see #executeChangeRequests()
      *  @see #setDeferringChangeRequests(boolean)
@@ -212,6 +220,12 @@ public class LifeCycleManager extends TypedCompositeActor {
      */
     @Override
     public void requestChange(ChangeRequest change) {
+        NamedObj container = getContainer();
+        if (container != null && !_deferChangeRequests && container.isDeferringChangeRequests()) {
+            super.requestChange(change);
+            return;
+        }
+
         // Have to ensure that
         // the collection of change listeners doesn't change during
         // this execution.  But we don't want to hold a lock on the
