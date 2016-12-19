@@ -77,7 +77,7 @@ import ptolemy.kernel.util.Workspace;
 //import util.WorkflowExecutionListener;
 
 //////////////////////////////////////////////////////////////////////////
-//// RExpression
+//// RExpression2
 /**
  * The RExpression actor is an actor designed to run an R script or function
  * with inputs and outputs determined by the ports created by the user. Port
@@ -88,6 +88,11 @@ import ptolemy.kernel.util.Workspace;
  * input and output port will usually be added to the actor; The names of these
  * ports correspond to R variables used in the R script.
  * 
+ * <p>Note that RExpression2 uses the Java/R interface from 
+ * <a rhef="https://rforge.net/JRI/#in_browser">https://rforge.net/JRI/</a>
+ * which requires that native libraries be installed in your java.library.path.
+ * </p>
+ *
  * @author Dan Higgins and Matt Jones, NCEAS, UC Santa Barbara
  * @version 3/3/2006
  * @UserLevelDocumentation This actor let the user insert R scripts in a Kepler
