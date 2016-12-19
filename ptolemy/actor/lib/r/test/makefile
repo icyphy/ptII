@@ -35,7 +35,7 @@ ME =		ptolemy/actor/lib/r/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTRTOOL_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
