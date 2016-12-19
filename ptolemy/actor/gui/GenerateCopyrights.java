@@ -168,6 +168,12 @@ public class GenerateCopyrights {
 
         _addIfClassPresent(copyrightsMap, "oscP5.OscP5", "lib/oscP5-license.htm");
 
+	// Used by RExpression and RExpression2 actors.
+        _addIfClassPresent(copyrightsMap, "org.apache.commons.lang.StringEscapeUtils",
+			   "lib/commons-license.htm");
+        _addIfClassPresent(copyrightsMap, "org.apache.commons.logging.Log",
+			   "lib/commons-license.htm");
+
         _addIfClassPresent(copyrightsMap, "org.apache.oltu.oauth2.common.OAuth",
                 "lib/org.apache.oltu.oauth2-license.htm");
 
@@ -194,6 +200,10 @@ public class GenerateCopyrights {
 
         _addIfClassPresent(copyrightsMap, "org.ptolemy.fmi.driver.OutputRow",
                 "org/ptolemy/fmi/driver/fmusdk-license.htm");
+
+	// Used by RExpression2 actor.
+        _addIfClassPresent(copyrightsMap, "org.rosuda.JRI.REXP",
+			   "lib/JRI-license.htm");
 
         _addIfClassPresent(copyrightsMap,
                 "org.satlive.jsat.objects.ExternalLiteral",
@@ -1003,6 +1013,7 @@ public class GenerateCopyrights {
             { "april", " ", " ", " ", "Y ", "BSD" },
             { "chic", " ", " ", "Y", "Y", "BSD" },
             { "colt", "Y", " ", "Y", "Y", "BSD and others" },
+            { "commons", "N", " ", "Y", "Y", "Apache" },
             { "cup", " ", " ", "Y", " ", "Similar to BSD" },
             { "db", " ", " ", "Y", " ",
                     "Similar to <font color=\"red\">GPL</font>" }, // GPL!!
@@ -1033,6 +1044,7 @@ public class GenerateCopyrights {
             { "jmf", " ", "Y", " ", " ", "Oracle" },
             { "jna", " ", " ", "Y", "Y",
                     "Apache License + GNU Lesser General Public" },
+            { "JRI", " ", "Y", " ", " ", "GNU Lesser General Public" },
             { "joystick", " ", " ", "Y", " ", "Artistic License" },
             { "js", " ", " ", "Y", " ", "Mozilla + Oracle" },
             { "json", " ", " ", "Y", "Y", "BSD-like" },
