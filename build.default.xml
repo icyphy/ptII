@@ -422,7 +422,9 @@
 	  depends="-check-ptII-mk-file, -check-bin-vergil, -check-make-bin-vergil, build-bin-not, build-not-bin-vergil"
 	  description="Run make in $PTII/bin, which creates scripts like $PTII/bin/vergil."
 	  if="${bin.vergil.makeable}">
-      <exec dir="${basedir}/bin" executable="make">
+    <exec dir="${basedir}/bin"
+	  executable="make"
+	  timeout="${timeout.short}">
       </exec>
   </target>
 
@@ -466,7 +468,9 @@ For example:
         Running make in $PTII/lbnl, which creates executables like cclient.
 	Typically, this is run after build-project so that the .class files are created.
       </echo>
-      <exec dir="${basedir}/lbnl" executable="make">
+      <exec dir="${basedir}/lbnl"
+	    executable="make"
+	    timeout="${timeout.short}">
       </exec>
   </target>
 
@@ -807,7 +811,8 @@ For example:
 
     The output appears in doc/codeDoc/js/index.html
     </echo>
-    <exec executable="${jsdoc.home}/jsdoc">
+    <exec executable="${jsdoc.home}/jsdoc"
+	  timeout="${timeout.short}">
       <arg value="--verbose" />
       <arg value="--recurse" />
       <arg value="-c" />
@@ -827,7 +832,7 @@ For example:
           >
     <chmod file="doc/jsdoc/makeptjsdocREADME" perm="a+x"/>
     <exec executable="doc/jsdoc/makeptjsdocREADME"
-      timeout="10000">
+	  timeout="10000">
     </exec>
   </target>
 
@@ -856,7 +861,8 @@ For example:
     </apply>
     <chmod file="adm/bin/fixjshint" perm="a+x"/>
     <exec executable="adm/bin/fixjshint"
-      output="reports/jshintFixed.xml">
+	  output="reports/jshintFixed.xml"
+	  timeout="${timeout.short}">
       <arg value="reports/jshint.xml"/>
     </exec>
   </target>
@@ -865,7 +871,9 @@ For example:
 	  depends="-check-jshint-executable"
           description="Install jshint in ${env.HOME} using npm"
 	  unless="${jshint.executable.exists}">
-    <exec dir="${env.HOME}" executable="npm">
+    <exec dir="${env.HOME}"
+	  executable="npm"
+	  timeout="${timeout.short}">
       <arg value="install"/>
       <arg value="jshint"/>
     </exec>
@@ -1548,7 +1556,8 @@ For example:
 		 property="converted"/>
 
     <echo>Running test.mocha in ${converted}</echo>
-    <exec executable="mocha">
+    <exec executable="mocha"
+	  timeout="${timeout.short}">
       <arg line="${converted}"/>
     </exec>
   </target>
@@ -1569,7 +1578,8 @@ For example:
 		 pathsep=" "
 		 property="converted"/>
 
-    <exec executable="mocha">
+    <exec executable="mocha"
+	  timeout="${timeout.short}">
       <arg value="--reporter"/>
       <arg value="mocha-junit-reporter"/>
       <arg value="--reporter-options"/>
@@ -1722,7 +1732,8 @@ For example:
   <target name="update"
 	  description="Update the tree from the SVN repository."
           depends="update-accessors">
-    <exec executable="svn">
+    <exec executable="svn"
+	  timeout="${timeout.short}">
       <arg value="update"/>
     </exec>
   </target>
@@ -1732,7 +1743,8 @@ For example:
           depends="-check-terraswarm-accessor-accessors-directory"
           if="${terraswarm-accessor-accessors-exists}">
     <exec dir="org/terraswarm/accessor/accessors"
-          executable="svn">
+          executable="svn"
+	  timeout="${timeout.short}">
       <arg value="update"/>
     </exec>
   </target>
@@ -1743,7 +1755,8 @@ For example:
 	  unless="${vendors.jsdoc.exists}">
       <mkdir dir="${basedir}/vendors"/>
       <exec dir="${basedir}/vendors"
-            executable="git">
+            executable="git"
+	    timeout="${timeout.short}">
         <arg value="clone"/>
         <arg value="https://github.com/terraswarm/jsdoc.git"/>
       </exec>
@@ -1753,7 +1766,8 @@ For example:
 	  depends="vendors-jsdoc"
 	  description="Do a git pull in vendors/jsdoc">
     <exec dir="${basedir}/vendors/jsdoc"
-          executable="git">
+          executable="git"
+	  timeout="${timeout.short}">
       <arg value="pull"/>
     </exec>
   </target>
