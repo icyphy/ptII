@@ -102,6 +102,8 @@
     <include name="ptolemy/actor/lib/mbed/mbed.jar" />
     <include name="ptolemy/actor/lib/python/demo/demo.jar" />
     <include name="ptolemy/actor/lib/python/python.jar" />
+    <include name="ptolemy/actor/lib/r/r.jar" />
+    <include name="ptolemy/actor/lib/r/demo/demo.jar" />
     <include name="ptolemy/actor/lib/security/demo/demo.jar" />
 
     <include name="ptolemy/actor/parameters/demo/demo.jar" />
@@ -5172,12 +5174,26 @@
 	 >
       <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/python/demo/Ptolemnizer/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/python/demo/PythonScale/*.xml"/>
-      </fileset>
-      <fileset dir="${basedir}">
 	<include name="ptolemy/actor/lib/python/demo/RecordManipulation/*.xml"/>
+      </fileset>
+    </jar>
+
+    <!-- ptolemy/actor/lib/r/r.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/r/r.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/r/*.class"/>
+	<include name="ptolemy/actor/lib/r/*.xml"/>
+      </fileset>
+    </jar>
+    <!-- ptolemy/actor/lib/r/demo/demo.jar -->
+    <jar defaultexcludes="yes"
+	 destfile="${basedir}/ptolemy/actor/lib/r/demo/demo.jar"
+	 >
+      <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/r/demo/*/*.xml"/>
       </fileset>
     </jar>
 

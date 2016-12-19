@@ -108,6 +108,8 @@
     <pathelement location="${basedir}" />
     <pathelement location="lib/bridj-0.6.2.jar" />
     <pathelement location="lib/bsh-2.0b4.jar" />
+    <pathelement location="lib/commons-lang-2.6.jar" />
+    <pathelement location="lib/commons-logging-1.1.1.jar" />
     <pathelement location="lib/ptCal.jar" />
     <pathelement location="lib/java_cup.jar" />
     <pathelement location="lib/saxon8.jar" />
@@ -123,6 +125,7 @@
     <pathelement location="lib/JUnitParams-0.3.0.jar"/>
     <pathelement location="lib/javax.mail.jar" />
     <pathelement location="lib/jcerti.jar" />
+    <pathelement location="lib/JRI.jar" />
     <pathelement location="lib/js.jar" />
     <pathelement location="lib/jython.jar" />
     <pathelement location="lib/kieler.jar" />
