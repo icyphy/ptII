@@ -687,6 +687,7 @@ FULL_11_0_JARS = \
 	ptolemy/domains/qss/qss.jar \
 	ptolemy/domains/qss/demo/demo.jar \
 	$(PTRSYNTAXTEXTAREA_JAR) \
+	$(PTRTOOL_JARS)
 
 #       $(PTPAHO_MQTT_JAR)
 #	$(PTXBEE_JARS)

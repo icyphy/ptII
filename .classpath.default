@@ -6,12 +6,15 @@
 
 <!-- To update: ls -1 lib/*.jar | sort | awk '{print "	<classpathentry kind=\"lib\" path=\"" $1 "\"/>"}' -->
 
+        <classpathentry kind="lib" path="lib/JRI.jar"/>
         <classpathentry kind="lib" path="lib/JUnitParams-0.3.0.jar"/>
         <classpathentry kind="lib" path="lib/JUnitParams-0.4.0.jar"/>
         <classpathentry kind="lib" path="lib/PDFRenderer.jar"/>
         <classpathentry kind="lib" path="lib/YieldAdapter.jar"/>
         <classpathentry kind="lib" path="lib/bsh-2.0b4.jar"/>
         <classpathentry kind="lib" path="lib/chic.jar"/>
+        <classpathentry kind="lib" path="lib/commons-lang-2.6.jar"/>
+        <classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
         <classpathentry kind="lib" path="lib/diva.jar"/>
         <classpathentry kind="lib" path="lib/g4ltl.jar"/>
         <classpathentry kind="lib" path="lib/gdp-0.7-2.jar"/>
