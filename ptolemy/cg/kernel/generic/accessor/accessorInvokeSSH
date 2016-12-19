@@ -119,7 +119,7 @@ if [ ! -z "$npmInstall" ]; then
 fi
 
 echo "### accessorInvokeSSH: Creating $runDirectory/invoke.js"
-echo "require('@terraswarm/accessors');invoke(process.argv);" | ssh $userHost "cat > $runDirectory/invoke.js"
+echo "require('@terraswarm/accessors');main(process.argv.slice(2));" | ssh $userHost "cat > $runDirectory/invoke.js"
 
 echo "### accessorInvokeSSH: Copying the accessor to $runDirectory"
 scp $accessor $userHost:$runDirectory/
