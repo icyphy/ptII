@@ -5427,12 +5427,15 @@ else
     so the R statistical computing language interface will not be compiled.])
     else
         PTRTOOL_JARS="${CLASSPATHSEPARATOR}${PTJRI_JAR}${CLASSPATHSEPARATOR}${PTCOMMONS_LANG_JAR}${CLASSPATHSEPARATOR}${PTCOMMONS_LOGGING_JAR}"
+	updateClasspath "$PTJRI_JAR"
+	updateClasspath "$PTCOMMONS_LANG_JAR"
+	updateClasspath "$PTCOMMONS_LOGGING_JAR"
     fi
 fi
 
 if test -z "$PTRTOOL_JARS"; then
    updateExcludes "ptolemy/actor/lib/r"
-fi 
+fi
 
 #--------------------------------------------------------------------
 #       Soot is a Java Optimization Framework, see
