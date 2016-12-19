@@ -734,6 +734,7 @@ See $PTII/doc/coding/maven.htm
            <exclude>doc/doclets/**</exclude>
            <exclude>ptolemy/apps/**</exclude>
            <exclude>ptolemy/actor/lib/jjs/**</exclude>
+           <exclude>ptolemy/actor/lib/r/**</exclude>
            <exclude>ptolemy/actor/lib/vertx/**</exclude>
            <exclude>ptolemy/domains/ct/demo/Saber/**</exclude>
            <exclude>ptolemy/domains/gr/**</exclude>
