@@ -665,6 +665,9 @@ PTSERVER_PACKAGES
 PTSERVER_DIR
 PTSERIAL_DIR
 PTRXTX_PACKAGES
+PTRTOOL_PACKAGES
+PTRTOOL_JARS
+PTRTOOL_DIR
 ANTLR_DIR
 PTPTALON_PACKAGES
 PTPTALON_DIR
@@ -12533,6 +12536,50 @@ else
 fi
 
 #--------------------------------------------------------------------
+#       R is a statistical computing language
+#	See https://www.r-project.org/
+#--------------------------------------------------------------------
+
+# PTRTOOL_DIR is set to r if r is found
+PTRTOOL_DIR=
+
+# We only enable RPtango if $PTRTOOL_USER_DIR is present
+PTRTOOL_USER_DIR="ptolemy/actor/lib/r"
+if test ! -d "$PTRTOOL_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTRTOOL_USER_DIR is not present" >&5
+$as_echo "$PTRTOOL_USER_DIR is not present" >&6; }; fi
+else
+    PTJRI_JAR="$PTII/lib/JRI.jar"
+    PTCOMMONS_LANG_JAR="$PTII/lib/commons-lang-2.6.jar"
+    PTCOMMONS_LOGGING_JAR="$PTII/lib/commons-logging-1.1.1.jar"
+    if test  -f "$PTJRI_JAR" -a -f "$PTCOMMONS_LANG_JAR" -a -f "$PTCOMMONS_LOGGING_JAR"; then
+        PTRTOOL_DIR=r
+        # PTRTOOL_PACKAGES is used in ptII/doc/makefile
+	PTRTOOL_PACKAGES=ptolemy.actor.lib.r
+    fi
+
+    if test "$PTRTOOL_DIR" = ""; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTJRI_JAR,
+    $PTCOMMONS_LANG_JAR
+    or $PTCOMMONS_LOGGING_JAR
+    so the R statistical computing language interface will not be compiled." >&5
+$as_echo "$as_me: WARNING: Failed to find $PTJRI_JAR,
+    $PTCOMMONS_LANG_JAR
+    or $PTCOMMONS_LOGGING_JAR
+    so the R statistical computing language interface will not be compiled." >&2;}
+    else
+        PTRTOOL_JARS="${CLASSPATHSEPARATOR}${PTJRI_JAR}${CLASSPATHSEPARATOR}${PTCOMMONS_LANG_JAR}${CLASSPATHSEPARATOR}${PTCOMMONS_LOGGING_JAR}"
+	updateClasspath "$PTJRI_JAR"
+	updateClasspath "$PTCOMMONS_LANG_JAR"
+	updateClasspath "$PTCOMMONS_LOGGING_JAR"
+    fi
+fi
+
+if test -z "$PTRTOOL_JARS"; then
+   updateExcludes "ptolemy/actor/lib/r"
+fi
+
+#--------------------------------------------------------------------
 #       Soot is a Java Optimization Framework, see
 #	http://www.sable.mcgill.ca/soot/
 #       See if there was a command-line option for where Soot is
@@ -14850,6 +14897,16 @@ fi
 
 
 # Directory that contains the antlr.jar file, used by ptalon
+
+
+# PTRTOOL_DIR is set to r and used in
+# $PTII/ptolemy/actor/lib/makefile if the jars necessary for the R interface were found.
+
+
+# Jar files used by the interface to the R statistical tool.
+
+
+# PTRTOOL_PACKAGES is used in $PTII/doc/makefile
 
 
 # Ptolemy II packages that use the RXTX Java Serial Communication facility
