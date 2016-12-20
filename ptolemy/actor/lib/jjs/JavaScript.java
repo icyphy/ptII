@@ -1789,26 +1789,16 @@ public class JavaScript extends TypedAtomicActor {
     /** Utility method to read a string from an input stream.
      *  @param stream The stream.
      *  @return The string.
-     * @exception IOException If the stream cannot be read.
+     *  @exception IOException If the stream cannot be read.
+     *  @deprecated Invoke
+     *  NashornAccessorHostApplication.readFromInputStream() directly.
      */
     public static String readFromInputStream(InputStream stream)
             throws IOException {
-        StringBuffer response = new StringBuffer();
-        BufferedReader reader = null;
-        String line = "";
-        // Avoid Coverity Scan: "Dubious method used (FB.DM_DEFAULT_ENCODING)"
-        reader = new BufferedReader(new InputStreamReader(stream,
-                java.nio.charset.Charset.defaultCharset()));
-
-        String lineBreak = System.getProperty("line.separator");
-        while ((line = reader.readLine()) != null) {
-            response.append(line);
-            if (!line.endsWith(lineBreak)) {
-                response.append(lineBreak);
-            }
-        }
-        reader.close();
-        return response.toString();
+	// This method was moved to NashornAccessorHostApplication
+	// when the pure Nashorn host and the Cape Code host were
+	// split.
+	return NashornAccessorHostApplication.readFromInputStream(stream);
     }
 
     /** Invoke the specified function after the specified amount of time and again
