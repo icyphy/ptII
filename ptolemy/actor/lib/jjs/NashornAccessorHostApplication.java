@@ -27,7 +27,10 @@
  */
 package ptolemy.actor.lib.jjs;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.Arrays;
 
 import javax.script.Invocable;
@@ -50,8 +53,7 @@ import ptolemy.util.StringUtilities;
  * <p>The Nashorn and Cape Code Accessor hosts are similar in that they
  * both use Nashorn as the underlying JavaScript engine.  They also
  * both can invoke JavaScript accessors that use modules defined in
- * $PTII/ptolemy/actor/lib/jjs/modules.  They also both share
- * $PTII/ptolemy/actor/lib/jjs/capeCodeHost.js.</p>
+ * $PTII/ptolemy/actor/lib/jjs/modules.</p>
  *
  * <p>The Nashorn Accessor Host differs from the Cape Code Accessor
  * Host in that Cape Code Accessor Host reads in Ptolemy II .xml MoML
@@ -66,6 +68,8 @@ import ptolemy.util.StringUtilities;
  * can be converted in to .js Composite Accessor files provided that
  * the .xml file only uses JavaScript and JSAccessor actors.</p>
  *
+ * <p>The main() method of this class takes the following command
+ * line arguments:</p>
  * <dl>
  * <dt><code>-accessor|--accessor</code>
  * <dd>If present, then the files named as command line arguments are
@@ -87,9 +91,14 @@ import ptolemy.util.StringUtilities;
  * <p>After the flags, the one or more JavaScript files are present that
  * name either or regular JavaScript files.</p>
  *
- * <p>To invoke:</p>
+ * <p>To run a very simple test:</p>
  * <pre>
  * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -accessor -timeout 10000 hosts/nashorn/test/testNashornHost.js)
+ * </pre>
+ *
+ * <p>To run a composite accessor:</p>
+ * <pre>
+ * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -accessor -timeout 10000 test/auto/RampJSDisplay.js)
  * </pre>
  *
  * <p> The command line syntax is:</p>
@@ -134,20 +143,23 @@ public class NashornAccessorHostApplication {
                     + " Nashorn is present in JDK 1.8 and later.");
         }
         
-        // Load capeCodeHost.js, which provides top-level functions.
+        // Load nashornHost.js, which provides top-level functions.
         engine.eval(FileUtilities.openForReading(
-                "$CLASSPATH/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
+                "$CLASSPATH/ptolemy/actor/lib/jjs/nashornHost.js", null,
                 null));
+	
+	String accessorMainPath = "$CLASSPATH/org/terraswarm/accessor/accessors/web/hosts/util/accessorMain.js";
+        engine.eval(FileUtilities.openForReading(accessorMainPath, null, null));
 
         // Load localFunctions.js, which loads commonHost.js and
         // provides more top-level functions.
-        String localFunctionsPath = "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js";
-        engine.eval(FileUtilities.openForReading(localFunctionsPath, null, null));
+        //String localFunctionsPath = "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js";
+        //engine.eval(FileUtilities.openForReading(localFunctionsPath, null, null));
 
         // Evaluate the command-line arguments. This will either instantiate and
         // initialize accessors or evaluate specified JavaScript code.
 	Object returnValue = ((Invocable)engine)
-	        .invokeFunction("evaluateArguments", (Object)args);
+	        .invokeFunction("accessorMain", (Object)args);
 	
         // FIXME: Should we close the engine in a finally block?
 	if (returnValue == null) {
@@ -171,5 +183,29 @@ public class NashornAccessorHostApplication {
             throwable.printStackTrace();
             StringUtilities.exit(1);
         }
+    }
+    /** Utility method to read a string from an input stream.
+     *  @param stream The stream.
+     *  @return The string.
+     * @exception IOException If the stream cannot be read.
+     */
+    public static String readFromInputStream(InputStream stream)
+            throws IOException {
+        StringBuffer response = new StringBuffer();
+        BufferedReader reader = null;
+        String line = "";
+        // Avoid Coverity Scan: "Dubious method used (FB.DM_DEFAULT_ENCODING)"
+        reader = new BufferedReader(new InputStreamReader(stream,
+                java.nio.charset.Charset.defaultCharset()));
+
+        String lineBreak = System.getProperty("line.separator");
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+            if (!line.endsWith(lineBreak)) {
+                response.append(lineBreak);
+            }
+        }
+        reader.close();
+        return response.toString();
     }
 }

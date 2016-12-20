@@ -220,6 +220,12 @@ var accessorHostsEnum = {
 
 var accessorHost = accessorHostsEnum.DEFAULT;
 
+// Be sure to export these variables before any require()s of the util module because util.js
+// require()s commonHost.  Do not put these at the end of the file.
+// To test, run "ant tests.duk"
+exports.accessorHostsEnum = accessorHostsEnum;
+exports.accessorHost = accessorHost;
+
 // In alphabetical order.
 if (typeof window !== 'undefined' && window.hasOwnProperty('browserJSLoaded')) {
     accessorHost = accessorHostsEnum.BROWSER;
@@ -1236,127 +1242,6 @@ Accessor.prototype.latestOutput = function (name) {
     return this.outputs[name].latestOutput;
 };
 
-/** Process command line arguments to evaluate accessors or plain JavaScript.
- *  The command-line arguments can be:
- *
- *  -accessor|--accessor: If present, then the files named as command
- *  line arguments are Composite Accessors to be instantiated an initialized.
- *  If not present, then the files named
- *  as command line arguments are to be interpreted as regular
- *  JavaScript files.
- * 
- *  -e|--e|-echo|--echo: Echo the command that would be run by hand to
- *  replicate the test. This is helpful for use under Ant apply.
- *  
- *  -h|--h|-help|--help: Print a usage message 
- *
- *  -timeout|--timeout milliseconds: The maximum amount of time the
- *  script can run. When this time is reached, stop() is called.
- *
- *  -v|--v|-version|--version: Print out the version number
- *
- *  The flags are followed by one or more filenames that are either
- *  composite accessors or plain JavaScript.  If --accessors is
- *  present, then the argument(s) are assumed to be composite
- *  accessors.  If it --accessors is not present, then the arguments
- *  are passed to getAccessor(), which looks for the file and returns
- *  the content.
- *
- *  @param argv An array of arguments, see above.
- *  @return 0 if there were no problems, 3 if there was a command line argument issue.
- */
-function main(argv) {
-	var usage = "Usage: [-accessor|--accessor] [-h|--h|-help|--help] [-e|--e|-echo|--echo] [-timeout|--timeout milliseconds] [-v|--v|-version|--version]  accessorOrRegularJavaScriptFile1.js [accessorOrRegularJavaScriptFile2.js ...]",
-			i,
-			sawAccessor = false,
-			sawFiles = false,
-			timeout = -1;
-
-    if (argv.length === 0) {
-        console.error(usage);
-        return 3;
-    }
-
-    for (i = 0; i < argv.length; i++) {
-    	switch (argv[i]) {
-    	case '-accessor':
-    	case '--accessor':
-    	case '-accessors':
-    	case '--accessors':
-    		sawAccessor = true;
-    		break;
-
-    	case '-e':
-    	case '--e':
-    	case '-echo':
-    	case '--echo':
-    		console.log(argv)
-    		break;
-
-    	case '-h':
-    	case '--h':
-    	case '-help':
-    	case '--help':
-    		console.log(usage);
-    		return 0;
-
-    	case '-timeout':
-    	case '--timeout':
-    		i += 1;
-    		if (i >= argv.length) {
-    			console.error("Argument " + i + "  was " + argv[i] + " but there is no argument for milliseconds.  Args were: " + argv);
-    			return 3;
-    		}
-    		timeout = argv[i];
-
-    		console.log("commonHost.js: main(): Setting timout to stop after " + timeout + " ms.");
-    		setTimeout(function () {
-    			// Under node, process.exit gets caught by exitHandler() in
-    			// nodeHost.js and invokes wrapup().
-    			console.log("commonHost.js: main(): Maximum time reached. Calling stop().");
-    			stop();
-    		}, timeout);
-    		break;
-
-    	case '-v':
-    	case '--v':
-    	case '-version':
-    	case '--version':
-    		console.log("Accessors 1.0, commonHost.js: $Id$");
-    		return 0;
-
-    	default:
-    		sawFiles = true;
-    		if (timeout === -1) {
-    			// Prevent the script from exiting by repeating the empty function
-    			// every ~25 days.
-    			setInterval(function () {}, 2147483647);
-    		}
-    		if (sawAccessor) {
-    			topLevelAccessors = instantiateAndInitialize(argv.slice(i));
-    			return 0;
-    		} else {
-    			try {
-    				// FIXME: Using getAccessorCode here is wrong.
-    				// That will search a library of accessors.
-    				// We want to read a regular file.
-    				// But that can't be done in commonHost without giving every
-    				// accessor access to the file system. This has to be moved
-    				// to the host-specific JavaScript.
-    				// FIXME: Rather than just eval, shouldn't this specify a context?
-    				eval(getAccessorCode(argv[i]));
-    			} catch (error) {
-    				throw new Error('Failed to eval "' + argv[i] + '": ' + error);
-    			}
-    		}
-    	}
-    }
-    if ( !sawFiles) {
-	throw new Error("No file arguments were present?  Args were: " + argv);
-    }
-    return 0;
-}
-
 /** Merge the specified objects. If the two have common properties, the merged object
  *  will have the properties of the second argument. If the first argument is null,
  *  then the returned object will equal the second argument, unless it too is null,
@@ -1903,8 +1788,8 @@ var _accessorInstanceTable = {};
 ///////////////////////////////////////////////////////////////////
 //// Exports
 
+// Note that there are some exports that occur earlier in this file.
 exports.Accessor = Accessor;
 exports.instantiateAccessor = instantiateAccessor;
 exports.getTopLevelAccessors = getTopLevelAccessors;
-exports.main = main;
 exports.stop = stop;
