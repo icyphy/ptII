@@ -983,6 +983,9 @@ PTRTOOL_DIR =			@PTRTOOL_DIR@
 # Jar files used by the interface to the R statistical tool.
 PTRTOOL_JARS =			@PTRTOOL_JARS@
 
+# Used in mk/jnlp.jar
+PTRTOOL_JNLP_JARS =		@PTRTOOL_JNLP_JARS@
+
 # PTRTOOL_PACKAGES is used in $PTII/doc/makefile
 PTRTOOL_PACKAGES =		@PTRTOOL_PACKAGES@
 

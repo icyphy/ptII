@@ -5406,6 +5406,9 @@ fi
 # PTRTOOL_DIR is set to r if r is found
 PTRTOOL_DIR=
 
+# Used in mk/jnlp.jar 
+PTRTOOL_JNLP_JARS=
+
 # We only enable RPtango if $PTRTOOL_USER_DIR is present
 PTRTOOL_USER_DIR="ptolemy/actor/lib/r"
 if test ! -d "$PTRTOOL_USER_DIR"; then
@@ -5427,6 +5430,8 @@ else
     so the R statistical computing language interface will not be compiled.])
     else
         PTRTOOL_JARS="${CLASSPATHSEPARATOR}${PTJRI_JAR}${CLASSPATHSEPARATOR}${PTCOMMONS_LANG_JAR}${CLASSPATHSEPARATOR}${PTCOMMONS_LOGGING_JAR}"
+
+	PTRTOOL_JNLP_JARS="ptolemy/actor/lib/r/r.jar ptolemy/actor/lib/r/demo/demo.jar"
 	updateClasspath "$PTJRI_JAR"
 	updateClasspath "$PTCOMMONS_LANG_JAR"
 	updateClasspath "$PTCOMMONS_LOGGING_JAR"
@@ -7385,6 +7390,9 @@ AC_SUBST(PTRTOOL_DIR)
 
 # Jar files used by the interface to the R statistical tool.
 AC_SUBST(PTRTOOL_JARS)
+
+# Used in mk/jnlp.jar
+AC_SUBST(PTRTOOL_JNLP_JARS)
 
 # PTRTOOL_PACKAGES is used in $PTII/doc/makefile
 AC_SUBST(PTRTOOL_PACKAGES)
