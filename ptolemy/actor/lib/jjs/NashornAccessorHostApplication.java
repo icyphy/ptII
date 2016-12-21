@@ -31,6 +31,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Arrays;
 
 import javax.script.Invocable;
@@ -168,6 +171,17 @@ public class NashornAccessorHostApplication {
 	    return -1;
 	}
 	return ((Integer)returnValue).intValue();
+    }
+
+    /** Return the string contents of the file at the specified location.
+     *  @param path The location.  This is used in localFunctions.js.
+     *  @return The contents as a string, assuming the default encoding of
+     *   this JVM (probably utf-8).
+     *  @exception IOException If the file cannot be read.
+     */
+    public static String getFileAsString(String path) throws IOException {
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded, Charset.defaultCharset());
     }
 
     /** Invoke one or more JavaScript files.

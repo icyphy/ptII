@@ -178,7 +178,7 @@ function httpRequest(url, method, properties, body, timeout) {
     }
 
     // Wait for response.
-    return Java.type('ptolemy.actor.lib.jjs.JavaScript').readFromInputStream(
+    return Java.type('ptolemy.actor.lib.jjs.NashornAccessorHostApplication').readFromInputStream(
         connection.getInputStream()
     );
 }
@@ -452,7 +452,7 @@ var accessors = [];
 function getAccessorCode(name) {
     var code,
         i,
-        js = Java.type('ptolemy.actor.lib.jjs.JavaScript'),
+        js = Java.type('ptolemy.actor.lib.jjs.NashornAccessorHostApplication'),
         location;
     // Append a '.js' to the name, if needed.
     if (name.indexOf('.js') !== name.length - 3) {
@@ -470,6 +470,7 @@ function getAccessorCode(name) {
         location = _accessorPath[i].concat(name);
         try {
             code = js.getFileAsString(location);
+            break;
         } catch (err) {
             continue;
         }
