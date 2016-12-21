@@ -1056,10 +1056,11 @@ public class JavaScript extends TypedAtomicActor {
      *  @return The contents as a string, assuming the default encoding of
      *   this JVM (probably utf-8).
      *  @exception IOException If the file cannot be read.
+     *  @deprecated Invoke
+     *  NashornAccessorHostApplication.getFileAsString() directly.
      */
     public static String getFileAsString(String path) throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, Charset.defaultCharset());
+        return NashornAccessorHostApplication.getFileAsString(path);
     }
 
     /** Return the string contents of the file from the classpath
