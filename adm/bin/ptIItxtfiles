@@ -7,6 +7,7 @@ $PTII/adm/bin/ptIIfiles | egrep -v '\.#' |egrep -v '\.au$' \
 	| egrep -v '\.bin$' |egrep -v '\.bmp$' \
 	| egrep -v '\.class$' |egrep -v '\.dat$' |egrep -v '\.data$' \
 	| egrep -v '\.dbxml$' \
+	| egrep -v '\.der$' \
 	| egrep -v '\.dll$' \
 	| egrep -v '\.dll.a$' \
         | egrep -v '\.doc$' \
