@@ -86,53 +86,6 @@ function evaluateCode(accessorName, code) {
     return new commonHost.Accessor(accessorName, code, getAccessorCode, bindings);
 }
 
-/** Return the source code for an accessor from its fully qualified name.
- *  This will throw an exception if there is no such accessor on the accessor
- *  search path.
- *  @param name Fully qualified accessor name, e.g. 'net/REST'.
- */
-function getAccessorCode(name) {
-    var code,
-        i,
-        js = Java.type('ptolemy.actor.lib.jjs.JavaScript'),
-        location;
-    // Append a '.js' to the name, if needed.
-    if (name.indexOf('.js') !== name.length - 3) {
-        name += '.js';
-    }
-
-    // Handle absolute pathnames.
-    if (name[0] === '/' || name[0] === '\\') {
-        code = js.getFileAsString(name);
-        return code;
-    }
-
-    // _accessorPath is defined in basicFunctions.js.
-    for (i = 0; i < _accessorPath.length; i++) {
-        location = _accessorPath[i].concat(name);
-        try {
-            code = js.getFileAsString(location);
-        } catch (err) {
-            continue;
-        }
-    }
-    if (!code) {
-	for (i = 0; i < _accessorClasspath.length; i++) {
-		location = _accessorClasspath[i].concat(name);
-		try {
-			code = js.getFileFromClasspathAsString(location);
-			break;
-		} catch (err) {
-			continue;
-		}
-	}
-    }
-    if (!code) {
-        throw ('Accessor ' + name + ' not found on path: ' + _accessorPath + ' or relative path: ' + _accessorClasspath);
-    }
-    return code;
-}
-
 /** Get data from a parameter.
  *  @param name The name of the parameter (a string).
  *  @return The value of the parameter, or null if it has no value.
