@@ -143,9 +143,9 @@ public class NashornAccessorHostApplication {
                     + " Nashorn is present in JDK 1.8 and later.");
         }
         
-        // Load nashornHost.js, which provides top-level functions.
+        // Load capeCodeHost.js, which provides top-level functions.
         engine.eval(FileUtilities.openForReading(
-                "$CLASSPATH/ptolemy/actor/lib/jjs/nashornHost.js", null,
+                "$CLASSPATH/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
                 null));
 	
 	String accessorMainPath = "$CLASSPATH/org/terraswarm/accessor/accessors/web/hosts/util/accessorMain.js";

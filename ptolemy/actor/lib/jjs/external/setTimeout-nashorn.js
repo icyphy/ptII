@@ -35,6 +35,7 @@
     };
 
     context.setTimeout = function (fn, millis /* [, args...] */ ) {
+	print("setTimeout-nashorn.js: setTimeout(, " + millis + ")");
         var args = [].slice.call(arguments, 2, arguments.length);
 
         var phase = phaser.register();
@@ -72,6 +73,7 @@
     };
 
     context.setInterval = function (fn, delay /* [, args...] */ ) {
+	print("setTimeout-nashorn.js: setInterval(, " + delay + ")");
         var args = [].slice.call(arguments, 2, arguments.length);
 
         var cancel = null;
