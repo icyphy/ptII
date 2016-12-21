@@ -230,6 +230,7 @@ $CLASSPATH/ptolemy/actor/lib/mail/demo/SendMail/SendMail.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/PythonScale/PythonScale.xml
 $CLASSPATH/ptolemy/actor/lib/python/demo/RecordManipulation/RecordManipulation.xml
+$CLASSPATH/ptolemy/actor/lib/r/demo/RRecordToDataframe/RRecordToDataframe.xml
 $CLASSPATH/ptolemy/actor/lib/security/demo/Signature/Signature.xml
 $CLASSPATH/ptolemy/actor/lib/video/demo/DCT2x2dc/DCT2x2dc.xml
 $CLASSPATH/ptolemy/actor/lib/video/demo/DCT4x4dc/DCT4x4dc.xml
