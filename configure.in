@@ -3696,7 +3696,7 @@ else
             PT_MSG_RESULT(OpenCV found in the default classpath.)
             PTOPENCV_DIR=opencv
             # PTOPENCV_PACKAGES is used in ptII/doc/makefile
-            PTOPENCV_PACKAGES="ptolemy.actor.lib.opencv ptolemy.actor.lib.opencv.optimize org.ptolemy.opencv"
+            PTOPENCV_PACKAGES="org.ptolemy.opencv"
             if test -z "$OPENCV_JAR"; then
                 AC_MSG_CHECKING([for the OpenCV jar files])
                 if "$JAVAC" FindClass.java ; then
