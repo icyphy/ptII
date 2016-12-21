@@ -3,7 +3,7 @@ files=$@
 for file in $files
 do
 	#echo $file
-	echo $file | egrep -s '(ai|aif|au|class|doc|dvi|eps|fm|fmucheck|GIF|gif|jpg|jar|\.m|mat|mpg|pdf|png|ps|psd|ppt|vsd|wav|xls)$'
+	echo $file | egrep -s '(ai|aif|au|bfc|certs|class|der|doc|dvi|eps|fm|fmucheck|GIF|gif|jpg|jar|\.m|mat|mpg|pdf|pf|pfx|png|ps|psd|ppt|ttf|vsd|wav|xls)$'
 	retval=$?
         if [ $retval = 0 ]; then
             echo "Skipping $file, it probably is not a text file"
