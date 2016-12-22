@@ -127,10 +127,10 @@ public class NashornAccessorHostApplication {
      *  @param args An array of one or more file names.  See the class comment for
      *  the syntax.
      *  @return 0 for success, 3 for argument problems.  See main() in commonHost.js.
-     *  @exception IllegalActionException If the Nashorn engine cannot be found.
-     *  @exception IOException If a file cannot be read or closed.
-     *  @exception NoSuchMethodException If evaluateCode() JavaScript method is not defined.
-     *  @exception ScriptException If there is a problem evaluating a file.
+     *  @exception Throwable If the Nashorn engine cannot be found, if
+     *  a file cannot be read or closed.  if evaluateCode() JavaScript
+     *  method is not defined or if there is a problem evaluating a
+     *  file.
      */
     public static int evaluate(String [] args)
             throws Throwable {

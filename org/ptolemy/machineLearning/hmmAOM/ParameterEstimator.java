@@ -1,6 +1,6 @@
-/* This actor implements a Network Bus.
+/* A parameter estimator aspect.
 
-@Copyright (c) 2010-2014 The Regents of the University of California.
+@Copyright (c) 2010-2016 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -657,14 +657,21 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
 
     protected abstract void _updateEstimates();
 
-    /* Java implementation of the Baum-Welch algorithm (Alpha-Beta Recursion) for parameter estimation
-     * and cluster assignment. This method uses normalized alpha values for computing the conditional
-     * probabilities of input sequences, to ensure numerical stability. SEt nCategories to zero for
-     * continuous distribution types */
+    /** Java implementation of the Baum-Welch algorithm (Alpha-Beta
+     * Recursion) for parameter estimation and cluster
+     * assignment. This method uses normalized alpha values for
+     * computing the conditional probabilities of input sequences, to
+     * ensure numerical stability. Set nCategories to zero for
+     * continuous distribution types
+     *
+     * @param double The y values
+     * @param A the A values
+     * @param prior prior values
+     * @param nCategories The number of categories
+     * @return a hashmaps with String keys and double array values.
+     */
     protected HashMap HMMAlphaBetaRecursion(double[] y, double[][] A,
-            double[] prior, int nCategories)
-
-    {
+            double[] prior, int nCategories) {
         boolean multinomial = (nCategories > 0) ? true : false;
         int nStates = _nStates;
         int nObservations = y.length;
@@ -970,43 +977,50 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
     }
 
     ///////////////////////////////////////////////////////////////////
-    //                           private variables                   //
+    ////                           protected variables            ////
 
-    /* User-defined initial guess array for the state transition matrix*/
+    /** User-defined initial guess array for the state transition matrix. */
     protected double[][] _A0;
 
-    /* User-defined batch size*/
+    /** User-defined batch size. */
     protected int _batchSize;
-    /* likelihood value of the observations given the current estimates L(x1,....xT | \theta_p)*/
+
+    /** The likelihood value of the observations given the current estimates L(x1,....xT | \theta_p). */
     protected double _likelihood;
 
+    /** The likelihood threshold. */
     protected double _likelihoodThreshold;
 
-    /* User-defined number of iterations of the alpha-beta recursion*/
+    /** User-defined number of iterations of the alpha-beta recursion. */
     protected int _nIterations;
 
-    /* Number of hidden states in the model*/
+    /** Number of hidden states in the model. */
     protected int _nStates;
 
-    /* Observation array*/
+    /** Observation array. */
     protected double[] _observations;
 
+    /*** The observation tokens. */
     protected HashMap<String, List<Double>> _observedTokens;
 
-    /* Prior distribution on hidden states*/
+    /** Prior distribution on hidden states. */
     protected double[] _priors;
 
-    /* The prior estimates used in the EM iterations*/
+    /** The prior estimates used in the EM iterations*/
     protected double[] _priorIn;
 
-    /* randomize the initial guess vectors or not*/
+    /** If true, then randomize the initial guess vectors. */
     protected boolean _randomize;
-    /* Initial guess array for the state transition matrix for the Alpha-Beta Recursion*/
+
+    /** Initial guess array for the state transition matrix for the Alpha-Beta Recursion. */
     protected double[][] _transitionMatrix;
 
     HashMap newEstimates;
 
     double likelihood;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                           private variables               ////
 
     /** Next receiver to which the next token to be sent is destined. */
     private Receiver _nextReceiver;
@@ -1024,6 +1038,7 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
     /** Tokens stored for processing. This is used with the DE Director. */
     private FIFOQueue _tokens;
 
+    /** Bus Attributes. */
     public static class BusAttributes extends CommunicationAspectAttributes {
 
         /** Constructor to use when editing a model.

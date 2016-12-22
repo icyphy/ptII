@@ -61,13 +61,14 @@ The class which convert input particles to covariance matrix.
  */
 public class ConvertParticlesToCovarianceMatrix extends TypedAtomicActor {
 
-    /**
-     * Constructs a ConvertParticlesToCovarianceMatrix object.
+    /** Construct the actor with a name and a container.
+     *  This constructor creates the ports, parameters, and the icon.
      *
-     * @param container  a CompositeEntity object
-     * @param name       entity name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+     * @param container The container.
+     * @param name The name.
+     * @exception NameDuplicationException If another entity already had
+     * this name.
+     * @exception IllegalActionException If there was an internal problem.
      */
     public ConvertParticlesToCovarianceMatrix(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -94,6 +95,20 @@ public class ConvertParticlesToCovarianceMatrix extends TypedAtomicActor {
         covarianceOfStates.setTypeEquals(BaseType.DOUBLE_MATRIX);
     }
 
+    /**
+     * Input port for particles.
+     */
+    public TypedIOPort particleInput;
+
+    /**
+     * Output port for covariance matrix.
+     */
+    public TypedIOPort covarianceOfStates;
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
     @Override
     public void fire() throws IllegalActionException {
 
@@ -144,19 +159,9 @@ public class ConvertParticlesToCovarianceMatrix extends TypedAtomicActor {
         if (particleInput.hasToken(0)) return true;
         return false;
     }
-    /**
-     * input port for particles
-     */
-    public TypedIOPort particleInput;
-    /**
-     * output port for covariance matrix
-     */
-    public TypedIOPort covarianceOfStates;
 
-
-    /*
-     * private variables
-     */
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private double[][] _particles;
     private double[] _meanState;

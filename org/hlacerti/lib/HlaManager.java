@@ -418,9 +418,11 @@ TimeRegulator {
         /** The federate uses next event request calls to advance in time.
          */
         NextEventRequest,
+
         /** The federate uses time advance request calls to advance in time.
          */
         TimeAdvancementRequest;
+
         /**Override the toString of enum class.
          * @return The string associated for every enumerate.
          */
@@ -1172,6 +1174,7 @@ TimeRegulator {
         _runtime =duration;
     }
 
+    /** Write the UAV information. */
     public void writeUAVsInformations() {
         if (_numberOfUAVs>0) {
             StringBuffer header = new StringBuffer("LookAhead;TimeStep;StopTime;Information;");
@@ -1189,6 +1192,7 @@ TimeRegulator {
         }
     }
 
+    /** Write the RAV information. */
     public void writeRAVsInformations() {
         if (_numberOfRAVs>0) {
             StringBuffer header = new StringBuffer("LookAhead;TimeStep;StopTime;Information;");
@@ -1335,7 +1339,7 @@ TimeRegulator {
         }
     }
 
-
+    /** Write the time file to times.csv. */
     public void writeTimes() {
         File timesFile = _createTextFile("times.csv");
         writeInTextFile(timesFile,_date +";Reason:;" + _reasonsToPrintTheTime +"\nt_ptII:;"+_tPTII+"\nt_hla:;" +_tHLA);

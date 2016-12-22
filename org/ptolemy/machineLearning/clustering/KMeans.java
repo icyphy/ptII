@@ -68,6 +68,14 @@ exploratory data analysis.
  */
 public class KMeans extends TypedAtomicActor {
 
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public KMeans(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
         super(container, name);

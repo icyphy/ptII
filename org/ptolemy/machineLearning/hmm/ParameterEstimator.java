@@ -266,6 +266,7 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
     /** The input port that provides the sample observations.*/
     public TypedIOPort input;
 
+    /** An output port of type Double that contains the likelyhood. */
     public TypedIOPort likelihoodOut;
 
     /** The vector estimate for the prior distribution on the set of states.*/
@@ -372,8 +373,8 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
             throws IllegalActionException;
 
     /**
-     * Initialize arrays to be used in parameter estimation
-     * @exception IllegalActionException
+     * Initialize arrays to be used in parameter estimation.
+     * @exception IllegalActionException Not thrown in this base class.
      */
     protected void _initializeArrays() throws IllegalActionException {
 
@@ -386,13 +387,13 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
     }
 
     /**
-     * Initialize parameters used in ExpectationMaximization here
+     * Initialize parameters used in ExpectationMaximization here.
      */
     protected abstract void _initializeEMParameters();
 
     /**
-     * One step EM iteration
-     * @exception IllegalActionException
+     * One step EM iteration.
+     * @exception IllegalActionException If there is a problem.
      */
     protected abstract void _iterateEM() throws IllegalActionException;
 
@@ -400,13 +401,13 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
      * Check whether the gradient-descent algorithm has converged
      * @param i Current iteration index
      * @return boolean indicating whether algorithm has converged
-     * @exception IllegalActionException
+     * @exception IllegalActionException If there is a problem
      */
     protected abstract boolean _checkForConvergence(int i)
             throws IllegalActionException;
 
     /**
-     * Update parameter estimates
+     * Update parameter estimates.
      */
     protected abstract void _updateEstimates();
 
@@ -630,30 +631,31 @@ public abstract class ParameterEstimator extends TypedAtomicActor {
     /** User-defined initial guess array for the state transition matrix.*/
     protected double[][] _A0;
 
-    /** likelihood value of the observations given the current estimates L(x1,....xT | \theta_p).*/
+    /** The likelihood value of the observations given the current estimates L(x1,....xT | \theta_p).*/
     protected double _likelihood;
 
+    /** The likelihood threshold. */
     protected double _likelihoodThreshold;
 
     /** User-defined number of iterations of the alpha-beta recursion.*/
     protected int _nIterations;
 
-    /** observation dimension */
+    /** observation dimension. */
     protected int _obsDimension;
 
-    /** Number of hidden states in the model.*/
+    /** Number of hidden states in the model. */
     protected int _nStates;
 
-    /** Observation array.*/
+    /** Observation array. */
     protected double[][] _observations;
 
-    /** Prior distribution on hidden states.*/
+    /** Prior distribution on hidden states. */
     protected double[] _priors;
 
-    /** The prior estimates used in the EM iterations.*/
+    /** The prior estimates used in the EM iterations. */
     protected double[] _priorIn;
 
-    /** randomize the initial guess vectors or not.*/
+    /** randomize the initial guess vectors or not. */
     protected boolean _randomize;
 
     /** Initial guess array for the state transition matrix for the Alpha-Beta Recursion.*/

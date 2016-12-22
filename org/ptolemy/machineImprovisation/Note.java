@@ -1,6 +1,6 @@
-/* A Note object
+/* A Note object.
 
-Copyright (c) 2013-2014 The Regents of the University of California.
+Copyright (c) 2013-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -28,12 +28,12 @@ COPYRIGHTENDKEY
 package org.ptolemy.machineImprovisation;
 
 /** The Note object.
-
-@author Ilge Akkaya
-@version  $Id$
-@since Ptolemy II 10.0
-@Pt.ProposedRating Red (ilgea)
-@Pt.AcceptedRating
+ *
+ * @author Ilge Akkaya
+ * @version  $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class Note {
 
@@ -59,7 +59,7 @@ public class Note {
     }
 
     /**
-     * Returns the note duration
+     * Return the note duration.
      * @return a double indicating the note duration
      */
     public double getDuration() {
@@ -67,7 +67,7 @@ public class Note {
     }
 
     /**
-     * Returns the name of Note object
+     * Return the name of Note object.
      * @return the name
      */
     public String getName() {
@@ -75,7 +75,7 @@ public class Note {
     }
 
     /**
-     * Returns the absolute MIDI key index of the note
+     * Return the absolute MIDI key index of the note.
      * @return MIDI key index
      */
     public int getCompleteIndex() {
@@ -83,7 +83,7 @@ public class Note {
     }
 
     /**
-     * Returns the relative MIDI key index in base 12
+     * Return the relative MIDI key index in base 12.
      * @return the relative key index
      */
     public int getKeyIndex() {

@@ -52,35 +52,36 @@ import ptolemy.math.DoubleArrayMath;
 import ptolemy.math.DoubleMatrixMath;
 
 /**
-The class which calculates Mutual Information
-
-<p> This class calculates mutual information between the inference represented by particles
-and the observation using a zeroth-order Gaussian approximation to the entropy expression
-that is approximated over a subset of particles. See references for
-further details on the theory.
-
-<b>References</b>
- <p>[1]
-B. Charrow, V. Kumar, and N. Michael <i>Approximate Representations for Multi-Robot
-  Control Policies that Maximize Mutual Information</i>, In Proc. Robotics: Science and Systems Conference (RSS), 2013.
-@see org.ptolemy.machineLearning.particleFilter.ParticleFilter
-@see com.cureos.numerics
-
-@author Shuhei Emoto
-@version $Id$
-@since Ptolemy II 10.0
-@Pt.ProposedRating Red (shuhei)
-@Pt.AcceptedRating
+ * Calculate mutual information.
+ *
+ * <p> This class calculates mutual information between the inference
+ * represented by particles and the observation using a zeroth-order
+ * Gaussian approximation to the entropy expression that is
+ * approximated over a subset of particles. See references for further
+ * details on the theory.
+ *
+ * <b>References</b>
+ * <p>[1]
+ * B. Charrow, V. Kumar, and N. Michael <i>Approximate Representations for Multi-Robot
+ * Control Policies that Maximize Mutual Information</i>, In Proc. Robotics: Science and Systems Conference (RSS), 2013.
+ * @see org.ptolemy.machineLearning.particleFilter.ParticleFilter
+ * @see com.cureos.numerics
+ *
+ * @author Shuhei Emoto
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (shuhei)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class ParticleMutualInformation extends TypedAtomicActor {
 
-    /**
-     * Constructs a ParticleMutualInformation object.
-     *
-     * @param container  a CompositeEntity object
-     * @param name       entity name
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public ParticleMutualInformation(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
@@ -88,18 +89,64 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         _init();
     }
 
-    /**
-     * Constructs a ParticleMutualInformation object.
-     *
-     * @param workspace The workspace
-     * @exception IllegalActionException
-     * @exception NameDuplicationException
+    /** Construct an actor in the given workspace.
+     *  @param workspace the workspace in which to construct the actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public ParticleMutualInformation(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
         _init();
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /**
+     * The computed mutual information between particle sets.
+     */
+    public TypedIOPort output;
+
+    /**
+     * Particles input that accepts an array of record tokens. One
+     * field of the record must be labeled as "weight".  Other fields
+     * will be resolved to state variables.
+     */
+    public TypedIOPort particles;
+
+    /**
+     * The locations of the pursue robots that are producing the
+     * particle estimate.
+     */
+    public TypedIOPort locations;
+
+    /**
+     * Jacobian of the mutual information.
+     */
+    public TypedIOPort jacobianOfMutualInformation;
+
+
+    /**
+     * Index of the robot which is optimizing location.  Jacobian of
+     * mutual information will be dMI/dRob_i, where Rob_i is the
+     * location of robotID.  If robotID &lt; 0, Jacobian will be
+     * dMI/dRob_all.
+     */
+    public Parameter robotID;
+
+//    /**
+//     * Index list of the robots which are optimizing location.
+//     * Jacobian of mutual information will be [0 ... dMI/dRob_i ... 0],
+//     * where i is a part of robotIDList.
+//     */
+//    public Parameter robotIdList;
+
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     @Override
     public void attributeChanged(Attribute attribute)
@@ -168,7 +215,7 @@ public class ParticleMutualInformation extends TypedAtomicActor {
             _nRobots = 0;
             return;
         }
-        output.send(0, new DoubleToken(Hz()));
+        output.send(0, new DoubleToken(_Hz()));
         jacobianOfMutualInformation.send(0, new DoubleMatrixToken(_jacobian));
 
         /////////////////////////////////////
@@ -220,6 +267,9 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         _firstStep = true;
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
     private void printMatrix(double[][] matrix) {
         for (int row=0; row<matrix.length; row++) {
             printVector(matrix[row]);
@@ -231,38 +281,6 @@ public class ParticleMutualInformation extends TypedAtomicActor {
         }
         System.out.println();
     }
-    /**
-     * The computed mutual information between particle sets.
-     */
-    public TypedIOPort output;
-    /**
-     * Particles input that accepts an array of record tokens. One field of the record must be labeled as "weight".
-     * Other fields will be resolved to state variables.
-     */
-    public TypedIOPort particles;
-    /**
-     * The locations of the pursue robots that are producing the particle estimate.
-     */
-    public TypedIOPort locations;
-    /**
-     * Jacobian of the mutual information
-     */
-    public TypedIOPort jacobianOfMutualInformation;
-
-
-    /**
-     * Index of the robot which is optimizing location.
-     * Jacobian of mutual information will be dMI/dRob_i, where Rob_i is the location of robotID.
-     * If robotID &lt; 0, Jacobian will be dMI/dRob_all.
-     */
-    public Parameter robotID;
-
-//    /**
-//     * Index list of the robots which are optimizing location.
-//     * Jacobian of mutual information will be [0 ... dMI/dRob_i ... 0],
-//     * where i is a part of robotIDList.
-//     */
-//    public Parameter robotIdList;
 
     private void _addMatrix(double[][] dist, double[][] val) {
         for (int row = 0; row < dist.length; row++) {
@@ -273,11 +291,11 @@ public class ParticleMutualInformation extends TypedAtomicActor {
     }
 
     /**
-     * code for computing the mutual information between particle sets and measurements
+     * Compute the mutual information between particle sets and measurements.
      * This function also calculate a jacobian matrix of the mutual information
      * @return - calculated mutual information
      */
-    private double Hz() {
+    private double _Hz() {
         // zeroth order approximation of the measurement entropy.
         double[][] Sigma = DoubleMatrixMath.identity(_nRobots);
         for (int i = 0; i < Sigma.length; i++) {

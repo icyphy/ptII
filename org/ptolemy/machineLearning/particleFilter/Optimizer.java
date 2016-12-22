@@ -75,15 +75,29 @@ B. Charrow, V. Kumar, and N. Michael <i>Approximate Representations for Multi-Ro
  */
 public class Optimizer extends TypedAtomicActor {
 
-    public Optimizer() {
-        // TODO Auto-generated constructor stub
-    }
 
+    /** Construct an Optimizer in the specified
+     *  workspace with no container and an empty string as a name. You
+     *  can then change the name with setName(). If the workspace
+     *  argument is null, then use the default workspace.
+     *  @param workspace The workspace that will list the actor.
+     *  @exception IllegalActionException If the name has a period in it, or
+     *   the director is not compatible with the specified container.
+     *  @exception NameDuplicationException If the container already contains
+     *   an entity with the specified name.
+     */
     public Optimizer(Workspace workspace) {
         super(workspace);
-        // TODO Auto-generated constructor stub
     }
 
+    /** Construct the composite actor with a name and a container.
+     *  This constructor creates the ports, parameters, and the icon.
+     * @param container The container.
+     * @param name The name.
+     * @exception NameDuplicationException If another entity already had
+     * this name.
+     * @exception IllegalActionException If there was an internal problem.
+     */
     public Optimizer(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -140,6 +154,38 @@ public class Optimizer extends TypedAtomicActor {
         _rhoend = 1E-6;
 
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /**
+     * Control Output.
+     */
+    public TypedIOPort output;
+
+    /**
+     * Particles input that accepts an array of record tokens. One field of the record must be labeled as "weight".
+     * Other fields will be resolved to state variables.
+     */
+    public TypedIOPort particles;
+
+    /** An Array of record tokens. */
+    public PortParameter locations;
+
+    /** The coveariance. */
+    public Parameter covariance;
+
+    /** The speed limit. */
+    public Parameter speedLimit;
+
+    /** The beginning of rho. */
+    public Parameter rhoBeg;
+
+    /** The end of rho. */
+    public Parameter rhoEnd;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
 
     @Override
     public void attributeChanged(Attribute attribute)
@@ -336,22 +382,8 @@ public class Optimizer extends TypedAtomicActor {
         return true;
     }
 
-    /**
-     * Control Output
-     */
-    public TypedIOPort output;
-    /**
-     * Particles input that accepts an array of record tokens. One field of the record must be labeled as "weight".
-     * Other fields will be resolved to state variables.
-     */
-    public TypedIOPort particles;
-    public PortParameter locations;
-    public Parameter covariance;
-    public Parameter speedLimit;
-    public Parameter rhoBeg;
-    public Parameter rhoEnd;
-
-    // code for computing the mutual information between particle sets and measurements
+    ///////////////////////////////////////////////////////////////////
+    ////                         private variables                 ////
 
     private Particle[] _particles;
     private double[] _weights;
@@ -365,10 +397,12 @@ public class Optimizer extends TypedAtomicActor {
 
     private double _rhobeg;
     private double _rhoend;
-    /**Cobyla parameter that determines the output on the terminal. Set to 0 for no status output
+
+    /**Cobyla parameter that determines the output on the terminal. Set to 0 for no status output.
      */
     private int iprint = 0;
-    /**Maximum number of function calls per optimization step
+
+    /**Maximum number of function calls per optimization step.
      */
     private int maxfun = 10000;
     private double u_limit;

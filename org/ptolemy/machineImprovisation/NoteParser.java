@@ -1,6 +1,6 @@
-/* Parses incoming token streams to output a sequence of Note objects
- *
-Copyright (c) 2013-2015 The Regents of the University of California.
+/* Parses incoming token streams to output a sequence of Note objects.
+
+Copyright (c) 2013-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -45,15 +45,15 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.StringAttribute;
 
 /**
-<p> The NoteParser receives OSC information regarding the Notes and
-builds a sequence of chord objects. Outputs
-a sequence of {@link Note} objects, in logical timestamp order.
-
- @author Ilge Akkaya
- @version $Id$
- @since Ptolemy II 10.0
- @Pt.ProposedRating red (ilgea)
- @Pt.AcceptedRating red (ilgea)
+ * The NoteParser receives OSC information regarding the Notes and
+ * builds a sequence of chord objects. Outputs
+ * a sequence of {@link Note} objects, in logical timestamp order.
+ *
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating red (ilgea)
+ * @Pt.AcceptedRating red (ilgea)
  */
 public class NoteParser extends TypedAtomicActor {
 
@@ -109,42 +109,42 @@ public class NoteParser extends TypedAtomicActor {
     ////                         public variables                  ////
 
     /**
-     * Sequence of note tokens
+     * Sequence of note tokens.
      */
     public TypedIOPort notes;
 
     /**
-     * The time stamp tokens
+     * The time stamp tokens.
      */
     public TypedIOPort timestamp;
 
     /**
-     * Indicator that the note sequence has terminated
+     * Indicator that the note sequence has terminated.
      */
     public TypedIOPort endTraining;
 
     /**
-     * Indicator that a new sequence has started
+     * Indicator that a new sequence has started.
      */
     public TypedIOPort resetFO;
 
     /**
-     * The replication probability of the factor oracle
+     * The replication probability of the factor oracle.
      */
     public TypedIOPort replicationProbability;
 
     /**
-     * Number of bars in training melody
+     * Number of bars in training melody.
      */
     public TypedIOPort bars;
 
     /**
-     * Note frequency
+     * Note frequency.
      */
     public TypedIOPort freq;
 
     /**
-     * Note durations
+     * Note durations.
      */
     public TypedIOPort dur;
 

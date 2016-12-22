@@ -37,70 +37,106 @@ import org.rosuda.JRI.Rengine;
  * and then can be used to return the console output as a string.
  * 
  * @author Matt Jones
+ * @version $Id$
+ * @since Ptolemy II 11.0
  */
 public class RConsole implements RMainLoopCallbacks {
-	/**
-	 * A buffer which caches the output of the R session standard output.
-	 */
-	private StringBuffer consoleText = null;
+    /**
+     * Construct the R Console class and initialize the buffer containing the
+     * text.
+     */
+    public RConsole() {
+	super();
+	_consoleText = new StringBuffer();
+    }
 
-	/**
-	 * Construct the R Console class and initialize the buffer containing the
-	 * text.
-	 */
-	public RConsole() {
-		super();
-		consoleText = new StringBuffer();
-	}
+    /** Clear the console. */
+    public void clear() {
+	_consoleText = new StringBuffer();
+    }
 
-	public void clear() {
-		consoleText = new StringBuffer();
-	}
+    /**
+     * After an R session has ended, get a String representation of the output
+     * of the R session.
+     * 
+     * @return String containing the text of the R session output
+     */
+    public String getConsoleOutput() {
+	return _consoleText.toString();
+    }
 
-	/**
-	 * After an R session has ended, get a String representation of the output
-	 * of the R session.
-	 * 
-	 * @return String containing the text of the R session output
-	 */
-	public String getConsoleOutput() {
-		return consoleText.toString();
-	}
+    /**
+     * Callback that is called when text is available from the R Engine and
+     * should be written to the console.
+     * @param re The R engine
+     * @param text The text to by written.
+     * @param oType Ignored in this method.
+     */
+    public void rWriteConsole(Rengine re, String text, int oType) {
+	_consoleText.append(text);
+    }
 
-	/**
-	 * Callback that is called when text is available from the R Engine and
-	 * should be written to the console.
-	 */
-	public void rWriteConsole(Rengine re, String text, int oType) {
-		consoleText.append(text);
-	}
+    //
+    // The remaining callback methods are not used, but need to have
+    // implementations to satisfy the interface definition.
+    //
+    /** Print a busy message.
+     *  @param re The R engine
+     *  @param which Unknown.
+     */
+    public void rBusy(Rengine re, int which) {
+	System.out.println("rBusy(" + which + ")");
+    }
 
-	//
-	// The remaining callback methods are not used, but need to have
-	// implementations to satisfy the interface definition.
-	//
-	public void rBusy(Rengine re, int which) {
-		System.out.println("rBusy(" + which + ")");
-	}
+    /** Read from the console.
+     *  In this class, null is returned.
+     *  @param re The R engine 
+     */
+    public String rReadConsole(Rengine re, String prompt, int addToHistory) {
+	return null;
+    }
 
-	public String rReadConsole(Rengine re, String prompt, int addToHistory) {
-		return null;
-	}
+    /** Show a message.
+     * @param re The R engine 
+     * @param message The message
+     */
+    public void rShowMessage(Rengine re, String message) {
+	System.out.println("rShowMessage \"" + message + "\"");
+    }
 
-	public void rShowMessage(Rengine re, String message) {
-		System.out.println("rShowMessage \"" + message + "\"");
-	}
+    /** Choose a file.
+     * In this class return the empty string.
+     * @param re The R engine 
+     */
+    public String rChooseFile(Rengine re, int newFile) {
+	return "";
+    }
 
-	public String rChooseFile(Rengine re, int newFile) {
-		return "";
-	}
+    /** Flush the console.
+     * In this class, do nothing.
+     * @param re The R engine 
+     */
+    public void rFlushConsole(Rengine re) {
+    }
 
-	public void rFlushConsole(Rengine re) {
-	}
+    /** Load the history.
+     * In this class, do nothing.
+     * @param re The R engine 
+     * @filename The file that contains the history.
+     */
+    public void rLoadHistory(Rengine re, String filename) {
+    }
 
-	public void rLoadHistory(Rengine re, String filename) {
-	}
+    /** Save history.
+     * In this class, do nothing.
+     * @param re The R engine 
+     * @param filename the file in which to save the history.
+     */
+    public void rSaveHistory(Rengine re, String filename) {
+    }
 
-	public void rSaveHistory(Rengine re, String filename) {
-	}
+    /**
+     * A buffer which caches the output of the R session standard output.
+     */
+    private StringBuffer _consoleText = null;
 }

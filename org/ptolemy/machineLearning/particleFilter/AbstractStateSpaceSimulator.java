@@ -74,14 +74,13 @@ import ptolemy.kernel.util.Workspace;
 ////
 
 /**
- Abstract simulator base class
-
- @author Ilge Akkaya
- @version $Id$
- @since Ptolemy II 10.0
- @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating Red (ilgea)
-
+ * Abstract simulator base class.
+ *
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating Red (ilgea)
  */
 public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor implements MapConstrained {
     /** Construct the composite actor with a name and a container.
@@ -98,7 +97,7 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor im
         _init();
     }
 
-    /** Construct a PF in the specified
+    /** Construct an actor in the specified
      *  workspace with no container and an empty string as a name. You
      *  can then change the name with setName(). If the workspace
      *  argument is null, then use the default workspace.
@@ -115,13 +114,14 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor im
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
 
-    /** State estimate output. A record token with one field per state variable */
-
+    /** State estimate output. A record token with one field per state
+     * variable.
+     */
     public TypedIOPort state;
 
-    /** An ordered array of initial state values */
+    /** An ordered array of initial state values. */
     public Parameter initialState;
 
     /** The value of current time. This parameter is not visible in
@@ -131,6 +131,7 @@ public abstract class AbstractStateSpaceSimulator extends TypedCompositeActor im
      */
     public Parameter t;
 
+    /** The trigger. */
     public TypedIOPort trigger;
 
     /** Boolean parameter to determine whether seeds are reset on each run.

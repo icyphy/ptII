@@ -1,6 +1,6 @@
 /* Parameter Estimation for Graphical Models.
 
-Copyright (c) 1998-2014 The Regents of the University of California.
+Copyright (c) 1998-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -47,7 +47,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-////ExpectationMaximization
+//// HMMGaussianEstimator
 
 /**
 <p>This actor implements a parameter estimator for Hidden Markov Models with Gaussian
@@ -138,12 +138,16 @@ public class HMMGaussianEstimator extends ParameterEstimator {
     ///////////////////////////////////////////////////////////////////
     ////                         public variables                  ////
 
+    /** The mean. A double array output */
     public TypedIOPort mean;
 
+    /** The standard deviation. A double array output */
     public TypedIOPort standardDeviation;
 
+    /** The mean vector guess.  A double array with initial values {0.0, 4.0}. */
     public Parameter meanVectorGuess;
 
+    /** The standard deviation guess. A double array with initial values (1.0, 1.0}. */
     public Parameter standardDeviationGuess;
 
     ///////////////////////////////////////////////////////////////////

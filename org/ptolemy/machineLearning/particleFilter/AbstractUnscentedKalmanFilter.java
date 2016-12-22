@@ -115,13 +115,13 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
     }
 
     ///////////////////////////////////////////////////////////////////
-    ////                         public variables                  ////
+    ////                     ports and parameters                  ////
+
     /** The output port that outputs the sigma-points of distribution of state variable at each firing.
      */
     public TypedIOPort sigmaPointOutput;
 
-    /** State estimate output. A record token with one field per state variable */
-
+    /** State estimate output. A record token with one field per state variable. */
     public TypedIOPort stateEstimate;
 
     /** The value of current time. This parameter is not visible in
@@ -131,17 +131,18 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
      */
     public Parameter t;
 
-    /** a matrix value used in initialization of sigma points   */
+    /** A matrix value used in initialization of sigma points.   */
     public Parameter priorCovariance;
 
-    /** An array value used in initialization of state variables */
+    /** An array value used in initialization of state variables. */
     public Parameter priorMeanState;
 
-    /** a matrix value which determine process noise  */
+    /** a matrix value which determine process noise.  */
     public Parameter processNoiseCovariance;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** If the argument is any parameter other than <i>stateVariableNames</i>
      *  <i>t</i>, or any parameter matching an input port,
      *  then request reinitialization.
@@ -420,25 +421,25 @@ public abstract class AbstractUnscentedKalmanFilter extends TypedCompositeActor 
     /** Flag indicating whether the contained model is up to date. */
     protected boolean _upToDate;
 
-    /** Cached State variable names */
+    /** Cached State variable names. */
     protected ArrayToken _stateNames;
 
-    /** Array of input Relations */
+    /** Array of input Relations. */
     protected IORelation[] _inputRelations;
 
-    /** Labels of sigma points, that contains state names and a weight label */
+    /** Labels of sigma points, that contains state names and a weight label. */
     protected String[] _sigmaPointLabels;
 
-    /** Types of each sigma point dimension */
+    /** Types of each sigma point dimension. */
     protected Type[] _sigmaPointTypes;
 
-    /** Labels of states */
+    /** Labels of states. */
     protected String[] _stateLabels;
 
-    /** Types of each state dimension */
+    /** Types of each state dimension. */
     protected Type[] _stateTypes;
 
-    /** Measurement covariance matrix */
+    /** Measurement covariance matrix. */
     protected double[][] _Sigma;
 
     ///////////////////////////////////////////////////////////////////

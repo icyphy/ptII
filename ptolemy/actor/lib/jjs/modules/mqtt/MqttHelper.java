@@ -62,6 +62,11 @@ import ptolemy.kernel.util.IllegalActionException;
  */
 public class MqttHelper extends HelperBase {
 
+    /** Construct a Mqtthelper for the specified JavaScript object.
+     *  The argument can be a JavaScript actor or an instance of a
+     *  JavaScript class.
+     *  @param actor The object that this is helping.
+     */
     public MqttHelper(Object actor) {
         super(actor);
     }
@@ -106,6 +111,7 @@ public class MqttHelper extends HelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public classes                    ////
 
+    /** A wrapper for a Paho MQTT client. */
     public class MqttClientWrapper {
         /**
          * This constructor creates one Paho MQTT client inside using given parameters.
@@ -114,6 +120,7 @@ public class MqttHelper extends HelperBase {
          * @param port The port number of the broker server.
          * @param host The host name of the broker server.
          * @param clientId The id of the client, whiich is passed to MqttAsyncClient();
+	 * @param rawBytes True if the payload is raw bytes.
          * @exception MqttException
          */
         public MqttClientWrapper(ScriptObjectMirror currentObj,

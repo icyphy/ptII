@@ -1,6 +1,6 @@
 /* Class that defines the musical Chord object
 
-Copyright (c) 2013-2014 The Regents of the University of California.
+Copyright (c) 2013-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -38,11 +38,11 @@ import ptolemy.kernel.util.IllegalActionException;
  * a set of notes that it contains, or a name. In the latter case,
  * the notes contained by the chord can be retrieved by a local library,
  * currently defined in {@link MusicSpecs}.
- @author Ilge Akkaya
- @version  $Id$
- @since Ptolemy II 10.0
- @Pt.ProposedRating Yellow (ilgea)
- @Pt.AcceptedRating
+ * @author Ilge Akkaya
+ * @version  $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Yellow (ilgea)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class Chord {
     /**
@@ -58,7 +58,7 @@ public class Chord {
     }
 
     /**
-     * Construct a chord by a set of note objects
+     * Construct a chord by a set of note objects.
      * @param chordTones a Set of notes that are a part of the specified Chord.
      */
     public Chord(Set<Note> chordTones) {

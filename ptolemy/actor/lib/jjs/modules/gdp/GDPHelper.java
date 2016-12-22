@@ -58,6 +58,8 @@ public class GDPHelper extends HelperBase {
     /** Create a GDP Helper by opening a pre-existing GDP Log
      *  or creating one if necessary.
      *
+     *  @param currentObj The ScriptObjectMirror context
+     *  in which to create the GDPHelper.
      *  @param logName The name of the log.  The format can be any
      *  string, but as multiple users could be sharing a log server, a
      *  dot-separated log name that is the reverse domain name

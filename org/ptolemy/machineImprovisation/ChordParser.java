@@ -1,6 +1,6 @@
 /* Parse incoming chord info into Chord objects in correct order
 
-Copyright (c) 2013-2015 The Regents of the University of California.
+Copyright (c) 2013-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -45,16 +45,16 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 
 /**
-<p> The Chord parser receives OSC information regarding the Chords and
-builds a sequence of chord objects. It both (i) ensures all chords that
-exist in the specification have been received and if so, (ii) outputs
-a sequence of {@link Chord} objects, in sequence order.
-
- @author Ilge Akkaya
- @version $Id$
- @since Ptolemy II 10.0
- @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating
+ * The Chord parser receives OSC information regarding the Chords and
+ * builds a sequence of chord objects. It both (i) ensures all chords that
+ * exist in the specification have been received and if so, (ii) outputs
+ * a sequence of {@link Chord} objects, in sequence order.
+ * 
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class ChordParser extends TypedAtomicActor {
 
@@ -100,23 +100,27 @@ public class ChordParser extends TypedAtomicActor {
     ////                         public variables                  ////
 
     /**
-     * Name of chord
+     * Name of chord.
      */
     public TypedIOPort chordName;
+
     /**
-     * Duration of chord
+     * Duration of chord.
      */
     public TypedIOPort chordDuration;
+
     /**
-     * Index of chord in the global chord sequence
+     * Index of chord in the global chord sequence.
      */
     public TypedIOPort chordIndex;
+
     /**
-     * Termination input to end chord sequence
+     * Termination input to end chord sequence.
      */
     public TypedIOPort endChord;
+
     /**
-     * An array of ordered chord objects
+     * An array of ordered chord objects.
      */
     public TypedIOPort chords;
 

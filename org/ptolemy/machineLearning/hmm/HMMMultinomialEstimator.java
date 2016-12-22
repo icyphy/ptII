@@ -1,6 +1,6 @@
 /* Parameter Estimation for Graphical Models.
 
-Copyright (c) 1998-2015 The Regents of the University of California.
+Copyright (c) 1998-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -144,18 +144,18 @@ public class HMMMultinomialEstimator extends ParameterEstimator {
 
     /**
      * An output that defines a probability mass estimate of the multinomial
-     * observation probabilities
+     * observation probabilities.
      */
     public TypedIOPort emissionEstimates;
 
     /**
      * An input guess array that defines a probability mass, defining the multinomial
-     * observation probabilities
+     * observation probabilities.
      */
     public Parameter observationProbabilities;
 
     /**
-     * Number of categories in the multinomial distribution
+     * Number of categories in the multinomial distribution.
      */
     public Parameter nCategories;
 

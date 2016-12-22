@@ -1,6 +1,6 @@
-/* Type conversion from MIDI key index to note name
+/* Type conversion from MIDI key index to note name.
 
-Copyright (c) 2013-2014 The Regents of the University of California.
+Copyright (c) 2013-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -40,15 +40,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////
 
 /**
- <p>
- Simple conversion actor that converts a midi key integer into a letter
- note</p>
-
- @author Ilge Akkaya
- @version $Id$
- @since Ptolemy II 10.0
- @Pt.ProposedRating
- @Pt.AcceptedRating
+ * Simple conversion actor that converts a midi key integer into a letter
+ * note.
+ *
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class MidiKeyToNote extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
@@ -76,12 +75,14 @@ public class MidiKeyToNote extends TypedAtomicActor {
     ////                     ports and parameters                  ////
 
     /**
-     * A note equivalent of the key, represented by a string, consisting of the pitch letter A-G, the ocrave, and (possibly) a trailing symbol
+     * A note equivalent of the key, represented by a string,
+     * consisting of the pitch letter A-G, the ocrave, and (possibly)
+     * a trailing symbol.
      */
     public TypedIOPort letterNote;
 
     /**
-     * The midi key index
+     * The midi key index.
      */
     public TypedIOPort midiKey;
 

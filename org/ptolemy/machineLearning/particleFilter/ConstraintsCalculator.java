@@ -1,23 +1,6 @@
-package org.ptolemy.machineLearning.particleFilter;
+/* The class for calculation of constraints of Swarm-Robots.
 
-import ptolemy.actor.TypedAtomicActor;
-import ptolemy.actor.TypedIOPort;
-import ptolemy.data.ArrayToken;
-import ptolemy.data.DoubleToken;
-import ptolemy.data.RecordToken;
-import ptolemy.data.StringToken;
-import ptolemy.data.type.ArrayType;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.RecordType;
-import ptolemy.data.type.Type;
-import ptolemy.kernel.CompositeEntity;
-import ptolemy.kernel.util.Attribute;
-import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.kernel.util.NameDuplicationException;
-
-/* Black-box optimizer class - to be modified
-
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -43,20 +26,44 @@ import ptolemy.kernel.util.NameDuplicationException;
 
  */
 
+package org.ptolemy.machineLearning.particleFilter;
+
+import ptolemy.actor.TypedAtomicActor;
+import ptolemy.actor.TypedIOPort;
+import ptolemy.data.ArrayToken;
+import ptolemy.data.DoubleToken;
+import ptolemy.data.RecordToken;
+import ptolemy.data.StringToken;
+import ptolemy.data.type.ArrayType;
+import ptolemy.data.type.BaseType;
+import ptolemy.data.type.RecordType;
+import ptolemy.data.type.Type;
+import ptolemy.kernel.CompositeEntity;
+import ptolemy.kernel.util.Attribute;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.NameDuplicationException;
+
 /**
-The class for calculation of constraints of Swarm-Robots.
-
-<p> Calculates various constraints required by Robots (Ex: Maximum Speed, Distance between each other).
-
-@author Shuhei Emoto
-@version $Id$
-@since Ptolemy II 10.0
-@Pt.ProposedRating Red (shuhei)
-@Pt.AcceptedRating Red (shuhei)
-
+ * The class for calculation of constraints of Swarm-Robots.
+ * 
+ * <p> Calculates various constraints required by Robots (Ex: Maximum
+ * Speed, Distance between each other).</p>
+ *
+ * @author Shuhei Emoto
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (shuhei)
+ * @Pt.AcceptedRating Red (shuhei)
  */
-
 public class ConstraintsCalculator extends TypedAtomicActor {
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
+     */
     public ConstraintsCalculator(CompositeEntity container, String name)
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
@@ -92,6 +99,33 @@ public class ConstraintsCalculator extends TypedAtomicActor {
         speed = new TypedIOPort(this, "speed", false, true);
         speed.setTypeEquals(new ArrayType(BaseType.DOUBLE));
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     ports and parameters                  ////
+
+    /**
+     * The minimum distance to the robot team.
+     */
+    public TypedIOPort minDistance;
+
+    /** The distance to the target. */
+    public TypedIOPort distToTarget;
+
+    /** The current speed. */
+    public TypedIOPort speed;
+
+    /** The target location.
+     * Particles input that accepts an array of record tokens. One field of the record must be labeled as "weight".
+     * Other fields will be resolved to state variables.
+     */
+    public TypedIOPort targetLocation;
+
+    /** The locations. */
+    public TypedIOPort locations;
+
+    /** The xValue. */
+    public TypedIOPort xValue;
+
 
     @Override
     public void attributeChanged(Attribute attribute)
@@ -142,28 +176,6 @@ public class ConstraintsCalculator extends TypedAtomicActor {
         speed.send(0, new ArrayToken(_speed));
 
     }
-
-    /**
-     * Minimum distance to the robot team.
-     */
-    public TypedIOPort minDistance;
-
-    /**
-     * Distance to target.
-     */
-    public TypedIOPort distToTarget;
-
-    /**
-     * Current speed.
-     */
-    public TypedIOPort speed;
-    /**
-     * Particles input that accepts an array of record tokens. One field of the record must be labeled as "weight".
-     * Other fields will be resolved to state variables.
-     */
-    public TypedIOPort targetLocation;
-    public TypedIOPort locations;
-    public TypedIOPort xValue;
 
     // code for computing the constraints between robots and target
     private void funcConstraints() {

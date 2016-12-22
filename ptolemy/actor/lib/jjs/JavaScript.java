@@ -606,6 +606,9 @@ public class JavaScript extends TypedAtomicActor {
      *  @param restricted True if script engine should be restricted
      *  so that it can execute unrusted code.  The default is typically false.
      *  @return The JavaScript engine.
+     *  @exception IllegalActionException If the "nashorn" JavaScript
+     *  engine cannot be found.  The Nashorn engine is only present in
+     *  JDK 1.8 and later.
      */
     public static ScriptEngine createEngine(JavaScript actor, boolean debugging, boolean restricted)
         throws IllegalActionException {
@@ -1063,7 +1066,7 @@ public class JavaScript extends TypedAtomicActor {
         return NashornAccessorHostApplication.getFileAsString(path);
     }
 
-    /** Return the string contents of the file from the classpath
+    /** Return the string contents of the file from the classpath.
      *  @param path The location.  This is used in localFunctions.js.
      *  The path should be a relative path.
      *  @return The contents as a string, assuming the default encoding of

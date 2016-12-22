@@ -206,12 +206,12 @@ HSMMTimeAwareMultinomialEstimator {
 
     /**
      * If set to true, model will be parameterized and parameter synthesis will be
-     * carried out using PRISM
+     * carried out using PRISM.
      */
     public Parameter optimize;
 
     /**
-     * If set to true, PRISM will be used to model check defined model properties
+     * If set to true, PRISM will be used to model check defined model properties.
      */
     public Parameter modelChecking;
 
@@ -220,10 +220,11 @@ HSMMTimeAwareMultinomialEstimator {
      */
     public Parameter testPreset;
 
+    /** An output port of type double that contains optional values. */
     public TypedIOPort optvals;
 
+    /** The minimum power threshold. The inital defaultis an integer with a value 0. */
     public Parameter minPowerThreshold;
-
 
     public void attributeChanged(Attribute attribute) throws IllegalActionException {
         if (attribute == optStep) {
@@ -1075,9 +1076,15 @@ HSMMTimeAwareMultinomialEstimator {
 
 
 
+    /** The line separator. */
     protected static final String _eol;
+
+    /** The level 1 index prefix. */
     public static final String INDENT1 = StringUtilities.getIndentPrefix(1);
+
+    /** The level 2 index prefix. */
     public static final String INDENT2 = StringUtilities.getIndentPrefix(2);
+
     static {
         _eol = StringUtilities.getProperty("line.separator");
     }
