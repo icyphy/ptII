@@ -1,6 +1,6 @@
-/* Type conversion from note name to MIDI key
+/* Type conversion from note name to MIDI key.
 
-Copyright (c) 2013-2015 The Regents of the University of California.
+Copyright (c) 2013-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -40,15 +40,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 ////
 
 /**
- <p>
- Simple conversion actor that converts a letter note as "C4" into
- a MIDI key integer</p>
-
- @author Ilge Akkaya
- @version $Id$
- @since Ptolemy II 10.0
- @Pt.ProposedRating
- @Pt.AcceptedRating
+ * Simple conversion actor that converts a letter note as "C4" into
+ * a MIDI key integer.
+ *
+ * @author Ilge Akkaya
+ * @version $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating red (cxh)
+ * @Pt.AcceptedRating red (cxh)
  */
 public class NoteToMidiKey extends TypedAtomicActor {
     /** Construct an actor in the specified container with the specified
@@ -76,12 +75,13 @@ public class NoteToMidiKey extends TypedAtomicActor {
     ////                     ports and parameters                  ////
 
     /**
-     * A note, represented by a string, consisting of the pitch letter A-G, the ocrave, and (possibly) a trailing symbol
+     * A note, represented by a string, consisting of the pitch letter
+     * A-G, the ocrave, and (possibly) a trailing symbol.
      */
     public TypedIOPort letterNote;
 
     /**
-     * The midi key equivalent of the input letter note
+     * The midi key equivalent of the input letter note.
      */
     public TypedIOPort midiKey;
 

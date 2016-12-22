@@ -1,6 +1,6 @@
 /** A Factor Oracle (FO) builder from an input sequence.
 
-Copyright (c) 2013-2015 The Regents of the University of California.
+Copyright (c) 2013-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -63,12 +63,12 @@ import ptolemy.vergil.modal.modal.ModalTableauFactory;
  * <p>This actor builds a factor oracle data structure that represents
  * a finite acyclic automaton that contains at least all the suffixes of
  * a given input sequence.</p>
-
- @author Ilge Akkaya
- @version  $Id$
- @since Ptolemy II 10.0
- @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating non
+ *
+ * @author Ilge Akkaya
+ * @version  $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class FactorOracleGenerator extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
@@ -137,22 +137,22 @@ public class FactorOracleGenerator extends TypedAtomicActor {
     public TypedIOPort noteSequence;
 
     /**
-     * The repetition probability of the forward links in the Factor Oracle
+     * The repetition probability of the forward links in the Factor Oracle.
      */
     public PortParameter repetitionProbability;
 
     /**
-     * Parameter indicating whether to check pitch specifications
+     * Parameter indicating whether to check pitch specifications.
      */
     public Parameter usePitchSpecs;
 
     /**
-     * The pitch oracle in MoML format
+     * The pitch oracle in MoML format.
      */
     public TypedIOPort pitchMoML;
 
     /**
-     * The duration oracle in MoML format
+     * The duration oracle in MoML format.
      */
     public TypedIOPort durationMoML;
 
@@ -274,7 +274,7 @@ public class FactorOracleGenerator extends TypedAtomicActor {
     }
 
     /**
-     * Get a list of transitions originating from node
+     * Get a list of transitions originating from node.
      * @param node Node index
      * @return a List of states which can be reached from current node
      */

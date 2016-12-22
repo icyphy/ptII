@@ -1,6 +1,6 @@
 /** An observation classifier
 
-Copyright (c) 2013-2015 The Regents of the University of California.
+Copyright (c) 2013-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -81,7 +81,7 @@ governing the Markovian process representing the hidden state evolution. The <i>
  @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating
+ @Pt.AcceptedRating Red (cxh)
  */
 public abstract class ObservationClassifier extends TypedAtomicActor {
     /** Construct an actor with the given container and name.
@@ -210,14 +210,13 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
     }
 
     /**
-     * Alpha-beta recursion
+     * Alpha-beta recursion.
      * @param y input sequence
      * @param prior prior guess vectors
      * @param A transition probability matrix
      * @return An array of assigned labels to observations
-     * @exception IllegalActionException
+     * @exception IllegalActionException If thrown while calculating the emmission probablity
      */
-
     protected final int[] classifyHMM(double[][] y, double[] prior, double[][] A) throws IllegalActionException {
 
         int nStates = _nStates;
@@ -294,7 +293,7 @@ public abstract class ObservationClassifier extends TypedAtomicActor {
     }
 
     /**
-     * Classify the incoming symbols into hidden states
+     * Classify the incoming symbols into hidden states.
      * @param y input array
      * @param mu mean array containing current mean estimates for hidden states
      * @param sigma mean array containing current standard deviation estimates for hidden states

@@ -1,6 +1,6 @@
 /* Discrete-Event Particle Filter Implementation.
 
- Copyright (c) 1998-2015 The Regents of the University of California.
+ Copyright (c) 1998-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -150,7 +150,7 @@ public class ParticleFilter extends AbstractParticleFilter {
 
 
     /** Standard deviation of the measurement noise ( assuming  Gaussian measurement noise
-     * at the moment)
+     * at the moment).
      */
     public Parameter measurementCovariance;
 
@@ -172,6 +172,7 @@ public class ParticleFilter extends AbstractParticleFilter {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
     /** If the argument is any parameter other than <i>stateVariableNames</i>
      *  <i>t</i>, or any parameter matching an input port,
      *  then request reinitialization.
@@ -276,7 +277,7 @@ public class ParticleFilter extends AbstractParticleFilter {
      * Return the Parameter that is part of a state space model.
      * @param parameterName Name of parameter
      * @return Parameter object
-     * @exception IllegalActionException
+     * @exception IllegalActionException If the parameter cannot be found.
      */
     @Override
     protected Parameter getUserDefinedParameter(String parameterName)

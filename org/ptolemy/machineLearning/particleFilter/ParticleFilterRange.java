@@ -1,6 +1,6 @@
-/* Particle Filter Subclass for Range-only sensor measurements
+/* Particle Filter Subclass for Range-only sensor measurements.
 
- Copyright (c) 1998-2014 The Regents of the University of California.
+ Copyright (c) 1998-2016 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -100,13 +100,13 @@ actor by Jie Liu.
  */
 public class ParticleFilterRange extends ParticleFilter {
 
-    /**
-     * Constructs a ParticleFilterRange object.
-     *
-     * @param container  a CompositeEntity object
-     * @param name       a String ...
-     * @exception NameDuplicationException ...
-     * @exception IllegalActionException ...
+    /** Construct an actor with the given container and name.
+     *  @param container The container.
+     *  @param name The name of this actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public ParticleFilterRange(CompositeEntity container, String name)
             throws NameDuplicationException, IllegalActionException {
@@ -114,29 +114,31 @@ public class ParticleFilterRange extends ParticleFilter {
         _init();
     }
 
-    /**
-     * Constructs a ParticleFilterRange object.
-     *
-     * @param workspace  a Workspace object
-     * @exception IllegalActionException ...
-     * @exception NameDuplicationException ...
+    /** Construct an actor in the given workspace.
+     *  @param workspace the workspace in which to construct the actor.
+     *  @exception IllegalActionException If the actor cannot be contained
+     *   by the proposed container.
+     *  @exception NameDuplicationException If the container already has an
+     *   actor with this name.
      */
     public ParticleFilterRange(Workspace workspace)
             throws IllegalActionException, NameDuplicationException {
         super(workspace);
     }
 
-    /** Incoming measurements */
+    /** Incoming measurements. */
     public TypedIOPort z_m;
 
     /**
      * Observation expression.
      */
     public Parameter z;
+
     /**
      * x component update equation.
      */
     public Parameter x_update;
+
     /**
      * y component update equation.
      */

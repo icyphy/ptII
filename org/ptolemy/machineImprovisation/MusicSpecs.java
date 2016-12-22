@@ -1,6 +1,6 @@
-/* Music Specifications
+/* Music Specifications.
 
-Copyright (c) 2013-2014 The Regents of the University of California.
+Copyright (c) 2013-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -32,13 +32,13 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
-/** A static class that contains musical specifications
-
- @author Ilge Akkaya
- @version  $Id$
- @since Ptolemy II 10.0
- @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating
+/** A static class that contains musical specifications.
+ *
+ * @author Ilge Akkaya
+ * @version  $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class MusicSpecs {
 
@@ -57,7 +57,7 @@ public class MusicSpecs {
     }
 
     /**
-     * Get a list of notes contained by the chord
+     * Get a list of notes contained by the chord.
      * @param chord The chord name
      * @param useScale A boolean specifying whether scale notes should be included
      * @return a List of notes
@@ -302,7 +302,7 @@ public class MusicSpecs {
     }
 
     /**
-     * Translate a MIDI key to its equivalent letter note representation
+     * Translate a MIDI key to its equivalent letter note representation.
      * @param key MIDI key index
      * @param addOctave boolean -- if true indicates that octave information should be output
      * @return letter note representation of note
@@ -364,7 +364,7 @@ public class MusicSpecs {
     }
 
     /**
-     * Translate a letter note to MIDI key
+     * Translate a letter note to MIDI key.
      * @param note a letter note
      * @return the MIDI key index
      */
@@ -464,19 +464,22 @@ public class MusicSpecs {
     }
 
     /**
-     * Symbol for the termination chord
+     * Symbol for the termination chord.
      */
     public static final String TERMINATION_CHORD = "T";
+
     /**
-     * Symbol for the termination note
+     * Symbol for the termination note.
      */
     public static final String TERMINATION_NOTE_SYMBOL = "T";
+
     /**
-     * Rest symbol
+     * Rest symbol.
      */
     public static final String REST_SYMBOL = "R";
+
     /**
-     * MIDI key for the termination note
+     * MIDI key for the termination note.
      */
     public static final int TERMINATION_NOTE_KEY = -100;
 }

@@ -78,46 +78,40 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
     }
 
     /**
-     *
+     * Read a file and return the contents as ano ArrayList of Strings.
      * @param file The file whose content is going to be turned into String.
-     * @return ArrayList
+     * @return the ArrayList of Strings.
      */
-    public static ArrayList<String> convertFileToString(File file) {
+    public static ArrayList<String> convertFileToString(File file) throws IOException {
         String content ="";
         ArrayList<String> lines = new ArrayList<String>();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            content=br.readLine();
-            while (content != null) {
-                lines.add(content);
-                content=br.readLine();
-            }
-            br.close();
+	BufferedReader bufferedReader = null;
+	try {
+	    bufferedReader = new BufferedReader(new FileReader(file));
+	    content = bufferedReader.readLine();
+	    while (content != null) {
+		lines.add(content);
+		content = bufferedReader.readLine();
+	    }
             return lines;
-        } catch (IOException e) {
-            e.printStackTrace();
-            return null;
-        }
-
+	} finally {	    
+	    if (bufferedReader != null) {
+		bufferedReader.close();
+	    }
+	}
     }
 
-    private static ArrayList<String> _readFile(File file) {
-        ArrayList<String> lines= new ArrayList<String>();
-        try {
-            BufferedReader br = new BufferedReader(new FileReader(file));
-            String content=br.readLine();
-            while (content != null) {
-                lines.add(content);
-                content=br.readLine();
-            }
-            br.close();
-            return lines;
-        } catch (Exception e) {
-            System.out.println("Couldn't read the file.");
-            System.exit(0);
-            return null;
-        }
-    }
+    // private static ArrayList<String> _readFile(File file) throws IOException {
+    //     ArrayList<String> lines= new ArrayList<String>();
+    // 	BufferedReader br = new BufferedReader(new FileReader(file));
+    // 	String content=br.readLine();
+    // 	while (content != null) {
+    // 	    lines.add(content);
+    // 	    content=br.readLine();
+    // 	}
+    // 	br.close();
+    // 	return lines;
+    // }
 
     private static ArrayList<String> _changeRKSolver(ArrayList<String> file, int newSolver) {
         if (newSolver >0 ) {
@@ -138,8 +132,9 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * @param type The type of the data. 0 for String, 1 for int, 2 for float.
      * @return The parameter value.
      */
-    public static String findParameterValue(File file, String propertyLine, int type) {
-        ArrayList<String> fileContent = _readFile(file);
+    public static String findParameterValue(File file, String propertyLine, int type) throws IllegalActionException {
+	try {
+        ArrayList<String> fileContent = convertFileToString(file);
         String value="UNDEFINED";
         for (String s: fileContent) {
             if (s.contains(propertyLine)) {
@@ -158,35 +153,55 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             }
         }
         return value;
+	} catch (IOException ex) {
+	    throw new IllegalActionException(null, ex, "Failed to read " + file + " and find " + propertyLine);
+	}
     }
 
 
 
-    /**Change a parameter in the .xml, making it assume previously chosen values. Run a ptolemy simulation for each value that the
+    /** 
+     * Change a parameter in the .xml, making it assume previously
+     * chosen values. Run a ptolemy simulation for each value that the
      * parameter has to assume.
-     * @param waitingTime The time the system will wait to close all the windows of a federation, after its execution has finished.
-     * This parameter is intended to give the user the ability to choose how long he will have to look at the simulation's results.
-     * If the variable is given a negative value, the user will be asked repetedly if he havalued time to look at the models and they will
-     * only close when he answers "yes".
+     *
+     * @param waitingTime The time the system will wait to close all
+     * the windows of a federation, after its execution has finished.
+     * This parameter is intended to give the user the ability to
+     * choose how long he will have to look at the simulation's
+     * results.  If the variable is given a negative value, the user
+     * will be asked repetedly if he havalued time to look at the
+     * models and they will only close when he answers "yes".
      * @param vergil An instance of vergil.
      * @param modelPath The path to the model you want to run.
      * @param propertyLine The xml line of the parameter that we want to change.
      * @param values The values the new property will assume.
+     * @exception IllegalActionException If there is a problem reading a file.
      **/
-    public static void changeParameter(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String propertyLine, double[] values , int solver) {
+    public static void changeParameter(int waitingTime,
+				       AutomaticSimulation vergil,
+				       String[] modelPath,
+				       String propertyLine,
+				       double[] values,
+				       int solver) throws IllegalActionException {
         int numberOfFederates = modelPath.length;
         File[] file = new File[numberOfFederates];
         String[][] data = new String[numberOfFederates][3];
 
-        for (int i=0;i<numberOfFederates;i++) {
-            file[i] = new File(modelPath[i]);
-            ArrayList<String> content= _readFile(file[i]);
-            content=_changeRKSolver(content, solver);
-            String[] info=  _findPropertyLine(content, propertyLine);
-            data[i][0]=info[0];
-            data[i][1]=info[1];
-            data[i][2]=info[2];
-        }
+	for (int i=0;i<numberOfFederates;i++) {
+	    file[i] = new File(modelPath[i]);
+	    ArrayList<String> content;
+	    try {
+		content= convertFileToString(file[i]);
+	    } catch (IOException ex) {
+		throw new IllegalActionException(null, ex, "Failed to open " + file[i]);
+	    }
+	    content=_changeRKSolver(content, solver);
+	    String[] info=  _findPropertyLine(content, propertyLine);
+	    data[i][0]=info[0];
+	    data[i][1]=info[1];
+	    data[i][2]=info[2];
+	}
         int numberOfInteractions = values.length;
         for (int i=0;i<numberOfInteractions;i++) {
             double x = values[i];
@@ -238,8 +253,9 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * @param start The value of the parameter.
      * @param end The end value of the parameter.
      * @param step The increment of the parameter value.
+     * @exception IllegalActionException If there is a problem reading a file.
      */
-    public static void changeParameter(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String propertyLine, float start, float end, float step, int solver) {
+    public static void changeParameter(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String propertyLine, float start, float end, float step, int solver) throws IllegalActionException {
         int numberOfFederates = modelPath.length;
         File[] file = new File[numberOfFederates];
         String[][] data = new String[numberOfFederates][3];
@@ -253,8 +269,12 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 
         for (int i=0;i<numberOfFederates;i++) {
             file[i] = new File(modelPath[i]);
-            ArrayList<String> content= _readFile(file[i]);
-            content=_changeRKSolver(content, solver);
+            ArrayList<String> content;
+            try {
+		content = convertFileToString(file[i]);
+	    } catch (IOException ex) {
+		throw new IllegalActionException(null, ex, "Failed to open " + file[i]);
+	    }
             String[] info=  _findPropertyLine(content, propertyLine);
             data[i][0]=info[0];
             data[i][1]=info[1];
@@ -313,8 +333,9 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * @param propertyLines The xml line of the parameter that we want to change.
      * @param values The values the new property will assume.
      * @param solver The Runge-Kutta solver order number.
+     * @exception IllegalActionException If there is a problem reading a file.
      **/
-    public static void changeParameters(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String[] propertyLines, double[][] values, int solver) {
+    public static void changeParameters(int waitingTime,AutomaticSimulation vergil,String[] modelPath, String[] propertyLines, double[][] values, int solver) throws IllegalActionException {
         if (propertyLines.length!= values.length) {
             System.out.println("The variable #propertyLines must have the number of elements equal to the number of lines of the variable #values.");
             return;
@@ -327,7 +348,14 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
 
         for (int i=0;i<numberOfFederates;i++) {
             file[i] = new File(modelPath[i]);
-            ArrayList<String> content= _readFile(file[i]);
+	    ArrayList<String> content;
+	    try {
+		content = convertFileToString(file[i]);
+	    } catch (IOException ex) {
+		throw new IllegalActionException(null, ex, "Failed to open " + file[i]);
+	    }
+            content=_changeRKSolver(content, solver);
+
             content=_changeRKSolver(content, solver);
             data[i]=_findPropertyLines(content, propertyLines);
         }

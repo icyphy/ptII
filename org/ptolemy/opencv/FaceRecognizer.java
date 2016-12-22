@@ -265,6 +265,7 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
     /** Return center of gravity of motion detected by the most recent
      *  invocation of filter(), or null if no motion was detected.
      *  @return The center of gravity of motion (in pixels).
+     *  @see #setFaceCount(int)
      */
     public int getFaceCount() {
         return _facesDetected;
@@ -272,6 +273,7 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
 
     /** Set the count of faces detected.
      *  @param count the count of faces detected.
+     *  @see #getFaceCount()
      */
     public void setFaceCount(int count) {
         _facesDetected = count;
@@ -279,6 +281,7 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
 
     /** Set the minimum face size.
      *  @param size the minimum face size, which must be positive.
+     *  @exception IllegalActionException If the value of the size parameter is less than 0.
      */
     public void setMinFaceSize( int size ) throws IllegalActionException {
         if ( size > 0) {
@@ -290,6 +293,7 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
 
     /** Set the maximum face size.
      *  @param size the maximum face size, which must be positive.
+     *  @exception IllegalActionException If the value of the size parameter is less than 0.
      */
     public void setMaxFaceSize( int size ) throws IllegalActionException {
         if ( size > 0) {

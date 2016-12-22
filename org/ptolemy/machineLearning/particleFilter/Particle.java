@@ -67,6 +67,7 @@ public class Particle {
      *  If w is greater than 0.0, then
      *  the weight is set to weight/w.
      *  @param w The weight.
+     *  @return true if the weight was adjusted.
      */
     public boolean adjustWeight(double w) {
         // normalize weight

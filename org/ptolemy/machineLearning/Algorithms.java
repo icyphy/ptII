@@ -48,7 +48,7 @@ import ptolemy.math.DoubleMatrixMath;
 public class Algorithms {
 
     /** Return the probability mass function P(x=k) ~ Poisson(mean)
-     * value at k, for the Poisson distribution with parameter mean
+     *  value at k, for the Poisson distribution with parameter mean.
      *  @param k The value at which the probability mass function will be computed
      *  @param mean The mean (lambda) of the poisson distribution
      *  @return The PMF value at k.
@@ -72,9 +72,10 @@ public class Algorithms {
     }
 
     /** Return the probability mass function P(x=k) ~ Poisson(mean)
-     * value at k, for the poisson distribution with parameter mean
+     *  value at k, for the poisson distribution with parameter mean.
      *  @param k The value at which the probability mass function will be computed
      *  @param mean The mean (lambda) of the poisson distribution
+     *  @param logFactorial The log factorial
      *  @return The PMF value at k.
      *  @exception IllegalActionException If k &lt; 0.
      */
@@ -133,7 +134,7 @@ public class Algorithms {
 
     /**
      * Compute the Gaussian pdf value with the given mean and covariance parameters
-     * at data point y
+     * at data point y.
      * @param y observation point
      * @param mu mean array
      * @param sigma covariance matrix

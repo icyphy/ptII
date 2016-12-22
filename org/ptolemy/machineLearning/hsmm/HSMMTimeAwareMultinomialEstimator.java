@@ -1,5 +1,4 @@
-/* Explicit-duration Hidden-Markov Model Estimator with hourly transition matrix
- * estimates.
+/* Explicit-duration Hidden-Markov Model Estimator with hourly transition matrix  estimates.
 
 Copyright (c) 1998-2016 The Regents of the University of California.
 All rights reserved.
@@ -95,7 +94,7 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
 
     }
 
-    /** Array of observation timestamps as UNIX timestamps */
+    /** Array of observation timestamps as UNIX timestamps. */
     public TypedIOPort timestamps;
 
     /** Transition Matrix partitioning options.
@@ -302,7 +301,7 @@ public class HSMMTimeAwareMultinomialEstimator extends HSMMMultinomialEstimator 
     /** Completion strategy for A set to self and zero transitions with equal probability. */
     protected static final String SELF_AND_ZERO = "Self and Zero";
 
-    /** Time-dependent transition probability matrix*/
+    /** Time-dependent transition probability matrix. */
     protected double[][][] At;
 
     /** The learned transition probability matrix: before completion strategy is applied. */

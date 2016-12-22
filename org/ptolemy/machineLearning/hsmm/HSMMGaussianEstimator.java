@@ -1,6 +1,6 @@
 /* Parameter Estimation for Graphical Models.
 
-Copyright (c) 1998-2015 The Regents of the University of California.
+Copyright (c) 1998-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -58,8 +58,7 @@ calculations and produces the relevant estimates at its output ports.</p>
 The output ports for a Gaussian HMM model are the <i>mean</i> and the <i>standardDeviation</i>
 vectors of the possible hidden states in addition to the HMM parameters independent
 from the emission density: <i>transitionMatrix</i> .
-T
-he <i>mean</i>  is a double array output containing the mean estimates and
+The <i>mean</i>  is a double array output containing the mean estimates and
 <i>sigma</i> is a double array output containing standard deviation estimates of
 each mixture component. If the <i>modelType</i> is HMM, then an additional output,
 <i>transitionMatrix</i> is provided, which is an estimate of the transition matrix
@@ -81,7 +80,7 @@ the parameter estimation stops iterating and delivers the parameter estimates.
  @version $Id$
  @since Ptolemy II 10.0
  @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating
+ @Pt.AcceptedRating Red (cxh)
  */
 public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     /** Construct an actor with the given container and name.
@@ -130,10 +129,10 @@ public class HSMMGaussianEstimator extends HSMMParameterEstimator {
     /** Standard deviation estimate array. */
     public TypedIOPort covariance;
 
-    /** Mean vector guess */
+    /** Mean vector guess. */
     public Parameter meanVectorGuess;
 
-    /** Standard deviation guess */
+    /** Standard deviation guess. */
     public Parameter standardDeviationGuess;
 
     ///////////////////////////////////////////////////////////////////

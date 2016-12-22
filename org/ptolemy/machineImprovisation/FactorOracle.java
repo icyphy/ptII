@@ -2,7 +2,7 @@
 automaton that contains at least all the suffixes of a given input
 sequence.
 
-Copyright (c) 2013-2015 The Regents of the University of California.
+Copyright (c) 2013-2016 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -76,19 +76,20 @@ import ptolemy.kernel.util.Workspace;
  (i) if the probability() transition evaluates to true AND (ii) if
  * validatePitch() returns true.
  *
- <p>
- <b>References</b>
- <p>[1]
- C. Allauzen, M. Crochemore, and M. Raffinot. "Factor oracle: A new structure for pattern matching."
- <i>SOFSEM'99: Theory and Practice of Informatics </i>. Springer Berlin Heidelberg, 1999.
-
- @author Ilge Akkaya
- @version  $Id$
- @since Ptolemy II 10.0
- @Pt.ProposedRating Red (ilgea)
- @Pt.AcceptedRating
+ * <p>
+ * <b>References</b>
+ * <p>[1]
+ * C. Allauzen, M. Crochemore, and M. Raffinot. "Factor oracle: A new structure for pattern matching."
+ * <i>SOFSEM'99: Theory and Practice of Informatics </i>. Springer Berlin Heidelberg, 1999.
+ *
+ * @author Ilge Akkaya
+ * @version  $Id$
+ * @since Ptolemy II 10.0
+ * @Pt.ProposedRating Red (ilgea)
+ * @Pt.AcceptedRating Red (cxh)
  */
 public class FactorOracle extends ModalController {
+
     /** Construct an actor with the given container and name.
      *  @param container The container.
      *  @param name The name of this actor
@@ -178,7 +179,8 @@ public class FactorOracle extends ModalController {
 
     /**
      * The repetition probability P(moving along the original sequence rather than taking a jump along
-     * a suffix link)*/
+     * a suffix link).
+     */
     public Parameter repetitionFactor;
 
     /**
@@ -188,7 +190,7 @@ public class FactorOracle extends ModalController {
     public Parameter validatePitch;
 
     /**
-     * Current chord in improvisation
+     * Current chord in improvisation.
      */
     public TypedIOPort currentChord;
 
@@ -408,7 +410,7 @@ public class FactorOracle extends ModalController {
     }
 
     /**
-     * Get a list of transitions originating from node
+     * Get a list of transitions originating from node.
      * @param node Node index
      * @return a List of states which can be reached from current node
      */
@@ -536,13 +538,12 @@ public class FactorOracle extends ModalController {
             return "function(t:string, s:string) boolean";
         }
 
+	/** A chord function token. */
         protected class ChordFunctionToken extends FunctionToken {
             public ChordFunctionToken() {
                 super(new ChordFunction(), new FunctionType(
                         _CHORD_FUNCTION_ARG_TYPE, BaseType.BOOLEAN));
             }
         }
-
     }
-
 }
