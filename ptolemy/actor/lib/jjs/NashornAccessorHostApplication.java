@@ -191,7 +191,8 @@ public class NashornAccessorHostApplication {
     public static void main(String[] args) {
         try {
 	    int returnValue = NashornAccessorHostApplication.evaluate(args);
-            StringUtilities.exit(returnValue);
+	    // Don't call exit here, wait for the last timeout to exit.
+            // StringUtilities.exit(returnValue);
         } catch (Throwable throwable) {
             System.err.println("Command Failed: " + throwable);
             throwable.printStackTrace();
