@@ -1535,6 +1535,18 @@ Accessor.prototype.setParameter = function (name, value) {
     parameter.currentValue = value;
 };
 
+/** Stop execution of the enclosing swarmlet by finding the top-level
+ *  accessor and invoking wrapup() on it.
+ */
+Accessor.prototype.stop = function() {
+    var container = this;
+    // Find the top-level container.
+    while (container.container) {
+        container = container.container;
+    }
+    container.wrapup();
+}
+
 //////////////////////////////////////////////////////////////////////////////////
 //// Module functions.
 

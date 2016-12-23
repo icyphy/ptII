@@ -81,6 +81,7 @@ function evaluateCode(accessorName, code) {
         'setInterval': setInterval,
         'setParameter': setParameter,
         'setTimeout': setTimeout,
+        'stop' : stop,
         'superSend': superSend
     };
     return new commonHost.Accessor(accessorName, code, getAccessorCode, bindings);
@@ -339,8 +340,7 @@ function setup() {
 
 // Stop execution of the model.  See ptolemy/actor/lib/Stop.java.
 function stop() {
-    actor.getDirector().finish();
-    actor.getDirector().stopFire();
+    actor.stopEnclosingModel();
 }
 
 // Default wrapup function, which invokes exports.wrapup().
