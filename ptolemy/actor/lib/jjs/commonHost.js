@@ -80,6 +80,7 @@
  *  * **initialize**: Emitted when the accessor has been initialized.
  *  * **output**(*name*, *value*): Emitted when an output with the specified name
  *    and value are sent.
+ *  * **reactStart** Emitted when a reaction is starting.
  *  * **react**: Emitted when the accessor has reacted.
  *  * **wrapup**: Emitted when the accessor has wrapped up.
  *
@@ -203,8 +204,9 @@
 /*jshint globalstrict: true, multistr: true */
 'use strict';
 
-// All the top-level accessors that were instantiated.
-var topLevelAccessors = [];
+// All the accessors that have been instantiated (at any level of the hierarchy,
+// and also including interfaces and accessors that are extended).
+var allAccessors = [];
 
 // Determine which accessor host is in use.
 // See https://www.terraswarm.org/accessors/wiki/Main/ResourcesForHostAuthors#Differentiating
@@ -248,6 +250,8 @@ if (accessorHost === accessorHostsEnum.DUKTAPE) {
     var EventEmitter = require('events').EventEmitter;
 }
 
+//////////////////////////////////////////////////////////////////////////////////
+//// Accessor class and its functions.
 
 /** Create (using new) an accessor instance whose interface and functionality is given by
  *  the specified code. This will evaluate the specified code, and if it exports a
@@ -332,6 +336,7 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
     // properties, even if it is being extended or implemented.
     this.accessorName = accessorName;
     this.extendedBy = extendedBy;
+    this.implementedBy = implementedBy;
 
     this.bindings = bindings;
 
@@ -407,24 +412,6 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
     // define it explicitly to be null.
     this.ssuper = null;
     this.exports.ssuper = null;
-
-    // Define an object to be populated with monitoring data for active
-    // accessors whose react() has been invoked. A mapping from accessor
-    // class to statistics capturing the execution time (in milliseconds)
-    // of react() is stored.
-    // ****************FORMAT of output sample array*******************
-    // {<Accessor class> : [<count of sample>, <mean of react execution
-    // duration>, <standard deviation of react execution duration>]}
-    // ****************************************************************
-    // NOTE: This is only a first iteration approach, we can use a different
-    // strategy if needed for storing execution times, like a fixed window of
-    // recent durations that can later be processed by monitoring components
-    // downstream.
-    // FIXME: It is possible a callback is created in react(), execution
-    // time of callback is not accounted for with current implementation
-    if (typeof Accessor.activeAccessors == 'undefined') {
-        Accessor.activeAccessors = {};
-    }
 
     ///////////////////////////////////////////////////////////////////
     //// Evaluate the accessor code.
@@ -939,84 +926,6 @@ Accessor.prototype.connect = function (a, b, c, d) {
     }
 };
 
-/** Convert the specified type to the type expected by the specified input,
- *  or throw an exception if no such conversion is possible.
- *  @param value The value to convert.
- *  @param destination The destination object, which may have a type property.
- *   This is an input, parameter, or output options object.
- *  @param name The name of the input, output, or parameter (for error reporting).
- */
-function convertType(value, destination, name) {
-    if (!destination.type || destination.type === typeof value || value === null) {
-        // Type is unspecified or a match, or value is null. Use value as given.
-    } else if (destination.type === 'string') {
-        if (typeof value !== 'string') {
-            // Convert to string.
-            try {
-                value = JSON.stringify(value);
-            } catch (error) {
-                throw new Error('Object provided to ' +
-                    name +
-                    ' does not have a string representation: ' +
-                    error);
-            }
-        }
-    } else if (typeof value === 'string') {
-        // Provided value is a string, but
-        // destination type is boolean, number, int, or JSON.
-        if (value === '') {
-            // If the value is an empty string, then convert
-            // to null, unless the destination type is JSON.
-            if (destination.type !== 'JSON') {
-                value = null;
-            }
-        } else {
-            try {
-                value = JSON.parse(value);
-            } catch (error) {
-                throw new Error('Failed to convert value to destination type: ' +
-                    name +
-                    ' expected a ' +
-                    destination.type +
-                    ' but received: ' +
-                    value);
-            }
-        }
-    } else if (destination.type === 'boolean' && typeof value !== 'boolean') {
-        // Liberally convert JavaScript data to boolean.
-        if (value) {
-            value = true;
-        } else {
-            value = false;
-        }
-    } else if (destination.type === 'int' || destination.type === 'number') {
-        // value is not a string. Needs to be a number.
-        if (typeof value !== 'number') {
-            throw new Error(name + ' expected an int, but got a ' +
-                (typeof value) +
-                ': ' +
-                value);
-        }
-        // If type is int, need the value to be an integer.
-        if (destination.type === 'int' && value % 1 !== 0) {
-            throw new Error(name + ' expected an int, but got ' + value);
-        }
-    } else {
-        // Only remaining case: value is not a string
-        // and destination type is JSON. Just check that the value has a
-        // JSON representation.
-        try {
-            JSON.stringify(value);
-        } catch (err) {
-            throw new Error('Object provided to ' +
-                name +
-                ' does not have a JSON representation: ' +
-                err);
-        }
-    }
-    return value;
-}
-
 /** Report an error using console.error().
  *  This should be used by an accessor to report non-fatal errors.
  *  For fatal errors, invoke "throw new Error('A Description');"
@@ -1193,42 +1102,6 @@ Accessor.prototype.instantiate = function (instanceName, accessorClass) {
     return containedInstance;
 };
 
-/** Return the top-level accessors that have been created thus far.
- *  @return an array that names the top level accessors that have been created thus far.
- */
-function getTopLevelAccessors() {
-    return topLevelAccessors;
-}
-
-/** Instantiate an accessor given its fully qualified name, a function to retrieve
- *  the code, and a require function to retrieve modules.
- *  The returned object will have a property **accessorClass** with the value of the
- *  name parameter passed in here.
- *  @param accessorName A name to give to the accessor instance.
- *  @param accessorClass Fully qualified accessor class, e.g. 'net/REST'.
- *  @param getAccessorCode A function that will retrieve the source code of a specified
- *   accessor (used to implement the this.extend() and this.implement() functions), or null if
- *   the host does not support accessors that extend other accessors.
- *  @param bindings The function bindings to be used by the accessor.
- *  @param extendedBy An optional argument specifying what accessor is extending
- *   this new instance. Pass null or no argument if this accessor is not being extended.
- *   If this argument is present, then the getAccessorCode and bindings arguments are
- *   ignored (the instance inherits those properties from the extender).
- *  @param implementedBy An optional argument specifying what accessor is implementing
- *   this new instance. Pass null or no argument if this accessor is not being
- *   implemented.
- *   If this argument is present, then the getAccessorCode and bindings arguments are
- *   ignored (the instance inherits those properties from the implementer).
- */
-function instantiateAccessor(
-		accessorName, accessorClass, getAccessorCode, bindings, extendedBy, implementedBy) {
-    var code = getAccessorCode(accessorClass);
-    var instance = new Accessor(
-        accessorName, code, getAccessorCode, bindings, extendedBy, implementedBy);
-    instance.accessorClass = accessorClass;
-    return instance;
-}
-
 /** Return the latest value produced on this output, or null if no
  *  output has been produced.
  *  @param name The name of the output.
@@ -1242,38 +1115,6 @@ Accessor.prototype.latestOutput = function (name) {
     return this.outputs[name].latestOutput;
 };
 
-/** Merge the specified objects. If the two have common properties, the merged object
- *  will have the properties of the second argument. If the first argument is null,
- *  then the returned object will equal the second argument, unless it too is null,
- *  in which case the returned object will be an empty object.
- *  @param first The first argument, giving default properties.
- *  @param second The second argument.
- */
-function mergeObjects(first, second) {
-    if (first) {
-        if (second) {
-            // Both objects exist. Copy the first.
-            var result = {};
-            for (var property in first) {
-                result[property] = first[property];
-            }
-            // Override with the second.
-            for (var property2 in second) {
-                result[property2] = second[property2];
-            }
-            return result;
-        } else {
-            // First but no second object.
-            return first;
-        }
-    } else if (second) {
-        // Second but no first object.
-        return second;
-    }
-    // No first or second.
-    return {};
-}
-
 /** Default module identifier for accessors.
  *  CommonJS specification requires a 'module' object with an 'id' property
  *  and an optional 'uri' property. The spec says that module.id should be
@@ -1285,11 +1126,6 @@ function mergeObjects(first, second) {
 Accessor.prototype.module = {
     'id': 'unspecified'
 };
-
-/** Default empty function to use if the function argument to
- *  addInputHandler is null.
- */
-function nullHandlerFunction() {}
 
 /** Define an accessor output.
  *  @param name The name of the output.
@@ -1357,27 +1193,6 @@ Accessor.prototype.provideInput = function (name, value) {
     }
 };
 
-/** Push the specified item onto the specified list if it is not already there.
- *  @param item Item to push.
- *  @param list List onto which to push it.
- */
-function pushIfNotPresent(item, list) {
-    for (var j = 0; j < list.length; j++) {
-        if (item === list[j]) {
-            return;
-        }
-    }
-    list.push(item);
-}
-
-/** Test function to query the accessor execution time statistics
- *  @return A mapping from accessor class to duration statistics for
- *          execution time of the accessor instance react function
- */
-Accessor.queryActiveAccessors = function () {
-    return Accessor.activeAccessors;
-};
-
 /** Invoke any registered handlers for all inputs or for a specified input.
  *  Also invoke any handlers that have been registered to respond to any input,
  *  if there are any such handlers.
@@ -1391,8 +1206,8 @@ Accessor.queryActiveAccessors = function () {
  */
 Accessor.prototype.react = function (name) {
     // console.log(this.accessorName + ": react(" + name + ")");
-    // For monitoring, we want to time execution of this function.
-    var startTime = Date.now();
+    this.emit('reactStart');
+
     var thiz = this.root;
     // Allow further reactions to be scheduled by this reaction.
     thiz.reactRequestedAlready = false;
@@ -1511,25 +1326,6 @@ Accessor.prototype.react = function (name) {
     if (typeof this.exports.fire === 'function') {
         //console.log('commonHost.js react(' + name + '): invoking fire');
         this.exports.fire.call(this);
-    }
-
-    // Duration is in milliseconds
-    var duration = Date.now() - startTime;
-    if (this.accessorClass in Accessor.activeAccessors) {
-        // Update mean and variance for duration of react execution
-        var newCount = Accessor.activeAccessors[this.accessorClass][0] + 1;
-        var currentMean = Accessor.activeAccessors[this.accessorClass][1];
-        var currentVar = Accessor.activeAccessors[this.accessorClass][2];
-        Accessor.activeAccessors[this.accessorClass][0] = newCount;
-        Accessor.activeAccessors[this.accessorClass][1] = currentMean + ((duration - currentMean) / newCount);
-        if (newCount > 1) {
-            var deviation = duration - currentMean;
-            var nextVar = (((newCount - 2) / (newCount - 1)) * currentVar) +
-                ((1 / newCount) * (deviation * deviation));
-            Accessor.activeAccessors[this.accessorClass][2] = nextVar;
-        }
-    } else {
-        Accessor.activeAccessors[this.accessorClass] = [1, duration, 0];
     }
 
     this.emit('react');
@@ -1739,37 +1535,199 @@ Accessor.prototype.setParameter = function (name, value) {
     parameter.currentValue = value;
 };
 
-/** Stop execution by invoking wrapup() on all top-level accessors.
- *
- *  Accessors such as JavaScriptStop would invoke stop as
- *  <pre>
- *  stop.call(this);
- *  </pre>
- *  In the nodeHost.js exitHandler() function, exit() is caught and wrapup() is invoked.
- */
-var stop = function () {
-    var accessor,
-        composite,
-        i,
-        initialThrowable = null;
+//////////////////////////////////////////////////////////////////////////////////
+//// Module functions.
 
-    for (composite in topLevelAccessors) {
-        for (i in topLevelAccessors[composite].containedAccessors) {
-        	try {
-        		accessor = topLevelAccessors[composite].containedAccessors[i];
-        		console.log('commonHost.js: invoking wrapup() for accessor: ' + accessor.accessorName);
-        		if (accessor) {
-        			accessor.wrapup();
-        		}
-        	} catch (error) {
-        		if (initialThrowable === null) {
-        			initialThrowable = error;
-        		}
-        	}
+/** Convert the specified type to the type expected by the specified input,
+ *  or throw an exception if no such conversion is possible.
+ *  @param value The value to convert.
+ *  @param destination The destination object, which may have a type property.
+ *   This is an input, parameter, or output options object.
+ *  @param name The name of the input, output, or parameter (for error reporting).
+ */
+function convertType(value, destination, name) {
+    if (!destination.type || destination.type === typeof value || value === null) {
+        // Type is unspecified or a match, or value is null. Use value as given.
+    } else if (destination.type === 'string') {
+        if (typeof value !== 'string') {
+            // Convert to string.
+            try {
+                value = JSON.stringify(value);
+            } catch (error) {
+                throw new Error('Object provided to ' +
+                    name +
+                    ' does not have a string representation: ' +
+                    error);
+            }
+        }
+    } else if (typeof value === 'string') {
+        // Provided value is a string, but
+        // destination type is boolean, number, int, or JSON.
+        if (value === '') {
+            // If the value is an empty string, then convert
+            // to null, unless the destination type is JSON.
+            if (destination.type !== 'JSON') {
+                value = null;
+            }
+        } else {
+            try {
+                value = JSON.parse(value);
+            } catch (error) {
+                throw new Error('Failed to convert value to destination type: ' +
+                    name +
+                    ' expected a ' +
+                    destination.type +
+                    ' but received: ' +
+                    value);
+            }
+        }
+    } else if (destination.type === 'boolean' && typeof value !== 'boolean') {
+        // Liberally convert JavaScript data to boolean.
+        if (value) {
+            value = true;
+        } else {
+            value = false;
+        }
+    } else if (destination.type === 'int' || destination.type === 'number') {
+        // value is not a string. Needs to be a number.
+        if (typeof value !== 'number') {
+            throw new Error(name + ' expected an int, but got a ' +
+                (typeof value) +
+                ': ' +
+                value);
+        }
+        // If type is int, need the value to be an integer.
+        if (destination.type === 'int' && value % 1 !== 0) {
+            throw new Error(name + ' expected an int, but got ' + value);
+        }
+    } else {
+        // Only remaining case: value is not a string
+        // and destination type is JSON. Just check that the value has a
+        // JSON representation.
+        try {
+            JSON.stringify(value);
+        } catch (err) {
+            throw new Error('Object provided to ' +
+                name +
+                ' does not have a JSON representation: ' +
+                err);
         }
     }
+    return value;
+}
+
+/** Return the top-level accessors that have been created thus far.
+ *  @return an array that names the top level accessors that have been created thus far.
+ */
+function getTopLevelAccessors() {
+    var result = [];
+    for (var i = 0; i < allAccessors.length; i++) {
+        if (!allAccessors[i].container && !allAccessors[i].extendedBy && !allAccessors[i].implementedBy) {
+            result.push(allAccessors[i]);
+        }
+    }
+    return result;
+}
+
+/** Instantiate an accessor given its fully qualified name, a function to retrieve
+ *  the code, and a require function to retrieve modules.
+ *  The returned object will have a property **accessorClass** with the value of the
+ *  name parameter passed in here.
+ *  @param accessorName A name to give to the accessor instance.
+ *  @param accessorClass Fully qualified accessor class, e.g. 'net/REST'.
+ *  @param getAccessorCode A function that will retrieve the source code of a specified
+ *   accessor (used to implement the this.extend() and this.implement() functions), or null if
+ *   the host does not support accessors that extend other accessors.
+ *  @param bindings The function bindings to be used by the accessor.
+ *  @param extendedBy An optional argument specifying what accessor is extending
+ *   this new instance. Pass null or no argument if this accessor is not being extended.
+ *   If this argument is present, then the getAccessorCode and bindings arguments are
+ *   ignored (the instance inherits those properties from the extender).
+ *  @param implementedBy An optional argument specifying what accessor is implementing
+ *   this new instance. Pass null or no argument if this accessor is not being
+ *   implemented.
+ *   If this argument is present, then the getAccessorCode and bindings arguments are
+ *   ignored (the instance inherits those properties from the implementer).
+ */
+function instantiateAccessor(
+        accessorName, accessorClass, getAccessorCode, bindings, extendedBy, implementedBy) {
+    var code = getAccessorCode(accessorClass);
+    var instance = new Accessor(
+        accessorName, code, getAccessorCode, bindings, extendedBy, implementedBy);
+    instance.accessorClass = accessorClass;
+    allAccessors.push(instance);
+    return instance;
+}
+
+/** Merge the specified objects. If the two have common properties, the merged object
+ *  will have the properties of the second argument. If the first argument is null,
+ *  then the returned object will equal the second argument, unless it too is null,
+ *  in which case the returned object will be an empty object.
+ *  @param first The first argument, giving default properties.
+ *  @param second The second argument.
+ */
+function mergeObjects(first, second) {
+    if (first) {
+        if (second) {
+            // Both objects exist. Copy the first.
+            var result = {};
+            for (var property in first) {
+                result[property] = first[property];
+            }
+            // Override with the second.
+            for (var property2 in second) {
+                result[property2] = second[property2];
+            }
+            return result;
+        } else {
+            // First but no second object.
+            return first;
+        }
+    } else if (second) {
+        // Second but no first object.
+        return second;
+    }
+    // No first or second.
+    return {};
+}
+
+/** Push the specified item onto the specified list if it is not already there.
+ *  @param item Item to push.
+ *  @param list List onto which to push it.
+ */
+function pushIfNotPresent(item, list) {
+    for (var j = 0; j < list.length; j++) {
+        if (item === list[j]) {
+            return;
+        }
+    }
+    list.push(item);
+}
+
+/** Default empty function to use if the function argument to
+ *  addInputHandler is null.
+ */
+function nullHandlerFunction() {}
+
+/** Stop execution by invoking wrapup() on all top-level accessors.
+ */
+function stopAllAccessors() {
+    var accessors = getTopLevelAccessors();
+    var initialThrowable = null;
+    for (var i = 0; i < accessors.length; i++ ) {
+        var composite = accessors[i];
+    	try {
+			console.log('commonHost.js: invoking wrapup() for accessor: ' + composite.accessorName);
+			composite.wrapup();
+    	} catch (error) {
+			console.error('commonHost.js: wrapup failed for accessor: ' + composite.accessorName);
+    		if (initialThrowable === null) {
+    			initialThrowable = error;
+    		}
+    	}
+    }
     if (initialThrowable !== null) {
-    	throw new Error("commonHost.js: stop(): while invoking wrapup() of all accessors," +
+    	throw new Error("commonHost.js: stopAllAccessors(): while invoking wrapup() of all accessors," +
     			" an exception was thrown: " + initialThrowable + ":" + initialThrowable.stack);
     }
 };
@@ -1792,4 +1750,4 @@ var _accessorInstanceTable = {};
 exports.Accessor = Accessor;
 exports.instantiateAccessor = instantiateAccessor;
 exports.getTopLevelAccessors = getTopLevelAccessors;
-exports.stop = stop;
+exports.stopAllAccessors = stopAllAccessors;
