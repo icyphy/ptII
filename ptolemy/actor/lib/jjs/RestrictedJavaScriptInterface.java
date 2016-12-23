@@ -289,6 +289,12 @@ public class RestrictedJavaScriptInterface {
         return _actor.setTimeout(function, millisecond);
     }
 
+    /** Stop execution of the enclosing model.
+     */
+    public void stopEnclosingModel() {
+        _actor.stopEnclosingModel();
+    }
+
     /** Specify version information to appear in the documentation for this actor.
      *  @param version Version information to appear in documentation.
      */

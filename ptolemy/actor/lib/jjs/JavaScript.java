@@ -36,8 +36,6 @@ import java.net.URI;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -1848,6 +1846,13 @@ public class JavaScript extends TypedAtomicActor {
         final Integer id = Integer.valueOf(_timeoutCount++); // Shouldn't this be synchronized?
         _setTimeout(function, milliseconds, id);
         return id;
+    }
+    
+    /** Stop execution of the enclosing model.
+     */
+    public void stopEnclosingModel() {
+        getDirector().finish();
+        getDirector().stopFire();
     }
 
     /** Convert the specified array into a native JavaScript array.
