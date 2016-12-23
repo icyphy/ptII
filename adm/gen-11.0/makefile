@@ -227,29 +227,33 @@ release_joule_remote4_test:
 
 ####
 release_terra:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc clean all src.jar
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc clean all src.jar
 
 release_terra_setup:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc setup
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc setup
+
+
+release_terra_test_capecode_setup:
+	$(MAKE) USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc test_capecode_setup
 
 release_terra_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc remote4_Test
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc remote4_Test
 
 release_terra_update_ftp:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc update_ftp
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc update_ftp
 
 ####
 release_sisyphus:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc clean all src.jar
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc clean all src.jar
 
 release_sisyphus_setup:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc setup
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc setup
 
 release_sisyphus_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc remote4_Test
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc remote4_Test
 
 release_sisyphus_update_ftp:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc update_ftp
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc update_ftp
 
 ####
 release_windows:
@@ -3305,8 +3309,8 @@ _test_capecode_setup_installerTest_clean:
 
 test/capeCodeTest:
 	if [ ! -f test/capeCodeTest ]; then \
-		echo "Invoking java -jar $(CAPECODE_SETUP).jar capecodeInstallerTest.xml to create test/capeCodeTest"; \
-		java -jar $(CAPECODE_SETUP).jar capecodeInstallerTest.xml; \
+		echo "Invoking java -jar $(CAPECODE_SETUP)_64.jar capecodeInstallerTest.xml to create test/capeCodeTest"; \
+		java -jar $(CAPECODE_SETUP)_64.jar capecodeInstallerTest.xml; \
 	fi
 
 test_capecode_setup_XvfbStart:
@@ -3808,7 +3812,7 @@ $(PTBUILDRELEASE)/ptolemy/ptsupport.jar:
 	@echo "# Now building in the $(PTBUILDRELEASE) directory so that we can update the website"
 	@echo "#"
 	@echo "$@ `date`"
-	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export JAVADOC=/usr/lib/jvm/jdk1.8.0_51/bin/javadoc; ./configure; ant; (cd bin; make); (cd doc; make codeDoc/tree.html); ant jars)
+	(cd tmp/build/ptII$(VERSION); export PTII=`pwd`; export JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc; ./configure; ant; (cd bin; make); (cd doc; make codeDoc/tree.html); ant jars)
 
 $(PTBUILDRELEASE)/signed:
 	@echo "#"
