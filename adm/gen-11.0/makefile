@@ -275,6 +275,9 @@ release_mac2:
 release_mac_setup:
 	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar setup
 
+release_mac_test_capecode_setup:
+	make USER=cxh PTIIHOME=/Users/cxh/src/ptII11.0.devel COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar test_capecode_setup
+
 release_mac2_setup:
 	make USER=cxh PTIIHOME=/Users/cxh/ptII COMPRESS=gzip TAR=/opt/local/bin/gnutar JAR=/usr/bin/jar src.jar setup
 
@@ -847,7 +850,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/backtrack \
 		ptolemy/build.xml \
 		ptolemy/caltrop \
-		ptolemy/cg \
 		ptolemy/component \
 		ptolemy/configs/dsp \
 		ptolemy/configs/full \
@@ -942,6 +944,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/security \
 		ptolemy/actor/lib/xslt \
 		ptolemy/actor/ptalon \
+		ptolemy/cg \
 		ptolemy/configs/ptiny \
 		ptolemy/domains/csp \
 		ptolemy/domains/pn \
@@ -964,6 +967,7 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/io \
 		ptolemy/actor/lib/io/comm \
 		ptolemy/actor/ptalon \
+		ptolemy/cg \
 		ptolemy/configs/hyvisual \
 		ptolemy/domains/ptinyDomains.xml
 
@@ -1053,42 +1057,70 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/bin/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/bin/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/bin/makefile
-	# Fix up actor/lib/makefile
-	egrep -v "comm.jar|javasound.jar|security.jar|xslt.jar" \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile \
-		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile.tmp
-	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile.tmp \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile
-	# Fix up domains/makefile
-	egrep -v "csp.jar|ddf.jar|pn.jar|domains.xml|ptinyDomains.xml|ci.jar|dde.jar|dt/dt.jar|giotto.jar|petrinet.jar|tm.jar|sr.jar|wireless.jar"	\
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile \
-		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile.tmp
-	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile.tmp \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile
-	# Fix up configs/makefile
-	egrep -v "dsp.jar|full.jar|jxta.jar|ptiny.jar|visualsense.jar" \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile \
-		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile.tmp
-	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile.tmp \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile
+	#
 	# Fix up doc/design/makefile
 	egrep -v "ptIIdesign1-intro.pdf|ptIIdesign2-software.pdf|ptIIdesign3-domains.pdf|visualsense.pdf|visualsense.jar|usingVergil" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/design/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/design/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/design/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/design/makefile
+	#
 	# Fix up doc/makefile
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|lib/comm|lib.comm|python|security|ci/kernel|ci/lib|copernicus|csp|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|sr.kernel|sr/kernel|sr.lib|sr/lib|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|wireless" \
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|books|lib/comm|lib.comm|python|security|books|ci/kernel|ci/lib|copernicus|csp|curriculum|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|space|sr.kernel|sr/kernel|sr.lib|sr/lib|sysml|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|vhdl|wireless" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile
-	# Fix up actor/lib/test/makefile
+	#
+	# Fix up makefile
+	egrep -v ".eclipse.epf|actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|lbnl|pt-modules|ptserver|thales|vergil/gt/gt.jar|vergil*.jnlp.in" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile
+	#
+	# Fix up ptolemy/actor/lib/makefile
+	egrep -v "comm.jar|fmi/fmi.jar|jopio/jopio.jar|javasound.jar|security.jar|vhdl/vhdl.jar|xslt.jar" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile
+	#
+	# Fix up ptolemy/actor/lib/test/makefile
 	egrep -v OrderedMerge.tcl \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/test/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/test/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/test/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/test/makefile
+	#
+	# Fix up ptolemy/actor/makefile
+	egrep -v "designs/designs.jar" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/makefile
+	#
+	# Fix up ptolemy/configs/makefile
+	egrep -v "dsp.jar|full.jar|jxta.jar|ptiny.jar|visualsense.jar" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile
+	#
+	# Fix up ptolemy/domains/makefile
+	egrep -v "csp.jar|ddf.jar|pn.jar|domains.xml|ptinyDomains.xml|algebraic.jar|ca.jar|ci.jar|curriculum.jar|dde.jar|dt/dt.jar|fmima.jar|giotto.jar|hdf.jar|ontologies.jar|petrinet.jar|ptera.jar|pthales.jar|qss.jar|scr.jar|sysml.jar|taskpt.jar|tester.jar|tm.jar|sr.jar|wireless.jar|algebraic/demo|ca/demo|ddf/demo|hdf/demo|pn/demo|ptera/demo|pthales/demo|ptera/demo|rendezvous/demo"	\
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile
+	#
+	# Fix up ptolemy/domains/modal/kernel/makefile
+	egrep -v "fmv" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/modal/kernel/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/modal/kernel/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/modal/kernel/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/modal/kernel/makefile
+	#
 	# Fix up ptolemy/makefile
 	sed -e 's/\$$(PTCALTROP_DIR)//' \
 	    -e 's/\$$(PTCOPERNICUS_DIR)//' \
@@ -1096,12 +1128,13 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/makefile
-	# Fix up makefile
-	egrep -v "actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|thales" \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile \
-		> src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile.tmp
-	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile.tmp \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile \
+	#
+	# Fix up ptolemy/vergil/basic/imprt
+	egrep -v "fmu|g4ltl" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/imprt/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/imprt/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/imprt/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/imprt/makefile
 	#cd src_jar/$(CAPECODE_CAPECODE_VERSION); $(FINDCLEAN))
 	(cd src_jar/$(CAPECODE_CAPECODE_VERSION); rm -rf `cat ../../src.ex`)
 	# Update the CapeCode copyright (really, the license).
@@ -1150,7 +1183,7 @@ src_jar/hyvisual$(VERSION): $(PTII_SRC_JAR)
 	mv src_jar/hyvisual$(VERSION)/bin/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/bin/makefile
 	# Fix up actor/lib/makefile
-	egrep -v "comm.jar|javasound.jar|security.jar|xslt.jar" \
+	egrep -v "comm.jar|fmi/fmi.jar|jopio/jopio.jar|javasound.jar|security.jar|vhdl/vhdl.jar|xslt.jar" \
 		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile \
 		> src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp \
