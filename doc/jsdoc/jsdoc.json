@@ -1,5 +1,5 @@
 {
-    "plugins": ["plugins/markdown", "doc/jsdoc/plugins/accessorJSDocTags"],
+    "plugins": ["vendors/jsdoc/plugins/markdown", "jsdoc/plugins/accessorJSDocTags"],
     "markdown": {
         "tags": ["accessor", "input", "output", "parameter"]
     },
