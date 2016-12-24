@@ -245,8 +245,6 @@
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/imprt/accessor"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/database/database.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/domains/space/space.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/domains/space"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/database/mysql-connector-java-5.1.6-bin.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/javax.mail.jar"
@@ -408,6 +406,7 @@
             <description>The Ptolemy II sources.</description>
 	    <!-- Can't just copy the directory, need to spec files -->
 	    <!-- If you edit this, also edit PTII_TOPDIR in the makefile. -->
+	    <file src="src_jar/capecode1.0.devel/.classpath.in" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode1.0.devel/bin" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode1.0.devel/build.default.xml" targetdir="$INSTALL_PATH"/>
 	    <file src="src_jar/capecode1.0.devel/build.xml.in" targetdir="$INSTALL_PATH"/>
