@@ -50,6 +50,9 @@
   <!-- The location of the jsdoc distribution, used by the jsdoc target. -->
   <property name="jsdoc.home" value="vendors/jsdoc" />
 
+  <!-- The location of the jsdoc distribution, used by the jsdoc target. -->
+  <property name="jsdoc.command" value="${jsdoc.home}/jsdoc.js" />
+
   <!-- Location of the jshint executable, used to check for common errors in JavaScript files. -->
   <property name="jshint.executable" value="${env.HOME}/node_modules/jshint/bin/jshint"/>
   
@@ -410,7 +413,7 @@
   </target>
 
   <target name="-check-vendors-jsdoc" unless="vendors.jsdoc.exists">
-    <available property="vendors.jsdoc.exists" file="${jsdoc.home}/jsdoc"/>
+    <available property="vendors.jsdoc.exists" file="${jsdoc.command}"/>
   </target>
 
   <target name="build"
@@ -814,7 +817,7 @@ For example:
 
     The output appears in doc/codeDoc/js/index.html
     </echo>
-    <exec executable="${jsdoc.home}/jsdoc"
+    <exec executable="${jsdoc.command}"
 	  timeout="${timeout.short}">
       <arg value="--verbose" />
       <arg value="--recurse" />
@@ -1763,6 +1766,13 @@ For example:
         <arg value="clone"/>
         <arg value="https://github.com/terraswarm/jsdoc.git"/>
       </exec>
+    <exec executable="npm"
+          timeout="${timeout}">
+      <arg value="install"/>
+      <arg value="jsdoc"/>
+      <arg value="marked"/>
+      <arg value="requizzle"/>
+    </exec>
   </target>
 
   <target name="vendors-jsdoc-pull"
@@ -1772,6 +1782,13 @@ For example:
           executable="git"
 	  timeout="${timeout.short}">
       <arg value="pull"/>
+    </exec>
+    <exec executable="npm"
+          timeout="${timeout}">
+      <arg value="update"/>
+      <arg value="jsdoc"/>
+      <arg value="marked"/>
+      <arg value="requizzle"/>
     </exec>
   </target>
 
