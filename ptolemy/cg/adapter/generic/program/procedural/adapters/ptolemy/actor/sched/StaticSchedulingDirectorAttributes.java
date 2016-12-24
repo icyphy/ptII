@@ -32,8 +32,6 @@ package ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sch
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
-import ptolemy.domains.giotto.kernel.GiottoReceiver;
-import ptolemy.domains.giotto.kernel.GiottoScheduler;
 import ptolemy.kernel.util.DecoratorAttributes;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -49,8 +47,6 @@ import ptolemy.kernel.util.NamedObj;
  @since Ptolemy II 10.0
  @Pt.ProposedRating Yellow (eal)
  @Pt.AcceptedRating Red (eal)
- @see GiottoScheduler
- @see GiottoReceiver
  */
 public class StaticSchedulingDirectorAttributes extends DecoratorAttributes {
 
