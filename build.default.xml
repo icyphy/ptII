@@ -48,9 +48,9 @@
   <property name="javadoc.packagenames" value="com.*,diva.*,lbnl.*,org.hlacerti.*,org.json.*,org.ptolemy.*,org.terraswarm.*,ptolemy.*,ptserver.*" />
 
   <!-- The location of the jsdoc distribution, used by the jsdoc target. -->
-  <property name="jsdoc.home" value="vendors/jsdoc" />
+  <property name="jsdoc.home" value="node_modules/@terraswarm/jsdoc" />
 
-  <!-- The location of the jsdoc distribution, used by the jsdoc target. -->
+  <!-- The location of the jsdoc command, used by the jsdoc target. -->
   <property name="jsdoc.command" value="${jsdoc.home}/jsdoc.js" />
 
   <!-- Location of the jshint executable, used to check for common errors in JavaScript files. -->
@@ -387,6 +387,10 @@
     <available property="bin.vergil.exists" file="bin/vergil"/>
   </target>
 
+  <target name="-check-jsdoc">
+    <available property="jsdoc.command.exists" file="${jsdoc.command}"/>
+  </target>
+
   <target name="-check-jshint-executable" unless="jshint.executable.exists">
     <available property="jshint.executable.exists" file="${jshint.executable}"/>
   </target>
@@ -410,10 +414,6 @@
 
   <target name="-check-terraswarm-accessor-accessors-directory" unless="terraswarm-accessor-accessors-exists">
     <available property="terraswarm-accessor-accessors-exists" file="org/terraswarm/accessor/accessors"/>
-  </target>
-
-  <target name="-check-vendors-jsdoc" unless="vendors.jsdoc.exists">
-    <available property="vendors.jsdoc.exists" file="${jsdoc.command}"/>
   </target>
 
   <target name="build"
@@ -806,7 +806,7 @@ For example:
   </target>
 
   <target name="jsdoc"
-          depends="vendors-jsdoc, jsdoc-getFromWiki"
+          depends="jsdoc-update, jsdoc-getFromWiki"
           description="Run jsdoc to generate documentation for JavaScript files."
           >
     <echo>Invoke jsdoc to generate documentation for .js files.
@@ -839,6 +839,26 @@ For example:
     <chmod file="doc/jsdoc/makeptjsdocREADME" perm="a+x"/>
     <exec executable="doc/jsdoc/makeptjsdocREADME"
 	  timeout="10000">
+    </exec>
+  </target>
+
+  <target name="jsdoc-install"
+	  depends="-check-jsdoc"
+	  unless="jsdoc.command.exists">
+    <mkdir dir="${basedir}/node_modules"/>
+    <exec executable="npm"
+          timeout="${timeout}">
+      <arg value="install"/>
+      <arg value="@terraswarm/jsdoc"/>
+    </exec>
+  </target>
+
+  <target name="jsdoc-update"
+	  depends="jsdoc-install">
+    <exec executable="npm"
+          timeout="${timeout}">
+      <arg value="update"/>
+      <arg value="@terraswarm/jsdoc"/>
     </exec>
   </target>
 
@@ -1752,43 +1772,6 @@ For example:
           executable="svn"
 	  timeout="${timeout.short}">
       <arg value="update"/>
-    </exec>
-  </target>
-
-  <target name="vendors-jsdoc"
-	  depends="-check-vendors-jsdoc"
-	  description="Check out jsdoc using git to create vendors/jsdoc."
-	  unless="${vendors.jsdoc.exists}">
-      <mkdir dir="${basedir}/vendors"/>
-      <exec dir="${basedir}/vendors"
-            executable="git"
-	    timeout="${timeout.short}">
-        <arg value="clone"/>
-        <arg value="https://github.com/terraswarm/jsdoc.git"/>
-      </exec>
-    <exec executable="npm"
-          timeout="${timeout}">
-      <arg value="install"/>
-      <arg value="jsdoc"/>
-      <arg value="marked"/>
-      <arg value="requizzle"/>
-    </exec>
-  </target>
-
-  <target name="vendors-jsdoc-pull"
-	  depends="vendors-jsdoc"
-	  description="Do a git pull in vendors/jsdoc">
-    <exec dir="${basedir}/vendors/jsdoc"
-          executable="git"
-	  timeout="${timeout.short}">
-      <arg value="pull"/>
-    </exec>
-    <exec executable="npm"
-          timeout="${timeout}">
-      <arg value="update"/>
-      <arg value="jsdoc"/>
-      <arg value="marked"/>
-      <arg value="requizzle"/>
     </exec>
   </target>
 

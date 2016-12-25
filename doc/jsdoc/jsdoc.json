@@ -1,5 +1,5 @@
 {
-    "plugins": ["vendors/jsdoc/plugins/markdown", "jsdoc/plugins/accessorJSDocTags"],
+    "plugins": ["node_modules/@terraswarm/jsdoc/plugins/markdown", "doc/jsdoc/plugins/accessorJSDocTags"],
     "markdown": {
         "tags": ["accessor", "input", "output", "parameter"]
     },
