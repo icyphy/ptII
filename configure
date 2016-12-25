@@ -9132,10 +9132,13 @@ fi
         if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JNA_JAR" >&5
 $as_echo "$JNA_JAR" >&6; }; fi
-	PTFMI_DIR=fmi
-	PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi org.ptolemy.fmi.driver org.ptolemy.fmi.type ptolemy.vergil.basic.imprt.fmu"
+	if test -d "$PTII/ptolemy/actor/lib/fmi"; then
+		PTFMI_DIR=fmi
+		PTFMI_PACKAGES="ptolemy.actor.lib.fmi org.ptolemy.fmi org.ptolemy.fmi.driver org.ptolemy.fmi.type ptolemy.vergil.basic.imprt.fmu"
+        fi
         updateClasspath "$JNA_JAR"
-        { $as_echo "$as_me:${as_lineno-$LINENO}: checking for GDP jar file" >&5
+	if test -d "$PTII/ptolemy/actor/lib/jjs/modules/gdp"; then
+	    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for GDP jar file" >&5
 $as_echo_n "checking for GDP jar file... " >&6; }
 
 # Check whether --with-gdp-jar was given.
@@ -9145,21 +9148,22 @@ else
   PTGDP_JAR=$PTII/lib/gdp-0.7-2.jar
 fi
 
-        if test -f "$PTGDP_JAR"; then
-             if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+            if test -f "$PTGDP_JAR"; then
+                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTGDP_JAR" >&5
 $as_echo "$PTGDP_JAR" >&6; }; fi
-	     PTGDP_DIR=gdp
-             updateClasspath "$PTGDP_JAR"
-             PTGDP_PACKAGES=ptolemy.actor.lib.jjs.modules.gdp
-        else
-             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/gdp-0.7-2.jar,
+	        PTGDP_DIR=gdp
+                updateClasspath "$PTGDP_JAR"
+                PTGDP_PACKAGES=ptolemy.actor.lib.jjs.modules.gdp
+            else
+                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/gdp-0.7-2.jar,
    which supplies an implementation of the Global Data Plane.
    The GDP is only necessary for use with the GDP Accessor." >&5
 $as_echo "$as_me: WARNING: Failed to find $PTII/lib/gdp-0.7-2.jar,
    which supplies an implementation of the Global Data Plane.
    The GDP is only necessary for use with the GDP Accessor." >&2;}
              updateExcludes "ptolemy/actor/lib/jjs/modules/gdp"
+            fi
         fi
     else
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/lib/jna-4.0.0-variadic.jar,
