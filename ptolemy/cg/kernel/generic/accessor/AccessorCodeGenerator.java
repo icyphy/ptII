@@ -32,8 +32,6 @@ import java.io.IOException;
 import java.net.URI;
 
 import ptolemy.cg.kernel.generic.RunnableCodeGenerator;
-import ptolemy.data.type.BaseType;
-import ptolemy.data.type.Type;
 import ptolemy.kernel.attributes.URIAttribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;

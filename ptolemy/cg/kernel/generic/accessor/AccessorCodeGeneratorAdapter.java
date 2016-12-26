@@ -27,11 +27,13 @@
  */
 package ptolemy.cg.kernel.generic.accessor;
 
+import ptolemy.actor.lib.conversions.json.TokenToJSON;
+import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
+import ptolemy.cg.kernel.generic.GenericCodeGenerator;
+import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
-import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
-import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.NamedObj;
@@ -123,18 +125,11 @@ public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter 
      *  type or expression of the parameter.
      */
     public String targetExpression(Parameter parameter) throws IllegalActionException{
-        Type ptType = parameter.getType();
-        String expression = parameter.getExpression();
-        if (ptType == BaseType.STRING
-                && parameter.getAttribute("_JSON") != null) {
-            return expression;
-        } else {
-            return
-                ptType == BaseType.BOOLEAN ? expression
-                : ptType == BaseType.DOUBLE ? expression
-                : ptType == BaseType.INT ? expression
-                : '"' + expression + '"';
-        }
+        // Should not use getExpression() here, because the expression may be
+        // referring to other parameters in scope. The code generator needs to
+        // juse use the value of the token.
+        Token token = parameter.getToken();
+        return TokenToJSON.constructJSON(token);
     }
 
     /** Set the code generator associated with this adapter class.
