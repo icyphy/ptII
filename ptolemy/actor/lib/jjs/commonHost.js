@@ -81,7 +81,7 @@
  *  * **output**(*name*, *value*): Emitted when an output with the specified name
  *    and value are sent.
  *  * **reactStart** Emitted when a reaction is starting.
- *  * **react**: Emitted when the accessor has reacted.
+ *  * **reactEnd**: Emitted when the accessor has reacted.
  *  * **wrapup**: Emitted when the accessor has wrapped up.
  *
  *
@@ -1328,7 +1328,7 @@ Accessor.prototype.react = function (name) {
         this.exports.fire.call(this);
     }
 
-    this.emit('react');
+    this.emit('reactEnd');
 };
 
 /** Default implement of the readURL function, which throws an exception stating
@@ -1703,6 +1703,206 @@ function mergeObjects(first, second) {
     return {};
 }
 
+/** Process command line arguments to instantiate and initialize
+ *  accessors or to evaluate plain JavaScript within the context of an
+ *  accessor host. This is provided here in commonHost so that all
+ *  accessor hosts that provide a command-line usage have the same
+ *  command-line argument structure. 
+ *  
+ *  This function takes up to four arguments,
+ *  where only the first is required.
+ *  
+ *  The first argument is an array of
+ *  command-line arguments (as detailed below).
+ *  
+ *  The second (optional)
+ *  argument is a function that given a file name, returns the contents
+ *  of the file as a string. The second argument is needed only if
+ *  plain JavaScript files are to be evaluated using the -js command-line
+ *  argument. 
+ *  
+ *  The third (optional) argument is an instantiate function that
+ *  takes two arguments, an accessor name (an arbitrary string) and an
+ *  accessor class name. This argument is needed only if accessors class
+ *  names are given on the command line to instantiate and initialize.
+ *  
+ *  The fourth (optional) argument is a callback function to
+ *  invoke when either a specified timeout is reached (if a timeout
+ *  is provided), or all instantiated accessors have wrapped up
+ *  and all specified JavaScript files have been evaluated. This argument
+ *  may, for example, cause the calling process to exit.
+ *  
+ *  For example, if a host provides a executable command named
+ *  'host', then it might be invoked as follows:
+ *  
+ *      > host -t 1000 -js fileName.js test/TestAccessor
+ *      
+ *  The above command will evaluate the JavaScript in fileName.js, then
+ *  instantiate the accessor with class name test/TestAccessor and
+ *  initialize it, then wait one second and then call the terminate
+ *  callback function.  For the above command to work, this function
+ *  has to be provided a fileReader argument to read fileName.js.
+ *  
+ *  The order in which files and accessors are specified matters. They
+ *  will be evaluated or instantiated and initialized in the order that
+ *  they appear in the argument list.
+ *  
+ *  The command-line arguments are file names, accessor class names (such as
+ *  net/REST), or any of the following options:
+ *
+ *  * -e|--e|-echo|--echo: Echo the command-line arguments.
+ *    This is helpful for use under Ant apply.
+ *  
+ *  * -h|--h|-help|--help: Print a usage message.
+ *
+ *  * -j|--j|-js|--js: Interpret the next argument as the name of a regular
+ *    JavaScript file to evaluate.
+ *    
+ *  * -t|--t|-timeout|--timeout milliseconds: The maximum amount of time the
+ *    script can run. When this time is reached, stop() is called on all
+ *    accessors that have been instantiated, and then 
+ *
+ *  * -v|--v|-version|--version: Print out the version number
+ *  
+ *  @param argv An array of command-line arguments, see above.
+ *  @param fileReader A function that, given a file name, returns its contents as a string.
+ *  @param instantiate A function that, given a name and class, instantiates an accessor and returns it.
+ *  @param terminator A callback function to invoke when all work is done.
+ *  @return 0 if there were no problems, 3 if there was a command line argument issue.
+ */
+function processCommandLineArguments(argv, fileReader, instantiate, terminator) {
+
+    // accessorMain() is not in commonHost.js because we want to
+    // ensure that commonHost cannot read arbitrary files from the
+    // file system.
+    
+    // Simplified usage message to just show the preferred form of the arguments,
+    // not all possible variations.
+    var usage = "Usage: [-help] [-echo] [-js filename] [-timeout milliseconds]" +
+    		" [-version] [accessorClassName] [accessorClassName ...]";
+    var timeout = -1;
+
+    if (argv.length === 0) {
+        console.error(usage);
+        return 3;
+    }
+
+    var accessorCount = 0;
+    var accessorsWrappedUp = 0;
+    for (var i = 0; i < argv.length; i++) {
+        switch (argv[i]) {
+
+        case '-e':
+        case '--e':
+        case '-echo':
+        case '--echo':
+            console.log(argv)
+            break;
+
+        case '-h':
+        case '--h':
+        case '-help':
+        case '--help':
+            console.log(usage);
+            return 0;
+
+        case '-j':
+        case '--j':
+        case '-js':
+        case '--js':
+            if (i+1 >= argv.length) {
+                console.error("Argument " + i + "  was " + argv[i] + " but there is no " +
+                		"following filename argument.  Args were: " + argv);
+                return 3;
+            }
+            i += 1;
+            if (!fileReader) {
+                console.error('This host does not support evaluating arbitrary JavaScript files.');
+                return 3;
+            }
+            
+            try {
+                eval(fileReader(argv[i]));
+            } catch (error) {
+                throw new Error('Failed to eval "' + argv[i] + '": ' + error);
+            }
+            
+            break;
+
+        case '-t':
+        case '--t':
+        case '-timeout':
+        case '--timeout':
+            if (i+1 >= argv.length) {
+                console.error("Argument " + i + "  was " + argv[i] + " but there is no " +
+                        "following milliseconds argument.  Args were: " + argv);
+                return 3;
+            }
+            i += 1;
+            if (typeof argv[i] === 'string') {
+                argv[i] = JSON.parse(argv[i]);
+            }
+            timeout = argv[i];
+
+            console.log("commonHost.js: main(): Setting timout to stop after " + timeout + " ms.");
+            setTimeout(function () {
+                // Under node, process.exit gets caught by exitHandler() in
+                // nodeHost.js and invokes wrapup().
+                console.log("commonHost.js: main(): Maximum time reached. Calling stopAllAccessors().");
+                // If a terminator function is given use it.
+                // Otherwise, invoke wrapup on all accessors.
+                if (terminator) {
+                    terminator.call(this);
+                } else {
+                    stopAllAccessors();
+                }
+            }, timeout);
+            break;
+
+        case '-v':
+        case '--v':
+        case '-version':
+        case '--version':
+            console.log("Accessors 1.0, commonHost.js: $Id$");
+            return 0;
+
+        default:
+            // All other arguments are assumed to be accessor class names to be instantiated.
+            if (!instantiate) {
+                console.error('This host does not support instanting accessors.');
+                return 3;
+            }
+            accessorCount++;
+            // Name for the accessor.
+            var name = "accessor" + accessorCount;
+            var accessor = instantiate.call(this, name, argv[i]);
+            
+            // Initialize the accessor.
+            accessor.initialize();
+            
+            accessor.on('wrapup', function() {
+                accessorsWrappedUp++;
+                if (terminator && accessorsWrappedUp >= accessorCount) {
+                    // All initialized accessors have wrapped up.
+                    terminator.call(this);
+                }
+            });
+        }
+    }
+    // All command-line arguments have been processed.
+    var timerHandle;
+    // If any accessors have been initialized and no timeout has been specified,
+    // then set a timeout to keep the process from exiting.
+    if (accessorCount > 0 && timeout === -1) {
+        // Prevent the script from exiting by repeating the empty function
+        // every ~25 days. This will be cancelled if the terminator argument
+        // is specified and all accessors have wrapped up.
+        timerHandle = setInterval(function () {}, 2147483647);
+    }
+
+    return 0;
+}
+
 /** Push the specified item onto the specified list if it is not already there.
  *  @param item Item to push.
  *  @param list List onto which to push it.
@@ -1721,22 +1921,25 @@ function pushIfNotPresent(item, list) {
  */
 function nullHandlerFunction() {}
 
-/** Stop execution by invoking wrapup() on all top-level accessors.
+/** Stop execution by invoking wrapup() on all top-level accessors
+ *  that have been initialized and not wrapped up.
  */
 function stopAllAccessors() {
     var accessors = getTopLevelAccessors();
     var initialThrowable = null;
     for (var i = 0; i < accessors.length; i++ ) {
         var composite = accessors[i];
-    	try {
-			console.log('commonHost.js: invoking wrapup() for accessor: ' + composite.accessorName);
-			composite.wrapup();
-    	} catch (error) {
-			console.error('commonHost.js: wrapup failed for accessor: ' + composite.accessorName);
-    		if (initialThrowable === null) {
-    			initialThrowable = error;
-    		}
-    	}
+        if (composite.initialized) {
+            try {
+                console.log('commonHost.js: invoking wrapup() for accessor: ' + composite.accessorName);
+                composite.wrapup();
+            } catch (error) {
+                console.error('commonHost.js: wrapup failed for accessor: ' + composite.accessorName);
+                if (initialThrowable === null) {
+                    initialThrowable = error;
+                }
+            }
+        }
     }
     if (initialThrowable !== null) {
     	throw new Error("commonHost.js: stopAllAccessors(): while invoking wrapup() of all accessors," +
@@ -1759,7 +1962,9 @@ var _accessorInstanceTable = {};
 //// Exports
 
 // Note that there are some exports that occur earlier in this file.
+// FIXME: Why?
 exports.Accessor = Accessor;
 exports.instantiateAccessor = instantiateAccessor;
 exports.getTopLevelAccessors = getTopLevelAccessors;
+exports.processCommandLineArguments = processCommandLineArguments;
 exports.stopAllAccessors = stopAllAccessors;
