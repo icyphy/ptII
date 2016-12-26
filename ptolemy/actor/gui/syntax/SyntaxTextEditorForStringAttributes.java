@@ -28,16 +28,21 @@
 package ptolemy.actor.gui.syntax;
 
 import java.awt.BorderLayout;
+import java.awt.Toolkit;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JTextArea;
+import javax.swing.KeyStroke;
 import javax.swing.SwingUtilities;
 import javax.swing.text.Document;
 
 import org.fife.ui.rsyntaxtextarea.ErrorStrip;
 import org.fife.ui.rsyntaxtextarea.RSyntaxDocument;
 import org.fife.ui.rsyntaxtextarea.RSyntaxTextArea;
+import org.fife.ui.rsyntaxtextarea.RSyntaxTextAreaEditorKit;
 import org.fife.ui.rtextarea.RTextScrollPane;
 
+import diva.gui.GUIUtilities;
 import ptolemy.gui.UndoListener;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.vergil.toolbox.TextEditorFactory;
@@ -74,6 +79,21 @@ public class SyntaxTextEditorForStringAttributes extends TextEditorForStringAttr
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
+
+    /** Create an edit menu.
+     */
+    protected void _addMenus() {
+        super._addMenus();
+
+        _editMenu.addSeparator();
+        
+        GUIUtilities.addMenuItem(_editMenu, new RSyntaxTextAreaEditorKit.IncreaseFontSizeAction(
+                "Increase Font", null, "Increase the font size.", 8, KeyStroke.getKeyStroke(KeyEvent.VK_EQUALS, Toolkit
+                        .getDefaultToolkit().getMenuShortcutKeyMask())));
+        GUIUtilities.addMenuItem(_editMenu, new RSyntaxTextAreaEditorKit.DecreaseFontSizeAction(
+                "Decrease Font", null, "Decrease the font size.", 9, KeyStroke.getKeyStroke(KeyEvent.VK_MINUS, Toolkit
+                        .getDefaultToolkit().getMenuShortcutKeyMask())));
+    }
 
     /** Initializes an empty text editor with the specified title and
      *  document and associated placeable.  After constructing this,
