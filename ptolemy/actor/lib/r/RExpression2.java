@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2010 The Regents of the University of California.
+ * Copyright (c) 2003-2016 The Regents of the University of California.
  * All rights reserved.
  *
  * '$Author$'
@@ -30,8 +30,11 @@
 package ptolemy.actor.lib.r;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -313,7 +316,9 @@ public class RExpression2 extends TypedAtomicActor {
 
 	File dir = new File(execDir);
 	if (!dir.exists()) {
-	    dir.mkdir();
+	    if (!dir.mkdir()) {
+		throw new IllegalActionException(null, this, "Failed to make directory " + dir);
+	    };
 	}
 	_home = execDir;
 
@@ -461,10 +466,14 @@ public class RExpression2 extends TypedAtomicActor {
 		if (arrayLength == -1) {
 		    arrayLength = arrayToken.length();
 		} else {
-		    int a_len = arrayToken.length();
-		    if (a_len != arrayLength) {
-			log.error("record elements are not all the same length!");
-			return;
+		    if (arrayToken == null) {
+			log.error("Could not parse " + recordToken + ", arrayToken == null?");
+		    } else {
+			int a_len = arrayToken.length();
+			if (a_len != arrayLength) {
+			    log.error("record elements are not all the same length!");
+			    return;
+			}
 		    }
 		}
 
@@ -1104,7 +1113,9 @@ public class RExpression2 extends TypedAtomicActor {
 	    switch (xt) {
 	    case REXP.XT_BOOL:
 		RBool b = rDataObject.asBool();
-		if (b.isFALSE()) {
+		if (b == null) {
+		    t = new BooleanToken("nil");
+		} else if (b.isFALSE()) {
 		    t = new BooleanToken(false);
 		} else if (b.isTRUE()) {
 		    t = new BooleanToken(true);
@@ -1118,12 +1129,16 @@ public class RExpression2 extends TypedAtomicActor {
 	    case REXP.XT_FACTOR:
 		log.debug("R object is XT_FACTOR");
 		RFactor factor = rDataObject.asFactor();
-		List factorValues = new ArrayList();
-		for (int i = 0; i < factor.size(); i++) {
-		    StringToken stringToken = new StringToken(factor.at(i));
-		    factorValues.add(stringToken);
+		if (factor == null) {
+		    t = ArrayToken.NIL;
+		} else {
+		    List factorValues = new ArrayList();
+		    for (int i = 0; i < factor.size(); i++) {
+			StringToken stringToken = new StringToken(factor.at(i));
+			factorValues.add(stringToken);
+		    }
+		    t = new ArrayToken((Token[]) factorValues.toArray(new Token[0]));
 		}
-		t = new ArrayToken((Token[]) factorValues.toArray(new Token[0]));
 		break;
 	    case REXP.XT_INT:
 		t = new IntToken(rDataObject.asInt());
@@ -1131,19 +1146,23 @@ public class RExpression2 extends TypedAtomicActor {
 	    case REXP.XT_LIST:
 		log.debug("R object is XT_LIST");
 		RList list = rDataObject.asList();
-		String[] keys = list.keys();
-		if (keys != null) {
-		    List values = new ArrayList();
-		    for (int i = 0; i < keys.length; i++) {
-			REXP col = list.at(i);
-			// recursion!
-			Token token = _convertToToken(col, null);
-			values.add(token);
+		if (list == null) {
+		    t = new OrderedRecordToken();
+		} else {
+		    String[] keys = list.keys();
+		    if (keys != null) {
+			List values = new ArrayList();
+			for (int i = 0; i < keys.length; i++) {
+			    REXP col = list.at(i);
+			    // recursion!
+			    Token token = _convertToToken(col, null);
+			    values.add(token);
+			}
+			// put it all together in a record
+			t = new OrderedRecordToken(
+						   keys, 
+						   (Token[]) values.toArray(new Token[0]));
 		    }
-		    // put it all together in a record
-		    t = new OrderedRecordToken(
-					       keys, 
-					       (Token[]) values.toArray(new Token[0]));
 		}
 		break;
 	    case REXP.XT_NULL:
@@ -1161,55 +1180,61 @@ public class RExpression2 extends TypedAtomicActor {
 	    case REXP.XT_VECTOR:
 		log.debug("I am a XT_VECTOR!");
 		RVector vector = rDataObject.asVector();
-	
-		// handle data.frame/Record structure
-		List names = vector.getNames();
-		if (names != null) {
-		    // preserve _every_ aspect of the data object 
-		    if (((BooleanToken) serializeData.getToken()).booleanValue()) {
+		if (vector == null) {
+		    t = new ArrayToken(Token.NIL.getType());
+		} else {
+		    // handle data.frame/Record structure
+		    List names = vector.getNames();
+		    if (names != null) {
+			// preserve _every_ aspect of the data object 
+			if (((BooleanToken) serializeData.getToken()).booleanValue()) {
 			t = _serializeRDataObject(rDataObject, name);
-		    }
-		    else {
+			} else {
+			    List values = new ArrayList();
+			    for (int i = 0; i < names.size(); i++) {
+				String columnName = (String) names.get(i);
+				REXP col = vector.at(columnName);
+				// recursion!
+				Token token = _convertToToken(col, null);
+				values.add(token);
+			    }
+			    // put it all together in a record
+			    String[] namesArray = (String[]) names.toArray(new String[0]);
+			    Token[] valuesArray = (Token[]) values.toArray(new Token[0]);
+			    t = new OrderedRecordToken(namesArray, valuesArray);
+			}
+		    } else {
+			// handle a List
 			List values = new ArrayList();
-			for (int i = 0; i < names.size(); i++) {
-			    String columnName = (String) names.get(i);
-			    REXP col = vector.at(columnName);
+			for (int i = 0; i < vector.size(); i++) {
+			    REXP value = vector.at(i);
 			    // recursion!
-			    Token token = _convertToToken(col, null);
+			    Token token = _convertToToken(value, null);
 			    values.add(token);
 			}
-			// put it all together in a record
-			String[] namesArray = (String[]) names.toArray(new String[0]);
-			Token[] valuesArray = (Token[]) values.toArray(new Token[0]);
-			t = new OrderedRecordToken(namesArray, valuesArray);
-		    }
-		} else {
-		    // handle a List
-		    List values = new ArrayList();
-		    for (int i = 0; i < vector.size(); i++) {
-			REXP value = vector.at(i);
-			// recursion!
-			Token token = _convertToToken(value, null);
-			values.add(token);
-		    }
-		    // put it all together in an array
-		    if (values.isEmpty()) {
-			t = new ArrayToken(Token.NIL.getType());
-		    } else {
-			t = new ArrayToken((Token[]) values.toArray(new Token[0]));
+			// put it all together in an array
+			if (values.isEmpty()) {
+			    t = new ArrayToken(Token.NIL.getType());
+			} else {
+			    t = new ArrayToken((Token[]) values.toArray(new Token[0]));
+			}
 		    }
 		}
 		break;
 	    case REXP.XT_ARRAY_BOOL:
 		int[] xb = rDataObject.asIntArray();
-		tokenArray = new Token[xb.length];
-		for (int i = 0; i < xb.length; i++) {
-		    String val = xb[i] == 0 ? "false" : (xb[i] == 1 ? "true"
-							 : "nil");
-		    BooleanToken bt = new BooleanToken(val);
-		    tokenArray[i] = bt;
+		if (xb == null) {
+		    t = ArrayToken.NIL;
+		} else {
+		    tokenArray = new Token[xb.length];
+		    for (int i = 0; i < xb.length; i++) {
+			String val = xb[i] == 0 ? "false" : (xb[i] == 1 ? "true"
+							     : "nil");
+			BooleanToken bt = new BooleanToken(val);
+			tokenArray[i] = bt;
+		    }
+		    t = new ArrayToken(tokenArray);
 		}
-		t = new ArrayToken(tokenArray);
 		break;
 	    case REXP.XT_ARRAY_BOOL_INT:
 		// try matrix first
@@ -1219,14 +1244,18 @@ public class RExpression2 extends TypedAtomicActor {
 		    break;
 		}
 		int[] xbi = rDataObject.asIntArray();
-		tokenArray = new Token[xbi.length];
-		for (int i = 0; i < xbi.length; i++) {
-		    String val = xbi[i] == 0 ? "false" : (xbi[i] == 1 ? "true"
+		if (xbi == null) {
+		    t = ArrayToken.NIL;
+		} else {
+		    tokenArray = new Token[xbi.length];
+		    for (int i = 0; i < xbi.length; i++) {
+			String val = xbi[i] == 0 ? "false" : (xbi[i] == 1 ? "true"
 							  : "nil");
-		    BooleanToken bt = new BooleanToken(val);
-		    tokenArray[i] = bt;
+			BooleanToken bt = new BooleanToken(val);
+			tokenArray[i] = bt;
+		    }
+		    t = new ArrayToken(tokenArray);
 		}
-		t = new ArrayToken(tokenArray);
 		break;
 	    case REXP.XT_ARRAY_DOUBLE:
 		// try as matrix first
@@ -1237,12 +1266,16 @@ public class RExpression2 extends TypedAtomicActor {
 		}
 		// otherwise it is a simple list
 		double[] xd = rDataObject.asDoubleArray();
-		tokenArray = new Token[xd.length];
-		for (int i = 0; i < xd.length; i++) {
-		    DoubleToken dt = new DoubleToken(xd[i]);
-		    tokenArray[i] = dt;
+		if (xd == null) {
+		    t = ArrayToken.NIL;
+		} else {
+		    tokenArray = new Token[xd.length];
+		    for (int i = 0; i < xd.length; i++) {
+			DoubleToken dt = new DoubleToken(xd[i]);
+			tokenArray[i] = dt;
+		    }
+		    t = new ArrayToken(tokenArray);
 		}
-		t = new ArrayToken(tokenArray);
 		break;
 	    case REXP.XT_ARRAY_INT:
 		// try as matrix first
@@ -1252,21 +1285,29 @@ public class RExpression2 extends TypedAtomicActor {
 		    break;
 		}
 		int[] xi = rDataObject.asIntArray();
-		tokenArray = new Token[xi.length];
-		for (int i = 0; i < xi.length; i++) {
-		    IntToken dt = new IntToken(xi[i]);
-		    tokenArray[i] = dt;
+		if (xi != null) {
+		    t = ArrayToken.NIL;
+		} else {
+		    tokenArray = new Token[xi.length];
+		    for (int i = 0; i < xi.length; i++) {
+			IntToken dt = new IntToken(xi[i]);
+			tokenArray[i] = dt;
+		    }
+		    t = new ArrayToken(tokenArray);
 		}
-		t = new ArrayToken(tokenArray);
 		break;
 	    case REXP.XT_ARRAY_STR:
 		String[] xs = rDataObject.asStringArray();
-		tokenArray = new Token[xs.length];
-		for (int i = 0; i < xs.length; i++) {
-		    StringToken st = new StringToken(xs[i]);
-		    tokenArray[i] = st;
+		if (xs == null) {
+		    t = ArrayToken.NIL;
+		} else {
+		    tokenArray = new Token[xs.length];
+		    for (int i = 0; i < xs.length; i++) {
+			StringToken st = new StringToken(xs[i]);
+			tokenArray[i] = st;
+		    }
+		    t = new ArrayToken(tokenArray);
 		}
-		t = new ArrayToken(tokenArray);
 		break;
 	    }
 	}
@@ -1359,15 +1400,20 @@ public class RExpression2 extends TypedAtomicActor {
 		
 	// file for the source
 	String tempFile = null;
+	PrintWriter printWriter = null;
 	try {
 	    tempFile = _getUniqueFileName("r");
 	    // write to file
-	    FileWriter fw = new FileWriter(tempFile);
-	    fw.write(script);
-	    fw.close();
+	    OutputStreamWriter w = new OutputStreamWriter(new FileOutputStream(tempFile), "UTF-8");
+	    printWriter = new PrintWriter(w);
+	    printWriter.write(script);
 	} catch (IOException e1) {
 	    log.error("could not create temp R source file");
-	    throw new IllegalActionException(e1.getMessage());
+	    throw new IllegalActionException(this, e1, "Could not create temp R source file: " + tempFile );
+	} finally {
+	    if (printWriter != null) {
+		printWriter.close();
+	    }
 	}
 		
 	// simple!

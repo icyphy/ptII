@@ -31,12 +31,15 @@ package ptolemy.actor.lib.r;
 
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
 import java.io.StringReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -741,18 +744,17 @@ public class RExpression extends TypedAtomicActor {
 	// the actor output
 	// ports. This information is removed from the R output text displayed
 	// to the user.
-	String r_out = "cat('----\\n')\n";
+	StringBuffer r_out = new StringBuffer("cat('----\\n')\n");
 
 	// Ensure that output is echoed from this point on
 	// We don't need to echo before cat('----\\n') because the cat statement forces output.
 	// This way, the options(echo = TRUE) isn't sent to the "output" port
-	r_out += "options(echo = TRUE)\n";
+	r_out.append("options(echo = TRUE)\n");
 	// The following creates an R function called 'myput' to output port
 	// info to output ports
 	// r_out = r_out +
 	// "if (class(x)=='data.frame') {write.table(x,file='"+df_fn+"');cat('_dataframe_:"+df_fn+"')}\n";
-	r_out = r_out
-	    + "myput <- function(x, filename) {\n"
+	r_out.append("myput <- function(x, filename) {\n"
 	    // I'm wrapping the serialization into the doserialize function
 	    // because it's gotten big.  Unique filename generation is 
 	    // done here because this is where file creation is actually done.
@@ -782,10 +784,10 @@ public class RExpression extends TypedAtomicActor {
 	    + "  else if (mode(x)=='logical' && substr(deparse(x)[1], 1, 9) != \"structure\") {dput(x)}\n"
 	    // use R serialization for other unknown objects
 	    + "  else {cat('_object_:', doserialize(x, filename), '\\n', sep = '')}"
-	    + "}\n";
+            + "}\n");
 
 	// Controlled newline test
-	r_out = r_out + "cat(\"before newline\\nafter newline\\n\")\n";
+	r_out.append("cat(\"before newline\\nafter newline\\n\")\n");
 
 	while (_iterO.hasNext()) {
 	    TypedIOPort tiop_o = (TypedIOPort) _iterO.next();
@@ -802,11 +804,11 @@ public class RExpression extends TypedAtomicActor {
 		// might occur. --Oliver
 		temp_o_escaped = temp_o_escaped.replace("\\", "\\\\");
 		temp_o_escaped = temp_o_escaped.replace("'", "\'");
-		r_out = r_out + "if(exists('" + temp_o_escaped + "', .GlobalEnv)) {"
+		r_out.append("if(exists('" + temp_o_escaped + "', .GlobalEnv)) {"
 		    + "cat(\"portName: " + temp_o + "\\nvectorVal: \"); "
 		    + "myput(get(\"" + temp_o_escaped + "\", .GlobalEnv),'" + df_fn + "'); "
 		    + "cat(\"endVectorVal\\n\")"
-		    + "}\n";
+		    + "}\n");
 	    }
 	}
 
@@ -934,7 +936,9 @@ public class RExpression extends TypedAtomicActor {
 
 	File dir = new File(execDir);
 	if (!dir.exists()) {
-	    dir.mkdir();
+	    if (!dir.mkdir()) {
+		throw new IllegalActionException(null, this, "Failed to make directory " + dir);
+	    };
 	}
 	_home = execDir + "/";
 
@@ -992,7 +996,7 @@ public class RExpression extends TypedAtomicActor {
 
     ///////////////////////////////////////////////////////////////////
     ////              private methods                              ////
-    private void _getOutput(String str) {
+    private void _getOutput(String str) throws IllegalActionException {
 	// Newline behavior is inconsistent.  Using an inline test.
 	//String newline = System.getProperty("line.separator");
 	int nlp1 = -1;
@@ -1029,7 +1033,7 @@ public class RExpression extends TypedAtomicActor {
 	}
     }
 
-    private void _setOutputToken(String portName, String tokenValue) {
+    private void _setOutputToken(String portName, String tokenValue) throws IllegalActionException {
 	_opList = outputPortList();
 	_iterO = _opList.iterator();
 	while (_iterO.hasNext()) {
@@ -1044,13 +1048,11 @@ public class RExpression extends TypedAtomicActor {
 			    BooleanToken btt = BooleanToken.getInstance(true);
 			    tiop_o.setTypeEquals(BaseType.BOOLEAN);
 			    token = btt;
-			}
-			if (tokenValue.equals("FALSE")) {
+			} else if (tokenValue.equals("FALSE")) {
 			    BooleanToken btf = BooleanToken.getInstance(false);
 			    tiop_o.setTypeEquals(BaseType.BOOLEAN);
 			    token = btf;
-			}
-			if (tokenValue.equals("NA")) {
+			} else if (tokenValue.equals("NA")) {
 			    tiop_o.setTypeEquals(BaseType.STRING);
 			    token = StringToken.NIL;
 			    // this solution just sends a string token with
@@ -1060,18 +1062,15 @@ public class RExpression extends TypedAtomicActor {
 			    // but nil support for Ptolemy BooleanTokens not yet
 			    // available
 
-			}
-			if (tokenValue.startsWith("_dataframe_:")) {
+			} else if (tokenValue.startsWith("_dataframe_:")) {
 			    StringToken st = new StringToken(tokenValue);
 			    tiop_o.setTypeEquals(BaseType.STRING);
 			    token = st;
-			}
-			if (tokenValue.startsWith("_object_:")) {
+			} else if (tokenValue.startsWith("_object_:")) {
 			    StringToken st = new StringToken(tokenValue);
 			    tiop_o.setTypeEquals(BaseType.STRING);
 			    token = st;
-			}
-			if (tokenValue.startsWith("_matrix_:")) {
+			} else if (tokenValue.startsWith("_matrix_:")) {
 			    int pos1, pos2;
 			    pos1 = tokenValue.indexOf(".Dim");
 			    pos1 = tokenValue.indexOf("c(", pos1);
@@ -1107,8 +1106,7 @@ public class RExpression extends TypedAtomicActor {
 			    }
 			    token = mt;
 			    tiop_o.setTypeEquals(mt.getType());
-			}
-			if (tokenValue.startsWith("\"")) { // these are strings
+			} else if (tokenValue.startsWith("\"")) { // these are strings
 			    // now remove the start and end quotes
 			    tokenValue = tokenValue.substring(1, tokenValue
 							      .length() - 1);
@@ -1146,11 +1144,9 @@ public class RExpression extends TypedAtomicActor {
 			// check for empty arrays
 			if (tokenValue.equals("character(0)")) {
 			    token = new ArrayToken(BaseType.STRING);
-			}
-			if (tokenValue.equals("numeric(0)")) {
+			} else if (tokenValue.equals("numeric(0)")) {
 			    token = new ArrayToken(BaseType.DOUBLE);
-			}
-			if (tokenValue.equals("logical(0)")) {
+			} else if (tokenValue.equals("logical(0)")) {
 			    token = new ArrayToken(BaseType.BOOLEAN);
 			}
 						
@@ -1204,6 +1200,7 @@ public class RExpression extends TypedAtomicActor {
 			log.error("Problem sending to output port! "
 				  + w);
 			w.printStackTrace();
+			throw new IllegalActionException(this, w, "Problem sending to output port.");
 		    }
 
 		    return;
@@ -1389,10 +1386,14 @@ public class RExpression extends TypedAtomicActor {
 	}
 	// log.debug("Ready to create threads");
 	// Create two threads to read from the subprocess.
-	_outputGobbler = new _StreamReaderThread(_process.getInputStream(),
+	try {
+	    _outputGobbler = new _StreamReaderThread(_process.getInputStream(),
 						 "Exec Stdout Gobbler-" + _streamReaderThreadCount++, this);
-	_errorGobbler = new _StreamReaderThread(_process.getErrorStream(),
+	    _errorGobbler = new _StreamReaderThread(_process.getErrorStream(),
 						"Exec Stderr Gobbler-" + _streamReaderThreadCount++, this);
+	} catch (UnsupportedEncodingException ex) {
+	    throw new IllegalActionException(this, ex, "Failed to open exec process gobblers.");
+	}
 	_errorGobbler.start();
 	_outputGobbler.start();
 
@@ -1401,9 +1402,13 @@ public class RExpression extends TypedAtomicActor {
 	    _streamReaderThreadCount = 0;
 	}
 
-	OutputStreamWriter inputStreamWriter = new OutputStreamWriter(_process
-								      .getOutputStream());
-	_inputBufferedWriter = new BufferedWriter(inputStreamWriter);
+	try {
+	    OutputStreamWriter inputStreamWriter = new OutputStreamWriter(_process
+								      .getOutputStream(), "UTF-8");
+	    _inputBufferedWriter = new BufferedWriter(inputStreamWriter);
+	} catch (UnsupportedEncodingException ex) {
+	    throw new IllegalActionException(this, ex, "Failed to open the output stream: " + _process);
+	}
 
     }
 
@@ -1471,21 +1476,32 @@ public class RExpression extends TypedAtomicActor {
 
     private String _writeDataFile(String dat) {
 	String fn = "";
+	StringReader stringReader = null;
+	PrintWriter printWriter = null;
 	try {
 	    String home = System.getProperty("user.home");
 	    home = home.replace('\\', '/');
 	    fn = home + "/" + _getUniqueFileName("dat") + _counter;
+	    stringReader = new StringReader(dat);
 	    File dataFile = new File(fn);
-	    StringReader is = new StringReader(dat);
-	    FileWriter os = new FileWriter(dataFile);
+	    OutputStreamWriter w = new OutputStreamWriter(new FileOutputStream(dataFile), "UTF-8");
+	    printWriter = new PrintWriter(w);
 	    int c;
-	    while ((c = is.read()) != -1) {
-		os.write(c);
+	    while ((c = stringReader.read()) != -1) {
+		printWriter.write(c);
 	    }
-	    is.close();
-	    os.close();
 	} catch (Exception exc) {
 	    log.error("error writing data file! - RExpression");
+	} finally {
+	    try {
+		if (stringReader != null) {
+		    stringReader.close();
+		}
+	    } finally {
+		if (printWriter != null) {
+		    printWriter.close();
+		}
+	    }
 	}
 	_counter++;
 	return fn;
@@ -1528,10 +1544,10 @@ public class RExpression extends TypedAtomicActor {
 	 *            The parent actor of this thread, which is used in error
 	 *            messages.
 	 */
-	_StreamReaderThread(InputStream inputStream, String name, Nameable actor) {
+	_StreamReaderThread(InputStream inputStream, String name, Nameable actor) throws UnsupportedEncodingException {
 	    super(name);
 	    _inputStream = inputStream;
-	    _inputStreamReader = new InputStreamReader(_inputStream);
+	    _inputStreamReader = new InputStreamReader(_inputStream, "UTF-8");
 	    _stringBuffer = new StringBuffer();
 	    _keepRunning = true;
 	    chars = new char[100001];
