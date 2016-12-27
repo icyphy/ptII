@@ -33,7 +33,11 @@
 
 ME =		ptolemy/cg/kernel/generic
 
-DIRS =		accessor html program syntactic test
+DIRS =		accessor \
+		html \
+		program \
+		syntactic \
+		test
 
 # Root of the Java directory
 ROOT =		../../../..

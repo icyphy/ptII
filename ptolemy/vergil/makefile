@@ -32,10 +32,17 @@
 ME =		ptolemy/vergil
 
 # PTPDFRENDERER_DIR is set to pdfrenderer by configure
-DIRS = 		toolbox basic actor kernel gt debugger test \
-		icon modal $(PTPDFRENDERER_DIR) \
-		ontologies ptera scr tree tdl \
-		unit
+DIRS = 	toolbox basic actor kernel \
+	gt \
+	debugger \
+	test \
+	icon modal $(PTPDFRENDERER_DIR) \
+	ontologies \
+	ptera \
+	scr \
+	tree \
+	tdl \
+	unit
 
 # Root of the Java directory
 ROOT =		../..

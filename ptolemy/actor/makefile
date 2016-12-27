@@ -38,8 +38,13 @@ ME =		ptolemy/actor
 # If $(PTPTALON_DIR) is empty, then configure failed and compilation
 # will fail.
 #
-DIRS = 		util sched process continuous gui injection lib corba parameters gt designs test \
-		$(PTPTALON_DIR)
+DIRS = 	util sched process continuous gui injection lib \
+	corba \
+	parameters \
+	gt \
+	designs \
+	test \
+	$(PTPTALON_DIR)
 
 # Root of the Ptolemy II directory
 ROOT =		../..

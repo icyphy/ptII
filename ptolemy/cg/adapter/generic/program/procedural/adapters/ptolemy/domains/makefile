@@ -33,7 +33,10 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains
 
-DIRS =		de giotto modal sdf
+DIRS =		de \
+		giotto \
+		modal \
+		sdf
 
 # Root of the Java directory
 ROOT =		../../../../../../../../..

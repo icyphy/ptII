@@ -78,6 +78,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.ExecuteCommands;
@@ -118,9 +119,9 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
         generateCpp.setTypeEquals(BaseType.BOOLEAN);
         generateCpp.setExpression("false");
 
-        sourceLineBinding = new Parameter(this, "sourceLineBinding");
-        sourceLineBinding.setTypeEquals(BaseType.BOOLEAN);
-        sourceLineBinding.setExpression("false");
+	// sourceLineBinding is used in CodeStream,
+	// so it defind in ProgramCodeGenerator.
+	sourceLineBinding.setVisibility(Settable.FULL);
 
         generatorPackageList.setExpression("generic.program.procedural.c");
 
@@ -141,13 +142,6 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      * implemented C++ code generation.
      */
     public Parameter generateCpp;
-
-    /** If true, then the generated source is bound to the line
-     *  number and file of the (adapter) templates. Otherwise, the
-     *  source is bound only to the output file. This is a boolean
-     *  parameter with default value false.
-     */
-    public Parameter sourceLineBinding;
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -1046,6 +1040,17 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
      */
     public String getModelName() throws IllegalActionException {
         return _sanitizedModelName;
+    }
+
+    /** Return true if StaticSchedulingDirector should
+     *  invoke generateUpdatePortOffsets.
+     *  Most code generators do not override this method,
+     *  CCodeGenerator overrides it to return false.
+     *  @return false, indicating that StaticSchedulingDirector
+     *  should not invoke StaticSchedulingDirectory.invokeGenerateUpdatePortOffset().
+     */
+    public boolean invokeGenerateUpdatePortOffsets() {
+	return false;
     }
 
     /** Add called functions to the set of overloaded functions for

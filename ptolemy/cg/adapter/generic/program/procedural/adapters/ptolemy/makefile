@@ -33,7 +33,9 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy
 
-DIRS =		actor domains vergil
+DIRS =		actor \
+		domains \
+		vergil
 
 # Root of the Java directory
 ROOT =		../../../../../../../..

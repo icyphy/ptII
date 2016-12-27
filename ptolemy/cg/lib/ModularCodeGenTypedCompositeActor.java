@@ -73,7 +73,7 @@ A TypedCompositeActor with Lazy evaluation for Modular code generation.
  @Pt.AcceptedRating Red (rodiers)
  */
 public class ModularCodeGenTypedCompositeActor extends
-        ModularCodeGenLazyTypedCompositeActor {
+        ModularCodeGenLazyTypedCompositeActor implements ModularableComposite {
 
     /** Construct a library in the default workspace with no container
      *  and an empty string as its name. Add the library to the

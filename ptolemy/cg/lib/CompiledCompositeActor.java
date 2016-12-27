@@ -31,6 +31,7 @@ package ptolemy.cg.lib;
 import java.io.File;
 import java.io.IOException;
 import java.io.Writer;
+import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
 import java.net.URI;
@@ -49,6 +50,7 @@ import ptolemy.actor.gui.Effigy;
 import ptolemy.actor.gui.PtolemyEffigy;
 import ptolemy.actor.parameters.ParameterPort;
 import ptolemy.actor.util.DFUtilities;
+import ptolemy.data.ArrayToken;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.DoubleToken;
 import ptolemy.data.IntToken;
@@ -56,6 +58,7 @@ import ptolemy.data.Token;
 import ptolemy.data.expr.FileParameter;
 import ptolemy.data.expr.Parameter;
 import ptolemy.data.expr.StringParameter;
+import ptolemy.data.type.ArrayType;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.CompositeEntity;
@@ -235,7 +238,7 @@ public class CompiledCompositeActor extends TypedCompositeActor {
                 for (Iterator<?> outputPorts = outputPortList().iterator(); outputPorts
                         .hasNext() && !_stopRequested;) {
                     IOPort iOPort = (IOPort) outputPorts.next();
-                    ModularCodeGenLazyTypedCompositeActor._transferOutputs(
+                    CompiledCompositeActor._transferOutputs(
                             this, iOPort, tokensToAllOutputPorts[portNumber++]);
                 }
 
@@ -611,6 +614,117 @@ public class CompiledCompositeActor extends TypedCompositeActor {
         }
 
         _compileJNICode();
+    }
+
+    /** Transfer the outputs.
+     *  @param compositeActor The composite actor transferring the
+     *  outputs.
+     *  @param port The port on which the output is to be transferred
+     *  @param outputTokens The tokens to be transferred.
+     *  @exception IllegalActionException If there are problems
+     *  getting the class or otherwise transferring the tokens.
+     */
+    protected static void _transferOutputs(TypedCompositeActor compositeActor,
+            IOPort port, Object outputTokens) throws IllegalActionException {
+
+        int rate = DFUtilities.getTokenProductionRate(port);
+        Type type = ((TypedIOPort) port).getType();
+        if (type == BaseType.INT) {
+
+            int[][] tokens = (int[][]) outputTokens;
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                for (int k = 0; k < rate; k++) {
+                    Token token = new IntToken(tokens[i][k]);
+                    port.send(i, token);
+                }
+            }
+
+        } else if (type == BaseType.DOUBLE) {
+
+            double[][] tokens = (double[][]) outputTokens;
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                for (int k = 0; k < rate; k++) {
+                    Token token = new DoubleToken(tokens[i][k]);
+                    port.send(i, token);
+                }
+            }
+
+            /*} else if (type == PointerToken.POINTER) {
+
+                int[][] tokens = (int[][]) outputTokens;
+                for (int i = 0; i < port.getWidthInside(); i++) {
+                    for (int k = 0; k < rate; k++) {
+                        Token token = new PointerToken(tokens[i][k]);
+                        port.send(i, token);
+                    }
+                }
+             */
+        } else if (type == BaseType.BOOLEAN) {
+
+            boolean[][] tokens = (boolean[][]) outputTokens;
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                for (int k = 0; k < rate; k++) {
+                    Token token = new BooleanToken(tokens[i][k]);
+                    port.send(i, token);
+                }
+            }
+
+        } else if (type instanceof ArrayType) {
+
+            for (int i = 0; i < port.getWidthInside(); i++) {
+                for (int k = 0; k < rate; k++) {
+                    type = ((ArrayType) type).getElementType();
+                    try {
+                        Object[][] tmpOutputTokens = (Object[][]) outputTokens;
+                        Class<?> tokenClass = tmpOutputTokens[i][k].getClass();
+
+                        Method getPayload;
+                        getPayload = tokenClass.getMethod("getPayload",
+                                (Class[]) null);
+
+                        Object payload = null;
+                        payload = getPayload.invoke(tmpOutputTokens[i][k],
+                                (Object[]) null);
+
+                        Field objSize = payload.getClass().getField("size");
+                        int size = objSize.getInt(payload);
+
+                        Field elementsField = payload.getClass().getField(
+                                "elements");
+                        Object[] elements = (Object[]) elementsField
+                                .get(payload);
+
+                        Token[] convertedTokens = new Token[size];
+
+                        for (int j = 0; j < size; j++) {
+                            Object element = getPayload.invoke(elements[j],
+                                    (Object[]) null);
+                            if (type == BaseType.INT) {
+                                convertedTokens[j] = new IntToken(
+                                        Integer.parseInt(element.toString()));
+                            } else if (type == BaseType.DOUBLE) {
+                                convertedTokens[j] = new DoubleToken(
+                                        Double.parseDouble(element.toString()));
+                            } else if (type == BaseType.BOOLEAN) {
+                                convertedTokens[j] = new BooleanToken(
+                                        Boolean.parseBoolean(element.toString()));
+                            } else {
+                                //FIXME: need to deal with other types
+                            }
+                        }
+
+                        Token token = new ArrayToken(type, convertedTokens);
+                        port.send(i, token);
+
+                    } catch (Throwable throwable) {
+                        throw new IllegalActionException(compositeActor,
+                                throwable, "Can't generate transfer code.");
+                    }
+                }
+            }
+        } else {
+            // FIXME: need to deal with other types
+        }
     }
 
     ///////////////////////////////////////////////////////////////////

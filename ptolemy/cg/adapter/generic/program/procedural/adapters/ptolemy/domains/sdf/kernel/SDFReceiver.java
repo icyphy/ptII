@@ -36,7 +36,7 @@ import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.Rece
 import ptolemy.cg.adapter.generic.program.procedural.adapters.ptolemy.actor.sched.StaticSchedulingDirector;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGeneratorAdapter;
-import ptolemy.cg.lib.ModularCodeGenTypedCompositeActor;
+import ptolemy.cg.lib.ModularableComposite;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -124,7 +124,7 @@ public class SDFReceiver extends Receiver {
         token = _removeSink(token);
 
         boolean forComposite = _forComposite;
-        if (getComponent().getContainer().getContainer() instanceof ModularCodeGenTypedCompositeActor
+        if (getComponent().getContainer().getContainer() instanceof ModularableComposite
                 && port.isInput()) {
             // If the container is a ModularCodeGenTypedCompositeActor
             // and the port is an input, then generate a reference

@@ -29,7 +29,9 @@
 # 						COPYRIGHTENDKEY
 ##########################################################################
 
-DIRS = cureos jhlabs jgoodies microstar
+DIRS = cureos jhlabs \
+	jgoodies \
+	microstar
 
 # Root of Ptolemy II directory
 ROOT =		..

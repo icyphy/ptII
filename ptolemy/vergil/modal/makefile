@@ -32,7 +32,10 @@
 
 ME =		ptolemy/vergil/modal
 
-DIRS =		fmv ia modal
+DIRS =		\
+		fmv \
+		ia \
+		modal
 
 # Root of the Java directory
 ROOT =		../../..

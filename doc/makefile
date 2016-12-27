@@ -33,7 +33,17 @@ ME =		doc
 
 # Sub directories to run make in.
 # PTDOCLETS_DIR is set to doclets if tools.jar can be found
-DIRS =		 books coding design img papers tour tutorial ui test $(PTDOCLETS_DIR)
+DIRS =		\
+		books \
+		coding \
+		design \
+		img \
+		papers \
+		tour \
+		tutorial \
+		ui \
+		test \
+		$(PTDOCLETS_DIR)
 
 # Root of Ptolemy II directory
 ROOT =		..
@@ -765,8 +775,15 @@ all: suball whatsnew.htm whatsnewVergil.htm
 	@echo "   run \"make jsdocs\""
 
 # Building the jar files also builds javadoc, PtDoclet and actor indices
-install: all codeDoc/js/index.html jars codeDoc.jar codeDocBcvtb.jar \
-		codeDocBcvtb.jar codeDocCapeCode.jar codeDocHyVisual.jar codeDocViptos.jar codeDocVisualSense.jar 
+install: all \
+	codeDoc/js/index.html \
+	jars \
+	codeDoc.jar \
+	codeDocBcvtb.jar \
+	codeDocCapeCode.jar \
+	codeDocHyVisual.jar \
+	codeDocViptos.jar \
+	codeDocVisualSense.jar 
 
 # Build with all common packages
 all_packages:

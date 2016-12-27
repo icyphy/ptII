@@ -33,7 +33,11 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural
 
-DIRS =		adapters c fmima fmimahybrid java
+DIRS =		adapters \
+		c \
+		fmima \
+		fmimahybrid \
+		java
 
 # Root of the Java directory
 ROOT =		../../../../../..
