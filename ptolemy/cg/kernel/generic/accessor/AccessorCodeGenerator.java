@@ -153,7 +153,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                     + INDENT1 + comment(" (cd " + codeDirectory.asFile().getCanonicalPath().replace(PTII, "$PTII") + "; "
                                     + _runCommand() + ")")
                 + INDENT1 + comment(" To regenerate this composite accessor, run:")
-                + INDENT1 + comment(" java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor " + modelURI)
+                + INDENT1 + comment(" $PTII/bin/ptinvoke ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor " + modelURI)
                 + INDENT1 + comment(" to edit the model, run:")
                 + INDENT1 + comment(" $PTII/bin/vergil -capecode " + modelURI)
                 + ((AccessorCodeGeneratorAdapter) getAdapter(toplevel()))
