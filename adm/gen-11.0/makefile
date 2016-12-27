@@ -236,6 +236,9 @@ release_terra_setup:
 release_terra_test_capecode_setup:
 	$(MAKE) USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc test_capecode_setup
 
+release_terra_jenkins_test_capecode_setup:
+	$(MAKE) USER=jenkinos PTIIHOME=/home/jenkins/workspace/ptII PTIIADM=/home/jenkins/workspace/ptII/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc clean all src.jar setup test_capecode_setup
+
 release_terra_remote4_test:
 	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc remote4_Test
 
