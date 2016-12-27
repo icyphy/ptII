@@ -33,7 +33,9 @@
 # PTOPENCV_DIR is set by configure in $PTII/mk/ptII.mk if Open Computer Vision was found. 
 # See also $PTII/org/opencv
 DIRS = classloading commons \
-	faultModels fmi machineImprovisation machineLearning $(PTOPENCV_DIR) \
+	faultModels \
+	fmi \
+	machineImprovisation machineLearning $(PTOPENCV_DIR) \
 	optimization $(PTOSCP5_DIR) \
 	$(PTANGO_DIR) qss ssm
 

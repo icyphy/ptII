@@ -1,5 +1,5 @@
 /*
- @Copyright (c) 2005-2014 The Regents of the University of California.
+ @Copyright (c) 2005-2016 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -38,7 +38,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
-import ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator;
 import ptolemy.data.BooleanToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
@@ -947,21 +946,12 @@ public class CodeStream {
      *  number and file of the adapter templates.
      * @return True if the generated source code is bound to the line
      *  number and file of the adapter templates.    Return false
-     *  if the source is bound only to the output file, or if there is
-     *  no CodeGenerator associated with this stream.
+     *  if the source is bound only to the output file.
      * @exception IllegalActionException If there is a problem reading
      *  the <i>sourceLineBinding</i> parameter.
      */
     private boolean _needLineInfo() throws IllegalActionException {
-        Token sourceLineBinding = null;
-
-        if (_codeGenerator instanceof CCodeGenerator) {
-            sourceLineBinding = ((CCodeGenerator) _codeGenerator).sourceLineBinding
-                    .getToken();
-        } else {
-            return false;
-        }
-        return ((BooleanToken) sourceLineBinding).booleanValue();
+        return ((BooleanToken) _codeGenerator.sourceLineBinding.getToken()).booleanValue();
     }
 
     /**

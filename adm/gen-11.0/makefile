@@ -395,9 +395,9 @@ $(PTIIDIST):
 	cp $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/jogl-all.jar $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
 	cp $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/gluegen.jar $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
 	#
-	# jsdoc
-	# Avoid "fatal: unable to access 'https://github.com/jsdoc3/jsdoc.git': Protocol https not supported or disabled in libcurl"
-	cd $(PTIIDIST)/vendors; LD_LIBRARY_PATH="" git clone https://github.com/terraswarm/jsdoc.git
+	# Install jsdoc from the npm repo
+	(cd $(PTIIDIST); mkdir -p node_modules; if [ ! -d node_modules/@terraswarm/jsdoc ]; then npm install @terraswarm/jsdoc; fi)
+	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web; ant jsdoc-install)
 	#
 	# Serial
 	mkdir -p $(PTIIDIST)/vendors/misc/rxtx/
@@ -921,15 +921,32 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 		$(BASE_SRC_TO_BE_REMOVED) \
 		doc/design/hyvisual.jar \
 		doc/design/visualsense.jar \
+		ptolemy/cg/adapter/generic/html \
+		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/*.java \
+		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/conversions\
 		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/fmi \
+		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/gui \
+		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/hoc \
+		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/logic \
+		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/string \
+		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/giotto \
+		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/vergil \
 		ptolemy/cg/adapter/generic/program/procedural/c \
 		ptolemy/cg/adapter/generic/program/procedural/fmima \
 		ptolemy/cg/adapter/generic/program/procedural/fmimahybrid \
 		ptolemy/cg/adapter/generic/program/procedural/java \
+		ptolemy/cg/kernel/generic/html \
 		ptolemy/cg/kernel/generic/program/procedural/c \
 		ptolemy/cg/kernel/generic/program/procedural/fmima \
 		ptolemy/cg/kernel/generic/program/procedural/fmimahybrid \
 		ptolemy/cg/kernel/generic/program/procedural/java \
+		ptolemy/cg/kernel/generic/syntactic \
+		ptolemy/cg/lib/demo/ModularCG \
+		ptolemy/cg/lib/demo/ModularCGPubSub \
+		ptolemy/cg/lib/syntactic \
+		ptolemy/cg/lib/ModularCodeGenLazyTypedCompositeActor.java \
+		ptolemy/cg/lib/ModularCodeGenTypedCompositeActor.java \
+	        ptolemy/cg/lib/ModularCompiledSDFTypedCompositeActor.java \
 		vergilBCVTB.jnlp.in \
 		vergilCyPhySim.jnlp.in \
 		vergilDSP.jnlp.in \
@@ -1056,7 +1073,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	# Clean up the source directory
 	#
 	# Check out the jsdoc repo.
-	(cd src_jar/$(CAPECODE_CAPECODE_VERSION)/org/terraswarm/accessor/accessors/web; ant vendors-jsdoc)
+	(cd src_jar/$(CAPECODE_CAPECODE_VERSION)/org/terraswarm/accessor/accessors/web; ant jsdoc-install)
 	#
 	# build.xml.in: Remove build-pt-modules from the depends.
 	sed 's/depends="build-pt-modules/depends="/' src_jar/$(CAPECODE_CAPECODE_VERSION)/build.xml.in \
@@ -1070,29 +1087,50 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/bin/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/bin/makefile
 	#
+	# com/makefile
+	egrep -v "jgoodies" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/com/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/com/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/com/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/com/makefile
+	#
 	# Fix up doc/design/makefile
-	egrep -v "ptIIdesign1-intro.pdf|ptIIdesign2-software.pdf|ptIIdesign3-domains.pdf|visualsense.pdf|visualsense.jar|usingVergil" \
+	egrep -v "hyvisual.pdf|ptIIdesign1-intro.pdf|ptIIdesign2-software.pdf|ptIIdesign3-domains.pdf|visualsense.pdf|visualsense.jar|usingVergil" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/design/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/design/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/design/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/design/makefile
 	#
 	# Fix up doc/makefile
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|books|lib/comm|lib.comm|python|security|books|ci/kernel|ci/lib|copernicus|csp|curriculum|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|lib.xslt|lib.xslt|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|space|sr.kernel|sr/kernel|sr.lib|sr/lib|sysml|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|vhdl|wireless" \
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|books|lib/comm|lib.comm|python|security|books|ci/kernel|ci/lib|copernicus|csp|curriculum|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|javasound|lib.xslt|lib.xslt|papers|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|space|sr.kernel|sr/kernel|sr.lib|sr/lib|sysml|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|vhdl|wireless|	codeDoc.jar|	codeDocBcvtb.jar|	codeDocHyVisual.jar|	codeDocViptos.jar|	codeDocVisualSense.jar" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile
 	#
 	# Fix up makefile
-	egrep -v ".eclipse.epf|actor/lib/javasound/demo/demo.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|lbnl|pt-modules|ptserver|thales|vergil/gt/gt.jar|vergil.*.jnlp.in" \
+	egrep -v ".eclipse.epf|actor/lib/javasound/demo/demo.jar|doc/codeDoc.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|lbnl|ptolemy/domains/experimentalDomains.jar|ptolemy/domains/de/demo/demo.jar|ptolemy/domains/sdf/demo/demo.jar|pt-modules|ptserver|thales|vergil/gt/gt.jar|vergil.*.jnlp.in" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/makefile
 	#
+	# Fix up org/makefile
+	egrep -v "hlacerti|mlc" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/org/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/org/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/org/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/org/makefile
+	#
+	# Fix up org/ptolemy/makefile
+	egrep -v "fmi|qss" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/org/ptolemy/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/org/ptolemy/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/org/ptolemy/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/org/ptolemy/makefile
+	#
 	# Fix up ptolemy/actor/lib/makefile
-	egrep -v "comm.jar|fmi/fmi.jar|jopio/jopio.jar|javasound.jar|security.jar|vhdl/vhdl.jar|xslt.jar" \
+	egrep -v "fmi|jopio|javasound|mbed|security|vhdl|video|xslt" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile.tmp \
@@ -1106,42 +1144,99 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/test/makefile
 	#
 	# Fix up ptolemy/actor/makefile
-	egrep -v "designs/designs.jar" \
+	egrep -v "corba|designs|gt" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/makefile
 	#
+	# Fix up ptolemy/cg/adapter/generic
+	egrep -v "html" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/makefile 
+	#
 	# Fix up ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/makefile
-	egrep -v "fmi.jar" \
+	egrep -v "\.java|conversions|fmi|gui|hoc|logic|string" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/makefile
 	#
+	# Fix up ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/makefile
+	egrep -v "giotto" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/makefile
+	#
+	# Fix up ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile
+	egrep -v "lib" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile
+	#
+	# Fix up ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/makefile
+	egrep -v "vergil" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/makefile
+	#
+	# Fix up ptolemy/cg/kernel/generic
+	egrep -v "html|syntactic" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/kernel/generic/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/kernel/generic/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/kernel/generic/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/kernel/generic/makefile 
+	#
 	# Fix up ptolemy/cg/adapter/generic/program/procedural/makefile
-	egrep -v "c.jar|fmima.jar|fmimahybrid.jar|c.jar" \
+	egrep -v "	c |c/c.jar|fmima|fmimahybrid|java" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/makefile
 	#
 	# Fix up ptolemy/cg/kernel/generic/program/procedural/makefile
-	egrep -v "c.jar|fmima.jar|fmimahybrid.jar|c.jar" \
+	egrep -v " c |c.jar|fmima|fmimahybrid|java" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/kernel/generic/program/procedural/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/kernel/generic/program/procedural/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/kernel/generic/program/procedural/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/kernel/generic/program/procedural/makefile
 	#
+	# Fix up ptolemy/cg/lib/demo/makefile
+	egrep -v "Modular|CompiledComposite|DECG" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/demo/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/demo/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/demo/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/demo/makefile 
+
+	#o
+	# Fix up ptolemy/cg/lib/makefile
+	egrep -v "Modular|syntactic" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/makefile 
+	#
 	# Fix up ptolemy/configs/makefile
-	egrep -v "dsp.jar|full.jar|jxta.jar|ptiny.jar|visualsense.jar" \
+	egrep -v "bcvtb|cyphysim|dsp|full|hyvisual|jxta|pn|ptdb|ptiny|ptserver|space|viptos|visualsense" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile
 	#
+	# Fix up ptolemy/data/makefile
+	egrep -v "ontologies" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile
+	#
 	# Fix up ptolemy/domains/makefile
-	egrep -v "csp.jar|ddf.jar|pn.jar|domains.xml|ptinyDomains.xml|algebraic.jar|ca.jar|ci.jar|curriculum.jar|dde.jar|dt/dt.jar|fmima.jar|giotto.jar|hdf.jar|ontologies.jar|petrinet.jar|ptera.jar|pthales.jar|qss.jar|scr.jar|sysml.jar|taskpt.jar|tester.jar|tm.jar|sr.jar|wireless.jar|algebraic/demo|ca/demo|ddf/demo|hdf/demo|pn/demo|ptera/demo|pthales/demo|ptera/demo|rendezvous/demo|space.jar|sr/demo/demo.jar|sr/doc/doc.jar"	\
+	egrep -v "csp.jar|ddf.jar|pn.jar|domains.xml|ptinyDomains.xml|algebraic.jar|ca.jar|ci.jar|curriculum.jar|dde.jar|dt/dt.jar|fmima.jar|giotto.jar|hdf.jar|ontologies.jar|petrinet.jar|ptera.jar|pthales.jar|qss.jar|scr.jar|sysml.jar|taskpt.jar|tester.jar|tm.jar|sr.jar|wireless.jar|algebraic/demo|ca/demo|ddf/demo|hdf/demo|pn/demo|ptera/demo|pthales/demo|ptera/demo|rendezvous/demo|\$\(PTSPACEDOMAIN_JAR\)|space.jar|sr/demo/demo.jar|sr/doc/doc.jar"	\
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile.tmp \
@@ -1161,11 +1256,26 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/makefile
-	egrep -v "copernicus.jar|gt.jar" \
+	egrep -v "backtrack|copernicus.jar|gt.jar|ptp|verification" \
 		< src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/makefile
+	#
+	# Fix up ptolemy/vergil/makefile
+	egrep -v "gt|ontologies|ptera|scr|tdl" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/makefile
+
+	#
+	# Fix up ptolemy/vergil/modal/makefile
+	egrep -v "fmv|	ia |ia.jar" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/modal/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/modal/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/modal/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/modal/makefile
 	#
 	# Fix up ptolemy/vergil/basic/imprt
 	egrep -v "fmu|g4ltl" \
@@ -1173,6 +1283,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/imprt/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/imprt/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/imprt/makefile
+	#
 	#cd src_jar/$(CAPECODE_CAPECODE_VERSION); $(FINDCLEAN))
 	(cd src_jar/$(CAPECODE_CAPECODE_VERSION); rm -rf `cat ../../src.ex`)
 	# Update the CapeCode copyright (really, the license).
@@ -1221,7 +1332,7 @@ src_jar/hyvisual$(VERSION): $(PTII_SRC_JAR)
 	mv src_jar/hyvisual$(VERSION)/bin/makefile.tmp \
 		src_jar/hyvisual$(VERSION)/bin/makefile
 	# Fix up actor/lib/makefile
-	egrep -v "comm.jar|fmi/fmi.jar|jopio/jopio.jar|javasound.jar|security.jar|vhdl/vhdl.jar|xslt.jar" \
+	egrep -v "comm.jar|fmi|jopio|javasound|security|vhdl|xslt" \
 		src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile \
 		> src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp
 	mv src_jar/hyvisual$(VERSION)/ptolemy/actor/lib/makefile.tmp \
@@ -3257,6 +3368,9 @@ $(PTIIDIST)/doc/books/systems/$(BOOK_PDF):
 		else \
 			echo "Downloading $(BOOK_URL)"; \
 			wget $(BOOK_URL); \
+			if [ -d $(HOME)/Downloads ]; then \
+				cp $(BOOK_PDF) $(HOME)/Downloads; \
+			fi; \
 		fi; \
 		mv $(BOOK_PDF) $(PTIIDIST)/doc/books/systems; \
 		ls -l "$@"; \

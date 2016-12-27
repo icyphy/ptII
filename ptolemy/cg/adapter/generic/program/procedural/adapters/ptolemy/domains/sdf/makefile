@@ -33,7 +33,8 @@
 
 ME =		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf
 
-DIRS =		kernel lib
+DIRS =		kernel \
+		lib
 
 # Root of the Java directory
 ROOT =		../../../../../../../../../..

@@ -67,8 +67,20 @@ ME =		ptolemy/actor/lib
 # $PTII/mk/ptII.mk if it was found.  Otherwise, PTRTOOL_DIR is empty.
 #
 DIRS = 		aspect conversions gui logic hoc image test \
-		javasound jjs jopio mbed net io xslt \
-		test comm security string tutorial vhdl video \
+		javasound \
+		jjs \
+		jopio \
+		mbed \
+		net \
+		io \
+		test \
+		comm \
+		security \
+		string \
+		tutorial \
+		vhdl \
+		video \
+		xslt \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTFMI_DIR) \
 		$(PTEXCEL_DIR) $(PTJAI_DIR) $(PTJAVAMAIL_DIR) \
 		$(PTJAVASCRIPT_DIR) \

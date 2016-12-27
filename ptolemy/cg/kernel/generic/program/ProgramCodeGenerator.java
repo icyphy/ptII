@@ -66,6 +66,7 @@ import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StreamListener;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.JVMBitWidth;
@@ -123,6 +124,14 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
         measureTime.setTypeEquals(BaseType.BOOLEAN);
         measureTime.setExpression("false");
 
+	// sourceLineBinding is used in CodeStream,
+	// so it defind in ProgramCodeGenerator.
+        sourceLineBinding = new Parameter(this, "sourceLineBinding");
+        sourceLineBinding.setTypeEquals(BaseType.BOOLEAN);
+        sourceLineBinding.setExpression("false");
+	// This parameter is typically only visible in CCodeGenerator.
+	sourceLineBinding.setVisibility(Settable.NONE);
+
         useMake = new Parameter(this, "useMake");
         useMake.setTypeEquals(BaseType.BOOLEAN);
         useMake.setExpression("true");
@@ -170,6 +179,13 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      *  The default value is a parameter with the value false.
      */
     public Parameter measureTime;
+
+    /** If true, then the generated source is bound to the line
+     *  number and file of the (adapter) templates. Otherwise, the
+     *  source is bound only to the output file. This is a boolean
+     *  parameter with default value false.
+     */
+    public Parameter sourceLineBinding;
 
     /** If true, then use the 'make' command to compile and run
      *  the generated code.  The default is true;
@@ -952,6 +968,17 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      */
     final public boolean isPrimitive(String cgType) {
         return _primitiveTypes.contains(cgType);
+    }
+
+    /** Return true if StaticSchedulingDirector should
+     *  invoke _generateUpdatePortOffsets.
+     *  Most code generators do not override this method,
+     *  CCodeGenerator overrides it to return false.
+     *  @return true, indicating that StaticSchedulingDirector
+     *  should invoke StaticSchedulingDirectory._invokeGenerateUpdatePortOffset().
+     */
+    public boolean invokeGenerateUpdatePortOffsets() {
+	return true;
     }
 
     /**
