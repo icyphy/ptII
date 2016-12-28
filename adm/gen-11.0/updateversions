@@ -11,10 +11,17 @@ tmpfile=/tmp/updateversions.$$
 for file in $@
 do
     if [ -f $file ]; then
-	sed "s/$oldVersion/$newVersion/g" $file > $tmpfile
-	echo "$0: $file"
-	diff $file $tmpfile
-	mv $tmpfile $file
+        case $file in
+	    *.gif|*.jpg|*.png)	
+		  echo "$0: file is a binary file."
+		  ;;
+	    *)
+		sed "s/$oldVersion/$newVersion/g" $file > $tmpfile
+		echo "$0: $file"
+		diff $file $tmpfile
+		mv $tmpfile $file
+		;;
+        esac
     else
 	echo "$0: $file is not a file, perhaps it is a directory."
     fi
