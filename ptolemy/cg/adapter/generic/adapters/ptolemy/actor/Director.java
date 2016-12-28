@@ -43,7 +43,6 @@ import ptolemy.cg.kernel.generic.program.CodeStream;
 import ptolemy.cg.kernel.generic.program.NamedProgramCodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.program.ProgramCodeGenerator;
 import ptolemy.data.expr.Parameter;
-import ptolemy.domains.ptides.kernel.PtidesPlatform;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NamedObj;
@@ -158,7 +157,8 @@ public class Director extends NamedProgramCodeGeneratorAdapter {
     public String generateConstructorCode() throws IllegalActionException {
         // FIXME : This should be in a proper adapter but since the PtidesPlatformDirector class
         // is private, we did it here which works but is not nice ...
-        if (getComponent().getContainer() instanceof PtidesPlatform) {
+	// FIXME: We get the class name here because for Cape Code, we don't want to include Ptides.
+	if (getComponent().getContainer().getClass().getName().equals("ptolemy.domains.ptides.kernel.PtidesPlatform")) {
             StringBuffer result = new StringBuffer();
             CompositeActor container = (CompositeActor) _director
                     .getContainer();
