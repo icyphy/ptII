@@ -274,8 +274,10 @@ public class FileUtilities {
      *  @exception IOException If the file cannot be read.
      */
     public static String getFileAsString(String path) throws IOException {
-        // FIXME: Will this support reading from jar files?
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
+	// Use nameToURL so that we look in the classpath for jar files
+	// that might contain the resource.
+	URL url = FileUtilities.nameToURL(path, null, null);
+	byte[] encoded = FileUtilities.binaryReadURLToByteArray(url);
         return new String(encoded, Charset.defaultCharset());
     }
 
@@ -703,19 +705,24 @@ public class FileUtilities {
             throws IOException {
         StringBuffer response = new StringBuffer();
         BufferedReader reader = null;
-        String line = "";
-        // Avoid Coverity Scan: "Dubious method used (FB.DM_DEFAULT_ENCODING)"
-        reader = new BufferedReader(new InputStreamReader(stream,
-                java.nio.charset.Charset.defaultCharset()));
+	try {
+	    String line = "";
+	    // Avoid Coverity Scan: "Dubious method used (FB.DM_DEFAULT_ENCODING)"
+	    reader = new BufferedReader(new InputStreamReader(stream,
+							      java.nio.charset.Charset.defaultCharset()));
 
-        String lineBreak = System.getProperty("line.separator");
-        while ((line = reader.readLine()) != null) {
-            response.append(line);
-            if (!line.endsWith(lineBreak)) {
-                response.append(lineBreak);
-            }
-        }
-        reader.close();
+	    String lineBreak = System.getProperty("line.separator");
+	    while ((line = reader.readLine()) != null) {
+		response.append(line);
+		if (!line.endsWith(lineBreak)) {
+		    response.append(lineBreak);
+		}
+	    }
+	} finally {
+	    if (reader != null) {
+		reader.close();
+	    }
+	}
         return response.toString();
     }
 
