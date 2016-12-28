@@ -118,13 +118,13 @@ PortCodeGenerator {
             if (receivers[channelIndex].length > 0) {
                 TypedIOPort port = (TypedIOPort) getComponent();
                 try {
-                    // FIXME: I have no idea why generateGetCode of the receiver class is not called
-                    // (for the CaseDirector??). So this is a hack that keeps PtidyOS working...
-                    if (port.getContainer() != null
-                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
-                        return receivers[channelIndex][0]
-                                .generateGetCode(offset);
-                    }
+                    // // FIXME: I have no idea why generateGetCode of the receiver class is not called
+                    // // (for the CaseDirector??). So this is a hack that keeps PtidyOS working...
+                    // if (port.getContainer() != null
+                    //         && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
+                    //     return receivers[channelIndex][0]
+                    //             .generateGetCode(offset);
+                    // }
                     if (port.getContainer() != null
                             && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.actor.sched.StaticSchedulingDirector) {
                         return receivers[channelIndex][0]
@@ -272,13 +272,13 @@ PortCodeGenerator {
             if (receivers[channelIndex].length > 0) {
                 TypedIOPort port = (TypedIOPort) getComponent();
                 try {
-                    // FIXME: I have no idea why generateGetCode of the receiver class is not called
-                    // (for the CaseDirector??). So this is a hack that keeps PtidyOS working...
-                    if (port.getContainer() != null
-                            && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
-                        return receivers[channelIndex][0]
-                                .generateGetCode(offset);
-                    }
+                    // // FIXME: I have no idea why generateGetCode of the receiver class is not called
+                    // // (for the CaseDirector??). So this is a hack that keeps PtidyOS working...
+                    // if (port.getContainer() != null
+                    //         && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.domains.ptides.kernel.PtidesDirector) {
+                    //     return receivers[channelIndex][0]
+                    //             .generateGetCode(offset);
+                    // }
                     if (port.getContainer() != null
                             && ((Actor) port.getContainer()).getDirector() instanceof ptolemy.actor.sched.StaticSchedulingDirector) {
                         return receivers[channelIndex][0]
