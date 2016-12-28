@@ -1805,10 +1805,6 @@ function nullHandlerFunction() {}
  *  @return 0 if there were no problems, 3 if there was a command line argument issue.
  */
 function processCommandLineArguments(argv, fileReader, instantiate, terminator) {
-
-    // accessorMain() is not in commonHost.js because we want to
-    // ensure that commonHost cannot read arbitrary files from the
-    // file system.
     
     // Simplified usage message to just show the preferred form of the arguments,
     // not all possible variations.
@@ -1878,7 +1874,8 @@ function processCommandLineArguments(argv, fileReader, instantiate, terminator) 
             }
             timeout = argv[i];
 
-            console.log("commonHost.js: main(): Setting timout to stop after " + timeout + " ms.");
+            console.log("commonHost.js: processCommandLineArguments(): "
+                    + "Setting timout to stop after " + timeout + " ms.");
             setTimeout(function () {
                 // Under node, process.exit gets caught by exitHandler() in
                 // nodeHost.js and invokes wrapup().
