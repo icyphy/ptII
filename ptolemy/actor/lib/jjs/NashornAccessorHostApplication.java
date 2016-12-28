@@ -27,13 +27,6 @@
  */
 package ptolemy.actor.lib.jjs;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.nio.charset.Charset;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.Arrays;
 
 import javax.script.Invocable;
@@ -144,17 +137,23 @@ public class NashornAccessorHostApplication {
                     + " Nashorn is present in JDK 1.8 and later.");
         }
         
-        // Load capeCodeHost.js, which provides top-level functions.
+        // Load nashornHost.js, which provides top-level functions.
         engine.eval(FileUtilities.openForReading(
-                "$CLASSPATH/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
+                "$CLASSPATH/ptolemy/actor/lib/jjs/nashornHost.js", null,
                 null));
 	
+        // Define setTimeout(), etc..
+        engine.eval(FileUtilities.openForReading(
+                "$CLASSPATH/ptolemy/actor/lib/jjs/external/setTimeout-nashorn.js", null,
+                null));
+
         // For some mysterious reason, if we don't set a timer here, we get
         // the following error message when a -timeout argument is supplied:
         // "java.lang.IllegalStateException: Timer already cancelled."
         // The time period is about 25 days.
         // This has something to do with the implementation in
         // external/setTimeout-nashorn.js.
+        // This timer keeps Nashorn from exiting.
         Object instance = engine.eval("function() {}");
         ((Invocable)engine).invokeFunction("setInterval", instance, 2147483647);
 
@@ -170,17 +169,6 @@ public class NashornAccessorHostApplication {
 	    return -1;
 	}
 	return ((Integer)returnValue).intValue();
-    }
-
-    /** Return the string contents of the file at the specified location.
-     *  @param path The location.  This is used in localFunctions.js.
-     *  @return The contents as a string, assuming the default encoding of
-     *   this JVM (probably utf-8).
-     *  @exception IOException If the file cannot be read.
-     */
-    public static String getFileAsString(String path) throws IOException {
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, Charset.defaultCharset());
     }
 
     /** Invoke one or more JavaScript files.
@@ -200,30 +188,5 @@ public class NashornAccessorHostApplication {
             throwable.printStackTrace();
             StringUtilities.exit(1);
         }
-    }
-    
-    /** Utility method to read a string from an input stream.
-     *  @param stream The stream.
-     *  @return The string.
-     * @exception IOException If the stream cannot be read.
-     */
-    public static String readFromInputStream(InputStream stream)
-            throws IOException {
-        StringBuffer response = new StringBuffer();
-        BufferedReader reader = null;
-        String line = "";
-        // Avoid Coverity Scan: "Dubious method used (FB.DM_DEFAULT_ENCODING)"
-        reader = new BufferedReader(new InputStreamReader(stream,
-                java.nio.charset.Charset.defaultCharset()));
-
-        String lineBreak = System.getProperty("line.separator");
-        while ((line = reader.readLine()) != null) {
-            response.append(line);
-            if (!line.endsWith(lineBreak)) {
-                response.append(lineBreak);
-            }
-        }
-        reader.close();
-        return response.toString();
     }
 }

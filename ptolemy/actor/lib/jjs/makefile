@@ -63,7 +63,8 @@ OTHER_FILES_TO_BE_JARED = \
 	JavaScriptIcon.xml \
 	jjs-license.htm \
 	js.xml \
-	localFunctions.js
+	localFunctions.js \
+	nashornHost.js
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

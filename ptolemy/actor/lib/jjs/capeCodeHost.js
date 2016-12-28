@@ -22,32 +22,28 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 //
 
-/** JavaScript functions for a Ptolemy II (Nashorn) accessor host.
+/** JavaScript functions for the CapeCode host, which is based on
+ *  Ptolemy II and Java's Nashorn JavaScript engine.
+ *  This host supports version 1 accessors.
+ *  To implement this host, first load the nashornHost.js file,
+ *  which realizes functions that are independent of Ptolemy II.
+ *  Then load this one, which overrides some of those function
+ *  definitions.
  *
- *  <p>This file includes basic utility functions assumed by version 1
- *  accessors.</p>
- *
- * @module basicFunctions
- * @author Edward A. Lee, Contributor: Christopher Brooks
- * @version $$Id$$
- * @since Ptolemy II 11.0
+ *  @module capeCodeHost
+ *  @author Edward A. Lee, Contributor: Christopher Brooks
+ *  @version $$Id$$
+ *  @since Ptolemy II 11.0
  */
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, accessors, actor, commonHost, getAccessorCode, load */
+/*globals Java, actor, commonHost, getAccessorCode, load */
 /*jshint globalstrict: true */
 /*jslint nomen: true */
 "use strict";
 
-// Java classes that define some static functions to call from JS.
-var NashornAccessorHostApplication 
-        = Java.type('ptolemy.actor.lib.jjs.NashornAccessorHostApplication');
-var StringUtilities
-        = Java.type('ptolemy.util.StringUtilities');
-
-// Flag that will cause debug output to the console if set to true.
-var debug = false;
+//////// NOTE: The following function overrides nashornHost.js.
 
 /** Pop up a dialog with the specified message.
  *  NOTE: This function is not required by the accessor specification, so accessors
@@ -74,6 +70,8 @@ function clearInterval(handle) {
 function clearTimeout(handle) {
     actor.clearTimeout(handle);
 }
+
+////////NOTE: The following function overrides nashornHost.js.
 
 /** Report an error. This implementation delegates to the host actor to
  *  report the error. In this implementation, the host actor has an error output
@@ -114,6 +112,8 @@ function error(message) {
 function getResource(uri, timeout) {
     return actor.getResource(uri, timeout);
 }
+
+/////////// NOTE: The following function is deprecated, but provided for compatibility
 
 /** Perform a blocking HTTP request.
  *  @param url The url for the request, method, properties, body, timeout) {
@@ -181,6 +181,8 @@ function httpRequest(url, method, properties, body, timeout) {
     );
 }
 
+/////////// NOTE: The following function is deprecated, but provided for compatibility
+
 // Print a message to the console.
 // print is built in to Nashorn, but is not required by the accessor specification,
 // so accessors should not rely on it being present.
@@ -217,148 +219,6 @@ function readURL(url, timeout) {
     }
     return response.getBody();
 }
-
-var __moduleFile = Java.type('ptolemy.util.FileUtilities').nameToFile(
-    '$CLASSPATH/ptolemy/actor/lib/jjs/',
-    null
-);
-
-/** A string giving the full path to the root directory for installed modules. */
-var _moduleRoot = __moduleFile.getAbsolutePath();
-
-// Check to see if _moduleFile is a Jar URL like
-if (_moduleRoot.indexOf("!/") !== -1) {
-    _moduleRoot = "jar:" + __moduleFile.toString();
-}
-
-var __accessorFile = Java.type('ptolemy.util.FileUtilities').nameToFile(
-    '$CLASSPATH/org/terraswarm/accessor/accessors/web/',
-    null
-);
-
-var _accessorRoot = __accessorFile.getAbsolutePath();
-
-// Check to see if _accessorRoot is a Jar URL like
-if (_accessorRoot.indexOf("!/") !== -1) {
-    _accessorRoot = "jar:" + __accessorFile.toString();
-}
-
-/** An array that gives the search path for modules to be required. */
-var _modulePath = [_moduleRoot + '/',
-		   _moduleRoot + '/modules/',
-		   _moduleRoot + '/node/',
-		   _moduleRoot + '/node_modules/',
-		   _accessorRoot + '/hosts/',
-		   _accessorRoot + '/'];
-
-/** An array that gives the search path for modules to be required relative to the classpath. */
-var _moduleClasspath = ['$CLASSPATH/ptolemy/actor/lib/jjs/modules/',
-			   '$CLASSPATH/ptolemy/actor/lib/jjs/node/',
-			   '$CLASSPATH/ptolemy/actor/lib/jjs/node_modules/',
-			   '$CLASSPATH/org/terraswarm/accessor/accessors/web/hosts/',
-			   '$CLASSPATH/org/terraswarm/accessor/accessors/web/'];
-
-/** A string giving the full path to the root directory for installed accessors. */
-var _accessorRoot = Java.type('ptolemy.util.FileUtilities').nameToFile(
-    '$CLASSPATH/org/terraswarm/accessor/accessors/web/',
-    null
-).getAbsolutePath();
-
-/** A string giving the full path to the root directory for test accessors. */
-var _testAccessors = Java.type('ptolemy.util.FileUtilities').nameToFile(
-    '$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/',
-    null
-).getAbsolutePath();
-
-/** An array that gives the search path for accessors to be extended. */
-var _accessorPath = [_accessorRoot + '/', _testAccessors + '/'].concat(_modulePath);
-
-/** An array that gives the search path for accessors to be extended. */
-var _accessorClasspath = ['$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/'].concat(_moduleClasspath);
-
-/**
- * Require the named module. This function imports modules formatted
- * according to the CommonJS standard.
- *
- * <p>If the name begins with './' or '/', then it is assumed to
- * specify a file or directory on the local disk. If it is a file, the
- * '.js' suffix may be optionally omitted. If it is a directory, then
- * this function will look for a package.json file in that directory
- * and load the file specified by the 'main' property the JSON object
- * defined in that file. If there is no package.json file, then it
- * will load an 'index.js' file, if there is one.</p>
- *
- * <p>If the name does not begin with './' or '/', then it is assumed
- * to specify a module installed in this accessor host.</p>
- *
- * <p>In both cases, this function returns an object that includes as
- * properties any properties that have been added to the 'exports'
- * property. For example, to export a function, the module JavaScript
- * file could define the function as follows:</p>
- *
- * <pre>
- *   exports.myFunction = function() {...};
- * </pre>
- *
- * <p>Alternatively, the module JavaScript file can explicitly define
- * the exports object as follows:<p>
- *
- * <pre>
- *   var myFunction = function() {...};
- *   module.exports = {
- *       myFunction : myFunction
- *   };
- * </pre>
- *
- * <p>This implementation uses the requires() function implemented by Walter Higgins,
- * found here: <a href="https://github.com/walterhiggins/commonjs-modules-javax-script.">https://github.com/walterhiggins/commonjs-modules-javax-script</a>.</p>
- *
- * @see http://nodejs.org/api/modules.html#modules_the_module_object
- * @see also: http://wiki.commonjs.org/wiki/Modules
- */
-var require = load(_moduleRoot + '/external/require.js')(
-    // Invoke the function returned by 'load' immediately with the following arguments.
-    //    - a root directory in which to look for modules.
-    //    - an array of paths in which to look for modules.
-    //    - an optional hook object that includes two callback functions for notification.
-    _moduleRoot,
-    _modulePath
-);
-
-// If we are using Nashorn outside of Cape Code, then actor will be undefined or null.
-if (typeof actor === 'undefined') {
-    var actor = require('external/setTimeout-nashorn.js');
-} else if (actor === null) {
-    // FIXME: What we have a RestrictedJavaScriptInterface?
-    actor = require('external/setTimeout-nashorn.js');
-}
-
-/**
- * Require the named accessor. This is a version of require() that looks
- * in a different place for accessors.
- * @see #require()
- */
-var requireAccessor = load(_moduleRoot + '/external/require.js')(
-    // Invoke the function returned by 'load' immediately with the following arguments.
-    //    - a root directory in which to look for accessors.
-    //    - an array of paths in which to look for accessors.
-    //    - an optional hook object that includes two callback functions for notification.
-    _accessorRoot,
-    _accessorPath
-);
-
-////////////////////
-// Pull in the util and console modules.
-var util = require('util');
-var console = require('console');
-
-// Locally defined modules.
-var commonHost = require('commonHost.js');
-
-// This Cape Code host allows trusted accessors, which means that any
-// accessor whose class name begins with 'trusted/' can invoke the
-// function getTopLevelAccessors().
-commonHost.allowTrustedAccessors(true);
 
 /**
  * Set a timeout to call the specified function after the specified
@@ -439,141 +299,3 @@ function setTimeout(func, milliseconds) {
     id = actor.setTimeout(callback, milliseconds);
     return id;
 }
-
-var accessors = [];
-
-/** Return the source code for an accessor from its fully qualified name.
- *  This will throw an exception if there is no such accessor on the accessor
- *  search path.
- *  @param name Fully qualified accessor name, e.g. 'net/REST'.
- */
-function getAccessorCode(name) {
-    var code,
-        i,
-        location;
-    // Append a '.js' to the name, if needed.
-    if (name.indexOf('.js') !== name.length - 3) {
-        name += '.js';
-    }
-
-    // Handle absolute pathnames.
-    if (name[0] === '/' || name[0] === '\\') {
-        code = NashornAccessorHostApplication.getFileAsString(name);
-        return code;
-    }
-
-    // _accessorPath is defined in basicFunctions.js.
-    for (i = 0; i < _accessorPath.length; i++) {
-        location = _accessorPath[i].concat(name);
-        try {
-            code = NashornAccessorHostApplication.getFileAsString(location);
-            break;
-        } catch (err) {
-            continue;
-        }
-    }
-    if (!code) {
-	for (i = 0; i < _accessorClasspath.length; i++) {
-		location = _accessorClasspath[i].concat(name);
-		try {
-			code = NashornAccessorHostApplication.getFileFromClasspathAsString(location);
-			break;
-		} catch (err) {
-			continue;
-		}
-	}
-    }
-    if (!code) {
-        throw ('Accessor ' + name + ' not found on path: ' + _accessorPath + ' or relative path: ' + _accessorClasspath);
-    }
-    return code;
-}
-
-/** Instantiate and return an accessor.
- *  This will throw an exception if there is no such accessor class on the accessor
- *  search path.
- *  @param accessorName The name to give to the instance.
- *  @param accessorClass Fully qualified accessor class name, e.g. 'net/REST'.
- */
-function instantiate(accessorName, accessorClass) {
-    // FIXME: The bindings should be a bindings object where require == a requireLocal
-    // function that searches first for local modules.
-    var bindings = {
-        'require': require,
-    };
-    var instance = new commonHost.instantiateAccessor(
-        accessorName, accessorClass, getAccessorCode, bindings);
-    console.log('Instantiated accessor ' + accessorName + ' with class ' + accessorClass);
-
-    accessors.push(instance);
-    return instance;
-}
-
-/** Instantiate and initialize the accessors named by the
- *  accessorNames argument
- *
- * See invoke() for how this method is used.
- *
- * @param accessorNames An array of accessor names in a format suitable
- * for getAccessorCode(name).
- */
-function instantiateAndInitialize(accessorNames) {
-    var length = accessorNames.length;
-    var index;
-    for (index = 0; index < length; ++index) {
-        // The name of the accessor is basename of the accessorClass.
-        var accessorClass = accessorNames[index];
-
-        // For example, if the accessorClass is
-        // test/TestComposite, then the accessorName will be
-        // TestComposite.
-
-        var startIndex = (accessorClass.indexOf('\\') >= 0 ? accessorClass.lastIndexOf('\\') : accessorClass.lastIndexOf('/'));
-        var accessorName = accessorClass.substring(startIndex);
-        if (accessorName.indexOf('\\') === 0 || accessorName.indexOf('/') === 0) {
-            accessorName = accessorName.substring(1);
-        }
-        // If the same accessorClass appears more than once in the
-        // list of arguments, then use different names.
-        // To replicate: node nodeHostInvoke.js test/TestComposite test/TestComposite
-        if (index > 0) {
-            accessorName += "_" + (index - 1);
-        }
-        var accessor = instantiate(accessorName, accessorClass);
-        // Push the top level accessor so that we can call wrapup later.
-        accessors.push(accessor);
-        accessor.initialize();
-    }
-    return accessors;
-}
-
-/** Evaluate command-line arguments by first converting the arguments
- *  from a Java array to a JavaScript array, and then invoking main()
- *  in commonHost.js.
- *  @param argv Command-line arguments.
- */
-function processCommandLineArguments(argv) {
-	return commonHost.processCommandLineArguments(
-	        // Command-line arguments.
-	        Java.from(argv),
-	        // Function to read a file and return a string.
-	        NashornAccessorHostApplication.getFileAsString,
-	        // Function to instantiate accessors.
-	        instantiate,
-	        // Function to call upon termination.
-	        function() {
-	            // FIXME: Should first call wrapup() on all accessors.
-	            StringUtilities.exit(0);
-	        }
-	);
-}
-
-///////////////////////////////////////////////////////////////////////
-// Make commonHost functions visible when this file is evaluated directly.
-
-var Accessor = commonHost.Accessor;
-var getTopLevelAccessors = commonHost.getTopLevelAccessors;
-var stopAllAccessors = commonHost.stopAllAccessors;
-var uniqueName = commonHost.uniqueName;
-
-// FIXME: Handle exit calls like how we do in nodeHost?

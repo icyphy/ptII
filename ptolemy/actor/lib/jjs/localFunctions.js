@@ -34,7 +34,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, actor, channel, clearInterval, clearTimeout, error, getAccessorCode, getParameter, httpRequest, input, java, output, parameter, readURL, require, requireAccessor, send, setDefault, setInterval, setAccessor, setParameter, setTimeout, superSend, _accessorPath */
+/*globals Java, actor, channel, clearInterval, clearTimeout, error, getAccessorCode, getParameter, httpRequest, input, java, output, parameter, readURL, require, send, setDefault, setInterval, setAccessor, setParameter, setTimeout, superSend, _accessorPath */
 /*jshint globalstrict: true*/
 "use strict";
 
