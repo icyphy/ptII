@@ -33,6 +33,14 @@
  *  @version $$Id$$
  */
 
+// If a variable 'actor' is defined, delegate to it. Otherwise,
+// print everything to stdout using print(), which is defined in
+// Nashorn.
+var actor = actor || {
+    'error' : function(message) {print(message);},
+    'log' : function(message) {print(message);},
+}
+
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
 /*globals actor, console, exports, print, require */
@@ -106,11 +114,7 @@ exports.info = exports.log;
  */
 exports.log = function () {
     var formatted = util.format.apply(this, arguments);
-    try {
-        actor.log(formatted);
-    } catch (error) {
-        print(formatted);
-    }
+    actor.log(formatted);
 };
 
 /** Same as console.log, but prefix the message with "WARNING: " and send to stderr

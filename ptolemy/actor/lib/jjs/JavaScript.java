@@ -640,6 +640,17 @@ public class JavaScript extends TypedAtomicActor {
         } else {
             engine.put("_debug", false);
         }
+        
+        // First load the Nashorn host, which defines functions that are independent
+        // of Ptolemy II.
+        try {
+            engine.eval(FileUtilities.openForReading(
+                    "$CLASSPATH/ptolemy/actor/lib/jjs/nashornHost.js", null,
+                    null));
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(actor, throwable,
+                    "Failed to load nashornHost.js");
+        }
 
         // Define the actor and accessor variables.
         // capeCodeHost.js refers to actor at eval-time, so set it now.
@@ -1050,18 +1061,6 @@ public class JavaScript extends TypedAtomicActor {
         } finally {
             _inFire = false;
         }
-    }
-
-    /** Return the string contents of the file at the specified location.
-     *  @param path The location.  This is used in localFunctions.js.
-     *  @return The contents as a string, assuming the default encoding of
-     *   this JVM (probably utf-8).
-     *  @exception IOException If the file cannot be read.
-     *  @deprecated Invoke
-     *  NashornAccessorHostApplication.getFileAsString() directly.
-     */
-    public static String getFileAsString(String path) throws IOException {
-        return NashornAccessorHostApplication.getFileAsString(path);
     }
 
     /** Return the string contents of the file from the classpath.
@@ -1800,7 +1799,7 @@ public class JavaScript extends TypedAtomicActor {
 	// This method was moved to NashornAccessorHostApplication
 	// when the pure Nashorn host and the Cape Code host were
 	// split.
-	return NashornAccessorHostApplication.readFromInputStream(stream);
+	return FileUtilities.readFromInputStream(stream);
     }
 
     /** Invoke the specified function after the specified amount of time and again
