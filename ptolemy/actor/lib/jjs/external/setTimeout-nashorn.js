@@ -73,6 +73,8 @@
 
     context.setInterval = function (fn, delay /* [, args...] */ ) {
         var args = [].slice.call(arguments, 2, arguments.length);
+        
+        console.log('FIXME: ' + delay);
 
         var cancel = null;
 
