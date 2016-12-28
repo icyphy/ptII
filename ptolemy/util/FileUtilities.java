@@ -44,6 +44,9 @@ import java.net.JarURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -262,6 +265,18 @@ public class FileUtilities {
             }
         }
         return directory.delete() && deletedAllFiles;
+    }
+
+    /** Return the string contents of the file at the specified location.
+     *  @param path The location.
+     *  @return The contents as a string, assuming the default encoding of
+     *   this JVM (probably utf-8).
+     *  @exception IOException If the file cannot be read.
+     */
+    public static String getFileAsString(String path) throws IOException {
+        // FIXME: Will this support reading from jar files?
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
+        return new String(encoded, Charset.defaultCharset());
     }
 
     /** Extract the contents of a jar file.
@@ -677,6 +692,31 @@ public class FileUtilities {
 
         File file = nameToFile(name, base);
         return new FileWriter(file, append);
+    }
+
+    /** Utility method to read a string from an input stream.
+     *  @param stream The stream.
+     *  @return The string.
+     * @exception IOException If the stream cannot be read.
+     */
+    public static String readFromInputStream(InputStream stream)
+            throws IOException {
+        StringBuffer response = new StringBuffer();
+        BufferedReader reader = null;
+        String line = "";
+        // Avoid Coverity Scan: "Dubious method used (FB.DM_DEFAULT_ENCODING)"
+        reader = new BufferedReader(new InputStreamReader(stream,
+                java.nio.charset.Charset.defaultCharset()));
+
+        String lineBreak = System.getProperty("line.separator");
+        while ((line = reader.readLine()) != null) {
+            response.append(line);
+            if (!line.endsWith(lineBreak)) {
+                response.append(lineBreak);
+            }
+        }
+        reader.close();
+        return response.toString();
     }
 
     ///////////////////////////////////////////////////////////////////
