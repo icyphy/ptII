@@ -149,6 +149,15 @@ public class NashornAccessorHostApplication {
                 "$CLASSPATH/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
                 null));
 	
+        // For some mysterious reason, if we don't set a timer here, we get
+        // the following error message when a -timeout argument is supplied:
+        // "java.lang.IllegalStateException: Timer already cancelled."
+        // The time period is about 25 days.
+        // This has something to do with the implementation in
+        // external/setTimeout-nashorn.js.
+        Object instance = engine.eval("function() {}");
+        ((Invocable)engine).invokeFunction("setInterval", instance, 2147483647);
+
         // Evaluate the command-line arguments. This will either instantiate and
         // initialize accessors or evaluate specified JavaScript code.
 	Object returnValue = ((Invocable)engine)

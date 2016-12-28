@@ -360,11 +360,6 @@ var commonHost = require('commonHost.js');
 // function getTopLevelAccessors().
 commonHost.allowTrustedAccessors(true);
 
-////////////////////
-// Use a single Timer object for all timeout functions
-// (since they all have to execute in the same thread anyway).
-var _timer;
-
 /**
  * Set a timeout to call the specified function after the specified
  * time and repeatedly at multiples of that time.
