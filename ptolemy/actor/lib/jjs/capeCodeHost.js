@@ -27,14 +27,6 @@
  *  <p>This file includes basic utility functions assumed by version 1
  *  accessors.</p>
  *
- * <h2>References</h2>
- *
- * <p><name="VisionOfSwarmLets">Elizabeth Latronico, Edward A. Lee,
- * Marten Lohstroh, Chris Shaver, Armin Wasicek, Matt Weber.</a>
- * <a href="http://www.terraswarm.org/pubs/332.html">A Vision of Swarmlets</a>,
- * <i>IEEE Internet Computing, Special Issue on Building Internet
- * of Things Software</i>, 19(2):20-29, March 2015.</p>
- *
  * @module basicFunctions
  * @author Edward A. Lee, Contributor: Christopher Brooks
  * @version $$Id$$
@@ -47,6 +39,12 @@
 /*jshint globalstrict: true */
 /*jslint nomen: true */
 "use strict";
+
+// Java classes that define some static functions to call from JS.
+var NashornAccessorHostApplication 
+        = Java.type('ptolemy.actor.lib.jjs.NashornAccessorHostApplication');
+var StringUtilities
+        = Java.type('ptolemy.util.StringUtilities');
 
 // Flag that will cause debug output to the console if set to true.
 var debug = false;
@@ -178,7 +176,7 @@ function httpRequest(url, method, properties, body, timeout) {
     }
 
     // Wait for response.
-    return Java.type('ptolemy.actor.lib.jjs.NashornAccessorHostApplication').readFromInputStream(
+    return NashornAccessorHostApplication.readFromInputStream(
         connection.getInputStream()
     );
 }
@@ -357,6 +355,11 @@ var console = require('console');
 // Locally defined modules.
 var commonHost = require('commonHost.js');
 
+// This Cape Code host allows trusted accessors, which means that any
+// accessor whose class name begins with 'trusted/' can invoke the
+// function getTopLevelAccessors().
+commonHost.allowTrustedAccessors(true);
+
 ////////////////////
 // Use a single Timer object for all timeout functions
 // (since they all have to execute in the same thread anyway).
@@ -452,7 +455,6 @@ var accessors = [];
 function getAccessorCode(name) {
     var code,
         i,
-        js = Java.type('ptolemy.actor.lib.jjs.NashornAccessorHostApplication'),
         location;
     // Append a '.js' to the name, if needed.
     if (name.indexOf('.js') !== name.length - 3) {
@@ -461,7 +463,7 @@ function getAccessorCode(name) {
 
     // Handle absolute pathnames.
     if (name[0] === '/' || name[0] === '\\') {
-        code = js.getFileAsString(name);
+        code = NashornAccessorHostApplication.getFileAsString(name);
         return code;
     }
 
@@ -469,7 +471,7 @@ function getAccessorCode(name) {
     for (i = 0; i < _accessorPath.length; i++) {
         location = _accessorPath[i].concat(name);
         try {
-            code = js.getFileAsString(location);
+            code = NashornAccessorHostApplication.getFileAsString(location);
             break;
         } catch (err) {
             continue;
@@ -479,7 +481,7 @@ function getAccessorCode(name) {
 	for (i = 0; i < _accessorClasspath.length; i++) {
 		location = _accessorClasspath[i].concat(name);
 		try {
-			code = js.getFileFromClasspathAsString(location);
+			code = NashornAccessorHostApplication.getFileFromClasspathAsString(location);
 			break;
 		} catch (err) {
 			continue;
@@ -550,38 +552,33 @@ function instantiateAndInitialize(accessorNames) {
     return accessors;
 }
 
-// Make the Accessor constructor visible so that we may use it in the
-// Cape Code Accessor Code Generator.
-var Accessor = commonHost.Accessor;
-
-// Define additional functions that should appear in the global scope
-// so that they can be invoked on the command line.
-//provideInput = commonHost.provideInput;
-//setParameter = commonHost.setParameter;
-
-var main = commonHost.main;
-
 /** Evaluate command-line arguments by first converting the arguments
  *  from a Java array to a JavaScript array, and then invoking main()
  *  in commonHost.js.
  *  @param argv Command-line arguments.
  */
-function evaluateArguments(argv) {
-	return this.main(Java.from(argv));
+function processCommandLineArguments(argv) {
+	return commonHost.processCommandLineArguments(
+	        // Command-line arguments.
+	        Java.from(argv),
+	        // Function to read a file and return a string.
+	        NashornAccessorHostApplication.getFileAsString,
+	        // Function to instantiate accessors.
+	        instantiate,
+	        // Function to call upon termination.
+	        function() {
+	            // FIXME: Should first call wrapup() on all accessors.
+	            StringUtilities.exit(0);
+	        }
+	);
 }
 
-// In case this gets used a module, create an exports object.
-// FIXME: This looks completely wrong. Should not be "var"
-// and should be module.exports = ...
-var exports = {
-    'Accessor': Accessor,
-    //'getAccessorCode': getAccessorCode,
-    'instantiate': instantiate,
-    'instantiateAndInitialize': instantiateAndInitialize,
-    //'invoke': invoke,
-    'main': main,
-    'provideInput': commonHost.provideInput,
-    'setParameter': commonHost.setParameter,
-};
+///////////////////////////////////////////////////////////////////////
+// Make commonHost functions visible when this file is evaluated directly.
+
+var Accessor = commonHost.Accessor;
+var getTopLevelAccessors = commonHost.getTopLevelAccessors;
+var stopAllAccessors = commonHost.stopAllAccessors;
+var uniqueName = commonHost.uniqueName;
 
 // FIXME: Handle exit calls like how we do in nodeHost?

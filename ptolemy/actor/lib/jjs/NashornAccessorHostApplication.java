@@ -39,9 +39,7 @@ import java.util.Arrays;
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
-import javax.script.ScriptException;
 
-import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
@@ -96,12 +94,12 @@ import ptolemy.util.StringUtilities;
  *
  * <p>To run a very simple test:</p>
  * <pre>
- * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -accessor -timeout 10000 hosts/nashorn/test/testNashornHost.js)
+ * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -timeout 10000 -js hosts/nashorn/test/testNashornHost.js)
  * </pre>
  *
  * <p>To run a composite accessor:</p>
  * <pre>
- * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -accessor -timeout 10000 test/auto/RampJSDisplay.js)
+ * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -timeout 10000 test/auto/RampJSDisplay.js)
  * </pre>
  *
  * <p> The command line syntax is:</p>
@@ -151,18 +149,10 @@ public class NashornAccessorHostApplication {
                 "$CLASSPATH/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
                 null));
 	
-	String accessorMainPath = "$CLASSPATH/org/terraswarm/accessor/accessors/web/hosts/util/accessorMain.js";
-        engine.eval(FileUtilities.openForReading(accessorMainPath, null, null));
-
-        // Load localFunctions.js, which loads commonHost.js and
-        // provides more top-level functions.
-        //String localFunctionsPath = "$CLASSPATH/ptolemy/actor/lib/jjs/localFunctions.js";
-        //engine.eval(FileUtilities.openForReading(localFunctionsPath, null, null));
-
         // Evaluate the command-line arguments. This will either instantiate and
         // initialize accessors or evaluate specified JavaScript code.
 	Object returnValue = ((Invocable)engine)
-	        .invokeFunction("accessorMain", (Object)args);
+	        .invokeFunction("processCommandLineArguments", (Object)args);
 	
         // FIXME: Should we close the engine in a finally block?
 	if (returnValue == null) {
@@ -202,6 +192,7 @@ public class NashornAccessorHostApplication {
             StringUtilities.exit(1);
         }
     }
+    
     /** Utility method to read a string from an input stream.
      *  @param stream The stream.
      *  @return The string.
