@@ -54,7 +54,7 @@ test NashornAccessorHostApplication-0.1 {test with no arguments} {
 	java::call ptolemy.actor.lib.jjs.NashornAccessorHostApplication evaluate $commandArguments
     } out err
     list $out $err
-} {{ERROR: Usage: [-accessor|--accessor] [-h|--h|-help|--help] [-e|--e|-echo|--echo] [-timeout|--timeout milliseconds] [-v|--v|-version|--version]  accessorOrRegularJavaScriptFile1.js [accessorOrRegularJavaScriptFile2.js ...]
+} {{ERROR: Usage: [-help] [-echo] [-js filename] [-timeout milliseconds] [-version] [accessorClassName] [accessorClassName ...]
 } 3}
 
 ######################################################################
@@ -68,7 +68,7 @@ test NashornAccessorHostApplication-1.1 {test -e -h} {
     } out err
     list $out $err
 } {{[ '-e', '-h' ]
-Usage: [-accessor|--accessor] [-h|--h|-help|--help] [-e|--e|-echo|--echo] [-timeout|--timeout milliseconds] [-v|--v|-version|--version]  accessorOrRegularJavaScriptFile1.js [accessorOrRegularJavaScriptFile2.js ...]
+Usage: [-help] [-echo] [-js filename] [-timeout milliseconds] [-version] [accessorClassName] [accessorClassName ...]
 } 0}
 
 ######################################################################
@@ -81,7 +81,7 @@ test NashornAccessorHostApplication-2.1 {test -h} {
 	java::call ptolemy.actor.lib.jjs.NashornAccessorHostApplication evaluate $commandArguments
     } out err
     list $out $err
-} {{Usage: [-accessor|--accessor] [-h|--h|-help|--help] [-e|--e|-echo|--echo] [-timeout|--timeout milliseconds] [-v|--v|-version|--version]  accessorOrRegularJavaScriptFile1.js [accessorOrRegularJavaScriptFile2.js ...]
+} {{Usage: [-help] [-echo] [-js filename] [-timeout milliseconds] [-version] [accessorClassName] [accessorClassName ...]
 } 0}
 
 ######################################################################
