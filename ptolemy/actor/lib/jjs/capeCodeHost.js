@@ -43,6 +43,12 @@
 /*jslint nomen: true */
 "use strict";
 
+////////////////////////////////////////////////////////////////////////////
+////Java dependencies.
+
+//Java classes that define some static functions to call from JS.
+var FileUtilities = Java.type('ptolemy.util.FileUtilities');
+
 //////// NOTE: The following function overrides nashornHost.js.
 
 /** Pop up a dialog with the specified message.
@@ -176,7 +182,7 @@ function httpRequest(url, method, properties, body, timeout) {
     }
 
     // Wait for response.
-    return NashornAccessorHostApplication.readFromInputStream(
+    return FileUtilities.readFromInputStream(
         connection.getInputStream()
     );
 }

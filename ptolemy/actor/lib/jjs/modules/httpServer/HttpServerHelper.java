@@ -79,6 +79,7 @@ public class HttpServerHelper extends VertxHelperBase {
     }
 
     /** Create a HttpServerHelper instance to help a JavaScript HttpServer instance.
+     *  @param actor The actor associated with this helper.
      *  @param currentObj The JavaScript HttpServer instance for which this is a helper.
      *  @param hostInterface The host interface to use, in case there the host has more
      *   than one interface (e.g. Ethernet and WiFi). This is IP address or name, and if
@@ -86,10 +87,22 @@ public class HttpServerHelper extends VertxHelperBase {
      *  @param port The port number that the server will use.
      *  @return A new HttpServerHelper instance.
      */
-    public static HttpServerHelper createServer(
-            ScriptObjectMirror currentObj, String hostInterface, int port) {
+    public static HttpServerHelper getOrCreateServer(
+            Object actor, ScriptObjectMirror currentObj, String hostInterface, int port) {
+        // If there already is a server for this actor with matching hostInterface and port, use it.
+        VertxHelperBase helper = VertxHelperBase.getHelper(actor);
+        if (helper instanceof HttpServerHelper) {
+            if (((hostInterface == null && ((HttpServerHelper)helper)._hostInterface == null)
+                    || (hostInterface != null && hostInterface.equals(((HttpServerHelper)helper)._hostInterface)))
+                    && port == ((HttpServerHelper)helper)._port) {
+                // All the interface match.
+                return (HttpServerHelper)helper;
+            }
+        }
+        // If there is some other helper associated with this actor, the following will
+        // share the same verticle with that helper.
         return new HttpServerHelper(
-                currentObj, hostInterface, port);
+                actor, currentObj, hostInterface, port);
     }
 
     /** Respond to the request with the specified ID by sending the specified text.
@@ -173,16 +186,16 @@ public class HttpServerHelper extends VertxHelperBase {
     ////                     private constructors                   ////
 
     /** Private constructor for HttpServerHelper to create a web server.
+     *  @param actor The actor associated with this server.
      *  @param currentObj The JavaScript Server instance for which this a helper.
      *  @param hostInterface The host interface to use, in case there the host has more
      *   than one interface (e.g. Ethernet and WiFi). This is IP address or name, and if
      *   the argument is null, then "localhost" will be used.
      *  @param port The port on which to create the server.
      */
-    private HttpServerHelper(ScriptObjectMirror currentObj, String hostInterface, int port) {
-            // NOTE: Really should have only one of these per actor,
-            // and the argument below should be the actor.
-        super(currentObj);
+    private HttpServerHelper(
+            Object actor, ScriptObjectMirror currentObj, String hostInterface, int port) {
+        super(actor, currentObj);
         _hostInterface = hostInterface;
         if (hostInterface == null) {
             _hostInterface = "localhost";

@@ -260,7 +260,7 @@ exports.SocketClient = function (port, host, options) {
     this.options = options || {};
     this.options = util._extend(defaultClientOptions, this.options);
 
-    this.helper = SocketHelper.getOrCreateHelper(actor);
+    this.helper = SocketHelper.getOrCreateHelper(actor, this);
     this.pendingSends = [];
 };
 util.inherits(exports.SocketClient, EventEmitter);
@@ -497,7 +497,7 @@ exports.SocketServer = function (options) {
     this.options = options || {};
     this.options = util._extend(defaultServerOptions, this.options);
 
-    this.helper = SocketHelper.getOrCreateHelper(actor);
+    this.helper = SocketHelper.getOrCreateHelper(actor, this);
 };
 util.inherits(exports.SocketServer, EventEmitter);
 

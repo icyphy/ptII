@@ -40,7 +40,6 @@
 
 var EventEmitter = require('events').EventEmitter;
 var MqttHelper = Java.type('ptolemy.actor.lib.jjs.modules.mqtt.MqttHelper');
-var helper = MqttHelper.getOrCreateHelper(actor);
 
 module.exports.createClient = function (port, host, options) {
     return new Client(port, host, options);
@@ -78,6 +77,8 @@ function Client(port, host, options) {
     if (options.rawBytes == null) {
         options.rawBytes = false;
     }
+    
+    var helper = MqttHelper.getOrCreateHelper(actor, this);
 
     this.javaClient = new MqttHelper.MqttClientWrapper(helper, this, port, host, options.clientId, options.rawBytes);
 

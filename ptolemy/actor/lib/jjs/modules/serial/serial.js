@@ -73,7 +73,7 @@ exports.hostSerialPorts = function () {
  *  @exception If the port is in use or initializing the port fails.
  */
 exports.SerialPort = function (portName, ownerName, timeout, options) {
-    this.helper = new SerialHelper(this, portName, ownerName, timeout, options);
+    this.helper = new SerialHelper(actor, this, portName, ownerName, timeout, options);
 };
 
 util.inherits(exports.SerialPort, EventEmitter);

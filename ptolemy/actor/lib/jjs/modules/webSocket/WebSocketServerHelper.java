@@ -78,6 +78,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
     }
 
     /** Create a WebSocketServerHelper instance to help a JavaScript Server instance.
+     *  @param actor The actor associated with this helper.
      *  @param currentObj The JavaScript Server instance for which this is a helper.
      *  @param hostInterface The host interface to use, in case there the host has more
      *   than one interface (e.g. Ethernet and WiFi). This is IP address or name, and if
@@ -90,11 +91,11 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  @param sendType The type for outgoing messages.
      *  @return A new WebSocketServerHelper instance.
      */
-    public static WebSocketServerHelper createServer(
+    public static WebSocketServerHelper createServer(Object actor,
             ScriptObjectMirror currentObj, String hostInterface, boolean sslTls,
             String pfxKeyCertPassword, String pfxKeyCertPath,
             int port, String receiveType, String sendType) {
-        return new WebSocketServerHelper(
+        return new WebSocketServerHelper(actor,
                 currentObj, hostInterface, sslTls, pfxKeyCertPassword, pfxKeyCertPath,
                 port, receiveType, sendType);
     }
@@ -159,6 +160,7 @@ public class WebSocketServerHelper extends VertxHelperBase {
     ////                     private constructors                   ////
 
     /** Private constructor for WebSocketServerHelper to create a web socket server.
+     *  @param actor The actor associated with this helper.
      *  @param currentObj The JavaScript Server instance for which this a helper.
      *  @param hostInterface The host interface to use, in case there the host has more
      *   than one interface (e.g. Ethernet and WiFi). This is IP address or name, and if
@@ -167,14 +169,15 @@ public class WebSocketServerHelper extends VertxHelperBase {
      *  @param receiveType The type to assume for incoming messages.
      *  @param sendType The type for outgoing messages.
      */
-    private WebSocketServerHelper(ScriptObjectMirror currentObj,
+    private WebSocketServerHelper(Object actor,
+            ScriptObjectMirror currentObj,
             String hostInterface, boolean sslTls,
             String pfxKeyCertPassword, String pfxKeyCertPath,
             int port, String receiveType,
             String sendType) {
             // NOTE: Really should have only one of these per actor,
             // and the argument below should be the actor.
-        super(currentObj);
+        super(actor, currentObj);
         _hostInterface = hostInterface;
         if (hostInterface == null) {
             _hostInterface = "localhost";

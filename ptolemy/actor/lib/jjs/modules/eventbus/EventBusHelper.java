@@ -96,7 +96,7 @@ public class EventBusHelper extends VertxHelperBase {
                     ScriptObjectMirror vertxBusJS,
                     int clusterPort,
             String clusterHostname) {
-            super(actor);
+            super(actor, vertxBusJS);
         _vertxBusJS = vertxBusJS;
         if (clusterHostname == null) {
             if (_unclusteredVertxInstance == null) {

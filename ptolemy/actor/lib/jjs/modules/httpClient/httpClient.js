@@ -316,7 +316,7 @@ function ClientRequest(options, responseCallback) {
 
     // console.log("Making an HTTP request: " + JSON.stringify(options));
 
-    this.helper = HttpClientHelper.getOrCreateHelper(actor);
+    this.helper = HttpClientHelper.getOrCreateHelper(actor, this);
     this.options = options;
 }
 util.inherits(ClientRequest, EventEmitter);
@@ -413,4 +413,5 @@ function IncomingMessage(response, body) {
 // Each time this file is reloaded, reset the helper for this actor.
 // This will start the sequence numbers at zero and discard any corrupted state
 // that may have resulted from exceptions.
-HttpClientHelper.getOrCreateHelper(actor).reset();
+// FIXME: This may not work, because the actor may be associated with some other Vertx helper.
+HttpClientHelper.reset(actor);

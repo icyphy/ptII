@@ -101,10 +101,11 @@ public class CameraHelper extends HelperBase implements WebcamListener {
      *  If the system does not have a physical camera, then the dummy
      *  is used.
      *  @exception IOException If there is no such camera.
+     *  @param actor The actor associated with this camera.
      *  @param currentObj The JavaScript object that this is helping.
      */
-    public CameraHelper(ScriptObjectMirror currentObj) throws IOException {
-        this(currentObj, null);
+    public CameraHelper(Object actor, ScriptObjectMirror currentObj) throws IOException {
+        this(actor, currentObj, null);
     }
 
     /** Create a camera with the specified name. The name is
@@ -112,12 +113,13 @@ public class CameraHelper extends HelperBase implements WebcamListener {
      *  or else a exception will be thrown.  If {@link #cameras()}
      *  returns no cameras, then the dummy camera is used.
      *  @param name The name of the camera.
+     *  @param actor The actor associated with this camera.
      *  @param currentObj The JavaScript object that this is helping.
      *  @exception IOException If the camera does not exist.
      */
-    public CameraHelper(ScriptObjectMirror currentObj, String name)
+    public CameraHelper(Object actor, ScriptObjectMirror currentObj, String name)
             throws IOException {
-        super(currentObj);
+        super(actor, currentObj);
         if (name == null || name.trim().equals("")) {
             _webcam = Webcam.getDefault();
         } else {

@@ -1791,12 +1791,11 @@ public class JavaScript extends TypedAtomicActor {
      *  @param stream The stream.
      *  @return The string.
      *  @exception IOException If the stream cannot be read.
-     *  @deprecated Invoke
-     *  NashornAccessorHostApplication.readFromInputStream() directly.
+     *  @deprecated Invoke FileUtilities.readFromInputStream() directly.
      */
     public static String readFromInputStream(InputStream stream)
             throws IOException {
-	// This method was moved to NashornAccessorHostApplication
+	// This method was moved to FileUtilities
 	// when the pure Nashorn host and the Cape Code host were
 	// split.
 	return FileUtilities.readFromInputStream(stream);

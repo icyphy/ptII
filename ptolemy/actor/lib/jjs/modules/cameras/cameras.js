@@ -108,7 +108,7 @@ exports.defaultCamera = function () {
  *  @param name The camera name, or null to use the default camera.
  */
 exports.Camera = function (name) {
-    this.helper = new CameraHelper(this, name);
+    this.helper = new CameraHelper(actor, this, name);
 };
 util.inherits(exports.Camera, EventEmitter);
 

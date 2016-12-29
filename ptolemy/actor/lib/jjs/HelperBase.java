@@ -58,33 +58,35 @@ import ptolemy.kernel.util.InternalErrorException;
  */
 public class HelperBase {
 
-    /** Construct a helper for the specified JavaScript object.
-     *  The argument can be a JavaScript actor or an instance of a
-     *  JavaScript class.
+    /** Construct a helper for the specified actor and JavaScript object.
+     *  @param actor The actor associated with this helper.
      *  @param helping The object that this is helping.
      */
-    public HelperBase(Object helping) {
-            Object actorOrWrapper = helping;
-            if (helping instanceof ScriptObjectMirror) {
-                    // Helping a JavaScript object.
-            _currentObj = (ScriptObjectMirror) helping;
+    public HelperBase(Object actor, ScriptObjectMirror helping) {
+        // Helping a JavaScript object.
+        _currentObj = helping;
 
-            // Find the actor associated with the object.
-            actorOrWrapper = _currentObj.eval("actor");
-            if (actorOrWrapper instanceof ScriptObjectMirror) {
-                actorOrWrapper = ScriptObjectMirror.unwrap(actorOrWrapper,
-                        ScriptContext.ENGINE_SCOPE);
-            }
-            }
-        if (actorOrWrapper instanceof RestrictedJavaScriptInterface) {
-            _actor = ((RestrictedJavaScriptInterface) actorOrWrapper)
+        if (actor instanceof RestrictedJavaScriptInterface) {
+            _actor = ((RestrictedJavaScriptInterface) actor)
                     ._getActor();
-        } else if (actorOrWrapper instanceof JavaScript) {
-            _actor = ((JavaScript) actorOrWrapper);
+        } else if (actor instanceof JavaScript) {
+            _actor = ((JavaScript) actor);
+        } else if (actor == null) {
+            throw new InternalErrorException("No actor object.");
         } else {
             throw new InternalErrorException("Invalid actor object: "
-                    + actorOrWrapper.toString());
+                    + actor.toString());
         }
+    }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         public methods                    ////
+    
+    /** Return the JavaScript object that this helper is helping.
+     *  @return The helping object given in the constructor.
+     */
+    public ScriptObjectMirror getHelping() {
+        return _currentObj;
     }
 
     ///////////////////////////////////////////////////////////////////

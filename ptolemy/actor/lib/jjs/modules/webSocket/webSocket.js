@@ -165,19 +165,20 @@ exports.Client = function (options) {
     this.discardMessagesBeforeOpen = options.discardMessagesBeforeOpen || false;
     this.throttleFactor = options.throttleFactor || 0;
     this.helper = WebSocketHelper.createClientSocket(
-        this,
-        this.host,
-        this.sslTls,
-        this.port,
-        this.receiveType,
-        this.sendType,
-        this.connectTimeout,
-        this.numberOfRetries,
-        this.timeBetweenRetries,
-        this.trustAll,
-        this.trustedCACertPath,
-        this.discardMessagesBeforeOpen,
-        this.throttleFactor);
+            actor,
+            this,
+            this.host,
+            this.sslTls,
+            this.port,
+            this.receiveType,
+            this.sendType,
+            this.connectTimeout,
+            this.numberOfRetries,
+            this.timeBetweenRetries,
+            this.trustAll,
+            this.trustedCACertPath,
+            this.discardMessagesBeforeOpen,
+            this.throttleFactor);
 };
 util.inherits(exports.Client, EventEmitter);
 
@@ -296,7 +297,7 @@ exports.Server = function (options) {
     this.hostInterface = options.hostInterface || 'localhost';
     this.receiveType = options.receiveType || 'application/json';
     this.sendType = options.sendType || 'application/json';
-    this.helper = WebSocketServerHelper.createServer(
+    this.helper = WebSocketServerHelper.createServer(actor,
         this, this.hostInterface, this.port, this.receiveType, this.sendType
     );
 };
@@ -344,7 +345,7 @@ exports.Server.prototype._socketCreated = function (serverWebSocket, helper) {
  *  @param sendType The MIME type for outgoing messages, which defaults to 'application/json'.
  */
 exports.Socket = function (serverWebSocket, helper, receiveType, sendType) {
-    this.helper = WebSocketHelper.createServerSocket(
+    this.helper = WebSocketHelper.createServerSocket(actor,
         this, serverWebSocket, helper, receiveType, sendType);
     this.receiveType = receiveType;
     this.sendType = sendType;

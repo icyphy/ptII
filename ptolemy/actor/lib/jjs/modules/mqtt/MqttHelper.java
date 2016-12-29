@@ -65,10 +65,11 @@ public class MqttHelper extends HelperBase {
     /** Construct a Mqtthelper for the specified JavaScript object.
      *  The argument can be a JavaScript actor or an instance of a
      *  JavaScript class.
-     *  @param actor The object that this is helping.
+     *  @param actor The actor that this is helping.
+     *  @param helping The JS object that this is helping.
      */
-    public MqttHelper(Object actor) {
-        super(actor);
+    public MqttHelper(Object actor, ScriptObjectMirror helping) {
+        super(actor, helping);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -80,9 +81,12 @@ public class MqttHelper extends HelperBase {
      *  @param actor Either a JavaScript actor or a RestrictedJavaScriptInterface.
      *  @return The MqttHelper.
      */
-    public static MqttHelper getOrCreateHelper(Object actor) {
+    public static MqttHelper getOrCreateHelper(Object actor, ScriptObjectMirror helping) {
         if (_mqttHelper == null) {
-            _mqttHelper = new MqttHelper(actor);
+            // FIXME: This isn't right. Instead of a static _mqttHelper, this
+            // should use a mechanism like in VertHelperBase to associate helpers
+            // with actors. Perhaps this should subclass VertxHelperBase?
+            _mqttHelper = new MqttHelper(actor, helping);
         }
         return _mqttHelper;
     }

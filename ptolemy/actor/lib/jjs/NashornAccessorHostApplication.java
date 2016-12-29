@@ -154,8 +154,8 @@ public class NashornAccessorHostApplication {
         // This has something to do with the implementation in
         // external/setTimeout-nashorn.js.
         // This timer keeps Nashorn from exiting.
-        Object instance = engine.eval("function() {}");
-        ((Invocable)engine).invokeFunction("setInterval", instance, 2147483647);
+        Object doNothing = engine.eval("function() {}");
+        ((Invocable)engine).invokeFunction("setInterval", doNothing, 2147483647);
 
         // Evaluate the command-line arguments. This will either instantiate and
         // initialize accessors or evaluate specified JavaScript code.
