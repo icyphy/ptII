@@ -80,10 +80,11 @@ import ptolemy.util.FileUtilities;
 public class CryptoHelper extends HelperBase {
 
     /** Constructor for CryptoHelper.
+     *  @param actor The actor associated with this helper.
      *  @param currentObj The JavaScript object that this is helping.
      */
-    public CryptoHelper(ScriptObjectMirror currentObj) {
-        super(currentObj);
+    public CryptoHelper(Object actor, ScriptObjectMirror currentObj) {
+        super(actor, currentObj);
     }
 
     /** Return the hash length for the given hash algorithm.

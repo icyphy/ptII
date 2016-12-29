@@ -38,7 +38,7 @@
 
 var DataConverterHelper = Java.type('ptolemy.actor.lib.jjs.modules.dataConverter.DataConverterHelper');
 
-this.helper = new DataConverterHelper(this);
+this.helper = new DataConverterHelper(actor, this);
 
 exports.imageToJSArray = function (image) {
     return this.helper.imageToJSArray(image);

@@ -62,7 +62,7 @@ var EventEmitter = require('events').EventEmitter;
  *  @param logdName  Name of the logd server that will handle the request.
  */
 exports.GDP = function (name, iomode, logdname) {
-    this.helper = new GDPHelper(this, name, iomode, logdname);
+    this.helper = new GDPHelper(actor, this, name, iomode, logdname);
 };
 util.inherits(exports.GDP, EventEmitter);
 

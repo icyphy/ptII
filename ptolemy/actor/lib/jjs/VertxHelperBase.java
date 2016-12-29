@@ -47,6 +47,7 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.imageio.ImageIO;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.data.ImageToken;
 import ptolemy.data.LongToken;
 import ptolemy.util.StringUtilities;
@@ -318,9 +319,10 @@ public class VertxHelperBase extends HelperBase {
      *  more than one instance per actor.
      *  @param actor The JavaScript actor that this is helping, or
      *   a RestrictedJavaScriptInterface proxy for that actor.
+     *  @param helping The JavaScript object that this is helping.
      */
-    protected VertxHelperBase(Object actor) {
-        this(actor, null);
+    protected VertxHelperBase(Object actor, ScriptObjectMirror helping) {
+        this(actor, helping, null);
     }
 
     /** Construct a helper for the specified JavaScript actor and
@@ -329,13 +331,20 @@ public class VertxHelperBase extends HelperBase {
      *  more than one instance per actor.
      *  @param actor The JavaScript actor that this is helping, or
      *   a RestrictedJavaScriptInterface proxy for that actor.
+     *  @param helping The JavaScript object that this is helping.
      *  @param helper The helper providing the verticle and event
      *   handler, or null to create a new verticle and event handler.
      */
-    protected VertxHelperBase(Object actor, VertxHelperBase helper) {
-        super(actor);
+    protected VertxHelperBase(Object actor, ScriptObjectMirror helping, VertxHelperBase helper) {
+        super(actor, helping);
+        
+        // See whether there is already a verticle associate with this actor
+        // and use it if there is.
+        if (helper == null) {
+            helper = getHelper(actor);
+        }
 
-        // If no verticle is specified, then create one. Also register
+        // If still no verticle is specified, then create one. Also register
         // this helper as the helper for the actor. If a verticle is specified,
         // then we assume that there is already a helper registered for the actor.
         if (helper == null) {

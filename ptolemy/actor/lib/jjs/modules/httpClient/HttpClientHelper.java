@@ -131,14 +131,15 @@ public class HttpClientHelper extends VertxHelperBase {
      *  If one has been created before and has not been garbage collected, return
      *  that one. Otherwise, create a new one.
      *  @param actor Either a JavaScript actor or a RestrictedJavaScriptInterface.
+     *  @param helping JavaScript object this is helping.
      *  @return A new HttpClientHelper instance.
      */
-    public static HttpClientHelper getOrCreateHelper(Object actor) {
+    public static HttpClientHelper getOrCreateHelper(Object actor, ScriptObjectMirror helping) {
         VertxHelperBase helper = VertxHelperBase.getHelper(actor);
         if (helper instanceof HttpClientHelper) {
             return (HttpClientHelper) helper;
         }
-        return new HttpClientHelper(actor);
+        return new HttpClientHelper(actor, helping);
     }
 
     /** Reset this handler. This method discards any pending submitted jobs,
@@ -154,6 +155,18 @@ public class HttpClientHelper extends VertxHelperBase {
                 _pendingRequests = 0;
             }
         });
+    }
+    
+    /** Reset the helper associated with the specified actor.
+     *  This method discards any pending submitted jobs,
+     *  marks the helper not busy, and resets the sequence number to zero.
+     *  If there is no HttpClientHelper associated with this actor, then do nothing.
+     */
+    public static void reset(Object actor) {
+        VertxHelperBase helper = VertxHelperBase.getHelper(actor);
+        if (helper instanceof HttpClientHelper) {
+            ((HttpClientHelper)helper).reset();
+        }
     }
 
     /** Stop a request. This ensures that future callbacks are discarded.
@@ -180,9 +193,19 @@ public class HttpClientHelper extends VertxHelperBase {
 
     /** Construct a helper for the specified actor.
      *  @param actor The JavaScript actor that this helps.
+     *  @param helping A JavaScript object that this helps.
      */
-    protected HttpClientHelper(Object actor) {
-        super(actor);
+    protected HttpClientHelper(Object actor, ScriptObjectMirror helping) {
+        super(actor, helping);
+    }
+
+    /** Construct a helper for the specified actor.
+     *  @param actor The JavaScript actor that this helps.
+     *  @param helping A JavaScript object that this helps.
+     *  @param base The helper base to share a verticle with.
+     */
+    protected HttpClientHelper(Object actor, ScriptObjectMirror helping, VertxHelperBase base) {
+        super(actor, helping, base);
     }
 
     ///////////////////////////////////////////////////////////////////

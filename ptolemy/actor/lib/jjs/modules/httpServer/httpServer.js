@@ -38,6 +38,10 @@
 /*jshint globalstrict: true */
 "use strict";
 
+//Stop extra messages from jslint.  Note that there should be no
+//space between the / and the * and global.
+/*globals actor */
+
 var HttpServerHelper = Java.type('ptolemy.actor.lib.jjs.modules.httpServer.HttpServerHelper');
 var EventEmitter = require('events').EventEmitter;
 
@@ -96,10 +100,11 @@ exports.HttpServer = function (options) {
         this.port = options.port;
     }
     this.hostInterface = options.hostInterface || 'localhost';
-    this.helper = HttpServerHelper.createServer(
-        this,
-        this.hostInterface,
-        this.port
+    this.helper = HttpServerHelper.getOrCreateServer(
+            actor,
+            this,
+            this.hostInterface,
+            this.port
     );
 };
 util.inherits(exports.HttpServer, EventEmitter);

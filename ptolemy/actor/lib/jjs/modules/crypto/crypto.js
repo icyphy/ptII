@@ -39,7 +39,7 @@
 var CryptoHelper = Java.type('ptolemy.actor.lib.jjs.modules.crypto.CryptoHelper');
 var EventEmitter = require('events').EventEmitter;
 
-this.helper = new CryptoHelper(this);
+this.helper = new CryptoHelper(actor, this);
 
 function unsigendByteArrayEquals(a, b) {
     if (a.length != b.length) {

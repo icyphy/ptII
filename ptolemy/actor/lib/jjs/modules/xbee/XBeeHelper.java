@@ -61,6 +61,7 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
 
     /** Create an XBee device.
      *  The first argument is an instance of the JavaScript XBee object.
+     *  @param actor The actor that this is helping.
      *  @param helping The object that this is helping (XBee).
      *  @param portName The name of the port to open.
      *  @param options Serial port options.
@@ -69,11 +70,12 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
      *  an input or output stream for the port.
      */
     public XBeeHelper(
+            Object actor,
             ScriptObjectMirror helping,
             String portName,
             Map<String,Object> options)
                     throws XBeeException {
-        super(helping);
+        super(actor, helping);
 
         Integer baudRate = (Integer)options.get("baudRate");
 

@@ -116,6 +116,7 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** Create a WebSocketHelper instance for the specified JavaScript
      *  Socket instance for the client side of the socket.
+     *  @param actor The actor associated with this helper.
      *  @param currentObj The JavaScript instance of the Socket.
      *  @param host IP address or host name of the host.
      *  @param port The port number that the host listens on.
@@ -131,7 +132,7 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param throttleFactor The number of milliseconds to stall for each queued item waiting to be sent.
      *  @return A new WebSocketHelper instance.
      */
-    public static WebSocketHelper createClientSocket(
+    public static WebSocketHelper createClientSocket(Object actor,
             ScriptObjectMirror currentObj, String host, boolean sslTls, int port,
             String receiveType, String sendType,
             int connectTimeout,
@@ -148,13 +149,14 @@ public class WebSocketHelper extends VertxHelperBase {
                 return null;
             }
         }
-        return new WebSocketHelper(currentObj, host, sslTls, port, receiveType, sendType,
+        return new WebSocketHelper(actor, currentObj, host, sslTls, port, receiveType, sendType,
                 connectTimeout, numberOfRetries, timeBetweenRetries, trustAll, trustedCACertPath,
                 discardMessagesBeforeOpen, throttleFactor);
     }
 
     /** Create a WebSocketHelper instance for the specified JavaScript
      *  Socket instance for the server side of the socket.
+     *  @param actor The actor associated with this helper.
      *  @param currentObj The JavaScript instance of the Socket.
      *  @param serverWebSocket The given server-side Java socket.
      *  @param helper The helper in charge of this socket.
@@ -162,11 +164,11 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param sendType The type for outgoing messages.
      *  @return A new WebSocketHelper instance.
      */
-    public static WebSocketHelper createServerSocket(
+    public static WebSocketHelper createServerSocket(Object actor,
             ScriptObjectMirror currentObj, WebSocketBase serverWebSocket,
             WebSocketServerHelper helper,
             String receiveType, String sendType) {
-        return new WebSocketHelper(
+        return new WebSocketHelper(actor,
                 currentObj, serverWebSocket, helper, receiveType, sendType);
     }
 
@@ -412,6 +414,7 @@ public class WebSocketHelper extends VertxHelperBase {
     /** Private constructor for WebSocketHelper to open a client-side web socket.
      *  This does not open the socket. You must call open on this helper to open it.
      *  Do this after setting up event handlers.
+     *  @param actor The actor associated with this helper.
      *  @param currentObj The JavaScript instance of Socket that this helps.
      *  @param host The IP address or host name of the host.
      *  @param port The port number of the host.
@@ -425,13 +428,14 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param throttleFactor The number of milliseconds to stall for each queued item
      *   waiting to be sent.
      */
-    private WebSocketHelper(ScriptObjectMirror currentObj, String host, boolean sslTls,
+    private WebSocketHelper(Object actor,
+            ScriptObjectMirror currentObj, String host, boolean sslTls,
             int port, String receiveType, String sendType,
             int connectTimeout,
             int numberOfRetries, long timeBetweenRetries,
             boolean trustAll, String trustedCACertPath,
             boolean discardMessagesBeforeOpen, long throttleFactor) {
-        super(currentObj);
+        super(actor, currentObj);
 
         _host = host;
         _sslTls = sslTls;
@@ -486,6 +490,7 @@ public class WebSocketHelper extends VertxHelperBase {
     }
 
     /** Private constructor for WebSocketHelper for a server-side web socket.
+     *  @param actor The actor associated with this helper.
      *  @param currentObj The JavaScript instance of Socket that this helps.
      *  @param serverWebSocket The server-side web socket, provided by the web socket server.
      *  @param helper The server helper in charge of this socket.
@@ -493,12 +498,13 @@ public class WebSocketHelper extends VertxHelperBase {
      *  @param sendType The type for outgoing messages.
      */
     private WebSocketHelper(
+            Object actor,
             ScriptObjectMirror currentObj,
             WebSocketBase serverWebSocket,
             WebSocketServerHelper helper,
             String receiveType,
             String sendType) {
-        super(currentObj, helper);
+        super(actor, currentObj, helper);
         _webSocket = serverWebSocket;
         // The serverSocket was already opened because a client successfully connected to the server.
         _wsIsOpen = true;

@@ -61,6 +61,7 @@ public class SerialHelper extends HelperBase {
 
     /** Open a serial port.
      *  The argument is an instance of the JavaScript SerialPort object.
+     *  @param actor The actor associated with this helper.
      *  @param helping The object that this is helping (SerialPort).
      *  @param portName The name of the port to open.
      *  @param ownerName The name of the owner assigned to this port, if opening is successful.
@@ -68,12 +69,13 @@ public class SerialHelper extends HelperBase {
      *  @param options Serial port options (FIXME: define).
      */
     public SerialHelper(
+            Object actor,
             ScriptObjectMirror helping,
             String portName,
             String ownerName,
             int timeout,
             Object options) {
-        super(helping);
+        super(actor, helping);
         _portName = portName;
         _ownerName = ownerName;
         _timeout = timeout;

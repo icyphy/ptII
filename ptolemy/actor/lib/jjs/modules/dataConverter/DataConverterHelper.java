@@ -51,10 +51,11 @@ import ptolemy.kernel.util.IllegalActionException;
 public class DataConverterHelper extends HelperBase {
 
     /** Constructor for DataConverterHelper.
+     *  @param actor The actor associated with this helper.
      *  @param currentObj The JavaScript object that this is helping.
      */
-    public DataConverterHelper(ScriptObjectMirror currentObj) {
-        super(currentObj);
+    public DataConverterHelper(Object actor, ScriptObjectMirror currentObj) {
+        super(actor, currentObj);
     }
 
     /**

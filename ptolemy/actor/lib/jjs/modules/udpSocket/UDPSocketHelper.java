@@ -67,9 +67,10 @@ public class UDPSocketHelper extends VertxHelperBase {
 
     /** Constructor for UDPSocketHelper for the specified actor.
      *  @param actor The actor that this will help.
+     *  @param helping The JavaScript object that this helping.
      */
-    public UDPSocketHelper(Object actor) {
-        super(actor);
+    public UDPSocketHelper(Object actor, ScriptObjectMirror helping) {
+        super(actor, helping);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -89,14 +90,15 @@ public class UDPSocketHelper extends VertxHelperBase {
      *  If one has been created before and has not been garbage collected, return
      *  that one. Otherwise, create a new one.
      *  @param actor Either a JavaScript actor or a RestrictedJavaScriptInterface.
+     *  @param helping The JavaScript object that this is helping.
      *  @return The UDPSocketHelper.
      */
-    public static UDPSocketHelper getOrCreateHelper(Object actor) {
+    public static UDPSocketHelper getOrCreateHelper(Object actor, ScriptObjectMirror helping) {
         VertxHelperBase helper = VertxHelperBase.getHelper(actor);
-        if (helper instanceof UDPSocketHelper) {
+        if (helper instanceof UDPSocketHelper && helper.getHelping() == helping) {
             return (UDPSocketHelper) helper;
         }
-        return new UDPSocketHelper(actor);
+        return new UDPSocketHelper(actor, helping);
     }
 
     /** Return an array of the types supported by the current host for

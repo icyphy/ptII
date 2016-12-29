@@ -140,7 +140,7 @@ exports.XBee = function (portName, options) {
     this.options = options || {};
     this.options = util._extend(defaultXBeeOptions, this.options);
 
-    this.helper = new XBeeHelper(this, portName, this.options);
+    this.helper = new XBeeHelper(actor, this, portName, this.options);
 };
 
 util.inherits(exports.XBee, EventEmitter);

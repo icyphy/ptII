@@ -58,6 +58,7 @@ public class GDPHelper extends HelperBase {
     /** Create a GDP Helper by opening a pre-existing GDP Log
      *  or creating one if necessary.
      *
+     *  @param actor The actor associated with this helper.
      *  @param currentObj The ScriptObjectMirror context
      *  in which to create the GDPHelper.
      *  @param logName The name of the log.  The format can be any
@@ -73,9 +74,10 @@ public class GDPHelper extends HelperBase {
      *  @exception GDPException If the log does not exist or if the
      *  connection to the log server fails.
      */
-    public GDPHelper(ScriptObjectMirror currentObj, String logName, int ioMode, String logdname) throws GDPException {
+    public GDPHelper(Object actor, ScriptObjectMirror currentObj,
+            String logName, int ioMode, String logdname) throws GDPException {
 
-        super(currentObj);
+        super(actor, currentObj);
 
         // The GDP_GCL constructor calls the gdp_init() C function for us.
         System.out.println("GDPHelper.GDPHelper(" + logName + ", " + ioMode + ", " + logdname + "): ");

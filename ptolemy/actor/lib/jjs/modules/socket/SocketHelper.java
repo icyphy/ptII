@@ -95,9 +95,10 @@ public class SocketHelper extends VertxHelperBase {
 
     /** Constructor for SocketHelper for the specified actor.
      *  @param actor The actor that this will help.
+     *  @param helping The JavaScript object that this is helping.
      */
-    public SocketHelper(Object actor) {
-        super(actor);
+    public SocketHelper(Object actor, ScriptObjectMirror helping) {
+        super(actor, helping);
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -231,14 +232,15 @@ public class SocketHelper extends VertxHelperBase {
      *  If one has been created before and has not been garbage collected, return
      *  that one. Otherwise, create a new one.
      *  @param actor Either a JavaScript actor or a RestrictedJavaScriptInterface.
+     *  @param helping The JavaScript object that this is helping.
      *  @return The SocketHelper.
      */
-    public static SocketHelper getOrCreateHelper(Object actor) {
+    public static SocketHelper getOrCreateHelper(Object actor, ScriptObjectMirror helping) {
         VertxHelperBase helper = VertxHelperBase.getHelper(actor);
-        if (helper instanceof SocketHelper) {
+        if (helper instanceof SocketHelper && helper.getHelping() == helping) {
             return (SocketHelper) helper;
         }
-        return new SocketHelper(actor);
+        return new SocketHelper(actor, helping);
     }
 
     /** Return an array of the types supported by the current host for

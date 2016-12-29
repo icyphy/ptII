@@ -148,7 +148,7 @@ exports.Server = function (options) {
     this.pfxKeyCertPath = options.pfxKeyCertPath || '';
     this.receiveType = options.receiveType || 'application/json';
     this.sendType = options.sendType || 'application/json';
-    this.helper = WebSocketServerHelper.createServer(
+    this.helper = WebSocketServerHelper.createServer(actor,
         this, this.hostInterface, this.sslTls, this.pfxKeyCertPassword, this.pfxKeyCertPath,
         this.port, this.receiveType, this.sendType
     );
@@ -197,7 +197,7 @@ exports.Server.prototype._socketCreated = function (serverWebSocket, helper) {
  *  @param sendType The MIME type for outgoing messages, which defaults to 'application/json'.
  */
 exports.Socket = function (serverWebSocket, helper, receiveType, sendType) {
-    this.helper = WebSocketHelper.createServerSocket(
+    this.helper = WebSocketHelper.createServerSocket(actor,
         this, serverWebSocket, helper, receiveType, sendType);
     this.receiveType = receiveType;
     this.sendType = sendType;

@@ -103,7 +103,7 @@ exports.supportedSendTypes = function () {
  */
 exports.Socket = function (type) {
     // FIXME: type is ignored.
-    var helper = UDPSocketHelper.getOrCreateHelper(actor);
+    var helper = UDPSocketHelper.getOrCreateHelper(actor, this);
     this.socket = helper.createSocket(this);
 };
 
