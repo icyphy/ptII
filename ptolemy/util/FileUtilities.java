@@ -274,9 +274,11 @@ public class FileUtilities {
      *  @exception IOException If the file cannot be read.
      */
     public static String getFileAsString(String path) throws IOException {
-	// FIXME: Will this support reading from jar files?
-        byte[] encoded = Files.readAllBytes(Paths.get(path));
-        return new String(encoded, Charset.defaultCharset());
+	// Use nameToURL so that we look in the classpath for jar files
+	// that might contain the resource.
+	URL url = FileUtilities.nameToURL(path, null, null);
+	byte[] encoded = FileUtilities.binaryReadURLToByteArray(url);
+	return new String(encoded, Charset.defaultCharset());
     }
 
     /** Extract the contents of a jar file.
@@ -429,7 +431,7 @@ public class FileUtilities {
 
         File file = new File(name);
 
-        if (file.isAbsolute()) {
+        if (file.isAbsolute() || file.canRead()) {
             // If the URL has a "fragment" (also called a reference), which is
             // a pointer into the file, we have to strip that off before we
             // get the file, and the reinsert it before returning the URL.
