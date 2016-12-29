@@ -411,6 +411,44 @@ public class ConfigurationApplication implements ExecutionListener {
         }
     }
 
+    /** Return the array of possible configuration directories.
+     *  in basePath.
+     *  @param The base path, typically "ptolemy/configs".
+     *  @return the possible configuration directories.
+     *  @exception IOException If the basePath cannot be found.
+     *  @exception URISyntaxException If the URI of the basePath is incorrect.
+     */
+    public static File[] configurationDirectories(String basePath) throws IOException, URISyntaxException {
+	URI configurationURI = new URI(specToURL(basePath)
+				       .toExternalForm().replaceAll(" ", "%20"));
+	File configurationDirectory = new File(configurationURI);
+	ConfigurationFilenameFilter filter = new ConfigurationFilenameFilter();
+	File[] configurationDirectories = configurationDirectory
+	    .listFiles(filter);
+	return configurationDirectories;
+    }
+
+    /** Return the full configuration directory or, if the full configuration
+     *  directory is not found, then the first configuration directory.
+     *  @return the possible configuration directories.
+     *  @exception IOException If the basePath cannot be found.
+     *  @exception URISyntaxException If the URI of the basePath is incorrect.
+     */
+    public static File configurationDirectoryFullOrFirst() throws IOException, URISyntaxException {
+	File[] configurationDirectories = configurationDirectories("ptolemy/configs");
+	if (configurationDirectories.length < 1) {
+	    throw new IOException("Could not find any configurations in ptolemy/configs");
+	}
+	File configurationDirectory = configurationDirectories[0];
+	int i;
+	for(i = 0; i < configurationDirectories.length; i++) {
+	    if (configurationDirectories[i].toString().endsWith("configs/fullxx")) {
+		configurationDirectory = configurationDirectories[i];
+	    }
+	}
+	return configurationDirectory;
+    }
+
     /** Reduce the count of executing models by one.  If the number of
      *  executing models drops to zero, then notify threads that might
      *  be waiting for this event.
@@ -624,18 +662,8 @@ public class ConfigurationApplication implements ExecutionListener {
 	    // This is needed for the exportHTML tests under CapeCode
 	    // because full/configuration.xml does not exist, but
 	    // capecode/configuration.xml does.
-	    
-	    File[] configurationDirectories = _configurationDirectories("ptolemy/configs");
-	    if (configurationDirectories.length < 1) {
-		throw new IOException("Could not find any configurations in ptolemy/configs");
-	    }
-	    File configurationDirectory = configurationDirectories[0];
-	    int i;
-	    for(i = 0; i < configurationDirectories.length; i++) {
-		if (configurationDirectories[i].toString().indexOf("configs/full") != -1) {
-		    configurationDirectory = configurationDirectories[i];
-		}
-	    }
+
+	    File configurationDirectory = configurationDirectoryFullOrFirst();
 
             // FIXME: are we in the right thread?
             ConfigurationApplication application = new ConfigurationApplication(
@@ -1039,7 +1067,7 @@ public class ConfigurationApplication implements ExecutionListener {
             // Look for configuration directories in _basePath
             // This will likely fail if ptolemy/configs is in a jar file
             // We use a URI here so that we cause call File(URI).
-	    File[] configurationDirectories = _configurationDirectories(_basePath);
+	    File[] configurationDirectories = configurationDirectories(_basePath);
 
             if (configurationDirectories != null) {
                 result.append("\nThe following (mutually exclusive) flags "
@@ -1767,23 +1795,6 @@ public class ConfigurationApplication implements ExecutionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
-
-    /** Return the array of possible configuration directories.
-     *  in basePath.
-     *  @param The base path, typically "ptolemy/configs".
-     *  @return the possible configuration directories.
-     *  @exception IOException If the basePath cannot be found.
-     *  @exception URISyntaxException If the URI of the basePath is incorrect.
-     */
-    private static File[] _configurationDirectories(String basePath) throws IOException, URISyntaxException {
-	URI configurationURI = new URI(specToURL(basePath)
-				       .toExternalForm().replaceAll(" ", "%20"));
-	File configurationDirectory = new File(configurationURI);
-	ConfigurationFilenameFilter filter = new ConfigurationFilenameFilter();
-	File[] configurationDirectories = configurationDirectory
-	    .listFiles(filter);
-	return configurationDirectories;
-    }
 
     /** Start the models running, each in a new thread, then return.
      *  @param useStartRun True if Manager.startRun() should be called,

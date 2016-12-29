@@ -309,15 +309,40 @@ test HTMLAbout-3.0 {GenerateCopyrights.generateCopyrights} {
 ####
 #
 test HTMLAbout-4.0 {checkCompleteDemos} { 
-    set fullConfigurationURL [java::call ptolemy.util.FileUtilities nameToURL \
-			      {$CLASSPATH/ptolemy/configs/full/configuration.xml} \
-			      [java::null] \
-			      [java::null]]
-    puts "Reading $fullConfigurationURL"
-    set fullConfiguration [java::call ptolemy.actor.gui.MoMLApplication readConfiguration $fullConfigurationURL]
+    set configurationDirectory [java::call ptolemy.actor.gui.ConfigurationApplication \
+			       configurationDirectoryFullOrFirst]
+    set configurationFile [java::new java.io.File $configurationDirectory "configuration.xml"]
+    puts "Reading [$configurationFile toString]"
+    set configuration [java::call ptolemy.actor.gui.MoMLApplication readConfiguration \
+			   [$configurationFile toURL]]
 
-    set about [java::call ptolemy.actor.gui.HTMLAbout about $fullConfiguration]
-    set checkCompleteDemosReport [java::call ptolemy.actor.gui.HTMLAbout checkCompleteDemos "ptolemy/configs/doc/completeDemos.htm"]
+    set about [java::call ptolemy.actor.gui.HTMLAbout about $configuration]
+
+    # If the full configuration is present, then use completeDemos.htm
+    # Otherwise search for the configuration-specific demo file.
+    set configurationName [$configurationDirectory toString]
+    if {[regexp {full$} $configurationName]} {
+	set completeDemos "ptolemy/configs/doc/completeDemos.htm"
+    } else {
+	set completeDemosFile [java::new java.io.File $configurationDirectory "demonstrations.htm"]
+	if {[$completeDemosFile exists]} {
+	    set $completeDemos [$completeDemosFile getCanonicalPath]
+	} else {
+	    puts "configurationName: $configurationName"
+	    set shortConfiguration [string range $configurationName [expr {[string last / $configurationName] + 1}] [string length $configurationName]]
+	    puts "shortConfiguration: $shortConfiguration"
+	    set shortUpcaseConfiguration "[string toupper [string range $shortConfiguration 0 0]][string range $shortConfiguration 1 [string length $shortConfiguration]]"
+	    set completeDemosFile [java::new java.io.File [$configurationDirectory getParentFile] "doc/demos${shortUpcaseConfiguration}.htm"]
+	    if {[$completeDemosFile exists]} {
+		set completeDemos [$completeDemosFile getCanonicalPath]
+	    } else {
+		error "[$completeDemosFile toString] does not exist"
+	    }
+	}
+    }
+
+    puts "Checking complete demos of $completeDemos"
+    set checkCompleteDemosReport [java::call ptolemy.actor.gui.HTMLAbout checkCompleteDemos $completeDemos]
     
     # Substitute $PTII
     set ptolemyPtIIDir [java::call System getProperty {ptolemy.ptII.dir}]
