@@ -48,14 +48,16 @@ EXPERIMENTAL_DOMAINS =
 DOMAINS =	algebraic atc tcs ca ci continuous \
 		coroutine \
 		csp curriculum \
-	        dde ddf de hdf modal pn sdf dt giotto fmima\
+	        dde ddf de hdf modal pn sdf dt giotto fmima \
 		$(PTMETROII_DIR) \
 		ontologies \
 		$(PTOPENMODELICA_DIR) \
 		petrinet qss rendezvous sysml \
 		$(PTPSDF_DIR) ptera pthales ptides ptinyos \
 		scr $(PTSPACE_DIR) \
-		sequence sr taskpt tdl tester tm $(PTJAVA3D_DIR) wireless
+		sequence sr taskpt tdl \
+		tester \
+		tm $(PTJAVA3D_DIR) wireless
 
 DIRS =		$(DOMAINS) $(EXPERIMENTAL_DOMAINS) test
 
