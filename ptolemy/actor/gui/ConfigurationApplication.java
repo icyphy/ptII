@@ -33,6 +33,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
 import java.net.URI;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -618,12 +619,30 @@ public class ConfigurationApplication implements ExecutionListener {
             String canonicalModelFileName = canonicalModelFile
                     .getCanonicalPath();
 
+	    // Search for the full configuration or the first configuration.
+
+	    // This is needed for the exportHTML tests under CapeCode
+	    // because full/configuration.xml does not exist, but
+	    // capecode/configuration.xml does.
+	    
+	    File[] configurationDirectories = _configurationDirectories("ptolemy/configs");
+	    if (configurationDirectories.length < 1) {
+		throw new IOException("Could not find any configurations in ptolemy/configs");
+	    }
+	    File configurationDirectory = configurationDirectories[0];
+	    int i;
+	    for(i = 0; i < configurationDirectories.length; i++) {
+		if (configurationDirectories[i].toString().indexOf("configs/full") != -1) {
+		    configurationDirectory = configurationDirectories[i];
+		}
+	    }
+
             // FIXME: are we in the right thread?
             ConfigurationApplication application = new ConfigurationApplication(
                     new String[] {
                             // Need to display a frame or Kieler fails.
                             //"ptolemy/actor/gui/test/testConfiguration.xml",
-                            "ptolemy/configs/full/configuration.xml",
+			    configurationDirectory.getCanonicalPath() + "/configuration.xml",
                             canonicalModelFileName });
 
             // Find the first CompositeEntity whos name matches
@@ -1020,12 +1039,7 @@ public class ConfigurationApplication implements ExecutionListener {
             // Look for configuration directories in _basePath
             // This will likely fail if ptolemy/configs is in a jar file
             // We use a URI here so that we cause call File(URI).
-            URI configurationURI = new URI(specToURL(_basePath)
-                    .toExternalForm().replaceAll(" ", "%20"));
-            File configurationDirectory = new File(configurationURI);
-            ConfigurationFilenameFilter filter = new ConfigurationFilenameFilter();
-            File[] configurationDirectories = configurationDirectory
-                    .listFiles(filter);
+	    File[] configurationDirectories = _configurationDirectories(_basePath);
 
             if (configurationDirectories != null) {
                 result.append("\nThe following (mutually exclusive) flags "
@@ -1753,6 +1767,23 @@ public class ConfigurationApplication implements ExecutionListener {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private methods                   ////
+
+    /** Return the array of possible configuration directories.
+     *  in basePath.
+     *  @param The base path, typically "ptolemy/configs".
+     *  @return the possible configuration directories.
+     *  @exception IOException If the basePath cannot be found.
+     *  @exception URISyntaxException If the URI of the basePath is incorrect.
+     */
+    private static File[] _configurationDirectories(String basePath) throws IOException, URISyntaxException {
+	URI configurationURI = new URI(specToURL(basePath)
+				       .toExternalForm().replaceAll(" ", "%20"));
+	File configurationDirectory = new File(configurationURI);
+	ConfigurationFilenameFilter filter = new ConfigurationFilenameFilter();
+	File[] configurationDirectories = configurationDirectory
+	    .listFiles(filter);
+	return configurationDirectories;
+    }
 
     /** Start the models running, each in a new thread, then return.
      *  @param useStartRun True if Manager.startRun() should be called,
