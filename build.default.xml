@@ -282,7 +282,6 @@
     <exclude name="ptolemy/plot/adm/"/>
     <exclude name="ptolemy/plot/servlet/" />
     <exclude name="ptolemy/vergil/basic/export/itextpdf/" />
-    <exclude name="ptolemy/vergil/basic/export/html/" />
     <exclude name="ptolemy/vergil/basic/imprt/fmu/" />
     <exclude name="ptolemy/vergil/basic/imprt/g4ltl/" />
     <exclude name="ptserver/" />
