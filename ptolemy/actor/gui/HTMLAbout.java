@@ -263,6 +263,10 @@ public class HTMLAbout {
     public static String checkCompleteDemos(String completeDemos)
             throws IOException {
         URL demosURL = _getDemoURL(completeDemos);
+        if (demosURL == null) {
+            throw new IOException("Could not find any demos in " + completeDemos
+				  + ". Does that file exist?");
+        }
         StringBuffer results = new StringBuffer(
                 "<h1>Results of checking for demos not listed in full "
                         + "demos</h1>\n"
