@@ -274,10 +274,8 @@ public class FileUtilities {
      *  @exception IOException If the file cannot be read.
      */
     public static String getFileAsString(String path) throws IOException {
-	// Use nameToURL so that we look in the classpath for jar files
-	// that might contain the resource.
-	URL url = FileUtilities.nameToURL(path, null, null);
-	byte[] encoded = FileUtilities.binaryReadURLToByteArray(url);
+	// FIXME: Will this support reading from jar files?
+        byte[] encoded = Files.readAllBytes(Paths.get(path));
         return new String(encoded, Charset.defaultCharset());
     }
 
