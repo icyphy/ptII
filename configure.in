@@ -4574,11 +4574,11 @@ fi
 #--------------------------------------------------------------------
 #      	The JavaScript Object Notation (JSON) package.
 #	JSON can be downloaded from http://www.json.org
-#	JSON is used by ptolemy/cg/syntactic
+#	JSON is used by ptolemy/actor/lib/conversions/json/ and ptolemy/cg/syntactic
 #--------------------------------------------------------------------
 
 # PTJSON_DIR is set to json and used in
-# $PTII/ptolemy/cg/lib/syntatic if json was found
+# ptolemy/actor/lib/conversions/json/ and $PTII/ptolemy/cg/lib/syntatic if json was found
 PTJSON_DIR=
 
 # Note that we don't substitute in the ${PTII} or $(JSON_DIR) here
@@ -4588,10 +4588,12 @@ PTJSON_DIR=
 #JSON_DIR='${PTII}/vendors/jode/1.1.2-pre1'
 #JSON_CLASSES='${JSON_DIR}/jode.jar'
 
-# We only need to look for jode if this director exists:
-JSON_USER_DIR="$PTII/ptolemy/cg/lib/syntactic"
-if test ! -d "$JSON_USER_DIR"; then
-    PT_MSG_STATUS([$JSON_USER_DIR is not present,
+# We only need to look for jode if either of these directories exists:
+JSON_USER_DIR1="$PTII/ptolemy/actor/lib/conversions/json"
+JSON_USER_DIR2="$PTII/ptolemy/actor/lib/jjs"
+
+if test ! -d "$JSON_USER_DIR1" -a ! -d "$JSON_USER_DIR2"; then
+    PT_MSG_STATUS([$JSON_USER_DIR1 and $JSON_USER_DIR2 are not present,
     so we need not find JSON, the JavaScript Object Notation package.])
 else
     AC_MSG_CHECKING([for json directory])
@@ -4616,8 +4618,18 @@ else
     else
         AC_MSG_WARN([Failed to find $PTII/org/json/
     perhaps JSON is not installed?
-    JSON is the JavaScript Object Notation package used by the cg/syntactic
-    work.  You need only have JSON if you plan on using the cg/syntactic work.])
+    JSON is the JavaScript Object Notation package used by the accessors
+    work.  You need only have JSON if you plan on using Accessors.])
+        updateExcludes "org.json"
+        updateExcludes "ptolemy.actor.lib.conversions.json"
+
+	# JavaScript imports
+	# ptolemy.actor.lib.conversions.TokenToJSON, so if we don't
+	# have org.json, we don't have accessors.
+
+	updateExcludes "ptolemy.actor.lib.jjs"
+	updateExcludes" org.terraswarm.accessor"
+        updateExcludes "ptolemy.vergil.basic.imprt.accessor"
     fi
 fi
 
