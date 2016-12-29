@@ -1069,6 +1069,10 @@ Accessor.prototype.implement = function (accessorClass) {
  *  @param options The options for the input.
  */
 Accessor.prototype.input = function (name, options) {
+    if (!this || !this.inputList) {
+        throw new Error('Function input() is being called without "this" being defined. '
+                + 'Perhaps use "this.input(...)" instead of "input(...)".');
+    }
     // The input may have been previously defined in a base accessor.
     pushIfNotPresent(name, this.inputList);
     this.inputs[name] = mergeObjects(this.inputs[name], options);
@@ -1087,7 +1091,7 @@ Accessor.prototype.instantiate = function (instanceName, accessorClass) {
     if (!this.getAccessorCode) {
         throw new Error('instantiate() is not supported by this swarmlet host.');
     }
-    // For functions that accessor ports, etc., we want the default implementation
+    // For functions that access ports, etc., we want the default implementation
     // when instantiating the contained accessor.
     var insideBindings = {
         'clearInterval': this.clearInterval,
@@ -1138,6 +1142,10 @@ Accessor.prototype.module = {
  *  @param options The options.
  */
 Accessor.prototype.output = function (name, options) {
+    if (!this || !this.outputList) {
+        throw new Error('Function output() is being called without "this" being defined. '
+                + 'Perhaps use "this.output(...)" instead of "output(...)".');
+    }
     // The output may have been previously defined in a base accessor.
     pushIfNotPresent(name, this.outputList);
     this.outputs[name] = mergeObjects(this.outputs[name], options);
@@ -1148,6 +1156,10 @@ Accessor.prototype.output = function (name, options) {
  *  @param options The options.
  */
 Accessor.prototype.parameter = function (name, options) {
+    if (!this || !this.parameterList) {
+        throw new Error('Function parameter() is being called without "this" being defined. '
+                + 'Perhaps use "this.parameter(...)" instead of "parameter(...)".');
+    }
     // The parameter may have been previously defined in a base accessor.
     pushIfNotPresent(name, this.parameterList);
     this.parameters[name] = mergeObjects(this.parameters[name], options);
@@ -1529,7 +1541,10 @@ Accessor.prototype.setDefault = function (name, value) {
 Accessor.prototype.setParameter = function (name, value) {
     var parameter = this.parameters[name];
     if (!parameter) {
-        throw new Error('setParameter(): Accessor has no parameter named ' + name);
+        throw new Error('setParameter(): Accessor '
+                + this.accessorName
+                + ' has no parameter named ' + name
+                + ' Perhaps it is an input and you should use setDefault()?');
     }
     // If necessary, convert the value to the match the type.
     value = convertType(value, parameter, name);
