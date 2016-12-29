@@ -11191,11 +11191,11 @@ fi
 #--------------------------------------------------------------------
 #      	The JavaScript Object Notation (JSON) package.
 #	JSON can be downloaded from http://www.json.org
-#	JSON is used by ptolemy/cg/syntactic
+#	JSON is used by ptolemy/actor/lib/conversions/json/ and ptolemy/cg/syntactic
 #--------------------------------------------------------------------
 
 # PTJSON_DIR is set to json and used in
-# $PTII/ptolemy/cg/lib/syntatic if json was found
+# ptolemy/actor/lib/conversions/json/ and $PTII/ptolemy/cg/lib/syntatic if json was found
 PTJSON_DIR=
 
 # Note that we don't substitute in the ${PTII} or $(JSON_DIR) here
@@ -11205,12 +11205,14 @@ PTJSON_DIR=
 #JSON_DIR='${PTII}/vendors/jode/1.1.2-pre1'
 #JSON_CLASSES='${JSON_DIR}/jode.jar'
 
-# We only need to look for jode if this director exists:
-JSON_USER_DIR="$PTII/ptolemy/cg/lib/syntactic"
-if test ! -d "$JSON_USER_DIR"; then
-    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JSON_USER_DIR is not present,
+# We only need to look for jode if either of these directories exists:
+JSON_USER_DIR1="$PTII/ptolemy/actor/lib/conversions/json"
+JSON_USER_DIR2="$PTII/ptolemy/actor/lib/jjs"
+
+if test ! -d "$JSON_USER_DIR1" -a ! -d "$JSON_USER_DIR2"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JSON_USER_DIR1 and $JSON_USER_DIR2 are not present,
     so we need not find JSON, the JavaScript Object Notation package." >&5
-$as_echo "$JSON_USER_DIR is not present,
+$as_echo "$JSON_USER_DIR1 and $JSON_USER_DIR2 are not present,
     so we need not find JSON, the JavaScript Object Notation package." >&6; }; fi
 else
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking for json directory" >&5
@@ -11243,12 +11245,22 @@ $as_echo "$as_me: WARNING: ptolemy.vergil.basic.imprt.accessor requires Java 1.8
     else
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find $PTII/org/json/
     perhaps JSON is not installed?
-    JSON is the JavaScript Object Notation package used by the cg/syntactic
-    work.  You need only have JSON if you plan on using the cg/syntactic work." >&5
+    JSON is the JavaScript Object Notation package used by the accessors
+    work.  You need only have JSON if you plan on using Accessors." >&5
 $as_echo "$as_me: WARNING: Failed to find $PTII/org/json/
     perhaps JSON is not installed?
-    JSON is the JavaScript Object Notation package used by the cg/syntactic
-    work.  You need only have JSON if you plan on using the cg/syntactic work." >&2;}
+    JSON is the JavaScript Object Notation package used by the accessors
+    work.  You need only have JSON if you plan on using Accessors." >&2;}
+        updateExcludes "org.json"
+        updateExcludes "ptolemy.actor.lib.conversions.json"
+
+	# JavaScript imports
+	# ptolemy.actor.lib.conversions.TokenToJSON, so if we don't
+	# have org.json, we don't have accessors.
+
+	updateExcludes "ptolemy.actor.lib.jjs"
+	updateExcludes" org.terraswarm.accessor"
+        updateExcludes "ptolemy.vergil.basic.imprt.accessor"
     fi
 fi
 
