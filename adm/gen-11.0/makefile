@@ -921,6 +921,11 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 		$(BASE_SRC_TO_BE_REMOVED) \
 		doc/design/hyvisual.jar \
 		doc/design/visualsense.jar \
+		doc/tutorial/domains \
+		org/ptolemy/machineLearning/particleFilter/test/auto/JointParticleFilter.xml \
+		org/ptolemy/machineLearning/particleFilter/test/auto/OnlineTrajectoryOptimization.xml \
+		org/ptolemy/machineLearning/particleFilter/test/auto/OpenLoopSingleRobotTargetLocalization.xml \
+		org/ptolemy/machineLearning/particleFilter/test/auto/OpenLoopTwoRobotTargetLocalization.xml \
 		ptolemy/cg/adapter/generic/html \
 		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/*.java \
 		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/conversions\
@@ -947,6 +952,54 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 		ptolemy/cg/lib/ModularCodeGenLazyTypedCompositeActor.java \
 		ptolemy/cg/lib/ModularCodeGenTypedCompositeActor.java \
 	        ptolemy/cg/lib/ModularCompiledSDFTypedCompositeActor.java \
+		ptolemy/configs/bcvtb \
+		ptolemy/configs/cyphysim \
+		ptolemy/configs/fullViewer \
+		ptolemy/configs/hyvisual \
+		ptolemy/configs/pn \
+		ptolemy/configs/ptdb \
+		ptolemy/configs/ptiny \
+		ptolemy/configs/ptinyKepler \
+		ptolemy/configs/ptinyViewer \
+		ptolemy/configs/ptserver \
+		ptolemy/configs/space \
+		ptolemy/configs/test \
+		ptolemy/configs/viptos \
+		ptolemy/configs/visualsense \
+		ptolemy/domains/algebraic \
+		ptolemy/domains/atc \
+		ptolemy/domains/ca \
+		ptolemy/domains/ci \
+		ptolemy/domains/continuous \
+		ptolemy/domains/csp \
+		ptolemy/domains/curriculum \
+		ptolemy/domains/dde \
+		ptolemy/domains/ddf \
+		ptolemy/domains/dt \
+		ptolemy/domains/fmima \
+		ptolemy/domains/giotto \
+		ptolemy/domains/gr \
+		ptolemy/domains/hdf \
+		ptolemy/domains/metroII \
+		ptolemy/domains/openmodelica \
+		ptolemy/domains/petrinet \
+		ptolemy/domains/pn \
+		ptolemy/domains/psdf \
+		ptolemy/domains/ptera \
+		ptolemy/domains/pthales \
+		ptolemy/domains/ptides \
+		ptolemy/domains/ptinyos \
+		ptolemy/domains/qss \
+		ptolemy/domains/rendezvous \
+		ptolemy/domains/scr \
+		ptolemy/domains/sequence \
+		ptolemy/domains/space \
+		ptolemy/domains/sr \
+		ptolemy/domains/taskpt \
+		ptolemy/domains/tcs \
+		ptolemy/domains/tdl \
+		ptolemy/domains/tm \
+		ptolemy/domains/wireless \
 		vergilBCVTB.jnlp.in \
 		vergilCyPhySim.jnlp.in \
 		vergilDSP.jnlp.in \
@@ -1081,6 +1134,12 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/build.xml.in.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/build.xml.in
 	#
+	# build.default.xml: Remove build-pt-modules from the depends.
+	sed 's/depends="build-pt-modules/depends="/' src_jar/$(CAPECODE_CAPECODE_VERSION)/build.default.xml \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/build.default.xml.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/build.default.xml.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/build.default.xml
+	#
 	# bin/makefile: Remove unused scripts
 	egrep -v "copernicus|decompile|emachine|giottoc|htmlconverter|jode|mescal|obfuscate|soot|tinic|startjini.gui" src_jar/$(CAPECODE_CAPECODE_VERSION)/bin/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/bin/makefile.tmp
@@ -1107,6 +1166,13 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile
+	#
+	# Fix up doc/tutorial/makefile
+	egrep -v "domains" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/tutorial/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/tutorial/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/tutorial/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/tutorial/makefile
 	#
 	# Fix up makefile
 	egrep -v ".eclipse.epf|actor/lib/javasound/demo/demo.jar|doc/codeDoc.jar|domains/dt/demo/demo.jar|domains/giotto/demo/demo.jar|domains/pn/demo/demo.jar|domains/tm/demo/demo.jar|lbnl|ptolemy/domains/experimentalDomains.jar|ptolemy/domains/de/demo/demo.jar|ptolemy/domains/sdf/demo/demo.jar|pt-modules|ptserver|thales|vergil/gt/gt.jar|vergil.*.jnlp.in" \
@@ -1172,11 +1238,11 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/makefile
 	#
 	# Fix up ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile
-	egrep -v "lib" \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile \
-		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile.tmp
-	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile.tmp \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile
+	#egrep -v "lib" \
+	#	src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile \
+	#	> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile.tmp
+	#mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile.tmp \
+	#	src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/domains/sdf/makefile
 	#
 	# Fix up ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/makefile
 	egrep -v "vergil" \
@@ -1222,7 +1288,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/makefile 
 	#
 	# Fix up ptolemy/configs/makefile
-	egrep -v "bcvtb|cyphysim|dsp|full|hyvisual|jxta|pn|ptdb|ptiny|ptserver|space|viptos|visualsense" \
+	egrep -v "bcvtb|cyphysim|dsp|full|hyvisual|jxta|pn|ptdb|ptiny|ptserver|space|test|viptos|visualsense" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile.tmp \
@@ -1236,7 +1302,10 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile
 	#
 	# Fix up ptolemy/domains/makefile
-	egrep -v "csp.jar|ddf.jar|pn.jar|domains.xml|ptinyDomains.xml|algebraic.jar|ca.jar|ci.jar|curriculum.jar|dde.jar|dt/dt.jar|fmima.jar|giotto.jar|hdf.jar|ontologies.jar|petrinet.jar|ptera.jar|pthales.jar|qss.jar|scr.jar|sysml.jar|taskpt.jar|tester.jar|tm.jar|sr.jar|wireless.jar|algebraic/demo|ca/demo|ddf/demo|hdf/demo|pn/demo|ptera/demo|pthales/demo|ptera/demo|rendezvous/demo|\$\(PTSPACEDOMAIN_JAR\)|space.jar|sr/demo/demo.jar|sr/doc/doc.jar"	\
+	#
+	# Use this to sort: awk -F '|' '{for (i=1;i<=NF;i++) {print $i}}' | sort |awk '{printf("%s|", $1)}'
+	#
+	egrep -v "\$\(PTSPACEDOMAIN_JAR\)|algebraic.jar|algebraic/demo|ca.jar|ca/demo|ci.jar|continuous.jar|csp.jar|curriculum.jar|dde.jar|ddf.jar|ddf/demo|domains.xml|dt/dt.jar|fmima.jar|giotto.jar|hdf.jar|hdf/demo|ontologies.jar|petrinet.jar|pn.jar|pn/demo|ptera.jar|ptera/demo|ptera/demo|ptides|pthales.jar|pthales/demo|ptides.jar|ptinyDomains.xml|qss.jar|rendezvous/demo.jar|rendezvous.jar|scr.jar|space.jar|sr.jar|sr/demo/demo.jar|sr/doc/doc.jar|sysml.jar|taskpt.jar|tm.jar|wireless.jar" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/makefile.tmp \
@@ -3524,7 +3593,16 @@ test_capecode_setup_make_tests:
 
 
 test_capecode_setup_ant: test/capeCodeTest
-	(cd test/capeCodeTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant clean; PTII=`pwd` ant; PTII=`pwd` ant jars; PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest; PTII=`pwd` ant clean; cp build.default.xml build.xml; PTII=`pwd` ant) 
+	# Test configure and build.xml.in
+	(cd test/capeCodeTest; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; \
+		chmod a+x ./configure; PTII=`pwd` ./configure; \
+		PTII=`pwd` ant clean; PTII=`pwd` ant; \
+		PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
+	# Test build.default.xml first, which does not compile everything.
+	(cd test/capeCodeTest; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; \
+		cp build.default.xml build.xml; \
+		PTII=`pwd` ant clean; PTII=`pwd` ant; \
+		PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
 
 test_capecode_setup_end: test_capecode_setup_XvfbStop
 

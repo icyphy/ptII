@@ -57,7 +57,10 @@ ME =		ptolemy
 # if it was found.  Otherwise, PTHOMER_DIR is empty.
 #
 DIRS = util math kernel plot graph moml data actor gui media	\
-	$(PTMATLAB_DIR)	domains	$(PTCOPERNICUS_DIR) verification \
+	$(PTMATLAB_DIR)	\
+	domains	\
+	$(PTCOPERNICUS_DIR) \
+	verification \
 	vergil $(PTCHIC_DIR) cg component $(PTBACKTRACK_DIR) \
 	configs \
 	$(PTDISTRIBUTED_DIR) $(PTHOMER_DIR) ptp $(PTCALTROP_DIR) \
