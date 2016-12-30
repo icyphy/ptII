@@ -326,7 +326,7 @@ test HTMLAbout-4.0 {checkCompleteDemos} {
     } else {
 	set completeDemosFile [java::new java.io.File $configurationDirectory "demonstrations.htm"]
 	if {[$completeDemosFile exists]} {
-	    set $completeDemos [$completeDemosFile getCanonicalPath]
+	    set completeDemos [$completeDemosFile getCanonicalPath]
 	} else {
 	    puts "configurationName: $configurationName"
 	    set shortConfiguration [string range $configurationName [expr {[string last / $configurationName] + 1}] [string length $configurationName]]
