@@ -34,6 +34,7 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTBROWSER_DIR is set to browser if the Vertx jars are found by configure.
 # PTCAMERAS_DIR is set to cameras if the webcam-capture*.jar and other jars are found by configure.
 # PTEVENTBUS_DIR is set to eventbus if the Vertx jars are found by configure.
+# PTGDP_DIR is set to gdp if $PTII/lib/gdp*.jar was found by configure
 # PTHTTPCLIENT_DIR is set to httpClient if the Vertx jars are found by configure.
 # PTHTTPCLIENT_DIR is set to httpServer if the Vertx jars are found by configure.
 # PTIMUSENSOR_DIR is set to IMUSensor if the Java Communications API (RXTX) jars are found by configure.
@@ -43,7 +44,7 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTVERTX_SOCKET_DIR is set to socket if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
 # PTXBEE_DIR is set to xbee if the XBee Java Interface was found
-DIRS = 		audio $(PTBROWSER_DIR) buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto dataConverter discovery dsp $(PTEVENTBUS_DIR) $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) $(PTIMUSENSOR_DIR) iotAuth localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign objectDetection $(PTSERIAL_DIR) shell testing $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) $(PTXBEE_DIR)
+DIRS = 		audio $(PTBROWSER_DIR) buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto dataConverter discovery dsp $(PTEVENTBUS_DIR) $(PTGDP_DIR) $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) $(PTIMUSENSOR_DIR) iotAuth localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign objectDetection $(PTSERIAL_DIR) shell testing $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) $(PTXBEE_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..
