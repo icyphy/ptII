@@ -115,14 +115,18 @@ if [catch {java::call ptolemy.actor.injection.ActorModuleInitializer initializeI
 }
 
 # Perform file prefix substitution.
-# We have a non-Ptolemy verison of the
+# We have a non-Ptolemy version of the
 # StringUtilities.substituteFilePrefix() method because
 # $PTII/adm/test/ant.tcl invokes "ant clean" and so the
 # StringUtilities .class file might not exist.
 proc substituteFilePrefix {prefix target replacement} {
+    # puts "substituteFilePrefix: $prefix, $target, $replacement"
+
     set prefixString [java::new String $prefix]
     set targetString [java::new String $target]
     if { [$targetString startsWith $prefixString] } {
+	set returnValue $replacement[string range $target 1 [string length $prefix]]
+	# puts "substituteFilePrefix: $prefix, $target, $replacement: returning $returnValue "
 	return $replacement[string range $target 1 [string length $prefix]]
     } else {
 	set prefixCanonicalPath [[java::new java.io.File $prefix] getCanonicalPath]
@@ -131,7 +135,9 @@ proc substituteFilePrefix {prefix target replacement} {
 	set targetCanonicalString [java::new String $targetCanonicalPath]
 
 	if { [$targetCanonicalString startsWith $prefixCanonicalString] } {
-	    return $replacement[string range $targetCanonicalString 1 [string length $prefixCanonicalString]]
+	    set returnValue $replacement[string range $targetCanonicalPath [string length $prefixCanonicalPath] [string length $targetCanonicalPath]]
+	    # puts "substituteFilePrefix: $prefix, $target, $replacement: $targetCanonicalPath, $prefixCanonicalPath, returning 2 $returnValue "
+	    return $returnValue
 	}
     }
 }
