@@ -642,8 +642,10 @@ $(PTII_FULL_ZIP): $(PTIIDIST) $(PTZIPRELEASE)
 
 VERSION_FILES = \
 	src/ptII$(VERSION)/ptolemy/configs/*/* \
-	src/ptII$(VERSION)/ptolemy/kernel/attributes/VersionAttribute.java \
-	src/ptII$(VERSION)/ptolemy/kernel/attributes/test/VersionAttribute.tcl
+	src/ptII$(VERSION)/ptolemy/kernel/attributes/VersionAttribute.java
+
+# VersionAttribute.tcl ignores the _201YMMDD, so we don't update the version there.
+#	src/ptII$(VERSION)/ptolemy/kernel/attributes/test/VersionAttribute.tcl
 
 updateversions_test:
 	./updateversions $(VERSION) $(VERSION)_`date +"%Y%m%d"` $(VERSION_FILES) 
@@ -896,7 +898,6 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/tcs \
 		ptolemy/domains/tdl \
 		ptolemy/domains/test \
-		ptolemy/domains/tester \
 		ptolemy/domains/tm \
 		ptolemy/homer \
 		ptolemy/moml/jxta/demo/EPtolemyA/EPtolemy.properties \
@@ -954,8 +955,21 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 	        ptolemy/cg/lib/ModularCompiledSDFTypedCompositeActor.java \
 		ptolemy/configs/bcvtb \
 		ptolemy/configs/cyphysim \
+		ptolemy/configs/defaultFullConfiguration.xml \
+		ptolemy/configs/fmvEffigyFactory.xml \
+		ptolemy/configs/fmvTableauFactory.xml \
 		ptolemy/configs/fullViewer \
 		ptolemy/configs/hyvisual \
+		ptolemy/configs/gtActorLibrary.xml \
+		ptolemy/configs/gtEffigyFactory.xml \
+		ptolemy/configs/gtLibrary.xml \
+		ptolemy/configs/gtStateLibrary.xml \
+		ptolemy/configs/gtTableauFactory.xml \
+		ptolemy/configs/iaEffigyFactory.xml \
+		ptolemy/configs/iaTableauFactory.xml \
+		ptolemy/configs/ontologyEffigyFactory.xml \
+		ptolemy/configs/ontologySolverEffigyFactory.xml \
+		ptolemy/configs/ontologyTableauFactories.xml \
 		ptolemy/configs/pn \
 		ptolemy/configs/ptdb \
 		ptolemy/configs/ptiny \
@@ -964,8 +978,10 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/ptserver \
 		ptolemy/configs/space \
 		ptolemy/configs/test \
+		ptolemy/configs/utilityPteraModalModel.xml \
 		ptolemy/configs/viptos \
 		ptolemy/configs/visualsense \
+		ptolemy/data/unit/test/auto/Units.xml \
 		ptolemy/domains/algebraic \
 		ptolemy/domains/atc \
 		ptolemy/domains/ca \
@@ -1032,6 +1048,7 @@ HYVISUAL_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/pn \
 		ptolemy/domains/ptinyDomains.xml \
 		ptolemy/domains/ptinyos \
+		ptolemy/domains/tester \
 		ptolemy/domains/wireless \
 		ptolemy/configs/visualsense
 
@@ -1051,7 +1068,8 @@ VIPTOS_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/ptalon \
 		ptolemy/cg \
 		ptolemy/configs/hyvisual \
-		ptolemy/domains/ptinyDomains.xml
+		ptolemy/domains/ptinyDomains.xml \
+		ptolemy/domains/tester
 
 # Location of the jar binary.  Cygwin /bin/jar is broken.
 JAR=c:/Program\ Files/Java/jdk1.5.0_14/bin/jar
@@ -1120,6 +1138,8 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		echo "About to remove unneeded sources from `pwd`"; \
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
 		rm -rf $(CAPECODE_SRC_TO_BE_REMOVED) thales; \
+		rm `find . -name "*.xml" | grep "test/auto/" | xargs grep "ptolemy.domains." | egrep "domains.continuous|domains.ddf|domains.hdf|domains.modal.kernel.ia|domains.pn|domains.ptides|domains.sr|domains.psdf"  | awk -F : '{print $$1}' | sort | uniq`; \
+		rm `find . -name "*.xml" | grep "test/auto/" | xargs grep "ptolemy.actor.gt." | awk -F : '{print $$1}' | sort | uniq`; \
 	   touch configure; \
 	   chmod a+rx configure util/testsuite/chkextra; \
 	)
@@ -1288,7 +1308,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/makefile 
 	#
 	# Fix up ptolemy/configs/makefile
-	egrep -v "bcvtb|cyphysim|dsp|full|hyvisual|jxta|pn|ptdb|ptiny|ptserver|space|test|viptos|visualsense" \
+	egrep -v "bcvtb|cyphysim|defaultFullConfiguration.xml|dsp|fmv|full|gt|hyvisual|iaEffigy|iaTablea|jxta|ontology|pn|ptdb|ptiny|Ptera|ptserver|space|test|viptos|visualsense" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/configs/makefile.tmp \
