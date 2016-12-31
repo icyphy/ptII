@@ -28,11 +28,22 @@
 package ptolemy.actor.lib.jjs;
 
 import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.script.Invocable;
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import javax.script.ScriptException;
 
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InvalidStateException;
+import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
@@ -113,6 +124,13 @@ import ptolemy.util.StringUtilities;
  * @Pt.AcceptedRating Red (cxh)
  */
 public class NashornAccessorHostApplication {
+    
+    /** Create an orchestrator for a top-level accessor.
+     *  @param name The name for the orchestrator.
+     */
+    public static ActorSubstitute createOrchestrator(String name) {
+        return new ActorSubstitute(name);
+    }
 
     /** Evaluate the files named by the arguments.
      *  @param args An array of one or more file names.  See the class comment for
@@ -126,49 +144,48 @@ public class NashornAccessorHostApplication {
     public static int evaluate(String [] args)
             throws Throwable {
 
-        // Create a Nashorn script engine.
-        // NOTE: This is somewhat similar to JavaScript.createEngine().
-        ScriptEngineManager factory = new ScriptEngineManager();
-        ScriptEngine engine = factory.getEngineByName("nashorn");
-        if (engine == null) {
-            // Coverity Scan is happier if we check for null here.
-            throw new Exception(
-                    "Could not get the nashorn engine from the javax.script.ScriptEngineManager."
-                    + " Nashorn is present in JDK 1.8 and later.");
-        }
-        
-        // Load nashornHost.js, which provides top-level functions.
-        engine.eval(FileUtilities.openForReading(
-                "$CLASSPATH/ptolemy/actor/lib/jjs/nashornHost.js", null,
-                null));
-	
-        // Define setTimeout(), etc..
-        engine.eval(FileUtilities.openForReading(
-                "$CLASSPATH/ptolemy/actor/lib/jjs/external/setTimeout-nashorn.js", null,
-                null));
+        // Create a Nashorn script engine, if we don't already have one.
+        if (_engine == null) {
+            // NOTE: This is somewhat similar to JavaScript.createEngine().
+            ScriptEngineManager factory = new ScriptEngineManager();
+            _engine = factory.getEngineByName("nashorn");
+            if (_engine == null) {
+                // Coverity Scan is happier if we check for null here.
+                throw new Exception(
+                        "Could not get the nashorn engine from the javax.script.ScriptEngineManager."
+                                + " Nashorn is present in JDK 1.8 and later.");
+            }
 
-        // For some mysterious reason, if we don't set a timer here, we get
-        // the following error message when a -timeout argument is supplied:
-        // "java.lang.IllegalStateException: Timer already cancelled."
-        // The time period is about 25 days.
-        // This has something to do with the implementation in
-        // external/setTimeout-nashorn.js.
-        // This timer keeps Nashorn from exiting.
-        Object doNothing = engine.eval("function() {}");
-        ((Invocable)engine).invokeFunction("setInterval", doNothing, 2147483647);
+            // Load nashornHost.js, which provides top-level functions.
+            _engine.eval(FileUtilities.openForReading(
+                    "$CLASSPATH/ptolemy/actor/lib/jjs/nashornHost.js", null,
+                    null));
+            
+            // Create a top-level orchestrator that provides setTimeout(), etc.
+            _orchestrator = new ActorSubstitute("main");
+            // The following will make setTimeout(), etc., available.
+            _engine.put("actor", _orchestrator);
+            // Start an event loop for invocations of setTimeout(), etc., in
+            // plain JavaScript files, as opposed to in accessors.
+            _orchestrator.eventLoop();
+        }
 
         // Evaluate the command-line arguments. This will either instantiate and
         // initialize accessors or evaluate specified JavaScript code.
-	Object returnValue = ((Invocable)engine)
-	        .invokeFunction("processCommandLineArguments", (Object)args);
-	
-        // FIXME: Should we close the engine in a finally block?
-	if (returnValue == null) {
-	    System.err.println("NashornAccessorHostApplication.evaluate(" 
-	            + Arrays.toString(args) + ") returned null?");
-	    return -1;
-	}
-	return ((Integer)returnValue).intValue();
+        // This needs to be evaluated in the orchestrator thread.
+        _orchestrator.invokeCallback(new Runnable() {
+            public void run() {
+                try {
+                    ((Invocable)_engine)
+                            .invokeFunction("processCommandLineArguments", (Object)args);
+                } catch (NoSuchMethodException | ScriptException e) {
+                    System.err.println("NashornAccessorHostApplication.evaluate(" 
+                            + Arrays.toString(args) + ") failed with: " + e);
+                    e.printStackTrace();
+                }
+            }
+        });
+        return 0;
     }
 
     /** Invoke one or more JavaScript files.
@@ -177,16 +194,286 @@ public class NashornAccessorHostApplication {
      */
     public static void main(String[] args) {
         try {
-	    int returnValue = NashornAccessorHostApplication.evaluate(args);
-	    // If we have an error condition, then call exit() immediately, otherwise wait for
-	    // the last setTimeout() and/or setInterval to return.
-	    if (returnValue != 0) {
-		StringUtilities.exit(returnValue);
-	    }
+            int returnValue = NashornAccessorHostApplication.evaluate(args);
+            // If we have an error condition, then call exit() immediately, otherwise wait for
+            // the last setTimeout() and/or setInterval to return.
+            if (returnValue != 0) {
+                StringUtilities.exit(returnValue);
+            }
         } catch (Throwable throwable) {
             System.err.println("Command Failed: " + throwable);
             throwable.printStackTrace();
             StringUtilities.exit(1);
         }
+    }
+    
+    //////////////////////////////////////////////////////////////////
+    ////                       Private Variables                  ////
+    
+    /** JavaScript engine to execute scripts. We use only one and share
+     *  it across all scripts and accessor instances created by this process.
+     */
+    private static ScriptEngine _engine;
+    
+    /** The orchestrator that provides the top-level event loop thread. */
+    private static ActorSubstitute _orchestrator;
+
+    //////////////////////////////////////////////////////////////////
+    ////                       Inner Classes                      ////
+    
+    /** Class that substitute for the JavaScript actor so that setTimeout,
+     *  setInterval, and CapeCode modules work in a pure Nashorn host.
+     *  This class provides an event loop that invokes callback functions.
+     *  To start the event loop, call {@link #eventLoop()}.
+     *  To request that a callback be invoked, call {@link #invokeCallback(Runnable)}
+     *  from any thread. The argument will be appended to a list of callbacks
+     *  to be invoked, and the event loop thread will be notified.
+     *  Callbacks will be executed in the same thread as the thread that
+     *  calls {@link #eventLoop()}.
+     */
+    public static class ActorSubstitute implements AccessorOrchestrator {
+        
+        public ActorSubstitute(String name) {
+            _name = name;
+        }
+        
+        /** Clear the interval with the specified handle, if it
+         *  has not already executed.
+         *  @param timer The timeout handle.
+         *  @throws IllegalActionException If the handle is invalid.
+         *  @see #setTimeout(Runnable, int)
+         *  @see #setInterval(Runnable, int)
+         */
+        @Override
+        public synchronized void clearInterval(Object timer) throws IllegalActionException {
+            clearTimeout(timer);
+        }
+
+        /** Clear the timeout with the specified handle, if it
+         *  has not already executed.
+         *  @param timer The timeout handle.
+         *  @throws IllegalActionException If the handle is invalid.
+         *  @see #setTimeout(Runnable, int)
+         *  @see #setInterval(Runnable, int)
+         */
+        @Override
+        public synchronized void clearTimeout(Object timer) throws IllegalActionException {
+            if (timer instanceof Timer) {
+                ((Timer)timer).cancel();
+                _pendingTimers.remove(timer);
+            } else {
+                throw new IllegalActionException(this, "Invalid timer handle: " + timer);
+            }
+        }
+
+        /** Return a description. */
+        @Override
+        public String description() throws IllegalActionException {
+            return "Orchestrator for executing accessors.";
+        }
+        
+        /** Report an error. */
+        public void error(String message) {
+            System.err.println(message);
+        }
+
+        /** Start an event loop in a new thread that does not end until
+         *  {@link #wrapup()} is called.
+         *  @throws IllegalActionException If something goes wrong.
+         */
+        public synchronized void eventLoop() {
+            // System.out.println(_name + ": **** Creating new event loop thread from thread: " + Thread.currentThread());
+            Thread thread = new Thread() {
+                public void run() {
+                    synchronized(ActorSubstitute.this) {
+                        while(!_wrapupRequested) {
+                            // System.out.println(_name + ": event loop thread: " + Thread.currentThread());
+                            // If there are no pending callbacks, then wait for notification.
+                            while(_pendingCallbacks.isEmpty()) {
+                                // System.out.println(_name + ": waiting for callbacks: " + Thread.currentThread());
+                                try {
+                                    ActorSubstitute.this.wait();
+                                } catch (InterruptedException e) {
+                                    // Thread was interrupted. Invoke wrapup and return.
+                                    try {
+                                        ActorSubstitute.this.wrapup();
+                                    } catch (IllegalActionException e1) {
+                                        ActorSubstitute.this.error(_name + ": Event loop thread interrupted.");
+                                    }
+                                    return;
+                                }
+                            }
+                            // Invoke any pending callback functions.
+                            // First, copy the _pendingCallbacks list, because a callback may
+                            // trigger additional callbacks (e.g. setTimeout(f, 0)), but those
+                            // should not be handled until the _next_ reaction.
+                            // Note that we cannot bulk copy the elements of the _pendingCallbacks
+                            // queue because then we would have to separately clear it, and
+                            // between the last copy and the clear, another element might be added
+                            // and then lost.
+                            Runnable callback = _pendingCallbacks.poll();
+                            List<Runnable> callbacks = new LinkedList<Runnable>();
+                            while (callback != null) {
+                                callbacks.add(callback);
+                                callback = _pendingCallbacks.poll();
+                            }
+                            for (Runnable callbackFunction : callbacks) {
+                                // System.out.println(_name + ": invoking callback: " + Thread.currentThread());
+                                callbackFunction.run();
+                            }
+                            // Trigger a reaction of the top-level accessor.
+                            // Must do this before invoking more callbacks.
+                            if (_accessor != null) {
+                                // System.out.println(_name + ": invoking react: " + Thread.currentThread());
+                                try {
+                                    ((Invocable) _engine).invokeMethod(_accessor, "react");
+                                } catch (NoSuchMethodException | ScriptException e) {
+                                    try {
+                                        ((Invocable) _engine).invokeMethod(_accessor, "error", e.getMessage());
+                                    } catch (NoSuchMethodException | ScriptException e1) {
+                                        error("Failed to react top-level accessor: " + e.getMessage());
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            };
+            thread.start();
+        }
+
+        /** Return null. */
+        @Override
+        public NamedObj getContainer() {
+            return null;
+        }
+
+        /** Return the name specified in the constructor. */
+        @Override
+        public String getDisplayName() {
+            return _name;
+        }
+
+        /** Return the name specified in the constructor. */
+        @Override
+        public String getFullName() {
+            return _name;
+        }
+
+        /** Return the name specified in the constructor. */
+        @Override
+        public String getName() {
+            return _name;
+        }
+
+        /** Return the name specified in the constructor. */
+        @Override
+        public String getName(NamedObj relativeTo) throws InvalidStateException {
+            return _name;
+        }
+
+        @Override
+        public synchronized void invokeCallback(Runnable function) {
+            _pendingCallbacks.offer(function);
+            notifyAll();
+        }
+        
+        /** Print a message. */
+        public void log(String message) {
+            System.out.println(message);
+        }
+                
+        /** Set the name.
+         *  @param name The name to use in reporting errors.
+         */
+        @Override
+        public void setName(String name) {
+            _name = name;
+        }
+        
+        /** Specify a function to invoke as a callback periodically with
+         *  the specified period (in milliseconds).
+         *  @param function The function to invoke.
+         *  @param periodMS The period in milliseconds.
+         *  @return handle A handle that can be used to cancel the timeout.
+         */
+        @Override
+        public synchronized Timer setInterval(Runnable function, int periodMS) {
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    // Cannot run this directly because it will be
+                    // invoked in an arbitrary thread, creating race conditions.
+                    invokeCallback(function);
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(task, 0L, (long)periodMS);
+            _pendingTimers.add(timer);
+            return timer;
+        }
+        
+        /** Specify a function to invoke as a callback after the specified
+         *  time (in milliseconds) has elapsed.
+         *  @param function The function to invoke.
+         *  @param timeMS The time in milliseconds.
+         *  @return handle A handle that can be used to cancel the timeout.
+         */
+        @Override
+        public synchronized Timer setTimeout(Runnable function, int timeMS) {
+            // System.out.println(_name + ": requesting timeout: " + timeMS + "ms for " + function + " in thread " + Thread.currentThread());
+            TimerTask task = new TimerTask() {
+                public void run() {
+                    // Cannot run this directly because it will be
+                    // invoked in an arbitrary thread, creating race conditions.
+                    // System.out.println(_name + ": queueing callback: " + timeMS + "ms for " + function + " in thread " + Thread.currentThread());
+                    invokeCallback(function);
+                }
+            };
+            Timer timer = new Timer();
+            timer.schedule(task, (long)timeMS);
+            _pendingTimers.add(timer);
+            return timer;
+        }
+        
+        /** Specify a top-level accessor to associate with this orchestrator
+         *  and start an event loop to invoke callbacks.
+         */
+        public void setTopLevelAccessor(ScriptObjectMirror accessor) {
+            _accessor = accessor;
+            eventLoop();
+        }
+
+        /** Stop the event loop, canceling all pending callbacks. */
+        @Override
+        public synchronized void wrapup() throws IllegalActionException {
+            _pendingCallbacks.clear();
+            for(Timer timer : _pendingTimers) {
+                timer.cancel();
+            }
+            _pendingTimers.clear();
+            _wrapupRequested = true;
+            notifyAll();
+        }
+        
+        ///////////////////////////////////////////////////////////
+        ////              Private Variables                    ////
+
+        /** The top-level accessor associated with this orchestrator. */
+        private ScriptObjectMirror _accessor;
+        
+        /** Name of this orchestrator. */
+        private String _name;
+
+        /** Queue containing callback functions to be invoked. */
+        private ConcurrentLinkedQueue<Runnable> _pendingCallbacks
+                = new ConcurrentLinkedQueue<Runnable>();
+        
+        /** Set containing pending timers. */
+        private HashSet<Timer> _pendingTimers
+                = new HashSet<Timer>();
+        
+        /** Flag indicating that wrapup has been called. */
+        private boolean _wrapupRequested;
     }
 }

@@ -210,8 +210,8 @@ public class HttpServerHelper extends VertxHelperBase {
     private String _hostInterface;
 
     /** Pending requests to timeout ID map. */
-    private HashMap<Integer,HttpServerRequest> _pendingRequests
-            = new HashMap<Integer,HttpServerRequest>();
+    private HashMap<Object,HttpServerRequest> _pendingRequests
+            = new HashMap<Object,HttpServerRequest>();
 
     /** The port on which the server listens. */
     private int _port;
@@ -237,7 +237,7 @@ public class HttpServerHelper extends VertxHelperBase {
             }
             _pendingRequests.put(_timeoutID, request);
         }
-        public int getTimeoutID() {
+        public Object getTimeoutID() {
             return _timeoutID;
         }
         public void run() {
@@ -256,7 +256,7 @@ public class HttpServerHelper extends VertxHelperBase {
                 .add("Content-Type", "text/html");
             response.end(responseText);
         }
-        private int _timeoutID;
+        private Object _timeoutID;
         private HttpServerRequest _request;
     }
 }

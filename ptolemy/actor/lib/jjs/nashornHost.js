@@ -52,6 +52,8 @@
 // Java classes that define some static functions to call from JS.
 var FileUtilities
         = Java.type('ptolemy.util.FileUtilities');
+var NashornAccessorHostApplication
+        = Java.type('ptolemy.actor.lib.jjs.NashornAccessorHostApplication');
 var System
     = Java.type('java.lang.System');
 
@@ -132,6 +134,28 @@ var _accessorClasspath = ['$CLASSPATH/org/terraswarm/accessor/test/auto/accessor
  */
 function alert(message) {
     console.log(message);
+}
+
+/** Clear an interval timer with the specified handle.
+ *  @param handle The handle.
+ *  @see setInterval().
+ */
+function clearInterval(handle) {
+    if (typeof actor === 'undefined') {
+        throw new Error('clearInterval(): No actor variable defined.');
+    }
+    actor.clearTimeout(handle);
+}
+
+/** Clear a timeout with the specified handle.
+ *  @param handle The handle.
+ *  @see setTimeout().
+ */
+function clearTimeout(handle) {
+    if (typeof actor === 'undefined') {
+        throw new Error('clearTimeout(): No actor variable defined.');
+    }
+    actor.clearTimeout(handle);
 }
 
 /** Report an error by printing using console.error().
@@ -290,82 +314,208 @@ function getAccessorCode(name) {
     return code;
 }
 
-/** Instantiate and return an accessor.
+/** Instantiate and return an accessor. If there is no 'actor' variable in scope,
+ *  then this method assumes there is nothing in charge of execution of this accessor
+ *  and therefore creates an orchestrator for it and starts an event loop.
  *  This will throw an exception if there is no such accessor class on the accessor
  *  search path.
  *  @param accessorName The name to give to the instance.
  *  @param accessorClass Fully qualified accessor class name, e.g. 'net/REST'.
  */
 function instantiate(accessorName, accessorClass) {
+    
     // NOTE: The definition of the require var in this file may be overridden if
     // capeCodeHost.js is evaluated after this file is evaluated.
     var bindings = {
         'require': require,
     };
+    
+    // If the variable actor does not exist, then create an orchestrator
+    // to provide an event loop for executing this accessor.
+    var orchestrator = null;
+    if (typeof actor === 'undefined') {
+        orchestrator = NashornAccessorHostApplication.createOrchestrator(accessorName);
+        bindings['actor'] = orchestrator;
+    }
+
     var instance = new commonHost.instantiateAccessor(
         accessorName, accessorClass, getAccessorCode, bindings);
     console.log('Instantiated accessor ' + accessorName + ' with class ' + accessorClass);
+    
+    if (orchestrator) {
+        console.log('Starting event loop for ' + accessorName);
+        // Make it so that 'this.actor' refers to the orchestrator.
+        instance['actor'] = orchestrator;
+        // The following will start a thread to handle the event loop for this accessor.
+        orchestrator.setTopLevelAccessor(instance);
+    }
 
     return instance;
 }
 
-////FIXME: Remove this.
-
-/** Instantiate and initialize the accessors named by the
- *  accessorNames argument
- *
- * See invoke() for how this method is used.
- *
- * @param accessorNames An array of accessor names in a format suitable
- * for getAccessorCode(name).
+/** Instantiate and return an accessor with its own orchestrator with an event loop.
+ *  This will throw an exception if there is no such accessor class on the accessor
+ *  search path.
+ *  @param accessorName The name to give to the instance.
+ *  @param accessorClass Fully qualified accessor class name, e.g. 'net/REST'.
  */
-function instantiateAndInitialize(accessorNames) {
-    var length = accessorNames.length;
-    var index;
-    for (index = 0; index < length; ++index) {
-        // The name of the accessor is basename of the accessorClass.
-        var accessorClass = accessorNames[index];
+function instantiateTopLevel(accessorName, accessorClass) {
+    
+    // Create an orchestrator
+    // to provide an event loop for executing this accessor.
+    var orchestrator = NashornAccessorHostApplication.createOrchestrator(accessorName);
 
-        // For example, if the accessorClass is
-        // test/TestComposite, then the accessorName will be
-        // TestComposite.
+    // NOTE: The definition of the 'require' var in this file may be overridden if
+    // capeCodeHost.js is evaluated after this file is evaluated.
+    // NOTE: setTimeout, etc., need to be redefined to this orchestrator to make
+    // the event requests go to the right place. Unfortunately, it doesn't work in
+    // Nashorn to just reference the orchestrator Java object's methods.
+    // They have to be wrapped in JavaScript functions.
+    // FIXME: setTimeout() and setInterval() should accept variable # of arguments.
+    var bindings = {
+            'actor': orchestrator,
+            'clearInterval': function(handle) {
+                orchestrator.clearTimeout(handle);
+            },
+            'clearTimeout': function(handle) {
+                orchestrator.clearTimeout(handle);
+            },
+            'require': require,
+            'setInterval': function(fun, period) {
+                orchestrator.setInterval(fun, period);
+            },
+            'setTimeout': function(fun, period) {
+                orchestrator.setTimeout(fun, period);
+            },
+            'wrapup': function() {
+                orchestrator.wrapup();
+            }
+    };
+ 
+    var instance = new commonHost.instantiateAccessor(
+        accessorName, accessorClass, getAccessorCode, bindings);
+    console.log('Instantiated accessor ' + accessorName + ' with class ' + accessorClass);
+    
+    // Make it so that 'this.actor' refers to the orchestrator.
+    instance['actor'] = orchestrator;
+    // The following will start a thread to handle the event loop for this accessor.
+    console.log('Starting event loop for ' + accessorName);
+    orchestrator.setTopLevelAccessor(instance);
 
-        var startIndex = (accessorClass.indexOf('\\') >= 0 ? accessorClass.lastIndexOf('\\') : accessorClass.lastIndexOf('/'));
-        var accessorName = accessorClass.substring(startIndex);
-        if (accessorName.indexOf('\\') === 0 || accessorName.indexOf('/') === 0) {
-            accessorName = accessorName.substring(1);
-        }
-        // If the same accessorClass appears more than once in the
-        // list of arguments, then use different names.
-        // To replicate: node nodeHostInvoke.js test/TestComposite test/TestComposite
-        if (index > 0) {
-            accessorName += "_" + (index - 1);
-        }
-        var accessor = instantiate(accessorName, accessorClass);
-        // Push the top level accessor so that we can call wrapup later.
-        accessors.push(accessor);
-    }
+    return instance;
 }
 
 /** Evaluate command-line arguments by first converting the arguments
  *  from a Java array to a JavaScript array, and then invoking main()
  *  in commonHost.js.
  *  @param argv Command-line arguments.
+ *  @return True if any standalone accessors with active event loops
+ *   were instantiated.
  */
 function processCommandLineArguments(argv) {
-	return commonHost.processCommandLineArguments(
+	var result = commonHost.processCommandLineArguments(
 	        // Command-line arguments.
 	        Java.from(argv),
 	        // Function to read a file and return a string.
 	        FileUtilities.getFileAsString,
-	        // Function to instantiate accessors.
-	        instantiate,
+	        // Function to instantiate accessors with their own event loop.
+	        instantiateTopLevel,
 	        // Function to call upon termination.
 	        function() {
-	            // FIXME: Should first call wrapup() on all accessors.
+	            commonHost.stopAllAccessors();
 	            System.exit(0);
 	        }
 	);
+	if (!result) {
+	    // No standalone accessors were instantiated.
+	    System.exit(0);
+	}
+}
+
+/**
+ * Set a timeout to call the specified function after the specified
+ * time and repeatedly at multiples of that time.
+ *
+ * <p> Return a handle to use in clearInterval(). If there are
+ * additional arguments beyond the first two, then those arguments
+ * will be passed to the function when it is invoked. This
+ * implementation uses fireAt() of the director in charge of the host
+ * JavaScript actor in Ptolemy II. Hence, actors that use this should
+ * be used with a director that respects fireAt(), such as DE.  If the
+ * director has synchronizeToRealTime set to true, then it will
+ * approximate real-time behavior reasonably closely. Otherwise, the
+ * timeout will only be simulated. Either way, the timing is much more
+ * precise and well-defined than usual for JavaScript environments. If
+ * two actors specify the same timeout time in, say, their
+ * initialize() function, then they will be invoked at the same model
+ * time, and their outputs will be simultaneous. Any downstream actor
+ * will see them simultaneously.</p>
+ *
+ * <p>Note with this implementation, it is not necessary to
+ * call clearInterval() in the actor's wrapup() function.
+ * Nevertheless, it is a good idea to do that in an accessor
+ * since other accessor hosts may not work the same way.
+ *
+ * @param func The callback function.
+ * @param milliseconds The interval in milliseconds.
+ */
+function setInterval(func, milliseconds) {
+    if (typeof actor === 'undefined') {
+        throw new Error('setInterval(): No actor variable defined.');
+    }
+    var callback = func,
+        // If there are arguments to the callback, create a new function.
+        // Get an array of arguments excluding the first two.
+        tail = Array.prototype.slice.call(arguments, 2),
+        id;
+    if (tail.length !== 0) {
+        callback = function () {
+            func.apply(this, tail);
+        };
+    }
+    id = actor.setInterval(callback, milliseconds);
+    return id;
+}
+
+/**
+ * Set a timeout to call the specified function after the specified time.
+ * Return a handle to use in clearTimeout(). If there are
+ * additional arguments beyond the first two, then those arguments
+ * will be passed to the function when it is invoked. This
+ * implementation uses fireAt() of the director in charge of the host
+ * JavaScript actor in Ptolemy II. Hence, actors that use this should
+ * be used with a director that respects fireAt(), such as DE.  If the
+ * director has synchronizeToRealTime set to true, then it will
+ * approximate real-time behavior reasonably closely. Otherwise, the
+ * timeout will only be simulated. Either way, the timing is much more
+ * precise and well-defined than usual for JavaScript environments. If
+ * two actors specify the same timeout time in, say, their
+ * initialize() function, then they will be invoked at the same model
+ * time, and their outputs will be simultaneous. Any downstream actor
+ * will see them simultaneously.
+ *
+ * Note with this implementation, it is not necessary to
+ * call clearTimeout() in the actor's wrapup() function.
+ * @param func The callback function.
+ * @param milliseconds The interval in milliseconds.
+ */
+function setTimeout(func, milliseconds) {
+    if (typeof actor === 'undefined') {
+        throw new Error('setTimeout(): No actor variable defined.');
+    }
+    var callback = func,
+        // If there are arguments to the callback, create a new function.
+        // Get an array of arguments excluding the first two.
+        tail = Array.prototype.slice.call(arguments, 2),
+        id;
+    if (tail.length !== 0) {
+        callback = function () {
+            func.apply(this, tail);
+        };
+    }
+
+    id = actor.setTimeout(callback, milliseconds);
+    return id;
 }
 
 ///////////////////////////////////////////////////////////////////////
