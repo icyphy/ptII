@@ -268,7 +268,7 @@ public class RestrictedJavaScriptInterface {
      *  @return A unique ID for this callback
      *  @exception IllegalActionException If the director cannot respect the request.
      */
-    public int setInterval(final Runnable function, int millisecond)
+    public Object setInterval(final Runnable function, int millisecond)
             throws IllegalActionException {
         return _actor.setInterval(function, millisecond);
     }
@@ -284,7 +284,7 @@ public class RestrictedJavaScriptInterface {
      *  @return A unique ID for this callback
      *  @exception IllegalActionException If the director cannot respect the request.
      */
-    public int setTimeout(final Runnable function, int millisecond)
+    public Object setTimeout(final Runnable function, int millisecond)
             throws IllegalActionException {
         return _actor.setTimeout(function, millisecond);
     }

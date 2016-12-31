@@ -434,7 +434,7 @@ import ptolemy.util.StringUtilities;
    @Pt.ProposedRating Yellow (eal)
    @Pt.AcceptedRating Red (bilung)
  */
-public class JavaScript extends TypedAtomicActor {
+public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator {
 
     /** Construct an actor with the given container and name.
      *  In addition to invoking the base class constructors, construct
@@ -555,13 +555,26 @@ public class JavaScript extends TypedAtomicActor {
         requestChange(request);
     }
 
-    /** Clear the timeout or interval with the specified handle, if it
+    /** Clear the interval with the specified handle, if it
      *  has not already executed.
      *  @param handle The timeout handle.
      *  @see #setTimeout(Runnable, int)
      *  @see #setInterval(Runnable, int)
      */
-    public synchronized void clearTimeout(Integer handle) {
+    public synchronized void clearInterval(Object handle) {
+        // NOTE: The handle for this timeout remains in the
+        // _pendingTimeoutIDs map, but it is more efficient to remove
+        // it from that map when the firing occurs.
+        _pendingTimeoutFunctions.remove(handle);
+    }
+
+    /** Clear the timeout with the specified handle, if it
+     *  has not already executed.
+     *  @param handle The timeout handle.
+     *  @see #setTimeout(Runnable, int)
+     *  @see #setInterval(Runnable, int)
+     */
+    public synchronized void clearTimeout(Object handle) {
         // NOTE: The handle for this timeout remains in the
         // _pendingTimeoutIDs map, but it is more efficient to remove
         // it from that map when the firing occurs.
@@ -1812,8 +1825,10 @@ public class JavaScript extends TypedAtomicActor {
      *  @param milliseconds The number of milliseconds in the future to invoke it.
      *  @return A unique ID for this callback.
      *  @exception IllegalActionException If the director cannot respect the request.
+     *  @see #clearTimeout(Object)
      */
-    public synchronized int setInterval(final Runnable function, final int milliseconds)
+    @Override
+    public synchronized Object setInterval(final Runnable function, final int milliseconds)
             throws IllegalActionException {
         final Integer id = Integer.valueOf(_timeoutCount++);
         // Create a new function that invokes the specified function and then reschedules
@@ -1825,7 +1840,7 @@ public class JavaScript extends TypedAtomicActor {
             }
         };
         _setTimeout(reschedulingFunction, milliseconds, id);
-        return id;
+        return new Integer(id);
     }
 
     /** Invoke the specified function after the specified amount of time.
@@ -1838,12 +1853,14 @@ public class JavaScript extends TypedAtomicActor {
      *  @param milliseconds The number of milliseconds in the future to invoke it.
      *  @return A unique ID for this callback.
      *  @exception IllegalActionException If the director cannot respect the request.
+     *  @see #clearTimeout(Object)
      */
-    public synchronized int setTimeout(final Runnable function, int milliseconds)
+    @Override
+    public synchronized Object setTimeout(final Runnable function, final int milliseconds)
             throws IllegalActionException {
-        final Integer id = Integer.valueOf(_timeoutCount++); // Shouldn't this be synchronized?
+        final Integer id = Integer.valueOf(_timeoutCount++);
         _setTimeout(function, milliseconds, id);
-        return id;
+        return new Integer(id);
     }
     
     /** Stop execution of the enclosing model.

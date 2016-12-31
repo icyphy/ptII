@@ -49,6 +49,7 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
+	AccessorOrchestrator.java \
 	HelperBase.java \
 	JavaScript.java \
 	JSUtils.java \

@@ -1094,15 +1094,18 @@ Accessor.prototype.instantiate = function (instanceName, accessorClass) {
     // For functions that access ports, etc., we want the default implementation
     // when instantiating the contained accessor.
     var insideBindings = {
-        'clearInterval': this.clearInterval,
-        'clearTimeout': this.clearTimeout,
-        'error': this.error,
-        'httpRequest': this.httpRequest,
-        'readURL': this.readURL,
-        'require': this.require,
-        'setInterval': this.setInterval,
-        'setTimeout': this.setTimeout,
+            'error': this.error,
+            'httpRequest': this.httpRequest,
+            'readURL': this.readURL,
+            'require': this.require,
     };
+    // If 'this' defines setTimeout(), etc., use that instead of current definitions.
+    if (this && this.clearInterval) { insideBindings.clearInterval = this.clearInterval; };
+    if (this && this.clearTimeout) { insideBindings.clearTimeout = this.clearTimeout; };
+    if (this && this.setInterval) { insideBindings.setInterval = this.setInterval; };
+    if (this && this.setTimeout) { insideBindings.setTimeout = this.setTimeout; };
+    
+    // FIXME: Do we need to ensure that 'actor' or 'accessor' is bound here?
     instanceName = this.accessorName + '.' + instanceName;
     instanceName = uniqueName(instanceName, this);
     var containedInstance = instantiateAccessor(
@@ -1227,8 +1230,6 @@ Accessor.prototype.react = function (name) {
     this.emit('reactStart');
 
     var thiz = this.root;
-    // Allow further reactions to be scheduled by this reaction.
-    thiz.reactRequestedAlready = false;
 
     // To avoid code duplication, define a local function.
     var invokeSpecificHandler = function (name) {
@@ -1395,22 +1396,13 @@ Accessor.prototype.require = function () {
  *  This puts the accessor onto the event queue in priority order.
  *  This assumes that priorities are unique to each accessor.
  *  It is necessary for the react() function to be invoked for this event
- *  to be handled, so this function uses setTimeout(function, time) with time
- *  argument 0 to schedule a reaction. This ensures that the reaction occurs
- *  after the currently executing function has completely executed.
+ *  to be handled. It is up to the host to invoke this reaction.
  *  @param accessor The accessor.
  */
 Accessor.prototype.scheduleEvent = function (accessor) {
     var thiz = this.root;
     var queue = thiz.eventQueue;
-    // If we haven't already scheduled a react() since the last react(),
-    // schedule it now.
-    if (!thiz.reactRequestedAlready) {
-        thiz.reactRequestedAlready = true;
-        setTimeout(function () {
-            thiz.react();
-        }, 0);
-    }
+
     // In the Nashorn host, queue can be undefined.
     if (typeof queue === 'undefined' || !queue || queue.length === 0) {
         // Use a simple array as an event queue because almost all
@@ -1810,21 +1802,28 @@ function nullHandlerFunction() {}
  *  
  *  @param argv An array of command-line arguments, see above.
  *  @param fileReader A function that, given a file name, returns its contents as a string.
- *  @param instantiate A function that, given a name and class, instantiates an accessor and returns it.
+ *  @param instantiateTopLevel A function that, given a name and class, instantiates a
+ *   top-level accessor and returns it.
  *  @param terminator A callback function to invoke when all work is done.
- *  @return 0 if there were no problems, 3 if there was a command line argument issue.
+ *  @return True if any standalone accessors with active event loops were instantiated.
  */
-function processCommandLineArguments(argv, fileReader, instantiate, terminator) {
+function processCommandLineArguments(argv, fileReader, instantiateTopLevel, terminator) {
     
     // Simplified usage message to just show the preferred form of the arguments,
     // not all possible variations.
     var usage = "Usage: [-help] [-echo] [-js filename] [-timeout milliseconds]" +
     		" [-version] [accessorClassName] [accessorClassName ...]";
     var timeout = -1;
-
+    
+    // If there is no other definition of the instantiate() function in scope,
+    // then set it equal to the instantiateTopLevel argument.
+    if (typeof instantiate === 'undefined') {
+        var instantiate = instantiateTopLevel;
+    }
+    
     if (argv.length === 0) {
         console.error(usage);
-        return 3;
+        return false;
     }
 
     var accessorCount = 0;
@@ -1844,7 +1843,7 @@ function processCommandLineArguments(argv, fileReader, instantiate, terminator) 
         case '-help':
         case '--help':
             console.log(usage);
-            return 0;
+            return false;
 
         case '-j':
         case '--j':
@@ -1853,19 +1852,20 @@ function processCommandLineArguments(argv, fileReader, instantiate, terminator) 
             if (i+1 >= argv.length) {
                 console.error("Argument " + i + "  was " + argv[i] + " but there is no " +
                 		"following filename argument.  Args were: " + argv);
-                return 3;
+                return false;
             }
             i += 1;
             if (!fileReader) {
                 console.error('This host does not support evaluating arbitrary JavaScript files.');
-                return 3;
+                return false;
             }
             
             try {
                 eval(fileReader(argv[i]));
             } catch (error) {
-                throw new Error('Failed to eval "' + argv[i] + '": ' + error
+                console.error('Failed to eval "' + argv[i] + '": ' + error
                         + ":" + error.stack);
+                return false;
             }
             
             break;
@@ -1877,7 +1877,7 @@ function processCommandLineArguments(argv, fileReader, instantiate, terminator) 
             if (i+1 >= argv.length) {
                 console.error("Argument " + i + "  was " + argv[i] + " but there is no " +
                         "following milliseconds argument.  Args were: " + argv);
-                return 3;
+                return false;
             }
             i += 1;
             if (typeof argv[i] === 'string') {
@@ -1890,8 +1890,8 @@ function processCommandLineArguments(argv, fileReader, instantiate, terminator) 
             setTimeout(function () {
                 // Under node, process.exit gets caught by exitHandler() in
                 // nodeHost.js and invokes wrapup().
-                console.log("commonHost.js: main(): Maximum time reached. Calling stopAllAccessors().");
-                // If a terminator function is given use it.
+                console.log("commonHost.js: processCommandLineArguments(): Maximum time reached. Calling stopAllAccessors().");
+                // If a terminator function is given, use it.
                 // Otherwise, invoke wrapup on all accessors.
                 if (terminator) {
                     terminator();
@@ -1906,18 +1906,18 @@ function processCommandLineArguments(argv, fileReader, instantiate, terminator) 
         case '-version':
         case '--version':
             console.log("Accessors 1.0, commonHost.js: $Id$");
-            return 0;
+            return false;
 
         default:
             // All other arguments are assumed to be accessor class names to be instantiated.
-            if (!instantiate) {
+            if (!instantiateTopLevel) {
                 console.error('This host does not support instanting accessors.');
-                return 3;
+                return false;
             }
             accessorCount++;
             // Name for the accessor.
             var name = uniqueName(argv[i]);
-            var accessor = instantiate(name, argv[i]);
+            var accessor = instantiateTopLevel(name, argv[i]);
             
             // Initialize the accessor.
             accessor.initialize();
@@ -1926,7 +1926,9 @@ function processCommandLineArguments(argv, fileReader, instantiate, terminator) 
                 accessorsWrappedUp++;
                 if (terminator && accessorsWrappedUp >= accessorCount) {
                     // All initialized accessors have wrapped up.
-                    clearInterval(timerHandle);
+                    if (timerHandle) {
+                        clearInterval(timerHandle);
+                    }
                     terminator();
                 }
             });
@@ -1943,8 +1945,10 @@ function processCommandLineArguments(argv, fileReader, instantiate, terminator) 
         // is specified and all accessors have wrapped up.
         timerHandle = setInterval(function () {}, 2147483647);
     }
-
-    return 0;
+    if (accessorCount > 0) {
+        return true;
+    }
+    return false;
 }
 
 /** Push the specified item onto the specified list if it is not already there.
