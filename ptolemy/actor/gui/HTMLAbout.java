@@ -1,6 +1,6 @@
 /* Utility methods to handle HTML Viewer about: calls
 
- Copyright (c) 2003-2016 The Regents of the University of California.
+ Copyright (c) 2003-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -317,12 +317,16 @@ public class HTMLAbout {
      *  @param regexp The regular expression of the links we are interested
      *  in.
      *  @param configuration  The configuration to open the files in.
-     *  @return the URL of the HTML file that was searched.
+     *  @return the URL of the HTML file that was searched or null
+     *  if demosFileName does not exist.
      *  @exception Exception If there is a problem opening a model.
      */
     public static URL generateLinks(String demosFileName, String regexp,
             Configuration configuration) throws Exception {
         URL demosURL = _getDemoURL(demosFileName);
+	if (demosURL == null) {
+	    return null;
+	}
         List modelList = _getURLs(demosURL, regexp);
         Iterator models = modelList.iterator();
 
