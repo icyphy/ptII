@@ -431,7 +431,14 @@ public class FileUtilities {
 
         File file = new File(name);
 
-        if (file.isAbsolute() || file.canRead()) {
+
+	// Be careful here, we need to be sure that we are reading
+	// relative to baseDirectory if baseDirectory is not null.
+
+	// The security tests rely on baseDirectory, to replicate:
+	// (cd $PTII/ptII/ptolemy/actor/lib/security/test; rm rm foo.keystore auto/foo.keystore; make)
+
+        if (file.isAbsolute() || (file.canRead() && baseDirectory == null)) {
             // If the URL has a "fragment" (also called a reference), which is
             // a pointer into the file, we have to strip that off before we
             // get the file, and the reinsert it before returning the URL.
