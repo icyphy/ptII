@@ -45,10 +45,11 @@ if {[info procs jdkCapture] == "" } then {
 # set VERBOSE 1
 
 
-# Unfortunately, the Nashorn Host spawns a separate thread, so there
-# is no way to asyncronously wait to get the results back.
-# This makes it difficult to test the command line argument processing.
-
+test NashornAccessorHostApplication-0.0.1 {No way to test the command line arguments} {
+    list "Unfortunately, the Nashorn Host spawns a separate thread, so there" \
+	"is no way to asyncronously wait to get the results back." \
+	"This makes it difficult to test the command line argument processing."
+} {1} {Known Failure}
 
 # ######################################################################
 # ####
