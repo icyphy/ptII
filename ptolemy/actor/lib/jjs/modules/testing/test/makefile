@@ -71,6 +71,8 @@ OPTIONAL_FILES =
 OTHER_FILES_TO_BE_JARED = \
 	testNestedSuites.js
 
+EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED) $(TCL_SRCS)
+
 JCLASS =	$(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user

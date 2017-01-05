@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/gdp/demo
 
-DIRS =		GDPBrowser GDPLogSubscribe
+DIRS =		GDPBrowser GDPLogSubscribe GDPLogWriteRead
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
