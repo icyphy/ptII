@@ -88,6 +88,11 @@ OPTIONAL_FILES = \
 	'JavaScript$$PortOrParameterProxy.class' \
 	'JavaScript$$PortProxy.class' \
 	'JavaScript$$PtolemyJavaScript.class' \
+	'NashornAccessorHostApplication$$1.class' \
+	'NashornAccessorHostApplication$$ActorSubstitute$$1.class' \
+	'NashornAccessorHostApplication$$ActorSubstitute$$2.class' \
+	'NashornAccessorHostApplication$$ActorSubstitute$$3.class' \
+	'NashornAccessorHostApplication$$ActorSubstitute.class' \
 	'VertxHelperBase$$1.class' \
 	'VertxHelperBase$$2.class' \
 	'VertxHelperBase$$AccessorVerticle.class' \

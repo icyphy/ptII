@@ -53,8 +53,7 @@ OTHER_FILES_TO_BE_JARED = \
 	require.js \
 	require.js-license.htm \
 	require.js.LICENSE.txt \
-	require.js.README.md \
-	setTimeout-nashorn.js
+	require.js.README.md
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

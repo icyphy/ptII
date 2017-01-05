@@ -84,6 +84,7 @@ MISC_FILES =	IMUSensor aprilTags audio browser buffer cameras contextAware conte
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
+	demo.jar \
 	$(PTCLASSJAR) 
 
 JCLASS = $(JSRCS:%.java=%.class)
