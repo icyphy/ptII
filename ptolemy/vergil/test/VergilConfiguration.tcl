@@ -89,6 +89,7 @@ proc expandConfiguration {configuration} {
     $inputFileNamesToSkip add "/rectangle.xml"
     $inputFileNamesToSkip add "/matlab.xml"
     $inputFileNamesToSkip add "utilityIDAttribute.xml"
+    $inputFileNamesToSkip add "utilityWebExport.xml"
     $inputFileNamesToSkip add "/x10/x10.xml"
 
     # set osName [java::call System getProperty {os.name}]
