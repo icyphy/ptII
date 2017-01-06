@@ -94,6 +94,8 @@ import ptolemy.util.StringUtilities;
  actor is being used with a SecretKey actor, then the type should be
  set to "JCEKS".
 
+ <p>See <a href="http://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html#in_browser">http://docs.oracle.com/javase/8/docs/technotes/guides/security/StandardNames.html</a> for possible values.</p>
+
  <p>Derived classes should add input or output ports as necessary.
  Derived classes should call _loadKeyStore() so that _keyStore is properly
  initialized before accessing _keyStore themselves.
@@ -394,14 +396,13 @@ public class KeyStoreActor extends TypedAtomicActor {
 
         String command1 = keytoolPath
                 + " -genkey"
-                + " -dname \"CN=Claudius Ptolemaus, OU=Your Project, O=Your University, L=Your Town, S=Your State, C=US\""
+	    //+ " -keyalg RSA"
+                + " -dname \"CN=ClaudiusPtolemaus, OU=YourProject, O=YourUniversity, L=YourTown, ST=YourState, C=US\""
                 + commonCommand;
 
         String command2 = keytoolPath + " -selfcert" + commonCommand;
 
-        String command3 = keytoolPath + " -list" + " -keystore "
-                + keystoreFilename + " -storepass \"" + _storePassword + "\"";
-
+        String command3 = keytoolPath + " -list -v" + commonCommand;
         _exec(command1);
         _exec(command2);
         _exec(command3);
