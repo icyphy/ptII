@@ -95,7 +95,7 @@ test_jsimple: $(EXTRA_SRCS) jclass $(KERNEL_TESTDEFS) \
 	$(JTCLSH) alljtests.tcl
 
 initialize_key:
-	rm -f auto/foo.keystore
+	rm -f auto/foo.keystore foo.keystore
 	@echo "creating auto/foo.keystore"
 	CLASSPATH=$(AUXCLASSPATH) \
 		$(ROOT)/bin/ptinvoke \
