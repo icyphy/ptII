@@ -999,6 +999,7 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/gr \
 		ptolemy/domains/hdf \
 		ptolemy/domains/metroII \
+		ptolemy/domains/modal/test/SystemLevelType.tcl \
 		ptolemy/domains/openmodelica \
 		ptolemy/domains/petrinet \
 		ptolemy/domains/pn \
@@ -1188,7 +1189,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/design/makefile
 	#
 	# Fix up doc/makefile
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|books|lib/comm|lib.comm|python|security|books|ci/kernel|ci/lib|copernicus|csp|curriculum|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|lib.xslt|lib.xslt|papers|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|space|sr.kernel|sr/kernel|sr.lib|sr/lib|sysml|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|vhdl|wireless|	codeDoc.jar|	codeDocBcvtb.jar|	codeDocHyVisual.jar|	codeDocViptos.jar|	codeDocVisualSense.jar" \
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|books|lib/comm|lib.comm|python|books|ci/kernel|ci/lib|copernicus|csp|curriculum|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|lib.xslt|lib.xslt|papers|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|space|sr.kernel|sr/kernel|sr.lib|sr/lib|sysml|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|vhdl|wireless|	codeDoc.jar|	codeDocBcvtb.jar|	codeDocHyVisual.jar|	codeDocViptos.jar|	codeDocVisualSense.jar" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile.tmp \
@@ -1223,7 +1224,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/org/ptolemy/makefile
 	#
 	# Fix up ptolemy/actor/lib/makefile
-	egrep -v "fmi|jopio|mbed|security|vhdl|video|xslt" \
+	egrep -v "fmi|jopio|mbed|vhdl|video|xslt" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile.tmp \
@@ -1351,6 +1352,13 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/modal/kernel/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/modal/kernel/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/modal/kernel/makefile
+	#
+	# Fix up ptolemy/domains/modal/test/makefile
+	egrep -v "SystemLevelType.tcl" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/modal/test/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/modal/test/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/modal/test/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/domains/modal/test/makefile
 	#
 	# Fix up ptolemy/makefile
 	sed -e 's/\$$(PTCALTROP_DIR)//' \
