@@ -953,6 +953,8 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 		ptolemy/cg/lib/ModularCodeGenLazyTypedCompositeActor.java \
 		ptolemy/cg/lib/ModularCodeGenTypedCompositeActor.java \
 	        ptolemy/cg/lib/ModularCompiledSDFTypedCompositeActor.java \
+		ptolemy/cg/lib/test/ModularCodeGenTest.xml \
+		ptolemy/cg/lib/test/ModularCodeGenTypedCompositeActor.tcl \
 		ptolemy/configs/bcvtb \
 		ptolemy/configs/cyphysim \
 		ptolemy/configs/defaultFullConfiguration.xml \
@@ -1144,7 +1146,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		rm -rf $(CAPECODE_SRC_TO_BE_REMOVED) thales; \
 		rm `find . -name "*.xml" | grep "test/auto/" | xargs grep "ptolemy.domains." | egrep "domains.continuous|domains.ddf|domains.hdf|domains.modal.kernel.ia|domains.pn|domains.ptides|domains.sr|domains.psdf"  | awk -F : '{print $$1}' | sort | uniq`; \
 		rm `find . -name "*.xml" | grep "test/auto/" | xargs grep "ptolemy.actor.gt." | awk -F : '{print $$1}' | sort | uniq`; \
-		rm `find . -name "*.xml" | grep "test/auto/" | xargs egrep "ptolemy.cg.kernel.generic.program.procedural.c|ptolemy.cg.kernel.generic.program.procedural.java|ptolemy.cg.kernel.generic.program.procedural.fmi" | awk -F : '{print $$1}' | sort | uniq`; \
+		rm `find . -name "*.xml" | grep "test/auto/" | xargs egrep "ptolemy.cg.kernel.generic.program.procedural.c|ptolemy.cg.kernel.generic.program.procedural.java|ptolemy.cg.kernel.generic.program.procedural.fmi|ptolemy.cg.lib.ModularCodeGen" | awk -F : '{print $$1}' | sort | uniq`; \
 	   touch configure; \
 	   chmod a+rx configure util/testsuite/chkextra; \
 	)
@@ -1304,13 +1306,20 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/demo/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/demo/makefile 
 
-	#o
+	#
 	# Fix up ptolemy/cg/lib/makefile
 	egrep -v "Modular|syntactic" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/makefile.tmp \
-		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/makefile 
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/makefile
+	#
+	# Fix up ptolemy/cg/lib/test
+	egrep -v "Modular" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/test/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/test/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/test/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/cg/lib/test/makefile 
 	#
 	# Fix up ptolemy/configs/makefile
 	egrep -v "bcvtb|cyphysim|defaultFullConfiguration.xml|dsp|fmv|full|gt|hyvisual|iaEffigy|iaTablea|jxta|ontology|pn|ptdb|ptiny|Ptera|ptserver|space|test|viptos|visualsense" \
@@ -3621,7 +3630,8 @@ test_capecode_setup_ant: test/capeCodeTest
 	# Test configure and build.xml.in
 	(cd test/capeCodeTest; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; \
 		chmod a+x ./configure; PTII=`pwd` ./configure; \
-		PTII=`pwd` ant clean; PTII=`pwd` ant; \
+		PTII=`pwd` ant clean; \
+		PTII=`pwd` ant build test.cobertura test.mocha.xml reports; \
 		PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
 	# Test build.default.xml first, which does not compile everything.
 	(cd test/capeCodeTest; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; \
