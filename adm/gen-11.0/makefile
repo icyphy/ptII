@@ -469,8 +469,8 @@ $(PTIIDIST):
 		> $(PTIIDIST)/ptolemy/configs/cosimulation.xml_tmp
 	mv $(PTIIDIST)/ptolemy/configs/cosimulation.xml_tmp \
 		$(PTIIDIST)/ptolemy/configs/cosimulation.xml
-	# Remove apps.xml, corba.xml and mail.xml from the configuration
-	egrep -v "apps.xml|corba.xml|mail.xml|mbed.xml|metroII.xml|openmodelica|scrEffigy|scrTableau|scr.xml" \
+	# Remove apps.xml, corba.xml from the configuration
+	egrep -v "apps.xml|corba.xml|mbed.xml|metroII.xml|openmodelica|scrEffigy|scrTableau|scr.xml" \
 		< $(PTIIDIST)/ptolemy/configs/defaultFullConfiguration.xml \
 		> $(PTIIDIST)/ptolemy/configs/defaultFullConfiguration.xml_tmp
 	sed 's/, &quot;ptolemy.vergil.basic.imprt.fmu.ImportFMUAsJavaFMUAction&quot;//' \
@@ -927,6 +927,8 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 		org/ptolemy/machineLearning/particleFilter/test/auto/OnlineTrajectoryOptimization.xml \
 		org/ptolemy/machineLearning/particleFilter/test/auto/OpenLoopSingleRobotTargetLocalization.xml \
 		org/ptolemy/machineLearning/particleFilter/test/auto/OpenLoopTwoRobotTargetLocalization.xml \
+		ptolemy/actor/gui/test/HTMLAbout.tcl \
+		ptolemy/actor/gui/test/PtolemyApplication.tcl \
 		ptolemy/cg/adapter/generic/html \
 		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/*.java \
 		ptolemy/cg/adapter/generic/program/procedural/adapters/ptolemy/actor/lib/conversions\
@@ -983,6 +985,7 @@ CAPECODE_SRC_TO_BE_REMOVED = \
 		ptolemy/configs/utilityPteraModalModel.xml \
 		ptolemy/configs/viptos \
 		ptolemy/configs/visualsense \
+		ptolemy/data/expr/test/Variable2.tcl \
 		ptolemy/data/unit/test/auto/Units.xml \
 		ptolemy/domains/algebraic \
 		ptolemy/domains/atc \
@@ -1189,7 +1192,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/design/makefile
 	#
 	# Fix up doc/makefile
-	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|books|lib/comm|lib.comm|python|books|ci/kernel|ci/lib|copernicus|csp|curriculum|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|lib.xslt|lib.xslt|papers|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|space|sr.kernel|sr/kernel|sr.lib|sr/lib|sysml|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|vhdl|wireless|	codeDoc.jar|	codeDocBcvtb.jar|	codeDocHyVisual.jar|	codeDocViptos.jar|	codeDocVisualSense.jar" \
+	egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd|books|lib/comm|lib.comm|python|books|ci/kernel|ci/lib|copernicus|csp|curriculum|dde|ddf|dt.kernel|giotto|gr.kernel|gr.lib|io.comm|papers|pn/kernel|psdf|petrinet|ptolemy.caltrop|ptolemy.domains.ci|ptolemy.domains.pn|space|sr.kernel|sr/kernel|sr.lib|sr/lib|sysml|thales.actor|thales.vergil|tm.kernel|tm/kernel|tm.lib|tm/lib|vhdl|wireless|	codeDoc.jar|	codeDocBcvtb.jar|	codeDocHyVisual.jar|	codeDocViptos.jar|	codeDocVisualSense.jar" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/doc/makefile.tmp \
@@ -1223,15 +1226,22 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/org/ptolemy/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/org/ptolemy/makefile
 	#
+	# Fix up ptolemy/actor/gui/test/makefile
+	egrep -v "HTMLAbout.tcl|PtolemyApplication.tcl" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/gui/test/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/gui/test/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/gui/test/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/gui/test/makefile
+	#
 	# Fix up ptolemy/actor/lib/makefile
-	egrep -v "fmi|jopio|mbed|vhdl|video|xslt" \
+	egrep -v "fmi|jopio|mbed|vhdl|video" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/makefile
 	#
 	# Fix up ptolemy/actor/lib/test/makefile
-	egrep -v OrderedMerge.tcl \
+	egrep -v "OrderedMerge.tcl|RampContinuous.tcl" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/test/makefile \
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/test/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/actor/lib/test/makefile.tmp \
@@ -1335,6 +1345,13 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/makefile
+	#
+	# Fix up ptolemy/data/test/makefile
+	egrep -v "/Variable2.tcl" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/test/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/test/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/test/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/data/test/makefile
 	#
 	# Fix up ptolemy/domains/makefile
 	#
@@ -3639,7 +3656,7 @@ test_capecode_setup_ant: test/capeCodeTest
 	(cd test/capeCodeTest; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; \
 		chmod a+x ./configure; PTII=`pwd` ./configure; \
 		PTII=`pwd` ant clean; \
-		PTII=`pwd` ant build test.cobertura test.mocha.xml reports; \
+		PTII=`pwd` ant build test.mocha.xml reports; \
 		PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
 	# Test build.default.xml first, which does not compile everything.
 	(cd test/capeCodeTest; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; \
