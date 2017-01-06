@@ -194,32 +194,10 @@ test GenericCodeGenerator-13.1 {main -help} {
     } result2
     java::call System setProperty ptolemy.ptII.exitAfterWrapup \
 	previousExitAfterWrapup
-    list $errMsg $result1 $errMsg2 [string range $result2 0 6]
+    list $errMsg [string range $result1 0 61] $errMsg2 [string range $result2 0 6]
 } {{java.lang.Exception: Failed to parse "-help"} {Usage: ptcg [ options ] [file ...]
 
 Options that take values:
- -codeDirectory         <directory in which to put code (default: $HOME/cg/. Other values: $CWD, $HOME, $PTII, $TMPDIR)>
- -dialect               <Use to distinguish between different implementations in the same package>
- -generatorDialect      <Same as dialect. Class naming convention: <Package><Dialect>CodeGenerator>
- -generatorPackage  <Java package of code generator, defaults to ptolemy.cg.kernel.generic.program.procedural.c>
- -generatorPackageList  <Semicolon or * separated list of Java packages to be searched for adapters>
- -language              <c|java|html (default: c)>
- -<parameter name>      <parameter value>
- -run                true|false (default: true)
- -runCommand         <a string, default: make -f @modelName@.mk run>
- -generateComment    true|false (default: true)
- -inline             true|false (default: false)
- -maximumLinesPerBlock <an integer, default: 2500>
- -measureTime        true|false (default: false)
- -variablesAsArrays  true|false (default:false)
- -verbosity          <an integer, try 1 or 10>, (default: 0)
-
-Boolean flags:
- -help
- -generateInSubdirectory
- -version
-
- To get additional help, try -language java -help
 } {java.lang.Exception: Failed to parse "-version"} Version}
 
 
