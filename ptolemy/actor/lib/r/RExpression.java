@@ -1,11 +1,7 @@
 /*
- * Copyright (c) 2003-2010 The Regents of the University of California.
+ * Copyright (c) 2003-2017 The Regents of the University of California.
  * All rights reserved.
  *
- * '$Author$'
- * '$Date$' 
- * '$Revision$'
- * 
  * Permission is hereby granted, without written agreement and without
  * license or royalty fees, to use, copy, modify, and distribute this
  * software and its documentation for any purpose, provided that the above
@@ -859,8 +855,10 @@ public class RExpression extends TypedAtomicActor {
 	    while(outputString.equals("")) {
 		outputString = _outputGobbler.getAndReset();
 		errorString = _errorGobbler.getAndReset();
-		log.debug("R standard output: " + newline + outputString);
-		log.error("R standard error: " + newline + errorString);
+		if (_debugging) {
+		    _debug("R standard output: " + newline + outputString);
+		    _debug("R standard error: " + newline + errorString);
+		}
 	    }
 	    throw e;
 	} catch (Exception www) {
@@ -1378,13 +1376,19 @@ public class RExpression extends TypedAtomicActor {
 
 	// log.debug("commandArray :"+commandArray);
 	try {
-	    // log.debug("ready to create _process!");
+	    if (_debugging) {
+		_debug("ready to create _process!");
+	    }
 	    _process = runtime.exec(commandArray);
-	    log.debug("Process :" + _process);
-	} catch (Exception e) {
-	    log.error("Problem with creating process in RExpression!");
+	    if (_debugging) {
+		_debug("Process :" + _process);
+	    }
+	} catch (Exception ex) {
+	    throw new IllegalActionException(this, ex, "Problem with creating process in RExpression!");
 	}
-	// log.debug("Ready to create threads");
+	if (_debugging) {
+	    _debug("Ready to create threads");
+	}
 	// Create two threads to read from the subprocess.
 	try {
 	    _outputGobbler = new _StreamReaderThread(_process.getInputStream(),
