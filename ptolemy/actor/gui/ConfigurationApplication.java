@@ -442,7 +442,7 @@ public class ConfigurationApplication implements ExecutionListener {
 	File configurationDirectory = configurationDirectories[0];
 	int i;
 	for(i = 0; i < configurationDirectories.length; i++) {
-	    if (configurationDirectories[i].toString().endsWith("configs/fullxx")) {
+	    if (configurationDirectories[i].toString().endsWith("configs/full")) {
 		configurationDirectory = configurationDirectories[i];
 	    }
 	}
