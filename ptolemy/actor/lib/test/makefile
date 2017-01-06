@@ -83,6 +83,7 @@ JSIMPLE_TESTS = \
 	Publisher.tcl \
 	Pulse.tcl \
 	Ramp.tcl \
+	RampContinuous.tcl \
 	RecordAssembler.tcl \
 	RecordDisassembler.tcl \
 	SequentialClock.tcl \
