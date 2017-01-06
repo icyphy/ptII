@@ -1519,7 +1519,15 @@ Decorator {
             // specific arguments.  This is a hack, but it beats have -help
             // not tell you about the command line arguments.
             String generatorPackageValue = _getGeneratorPackageValue();
-            Class<?> generatorClass = _getCodeGeneratorClass(generatorPackageValue, _getGeneratorDialectValue());
+	    Class<?> generatorClass = null;
+	    try {
+		generatorClass = _getCodeGeneratorClass(generatorPackageValue, _getGeneratorDialectValue());
+	    } catch (Throwable throwable) {
+		// Cape Code does not include ptolemy.cg.kernel.generic.program.procedural.c.CCodeGenerator
+		// so getting the usage may fail.
+		generatorPackageValue = "ptolemy.cg.kernel.generic.accessor";
+		generatorClass = _getCodeGeneratorClass(generatorPackageValue, _getGeneratorDialectValue());
+	    }
             Constructor<?> codeGeneratorConstructor = generatorClass
                     .getConstructor(new Class[] { NamedObj.class, String.class });
             CompositeActor toplevel = new CompositeActor();
@@ -1749,7 +1757,7 @@ Decorator {
         { "-generatorDialect", "     <Same as dialect. Class naming convention: <Package><Dialect>CodeGenerator>" },
         {
             "-generatorPackage",
-        " <Java package of code generator, defaults to ptolemy.cg.kernel.generic.program.procedural.c>" },
+        " <Java package of code generator>" },
         { "-generatorPackageList",
         " <Semicolon or * separated list of Java packages to be searched for adapters>" },
         { "-language", "             <c|java|html (default: c)>" },
