@@ -3656,8 +3656,11 @@ test_capecode_setup_ant: test/capeCodeTest
 	(cd test/capeCodeTest; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; \
 		chmod a+x ./configure; PTII=`pwd` ./configure; \
 		PTII=`pwd` ant clean; \
-		PTII=`pwd` ant build test.mocha.xml reports; \
+		PTII=`pwd` ant build test.report reports; \
 		PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
+	# Run the accessors tests.
+	(cd test/capeCodeTest/org/terraswarm/accessor/accessors/web; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; \
+		ant tests.jenkins)
 	# Test build.default.xml first, which does not compile everything.
 	(cd test/capeCodeTest; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; \
 		cp build.default.xml build.xml; \
