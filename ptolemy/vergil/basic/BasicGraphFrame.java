@@ -1662,7 +1662,7 @@ public abstract class BasicGraphFrame extends PtolemyFrame implements
         if (_exportHTMLAction != null) {
             ((HTMLExportable) _exportHTMLAction).writeHTML(parameters, writer);
         } else {
-            throw new IOException("Export to Web not supported.");
+            throw new IOException("Export to Web not supported.  Probably the configuration does not have a _exportHTMLActionClassName parameter or the class named by that parameter is not present.");
         }
     }
 
