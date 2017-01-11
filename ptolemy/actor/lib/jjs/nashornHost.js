@@ -32,6 +32,11 @@
  *  Also, modules that are required by accessors are loaded
  *  from $PTII/ptolemy/actor/lib/jjs, and some of those modules
  *  may have dependencies on Ptolemy II.
+ *  
+ *  To invoke this, the accessors repository has a script in
+ *  accessors/web/hosts/nashorn called nashornAccessorHost.
+ *  Execute that script with command-line arguments (e.g. a composite
+ *  accessor to instantiate and initialize).
  *
  *  @module nashornHost
  *  @author Edward A. Lee, Contributor: Christopher Brooks
@@ -353,56 +358,13 @@ function instantiate(accessorName, accessorClass) {
     return instance;
 }
 
-/** Instantiate and return an accessor with its own orchestrator with an event loop.
- *  This will throw an exception if there is no such accessor class on the accessor
- *  search path.
+/** Instantiate and return a top-level accessor.
+ *  For now, this is the same as instantiate().
  *  @param accessorName The name to give to the instance.
  *  @param accessorClass Fully qualified accessor class name, e.g. 'net/REST'.
  */
 function instantiateTopLevel(accessorName, accessorClass) {
-    
-    // Create an orchestrator
-    // to provide an event loop for executing this accessor.
-    var orchestrator = NashornAccessorHostApplication.createOrchestrator(accessorName);
-
-    // NOTE: The definition of the 'require' var in this file may be overridden if
-    // capeCodeHost.js is evaluated after this file is evaluated.
-    // NOTE: setTimeout, etc., need to be redefined to this orchestrator to make
-    // the event requests go to the right place. Unfortunately, it doesn't work in
-    // Nashorn to just reference the orchestrator Java object's methods.
-    // They have to be wrapped in JavaScript functions.
-    // FIXME: setTimeout() and setInterval() should accept variable # of arguments.
-    var bindings = {
-            'actor': orchestrator,
-            'clearInterval': function(handle) {
-                orchestrator.clearTimeout(handle);
-            },
-            'clearTimeout': function(handle) {
-                orchestrator.clearTimeout(handle);
-            },
-            'require': require,
-            'setInterval': function(fun, period) {
-                orchestrator.setInterval(fun, period);
-            },
-            'setTimeout': function(fun, period) {
-                orchestrator.setTimeout(fun, period);
-            },
-            'wrapup': function() {
-                orchestrator.wrapup();
-            }
-    };
- 
-    var instance = new commonHost.instantiateAccessor(
-        accessorName, accessorClass, getAccessorCode, bindings);
-    console.log('Instantiated accessor ' + accessorName + ' with class ' + accessorClass);
-    
-    // Make it so that 'this.actor' refers to the orchestrator.
-    instance['actor'] = orchestrator;
-    // The following will start a thread to handle the event loop for this accessor.
-    console.log('Starting event loop for ' + accessorName);
-    orchestrator.setTopLevelAccessor(instance);
-
-    return instance;
+    return instantiate(accessorName, accessorClass);
 }
 
 /** Evaluate command-line arguments by first converting the arguments

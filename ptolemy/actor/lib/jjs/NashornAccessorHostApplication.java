@@ -165,8 +165,8 @@ public class NashornAccessorHostApplication {
             _orchestrator = new ActorSubstitute("main");
             // The following will make setTimeout(), etc., available.
             _engine.put("actor", _orchestrator);
-            // Start an event loop for invocations of setTimeout(), etc., in
-            // plain JavaScript files, as opposed to in accessors.
+            // Start an event loop to handle all invocations of setTimeout(), etc., in
+            // plain JavaScript files and in the accessors.
             _orchestrator.eventLoop();
         }
 
@@ -321,21 +321,6 @@ public class NashornAccessorHostApplication {
                                 // System.out.println(_name + ": invoking callback: " + Thread.currentThread());
                                 callbackFunction.run();
                             }
-                            // Trigger a reaction of the top-level accessor.
-                            // Must do this before invoking more callbacks.
-                            if (_accessor != null) {
-                                // System.out.println(_name + ": invoking react: " + Thread.currentThread());
-                                try {
-                                    ((Invocable) _engine).invokeMethod(_accessor, "react");
-                                } catch (NoSuchMethodException | ScriptException e) {
-                                    try {
-                                        ((Invocable) _engine).invokeMethod(_accessor, "error", e.getMessage());
-                                    } catch (NoSuchMethodException | ScriptException e1) {
-                                        error("Failed to react top-level accessor: " + e.getMessage());
-                                        e.printStackTrace();
-                                    }
-                                }
-                            }
                         }
                     }
                 }
@@ -400,6 +385,7 @@ public class NashornAccessorHostApplication {
          */
         @Override
         public synchronized Timer setInterval(Runnable function, int periodMS) {
+            // System.out.println(_name + ": requesting interval: " + periodMS + "ms for " + function + " in thread " + Thread.currentThread());
             TimerTask task = new TimerTask() {
                 public void run() {
                     // Cannot run this directly because it will be
