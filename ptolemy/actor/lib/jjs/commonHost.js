@@ -1227,9 +1227,14 @@ Accessor.prototype.provideInput = function (name, value) {
  */
 Accessor.prototype.react = function (name) {
     // console.log(this.accessorName + ": ================== react(" + name + ")");
+    
     this.emit('reactStart');
 
     var thiz = this.root;
+    
+    // Mark that there is no pending reaction so that if this reaction has
+    // actions that require further reactions, those will be scheduled.
+    thiz.reactRequestedAlready = false;
 
     // To avoid code duplication, define a local function.
     var invokeSpecificHandler = function (name) {
@@ -1395,13 +1400,25 @@ Accessor.prototype.require = function () {
 /** Schedule a reaction of the specified contained accessor.
  *  This puts the accessor onto the event queue in priority order.
  *  This assumes that priorities are unique to each accessor.
- *  It is necessary for the react() function to be invoked for this event
- *  to be handled. It is up to the host to invoke this reaction.
+ *  
+ *  As a side effect, this function schedules a reaction of this
+ *  container accessor using setTimeout with timeout 0 unless
+ *  there is already such a pending reaction request.
+ *  
  *  @param accessor The accessor.
  */
 Accessor.prototype.scheduleEvent = function (accessor) {
     var thiz = this.root;
     var queue = thiz.eventQueue;
+    
+    // If we have not already requested a reaction for this container
+    // accessor, do so now.
+    if (!thiz.reactRequestedAlready) {
+        thiz.reactRequestedAlready = true;
+        setTimeout(function () {
+            thiz.react();
+        }, 0);
+    }
 
     // In the Nashorn host, queue can be undefined.
     if (typeof queue === 'undefined' || !queue || queue.length === 0) {
