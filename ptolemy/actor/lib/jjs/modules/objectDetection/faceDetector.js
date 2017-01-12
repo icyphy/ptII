@@ -51,7 +51,12 @@
 ////////////////////////////////////////////////////////////
 //// Private variables.
 
-var Filter = Java.type('org.ptolemy.opencv.FaceRecognizer');
+var Filter;
+try {
+    Filter = Java.type('org.ptolemy.opencv.FaceRecognizer');
+} catch (e) {
+    throw new Error('Could not find the org.ptolemy.opencv.FaceRecognizer class, perhaps OpenCV was not installed. The OpenCV API can be downloaded from http://opencv.org.  Under Mac OS X, try:  :sudo port install opencv +python27 +java".See org/ptolemy/opencv/package.html for installation help.');
+}
 var filter = new Filter();
 
 ////////////////////////////////////////////////////////////
