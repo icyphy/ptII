@@ -76,17 +76,14 @@ import ptolemy.util.StringUtilities;
  * <p>The main() method of this class takes the following command
  * line arguments:</p>
  * <dl>
- * <dt><code>-accessor|--accessor</code>
- * <dd>If present, then the files named as command line arguments are
- * Composite Accessors to be instantiated and initialized.
- * If not present, then the files named
- * as command line arguments are to be interpreted as regular
- * JavaScript files.</dd>
- * <dt><code>-echo|--echo</code></dt>
+ * <dt><code>-e|--e|-echo|--echo</code></dt>
  * <dd>Echo the command that would be run by hand to replicate the
  * test. This is helpful for use under Ant apply.</dd>
  * <dt><code>-h|--h|-help|--help</code></dt>
  * <dd>Print a usage message</dd>
+ * <dt><code>-j|--j|-js|--js filename</code></dt>
+ * <dd>Interpret the next argument as the name of a regular
+ * JavaScript file to evaluate.</dd>
  * <dt><code>-timeout|--timeout <i>milliseconds</i></code></dt>
  * <dd>The minimum amount of time the script should run.</dd>
  * <dt><code>-v|--v|-version|--version</code></dt>
@@ -109,12 +106,12 @@ import ptolemy.util.StringUtilities;
  * <p> The command line syntax is:</p>
  * <pre>
  * java -classpath $PTII ptolemy.actor.lib.jjs.NashornAccessorHostApplication \
- *  [-accessor|--accessors] \
  *  [-h|--h|-help|--help] \
- *  [-echo|--echo] \
+ *  [-e|--e|-echo|--echo] \
+ *  [-j|--j|-js|--js filename] \
  *  [-timeout|--timeout milliseconds] \
  *  [-v|--v|-version|--version] \
- *  accessorOrRegularJavaScriptFile1.js [accessorOrRegularJavaScriptFile2.js ...]
+ *  accessorClassName [accessorClassName ...]
  * </pre>
  *
  * @author Christopher Brooks
