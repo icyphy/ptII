@@ -55,10 +55,12 @@ exports.Testing = function() {
     require('testing/mocha/mocha.js');
     mocha.setup('bdd');
     mocha.reporter('junit');
-    
-    // TODO:  Data structures to store the results
 };
 util.inherits(exports.Testing, EventEmitter);
+
+/** Load chai and make it visible.
+ */
+exports.Testing.prototype.chai = require('testing/chai/chai.js');
 
 /** Load the given mocha test file.
  */
