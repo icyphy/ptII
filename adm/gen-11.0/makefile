@@ -493,6 +493,12 @@ $(PTIIDIST):
 		> $(PTIIDIST)/ptolemy/configs/doc/models.txt_tmp
 	mv $(PTIIDIST)/ptolemy/configs/doc/models.txt_tmp \
 		$(PTIIDIST)/ptolemy/configs/doc/models.txt
+	# Fix up data/expr/test/makefile
+	egrep -v Variable2.tcl \
+		$(PTIIDIST)/ptolemy/data/expr/test/makefile \
+		> $(PTIIDIST)/ptolemy/data/expr/test/makefile.tmp
+	mv $(PTIIDIST)/ptolemy/data/expr/test/makefile.tmp \
+		$(PTIIDIST)/ptolemy/data/expr/test/makefile
 	#
 	# ptolemy/domains
 	#
