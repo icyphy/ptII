@@ -3607,11 +3607,11 @@ test_setup_XvfbStop:
 	rm -f /tmp/.X8-lock
 ########################################################################
 # Test the Cape Code installer
-test_capecode_setup:  test_capecode_setup_start test_capecode_setup_make_fast_install test_capecode_setup_test test_capecode_setup_ant
+test_capecode_setup:  test_capecode_setup_start test_capecode_setup_make_fast_install test_capecode_setup_test
 
 test_capecode_setup_start: test_capecode_setup_announce capecode_setup_64_jar capecode_setup_64 capecode_setup_mac_app_tar test_capecode_setup_installerTest 
 
-test_capecode_setup_test: test_capecode_setup_XvfbStart test_capecode_setup_make_tests test_capecode_setup_end
+test_capecode_setup_test: test_capecode_setup_XvfbStart test_capecode_setup_make_tests test_capecode_setup_ant test_capecode_setup_end
 
 
 test_capecode_setup_announce:
