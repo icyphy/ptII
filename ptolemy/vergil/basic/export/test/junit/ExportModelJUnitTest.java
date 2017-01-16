@@ -33,6 +33,7 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.File;
 import java.util.Date;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,6 +45,7 @@ import org.junit.runner.RunWith;
 import junitparams.JUnitParamsRunner;
 import junitparams.Parameters;
 import ptolemy.actor.Manager;
+import ptolemy.actor.gui.ConfigurationApplication;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.util.StringUtilities;
 import ptolemy.vergil.basic.export.ExportModel;
@@ -176,6 +178,32 @@ public class ExportModelJUnitTest {
         FileInputStream fileInputStream = null;
         DataInputStream dataInputStream = null;
         BufferedReader reader = null;
+
+        // If the full configuration exists, use ptolemy/configs/doc/models.txt.
+        // If the full configuration does not exist, then use the *Models.txt
+        // file for the configuration that does exist.  In this way, we can
+        // export the Cape Code models.
+
+        try {
+            File configurationDirectory = ConfigurationApplication.configurationDirectoryFullOrFirst();
+            if (!configurationDirectory.getCanonicalPath().endsWith("configs/full")) {
+                String configurationDirectoryName = configurationDirectory.getName();
+                File configurationModelsFile = new File(configurationDirectory, configurationDirectoryName + "Models.txt");
+                if (configurationModelsFile.exists()) {
+                    modelsFile = configurationModelsFile.getCanonicalPath();
+                    System.err.println("ExportModelJUnitTest: configurationDirectory is " + configurationDirectory
+                            + " Using " + modelsFile + ".");
+                } else {
+                    System.err.println("ExportModelJUnitTest: Warning: configurationDirectory is " + configurationDirectory
+                            + ", yet " + configurationModelsFile + " does not exist?  Using " + modelsFile + ".");
+                }
+            }
+        } catch (Throwable throwable) {
+            IOException exception = new IOException("Failed to get the configuration");
+            exception.initCause(throwable);
+            throw exception;
+        }
+
         List<String> demos = new LinkedList<String>();
         try {
             fileInputStream = new FileInputStream(modelsFile);
