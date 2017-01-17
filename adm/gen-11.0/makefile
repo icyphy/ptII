@@ -852,6 +852,7 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/actor/lib/mbed \
 		ptolemy/actor/lib/reactable \
 		ptolemy/actor/lib/test/OrderedMerge.tcl \
+		ptolemy/actor/lib/test/RampContinuous.tcl \
 		ptolemy/actor/lib/test/auto/MathFunction.xml \
 		ptolemy/actor/lib/test/auto/OrderedMerge.xml \
 	        ptolemy/actor/lib/test/auto/Switch.xml \
@@ -907,11 +908,15 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/domains/tm \
 		ptolemy/homer \
 		ptolemy/moml/jxta/demo/EPtolemyA/EPtolemy.properties \
+		ptolemy/moml/filter/test/BackwardCompatibilityPN.tcl \
+		ptolemy/moml/filter/test/GRColorChanges.tcl \
+		ptolemy/moml/filter/test/PropertyClassChangesHDF.tcl \
 		ptolemy/plot/build.xml \
 		ptolemy/plot/plotml/build.xml \
 		ptolemy/ptp \
 		ptolemy/vergil/basic/imprt/fmu \
 		ptolemy/vergil/basic/imprt/g4ltl \
+		ptolemy/vergil/basic/layout/kieler/test/junit/KielerJUnitExtendedModels.java \
 		ptolemy/vergil/gt \
 		ptolemy/vergil/modal/fmv \
 		ptolemy/vergil/ontologies \
@@ -1396,6 +1401,13 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/makefile
 	#
+	# Fix up ptolemy/moml/filter/test/makefile
+	egrep -v "BackwardCompatibilityPN.tcl|GRColorChanges.tcl|PropertyClassChangesHDF.tcl" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/moml/filter/test/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/moml/filter/test/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/moml/filter/test/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/moml/filter/test/makefile
+	#
 	# Fix up ptolemy/vergil/makefile
 	egrep -v "gt|ontologies|ptera|scr|tdl" \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/makefile \
@@ -1417,6 +1429,13 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/imprt/makefile.tmp
 	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/imprt/makefile.tmp \
 		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/imprt/makefile
+	#
+	# Fix up ptolemy/vergil/basic/layout/kieler/test/junit/makefile
+	egrep -v "KielerJUnitTestExtendedModels.java" \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/layout/kieler/test/junit/makefile \
+		> src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/layout/kieler/test/junit/makefile.tmp
+	mv src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/layout/kieler/test/junit/makefile.tmp \
+		src_jar/$(CAPECODE_CAPECODE_VERSION)/ptolemy/vergil/basic/layout/kieler/test/junit/makefile
 	#
 	#cd src_jar/$(CAPECODE_CAPECODE_VERSION); $(FINDCLEAN))
 	(cd src_jar/$(CAPECODE_CAPECODE_VERSION); rm -rf `cat ../../src.ex`)
