@@ -13,10 +13,10 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 52.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={231, 150, 1024, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1433, 96, 1024, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[790, 522]">
     </property>
@@ -24,7 +24,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{395.0, 261.0}">
     </property>
-    <property name="PROJECT_PATH" class="ptolemy.data.expr.Parameter" value="&quot;$PTII/vendors/iotauth&quot;">
+    <property name="PROJECT_PATH" class="ptolemy.data.expr.Parameter" value="&quot;/Users/hokeunkim/Development/iotauth/&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -40,13 +40,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 42.5]">
-        </property>
-    </property>
-    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The AuthManager checks out the iotAuth repo from &#10;https://github.com/iotauth/iotauth.git&#10;and creates $PTII/vendors/iotautho&#10;.&#10;">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 52.5]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 112.5]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -55,10 +49,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Hokeun Kim">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 397.5]">
-        </property>
-    </property>
-    <property name="AuthManager" class="ptolemy.actor.lib.jjs.modules.iotAuth.AuthManager">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 62.5]">
         </property>
     </property>
     <entity name="Listening" class="ptolemy.actor.lib.gui.TimedDisplay">
@@ -266,15 +256,19 @@
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="Listening.input" relation="relation"/>
     <link port="Connection.input" relation="relation2"/>
     <link port="Received.input" relation="relation5"/>
+    <link port="Error.input" relation="relation3"/>
     <link port="Ramp.output" relation="relation6"/>
     <link port="Ramp.trigger" relation="relation5"/>
     <link port="Expression.output" relation="relation12"/>
     <link port="Expression.received" relation="relation5"/>
     <link port="Expression.count" relation="relation6"/>
     <link port="ReceivedID.input" relation="relation9"/>
+    <link port="SecureCommServer.error" relation="relation3"/>
     <link port="SecureCommServer.toSendID" relation="relation11"/>
     <link port="SecureCommServer.toSend" relation="relation12"/>
     <link port="SecureCommServer.listening" relation="relation"/>

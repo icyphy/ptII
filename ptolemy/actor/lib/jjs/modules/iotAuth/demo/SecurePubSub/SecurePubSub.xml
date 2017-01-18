@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0018120079789261">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{413.83506653142484, 230.93237704599875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{413.8350665314248, 230.93237704599875}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for JavaScript MQTT publisher / subscriber.&#10;&#10;NOTE: The default assumes you have a broker server (e.g. mosquitto) running on 'localhost'.&#10;If you don't have a broker server, then try 'iot.eclipse.org' as the broker server address.&#10;It is an open and public broker server provided by the Paho project (https://eclipse.org/paho/).&#10;&#10;The publisher publishes a message every second.&#10;The subscriber unsubscribes after the 7th message arrives.">
@@ -61,10 +61,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 325.0]">
         </property>
     </property>
-    <property name="AuthManager" class="ptolemy.actor.lib.jjs.modules.iotAuth.AuthManager">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, -55.0]">
-        </property>
-    </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <doc>Create periodic timed events.</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 205.0]">
@@ -95,7 +91,7 @@
         </property>
     </entity>
     <entity name="SubscriberConnection" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={344, 451, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1872, 465, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -103,7 +99,7 @@
         </property>
     </entity>
     <entity name="Received" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={365, 216, 1075, 684}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1766, 406, 1075, 684}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1075, 640]">
         </property>
@@ -111,7 +107,7 @@
         </property>
     </entity>
     <entity name="ReceivedTopic" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 599, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1657, 769, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -183,7 +179,7 @@
         </property>
     </entity>
     <entity name="Subscription" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 692, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1496, 284, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -191,7 +187,7 @@
         </property>
     </entity>
     <entity name="PublisherReady" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={581, 692, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1970, 945, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -199,7 +195,7 @@
         </property>
     </entity>
     <entity name="PublisherConnection" class="ptolemy.actor.lib.gui.TimedDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={941, 405, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1819, 636, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
