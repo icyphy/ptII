@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 210.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1272, 540, 1133, 657}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={307, 243, 1133, 657}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[899, 547]">
     </property>
@@ -22,7 +22,7 @@
     </property>
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{516.1181640625, 417.73793742090834}">
     </property>
-    <property name="PROJECT_PATH" class="ptolemy.data.expr.Parameter" value="&quot;/Users/hokeunkim/Development/iotauth/&quot;">
+    <property name="IOTAUTH_HOME" class="ptolemy.data.expr.Parameter" value="&quot;/Users/hokeunkim/Development/iotauth/&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -38,7 +38,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, 510.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 510.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -175,11 +175,11 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="authCertPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/auth_certs/Auth101EntityCert.pem">
+        <property name="authCertPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/auth_certs/Auth101EntityCert.pem">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="clientPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/credentials/keys/net1/PtClientKey.der">
+        <property name="clientPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/credentials/keys/net1/PtClientKey.der">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
