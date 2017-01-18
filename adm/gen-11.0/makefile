@@ -1170,7 +1170,7 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	)
 	#
 	# Remove the duktape binaries.
-	(cd $(src_jar/$(CAPECODE_CAPECODE_VERSION)/org/terraswarm/accessor/accessors/web; ant clean.duktape)
+	(cd src_jar/$(CAPECODE_CAPECODE_VERSION)/org/terraswarm/accessor/accessors/web; ant clean.duktape)
 	#
 	# Clean up the source directory
 	#
