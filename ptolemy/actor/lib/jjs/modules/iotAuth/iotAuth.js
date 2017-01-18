@@ -542,6 +542,7 @@ exports.sendSessionKeyRequest = function (options, sessionKeyResponseCallback, c
             }).getArray();
             authClientSocket.send(toSend);
         } else {
+            console.log('Session key response arrived.')
             handleSessionKeyResponse(options, obj, myNonce, sessionKeyResponseCallback, callbackParameters);
             authClientSocket.close();
         }

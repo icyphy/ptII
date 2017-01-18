@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0018120079789261">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{413.8350665314248, 230.93237704599875}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{413.83506653142473, 230.93237704599875}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A demo for JavaScript MQTT publisher / subscriber.&#10;&#10;NOTE: The default assumes you have a broker server (e.g. mosquitto) running on 'localhost'.&#10;If you don't have a broker server, then try 'iot.eclipse.org' as the broker server address.&#10;It is an open and public broker server provided by the Paho project (https://eclipse.org/paho/).&#10;&#10;The publisher publishes a message every second.&#10;The subscriber unsubscribes after the 7th message arrives.">
@@ -36,7 +36,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 545.0]">
         </property>
     </property>
-    <property name="PROJECT_PATH" class="ptolemy.data.expr.Parameter" value="&quot;/Users/hokeunkim/Development/iotauth/&quot;">
+    <property name="IOTAUTH_HOME" class="ptolemy.data.expr.Parameter" value="&quot;/Users/hokeunkim/Development/iotauth/&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -237,11 +237,11 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="authCertPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/auth_certs/Auth101EntityCert.pem">
+        <property name="authCertPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/auth_certs/Auth101EntityCert.pem">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="subscriberPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/credentials/keys/net1/PtSubscriberKey.der">
+        <property name="subscriberPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/credentials/keys/net1/PtSubscriberKey.der">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -315,11 +315,11 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="authCertPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/auth_certs/Auth101EntityCert.pem">
+        <property name="authCertPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/auth_certs/Auth101EntityCert.pem">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="publisherPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$PROJECT_PATH/entity/credentials/keys/net1/PtPublisherKey.der">
+        <property name="publisherPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/credentials/keys/net1/PtPublisherKey.der">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
