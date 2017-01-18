@@ -45,6 +45,7 @@ include $(CONFIG)
 
 JSRCS = \
 	JUnitTclTest.java \
+	KielerJUnitTestExtendedModels.java \
 	KielerJUnitTest.java
 
 # Non-graphical Java tests written in Tcl

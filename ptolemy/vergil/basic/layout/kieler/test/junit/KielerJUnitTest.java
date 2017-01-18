@@ -156,63 +156,6 @@ public class KielerJUnitTest {
         _layoutTest("$CLASSPATH/ptolemy/moml/demo/modulation.xml", false);
     }
 
-    /** Test the layout of the CarTracking model.
-     * @exception Exception If there is a problem reading or laying
-     * out a model.
-     */
-    @org.junit.Test
-    public void runCarTracking() throws Exception {
-
-        _layoutTest(
-                "$CLASSPATH/ptolemy/domains/continuous/demo/CarTracking/CarTracking.xml",
-                false);
-    }
-
-    /** Test the layout of the Router model.
-     * @exception Exception If there is a problem reading or laying
-     * out a model.
-     */
-    @org.junit.Test
-    public void runRouter() throws Exception {
-        _layoutTest("$CLASSPATH/ptolemy/demo/ExecDemos/Demos/Router.xml", false);
-    }
-
-    /* ----------------------------
-     *          FSM Tests
-     * ---------------------------- */
-    /** Test the layout of the CSPDomain FSM Model.
-     * @exception Exception If there is a problem reading or laying
-     * out a model.
-     */
-    @org.junit.Test
-    public void runCSPDomain() throws Exception {
-        _layoutTest(
-                "$CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/CSPDomain.xml",
-                false);
-    }
-
-    /** Test the layout of the Interrupter FSM Model.
-     * @exception Exception If there is a problem reading or laying
-     * out a model.
-     */
-    @org.junit.Test
-    public void runInterrupter() throws Exception {
-        _layoutTest(
-                "$CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/Interrupter.xml",
-                false);
-    }
-
-    /** Test the layout of the Monitor FSM Model.
-     * @exception Exception If there is a problem reading or laying
-     * out a model.
-     */
-    @org.junit.Test
-    public void runMonitor() throws Exception {
-        _layoutTest(
-                "$CLASSPATH/ptolemy/domains/modal/demo/SystemLevelType/Monitor.xml",
-                false);
-    }
-
     /** Reset the ptolemy.ptII.doNotExit property to the previous value.
      * @exception Throwable If there is a problem setting the property.
      */
