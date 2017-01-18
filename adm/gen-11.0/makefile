@@ -375,6 +375,8 @@ $(PTIIDIST):
 	ls -l $(PTIIDIST)/configure $(PTIIDIST)/config
 	-(cd $(PTIIDIST); $(FINDCLEAN))
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
+	# Remove the duktape binaries.
+	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web; ant clean.duktape); \
 	#
 	# Set up vendors directory for making docs and jar_dist
 	#
@@ -693,6 +695,8 @@ $(PTII_SRC): $(PTII_FULL)
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
 		ls $(PTII_SRC_TO_BE_REMOVED); \
 		$(FINDCLEAN); \
+		# Remove the duktape binaries.
+		(cd org/terraswarm/accessor/accessors/web; ant clean.duktape); \
 		cd ..;)
 	# Fix up doc/img/makefile
 	#egrep -v "PtolemyIISplash.psd|banner.psd|ptIIbanner2.psd" \
@@ -1165,6 +1169,10 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	   touch configure; \
 	   chmod a+rx configure util/testsuite/chkextra; \
 	)
+	#
+	# Remove the duktape binaries.
+	(cd $(src_jar/$(CAPECODE_CAPECODE_VERSION)/org/terraswarm/accessor/accessors/web; ant clean.duktape)
+	#
 	# Clean up the source directory
 	#
 	# Check out the jsdoc repo.
