@@ -840,6 +840,7 @@ BASE_SRC_TO_BE_REMOVED = \
 		org/mlc \
 		org/ptolemy/fmi \
 		org/ptolemy/qss \
+		org/terraswarm/accessor/accessors/web/package.json \
 		ptdb \
 		ptolemy/actor/designs \
 		ptolemy/actor/gt \
@@ -1171,6 +1172,10 @@ src_jar/$(CAPECODE_CAPECODE_VERSION): $(PTII_SRC_JAR)
 	#
 	# Remove the duktape binaries.
 	(cd src_jar/$(CAPECODE_CAPECODE_VERSION)/org/terraswarm/accessor/accessors/web; ant clean.duktape)
+	#
+	# Remove package.json (if it exists) because if it exists,
+	# it will prevent npm update @terraswarm/gdp from working.
+	rm -f src_jar/$(CAPECODE_CAPECODE_VERSION)/org/terraswarm/accessor/accessors/web/package.json
 	#
 	# Clean up the source directory
 	#
