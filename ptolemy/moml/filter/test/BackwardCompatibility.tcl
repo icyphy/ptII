@@ -586,35 +586,6 @@ model is known as a Lorenz attractor.</text>
 </entity>
 }}
 
-
-set pnDirectorMoml  "$header 
-<entity name=\"PnDirectoryMoML\" class=\"ptolemy.actor.TypedCompositeActor\">
-    <property name=\"Process Network Director\" class=\"ptolemy.domains.pn.kernel.PNDirector\">
-        <property name=\"Initial_queue_capacity\" class=\"ptolemy.data.expr.Parameter\" value=\"1\">
-        </property>
-    </property>
-</entity>
-"
-
-
-test BackwardCompatibility-10.1 {PNDirectory parameter named Initial_queue_capacity} { 
-    set parser [java::new ptolemy.moml.MoMLParser]
-    set toplevel [$parser parse $pnDirectorMoml]
-    set newMoML [$toplevel exportMoML]
-    list $newMoML
-} {{<?xml version="1.0" standalone="no"?>
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
-    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="PnDirectoryMoML" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
-    </property>
-    <property name="Process Network Director" class="ptolemy.domains.pn.kernel.PNDirector">
-        <property name="initialQueueCapacity" class="ptolemy.data.expr.Parameter" value="1">
-        </property>
-    </property>
-</entity>
-}}
-
 test BackwardCompatiblity-11.1 {Call toString on all the filters} {
     set filters [java::call ptolemy.moml.MoMLParser getMoMLFilters]
     # listToStrings is defined in  util/testsuite/enums.tcl

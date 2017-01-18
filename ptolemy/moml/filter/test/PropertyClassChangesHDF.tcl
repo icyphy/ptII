@@ -1,4 +1,4 @@
-# Tests for the PropertyClassChanges class
+# Tests for the PropertyClassChangesHDF class
 #
 # @Author: Christopher Brooks
 #
@@ -53,31 +53,39 @@ set header {<?xml version="1.0" standalone="no"?>
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">}
 
 
-set hideMoml  "$header 
+set modalMoml  "$header 
 <entity name=\"PropertClassChangesTest\" class=\"ptolemy.actor.TypedCompositeActor\">
-    <entity name=\"Occupants14\" class=\"ptolemy.actor.lib.Ramp\">
-        <property name=\"_rotatePorts\" class=\"ptolemy.data.expr.Parameter\" value=\"0\">
-            <property name=\"_editorFactory\" class=\"ptolemy.kernel.util.Attribute\">
+    <entity name=\"modeCtrl\" class=\"ptolemy.domains.fsm.modal.ModalModel\">
+        <property name=\"directorClass\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"ptolemy.domains.hdf.kernel.HDFFSMDirector\">
+            <property name=\"style\" class=\"ptolemy.actor.gui.style.ChoiceStyle\">
+                <property name=\"style0\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"ptolemy.domains.fsm.kernel.HSDirector\">
+                </property>
+                <property name=\"style1\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"ptolemy.domains.fsm.kernel.FSMDirector\">
+                </property>
+                <property name=\"style2\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"ptolemy.domains.hdf.kernel.HDFFSMDirector\">
+                </property>
             </property>
         </property>
-        <property name=\"_hideName\" class=\"ptolemy.data.expr.SingletonParameter\" value=\"true\">
+        <property name=\"_Director\" class=\"ptolemy.domains.hdf.kernel.HDFFSMDirector\">
+            <property name=\"controllerName\" class=\"ptolemy.kernel.util.StringAttribute\" value=\"_Controller\">
+            </property>
+        </property>
+        <property name=\"_tableauFactory\" class=\"ptolemy.vergil.fsm.modal.ModalTableauFactory\">
         </property>
     </entity>
-</entity>
-"
-
+</entity>"
 ######################################################################
 ####
 #
-test PropertyClassChanges-1.1 {A _hideName that is after an Attribute} { 
+test PropertyClassChangesHDF-1.2 {Remove _Director from a modal model, based on domains/hdf/kernel/test/auto/DifferentRefinedRates3.xml} {
     set parser [java::new ptolemy.moml.MoMLParser]
 
     # The list of filters is static, so we reset it in case there
     # filters were already added.
     java::call ptolemy.moml.MoMLParser setMoMLFilters [java::null]
 
-    #$parser addMoMLFilters \
-    #	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
+    java::call ptolemy.moml.MoMLParser addMoMLFilters \
+    	    [java::call ptolemy.moml.filter.BackwardCompatibility allFilters]
 
     set filter [java::new ptolemy.moml.filter.PropertyClassChanges]
 
@@ -85,12 +93,14 @@ test PropertyClassChanges-1.1 {A _hideName that is after an Attribute} {
     # ptolemy.copernicus.kernel.KernelMain does this
     $filter put "ptolemy.copernicus.kernel.GeneratorAttribute" [java::null]
 
-    # Test out the remove method by adding a class and then removing it
-    $filter put "ptolemy.actor.TypedCompositeActor" [java::null]
-    $filter remove "ptolemy.actor.TypedCompositeActor"
-
     java::call ptolemy.moml.MoMLParser addMoMLFilter $filter
-    set toplevel [$parser parse $hideMoml]
+
+    # Run RemoveGraphicalClasses in case 
+    # ptolemy.vergil.fsm.modal.ModalTableauFactory is not present.
+    java::call ptolemy.moml.MoMLParser addMoMLFilter \
+        [java::new ptolemy.moml.filter.RemoveGraphicalClasses]
+
+    set toplevel [$parser parse $modalMoml]
     set newMoML [$toplevel exportMoML]
     list $newMoML
 } {{<?xml version="1.0" standalone="no"?>
@@ -99,12 +109,10 @@ test PropertyClassChanges-1.1 {A _hideName that is after an Attribute} {
 <entity name="PropertClassChangesTest" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="9.0.devel">
     </property>
-    <entity name="Occupants14" class="ptolemy.actor.lib.Ramp">
-        <property name="_rotatePorts" class="ptolemy.data.expr.Parameter" value="0">
-            <property name="_editorFactory" class="ptolemy.kernel.util.Attribute">
-            </property>
+    <entity name="modeCtrl" class="ptolemy.domains.modal.modal.ModalModel">
+        <property name="directorClass" class="ptolemy.data.expr.StringParameter" value="ptolemy.domains.hdf.kernel.HDFFSMDirector">
         </property>
-        <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        <property name="_tableauFactory" class="ptolemy.kernel.util.Attribute">
         </property>
     </entity>
 </entity>

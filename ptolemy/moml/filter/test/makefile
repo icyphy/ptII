@@ -54,11 +54,13 @@ JSIMPLE_TESTS = \
 	AddMissingParameter.tcl \
 	AddIcon.tcl \
 	BackwardCompatibility.tcl \
+	BackwardCompatibilityPN.tcl \
 	GRColorChanges.tcl \
 	ActorIndex.tcl \
 	LazyTypedCompositeActorChanges.tcl \
 	MultiportToSinglePort.tcl \
 	PropertyClassChanges.tcl \
+	PropertyClassChangesHDF.tcl \
 	RelationWidthChanges.tcl \
 	RemoveClasses.tcl \
 	RemoveGraphicalClasses.tcl \
