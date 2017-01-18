@@ -376,7 +376,7 @@ $(PTIIDIST):
 	-(cd $(PTIIDIST); $(FINDCLEAN))
 	(cd $(PTIIDIST); rm -rf `cat $(GENDIR)/src.ex`)
 	# Remove the duktape binaries.
-	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web; ant clean.duktape); \
+	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web; ant clean.duktape);
 	#
 	# Set up vendors directory for making docs and jar_dist
 	#
@@ -695,7 +695,6 @@ $(PTII_SRC): $(PTII_FULL)
 		rm -rf $(PTII_SRC_TO_BE_REMOVED); \
 		ls $(PTII_SRC_TO_BE_REMOVED); \
 		$(FINDCLEAN); \
-		# Remove the duktape binaries.
 		(cd org/terraswarm/accessor/accessors/web; ant clean.duktape); \
 		cd ..;)
 	# Fix up doc/img/makefile
