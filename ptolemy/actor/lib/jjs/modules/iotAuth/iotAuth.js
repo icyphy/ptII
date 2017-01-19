@@ -498,11 +498,32 @@ exports.sendSessionKeyRequest = function (options, sessionKeyResponseCallback, c
         console.log('connected to auth');
     });
     var myNonce;
+    var expectingMoreData = false;
+    var obj;
     authClientSocket.on('data', function (data) {
         console.log('data received from auth');
         var buf = new buffer.Buffer(data);
-        var obj = exports.parseIoTSP(buf);
-        if (obj.msgType == msgType.AUTH_HELLO) {
+        if (!expectingMoreData) {
+            obj = exports.parseIoTSP(buf);
+            if (obj.payload.length < obj.payloadLen) {
+                expectingMoreData = true;
+                console.log('more data will come. current: ' + obj.payload.length +
+                    ' expected: ' + obj.payloadLen);
+            }
+        } else {
+            obj.payload = buffer.concat([obj.payload, new buffer.Buffer(data)]);
+            if (obj.payload.length == obj.payloadLen) {
+                expectingMoreData = false;
+            } else {
+                console.log('more data will come. current: ' + obj.payload.length +
+                    ' expected: ' + obj.payloadLen);
+            }
+        }
+
+        if (expectingMoreData) {
+            // do not process the packet yet
+            return;
+        } else if (obj.msgType == msgType.AUTH_HELLO) {
             var authHello = parseAuthHello(obj.payload);
             myNonce = new buffer.Buffer(crypto.randomBytes(AUTH_NONCE_SIZE));
 
