@@ -84,6 +84,9 @@ import ptolemy.util.StringUtilities;
  * <dt><code>-j|--j|-js|--js filename</code></dt>
  * <dd>Interpret the next argument as the name of a regular
  * JavaScript file to evaluate.</dd>
+ * <dt><code>-k|--k|-keepalive|--keepalive</code></dt>
+ * <dd>Keep the calling process alive until either a timeout option
+ * expires or all instanted accessors have called wrapup.</dd>
  * <dt><code>-timeout|--timeout <i>milliseconds</i></code></dt>
  * <dd>The minimum amount of time the script should run.</dd>
  * <dt><code>-v|--v|-version|--version</code></dt>
@@ -316,7 +319,13 @@ public class NashornAccessorHostApplication {
                             }
                             for (Runnable callbackFunction : callbacks) {
                                 // System.out.println(_name + ": invoking callback: " + Thread.currentThread());
-                                callbackFunction.run();
+                                try {
+                                    callbackFunction.run();
+                                } catch (Throwable throwable) {
+                                    System.err.println("*** Callback function failed: " + throwable);
+                                    throwable.printStackTrace();
+                                    // Do not terminate the event loop. Keep running.
+                                }
                             }
                         }
                     }
@@ -391,7 +400,7 @@ public class NashornAccessorHostApplication {
                 }
             };
             Timer timer = new Timer();
-            timer.schedule(task, 0L, (long)periodMS);
+            timer.schedule(task, (long)periodMS, (long)periodMS);
             _pendingTimers.add(timer);
             return timer;
         }
@@ -420,10 +429,11 @@ public class NashornAccessorHostApplication {
         }
         
         /** Specify a top-level accessor to associate with this orchestrator
-         *  and start an event loop to invoke callbacks.
+         *  and start an event loop to invoke callbacks. This implementation
+         *  ignores the accessor argument.
+         *  @param accessor A top-level accessor.
          */
         public void setTopLevelAccessor(ScriptObjectMirror accessor) {
-            _accessor = accessor;
             eventLoop();
         }
 
@@ -441,9 +451,6 @@ public class NashornAccessorHostApplication {
         
         ///////////////////////////////////////////////////////////
         ////              Private Variables                    ////
-
-        /** The top-level accessor associated with this orchestrator. */
-        private ScriptObjectMirror _accessor;
         
         /** Name of this orchestrator. */
         private String _name;

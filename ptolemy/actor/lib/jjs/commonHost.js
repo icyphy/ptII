@@ -1811,6 +1811,9 @@ function nullHandlerFunction() {}
  *  * -j|--j|-js|--js: Interpret the next argument as the name of a regular
  *    JavaScript file to evaluate.
  *    
+ *  * -k|--k|-keepalive|--keepalive: Keep the calling process alive until either
+ *    a timeout option expires or all instanted accessors have called wrapup.
+ *
  *  * -t|--t|-timeout|--timeout milliseconds: The maximum amount of time the
  *    script can run. When this time is reached, stop() is called on all
  *    accessors that have been instantiated, and then 
@@ -1822,13 +1825,16 @@ function nullHandlerFunction() {}
  *  @param instantiateTopLevel A function that, given a name and class, instantiates a
  *   top-level accessor and returns it.
  *  @param terminator A callback function to invoke when all work is done.
- *  @return True if any standalone accessors with active event loops were instantiated.
+ *  @return True if any accessors were intantiated and initialized or if the keepalive
+ *   option was specified. The caller can use the return value to indicate whether there
+ *   is still work to be done, for example in active accessors. The caller may exit if
+ *   the return value is false, since this indicates that all work is done.
  */
 function processCommandLineArguments(argv, fileReader, instantiateTopLevel, terminator) {
     
     // Simplified usage message to just show the preferred form of the arguments,
     // not all possible variations.
-    var usage = "Usage: [-help] [-echo] [-js filename] [-timeout milliseconds]" +
+    var usage = "Usage: [-help] [-echo] [-js filename] [-keepalive] [-timeout milliseconds]" +
     		" [-version] [accessorClassName] [accessorClassName ...]";
     var timeout = -1;
     
@@ -1845,6 +1851,7 @@ function processCommandLineArguments(argv, fileReader, instantiateTopLevel, term
 
     var accessorCount = 0;
     var accessorsWrappedUp = 0;
+    var keepAlive = false;
     for (var i = 0; i < argv.length; i++) {
         switch (argv[i]) {
 
@@ -1887,6 +1894,13 @@ function processCommandLineArguments(argv, fileReader, instantiateTopLevel, term
             
             break;
 
+        case '-k':
+        case '--k':
+        case '-keepalive':
+        case '--keepalive':
+            keepAlive = true;
+            break;
+
         case '-t':
         case '--t':
         case '-timeout':
@@ -1903,11 +1917,15 @@ function processCommandLineArguments(argv, fileReader, instantiateTopLevel, term
             timeout = argv[i];
 
             console.log("commonHost.js: processCommandLineArguments(): "
-                    + "Setting timout to stop after " + timeout + " ms.");
+                    + "Setting timeout to stop after " + timeout + " ms.");
             setTimeout(function () {
                 // Under node, process.exit gets caught by exitHandler() in
                 // nodeHost.js and invokes wrapup().
                 console.log("commonHost.js: processCommandLineArguments(): Maximum time reached. Calling stopAllAccessors().");
+                // If a keep-alive timer is active, stop it.
+                if (timerHandle) {
+                    clearInterval(timerHandle);
+                }
                 // If a terminator function is given, use it.
                 // Otherwise, invoke wrapup on all accessors.
                 if (terminator) {
@@ -1943,6 +1961,7 @@ function processCommandLineArguments(argv, fileReader, instantiateTopLevel, term
                 accessorsWrappedUp++;
                 if (terminator && accessorsWrappedUp >= accessorCount) {
                     // All initialized accessors have wrapped up.
+                    console.log("All initialized accessors have wrapped up. Terminating.");
                     if (timerHandle) {
                         clearInterval(timerHandle);
                     }
@@ -1954,9 +1973,10 @@ function processCommandLineArguments(argv, fileReader, instantiateTopLevel, term
 
     // All command-line arguments have been processed.
     var timerHandle;
-    // If any accessors have been initialized and no timeout has been specified,
+    // If a keep-alive argument has been given or if
+    // any accessors have been initialized and no timeout has been specified,
     // then set a timeout to keep the process from exiting.
-    if (accessorCount > 0 && timeout === -1) {
+    if (keepAlive || (accessorCount > 0 && timeout === -1)) {
         // Prevent the script from exiting by repeating the empty function
         // every ~25 days. This will be cancelled if the terminator argument
         // is specified and all accessors have wrapped up.
@@ -1965,7 +1985,7 @@ function processCommandLineArguments(argv, fileReader, instantiateTopLevel, term
     if (accessorCount > 0) {
         return true;
     }
-    return false;
+    return keepAlive;
 }
 
 /** Push the specified item onto the specified list if it is not already there.
