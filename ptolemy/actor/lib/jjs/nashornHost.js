@@ -382,14 +382,20 @@ function processCommandLineArguments(argv) {
 	        FileUtilities.getFileAsString,
 	        // Function to instantiate accessors with their own event loop.
 	        instantiateTopLevel,
-	        // Function to call upon termination.
+	        // Function terminate to call upon termination.
 	        function() {
-	            commonHost.stopAllAccessors();
+	            // Do let failure to stop accessors block exiting.
+	            try {
+	                commonHost.stopAllAccessors();
+	            } catch(e) {
+	                console.error("Failed to stop accessors: " + e);
+	            }
 	            System.exit(0);
 	        }
 	);
 	if (!result) {
-	    // No standalone accessors were instantiated.
+	    // No accessors were initialized and the keepalive argument
+	    // was not given, so there is presumably no more to do.
 	    System.exit(0);
 	}
 }
@@ -462,6 +468,7 @@ function setInterval(func, milliseconds) {
  * @param milliseconds The interval in milliseconds.
  */
 function setTimeout(func, milliseconds) {
+    // console.log("+++++ after " + milliseconds + " invoke " + func);
     if (typeof actor === 'undefined') {
         throw new Error('setTimeout(): No actor variable defined.');
     }
