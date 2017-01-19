@@ -562,15 +562,20 @@ public class SocketHelper extends VertxHelperBase {
             // Set up handlers for data, errors, etc.
             // Here we are assuming we are in the verticle thread, so we don't call submit().
             _socket.closeHandler((Void) -> {
-                synchronized(SocketWrapper.this) {
-                    if (_closed) {
-                        // Nothing to do. Socket is already closed.
-                        return;
+                // Defer this to the director thread.
+                // This ensures that handling of the close event occurs after
+                // handling of any data that arrives before the close.
+                _issueResponse(() -> {
+                    synchronized(SocketWrapper.this) {
+                        if (_closed) {
+                            // Nothing to do. Socket is already closed.
+                            return;
+                        }
+                        _eventEmitter.callMember("emit", "close");
+                        _eventEmitter.callMember("removeAllListeners");
+                        _closed = true;
                     }
-                    _eventEmitter.callMember("emit", "close");
-                    _eventEmitter.callMember("removeAllListeners");
-                    _closed = true;
-                }
+                });
             });
             _socket.drainHandler((Void) -> {
                 synchronized(SocketWrapper.this) {
