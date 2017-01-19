@@ -426,9 +426,9 @@ $(PTIIDIST):
 	#cp $(PTIIHOME)/ptolemy/codegen/c/lib/win/libjvm.dll.a $(PTIIDIST)/ptolemy/codegen/c/lib/win
 	#ls -l  $(PTIIDIST)/ptolemy/codegen/c/lib/win/libjvm.dll.a
 	#
-	# Copy libptmatlab.so because src.ex removes it
-	cp $(PTIIHOME)/lib/libptmatlab.so $(PTIIDIST)/lib
-	ls -l $(PTIIDIST)/lib/libptmatlab.so
+	# Copy *.so files because src.ex removes them.
+	cp $(PTIIHOME)/lib/lib*.so $(PTIIDIST)/lib/
+	ls -l $(PTIIDIST)/lib/linux-x86-64-rhel/*.so $(PTIIDIST)/lib/linux-x86-64-rhel/
 	#
 	touch $(PTIIDIST)/configure
 	# Copy the vergil script for use in the full tar file
@@ -920,7 +920,7 @@ BASE_SRC_TO_BE_REMOVED = \
 		ptolemy/ptp \
 		ptolemy/vergil/basic/imprt/fmu \
 		ptolemy/vergil/basic/imprt/g4ltl \
-		ptolemy/vergil/basic/layout/kieler/test/junit/KielerJUnitExtendedModels.java \
+		ptolemy/vergil/basic/layout/kieler/test/junit/KielerJUnitTestExtendedModels.java \
 		ptolemy/vergil/gt \
 		ptolemy/vergil/modal/fmv \
 		ptolemy/vergil/ontologies \
