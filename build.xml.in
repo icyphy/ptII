@@ -777,6 +777,14 @@ For example:
     </javadoc>
   </target>
 
+  <target name="ptdoc"
+          depends="jsdoc-update"
+          description="Invoke jsdoc to read *.js files and generate *PtDoc.xml files suitable for Ptolemy">
+    <subant target="ptdoc" genericantfile="${basedir}/org/terraswarm/accessor/accessors/web/build.xml">
+      <dirset dir="." includes="org/terraswarm/accessor/accessors/web"/>
+    </subant>
+  </target>
+
   <target name="reports"
 	  description="Generate non-test reports about the Ptolemy II code base."
 	  depends="checkstyle, doccheck, findbugs, ojdcheck" />

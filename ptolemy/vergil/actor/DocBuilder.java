@@ -28,6 +28,7 @@
 package ptolemy.vergil.actor;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
@@ -256,10 +257,11 @@ public class DocBuilder extends Attribute {
             if (applicationName == null) {
                 File ptIImk = new File(
                         StringUtilities.getProperty("ptolemy.ptII.dir")
-                        + "/mk/ptII.mk");
+                        + "/mk/ptII.mkxx");
                 // If the user has run configure, then we run make,
                 // otherwise we run the javadoc command.
                 if (ptIImk.exists()) {
+                    commands.add("make codeDoc/js/index.html");
                     commands.add("make codeDoc/tree.html");
                     commands.add("make codeDoc/ptolemy/actor/lib/Ramp.xml");
                     commands.add("make codeDoc/ptolemy/actor/lib/RampIdx.xml");
@@ -272,6 +274,14 @@ public class DocBuilder extends Attribute {
 
                     commands.add(_compilePtDoclet(ptII));
 
+		    if (_inPath("ant")) {
+			commands.add("ant jsdoc ptdoc");
+		    } else {
+			String message = "ant not found? jsdoc and ptdoc will not be run.";
+			_executeCommands.updateStatusBar(message);
+			System.err.println(message);
+			
+		    }
                     String styleSheetFile = "";
                     //Unfortunately, -stylesheetfile is not supported with -doclet?
                     //                     String styleSheetFileName = ptII + "/doc/doclets/stylesheet.css";
@@ -304,6 +314,7 @@ public class DocBuilder extends Attribute {
                             + "/ptolemy/configs/doc/models.txt\" doc/codeDoc");
                 }
             } else {
+		commands.add("make codeDoc/js/index.html");
                 commands.add("make codeDoc" + applicationName
                         + "/doc/codeDoc/tree.html");
                 commands.add("make APPLICATION=" + applicationName
@@ -335,6 +346,21 @@ public class DocBuilder extends Attribute {
         return _executeCommands.getLastSubprocessReturnCode();
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    private boolean _inPath(String command) {
+	String path = System.getenv("PATH");
+	List <String> directories = Arrays.asList(path.split(":"));
+	for (String directory : directories) {
+	    File file = new File(directory, command);
+	    if (file.exists() && file.canExecute()) {
+		System.out.println("DocBuilder: " + file + " exists");
+		return true;
+	    }
+	}
+	return false;
+    }
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 

@@ -813,8 +813,8 @@ codeDoc/js/index.html:
 	fi
 	ls -l $(ROOT)/vendors/jsdoc
 	if [ -d $(ROOT)/vendors/jsdoc -a $(ROOT)/build.xml ]; then \
-		echo "About to run ant jsdoc"; \
-		(cd $(ROOT); ant jsdoc); \
+		echo "About to run ant jsdoc ptdoc"; \
+		(cd $(ROOT); ant jsdoc ptdoc); \
 		echo "The output appears in $(PTII)/doc/codeDoc/js/index.html"; \
         else \
 		echo "Either $(ROOT)/vendors/jsdoc or $(ROOT)/build.xml do not exist."; \
