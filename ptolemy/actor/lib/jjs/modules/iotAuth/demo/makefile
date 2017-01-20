@@ -51,8 +51,8 @@ PTCLASSALLJARS = \
 	SecureCommClient/SecureCommClient.jar \
 	SecureCommServer/SecureCommServer.jar \
 	SecurePubSub/SecurePubSub.jar \
-	SecurePubSub/SecureCommServerClient.jar \
-	SecurePubSub/SecureCommServerClientWithAuthManager.jar
+	SecureCommServerClient/SecureCommServerClient.jar \
+	SecureCommServerClientWithAuthManager/SecureCommServerClientWithAuthManager.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
