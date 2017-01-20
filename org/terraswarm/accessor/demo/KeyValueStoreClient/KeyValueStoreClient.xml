@@ -10,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 15.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={433, 23, 1005, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={320, 23, 1005, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[771, 524]">
     </property>
@@ -139,7 +139,7 @@
         </property>
     </property>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={900, 47, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1035, 121, 499, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
@@ -173,10 +173,6 @@
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[515.0, 315.0]">
-        </property>
-    </entity>
-    <entity name="Merge" class="ptolemy.domains.continuous.lib.ContinuousMerge">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[435.0, 315.0]">
         </property>
     </entity>
     <entity name="KeyValueStore2" class="org.terraswarm.accessor.JSAccessor">
@@ -269,11 +265,15 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="Merge2" class="ptolemy.domains.de.lib.Merge">
+        <property name="discardEvents" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 295.0]">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Ramp.trigger&quot;,x=190.0,y=145.0}, tail={id=&quot;DiscreteClock.output&quot;,x=55.0,y=135.0}, points={} } }">
         </property>
-    </relation>
-    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -281,9 +281,11 @@
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -293,14 +295,14 @@
     <link port="DiscreteClock.output" relation="relation3"/>
     <link port="DiscreteClock2.output" relation="relation2"/>
     <link port="DiscreteClock2.trigger" relation="relation4"/>
-    <link port="Errors.input" relation="relation8"/>
-    <link port="Merge.input" relation="relation9"/>
-    <link port="Merge.input" relation="relation5"/>
-    <link port="Merge.output" relation="relation8"/>
-    <link port="KeyValueStore2.error" relation="relation5"/>
+    <link port="Errors.input" relation="relation5"/>
+    <link port="KeyValueStore2.error" relation="relation9"/>
     <link port="KeyValueStore2.remove" relation="relation2"/>
     <link port="KeyValueStore2.result" relation="relation"/>
-    <link port="KeyValueStore.error" relation="relation9"/>
+    <link port="KeyValueStore.error" relation="relation6"/>
     <link port="KeyValueStore.value" relation="relation7"/>
     <link port="KeyValueStore.result" relation="relation4"/>
+    <link port="Merge2.input" relation="relation6"/>
+    <link port="Merge2.input" relation="relation9"/>
+    <link port="Merge2.output" relation="relation5"/>
 </entity>
