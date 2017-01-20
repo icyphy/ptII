@@ -428,7 +428,7 @@ $(PTIIDIST):
 	#
 	# Copy *.so files because src.ex removes them.
 	cp $(PTIIHOME)/lib/lib*.so $(PTIIDIST)/lib/
-	cp $(PTIIDIST)/lib/linux-x86-64-rhel/lib*.so $(PTIIDIST)/lib/linux-x86-64-rhel/
+	cp $(PTIIHOME)/lib/linux-x86-64-rhel/lib*.so $(PTIIDIST)/lib/linux-x86-64-rhel/
 	ls -l $(PTIIDIST)/lib/lib*.so $(PTIIDIST)/lib/linux-x86-64-rhel/
 	#
 	touch $(PTIIDIST)/configure
