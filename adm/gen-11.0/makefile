@@ -567,6 +567,7 @@ $(PTIIDIST):
 	#(cd $(PTIIDIST)/doc; make JAVADOC=$(JAVADOC) install)
 	# Regenerate $PTII/build.xml
 	(cd $(PTII); ./configure)
+	ls -l $(PTIIDIST)/lib/lib*.so $(PTIIDIST)/lib/linux-x86-64-rhel/
 
 dist_jar_dist: $(PTIIDIST)/jar_dist
 $(PTIIDIST)/jar_dist:
@@ -3612,6 +3613,7 @@ test_setup_make_fast_install:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
+	ls -l $(PTIIDIST)/lib/lib*.so $(PTIIDIST)/lib/linux-x86-64-rhel/
 	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` sources fast install)
 
 test_setup_make_tests:
@@ -3787,6 +3789,7 @@ $(CAPECODE_SETUP_MAC).jar: $(CAPECODE_SETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTIN
 	@echo "# Now building target setup_mac_jar: (CAPECODE_SETUP_MAC): $@"
 	@echo "# `date`"
 	ls -ldg $(PTINY_APP)
+	ls -l $(PTIIDIST)/lib/linux-x86-64-rhel/
 	# Disable logging, see https://groups.google.com/forum/#!topic/izpack-user/87fwTxSz3jA
 	$(IZPACK_COMMAND) $@ $<
 	if [ ! -f $@ ];  then \
