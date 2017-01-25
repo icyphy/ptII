@@ -396,7 +396,8 @@ function processCommandLineArguments(argv) {
 	if (!result) {
 	    // No accessors were initialized and the keepalive argument
 	    // was not given, so there is presumably no more to do.
-	    System.exit(0);
+	    print('No standalone accessors were instantiated');
+	    //System.exit(0);
 	}
 }
 
