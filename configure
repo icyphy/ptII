@@ -10343,7 +10343,8 @@ $as_echo "$as_me: WARNING: Failed to find javacc in '$JAVACC_DIR/bin'" >&2;};
     Try:
     cd $PTII/vendors/sun
     wget https://java.net/projects/javacc/downloads/download/javacc-5.0.tar.gz
-    unzip javacc-5.0.tar.gz
+    tar -zxf javacc-5.0.tar.gz
+    cd $PTII
     ./configure
 
     Configure looks for JavaCC in $PTII/vendors/sun/javacc-5.0
@@ -10367,7 +10368,8 @@ $as_echo "$as_me: WARNING: Failed to find javacc, perhaps JavaCC is not installe
     Try:
     cd $PTII/vendors/sun
     wget https://java.net/projects/javacc/downloads/download/javacc-5.0.tar.gz
-    unzip javacc-5.0.tar.gz
+    tar -zxf javacc-5.0.tar.gz
+    cd $PTII
     ./configure
 
     Configure looks for JavaCC in $PTII/vendors/sun/javacc-5.0
