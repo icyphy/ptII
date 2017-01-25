@@ -979,6 +979,33 @@ See $PTII/doc/coding/maven.htm
       </configuration>
     </plugin>
 
+    <!-- Configure "mvn clean" to remove the .class files instead of
+	 the entire default directory.
+	 The issue here is that Maven expect to have an output directory
+	 that is separate from the the source directory.  However, Ptolemy
+	 does it differently, where the .class files are in the same directory
+	 as the .java files.
+	 For more about the clean plugin, see
+	 https://maven.apache.org/plugins/maven-clean-plugin/examples/skipping-clean.html
+      -->
+    <plugin>
+      <artifactId>maven-clean-plugin</artifactId>
+      <version>3.0.0</version>
+      <configuration>
+	<excludeDefaultDirectories>true</excludeDefaultDirectories>
+	<filesets>
+	  <fileset>
+	    <directory>.</directory>
+	    <followSymlinks>false</followSymlinks>
+	    <useDefaultExcludes>true</useDefaultExcludes>
+	    <includes>
+	      <include>**/*.class</include>
+	    </includes>
+	  </fileset>
+	</filesets>
+      </configuration>
+    </plugin>
+
     </plugins>
 
   </build>
