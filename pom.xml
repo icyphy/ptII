@@ -813,6 +813,9 @@ See $PTII/doc/coding/maven.htm
 	      <includes>
 		<include>**/MatrixParser.jjt</include>
 	      </includes>
+	      <excludes>
+		<exclude>**/adm/**</exclude>
+	      </excludes>
             </configuration>
           </execution>
 
@@ -831,6 +834,8 @@ See $PTII/doc/coding/maven.htm
 	      <excludes>
 		<exclude>**/PtParser.jjt</exclude>
 		<exclude>**/MatrixParser.jjt</exclude>
+		<exclude>**/adm/**</exclude>
+		<exclude>**/vendors/**</exclude>
 	      </excludes>
             </configuration>
           </execution>
