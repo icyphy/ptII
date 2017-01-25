@@ -4037,7 +4037,8 @@ Be sure that your CLASSPATH includes JavaCC.zip, which is located in]);
     Try:
     cd $PTII/vendors/sun
     wget https://java.net/projects/javacc/downloads/download/javacc-5.0.tar.gz
-    unzip javacc-5.0.tar.gz
+    tar -zxf javacc-5.0.tar.gz
+    cd $PTII
     ./configure
 
     Configure looks for JavaCC in $PTII/vendors/sun/javacc-5.0
