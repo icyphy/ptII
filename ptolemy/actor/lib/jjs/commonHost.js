@@ -1169,6 +1169,9 @@ Accessor.prototype.parameter = function (name, options) {
 };
 
 /** Set an input of this accessor to the specified value.
+ *  If this accessor has a container, then schedule an event using scheduleEvent()
+ *  so that a reaction of the container is requested and that reaction triggers
+ *  a reaction of this accessor to respond to the input.
  *  This function will perform conversions to the destination port type, if possible.
  *  For example, if a number is expected, but a string is provided, then it will
  *  attempt to parse the string to create a number.
@@ -1220,6 +1223,8 @@ Accessor.prototype.provideInput = function (name, value) {
  *  If no input name is given, or the name is null, then invoke handlers for
  *  all inputs that have been provided with input value using provideInput()
  *  since the last time input handlers were invoked.
+ *  Also, if any contained accessors have events scheduled using scheduleEvent(),
+ *  then invoke their react() functions in priority order.
  *  Also invoke the fire function of the accessor, if one has been defined.
  *  If a handler throws an exception, then remove it from the registered
  *  handlers before rethrowing the exception.
@@ -1397,7 +1402,9 @@ Accessor.prototype.require = function () {
     throw e;
 };
 
-/** Schedule a reaction of the specified contained accessor.
+/** Schedule a reaction of the specified contained accessor,
+ *  unless such a reaction has already been scheduled and has not
+ *  yet occurred.
  *  This puts the accessor onto the event queue in priority order.
  *  This assumes that priorities are unique to each accessor.
  *  
@@ -1413,11 +1420,19 @@ Accessor.prototype.scheduleEvent = function (accessor) {
     
     // If we have not already requested a reaction for this container
     // accessor, do so now.
-    if (!thiz.reactRequestedAlready) {
-        thiz.reactRequestedAlready = true;
-        setTimeout(function () {
-            thiz.react();
-        }, 0);
+    // If there is a container accessor, then put this accessor in its
+    // event queue for handling in its react() function.
+    if (thiz.container) {
+        thiz.container.scheduleEvent(this);
+    } else {
+        // The container has no container, so request a reaction if one
+        // has not already been requested.
+        if (!thiz.reactRequestedAlready) {
+            thiz.reactRequestedAlready = true;
+            setTimeout(function () {
+                thiz.react();
+            }, 0);
+        }
     }
 
     // In the Nashorn host, queue can be undefined.
@@ -1483,8 +1498,21 @@ Accessor.prototype.send = function (name, value) {
             throw new Error('send(name, value): No output or input named ' + name);
         }
         // Make the input available in the _next_ reaction.
+        console.log('call setTimeout');
         setTimeout(function () {
             thiz.provideInput(name, value);
+            // If this accessor has a container, then provideInput()
+            // above will take care of scheduling a future reaction.
+            // However, if it has no container, then no such reaction
+            // will be requested. Request that reaction here.
+            if (!thiz.container) {
+                if (!thiz.reactRequestedAlready) {
+                    thiz.reactRequestedAlready = true;
+                    setTimeout(function () {
+                        thiz.react();
+                    }, 0);
+                }
+            }
         }, 0);
         return;
     }
