@@ -3206,9 +3206,9 @@ $as_echo "no" >&6; }
 fi
 
 
-		if env CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$JAVAC"> /dev/null; then
+		if env "$JAVA" -classpath "$PTII/config" RootDirectory "$JAVAC"> /dev/null; then
 
-		    PTJAVA_DIR_TMP=`CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$JAVAC"`
+		    PTJAVA_DIR_TMP=`"$JAVA" -classpath "$PTII/config" RootDirectory "$JAVAC"`
 
 		    # Use changequote to protect the square brackets in sed
 	            # Remove /cygdrive so we can compile with MSVC
@@ -3219,15 +3219,15 @@ fi
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: '$PTJAVA_DIR'" >&5
 $as_echo "'$PTJAVA_DIR'" >&6; }; fi ;
 		    else
-		        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA RootDirectory \"$JAVAC\"' failed.
+		        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '$JAVA -classpath \"$PTII/config\" RootDirectory \"$JAVAC\"' failed.
     We will not be able to search for the canonical Java home directory." >&5
-$as_echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA RootDirectory \"$JAVAC\"' failed.
+$as_echo "$as_me: WARNING: '$JAVA -classpath \"$PTII/config\" RootDirectory \"$JAVAC\"' failed.
     We will not be able to search for the canonical Java home directory." >&2;};
 		    fi
 	        else
-		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVAC RootDirectory.java' failed.
+		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'cd config; $JAVAC RootDirectory.java' failed.
     We will not be able to search for the canonical Java home directory." >&5
-$as_echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVAC RootDirectory.java' failed.
+$as_echo "$as_me: WARNING: 'cd config; $JAVAC RootDirectory.java' failed.
     We will not be able to search for the canonical Java home directory." >&2;};
 	        fi
 	        cd "$startdir"
@@ -3403,9 +3403,9 @@ $as_echo_n "checking PTJAVA32_DIR == /usr or /usr/local, checking for links... "
 	    if "$JAVAC" RootDirectory.java ; then
 	        { $as_echo "$as_me:${as_lineno-$LINENO}: checking the value of the Java directory " >&5
 $as_echo_n "checking the value of the Java directory ... " >&6; }
-		if env CLASSPATH="$PTII/config" "$JAVA32" RootDirectory "$JAVA32"> /dev/null; then
+		if env "$JAVA32" -classpath "$PTII/config" RootDirectory "$JAVA32"> /dev/null; then
 
-		    PTJAVA32_DIR_TMP=`CLASSPATH="$PTII/config" "$JAVA32" RootDirectory "$JAVA32"`
+		    PTJAVA32_DIR_TMP=`"$JAVA32" -classpath "$PTII/config" RootDirectory "$JAVA32"`
 
 		    # Use changequote to protect the square brackets in sed
 	            # Remove /cygdrive so we can compile with MSVC
@@ -3416,15 +3416,15 @@ $as_echo_n "checking the value of the Java directory ... " >&6; }
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: '$PTJAVA_DIR'" >&5
 $as_echo "'$PTJAVA_DIR'" >&6; }; fi ;
 		    else
-		        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA32 RootDirectory \"$JAVA32\"' failed.
+		        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '$JAVA32 -classpath \"$PTII/config\" RootDirectory \"$JAVA32\"' failed.
     We will not be able to search for the canonical 32-bit Java home directory." >&5
-$as_echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA32 RootDirectory \"$JAVA32\"' failed.
+$as_echo "$as_me: WARNING: '$JAVA32 -classpath \"$PTII/config\" RootDirectory \"$JAVA32\"' failed.
     We will not be able to search for the canonical 32-bit Java home directory." >&2;};
 		    fi
 	        else
-		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVAC RootDirectory.java' failed.
+		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'cd \"$PTII/config\"; $JAVAC RootDirectory.java' failed.
     We will not be able to search for the canonical 32-bit Java home directory." >&5
-$as_echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVAC RootDirectory.java' failed.
+$as_echo "$as_me: WARNING: 'cd \"$PTII/config\"; $JAVAC RootDirectory.java' failed.
     We will not be able to search for the canonical 32-bit Java home directory." >&2;};
 	        fi
 	        cd "$startdir"
@@ -3777,14 +3777,14 @@ $as_echo "confTest.java compiled" >&6; }; fi
     { $as_echo "$as_me:${as_lineno-$LINENO}: checking the value of the java.version Property " >&5
 $as_echo_n "checking the value of the java.version Property ... " >&6; }
     # Older versions of cygwin might not have env, but 1.1 does
-    if env CLASSPATH="$PTII/config" "$JAVA" confTest > /dev/null; then
+    if env "$JAVA" -classpath "$PTII/config" confTest > /dev/null; then
 	# Run it again and get the results
-	JVERSION=`CLASSPATH="$PTII/config" "$JAVA" confTest`
+	JVERSION=`"$JAVA" -classpath "$PTII/config" confTest`
 	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JVERSION" >&5
 $as_echo "$JVERSION" >&6; }; fi
     else
-	as_fn_error $? "'CLASSPATH=\"$PTII/config\" \"$JAVA\" confTest failed.
+	as_fn_error $? "'\"$JAVA\" -classpath \"$PTII/config\" confTest failed.
 If java fails, then you will not be able to run Ptolemy II.
 This could be because your PTII variable is set incorrectly, perhaps
 it has 'cygwin' or 'cygdrive' in it?
@@ -3799,7 +3799,7 @@ and then rerun
 See $PTII/doc/install.htm for details.'" "$LINENO" 5
    fi
 else
-   as_fn_error $? "'CLASSPATH=\"$PTII/config\" \"$JAVAC\" confTest.java failed.
+   as_fn_error $? "'cd \"$PTII/config\"; \"$JAVAC\" confTest.java failed.
 If javac fails, then you will not be able to compile Ptolemy II.
 This could be because your PTII variable is set incorrectly.
 Under Cygwin, try setting PTII in the control panel
@@ -3910,18 +3910,18 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: Java
 $as_echo "JavaHome.java compiled" >&6; }; fi
    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for java.home property by running a test program " >&5
 $as_echo_n "checking for java.home property by running a test program ... " >&6; }
-   if env CLASSPATH="$PTII/config" "$JAVA" JavaHome > /dev/null; then
+   if env "$JAVA" -classpath "$PTII/config" JavaHome > /dev/null; then
       # Run it again and get the results with \ converted to /
-      PTJAVA_HOME=`CLASSPATH="$PTII/config" "$JAVA" JavaHome`
+      PTJAVA_HOME=`"$JAVA" -classpath "$PTII/config" JavaHome`
       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJAVA_HOME" >&5
 $as_echo "$PTJAVA_HOME" >&6; }; fi
       PTDOCLETS_DIR=doclets
    else
-      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA JavaHome' failed.
+      { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '$JAVA -classpath \"$PTII/config\" JavaHome' failed.
    Since we cannot determine where the JRE is, we cannot set PTJAVA_HOME.
    for use with doclets or the serial communications protocol" >&5
-$as_echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA JavaHome' failed.
+$as_echo "$as_me: WARNING: '$JAVA -classpath \"$PTII/config\" JavaHome' failed.
    Since we cannot determine where the JRE is, we cannot set PTJAVA_HOME.
    for use with doclets or the serial communications protocol" >&2;}
     fi
@@ -4689,8 +4689,8 @@ ANT_WEBSENSOR_SOURCEPATH=''
 # and if $PTII/ptolemy/apps/websensor was found.
 ANT_WEBSENSOR_SRC=''
 
-# Extract the first word of "antxxx", so it can be a program name with args.
-set dummy antxxx; ac_word=$2
+# Extract the first word of "ant", so it can be a program name with args.
+set dummy ant; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
 $as_echo_n "checking for $ac_word... " >&6; }
 if ${ac_cv_path_ANT+:} false; then :
@@ -8443,7 +8443,7 @@ $as_echo "JAI found in the default classpath" >&6; }; fi
 $as_echo_n "checking for the jai jar files... " >&6; }
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jai-core.jar will be in the CLASSPATH
-	    JAI_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass javax.media.jai.RenderedOp`
+	    JAI_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass javax.media.jai.RenderedOp`
 	    if test -f "$JAI_JAR" ; then
 	       JAI_JARS_DIR=`dirname "$JAI_JAR"`
 	       JAI_JARS="${JAI_JARS_DIR}/jai_core.jar${CLASSPATHSEPARATOR}${JAI_JARS_DIR}/jai_codec.jar"
@@ -9003,7 +9003,7 @@ $as_echo "JMF found in the default classpath." >&6; }; fi
 $as_echo_n "checking for the JMF directory... " >&6; }
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jmf.jar will be in the CLASSPATH
-	    JMF_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass javax.media.CaptureDeviceInfo`
+	    JMF_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass javax.media.CaptureDeviceInfo`
 	    if test -f "$JMF_JAR" ; then
 	       JMF_JARS_DIR=`dirname "$JMF_JAR"`
 	       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
@@ -9297,29 +9297,29 @@ $as_echo "$PTJACL_JAR" >&6; }; fi
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for how to run jacl with \"$JAVA\"" >&5
 $as_echo_n "checking for how to run jacl with \"$JAVA\"... " >&6; }
 	# This command starts up Jacl
-	if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
+	if echo "set java::jdkVersion; exit" | "$JAVA" -classpath "$PTJACL_JAR" tcl.lang.Shell; then
 		if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJACL_JAR" >&5
 $as_echo "$PTJACL_JAR" >&6; }; fi
 		PTJACL_DIR=ptjacl
 	else
 		if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: CLASSPATH=\"$PTJACL_JAR\" \"$JAVA\" tcl.lang.Shell failed" >&5
-$as_echo "CLASSPATH=\"$PTJACL_JAR\" \"$JAVA\" tcl.lang.Shell failed" >&6; }; fi
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: \"$JAVA\" -classpath \"$PTJACL_JAR\" tcl.lang.Shell failed" >&5
+$as_echo "\"$JAVA\" -classpath \"$PTJACL_JAR\" tcl.lang.Shell failed" >&6; }; fi
 		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for how to run jacl with \"$JAVA\" \"$PTJACL_FLAG\"" >&5
 $as_echo_n "checking for how to run jacl with \"$JAVA\" \"$PTJACL_FLAG\"... " >&6; }
-		if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
+		if echo "set java::jdkVersion; exit" | "$JAVA" -classpath "$PTJACL_JAR" tcl.lang.Shell; then
 			if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTJACL_JAR" >&5
 $as_echo "$PTJACL_JAR" >&6; }; fi
 		else
 			if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
-$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: 'CLASSPATH=\"$PTJACL_JAR\" \"$JAVA\" tcl.lang.Shell' failed,
-	use 'CLASSPATH=\"$PTJACL_JAR\" \"$JAVA\" tcl.lang.Shell'
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: \"$JAVA\" -classpath \"$PTJACL_JAR\" tcl.lang.Shell' failed,
+	use '\"$JAVA\" -classpath \"$PTJACL_JAR\" tcl.lang.Shell'
 	instead. ptjacl is used by the test suite, so you may be able to
 	ignore this error." >&5
-$as_echo "'CLASSPATH=\"$PTJACL_JAR\" \"$JAVA\" tcl.lang.Shell' failed,
-	use 'CLASSPATH=\"$PTJACL_JAR\" \"$JAVA\" tcl.lang.Shell'
+$as_echo "\"$JAVA\" -classpath \"$PTJACL_JAR\" tcl.lang.Shell' failed,
+	use '\"$JAVA\" -classpath \"$PTJACL_JAR\" tcl.lang.Shell'
 	instead. ptjacl is used by the test suite, so you may be able to
 	ignore this error." >&6; }; fi
 		fi
@@ -9863,7 +9863,7 @@ $as_echo "OpenCV found in the default classpath." >&6; }; fi
 $as_echo_n "checking for the OpenCV jar files... " >&6; }
                 if "$JAVAC" FindClass.java ; then
 	            # Usually opencv.jar will be in the CLASSPATH
-	            OPENCV_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass org.opencv.core.Core`
+	            OPENCV_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass org.opencv.core.Core`
 	            if test -f "$OPENCV_JAR" ; then
 	                if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $OPENCV_JAR" >&5
@@ -10067,7 +10067,7 @@ $as_echo_n "checking for rxtx classes in CLASSPATH... " >&6; }
 
         if "$JAVAC" FindClass.java ; then
 	    # Usually RXTXcomm.jar will be in the CLASSPATH
-	    RXTX_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass gnu.io.SerialPort`
+	    RXTX_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass gnu.io.SerialPort`
 	    if test -f "$RXTX_JAR" ; then
 	       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $RXTC_JAR" >&5
@@ -10090,7 +10090,7 @@ $as_echo "$as_me: WARNING: Not including
             else
 	       # RXTX_JAR might contain a warning message from FindClass
 	       RXTX_JAR=""
-	       CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass gnu.io.SerialPort > /dev/null
+	       "$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass gnu.io.SerialPort > /dev/null
 	       retval=$?
 	       if test "$retval" = "0"; then
 	       	       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
@@ -11474,9 +11474,9 @@ $as_echo "$as_me: WARNING: Failed to find matlab executable in the path.
 	    if "$JAVAC" RootDirectory.java ; then
 		{ $as_echo "$as_me:${as_lineno-$LINENO}: checking the value of the Matlab root directory " >&5
 $as_echo_n "checking the value of the Matlab root directory ... " >&6; }
-		if env CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$MATLAB"> /dev/null; then
+		if env "$JAVA" -classpath "$PTII/config" RootDirectory "$MATLAB"> /dev/null; then
 
-		    MATLAB_DIR_TMP=`CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$MATLAB"`
+		    MATLAB_DIR_TMP=`"$JAVA" -classpath "$PTII/config" RootDirectory "$MATLAB"`
 
 		    # Use changequote to protect the square brackets in sed
 		    # Remove /cygdrive so we can compile with MSVC
@@ -11486,15 +11486,15 @@ $as_echo_n "checking the value of the Matlab root directory ... " >&6; }
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: '$MATLAB_DIR'" >&5
 $as_echo "'$MATLAB_DIR'" >&6; }; fi
 		else
-		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA RootDirectory \"$MATLAB\"' failed.
+		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVA\" -classpath \"$PTII/config\" RootDirectory \"$MATLAB\"' failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab/" >&5
-$as_echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA RootDirectory \"$MATLAB\"' failed.
+$as_echo "$as_me: WARNING: '\"$JAVA\" -classpath \"$PTII/config\" RootDirectory \"$MATLAB\"' failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab/" >&2;};
 		fi
 	    else
-		{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVAC RootDirectory.java' failed.
+		{ $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'cd \"$PTII/config\"; $JAVAC RootDirectory.java' failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab" >&5
-$as_echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVAC RootDirectory.java' failed.
+$as_echo "$as_me: WARNING: 'cd \"$PTII/config\"; $JAVAC RootDirectory.java' failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab" >&2;};
 	    fi
 	    cd "$startdir"
@@ -11768,18 +11768,18 @@ $as_echo "$PTMATLAB_MEXEXT" >&6; }; fi ;;
 	        { $as_echo "$as_me:${as_lineno-$LINENO}: checking which major type of OS we are running under" >&5
 $as_echo_n "checking which major type of OS we are running under... " >&6; }
 		# Older versions of cygwin might not have env, but 1.1 does
-		if env CLASSPATH="$PTII/config" "$JAVA" MajorOSName > /dev/null; then
+		if env "$JAVA" -classpath "$PTII/config" MajorOSName > /dev/null; then
 		    # Run it again and get the results.  We get just the first word: Windows, Linux, Mac etc.
-		    MAJOR_OS_NAME=`CLASSPATH="$PTII/config" "$JAVA" MajorOSName | awk '{print $1}'`
+		    MAJOR_OS_NAME=`"$JAVA" -classpath "$PTII/config" MajorOSName | awk '{print $1}'`
 		    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $MAJOR_OS_NAME" >&5
 $as_echo "$MAJOR_OS_NAME" >&6; }; fi
 		else
-		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed.
+		    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVA\" -classpath \"$PTII/config\" MajorOSName' failed.
     The Matlab interface will build fine, but not being able to determine
     the major operating system name could cause problems with running
     (cd \"$PTII/ptolemy/matlab\"; make install)" >&5
-$as_echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" $JAVA MajorOSName' failed.
+$as_echo "$as_me: WARNING: '\"$JAVA\" -classpath \"$PTII/config\" MajorOSName' failed.
     The Matlab interface will build fine, but not being able to determine
     the major operating system name could cause problems with running
     (cd \"$PTII/ptolemy/matlab\"; make install)" >&2;};
@@ -12705,16 +12705,16 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: Syst
 $as_echo "SystemJar.java compiled" >&6; }; fi
 	{ $as_echo "$as_me:${as_lineno-$LINENO}: checking the location or rt.jar" >&5
 $as_echo_n "checking the location or rt.jar... " >&6; }
-	if env CLASSPATH="$PTII/config" "$JAVA" SystemJar > /dev/null; then
+	if env "$JAVA" -classpath "$PTII/config" SystemJar > /dev/null; then
 	    # Run it again and get the results
-	    JAVA_SYSTEM_JAR=`CLASSPATH="$PTII/config" "$JAVA" SystemJar`
+	    JAVA_SYSTEM_JAR=`"$JAVA" -classpath "$PTII/config" SystemJar`
    	    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: '$JAVA_SYSTEM_JAR'" >&5
 $as_echo "'$JAVA_SYSTEM_JAR'" >&6; }; fi
 	else
-	    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: 'CLASSPATH=\"$PTII/config\" \"$JAVA\" SystemJar failed.
+	    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: '\"$JAVA\" -classpath \"$PTII/config\" SystemJar failed.
     Classes that use Soot will compile, but will fail to run.'" >&5
-$as_echo "$as_me: WARNING: 'CLASSPATH=\"$PTII/config\" \"$JAVA\" SystemJar failed.
+$as_echo "$as_me: WARNING: '\"$JAVA\" -classpath \"$PTII/config\" SystemJar failed.
     Classes that use Soot will compile, but will fail to run.'" >&2;}
         fi
     else
