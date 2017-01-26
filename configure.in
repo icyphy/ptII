@@ -343,9 +343,9 @@ else
 	    if "$JAVAC" RootDirectory.java ; then
 	        AC_MSG_CHECKING([the value of the Java directory ])
 		AC_PATH_PROG(JAVA, java)
-		if env CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$JAVAC"> /dev/null; then
+		if env "$JAVA" -classpath "$PTII/config" RootDirectory "$JAVAC"> /dev/null; then
 
-		    PTJAVA_DIR_TMP=`CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$JAVAC"`
+		    PTJAVA_DIR_TMP=`"$JAVA" -classpath "$PTII/config" RootDirectory "$JAVAC"`
 
 		    # Use changequote to protect the square brackets in sed
 changequote(<<, >>)dnl
@@ -356,11 +356,11 @@ changequote([, ])dnl
 		        PTJAVA_DIR="$PTJAVA_DIR_TMP"
 		        PT_MSG_RESULT('$PTJAVA_DIR');
 		    else	
-		        AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA RootDirectory "$JAVAC"' failed.
+		        AC_MSG_WARN(['$JAVA -classpath "$PTII/config" RootDirectory "$JAVAC"' failed.
     We will not be able to search for the canonical Java home directory.]);
 		    fi
 	        else
-		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC RootDirectory.java' failed.
+		    AC_MSG_WARN(['cd config; $JAVAC RootDirectory.java' failed.
     We will not be able to search for the canonical Java home directory.]);
 	        fi
 	        cd "$startdir"
@@ -477,9 +477,9 @@ else
 	    cd "$srcdir/config"
 	    if "$JAVAC" RootDirectory.java ; then
 	        AC_MSG_CHECKING([the value of the Java directory ])
-		if env CLASSPATH="$PTII/config" "$JAVA32" RootDirectory "$JAVA32"> /dev/null; then
+		if env "$JAVA32" -classpath "$PTII/config" RootDirectory "$JAVA32"> /dev/null; then
 
-		    PTJAVA32_DIR_TMP=`CLASSPATH="$PTII/config" "$JAVA32" RootDirectory "$JAVA32"`
+		    PTJAVA32_DIR_TMP=`"$JAVA32" -classpath "$PTII/config" RootDirectory "$JAVA32"`
 
 		    # Use changequote to protect the square brackets in sed
 changequote(<<, >>)dnl
@@ -490,11 +490,11 @@ changequote([, ])dnl
 		        PTJAVA32_DIR="$PTJAVA32_DIR_TMP"
 		        PT_MSG_RESULT('$PTJAVA_DIR');
 		    else	
-		        AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA32 RootDirectory "$JAVA32"' failed.
+		        AC_MSG_WARN(['$JAVA32 -classpath "$PTII/config" RootDirectory "$JAVA32"' failed.
     We will not be able to search for the canonical 32-bit Java home directory.]);
 		    fi
 	        else
-		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC RootDirectory.java' failed.
+		    AC_MSG_WARN(['cd "$PTII/config"; $JAVAC RootDirectory.java' failed.
     We will not be able to search for the canonical 32-bit Java home directory.]);
 	        fi
 	        cd "$startdir"
@@ -633,12 +633,12 @@ if "$JAVAC" confTest.java ; then
 
     AC_MSG_CHECKING([the value of the java.version Property ])
     # Older versions of cygwin might not have env, but 1.1 does
-    if env CLASSPATH="$PTII/config" "$JAVA" confTest > /dev/null; then
+    if env "$JAVA" -classpath "$PTII/config" confTest > /dev/null; then
 	# Run it again and get the results
-	JVERSION=`CLASSPATH="$PTII/config" "$JAVA" confTest`
+	JVERSION=`"$JAVA" -classpath "$PTII/config" confTest`
 	PT_MSG_RESULT($JVERSION)
     else	
-	AC_MSG_ERROR(['CLASSPATH="$PTII/config" "$JAVA" confTest failed.
+	AC_MSG_ERROR(['"$JAVA" -classpath "$PTII/config" confTest failed.
 If java fails, then you will not be able to run Ptolemy II.
 This could be because your PTII variable is set incorrectly, perhaps
 it has 'cygwin' or 'cygdrive' in it?
@@ -653,7 +653,7 @@ and then rerun
 See $PTII/doc/install.htm for details.'])
    fi
 else
-   AC_MSG_ERROR(['CLASSPATH="$PTII/config" "$JAVAC" confTest.java failed.
+   AC_MSG_ERROR(['cd "$PTII/config"; "$JAVAC" confTest.java failed.
 If javac fails, then you will not be able to compile Ptolemy II.
 This could be because your PTII variable is set incorrectly.
 Under Cygwin, try setting PTII in the control panel 
@@ -750,13 +750,13 @@ AC_MSG_CHECKING([for java.home property by compiling a test program ])
 if "$JAVAC" JavaHome.java ; then
    PT_MSG_RESULT(JavaHome.java compiled)
    AC_MSG_CHECKING([for java.home property by running a test program ])
-   if env CLASSPATH="$PTII/config" "$JAVA" JavaHome > /dev/null; then
+   if env "$JAVA" -classpath "$PTII/config" JavaHome > /dev/null; then
       # Run it again and get the results with \ converted to /
-      PTJAVA_HOME=`CLASSPATH="$PTII/config" "$JAVA" JavaHome`
+      PTJAVA_HOME=`"$JAVA" -classpath "$PTII/config" JavaHome`
       PT_MSG_RESULT($PTJAVA_HOME)
       PTDOCLETS_DIR=doclets
    else   
-      AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA JavaHome' failed.
+      AC_MSG_WARN(['$JAVA -classpath "$PTII/config" JavaHome' failed.
    Since we cannot determine where the JRE is, we cannot set PTJAVA_HOME.
    for use with doclets or the serial communications protocol])
     fi
@@ -1237,7 +1237,7 @@ ANT_WEBSENSOR_SOURCEPATH=''
 # and if $PTII/ptolemy/apps/websensor was found.
 ANT_WEBSENSOR_SRC=''
 
-AC_PATH_PROG(ANT, antxxx)
+AC_PATH_PROG(ANT, ant)
 if test ! -x "$ANT"; then
     AC_MSG_WARN([Couldn't find Apache Ant, which is the best way to build Ptolemy II from sources.
     Apache Ant is available from http://ant.apache.org/bindownload.cgi])
@@ -2685,7 +2685,7 @@ else
 	AC_MSG_CHECKING([for the jai jar files])
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jai-core.jar will be in the CLASSPATH
-	    JAI_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass javax.media.jai.RenderedOp`
+	    JAI_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass javax.media.jai.RenderedOp`
 	    if test -f "$JAI_JAR" ; then
 	       JAI_JARS_DIR=`dirname "$JAI_JAR"`
 	       JAI_JARS="${JAI_JARS_DIR}/jai_core.jar${CLASSPATHSEPARATOR}${JAI_JARS_DIR}/jai_codec.jar"
@@ -3098,7 +3098,7 @@ else
 	AC_MSG_CHECKING([for the JMF directory])
 	if "$JAVAC" FindClass.java ; then
 	    # Usually jmf.jar will be in the CLASSPATH
-	    JMF_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass javax.media.CaptureDeviceInfo`
+	    JMF_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass javax.media.CaptureDeviceInfo`
 	    if test -f "$JMF_JAR" ; then
 	       JMF_JARS_DIR=`dirname "$JMF_JAR"`
 	       PT_MSG_RESULT($JMF_JARS_DIR)
@@ -3321,17 +3321,17 @@ else
 	PT_MSG_RESULT([$PTJACL_JAR])
 	AC_MSG_CHECKING([for how to run jacl with "$JAVA"])
 	# This command starts up Jacl
-	if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
+	if echo "set java::jdkVersion; exit" | "$JAVA" -classpath "$PTJACL_JAR" tcl.lang.Shell; then
 		PT_MSG_RESULT($PTJACL_JAR)
 		PTJACL_DIR=ptjacl
 	else
-		PT_MSG_RESULT([CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell failed])
+		PT_MSG_RESULT(["$JAVA" -classpath "$PTJACL_JAR" tcl.lang.Shell failed])
 		AC_MSG_CHECKING([for how to run jacl with "$JAVA" "$PTJACL_FLAG]")
-		if echo "set java::jdkVersion; exit" | CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell; then
+		if echo "set java::jdkVersion; exit" | "$JAVA" -classpath "$PTJACL_JAR" tcl.lang.Shell; then
 			PT_MSG_RESULT($PTJACL_JAR)
 		else
-			PT_MSG_RESULT(['CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell' failed,
-	use 'CLASSPATH="$PTJACL_JAR" "$JAVA" tcl.lang.Shell'
+			PT_MSG_RESULT(["$JAVA" -classpath "$PTJACL_JAR" tcl.lang.Shell' failed,
+	use '"$JAVA" -classpath "$PTJACL_JAR" tcl.lang.Shell'
 	instead. ptjacl is used by the test suite, so you may be able to
 	ignore this error.])
 		fi
@@ -3705,7 +3705,7 @@ else
                 AC_MSG_CHECKING([for the OpenCV jar files])
                 if "$JAVAC" FindClass.java ; then
 	            # Usually opencv.jar will be in the CLASSPATH
-	            OPENCV_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass org.opencv.core.Core`
+	            OPENCV_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass org.opencv.core.Core`
 	            if test -f "$OPENCV_JAR" ; then
 	                PT_MSG_RESULT($OPENCV_JAR)
   	                updateClasspath "$OPENCV_JAR"
@@ -3854,7 +3854,7 @@ else
 
         if "$JAVAC" FindClass.java ; then
 	    # Usually RXTXcomm.jar will be in the CLASSPATH
-	    RXTX_JAR=`CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass gnu.io.SerialPort`
+	    RXTX_JAR=`"$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass gnu.io.SerialPort`
 	    if test -f "$RXTX_JAR" ; then
 	       PT_MSG_RESULT($RXTC_JAR)
 	       RXTX_PRESENT=yes
@@ -3872,7 +3872,7 @@ else
             else
 	       # RXTX_JAR might contain a warning message from FindClass
 	       RXTX_JAR="" 
-	       CLASSPATH="$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" "$JAVA" FindClass gnu.io.SerialPort > /dev/null
+	       "$JAVA" -classpath "$PTII/config$CLASSPATHSEPARATOR$CLASSPATH" FindClass gnu.io.SerialPort > /dev/null
 	       retval=$?
 	       if test "$retval" = "0"; then
 	       	       PT_MSG_RESULT([ok, RXTX is probably in the jre directory])
@@ -4767,9 +4767,9 @@ else
 	    cd "$srcdir/config"
 	    if "$JAVAC" RootDirectory.java ; then
 		AC_MSG_CHECKING([the value of the Matlab root directory ])
-		if env CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$MATLAB"> /dev/null; then
+		if env "$JAVA" -classpath "$PTII/config" RootDirectory "$MATLAB"> /dev/null; then
 
-		    MATLAB_DIR_TMP=`CLASSPATH="$PTII/config" "$JAVA" RootDirectory "$MATLAB"`
+		    MATLAB_DIR_TMP=`"$JAVA" -classpath "$PTII/config" RootDirectory "$MATLAB"`
 
 		    # Use changequote to protect the square brackets in sed
 changequote(<<, >>)dnl
@@ -4779,11 +4779,11 @@ changequote([, ])dnl
 
 		    PT_MSG_RESULT('$MATLAB_DIR')
 		else	
-		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA RootDirectory "$MATLAB"' failed.
+		    AC_MSG_WARN(['"$JAVA" -classpath "$PTII/config" RootDirectory "$MATLAB"' failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab/]);
 		fi
 	    else
-		AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVAC RootDirectory.java' failed.
+		AC_MSG_WARN(['cd "$PTII/config"; $JAVAC RootDirectory.java' failed.
     We will not be able to compile the Matlab interface in ptolemy/matlab]);
 	    fi
 	    cd "$startdir"
@@ -4863,12 +4863,12 @@ changequote([, ])dnl
 	    if "$JAVAC" MajorOSName.java ; then
 	        AC_MSG_CHECKING([which major type of OS we are running under])
 		# Older versions of cygwin might not have env, but 1.1 does
-		if env CLASSPATH="$PTII/config" "$JAVA" MajorOSName > /dev/null; then
+		if env "$JAVA" -classpath "$PTII/config" MajorOSName > /dev/null; then
 		    # Run it again and get the results.  We get just the first word: Windows, Linux, Mac etc.
-		    MAJOR_OS_NAME=`CLASSPATH="$PTII/config" "$JAVA" MajorOSName | awk '{print $1}'`
+		    MAJOR_OS_NAME=`"$JAVA" -classpath "$PTII/config" MajorOSName | awk '{print $1}'`
 		    PT_MSG_RESULT($MAJOR_OS_NAME)
 		else   
-		    AC_MSG_WARN(['CLASSPATH="$PTII/config" $JAVA MajorOSName' failed.
+		    AC_MSG_WARN(['"$JAVA" -classpath "$PTII/config" MajorOSName' failed.
     The Matlab interface will build fine, but not being able to determine
     the major operating system name could cause problems with running 
     (cd "$PTII/ptolemy/matlab"; make install)]);		    
@@ -5536,12 +5536,12 @@ else
     if "$JAVAC" SystemJar.java ; then
 	PT_MSG_RESULT(SystemJar.java compiled)
 	AC_MSG_CHECKING([the location or rt.jar])
-	if env CLASSPATH="$PTII/config" "$JAVA" SystemJar > /dev/null; then
+	if env "$JAVA" -classpath "$PTII/config" SystemJar > /dev/null; then
 	    # Run it again and get the results
-	    JAVA_SYSTEM_JAR=`CLASSPATH="$PTII/config" "$JAVA" SystemJar`
+	    JAVA_SYSTEM_JAR=`"$JAVA" -classpath "$PTII/config" SystemJar`
    	    PT_MSG_RESULT('$JAVA_SYSTEM_JAR')
 	else	
-	    AC_MSG_WARN(['CLASSPATH="$PTII/config" "$JAVA" SystemJar failed.
+	    AC_MSG_WARN(['"$JAVA" -classpath "$PTII/config" SystemJar failed.
     Classes that use Soot will compile, but will fail to run.'])
         fi
     else
