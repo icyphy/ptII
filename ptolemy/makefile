@@ -102,6 +102,7 @@ PTAUXALLJAR =	ptsupport.jar
 PTCLASSALLJARS = \
 		$(PTAUXALLJARS) \
 		actor/gt/gt.jar \
+		$(PTJSON_JAR) \
 		domains/domains.jar \
 		copernicus/copernicus.jar
 
