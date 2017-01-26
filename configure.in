@@ -4639,6 +4639,7 @@ else
 	PT_MSG_RESULT([$JSON_DIR])
 	# Used in org/makefile
 	PTJSON_DIR=json
+	PTJSON_JAR=actor/lib/conversions/json/json.jar
         if test "$PRE_JDK18" = "yes" ; then
             AC_MSG_WARN([ptolemy.vergil.basic.imprt.accessor requires Java 1.8 or later])
             updateExcludes "ptolemy.vergil.basic.imprt.accessor"
@@ -7213,6 +7214,9 @@ AC_SUBST(PTJOYSTICK_PACKAGES)
 
 # Set to json and used in $PTII/org/makefile if the JavaScript Object Notation was found.
 AC_SUBST(PTJSON_DIR)
+
+# Set to actor/lib/conversions/json/json.jar and used in $PTII/ptolemy/makefile if org/json was found.
+AC_SUBST(PTJSON_JAR)
 
 # Set to json.org and used in $PTII/doc/makefile if JSON was found.
 AC_SUBST(PTJSON_PACKAGES)

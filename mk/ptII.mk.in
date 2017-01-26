@@ -784,6 +784,9 @@ PTJOYSTICK_PACKAGES =	@PTJOYSTICK_PACKAGES@
 # Set to json and used in $PTII/org/makefile if the JavaScript Object Notation was found.
 PTJSON_DIR =		@PTJSON_DIR@
 
+# Set to actor/lib/conversions/json/json.jar and used in $PTII/ptolemy/makefile if org/json was found.
+PTJSON_JAR =		@PTJSON_JAR@
+
 # Set to json.org and used in $PTII/doc/makefile if JSON was found.
 PTJSON_PACKAGES = 	@PTJSON_PACKAGES@
 
