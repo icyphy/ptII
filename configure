@@ -2817,8 +2817,7 @@ you mistakenly do something like PTII=\`pwd\`.
 Under Cygwin, try permanently setting PTII in the control panel
 (Start->Control Panels->Advanced->Environment Variables)
 or temporary set it within bash:
-  PTII=c:/users/yourname/ptII
-  export PTII
+  export PTII=c:/Users/YourLogin/ptII
 and then rerun
   ./configure
 See $PTII/doc/install.htm for details.'" >&5
@@ -2837,8 +2836,7 @@ you mistakenly do something like PTII=\`pwd\`.
 Under Cygwin, try permanently setting PTII in the control panel
 (Start->Control Panels->Advanced->Environment Variables)
 or temporary set it within bash:
-  PTII=c:/users/yourname/ptII
-  export PTII
+  export PTII=c:/Users/YourLogin/ptII
 and then rerun
   ./configure
 See $PTII/doc/install.htm for details.'" >&2;}
@@ -3266,8 +3264,7 @@ Under bash, you may temporarily add a directory with something like:
   rm config.*; ./configure
 You may also try --with-java=DIR, or set the PTJAVA_DIR environment variable
 to the directory where your jdk is located:
-  PTJAVA_DIR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_45
-  export PTJAVA_DIR
+  export PTJAVA_DIR=/cygdrive/c/Program\ Files/Java/jdk1.8.0_45
   rm config.*; ./configure
 but adding the directory to your path is likely to work best." "$LINENO" 5
 	    fi
@@ -3784,32 +3781,66 @@ $as_echo_n "checking the value of the java.version Property ... " >&6; }
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JVERSION" >&5
 $as_echo "$JVERSION" >&6; }; fi
     else
-	as_fn_error $? "'\"$JAVA\" -classpath \"$PTII/config\" confTest failed.
-If java fails, then you will not be able to run Ptolemy II.
-This could be because your PTII variable is set incorrectly, perhaps
-it has 'cygwin' or 'cygdrive' in it?
+        case "`uname -s`" in
+            CYGWIN_NT-*)
+	        # If $PTII is in /home, then suggest moving it.
+	        echo "$PTII" | egrep "^/home/" > /dev/null
+		status=$?
 
-Under Cygwin, try setting PTII in the control panel
-(Start->Control Panels->Advanced->Environment Variables)
-or temporary set it within bash:
-  PTII=c:/users/yourname/ptII
-  export PTII
-and then rerun
-  ./configure
-See $PTII/doc/install.htm for details.'" "$LINENO" 5
+		if test "$status" -eq 0; then
+		    as_fn_error $? "'\"$JAVA\" -classpath \"$PTII/config\" confTest failed.
+    If java fails, then you will not be able to run Ptolemy II.'
+
+    You are running under Cygwin and $PTII and starts with /home/.
+
+    By default, Cygwin puts user home directories in /home.
+    However, Java will not be able to find directories in Cygwin's /home/ tree.
+
+    The fix is to move $PTII to the /cygdrive/Users/$USERNAME and set
+    PTII to c:/Users/$USERNAME/ptII:
+
+       mv $PTII /cygdrive/Users/$USERNAME
+       export PTII=c:/Users/$USERNAME/ptII
+       cd $PTII
+       ./configure
+    '" "$LINENO" 5
+		fi
+
+	        as_fn_error $? "'\"$JAVA\" -classpath \"$PTII/config\" confTest failed.
+    If java fails, then you will not be able to run Ptolemy II.'
+    This could be because your PTII variable is set incorrectly, perhaps
+    it has 'cygwin' or 'cygdrive' in it?
+
+    Under Cygwin, try setting PTII in the control panel
+    (Start->Control Panels->Advanced->Environment Variables)
+    or temporary set it within bash:
+        export PTII=c:/Users/$USERNAME/ptII
+    and then rerun
+        ./configure
+    See $PTII/doc/install.htm for details.'" "$LINENO" 5
+
+            ;;
+
+            *)
+	        as_fn_error $? "'\"$JAVA\" -classpath \"$PTII/config\" confTest failed.
+    If java fails, then you will not be able to run Ptolemy II.'" "$LINENO" 5
+            ;;
+        esac
    fi
+
 else
    as_fn_error $? "'cd \"$PTII/config\"; \"$JAVAC\" confTest.java failed.
-If javac fails, then you will not be able to compile Ptolemy II.
-This could be because your PTII variable is set incorrectly.
-Under Cygwin, try setting PTII in the control panel
-(Start->Control Panels->Advanced->Environment Variables)
-or temporary set it within bash:
-  PTII=c:/users/yourname/ptII
-  export PTII
-and then rerun
-  ./configure
-See $PTII/doc/install.htm for details.'" "$LINENO" 5
+    If javac fails, then you will not be able to compile Ptolemy II.
+
+    This could be because your PTII variable is set incorrectly.
+
+    Under Cygwin, try setting PTII in the control panel
+    (Start->Control Panels->Advanced->Environment Variables)
+    or temporary set it within bash:
+       export PTII=c:/Users/YourLogin/ptII
+    and then rerun
+      ./configure
+      See $PTII/doc/install.htm for details.'" "$LINENO" 5
 
 fi
 
