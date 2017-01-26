@@ -654,9 +654,9 @@ if "$JAVAC" confTest.java ; then
     The fix is to move $PTII to the /cygdrive/Users/$USERNAME and set
     PTII to c:/Users/$USERNAME/ptII:
 
-       mv $PTII /cygdrive/Users/$USERNAME
-       export PTII=c:/Users/$USERNAME/ptII
-       cd $PTII
+       mv $PTII /cygdrive/c/Users/$USERNAME
+       export PTII=c:/Users/c/$USERNAME/ptII
+       cd \$PTII
        ./configure
     '])
 		fi
