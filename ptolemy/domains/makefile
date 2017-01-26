@@ -77,6 +77,9 @@ PTCLASSJAR =
 # PTGRDOMAIN_JAR is the name of the jar file that includes the GR
 # domain if Java 3D was found.  PTGRDOMAIN_JAR is set by configure.
 
+# PTOPENMODELICADOMAIN_JAR is the name of the jar file that includes the openmodelica
+# domain if OpenModelica was found.  PTOPENMODELICADOMAIN_JAR is set by configure.
+
 # PTSPACEDOMAIN_JAR is the name of the jar file that includes the space
 # domain if ojdbc6.jar was found.  PTSPACEDOMAIN_JAR is set by configure.
 
@@ -91,7 +94,7 @@ PTAUXALLJARS = \
 		fmima/fmima.jar \
 		giotto/giotto.jar \
 		$(PTGRDOMAIN_JAR) \
-		openmodelica/openmodelica.jar \
+		$(PTOPENMODELICADOMAIN_JAR) \
 		petrinet/petrinet.jar \
 		ptera/ptera.jar \
 		pthales/pthales.jar \

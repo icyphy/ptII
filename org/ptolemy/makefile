@@ -58,8 +58,27 @@ VPATH =		$(ROOT)/$(ME)
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
+# Used to build jar files
+PTPACKAGE = 	ptolemy
+PTCLASSJAR =
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Include these jars in PTAUXALLJAR
+# plotmlapplet pulls in the com/microstar/xml and util/ classes
+PTCLASSALLJARS = \
+	classloading/classloading.jar \
+	commons/commons.jar \
+	faultModels/faultModels.jar \
+	fmi/fmi.jar \
+	machineImprovisation/machineImprovisation.jar \
+	machineLearning/machineLearning.jar \
+	optimization/optimization.jar \
+	qss/qss.jar \
+	ssm/ssm.jar
+
 all: suball
-install: subinstall
+install: subinstall jars
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.

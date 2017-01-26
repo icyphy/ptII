@@ -5065,6 +5065,7 @@ else
         if test -d "$PTOPENMODELICA_USER_DIR";  then
                 PTOPENMODELICA_DIR=openmodelica
                 PTOPENMODELICA_PACKAGES="ptolemy.domains.openmodelica.kernel ptolemy.domains.openmodelica.lib ptolemy.domains.openmodelica.lib.omc ptolemy.domains.openmodelica.lib.omc.corba"
+		PTOPENMODELICADOMAIN_JAR=openmodelica/openmodelica.jar
         fi
     fi
 fi
@@ -7346,8 +7347,11 @@ AC_SUBST(PTOPENCV_PACKAGES)
 # PTOMC_DIR is set to omc if OpenModelica is found and used in ptII/ptolemy/actor/lib/fmi/fmus/makefile
 AC_SUBST(PTOMC_DIR)
 
-# PTOPENMOELICA_DIRS is set to omc if OpenModelica is found and used in ptII/ptolemy/actor/lib/fmi/fmus/makefile
+# PTOPENMODELICA_DIRS is set to omc if OpenModelica is found and used in ptII/ptolemy/actor/lib/fmi/fmus/makefile
 AC_SUBST(PTOPENMODELICA_DIR)
+
+# PTOPENMODELICADOMAIN_JAR is set to openmodelica/openmodelica.jar if OpenModelica is found and used in ptII/ptolemy/domains/makefile.
+AC_SUBST(PTOPENMODELICADOMAIN_JAR)
 
 #There are no OMC FMU .java files, so there is no PTOMC_PACKAGES.
 

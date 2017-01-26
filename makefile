@@ -82,6 +82,8 @@ PTDEMODOCJARS = \
 PTCLASSALLJARS = \
 		doc/codeDoc.jar \
 		lib/diva.jar \
+		org/ptolemy/ptolemy.jar \
+		org/terraswarm/terraswarm.jar \
 		$(PTAUXALLJARS) \
 		ptolemy/domains/experimentalDomains.jar \
 		$(PTDEMODOCJARS) \
