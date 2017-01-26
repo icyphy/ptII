@@ -732,6 +732,7 @@ PTJSOUP_PACKAGES
 PTJSOUP_DIR
 PTJSOUP_JAR
 PTJSON_PACKAGES
+PTJSON_JAR
 PTJSON_DIR
 PTJOYSTICK_PACKAGES
 PTJOYSTICK_DIR
@@ -11266,6 +11267,7 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JSO
 $as_echo "$JSON_DIR" >&6; }; fi
 	# Used in org/makefile
 	PTJSON_DIR=json
+	PTJSON_JAR=actor/lib/conversions/json/json.jar
         if test "$PRE_JDK18" = "yes" ; then
             { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: ptolemy.vergil.basic.imprt.accessor requires Java 1.8 or later" >&5
 $as_echo "$as_me: WARNING: ptolemy.vergil.basic.imprt.accessor requires Java 1.8 or later" >&2;}
@@ -14734,6 +14736,9 @@ fi
 
 
 # Set to json and used in $PTII/org/makefile if the JavaScript Object Notation was found.
+
+
+# Set to actor/lib/conversions/json/json.jar and used in $PTII/ptolemy/makefile if org/json was found.
 
 
 # Set to json.org and used in $PTII/doc/makefile if JSON was found.
