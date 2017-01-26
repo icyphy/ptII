@@ -47,14 +47,16 @@ include $(CONFIG)
 
 # Variables and rules used to create source file distributions
 PTPACKAGE = 	terraswarm
-PTCLASSJAR = $(PTPACKAGE).jar
-#PTCLASSALLJAR = $(PTPACKAGE).jar
+#PTCLASSJAR = $(PTPACKAGE).jar
+PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
-#PTCLASSALLJARS =
+PTCLASSALLJARS = \
+	accessor/accessor.jar \
+	ros/ros.jar
 
 all: suball
-install: subinstall
+install: subinstall jars
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to report an error on them.
