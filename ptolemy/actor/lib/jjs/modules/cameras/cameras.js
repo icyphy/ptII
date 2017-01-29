@@ -146,8 +146,10 @@ exports.Camera.prototype.setViewSize = function (size) {
     this.helper.setViewSize(size);
 };
 
+/** Take a snapshot and emit an event with the image.
+ */
 exports.Camera.prototype.snapshot = function () {
-    return this.helper.snapshot();
+	this.emit('snapshot', this.helper.snapshot());
 };
 
 /** Return an array of view sizes supported by this camera,
