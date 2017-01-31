@@ -13757,7 +13757,7 @@ fi
 $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTWEBCAMCAPTURE_JAR" >&5
 $as_echo "$PTWEBCAMCAPTURE_JAR" >&6; }; fi
                 PTCAMERAS_DIR=cameras
-                PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR${CLASSPATHSEPARATOR}$PTBRIDG_JAR"
+                PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR\${CLASSPATHSEPARATOR}$PTBRIDG_JAR"
                 PTWEBCAMCAPTURE_PACKAGES=ptolemy.actor.lib.jjs.modules.cameras
                 updateClasspath "$PTWEBCAMCAPTURE_JAR"
                 updateClasspath "$PTBRIDG_JAR"
