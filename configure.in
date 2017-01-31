@@ -6367,7 +6367,7 @@ else
             if test -f "$PTBRIDG_JAR"; then
                 PT_MSG_RESULT([$PTWEBCAMCAPTURE_JAR])
                 PTCAMERAS_DIR=cameras
-                PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR${CLASSPATHSEPARATOR}$PTBRIDG_JAR"
+                PTWEBCAMCAPTURE_JARS="$PTWEBCAMCAPTURE_JAR\${CLASSPATHSEPARATOR}$PTBRIDG_JAR"
                 PTWEBCAMCAPTURE_PACKAGES=ptolemy.actor.lib.jjs.modules.cameras
                 updateClasspath "$PTWEBCAMCAPTURE_JAR"
                 updateClasspath "$PTBRIDG_JAR"
