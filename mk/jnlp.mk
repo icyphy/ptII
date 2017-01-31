@@ -1977,6 +1977,13 @@ visualsensedoc.exe: visualsensedoc_l4j.xml
 # Echo the jar files in a format suitable for izpack. 
 # Certain jar files from the doc/ directory are not echoed.
 # For example:  make echo_jars JARS=PTINY_JNLP_JARS
+#
+# FIXME: These rules probably won't work under Windows because
+# the classpath separator is set to ; and PTVERTX_JARS includes multiple
+# jar files.  One workaround is to set CLASSPATHSEPARATOR when make is run:
+#
+# make echo_classpath_jars  JARS=CAPECODE_JNLP_JARS CLASSPATHSEPARATOR=xxx | sed 's/xxx/;/g'
+#
 echo_jars:
 	@echo $($(JARS)) | grep -v "(doc/codeDoc|doc/design/hyvisual.jar|doc/design/design.jar|doc/design/visualsense.jar)" |  sed 's/:/ /g' | awk '{for(i=1;i<=NF;i++){ print "            <file src=\"../dists/ptII11.0.devel/jar_dist/" $$i "\""; ns = split($$i, f, "/"); dir = ""; for(s=1;s<ns;s++) {dir = dir "/" f[s]}  print "                  targetdir=\"$$INSTALL_PATH" dir "\"/>"  } }'
 
