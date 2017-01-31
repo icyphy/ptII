@@ -79,8 +79,8 @@ var __moduleFile = FileUtilities.nameToFile(
 /** A string giving the full path to the root directory for installed modules. */
 var _moduleRoot = __moduleFile.getAbsolutePath();
 
-//Check to see if _moduleFile is a Jar URL like
-if (_moduleRoot.indexOf("!/") !== -1) {
+// Check to see if _moduleFile is a Jar URL like.  Windows: check !\\.
+if (_moduleRoot.indexOf("!/") !== -1 || _moduleRoot.indexOf("!\\") !== -1) {
     _moduleRoot = "jar:" + __moduleFile.toString();
 }
 
@@ -91,8 +91,8 @@ var __accessorFile = FileUtilities.nameToFile(
 
 var _accessorRoot = __accessorFile.getAbsolutePath();
 
-//Check to see if _accessorRoot is a Jar URL like
-if (_accessorRoot.indexOf("!/") !== -1) {
+// Check to see if _accessorRoot is a Jar URL like. Windows: check !\\.
+if (_accessorRoot.indexOf("!/") !== -1) || _accessorRoot.indexOf("!\\") !== -1) {{
 _accessorRoot = "jar:" + __accessorFile.toString();
 }
 
