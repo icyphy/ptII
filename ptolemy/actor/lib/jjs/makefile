@@ -45,7 +45,14 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE = 	jjs
-PTCLASSJAR = 	$(PTPACKAGE).jar
+#PTCLASSJAR = 	$(PTPACKAGE).jar
+
+PTCLASSALLJAR = 	$(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	external/external.jar \
+	node/node.jar
 
 # Keep this list alphabetized.
 JSRCS = \
