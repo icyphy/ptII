@@ -123,6 +123,7 @@ var _testAccessors = FileUtilities.nameToFile(
         null
 ).getAbsolutePath();
 
+
 /** An array that gives the search path for accessors to be extended. */
 var _accessorPath = [_accessorRoot + '/', _testAccessors + '/'].concat(_modulePath);
 
@@ -226,14 +227,22 @@ function error(message) {
  * @see http://nodejs.org/api/modules.html#modules_the_module_object
  * @see also: http://wiki.commonjs.org/wiki/Modules
  */
-var require = load(_moduleRoot + '/external/require.js')(
-    // Invoke the function returned by 'load' immediately with the following arguments.
-    //    - a root directory in which to look for modules.
-    //    - an array of paths in which to look for modules.
-    //    - an optional hook object that includes two callback functions for notification.
-    _moduleRoot,
-    _modulePath
-);
+var require = null;
+try {
+    require = load(_moduleRoot + '/external/require.js')(
+	// Invoke the function returned by 'load' immediately with the following arguments.
+	//    - a root directory in which to look for modules.
+	//    - an array of paths in which to look for modules.
+	//    - an optional hook object that includes two callback functions for notification.
+	_moduleRoot,
+	_modulePath
+    );
+} catch(err) {
+    // We could be under Windows, try using Nashorn's load() "classpath:" extension.
+    // See http://stackoverflow.com/questions/28221006/is-it-possible-to-have-nashorn-load-scripts-from-classpath,
+    // See https://wiki.openjdk.java.net/display/Nashorn/Nashorn+extensions
+    require = load("classpath:ptolemy/actor/lib/jjs/external/require.js")(_moduleRoot, _modulePath);
+}
 
 /**
  * Require the named accessor. This is a version of require() that looks
@@ -306,7 +315,7 @@ function getAccessorCode(name) {
 	for (i = 0; i < _accessorClasspath.length; i++) {
 		location = _accessorClasspath[i].concat(name);
 		try {
-			code = FileUtilities.getFileFromClasspathAsString(location);
+			code = FileUtilities.getFileAsString(location);
 			break;
 		} catch (err) {
 			continue;

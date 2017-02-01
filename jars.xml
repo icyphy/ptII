@@ -4161,6 +4161,9 @@
         <include name="org/terraswarm/accessor/accessors/web/jsdoc/templates/ptdoc/*.js"/>
         <include name="org/terraswarm/accessor/accessors/web/library/website/*.html"/>
         <include name="org/terraswarm/accessor/accessors/web/library/website/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/test/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/test/auto/*.js"/>
+        <include name="org/terraswarm/accessor/accessors/web/test/util/*.js"/>
       </fileset>
     </jar>
 
