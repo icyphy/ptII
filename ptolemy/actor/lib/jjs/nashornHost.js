@@ -92,7 +92,7 @@ var __accessorFile = FileUtilities.nameToFile(
 var _accessorRoot = __accessorFile.getAbsolutePath();
 
 // Check to see if _accessorRoot is a Jar URL like. Windows: check !\\.
-if (_accessorRoot.indexOf("!/") !== -1) || _accessorRoot.indexOf("!\\") !== -1) {{
+if (_accessorRoot.indexOf("!/") !== -1 || _accessorRoot.indexOf("!\\") !== -1) {
 _accessorRoot = "jar:" + __accessorFile.toString();
 }
 
