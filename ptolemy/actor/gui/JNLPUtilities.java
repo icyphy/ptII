@@ -164,7 +164,7 @@ public class JNLPUtilities {
         // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec);
         // If the spec is not a jar URL, then check in file system.
         // This method is used by CapeCode to find .js file resources with require().
-        int jarSeparatorIndex = spec.indexOf("!/");
+        int jarSeparatorIndex = spec.indexOf("!" + File.separator);
         File results = null;
         if (jarSeparatorIndex == -1) {
             results = new File(spec);
@@ -173,7 +173,7 @@ public class JNLPUtilities {
                 return results;
             }
         } else {
-            // Strip off the text leading up to !/.
+            // Strip off the text leading up to !/ or !\
             spec = spec.substring(jarSeparatorIndex + 2);
         }
 
@@ -181,12 +181,17 @@ public class JNLPUtilities {
         URL url = ClassUtilities.getResource(spec);
         if (url == null) {
             // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 0.5");
-            // If we are trying to read something with a path like ./decode.js, then check the _lastSpec
-            if (spec.startsWith("./") && _lastSpec != null) {
-                String parentLastSpec = _lastSpec.substring(0, _lastSpec.lastIndexOf("/") + 1);
-                return getResourceSaveJarURLAsTempFile(parentLastSpec + spec.substring(2));
-            }
-            return null;
+	    // Windows, getResource() on spec with backslashes causes problems.
+	    String spec2 = spec.replace("\\", "/");
+	    url = ClassUtilities.getResource(spec2);
+	    if (url == null) {
+		// If we are trying to read something with a path like ./decode.js, then check the _lastSpec
+		if (spec.startsWith("." + File.separator) && _lastSpec != null) {
+		    String parentLastSpec = _lastSpec.substring(0, _lastSpec.lastIndexOf(File.separator) + 1);
+		    return getResourceSaveJarURLAsTempFile(parentLastSpec + spec.substring(2));
+		}
+		return null;
+	    }
         }
 
         results = null;
@@ -204,7 +209,7 @@ public class JNLPUtilities {
                         && _jarURITemporaryFiles.containsKey(url.toURI())) {
                     results = _jarURITemporaryFiles.get(url.toURI());
                     _lastSpec = spec;
-                    //System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 1 return: " + results);
+                    // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 1 return: " + results);
                     return results;
                 }
             } catch (URISyntaxException ex) {
@@ -214,7 +219,7 @@ public class JNLPUtilities {
             }
             String prefix = "";
             String suffix = "";
-            int lastIndexOfSlash = spec.lastIndexOf("/");
+            int lastIndexOfSlash = spec.lastIndexOf(File.separator);
             int lastIndexOfDot = spec.lastIndexOf(".");
             if (lastIndexOfSlash == -1) {
                 if (lastIndexOfDot == -1) {
@@ -237,14 +242,14 @@ public class JNLPUtilities {
                 results =  new File(temporaryFileName);
                 // System.out.println("JNLPUtilities.g.r.s.j.u.a.t.f(): start spec: " + spec + " 1.5 reslts: " + results + " exists: " + results.exists());
             } catch (IOException ex) {
-                // If the spec exists with a trailing /, then just
+                // If the spec exists with a trailing / or \ , then just
                 // return that so that we can detect that it is a
                 // directory.  FIXME: the directory is not actually
                 // created here, which could be confusing.
-                if (spec.length() > 0 && spec.charAt(spec.length()-1) != '/') {
-                    URL urlDirectory = ClassUtilities.getResource(spec + "/");
+                if (spec.length() > 0 && spec.charAt(spec.length()-1) != File.separatorChar) {
+                    URL urlDirectory = ClassUtilities.getResource(spec + File.separator);
                     if (urlDirectory != null) {
-                        results = new File(spec + "/");
+                        results = new File(spec + File.separator);
                     }
                 } else {
                     results = null;

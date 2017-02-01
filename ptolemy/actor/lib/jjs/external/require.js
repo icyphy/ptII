@@ -182,8 +182,14 @@
         if (moduleName.match(/^[^\.\/]/)) {
             // it's a module named like so ... 'events' , 'net/http'
             for (var i = 0; i < modulePaths.length; i++) {
+		var modulePath = modulePaths[i];
+		// Windows? 
+		if (moduleFilePath.indexOf('\\') != -1) {
+		    modulePath = modulePath.replace(/\//g, '\\');
+		}
                 // Remove the value of __moduleFile from the start of modulePaths.
-                var shortModulePath = modulePaths[i].replace(moduleFilePath, 'ptolemy/actor/lib/jjs');
+                var shortModulePath = modulePath.replace(moduleFilePath, 'ptolemy/actor/lib/jjs');
+                shortModulePath = shortModulePath.replace(moduleFilePath, 'ptolemy\\actor\\lib\\jjs');
                 var classPathFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(shortModulePath + moduleName);
                 if (classPathFile !== null) {
                     if (classPathFile.isFile()) {
@@ -304,8 +310,10 @@
 
         file = resolveModuleToFile(path, parentFile, modulePaths);
         if (!file) {
+	    // Use parentFile.absolutePath instead of parentFile.canonicalFile
+	    // because parentFile.canonicalFile will fail under certain circumstances.
             var errMsg = '' + fmt("require() failed to find matching file for module '%s' " +
-                "in working directory '%s' ", [path, parentFile.canonicalPath]);
+                "in working directory '%s' ", [path, parentFile.absolutePath]);
             if (!(('' + path).match(/^\./))) {
                 errMsg = errMsg + ' and not found in paths ' + JSON.stringify(modulePaths);
             }
