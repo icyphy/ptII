@@ -161,7 +161,7 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
-        <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="terra.eecs.berkeley.edu">
+        <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="10.142.93.46">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
