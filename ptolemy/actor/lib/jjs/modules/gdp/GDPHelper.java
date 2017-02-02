@@ -104,13 +104,17 @@ public class GDPHelper extends HelperBase {
             String ptII = StringUtilities.getProperty("ptolemy.ptII.dir");
             String gdpLibraryPath = ptII + "/lib/linux-x86-64-rhel/";
             String jnaLibraryPath = StringUtilities.getProperty("jna.library.path").trim();
-            if (jnaLibraryPath.length() > 0) {
-                jnaLibraryPath += File.pathSeparator + gdpLibraryPath;
-            } else {
-                jnaLibraryPath = gdpLibraryPath;
-            }
-            System.setProperty("jna.library.path", jnaLibraryPath);
-            System.out.println("GDPHelper: Updated jna.library.path to " + jnaLibraryPath);
+
+	    // If gdpLibraryPath is not yet in jna.libraryPath, then add it.
+	    if (jnaLibraryPath.indexOf(gdpLibraryPath) == -1) {
+		if (jnaLibraryPath.length() > 0) {
+		    jnaLibraryPath += File.pathSeparator + gdpLibraryPath;
+		} else {
+		    jnaLibraryPath = gdpLibraryPath;
+		}
+		System.setProperty("jna.library.path", jnaLibraryPath);
+		System.out.println("GDPHelper: Updated jna.library.path to " + jnaLibraryPath);
+	    }
         }
 
         // Update ~/.ep_adm_params/gdp according to the value of logdname.
