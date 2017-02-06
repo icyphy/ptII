@@ -113,7 +113,7 @@ public class JavaScript extends AccessorCodeGeneratorAdapter {
                 String setter = "setParameter";
 
                 // For PortParameters, use setDefault(), not setParameter().  See
-                // https://www.terraswarm.org/accessors/wiki/VersionCurrent/Input#SettingDefaultInput
+                // https://www.icyphy.org/accessors/wiki/VersionCurrent/Input#SettingDefaultInput
                 if (parameter instanceof PortParameter) {
                     setter = "setDefault";
                 }

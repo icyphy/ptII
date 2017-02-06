@@ -32,7 +32,7 @@ package ptolemy.actor.gui.jnlp;
 
 /** Wrapper class to start up CapeCode, the subset that has the
  convenient feature that it automatically imports all the accessors
- at https://www.terraswarm.org/accessors and makes them available in an
+ at https://www.icyphy.org/accessors and makes them available in an
  actor library to drag and drop into models.
 
  This wrapper class that calls eventually calls

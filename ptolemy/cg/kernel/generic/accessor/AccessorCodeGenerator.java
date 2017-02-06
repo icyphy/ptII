@@ -61,7 +61,7 @@ import ptolemy.util.StringUtilities;
  *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js
  *  </pre>
  *
- *  <p>For more information, see <a href="https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#in_browser">https://www.terraswarm.org/accessors/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
+ *  <p>For more information, see <a href="https://www.icyphy.org/accessors/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
  *
  *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
  *  @version $Id$

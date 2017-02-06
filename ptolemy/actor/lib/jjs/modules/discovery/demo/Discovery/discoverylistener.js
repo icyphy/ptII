@@ -36,8 +36,8 @@
  *
  *   To test locally, see instructions at the bottom of the file.
  *
- *   Accessors: https://www.terraswarm.org/accessors/
- *   Discovery:  https://www.terraswarm.org/accessors/wiki/Version0/Discovery
+ *   Accessors: https://www.icyphy.org/accessors/
+ *   Discovery:  https://www.icyphy.org/accessors/wiki/Version0/Discovery
  *
  *   Author: Elizabeth Latronico
  */

@@ -1,7 +1,7 @@
 
 * * *
 
-* *The text above was downloaded from https://www.terraswarm.org/accessors/wiki/Version0/OptionalJavaScriptModules?action=markdown -O OptionalJavaScriptModules.md *
+* *The text above was downloaded from https://www.icyphy.org/accessors/wiki/Version0/OptionalJavaScriptModules?action=markdown -O OptionalJavaScriptModules.md *
 * *The text below is from $PTII/doc/jsdoc/topREADMEEnd.md *
 
 * * *
@@ -12,7 +12,7 @@ Where to find this page on the web
 
 How to get the list of Accessors from the TerraSwarm accessors wiki
 -------------------------------------------------------------------
-Currently, https://www.terraswarm.org/accessors/wiki/Version0/OptionalJavaScriptModules is not world readable.
+Currently, https://www.icyphy.org/accessors/wiki/Version0/OptionalJavaScriptModules is not world readable.
 
 However, we use the contents of that URL for the first part of this page.  What we do is use wget to get a markdown version of that page using cookies and then concatenate it with $PTII/doc/jsdoc/topREADMEEnd.md to create $PTII/doc/jsdoc/topREADME.md.  Running "cd $PTII; ant jsdoc" reads topREADME.md.
 
@@ -42,8 +42,8 @@ The ptII continuous integration build at [http://terra.eecs.berkeley.edu:8080/jo
 See Also
 --------
 * [https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems](https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems) - Overview of JSDoc systems
-* [https://www.terraswarm.org/accessors/wiki/Main/JSDoc](https://www.terraswarm.org/accessors/wiki/Main/JSDoc) - Information for Accessor writers (TerraSwarm membership required)
-* [https://www.terraswarm.org/accessors/doc/jsdoc/index.html](https://www.terraswarm.org/accessors/doc/jsdoc/index.html) - JavaScript documentation of Accessors.
+* [https://www.icyphy.org/accessors/wiki/Main/JSDoc) - Information for Accessor writers (TerraSwarm membership required)
+* [https://www.icyphy.org/accessors/doc/jsdoc/index.html) - JavaScript documentation of Accessors.
 
 How to update this file
 -----------------------

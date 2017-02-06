@@ -128,7 +128,7 @@ public class AccessorLibrary extends EntityLibrary {
 
                 if (_configureSource != null && !_configureSource.equals("")) {
                     // FIXME: This will only work if the _configureSource is
-                    // "https://www.terraswarm.org/accessors" or a sublibrary.
+                    // "https://www.icyphy.org/accessors" or a sublibrary.
                     // Should be generalized to be able to list accessor
                     // libraries from other sites.
 

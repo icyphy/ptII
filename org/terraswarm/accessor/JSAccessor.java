@@ -166,7 +166,7 @@ public class JSAccessor extends JavaScript {
     /** The source of the accessor (a URL). */
     public ActionableAttribute accessorSource;
 
-    /** If true, then check out the TerraSwarm accessors svn
+    /** If true, then check out the accessors svn
      *  repository when the accessor is reloaded and run ant to build
      *  the PtDoc files.  This repository is not currently publically
      *  readable.  This parameter is a boolean, and the initial
@@ -234,7 +234,7 @@ public class JSAccessor extends JavaScript {
 
         // This method is a separate method so that we can use it for
         // testing the reimportation of accessors.  See
-        // https://www.terraswarm.org/accessors/wiki/Main/TestAPtolemyAccessorImport
+        // https://www.icyphy.org/accessors/wiki/Main/TestAPtolemyAccessorImport
 
         // First get the file name only.
         String fileName = urlSpec.substring(urlSpec.lastIndexOf('/') + 1, urlSpec.length());
@@ -307,7 +307,7 @@ public class JSAccessor extends JavaScript {
         return newObject;
     }
 
-    /** Check out or update the TerraSwarm accessor repository, unless
+    /** Check out or update the accessor repository, unless
      *  the <i>checkoutOrUpdateAccessorsRepository</i> parameter is
      *  false, in which case, do nothing.
      *  If the udpate succeeds, and the response from the SVN server
@@ -348,10 +348,10 @@ public class JSAccessor extends JavaScript {
             } else {
                 newCheckout = true;
                 // Default to anonymous, read-only access.
-                String accessorsRepo = "https://repo.eecs.berkeley.edu/svn-anon/projects/terraswarm/accessors/trunk/accessors";
+                String accessorsRepo = "https://repo.eecs.berkeley.edu/svn-anon/projects/icyphy/accessors/trunk/accessors";
                 // If the ptII svn repo is read/write, then try read write access to the accessors repo.
                 if (_ptIISvnRepoIsReadWrite()) {
-                    accessorsRepo = "https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors";
+                    accessorsRepo = "https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors";
                 }
                 exec.setWorkingDirectory(JSAccessor._accessorDirectory());
                 String svnCommand = "svn co --non-interactive --trust-server-cert " + accessorsRepo;
@@ -379,7 +379,7 @@ public class JSAccessor extends JavaScript {
                 _checkoutOrUpdateFailed = true;
                 if (newCheckout) {
                     MessageHandler.status("Failed to check out the accessors repository.");
-                    throw new IOException("Failed to check out the TerraSwarm accessors repository with:\n"
+                    throw new IOException("Failed to check out the accessors repository with:\n"
                             + _commands + "\n"
                             + "The output was: " + exec.buffer);
                 } else {
@@ -403,10 +403,10 @@ public class JSAccessor extends JavaScript {
             _checkoutOrUpdateFailed = true;
             if (newCheckout) {
                 MessageHandler.status("Failed to check out the accessors repository.");
-                IOException ioException = new IOException("Failed to check out the TerraSwarm accessors repository with:\n"
+                IOException ioException = new IOException("Failed to check out the accessors repository with:\n"
                         + _commands + "\n"
                         + "Perhaps you don't have read access?  "
-                        + "The TerraSwarm accessors repository is under development.\n"
+                        + "The accessors repository is under development.\n"
                         + "The output was: " + exec.buffer);
                 ioException.initCause(throwable);
                 throw ioException;
@@ -705,7 +705,7 @@ public class JSAccessor extends JavaScript {
         if (urlSpec == null || urlSpec.trim().equals("")) {
             throw new IllegalActionException("No source file specified.");
         }
-        // If the source makes no mention of the TerraSwarm accessors repo,
+        // If the source makes no mention of the accessors repo,
         // then just use FileParameter to find the source file.
         if (urlSpec.indexOf("org/terraswarm/accessor/accessors") < 0
                 && urlSpec.indexOf("terraswarm.org/accessors") < 0) {
@@ -716,7 +716,7 @@ public class JSAccessor extends JavaScript {
         try {
             JSAccessor.getAccessorsRepository();
         } catch (Throwable throwable) {
-            System.err.println("Failed to checkout or update the TerraSwarm accessor repo.  "
+            System.err.println("Failed to checkout or update the accessors repo.  "
                     + "This could happen if you don't have read access to the repo.  "
                     + "The message was:\n"
                     + throwable);
@@ -768,7 +768,7 @@ public class JSAccessor extends JavaScript {
      *  The command to check out the repo is:
      *  <pre>
      *  cd $PTII/org/terraswarm/accessor
-     *  svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors
+     *  svn co https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors
      *  </pre>
      *  @return The $PTII/org/terraswarm/accessor directory.
      *  @exception IOException If the ptolemy.ptII.dir property does
@@ -795,16 +795,16 @@ public class JSAccessor extends JavaScript {
      *  XSLT (if XML) and MoML is returned.
      *
      *  <p>The first time this method is run, it will attempt to
-     *  either checkout or update the TerraSwarm accessors repo
+     *  either checkout or update the accessors repo
      *  located at $PTII/org/terraswarm/accessor/accessors.  Note that
      *  this repo is not necessarily world readable. </p>
      *
-     *  <p>If the <i>urlSpec</i> is not found, then the TerraSwarm
+     *  <p>If the <i>urlSpec</i> is not found, then the 
      *  accessor repo will be checked out or updated.</p>
      *
      *  <p>After the repo is loaded or updated, if url starts with
-     *  https://www.terraswarm.org/accessors/ or
-     *  https://terraswarm.org/accessors/, and the corresponding file
+     *  https://www.icyphy.org/accessors/ or
+     *  https://icyphy.org/accessors/, and the corresponding file
      *  in the local svn accessors repo directory exists, then the
      *  file in the local svn directory is used instead of the file
      *  from the website.</p>
@@ -830,7 +830,7 @@ public class JSAccessor extends JavaScript {
 
         // This method is a separate method so that we can use it for
         // testing the reimportation of accessors.  See
-        // https://www.terraswarm.org/accessors/wiki/Main/TestAPtolemyAccessorImport
+        // https://www.icyphy.org/accessors/wiki/Main/TestAPtolemyAccessorImport
 
         URL accessorURL = _sourceToURL(urlSpec, updateRepository);
 
@@ -919,7 +919,7 @@ public class JSAccessor extends JavaScript {
      *  @param urlSpec The String URL of the accessor or *PtDoc.xml file.
      *  @param accessorOrPtDocURL The proposed URL of the accessor or *PtDoc.xml file.
      *  @return If the urlSpec matches
-     *  https*://(www\.)*terraswarm.org/accessors and the
+     *  https*://(www\.)*icyphy.org/accessors and the
      *  corresponding file can be found in the directory returned by
      *  _accessorDirectory(), then return a URL that refers to the
      *  local file.  Otherwise, return the value of the
@@ -934,8 +934,8 @@ public class JSAccessor extends JavaScript {
         // the website and the local file and act accordingly.
         // Another enhancement would be to add a parameter to control
         // this functionality.
-        if (urlSpec.matches("https*://(www\\.)*terraswarm.org/accessors/.*")) {
-            String target = "terraswarm.org/accessors/";
+        if (urlSpec.matches("https*://(www\\.)*icyphy.org/accessors/.*")) {
+            String target = "icyphy.org/accessors/";
             String urlSpecTailPath = urlSpec.substring(urlSpec.indexOf(target) + target.length());
             try {
                 File urlSpecLocalFile = new File(_accessorDirectory(), "accessors/web/" + urlSpecTailPath);

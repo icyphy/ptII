@@ -69,7 +69,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/net/UDPSocketListener.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/net/UDPSocketListener.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -156,7 +156,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.terraswarm.org/accessors/net/UDPSocketSender.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/net/UDPSocketSender.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor sends UDP (datagram) messages to the specified&#10; destination address and port.&lt;/p&gt;&#10;&lt;p&gt; The send type can be any of those supported by the host.&#10; The list of supported types will be provided as options for the &lt;code&gt;sendType&lt;/code&gt;&#10; parameter. For the Ptolemy II host, these include at&#10; least 'string', 'number', 'image', and a variety of numeric types.&lt;/p&gt;">

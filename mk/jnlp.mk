@@ -235,7 +235,7 @@ PTXBEE_JARS = \
 #
 # CapeCode: This subset has the convenient feature that it
 # automatically imports all the accessors at
-# http://terraswarm.org/accessors and makes them available in an actor
+# https://www.icyphy.org/accessors and makes them available in an actor
 # library to drag and drop into models.
 
 # Jar files that will appear in a CapeCode only JNLP Ptolemy II Runtime.

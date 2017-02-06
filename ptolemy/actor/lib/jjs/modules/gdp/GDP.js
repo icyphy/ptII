@@ -29,7 +29,7 @@
 /**
  * Module to access the Global Data Plane (GDP).
  *
- * See <a href="https://www.terraswarm.org/accessors/wiki/Main/GDPWithAccessors">https://www.terraswarm.org/accessors/wiki/Main/GDPWithAccessors</a>
+ * See <a href="https://www.icyphy.org/accessors/wiki/Main/GDPWithAccessors</a>
  *
  * @module GDP
  * @author Edward A. Lee, Christopher Brooks

@@ -98,7 +98,7 @@ import ptolemy.util.StringUtilities;
 /**
    An actor whose functionality is given in JavaScript using the accessor
    interface defined at
-   <a href="https://www.terraswarm.org/accessors">https://www.terraswarm.org/accessors</a>.
+   <a href="https://www.icyphy.org/accessors">https://www.icyphy.org/accessors</a>.
    Refer to that page for complete documentation of the
    functions and modules that are provided to the script.
    <p>
@@ -231,7 +231,7 @@ import ptolemy.util.StringUtilities;
    <li> print(string): print the specified string to the console (standard out).</li>
    <li> readURL(string): read the specified URL and return its contents as a string (HTTP GET).</li>
    <li> require(string): load and return a CommonJS module by name. See
-        <a href="https://www.terraswarm.org/accessors">https://www.terraswarm.org/accessors</a> for
+        <a href="https://www.icyphy.org/accessors">https://www.icyphy.org/accessors</a> for
         supported modules. See
         <a href="http://wiki.commonjs.org/wiki/Modules">http://wiki.commonjs.org/wiki/Modules</a>
         for what a CommonJS module is.</li>
@@ -422,7 +422,7 @@ import ptolemy.util.StringUtilities;
    </ul>
    <p>
    For debugging, it can be useful to right click on this actor and select Listen to Actor.
-   Refer to <a href="https://www.terraswarm.org/accessors">https://www.terraswarm.org/accessors</a>
+   Refer to <a href="https://www.icyphy.org/accessors">https://www.icyphy.org/accessors</a>
    for a complete definition of the available functionality. For example,
    it is explained there how to create composite accessors, which instantiate and connect
    multiple subaccessors within this one.
