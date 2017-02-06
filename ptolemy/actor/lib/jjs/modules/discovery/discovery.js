@@ -35,7 +35,7 @@
  *  discovery accessor, and returns a JSON object containing a list of device
  *  IP addresses, and names and MAC addresses when available.
  *
- *  Accessors overview: https://www.terraswarm.org/accessors/
+ *  Accessors overview: https://www.icyphy.org/accessors/
  *  Device discovery overview:  http://www.terraswarm.org/testbeds/wiki/Main/DiscoverEthernetMACs
  *
  *  @module discovery

@@ -93,7 +93,7 @@ public class ImportAccessorAction extends AbstractAction {
 
     /** Create a new action to import an accessor.
      *  The initial default value for last location is
-     *  "https://www.terraswarm.org/accessors".
+     *  "https://www.icyphy.org/accessors".
      * @param frame The Top that gets the menu.
      */
     public ImportAccessorAction(Top frame) {
@@ -103,7 +103,7 @@ public class ImportAccessorAction extends AbstractAction {
                     + " is not a BasicGraphFrame?");
         }
         _frame = (BasicGraphFrame) frame;
-        _lastLocation = "https://www.terraswarm.org/accessors";
+        _lastLocation = "https://www.icyphy.org/accessors";
         putValue("tooltip", "Import an accessor");
         // putValue(GUIUtilities.MNEMONIC_KEY, Integer.valueOf(KeyEvent.VK_E));
     }

@@ -79,8 +79,8 @@ public class JSAccessor
                 + "', '"
                 + actor.accessorSource.getExpression()
                 // Replace both https and http.  http is used in older accessors.
-                .replace("https://www.terraswarm.org/accessors/", "")
-                .replace("http://www.terraswarm.org/accessors/", "")
+                .replace("https://www.icyphy.org/accessors/", "")
+                .replace("https://www.icyphy.org/accessors/", "")
                 + "');"
                 + _eol
                 // No need to add this accessor to the container or containedAccessors because

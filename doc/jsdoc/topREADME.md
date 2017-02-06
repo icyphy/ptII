@@ -63,37 +63,37 @@ To implement a module, see the [Module Specification][26].
 
 [Back to accessor specification][27]
 
- [1]: https://www.terraswarm.org/accessors/wiki/Version0/Require
+ [1]: https://www.icyphy.org/accessors/wiki/Version0/Require
  [2]: https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/index.html
- [3]: https://www.terraswarm.org/accessors/wiki/Version0/Eventbus
- [4]: https://www.terraswarm.org/accessors/wiki/Version0/HttpClient
- [5]: https://www.terraswarm.org/accessors/wiki/Version0/Socket
- [6]: https://www.terraswarm.org/accessors/wiki/Version0/WebSocket
- [7]: https://www.terraswarm.org/accessors/wiki/Version0/AprilTags
- [8]: https://www.terraswarm.org/accessors/wiki/Version0/Cameras
- [9]: https://www.terraswarm.org/accessors/wiki/Version0/ImageFilters
- [10]: https://www.terraswarm.org/accessors/wiki/Version0/MotionDetector
+ [3]: https://www.icyphy.org/accessors/wiki/Version0/Eventbus
+ [4]: https://www.icyphy.org/accessors/wiki/Version0/HttpClient
+ [5]: https://www.icyphy.org/accessors/wiki/Version0/Socket
+ [6]: https://www.icyphy.org/accessors/wiki/Version0/WebSocket
+ [7]: https://www.icyphy.org/accessors/wiki/Version0/AprilTags
+ [8]: https://www.icyphy.org/accessors/wiki/Version0/Cameras
+ [9]: https://www.icyphy.org/accessors/wiki/Version0/ImageFilters
+ [10]: https://www.icyphy.org/accessors/wiki/Version0/MotionDetector
  [11]: https://nodejs.org/api/querystring.html
- [12]: https://www.terraswarm.org/accessors/wiki/Version0/Audio
- [13]: https://www.terraswarm.org/accessors/wiki/Version0/Ble
- [14]: https://www.terraswarm.org/accessors/wiki/Version0/Browser
- [15]: https://www.terraswarm.org/accessors/wiki/Version0/CoapClient
- [16]: https://www.terraswarm.org/accessors/wiki/Version0/Discovery
- [17]: https://www.terraswarm.org/accessors/wiki/Version0/GMTK
- [18]: https://www.terraswarm.org/accessors/wiki/Version0/IMUSensor
- [19]: https://www.terraswarm.org/accessors/wiki/Version0/LocalStorage
- [20]: https://www.terraswarm.org/accessors/wiki/Version0/MapManager?action=edit
- [21]: https://www.terraswarm.org/accessors/wiki/Version0/MdnsClient?action=edit
- [22]: https://www.terraswarm.org/accessors/wiki/Version0/Mqtt
- [23]: https://www.terraswarm.org/accessors/wiki/Version0/SsdpClient
- [24]: https://www.terraswarm.org/accessors/wiki/Version0/TextToSpeech
- [25]: https://www.terraswarm.org/accessors/wiki/Version0/UDPSocket
- [26]: https://www.terraswarm.org/accessors/wiki/Version0/ModuleSpecification
- [27]: https://www.terraswarm.org/accessors/wiki/Version1/AccessorSpecification
+ [12]: https://www.icyphy.org/accessors/wiki/Version0/Audio
+ [13]: https://www.icyphy.org/accessors/wiki/Version0/Ble
+ [14]: https://www.icyphy.org/accessors/wiki/Version0/Browser
+ [15]: https://www.icyphy.org/accessors/wiki/Version0/CoapClient
+ [16]: https://www.icyphy.org/accessors/wiki/Version0/Discovery
+ [17]: https://www.icyphy.org/accessors/wiki/Version0/GMTK
+ [18]: https://www.icyphy.org/accessors/wiki/Version0/IMUSensor
+ [19]: https://www.icyphy.org/accessors/wiki/Version0/LocalStorage
+ [20]: https://www.icyphy.org/accessors/wiki/Version0/MapManager?action=edit
+ [21]: https://www.icyphy.org/accessors/wiki/Version0/MdnsClient?action=edit
+ [22]: https://www.icyphy.org/accessors/wiki/Version0/Mqtt
+ [23]: https://www.icyphy.org/accessors/wiki/Version0/SsdpClient
+ [24]: https://www.icyphy.org/accessors/wiki/Version0/TextToSpeech
+ [25]: https://www.icyphy.org/accessors/wiki/Version0/UDPSocket
+ [26]: https://www.icyphy.org/accessors/wiki/Version0/ModuleSpecification
+ [27]: https://www.icyphy.org/accessors/wiki/Version1/AccessorSpecification
 
 * * *
 
-* *The text above was downloaded from https://www.terraswarm.org/accessors/wiki/Version0/OptionalJavaScriptModules?action=markdown -O OptionalJavaScriptModules.md *
+* *The text above was downloaded from https://www.icyphy.org/accessors/wiki/Version0/OptionalJavaScriptModules?action=markdown -O OptionalJavaScriptModules.md *
 * *The text below is from $PTII/doc/jsdoc/topREADMEEnd.md *
 
 * * *
@@ -104,7 +104,7 @@ Where to find this page on the web
 
 How to get the list of Accessors from the TerraSwarm accessors wiki
 -------------------------------------------------------------------
-Currently, https://www.terraswarm.org/accessors/wiki/Version0/OptionalJavaScriptModules is not world readable.
+Currently, https://www.icyphy.org/accessors/wiki/Version0/OptionalJavaScriptModules is not world readable.
 
 However, we use the contents of that URL for the first part of this page.  What we do is use wget to get a markdown version of that page using cookies and then concatenate it with $PTII/doc/jsdoc/topREADMEEnd.md to create $PTII/doc/jsdoc/topREADME.md.  Running "cd $PTII; ant jsdoc" reads topREADME.md.
 
@@ -134,8 +134,8 @@ The ptII continuous integration build at [http://terra.eecs.berkeley.edu:8080/jo
 See Also
 --------
 * [https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems](https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems) - Overview of JSDoc systems
-* [https://www.terraswarm.org/accessors/wiki/Main/JSDoc](https://www.terraswarm.org/accessors/wiki/Main/JSDoc) - Information for Accessor writers (TerraSwarm membership required)
-* [https://www.terraswarm.org/accessors/doc/jsdoc/index.html](https://www.terraswarm.org/accessors/doc/jsdoc/index.html) - JavaScript documentation of Accessors.
+* [https://www.icyphy.org/accessors/wiki/Main/JSDoc) - Information for Accessor writers (TerraSwarm membership required)
+* [https://www.icyphy.org/accessors/doc/jsdoc/index.html) - JavaScript documentation of Accessors.
 
 How to update this file
 -----------------------

@@ -1172,7 +1172,7 @@ else
            if test ! -d "$PTACCESSOR_DIR_FULL/accessors" ; then
               # The accessors mechanism needs to have a repo checked out.  svn:externals won't work.
               # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#svnExternals
-              # See https://www.terraswarm.org/accessors/wiki/Version0/SupportForImplementAndExtendInPtolemyIIDiscussion
+              # See https://www.icyphy.org/accessors/wiki/Version0/SupportForImplementAndExtendInPtolemyIIDiscussion
 
               # If the svn command is present, try to check out the repo
               AC_PATH_PROG(SVN, svn)

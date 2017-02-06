@@ -28,7 +28,7 @@ Click “OK”
 Navigate your browser to http://accessors.org and find the browser host, or
 go directly to:
 
-  https://www.terraswarm.org/accessors/hosts/browser/index.html
+  https://www.icyphy.org/accessors/hosts/browser/index.html
   
 Select the WebSocketClient accessor within the net directory.
 Set parameter “sslTls” true, set the server address to localhost,
