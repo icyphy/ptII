@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 125.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={416, 96, 1024, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1362, 233, 1024, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[790, 522]">
     </property>
@@ -153,7 +153,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="serverPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/credentials/keys/net1/PtServerKey.der">
+        <property name="serverPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/credentials/keys/net1/Net1.PtServerKey.der">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>

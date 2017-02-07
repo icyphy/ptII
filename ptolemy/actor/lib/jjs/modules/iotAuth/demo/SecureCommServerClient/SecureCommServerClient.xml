@@ -39,7 +39,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9963333947848174">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.7885279605262, 348.54366776315794}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.7885279605262, 348.543667763158}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To run this demo, an open-source local authorization entity (Auth) should be running.&#10;The Auth can be obtained in the github repository, https://github.com/iotauth/iotauth.&#10;&#10;NOTE2: The parameter PROJECT_PATH in this demo should be set to the repository directory of iotauth.&#10;">
@@ -82,7 +82,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="clientPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/credentials/keys/net1/PtClientKey.der">
+        <property name="clientPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/credentials/keys/net1/Net1.PtClientKey.der">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -156,7 +156,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="serverPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/credentials/keys/net1/PtServerKey.der">
+        <property name="serverPrivateKeyPath" class="ptolemy.data.expr.Parameter" value="$IOTAUTH_HOME/entity/credentials/keys/net1/Net1.PtServerKey.der">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
