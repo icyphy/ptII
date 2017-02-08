@@ -92,15 +92,29 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;An accessor for a camera on the local host. This can be a built-in camera or&#10; a USB-connected camera. This accessor has two modes of operation, &amp;quot;triggered&amp;quot;&#10; and &amp;quot;open loop.&amp;quot; In triggered mode, it captures an image whenever a trigger&#10; input is received and produces that image on its output. In open-loop mode,&#10; it captures every image produced by the camera, at the speed of the camera,&#10; and produces on the output a stream of such images.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="triggered (parameter)" class="ptolemy.kernel.util.StringAttribute" value="If true, use triggered mode.&#10;  Otherwise, use open-loop mode. This is a boolean that defaults to true.">
+            </property>
+            <property name="camera (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The name of the camera to use.&#10;  A list of available cameras is presented as options.&#10;  This is a string that defaults to &quot;default camera&quot;,&#10;  which uses the system default, if there is one.">
+            </property>
+            <property name="viewSize (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The view size&#10;  to use for capture, in pixels. A list of available view sizes for&#10;  the selected camara is presented as options. This is a JSON specification&#10;  with a &quot;width&quot; and &quot;height&quot; field, as in for example {&quot;width&quot;:640, &quot;height&quot;:480}.">
+            </property>
+            <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="A trigger input for triggered mode.&#10;  The value is ignored and can be anything.">
+            </property>
+            <property name="image (port)" class="ptolemy.kernel.util.StringAttribute" value="A stream of captured images.">
+            </property>
+        </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="image" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

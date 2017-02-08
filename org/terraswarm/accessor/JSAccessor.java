@@ -708,7 +708,7 @@ public class JSAccessor extends JavaScript {
         // If the source makes no mention of the accessors repo,
         // then just use FileParameter to find the source file.
         if (urlSpec.indexOf("org/terraswarm/accessor/accessors") < 0
-                && urlSpec.indexOf("terraswarm.org/accessors") < 0) {
+                && urlSpec.indexOf("icyphy.org/accessors") < 0) {
             return FileUtilities.nameToURL(urlSpec, null, null);
         }
 

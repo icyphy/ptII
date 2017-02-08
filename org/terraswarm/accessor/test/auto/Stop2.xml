@@ -43,6 +43,16 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 100.0]">
         </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that stops execution of the enclosing swarmlet when it&#10; receives an input with value true. It does this by identifying&#10; the top-level enclosing composite accessor and invoking wrapup&#10; on it.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="stop (port)" class="ptolemy.kernel.util.StringAttribute" value="A signal with value true to stop the swarmlet.">
+            </property>
+        </property>
         <port name="stop" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>

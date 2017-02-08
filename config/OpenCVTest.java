@@ -47,6 +47,7 @@ import java.io.File;
 public class OpenCVTest {
     public static void main(String[] args) {
         try {
+            System.out.println("About to load " + Core.NATIVE_LIBRARY_NAME);
             System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
             System.out.println("Loaded " + Core.NATIVE_LIBRARY_NAME);
         } catch (Throwable throwable) {
