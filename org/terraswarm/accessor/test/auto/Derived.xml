@@ -35,7 +35,7 @@
         </property>
     </entity>
     <entity name="DerivedA" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;   this.extend('BaseA');&#10;   this.input('in2');&#10;   this.output('output');&#10;   console.log('derived set up');&#10;}&#10;&#10;exports.initialize = function() {&#10;   exports.ssuper.initialize.call(this);&#10;   console.log('derived init');&#10;   var self = this;&#10;   this.addInputHandler('in1', function() {&#10;      self.send('output', self.get('in1'));&#10;   });&#10;}&#10;&#10;exports.wrapup = function() {&#10;   console.log('derived wrapped up');&#10;}&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function () {&#10;    this.extend('BaseA');&#10;    this.input('in2');&#10;    this.output('output');&#10;    console.log('derived set up');&#10;}&#10;&#10;exports.initialize = function () {&#10;    exports.ssuper.initialize.call(this);&#10;    console.log('derived init');&#10;    var self = this;&#10;    this.addInputHandler('in1', function () {&#10;        self.send('output', self.get('in1'));&#10;    });&#10;}&#10;&#10;exports.wrapup = function () {&#10;    console.log('derived wrapped up');&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
