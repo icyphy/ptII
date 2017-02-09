@@ -33,8 +33,8 @@ import java.io.File;
  *
  *  <p>To compile and run:</p>
  *  <pre>
- *   javac -classpath /opt/local/share/OpenCV/java/opencv-310.jar OpenCVTest.java
- *   java -classpath /opt/local/share/OpenCV/java/opencv-310.jar:. OpenCVTest
+ *   javac -classpath /opt/local/share/OpenCV/java/opencv-320.jar OpenCVTest.java
+ *   java -classpath /opt/local/share/OpenCV/java/opencv-320.jar:. OpenCVTest
  *  </pre>
  *  <p>See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/OpenCV</p>
  *
