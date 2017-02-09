@@ -4565,7 +4565,7 @@ else
            if test ! -d "$PTACCESSOR_DIR_FULL/accessors" ; then
               # The accessors mechanism needs to have a repo checked out.  svn:externals won't work.
               # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#svnExternals
-              # See https://www.icyphy.org/accessors/wiki/Version0/SupportForImplementAndExtendInPtolemyIIDiscussion
+              # See https://accessors.org/wiki/Version0/SupportForImplementAndExtendInPtolemyIIDiscussion
 
               # If the svn command is present, try to check out the repo
               # Extract the first word of "svn", so it can be a program name with args.
@@ -4616,7 +4616,7 @@ $as_echo "$as_me: WARNING: Could not find a svn binary so accessors that extend 
 $as_echo_n "checking Attempting to get a local copy of the accessors svn repo... " >&6; }
 
                   # Default to anonymous read-only access.
-                  ACCESSORS_REPO=https://repo.eecs.berkeley.edu/svn-anon/projects/terraswarm/accessors/trunk/accessors
+                  ACCESSORS_REPO=https://repo.eecs.berkeley.edu/svn-anon/projects/icyphy/accessors/trunk/accessors
 
                   # If the the PTII tree was not checked out with svn, then default to using anonymous read-only access
                   if test ! -d "$PTII/.svn"; then
@@ -4636,7 +4636,7 @@ $as_echo "$PTII/.svn does exist, so we will determine whether to use anonymous r
                       REPOSITORY_ROOT=`$SVN info --non-interactive --trust-server-cert | grep 'Repository Root' | awk '{print $NF}'`
                       if test "$REPOSITORY_ROOT" = "https://repo.eecs.berkeley.edu/svn/projects/eal/ptII"; then
                           # Read/Write access.
-                          ACCESSORS_REPO=https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors
+                          ACCESSORS_REPO=https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors
                       fi
                   fi
 
@@ -4652,25 +4652,25 @@ $as_echo "About to check out the accessors repo using $SVN_CO_COMMAND" >&6; }
     The repo may be accessed anonymously with read-only permissions or with a named account with read/write permissions.
     For anonymous access, do
       cd org/terraswarm/accessor
-      svn co https://repo.eecs.berkeley.edu/svn-anon/projects/terraswarm/accessors/trunk/accessors
+      svn co https://repo.eecs.berkeley.edu/svn-anon/projects/icyphy/accessors/trunk/accessors
     For read/write access from a UCB EECS account that is the same as your login:
       cd org/terraswarm/accessor
-      svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors
+      svn co https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors
     For read/write access from a non-UCB EECS account:
       cd org/terraswarm/accessor
-      svn co --username yourname@youremail.com https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors
+      svn co --username yourname@youremail.com https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors
     In all of the above cases, rerun ./configure" >&5
 $as_echo "$as_me: WARNING: Could not check out the accessors svn repo.  Accessors that extend the TerraSwarm accessors will not work.
     The repo may be accessed anonymously with read-only permissions or with a named account with read/write permissions.
     For anonymous access, do
       cd org/terraswarm/accessor
-      svn co https://repo.eecs.berkeley.edu/svn-anon/projects/terraswarm/accessors/trunk/accessors
+      svn co https://repo.eecs.berkeley.edu/svn-anon/projects/icyphy/accessors/trunk/accessors
     For read/write access from a UCB EECS account that is the same as your login:
       cd org/terraswarm/accessor
-      svn co https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors
+      svn co https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors
     For read/write access from a non-UCB EECS account:
       cd org/terraswarm/accessor
-      svn co --username yourname@youremail.com https://repo.eecs.berkeley.edu/svn/projects/terraswarm/accessors/trunk/accessors
+      svn co --username yourname@youremail.com https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors
     In all of the above cases, rerun ./configure" >&2;}
                else
                    if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
