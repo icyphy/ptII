@@ -9875,6 +9875,13 @@ else
 $as_echo_n "checking for OpenCV Java API... " >&6; }
     # We need to run javac in the config directory so that javac from jdk1.1.6
     # under NT and cygwin works properly
+
+    # If you update $PTII/lib/opencv-*.jar, then please update these files
+    # .classpath.default
+    # adm/gen-11.0/capecode1_0_devel_setup_windows.xml
+    # build.default.xml
+    # config/OpenCVTest.java
+
     startdir=$PTII
     cd "$srcdir/config"
     TMP_OPENCV_JAR=`find $PTII/lib -name "opencv-*.jar" | head -1`
