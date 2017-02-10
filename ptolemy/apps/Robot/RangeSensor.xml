@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="renderHTML.xsl"?>
 <!DOCTYPE entity PUBLIC "-//TerraSwarm//DTD Accessor 1//EN"
-    "https://www.icyphy.org/accessors/Accessor_1.dtd">
+    "https://accessors.org/Accessor_1.dtd">
 <class name="RangeSensor" extends="org.terraswarm.kernel.JavaScript">
   <version>0.1</version>
   <author>Ilge Akkaya</author>

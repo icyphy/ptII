@@ -31,7 +31,7 @@
 
 ME =		ptolemy/demo
 
-DIRS = 		AirManagementSystem ElectricPowerSystem ExecDemos FuelSystem ProbabilisticModels Robot RobotMPC doc test
+DIRS = 		AirManagementSystem ElectricPowerSystem ExecDemos FuelSystem ProbabilisticModels RobotMPC doc test
 
 # Root of Ptolemy II directory
 ROOT =		../..
@@ -52,7 +52,6 @@ PTAUXALLJARS = \
 	ExecDemos/ExecDemos.jar \
 	FuelSystem/FuelSystem.jar \
 	ProbabilisticModels/ProbabilisticModels.jar \
-	Robot/Robot.jar \
 	doc/doc.jar
 
 PTAUXALLJAR = $(PTPACKAGE).jar
