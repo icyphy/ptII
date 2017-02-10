@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <?xml-stylesheet type="text/xsl" href="renderHTML.xsl"?>
 <!DOCTYPE class PUBLIC "-//TerraSwarm//DTD Accessor 1//EN"
-    "https://www.icyphy.org/accessors/Accessor_1.dtd">
+    "https://accessors.org/Accessor_1.dtd">
 <class name="ReadURL" extends="org.terraswarm.JSAccessor">
   <version>0.1 $Date: 2015-05-14 13:43:08 -0700 (Thu, 14 May 2015) $</version>
   <author>Edward A. Lee</author>
