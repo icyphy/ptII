@@ -41,6 +41,7 @@ import ptolemy.kernel.util.IconAttribute;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.IconLoader;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.FileUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// AccessorIconLoader
@@ -143,7 +144,12 @@ public class AccessorIconLoader implements IconLoader {
                             // Do not update the repo (second argument is false).
                             try {
                                 URL iconURL = JSAccessor._sourceToURL(iconURLSpec, false);
-                                InputStream input = iconURL.openStream();
+                                // If the URL starts with http, then we follow
+                                // up to 10 redirects.  Otherwise, we just
+                                // call URL.getInputStream().
+
+                                InputStream input = FileUtilities.openStreamFollowingRedirects(iconURL);
+
                                 MoMLParser newParser = new MoMLParser();
                                 // Mark the parser to keep track of objects created.
                                 newParser.clearTopObjectsList();

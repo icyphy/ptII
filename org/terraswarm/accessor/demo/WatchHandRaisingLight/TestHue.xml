@@ -79,7 +79,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TestSpontaneousOnce.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestSpontaneousOnce.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -190,7 +190,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/devices/Hue.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/devices/Hue.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -263,7 +263,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TestDisplay.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestDisplay.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -303,7 +303,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TestDisplay.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestDisplay.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">

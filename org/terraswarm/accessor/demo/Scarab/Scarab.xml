@@ -79,7 +79,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/robotics/Scarab.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/robotics/Scarab.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -187,7 +187,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/cameras/Camera.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/cameras/Camera.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;An accessor for a camera on the local host. This can be a built-in camera or&#10; a USB-connected camera. This accessor has two modes of operation, &amp;quot;triggered&amp;quot;&#10; and &amp;quot;open loop.&amp;quot; In triggered mode, it captures an image whenever a trigger&#10; input is received and produces that image on its output. In open-loop mode,&#10; it captures every image produced by the camera, at the speed of the camera,&#10; and produces on the output a stream of such images.&lt;/p&gt;">
@@ -241,7 +241,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/image/MotionDetector.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/MotionDetector.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;A motion detector accessor.&#10; This accessor compares each input image against the previous&#10; input image. There are three outputs.&#10; The one named 'output' is a modified image that graphically illustrates&#10; the center of gravity of motion, if motion is detected.&#10; If enough of the pixels differ by enough, then the 'cog'&#10; output will produce the center of gravity of the pixels that&#10; differ by enough.&#10; Finally, the 'area' output produces the percentage of area&#10; covered by motion in the input image, where 0 means no motion&#10; and 100 means full image motion.&lt;/p&gt;&#10;&lt;p&gt; The options parameter can include the following fields:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;em&gt;PixelThreshold&lt;/em&gt;: Intensity threshold whereby a pixel is&#10;deemed to different (an int in the range of 0 to 255, with default 25).&lt;/li&gt;&#10;&lt;li&gt;&lt;em&gt;AreaThreshold&lt;/em&gt;: The percentage threshold of image&#10;that has different pixels for motion to be detected&#10;(a double 0-100, with default 0.2).&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;em&gt;ModifyImage&lt;/em&gt;: If true (the default), the modify the&#10;provided image with a visual indication of the location&#10;and amount of motion.&lt;/p&gt;&#10;&lt;p&gt;The implementation for the Ptolemy II host is taken from&#10;the webcam-capture package by Bartosz Firyn (SarXos), available from&#10;&lt;a href=&quot;https://github.com/sarxos/webcam-capture&quot;&gt;https://github.com/sarxos/webcam-capture&lt;/a&gt;.&#10;The webcam-capture package is licensed under the MIT License.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">

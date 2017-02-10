@@ -65,7 +65,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TrainableTest.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TrainableTest.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -113,7 +113,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/gdp/GDPLogRead.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/gdp/GDPLogRead.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -182,7 +182,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/gdp/GDPLogCreate.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/gdp/GDPLogCreate.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -250,7 +250,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TestSpontaneous.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestSpontaneous.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
@@ -321,7 +321,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TestSpontaneous.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestSpontaneous.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
@@ -392,7 +392,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TrainableTest.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TrainableTest.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -466,7 +466,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TestSpontaneousOnce.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestSpontaneousOnce.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -505,7 +505,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/gdp/GDPLogSubscribe.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/gdp/GDPLogSubscribe.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Subscribe to a Global Data Plane (GDP) log.&lt;/p&gt;&#10;&lt;p&gt; FIXME: What is the meaning of the startrec and numrec arguments? Makes no sense for subscription.&lt;/p&gt;">
@@ -574,7 +574,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/gdp/GDPLogAppend.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/gdp/GDPLogAppend.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Append string data to a Global Data Plane (GDP) log.&#10; If a log with the specified name does not exist, it is automatically&#10; created.&lt;/p&gt;">

@@ -67,7 +67,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TrainableTest.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TrainableTest.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&#10; If you set ''trainingMode'' to true and provide inputs, then the&#10; inputs will be recorded in the ''correctValues'' parameters.&#10; Otherwise, the inputs will be compared against those in the&#10; ''correctValue'' parameter.&lt;/p&gt;">
@@ -115,7 +115,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/net/WebSocketClient.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/WebSocketClient.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -214,7 +214,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/net/WebSocketServer.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/WebSocketServer.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -302,7 +302,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TestDisplay.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestDisplay.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -338,7 +338,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TestDisplay.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestDisplay.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -393,7 +393,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TrainableTest.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TrainableTest.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&#10; If you set ''trainingMode'' to true and provide inputs, then the&#10; inputs will be recorded in the ''correctValues'' parameters.&#10; Otherwise, the inputs will be compared against those in the&#10; ''correctValue'' parameter.&lt;/p&gt;">
@@ -487,7 +487,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/utilities/Stop.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/Stop.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that stops execution of the enclosing swarmlet when it&#10; receives an input with value true. It does this by identifying&#10; the top-level enclosing composite accessor and invoking wrapup&#10; on it.&lt;/p&gt;">

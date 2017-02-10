@@ -149,7 +149,7 @@
 
     <!-- Standard TerraSwarm accessors. -->
     <entity name="Accessors" class="org.terraswarm.accessor.AccessorLibrary">
-      <configure source="https://www.icyphy.org/accessors"/>
+      <configure source="https://accessors.org"/>
     </entity>
 
     <!-- Optional packages that may or may not be present  -->

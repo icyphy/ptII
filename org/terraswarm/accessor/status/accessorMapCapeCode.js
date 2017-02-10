@@ -306,7 +306,7 @@ module.exports = (function () {
 						// with a value tag:
 						// value="path/to/accessorname.js
 						// e.g.:
-						// value="https://www.icyphy.org/accessors/net/REST.js"
+						// value="https://accessors.org/net/REST.js"
 						
 						var exp = /<property name=['"]accessorSource['"]\s*class=['"]org.terraswarm.accessor.JSAccessor\$ActionableAttribute['"]\s*value=['"][A-Za-z//:/.]*['"]/g; 
 					

@@ -127,7 +127,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/devices/Moto360SensorListener.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/devices/Moto360SensorListener.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Read sensor data from a Moto 360 watch that is broadcasting the data via&#10;UDP on the local network.&lt;/p&gt;&#10;&lt;p&gt;FIXME: Give the app that needs to be running on the watch.&lt;/p&gt;&#10;&lt;p&gt;Each sensor has its own output port.  The outputs will be objects with&#10;fields 'watchID', a four-character string, and 'timestamp' representing&#10;FIXME: what information is this?&lt;/p&gt;&#10;&lt;p&gt;See https://www.terraswarm.org/urbanheartbeat/wiki/Main/WatchSoftware&#10;for details on the software that runs on the watch.&lt;/p&gt;">

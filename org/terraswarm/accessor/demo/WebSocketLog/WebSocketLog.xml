@@ -33,11 +33,11 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="It would probably also work on the TerraSwarm website&#10;TerraSwarm adds other stuff to the web page (e.g. header bar, menu bar), but if&#10;we serve pages from /src/ directories without decoration.&#10;&#10;Click here to open up&#10;https://www.icyphy.org/accessors/hosts/duktape/duktape/src/duktape.h">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="It would probably also work on the TerraSwarm website&#10;TerraSwarm adds other stuff to the web page (e.g. header bar, menu bar), but if&#10;we serve pages from /src/ directories without decoration.&#10;&#10;Click here to open up&#10;https://accessors.org/hosts/duktape/duktape/src/duktape.h">
         </property>
         <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[30.0, 575.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://www.icyphy.org/accessors/hosts/duktape/duktape/src/duktape.h#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://accessors.org/hosts/duktape/duktape/src/duktape.h#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -120,7 +120,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TestSpontaneous.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestSpontaneous.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -159,7 +159,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/net/WebSocketServer.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/WebSocketServer.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -249,7 +249,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/test/TestDisplay.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestDisplay.js">
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
             <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">

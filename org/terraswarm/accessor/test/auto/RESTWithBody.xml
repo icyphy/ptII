@@ -472,7 +472,7 @@ executing the REST accessor, so that baseURL's port number is updated</text></sv
                     </property>
                 </property>
             </property>
-            <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/net/REST.js">
+            <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/REST.js">
             </property>
             <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
                 <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
