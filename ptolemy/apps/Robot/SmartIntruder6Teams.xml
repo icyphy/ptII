@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SmartIntruder" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SmartIntruder6Teams" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -13,16 +13,16 @@
         </property>
         <property name="enforceMicrostepSemantics" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, -15.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-66.53225708007812, -29.5]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 191, 1433, 674}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1440, 748}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1199, 564]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 638]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7308512138974678">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.7706830531459334">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{812.31884765625, 331.70550019927543}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{653.2865905761719, 350.1124238999791}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
@@ -33,10 +33,10 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An intruder model that moves at constant speed and&#10;randomly changes direction at each discrete time step.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[20.0, 40.0]">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-126.53225708007812, 15.5]">
         </property>
     </property>
-    <property name="storeLocation" class="ptolemy.data.expr.Parameter" value="&quot;http://localhost:8077/keyvalue&quot;">
+    <property name="storeLocation" class="ptolemy.data.expr.Parameter" value="&quot;http://ptango.eecs.berkeley.edu:8077/keyvalue&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -52,7 +52,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{775.0, -35.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[433.4677429199219, -49.5]">
         </property>
     </property>
     <property name="maxSpeed" class="ptolemy.data.expr.Parameter" value="5.0">
@@ -71,10 +71,10 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{140.0, -35.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[3.467742919921875, -49.5]">
         </property>
     </property>
-    <property name="teamNames" class="ptolemy.data.expr.Parameter" value="{&quot;team0&quot;,&quot;team1&quot;,&quot;team2&quot;,&quot;team3&quot;}">
+    <property name="teamNames" class="ptolemy.data.expr.Parameter" value="{&quot;team0&quot;,&quot;team1&quot;,&quot;team2&quot;,&quot;team3&quot;,&quot;team4&quot;,&quot;team5&quot;}">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -90,13 +90,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{460.0, -35.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[833.4677429199219, -49.5]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="An intruder that moves away from a team of search robots. ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="{-205.0, 30.0}">
+        <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-205.0, 25.0]">
             <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Intruder">
             </property>
             <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -119,7 +119,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{275.0, -35.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[263.4677429199219, -49.5]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -127,11 +127,16 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Ilge Akkaya">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, 500.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, 635.0]">
+        </property>
+    </property>
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
+        <property name="spacing" class="ptolemy.actor.parameters.DoubleRangeParameter" value="4.4">
+            <display name="Object spacing"/>
         </property>
     </property>
     <class name="KVtoArray" extends="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1250.0, -5.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1338.4677429199219, -19.5]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={256, 134, 739, 634}, maximized=false}">
         </property>
@@ -174,17 +179,36 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
-        <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
-            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url); &#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;                                              if ( valueFromStore != &quot;&quot;) {&#10;    		send(valueFromStore, result); }&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
+        <entity name="Const" class="ptolemy.actor.lib.Const">
+            <property name="value" class="ptolemy.data.expr.Parameter" value="false">
             </property>
-            <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="https://www.icyphy.org/accessors/net/KeyValueStore.xml">
+            <doc>Create a constant sequence.</doc>
+            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+                </property>
+                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                </property>
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 125.0}">
+            </property>
+        </entity>
+        <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 115.0}">
+            </property>
+        </entity>
+        <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
+            </property>
+            <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/KeyValueStore.xml">
             </property>
             <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-                <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor reads or writes data to a key-value store web service.&#10;The key and the value are both encoded using the JavaScript encodeURIComponent() function,&#10;and on retrieval, decoded using decodeURIComponent().&#10;If &lt;i&gt;remove&lt;/i&gt; is true and the &lt;i&gt;key&lt;/i&gt; is non-empty, then upon firing, this actor&#10;will remove the specified key from the store, producing on its output the previous&#10;value (if any).&#10;&lt;p&gt;&#10;This accessor assumes that the protocol implemented at that location matches&#10;the specification below for the default location:&#10;&lt;ul&gt;&#10;&lt;li&gt;To store a value with key MY_ID and value MY_VALUE, use&#10;&lt;pre&gt;&#10;   https://www.icyphy.org/accessors/demo/KeyValueStore/KeyValueStoreClient.xml&lt;/a&gt;.&#10;&lt;/ul&gt;&#10;	&#10;  ">
+                <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor reads or writes data to a key-value store web service.&#10;The key and the value are both encoded using the JavaScript encodeURIComponent() function,&#10;and on retrieval, decoded using decodeURIComponent().&#10;If &lt;i&gt;remove&lt;/i&gt; is true and the &lt;i&gt;key&lt;/i&gt; is non-empty, then upon firing, this actor&#10;will remove the specified key from the store, producing on its output the previous&#10;value (if any).&#10;&lt;p&gt;&#10;This accessor assumes that the protocol implemented at that location matches&#10;the specification below for the default location:&#10;&lt;ul&gt;&#10;&lt;li&gt;To store a value with key MY_ID and value MY_VALUE, use&#10;&lt;pre&gt;&#10;   https://accessors.org/demo/KeyValueStore/KeyValueStoreClient.xml&lt;/a&gt;.&#10;&lt;/ul&gt;&#10;	&#10;  ">
                 </property>
                 <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
                 </property>
                 <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+                </property>
+                <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
                 </property>
                 <property name="storeLocation (port-parameter)" class="ptolemy.kernel.util.StringAttribute">
                 </property>
@@ -195,6 +219,10 @@
                 <property name="value (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="Value to store in the key-value store, or empty to not store anything.">
                 </property>
                 <property name="result (port)" class="ptolemy.kernel.util.StringAttribute" value="Value retrieved from or written to the key-value store.">
+                </property>
+                <property name="key (port)" class="ptolemy.kernel.util.StringAttribute" value="Key to be updated or retrieved.">
+                </property>
+                <property name="value (port)" class="ptolemy.kernel.util.StringAttribute" value="Value to store in the key-value store, or empty to not store anything.">
                 </property>
             </property>
             <property name="storeLocation" class="ptolemy.actor.parameters.PortParameter" value="storeLocation">
@@ -222,6 +250,8 @@
                 </property>
                 <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                 </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+                </property>
             </port>
             <port name="remove" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
@@ -236,6 +266,8 @@
                 </property>
                 <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                 </property>
+                <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+                </property>
             </port>
             <port name="result" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -243,29 +275,8 @@
                 </property>
             </port>
         </entity>
-        <entity name="Const" class="ptolemy.actor.lib.Const">
-            <property name="value" class="ptolemy.data.expr.Parameter" value="false">
-            </property>
-            <doc>Create a constant sequence.</doc>
-            <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-                <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
-                </property>
-                <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-                </property>
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 125.0}">
-            </property>
-        </entity>
-        <entity name="JSONToToken" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{325.0, 115.0}">
-            </property>
-        </entity>
         <relation name="relation2" class="ptolemy.actor.TypedIORelation">
             <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;trigger._location&quot;,x=20.0,y=125.0}, tail={id=&quot;Const.trigger&quot;,x=110.0,y=125.0}, points={} } }">
-            </property>
-        </relation>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=110.0,y=125.0}, tail={id=&quot;KeyValueStore.remove&quot;,x=225.0,y=115.0}, points={} } }">
             </property>
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -276,24 +287,28 @@
             <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JSONToToken.input&quot;,x=325.0,y=115.0}, tail={id=&quot;KeyValueStore.result&quot;,x=225.0,y=115.0}, points={} } }">
             </property>
         </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=110.0,y=125.0}, tail={id=&quot;KeyValueStore.remove&quot;,x=225.0,y=115.0}, points={} } }">
+            </property>
+        </relation>
         <link port="x" relation="relation4"/>
         <link port="trigger" relation="relation2"/>
-        <link port="KeyValueStore.remove" relation="relation"/>
-        <link port="KeyValueStore.result" relation="relation5"/>
         <link port="Const.output" relation="relation"/>
         <link port="Const.trigger" relation="relation2"/>
         <link port="JSONToToken.input" relation="relation5"/>
         <link port="JSONToToken.output" relation="relation4"/>
+        <link port="KeyValueStore.remove" relation="relation"/>
+        <link port="KeyValueStore.result" relation="relation5"/>
     </class>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
         <property name="values" class="ptolemy.data.expr.Parameter" value="{false}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 280.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-66.53225708007812, 370.5]">
         </property>
     </entity>
     <entity name="ElementsToArray" class="ptolemy.actor.lib.ElementsToArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{420.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[273.4677429199219, 115.5]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -303,19 +318,19 @@
         </port>
     </entity>
     <entity name="ArrayToElements2" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1315.0, 215.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1138.4677429199219, 185.5]">
         </property>
     </entity>
     <entity name="ArrayToElements3" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1315.0, 280.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1138.4677429199219, 245.5]">
         </property>
     </entity>
     <entity name="ArrayToElements4" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1315.0, 370.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1138.4677429199219, 305.5]">
         </property>
     </entity>
     <entity name="Intruder" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{715.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[563.4677429199219, 115.5]">
         </property>
         <property name="initialPosition" class="ptolemy.data.expr.Parameter" value="{0,10}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -336,7 +351,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-515.0, -430.0}">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1115, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 22, 1115, 634}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[881, 449]">
         </property>
@@ -695,24 +710,26 @@
         <link port="AddSubtract.output" relation="relation"/>
     </entity>
     <entity name="ArrayToElements5" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1315.0, 440.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1138.4677429199219, 370.5]">
         </property>
     </entity>
     <entity name="ArrayToElements" class="ptolemy.actor.lib.ArrayToElements">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1320.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1143.4677429199219, 95.5]">
         </property>
     </entity>
     <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get(storeLocation);&#10;    var theKey = get(key);&#10;    var toRemove = get(remove);&#10;    var theValue = get(value);&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;        if (theKey != &quot;&quot;) {&#10;    		produce = readURL(url);&#10;    		url = store + '/delete?id=' + theKey;&#10;    		readURL(url);&#10;    		if (produce != &quot;&quot;) {&#10;    			send(produce, result);&#10;    		}&#10;    	}&#10;    } else {&#10;    	// toRemove == false. If there is a value, use it to set.&#10;    	if (theValue != &quot;&quot;) {&#10;    		// FIXME: Escape theValue to make a valid URL.&#10;    	    url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;			readURL(url);&#10;			send(theValue, result);&#10;		} else {&#10;			var valueFromStore = decodeURIComponent(readURL(url));&#10;    		send(valueFromStore, result);&#10;		}&#10;    }&#10;}&#10;	// &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
         </property>
-        <property name="accessorSource" class="ptolemy.kernel.util.StringAttribute" value="https://www.icyphy.org/accessors/net/KeyValueStore.xml">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/KeyValueStore.xml">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor reads or writes data to a key-value store web service.&#10;The key and the value are both encoded using the JavaScript encodeURIComponent() function,&#10;and on retrieval, decoded using decodeURIComponent().&#10;If &lt;i&gt;remove&lt;/i&gt; is true and the &lt;i&gt;key&lt;/i&gt; is non-empty, then upon firing, this actor&#10;will remove the specified key from the store, producing on its output the previous&#10;value (if any).&#10;&lt;p&gt;&#10;This accessor assumes that the protocol implemented at that location matches&#10;the specification below for the default location:&#10;&lt;ul&gt;&#10;&lt;li&gt;To store a value with key MY_ID and value MY_VALUE, use&#10;&lt;pre&gt;&#10;   https://www.icyphy.org/accessors/demo/KeyValueStore/KeyValueStoreClient.xml&lt;/a&gt;.&#10;&lt;/ul&gt;&#10;	&#10;  ">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This accessor reads or writes data to a key-value store web service.&#10;The key and the value are both encoded using the JavaScript encodeURIComponent() function,&#10;and on retrieval, decoded using decodeURIComponent().&#10;If &lt;i&gt;remove&lt;/i&gt; is true and the &lt;i&gt;key&lt;/i&gt; is non-empty, then upon firing, this actor&#10;will remove the specified key from the store, producing on its output the previous&#10;value (if any).&#10;&lt;p&gt;&#10;This accessor assumes that the protocol implemented at that location matches&#10;the specification below for the default location:&#10;&lt;ul&gt;&#10;&lt;li&gt;To store a value with key MY_ID and value MY_VALUE, use&#10;&lt;pre&gt;&#10;   https://accessors.org/demo/KeyValueStore/KeyValueStoreClient.xml&lt;/a&gt;.&#10;&lt;/ul&gt;&#10;	&#10;  ">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
             <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+            </property>
+            <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
             </property>
             <property name="storeLocation (port-parameter)" class="ptolemy.kernel.util.StringAttribute">
             </property>
@@ -724,6 +741,10 @@
             </property>
             <property name="result (port)" class="ptolemy.kernel.util.StringAttribute" value="Value retrieved from or written to the key-value store.">
             </property>
+            <property name="key (port)" class="ptolemy.kernel.util.StringAttribute" value="Key to be updated or retrieved.">
+            </property>
+            <property name="value (port)" class="ptolemy.kernel.util.StringAttribute" value="Value to store in the key-value store, or empty to not store anything.">
+            </property>
         </property>
         <property name="storeLocation" class="ptolemy.actor.parameters.PortParameter" value="storeLocation">
         </property>
@@ -731,9 +752,9 @@
         </property>
         <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
         </property>
-        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[-169.7667290105279,83.51365669770293]&quot;">
+        <property name="value" class="ptolemy.actor.parameters.PortParameter" value="&quot;[-24.051933776659187,16.684631551300427]&quot;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1105.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[943.4677429199219, 95.5]">
         </property>
         <port name="storeLocation" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -747,6 +768,8 @@
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
             </property>
         </port>
         <port name="remove" class="ptolemy.actor.parameters.ParameterPort">
@@ -762,6 +785,8 @@
             </property>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
+            <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+            </property>
         </port>
         <port name="result" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -770,61 +795,105 @@
         </port>
     </entity>
     <entity name="TokenToJSON" class="ptolemy.actor.lib.conversions.json.TokenToJSON">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{950.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[793.4677429199219, 115.5]">
         </property>
     </entity>
     <entity name="JSONToToken5" class="ptolemy.actor.lib.conversions.json.JSONToToken">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1205.0, 125.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1038.4677429199219, 95.5]">
         </property>
     </entity>
     <entity name="InstanceOfKVtoArray" class="KVtoArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 135.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[73.46774291992188, 90.5]">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={256, 134, 739, 634}, maximized=false}">
         </property>
         <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
+            </property>
             <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
             </property>
         </entity>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JSONToToken.input&quot;,x=325.0,y=115.0}, tail={id=&quot;KeyValueStore.result&quot;,x=225.0,y=115.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=110.0,y=125.0}, tail={id=&quot;KeyValueStore.remove&quot;,x=225.0,y=115.0}, points={} } }">
+            </property>
+        </relation>
     </entity>
     <entity name="InstanceOfKVtoArray2" class="KVtoArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 280.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.46774291992188, 245.5]">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(2)">
         </property>
         <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
+            </property>
             <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
             </property>
         </entity>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JSONToToken.input&quot;,x=325.0,y=115.0}, tail={id=&quot;KeyValueStore.result&quot;,x=225.0,y=115.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=110.0,y=125.0}, tail={id=&quot;KeyValueStore.remove&quot;,x=225.0,y=115.0}, points={} } }">
+            </property>
+        </relation>
     </entity>
     <entity name="InstanceOfKVtoArray3" class="KVtoArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 370.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.46774291992188, 305.5]">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(3)">
         </property>
         <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
+            </property>
             <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
             </property>
         </entity>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JSONToToken.input&quot;,x=325.0,y=115.0}, tail={id=&quot;KeyValueStore.result&quot;,x=225.0,y=115.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=110.0,y=125.0}, tail={id=&quot;KeyValueStore.remove&quot;,x=225.0,y=115.0}, points={} } }">
+            </property>
+        </relation>
     </entity>
     <entity name="InstanceOfKVtoArray4" class="KVtoArray">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 440.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.46774291992188, 370.5]">
         </property>
         <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(0)">
         </property>
         <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
+            </property>
             <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
             </property>
         </entity>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JSONToToken.input&quot;,x=325.0,y=115.0}, tail={id=&quot;KeyValueStore.result&quot;,x=225.0,y=115.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=110.0,y=125.0}, tail={id=&quot;KeyValueStore.remove&quot;,x=225.0,y=115.0}, points={} } }">
+            </property>
+        </relation>
     </entity>
     <entity name="XYScope" class="ptolemy.actor.lib.gui.XYScope">
         <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 873, 874}, maximized=false}">
+        <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="intruder,t0,t1,t2,t3,t4,t5,t6">
+        </property>
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={42, 22, 873, 874}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[873, 830]">
         </property>
         <property name="persistence" class="ptolemy.data.expr.Parameter" value="50">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{1595.0, 140.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1398.4677429199219, 125.5]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -833,117 +902,171 @@
 <title>Robot Positions</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="-100.0" max="100.0"/>
-<yRange min="-100.0" max="100.0"/>
+<xRange min="-1059.4853475983339" max="17.01455472628483"/>
+<yRange min="-408.48004374914757" max="35.24144674041744"/>
 <default connected="no" marks="various"/>
 </plot>?>
         </configure>
     </entity>
+    <entity name="InstanceOfKVtoArray5" class="KVtoArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.46774291992188, 515.5]">
+        </property>
+        <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(4)">
+        </property>
+        <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
+            </property>
+            <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
+            </property>
+        </entity>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JSONToToken.input&quot;,x=325.0,y=115.0}, tail={id=&quot;KeyValueStore.result&quot;,x=225.0,y=115.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=110.0,y=125.0}, tail={id=&quot;KeyValueStore.remove&quot;,x=225.0,y=115.0}, points={} } }">
+            </property>
+        </relation>
+    </entity>
+    <entity name="InstanceOfKVtoArray6" class="KVtoArray">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[68.46774291992188, 455.5]">
+        </property>
+        <property name="key" class="ptolemy.data.expr.Parameter" value="teamNames(5)">
+        </property>
+        <entity name="KeyValueStore" class="org.terraswarm.accessor.JSAccessor">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;function fire() {&#10;    var store = get('storeLocation');&#10;    var theKey = get('key');&#10;    var toRemove = get('remove');&#10;    var theValue = get('value');&#10;    var url = store + '/get?id=' + theKey;&#10;    var produce;&#10;    if (toRemove) {&#10;       if (theKey != &quot;&quot;) {&#10;           produce = readURL(url);&#10;           url = store + '/delete?id=' + theKey;&#10;           readURL(url);&#10;           if (produce != &quot;&quot;) {&#10;               send('result', produce);&#10;           }&#10;        }&#10;    } else {&#10;        // toRemove == false. If there is a value, use it to set.&#10;        if (theValue != &quot;&quot;) {&#10;            // FIXME: Escape theValue to make a valid URL.&#10;            url = store + '/set?id=' + encodeURIComponent(theKey) + '&amp;value=' + encodeURIComponent(theValue);&#10;            readURL(url);&#10;            send('result', theValue);&#10;        } else {&#10;            var valueFromStore = decodeURIComponent(readURL(url));&#10;            send('result', valueFromStore);&#10;        }&#10;    }&#10;}&#10;    // &#10;  ">
+            </property>
+            <property name="remove" class="ptolemy.actor.parameters.PortParameter" value="false">
+            </property>
+        </entity>
+        <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JSONToToken.input&quot;,x=325.0,y=115.0}, tail={id=&quot;KeyValueStore.result&quot;,x=225.0,y=115.0}, points={} } }">
+            </property>
+        </relation>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.output&quot;,x=110.0,y=125.0}, tail={id=&quot;KeyValueStore.remove&quot;,x=225.0,y=115.0}, points={} } }">
+            </property>
+        </relation>
+    </entity>
+    <entity name="ArrayToElements6" class="ptolemy.actor.lib.ArrayToElements">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1138.4677429199219, 455.5]">
+        </property>
+    </entity>
+    <entity name="ArrayToElements7" class="ptolemy.actor.lib.ArrayToElements">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1138.4677429199219, 515.5]">
+        </property>
+    </entity>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{135.0, 280.0}">
+        <vertex name="vertex1" value="[-1.532257080078125, 370.5]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=55.0,y=280.0}, tail={id=&quot;relation6.vertex1&quot;,x=135.0,y=280.0}, points={} },{ head={id=&quot;InstanceOfKVtoArray.trigger&quot;,x=210.0,y=135.0}, tail={id=&quot;relation6.vertex1&quot;,x=135.0,y=280.0}, points={135.0,135.0} },{ head={id=&quot;InstanceOfKVtoArray2.trigger&quot;,x=210.0,y=280.0}, tail={id=&quot;relation6.vertex1&quot;,x=135.0,y=280.0}, points={} },{ head={id=&quot;InstanceOfKVtoArray3.trigger&quot;,x=210.0,y=370.0}, tail={id=&quot;relation6.vertex1&quot;,x=135.0,y=280.0}, points={135.0,370.0} },{ head={id=&quot;InstanceOfKVtoArray4.trigger&quot;,x=205.0,y=440.0}, tail={id=&quot;relation6.vertex1&quot;,x=135.0,y=280.0}, points={135.0,440.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=-66.53225708007812,y=370.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={} },{ head={id=&quot;InstanceOfKVtoArray.trigger&quot;,x=73.46774291992188,y=90.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={-1.532257080078125,90.5} },{ head={id=&quot;InstanceOfKVtoArray2.trigger&quot;,x=68.46774291992188,y=245.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={-1.532257080078125,245.5} },{ head={id=&quot;InstanceOfKVtoArray3.trigger&quot;,x=68.46774291992188,y=305.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={-1.532257080078125,305.5} },{ head={id=&quot;InstanceOfKVtoArray4.trigger&quot;,x=68.46774291992188,y=370.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={} },{ head={id=&quot;InstanceOfKVtoArray5.trigger&quot;,x=68.46774291992188,y=515.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={-1.532257080078125,515.5} },{ head={id=&quot;InstanceOfKVtoArray6.trigger&quot;,x=68.46774291992188,y=455.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={-1.532257080078125,455.5} },{ head={id=&quot;InstanceOfKVtoArray7.trigger&quot;,x=68.46774291992188,y=580.5}, tail={id=&quot;relation6.vertex1&quot;,x=-1.532257080078125,y=370.5}, points={-1.532257080078125,580.5} } }">
         </property>
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{325.0, 440.0}">
+        <vertex name="vertex1" value="[173.46774291992188, 370.5]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.input&quot;,x=1205.0,y=130.0}, tail={id=&quot;relation14.vertex1&quot;,x=520.0,y=445.0}, points={} },{ head={id=&quot;InstanceOfKVtoArray4.x&quot;,x=205.0,y=440.0}, tail={id=&quot;relation14.vertex1&quot;,x=325.0,y=440.0}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=420.0,y=145.0,index=4}, tail={id=&quot;relation14.vertex1&quot;,x=325.0,y=440.0}, points={325.0,130.0} },{ head={id=&quot;ArrayToElements5.input&quot;,x=1315.0,y=440.0}, tail={id=&quot;relation14.vertex1&quot;,x=325.0,y=440.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.input&quot;,x=1380.0,y=130.0}, tail={id=&quot;relation14.vertex1&quot;,x=325.0,y=425.0}, points={} },{ head={id=&quot;InstanceOfKVtoArray4.x&quot;,x=68.46774291992188,y=370.5}, tail={id=&quot;relation14.vertex1&quot;,x=173.46774291992188,y=370.5}, points={} },{ head={id=&quot;ArrayToElements5.input&quot;,x=1138.4677429199219,y=370.5}, tail={id=&quot;relation14.vertex1&quot;,x=173.46774291992188,y=370.5}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=273.4677429199219,y=115.5,index=7}, tail={id=&quot;relation14.vertex1&quot;,x=173.46774291992188,y=370.5}, points={173.46774291992188,85.5} } }">
         </property>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{370.0, 135.0}">
+        <vertex name="vertex1" value="[213.46774291992188, 90.5]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ElementsToArray.input&quot;,x=420.0,y=145.0,index=4}, tail={id=&quot;relation10.vertex1&quot;,x=370.0,y=135.0}, points={} },{ head={id=&quot;ArrayToElements2.input&quot;,x=1315.0,y=215.0}, tail={id=&quot;relation10.vertex1&quot;,x=370.0,y=135.0}, points={370.0,215.0} },{ head={id=&quot;InstanceOfKVtoArray.x&quot;,x=210.0,y=135.0}, tail={id=&quot;relation10.vertex1&quot;,x=370.0,y=135.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements2.input&quot;,x=1138.4677429199219,y=185.5}, tail={id=&quot;relation10.vertex1&quot;,x=213.46774291992188,y=90.5}, points={213.46774291992188,185.5} },{ head={id=&quot;InstanceOfKVtoArray.x&quot;,x=73.46774291992188,y=90.5}, tail={id=&quot;relation10.vertex1&quot;,x=213.46774291992188,y=90.5}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=273.4677429199219,y=115.5,index=7}, tail={id=&quot;relation10.vertex1&quot;,x=213.46774291992188,y=90.5}, points={} } }">
         </property>
     </relation>
     <relation name="relation19" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{340.0, 280.0}">
+        <vertex name="vertex1" value="[183.46774291992188, 245.5]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements3.input&quot;,x=1315.0,y=280.0}, tail={id=&quot;relation19.vertex1&quot;,x=340.0,y=280.0}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=420.0,y=145.0,index=4}, tail={id=&quot;relation19.vertex1&quot;,x=340.0,y=280.0}, points={340.0,140.0} },{ head={id=&quot;InstanceOfKVtoArray2.x&quot;,x=210.0,y=280.0}, tail={id=&quot;relation19.vertex1&quot;,x=340.0,y=280.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements3.input&quot;,x=1138.4677429199219,y=245.5}, tail={id=&quot;relation19.vertex1&quot;,x=183.46774291992188,y=245.5}, points={} },{ head={id=&quot;InstanceOfKVtoArray2.x&quot;,x=68.46774291992188,y=245.5}, tail={id=&quot;relation19.vertex1&quot;,x=183.46774291992188,y=245.5}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=273.4677429199219,y=115.5,index=7}, tail={id=&quot;relation19.vertex1&quot;,x=183.46774291992188,y=245.5}, points={183.46774291992188,95.5} } }">
         </property>
     </relation>
     <relation name="relation21" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{355.0, 370.0}">
+        <vertex name="vertex1" value="[188.46774291992188, 305.5]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements4.input&quot;,x=1315.0,y=370.0}, tail={id=&quot;relation21.vertex1&quot;,x=355.0,y=370.0}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=420.0,y=145.0,index=4}, tail={id=&quot;relation21.vertex1&quot;,x=355.0,y=370.0}, points={355.0,145.0} },{ head={id=&quot;InstanceOfKVtoArray3.x&quot;,x=210.0,y=370.0}, tail={id=&quot;relation21.vertex1&quot;,x=355.0,y=370.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements4.input&quot;,x=1138.4677429199219,y=305.5}, tail={id=&quot;relation21.vertex1&quot;,x=188.46774291992188,y=305.5}, points={} },{ head={id=&quot;InstanceOfKVtoArray3.x&quot;,x=68.46774291992188,y=305.5}, tail={id=&quot;relation21.vertex1&quot;,x=188.46774291992188,y=305.5}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=273.4677429199219,y=115.5,index=7}, tail={id=&quot;relation21.vertex1&quot;,x=188.46774291992188,y=305.5}, points={188.46774291992188,100.5} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;KeyValueStore.value&quot;,x=1105.0,y=125.0}, tail={id=&quot;TokenToJSON.output&quot;,x=950.0,y=145.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;KeyValueStore.value&quot;,x=943.4677429199219,y=95.5}, tail={id=&quot;TokenToJSON.output&quot;,x=793.4677429199219,y=115.5}, points={} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Intruder.robotPosition&quot;,x=715.0,y=145.0}, tail={id=&quot;TokenToJSON.input&quot;,x=950.0,y=145.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Intruder.robotPosition&quot;,x=563.4677429199219,y=115.5}, tail={id=&quot;TokenToJSON.input&quot;,x=793.4677429199219,y=115.5}, points={} } }">
         </property>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.input&quot;,x=1320.0,y=125.0}, tail={id=&quot;JSONToToken5.output&quot;,x=1205.0,y=125.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.input&quot;,x=1143.4677429199219,y=95.5}, tail={id=&quot;JSONToToken5.output&quot;,x=1038.4677429199219,y=95.5}, points={} } }">
         </property>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;KeyValueStore.result&quot;,x=1105.0,y=125.0}, tail={id=&quot;JSONToToken5.input&quot;,x=1205.0,y=125.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;KeyValueStore.result&quot;,x=943.4677429199219,y=95.5}, tail={id=&quot;JSONToToken5.input&quot;,x=1038.4677429199219,y=95.5}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ElementsToArray.output&quot;,x=420.0,y=145.0}, tail={id=&quot;Intruder.searchTeamLocations&quot;,x=715.0,y=145.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ElementsToArray.output&quot;,x=273.4677429199219,y=115.5}, tail={id=&quot;Intruder.searchTeamLocations&quot;,x=563.4677429199219,y=115.5}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=1320.0,y=125.0,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1595.0,y=140.0,index=5}, points={1415.0,125.0,1415.0,110.0} } }">
-        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements2.output&quot;,x=1315.0,y=215.0,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1595.0,y=140.0,index=5}, points={1430.0,215.0,1430.0,115.0} } }">
-        </property>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements3.output&quot;,x=1315.0,y=280.0,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1595.0,y=140.0,index=5}, points={1445.0,280.0,1445.0,120.0} } }">
-        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements4.output&quot;,x=1315.0,y=370.0,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1595.0,y=140.0,index=5}, points={1475.0,370.0,1475.0,125.0} } }">
-        </property>
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements5.output&quot;,x=1315.0,y=440.0,index=2}, tail={id=&quot;XYScope.inputX&quot;,x=1595.0,y=140.0,index=5}, points={1505.0,440.0,1505.0,130.0} } }">
-        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements.output&quot;,x=1320.0,y=125.0,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1595.0,y=140.0,index=5}, points={} } }">
-        </property>
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements2.output&quot;,x=1315.0,y=215.0,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1595.0,y=140.0,index=5}, points={1460.0,220.0,1460.0,135.0} } }">
-        </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements3.output&quot;,x=1315.0,y=280.0,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1595.0,y=140.0,index=5}, points={1490.0,285.0,1490.0,140.0} } }">
-        </property>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements4.output&quot;,x=1315.0,y=370.0,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1595.0,y=140.0,index=5}, points={1520.0,375.0,1520.0,145.0} } }">
-        </property>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements5.output&quot;,x=1315.0,y=440.0,index=2}, tail={id=&quot;XYScope.inputY&quot;,x=1595.0,y=140.0,index=5}, points={1535.0,445.0,1535.0,150.0} } }">
+    </relation>
+    <relation name="relation24" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
+        <vertex name="vertex1" value="[203.46774291992188, 455.5]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements6.input&quot;,x=1138.4677429199219,y=455.5}, tail={id=&quot;relation24.vertex1&quot;,x=203.46774291992188,y=455.5}, points={} },{ head={id=&quot;InstanceOfKVtoArray6.x&quot;,x=68.46774291992188,y=455.5}, tail={id=&quot;relation24.vertex1&quot;,x=203.46774291992188,y=455.5}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=273.4677429199219,y=115.5,index=7}, tail={id=&quot;relation24.vertex1&quot;,x=203.46774291992188,y=455.5}, points={203.46774291992188,110.5} } }">
+        </property>
+    </relation>
+    <relation name="relation22" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="[193.46774291992188, 515.5]">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ArrayToElements7.input&quot;,x=1138.4677429199219,y=515.5}, tail={id=&quot;relation22.vertex1&quot;,x=193.46774291992188,y=515.5}, points={} },{ head={id=&quot;InstanceOfKVtoArray5.x&quot;,x=68.46774291992188,y=515.5}, tail={id=&quot;relation22.vertex1&quot;,x=193.46774291992188,y=515.5}, points={} },{ head={id=&quot;ElementsToArray.input&quot;,x=273.4677429199219,y=115.5,index=7}, tail={id=&quot;relation22.vertex1&quot;,x=193.46774291992188,y=515.5}, points={193.46774291992188,105.5} } }">
+        </property>
+    </relation>
+    <relation name="relation20" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation25" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation26" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation27" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="DiscreteClock.output" relation="relation6"/>
     <link port="ElementsToArray.input" relation="relation14"/>
     <link port="ElementsToArray.input" relation="relation10"/>
     <link port="ElementsToArray.input" relation="relation19"/>
     <link port="ElementsToArray.input" relation="relation21"/>
+    <link port="ElementsToArray.input" relation="relation22"/>
+    <link port="ElementsToArray.input" relation="relation24"/>
     <link port="ElementsToArray.output" relation="relation"/>
     <link port="ArrayToElements2.input" relation="relation10"/>
     <link port="ArrayToElements2.output" relation="relation4"/>
@@ -981,9 +1104,23 @@
     <link port="XYScope.inputX" relation="relation7"/>
     <link port="XYScope.inputX" relation="relation8"/>
     <link port="XYScope.inputX" relation="relation9"/>
+    <link port="XYScope.inputX" relation="relation20"/>
+    <link port="XYScope.inputX" relation="relation26"/>
     <link port="XYScope.inputY" relation="relation11"/>
     <link port="XYScope.inputY" relation="relation12"/>
     <link port="XYScope.inputY" relation="relation13"/>
     <link port="XYScope.inputY" relation="relation15"/>
     <link port="XYScope.inputY" relation="relation18"/>
+    <link port="XYScope.inputY" relation="relation25"/>
+    <link port="XYScope.inputY" relation="relation27"/>
+    <link port="InstanceOfKVtoArray5.x" relation="relation22"/>
+    <link port="InstanceOfKVtoArray5.trigger" relation="relation6"/>
+    <link port="InstanceOfKVtoArray6.x" relation="relation24"/>
+    <link port="InstanceOfKVtoArray6.trigger" relation="relation6"/>
+    <link port="ArrayToElements6.input" relation="relation24"/>
+    <link port="ArrayToElements6.output" relation="relation20"/>
+    <link port="ArrayToElements6.output" relation="relation25"/>
+    <link port="ArrayToElements7.input" relation="relation22"/>
+    <link port="ArrayToElements7.output" relation="relation26"/>
+    <link port="ArrayToElements7.output" relation="relation27"/>
 </entity>
