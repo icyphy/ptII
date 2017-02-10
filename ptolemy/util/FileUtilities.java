@@ -41,6 +41,7 @@ import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.Writer;
 import java.net.JarURLConnection;
+import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URL;
 import java.net.URLConnection;
@@ -267,6 +268,48 @@ public class FileUtilities {
         return directory.delete() && deletedAllFiles;
     }
 
+    /** Given a URL, if it starts with http, the follow up to 10 redirects.
+     * 
+     *  <p>If the URL is null or does not start with "http", then return the
+     *  URL.</p>
+     *
+     *  @param url The URL to be followed.
+     *  @return The new URL if any.
+     *  @exception IOException If there is a problem opening the URL or
+     *  if there are more than 10 redirects.
+     */
+    public static URL followRedirects(URL url)
+	throws IOException {
+
+        if (url == null || !url.getProtocol().startsWith("http")) {
+            return url;
+        }
+        URL temporaryURL = url;
+        int count;
+        for (count = 0; count < 10; count++) {
+            HttpURLConnection connection = (HttpURLConnection) temporaryURL.openConnection();
+            connection.setConnectTimeout(15000);
+            connection.setReadTimeout(15000);
+            connection.setInstanceFollowRedirects(false);
+
+            switch (connection.getResponseCode()) {
+            case HttpURLConnection.HTTP_MOVED_PERM:
+            case HttpURLConnection.HTTP_MOVED_TEMP:
+                String location = connection.getHeaderField("Location");
+                // Handle relative URLs.
+                temporaryURL = new URL(temporaryURL, location);  
+                continue;
+            }
+
+	    connection.disconnect();
+            return temporaryURL;
+        }
+        throw new IOException("Failed to resolve " + url
+                              + " after 10 attempts.  The last url was "
+                              + temporaryURL);
+
+    }
+
     /** Return the string contents of the file at the specified location.
      *  @param path The location.
      *  @return The contents as a string, assuming the default encoding of
@@ -274,11 +317,11 @@ public class FileUtilities {
      *  @exception IOException If the file cannot be read.
      */
     public static String getFileAsString(String path) throws IOException {
-	// Use nameToURL so that we look in the classpath for jar files
-	// that might contain the resource.
-	URL url = FileUtilities.nameToURL(path, null, null);
-	byte[] encoded = FileUtilities.binaryReadURLToByteArray(url);
-	return new String(encoded, Charset.defaultCharset());
+        // Use nameToURL so that we look in the classpath for jar files
+        // that might contain the resource.
+        URL url = FileUtilities.nameToURL(path, null, null);
+        byte[] encoded = FileUtilities.binaryReadURLToByteArray(url);
+        return new String(encoded, Charset.defaultCharset());
     }
 
     /** Extract the contents of a jar file.
@@ -432,11 +475,11 @@ public class FileUtilities {
         File file = new File(name);
 
 
-	// Be careful here, we need to be sure that we are reading
-	// relative to baseDirectory if baseDirectory is not null.
+        // Be careful here, we need to be sure that we are reading
+        // relative to baseDirectory if baseDirectory is not null.
 
-	// The security tests rely on baseDirectory, to replicate:
-	// (cd $PTII/ptII/ptolemy/actor/lib/security/test; rm rm foo.keystore auto/foo.keystore; make)
+        // The security tests rely on baseDirectory, to replicate:
+        // (cd $PTII/ptII/ptolemy/actor/lib/security/test; rm rm foo.keystore auto/foo.keystore; make)
 
         if (file.isAbsolute() || (file.canRead() && baseDirectory == null)) {
             // If the URL has a "fragment" (also called a reference), which is
@@ -703,6 +746,32 @@ public class FileUtilities {
         return new FileWriter(file, append);
     }
 
+    /** Given a URL, open a stream.
+     * 
+     *  <p>If the URL starts with "http", then follow up to 10 redirects
+     *  and return the the final HttpURLConnection.</p>
+     *
+     *  <p>If the URL does not start with "http", then call
+     *  URL.openStream().</p>
+     *
+     *  @param url The URL to be opened.
+     *  @return The input stream
+     *  @exception IOException If there is a problem opening the URL or
+     *  if there are more than 10 redirects.
+     */
+    public static InputStream openStreamFollowingRedirects(URL url)
+        throws IOException {
+
+        if (!url.getProtocol().startsWith("http")) {
+            return url.openStream();
+        }
+
+	// followRedirects() also calls openConnection() and then closes
+	// the connection with disconnect().  We could duplicate the code
+	// here, but it seems safer to avoid the duplication.
+        return FileUtilities.followRedirects(url).openStream();
+    }
+
     /** Utility method to read a string from an input stream.
      *  @param stream The stream.
      *  @return The string.
@@ -712,24 +781,24 @@ public class FileUtilities {
             throws IOException {
         StringBuffer response = new StringBuffer();
         BufferedReader reader = null;
-	try {
-	    String line = "";
-	    // Avoid Coverity Scan: "Dubious method used (FB.DM_DEFAULT_ENCODING)"
-	    reader = new BufferedReader(new InputStreamReader(stream,
-							      java.nio.charset.Charset.defaultCharset()));
+        try {
+            String line = "";
+            // Avoid Coverity Scan: "Dubious method used (FB.DM_DEFAULT_ENCODING)"
+            reader = new BufferedReader(new InputStreamReader(stream,
+                                                              java.nio.charset.Charset.defaultCharset()));
 
-	    String lineBreak = System.getProperty("line.separator");
-	    while ((line = reader.readLine()) != null) {
-		response.append(line);
-		if (!line.endsWith(lineBreak)) {
-		    response.append(lineBreak);
-		}
-	    }
-	} finally {
-	    if (reader != null) {
-		reader.close();
-	    }
-	}
+            String lineBreak = System.getProperty("line.separator");
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+                if (!line.endsWith(lineBreak)) {
+                    response.append(lineBreak);
+                }
+            }
+        } finally {
+            if (reader != null) {
+                reader.close();
+            }
+        }
         return response.toString();
     }
 

@@ -25,7 +25,7 @@ See Also
 --------
 * https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems - Overview of JSDoc systems
 ** https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSDocSystems#JSDocCustomTagPlugin - How @accessor, @input etc. are supported.
-* https://www.icyphy.org/accessors/wiki/Main/JSDoc - Information for Accessor writers (TerraSwarm membership required)
+* https://accessors.org/wiki/Main/JSDoc - Information for Accessor writers (TerraSwarm membership required)
 
 
 

@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={432, 23, 928, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={432, 23, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -63,7 +63,7 @@
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 22, 656, 540}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 23, 640, 524}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
@@ -79,7 +79,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/cameras/Camera.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/cameras/Camera.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;An accessor for a camera on the local host. This can be a built-in camera or&#10; a USB-connected camera. This accessor has two modes of operation, &amp;quot;triggered&amp;quot;&#10; and &amp;quot;open loop.&amp;quot; In triggered mode, it captures an image whenever a trigger&#10; input is received and produces that image on its output. In open-loop mode,&#10; it captures every image produced by the camera, at the speed of the camera,&#10; and produces on the output a stream of such images.&lt;/p&gt;">

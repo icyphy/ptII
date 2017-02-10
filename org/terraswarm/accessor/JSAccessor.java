@@ -234,7 +234,7 @@ public class JSAccessor extends JavaScript {
 
         // This method is a separate method so that we can use it for
         // testing the reimportation of accessors.  See
-        // https://www.icyphy.org/accessors/wiki/Main/TestAPtolemyAccessorImport
+        // https://accessors.org/wiki/Main/TestAPtolemyAccessorImport
 
         // First get the file name only.
         String fileName = urlSpec.substring(urlSpec.lastIndexOf('/') + 1, urlSpec.length());
@@ -684,17 +684,18 @@ public class JSAccessor extends JavaScript {
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
 
-    /** For the given URL specification, attempt to find a local copy of the resource
-     *  and return that if it exists. Otherwise, return the URL specified.
-     *  If updateRepository is true, or if an exception occurs accessing the local copy,
-     *  then attempt to update the accessor repository on the local file system.
-     *  Do this only once in this instance of the JVM, as it is quite costly,
-     *  unless the last update was more than 12 hours ago.
+    /** For the given URL specification, attempt to find a local copy
+     *  of the resource and return that if it exists. Otherwise,
+     *  return the URL specified.  If updateRepository is true, or if
+     *  an exception occurs accessing the local copy, then attempt to
+     *  update the accessor repository on the local file system.  Do
+     *  this only once in this instance of the JVM, as it is quite
+     *  costly, unless the last update was more than 12 hours ago.
      *  @param urlSpec The URL specification.
-     *  @param updateRepository True to update the repository before attempting to
-     *   find the local file.
-     *  @return The local version of the URL, or the URL given by the specification
-     *   if the local version cannot be found.
+     *  @param updateRepository True to update the repository before
+     *   attempting to find the local file.
+     *  @return The local version of the URL, or the URL given by the
+     *   specification if the local version cannot be found.
      * @exception IllegalActionException If no urlSpec is given.
      * @exception IOException If the URL cannot be found.
      * @exception MalformedURLException If the URL specification is malformed.
@@ -803,7 +804,7 @@ public class JSAccessor extends JavaScript {
      *  accessor repo will be checked out or updated.</p>
      *
      *  <p>After the repo is loaded or updated, if url starts with
-     *  https://www.icyphy.org/accessors/ or
+     *  https://accessors.org/ or
      *  https://icyphy.org/accessors/, and the corresponding file
      *  in the local svn accessors repo directory exists, then the
      *  file in the local svn directory is used instead of the file
@@ -830,15 +831,18 @@ public class JSAccessor extends JavaScript {
 
         // This method is a separate method so that we can use it for
         // testing the reimportation of accessors.  See
-        // https://www.icyphy.org/accessors/wiki/Main/TestAPtolemyAccessorImport
+        // https://accessors.org/wiki/Main/TestAPtolemyAccessorImport
 
         URL accessorURL = _sourceToURL(urlSpec, updateRepository);
 
         final URL url = accessorURL;
         BufferedReader in = null;
         try {
+            // If the URL starts with http, then we follow
+            // up to 10 redirects.  Otherwise, we just
+            // call URL.getInputStream().
             in = new BufferedReader(new InputStreamReader(
-                    url.openStream()));
+                    FileUtilities.openStreamFollowingRedirects(url)));
             StringBuffer contents = new StringBuffer();
             String input;
             while ((input = in.readLine()) != null) {
@@ -883,8 +887,12 @@ public class JSAccessor extends JavaScript {
                 Source xslt = new StreamSource(FileUtilities.nameToFile(
                         xsltLocation, null));
                 Transformer transformer = factory.newTransformer(xslt);
+
+                // If the URL starts with http, then we follow
+                // up to 10 redirects.  Otherwise, we just
+                // call URL.getInputStream().
                 StreamSource source = new StreamSource(new InputStreamReader(
-                        url.openStream()));
+                        FileUtilities.openStreamFollowingRedirects(url)));
                 StringWriter outWriter = new StringWriter();
                 // NOTE: Could target a DOMResult here instead, which would give
                 // much more flexibility.
@@ -981,14 +989,31 @@ public class JSAccessor extends JavaScript {
 
         // Check that the URL is readable, and import without docs if not.
         // This will throw IOException if not.
-        InputStream stream = url.openStream();
-        if (stream.available() == 0) {
-            throw new IOException("Could not find PtDoc for urlSpec: \"" + urlSpec + "\"."
+        // If the URL starts with http, then we follow
+        // up to 10 redirects.  Otherwise, we just
+        // call URL.getInputStream().
+        BufferedReader in = null;
+	//InputStream in = null;
+        try {
+	    //in = FileUtilities.openStreamFollowingRedirects(url);
+            in = new BufferedReader(new InputStreamReader(
+                    FileUtilities.openStreamFollowingRedirects(url)));
+            String line = in.readLine();
+            // We used to call availavble() on the inputStream, but that
+            // does not always work.  See
+            // http://stackoverflow.com/questions/15030026/httpurlconnection-getinputstream-returns-empty-stream-in-android
+            if (line.length() == 0) {
+		//if ( in.available() == 0) {
+                throw new IOException("Could not find PtDoc for urlSpec: \"" + urlSpec + "\"."
                     + "The url \"" + url + "\" was opened, but had 0 bytes available?  "
                     + "Perhaps the file has a zero length because there are no "
                     + "JSDoc directives in it?");
+            }
+        } finally {
+            if (in != null) {
+                in.close();
+            }
         }
-        stream.close();
 
         // For some reason, using an input tag results in updating
         // the docs on reload, whereas using the previous method below

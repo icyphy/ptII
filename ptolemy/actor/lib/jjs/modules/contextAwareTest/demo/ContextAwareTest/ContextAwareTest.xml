@@ -84,12 +84,12 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/contextAware/ContextAwareTest.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/contextAware/ContextAwareTest.js">
         </property>
         <property name="checkoutOrUpdateAccessorsRepository" class="ptolemy.actor.parameters.SharedParameter" value="true">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor discovers IOT services on web.&#10; It requires the contextAware module.  Please see:&#10; https://www.icyphy.org/accessors/wiki/Version0/ContextAware&lt;/p&gt;">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor discovers IOT services on web.&#10; It requires the contextAware module.  Please see:&#10; https://accessors.org/wiki/Version0/ContextAware&lt;/p&gt;">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Anne H. Ngu (angu@btxstate.edu)">
             </property>

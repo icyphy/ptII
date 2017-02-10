@@ -213,7 +213,7 @@ var allAccessors = [];
 var trustedAccessorsAllowed = false;
 
 // Determine which accessor host is in use.
-// See https://www.icyphy.org/accessors/wiki/Main/ResourcesForHostAuthors#Differentiating
+// See https://accessors.org/wiki/Main/ResourcesForHostAuthors#Differentiating
 // See https://stijndewitt.com/2014/01/26/enums-in-javascript/
 var accessorHostsEnum = {
     BROWSER: 1,

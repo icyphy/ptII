@@ -30,6 +30,7 @@ package org.terraswarm.accessor;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.List;
 
@@ -45,6 +46,7 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.moml.EntityLibrary;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
 import ptolemy.util.StringUtilities;
 
@@ -128,7 +130,7 @@ public class AccessorLibrary extends EntityLibrary {
 
                 if (_configureSource != null && !_configureSource.equals("")) {
                     // FIXME: This will only work if the _configureSource is
-                    // "https://www.icyphy.org/accessors" or a sublibrary.
+                    // "https://accessors.org" or a sublibrary.
                     // Should be generalized to be able to list accessor
                     // libraries from other sites.
 
@@ -141,13 +143,18 @@ public class AccessorLibrary extends EntityLibrary {
                     URL source = JSAccessor._sourceToURL(_configureSource + "index.json", true);
 
                     // Get the index file at the specified location.
-                    URL indexFile = new URL(source, "index.json");
+                    URL indexURL = new URL(source, "index.json");
+
                     BufferedReader in = null;
                     StringBuffer contents = new StringBuffer();
                     MessageHandler.status("Retrieving library from " + source);
                     try {
+                        // If the URL starts with http, then we follow
+                        // up to 10 redirects.  Otherwise, we just
+                        // call URL.getInputStream().
                         in = new BufferedReader(new InputStreamReader(
-                                indexFile.openStream()));
+                                FileUtilities.openStreamFollowingRedirects(indexURL)));
+
                         String input;
                         while ((input = in.readLine()) != null) {
                             contents.append(input);
@@ -210,7 +217,7 @@ public class AccessorLibrary extends EntityLibrary {
                             }
                         }
                     } catch (IOException ex) {
-                        String message = "Cannot open index file: " + indexFile;
+                        String message = "Cannot open index file: " + indexURL;
                         MessageHandler.status(message);
                         System.err.println(message + "\n" + ex);
                         if (StringUtilities.getProperty("ptolemy.ptII.isRunningNightlyBuild").length() > 0) {

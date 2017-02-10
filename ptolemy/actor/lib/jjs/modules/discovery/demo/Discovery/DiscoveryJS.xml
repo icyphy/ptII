@@ -31,7 +31,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Javascript Accessor Version&#10;This demo uses an accessor to discover devices on the local area network.&#10;The accessor uses the discovery module.  &#10;&#10;The discovery module determines the host platform (Linux, Mac, Windows), &#10;then executes OS commands to find IP addresses, names (when available), &#10;and MAC addresses (when available) of devices on the local network.  &#10;&#10;By default, discovery uses the ping and arp commands.  To use nmap, &#10;double-click on the accessor and check &quot;useNmap&quot;.  The nmap program must&#10;be installed on your system.  See link below for nmap setup info.&#10;&#10;For more info, please see:&#10;https://www.icyphy.org/accessors/wiki/Version0/Discovery">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Javascript Accessor Version&#10;This demo uses an accessor to discover devices on the local area network.&#10;The accessor uses the discovery module.  &#10;&#10;The discovery module determines the host platform (Linux, Mac, Windows), &#10;then executes OS commands to find IP addresses, names (when available), &#10;and MAC addresses (when available) of devices on the local network.  &#10;&#10;By default, discovery uses the ping and arp commands.  To use nmap, &#10;double-click on the accessor and check &quot;useNmap&quot;.  The nmap program must&#10;be installed on your system.  See link below for nmap setup info.&#10;&#10;For more info, please see:&#10;https://accessors.org/wiki/Version0/Discovery">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 10.0]">
         </property>
@@ -100,7 +100,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/net/IPAddress.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/IPAddress.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor outputs the IP address of the local machine.&lt;/p&gt;">
@@ -136,10 +136,10 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/net/Discovery.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/Discovery.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor discovers devices on the local area network.&#10; It requires the discovery module.  Please see:&#10; https://www.icyphy.org/accessors/wiki/Version0/Discovery&lt;/p&gt;">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor discovers devices on the local area network.&#10; It requires the discovery module.  Please see:&#10; https://accessors.org/wiki/Version0/Discovery&lt;/p&gt;">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Elizabeth Latronico (beth@berkeley.edu)">
             </property>

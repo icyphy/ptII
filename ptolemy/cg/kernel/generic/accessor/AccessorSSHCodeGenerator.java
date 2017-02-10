@@ -83,7 +83,7 @@ import ptolemy.util.StringUtilities;
  *      that this means that to run a composite accessor with the
  *      latest accessors, the npm <code>@terraswarm/accessors</code>
  *      module must be updated.  See <a
- *      href="https://www.icyphy.org/accessors/wiki/Main/NPMUpload</a>.
+ *      href="https://accessors.org/wiki/Main/NPMUpload</a>.
  *      In addition, any modules listed in the <i>modules</i>
  *      parameter are also installed.  </li>
  *
@@ -113,7 +113,7 @@ import ptolemy.util.StringUtilities;
  *
  *  <p>To use a SwarmBox, add your <code>~/.ssh/id_rsa.pub</code> file to <code>swarmboxadmin/ansible/keys/sbuser_authorized_keys</code>.  See <a href="https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess#in_browser">https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess</a>.</p>
  *
- *  <p>For more information, see <a href="https://www.icyphy.org/accessors/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
+ *  <p>For more information, see <a href="https://accessors.org/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
  *
  *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
  *  @version $Id$

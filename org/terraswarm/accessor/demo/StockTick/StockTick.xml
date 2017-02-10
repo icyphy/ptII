@@ -4,13 +4,13 @@
 <entity name="StockTick" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 31, 1204, 644}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 31, 1213, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[979, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2954651335079255">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.9969432353977, 180.56598409558228}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{290.99694323539774, 180.56598409558228}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
     </property>
@@ -134,7 +134,7 @@
                 </property>
             </property>
         </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://www.icyphy.org/accessors/services/StockTick.js">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/services/StockTick.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Retrieve a stock price from a Yahoo server.&#10; This accessor reacts to a &lt;em&gt;symbol&lt;/em&gt; input by issuing a query to a web server&#10; for the most recent trade prices of the common stock whose symbol is given&#10; by the input. When the server replies, this accessor produces the most&#10; recent trade price on the &lt;em&gt;price&lt;/em&gt; output.&lt;/p&gt;&#10;&lt;p&gt; This accessor does not block waiting for the response, but if any additional&#10; &lt;em&gt;symbol&lt;/em&gt; input is received before a pending request has received a response&#10; or timed out, then the new request will be queued and sent out only after&#10; the pending request has completed. This strategy ensures that outputs are&#10; produced in the same order as the input requests.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires the optional 'httpClient' module, which may or may&#10; not be provided by an accessor host. Most hosts will provide this module.&lt;/p&gt;">
