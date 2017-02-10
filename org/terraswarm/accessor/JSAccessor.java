@@ -28,16 +28,20 @@
 package org.terraswarm.accessor;
 
 import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
+import javax.xml.parsers.SAXParserFactory;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -45,6 +49,11 @@ import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
+
+import org.xml.sax.EntityResolver;
+import org.xml.sax.InputSource;
+import org.xml.sax.SAXException;
+import org.xml.sax.XMLReader;
 
 import ptolemy.actor.lib.jjs.JavaScript;
 import ptolemy.actor.parameters.SharedParameter;
@@ -882,6 +891,7 @@ public class JSAccessor extends JavaScript {
                 return result.toString();
             } else if (extension.equals("xml")) {
                 // XML specification.
+
                 TransformerFactory factory = TransformerFactory.newInstance();
                 String xsltLocation = "$CLASSPATH/org/terraswarm/accessor/XMLJSToMoML.xslt";
                 Source xslt = new StreamSource(FileUtilities.nameToFile(
@@ -891,13 +901,58 @@ public class JSAccessor extends JavaScript {
                 // If the URL starts with http, then we follow
                 // up to 10 redirects.  Otherwise, we just
                 // call URL.getInputStream().
-                StreamSource source = new StreamSource(new InputStreamReader(
-                        FileUtilities.openStreamFollowingRedirects(url)));
+                //StreamSource source = new StreamSource(new InputStreamReader(
+                //        FileUtilities.openStreamFollowingRedirects(url)));
                 StringWriter outWriter = new StringWriter();
                 // NOTE: Could target a DOMResult here instead, which would give
                 // much more flexibility.
                 StreamResult result = new StreamResult(outWriter);
                 try {
+                    // If we have an Accessor that is written in a .xml file,
+                    // then it may refer to the DTD with:
+
+                    // <!DOCTYPE class PUBLIC "-//TerraSwarm//DTD Accessor 1//EN"
+                    //     "https://accessors.org/Accessor_1.dtd">
+
+                    // The problem is that https://accessors.org redirects and the
+                    // resolver does not follow the redirect.
+
+                    // Also, we should not be hitting on the website, instead we should
+                    // use the Accessor_1.dtd that ships with this class.
+
+                    // So, we define an entity resolver.  See
+                    // http://stackoverflow.com/questions/1572808/java-xml-xslt-prevent-dtd-validation
+
+                    XMLReader xmlReader = SAXParserFactory.newInstance().newSAXParser().getXMLReader();
+                    xmlReader.setEntityResolver(new EntityResolver() {
+                            public InputSource resolveEntity(String publicID, String systemID)
+                                throws SAXException {
+                                if (publicID.equals("-//TerraSwarm//DTD Accessor 1//EN")
+                                    && systemID.equals("https://accessors.org/Accessor_1.dtd")) {
+                                    try {
+                                        String dtd = FileUtilities.getFileAsString("$CLASSPATH/org/terraswarm/accessor/accessors/web/Accessor_1.dtd");
+                                        InputSource source = new InputSource(new StringReader(dtd));
+                                        source.setPublicId(publicID);
+                                        source.setSystemId(systemID);
+                                        return source;
+                                    } catch (Exception ex) {
+                                        throw new SAXException("Failed to read Accessor_1.dtd from local file system", ex);
+                                    }
+                                } else {
+                                    System.out.println("JSAccessor._accessorToMoML.resolveEntity(): "
+                                                       + " Minor warning: Can't resolve "
+                                                       + publicID + ", " + systemID
+                                                       + ".  Returning the empty string.");
+                                    return new InputSource(new ByteArrayInputStream(new byte[] {}));
+                                }
+                            }
+                        });
+
+
+                    Source source = new SAXSource(xmlReader, new InputSource(new InputStreamReader(
+                                                                                               FileUtilities.openStreamFollowingRedirects(url))));
+
+
                     transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"yes");
                     transformer.setOutputProperty(OutputKeys.INDENT,"yes");
                     contents = outWriter.getBuffer();

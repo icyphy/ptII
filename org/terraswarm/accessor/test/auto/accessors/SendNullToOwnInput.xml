@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!DOCTYPE class PUBLIC "-//TerraSwarm//DTD Accessor 1//EN"
-    "https://www.icyphy.org/accessors/Accessor_1.dtd">
+    "https://accessors.org/Accessor_1.dtd">
 <class name="SendNullToOwnInput" extends="org.terraswarm.JSAccessor">
   <version>0.1</version>
   <author>Edward A. Lee</author>
