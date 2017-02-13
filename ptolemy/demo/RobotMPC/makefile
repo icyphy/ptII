@@ -50,6 +50,7 @@ EXAMPLE_MODELS = \
 	CollisionAvoidanceWithAccModel.xml \
 	CollisionAvoidanceWithObservationRobots.xml \
 	CollisionAvoidanceWithUncertainMeasurement.xml \
+	RobotMPC.xml \
 	SimpleChase.xml
 
 OTHER_FILES_TO_BE_JARED = \
