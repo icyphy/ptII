@@ -37,6 +37,7 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -851,7 +852,7 @@ public class JSAccessor extends JavaScript {
             // up to 10 redirects.  Otherwise, we just
             // call URL.getInputStream().
             in = new BufferedReader(new InputStreamReader(
-                    FileUtilities.openStreamFollowingRedirects(url)));
+                  FileUtilities.openStreamFollowingRedirects(url), StandardCharsets.UTF_8));
             StringBuffer contents = new StringBuffer();
             String input;
             while ((input = in.readLine()) != null) {
@@ -1057,7 +1058,7 @@ public class JSAccessor extends JavaScript {
             // We used to call availavble() on the inputStream, but that
             // does not always work.  See
             // http://stackoverflow.com/questions/15030026/httpurlconnection-getinputstream-returns-empty-stream-in-android
-            if (line.length() == 0) {
+            if (line == null || line.length() == 0) {
 		//if ( in.available() == 0) {
                 throw new IOException("Could not find PtDoc for urlSpec: \"" + urlSpec + "\"."
                     + "The url \"" + url + "\" was opened, but had 0 bytes available?  "
