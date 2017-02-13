@@ -383,6 +383,12 @@ $CLASSPATH/ptolemy/demo/ProbabilisticModels/HiddenMarkovModel.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/HiddenMarkovModelAnalysis.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/ProbabilisticModels.xml
 $CLASSPATH/ptolemy/demo/ProbabilisticModels/TwoStateMarkovChain.xml
+$CLASSPATH/ptolemy/demo/RobotMPC/CollisionAvoidance.xml
+$CLASSPATH/ptolemy/demo/RobotMPC/CollisionAvoidanceWithAccModel.xml
+$CLASSPATH/ptolemy/demo/RobotMPC/CollisionAvoidanceWithObservationRobots.xml
+$CLASSPATH/ptolemy/demo/RobotMPC/CollisionAvoidanceWithUncertainMeasurement.xml
+$CLASSPATH/ptolemy/demo/RobotMPC/RobotMPC.xml
+$CLASSPATH/ptolemy/demo/RobotMPC/SimpleChase.xml
 $CLASSPATH/ptolemy/distributed/demo/Sleep/Sleep.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTank.xml
 $CLASSPATH/ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTankRefactored.xml
