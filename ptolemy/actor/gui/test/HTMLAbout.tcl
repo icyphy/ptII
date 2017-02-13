@@ -361,6 +361,25 @@ For each of the files below, we list demos that are not included in <a href="fil
 </ul>
 <h2><a href="file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm"><code>file:XXXPTIIXXX/ptolemy/configs/doc/whatsNew10.0.htm</code></a></h2>
 <ul>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/demo/Robot/KeyValueStoreServer.xml">XXXPTIIXXX/ptolemy/demo/Robot/KeyValueStoreServer.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/demo/Robot/RandomWalkIntruder.xml">XXXPTIIXXX/ptolemy/demo/Robot/RandomWalkIntruder.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/demo/Robot/RobotChase.xml">XXXPTIIXXX/ptolemy/demo/Robot/RobotChase.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/demo/Robot/RobotCollaborativeChase.xml">XXXPTIIXXX/ptolemy/demo/Robot/RobotCollaborativeChase.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/demo/Robot/RobotInLine.xml">XXXPTIIXXX/ptolemy/demo/Robot/RobotInLine.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/demo/Robot/RobotMonitor.xml">XXXPTIIXXX/ptolemy/demo/Robot/RobotMonitor.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/demo/Robot/RobotOnCircle.xml">XXXPTIIXXX/ptolemy/demo/Robot/RobotOnCircle.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/demo/Robot/RobotOnCircleKV.xml">XXXPTIIXXX/ptolemy/demo/Robot/RobotOnCircleKV.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/demo/Robot/RobotPFChase.xml">XXXPTIIXXX/ptolemy/demo/Robot/RobotPFChase.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/demo/Robot/SmartChase.xml">XXXPTIIXXX/ptolemy/demo/Robot/SmartChase.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/demo/Robot/SmartChaseWithSmartIntruder.xml">XXXPTIIXXX/ptolemy/demo/Robot/SmartChaseWithSmartIntruder.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/demo/Robot/SmartIntruder.xml">XXXPTIIXXX/ptolemy/demo/Robot/SmartIntruder.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/demo/Robot/SmartIntruder6Teams.xml">XXXPTIIXXX/ptolemy/demo/Robot/SmartIntruder6Teams.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/Factorial/Factorial.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/Factorial/Factorial.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.xml</a></li>
+ <li><a href="file:/XXXPTIIXXX/ptolemy/actor/lib/js/demo/StockPrice/StockPrice.xml">XXXPTIIXXX/ptolemy/actor/lib/js/demo/StockPrice/StockPrice.xml</a></li>
  <li><a href="file:XXXPTIIXXX/ptolemy/domains/continuous/lib/DCMotor.xml">file:XXXPTIIXXX/ptolemy/domains/continuous/lib/DCMotor.xml</a></li>
  <li><a href="file:XXXPTIIXXX/ptolemy/domains/continuous/lib/PWM.xml">file:XXXPTIIXXX/ptolemy/domains/continuous/lib/PWM.xml</a></li>
 </ul>
@@ -446,4 +465,3 @@ For each of the files below, we list demos that are not included in <a href="fil
 <ul>
 </ul>
 }}
-
