@@ -931,6 +931,7 @@ public class JSAccessor extends JavaScript {
                                 if (publicID.equals("-//TerraSwarm//DTD Accessor 1//EN")
                                     && systemID.equals("https://accessors.org/Accessor_1.dtd")) {
                                     try {
+                                        // See also ptolemy/configs/test/ValidatingXMLParser.java
                                         String dtd = FileUtilities.getFileAsString("$CLASSPATH/org/terraswarm/accessor/accessors/web/Accessor_1.dtd");
                                         InputSource source = new InputSource(new StringReader(dtd));
                                         source.setPublicId(publicID);
