@@ -263,8 +263,6 @@ CAPECODE_ONLY_JNLP_JARS = \
 	ptolemy/actor/lib/jjs/demo/demo.jar \
 	ptolemy/actor/lib/jjs/modules/demo.jar \
 	ptolemy/actor/lib/jjs/modules/modules.jar \
-	ptolemy/actor/lib/js/js.jar \
-	ptolemy/actor/lib/js/demo/demo.jar \
 	ptolemy/actor/lib/mail/mail.jar \
 	ptolemy/vergil/basic/imprt/accessor/accessor.jar \
 	ptolemy/cg/cgAccessor.jar \
@@ -274,7 +272,6 @@ CAPECODE_ONLY_JNLP_JARS = \
 	$(PTGDP_JAR) \
 	$(JNA_JAR) \
 	$(PTJAVAMAIL_JARS) \
-	$(PTJAVASCRIPT_JARS) \
 	$(PTNRJAVASERIAL_JAR) \
 	org/ptolemy/opencv/opencv.jar \
 	$(OPENCV_JAR) \
@@ -333,11 +330,6 @@ CAPECODE_JNLP_JARS = \
 CYPHYSIM_MAIN_JAR = \
 	ptolemy/actor/gui/jnlp/CyPhySimApplication.jar
 
-PTJAVASCRIPT_JARS = \
-	$(PTOAUTHCLIENT_JAR) \
-	$(PTOAUTHCOMMON_JAR) \
-	$(PTSOCKETIO_JAR)
-
 CYPHYSIM_JNLP_JARS =	\
 	com/cureos/cureos.jar \
 	org/json/json.jar \
@@ -355,7 +347,6 @@ CYPHYSIM_JNLP_JARS =	\
 	ptolemy/actor/lib/jjs/jjs.jar \
 	ptolemy/actor/lib/jjs/demo/demo.jar \
 	ptolemy/actor/lib/jmf/jmf.jar \
-	ptolemy/actor/lib/js/js.jar \
 	ptolemy/actor/lib/mail/mail.jar \
 	$(PTJAVAMAIL_JARS) \
 	$(PTMATLAB_JARS) \
@@ -378,7 +369,6 @@ CYPHYSIM_JNLP_JARS =	\
 	org/ptolemy/ptango/ptango.jar \
 	$(PTANGO_JAR_FILES) \
 	$(PTFMI_JARS) \
-	$(PTJAVASCRIPT_JARS) \
 	$(PTLBNL_JARS) \
 	$(PTMATLAB_JARS) \
 	$(PTDATABASE_JNLP_JARS) \
@@ -805,14 +795,11 @@ FULL_ONLY_JNLP_JARS = \
 
 #	com/jhlabs/jhlabs.jar
 #	org/json/json.jar
-#	$(PTJAVASCRIPT_JARS)
 #	$(PTJAVAMAIL_JARS)
 #	$(PTNRJAVASERIAL_JAR)
 #	ptolemy/actor/lib/conversions/json/json.jar
 #	ptolemy/actor/lib/io/comm/comm.jar
 #	ptolemy/actor/lib/io/comm/demo/demo.jar
-#	ptolemy/actor/lib/js/js.jar
-#	ptolemy/actor/lib/js/demo/demo.jar
 
 
 

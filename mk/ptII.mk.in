@@ -816,14 +816,6 @@ PTJYTHON_DIR=	@PTJYTHON_DIR@
 # PTJYTHON_PACKAGES is used in ptII/doc/makefile
 PTJYTHON_PACKAGES = @PTJYTHON_PACKAGES@
 
-# OAuth Client jar file used by JavaScript Actor.
-# Typically lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar
-PTOAUTHCLIENT_JAR = @PTOAUTHCLIENT_JAR@
-
-# OAuth Client jar file used by JavaScript Actor.
-# Typically lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar
-PTOAUTHCOMMON_JAR = @PTOAUTHCOMMON_JAR@
-
 # Set to opencv and used in 
 # $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found
 PTOPENCV_DIR = @PTOPENCV_DIR@
@@ -1017,11 +1009,6 @@ PTSLF4J_API_JAR =	@PTSLF4J_API_JAR@
 
 # slf4j-nop*.jar, used by webcam-capture and xbjlib (XBee).
 PTSLF4J_NOP_JAR =	@PTSLF4J_NOP_JAR@
-
-# socketio Jar used by the JavaScript actor $PTII/lib/socketio.jar The
-# socketio.jar file is built by running "ant jar" after downloading
-# source from here: https://github.com/Gottox/socket.io-java-client
-PTSOCKETIO_JAR = 	@PTSOCKETIO_JAR@
 
 # PTSPACE_DIR is set to space and used in
 # $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.

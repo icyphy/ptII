@@ -250,12 +250,6 @@
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/database"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/javax.mail.jar"
                   targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/socketio.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/nrjavaserial-3.11.0.devel.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/org.eclipse.paho.client.mqttv3.jar"

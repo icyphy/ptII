@@ -428,13 +428,6 @@ The Ptiny pack is required.
             <file src="../dists/ptII11.0.devel/jar_dist/vendors/misc/joystick/Joystick.jar"
                   targetdir="$INSTALL_PATH/vendors/misc/joystick"/>
 
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/socketio.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/mail/mail.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/mail"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/mail/demo/demo.jar"
