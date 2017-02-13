@@ -4,13 +4,13 @@
 <entity name="CollisionAvoidanceWithObservationRobots" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 722}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1135, 873}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 605]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[901, 763]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5120000000000019">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000001">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-209.15475816582853, -104.68011934673348}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{364.7187500000001, 381.5}">
     </property>
     <property name="Nparticles" class="ptolemy.data.expr.Parameter" value="9">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -28,7 +28,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-290.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, -155.0]">
         </property>
     </property>
     <property name="RobotCount" class="ptolemy.data.expr.Parameter" value="4">
@@ -47,7 +47,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-170.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, -155.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -68,7 +68,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-365.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, -155.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -76,7 +76,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Shuhei Emoto">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-730.0, 415.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-290.0, 910.0]">
         </property>
     </property>
     <property name="AccelerationLimit" class="ptolemy.data.expr.Parameter" value="8.0">
@@ -95,7 +95,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-50.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, -155.0]">
         </property>
     </property>
     <property name="ObjectCount" class="ptolemy.data.expr.Parameter" value="1">
@@ -114,7 +114,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-170.0, -725.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, -135.0]">
         </property>
     </property>
     <property name="WirelessDirector" class="ptolemy.domains.wireless.kernel.WirelessDirector">
@@ -128,7 +128,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-490.0, -735.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-165.0, -55.0]">
         </property>
     </property>
     <property name="SpeedLimit" class="ptolemy.data.expr.Parameter" value="8.0">
@@ -147,13 +147,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -725.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, -135.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model that simulates a collision avidance scenario, where one &quot;Main Robot&quot; &#10;moves to origin (0,0) and multiple &quot;Observation Robots&quot; move to minimize &#10;uncertainties.&#10;The robot runs Unscented Kalman Filter to estimate a position of&#10;a moving obstacle and calculates its path to keep the distance from &#10;the obstacle greater than &quot;minDistanceLimit&quot;. Since estimation results &#10;include an uncertainty resulting from measurement noise, The robot avoids &#10;from all reachability sets of the obstacle which is calculated according to&#10;a particle output of UKF and a scale factor &quot;SigmaScale&quot;.&#10;Observation robots behave mutual information based information seeking so that&#10;the particle output of UKF is shrunk into a small area. This effect becomes &#10;pronouced if there are many observation robots. &#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-560.0, -565.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-230.0, -5.0]">
         </property>
     </property>
     <property name="minDistanceLimit" class="ptolemy.data.expr.Parameter" value="2">
@@ -172,7 +172,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -770.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, -165.0]">
         </property>
     </property>
     <property name="predict_TimeHorizon" class="ptolemy.data.expr.Parameter" value="10">
@@ -191,13 +191,13 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-365.0, -700.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-100.0, -110.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Time horizon - 1:Simple optimal control, 2 (or more):MPC">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-220.0, -710.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, -120.0]">
         </property>
     </property>
     <property name="measurementNoise" class="ptolemy.data.expr.Parameter" value="[pow(actualMeasurementNoise(0),2),0.0;&#10; 0.0,pow(actualMeasurementNoise(1), 2)]">
@@ -216,7 +216,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -580.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 25.0]">
         </property>
     </property>
     <property name="observationDistanceLimit" class="ptolemy.data.expr.Parameter" value="10">
@@ -235,7 +235,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, -140.0]">
         </property>
     </property>
     <property name="control_TimeHorizon" class="ptolemy.data.expr.Parameter" value="min(4, predict_TimeHorizon)">
@@ -254,7 +254,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[195.0, -700.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[490.0, -95.0]">
         </property>
     </property>
     <property name="initPositions" class="ptolemy.data.expr.Parameter" value="{{30,0}, {20, 2}, {20, -2}, {20, -6}, {20, 6}}">
@@ -273,7 +273,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -645.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, -40.0]">
         </property>
     </property>
     <property name="GoalPosition" class="ptolemy.data.expr.Parameter" value="{0, 0}">
@@ -292,7 +292,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -615.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, -10.0]">
         </property>
     </property>
     <property name="packetLossProbability" class="ptolemy.data.expr.Parameter" value="0.5">
@@ -311,7 +311,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, -775.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, -170.0]">
         </property>
     </property>
     <property name="NoiseOfRobotDynamics" class="ptolemy.data.expr.Parameter" value="[0.04, 0.0, 0.0, 0.0;&#10; 0.0, 0.04, 0.0, 0.0;&#10; 0.0, 0.0, 0.04, 0.0;&#10; 0.0, 0.0, 0.0, 0.04]">
@@ -330,7 +330,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -550.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 55.0]">
         </property>
     </property>
     <property name="AccelerationLimitForObservation" class="ptolemy.data.expr.Parameter" value="16.0">
@@ -349,7 +349,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -785.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[262.0, -220.0]">
         </property>
     </property>
     <property name="SpeedLimitForObservation" class="ptolemy.data.expr.Parameter" value="16.0">
@@ -368,7 +368,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -765.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[215.0, -175.0]">
         </property>
     </property>
     <property name="actualMeasurementNoise" class="ptolemy.data.expr.Parameter" value="{0.4, 4.0}">
@@ -387,7 +387,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, -670.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, -65.0]">
         </property>
     </property>
     <property name="sensorLossProbability" class="ptolemy.data.expr.Parameter" value="0.5">
@@ -406,7 +406,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, -750.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[755.0, -145.0]">
         </property>
     </property>
     <property name="SigmaScale" class="ptolemy.data.expr.Parameter" value="2">
@@ -425,11 +425,11 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, -795.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[1192.0, -480.0]">
         </property>
     </property>
     <class name="TargetObject" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, -645.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, -55.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1382, 754}, maximized=false}">
         </property>
@@ -834,7 +834,7 @@
         <link port="Gaussian2.trigger" relation="relation8"/>
     </class>
     <class name="Robot" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{65.0, -645.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.0, -55.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 722}, maximized=true}">
         </property>
@@ -1869,19 +1869,19 @@ Then delete this annotation.</text>
                     </property>
                     <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
-                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                    </property>
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[154.0, 261.43078831303865]">
                     </property>
-                </entity>
-                <entity name="fault" class="ptolemy.domains.modal.kernel.State">
                     <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
+                </entity>
+                <entity name="fault" class="ptolemy.domains.modal.kernel.State">
                     <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                     </property>
                     <property name="_location" class="ptolemy.kernel.util.Location" value="[314.0, 261.43078831303865]">
+                    </property>
+                    <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                     </property>
                 </entity>
                 <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -2035,7 +2035,7 @@ Then delete this annotation.</text>
     <class name="PacketLossModel" extends="ptolemy.domains.modal.modal.ModalModel">
         <property name="_tableauFactory" class="ptolemy.vergil.modal.modal.ModalTableauFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, -710.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[625.0, 130.0]">
         </property>
         <port name="messageIn" class="ptolemy.domains.modal.modal.ModalPort">
             <property name="input"/>
@@ -2105,19 +2105,19 @@ Then delete this annotation.</text>
                 </property>
                 <property name="isInitialState" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
-                </property>
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[154.0, 261.43078831303865]">
                 </property>
-            </entity>
-            <entity name="drop" class="ptolemy.domains.modal.kernel.State">
                 <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
+            </entity>
+            <entity name="drop" class="ptolemy.domains.modal.kernel.State">
                 <property name="_controllerFactory" class="ptolemy.vergil.modal.modal.HierarchicalStateControllerFactory">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[314.0, 261.43078831303865]">
+                </property>
+                <property name="_hideName" class="ptolemy.data.expr.SingletonParameter" value="true">
                 </property>
             </entity>
             <relation name="relation" class="ptolemy.domains.modal.kernel.Transition">
@@ -2195,7 +2195,7 @@ Then delete this annotation.</text>
         <link port="pass.messageOut" relation="messageOutRelation"/>
     </class>
     <entity name="InstanceOfTargetObject" class="TargetObject">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-515.0, -230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-253.0, 295.0]">
         </property>
         <property name="initialXposition" class="ptolemy.data.expr.Parameter" value="12.0">
         </property>
@@ -2215,7 +2215,7 @@ Then delete this annotation.</text>
         </property>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-95.0, -165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[167.0, 360.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -2223,11 +2223,11 @@ Then delete this annotation.</text>
     <entity name="PositionRelayer" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
         <property name="name" class="ptolemy.data.expr.NameParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-715.0, -230.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 65.0]">
         </property>
     </entity>
     <entity name="InstanceOfRobot" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-280.0, -250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-18.0, 275.0]">
         </property>
         <property name="initialXposition" class="ptolemy.data.expr.Parameter" value="initPositions(RobotID)(0)">
         </property>
@@ -2255,13 +2255,13 @@ Then delete this annotation.</text>
     <entity name="MeasurementRelayer" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
         <property name="name" class="ptolemy.data.expr.NameParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-715.0, -165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 120.0]">
         </property>
     </entity>
     <entity name="RobotMessageRelayer" class="ptolemy.domains.wireless.kernel.AtomicWirelessChannel">
         <property name="name" class="ptolemy.data.expr.NameParameter" value="">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-715.0, -105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 180.0]">
         </property>
     </entity>
     <entity name="DisplayResults" class="ptolemy.domains.wireless.kernel.WirelessComposite">
@@ -2269,7 +2269,7 @@ Then delete this annotation.</text>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{445.0, 60.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[475.0, -250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[737.0, 275.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={38, 31, 1131, 617}, maximized=false}">
         </property>
@@ -3320,7 +3320,7 @@ Then delete this annotation.</text>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, -285.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, -250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[322.0, 275.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 1, 1382, 722}, maximized=false}">
         </property>
@@ -5262,12 +5262,6 @@ Then delete this annotation.</text>
                 <link port="OrientationOfTarget.RobotPosition" relation="relation12"/>
             </entity>
             <entity name="StateSpaceModel" class="org.ptolemy.ssm.StateSpaceModel">
-                <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;,&quot;vx&quot;,&quot;vy&quot;}">
-                </property>
-                <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*100,random()*200-100,0,0}">
-                </property>
-                <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0,0.0,0.0},intruderCov)">
-                </property>
                 <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="x_update" class="ptolemy.data.expr.Parameter" value="(x+(vx*time_samplePeriod(1)/samplePeriod))">
@@ -5275,6 +5269,12 @@ Then delete this annotation.</text>
                 <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="y_update" class="ptolemy.data.expr.Parameter" value="(y+(vy*time_samplePeriod(1)/samplePeriod))">
+                </property>
+                <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;,&quot;vx&quot;,&quot;vy&quot;}">
+                </property>
+                <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*100,random()*200-100,0,0}">
+                </property>
+                <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0,0.0,0.0},intruderCov)">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-380.0, -60.0]">
                 </property>
@@ -5449,11 +5449,12 @@ Then delete this annotation.</text>
                     </property>
                     <property name="x" class="ptolemy.data.expr.Parameter" value="11.642450430460896">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="y_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(y+(vy*time_samplePeriod(1)/samplePeriod))">
@@ -5462,11 +5463,12 @@ Then delete this annotation.</text>
                     </property>
                     <property name="y" class="ptolemy.data.expr.Parameter" value="1.9542130048785773">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="vx_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="vx">
@@ -5475,11 +5477,12 @@ Then delete this annotation.</text>
                     </property>
                     <property name="vx" class="ptolemy.data.expr.Parameter" value="-0.031829905360102426">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="vy_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="vy">
@@ -5488,49 +5491,42 @@ Then delete this annotation.</text>
                     </property>
                     <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.24154543117839034">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="GaussianMeasurementModel_z_equation" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[(x-robotPositionInMea(0, 0)); (y-robotPositionInMea(1, 0))]">
                         <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="GaussianMeasurementModel_z_noise" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="currentMeasurementNoise">
                         <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="setGaussianMeasurementModel_z" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="GaussianMeasurementModel_z">
                     </property>
                     <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                        </property>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                        </property>
-                    </port>
                 </entity>
             </entity>
             <entity name="LatestEstimates" class="ptolemy.domains.de.lib.Register">
@@ -8264,7 +8260,7 @@ Then delete this annotation.</text>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, -285.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, -55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[342.0, 470.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1382, 722}, maximized=false}">
         </property>
@@ -12831,12 +12827,6 @@ Then delete this annotation.</text>
                 <link port="OrientationOfTarget.RobotPosition" relation="relation12"/>
             </entity>
             <entity name="StateSpaceModel" class="org.ptolemy.ssm.StateSpaceModel">
-                <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;,&quot;vx&quot;,&quot;vy&quot;}">
-                </property>
-                <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*100,random()*200-100,0,0}">
-                </property>
-                <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0,0.0,0.0},intruderCov)">
-                </property>
                 <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="x_update" class="ptolemy.data.expr.Parameter" value="(x+(vx*time_samplePeriod(1)/samplePeriod))">
@@ -12844,6 +12834,12 @@ Then delete this annotation.</text>
                 <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="y_update" class="ptolemy.data.expr.Parameter" value="(y+(vy*time_samplePeriod(1)/samplePeriod))">
+                </property>
+                <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;,&quot;vx&quot;,&quot;vy&quot;}">
+                </property>
+                <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*100,random()*200-100,0,0}">
+                </property>
+                <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0,0.0,0.0},intruderCov)">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-380.0, -60.0]">
                 </property>
@@ -13018,11 +13014,12 @@ Then delete this annotation.</text>
                     </property>
                     <property name="x" class="ptolemy.data.expr.Parameter" value="11.582025560368514">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="y_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(y+(vy*time_samplePeriod(1)/samplePeriod))">
@@ -13031,11 +13028,12 @@ Then delete this annotation.</text>
                     </property>
                     <property name="y" class="ptolemy.data.expr.Parameter" value="2.082252681163338">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="vx_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="vx">
@@ -13044,11 +13042,12 @@ Then delete this annotation.</text>
                     </property>
                     <property name="vx" class="ptolemy.data.expr.Parameter" value="-0.08732709868405908">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="vy_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="vy">
@@ -13057,49 +13056,42 @@ Then delete this annotation.</text>
                     </property>
                     <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.29972539954978566">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="GaussianMeasurementModel_z_equation" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[(x-robotPositionInMea(0, 0)); (y-robotPositionInMea(1, 0))]">
                         <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="GaussianMeasurementModel_z_noise" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="currentMeasurementNoise">
                         <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="setGaussianMeasurementModel_z" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="GaussianMeasurementModel_z">
                     </property>
                     <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                        </property>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                        </property>
-                    </port>
                 </entity>
             </entity>
             <entity name="LatestEstimates" class="ptolemy.domains.de.lib.Register">
@@ -13339,13 +13331,13 @@ Then delete this annotation.</text>
         <link relation1="relation8" relation2="relation4"/>
     </entity>
     <entity name="MicrostepDelay2" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[187.0, 555.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="InstanceOfRobot2" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-260.0, -55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[2.0, 470.0]">
         </property>
         <property name="RobotID" class="ptolemy.data.expr.Parameter" value="1">
         </property>
@@ -13379,7 +13371,7 @@ Then delete this annotation.</text>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, -285.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[332.0, 640.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1382, 722}, maximized=false}">
         </property>
@@ -17946,12 +17938,6 @@ Then delete this annotation.</text>
                 <link port="OrientationOfTarget.RobotPosition" relation="relation12"/>
             </entity>
             <entity name="StateSpaceModel" class="org.ptolemy.ssm.StateSpaceModel">
-                <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;,&quot;vx&quot;,&quot;vy&quot;}">
-                </property>
-                <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*100,random()*200-100,0,0}">
-                </property>
-                <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0,0.0,0.0},intruderCov)">
-                </property>
                 <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="x_update" class="ptolemy.data.expr.Parameter" value="(x+(vx*time_samplePeriod(1)/samplePeriod))">
@@ -17959,6 +17945,12 @@ Then delete this annotation.</text>
                 <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="y_update" class="ptolemy.data.expr.Parameter" value="(y+(vy*time_samplePeriod(1)/samplePeriod))">
+                </property>
+                <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;,&quot;vx&quot;,&quot;vy&quot;}">
+                </property>
+                <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*100,random()*200-100,0,0}">
+                </property>
+                <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0,0.0,0.0},intruderCov)">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-380.0, -60.0]">
                 </property>
@@ -18133,11 +18125,12 @@ Then delete this annotation.</text>
                     </property>
                     <property name="x" class="ptolemy.data.expr.Parameter" value="11.600528577525994">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="y_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(y+(vy*time_samplePeriod(1)/samplePeriod))">
@@ -18146,11 +18139,12 @@ Then delete this annotation.</text>
                     </property>
                     <property name="y" class="ptolemy.data.expr.Parameter" value="2.743842046212664">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="vx_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="vx">
@@ -18159,11 +18153,12 @@ Then delete this annotation.</text>
                     </property>
                     <property name="vx" class="ptolemy.data.expr.Parameter" value="-0.06813744366464791">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="vy_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="vy">
@@ -18172,49 +18167,42 @@ Then delete this annotation.</text>
                     </property>
                     <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.23822516171183128">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="GaussianMeasurementModel_z_equation" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[(x-robotPositionInMea(0, 0)); (y-robotPositionInMea(1, 0))]">
                         <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="GaussianMeasurementModel_z_noise" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="currentMeasurementNoise">
                         <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="setGaussianMeasurementModel_z" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="GaussianMeasurementModel_z">
                     </property>
                     <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                        </property>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                        </property>
-                    </port>
                 </entity>
             </entity>
             <entity name="LatestEstimates" class="ptolemy.domains.de.lib.Register">
@@ -18454,13 +18442,13 @@ Then delete this annotation.</text>
         <link relation1="relation8" relation2="relation4"/>
     </entity>
     <entity name="MicrostepDelay3" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-85.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[177.0, 725.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="InstanceOfRobot3" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-270.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-8.0, 640.0]">
         </property>
         <property name="RobotID" class="ptolemy.data.expr.Parameter" value="2">
         </property>
@@ -18494,7 +18482,7 @@ Then delete this annotation.</text>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{30.0, -285.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[342.0, 835.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1382, 722}, maximized=false}">
         </property>
@@ -23061,12 +23049,6 @@ Then delete this annotation.</text>
                 <link port="OrientationOfTarget.RobotPosition" relation="relation12"/>
             </entity>
             <entity name="StateSpaceModel" class="org.ptolemy.ssm.StateSpaceModel">
-                <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;,&quot;vx&quot;,&quot;vy&quot;}">
-                </property>
-                <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*100,random()*200-100,0,0}">
-                </property>
-                <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0,0.0,0.0},intruderCov)">
-                </property>
                 <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="x_update" class="ptolemy.data.expr.Parameter" value="(x+(vx*time_samplePeriod(1)/samplePeriod))">
@@ -23074,6 +23056,12 @@ Then delete this annotation.</text>
                 <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
                 <property name="y_update" class="ptolemy.data.expr.Parameter" value="(y+(vy*time_samplePeriod(1)/samplePeriod))">
+                </property>
+                <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;,&quot;vx&quot;,&quot;vy&quot;}">
+                </property>
+                <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*100,random()*200-100,0,0}">
+                </property>
+                <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0,0.0,0.0},intruderCov)">
                 </property>
                 <property name="_location" class="ptolemy.kernel.util.Location" value="[-380.0, -60.0]">
                 </property>
@@ -23248,11 +23236,12 @@ Then delete this annotation.</text>
                     </property>
                     <property name="x" class="ptolemy.data.expr.Parameter" value="11.569536883716307">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="y_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="(y+(vy*time_samplePeriod(1)/samplePeriod))">
@@ -23261,11 +23250,12 @@ Then delete this annotation.</text>
                     </property>
                     <property name="y" class="ptolemy.data.expr.Parameter" value="2.1666120019700914">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="vx_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="vx">
@@ -23274,11 +23264,12 @@ Then delete this annotation.</text>
                     </property>
                     <property name="vx" class="ptolemy.data.expr.Parameter" value="-0.09215822112415337">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="vy_update" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="vy">
@@ -23287,49 +23278,42 @@ Then delete this annotation.</text>
                     </property>
                     <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.2996611858023883">
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="GaussianMeasurementModel_z_equation" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="[(x-robotPositionInMea(0, 0)); (y-robotPositionInMea(1, 0))]">
                         <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="GaussianMeasurementModel_z_noise" class="ptolemy.actor.lib.Expression">
                     <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="currentMeasurementNoise">
                         <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                         </property>
                     </property>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+                    <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
+                        <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
                         </property>
-                    </port>
+                        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
+                        </property>
+                    </property>
                 </entity>
                 <entity name="setGaussianMeasurementModel_z" class="ptolemy.actor.lib.SetVariable">
                     <property name="variableName" class="ptolemy.kernel.util.StringAttribute" value="GaussianMeasurementModel_z">
                     </property>
                     <property name="delayed" class="ptolemy.data.expr.Parameter" value="false">
                     </property>
-                    <port name="input" class="ptolemy.actor.TypedIOPort">
-                        <property name="input"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                        </property>
-                    </port>
-                    <port name="output" class="ptolemy.actor.TypedIOPort">
-                        <property name="output"/>
-                        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                        </property>
-                    </port>
                 </entity>
             </entity>
             <entity name="LatestEstimates" class="ptolemy.domains.de.lib.Register">
@@ -23569,13 +23553,13 @@ Then delete this annotation.</text>
         <link relation1="relation8" relation2="relation4"/>
     </entity>
     <entity name="MicrostepDelay4" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-75.0, 395.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[187.0, 920.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
     </entity>
     <entity name="InstanceOfRobot4" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-260.0, 310.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[2.0, 835.0]">
         </property>
         <property name="RobotID" class="ptolemy.data.expr.Parameter" value="3">
         </property>
@@ -23607,7 +23591,7 @@ Then delete this annotation.</text>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-345.0, -165.0]">
+        <vertex name="vertex1" value="[-83.0, 360.0]">
         </vertex>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -23621,7 +23605,7 @@ Then delete this annotation.</text>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-325.0, 30.0]">
+        <vertex name="vertex1" value="[-63.0, 555.0]">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -23631,7 +23615,7 @@ Then delete this annotation.</text>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-335.0, 200.0]">
+        <vertex name="vertex1" value="[-73.0, 725.0]">
         </vertex>
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
@@ -23641,7 +23625,7 @@ Then delete this annotation.</text>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-325.0, 395.0]">
+        <vertex name="vertex1" value="[-63.0, 920.0]">
         </vertex>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">

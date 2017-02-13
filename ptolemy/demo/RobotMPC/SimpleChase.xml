@@ -4,13 +4,13 @@
 <entity name="SimpleChase" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 754}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1099, 813}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1154, 637]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[865, 703]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9224934680308534">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-6.56659230787352, -427.7587812053654}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{432.5, 351.5}">
     </property>
     <property name="Nparticles" class="ptolemy.data.expr.Parameter" value="100">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -28,7 +28,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-290.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[284.5, 30.0]">
         </property>
     </property>
     <property name="RobotCount" class="ptolemy.data.expr.Parameter" value="1">
@@ -47,7 +47,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-165.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[409.5, 30.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="true">
@@ -68,7 +68,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-365.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[209.5, 30.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -76,13 +76,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Shuhei Emoto">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-495.0, -125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[79.5, 650.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A model that simulates a simple chase scenario, where one robot &#10;estimates the location of a moving intruder and moves to &#10;the estimated location. &#10;The robot optimizes its future path as long as &quot;predict_Timehorizon&quot;. &#10;As the time horizon become longer, the robot tends to go to the future &#10;location of the intruder and its trajectory becomes shorter.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-510.0, -595.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[64.5, 180.0]">
         </property>
     </property>
     <property name="SpeedLimit" class="ptolemy.data.expr.Parameter" value="20.0">
@@ -101,7 +101,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-40.0, -745.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[534.5, 30.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -109,7 +109,7 @@
         </property>
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-455.0, -725.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[119.5, 50.0]">
         </property>
     </property>
     <property name="predict_TimeHorizon" class="ptolemy.data.expr.Parameter" value="40">
@@ -128,17 +128,17 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-365.0, -715.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[209.5, 60.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Time horizon - 1:Simple optimal control, 2 (or more):MPC">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-215.0, -725.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[359.5, 50.0]">
         </property>
     </property>
     <class name="Intruder" extends="ptolemy.domains.wireless.kernel.WirelessComposite">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-115.0, -650.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[459.5, 125.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 754}, maximized=true}">
         </property>
@@ -410,7 +410,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{-525.0, -300.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, -650.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[644.5, 125.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 754}, maximized=true}">
         </property>
@@ -1170,7 +1170,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="{40.0, -185.0}">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, -370.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[549.5, 405.0]">
         </property>
         <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-8, -8, 1382, 754}, maximized=true}">
         </property>
@@ -1256,7 +1256,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[890.0, -205.0]">
             </property>
         </property>
-        <property name="r1" class="ptolemy.data.expr.Parameter" value="{1.4955040964699, 50.3583438295577}">
+        <property name="r1" class="ptolemy.data.expr.Parameter" value="{59.1321569452948, 44.5453574083652}">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -1629,7 +1629,7 @@
                 </property>
                 <property name="automaticRescale" class="ptolemy.data.expr.Parameter" value="true">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={670, 68, 687, 326}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={649, 108, 671, 310}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[671, 266]">
                 </property>
@@ -1643,7 +1643,7 @@
 <xLabel>time</xLabel>
 <yLabel>Distance [m]</yLabel>
 <xRange min="0.0" max="12.700000000000001"/>
-<yRange min="-55.956001546117946" max="100.0"/>
+<yRange min="-55.58379254283952" max="100.0"/>
 </plot>?>
                 </configure>
             </entity>
@@ -1678,7 +1678,7 @@
                 </property>
                 <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="intruder, particles, robot1, robot2, robot3, robot4">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={39, 0, 613, 589}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 97, 597, 573}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[597, 529]">
                 </property>
@@ -1720,7 +1720,7 @@
                 </property>
                 <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="vx,vy">
                 </property>
-                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={679, 412, 687, 281}, maximized=false}">
+                <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={653, 452, 671, 265}, maximized=false}">
                 </property>
                 <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[671, 221]">
                 </property>
@@ -1734,7 +1734,7 @@
 <xLabel>time</xLabel>
 <yLabel>velocity [m/step]</yLabel>
 <xRange min="0.05" max="12.75"/>
-<yRange min="-9.303200003116094" max="3.284721920098532"/>
+<yRange min="-3.0622330893174867" max="1.8698688349428547"/>
 </plot>?>
                 </configure>
             </entity>
@@ -2060,12 +2060,6 @@
             </property>
         </entity>
         <entity name="SSMofTarget" class="org.ptolemy.ssm.StateSpaceModel">
-            <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;,&quot;vx&quot;,&quot;vy&quot;}">
-            </property>
-            <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*200+100,random()*200,0,0}">
-            </property>
-            <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0,0.0,0.0},intruderCov)">
-            </property>
             <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="x_update" class="ptolemy.data.expr.Parameter" value="x+vx">
@@ -2073,6 +2067,12 @@
             <property name="y" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
             <property name="y_update" class="ptolemy.data.expr.Parameter" value="y+vy">
+            </property>
+            <property name="stateVariableNames" class="ptolemy.data.expr.Parameter" value="{&quot;x&quot;,&quot;y&quot;,&quot;vx&quot;,&quot;vy&quot;}">
+            </property>
+            <property name="prior" class="ptolemy.data.expr.Parameter" value="{random()*200+100,random()*200,0,0}">
+            </property>
+            <property name="processNoise" class="ptolemy.data.expr.Parameter" value="multivariateGaussian({0.0,0.0,0.0,0.0},intruderCov)">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[1075.0, -275.0]">
             </property>
@@ -2141,12 +2141,12 @@
                 </property>
             </port>
         </entity>
-        <entity name="ParticleFilterSSM" class="org.ptolemy.ssm.ParticleFilterSSM">
+        <entity name="ParticleFilter" class="org.ptolemy.ssm.ParticleFilter">
             <property name="particleCount" class="ptolemy.data.expr.Parameter" value="Nparticles*2">
             </property>
             <property name="outputParticleCount" class="ptolemy.data.expr.Parameter" value="Nparticles">
             </property>
-            <property name="t" class="ptolemy.data.expr.Parameter" value="9.95">
+            <property name="t" class="ptolemy.data.expr.Parameter" value="7.15">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, -120.0]">
             </property>
@@ -2183,19 +2183,19 @@
                 </property>
                 <property name="t" class="ptolemy.data.expr.Parameter" value="0.0">
                 </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="1.8409103872057362">
+                <property name="x" class="ptolemy.data.expr.Parameter" value="42.44435008416306">
                 </property>
                 <property name="x_update" class="ptolemy.data.expr.Parameter" value="x+vx">
                 </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="50.22810036239334">
+                <property name="y" class="ptolemy.data.expr.Parameter" value="47.75810157061678">
                 </property>
                 <property name="y_update" class="ptolemy.data.expr.Parameter" value="y+vy">
                 </property>
-                <property name="vx" class="ptolemy.data.expr.Parameter" value="-0.8969562323353903">
+                <property name="vx" class="ptolemy.data.expr.Parameter" value="-1.755844203067536">
                 </property>
                 <property name="vx_update" class="ptolemy.data.expr.Parameter" value="vx">
                 </property>
-                <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.15836880163324485">
+                <property name="vy" class="ptolemy.data.expr.Parameter" value="-1.6887138681816647">
                 </property>
                 <property name="vy_update" class="ptolemy.data.expr.Parameter" value="vy">
                 </property>
@@ -2208,7 +2208,7 @@
             </property>
             <property name="vy" class="ptolemy.data.expr.Parameter" value="0.0">
             </property>
-            <property name="GaussianMeasurementModel_z" class="ptolemy.data.expr.Parameter" value="[-2.2163430990472; -0.6554848374304]">
+            <property name="GaussianMeasurementModel_z" class="ptolemy.data.expr.Parameter" value="[-13.7706561582926; 4.4849125631037]">
             </property>
             <port name="particleOutput" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
@@ -2230,7 +2230,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="x" class="ptolemy.data.expr.Parameter" value="2.7181160883944155">
+                <property name="x" class="ptolemy.data.expr.Parameter" value="43.99297132383458">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2243,7 +2243,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="y" class="ptolemy.data.expr.Parameter" value="50.815955104938574">
+                <property name="y" class="ptolemy.data.expr.Parameter" value="48.98594091103062">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2256,7 +2256,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="vx" class="ptolemy.data.expr.Parameter" value="-0.755286137539253">
+                <property name="vx" class="ptolemy.data.expr.Parameter" value="-1.634253908266852">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -2269,7 +2269,7 @@
                     <property name="_hide" class="ptolemy.data.expr.Parameter" value="true">
                     </property>
                 </property>
-                <property name="vy" class="ptolemy.data.expr.Parameter" value="-0.493296952499944">
+                <property name="vy" class="ptolemy.data.expr.Parameter" value="-1.227175952839469">
                 </property>
                 <port name="output" class="ptolemy.actor.TypedIOPort">
                     <property name="output"/>
@@ -3209,9 +3209,9 @@
         <link port="DecompositeRobotPositions.sampling" relation="relation16"/>
         <link port="ArrayExtract.input" relation="relation7"/>
         <link port="ArrayExtract.output" relation="relation5"/>
-        <link port="ParticleFilterSSM.particleOutput" relation="relation4"/>
-        <link port="ParticleFilterSSM.stateEstimate" relation="relation13"/>
-        <link port="ParticleFilterSSM.GaussianMeasurementModel_z" relation="relation3"/>
+        <link port="ParticleFilter.particleOutput" relation="relation4"/>
+        <link port="ParticleFilter.stateEstimate" relation="relation13"/>
+        <link port="ParticleFilter.GaussianMeasurementModel_z" relation="relation3"/>
         <link port="PredictForTarget.mean_value" relation="relation13"/>
         <link port="PredictForTarget.predicted_mean_value" relation="relation12"/>
         <link port="CompositeOptimizerUsingGradient.optimalValue" relation="relation7"/>
@@ -3219,7 +3219,7 @@
         <link port="CompositeOptimizerUsingGradient.target_location" relation="relation12"/>
     </entity>
     <entity name="InstanceOfIntruder" class="Intruder">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-480.0, -380.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[94.5, 395.0]">
         </property>
         <property name="initialXposition" class="ptolemy.data.expr.Parameter" value="150.0">
         </property>
@@ -3234,7 +3234,7 @@
         <property name="samplePeriod" class="ptolemy.data.expr.Parameter" value="T">
         </property>
         <entity name="DifferentialSystem" class="ptolemy.domains.continuous.lib.DifferentialSystem">
-            <property name="t" class="ptolemy.data.expr.Parameter" value="10.05">
+            <property name="t" class="ptolemy.data.expr.Parameter" value="7.2">
             </property>
             <relation name="_R" class="ptolemy.actor.TypedIORelation">
                 <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
@@ -3261,7 +3261,7 @@
         </entity>
     </entity>
     <entity name="InstanceOfRobot0" class="Robot">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-270.0, -330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[304.5, 445.0]">
         </property>
         <property name="RobotID" class="ptolemy.data.expr.Parameter" value="0">
         </property>
@@ -3316,7 +3316,7 @@
         </entity>
     </entity>
     <entity name="MicrostepDelay" class="ptolemy.actor.lib.MicrostepDelay">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-170.0, -280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[404.5, 495.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -3324,7 +3324,7 @@
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[-320.0, -380.0]">
+        <vertex name="vertex1" value="[254.5, 395.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
