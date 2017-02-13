@@ -43,6 +43,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.FileUtilities;
 
 /**
  A validating XML parser.
@@ -140,8 +141,13 @@ public class ValidatingXMLParser extends DefaultHandler {
         /** Resolve the entity.
          *  @param publicID Ignored.
          *  @param systemID The systemID.
-         *  @return If systemID equals http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd
-         *  then return an InputSource based on the value of MoMLParser.MoML_DTD_1,
+         *  @return If systemID equals
+         *  http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd then
+         *  return an InputSource based on the value of
+         *  MoMLParser.MoML_DTD_1, If the systemID equals
+         *  https://accessors.org/Accessor_1.dtd, then return the
+         *  contents of
+         *  $CLASSPATH/org/terraswarm/accessor/accessors/web/Accessor_1.dtd
          *  otherwise return null.
          *  @exception SAXException If the MoML DTD cannot be created.
          */
@@ -150,8 +156,23 @@ public class ValidatingXMLParser extends DefaultHandler {
                 throws SAXException {
             if (systemID
                     .equals("http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd")) {
-                return new InputSource(new StringReader(MoMLParser.MoML_DTD_1));
-            }
+                InputSource source = new InputSource(new StringReader(MoMLParser.MoML_DTD_1));
+                source.setPublicId(publicID);
+                source.setSystemId(systemID);
+                return source;
+            } else if (publicID.equals("-//TerraSwarm//DTD Accessor 1//EN")
+                       && systemID.equals("https://accessors.org/Accessor_1.dtd")) {
+                try {
+                    // See also org/terraswarm/accessor/JSAccessor.java
+                    String dtd = FileUtilities.getFileAsString("$CLASSPATH/org/terraswarm/accessor/accessors/web/Accessor_1.dtd");
+                    InputSource source = new InputSource(new StringReader(dtd));
+                    source.setPublicId(publicID);
+                    source.setSystemId(systemID);
+                    return source;
+                } catch (Exception ex) {
+                    throw new SAXException("Failed to read Accessor_1.dtd from local file system", ex);
+                }
+            }                
             return null;
         }
     }
