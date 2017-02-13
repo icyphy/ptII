@@ -105,7 +105,6 @@
       <configure>
         <?moml
           <group>
-	      <input source="ptolemy/actor/lib/jjs/js.xml"/>
 	      <input source="ptolemy/actor/lib/jjs/modules/gdp/gdp.xml"/>
               <input source="ptolemy/vergil/basic/export/web/utilityWebExport.xml"/>
 	      <input source="ptolemy/vergil/pdfrenderer/pdfattribute.xml"/>
