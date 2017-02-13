@@ -240,10 +240,6 @@
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/modules"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/jjs/modules/modules.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/jjs/modules"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/js/js.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/js"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/js/demo/demo.jar"
-                  targetdir="$INSTALL_PATH/ptolemy/actor/lib/js/demo"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/actor/lib/mail/mail.jar"
                   targetdir="$INSTALL_PATH/ptolemy/actor/lib/mail"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/vergil/basic/imprt/accessor/accessor.jar"
@@ -259,8 +255,6 @@
             <file src="../dists/ptII11.0.devel/jar_dist/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/socketio.jar"
-                  targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/js.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/nrjavaserial-3.11.0.devel.jar"
                   targetdir="$INSTALL_PATH/lib"/>
