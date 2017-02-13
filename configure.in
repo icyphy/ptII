@@ -2962,101 +2962,6 @@ if test -z "$PTJAVAMAIL_DIR"; then
 fi 
 
 #--------------------------------------------------------------------
-#       js: Rhino JavaScript  implementation
-#	https://developer.mozilla.org/en-US/docs/Rhino
-#       Js is used by actors
-#--------------------------------------------------------------------
-
-# Jar files used by JavaScript.
-# Rhino JavaScript jar files used by export html facility
-PTJAVASCRIPT_JAR=
-
-# Set to js if js.jar is found and used in $PTII/ptolemy/actor/lib/makefile
-PTJAVASCRIPT_DIR=
-
-# OAuth Client jar file used by the JavaScript actor $PTII/lib/org.apache.oltu.oauth2.*.jar
-PTOAUTHCLIENT_JAR=
-
-# OAuth Common jar file used by the JavaScript actor $PTII/lib/org.apache.oltu.oauth2.*.jar
-PTOAUTHCOMMON_JAR=
-
-# socketio Jar used by the JavaScript actor $PTII/lib/socketio.jar The
-# socketio.jar file is built by running "ant jar" after downloading
-# source from here: https://github.com/Gottox/socket.io-java-client
-PTSOCKETIO_JAR=
-
-# We only need to look for Jsoup if $PTJAVASCRIPT_USER_DIR is present
-PTJAVASCRIPT_USER_DIR="$PTII/ptolemy/actor/lib/js"
-
-if test ! -d "$PTJAVASCRIPT_USER_DIR"; then
-    PT_MSG_STATUS([$PTJAVASCRIPT_USER_DIR is not present,
-    so we need not find Rhino JavaScript Implementation.])
-else
-    AC_MSG_CHECKING([for JavaScript, used by js and org.terraswarm.kernel actors. ])
-    AC_ARG_WITH(rhino, [  --with-javascript=JAR       use js.jar from JAR,
-                          defaults to \$PTII/lib/js.jar],
-        PTJAVASCRIPT_JAR=$withval,
-	PTJAVASCRIPT_JAR=$PTII/lib/js.jar)
-
-    if test  -f "$PTJAVASCRIPT_JAR"; then
-	PT_MSG_RESULT([$PTJAVASCRIPT_JAR])
-	updateClasspath "$PTJAVASCRIPT_JAR"
-
-	AC_MSG_CHECKING([for OAuth client, used by js and org.terraswarm.kernel actors. ])
-	AC_ARG_WITH(oauthclient, [  --with-oauthclient=JAR       use oauth from JAR,
-                          defaults to \$PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar],
-        PTOAUTHCLIENT_JAR=$withval,
-	PTOAUTHCLIENT_JAR=$PTII/lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar)
-
-	if test  -f "$PTOAUTHCLIENT_JAR"; then
-	   PT_MSG_RESULT([$PTOAUTHCLIENT_JAR])
-	   updateClasspath "$PTOAUTHCLIENT_JAR"
-
-	   AC_MSG_CHECKING([for OAuth common, used by js and org.terraswarm.kernel actors. ])
-	   AC_ARG_WITH(oauthcommon, [  --with-oauthcommon=JAR       use oauth from JAR,
-                          defaults to \$PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar],
-           PTOAUTHCOMMON_JAR=$withval,
-	   PTOAUTHCOMMON_JAR=$PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar)
-
-	   if test  -f "$PTOAUTHCOMMON_JAR"; then
-	      PT_MSG_RESULT([$PTOAUTHCOMMON_JAR])
-	      updateClasspath "$PTOAUTHCOMMON_JAR"
-
-	      AC_MSG_CHECKING([for socketio, used by js and org.terraswarm.kernel actors. ])
-	      AC_ARG_WITH(socketio, [  --with-socketio=JAR       use socketIO from JAR,
-                          defaults to \$PTII/lib/socketio.jar],
-                          PTSOCKETIO_JAR=$withval,
-			  PTSOCKETIO_JAR=$PTII/lib/socketio.jar)
-
-  	      if test  -f "$PTSOCKETIO_JAR"; then
-	          PT_MSG_RESULT([$PTSOCKETIO_JAR])
-	          updateClasspath "$PTSOCKETIO_JAR"
-	          PTJAVASCRIPT_DIR=js
-	          # PTJAVASCRIPT_PACKAGES is used in ptII/doc/makefile
-	          PTJAVASCRIPT_PACKAGES="ptolemy.actor.lib.js"
-              fi
-	   fi
-       fi
-    fi
-fi
-
-if test -z "$PTJAVASCRIPT_DIR"; then
-    updateExcludes "ptolemy/actor/lib/js/"
-    updateExcludes "org/terraswarm/kernel/"
-    updateExcludes "org/terraswarm/accessor/jjs/"
-    
-    # Only print the message if the PTJAVASCRIPT_USER_DIR was present.
-    if test -d "$PTJAVASCRIPT_USER_DIR"; then
-        AC_MSG_WARN([Failed to find the OAuth common jar files or socketio necessary to
-    to compile ptolemy/actor/lib/js and org/terraswarm/kernel
-    Typically, the OAuth client jar is found at $PTII/lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar.
-    The lib/socketio.jar, is built by running "ant jar" after downloading source from here:
-    https://github.com/Gottox/socket.io-java-client])
-    fi
-fi
-
-
-#--------------------------------------------------------------------
 #       Ptolemy includes one or more FMUs that use JModelica
 #       
 #--------------------------------------------------------------------
@@ -7336,14 +7241,6 @@ AC_SUBST(PTMETROII_DIR)
 # PTMETROII_PACKAGES is used in doc/makefile
 AC_SUBST(PTMETROII_PACKAGES)
 
-# OAuth Client jar file used by JavaScript Actor.
-# Typically lib/org.apache.oltu.oauth2.client-1.0.1-SNAPSHOT.jar
-AC_SUBST(PTOAUTHCLIENT_JAR)
-
-# OAuth Client jar file used by JavaScript Actor.
-# Typically lib/org.apache.oltu.oauth2.common-1.0.1-SNAPSHOT.jar
-AC_SUBST(PTOAUTHCOMMON_JAR)
-
 # Set to opencv and used in 
 # $PTII/ptolemy/actor/lib/makefile if OpenCV Open Computer Vision was found
 AC_SUBST(PTOPENCV_DIR)
@@ -7487,11 +7384,6 @@ AC_SUBST(PTSLF4J_API_JAR)
 
 # slf4j-nop*.jar, used by webcam-capture and xbjlib (XBee).
 AC_SUBST(PTSLF4J_NOP_JAR)
-
-# socketio Jar used by the JavaScript actor $PTII/lib/socketio.jar The
-# socketio.jar file is built by running "ant jar" after downloading
-# source from here: https://github.com/Gottox/socket.io-java-client
-AC_SUBST(PTSOCKETIO_JAR)
 
 # PTSPACE_DIR is set to space and used in
 # $PTII/ptolemy/domains/makefile if ojdbc6.jar was found.
