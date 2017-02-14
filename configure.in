@@ -7043,15 +7043,6 @@ AC_SUBST(PTJAVAMAIL_JARS)
 # PTJMF_PACKAGES is used in ptII/doc/makefile.
 AC_SUBST(PTJAVAMAIL_PACKAGES)
 
-# Rhino JavaScript jar files used by ptolemy.actor.lib.js
-AC_SUBST(PTJAVASCRIPT_JAR)
-
-# Set to js if JavaScript is found and used in $PTII/ptolemy/actor/lib/js/makefile
-AC_SUBST(PTJAVASCRIPT_DIR)
-
-# Set to ptolemy.actor.lib.js and used int $PTII/doc/makefile if Rhino JavaScript is found.
-AC_SUBST(PTJAVASCRIPT_PACKAGES)
-
 # lib/jcerti.jar, used by ptolemy/apps/hlacerti
 AC_SUBST(PTJCERTI_JAR)
 
