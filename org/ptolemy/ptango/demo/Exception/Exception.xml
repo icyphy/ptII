@@ -2,7 +2,7 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="Exception" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.beta">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={68, 255, 1073, 634}, maximized=false}">
     </property>
@@ -10,18 +10,22 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{419.5, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{275.90188259548614, 119.0457899305556}">
     </property>
     <property name="SDF Director" class="ptolemy.domains.sdf.kernel.SDFDirector">
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="UNBOUNDED">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[103.48408508300781, 54.49542999267578]">
+        <property name="allowRateChanges" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="constrainBufferSizes" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, -70.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Interactive shell for executing JavaScript.&#10;This model restarts on each exception.&#10;It does not, however, inform the user of the exception, which is not very useful.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[43.48408508300781, 89.49542999267578]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-110.0, -40.0]">
         </property>
     </property>
     <property name="CatchExceptionAttribute" class="ptolemy.actor.lib.CatchExceptionAttribute">
@@ -35,7 +39,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[278.4840850830078, 49.49542999267578]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, -60.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -43,14 +47,14 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Beth Latronico">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{48.0, 437.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, -100.0]">
         </property>
     </property>
     <entity name="InteractiveShell" class="ptolemy.actor.lib.gui.InteractiveShell">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={254, 263, 646, 420}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={330, 143, 646, 420}, maximized=false}">
         </property>
         <doc>Produce strings from an interactive shell on the screen</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[113.48408508300781, 269.4954299926758]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 165.0]">
         </property>
     </entity>
     <entity name="SampleDelay" class="ptolemy.domains.sdf.lib.SampleDelay">
@@ -64,7 +68,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[403.4840850830078, 319.4954299926758]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 55.0]">
         </property>
         <property name="_flipPortsHorizontal" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -91,7 +95,7 @@
         <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[423.4840850830078, 259.4954299926758]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[340.0, 155.0]">
         </property>
     </entity>
     <entity name="EscapeQuotes" class="ptolemy.actor.lib.string.StringReplace">
@@ -104,11 +108,11 @@
         <property name="regularExpression" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <doc>Replace the patterns that match a regular expression</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[273.4840850830078, 259.4954299926758]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 155.0]">
         </property>
     </entity>
-    <entity name="JavaScript" class="ptolemy.actor.lib.js.JavaScript">
-        <property name="script" class="ptolemy.kernel.util.StringAttribute" value="// In case somehow no input is provided.&#10;function fire() {&#10;  send(output, &quot;No input script provided.&quot;);&#10;}">
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// In case somehow no input is provided.&#10;function fire() {&#10;  send(output, &quot;No input script provided.&quot;);&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -116,34 +120,32 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[503.4840850830078, 189.49542999267578]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 90.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
             <property name="_type" class="ptolemy.actor.TypeAttribute" value="general">
             </property>
         </port>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=65.0,y=230.0}, tail={id=&quot;SampleDelay.output&quot;,x=355.0,y=280.0}, points={0.0,220.0,0.0,280.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveShell.input&quot;,x=-20.0,y=165.0}, tail={id=&quot;SampleDelay.output&quot;,x=325.0,y=55.0}, points={-105.0,155.0,-105.0,55.0} } }">
         </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=65.0,y=230.0}, tail={id=&quot;EscapeQuotes.stringToEdit&quot;,x=225.0,y=220.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;InteractiveShell.output&quot;,x=-20.0,y=165.0}, tail={id=&quot;EscapeQuotes.stringToEdit&quot;,x=165.0,y=155.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringReplace.replacement&quot;,x=375.0,y=220.0}, tail={id=&quot;EscapeQuotes.output&quot;,x=225.0,y=220.0}, points={} } }">
-        </property>
-    </relation>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringReplace.output&quot;,x=375.0,y=220.0}, tail={id=&quot;JavaScript.scriptIn&quot;,x=455.0,y=150.0}, points={455.0,220.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringReplace.replacement&quot;,x=340.0,y=155.0}, tail={id=&quot;EscapeQuotes.output&quot;,x=165.0,y=155.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SampleDelay.input&quot;,x=355.0,y=280.0}, tail={id=&quot;JavaScript.output&quot;,x=455.0,y=150.0}, points={520.0,280.0,520.0,150.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;SampleDelay.input&quot;,x=325.0,y=55.0}, tail={id=&quot;JavaScript.output&quot;,x=440.0,y=90.0}, points={515.0,55.0,515.0,90.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;StringReplace.output&quot;,x=340.0,y=155.0}, tail={id=&quot;JavaScript.script&quot;,x=440.0,y=90.0}, points={450.0,155.0} } }">
         </property>
     </relation>
     <link port="InteractiveShell.input" relation="relation3"/>
@@ -151,9 +153,9 @@
     <link port="SampleDelay.input" relation="relation4"/>
     <link port="SampleDelay.output" relation="relation3"/>
     <link port="StringReplace.replacement" relation="relation2"/>
-    <link port="StringReplace.output" relation="relation"/>
+    <link port="StringReplace.output" relation="relation6"/>
     <link port="EscapeQuotes.stringToEdit" relation="relation5"/>
     <link port="EscapeQuotes.output" relation="relation2"/>
-    <link port="JavaScript.scriptIn" relation="relation"/>
+    <link port="JavaScript.script" relation="relation6"/>
     <link port="JavaScript.output" relation="relation4"/>
 </entity>

@@ -363,5 +363,13 @@ public class PortNameChanges extends MoMLFilterSimple {
         serverPorts.put("newServiceTime", "serviceTime");
         _actorsWithPortNameChanges.put("ptolemy.domains.de.lib.Server",
                 serverPorts);
+
+        // Rhino actor/lib/js/JavaScript is now Nashorn actor/lib/jjs/JavaScript.
+        // The old had a scriptIn port.
+        HashMap javaScriptPorts = new HashMap();
+        javaScriptPorts.put("scriptIn", "script");
+        _actorsWithPortNameChanges.put("ptolemy.actor.lib.jjs.JavaScript",
+                javaScriptPorts);
+        
     }
 }
