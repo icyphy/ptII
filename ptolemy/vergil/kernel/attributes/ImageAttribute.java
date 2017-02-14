@@ -29,6 +29,7 @@ package ptolemy.vergil.kernel.attributes;
 
 import java.awt.Image;
 import java.awt.Toolkit;
+import java.io.IOException;
 import java.net.URL;
 
 import ptolemy.data.DoubleToken;
@@ -40,6 +41,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Workspace;
+import ptolemy.util.FileUtilities;
 import ptolemy.vergil.icon.ImageIcon;
 
 ///////////////////////////////////////////////////////////////////
@@ -124,7 +126,12 @@ public class ImageAttribute extends VisibleAttribute {
     public void attributeChanged(Attribute attribute)
             throws IllegalActionException {
         if (attribute == source) {
-            URL url = source.asURL();
+            URL url = null;
+            try {
+                url = FileUtilities.followRedirects(source.asURL());
+            } catch (IOException ex) {
+                throw new IllegalActionException(this, ex, "Failed to follow possible redirects for " + source.asURL());
+            }
             Toolkit tk = Toolkit.getDefaultToolkit();
             Image image = tk.getImage(url);
             _icon.setImage(image);
