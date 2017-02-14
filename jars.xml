@@ -95,8 +95,6 @@
     <include name="ptolemy/actor/lib/jmf/demo/demo.jar" />
     <include name="ptolemy/actor/lib/jmf/jmf.jar" />
     <include name="ptolemy/actor/lib/joystick/joystick.jar" />
-    <include name="ptolemy/actor/lib/js/demo/demo.jar" />
-    <include name="ptolemy/actor/lib/js/js.jar" />
     <include name="ptolemy/actor/lib/mail/demo/demo.jar" />
     <include name="ptolemy/actor/lib/mail/mail.jar" />
     <include name="ptolemy/actor/lib/mbed/mbed.jar" />
@@ -340,12 +338,6 @@
     <include name="ptolemy/actor/lib/javasound/demo/KarplusStrong/KarplusStrong.jar" />
     <include name="ptolemy/actor/lib/jmf/demo/JMFJAI/JMFJAI.jar" />
     <include name="ptolemy/actor/lib/jmf/demo/VideoCapture/VideoCapture.jar" />
-    <include name="ptolemy/actor/lib/js/demo/Factorial/Factorial.jar" />
-    <include name="ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth.jar" />
-    <include name="ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.jar" />
-    <include name="ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.jar" />
-    <include name="ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.jar" />
-    <include name="ptolemy/actor/lib/js/demo/StockPrice/StockPrice.jar" />
     <include name="ptolemy/actor/lib/python/demo/Ptolemnizer/Ptolemnizer.jar" />
     <include name="ptolemy/actor/lib/python/demo/PythonScale/PythonScale.jar" />
     <include name="ptolemy/actor/lib/python/demo/RecordManipulation/RecordManipulation.jar" />
@@ -1847,33 +1839,6 @@
     </jar>
 
     <!-- vendors/misc/joystick/Joystick.jar -->
-
-    <!-- ptolemy/actor/lib/js/js.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/js/js.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/js/*.class"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/js/*.htm"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/js/*.xml"/>
-      </fileset>
-    </jar>
-
-    <!-- ptolemy/actor/lib/js/demo/demo.jar -->
-    <jar defaultexcludes="yes"
-	 destfile="${basedir}/ptolemy/actor/lib/js/demo/demo.jar"
-	 >
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/js/demo/*/*.txt"/>
-      </fileset>
-      <fileset dir="${basedir}">
-	<include name="ptolemy/actor/lib/js/demo/*/*.xml"/>
-      </fileset>
-    </jar>
 
     <!-- ptolemy/actor/lib/mail/mail.jar -->
     <jar defaultexcludes="yes"
@@ -6521,59 +6486,6 @@
          >
        <fileset dir="${basedir}">
         <include name="ptolemy/actor/lib/jmf/demo/VideoCapture/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/actor/lib/js/demo/Factorial/Factorial.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/actor/lib/js/demo/Factorial/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/actor/lib/js/demo/GoogleOAuth/GoogleOAuth.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/actor/lib/js/demo/GoogleOAuth/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/WebServerDE/*.xml"/>
-        <include name="org/ptolemy/ptango/demo/WebServerDE/img/Icon.gif"/>
-        <include name="org/ptolemy/ptango/demo/WebServerDE/pages/*.html"/>
-	<include name="org/ptolemy/ptango/demo/files/PtolemyIISmallIcon.gif"/>
-        <include name="org/ptolemy/ptango/demo/files/*.gif"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/actor/lib/js/demo/JavaScriptShell/JavaScriptShell.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/actor/lib/js/demo/JavaScriptShell/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/actor/lib/js/demo/ModelBuilder/ModelBuilder.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/actor/lib/js/demo/ModelBuilder/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/actor/lib/js/demo/Spontaneous/Spontaneous.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/actor/lib/js/demo/Spontaneous/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/actor/lib/js/demo/StockPrice/StockPrice.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/actor/lib/js/demo/StockPrice/*.xml"/>
        </fileset>
     </jar>
 
