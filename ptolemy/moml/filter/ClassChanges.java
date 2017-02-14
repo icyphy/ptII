@@ -228,6 +228,10 @@ public class ClassChanges extends MoMLFilterSimple {
         _classChanges.put("org.terraswarm.kernel.AccessorOne",
                 "org.terraswarm.accessor.JSAccessor");
 
+        // Rhino JavaScript
+        _classChanges.put("ptolemy.actor.lib.js.JavaScript",
+                "ptolemy.actor.lib.jjs.JavaScript");
+
         // Location
         _classChanges.put("ptolemy.moml.Location",
                 "ptolemy.kernel.util.Location");
