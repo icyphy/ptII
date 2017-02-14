@@ -375,6 +375,7 @@ public class ExportModelJUnitTest {
                 "RecordManipulation", // Python demo pops up a dialog.
                 "ptolemy/demo/Robot/Robot.xml", // Has links to other demos.
                 "ros/demo/Ros", // Need a robot.
+                "RobotMPC", // Has links to other demos.
                 "RobotOnCircleKV.xml", // Needs the KeyValue model running.
                 "RobotPFChase.xml", // Needs the KeyValue model running.
                 "Ros.xml", // This demo has links to the demo that are to run
