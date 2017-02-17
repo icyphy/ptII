@@ -145,6 +145,7 @@ public class AccessorLibrary extends EntityLibrary {
                     // Get the index file at the specified location.
                     URL indexURL = new URL(source, "index.json");
 
+                    indexURL = JSAccessor.getLocalURL(indexURL.toString(), indexURL);
                     BufferedReader in = null;
                     StringBuffer contents = new StringBuffer();
                     MessageHandler.status("Retrieving library from " + source);

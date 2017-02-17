@@ -487,6 +487,55 @@ public class JSAccessor extends JavaScript {
         }
     }
 
+    /** If the URL can be found locally, return it, otherwise return
+     *  the value of the passed in URL.
+     *
+     *  @param urlSpec The String URL of the accessor or *PtDoc.xml file.
+     *  @param accessorOrPtDocURL The proposed URL of the accessor or *PtDoc.xml file.
+     *  @return If the urlSpec matches
+     *  https*://(www\.)*icyphy.org/accessors and the
+     *  corresponding file can be found in the directory returned by
+     *  _accessorDirectory(), then return a URL that refers to the
+     *  local file.  Otherwise, return the value of the
+     *  accessorOrPtDocURL argument.
+     *  @exception IOException If thrown while getting the accessor directory.
+     *  @exception MalformedURLException if throw while creating a URL.
+     */
+    public static URL getLocalURL(String urlSpec, URL accessorOrPtDocURL) throws IOException, MalformedURLException {
+        // See the class comment for more information.
+
+        // A possible enhancement would be to check the mod times of
+        // the website and the local file and act accordingly.
+        // Another enhancement would be to add a parameter to control
+        // this functionality.
+
+        String target = null;
+        if (urlSpec.matches("https*://(www\\.)*icyphy.org/accessors/.*")) {
+            target = "icyphy.org/accessors/";
+        } else if (urlSpec.matches("https*://(www\\.)*accessors.org/.*")) {
+            target = "accessors.org/";
+        }
+        if (target != null) {
+            String urlSpecTailPath = urlSpec.substring(urlSpec.indexOf(target) + target.length());
+            try {
+                File urlSpecLocalFile = new File(_accessorDirectory(), "accessors/web/" + urlSpecTailPath);
+                if (urlSpecLocalFile.exists()) {
+                    if (urlSpecLocalFile.length() == 0) {
+                        System.out.println("JSAccessor: urlSpec is " + urlSpec
+                                           + ", but " + urlSpecLocalFile + " has length 0, so the former is being read");
+                    } else {
+                        System.out.println("JSAccessor: urlSpec is " + urlSpec
+                                           + ", but " + urlSpecLocalFile + " exists, so the latter is being read.");
+                        accessorOrPtDocURL = urlSpecLocalFile.toURI().toURL();
+                    }
+                }
+            } catch (IOException ex) {
+                System.out.println("JSAccessor: Could not look up the local accessor directory: " + ex);
+            }
+        }
+        return accessorOrPtDocURL;
+    }
+
     /** Handle an accessor-specific MoMLChangeRequest.
      *
      *  In the postParse() phase, the _location and accessorSource
@@ -719,7 +768,8 @@ public class JSAccessor extends JavaScript {
         // If the source makes no mention of the accessors repo,
         // then just use FileParameter to find the source file.
         if (urlSpec.indexOf("org/terraswarm/accessor/accessors") < 0
-                && urlSpec.indexOf("icyphy.org/accessors") < 0) {
+            && urlSpec.indexOf("icyphy.org/accessors") < 0
+            && urlSpec.indexOf("accessors.org/") < 0) {
             return FileUtilities.nameToURL(urlSpec, null, null);
         }
 
@@ -766,7 +816,7 @@ public class JSAccessor extends JavaScript {
 
         // Use the local file if possible.  See the method comment for
         // details.
-        accessorURL = _getLocalURL(urlSpec, accessorURL);
+        accessorURL = getLocalURL(urlSpec, accessorURL);
         return accessorURL;
     }
 
@@ -775,12 +825,21 @@ public class JSAccessor extends JavaScript {
 
     /** The directory that contains the accessors svn repository.
      *  The default value is $PTII/org/terraswarm/accessor
-     *  Note that this svn repo is not world readable.
-     *  The command to check out the repo is:
+     *  Note that this svn repo is world readable.
+     *  The command to check out the repo anonymously read-only is:</p>
      *  <pre>
      *  cd $PTII/org/terraswarm/accessor
-     *  svn co https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors
+     *  svn co svn co https://repo.eecs.berkeley.edu/svn-anon/projects/icyphy/accessors/trunk/accessors
      *  </pre>
+     *
+     *  <p>For read/write access, you need an account on repo.eecs.berkeley.edu,
+     *  see <a href="https://accessors.org/svn.html#in_browser">https://accessors.org/svn.html</a>.
+     *  The command is:</p>
+     *  <pre>
+     *  cd $PTII/org/terraswarm/accessor
+     *  svn co svn co https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors
+     *  </pre>
+     *
      *  @return The $PTII/org/terraswarm/accessor directory.
      *  @exception IOException If the ptolemy.ptII.dir property does
      *  not exist or if the directory does not exist.
@@ -978,49 +1037,6 @@ public class JSAccessor extends JavaScript {
         }
     }
 
-    /** If the URL can be found locally, return it, otherwise return
-     *  the value of the passed in URL.
-     *
-     *  @param urlSpec The String URL of the accessor or *PtDoc.xml file.
-     *  @param accessorOrPtDocURL The proposed URL of the accessor or *PtDoc.xml file.
-     *  @return If the urlSpec matches
-     *  https*://(www\.)*icyphy.org/accessors and the
-     *  corresponding file can be found in the directory returned by
-     *  _accessorDirectory(), then return a URL that refers to the
-     *  local file.  Otherwise, return the value of the
-     *  accessorOrPtDocURL argument.
-     *  @exception IOException If thrown while getting the accessor directory.
-     *  @exception MalformedURLException if throw while creating a URL.
-     */
-    private static URL _getLocalURL(String urlSpec, URL accessorOrPtDocURL) throws IOException, MalformedURLException {
-        // See the class comment for more information.
-
-        // A possible enhancement would be to check the mod times of
-        // the website and the local file and act accordingly.
-        // Another enhancement would be to add a parameter to control
-        // this functionality.
-        if (urlSpec.matches("https*://(www\\.)*icyphy.org/accessors/.*")) {
-            String target = "icyphy.org/accessors/";
-            String urlSpecTailPath = urlSpec.substring(urlSpec.indexOf(target) + target.length());
-            try {
-                File urlSpecLocalFile = new File(_accessorDirectory(), "accessors/web/" + urlSpecTailPath);
-                if (urlSpecLocalFile.exists()) {
-                    if (urlSpecLocalFile.length() == 0) {
-                        System.out.println("JSAccessor: urlSpec is " + urlSpec
-                                           + ", but " + urlSpecLocalFile + " has length 0, so the former is being read");
-                    } else {
-                        System.out.println("JSAccessor: urlSpec is " + urlSpec
-                                           + ", but " + urlSpecLocalFile + " exists, so the latter is being read.");
-                        accessorOrPtDocURL = urlSpecLocalFile.toURI().toURL();
-                    }
-                }
-            } catch (IOException ex) {
-                System.out.println("JSAccessor: Could not look up the local accessor directory: " + ex);
-            }
-        }
-        return accessorOrPtDocURL;
-    }
-
     /** Get the PtDoc for an accessor or create a link to a html file.
      *
      *  Given a urlSpec for foo.js, look for PtDoc.xml.  If it is found,
@@ -1042,7 +1058,7 @@ public class JSAccessor extends JavaScript {
 
         // Look for a local version of the PtDoc file.
         // This assumes that getAccessorsRepository() was previously invoked.
-        url = _getLocalURL(ptDocSpec, url);
+        url = getLocalURL(ptDocSpec, url);
 
         // Check that the URL is readable, and import without docs if not.
         // This will throw IOException if not.
@@ -1052,7 +1068,6 @@ public class JSAccessor extends JavaScript {
         BufferedReader in = null;
 	//InputStream in = null;
         try {
-	    //in = FileUtilities.openStreamFollowingRedirects(url);
             in = new BufferedReader(new InputStreamReader(
                     FileUtilities.openStreamFollowingRedirects(url)));
             String line = in.readLine();
