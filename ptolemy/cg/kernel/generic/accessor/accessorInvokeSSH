@@ -116,10 +116,14 @@ if [ ! -z "$npmInstall" ]; then
     echo "### accessorInvokeSSH: Running npm install @terraswarm/accessors forever $modules"
     echo "### accessorInvokeSSH:   Ignore messages like: 'npm WARN enoent ENOENT: no such file or directory, open $runDirectory/package.json'"
     ssh $userHost "cd $cg; npm install @terraswarm/accessors forever $modules"
+
+    # We could check on the remote machine if we need to update the modules, but instead we just do it anyway.
+    echo "### accessorInvokeSSH: Running npm update @terraswarm/accessors forever $modules"
+    ssh $userHost "cd $cg; npm update @terraswarm/accessors forever $modules"
 fi
 
 echo "### accessorInvokeSSH: Creating $runDirectory/invoke.js"
-echo "require('@terraswarm/accessors');main(process.argv.slice(2));" | ssh $userHost "cat > $runDirectory/invoke.js"
+echo "var nodeHost = require('@terraswarm/accessors'); nodeHost.processCommandLineArgumentsNode(process.argv);" | ssh $userHost "cat > $runDirectory/invoke.js"
 
 echo "### accessorInvokeSSH: Copying the accessor to $runDirectory"
 scp $accessor $userHost:$runDirectory/
@@ -166,7 +170,7 @@ if [ ! -z "\$stopForeverAccessors" -o ! -z "\$npmForever" ]; then
 
     echo "Using npm forever to stop $accessorShortName"
 
-    \$HOME/node_modules/forever/bin/forever stop $accessorShortName
+    \$HOME/cg/node_modules/forever/bin/forever stop $accessorShortName
 
 fi
 
