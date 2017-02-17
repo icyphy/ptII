@@ -68,6 +68,8 @@ public class AccessorIconLoader implements IconLoader {
     /** Load an icon for a class in a particular context.
      *  This method defers icon loading until the context object has
      *  been fully constructed.
+     *  Icons that resolve to urls that start with "http"
+     *  are ignored.
      *  @param className The name of the class for which the icon is
      *  to be loaded.
      *  @param context The context in which the icon is loaded.
@@ -144,59 +146,65 @@ public class AccessorIconLoader implements IconLoader {
                             // Do not update the repo (second argument is false).
                             try {
                                 URL iconURL = JSAccessor._sourceToURL(iconURLSpec, false);
-                                // If the URL starts with http, then we follow
-                                // up to 10 redirects.  Otherwise, we just
-                                // call URL.getInputStream().
+                                iconURL = JSAccessor.getLocalURL(iconURLSpec, iconURL);
 
-                                InputStream input = FileUtilities.openStreamFollowingRedirects(iconURL);
+                                // For performance reasons, ignore icon URLs that start with http.
+                                if (!iconURL.getProtocol().startsWith("http")) {
 
-                                MoMLParser newParser = new MoMLParser();
-                                // Mark the parser to keep track of objects created.
-                                newParser.clearTopObjectsList();
-                                newParser.setContext(context);
+                                    // If the URL starts with http, then we follow
+                                    // up to 10 redirects.  Otherwise, we just
+                                    // call URL.getInputStream().
 
-                                // This is quite a hack, but the icon may refer to external resources
-                                // such as images at locations relative to the accessor location.
-                                // Temporarily create a URI attribute to use while loading the icon.
-                                // This cannot be permanent because then other relative references,
-                                // particularly in accessorSource itself, will become relative to
-                                // this accessorSource location.
-                                URIAttribute uriAttribute = null;
-                                try {
-                                    // Create a URIAttribute so that if the icon makes external
-                                    // references, it can use relative file names, relative to the
-                                    // location of the accessor.
-                                    // Use FileParameter to preprocess the source to resolve
-                                    // relative classpaths and references to $CLASSPATH, etc.
-                                    // FIXME: NO! This messes up any further calls to accessorSource.asURL()
-                                    // if the accessorSource is relative, because then they will use the accessor
-                                    // source location rather than the model. E.g., reload will no longer work.
-                                    URL sourceURL = JSAccessor._sourceToURL(((JSAccessor)context).accessorSource.asURL().toExternalForm(), false);
-                                    uriAttribute = new URIAttribute((JSAccessor)context, "_uri");
-                                    uriAttribute.setURL(sourceURL);
-                                } catch (Throwable e) {
-                                    // Ignore. The only effect will be that icons don't load properly
-                                    // if they make references to external files.
-                                }
+                                    InputStream input = FileUtilities.openStreamFollowingRedirects(iconURL);
 
-                                try {
-                                    newParser.parse(iconURL, iconURL.toExternalForm(), input);
-                                    // Have to mark the contents derived objects, so that
-                                    // the icon is not exported with the MoML export.
-                                    List<NamedObj> icons = newParser.topObjectsCreated();
-                                    if (icons != null) {
-                                        Iterator objects = icons.iterator();
+                                    MoMLParser newParser = new MoMLParser();
+                                    // Mark the parser to keep track of objects created.
+                                    newParser.clearTopObjectsList();
+                                    newParser.setContext(context);
 
-                                        while (objects.hasNext()) {
-                                            NamedObj newObject = (NamedObj) objects.next();
-                                            newObject.setDerivedLevel(1);
-                                            _markContentsDerived(newObject, 1);
-                                            foundAnIcon = true;
-                                        }
+                                    // This is quite a hack, but the icon may refer to external resources
+                                    // such as images at locations relative to the accessor location.
+                                    // Temporarily create a URI attribute to use while loading the icon.
+                                    // This cannot be permanent because then other relative references,
+                                    // particularly in accessorSource itself, will become relative to
+                                    // this accessorSource location.
+                                    URIAttribute uriAttribute = null;
+                                    try {
+                                        // Create a URIAttribute so that if the icon makes external
+                                        // references, it can use relative file names, relative to the
+                                        // location of the accessor.
+                                        // Use FileParameter to preprocess the source to resolve
+                                        // relative classpaths and references to $CLASSPATH, etc.
+                                        // FIXME: NO! This messes up any further calls to accessorSource.asURL()
+                                        // if the accessorSource is relative, because then they will use the accessor
+                                        // source location rather than the model. E.g., reload will no longer work.
+                                        URL sourceURL = JSAccessor._sourceToURL(((JSAccessor)context).accessorSource.asURL().toExternalForm(), false);
+                                        uriAttribute = new URIAttribute((JSAccessor)context, "_uri");
+                                        uriAttribute.setURL(sourceURL);
+                                    } catch (Throwable e) {
+                                        // Ignore. The only effect will be that icons don't load properly
+                                        // if they make references to external files.
                                     }
-                                } finally {
-                                    if (uriAttribute != null) {
-                                        uriAttribute.setContainer(null);
+
+                                    try {
+                                        newParser.parse(iconURL, iconURL.toExternalForm(), input);
+                                        // Have to mark the contents derived objects, so that
+                                        // the icon is not exported with the MoML export.
+                                        List<NamedObj> icons = newParser.topObjectsCreated();
+                                        if (icons != null) {
+                                            Iterator objects = icons.iterator();
+
+                                            while (objects.hasNext()) {
+                                                NamedObj newObject = (NamedObj) objects.next();
+                                                newObject.setDerivedLevel(1);
+                                                _markContentsDerived(newObject, 1);
+                                                foundAnIcon = true;
+                                            }
+                                        }
+                                    } finally {
+                                        if (uriAttribute != null) {
+                                            uriAttribute.setContainer(null);
+                                        }
                                     }
                                 }
                             } catch (Throwable ex) {
