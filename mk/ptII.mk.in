@@ -701,12 +701,6 @@ PTJAVAMAIL_JARS = 	@PTJAVAMAIL_JARS@
 # PTJMF_PACKAGES is used in ptII/doc/makefile.
 PTJAVAMAIL_PACKAGES =	@PTJAVAMAIL_PACKAGES@
 
-# Rhino JavaScript jar files used by ptolemy.actor.lib.js
-PTJAVASCRIPT_JAR =	@PTJAVASCRIPT_JAR@
-
-# Set to jsoup if jsoup is found and used in $PTII/ptolemy/actor/lib/js/makefile
-PTJAVASCRIPT_DIR = 	@PTJAVASCRIPT_DIR@
-
 # Set to ptolemy.actor.lib.js and used int $PTII/doc/makefile if Rhino JavaScript is found.
 PTJAVASCRIPT_PACKAGES =	@PTJAVASCRIPT_PACKAGES@
 
