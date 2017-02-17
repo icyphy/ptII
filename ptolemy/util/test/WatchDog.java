@@ -1,6 +1,6 @@
 /* WatchDog timer for tests
 
- @Copyright (c) 2003-2014 The Regents of the University of California.
+ @Copyright (c) 2003-2017 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -63,7 +63,7 @@ public class WatchDog {
             @Override
             public void run() {
                 try {
-                    System.err.println("*** util.testsuite.WatchDog went "
+                    System.err.println("*** ptolemy.util.test.WatchDog went "
                             + "off after " + timeToDie + "ms. "
                             + new Date().toString());
 
@@ -96,7 +96,7 @@ public class WatchDog {
                 } catch (Exception e) {
                     System.err.println(e);
                 } finally {
-                    System.out.println("util.testsuite.WatchDog went off");
+                    System.out.println("ptolemy.util.test.WatchDog went off");
                     watchDogWentOff = true;
 
                     if (_exitOnTimeOut) {
@@ -105,7 +105,7 @@ public class WatchDog {
                             userDir = System.getProperty("user.dir");
                         } catch (Exception ex) {
                             // ignore
-                            userDir = "util.testsuite.WatchDog went off";
+                            userDir = "ptolemy.util.test.WatchDog went off";
                         }
                         System.out.println("The string below is so that "
                                 + "the nightly build will notice\n"
@@ -132,11 +132,11 @@ public class WatchDog {
     /** Cancel the currently pending watchdog.
      */
     public void cancel() {
-        System.out.println("util.testsuite.WatchDog.cancel(): canceling "
+        System.out.println("ptolemy.util.test.WatchDog.cancel(): canceling "
                 + new Date());
 
         if (_timer == null) {
-            System.out.println("util.testsuite.WatchDog.cancel(): "
+            System.out.println("ptolemy.util.test.WatchDog.cancel(): "
                     + "Warning: cancel called twice?");
         } else {
             _timer.cancel();
