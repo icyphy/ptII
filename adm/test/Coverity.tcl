@@ -86,7 +86,12 @@ set startingDirectory [pwd]
 cd $gendir
 
 test coverity-1.0 {coverity} {
+    set t [clock seconds]
+    puts "Before running nightlyMake coverity, the time is [clock format  $t -format %T]"
     set matches [nightlyMake coverity]
+    set t [clock seconds]
+    puts "After running nightlyMake coverity, the time is [clock format  $t -format %T]"
+    list $matches
 } {****************************************************
 ****************************************************
 }
