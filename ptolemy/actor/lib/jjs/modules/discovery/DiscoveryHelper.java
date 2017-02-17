@@ -105,7 +105,7 @@ public class DiscoveryHelper {
                 if (_debugging) {
                     System.out.println("Discovery - using nmap");
                 }
-                nmap(baseIP);
+                _nmap(baseIP);
             } else {
 
                 // Select appropriate function for the OS
@@ -130,7 +130,7 @@ public class DiscoveryHelper {
 
                     // Read all data
                     for (int i = 0; i < _processes.size(); i++) {
-                        readPingWindows(_processes.get(i), baseIP + "." + i);
+                        _readPingWindows(_processes.get(i), baseIP + "." + i);
                     }
 
                     // Wait for all processes to finish
@@ -142,7 +142,7 @@ public class DiscoveryHelper {
                         }
                     }
 
-                    arpWindows();
+                    _arpWindows();
 
                 } else {
                     if (_debugging) {
@@ -164,20 +164,20 @@ public class DiscoveryHelper {
                         }
                     }
 
-                    // Read all data
+                    // Read all data.
                     for (int i = 0; i < _processes.size(); i++) {
-                        readPingLinux(_processes.get(i), baseIP + "." + i);
+                        _readPingLinux(_processes.get(i), baseIP + "." + i);
                     }
 
-                    // Wait for all processes to finish
+                    // Wait for all processes to finish.
                     for (int i = 0; i < _processes.size(); i++) {
                         try {
                             _processes.get(i).waitFor();
                         } catch (InterruptedException e) {
-                            // Don't wait for it if interrupted
+                            // Don't wait for it if interrupted.
                         }
                     }
-                    arpLinux();
+                    _arpLinux();
                 }
             }
         } else {
@@ -207,47 +207,28 @@ public class DiscoveryHelper {
      *
      * @return The IP address of the host machine.
      */
-    public String getHostAddress() {
-        // Based on:
-        // http://stackoverflow.com/questions/9481865/getting-the-ip-address-of-the-current-machine-using-java
-        // Ignore loopback (127.*) and broadcast (255.*)
-        // Others could be private (site-local) (192.*, 10.*, 172.16.*
-        // through 172.31.*), link local (169.254.*), or multicast
-        // (224.* through 239.*)
-        String hostAddress = "Unknown";
-        InetAddress address;
-        NetworkInterface iface;
-
-        try {
-            // Coverity Scan: "getNetworkInterfaces returns null".
-            Enumeration<NetworkInterface> interfaces =
-                NetworkInterface.getNetworkInterfaces();
-            if (interfaces == null) {
-                return "Unknown";
-            }
-            Enumeration<InetAddress> addresses;
-
-            while (interfaces.hasMoreElements()) {
-                iface = interfaces.nextElement();
-                addresses = iface.getInetAddresses();
-                while (addresses.hasMoreElements()) {
-                    address = addresses.nextElement();
-                    hostAddress = address.getHostAddress();
-                    // Break at first non-loopback, non-multicast address
-                    if (!address.isLoopbackAddress() &&
-                            !address.isMulticastAddress() &&
-                            // Avoid addresses such as fe80:0:0:0:0:5efe:c0a8:3801%net3
-                            // Assumes IPv4 address
-                            !hostAddress.contains(":")) {
-                        return hostAddress;
-                    }
-                }
-            }
-        } catch(SocketException e) {
-            return "Unknown";
-        }
-
+    public /*static*/ String getHostAddress() {
+        InetAddress address = _getUsefulAddress();
+        String hostAddress = address.getHostAddress();
         return hostAddress;
+    }
+
+    
+    /** Get the MAC (Media Access Control) address
+     *  of the first non-loopback, non-multicast address.
+     *  @return the MAC address
+     *  @exception SocketException If thrown while finding the address.
+     */
+    public /*static*/ String getMacAddress() throws SocketException {
+        InetAddress address = _getUsefulAddress();
+        NetworkInterface networkInterface = NetworkInterface.getByInetAddress(address);
+        byte [] macAddress = networkInterface.getHardwareAddress();
+
+        StringBuffer buffer = new StringBuffer();
+        for (int i = 0; i < macAddress.length; i++) {
+            buffer.append(String.format("%02X%s", macAddress[i], (i < macAddress.length - 1) ? "-" : ""));
+        }
+        return macAddress.toString();
     }
 
     /** Execute the arp command on a Linux platform.  The arp command finds
@@ -256,7 +237,7 @@ public class DiscoveryHelper {
      *  information and to screen out devices that are not accessible at the
      *  moment (which may be cached in the arp cache).
      */
-    private void arpLinux() {
+    private void _arpLinux() {
         if (_ipMap.size() == 0) {
             System.err
                     .println("Warning, no devices were found.  Perhaps the format returned by "
@@ -334,8 +315,7 @@ public class DiscoveryHelper {
      *  information and to screen out devices that are not accessible at the
      *  moment (which may be cached in the arp cache).
      */
-
-    private void arpWindows() {
+    private void _arpWindows() {
         if (_ipMap.size() == 0) {
             System.err
                     .println("Warning, no devices were found.  Perhaps the format returned by "
@@ -385,13 +365,58 @@ public class DiscoveryHelper {
         }
     }
 
+    /** Return the first non-loopback, non-multicast Network Interface.
+     *  @return the Network Interface.
+     */
+    private static InetAddress _getUsefulAddress() {
+        // Based on:
+        // http://stackoverflow.com/questions/9481865/getting-the-ip-address-of-the-current-machine-using-java
+        // Ignore loopback (127.*) and broadcast (255.*)
+        // Others could be private (site-local) (192.*, 10.*, 172.16.*
+        // through 172.31.*), link local (169.254.*), or multicast
+        // (224.* through 239.*)
+        String hostAddress = "Unknown";
+        InetAddress address;
+        NetworkInterface networkInterface;
+
+        try {
+            // Coverity Scan: "getNetworkInterfaces returns null".
+            Enumeration<NetworkInterface> interfaces =
+                NetworkInterface.getNetworkInterfaces();
+            if (interfaces == null) {
+                return null;
+            }
+            Enumeration<InetAddress> addresses;
+
+            while (interfaces.hasMoreElements()) {
+                networkInterface = interfaces.nextElement();
+                addresses = networkInterface.getInetAddresses();
+                while (addresses.hasMoreElements()) {
+                    address = addresses.nextElement();
+                    hostAddress = address.getHostAddress();
+                    // Break at first non-loopback, non-multicast address
+                    if (!address.isLoopbackAddress() &&
+                            !address.isMulticastAddress() &&
+                            // Avoid addresses such as fe80:0:0:0:0:5efe:c0a8:3801%net3
+                            // Assumes IPv4 address
+                            !hostAddress.contains(":")) {
+                        return address;
+                    }
+                }
+            }
+        } catch(SocketException e) {
+            return null;
+        }
+        return null;
+    }
+
     /** Execute the nmap command.  Nmap finds IP addresses, names and MAC
      *  addresses on the local area network.  The nmap program requires separate
      *  installation on Mac and Windows; please see: https://nmap.org/
      *
      *  @param baseIP The IP address of the host minus the subnet portion.
      */
-    private void nmap(String baseIP) {
+    private void _nmap(String baseIP) {
         try {
             // FIXME: This assumes that .1 is the correct
             // network and /24 is the correct netmask.
@@ -424,7 +449,7 @@ public class DiscoveryHelper {
                 while ((line = stdOut.readLine()) != null) {
                     // Look for "Nmap scan"
                     if (line.startsWith("Nmap scan")) {
-                        readDeviceNmap(line, stdOut);
+                        _readDeviceNmap(line, stdOut);
                     }
                 }
             } finally {
@@ -443,7 +468,7 @@ public class DiscoveryHelper {
      * @param process  The process that is executing the ping.
      * @param testIP  The IP address to base the sweep on.
      */
-    private void readPingLinux(Process process, String testIP) {
+    private void _readPingLinux(Process process, String testIP) {
         JSONObject device = null;
 
         try {
@@ -533,7 +558,7 @@ public class DiscoveryHelper {
      * @param process  The process that is executing the ping.
      * @param testIP  The IP address to base the sweep on.
      */
-    private void readPingWindows(Process process, String testIP) {
+    private void _readPingWindows(Process process, String testIP) {
         JSONObject device = null;
 
         BufferedReader stdOut = null;
@@ -605,7 +630,7 @@ public class DiscoveryHelper {
      * @param line The previous line read
      * @param stdOut The stream to read device information from.
      */
-    private void readDeviceNmap(String line, BufferedReader stdOut) {
+    private void _readDeviceNmap(String line, BufferedReader stdOut) {
         try {
             StringTokenizer tokenizer = new StringTokenizer(line, " ");
             String token, name = "Unknown", mac = "Unknown", ip;
@@ -640,7 +665,7 @@ public class DiscoveryHelper {
                         token = tokenizer.nextToken();
                         mac = tokenizer.nextToken();
                     } else if (line.startsWith("Nmap scan")) {
-                        readDeviceNmap(line, stdOut);
+                        _readDeviceNmap(line, stdOut);
                     }
                 }
 
