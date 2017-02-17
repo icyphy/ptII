@@ -754,9 +754,6 @@ PTJMF_DIR
 PTJJS_DIR
 PTJETTY_JAR
 PTJCERTI_JAR
-PTJAVASCRIPT_PACKAGES
-PTJAVASCRIPT_DIR
-PTJAVASCRIPT_JAR
 PTJAVAMAIL_PACKAGES
 PTJAVAMAIL_JARS
 PTJAVAMAIL_DIR
@@ -14514,15 +14511,6 @@ fi
 
 # Ptolemy II packages that use JavaMail framework.
 # PTJMF_PACKAGES is used in ptII/doc/makefile.
-
-
-# Rhino JavaScript jar files used by ptolemy.actor.lib.js
-
-
-# Set to js if JavaScript is found and used in $PTII/ptolemy/actor/lib/js/makefile
-
-
-# Set to ptolemy.actor.lib.js and used int $PTII/doc/makefile if Rhino JavaScript is found.
 
 
 # lib/jcerti.jar, used by ptolemy/apps/hlacerti
