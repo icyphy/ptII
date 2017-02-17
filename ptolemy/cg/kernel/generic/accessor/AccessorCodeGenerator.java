@@ -91,7 +91,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
         // @codeDirectory@ and @modelName@ are set in
         // RunnableCodeGenerator._executeCommands().
         // Run the accessors for 2000 ms.
-        runCommand.setExpression("node nodeHostInvoke.js --accessor -timeout @timeout@ hosts/node/@modelName@");
+        runCommand.setExpression("node nodeHostInvoke.js -timeout @stopTime@ hosts/node/@modelName@");
 
         generatorPackageList.setExpression("generic.accessor");
     }
