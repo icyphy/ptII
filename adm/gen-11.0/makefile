@@ -4144,8 +4144,10 @@ update_moog:
 
 # Invoke the coverity scan.
 coverity:
+	@echo "coverity: start `date`"
 	(cd $(PTIIHOME); adm/bin/coverity)
 	(cd $(PTIIHOME); adm/bin/coverityAccessors)
+	@echo "coverity: done `date`"
 
 
 # Build from the website
