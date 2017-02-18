@@ -71,6 +71,11 @@ import ptolemy.util.StringUtilities;
  *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js
  *  </pre>
  *
+ *  To use Cape Code, invoke:
+ *  <pre>
+ *  $PTII/bin/vergil -capecode ~/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTestDisplay.xml 
+ *  </pre>
+ *
  *  <p>This actor runs $PTII/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH, which does the following on the remote machine:</p>
  *  <ol>
  *
