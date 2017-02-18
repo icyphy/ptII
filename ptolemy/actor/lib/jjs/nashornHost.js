@@ -184,9 +184,6 @@ function error(message) {
     console.error(message);
 }
 
-//////// NOTE: This host does not support getResource(). How to restrict
-// file system access?
-
 /**
  * Require the named module. This function imports modules formatted
  * according to the CommonJS standard.
@@ -384,30 +381,36 @@ function instantiateTopLevel(accessorName, accessorClass) {
  *   were instantiated.
  */
 function processCommandLineArguments(argv) {
-	var result = commonHost.processCommandLineArguments(
-	        // Command-line arguments.
-	        Java.from(argv),
-	        // Function to read a file and return a string.
-	        FileUtilities.getFileAsString,
-	        // Function to instantiate accessors with their own event loop.
-	        instantiateTopLevel,
-	        // Function terminate to call upon termination.
-	        function() {
-	            // Do let failure to stop accessors block exiting.
-	            try {
-	                commonHost.stopAllAccessors();
-	            } catch(e) {
-	                console.error("Failed to stop accessors: " + e);
-	            }
-	            System.exit(0);
-	        }
-	);
-	if (!result) {
-	    // No accessors were initialized and the keepalive argument
-	    // was not given, so there is presumably no more to do.
-	    print('No standalone accessors were instantiated');
-	    //System.exit(0);
+    // nodeHost has a similar method.
+
+    var result = commonHost.processCommandLineArguments(
+	// Command-line arguments.
+        // Java.from is Nashorn-specific
+	Java.from(argv),
+	// Function to read a file and return a string.
+	FileUtilities.getFileAsString,
+	// Function to instantiate accessors with their own event loop.
+	instantiateTopLevel,
+	// Function terminate to call upon termination.
+	function() {
+	    // Do let failure to stop accessors block exiting.
+	    try {
+	        commonHost.stopAllAccessors();
+	    } catch(e) {
+	        console.error("Failed to stop accessors: " + e);
+	    }
+            // Ptolemy defines a process module that defines exit()
+            // that invokes ptolemy.util.StringUtilities.exit(), which
+            // checks environment variables before possibly exiting.
+            process.exit(0);
 	}
+    );
+    if (!result) {
+	// No accessors were initialized and the keepalive argument
+	// was not given, so there is presumably no more to do.
+	print('No standalone accessors were instantiated');
+	//process.exit(0);
+    }
 }
 
 /**
