@@ -70,6 +70,7 @@ function evaluateCode(accessorName, code) {
         'clearTimeout': clearTimeout,
         'error': error,
         'getParameter': getParameter,
+        'getResource': getResource,
         'httpRequest': httpRequest,
         'input': input,
         'output': output,
@@ -105,6 +106,22 @@ function getParameter(name) {
     //}
     var result = proxy.get(0 /*channel*/ );
     return convertFromToken(result, proxy.isJSON());
+}
+
+
+/** Get a resource, which may be a file name or a URL, and return the
+ *  value of the resource as a string. If this instance of JavaScript
+ *  is restricted (e.g., it is an accessor), then restrict relative file
+ *  names to be in the same directory where the model is located or
+ *  in a subdirectory, or if the resource begins with "$CLASSPATH/", to the
+ *  classpath of the current Java process.
+ *  If the accessor is not restricted, the $KEYSTORE is resolved to
+ *  $HOME/.ptKeystore.
+ *  @param uri A specification for the resource.
+ *  @param timeout The timeout in milliseconds.
+ */
+function getResource(uri, timeout) {
+    return actor.getResource(uri, timeout);
 }
 
 /** Specify an input for the accessor.

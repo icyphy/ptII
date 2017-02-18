@@ -28,6 +28,7 @@
 package ptolemy.actor.lib.jjs;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -1114,6 +1115,8 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
      *  names to be in the same directory where the model is located or
      *  in a subdirectory, or if the resource begins with "$CLASSPATH/", to the
      *  classpath of the current Java process.
+     *  If the accessor is not restricted, the $KEYSTORE is resolved to
+     *  $HOME/.ptKeystore.
      *  @param uri A specification for the resource.
      *  @param timeout The timeout in milliseconds.
      *  @return The resource
@@ -1133,9 +1136,9 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
                     + uri);
         }
         if (_restricted && (uri.contains("$CWD")
-                || uri.contains("$USER")
                 || uri.contains("$HOME")
                 || uri.contains("$USERNAME")
+                || uri.contains("$USER")
                 || uri.contains("~"))) {
             throw new IllegalActionException(this, "Illegal file name for resource: " + uri);
         }
@@ -1150,6 +1153,26 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
                         "Only file names at or within the model location are permitted: " + uri);
             }
             baseDirectory = URIAttribute.getModelURI(this);
+        }
+
+        // If the uri starts with $KEYSTORE, then try to create
+        // the directory and subsitute the name.
+        if ( uri.startsWith("$KEYSTORE")) {
+            String home = System.getenv("HOME");
+            if (home == null || home.length() == 0) {
+                home = System.getenv("USERHOME");
+            }
+            String ptKeystoreName = home + File.separator + ".ptKeystore";
+            File ptKeystore = new File(ptKeystoreName);
+            if (!ptKeystore.isDirectory()) {
+                System.out.println("JavaScript.java: Creating " + ptKeystore);
+                if (!ptKeystore.mkdirs()) {
+                    System.err.println("JavaScript.java: Could not create " + ptKeystoreName);
+                }
+            }
+            if (ptKeystore.isDirectory()) {
+                uri = uri.replace("$KEYSTORE", ptKeystoreName);
+            }
         }
 
         try {

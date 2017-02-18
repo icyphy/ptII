@@ -1,6 +1,6 @@
 // JavaScript functions to be shared among accessor hosts.
 //
-// Copyright (c) 2015-2016 The Regents of the University of California.
+// Copyright (c) 2015-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -235,7 +235,7 @@ var allAccessors = [];
 var trustedAccessorsAllowed = false;
 
 // Determine which accessor host is in use.
-// See https://accessors.org/wiki/Main/ResourcesForHostAuthors#Differentiating
+// See https://www.icyphy.org/accessors/wiki/Main/ResourcesForHostAuthors#Differentiating
 // See https://stijndewitt.com/2014/01/26/enums-in-javascript/
 var accessorHostsEnum = {
     BROWSER: 1,
@@ -383,7 +383,7 @@ if (accessorHost === accessorHostsEnum.DUKTAPE) {
  *   
  */
 function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, implementedBy, mutable) {
-	if (!code) {
+    if (!code) {
         throw new Error('No accessor code specified.');
     }
     var binding;
@@ -511,6 +511,14 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
 
     // Need to provide all the functions that are allowed to be invoked
     // as top-level functions in the accessor specification.
+    if (bindings && bindings.getResource) {
+        this.getResource = bindings.getResource;
+    } else if (typeof getResource !== 'undefined') {
+        this.getResource = getResource;
+    } else {
+        throw new Error('Host does not define required getResource function.');
+    }
+
     if (bindings && bindings.setInterval) {
         this.setInterval = bindings.setInterval;
     } else if (typeof setInterval !== 'undefined') {
@@ -518,6 +526,7 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
     } else {
         throw new Error('Host does not define required setInterval function.');
     }
+
     if (bindings && bindings.setTimeout) {
         this.setTimeout = bindings.setTimeout;
     } else if (typeof setTimeout !== 'undefined') {

@@ -142,6 +142,20 @@ function alert(message) {
     console.log(message);
 }
 
+/** Get a resource, which may be a relative file name or a URL, and return the
+ *  value of the resource as a string.
+ *  Implementations of this function may restrict the locations from which
+ *  resources can be retrieved. This implementation restricts relative file
+ *  names to be in the same directory where the swarmlet model is located or
+ *  in a subdirectory, or if the resource begins with "$CLASSPATH/", to the
+ *  classpath of the current Java process.
+ *  @param uri A specification for the resource.
+ *  @param timeout The timeout in milliseconds.
+ */
+function getResource(uri, timeout) {
+    return actor.getResource(uri, timeout);
+}
+
 /** Clear an interval timer with the specified handle.
  *  @param handle The handle.
  *  @see setInterval().
