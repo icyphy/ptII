@@ -26,7 +26,7 @@
 // Ptolemy II includes the work of others, to see those copyrights, follow
 // the copyright link on the splash page or see copyright.htm.
 
-/** A process module that implements a subset of the Node process module.
+/** A Nashorn process module that implements a subset of the Node process module.
  *
  *  @module process
  *  @author Christopher Broosk
@@ -39,11 +39,35 @@
 /*jshint globalstrict: true*/
 "use strict";
 
+var env = {};
+
+// Populate the env Object.
+var System = Java.type('java.lang.System');
+for each (var javaVariable in System.env.entrySet()) {
+    env[javaVariable.key] = javaVariable.value;
+}
+
+// Use this to print out the env Object.
+//for (var v in env) {
+//    print(v + " = " + env[v]);
+//}
+
 
 /** Exit the process.
  *  It is usually a very bad idea to call this function.
+ *
+ *  If the ptolemy.ptII.exitAfterWrapup or the
+ *  ptolemy.ptII.doNotExit properties are not set, then call
+ *  System.exit().
+ *  Ptolemy code should call this method instead of directly calling
+ *  System.exit() so that we can test code that would usually exit.
+ *
  *  @param code If non-zero, then typically an error.
  */
 exports.exit = function(code) {
-    exit();
+    var StringUtilities = Java.type('ptolemy.util.StringUtilities');
+    print("ptolemy/actor/lib/jjs/modules/process/process.js: called exit()");
+    StringUtilities.exit(code);
 }
+
+exports.env = env;
