@@ -92,9 +92,9 @@ test coverity-1.0 {coverity} {
     set t [clock seconds]
     puts "After running nightlyMake coverity, the time is [clock format  $t -format %T]"
     list $matches
-} {****************************************************
+} {{****************************************************
 ****************************************************
-}
+}}
 
 set VERBOSE 0
 cd $startingDirectory
