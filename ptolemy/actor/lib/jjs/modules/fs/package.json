@@ -1,0 +1,11 @@
+{
+  "name": "fs",
+  "version": "0.1.0",
+  "main": "fs.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Christopher Brooks"
+    , "email" : "cxh@eecs.berkeley.edu"}
+  ],
+  "description": "A file system module that implements a subset of the Node fs module."
+}
