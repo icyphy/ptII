@@ -7,5 +7,5 @@
     {"name" : "Christopher Brooks"
     , "email" : "cxh@eecs.berkeley.edu"}
   ],
-  "description": "A file system module that implements a subset of the Node fs module."
+  "description": "A Nashorn file system module that implements a subset of the Node fs module."
 }

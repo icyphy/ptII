@@ -26,9 +26,10 @@
 // Ptolemy II includes the work of others, to see those copyrights, follow
 // the copyright link on the splash page or see copyright.htm.
 
-/** A Nashorn file system module that implements a subset of the Node fs module.
+/** A Nashorn operating system module that implements a subset of the
+ *  Node os module.
  *
- *  @module fs
+ *  @module os
  *  @author Christopher Broosk
  *  @version $$Id$$
  */
@@ -39,23 +40,28 @@
 /*jshint globalstrict: true*/
 "use strict";
 
-
-/** Read a file syncronously. 
- *  @param path The path to the file, which can be relative
- *  @param options Ignored.
- *  @return the contents of the file.
+/** Get the hostname.
+ *  @return The hostname
  */
-exports.readFileSync = function(path, options) {
-    // See https://github.com/opal/opal/issues/1220
+exports.hostname = function() {
+    var InetAddress = Java.type('java.net.InetAddress');
+    try {
+        var result = InetAddress.getLocalHost().getHostName();
+        if (result.length() !== 0) {
+            return result;
+        }
+    } catch (e) {
+    }
 
-    var Files = Java.type('java.nio.file.Files');
-    var Paths = Java.type('java.nio.file.Paths');
-    var StandardCharsets = Java.type('java.nio.charset.StandardCharsets');
-
-    var lines = Files.readAllLines(Paths.get(path), StandardCharsets.UTF_8);
-    var data = [];
-    lines.forEach(function(line) {
-        data.push(line);
-    });
-    return data.join("\n");    
+    var System = Java.type('java.lang.System');
+    host = System.getenv("HOSTNAME");
+    if (host !== null) {
+        return host;
+    }
+    var host = System.getenv("COMPUTERNAME");
+    if (host !== null) {
+        return host;
+    }
+    return null;
 }
+

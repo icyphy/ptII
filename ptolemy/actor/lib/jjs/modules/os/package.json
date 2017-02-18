@@ -1,11 +1,11 @@
 {
-  "name": "process",
+  "name": "os",
   "version": "0.1.0",
-  "main": "process.js",
+  "main": "os.js",
   "license" : "BSD-3-Clause",
   "contributors": [
     {"name" : "Christopher Brooks"
     , "email" : "cxh@eecs.berkeley.edu"}
   ],
-  "description": "A Nashorn process module that implements a subset of the Node process module."
+  "description": "A Nashorn operating system  module that implements a subset of the Node os module."
 }
