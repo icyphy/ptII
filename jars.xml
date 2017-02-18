@@ -378,7 +378,6 @@
     <include name="ptolemy/demo/ExecDemos/Demos/Demos.jar" />
     <include name="ptolemy/demo/FuelSystem/FuelSystem.jar" />
     <include name="ptolemy/demo/ProbabilisticModels/ProbabilisticModels.jar" />
-    <include name="ptolemy/demo/Robot/Robot.jar" />
     <include name="ptolemy/distributed/demo/Sleep/Sleep.jar" />
     <include name="ptolemy/domains/algebraic/demo/HeaterOpenTank/HeaterOpenTank.jar" />
     <include name="ptolemy/domains/algebraic/demo/RLC/RLC.jar" />
@@ -6826,14 +6825,6 @@
          >
        <fileset dir="${basedir}">
         <include name="ptolemy/demo/ProbabilisticModels/*.xml"/>
-       </fileset>
-    </jar>
-
-    <jar defaultexcludes="yes"
-         destfile="${basedir}/ptolemy/demo/Robot/Robot.jar"
-         >
-       <fileset dir="${basedir}">
-        <include name="ptolemy/demo/Robot/*.xml"/>
        </fileset>
     </jar>
 
