@@ -45,7 +45,7 @@
         </property>
         <property name="stopForeverAccessors" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="userHost" class="ptolemy.data.expr.StringParameter" value="sbuser@128.32.39.151">
+        <property name="userHost" class="ptolemy.data.expr.StringParameter" value="sbuser@swarmnuc001.eecs.berkeley.edu">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 460.0]">
         </property>

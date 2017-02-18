@@ -2,6 +2,9 @@
 # $Id$
 # A script that deploys a composite accessor to a remote machine.
 #
+# This script is used by:
+#   $PTII/bin/vergil -capecode ~/ptII/ptolemy/cg/kernel/generic/accessor/test/auto/RampJSTestDisplay.xml 
+#
 # The steps are:
 # 1. Create a directory on the remote machine
 # 2. Use npm to install @terraswarm/accessors, forever and any other
@@ -12,6 +15,8 @@
 
 usage="$0: Usage: $0 remoteuser@remotehost compositeAccessor.js [-timeout timeoutInMs] [-modules \"module1[,module2...]\"] [npmInstall] [runForever] [stopForeverAccessors]"
 
+# There are the following command line arguments: 
+#
 # npmInstall - If present, then install the modules.  If not present,
 # then assume that ~/cg/node_modules is set. If not present and
 # ~/cg/node_modules/@terraswarm/accessors does not exist, then nothing
@@ -123,7 +128,7 @@ if [ ! -z "$npmInstall" ]; then
 fi
 
 echo "### accessorInvokeSSH: Creating $runDirectory/invoke.js"
-echo "var nodeHost = require('@terraswarm/accessors'); nodeHost.processCommandLineArgumentsNode(process.argv);" | ssh $userHost "cat > $runDirectory/invoke.js"
+echo "var nodeHost = require('@terraswarm/accessors'); nodeHost.processCommandLineArguments(process.argv.slice(2));" | ssh $userHost "cat > $runDirectory/invoke.js"
 
 echo "### accessorInvokeSSH: Copying the accessor to $runDirectory"
 scp $accessor $userHost:$runDirectory/
