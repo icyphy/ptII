@@ -1,5 +1,5 @@
 // JavaScript functions for a Ptolemy II (Nashorn) accessor host.
-// Copyright (c) 2016-2016 The Regents of the University of California.
+// Copyright (c) 2016-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -24,11 +24,17 @@
 
 /** JavaScript functions for the CapeCode host, which is based on
  *  Ptolemy II and Java's Nashorn JavaScript engine.
+ *
  *  This host supports version 1 accessors.
- *  To implement this host, first load the nashornHost.js file,
+ *
+ *  To implement this host, JavaScript.java does the following:
+ *
+ *  1) Load the nashornHost.js file,
  *  which realizes functions that are independent of Ptolemy II.
- *  Then load this one, which overrides some of those function
- *  definitions.
+ *  2) load this file (capeCodeHost.js) which overrides some of those
+ *  function definitions.
+ *  3) Load localFunctions.js, which evaluates the accessor in in the
+ *  context that includes the overrides.
  *
  *  @module capeCodeHost
  *  @author Edward A. Lee, Contributor: Christopher Brooks
@@ -44,10 +50,13 @@
 "use strict";
 
 ////////////////////////////////////////////////////////////////////////////
-////Java dependencies.
+//// Java dependencies.
 
-//Java classes that define some static functions to call from JS.
+// Java classes that define some static functions to call from JS.
 var FileUtilities = Java.type('ptolemy.util.FileUtilities');
+
+// If you are going to override functions from commonHost, then work
+// in localFunctions.js, not in this file.
 
 //////// NOTE: The following function overrides nashornHost.js.
 
@@ -61,7 +70,7 @@ function alert(message) {
     MessageHandler.message(message);
 }
 
-////////NOTE: The following function overrides nashornHost.js.
+//////// NOTE: The following function overrides nashornHost.js.
 
 /** Report an error. This implementation delegates to the host actor to
  *  report the error. In this implementation, the host actor has an error output
@@ -89,21 +98,7 @@ function error(message) {
     actor.error(message);
 }
 
-/** Get a resource, which may be a relative file name or a URL, and return the
- *  value of the resource as a string.
- *  Implementations of this function may restrict the locations from which
- *  resources can be retrieved. This implementation restricts relative file
- *  names to be in the same directory where the swarmlet model is located or
- *  in a subdirectory, or if the resource begins with "$CLASSPATH/", to the
- *  classpath of the current Java process.
- *  @param uri A specification for the resource.
- *  @param timeout The timeout in milliseconds.
- */
-function getResource(uri, timeout) {
-    return actor.getResource(uri, timeout);
-}
-
-/////////// NOTE: The following function is deprecated, but provided for compatibility
+/////////// NOTE: The following function is deprecated, but provided for compatibility.
 
 /** Perform a blocking HTTP request.
  *  @param url The url for the request, method, properties, body, timeout) {
@@ -171,11 +166,7 @@ function httpRequest(url, method, properties, body, timeout) {
     );
 }
 
-/////////// NOTE: The following function is deprecated, but provided for compatibility
-
-// Print a message to the console.
-// print is built in to Nashorn, but is not required by the accessor specification,
-// so accessors should not rely on it being present.
+/////////// NOTE: The following function is deprecated, but provided for compatibility.
 
 /** Synchronously read a URL.
  *  @param url The url.
