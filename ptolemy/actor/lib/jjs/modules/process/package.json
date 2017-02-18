@@ -1,0 +1,11 @@
+{
+  "name": "process",
+  "version": "0.1.0",
+  "main": "process.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Christopher Brooks"
+    , "email" : "cxh@eecs.berkeley.edu"}
+  ],
+  "description": "A process module that implements a subset of the Node process module."
+}
