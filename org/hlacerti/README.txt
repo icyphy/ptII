@@ -31,7 +31,7 @@ based on co-simulation strategies described above.
 
 To install the software CERTI (and JCERTI), follow the instructions here:
 
-  http://savannah.nongnu.org/cvs/?group=certi
+  http://savannah.nongnu.org/projects/certi
 
 To execute a Ptolemy II demo, open each .xml files in a subdirectory of the
 org/hlacerti/demo/ directory.
