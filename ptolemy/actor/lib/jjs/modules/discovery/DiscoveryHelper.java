@@ -231,7 +231,7 @@ public class DiscoveryHelper {
         for (int i = 0; i < macAddress.length; i++) {
             buffer.append(String.format("%02X%s", macAddress[i], (i < macAddress.length - 1) ? "-" : ""));
         }
-        return macAddress.toString();
+        return buffer.toString();
     }
 
     /** Execute the arp command on a Linux platform.  The arp command finds
@@ -252,7 +252,7 @@ public class DiscoveryHelper {
             BufferedReader stdOut = null;
             try {
                 stdOut = new BufferedReader(new InputStreamReader(
-                                process.getInputStream()));
+                                                                  process.getInputStream(), "UTF-8"));
                 String line;
 
                 while ((line = stdOut.readLine()) != null) {
@@ -330,7 +330,7 @@ public class DiscoveryHelper {
             BufferedReader stdOut = null;
             try {
                 stdOut = new BufferedReader(new InputStreamReader(
-                                process.getInputStream()));
+                                                                  process.getInputStream(), "UTF-8"));
                 String line;
                 int index;
                 JSONObject object;
@@ -434,7 +434,7 @@ public class DiscoveryHelper {
 
             try {
                 stdOut = new BufferedReader(new InputStreamReader(
-                                process.getInputStream()));
+                                                                  process.getInputStream(), "UTF-8"));
 
                 String line;
 
@@ -567,7 +567,7 @@ public class DiscoveryHelper {
         BufferedReader stdOut = null;
         try {
             stdOut = new BufferedReader(new InputStreamReader(
-                    process.getInputStream()));
+                                                              process.getInputStream(), "UTF-8"));
 
             StringBuffer data = new StringBuffer();
             String line;
