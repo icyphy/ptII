@@ -209,6 +209,9 @@ public class DiscoveryHelper {
      */
     public /*static*/ String getHostAddress() {
         InetAddress address = _getUsefulAddress();
+        if (address == null) {
+            return null;
+        }
         String hostAddress = address.getHostAddress();
         return hostAddress;
     }
