@@ -1243,7 +1243,7 @@ ChangeListener {
                 int col) {
             // FindBugs: Use equals, not == and avoid RC: Suspicious
             // reference comparison of Boolean values.
-            if (value.equals(Boolean.TRUE)) {
+            if (value != null && value.equals(Boolean.TRUE)) {
                 setSelected(true);
             } else {
                 setSelected(false);
