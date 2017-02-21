@@ -1,6 +1,6 @@
 /* Implement the Import Accessor menu choice.
 
-   Copyright (c) 2014-2016 The Regents of the University of California.
+   Copyright (c) 2014-2017 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -32,6 +32,7 @@ import java.awt.geom.Rectangle2D;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 
 import javax.swing.AbstractAction;
 import javax.swing.JComboBox;
@@ -169,7 +170,9 @@ public class ImportAccessorAction extends AbstractAction {
             // that we can properly test the code.
             String moml = "";
             try {
-               moml = JSAccessor.accessorToMoML(urlSpec);
+                System.out.println("ImportAccessorAction: urlSpec: " + urlSpec);
+                moml = JSAccessor.accessorToMoML(urlSpec);
+                System.out.println("ImportAccessorAction: moml: " + moml);
             } catch (Throwable throwable) {
                 MessageHandler.error("Failed to import accessor \""
                         + urlSpec + "\".", throwable);
@@ -186,8 +189,6 @@ public class ImportAccessorAction extends AbstractAction {
 
     private void _updateComboBox(JComboBox box, Query query) {
         box.removeAllItems();
-        URL url;
-        BufferedReader in;
         try {
             _lastLocation = query.getStringValue("location");
             if (_lastLocation.endsWith(".xml")) {
@@ -196,16 +197,25 @@ public class ImportAccessorAction extends AbstractAction {
                 _lastLocation = _lastLocation + "/";
             }
             String index = _lastLocation + "index.json";
-            url = FileUtilities.nameToURL(index, null, null);
-
-            in = new BufferedReader(new InputStreamReader(url.openStream()));
+            // Look for a local version of the index.json file
+            URL url = JSAccessor.getLocalURL(index,
+                                             FileUtilities.nameToURL(index, null, null));
 
             StringBuffer buffer = new StringBuffer();
-            String inputLine;
-            while ((inputLine = in.readLine()) != null) {
-                buffer.append(inputLine);
+            BufferedReader in = null;
+
+            try {
+                in = new BufferedReader(new InputStreamReader(
+                      FileUtilities.openStreamFollowingRedirects(url), StandardCharsets.UTF_8));             
+                String inputLine;
+                while ((inputLine = in.readLine()) != null) {
+                    buffer.append(inputLine);
+                }
+            } finally {
+                if (in != null) {
+                    in.close();
+                }
             }
-            in.close();
 
             JSONArray array = new JSONArray(buffer.toString());
             for (int i = 0; i < array.length(); i++) {
