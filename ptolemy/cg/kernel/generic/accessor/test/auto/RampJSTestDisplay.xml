@@ -40,16 +40,6 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 180.0]">
         </property>
     </property>
-    <property name="AccessorSSHCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator">
-        <property name="modules" class="ptolemy.data.expr.StringParameter" value="">
-        </property>
-        <property name="stopForeverAccessors" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="userHost" class="ptolemy.data.expr.StringParameter" value="sbuser@swarmnuc001.eecs.berkeley.edu">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 460.0]">
-        </property>
-    </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
@@ -64,6 +54,18 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This code generator runs the composite&#10;accessor on a remote machine that has node and npm&#10;installed.&#10;If you do not have access to the sbuser account, then&#10;change the userHost parameter to be a username and&#10;an machine name.  If you have ssh set up on your local&#10;machine, then you could use localhost.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[230.0, 390.0]">
+        </property>
+    </property>
+    <property name="AccessorSSHCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator">
+        <property name="npmInstall" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="runForever" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="stopForeverAccessors" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="userHost" class="ptolemy.data.expr.StringParameter" value="sbuser@192.168.2.10">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 445.0]">
         </property>
     </property>
     <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">

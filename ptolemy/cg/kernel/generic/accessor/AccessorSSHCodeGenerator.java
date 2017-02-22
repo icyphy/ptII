@@ -1,6 +1,6 @@
 /* Code generator for JavaScript Accessors that uses SSH to deploy Swarmlets.
 
-Copyright (c) 2009-2016 The Regents of the University of California.
+Copyright (c) 2009-2017 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -51,8 +51,8 @@ import ptolemy.util.StringUtilities;
 ///////////////////////////////////////////////////////////////////
 //// AccessorSSHCodeGenerator
 
-/** Generate a JavaScript composite accessor for a  model and deploy
- *  it using ssh.
+/** Generate a JavaScript composite accessor for a model and deploy
+ *  it to a remote host.
  *
  *  <p>Accessors are a technology, developed by the
  *  <a href="http://www.terraswarm.org#in_browser" target="_top">TerraSwarm Research Center</a>,
@@ -83,42 +83,54 @@ import ptolemy.util.StringUtilities;
  *    for example <code>~/cg/MyCompositeAccessor</code></li>
  *
  *    <li>Installs the <code>@terraswarm/accessors</code> and
- *      <code>forever</code> modules in
+ *      <code>pm2</code> modules in
  *      <code>~/cg/<i>ModelName</i></code>. Note
  *      that this means that to run a composite accessor with the
  *      latest accessors, the npm <code>@terraswarm/accessors</code>
- *      module must be updated.  See <a
- *      href="https://accessors.org/wiki/Main/NPMUpload</a>.
- *      In addition, any modules listed in the <i>modules</i>
- *      parameter are also installed.  </li>
+ *      module must be updated.  See
+ *      <a href="https://accessors.org/wiki/Main/NPMUpload">NPM Upload</a>
+ *      in the accessors Wiki.        
+ *      In addition, any modules listed in the comma-separated
+ *      <<i>modules</i> parameter are also installed.  </li>
  *
  *    <li>Creates a small node script called <code>invoke.js</code> to
  *    run the composite accessor.</li>
  *
  *    <li>Copies the composite accessor to the directory.</li>
  *
- *    <li>Creates a script called <code>runit</code> that uses npm
- *    forever to stop any processes started with forever with the same
- *    name and then invokes node on the remote machine using
- *    <code>forever</code>.  If the director of the model has a
- *    <i>stopTime</i> parameter, then the value is multiplied by 1000
- *    and used as the value of the timeout parameter on the remote
- *    machine. If the <i>stopTime</i> parameter is not set, then a
- *    default value (currently 15000 ms.)  is used.</li>
+ *    <li>Creates a script called <code>runit</code> that uses 
+ *    <a href="http://pm2.keymetrics.io/">pm2</a>
+ *    to stop any processes with the same name as the accessor
+ *    started with forever name and then invokes node on the remote
+ *    machine using <code>pm2</code>.  If the director of the model
+ *    has a <i>stopTime</i> parameter, then the value is multiplied by
+ *    1000 and used as the value of the timeout parameter on the
+ *    remote machine. If the <i>stopTime</i> parameter is not set,
+ *    then a default value (currently 15000 ms.)  is used.</li>
  *
- *    <li>The output of the forever log, stderr and stdout are then
+ *    <li>The stderr and stdout are then
  *    reported using tail</li>
  *
  *   </ol>
  *
- *  <p><a href="https://www.npmjs.com/package/forever#in_browser">npm forever</a>
- *  is a facility that starts a process and restarts it as necesary.</p>
+ *  <p>The <code>accessorInvokeSSH</code> script should work on any
+ *  machine that has node and npm installed.</p>
  *
- *  <p>The <code>accessorInvokeSSH</code> script should work on any machine that has node and npm installed.</p>
+ *  <p> <a href="http://pm2.keymetrics.io/">pm2</a> is a Node package
+ *  installed using npm that can run a process forever and can cause
+ *  it to be started upon reboot. <b>Note that for the process to be started
+ *  after reboot</b>, a command needs to be run once as root on the host machine.
+ *  The command is displayed during code generation.  The command is specific
+ *  to the user account on the remote machine.
+ *  </p>
  *
- *  <p>To use a SwarmBox, add your <code>~/.ssh/id_rsa.pub</code> file to <code>swarmboxadmin/ansible/keys/sbuser_authorized_keys</code>.  See <a href="https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess#in_browser">https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess</a>.</p>
+
+ *  <p>To use a SwarmBox, add your <code>~/.ssh/id_rsa.pub</code> file
+ *  to <code>swarmboxadmin/ansible/keys/sbuser_authorized_keys</code>.
+ *  See <a href="https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess#in_browser">https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess</a>.</p>
  *
- *  <p>For more information, see <a href="https://accessors.org/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
+ *  <p>For more information, see the 
+ *  <a href="https://accessors.org/wiki/Main/CapeCodeHost#CodeGeneration">Code Generation wiki</a>.</p>
  *
  *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
  *  @version $Id$
@@ -147,7 +159,7 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
         npmInstall.setExpression("true");
 
         modules = new StringParameter(this, "modules");
-        modules.setExpression("@terraswarm/gdp,forever");
+        modules.setExpression("");
 
         runForever = new Parameter(this, "runForever");
         runForever.setTypeEquals(BaseType.BOOLEAN);
