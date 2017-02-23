@@ -24,7 +24,7 @@
 /**
  * Module supporting serial port access.
  *
- * @module socket
+ * @module serial
  * @author Edward A. Lee, Rene Vivanco, and Christopher Brooks
  * @version $$Id$$
  */
