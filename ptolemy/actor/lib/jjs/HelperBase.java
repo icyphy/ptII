@@ -27,15 +27,23 @@
  */
 package ptolemy.actor.lib.jjs;
 
+import io.vertx.core.buffer.Buffer;
+
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.util.Collection;
 import java.util.TreeSet;
 
-import javax.script.ScriptContext;
+import javax.imageio.ImageIO;
 import javax.xml.bind.DatatypeConverter;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import jdk.nashorn.internal.objects.NativeArray;
+import ptolemy.data.ImageToken;
+import ptolemy.data.LongToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -88,6 +96,26 @@ public class HelperBase {
     public ScriptObjectMirror getHelping() {
         return _currentObj;
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                     public fields                         ////
+
+    /** Support data types for reading and writing to buffers. */
+    public static enum DATA_TYPE {
+        BYTE,
+        DOUBLE,
+        FLOAT,
+        IMAGE,
+        INT,
+        JSON,
+        LONG,
+        NUMBER,
+        SHORT,
+        STRING,
+        UNSIGNEDBYTE,
+        UNSIGNEDINT,
+        UNSIGNEDSHORT
+    };
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected methods                 ////
@@ -170,6 +198,153 @@ public class HelperBase {
         });
     }
 
+    /** Append a numeric instance of the specified type to a buffer.
+     *  @param buffer The buffer to which to append
+     *  @param data The data to be appended
+     *  @param type The type of data.
+     */
+    protected void _appendNumericToBuffer(Buffer buffer, Object data, DATA_TYPE type) {
+        if (data instanceof Number) {
+            switch(type) {
+            case BYTE:
+                buffer.appendByte(((Number)data).byteValue());
+                break;
+            case DOUBLE:
+            case NUMBER:
+                buffer.appendDouble(((Number)data).doubleValue());
+                break;
+            case FLOAT:
+                buffer.appendFloat(((Number)data).floatValue());
+                break;
+            case INT:
+                buffer.appendInt(((Number)data).intValue());
+                break;
+            case LONG:
+                buffer.appendLong(((Number)data).longValue());
+                break;
+            case SHORT:
+                buffer.appendShort(((Number)data).shortValue());
+                break;
+            case UNSIGNEDBYTE:
+                // Number class can't extract an unsigned byte, so we use short.
+                buffer.appendUnsignedByte(((Number)data).shortValue());
+                break;
+            case UNSIGNEDINT:
+                // Number class can't extract an unsigned int, so we use long.
+                buffer.appendUnsignedInt(((Number)data).longValue());
+                break;
+            case UNSIGNEDSHORT:
+                // Number class can't extract an unsigned short, so we use int.
+                buffer.appendUnsignedShort(((Number)data).intValue());
+                break;
+            default:
+                _error("Unsupported type for buffer: "
+                        + type.toString());
+            }
+        } else if (data instanceof LongToken) {
+            // JavaScript has no long data type, and long is not convertible to
+            // "number" (which is double), so the Ptolemy host will pass in a
+            // LongToken.  Handle this specially.
+            buffer.appendLong(((LongToken)data).longValue());
+        } else {
+            _toTypeError(type, data);
+        }
+    }
+
+    /** Append data to be sent to the specified buffer.
+     *  @param data The data to append.
+     *  @param type The type of data append.
+     *  @param imageType If the type is IMAGE, then then the image encoding to use, or
+     *   null to use the default (JPG).
+     *  @param buffer The buffer.
+     */
+    protected void _appendToBuffer(
+            final Object data, DATA_TYPE type, String imageType, Buffer buffer) {
+        if (data == null) {
+            // Nothing to do.
+            return;
+        }
+        if (type.equals(DATA_TYPE.STRING) || type.equals(DATA_TYPE.JSON)) {
+            // NOTE: Use of toString() method makes this very tolerant, but
+            // it won't properly stringify JSON. Is this OK?
+            // NOTE: A second argument could take an encoding.
+            // Defaults to UTF-8. Is this OK?
+            buffer.appendString(data.toString());
+        } else if (type.equals(DATA_TYPE.IMAGE)) {
+            if (data instanceof ImageToken) {
+                Image image = ((ImageToken)data).asAWTImage();
+                if (image == null) {
+                    _error("Empty image received: " + data);
+                    return;
+                }
+                if (!(image instanceof BufferedImage)) {
+                    _error("Unsupported image token type: " + image.getClass());
+                    return;
+                }
+                if (imageType == null) {
+                    // If only image is specified, use JPG.
+                    imageType = "jpg";
+                }
+                ByteArrayOutputStream stream = new ByteArrayOutputStream();
+                try {
+                    ImageIO.write((BufferedImage)image, imageType, stream);
+                } catch (IOException e) {
+                    _error("Failed to convert image to byte array for sending: " + e.toString());
+                }
+                byte[] imageBytes = stream.toByteArray();
+                buffer.appendBytes(imageBytes);
+            } else {
+                // Coverity Scan: data cannot be null here.
+                _error("Expected an image to send, but instead got "
+                        + data.getClass().getName());
+            }
+        } else {
+            _appendNumericToBuffer(buffer, data, type);
+        }
+    }
+
+    /** Extract a numeric instance of the specified type from a buffer.
+     *  @param buffer The buffer containing the data.
+     *  @param type The type to extract.
+     *  @param position The position in the buffer from which to extract it.
+     *  @return The numeric instance.
+     */
+    protected Object _extractFromBuffer(Buffer buffer, DATA_TYPE type, int position) {
+        try {
+            switch(type) {
+            case BYTE:
+                return buffer.getByte(position);
+            case DOUBLE:
+            case NUMBER:
+                return buffer.getDouble(position);
+            case FLOAT:
+                return buffer.getFloat(position);
+            case INT:
+                return buffer.getInt(position);
+            case LONG:
+                // Note that long is not representable in JavaScript.
+                // Hence, we return a LongToken.
+                long result = buffer.getLong(position);
+                return new LongToken(result);
+            case SHORT:
+                return buffer.getShort(position);
+            case UNSIGNEDBYTE:
+                return buffer.getUnsignedByte(position);
+            case UNSIGNEDINT:
+                return buffer.getUnsignedInt(position);
+            case UNSIGNEDSHORT:
+                return buffer.getUnsignedShort(position);
+            default:
+                _error("Type has no fixed size: "
+                        + type.toString());
+                return null;
+            }
+        } catch (Throwable ex) {
+            _fromTypeError(ex, type, buffer);
+            return null;
+        }
+    }
+
     /** Execute the specified response in the director thread.
      *  If this is called within the director thread and the associated actor
      *  is in its fire() method, then the response is executed immediately.
@@ -206,6 +381,38 @@ public class HelperBase {
             result.add(value.toLowerCase());
         }
         return result;
+    }
+
+    /** Return the size of a data type.
+     *  @param type The object
+     *  @return The size
+     */
+    protected int _sizeOfType(DATA_TYPE type) {
+        switch(type) {
+        case BYTE:
+            return Byte.BYTES;
+        case DOUBLE:
+        case NUMBER:
+            return Double.BYTES;
+        case FLOAT:
+            return Float.BYTES;
+        case INT:
+            return Integer.BYTES;
+        case LONG:
+            return Long.BYTES;
+        case SHORT:
+            return Short.BYTES;
+        case UNSIGNEDBYTE:
+            return Byte.BYTES;
+        case UNSIGNEDINT:
+            return Integer.BYTES;
+        case UNSIGNEDSHORT:
+            return Short.BYTES;
+        default:
+            _error("Type has no fixed size: "
+                    + type.toString());
+            return 0;
+        }
     }
 
     /** Convert a Java byte array into the JavaScript integer array.
@@ -295,4 +502,35 @@ public class HelperBase {
 
     /** The JavaScript object that this is a helper for. */
     protected ScriptObjectMirror _currentObj;
+    
+    ///////////////////////////////////////////////////////////////////
+    ////                     private methods                      ////
+
+    /** Indicate that the expected type cannot be extracted from the buffer.
+     *  @param ex The exception that occurred.
+     *  @param type The expected type.
+     *  @param buffer The buffer.
+     */
+    private void _fromTypeError(Throwable ex, DATA_TYPE type, Buffer buffer) {
+        String expectedType = type.toString().toLowerCase();
+        // ex.printStackTrace();
+        _error("Cannot convert buffer data to type "
+                + expectedType
+                + ": "
+                + buffer.toString()
+                + "\nException occurred: "
+                + ex);
+    }
+
+    /** Indicate a conversion error of data to a buffer.
+     *  @param type The type to convert to.
+     *  @param data The data that cannot be converted to that type.
+     */
+    private void _toTypeError(DATA_TYPE type, Object data) {
+        String expectedType = type.toString().toLowerCase();
+        _error("Data cannot be converted to "
+                + expectedType
+                + ". It is: "
+                + data.getClass().getName());
+    }
 }

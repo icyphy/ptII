@@ -27,20 +27,22 @@
  */
 package ptolemy.actor.lib.jjs.modules.serial;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.util.Enumeration;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.TooManyListenersException;
-
 import gnu.io.CommPort;
 import gnu.io.CommPortIdentifier;
 import gnu.io.NoSuchPortException;
 import gnu.io.PortInUseException;
 import gnu.io.SerialPort;
 import gnu.io.UnsupportedCommOperationException;
+import io.vertx.core.buffer.Buffer;
+
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.util.Enumeration;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.kernel.util.IllegalActionException;
@@ -74,11 +76,33 @@ public class SerialHelper extends HelperBase {
             String portName,
             String ownerName,
             int timeout,
-            Object options) {
+            Map<String,Object> options) {
         super(actor, helping);
         _portName = portName;
         _ownerName = ownerName;
         _timeout = timeout;
+        
+        _baudRate = (Integer)options.get("baudRate");
+        
+        // Set the send and receive types.
+        // First, make sure the arrays are populated.
+        supportedSendTypes();
+        supportedReceiveTypes();
+        // Next, get the option values.
+        String receiveTypeName = (String)options.get("receiveType");
+        String sendTypeName = (String)options.get("sendType");
+        // Next, map these names to data types.
+        try {
+            _sendType = Enum.valueOf(DATA_TYPE.class, sendTypeName.trim().toUpperCase());
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Invalid send data type: " + sendTypeName);
+        }
+        // Finally, do the receive type.
+        try {
+            _receiveType = Enum.valueOf(DATA_TYPE.class, receiveTypeName.trim().toUpperCase());
+        } catch (Exception ex) {
+            throw new IllegalArgumentException("Invalid receive data type: " + receiveTypeName);
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -206,7 +230,7 @@ public class SerialHelper extends HelperBase {
             _serialPort = (SerialPort) port;
 
             // FIXME: Set the options.
-            _serialPort.setSerialPortParams(9600,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
+            _serialPort.setSerialPortParams(_baudRate,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
 
             // FIXME: Uncomment the next line to avoid jjs/modules/serial/test/auto/SerialHelloWorld.xml hanging.
             _serialPort.enableReceiveTimeout(_timeout);
@@ -231,10 +255,62 @@ public class SerialHelper extends HelperBase {
             throw new IllegalActionException(_actor, e, "Failed to input input or output stream: " + _portName);
         }
     }
+    
+    /** Return an array of the types supported by the current host for
+     *  receiveType arguments.
+     *  @return an array of the types supported by the current host for
+     *  receiveType arguments.
+     */
+    public static String[] supportedReceiveTypes() {
+        // FIXME: This is duplicated from XBeeHelper and should be moved to a base class!!
+        // also supportedSendTypes.
+        
+        // Formerly, we checked to see if _types was null outside of the syncronized block
+
+        // However, Coverity Scan warns:
+        // "CID 1349633 (#1 of 1): Check of thread-shared field evades
+        // lock acquisition
+        // (LOCK_EVASION)5. thread2_checks_field_early: Thread2 checks
+        // _types, reading it after Thread1 assigns to _types but
+        // before some of the correlated field assignments can
+        // occur. It sees the condition
+        // ptolemy.actor.lib.jjs.modules.xbee.XBeeHelper._types ==
+        // null as being false. It continues on before the critical
+        // section has completed, and can read data changed by that
+        // critical section while it is in an inconsistent state."
+
+        // Avoid FindBugs LI: Unsynchronized Lazy Initialization (FB.LI_LAZY_INIT_UPDATE_STATIC)
+        synchronized (_typesMutex) {
+            if (_types == null) {
+                // Don't support image type.
+                int length = DATA_TYPE.values().length - 1;
+                _types = new String[length];
+                int i = 0;
+                for (DATA_TYPE type : DATA_TYPE.values()) {
+                    if (type != DATA_TYPE.IMAGE) {
+                        _types[i++] = type.toString().toLowerCase();
+                    }
+                }
+            }
+            return _types;
+        }
+    }
+
+    /** Return an array of the types supported by the current host for
+     *  sendType arguments.
+     *  @return an array of the types supported by the current host for
+     *  sendType arguments.
+     */
+    public static String[] supportedSendTypes() {
+        return supportedReceiveTypes();
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
+    /** The baud rate for the port. */
+    private int _baudRate;
+    
     /** Input stream. */
     private InputStream _inputStream;
 
@@ -254,9 +330,21 @@ public class SerialHelper extends HelperBase {
 
     /** The name of the owner. */
     private String _ownerName;
+    
+    /** The receive type for this instance of XBee. */
+    private DATA_TYPE _receiveType;
 
     /** The timeout for opening. */
     private int _timeout;
+
+    /** The array of send and receive type names. */
+    private static String[] _types;
+
+    /** A mutex used when creating _types. */
+    private static Object _typesMutex = new Object();
+
+    /** The send type for this instance of XBee. */
+    private DATA_TYPE _sendType;
 
     /** The serial port. */
     private SerialPort _serialPort;
@@ -268,17 +356,66 @@ public class SerialHelper extends HelperBase {
      */
     public class SerialReader implements Runnable {
         public void run () {
-            byte[] buffer = new byte[1024];
+            byte[] message = new byte[1024];
             int length = -1;
             try {
+                Buffer buffer = Buffer.buffer();
                 // Perform blocking read of up to 1024 bytes until
                 // end of stream is observed.
-                // FIXME: look for a message delimitter here.
-                while (_open && (length = _inputStream.read(buffer)) > -1) {
-                    final String message = new String(buffer, 0, length);
-                    _issueResponse(() -> {
-                        _currentObj.callMember("emit", "data", message);
-                    });
+                while (_open && (length = _inputStream.read(message)) > -1) {
+                    if (length == 0) {
+                        // No bytes were read (why didn't _inputStream block?).
+                        continue;
+                    }
+                    if (_receiveType == DATA_TYPE.STRING || _receiveType == DATA_TYPE.JSON) {
+                        // Read until we receive a null byte.
+                        for (int i = 0; i < length; i++) {
+                            if (message[i] == 0) {
+                                if (buffer.length() > 0) {
+                                    // JSON parsing is handled on the accessor end.
+                                    _currentObj.callMember("emit", "data", new String(buffer.toString()));
+                                    buffer = Buffer.buffer();
+                                }
+                            } else {
+                                buffer.appendByte(message[i]);
+                            }
+                        }
+                    } else {
+                        // Assume a numeric type.
+                        buffer.appendBytes(message, 0, length);
+                        int size = _sizeOfType(_receiveType);
+                        int numberOfElements = 0;
+                        if (size > 0) {
+                            numberOfElements = length / size;
+                        }
+                        if (numberOfElements == 1) {
+                            _currentObj.callMember("emit", "data", _extractFromBuffer(buffer, _receiveType, 0));
+                        } else if (numberOfElements > 1) {
+                            // Output a single array.
+                            Object[] result = new Object[numberOfElements];
+                            int position = 0;
+                            for (int i = 0; i < result.length; i++) {
+                                result[i] = _extractFromBuffer(buffer, _receiveType, position);
+                                position += size;
+                            }
+                            // NOTE: If we return result, then the emitter will not
+                            // emit a native JavaScript array. We have to do a song and
+                            // dance here which is probably very inefficient (almost
+                            // certainly... the array gets copied).
+                            try {
+                                _currentObj.callMember("emit", "data", _actor.toJSArray(result));
+                            } catch (Exception e) {
+                                _error("Failed to convert to a JavaScript array: " + e);
+                                _currentObj.callMember("emit", "data", result);
+                            }
+                        } else if (numberOfElements <= 0) {
+                            _error("Expect to receive type "
+                                    + _receiveType
+                                    + ", of size " + size
+                                    + ", but received an insufficient number of bytes: "
+                                    + length);
+                        }
+                    }
                 }
             } catch ( IOException e ) {
                 _error("Exception occurred reading from serial port.", e);

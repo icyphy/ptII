@@ -42,10 +42,11 @@ var EventEmitter = require('events').EventEmitter;
 ///////////////////////////////////////////////////////////////////////////////
 //// hostSerialPorts
 
-/** Return an array of serial port names or null if none are found.
+/** Get an array of serial port names or null if none are found, and invoke the
+ *  specified callback with an argument that is that array.
  *  @return An array of port names.
  */
-exports.hostSerialPorts = function () {
+exports.hostSerialPorts = function (callback) {
     var enumeration = CommPortIdentifier.getPortIdentifiers();
     var result = [];
     while (enumeration.hasMoreElements()) {
@@ -55,7 +56,27 @@ exports.hostSerialPorts = function () {
             result.push(value);
         }
     }
-    return result;
+    callback(result);
+};
+
+///////////////////////////////////////////////////////////////////////////////
+////supportedReceiveTypes
+
+/** Return an array of the types supported by the current host for
+ *  the receiveType option.
+ */
+exports.supportedReceiveTypes = function () {
+    return SerialHelper.supportedReceiveTypes();
+};
+
+///////////////////////////////////////////////////////////////////////////////
+////supportedSendTypes
+
+/** Return an array of the types supported by the current host for
+ *  the sendType option.
+ */
+exports.supportedSendTypes = function () {
+    return SerialHelper.supportedSendTypes();
 };
 
 ///////////////////////////////////////////////////////////////////////////////

@@ -21,7 +21,7 @@
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var serial = require('serial');&#10;&#10;exports.setup = function() {&#10;	parameter('port', {&#10;		'type':'string',&#10;		'options': serial.hostSerialPorts()&#10;		// FIXME: Set a default value&#10;	});&#10;	output('dataReceived');&#10;};&#10;&#10;var port;&#10;&#10;exports.initialize = function() {&#10;	port = new serial.SerialPort(&#10;		get('port'),&#10;		&quot;Foo&quot;, // FIXME: Instance name of accessor.&#10;		2000,  // FIXME: Need a timeout parameter.&#10;		null); // FIXME: baud rate, etc.&#10;		&#10;	port.on('data', function(data) {&#10;    alert('sending data');&#10;		send('data', data);&#10;	});&#10;		&#10;	// alert(port.getName());&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (port) {&#10;		port.close();&#10;	}&#10;}&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var serial = require('serial');&#10;&#10;exports.setup = function() {&#10;	this.parameter('port', {&#10;		'type':'string',&#10;		'options': serial.hostSerialPorts()&#10;		// FIXME: Set a default value&#10;	});&#10;	this.output('dataReceived');&#10;};&#10;&#10;var port;&#10;&#10;exports.initialize = function() {&#10;	port = new serial.SerialPort(&#10;		this.get('port'),&#10;		&quot;Foo&quot;, // FIXME: Instance name of accessor.&#10;		2000,  // FIXME: Need a timeout parameter.&#10;		null); // FIXME: baud rate, etc.&#10;		&#10;	var self = this;&#10;	port.on('data', function(data) {&#10;    	// alert('sending data');&#10;		self.send('dataReceived', data);&#10;	});&#10;	port.open();&#10;	// alert(port.getName());&#10;}&#10;&#10;exports.wrapup = function() {&#10;	if (port) {&#10;		port.close();&#10;	}&#10;}&#10;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -35,7 +35,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, 50.0}">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/tty.usbserial-DA01QWMR">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="/dev/cu.usbserial-ANZ1R1A5">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
