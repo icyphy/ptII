@@ -40,6 +40,9 @@
              </property>
            </entity>
 
+           <entity name="SequencePlotter" class="ptolemy.actor.lib.gui.SequencePlotter"/>
+           <entity name="SequenceScope" class="ptolemy.actor.lib.gui.SequenceScope"/>
+
            <entity name="SetVariable" class="ptolemy.actor.lib.SetVariable">
              <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
              <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="variableName">
