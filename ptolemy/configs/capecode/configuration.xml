@@ -105,6 +105,8 @@
       <configure>
         <?moml
           <group>
+              <!-- Keep the JavaScript actor in the Utilities menu -->
+              <input source="ptolemy/actor/lib/jjs/js.xml"/>
 	      <input source="ptolemy/actor/lib/jjs/modules/gdp/gdp.xml"/>
               <input source="ptolemy/vergil/basic/export/web/utilityWebExport.xml"/>
 	      <input source="ptolemy/vergil/pdfrenderer/pdfattribute.xml"/>
@@ -130,6 +132,7 @@
           <input source="ptolemy/actor/lib/flowcontrol.xml"/>
           <input source="ptolemy/configs/capecode/hoc.xml"/>
           <input source="ptolemy/configs/capecode/io.xml"/>
+          <!-- Keep the JavaScript actor in the list of actors as well. -->
           <input source="ptolemy/actor/lib/jjs/js.xml"/>
           <input source="ptolemy/actor/lib/logic/logic.xml"/>
           <input source="ptolemy/actor/lib/math.xml"/>
