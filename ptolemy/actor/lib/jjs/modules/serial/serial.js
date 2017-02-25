@@ -22,7 +22,10 @@
 //
 
 /**
- * Module supporting serial port access.
+ * Module supporting serial port access. This module provides a dummy
+ * loopback serial port that can send data to itself.
+ * This is useful for regression tests.
+ * Currently, it ignores the baud rate.
  *
  * @module serial
  * @author Edward A. Lee, Rene Vivanco, and Christopher Brooks
@@ -42,13 +45,13 @@ var EventEmitter = require('events').EventEmitter;
 ///////////////////////////////////////////////////////////////////////////////
 //// hostSerialPorts
 
-/** Get an array of serial port names or null if none are found, and invoke the
+/** Get an array of serial port names and invoke the
  *  specified callback with an argument that is that array.
  *  @return An array of port names.
  */
 exports.hostSerialPorts = function (callback) {
     var enumeration = CommPortIdentifier.getPortIdentifiers();
-    var result = [];
+    var result = ["loopback"];
     while (enumeration.hasMoreElements()) {
         var identifier = enumeration.nextElement();
         if (identifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
@@ -111,3 +114,13 @@ exports.SerialPort.prototype.close = function () {
 exports.SerialPort.prototype.open = function () {
     this.helper.open();
 };
+
+/** Send data over the port.
+ */
+exports.SerialPort.prototype.send = function (data) {
+    if (Array.isArray(data)) {
+        data = Java.to(data);
+    }
+    this.helper.send(data);
+};
+
