@@ -119,6 +119,29 @@ function varLenIntToNum(buf, offset) {
     return null;
 }
 
+function serializeStringParam(stringParam) {
+    var result;
+    if (stringParam == null) {
+        result = numToVarLenInt(0);
+    }
+    else {
+        var strLenBuf = numToVarLenInt(stringParam.length);
+        var strBuf = new buffer.Buffer(stringParam);
+        result = buffer.concat([strLenBuf, strBuf]);
+    }
+    return result;
+};
+
+function parseStringParam(buf, offset) {
+    var ret = varLenIntToNum(buf, offset);
+    if (ret.bufLen == 0) {
+        return {len: 1, str: null};
+    }
+    var strLen = ret.num;
+    var str = buf.toString(offset + ret.bufLen, offset + ret.bufLen + strLen);
+    return {len: ret.bufLen + strLen, str: str};
+};
+
 /*
     IoTSP (IoT Secure Protocol) Message
     {
@@ -170,14 +193,13 @@ var serializeSessionKeyReq = function (obj) {
             'or purpose or numKeysPerRequest is missing.');
         return;
     }
-    var buf = new buffer.Buffer(AUTH_NONCE_SIZE * 2 + 5);
+    var buf = new buffer.Buffer(AUTH_NONCE_SIZE * 2 + 4);
     obj.nonce.copy(buf, 0);
     obj.replyNonce.copy(buf, AUTH_NONCE_SIZE);
     buf.writeUInt32BE(obj.numKeysPerRequest, AUTH_NONCE_SIZE * 2);
-    buf.writeUInt8(obj.sender.length, AUTH_NONCE_SIZE * 2 + 4);
 
-    var senderBuf = new buffer.Buffer(obj.sender);
-    var purposeBuf = new buffer.Buffer(JSON.stringify(obj.purpose));
+    var senderBuf = serializeStringParam(obj.sender);
+    var purposeBuf = serializeStringParam(JSON.stringify(obj.purpose));
     return buffer.concat([buf, senderBuf, purposeBuf]);
 };
 
@@ -239,10 +261,9 @@ var parseSessionKeyResp = function (buf) {
     var replyNonce = buf.slice(0, AUTH_NONCE_SIZE);
     var curIndex = AUTH_NONCE_SIZE;
 
-    var cryptoSpecLen = buf.readUInt8(curIndex);
-    curIndex += 1;
-    var cryptoSpecStr = buf.toString(curIndex, curIndex + cryptoSpecLen);
-    curIndex += cryptoSpecLen;
+    var ret = parseStringParam(buf, curIndex);
+    var cryptoSpecStr = ret.str;
+    curIndex += ret.len;
 
     var sessionKeyCount = buf.readUInt32BE(curIndex);
 
