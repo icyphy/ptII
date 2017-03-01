@@ -103,11 +103,11 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
    * @return true if the entry was added successfully
    * @throws IllegalArgumentException when the given provider is null
    */
-  public boolean addModelElementClassProvider(ModelElementClassProvider classProvider) {
+  public void addModelElementClassProvider(ModelElementClassProvider classProvider) {
     if(classProvider==null) {
       throw new IllegalArgumentException("classProvider can not be null");
     }
-    return _modelElementClassProviders.add(classProvider);
+    _modelElementClassProviders.add(classProvider);
   }
   
   /**
@@ -117,11 +117,11 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
    * @return true if the set of registered providers contained the given instance and it was removed successfully
    * @throws IllegalArgumentException when the given provider is null
    */
-  public boolean removeModelElementClassProvider(ModelElementClassProvider classProvider) {
+  public void removeModelElementClassProvider(ModelElementClassProvider classProvider) {
     if(classProvider==null) {
       throw new IllegalArgumentException("classProvider can not be null");
     }
-    return _modelElementClassProviders.remove(classProvider);
+    _modelElementClassProviders.remove(classProvider);
   }
   
   /**
@@ -139,11 +139,11 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
    * @return true if the entry was added successfully
    * @throws IllegalArgumentException when the given provider is null
    */
-  public boolean addActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
+  public void addActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
     if(classProvider==null) {
       throw new IllegalArgumentException("classProvider can not be null");
     }
-    return _actorOrientedClassProviders.add(classProvider);
+    _actorOrientedClassProviders.add(classProvider);
   }
 
   /**
@@ -153,8 +153,8 @@ public class OSGiClassLoadingStrategy implements ClassLoadingStrategy {
    * @return true if the set of registered providers contained the given instance and it was removed successfully
    * @throws IllegalArgumentException when the given provider is null
    */
-  public boolean removeActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
-    return _actorOrientedClassProviders.remove(classProvider);
+  public void removeActorOrientedClassProvider(ActorOrientedClassProvider classProvider) {
+    _actorOrientedClassProviders.remove(classProvider);
   }
 
   /**
