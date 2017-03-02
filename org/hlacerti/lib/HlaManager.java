@@ -1229,7 +1229,7 @@ TimeRegulator {
 
 
             StringBuffer info = new StringBuffer("Federate "+ getDisplayName() +" in the model "+nameOfTheFile);
-            RKSolver = AutomaticSimulation.findParameterValue(file, RKSolver, 0);
+            RKSolver = AutomaticSimulation.findParameterValue(file, RKSolver);
             info.append("\nRKSolver: " + RKSolver);
 
             info.append("\n" +"stopTime: " +_stopTime
@@ -1328,11 +1328,13 @@ TimeRegulator {
      */
     public boolean writeInTextFile(File file,String data) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file, true));
+        	FileWriter fWriter =  new FileWriter(file);
+            BufferedWriter writer = new BufferedWriter(fWriter);
             writer.write(data);
             writer.newLine();
             writer.flush();
             writer.close();
+            fWriter.close();
             return true;
         } catch (Exception e) {
             return false;
@@ -1433,7 +1435,7 @@ TimeRegulator {
     private File _createTextFile(String name) {
         if (_testsFolder!= null) {
             name = _testsFolder + "/"+ name;
-            if (name.equals(null) || name.length()<3) {
+            if (name == null || name.length() < 3) {
                 System.out.println("Choose a valid name for the txt file.");
                 return null;
             }else {
@@ -1468,7 +1470,7 @@ TimeRegulator {
     private File _createTextFile(String name, String header) {
         if (_testsFolder!= null) {
             name = _testsFolder + "/"+ name;
-            if (name.equals(null) || name.length()<3) {
+            if (name == null || name.length() < 3) {
                 System.out.println("Choose a valid name for the txt file.");
                 return null;
             }else {
@@ -1554,10 +1556,8 @@ TimeRegulator {
 
             // End the loop with one NER call.
             if (_debugging) {
-                if (_debugging) {
-                    _debug("        proposeTime(t(lastFoundEvent)="+proposedTimeInString+") - _eventsBasedTimeAdvance("+proposedTimeInString+")"
+                _debug("        proposeTime(t(lastFoundEvent)="+proposedTimeInString+") - _eventsBasedTimeAdvance("+proposedTimeInString+")"
                             + " - calling CERTI NER(proposedTime*hlaTimeUnitValue = "+ certiProposedTime.getTime() + ")");
-                }
             }
             _rtia.nextEventRequest(certiProposedTime);
             _numberOfNERs++;
@@ -2742,13 +2742,19 @@ TimeRegulator {
 
                         } else {
                             //retrieve and remove head
-                            instance = actors.poll();
-                            newActor = (CompositeActor) instance;
-                            newActor.setDisplayName(objectName);
-                            if (_debugging) {
-                                _debug(instance.getName() + "  discoverObjectInstance() - will do object "
-                                        + objectName);
-                            }
+                        	instance = actors.poll();
+                        	if (instance == null) {
+                        		throw new IllegalActionException( 
+                        				"A null actor requested to be inserted in the model");
+                        	}
+                        	else {
+                        		newActor = (CompositeActor) instance;
+                        		newActor.setDisplayName(objectName);
+                        		if (_debugging) {
+                        			_debug(instance.getName() + "  discoverObjectInstance() - will do object "
+                        					+ objectName);
+                        		}
+                        	}
                         }
 
                         //if the actor as an attribute called temp block

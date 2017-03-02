@@ -129,10 +129,9 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      * Find a parameter value from a file.
      * @param file The file to be read
      * @param propertyLine The property line to be found
-     * @param type The type of the data. 0 for String, 1 for int, 2 for float.
      * @return The parameter value.
      */
-    public static String findParameterValue(File file, String propertyLine, int type) throws IllegalActionException {
+    public static String findParameterValue(File file, String propertyLine) throws IllegalActionException {
 	try {
         ArrayList<String> fileContent = convertFileToString(file);
         String value="UNDEFINED";
@@ -140,12 +139,6 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
             if (s.contains(propertyLine)) {
                 try {
                     value=s.substring(s.lastIndexOf("value=\"")+7, s.lastIndexOf("\""));
-                    if (type == 1) {
-                        Integer.parseInt(value);
-                    }else if (type==2) {
-                        Float.parseFloat(value);
-                    }
-                    break;
                 }
                 catch (Exception e) {
                     value ="UNDEFINED";
@@ -613,7 +606,6 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     line = content.substring(0,content.length()-2);
                     line = line.substring(line.lastIndexOf("\"")+1);
                     try {
-                        Double.valueOf(line);
                         line=content.substring(0,content.indexOf(line));
                         lineFound=true;
                         System.out.println(true);
@@ -673,7 +665,6 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
                     String line = content.substring(0,content.length()-2);
                     line = line.substring(line.lastIndexOf("\"")+1);
                     try {
-                        Double.valueOf(line);
                         result[linesFound][1]=content.substring(0,content.indexOf(line));
                         linesFound++;
                         result[linesFound][0]="";
@@ -806,10 +797,12 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      */
     private static void _writeInFile(File file,String data) {
         try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+        	FileWriter fWriter =  new FileWriter(file); 
+            BufferedWriter writer = new BufferedWriter(fWriter);
             writer.write(data);
             writer.flush();
             writer.close();
+            fWriter.close();
         } catch (Exception e) {
             System.out.println("Couldn't write in the file.");
         }
