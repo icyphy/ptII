@@ -86,26 +86,33 @@ public class SerialHelper extends HelperBase {
         _ownerName = ownerName;
         _timeout = timeout;
         
-        _baudRate = (Integer)options.get("baudRate");
-        
-        // Set the send and receive types.
-        // First, make sure the arrays are populated.
-        supportedSendTypes();
-        supportedReceiveTypes();
-        // Next, get the option values.
-        String receiveTypeName = (String)options.get("receiveType");
-        String sendTypeName = (String)options.get("sendType");
-        // Next, map these names to data types.
-        try {
-            _sendType = Enum.valueOf(DATA_TYPE.class, sendTypeName.trim().toUpperCase());
-        } catch (Exception ex) {
-            throw new IllegalArgumentException("Invalid send data type: " + sendTypeName);
-        }
-        // Finally, do the receive type.
-        try {
-            _receiveType = Enum.valueOf(DATA_TYPE.class, receiveTypeName.trim().toUpperCase());
-        } catch (Exception ex) {
-            throw new IllegalArgumentException("Invalid receive data type: " + receiveTypeName);
+        if (options != null) {
+            _baudRate = (Integer)options.get("baudRate");
+
+            // Set the send and receive types.
+            // First, make sure the arrays are populated.
+            supportedSendTypes();
+            supportedReceiveTypes();
+            // Next, get the option values.
+            String receiveTypeName = (String)options.get("receiveType");
+            String sendTypeName = (String)options.get("sendType");
+            // Next, map these names to data types.
+            try {
+                _sendType = Enum.valueOf(DATA_TYPE.class, sendTypeName.trim().toUpperCase());
+            } catch (Exception ex) {
+                throw new IllegalArgumentException("Invalid send data type: " + sendTypeName);
+            }
+            // Finally, do the receive type.
+            try {
+                _receiveType = Enum.valueOf(DATA_TYPE.class, receiveTypeName.trim().toUpperCase());
+            } catch (Exception ex) {
+                throw new IllegalArgumentException("Invalid receive data type: " + receiveTypeName);
+            }
+        } else {
+            // No options specified. Use defaults.
+            _baudRate = 9600;
+            _sendType = DATA_TYPE.STRING;
+            _receiveType = DATA_TYPE.STRING;
         }
     }
 
