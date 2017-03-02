@@ -121,42 +121,45 @@ public class SerialHelper extends HelperBase {
 
     /** Close the serial port.
      */
-    public synchronized void close() {
-        _actor.log("Closing serial port.");
-        _open = false;
-        if (_portName.equals("loopback")) {
-            // Port is the dummy loopback port. Free up its use.
-            _loopbackUser = null;
-        }
-        if (_serialPort != null) {
-            if (_inputStream != null) {
-                _actor.log("Closing inputStream.");
-                try {
-                    _inputStream.close();
-                } catch (IOException e) {
-                    // No idea why closing this would fail.
-                    e.printStackTrace();
+    public void close() {
+        // Synchronize on the class because serial ports are a common resource.
+        synchronized(SerialHelper.class) {
+            _actor.log("Closing serial port.");
+            _open = false;
+            if (_portName.equals("loopback")) {
+                // Port is the dummy loopback port. Free up its use.
+                _loopbackUser = null;
+            }
+            if (_serialPort != null) {
+                if (_inputStream != null) {
+                    _actor.log("Closing inputStream.");
+                    try {
+                        _inputStream.close();
+                    } catch (IOException e) {
+                        // No idea why closing this would fail.
+                        e.printStackTrace();
+                    }
                 }
-            }
-            if (_outputStream != null) {
-                _actor.log("Closing outputStream.");
-                try {
-                    _outputStream.flush();
-                    _outputStream.close();
-                } catch (IOException e) {
-                    // No idea why closing this would fail.
-                    e.printStackTrace();
+                if (_outputStream != null) {
+                    _actor.log("Closing outputStream.");
+                    try {
+                        _outputStream.flush();
+                        _outputStream.close();
+                    } catch (IOException e) {
+                        // No idea why closing this would fail.
+                        e.printStackTrace();
+                    }
                 }
+                if (SerialHelper._openedPorts != null) {
+                    SerialHelper._openedPorts.remove(_portName);
+                }
+                _actor.log("About to remove event listeners from the serial port.");
+                _serialPort.removeEventListener();
+                _actor.log("About to call _serialPort.close().");
+                _serialPort.close();
+                _serialPort = null;
+                _actor.log("Serial port closed.");
             }
-            if (SerialHelper._openedPorts != null) {
-                SerialHelper._openedPorts.remove(_portName);
-            }
-            _actor.log("About to remove event listeners from the serial port.");
-            _serialPort.removeEventListener();
-            _actor.log("About to call _serialPort.close().");
-            _serialPort.close();
-            _serialPort = null;
-            _actor.log("Serial port closed.");
         }
     }
 
@@ -175,119 +178,122 @@ public class SerialHelper extends HelperBase {
      *  support the specified paramters or if the input or output
      *  fails.
      */
-    public synchronized void open() throws IllegalActionException {
-        if (_serialPort != null) {
-            _serialPort.close();
-            _serialPort = null;
-        }
-        if (_portName.equals("loopback")) {
-            // Port is the dummy loopback port. See whether it is already in use.
-            if (_loopbackUser != null) {
-                throw new IllegalActionException(_actor,
-                        "Port loopback is already in use by " + _loopbackUser);
+    public void open() throws IllegalActionException {
+        // Synchronize on the class because serial ports are a common resource.
+        synchronized(SerialHelper.class) {
+            if (_serialPort != null) {
+                _serialPort.close();
+                _serialPort = null;
             }
-            _loopbackUser = _ownerName;
-            try {
-                _loopbackInput = new PipedInputStream();
-                _loopbackOutput = new PipedOutputStream(_loopbackInput);
-                _inputStream = _loopbackInput;
-                _outputStream = _loopbackOutput;
-            } catch (IOException e) {
-                throw new IllegalActionException(_actor, e, "Failed to connect loopback port.");
-            }
-        } else {
-            // Port is not a dummy port.
-            CommPortIdentifier portID = null;
-            try {
-                CommPort port = null;
+            if (_portName.equals("loopback")) {
+                // Port is the dummy loopback port. See whether it is already in use.
+                if (_loopbackUser != null) {
+                    throw new IllegalActionException(_actor,
+                            "Port loopback is already in use by " + _loopbackUser);
+                }
+                _loopbackUser = _ownerName;
                 try {
-                    portID = CommPortIdentifier.getPortIdentifier(_portName);
-                    port = portID.open(_ownerName, _timeout);
-                } catch (NoSuchPortException ex) {
-                    // If a model is on a different machine, then the port names maybe different.
-                    // As a workaround, we cycle through the ports and open the first available port.
-                    // FIXME: Is that really a good idea? Perhaps use dummy ports instead?
+                    _loopbackInput = new PipedInputStream();
+                    _loopbackOutput = new PipedOutputStream(_loopbackInput);
+                    _inputStream = _loopbackInput;
+                    _outputStream = _loopbackOutput;
+                } catch (IOException e) {
+                    throw new IllegalActionException(_actor, e, "Failed to connect loopback port.");
+                }
+            } else {
+                // Port is not a dummy port.
+                CommPortIdentifier portID = null;
+                try {
+                    CommPort port = null;
+                    try {
+                        portID = CommPortIdentifier.getPortIdentifier(_portName);
+                        port = portID.open(_ownerName, _timeout);
+                    } catch (NoSuchPortException ex) {
+                        // If a model is on a different machine, then the port names maybe different.
+                        // As a workaround, we cycle through the ports and open the first available port.
+                        // FIXME: Is that really a good idea? Perhaps use dummy ports instead?
 
-                    if (SerialHelper._openedPorts == null) {
-                        SerialHelper._openedPorts = new LinkedList<String>();
-                    }
-                    boolean openedPort = false;
-                    // Enumerate the available ports.
-                    Enumeration ports = CommPortIdentifier.getPortIdentifiers();
-                    while (ports.hasMoreElements()) {
-                        CommPortIdentifier identifier = (CommPortIdentifier) ports
-                            .nextElement();
-                        // Try to open each port in turn.
-                        if (identifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
-                            if (identifier.getName().indexOf("/dev/cu.") != -1) {
-                                System.out.println("SerialHelper.java: " + _actor.getFullName()
-                                        + " Could not find or open " + _portName
-                                        + ".  Skipping " + identifier.getName() + " because it is a calling unit (/dev/cu) port");
-                                continue;
-                            }
-                            if (identifier.getName().indexOf("Bluetooth") != -1) {
-                                System.out.println("SerialHelper.java: " + _actor.getFullName()
-                                        + " Could not find or open " + _portName
-                                        + ".  Skipping " + identifier.getName() + " because it is a Bluetooth port");
-                                continue;
-                            }
-                            // Only try to open the port if it has not yet been opened.
-                            if (!SerialHelper._openedPorts.contains(identifier.getName())) {
-                                try {
-                                    portID = CommPortIdentifier.getPortIdentifier(identifier.getName());
-                                    port = portID.open(_ownerName, _timeout);
+                        if (SerialHelper._openedPorts == null) {
+                            SerialHelper._openedPorts = new LinkedList<String>();
+                        }
+                        boolean openedPort = false;
+                        // Enumerate the available ports.
+                        Enumeration ports = CommPortIdentifier.getPortIdentifiers();
+                        while (ports.hasMoreElements()) {
+                            CommPortIdentifier identifier = (CommPortIdentifier) ports
+                                    .nextElement();
+                            // Try to open each port in turn.
+                            if (identifier.getPortType() == CommPortIdentifier.PORT_SERIAL) {
+                                if (identifier.getName().indexOf("/dev/cu.") != -1) {
                                     System.out.println("SerialHelper.java: " + _actor.getFullName()
-                                            + " Successfully opened "
-                                            + identifier.getName() + " because " + _portName
-                                            + " could not be opened, the exception was " + ex);
-                                    _portName = identifier.getName();
-                                    SerialHelper._openedPorts.add(_portName);
-                                    openedPort = true;
-                                    break;
-                                } catch (Throwable throwable) {
-                                    System.out.println("SerialHelper.java: "  + _actor.getFullName()
-                                            + " Failed to open " + identifier.getName() + ": "
-                                            + throwable + ". Will try the next port (if available).");
+                                            + " Could not find or open " + _portName
+                                            + ".  Skipping " + identifier.getName() + " because it is a calling unit (/dev/cu) port");
+                                    continue;
+                                }
+                                if (identifier.getName().indexOf("Bluetooth") != -1) {
+                                    System.out.println("SerialHelper.java: " + _actor.getFullName()
+                                            + " Could not find or open " + _portName
+                                            + ".  Skipping " + identifier.getName() + " because it is a Bluetooth port");
+                                    continue;
+                                }
+                                // Only try to open the port if it has not yet been opened.
+                                if (!SerialHelper._openedPorts.contains(identifier.getName())) {
+                                    try {
+                                        portID = CommPortIdentifier.getPortIdentifier(identifier.getName());
+                                        port = portID.open(_ownerName, _timeout);
+                                        System.out.println("SerialHelper.java: " + _actor.getFullName()
+                                                + " Successfully opened "
+                                                + identifier.getName() + " because " + _portName
+                                                + " could not be opened, the exception was " + ex);
+                                        _portName = identifier.getName();
+                                        SerialHelper._openedPorts.add(_portName);
+                                        openedPort = true;
+                                        break;
+                                    } catch (Throwable throwable) {
+                                        System.out.println("SerialHelper.java: "  + _actor.getFullName()
+                                                + " Failed to open " + identifier.getName() + ": "
+                                                + throwable + ". Will try the next port (if available).");
+                                    }
                                 }
                             }
                         }
+                        if (!openedPort) {
+                            throw ex;
+                        }
                     }
-                    if (!openedPort) {
-                        throw ex;
+
+                    if (!(port instanceof SerialPort)) {
+                        _error("Port " + _portName + " is not a serial port.");
+                        return;
                     }
+                    _serialPort = (SerialPort) port;
+
+                    // FIXME: Set the options.
+                    _serialPort.setSerialPortParams(_baudRate,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
+
+                    // FIXME: Uncomment the next line to avoid jjs/modules/serial/test/auto/SerialHelloWorld.xml hanging.
+                    _serialPort.enableReceiveTimeout(_timeout);
+                    _inputStream = _serialPort.getInputStream();
+                    _outputStream = _serialPort.getOutputStream();
+                } catch (NoSuchPortException e) {
+                    throw new IllegalActionException(_actor, e, "No such port: " + _portName);
+                } catch (PortInUseException e) {
+                    throw new IllegalActionException(_actor, e, "Port " + _portName + " is currently owned by " + portID.getCurrentOwner());
+                } catch (UnsupportedCommOperationException e) {
+                    throw new IllegalActionException(_actor, e, "Port does not support the specified parameters: " + _portName);
+                } catch (IOException e) {
+                    throw new IllegalActionException(_actor, e, "Failed to input input or output stream: " + _portName);
                 }
-
-                if (!(port instanceof SerialPort)) {
-                    _error("Port " + _portName + " is not a serial port.");
-                    return;
-                }
-                _serialPort = (SerialPort) port;
-
-                // FIXME: Set the options.
-                _serialPort.setSerialPortParams(_baudRate,SerialPort.DATABITS_8,SerialPort.STOPBITS_1,SerialPort.PARITY_NONE);
-
-                // FIXME: Uncomment the next line to avoid jjs/modules/serial/test/auto/SerialHelloWorld.xml hanging.
-                _serialPort.enableReceiveTimeout(_timeout);
-                _inputStream = _serialPort.getInputStream();
-                _outputStream = _serialPort.getOutputStream();
-            } catch (NoSuchPortException e) {
-                throw new IllegalActionException(_actor, e, "No such port: " + _portName);
-            } catch (PortInUseException e) {
-                throw new IllegalActionException(_actor, e, "Port " + _portName + " is currently owned by " + portID.getCurrentOwner());
-            } catch (UnsupportedCommOperationException e) {
-                throw new IllegalActionException(_actor, e, "Port does not support the specified parameters: " + _portName);
-            } catch (IOException e) {
-                throw new IllegalActionException(_actor, e, "Failed to input input or output stream: " + _portName);
             }
+            _open = true;
+
+            // The RXTX event listener mechanism does not work under OS X.
+            // It causes the JVM to crash.
+            // _serialPort.addEventListener(this);
+
+            (new Thread(new SerialReader())).start();
+            (new Thread(new SerialWriter())).start();
         }
-        _open = true;
-
-        // The RXTX event listener mechanism does not work under OS X.
-        // It causes the JVM to crash.
-        // _serialPort.addEventListener(this);
-
-        (new Thread(new SerialReader())).start();
-        (new Thread(new SerialWriter())).start();
     }
     
     /** Send data over the serial port.
@@ -407,7 +413,7 @@ public class SerialHelper extends HelperBase {
     private static PipedInputStream _loopbackInput;
     private static PipedOutputStream _loopbackOutput;
 
-    /** If the dummy ports are used, the user's names are recorded here. */
+    /** If the dummy port is used, the user's name is recorded here. */
     private static String _loopbackUser;
 
     /** Output stream. */
