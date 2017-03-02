@@ -273,13 +273,16 @@ public class HlaSubscriber extends TypedAtomicActor {
                                 break;
                         }
                 }
-                if (hlaManagers.size() > 1) {
-                        throw new IllegalActionException(this,
-                                        "Only one HlaManager attribute is allowed per model");
-                } else if (hlaManagers.size() < 1) {
-                        throw new IllegalActionException(this,
-                                        "A HlaManager attribute is required to use this actor");
+                
+                if (hlaManagers == null || hlaManagers.size() < 1) {
+                	throw new IllegalActionException(this,
+                            "A HlaManager attribute is required to use this actor");
+                } else {
+                if (hlaManagers.size() > 1) throw new IllegalActionException(this,
+                						"Only one HlaManager attribute is allowed per model");
                 }
+                        
+                
         }
 
         /** Send each update value of the HLA attribute (mapped to this actor) as
