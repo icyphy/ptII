@@ -378,11 +378,9 @@ if (accessorHost === accessorHostsEnum.DUKTAPE) {
  *   implemented.
  *   If this argument is present, then the getAccessorCode and bindings arguments are
  *   ignored (the instance inherits those properties from the implementer).
- *  @param mutable An optional argument specifying if this is a mutableAccessor. Pass null or no 
- *   argument if this not a mutableAccessor, otherwise, pass true.
  *   
  */
-function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, implementedBy, mutable) {
+function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, implementedBy) {
     if (!code) {
         throw new Error('No accessor code specified.');
     }
@@ -393,7 +391,7 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
     this.extendedBy = extendedBy;
     this.implementedBy = implementedBy;
     
-    this.mutable = mutable;
+    this.code = code;
     
     this.bindings = bindings;
 
@@ -470,11 +468,18 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
         };
         
         // Monitoring react events
-        this.monitor['react'] = {
+        this.monitor['reactStart'] = {
         		'count' : 0,
         		'firstOccurrenceDate' : {},
         		'latestOccurrenceDate' : {}
-        };        
+        };
+        
+        // Monitoring react events
+        this.monitor['reactEnd'] = {
+        		'count' : 0,
+        		'firstOccurrenceDate' : {},
+        		'latestOccurrenceDate' : {}
+        };
 
         // Monitoring wrapup events
         this.monitor['wrapup'] = {
@@ -611,35 +616,6 @@ setTimeout',
     }
     
     ///////////////////////////////////////////////////////////////////
-    //// Set up the mutableAccessor properties.
-    if (mutable) {
-    	if (extendedBy || implementedBy)
-    		throw new Error('An extended or implementing Accessor cannot be a mutableAccessor.');
-    	
-        ////////////////////////////////////////////////////////////////////
-        //// For a mutableAccessor, define additional attributes
-    
-    	this.reifyingAccessorsList = [];
-    	
-    	this.inputsMap = new Map();
-    	this.outputsMap = new Map();
-    	this.parametersMap = new Map();
-    	
-    	this.status = 'instantiated';
-        
-    	////////////////////////////////////////////////////////////////////
-        //// Support for additional monitoring information
-  
-        // Monitoring reify events
-    	this.monitor['reify'] = {
-        		'count' : 0,
-        		'firstOccurrenceDate' : {},
-        		'latestOccurrenceDate' : {}
-        };
-        
-    }
-
-    ///////////////////////////////////////////////////////////////////
     //// Evaluate the setup() function to populate the data structures.
 
     if (typeof this.exports.setup === 'function') {
@@ -686,7 +662,6 @@ setTimeout',
             
             // Update monitoring information
             // FIXME: Are react and fire semantically different?
-            this.updateMonitoringInformation('react');
         };
 
         this.wrapup = function () {
@@ -1358,6 +1333,47 @@ Accessor.prototype.module = {
     'id': 'unspecified'
 };
 
+/** Default implementation of the function to define an accessor input.
+ *  Accessors that override this should probably invoke this default explicitly
+ *  by referencing the prototype.
+ *  @param name The name of the input.
+ *  @param options The options for the input.
+ */
+Accessor.prototype.mutable = function (value) {
+    if (value === 'true') {
+    	this.mutable = true;
+    	
+        ///////////////////////////////////////////////////////////////////
+        //// Set up the mutableAccessor properties.
+        /*if (extendedBy || implementedBy) {
+        	throw new Error('An extended or implementing Accessor cannot be a mutableAccessor.');
+        }*/
+        	
+        ////////////////////////////////////////////////////////////////////
+        //// For a mutableAccessor, define additional attributes
+        
+        this.reifyingAccessorsList = [];
+        	
+        this.inputsMap = new Map();
+        this.outputsMap = new Map();
+        this.parametersMap = new Map();
+        	
+        this.status = 'instantiated';
+            
+        ////////////////////////////////////////////////////////////////////
+        //// Support for additional monitoring information
+      
+        // Monitoring reify events
+        this.monitor['reify'] = {
+        	'count' : 0,
+        	'firstOccurrenceDate' : {},
+        	'latestOccurrenceDate' : {}
+        };
+            
+    }
+
+};
+
 /** Define an accessor output.
  *  @param name The name of the output.
  *  @param options The options.
@@ -1452,7 +1468,9 @@ Accessor.prototype.react = function (name) {
     // console.log(this.accessorName + ": ================== react(" + name + ")");
     
     this.emit('reactStart');
-
+    // Update monitoring information
+    this.updateMonitoringInformation('reactStart');
+    
     var thiz = this.root;
     
     // Mark that there is no pending reaction so that if this reaction has
@@ -1569,12 +1587,11 @@ Accessor.prototype.react = function (name) {
     if (typeof this.exports.fire === 'function') {
         //console.log('commonHost.js react(' + name + '): invoking fire');
         this.exports.fire.call(this);
-    } else {
-    	// FIXME: ??? Should be in else or not
-    	// Because fire updates already 'react' monitoring
-    	thiz.updateMonitoringInformation('react');
     }
-
+    
+    // Update monitoring information
+    this.updateMonitoringInformation('reactEnd');
+    
     this.emit('reactEnd');
 };
 
