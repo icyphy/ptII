@@ -1330,8 +1330,10 @@ TimeRegulator {
 		
 		boolean noExceptionOccured = true;
         
+		BufferedWriter writer = null;
+		
 		try {
-            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+			writer = new BufferedWriter(new FileWriter(file));
             writer.write(data);
             writer.newLine();
             writer.flush();
@@ -1340,7 +1342,15 @@ TimeRegulator {
             noExceptionOccured = false;
         }
 		finally {
-			writer.close();
+			if (writer != null) {
+				try {
+				writer.close();
+				}
+				catch (IOException e)
+				{
+					System.out.println("The file failed to be closed.");
+				}
+			}
 		}
 
 		return noExceptionOccured;
