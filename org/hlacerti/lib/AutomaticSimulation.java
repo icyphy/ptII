@@ -797,19 +797,17 @@ public class AutomaticSimulation extends VergilApplication implements ExecutionL
      */
     private static void _writeInFile(File file,String data) {
         try {
-        	FileWriter fWriter =  new FileWriter(file); 
-            BufferedWriter writer = new BufferedWriter(fWriter);
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(data);
             writer.flush();
-            writer.close();
-            fWriter.close();
         } catch (Exception e) {
             System.out.println("Couldn't write in the file.");
         }
-    }
+		finally {
+			writer.close();
+    	}
+	}
 
     private boolean _wait;
-
-
 
 }
