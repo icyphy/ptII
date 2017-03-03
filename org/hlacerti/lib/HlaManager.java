@@ -1327,19 +1327,24 @@ TimeRegulator {
      * @return Return true if the information was successfully written in the file.
      */
     public boolean writeInTextFile(File file,String data) {
-        try {
-        	FileWriter fWriter =  new FileWriter(file);
-            BufferedWriter writer = new BufferedWriter(fWriter);
+		
+		boolean noExceptionOccured = true;
+        
+		try {
+            BufferedWriter writer = new BufferedWriter(new FileWriter(file));
             writer.write(data);
             writer.newLine();
             writer.flush();
-            writer.close();
-            fWriter.close();
-            return true;
-        } catch (Exception e) {
-            return false;
+		}
+        catch (Exception e) {
+            noExceptionOccured = false;
         }
-    }
+		finally {
+			writer.close();
+		}
+
+		return noExceptionOccured;
+	}
 
     /** Write the time file to times.csv. */
     public void writeTimes() {
