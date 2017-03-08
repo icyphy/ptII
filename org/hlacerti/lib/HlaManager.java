@@ -736,8 +736,6 @@ public class HlaManager extends AbstractInitializableAttribute
             }
         }
         Time currentTime = _getModelTime();
-        proposedTime = new Time(_director,
-                Double.parseDouble(proposedTimeInString));
 
         if (proposedTime.compareTo(_stopTime) > 0) {
             if (_debugging) {
@@ -870,8 +868,8 @@ public class HlaManager extends AbstractInitializableAttribute
     public void updateHlaAttribute(HlaPublisher hp, Token in, String senderName)
             throws IllegalActionException {
         SuperdenseTime currentSuperdenseTime = _getModelSuperdenseTime();
-        Time currentTime = new Time(_director, _roundDoubles(
-                currentSuperdenseTime.timestamp().getDoubleValue()));
+        Time currentTime = new Time(_director,
+                currentSuperdenseTime.timestamp().getDoubleValue());
         int microstep = currentSuperdenseTime.index();
         // The following operations build the different arguments required
         // to use the updateAttributeValues() (UAV) service provided by HLA/CERTI.
@@ -1462,8 +1460,7 @@ public class HlaManager extends AbstractInitializableAttribute
      */
     private CertiLogicalTime _convertToCertiLogicalTime(Time pt) {
 
-        return new CertiLogicalTime(
-                _roundDoubles(pt.getDoubleValue() * _hlaTimeUnitValue));
+        return new CertiLogicalTime(pt.getDoubleValue() * _hlaTimeUnitValue);
     }
 
     /**
@@ -1474,8 +1471,7 @@ public class HlaManager extends AbstractInitializableAttribute
      */
     private Time _convertToPtolemyTime(CertiLogicalTime ct)
             throws IllegalActionException {
-        return new Time(_director,
-                _roundDoubles(ct.getTime() / _hlaTimeUnitValue));
+        return new Time(_director, ct.getTime() / _hlaTimeUnitValue);
     }
 
     /**Verify the existence of a folder, if it doesn't exist, the function tries
@@ -1600,8 +1596,6 @@ public class HlaManager extends AbstractInitializableAttribute
                 proposedTime);
 
         String proposedTimeInString = _printTimes(proposedTime);
-        proposedTime = new Time(_director,
-                Double.parseDouble(proposedTimeInString));
         _storeTimes("NER(" + proposedTimeInString + ")");
 
         if (_hlaLookAHead > 0) {
@@ -2008,7 +2002,6 @@ public class HlaManager extends AbstractInitializableAttribute
      */
     private Time _getHlaNextPointInTime() throws IllegalActionException {
         Double time = _getHlaCurrentTime().add(_hlaTimeStep).getDoubleValue();
-        time = _roundDoubles(time);
         return _convertToPtolemyTime(new CertiLogicalTime(time));
         //return _getHlaCurrentTime().add(_hlaTimeStep);
 
@@ -2060,7 +2053,7 @@ public class HlaManager extends AbstractInitializableAttribute
         _numberOfRAVs = 0;
         _numberOfUAVs = 0;
     }
-
+    /*
     /**This function was created with the sole purpose of solving the
      * java problem with mathematical operations of real numbers.
      * In time stepped systems, we used to have a situation where instead of,
@@ -2070,13 +2063,14 @@ public class HlaManager extends AbstractInitializableAttribute
      * to this number of digits.
      * @param value The time value that is going to be rounded.
      * @return A double representing a rounded time value.
-     */
+     *
     private double _roundDoubles(double value) {
         //Forcing the number to have the same amount of decimal digits
         //than the time step;
         return Double.parseDouble(_printFormatedNumbers(value));
     }
-
+    */
+    
     private String _printFormatedNumbers(double value) {
         DecimalFormat df = new DecimalFormat(_decimalFormat);
         df.setRoundingMode(RoundingMode.HALF_DOWN);
@@ -2088,27 +2082,12 @@ public class HlaManager extends AbstractInitializableAttribute
     }
 
     private Time _getModelTime() {
-        double currentTime = _director.getModelTime().getDoubleValue();
-        currentTime = _roundDoubles(currentTime);
-        try {
-            return new Time(_director, currentTime);
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-            return _director.getModelTime();
-        }
+        return _director.getModelTime();
     }
 
     private SuperdenseTime _getModelSuperdenseTime() {
-        double currentTime = _director.getModelTime().getDoubleValue();
-        currentTime = _roundDoubles(currentTime);
-        try {
-            Time time = new Time(_director, currentTime);
-            return new SuperdenseTime(time, _director.getMicrostep());
-        } catch (IllegalActionException e) {
-            e.printStackTrace();
-            return new SuperdenseTime(_director.getModelTime(),
-                    _director.getMicrostep());
-        }
+        return new SuperdenseTime(_director.getModelTime(),
+                _director.getMicrostep());
     }
 
     private void _storeTimes(String reason) {
@@ -2707,8 +2686,7 @@ public class HlaManager extends AbstractInitializableAttribute
                                 double timeValue = ((CertiLogicalTime) theTime)
                                         .getTime() / _hlaTimeUnitValue;
 
-                                ts = new Time(_director,
-                                        _roundDoubles(timeValue));
+                                ts = new Time(_director, timeValue);
                                 value = MessageProcessing.decodeHlaValue(hs,
                                         (BaseType) _getTypeFromTab(tObj),
                                         theAttributes.getValue(i));
@@ -3013,8 +2991,7 @@ public class HlaManager extends AbstractInitializableAttribute
                 throws InvalidFederationTime, TimeAdvanceWasNotInProgress,
                 FederateInternalError {
             double time = ((CertiLogicalTime) theTime).getTime();
-            time = _roundDoubles(time);
-            time = _roundDoubles(_hlaTimeUnitValue * time);
+            time = _hlaTimeUnitValue * time;
 
             logicalTimeHLA = new CertiLogicalTime(time);
             //* ((CertiLogicalTime) theTime).getTime());
