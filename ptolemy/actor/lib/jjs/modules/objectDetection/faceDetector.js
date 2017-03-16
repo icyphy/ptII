@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2016-2016 The Regents of the University of California.
+// Copyright (c) 2016-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -25,20 +25,11 @@
 //
 // Ptolemy II includes the work of others, to see those copyrights, follow
 // the copyright link on the splash page or see copyright.htm.
-/** Module to detect motion in a sequence of images.'
- *  This module provides an interface to a motion detection implementation
- *  taken from the webcam-capture package by Bartosz Firyn (SarXos), available from:
- *  [https://github.com/sarxos/webcam-capture](https://github.com/sarxos/webcam-capture).
- *  The webcam-capture package is licensed under the MIT License.
+
+/** Module to detect faces.
  *
- *  The filter architecture follows the pattern defined by Jerry Huxtable
- *  in the JH Labs Java Image Processing library, available from:
- *    http://www.jhlabs.com/ip/filters
- *  and licensed under the Apache License, Version 2.0
- *  (http://www.apache.org/licenses/LICENSE-2.0).
- *
- *  @module motionDetector
- *  @author Edward A. Lee
+ *  @module faceDetector
+ *  @author Ilea Akkay, Contributor: Christopher Brooks, based on motionDector by Edward A. Lee
  *  @version $$Id$$
  */
 
