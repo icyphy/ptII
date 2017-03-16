@@ -84,6 +84,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Threshold.xml
 $CLASSPATH/org/terraswarm/accessor/demo/IMUSensor/IMUSensor.xml
 $CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreClient.xml
 $CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreServer.xml
+$CLASSPATH/org/terraswarm/accessor/demo/Kubi/Kubi.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MoC/MoC.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MotionDetector/MotionDetector.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MotionLights/MotionLights.xml
