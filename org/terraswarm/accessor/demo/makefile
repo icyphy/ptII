@@ -34,7 +34,8 @@ ROOT = ../../../..
 
 DIRS = AprilTags Audio Browser Camera Foscam HappySadStock \
 	Heartbeat HueToggle \
-	IMUSensor ImageAnnotate ImageFilters KeyValueStoreClient \
+	IMUSensor ImageAnnotate ImageFilters Kubi \
+	KeyValueStoreClient \
 	MoC MotionDetector MotionLights \
 	OccupancyLights Scarab SecureSocket StockTick \
 	SwarmAcousticService TCPSocket \
@@ -75,6 +76,7 @@ PTCLASSALLJARS = \
 	ImageAnnotate/ImageAnnotate.jar \
 	ImageFilters/ImageFilters.jar \
 	KeyValueStoreClient/KeyValueStoreClient.jar \
+	Kubi/Kubi.jar \
 	MoC/MoC.jar \
 	MotionDetector/MotionDetector.jar \
 	StockTick/StockTick.jar \
