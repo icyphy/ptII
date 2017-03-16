@@ -1214,7 +1214,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         + _UAVsValues[i] + "\n");
             }
             _UAVsValuesFile = _createTextFile(
-                    "uav" + getDisplayName() + ".csv");
+                    "uav" + _federateName + ".csv");
             writeInTextFile(_UAVsValuesFile, String.valueOf(info));
         }
     }
@@ -1238,7 +1238,7 @@ public class HlaManager extends AbstractInitializableAttribute
                         + _RAVsValues[i] + "\n");
             }
             _RAVsValuesFile = _createTextFile(
-                    "rav" + getDisplayName() + ".csv");
+                    "rav" + _federateName + ".csv");
             writeInTextFile(_RAVsValuesFile, String.valueOf(info));
         }
     }
@@ -1399,7 +1399,7 @@ public class HlaManager extends AbstractInitializableAttribute
         BufferedWriter writer = null;
 
         try {
-            writer = new BufferedWriter(new FileWriter(file));
+            writer = new BufferedWriter(new FileWriter(file, true));
             writer.write(data);
             writer.newLine();
             writer.flush();
