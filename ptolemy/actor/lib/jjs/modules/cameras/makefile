@@ -36,7 +36,8 @@ DIRS = 		demo #test
 # Root of the Java directory
 ROOT =		../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTWEBCAMCAPTURE_JARS)$(CLASSPATHSEPARATOR)$(PTHOMER_JARS)
+# Include $(PTVERTX_JARS) in case this directory is built with "make fast" and the parent directory, which depends on vert.x is not yet built.
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTWEBCAMCAPTURE_JARS)$(CLASSPATHSEPARATOR)$(PTHOMER_JARS)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
