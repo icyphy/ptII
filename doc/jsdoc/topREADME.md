@@ -20,8 +20,9 @@ As these modules are very much under development, these interface definitions ma
 
 *   [aprilTags][7]: Recognize and locate AprilTags in images. 
 *   [cameras][8]: Capture images and video from cameras on the host (built in or USB connected). 
-*   [imageFilters][9]: Filter images to create new images. 
-*   [motionDetector][10]: Detect and locate motion in streams of images. 
+*   [computerVision][9] : OpenCV image processing library, ported to Javascript by UC Irvine and Intel. 
+*   [imageFilters][10]: Filter images to create new images. 
+*   [motionDetector][11]: Detect and locate motion in streams of images. 
 
 
 
@@ -29,7 +30,7 @@ As these modules are very much under development, these interface definitions ma
 
 Some modules designed for Node.js are pure JavaScript with no particular dependency on Node. These can be required as well by an accessor. These include, at least, 
 
-*   [querystring][11] 
+*   [querystring][12] 
 
 
 
@@ -37,31 +38,31 @@ Some modules designed for Node.js are pure JavaScript with no particular depende
 
 *In case-insensitive alphabetical order, please* 
 
-*   [audio][12]: Provide access to the host audio hardware. 
-*   [ble][13]: Provide access to Bluetooth Low Energy peripherals. 
-*   [browser][14]: Provide display in the default browser. 
-*   [coapClient][15]: Provide support for CoAP clients. 
-*   [discovery][16]: Provide device discovery for devices on the local area network. 
-*   [GMTK][17]: GMTK accessor that requires some setup through the [webSocket][6] or shell accessors 
-*   [IMUSensor][18]: Provides bluetooth connection and packet output from Roozbeh's IMU Sensors. 
-*   [localStorage][19]: Provide persistent key-value storage based on local files. 
-*   [mapManager][20]: Provides resources for creating maps and combining information across them. 
-*   [mdnsClient][21]: mDNS and DNS-SD support. 
-*   [mqtt][22]: Provide support for MQTT protocol clients. 
+*   [audio][13]: Provide access to the host audio hardware. 
+*   [ble][14]: Provide access to Bluetooth Low Energy peripherals. 
+*   [browser][15]: Provide display in the default browser. 
+*   [coapClient][16]: Provide support for CoAP clients. 
+*   [discovery][17]: Provide device discovery for devices on the local area network. 
+*   [GMTK][18]: GMTK accessor that requires some setup through the [webSocket][6] or shell accessors 
+*   [IMUSensor][19]: Provides bluetooth connection and packet output from Roozbeh's IMU Sensors. 
+*   [localStorage][20]: Provide persistent key-value storage based on local files. 
+*   [mapManager][21]: Provides resources for creating maps and combining information across them. 
+*   [mdnsClient][22]: mDNS and DNS-SD support. 
+*   [mqtt][23]: Provide support for MQTT protocol clients. 
 *   obd 
 *   rabbitmq 
-*   serial 
-*   [ssdpClient][23]: UPnP device discovery. 
-*   [textToSpeech][24]: Provide spoken word output. 
-*   [UDPSocket][25]: Provide interfaces and functions for UDP sockets. 
+*   [serial][24] : Provide connection to serial ports. 
+*   [ssdpClient][25]: UPnP device discovery. 
+*   [textToSpeech][26]: Provide spoken word output. 
+*   [UDPSocket][27]: Provide interfaces and functions for UDP sockets. 
 
-To implement a module, see the [Module Specification][26]. 
+To implement a module, see the [Module Specification][28]. 
 
 
 
 * * *
 
-[Back to accessor specification][27]
+[Back to accessor specification][29]
 
  [1]: https://www.icyphy.org/accessors/wiki/Version0/Require
  [2]: https://chess.eecs.berkeley.edu/ptexternal/src/ptII/doc/codeDoc/js/index.html
@@ -71,25 +72,27 @@ To implement a module, see the [Module Specification][26].
  [6]: https://www.icyphy.org/accessors/wiki/Version0/WebSocket
  [7]: https://www.icyphy.org/accessors/wiki/Version0/AprilTags
  [8]: https://www.icyphy.org/accessors/wiki/Version0/Cameras
- [9]: https://www.icyphy.org/accessors/wiki/Version0/ImageFilters
- [10]: https://www.icyphy.org/accessors/wiki/Version0/MotionDetector
- [11]: https://nodejs.org/api/querystring.html
- [12]: https://www.icyphy.org/accessors/wiki/Version0/Audio
- [13]: https://www.icyphy.org/accessors/wiki/Version0/Ble
- [14]: https://www.icyphy.org/accessors/wiki/Version0/Browser
- [15]: https://www.icyphy.org/accessors/wiki/Version0/CoapClient
- [16]: https://www.icyphy.org/accessors/wiki/Version0/Discovery
- [17]: https://www.icyphy.org/accessors/wiki/Version0/GMTK
- [18]: https://www.icyphy.org/accessors/wiki/Version0/IMUSensor
- [19]: https://www.icyphy.org/accessors/wiki/Version0/LocalStorage
- [20]: https://www.icyphy.org/accessors/wiki/Version0/MapManager?action=edit
- [21]: https://www.icyphy.org/accessors/wiki/Version0/MdnsClient?action=edit
- [22]: https://www.icyphy.org/accessors/wiki/Version0/Mqtt
- [23]: https://www.icyphy.org/accessors/wiki/Version0/SsdpClient
- [24]: https://www.icyphy.org/accessors/wiki/Version0/TextToSpeech
- [25]: https://www.icyphy.org/accessors/wiki/Version0/UDPSocket
- [26]: https://www.icyphy.org/accessors/wiki/Version0/ModuleSpecification
- [27]: https://www.icyphy.org/accessors/wiki/Version1/AccessorSpecification
+ [9]: https://www.icyphy.org/accessors/wiki/Version0/ComputerVision
+ [10]: https://www.icyphy.org/accessors/wiki/Version0/ImageFilters
+ [11]: https://www.icyphy.org/accessors/wiki/Version0/MotionDetector
+ [12]: https://nodejs.org/api/querystring.html
+ [13]: https://www.icyphy.org/accessors/wiki/Version0/Audio
+ [14]: https://www.icyphy.org/accessors/wiki/Version0/Ble
+ [15]: https://www.icyphy.org/accessors/wiki/Version0/Browser
+ [16]: https://www.icyphy.org/accessors/wiki/Version0/CoapClient
+ [17]: https://www.icyphy.org/accessors/wiki/Version0/Discovery
+ [18]: https://www.icyphy.org/accessors/wiki/Version0/GMTK
+ [19]: https://www.icyphy.org/accessors/wiki/Version0/IMUSensor
+ [20]: https://www.icyphy.org/accessors/wiki/Version0/LocalStorage
+ [21]: https://www.icyphy.org/accessors/wiki/Version0/MapManager?action=edit
+ [22]: https://www.icyphy.org/accessors/wiki/Version0/MdnsClient?action=edit
+ [23]: https://www.icyphy.org/accessors/wiki/Version0/Mqtt
+ [24]: https://www.icyphy.org/accessors/wiki/Version0/Serial
+ [25]: https://www.icyphy.org/accessors/wiki/Version0/SsdpClient
+ [26]: https://www.icyphy.org/accessors/wiki/Version0/TextToSpeech
+ [27]: https://www.icyphy.org/accessors/wiki/Version0/UDPSocket
+ [28]: https://www.icyphy.org/accessors/wiki/Version0/ModuleSpecification
+ [29]: https://www.icyphy.org/accessors/wiki/Version1/AccessorSpecification
 
 * * *
 
