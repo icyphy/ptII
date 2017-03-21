@@ -314,7 +314,7 @@ function ClientRequest(options, responseCallback) {
         options.headers = headers;
     }
 
-    // console.log("Making an HTTP request: " + JSON.stringify(options));
+    // console.log("Making an HTTP request: " + util.inspect(options));
 
     this.helper = HttpClientHelper.getOrCreateHelper(actor, this);
     this.options = options;
@@ -324,6 +324,7 @@ exports.ClientRequest = ClientRequest;
 
 /** Issue the request. */
 ClientRequest.prototype.end = function () {
+    console.log("Making an HTTP request: " + util.inspect(this.options));
     this.helper.request(this, this.options);
 };
 
@@ -336,13 +337,17 @@ ClientRequest.prototype.stop = function () {
     }
 };
 
-// FIXME:  Writing is currently implemented as part of ClientRequest().  The
-// body is passed in as part of the options object, options.body.
-// ClientRequest() both creates and sends the request; the request object is not
-// returned to httpClient.js.
-// We may need something different for multi-part requests?
+/** Append the specified data to the body of the request.
+ *  FIXME: Currently, this supports only strings and ignore the encoding.
+ *  @param data The data to append.
+ *  @param encoding The encoding of the data.
+ */
 ClientRequest.prototype.write = function (data, encoding) {
-    throw ("Write is implemented as part of ClientRequest()");
+    if (this.options.body) {
+        this.options.body = this.options.body + data;
+    } else {
+        this.options.body = data;
+    }
 };
 
 /** Internal function used to handle an error.
@@ -358,27 +363,38 @@ ClientRequest.prototype._handleError = function (message) {
 };
 
 /** Internal method used to handle a response. The argument is an
- *  an instance of the Java class org.vertx.java.core.http.HttpClientResponse,
- *  or null if an error occurred.
+ *  an instance of the Java class org.vertx.java.core.http.HttpClientResponse.
  *  This method uses the data therein to construct an IncomingMessage object
  *  and pass that as an argument to the 'response' event of the ClientRequest.
  *  @param response The response from the server, or null to signal an error.
  *  @param body The body of the response, or an error message for an error.
  */
 ClientRequest.prototype._response = function (response, body) {
-    if (response === null) {
-        this.emit('response', null);
-        this._handleError(body);
-        return;
-    }
     var message = new IncomingMessage(response, body);
     this.emit('response', message);
 
-    var code = response.statusCode();
-    if (code >= 400) {
-        // An error occurred. Emit both an error event and a response event.
-        this._handleError('Received response code ' + code + ". " + response.statusMessage());
+    if (typeof response.statusCode === 'function') {
+        var code = response.statusCode();
+        if (code >= 400) {
+            // An error occurred. Emit both an error event and a response event.
+            this._handleError('Received response code ' + code + ". " + response.statusMessage());
+        }
+    } else {
+        this._handleError('Received incorrect response: ' + response);
     }
+};
+
+/** Internal method used to handle an error response. The argument is an
+ *  an instance of the Java class org.vertx.java.core.http.HttpClientResponse.
+ *  This method emits the response and then handles the error.
+ *  @param response The response from the server, or null to not emit a response.
+ *  @param body The body of the response, or an error message for an error.
+ */
+ClientRequest.prototype._errorResponse = function (response, body) {
+    if (response !== null) {
+        this.emit('response', response);
+    }
+    this._handleError(body);
 };
 
 // NOTE: The following events are produce by IncomingMessage in Node.js
@@ -405,9 +421,19 @@ ClientRequest.prototype._response = function (response, body) {
 // IncomingMessage = function(response, body) {
 function IncomingMessage(response, body) {
     this.body = body;
-    this.cookies = response.cookies();
-    this.statusCode = response.statusCode();
-    this.statusMessage = response.statusMessage();
+    if (typeof response.cookies === 'function') {
+        this.cookies = response.cookies();
+    }
+    if (typeof response.statusCode === 'function') {
+        this.statusCode = response.statusCode();
+    } else {
+        this.statusCode = 400;
+    }
+    if (typeof response.statusMessage === 'function') {
+        this.statusMessage = response.statusMessage();
+    } else {
+        this.statusMessage = body;
+    }
 }
 
 // Each time this file is reloaded, reset the helper for this actor.
