@@ -243,7 +243,7 @@ public class HttpClientHelper extends VertxHelperBase {
             // True argument indicates that this request is done.
             _issueOrDeferResponse(_requestNumber, true, new Runnable() {
                 public void run() {
-                    _requestObj.callMember("_response", null, throwable.getMessage());
+                    _requestObj.callMember("_errorResponse", null, throwable.getMessage());
                 }
             });
             if (_client != null) {
@@ -300,7 +300,7 @@ public class HttpClientHelper extends VertxHelperBase {
                 _issueOrDeferResponse(_requestNumber, true, new Runnable() {
                     public void run() {
                         // Null argument indicates error.
-                        _requestObj.callMember("_response", null,
+                        _requestObj.callMember("_errorResponse", response,
                                 "Request failed with code " + status + ": "
                                         + response.statusMessage());
                     }
@@ -320,7 +320,7 @@ public class HttpClientHelper extends VertxHelperBase {
                     _issueOrDeferResponse(_requestNumber, true, new Runnable() {
                         public void run() {
                             // FIXME: How to handle the redirect?
-                            _requestObj.callMember("_response", null,
+                            _requestObj.callMember("_errorResponse", response,
                                     "Redirect to "
                                             + newLocation
                                             + " not yet handled by HttpClientHelper. "
@@ -486,8 +486,8 @@ public class HttpClientHelper extends VertxHelperBase {
                             }
                         } catch (IOException e) {
                             _requestObj.callMember(
-                                    "_response",
-                                    null,
+                                    "_errorResponse",
+                                    response,
                                     e.toString());
                         }
                     }
@@ -667,8 +667,9 @@ public class HttpClientHelper extends VertxHelperBase {
             } else {
 
                 // Otherwise, send body as string
-                String body = (String) _options.get("body");
+                String body = _options.get("body").toString();
                 if (body != null) {
+                    request.putHeader("Content-Length", Integer.toString(body.length()));
                     request.write(body);
                 }
             }
