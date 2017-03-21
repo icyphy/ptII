@@ -142,29 +142,39 @@ public class HttpServerHelper extends VertxHelperBase {
                             _error("Request failed.", throwable);
                         });
                         // FIXME: Get request.headers(), a MultiMap.
-                    // FIXME: Get request.params(), a MultiMap.
+                        // FIXME: Get request.params(), a MultiMap.
 
                         final String method = request.method().toString();
                         final String path = request.path();
 
-                    // For POST, wait until full body arrives before issuing request.
-                    if (request.method() == HttpMethod.POST) {
-                        request.bodyHandler(new Handler<Buffer>() {
-                            @Override
-                            public void handle(Buffer buffer) {
-                                // FIXME
-                            }
-                        });
-                    } else {
-                        // Make this callback in the director thread instead of
-                        // the verticle thread so that all outputs associated with
-                        // a request are emitted simultaneously.
+                        // For POST, wait until full body arrives before issuing request.
+                        if (request.method() == HttpMethod.POST) {
+                            request.bodyHandler(new Handler<Buffer>() {
+                                @Override
+                                public void handle(Buffer buffer) {
+                                    // Make this callback in the director thread instead of
+                                    // the verticle thread so that all outputs associated with
+                                    // a request are emitted simultaneously.
+                                    _issueResponse(() -> {
+                                        // Set up a timeout handler.
+                                        // FIXME: timeout 10000 needs to be an option given in JS constructor.
+                                        TimeoutResponse timeoutResponse = new TimeoutResponse(request, 10000);
+                                        // FIXME: Only handling string bodies for now.
+                                        _currentObj.callMember(
+                                                "_request", timeoutResponse.getTimeoutID(), method, path, buffer.toString());
+                                    });
+                                }
+                            });
+                        } else {
+                            // Make this callback in the director thread instead of
+                            // the verticle thread so that all outputs associated with
+                            // a request are emitted simultaneously.
                             _issueResponse(() -> {
                                 // Set up a timeout handler.
-                            // FIXME: timeout 10000 needs to be an option given in JS constructor.
-                            TimeoutResponse timeoutResponse = new TimeoutResponse(request, 10000);
-                            _currentObj.callMember(
-                                    "_request", timeoutResponse.getTimeoutID(), method, path);
+                                // FIXME: timeout 10000 needs to be an option given in JS constructor.
+                                TimeoutResponse timeoutResponse = new TimeoutResponse(request, 10000);
+                                _currentObj.callMember(
+                                        "_request", timeoutResponse.getTimeoutID(), method, path);
                             });
                         }
                     }
