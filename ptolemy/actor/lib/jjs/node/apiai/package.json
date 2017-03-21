@@ -1,0 +1,97 @@
+{
+  "_args": [
+    [
+      "apiai",
+      "/Users/eal/Box Sync/Projects/GoogleHome"
+    ]
+  ],
+  "_from": "apiai@*",
+  "_id": "apiai@4.0.1",
+  "_inCache": true,
+  "_installable": true,
+  "_location": "/apiai",
+  "_nodeVersion": "6.9.2",
+  "_npmOperationalInternal": {
+    "host": "packages-12-west.internal.npmjs.com",
+    "tmp": "tmp/apiai-4.0.1.tgz_1488868384851_0.7057120003737509"
+  },
+  "_npmUser": {
+    "email": "kuragin@speaktoit.com",
+    "name": "sstepashka"
+  },
+  "_npmVersion": "3.10.9",
+  "_phantomChildren": {},
+  "_requested": {
+    "name": "apiai",
+    "raw": "apiai",
+    "rawSpec": "",
+    "scope": null,
+    "spec": "*",
+    "type": "range"
+  },
+  "_requiredBy": [
+    "#USER"
+  ],
+  "_resolved": "https://registry.npmjs.org/apiai/-/apiai-4.0.1.tgz",
+  "_shasum": "8940e811ae60802d7f6aa1424914dc4a21484f2d",
+  "_shrinkwrap": null,
+  "_spec": "apiai",
+  "_where": "/Users/eal/Box Sync/Projects/GoogleHome",
+  "author": {
+    "name": "Dmitriy Kuragin"
+  },
+  "bugs": {
+    "url": "https://github.com/api-ai/api-ai-node-js/issues"
+  },
+  "dependencies": {},
+  "description": "Node.js SDK for api.ai",
+  "devDependencies": {
+    "@types/node": "^7.0.5",
+    "nodemon": "^1.11.0",
+    "ts-node": "^2.1.0",
+    "typescript": "^2.1.6",
+    "typing": "^0.1.9",
+    "typings": "^2.0.0"
+  },
+  "directories": {
+    "example": "examples"
+  },
+  "dist": {
+    "shasum": "8940e811ae60802d7f6aa1424914dc4a21484f2d",
+    "tarball": "https://registry.npmjs.org/apiai/-/apiai-4.0.1.tgz"
+  },
+  "files": [
+    "index.d.ts",
+    "index.js",
+    "module/"
+  ],
+  "gitHead": "51286a546dd82bcd29ff43192c82c743d9083881",
+  "homepage": "https://github.com/api-ai/api-ai-node-js#readme",
+  "keywords": [
+    "NLU",
+    "apiai",
+    "language",
+    "natural",
+    "understanding"
+  ],
+  "license": "Apache 2.0",
+  "main": "index.js",
+  "maintainers": [
+    {
+      "name": "sstepashka",
+      "email": "kuragin@speaktoit.com"
+    }
+  ],
+  "name": "apiai",
+  "optionalDependencies": {},
+  "readme": "ERROR: No README data found!",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/api-ai/api-ai-node-js.git"
+  },
+  "scripts": {
+    "build:live": "NODE_ENV=development nodemon --exec ./node_modules/.bin/ts-node -- ./typescript_examples/text_request.ts"
+  },
+  "types": "index.d.ts",
+  "version": "4.0.1"
+}
