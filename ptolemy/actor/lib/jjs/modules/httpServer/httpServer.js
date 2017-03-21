@@ -141,12 +141,16 @@ exports.HttpServer.prototype.stop = function () {
  *   a default response will be issued.
  *  @param method The HTTP method of the request.
  *  @param path The path of the request.
+ *  @param body The body of the request, if any.
  */
-exports.HttpServer.prototype._request = function (requestID, method, path) {
+exports.HttpServer.prototype._request = function (requestID, method, path, body) {
     var request = {
         'requestID': requestID,
         'method': method,
         'path': path
     };
+    if (body !== null) {
+        request.body = body;
+    }
     this.emit('request', request);
 };
