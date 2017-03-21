@@ -314,8 +314,6 @@ function ClientRequest(options, responseCallback) {
         options.headers = headers;
     }
 
-    // console.log("Making an HTTP request: " + util.inspect(options));
-
     this.helper = HttpClientHelper.getOrCreateHelper(actor, this);
     this.options = options;
 }
@@ -324,7 +322,7 @@ exports.ClientRequest = ClientRequest;
 
 /** Issue the request. */
 ClientRequest.prototype.end = function () {
-    console.log("Making an HTTP request: " + util.inspect(this.options));
+    // console.log("Making an HTTP request: " + util.inspect(this.options));
     this.helper.request(this, this.options);
 };
 
