@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="SerialLoopbackInt" class="ptolemy.actor.TypedCompositeActor">
+<entity name="SerialLoopbackJSON" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{90.0, 80.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={48, 50, 1042, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={195, 135, 1042, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[808, 524]">
     </property>
@@ -33,7 +33,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use the loopback port of the Serial accessor with ints.&#10;&#10;Stop if we get invalid data.  &#10;Hopefully the invalid data occurs before the last received data.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use the loopback port of the Serial accessor with JSON.&#10;&#10;JSON like {&quot;foo&quot;: 1} is sent and received.&#10;&#10;Stop if we get invalid data.  &#10;Hopefully the invalid data occurs before the last received data.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 265.0]">
         </property>
@@ -77,15 +77,15 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="number">
+        <property name="receiveType" class="ptolemy.data.expr.Parameter" value="json">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="sendType" class="ptolemy.data.expr.Parameter" value="number">
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="json">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{395.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 155.0]">
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -124,9 +124,9 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{540.0, 145.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{625.0, 145.0}">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{1, 2, 3, 4}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{{foo = 1}, {foo = 2}, {foo = 3}, {foo = 4}}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -183,7 +183,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[175.0, 155.0]">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -217,7 +217,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[630.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[715.0, 235.0]">
         </property>
         <port name="stop" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -232,7 +232,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[500.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 235.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -241,15 +241,37 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="JavaScriptJSON" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Read the input and create a JSON object with a name &quot;foo&quot; and the value of the input.&#10;exports.setup = function() {&#10;  this.input('input');&#10;  this.output('output', {'type': 'JSON'});&#10;}&#10;&#10;var handle;&#10;&#10;exports.initialize  = function() {&#10;  var self = this;&#10;  handle = this.addInputHandler('input', function() {&#10;     var value = self.get('input');&#10;     self.send('output', {&quot;foo&quot;: value} );&#10;  });&#10;}&#10;&#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptTrueToken.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="16">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="80">
+                </property>
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 155.0]">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="SerialPort.toSend" relation="relation4"/>
     <link port="SerialPort.received" relation="relation3"/>
@@ -257,8 +279,10 @@
     <link port="TrainableTest.input" relation="relation3"/>
     <link port="TestSpontaneous.output" relation="relation"/>
     <link port="JavaScriptRamp.trigger" relation="relation"/>
-    <link port="JavaScriptRamp.output" relation="relation4"/>
+    <link port="JavaScriptRamp.output" relation="relation6"/>
     <link port="Stop.stop" relation="relation5"/>
     <link port="JavaScriptTrueToken.input" relation="relation2"/>
     <link port="JavaScriptTrueToken.output" relation="relation5"/>
+    <link port="JavaScriptJSON.input" relation="relation6"/>
+    <link port="JavaScriptJSON.output" relation="relation4"/>
 </entity>
