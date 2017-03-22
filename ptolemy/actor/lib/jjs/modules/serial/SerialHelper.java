@@ -499,6 +499,7 @@ public class SerialHelper extends HelperBase {
                         // Output each element separately.
                         int position = 0;
                         for (int i = 0; i < numberOfElements; i++) {
+                            System.out.println("SerialHelper.java: SerialReader: extracting " + _receiveType + " " + position);
                             _currentObj.callMember("emit", "data", _extractFromBuffer(buffer, _receiveType, position));
                             position += size;
                         }
@@ -536,6 +537,7 @@ public class SerialHelper extends HelperBase {
                     if (buffer != null) {
                         try {
                             _outputStream.write(buffer.getBytes());
+
                         } catch ( IOException e ) {
                             _error("Exception occurred writing to the serial port.", e);
                         }
