@@ -27,7 +27,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Serial accessor is expecting JSON, but we send it string data,&#10;which appears on the invalid port.&#10;&#10;Stop if we get valid JSON data.  &#10;Hopefully the valid JSON data occurs before the last invalid data&#10;and causes the TrainableTest to end early and signal an error&#10;in wrapup.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Serial accessor is expecting JSON, but we send it string data,&#10;which appears on the invalid port.&#10;&#10;Note that we get one fewer invalid token than the number of inputs.&#10;&#10;Stop if we get valid JSON data.  &#10;Hopefully the valid JSON data occurs before the last invalid data&#10;and causes the TrainableTest to end early and signal an error&#10;in wrapup.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 280.0]">
         </property>
@@ -120,7 +120,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 135.0]">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;ab&quot;, &quot;abb&quot;, &quot;abbb&quot;, &quot;abbbb&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;a&quot;, &quot;ab&quot;, &quot;abb&quot;, &quot;abbb&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -193,9 +193,9 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 200.0]">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;ab&quot;, &quot;abb&quot;, &quot;abbb&quot;, &quot;abbbb&quot;, &quot;abbbbb&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;a&quot;, &quot;ab&quot;, &quot;abb&quot;, &quot;abbb&quot;, &quot;abbbb&quot;}">
         </property>
-        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="true">
+        <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -236,7 +236,7 @@
         </port>
     </entity>
     <entity name="JavaScriptRampString" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Output a sequence with a given step in values.&#10; *&#10; *  @accessor test/TestRamp&#10; *  @param init The value produced on its first iteration.  The&#10; *  initial default is 0.&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @param step The amount by which the output is incremented. The&#10; *  default is 1.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;exports.setup = function() {&#10;    // FIXME: this only supports numbers, unlike the Cape Code Ramp&#10;    // actor, which supports many types.&#10;    this.parameter('init', {'type':'string', 'value':0});&#10;    this.input('trigger');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('step', {'type':'string', 'value':1});&#10;};&#10;&#10;var _lastValue = &quot;&quot;;&#10;&#10;exports.initialize = function() {&#10;    _lastValue = this.getParameter('init');&#10;}&#10;exports.fire = function() {&#10;    _lastValue += this.getParameter('step');&#10;    this.send('output', _lastValue);&#10;};">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Output a sequence with a given step in values.&#10; *&#10; *  @accessor test/TestRamp&#10; *  @param init The value produced on its first iteration.  The&#10; *  initial default is 0.&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @param step The amount by which the output is incremented. The&#10; *  default is 1.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;exports.setup = function() {&#10;    // FIXME: this only supports numbers, unlike the Cape Code Ramp&#10;    // actor, which supports many types.&#10;    this.parameter('init', {'type':'string', 'value':0});&#10;    this.input('trigger');&#10;    this.output('output', {'type':'string'});&#10;    this.parameter('step', {'type':'string', 'value':1});&#10;};&#10;&#10;var _lastValue = &quot;&quot;;&#10;&#10;exports.initialize = function() {&#10;    _lastValue = this.getParameter('init');&#10;}&#10;exports.fire = function() {&#10;    this.send('output', _lastValue);&#10;    _lastValue += this.getParameter('step');&#10;};">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>

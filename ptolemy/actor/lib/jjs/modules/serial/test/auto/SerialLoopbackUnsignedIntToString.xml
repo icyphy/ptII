@@ -27,7 +27,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use the loopback port of the Serial accessor with unsigned ints&#10;converted to strings.&#10;&#10;Stop if we get invalid data.  &#10;Hopefully the invalid data occurs before the last received data.&#10;&#10;Note that we only get 3 outputs because the last outputs are dropped.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use the loopback port of the Serial accessor with unsigned ints&#10;converted to strings.&#10;&#10;We start with 65, which is the ASCII value of 'A'.&#10;&#10;Note that we get one less output than inputs.&#10;&#10;Stop if we get invalid data.  &#10;Hopefully the invalid data occurs before the last received data.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 280.0]">
         </property>
@@ -165,7 +165,7 @@
         </port>
     </entity>
     <entity name="JavaScriptRamp" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Output a sequence with a given step in values.&#10; *&#10; *  @accessor test/TestRamp&#10; *  @param init The value produced on its first iteration.  The&#10; *  initial default is 0.&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @param step The amount by which the output is incremented. The&#10; *  default is 1.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;exports.setup = function() {&#10;    // FIXME: this only supports numbers, unlike the Cape Code Ramp&#10;    // actor, which supports many types.&#10;    this.parameter('init', {'type':'number', 'value':0});&#10;    this.input('trigger');&#10;    this.output('output', {'type':'number'});&#10;    this.parameter('step', {'type':'number', 'value':1});&#10;};&#10;&#10;var _lastValue = 0;&#10;&#10;exports.initialize = function() {&#10;    _lastValue = this.getParameter('init');&#10;}&#10;exports.fire = function() {&#10;    _lastValue += this.getParameter('step');&#10;    this.send('output', _lastValue);&#10;};">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Output a sequence with a given step in values.&#10; *&#10; *  @accessor test/TestRamp&#10; *  @param init The value produced on its first iteration.  The&#10; *  initial default is 0.&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @param step The amount by which the output is incremented. The&#10; *  default is 1.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;exports.setup = function() {&#10;    // FIXME: this only supports numbers, unlike the Cape Code Ramp&#10;    // actor, which supports many types.&#10;    this.parameter('init', {'type':'number', 'value':0});&#10;    this.input('trigger');&#10;    this.output('output', {'type':'number'});&#10;    this.parameter('step', {'type':'number', 'value':1});&#10;};&#10;&#10;var _lastValue = 0;&#10;&#10;exports.initialize = function() {&#10;    _lastValue = this.getParameter('init');&#10;}&#10;exports.fire = function() {&#10;    this.send('output', _lastValue);&#10;    _lastValue += this.getParameter('step');&#10;};">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -177,9 +177,9 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 125.0}">
         </property>
-        <property name="init" class="ptolemy.data.expr.Parameter" value="64">
+        <property name="init" class="ptolemy.data.expr.Parameter" value="65">
         </property>
         <property name="step" class="ptolemy.data.expr.Parameter" value="1">
         </property>
