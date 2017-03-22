@@ -38,8 +38,10 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.parsers.SAXParserFactory;
 import javax.xml.transform.sax.SAXSource;
@@ -524,8 +526,15 @@ public class JSAccessor extends JavaScript {
                         System.out.println("JSAccessor: urlSpec is " + urlSpec
                                            + ", but " + urlSpecLocalFile + " has length 0, so the former is being read");
                     } else {
-                        System.out.println("JSAccessor: urlSpec is " + urlSpec
-                                           + ", but " + urlSpecLocalFile + " exists, so the latter is being read.");
+                        // Print one message per local url spec.
+                        if (_urlSpecLocalFilesPrinted == null) {
+                            _urlSpecLocalFilesPrinted = new HashSet<File>();
+                        }
+                        if (!_urlSpecLocalFilesPrinted.contains(urlSpecLocalFile)) {
+                            _urlSpecLocalFilesPrinted.add(urlSpecLocalFile);
+                            System.out.println("JSAccessor: urlSpec is " + urlSpec
+                                               + ", but " + urlSpecLocalFile + " exists, so the latter is being read. (This message is printed once per local file.)");
+                        }
                         accessorOrPtDocURL = urlSpecLocalFile.toURI().toURL();
                     }
                 }
@@ -1203,6 +1212,11 @@ public class JSAccessor extends JavaScript {
      *  not been set.
      */
     private StringToken _previousScript = null;
+
+    /** Local url specifications that have been printed because
+     *  the are local.
+     */
+    private static Set<File> _urlSpecLocalFilesPrinted = null;
 
     ///////////////////////////////////////////////////////////////////
     ////                         inner classes                     ////
