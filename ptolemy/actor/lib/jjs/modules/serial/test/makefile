@@ -4,7 +4,7 @@
 #
 # @Version: : mkpttest 72874 2015-07-26 21:01:52Z cxh $
 #
-# @Copyright (c) 2015-2016 The Regents of the University of California.
+# @Copyright (c) 2015-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -35,7 +35,7 @@ ME =		ptolemy/actor/lib/jjs/modules/serial/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(RXTX_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(RXTX_JAR)$(CLASSPATHSEPARATOR)$(PTVERTX_JARS)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
