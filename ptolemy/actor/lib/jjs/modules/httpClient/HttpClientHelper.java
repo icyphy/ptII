@@ -665,12 +665,14 @@ public class HttpClientHelper extends VertxHelperBase {
                     _error(_requestObj, message);
                 }
             } else {
-
                 // Otherwise, send body as string
-                String body = _options.get("body").toString();
-                if (body != null) {
-                    request.putHeader("Content-Length", Integer.toString(body.length()));
-                    request.write(body);
+                Object bodyObject = _options.get("body");
+                if (bodyObject != null) {
+                    String body =  bodyObject.toString();
+                    if (body != null) {
+                        request.putHeader("Content-Length", Integer.toString(body.length()));
+                        request.write(body);
+                    }
                 }
             }
             // Allow overlapped requests. Sequence numbers take care of ensuring outputs
