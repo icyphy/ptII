@@ -1,0 +1,11 @@
+{
+  "name": "objectDetection",
+  "version": "0.1.0",
+  "main": "faceDetector.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Ilge Akkaya"
+    , "email" : "ilgea@eecs.berkeley.edu"}
+  ],
+  "description": "A module for detecting faces in an image."
+}

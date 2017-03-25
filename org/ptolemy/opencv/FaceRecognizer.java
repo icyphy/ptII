@@ -130,26 +130,43 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-
-    /** Filter the source image, and if a face is detected, place a
-     *  blue square at at the center of the face. If the destination
-     *  argument is null, then the blue square is added directly to
-     *  the source, and the source is returned. Otherwise, the blue
-     *  square is added to the destination image.
-     *
-     *  @param source The source image, on which motion is detected.
-     *  @param destination The destination image, on which the blue
-     *   square is added, or null to specify to add the circle to the
-     *   source image.
-     *  @return the filtered image.
+    
+    /** Construct an instance of FaceRecognizer and load the face 
+     *  recognition classifier.
      */
-    @Override
-    public BufferedImage filter(BufferedImage source, BufferedImage destination) {
-
+    public FaceRecognizer() throws IOException {
+        super();
+        
         /** Load Native C Library for OpenCV */
         //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         // Use a better loader that looks for the shared library for the Mac.
         OpenCVLoader.loadOpenCV(Core.NATIVE_LIBRARY_NAME);
+        
+        _cascade = new CascadeClassifier();
+        String trainingFile = "$CLASSPATH/org/ptolemy/opencv/haarcascade_frontalface_default.xml";
+        URL url = FileUtilities.nameToURL(trainingFile, null, null);
+        if (url == null) {
+            throw new IOException("Could not load " + trainingFile);
+        }
+
+        boolean loaded = _cascade.load(url.getPath());
+        if (!loaded) {
+            // Try without leading / on Windows.
+            loaded = _cascade.load(url.getPath().substring(1, url.getPath().length()));
+            if (!loaded) {
+                throw new IOException("Could not load " + url.getPath());
+            }
+        }
+    }
+
+    /** Scan the source image and place blue squares around any faces detected. 
+
+     *  @param source The source image to scan for faces.
+     *  @param destination Not used here.  Required by superclass.
+     *  @return The image with blue squares around any faces.
+     */
+    @Override
+    public BufferedImage filter(BufferedImage source, BufferedImage destination) {
 
         // Get OpenCV image.
         Mat inputImage = bufferedImage2Mat(source);
@@ -171,7 +188,7 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
                     new Point(rect.x+rect.width,rect.y+rect.height),new Scalar(0,0,255));
         }
 
-        setFaceCount(faceRectangles.length);
+        _facesDetected = faceRectangles.length;
 
         return mat2BufferedImage(inputImage);
 
@@ -245,38 +262,19 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
     public Rect[] detectFaces(Mat img) throws IOException {
         Mat gray = new Mat();
         Imgproc.cvtColor(img, gray, Imgproc.COLOR_RGB2GRAY);
-
-        CascadeClassifier cas = new CascadeClassifier();
-        String trainingFile = "$CLASSPATH/org/ptolemy/opencv/haarcascade_frontalface_default.xml";
-        //URL url = getClass().getResource(trainingFile);
-        URL url = FileUtilities.nameToURL(trainingFile, null, null);
-        if (url == null) {
-            throw new IOException("Could not load " + trainingFile);
-        }
-
-        cas.load(url.getPath());
+        
         MatOfRect faces = new MatOfRect();
-        cas.detectMultiScale(img, faces, 1.05, 5, 0, new Size(_minFaceSize,_minFaceSize),
+        _cascade.detectMultiScale(img, faces, 1.05, 5, 0, new Size(_minFaceSize,_minFaceSize),
                 new Size(_maxFaceSize,_maxFaceSize));
         Rect[] fbox = faces.toArray();
         return fbox;
     }
 
-    /** Return center of gravity of motion detected by the most recent
-     *  invocation of filter(), or null if no motion was detected.
-     *  @return The center of gravity of motion (in pixels).
-     *  @see #setFaceCount(int)
+    /** Return the number of faces detected.
+     *  @return The number of faces detected.
      */
     public int getFaceCount() {
         return _facesDetected;
-    }
-
-    /** Set the count of faces detected.
-     *  @param count the count of faces detected.
-     *  @see #getFaceCount()
-     */
-    public void setFaceCount(int count) {
-        _facesDetected = count;
     }
 
     /** Set the minimum face size.
@@ -314,13 +312,16 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
+    
+    /** The face recognition classifier.  */
+    private CascadeClassifier _cascade;
+    
+    /** Indicator that motion has been detected by the filter operation. */
+    private int _facesDetected = 0;
 
     /** Minimum face size to be considered in face recognition. */
     private int _minFaceSize = 30;
 
     /** Maximum face size to be considered in face recognition. */
     private int _maxFaceSize = 400;
-
-    /** Indicator that motion has been detected by the filter operation. */
-    private int _facesDetected = 0;
 }
