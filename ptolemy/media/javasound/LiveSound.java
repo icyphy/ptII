@@ -625,7 +625,7 @@ public class LiveSound {
      *   while audio capture is already active.
      */
     public static void startCapture(Object consumer) throws IOException,
-    IllegalStateException {
+            IllegalStateException {
 
         _implementation.startCapture(consumer);
 
@@ -652,7 +652,7 @@ public class LiveSound {
      *   while audio playback is already active.
      */
     public static void startPlayback(Object producer) throws IOException,
-    IllegalStateException {
+            IllegalStateException {
 
         _implementation.startPlayback(producer);
 
@@ -675,7 +675,7 @@ public class LiveSound {
      *   captured audio resources when this method was invoked.
      */
     public static void stopCapture(Object consumer) throws IOException,
-    IllegalStateException {
+            IllegalStateException {
         _implementation.stopCapture(consumer);
     }
 
@@ -697,7 +697,7 @@ public class LiveSound {
      *
      */
     public static void stopPlayback(Object producer) throws IOException,
-    IllegalStateException {
+            IllegalStateException {
         _implementation.stopPlayback(producer);
     }
 

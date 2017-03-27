@@ -215,7 +215,7 @@ LiveSoundInterface {
      */
     @Override
     public double[][] getSamples(Object consumer) throws IOException,
-    IllegalStateException {
+            IllegalStateException {
         if (!isCaptureActive()) {
             throw new IllegalStateException("Object: " + consumer.toString()
                     + " attempted to call LiveSound.getSamples(), but "
