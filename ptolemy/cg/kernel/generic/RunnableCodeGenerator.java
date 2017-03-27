@@ -180,12 +180,20 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
      */
     @Override
     protected int _executeCommands() throws IllegalActionException {
+        if (_substituteMap == null) {
+            _substituteMap = CodeGeneratorUtilities.newMap(this);
+        }
+
+        _updateSubstituteMap();
+
         List<String> commands = new LinkedList<String>();
 
         String command = "";
         // The run command.
         if (_isTopLevel()) {
             if (((BooleanToken) run.getToken()).booleanValue()) {
+                List<String> setupCommands = _setupCommands();
+                commands.addAll(setupCommands);
                 command = _runCommand();
                 commands.add(command);
             }
@@ -218,24 +226,49 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
     }
 
     /** Return the command to run the generated code.
+     *  Derived classes typically extend {@link #_updateSubstituteMap}.   
      *  @return The command to run the generated code.
      *  @exception IllegalActionException If the there is a problem
-     *  substituting the @..@ tags.
+     *  substituting the @...@ tags.
      */
     protected String _runCommand() throws IllegalActionException {
-        Map<String, String> substituteMap = CodeGeneratorUtilities.newMap(this);
-        substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
-        substituteMap.put("@modelName@", _sanitizedModelName);
-        substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
-
-        if (_model instanceof CompositeActor) {
-            substituteMap.put("@stopTime@", ((CompositeActor) _model).getDirector().stopTime.getExpression());
+        if (_substituteMap == null) {
+            _substituteMap = CodeGeneratorUtilities.newMap(this);
         }
-
         String command = CodeGeneratorUtilities
             .substitute(((StringToken) runCommand.getToken())
-                        .stringValue(), substituteMap);
+                        .stringValue(), _substituteMap);
         return command;
+    }
+
+    /** Return a list of setup commands to be invoked before
+     *  the run command.
+     *  @param return The list of commands.
+     *  @exception IllegalActionException Not thrown in this base class.
+     */
+    protected List<String> _setupCommands() throws IllegalActionException {
+        if (_substituteMap == null) {
+            _substituteMap = CodeGeneratorUtilities.newMap(this);
+        }
+        return new LinkedList<String>();
+    }
+
+    /** Update the substitute map for the setup and run commands
+     *  In this base class, @codeDirectory@, @modelName@
+     *  and @PTII@ are added to the map.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  Derived classes should throw it if there is a problem parsing
+     *  a value.
+     */
+    protected void _updateSubstituteMap()
+        throws IllegalActionException {
+        _substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
+        _substituteMap.put("@modelName@", _sanitizedModelName);
+        _substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
+
+        if (_model instanceof CompositeActor) {
+            _substituteMap.put("@stopTime@", ((CompositeActor) _model).getDirector().stopTime.getExpression());
+        }
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -247,4 +280,9 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
      *  parameter with a new value.
      */
     protected final static String _runCommandDefault = "make -f @modelName@.mk run";
+
+    /** The @...@ strings to be substituted in _setupCommands() and
+     * _runCommands().
+     */
+    protected Map<String, String> _substituteMap = null;
 }

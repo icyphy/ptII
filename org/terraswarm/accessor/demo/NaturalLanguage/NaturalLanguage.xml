@@ -121,6 +121,8 @@
         </property>
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
+        <property name="modules" class="ptolemy.data.expr.StringParameter" value="apiai">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 490.0]">
         </property>
     </property>
@@ -129,9 +131,9 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this in the Node.js&#10;host, install the NPM&#10;package apiai:&#10;  npm install -g apiai&#10;and then run the code&#10;generator below.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this in the Node.js&#10;host, run the code&#10;generator below.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 360.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 405.0]">
         </property>
     </property>
     <entity name="PrettyPrint" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -221,13 +223,9 @@
         </property>
         <port name="query" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="TestDisplay" class="org.terraswarm.accessor.JSAccessor">
