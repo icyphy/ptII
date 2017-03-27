@@ -1,0 +1,295 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="NaturalLanguage" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 30.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 23, 1079, 678}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[845, 568]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{427.5, 278.181640625}">
+    </property>
+    <property name="clientAccessToken" class="ptolemy.data.expr.StringParameter" value="729b2622464c43c2a4f2b0fc82c8cc46">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:red" y="20">-S-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 350.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo uses the above client access token for an API.AI agent created by&#10;Edward Lee using the tutorial at:&#10;&#10;  https://developers.google.com/actions/develop/apiai/tutorials/getting-started&#10;&#10;Replace this with a client access token for your own agent&#10;and change the queries in the Sequence actor to test it.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 370.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://developers.google.com/actions/develop/apiai/tutorials/getting-started#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 335}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo shows the use of a Google cloud service for natural language processing&#10;called API.AI (see https://api.ai/ or click here). This service supports the design of&#10;'agents' that respond to textual queries in programmed ways using a natural-language&#10;engine that tolerates a wide variety of forms of text.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 15.0}">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://api.ai/#in_browser">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{125, 335}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo invokes an agent called SillyNameMaker that asks for your favorite&#10;number and color and then constructs a silly name by combining the two.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 100.0}">
+        </property>
+    </property>
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
+        <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
+            <display name="Include decorations"/>
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Edward A. Lee">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 505.0]">
+        </property>
+    </property>
+    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Output goes to the console.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[580.0, 245.0]">
+        </property>
+    </property>
+    <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[650.0, 490.0]">
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To run this in the Node.js&#10;host, install the NPM&#10;package apiai:&#10;  npm install -g apiai&#10;and then run the code&#10;generator below.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 360.0]">
+        </property>
+    </property>
+    <entity name="PrettyPrint" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('query');&#10;	this.input('response');&#10;	this.output('message');&#10;}&#10;exports.initialize = function() {&#10;	this.addInputHandler('query', function() {&#10;		var query = this.get('query');&#10;		this.send('message', 'Query: ' + query);&#10;	});&#10;	this.addInputHandler('response', function() {&#10;		var response = this.get('response');&#10;		this.send('message', 'Response: ' + response);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{450.0, 305.0}">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="query" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="message" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="NaturalLanguage" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Respond to textual inputs using the natural-language server from&#10; *  Google called API.AI (see http://api.ai). To use this, you need to&#10; *  create an agent at API.AI, using for example the tutorial here:&#10; *&#10; *    https://developers.google.com/actions/develop/apiai/tutorials/getting-started&#10; *&#10; *  An agent parses input text (natural language) and matches queries against&#10; *  rules defined in the agent to issue responses. For example, the above&#10; *  tutorial walks you through creating an agent that asks for your favorite&#10; *  number and color and then constructs a silly name by concatenating the two.&#10; *&#10; *  Once you have created an agent, you should set the '''clientAccessToken'''&#10; *  parameter to the hex key that identifies the agent. Without this token&#10; *  this accessor will not do anything.&#10; *&#10; *  This accessor is just a starting point. It should be extended&#10; *  to support multiple languages, for example. Also, it would be nice&#10; *  if there were a public agent that we could provide a default client&#10; *  access token for so that the accessor would work out of the box, without&#10; *  having to go create your own agent.&#10; *&#10; *  This accessor uses the apiai modeul, which is supported by at least&#10; *  the Nashorn (and CapeCode) hosts and the Node.js host.&#10; *  To use this under the Node.js host, install the apiai NPM module&#10; *  as follows:&#10; *  &lt;pre&gt;&#10; *    npm apiai&#10; *  &lt;/pre&gt;&#10; *  For the Nashorn host, CapeCode includes a port of the apiai module&#10; *  that works under Nashorn.&#10; *&#10; *  @accessor services/NaturalLanguage&#10; *  @input {string} textQuery A query that the service is to respond to.&#10; *  @output {object} response The full response from the service.&#10; *  @output {string} fulfillment The fulfillment text within the response.&#10; *  @parameter {string} clientAccessToken The client access token for the service.&#10; *&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals exports, require */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10;&#10;exports.setup = function() {&#10;	this.input('textQuery', {type: 'string'});&#10;	this.output('response');&#10;	this.output('fulfillment', {&#10;	        type: 'string',&#10;	        spontaneous: true&#10;	});&#10;	this.parameter('clientAccessToken', {&#10;	        type: 'string',&#10;	        value: '&lt;-- your client access token here --&gt;'&#10;	});&#10;}&#10;&#10;var apiai = require('apiai');&#10;var util = require('util');&#10;&#10;exports.initialize = function() {&#10; 	var self = this;&#10; 	var token = this.get('clientAccessToken');&#10; 	if (token === '&lt;-- your client access token here --&gt;') {&#10; 	    error('You need to set clientAccessToken to a hex string that identifies\n'&#10; 	        + 'an agent at https://api.ai. For a tutorial on creating an agent, see\n'&#10; 	        + 'https://developers.google.com/actions/develop/apiai/tutorials/getting-started');&#10; 	    return;&#10; 	}&#10;    var app = apiai(this.get('clientAccessToken'));&#10;    &#10; 	self.addInputHandler('textQuery', function() {&#10; 	    // The session ID, I guess, disambiguates multiple users of the same&#10; 	    // agent. Here, I'm just using a fixed session ID, which is risky.&#10;		var request = app.textRequest(self.get('textQuery'), {&#10;    		sessionId: 'textQuery'&#10;		});&#10;		request.on('response', function(response) {&#10;    		self.send('response', response);&#10;    		self.send('fulfillment', extractFulfillment(response));&#10;		});&#10;		request.on('error', function(message) {&#10;    		error(message);&#10;		});&#10;		request.end();	&#10; 	});&#10;}&#10;/** Given a response structure, find the fulfillment speech within it&#10; *  and return that. If there is no fulfillment speech in the response,&#10; *  then just return the entire response formatted using util.inspect().&#10; */&#10;function extractFulfillment(response) {&#10;	if (response.result&#10;			&amp;&amp; response.result.fulfillment&#10;			&amp;&amp; response.result.fulfillment.speech) {&#10;		return response.result.fulfillment.speech;&#10;	}&#10;	return util.inspect(response);&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/services/NaturalLanguage.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="clientAccessToken" class="ptolemy.data.expr.Parameter" value="$clientAccessToken">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{455.0, 205.0}">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="textQuery" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="fulfillment" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="GenerateQueries" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Generate a sequence of queries for the SillyNameMaker agent.&#10;exports.setup = function() {&#10;	this.input('response', {type: 'string'});&#10;	this.output('query', {type: 'string'});&#10;}&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('response', function() {&#10;		var response = self.get('response');&#10;		if (response.indexOf('number') &gt;= 0) {&#10;			// Introduce a small delay.&#10;			setTimeout(function() {&#10;				self.send('query', '42');&#10;			}, 1000);&#10;		} else if (response.indexOf('color') &gt;= 0) {&#10;			// Introduce a small delay.&#10;			setTimeout(function() {&#10;				self.send('query', 'blue');&#10;			}, 1000);&#10;		} else {&#10;			// Keep the conversation going, but with a delay.&#10;			setTimeout(function() {&#10;				self.send('query', 'Hello');&#10;			}, 5000);&#10;		}&#10;	});&#10;	// Get things started.&#10;	this.send('query', 'Hello');&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{230.0, 205.0}">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="query" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+    </entity>
+    <entity name="TestDisplay" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display data on the console.&#10;//&#10;// Copyright (c) 2016-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data on the console.&#10; *&#10; *  @accessor test/TestDisplay&#10; *  @param input The output&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output');&#10;};&#10;&#10;exports.initialize = function () {&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = this.get('input');&#10;        console.log(inputValue);&#10;        this.send('output', inputValue);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data on the console.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[620.0, 305.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{360.0, 205.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation.vertex1&quot;,x=360.0,y=205.0}, tail={id=&quot;NaturalLanguage.textQuery&quot;,x=455.0,y=205.0}, points={} },{ head={id=&quot;.Sequence.output&quot;,x=225.0,y=205.0}, tail={id=&quot;relation.vertex1&quot;,x=310.0,y=205.0}, points={} },{ head={id=&quot;PrettyPrint.query&quot;,x=450.0,y=305.0}, tail={id=&quot;relation.vertex1&quot;,x=360.0,y=205.0}, points={360.0,295.0} },{ head={id=&quot;relation.vertex1&quot;,x=360.0,y=205.0}, tail={id=&quot;GenerateQueries.query&quot;,x=230.0,y=205.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{145.0, 315.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation2.vertex1&quot;,x=145.0,y=315.0}, tail={id=&quot;GenerateQueries.response&quot;,x=230.0,y=205.0}, points={145.0,205.0} },{ head={id=&quot;PrettyPrint.response&quot;,x=450.0,y=305.0}, tail={id=&quot;relation2.vertex1&quot;,x=145.0,y=315.0}, points={} },{ head={id=&quot;NaturalLanguage.fulfillment&quot;,x=455.0,y=205.0}, tail={id=&quot;relation2.vertex1&quot;,x=145.0,y=315.0}, points={550.0,215.0,550.0,160.0,145.0,160.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="PrettyPrint.query" relation="relation"/>
+    <link port="PrettyPrint.response" relation="relation2"/>
+    <link port="PrettyPrint.message" relation="relation3"/>
+    <link port="NaturalLanguage.textQuery" relation="relation"/>
+    <link port="NaturalLanguage.fulfillment" relation="relation2"/>
+    <link port="GenerateQueries.query" relation="relation"/>
+    <link port="GenerateQueries.response" relation="relation2"/>
+    <link port="TestDisplay.input" relation="relation3"/>
+</entity>
