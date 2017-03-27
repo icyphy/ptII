@@ -30,6 +30,8 @@ package ptolemy.cg.kernel.generic.accessor;
 
 import java.io.IOException;
 import java.net.URI;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import ptolemy.actor.CompositeActor;
@@ -91,7 +93,7 @@ import ptolemy.util.StringUtilities;
  *      <a href="https://accessors.org/wiki/Main/NPMUpload">NPM Upload</a>
  *      in the accessors Wiki.        
  *      In addition, any modules listed in the comma-separated
- *      <<i>modules</i> parameter are also installed.  </li>
+ *      <i>modules</i> parameter are also installed.  </li>
  *
  *    <li>Creates a small node script called <code>invoke.js</code> to
  *    run the composite accessor.</li>
@@ -124,7 +126,7 @@ import ptolemy.util.StringUtilities;
  *  to the user account on the remote machine.
  *  </p>
  *
-
+ *
  *  <p>To use a SwarmBox, add your <code>~/.ssh/id_rsa.pub</code> file
  *  to <code>swarmboxadmin/ansible/keys/sbuser_authorized_keys</code>.
  *  See <a href="https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess#in_browser">https://www.terraswarm.org/testbeds/wiki/Main/SbuserSSHAccess</a>.</p>
@@ -154,13 +156,6 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
             throws IllegalActionException, NameDuplicationException {
         super(container, name);
 
-        npmInstall = new Parameter(this, "npmInstall");
-        npmInstall.setTypeEquals(BaseType.BOOLEAN);
-        npmInstall.setExpression("true");
-
-        modules = new StringParameter(this, "modules");
-        modules.setExpression("");
-
         runForever = new Parameter(this, "runForever");
         runForever.setTypeEquals(BaseType.BOOLEAN);
         runForever.setExpression("false");
@@ -179,32 +174,6 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
-
-    /** A comma separated list of modules to be installed
-     *  on the remote machine.
-     *  For to install the Global Data Plane module,
-     *  use <code>@terraswarm/gdp</code>.
-     *  Note that the <code>@terraswarm/accessors</code>
-     *  module is always installed and need not be
-     *  specified here.  The initial default value
-     *  is the empty string, which signifies that
-     *  only the <code>@terraswarm/accessors</code> module
-     *  will be installed.
-     */
-    public StringParameter modules;
-
-    /** If true, then use npm install to install the modules.
-     *  The reason to set this to false is if the remote host is
-     *  not connected to the internet or if the remote host already
-     *  has the modules installed in <code>~/cg/node_modules.</code>
-     *  Setting this to false means that the composite accessor
-     *  will be deployed more quickly because npm install will not
-     *  be run.
-     *  The default value is false, indicating that
-     *  <code>npm install <i>modules</i></code>
-     *  should not be run.
-     */
-    public Parameter npmInstall;
 
     /** If true, then use npm forever to run the Node composite
      *  accessor forever.  If false, then run until <i>stopTime</i>
@@ -235,55 +204,43 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
      */
     public StringParameter userHost;
 
-    /** Return the command to run the generated code.
-     *  @return The command to run the generated code.
-     *  @exception IllegalActionException If the there is a problem
-     *  substituting the @..@ tags.
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected methods                 ////
+
+    /** Return a list of setup commands to be invoked before the run
+     *  command. 
+     *
+     *  In this class, any commands that start with "npm install" are
+     *  removed.
+     *  @param return The list of commands.
+     *  @exception IllegalActionException If thrown in a base class.
      */
-    protected String _runCommand() throws IllegalActionException {
-        Map<String, String> substituteMap = CodeGeneratorUtilities.newMap(this);
-        substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
-        substituteMap.put("@modelName@", _sanitizedModelName);
-        substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
-
-        // If the value of the npmInstall parameter is true, then pass
-        // "npmInstall" as an argument to accessorInvokeSSH.
-        if (((BooleanToken) npmInstall.getToken()).booleanValue()) {
-            substituteMap.put("@npmInstall@", "npmInstall");
-        } else {
-            substituteMap.put("@npmInstall@", "");
-        }
-
-        // If the value of the runForever parameter is true, then pass
-        // "runForever" as an argument to accessorInvokeSSH.
-        if (((BooleanToken) runForever.getToken()).booleanValue()) {
-            substituteMap.put("@runForever@", "runForever");
-        } else {
-            substituteMap.put("@runForever@", "");
-        }
-
-        // If the value of the stopForeverAccessors parameter is true, then pass
-        // "stopForeverAccessors" as an argument to accessorInvokeSSH.
-        if (((BooleanToken) stopForeverAccessors.getToken()).booleanValue()) {
-            substituteMap.put("@stopForeverAccessors@", "stopForeverAccessors");
-        } else {
-            substituteMap.put("@stopForeverAccessors@", "");
-        }
-
-        // If stopTime is set in the director, then multiply it by
-        // 1000 and use it as the timeout of the accessor.
-        if (_model instanceof CompositeActor) {
-            String stopTime = ((CompositeActor) _model).getDirector().stopTime.getExpression();
-            String timeoutFlagAndValue = "";
-            if (stopTime.length() > 0) {
-                try {
-                    timeoutFlagAndValue = "-timeout " + Double.toString(Double.parseDouble(stopTime) * 1000.0);
-                } catch (NumberFormatException ex) {
-                    throw new IllegalActionException(_model, ex, "Could not parse " + stopTime);
-                }
+    protected List<String> _setupCommands() throws IllegalActionException {
+        List<String> commands = super._setupCommands();
+        Iterator<String> iterator = commands.iterator();
+        while (iterator.hasNext()) {
+            // Remove any npm install commands because the
+            // commands are installed on the remote machine using the
+            // accessorInvokeSSH script.
+            if (iterator.next().startsWith("npm install")) {
+                iterator.remove();
             }
-            substituteMap.put("@timeoutFlagAndValue@", timeoutFlagAndValue);
         }
+        return commands;
+    }
+
+    /** Update the substitute map for the setup and run commands.
+     *  The base classes adds @codeDirectory@, @modelName@,
+     *  @PTII@, @modules@ and @npmInstall@ and @timeoutFlagAndValue@.
+     *  This method adds
+     *  @modulesFlagAndValue,@runForever@, and @stopForeverAccessor@.
+     *
+     *  @exception IllegalActionException If the @modules@ parameter
+     *  contains spaces or if thrown by a base class.
+     */
+    protected void _updateSubstituteMap()
+        throws IllegalActionException {
+        super._updateSubstituteMap();
 
         // The value of the modules parameter names one or more
         // modules to be installed with npm.
@@ -296,13 +253,31 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
             }
             modulesFlagAndValue = "-modules " + modulesValue;
         }
-        substituteMap.put("@modulesFlagAndValue@", modulesFlagAndValue);
+        _substituteMap.put("@modulesFlagAndValue@", modulesFlagAndValue);
 
-        String command = CodeGeneratorUtilities
-            .substitute(((StringToken) runCommand.getToken())
-                        .stringValue(), substituteMap);
-        return command;
+        // If the value of the npmInstall parameter is true, then 
+        // install the modules listed in the modules parameter
+        if (((BooleanToken) npmInstall.getToken()).booleanValue()) {
+            _substituteMap.put("@npmInstall@", "npmInstall");
+        } else {
+            _substituteMap.put("@npmInstall@", "");
+        }
+
+        // If the value of the runForever parameter is true, then pass
+        // "runForever" as an argument to accessorInvokeSSH.
+        if (((BooleanToken) runForever.getToken()).booleanValue()) {
+            _substituteMap.put("@runForever@", "runForever");
+        } else {
+            _substituteMap.put("@runForever@", "");
+        }
+
+        // If the value of the stopForeverAccessors parameter is true, then pass
+        // "stopForeverAccessors" as an argument to accessorInvokeSSH.
+        if (((BooleanToken) stopForeverAccessors.getToken()).booleanValue()) {
+            _substituteMap.put("@stopForeverAccessors@", "stopForeverAccessors");
+        } else {
+            _substituteMap.put("@stopForeverAccessors@", "");
+        }
     }
-
 }
 
