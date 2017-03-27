@@ -1,4 +1,4 @@
-# Modification of Node.js SDK for Api.ai
+# Modification of Node.js SDK for Api.ai to run in Nashorn.
 
 This plugin allows integrating agents from the [Api.ai](http://api.ai) natural language processing service with your JavaScript application.
 
