@@ -47,7 +47,7 @@ var EventEmitter = require('events').EventEmitter;
 
 /** Get an array of serial port names and invoke the
  *  specified callback with an argument that is that array.
- *  @return An array of port names.
+ *  @param callback The function to invoke with the port names
  */
 exports.hostSerialPorts = function (callback) {
     var enumeration = CommPortIdentifier.getPortIdentifiers();

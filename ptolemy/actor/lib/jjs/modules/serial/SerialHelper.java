@@ -50,6 +50,7 @@ import java.util.concurrent.TimeUnit;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 
 ///////////////////////////////////////////////////////////////////
 //// SerialHelper
@@ -57,11 +58,11 @@ import ptolemy.kernel.util.IllegalActionException;
 /**
  Helper for the serial module.
 
- @author Edward A. Lee
+ @author Edward A. Lee. Contributor: Christopher Brooks
  @version $Id$
  @since Ptolemy II 11.0
- @Pt.ProposedRating red (winthrop)
- @Pt.AcceptedRating red (winthrop)
+ @Pt.ProposedRating red (cxh)
+ @Pt.AcceptedRating red (cxh)
  */
 public class SerialHelper extends HelperBase {
 
@@ -114,6 +115,15 @@ public class SerialHelper extends HelperBase {
             _sendType = DATA_TYPE.STRING;
             _receiveType = DATA_TYPE.STRING;
         }
+
+        if (_receiveType == null) {
+            throw new NullPointerException("_receiveType was null?  Perhaps it was set to an unsupported type?");
+        }
+
+        if (_sendType == null) {
+            throw new NullPointerException("_sendType was null?  Perhaps it was set to an unsupported type?");
+        }
+
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -353,12 +363,23 @@ public class SerialHelper extends HelperBase {
         // Avoid FindBugs LI: Unsynchronized Lazy Initialization (FB.LI_LAZY_INIT_UPDATE_STATIC)
         synchronized (_typesMutex) {
             if (_types == null) {
-                // Don't support image type.
-                int length = DATA_TYPE.values().length - 1;
+                // Don't support image, long or unsigned int types.
+                int length = DATA_TYPE.values().length - 3;
                 _types = new String[length];
                 int i = 0;
                 for (DATA_TYPE type : DATA_TYPE.values()) {
-                    if (type != DATA_TYPE.IMAGE) {
+                    if (type != DATA_TYPE.IMAGE
+                        // Exclude DATA_TYPE.LONG because JavaScript
+                        // does not have a representation for longs.
+                        && type != DATA_TYPE.LONG
+                        // Unsigned ints cannot be represented as a
+                        // JavaScript number.  Interestingly, signed
+                        // ints can be, because they are losslessly
+                        // convertible to double.  But neither longs
+                        // nor unsigned ints are losslessly
+                        // convertible to double.
+                        && type != DATA_TYPE.UNSIGNEDINT
+                        ) {
                         _types[i++] = type.toString().toLowerCase();
                     }
                 }
@@ -433,7 +454,7 @@ public class SerialHelper extends HelperBase {
     /** The name of the owner. */
     private String _ownerName;
     
-    /** The receive type for this instance of XBee. */
+    /** The receive type for this instance of SerialHelper. */
     private DATA_TYPE _receiveType;
 
     /** The timeout for opening. */
@@ -445,7 +466,7 @@ public class SerialHelper extends HelperBase {
     /** A mutex used when creating _types. */
     private static Object _typesMutex = new Object();
 
-    /** The send type for this instance of XBee. */
+    /** The send type for this instance of SerialHelper. */
     private DATA_TYPE _sendType;
 
     /** The serial port. */
@@ -491,6 +512,9 @@ public class SerialHelper extends HelperBase {
                     } else {
                         // Assume a numeric type.
                         buffer.appendBytes(message, 0, length);
+                        if (_receiveType == null) {
+                            throw new NullPointerException("_receiveType was null?  Perhaps it was set to an unsupported type?");
+                        }
                         int size = _sizeOfType(_receiveType);
                         int numberOfElements = 0;
                         if (size > 0) {
@@ -499,7 +523,12 @@ public class SerialHelper extends HelperBase {
                         // Output each element separately.
                         int position = 0;
                         for (int i = 0; i < numberOfElements; i++) {
-                            System.out.println("SerialHelper.java: SerialReader: extracting " + _receiveType + " " + position);
+                            // System.out.println("SerialHelper.java: SerialReader: extracting " + _receiveType + " " + position);
+                            if (_receiveType == DATA_TYPE.IMAGE
+                                || _receiveType == DATA_TYPE.LONG
+                                || _receiveType == DATA_TYPE.UNSIGNEDINT) {
+                                throw new InternalErrorException(_actor, null, "Receive type " + _receiveType + " is not supported.");
+                            }
                             _currentObj.callMember("emit", "data", _extractFromBuffer(buffer, _receiveType, position));
                             position += size;
                         }
