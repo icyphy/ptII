@@ -2409,7 +2409,15 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
                     // choices = Arrays.asList(possibilities);
                     choices = new LinkedList<Object>();
                     for (int i = 0; i < ((Object[])possibilities).length; i++) {
-                        ((LinkedList<Object>)choices).add(((Object[])possibilities)[i].toString());
+                        if (((Object [])possibilities)[i] == null) {
+                            // When SerialHelper was handling longs,
+                            // we would get a NPE here, so we print a
+                            // better message.
+                            new NullPointerException("possibility " + i + " was null?").printStackTrace();
+                            ((LinkedList<Object>)choices).add("null");
+                        } else {
+                            ((LinkedList<Object>)choices).add(((Object[])possibilities)[i].toString());
+                        }
                     }
                 } else if (possibilities instanceof int[]) {
                     choices = new LinkedList<Object>();
