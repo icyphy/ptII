@@ -364,21 +364,21 @@ public class SerialHelper extends HelperBase {
         synchronized (_typesMutex) {
             if (_types == null) {
                 // Don't support image, long or unsigned int types.
-                int length = DATA_TYPE.values().length - 3;
+                int length = DATA_TYPE.values().length - 1;
                 _types = new String[length];
                 int i = 0;
                 for (DATA_TYPE type : DATA_TYPE.values()) {
                     if (type != DATA_TYPE.IMAGE
                         // Exclude DATA_TYPE.LONG because JavaScript
                         // does not have a representation for longs.
-                        && type != DATA_TYPE.LONG
+                        // && type != DATA_TYPE.LONG
                         // Unsigned ints cannot be represented as a
                         // JavaScript number.  Interestingly, signed
                         // ints can be, because they are losslessly
                         // convertible to double.  But neither longs
                         // nor unsigned ints are losslessly
                         // convertible to double.
-                        && type != DATA_TYPE.UNSIGNEDINT
+                        // && type != DATA_TYPE.UNSIGNEDINT
                         ) {
                         _types[i++] = type.toString().toLowerCase();
                     }
@@ -525,8 +525,9 @@ public class SerialHelper extends HelperBase {
                         for (int i = 0; i < numberOfElements; i++) {
                             // System.out.println("SerialHelper.java: SerialReader: extracting " + _receiveType + " " + position);
                             if (_receiveType == DATA_TYPE.IMAGE
-                                || _receiveType == DATA_TYPE.LONG
-                                || _receiveType == DATA_TYPE.UNSIGNEDINT) {
+                                // || _receiveType == DATA_TYPE.LONG
+                                // || _receiveType == DATA_TYPE.UNSIGNEDINT
+                                ) {
                                 throw new InternalErrorException(_actor, null, "Receive type " + _receiveType + " is not supported.");
                             }
                             _currentObj.callMember("emit", "data", _extractFromBuffer(buffer, _receiveType, position));
