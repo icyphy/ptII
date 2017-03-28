@@ -1,6 +1,6 @@
 /* A JavaScript helper for HttpClient.
 
-@Copyright (c) 2015-2016 The Regents of the University of California.
+@Copyright (c) 2015-2017 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -40,6 +40,7 @@ import java.io.InputStream;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import javax.imageio.ImageIO;
 
@@ -609,8 +610,9 @@ public class HttpClientHelper extends VertxHelperBase {
             boolean isImage = false;
             String imageType = "";
             if (!headers.isEmpty()) {
-                for (String key : headers.keySet()) {
-                    Object value = headers.get(key);
+                for (Entry<String, Object> entry : headers.entrySet()) {
+                    String key = entry.getKey();
+                    Object value = entry.getValue();
                     if (key.equalsIgnoreCase("Content-Type") &&
                             ( (String)value).startsWith("image")) {
                         isImage = true;

@@ -1,6 +1,6 @@
 /* A Javascript helper for Vert.x.
 
-@Copyright (c) 2015-2016 The Regents of the University of California.
+@Copyright (c) 2015-2017 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -32,6 +32,7 @@ package ptolemy.actor.lib.jjs.modules.eventbus;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
@@ -224,9 +225,8 @@ public class EventBusHelper extends VertxHelperBase {
     public void unsubscribe(final String address) {
         if (_subscriptions != null) {
             if (address == null) {
-                for (String toUnsubscribe : _subscriptions.keySet()) {
-                    MessageConsumer<String> messageConsumer = _subscriptions
-                            .get(toUnsubscribe);
+                for (Entry<String, MessageConsumer<String>> entry : _subscriptions.entrySet()) {
+                    MessageConsumer<String> messageConsumer = entry.getValue();
                     messageConsumer.unregister();
                 }
                 _subscriptions.clear();
