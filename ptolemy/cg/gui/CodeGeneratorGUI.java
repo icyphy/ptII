@@ -223,7 +223,7 @@ public class CodeGeneratorGUI extends PtolemyFrame {
                     // Don't write the file to the window
                     //exec.updateStatusBar(code.toString());
 
-                    exec.updateStatusBar("// Code generation " + "complete.");
+                    exec.updateStatusBar("// Code generation complete.");
                 } catch (Exception ex) {
                     MessageHandler.error("Code generation failed.", ex);
                 }

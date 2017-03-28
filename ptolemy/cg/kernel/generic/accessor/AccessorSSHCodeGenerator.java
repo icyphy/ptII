@@ -170,6 +170,7 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
         // Invoke the accessoInvokeSSH script
         runCommand.setExpression("@PTII@/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js @timeoutFlagAndValue@ @modulesFlagAndValue@ @npmInstall@ @runForever@ @stopForeverAccessors@");
 
+        _checkForLocalModules = false;
     }
 
     ///////////////////////////////////////////////////////////////////

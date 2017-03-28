@@ -212,10 +212,6 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
      */
     @Override
     protected int _executeCommands() throws IllegalActionException {
-        if (_substituteMap == null) {
-            _substituteMap = CodeGeneratorUtilities.newMap(this);
-        }
-
         _updateSubstituteMap();
 
         List<String> commands = new LinkedList<String>();
@@ -264,9 +260,7 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
      *  substituting the @...@ tags.
      */
     protected String _runCommand() throws IllegalActionException {
-        if (_substituteMap == null) {
-            _substituteMap = CodeGeneratorUtilities.newMap(this);
-        }
+        _updateSubstituteMap();
         String command = CodeGeneratorUtilities
             .substitute(((StringToken) runCommand.getToken())
                         .stringValue(), _substituteMap);
@@ -279,9 +273,7 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected List<String> _setupCommands() throws IllegalActionException {
-        if (_substituteMap == null) {
-            _substituteMap = CodeGeneratorUtilities.newMap(this);
-        }
+        _updateSubstituteMap();
         return new LinkedList<String>();
     }
 
@@ -294,6 +286,10 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
      */
     protected void _updateSubstituteMap()
         throws IllegalActionException {
+        if (_substituteMap == null) {
+            _substituteMap = CodeGeneratorUtilities.newMap(this);
+        }
+
         _substituteMap.put("@codeDirectory@", codeDirectory.asFile().toString());
         _substituteMap.put("@modelName@", _sanitizedModelName);
         _substituteMap.put("@PTII@", StringUtilities.getProperty("ptolemy.ptII.dir"));
