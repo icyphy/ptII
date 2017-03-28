@@ -47,7 +47,8 @@ PTPACKAGE = 	audio
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = 
+JSRCS = \
+    AudioHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
 	audio.js \
