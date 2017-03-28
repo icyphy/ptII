@@ -1,6 +1,6 @@
 /* Download, build, start and stop the local authorization entity, Auth.
 
-@Copyright (c) 2016 The Regents of the University of California.
+@Copyright (c) 2017 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -289,12 +289,12 @@ public class AuthManager extends AbstractInitializableAttribute {
         if (directory.isFile()) {
             throw new IOException(directory + _badFileMessage);
         }
-        final StringBufferExec exec = new StringBufferExec(true /*appendToStderrAndStdout*/);
-        List execCommands = new LinkedList<String>();
+        //final StringBufferExec exec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+        //List execCommands = new LinkedList<String>();
 
-        String commands = "";
+        //String commands = "";
         System.out.println("AuthManager._generateCredentials(" + directory + ", " + subdirectory);
-        File subdirectoryDirectory = new File(directory, subdirectory);
+        //File subdirectoryDirectory = new File(directory, subdirectory);
 
     }
 
