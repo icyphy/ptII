@@ -44,7 +44,7 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTVERTX_SOCKET_DIR is set to socket if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
 # PTXBEE_DIR is set to xbee if the XBee Java Interface was found
-DIRS = 		audio $(PTBROWSER_DIR) buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto dataConverter discovery dsp $(PTEVENTBUS_DIR) $(PTGDP_DIR) $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) $(PTIMUSENSOR_DIR) iotAuth localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign objectDetection os process $(PTSERIAL_DIR) shell testing $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) $(PTXBEE_DIR)
+DIRS = 		audio $(PTBROWSER_DIR) buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto dataConverter discovery dsp $(PTEVENTBUS_DIR) $(PTGDP_DIR) $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) $(PTIMUSENSOR_DIR) iotAuth localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign os process $(PTSERIAL_DIR) shell testing $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) $(PTXBEE_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..
@@ -78,7 +78,7 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	IMUSensor aprilTags audio browser buffer cameras contextAware contextAwareTest crypto dataConverter discovery dsp eventbus gdp httpClient httpServer imageFilters iotAuth localStorage mapManager motionDetector mqtt objectAssign objectDetection serial shell socket testing udpSocket webSocket webSocketClient webSocketServer xbee #test
+MISC_FILES =	IMUSensor aprilTags audio browser buffer cameras contextAware contextAwareTest crypto dataConverter discovery dsp eventbus gdp httpClient httpServer imageFilters iotAuth localStorage mapManager motionDetector mqtt objectAssign serial shell socket testing udpSocket webSocket webSocketClient webSocketServer xbee #test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
