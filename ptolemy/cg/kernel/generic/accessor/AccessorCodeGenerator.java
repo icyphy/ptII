@@ -28,6 +28,7 @@ COPYRIGHTENDKEY
 
 package ptolemy.cg.kernel.generic.accessor;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.util.List;
@@ -147,14 +148,20 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
      */
     public StringParameter modules;
 
-    /** If true, then use npm install to install the modules listed in
-     *  the <i>modules</i> parameter.  The reason to set this to false
-     *  is if the host is not connected to the internet or if the host
-     *  already has the modules installed.  Setting this to false
-     *  means that the composite accessor will be deployed more
-     *  quickly because <code>npm install</code> will not be run.  The
-     *  default value is false, indicating that <code>npm install
-     *  <i>modules</i></code> should not be run.
+    /** If true, then search <i>codeDirectory</i> and its parent
+     *  directories for a node_modules/ directory. If it is found,
+     *  then search for the modules listed in the <i>modules</i>
+     *  parameter in that directory.  If any module is not found, then
+     *  install all the modules using npm install.  If all the modules
+     *  are found, then don't bother installing.
+     *
+     *  <p>The reason to set this to false is if the host is not
+     *  connected to the internet or if the host already has the
+     *  modules installed.  Setting this to false means that the
+     *  composite accessor will be deployed more quickly because
+     *  <code>npm install</code> will not be run.  The default value
+     *  is false, indicating that <code>npm install
+     *  <i>modules</i></code> should not be run.</p>
      */
     public Parameter npmInstall;
 
@@ -187,8 +194,8 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
 
         if (uri != null) {
             modelURI = uri.toString();
-            System.out.println("AccessorCodeGenerator: PTII: " + PTII + " "
-                    + modelURI.startsWith("file:/") + " " + modelURI.contains(PTII));
+            // System.out.println("AccessorCodeGenerator: PTII: " + PTII + " "
+            //        + modelURI.startsWith("file:/") + " " + modelURI.contains(PTII));
             if (modelURI.startsWith("file:/")
                     && modelURI.contains(PTII)) {
                 modelURI = modelURI.substring(5).replace(PTII, "$PTII");
@@ -235,12 +242,42 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
      */
     protected List<String> _setupCommands() throws IllegalActionException {
         List<String> commands = super._setupCommands();
-        if (((BooleanToken) npmInstall.getToken()).booleanValue()
-            && ((StringToken) modules.getToken()).stringValue().length() > 0) {
-            String command = CodeGeneratorUtilities
-                .substitute("npm install @modules@",
-                            _substituteMap);
-            commands.add(command);
+
+        String modulesValue = ((StringToken) modules.getToken()).stringValue().replace(',', ' ').trim();
+        if (_checkForLocalModules
+            && ((BooleanToken) npmInstall.getToken()).booleanValue()
+            && modulesValue.length() > 0) {
+            // Search from codeDirectory and up for a node_modules/ directory
+            // If it is found, then search for the modules in that directory.
+            // If any module is not found, then install all the modules.
+            // If all the modules are found, then don't bother installing.
+            boolean missingModules = false;
+            File directory = codeDirectory.asFile();
+            while (directory != null) {
+                File nodeModules = new File(directory, "node_modules");
+                if (nodeModules.isDirectory()) {
+                    String[] splitModules = modulesValue.split("\\s+");
+                    for (int i = 0; i < splitModules.length; i++) {
+                        File modulesFile = new File(nodeModules, splitModules[i]);
+                        if (!modulesFile.isDirectory()) {
+                            missingModules = true;
+                        }
+                    }
+                    if (!missingModules) {
+                        System.out.println("AccessorCodeGenerator: Found the modules in "
+                                           + nodeModules
+                                           + ", so npm install will not be run.");
+                        break;
+                    }
+                }
+                directory = directory.getParentFile();
+            }
+            if (missingModules) {
+                String command = CodeGeneratorUtilities
+                    .substitute("npm install @modules@",
+                                _substituteMap);
+                commands.add(command);
+            }
         }
         return commands;
     }
@@ -283,4 +320,13 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
             _substituteMap.put("@timeoutFlagAndValue@", timeoutFlagAndValue);
         }
     }
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         protected variables               ////
+
+    /** If true, the {@link _setupCommands()} will check for
+     *  modules in the local directory.
+     *  Derived classes like AccessorSSHCodeGenerator set this to false.
+     */
+    protected boolean _checkForLocalModules = true;
 }
