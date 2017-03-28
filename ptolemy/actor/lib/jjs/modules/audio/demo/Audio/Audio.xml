@@ -4,18 +4,18 @@
 <entity name="Audio" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={149, 112, 928, 615}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={149, 112, 934, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 498]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 243.265625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Please turn your speakers on and run the model.&#10;You should hear jazz music.  Stop is triggered after 15 seconds.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 25.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[13.75, 69.4384765625]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -23,7 +23,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[73.75, 39.4384765625]">
         </property>
     </property>
     <entity name="Const" class="ptolemy.actor.lib.Const">
@@ -35,7 +35,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[178.75, 214.4384765625]">
         </property>
     </entity>
     <entity name="ClipPlayer" class="org.terraswarm.accessor.JSAccessor">
@@ -55,9 +55,9 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[260.0, 125.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[293.75, 169.4384765625]">
         </property>
-        <property name="clipURL" class="ptolemy.data.expr.Parameter" value="&quot;http://music.berkeley.edu/files/2014/02/jcime_odwalla1.mp3&quot;">
+        <property name="clipURL" class="ptolemy.data.expr.Parameter" value="http://music.berkeley.edu/files/2014/02/jcime_odwalla1.mp3">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -91,21 +91,31 @@
     <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[53.75, 214.4384765625]">
         </property>
     </entity>
     <entity name="SingleEvent2" class="ptolemy.actor.lib.SingleEvent">
         <property name="time" class="ptolemy.data.expr.Parameter" value="15.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 185.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[163.75, 159.4384765625]">
         </property>
     </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ClipPlayer.stop&quot;,x=293.75,y=169.4384765625}, tail={id=&quot;SingleEvent2.output&quot;,x=163.75,y=159.4384765625}, points={} } }">
+        </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Const.trigger&quot;,x=178.75,y=214.4384765625}, tail={id=&quot;SingleEvent.output&quot;,x=53.75,y=214.4384765625}, points={} } }">
+        </property>
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ClipPlayer.start&quot;,x=293.75,y=169.4384765625}, tail={id=&quot;Const.output&quot;,x=178.75,y=214.4384765625}, points={228.75,179.4384765625,228.75,214.4384765625} } }">
+        </property>
+    </relation>
+    <link port="Const.output" relation="relation2"/>
     <link port="Const.trigger" relation="relation"/>
     <link port="ClipPlayer.stop" relation="relation3"/>
+    <link port="ClipPlayer.start" relation="relation2"/>
     <link port="SingleEvent.output" relation="relation"/>
     <link port="SingleEvent2.output" relation="relation3"/>
 </entity>
