@@ -1,6 +1,6 @@
 /* Execute a script in JavaScript using Nashorn.
 
-   Copyright (c) 2014-2016 The Regents of the University of California.
+   Copyright (c) 2014-2017 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -1391,7 +1391,7 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
             }
         }
 
-        if (options instanceof Map) {
+        if (options != null) {
             // If the port has its own type already (a TypeAttribute),
             // do not override it.
             if (port.attributeList(TypeAttribute.class).isEmpty()
@@ -1863,7 +1863,7 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
             }
         };
         _setTimeout(reschedulingFunction, milliseconds, id);
-        return new Integer(id);
+        return Integer.valueOf(id);
     }
 
     /** Invoke the specified function after the specified amount of time.
@@ -1883,7 +1883,7 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
             throws IllegalActionException {
         final Integer id = Integer.valueOf(_timeoutCount++);
         _setTimeout(function, milliseconds, id);
-        return new Integer(id);
+        return Integer.valueOf(id);
     }
     
     /** Stop execution of the enclosing model.
@@ -2092,7 +2092,7 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
     protected Object _exports;
 
     /** Initial script as a token. */
-    protected static StringToken _INITIAL_SCRIPT = new StringToken(
+    protected static final StringToken _INITIAL_SCRIPT = new StringToken(
             "// Put your JavaScript program here.\n"
             + "// Add ports and parameters.\n"
             + "// Define JavaScript functions initialize(), fire(), and/or wrapup().\n"
