@@ -88,6 +88,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/Kubi/Kubi.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MoC/MoC.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MotionDetector/MotionDetector.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MotionLights/MotionLights.xml
+$CLASSPATH/org/terraswarm/accessor/demo/NaturalLanguage/NaturalLanguage.xml
 $CLASSPATH/org/terraswarm/accessor/demo/OccupancyLights/OccupancyLights.xml
 $CLASSPATH/org/terraswarm/accessor/demo/REST/REST.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Scarab/Scarab.xml
