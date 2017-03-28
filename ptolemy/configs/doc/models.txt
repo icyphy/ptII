@@ -82,13 +82,8 @@ $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Random.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Solarize.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Threshold.xml
 $CLASSPATH/org/terraswarm/accessor/demo/IMUSensor/IMUSensor.xml
-$CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreClient.xml
-$CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreServer.xml
-$CLASSPATH/org/terraswarm/accessor/demo/Kubi/Kubi.xml
-$CLASSPATH/org/terraswarm/accessor/demo/MoC/MoC.xml
-$CLASSPATH/org/terraswarm/accessor/demo/MotionDetector/MotionDetector.xml
-$CLASSPATH/org/terraswarm/accessor/demo/MotionLights/MotionLights.xml
 $CLASSPATH/org/terraswarm/accessor/demo/NaturalLanguage/NaturalLanguage.xml
+$CLASSPATH/org/terraswarm/accessor/demo/OccupancyCount/OccupancyCount.xml
 $CLASSPATH/org/terraswarm/accessor/demo/OccupancyLights/OccupancyLights.xml
 $CLASSPATH/org/terraswarm/accessor/demo/REST/REST.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Scarab/Scarab.xml
