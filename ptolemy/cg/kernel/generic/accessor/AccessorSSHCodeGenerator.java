@@ -230,12 +230,12 @@ public class AccessorSSHCodeGenerator extends AccessorCodeGenerator {
     }
 
     /** Update the substitute map for the setup and run commands.
-     *  The base classes adds @codeDirectory@, @modelName@,
-     *  @PTII@, @modules@ and @npmInstall@ and @timeoutFlagAndValue@.
+     *  The base classes adds codeDirectory, modelName,
+     *  PTII, modules and npmInstall and timeoutFlagAndValue.
      *  This method adds
-     *  @modulesFlagAndValue,@runForever@, and @stopForeverAccessor@.
+     *  modulesFlagAndValue,runForever, and stopForeverAccessor.
      *
-     *  @exception IllegalActionException If the @modules@ parameter
+     *  @exception IllegalActionException If the modules parameter
      *  contains spaces or if thrown by a base class.
      */
     protected void _updateSubstituteMap()

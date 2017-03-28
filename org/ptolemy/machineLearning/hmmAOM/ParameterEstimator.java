@@ -1,6 +1,6 @@
 /* A parameter estimator aspect.
 
-@Copyright (c) 2010-2016 The Regents of the University of California.
+@Copyright (c) 2010-2017 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -664,8 +664,8 @@ public abstract class ParameterEstimator extends AtomicCommunicationAspect {
      * ensure numerical stability. Set nCategories to zero for
      * continuous distribution types
      *
-     * @param double The y values
-     * @param A the A values
+     * @param y y values
+     * @param A A values
      * @param prior prior values
      * @param nCategories The number of categories
      * @return a hashmaps with String keys and double array values.

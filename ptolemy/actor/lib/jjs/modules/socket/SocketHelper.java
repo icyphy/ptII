@@ -1,6 +1,6 @@
 /* Support for the websocket accessor.
 
-@Copyright (c) 2015-2016 The Regents of the University of California.
+@Copyright (c) 2015-2017 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -62,10 +62,11 @@ import ptolemy.util.MessageHandler;
 //// SocketHelper
 
 /**
-   A helper class for the socket module in JavaScript.
-   You should use {@link #getOrCreateHelper(Object)} to create
-   exactly one instance of this helper per actor. Pass the actor
-   as an argument.
+   A helper class for the socket module in JavaScript. 
+
+   You should use {@link #getOrCreateHelper(Object, ScriptObjectMirror)}
+   to create exactly one instance of this helper
+   per actor. Pass the actor as an argument.
 
    A confusing aspect of this design is the socket client will
    have exactly one socket associated with it, whereas a socket

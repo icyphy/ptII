@@ -150,7 +150,7 @@ public class GLine2D implements Cloneable, Serializable
      * a line passing through the origin and the line.  This allows
      * easy computation if one point is between two other points on
      * the line: compute the line coordinate of all three points and
-     * test if a<=b<=c. This is implemented by computing the dot product
+     * test if a&lt;=b&lt;=c. This is implemented by computing the dot product
      * of the vector p with the line's direction unit vector.
      **/
     public double getLineCoordinate(double p[])

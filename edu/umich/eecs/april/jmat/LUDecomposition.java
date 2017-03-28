@@ -45,16 +45,18 @@ https://april.eecs.umich.edu/wiki/index.php/AprilTags-C
 package edu.umich.eecs.april.jmat;
 
 /** LU Decomposition
-    <P>
-    For an m-by-n matrix A with m >= n, the LU decomposition is an m-by-n
+    <p>
+    For an m-by-n matrix A with m &gt;= n, the LU decomposition is an m-by-n
     unit lower triangular matrix L, an n-by-n upper triangular matrix U,
     and a permutation vector piv of length m so that A(piv,:) = L*U.
-    If m < n, then L is m-by-m and U is m-by-n.
-    <P>
+    If m &lt; n, then L is m-by-m and U is m-by-n.
+    </p>
+    <p>
     The LU decompostion with pivoting always exists, even if the matrix is
     singular, so the constructor will never fail.  The primary use of the
     LU decomposition is in the solution of square systems of simultaneous
     linear equations.  This will fail if isNonsingular() returns false.
+    </p>
  **/
 public class LUDecomposition {
     Matrix LU;

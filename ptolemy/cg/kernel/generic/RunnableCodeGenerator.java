@@ -275,7 +275,7 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
 
     /** Return a list of setup commands to be invoked before
      *  the run command.
-     *  @param return The list of commands.
+     *  @return The list of commands.
      *  @exception IllegalActionException Not thrown in this base class.
      */
     protected List<String> _setupCommands() throws IllegalActionException {

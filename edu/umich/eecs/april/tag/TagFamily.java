@@ -115,7 +115,7 @@ public class TagFamily {
      * The bits are organized like this (for d = 3):
      *
      *  8 7 6       2 5 8      0 1 2
-     *  5 4 3  ==>  1 4 7 ==>  3 4 5    (rotate90 applied twice)
+     *  5 4 3  ==&gt;  1 4 7 ==&gt;  3 4 5    (rotate90 applied twice)
      *  2 1 0       0 3 6      6 7 8
      **/
     public static long rotate90(long w, int d) {

@@ -58,7 +58,6 @@ import ptolemy.kernel.util.NameDuplicationException;
  * <p>
  * A simple use of this actor is to pad a block of inputs with zeros.
  * Set <i>offset</i> to zero and use <i>numberToWrite &gt; numberToRead</i>.
- * <a name="zero padding"></a>
  * <a name="padding"></a></p>
  * <p>
  * Another simple use is to obtain overlapping windows from
@@ -71,7 +70,7 @@ import ptolemy.kernel.util.NameDuplicationException;
  * The general operation is illustrated with the following examples.
  * If <i>offset</i> is positive,
  * there two possible scenarios, illustrated by the following examples:</p>
- * <p>
+ *
  * <pre>
  * iiiiii                  numberToRead = 6
  * \    \                 offset = 2
@@ -79,7 +78,8 @@ import ptolemy.kernel.util.NameDuplicationException;
  * iiiiii                  numberToRead = 6
  * \ \  \                 offset = 2
  * ppiii                   numberToWrite = 5
- * </pre></p>
+ * </pre>
+ *
  * <p>
  * The symbol "i" refers to any input token. The leftmost symbol
  * refers to the oldest input token of the ones consumed in a given

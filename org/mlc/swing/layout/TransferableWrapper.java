@@ -55,7 +55,7 @@ public class TransferableWrapper implements java.awt.datatransfer.Transferable {
 
     /** Get the transfer data for a flavor.
      *  @param flavor the flavor
-     *  @retrun the transfer data.
+     *  @return the transfer data.
      */
     @Override
     public synchronized Object getTransferData(DataFlavor flavor) {
@@ -73,7 +73,7 @@ public class TransferableWrapper implements java.awt.datatransfer.Transferable {
     }
 
     /** Get the transfer data flavors.
-     *  @retrun the transfer data flavors.
+     *  @return the transfer data flavors.
      */
     @Override
     public synchronized DataFlavor[] getTransferDataFlavors() {
