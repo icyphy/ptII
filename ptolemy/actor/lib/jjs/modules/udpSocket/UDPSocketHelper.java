@@ -1,6 +1,6 @@
 /* Embedding of a Datagram (UDP) socket.
 
-@Copyright (c) 2015-2016 The Regents of the University of California.
+@Copyright (c) 2015-2017 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -352,7 +352,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                                     + e);
                             _currentObj.callMember("emit", "message", result);
                         }
-                    } else if (numberOfElements <= 0) {
+                    } else {
                         _error(_currentObj, "Expect to receive type "
                                 + _receiveType
                                 + ", but received an insufficient number of bytes: "
