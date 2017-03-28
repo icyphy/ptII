@@ -1,6 +1,6 @@
 /* A helper class for the device discovery accessor.
 
-   Copyright (c) 2015-2016 The Regents of the University of California.
+   Copyright (c) 2015-2017 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -34,9 +34,11 @@ import java.io.InputStreamReader;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.Map.Entry;
 import java.util.StringTokenizer;
 
 import org.json.JSONArray;
@@ -192,8 +194,8 @@ public class DiscoveryHelper {
 
         // Return a string representation of a JSON array of JSON objects
         if (_ipMap.size() > 0) {
-            for (String key : _ipMap.keySet()) {
-                jArray.put(_ipMap.get(key));
+            for (Entry<String, JSONObject> entry : _ipMap.entrySet()) {
+                jArray.put(entry.getKey());
             }
             return jArray.toString();
         } else {
@@ -284,8 +286,8 @@ public class DiscoveryHelper {
                                     + ", mac: " + token + " ,ip: " + ip);
                         }
                         JSONObject object;
-                        for (String key : _ipMap.keySet()) {
-                            object = _ipMap.get(key);
+                        for (Entry<String, JSONObject> entry : _ipMap.entrySet()) {
+                            object = entry.getValue();
                             if (object.get("IPAddress").toString()
                                     .equalsIgnoreCase(ip)) {
                                 token = (String) tokenizer.nextElement();
@@ -293,7 +295,7 @@ public class DiscoveryHelper {
                                 object.put("name", name);
                                 object.put("mac", token);
 
-                                _ipMap.put(key, object);
+                                _ipMap.put(entry.getKey(), object);
                             }
                         }
                     }
@@ -336,8 +338,8 @@ public class DiscoveryHelper {
                 JSONObject object;
 
                 while ((line = stdOut.readLine()) != null) {
-                    for (String key : _ipMap.keySet()) {
-                        object = _ipMap.get(key);
+                    for (Entry<String, JSONObject> entry : _ipMap.entrySet()) {
+                        object = entry.getValue();
                         index = line.indexOf(object.getString("IPAddress"));
                         if (index != -1) {
                             // The Interface: IP entry is the host machine.  Its mac
@@ -350,7 +352,7 @@ public class DiscoveryHelper {
                                 object.put("mac",
                                         line.substring(index + 22, index + 39));
                             }
-                            _ipMap.put(key, object);
+                            _ipMap.put(entry.getKey(), object);
                         }
                     }
                 }
@@ -478,7 +480,7 @@ public class DiscoveryHelper {
             BufferedReader stdOut = null;
             try {
                 stdOut = new BufferedReader(new InputStreamReader(
-                    process.getInputStream()));
+                        process.getInputStream(), StandardCharsets.UTF_8));
                 String line;
 
                 while ((line = stdOut.readLine()) != null) {
