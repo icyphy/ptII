@@ -1,6 +1,6 @@
 /* Code generator that generates runnable output that does not require compilation.
 
-Copyright (c) 2009-2016 The Regents of the University of California.
+Copyright (c) 2009-2017 The Regents of the University of California.
 All rights reserved.
 Permission is hereby granted, without written agreement and without
 license or royalty fees, to use, copy, modify, and distribute this
@@ -138,6 +138,38 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
+
+    /** Clone the attribute into the specified workspace.
+     *  @param workspace The workspace for the new object.
+     *  @return A new attribute.
+     *  @exception CloneNotSupportedException If a derived class contains
+     *   an attribute that cannot be cloned.
+     */
+    @Override
+    public Object clone(Workspace workspace) throws CloneNotSupportedException {
+        RunnableCodeGenerator newObject = (RunnableCodeGenerator) super
+                .clone(workspace);
+
+        try {
+            newObject._substituteMap = CodeGeneratorUtilities.newMap(this);
+        } catch (IllegalActionException ex) {
+            throw new CloneNotSupportedException(ex.getMessage());
+        }
+        return newObject;
+    }
+
+    /** Reset the code generator.
+     *  @exception IllegalActionException Not thrown in this base class,
+     *  thrown by the parent if the container of the model
+     *  cannot be set to null.
+     */
+    @Override
+    protected void _reset() throws IllegalActionException {
+        super._reset();
+        if (_substituteMap != null) {
+            _substituteMap.clear();
+        }
+    }
 
     /** Return an updated array of command line options.
      *  @return An array of updated command line options.
@@ -281,8 +313,7 @@ public class RunnableCodeGenerator extends GenericCodeGenerator {
      */
     protected final static String _runCommandDefault = "make -f @modelName@.mk run";
 
-    /** The @...@ strings to be substituted in _setupCommands() and
-     * _runCommands().
+    /** Map of '@' delimited keys to values.
      */
-    protected Map<String, String> _substituteMap = null;
+    protected Map<String, String> _substituteMap;
 }

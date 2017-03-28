@@ -136,8 +136,6 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
         useMake.setTypeEquals(BaseType.BOOLEAN);
         useMake.setExpression("true");
 
-        _substituteMap = CodeGeneratorUtilities.newMap(this);
-
         variablesAsArrays = new Parameter(this, "variablesAsArrays");
         variablesAsArrays.setTypeEquals(BaseType.BOOLEAN);
         variablesAsArrays.setExpression("false");
@@ -249,25 +247,6 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
             }
         }
         super.attributeChanged(attribute);
-    }
-
-    /** Clone the attribute into the specified workspace.
-     *  @param workspace The workspace for the new object.
-     *  @return A new attribute.
-     *  @exception CloneNotSupportedException If a derived class contains
-     *   an attribute that cannot be cloned.
-     */
-    @Override
-    public Object clone(Workspace workspace) throws CloneNotSupportedException {
-        ProgramCodeGenerator newObject = (ProgramCodeGenerator) super
-                .clone(workspace);
-
-        try {
-            newObject._substituteMap = CodeGeneratorUtilities.newMap(this);
-        } catch (IllegalActionException ex) {
-            throw new CloneNotSupportedException(ex.getMessage());
-        }
-        return newObject;
     }
 
     /**
@@ -1801,9 +1780,6 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
         _newTypesUsed.clear();
         _tokenFuncUsed.clear();
         _typeFuncUsed.clear();
-        if (_substituteMap != null) {
-            _substituteMap.clear();
-        }
     }
 
     /** Perform any setup or initialization of the adapter.
@@ -1933,8 +1909,6 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
         // Add substitutions for all the parameter.
         // For example, @generatorPackage@ will be replaced with
         // the value of the generatorPackage.
-        _substituteMap.put("@modelName@", _sanitizedModelName);
-
         _substituteMap.put("@CLASSPATHSEPARATOR@",
                 StringUtilities.getProperty("path.separator"));
 
@@ -2240,12 +2214,6 @@ public class ProgramCodeGenerator extends RunnableCodeGenerator {
      *  parameter with a new value.
      */
     protected final static String _runCommandDefault = "make -f @modelName@.mk run";
-
-    /** Map of '@' delimited keys to values.  Used to create
-     *  the makefile from makefile.in.
-     *  Use "@help:all@" to list all key/value pairs.
-     */
-    protected Map<String, String> _substituteMap;
 
     /** A set that contains all token functions referenced in the model.
      *  When the codegen kernel processes a $tokenFunc() macro, it must add
