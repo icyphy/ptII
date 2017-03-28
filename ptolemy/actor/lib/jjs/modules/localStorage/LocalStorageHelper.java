@@ -1,6 +1,6 @@
 /* Execute a script in JavaScript.
 
-@Copyright (c) 2015 The Regents of the University of California.
+@Copyright (c) 2015-2017 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.localStorage;
 
+import java.nio.charset.StandardCharsets;
 import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -103,7 +104,7 @@ public class LocalStorageHelper {
         if (_mqttLocalStorage.containsKey(key)) {
             MqttPersistentData message = (MqttPersistentData) _mqttLocalStorage
                     .get(key);
-            return new String(message.getHeaderBytes());
+            return new String(message.getHeaderBytes(), StandardCharsets.UTF_8);
         } else {
             return null;
         }
@@ -122,7 +123,7 @@ public class LocalStorageHelper {
      */
     public void setItem(String key, String value)
             throws MqttPersistenceException, IOException {
-        byte[] bytes = value.getBytes();
+        byte[] bytes = value.getBytes(StandardCharsets.UTF_8);
         MqttPersistentData message = new MqttPersistentData(value, new byte[0],
                 0, 0, bytes, 0, bytes.length);
         _mqttLocalStorage.put(key, message);
