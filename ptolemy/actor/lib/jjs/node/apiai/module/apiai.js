@@ -145,12 +145,6 @@ Application.prototype.deleteContextsRequest = function(options) {
     return new DeleteContextsRequest(self, opt);
 }
 
-/**
- * [textRequest description]
- * @param  {[type]} query   [description]
- * @param  {[type]} options [description]
- * @return {[type]}         [description]
- */
 Application.prototype.textRequest = function(query, options) {
     var self = this;
     var opt = options || {};
@@ -204,12 +198,6 @@ Application.prototype.voiceRequest = function(options) {
     return new VoiceRequest(self, opt);
 };
 
-/**
- * [userEntitiesRequest description]
- * @param  {[type]} user_entities_body  [description]
- * @param  {[type]} options             [description]
- * @return {[type]}                     [description]
- */
 Application.prototype.userEntitiesRequest = function(user_entities_body, options) {
     var self = this;
     var opt = options || {};
