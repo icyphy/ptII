@@ -146,7 +146,7 @@ public class XBeeHelper extends VertxHelperBase implements IDataReceiveListener 
                     _error("Failed to convert to a JavaScript array: " + e);
                     _currentObj.callMember("emit", "data", result);
                 }
-            } else if (numberOfElements <= 0) {
+            } else {
                 _error("Expect to receive type "
                         + _receiveType
                         + ", of size " + size
