@@ -1,5 +1,6 @@
-/*
-@Copyright (c) 2015 The Regents of the University of California.
+/* A helper class for the shell accessor module.
+
+@Copyright (c) 2015-2017 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -29,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 package ptolemy.actor.lib.jjs.modules.shell;
 
+import java.nio.charset.StandardCharsets;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
@@ -168,13 +170,16 @@ public class ShellHelper {
             e.printStackTrace();
             return false;
         }
+        // FIXME: FindBugs says that out is being accessed without a lock here.
         out = new BufferedWriter(new OutputStreamWriter(
                 process.getOutputStream()));
-        in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+        in = new BufferedReader(new InputStreamReader(process.getInputStream(), StandardCharsets.UTF_8));
         return true;
     }
 
-    /** Starts the reader thread to read from the process' stdout asynchronously.*/
+    /** Starts the reader thread to read from the process' stdout
+     * asynchronously.
+     */
     private void startReader() {
         readerThread = new Thread(new Runnable() {
             @Override

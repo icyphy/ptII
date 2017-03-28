@@ -1,6 +1,6 @@
-/* AnExecute a script in JavaScript.
+/* A helper class for the MQTT module in JavaScript.
 
-@Copyright (c) 2015-2016 The Regents of the University of California.
+Copyright (c) 2015-2017 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -30,6 +30,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
  */
 package ptolemy.actor.lib.jjs.modules.mqtt;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Random;
 
 import org.eclipse.paho.client.mqttv3.IMqttActionListener;
@@ -173,7 +174,7 @@ public class MqttHelper extends HelperBase {
                         messageObject = _toJSArray(message.getPayload());
                     }
                     else {
-                        messageObject = new String(message.getPayload());
+                        messageObject = new String(message.getPayload(), StandardCharsets.UTF_8);
                     }
                     _currentObj.callMember("emit", "message", topic, messageObject);
                 }
@@ -209,7 +210,7 @@ public class MqttHelper extends HelperBase {
                 payload = _toJavaBytes(message);
             }
             else {
-                payload = ((String)message).getBytes();
+                payload = ((String)message).getBytes(StandardCharsets.UTF_8);
             }
 
             MqttMessage mqttMessage = new MqttMessage(payload);

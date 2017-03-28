@@ -1,6 +1,6 @@
 /* Generate "Hello XBee World!" on a XBee radio connected to a serial port.
 
- Copyright (c) 2015-2016 The Regents of the University of California.
+ Copyright (c) 2015-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -28,6 +28,7 @@
 
 package ptolemy.actor.lib.jjs.modules.xbee.test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Enumeration;
 
 import com.digi.xbee.api.XBeeDevice;
@@ -90,7 +91,7 @@ public class XBeeHello {
         int baudRate = 9600;
         XBeeDevice xBeeDevice = new XBeeDevice(args[0], baudRate);
         String dataToSend = "Hello XBee World";
-        byte[] dataToSendBytes = dataToSend.getBytes();
+        byte[] dataToSendBytes = dataToSend.getBytes(StandardCharsets.UTF_8);
 
         try {
             xBeeDevice.open();
