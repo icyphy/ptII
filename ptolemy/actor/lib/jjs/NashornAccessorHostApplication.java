@@ -1,6 +1,6 @@
 /* Instantiate and Invoke Accessors using Nashorn.
 
-   Copyright (c) 2016 The Regents of the University of California.
+   Copyright (c) 2016-2017 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -279,7 +279,6 @@ public class NashornAccessorHostApplication {
 
         /** Start an event loop in a new thread that does not end until
          *  {@link #wrapup()} is called.
-         *  @throws IllegalActionException If something goes wrong.
          */
         public synchronized void eventLoop() {
             // System.out.println(_name + ": **** Creating new event loop thread from thread: " + Thread.currentThread());

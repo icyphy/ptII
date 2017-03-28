@@ -1,6 +1,6 @@
 /* ReaderM class is a manager for reading the unique packet data from the IMU sensor
 
-// Copyright (c) 2015-2016 The Regents of the University of California.
+// Copyright (c) 2015-2017 The Regents of the University of California.
 // All rights reserved.
 
 // Permission is hereby granted, without written agreement and without
@@ -28,16 +28,15 @@ package ptolemy.actor.lib.jjs.modules.IMUSensor;
 ///// ReaderM
 
 /**
- *        Start a SerialPortreader and interpret the incoming bytes from
- *        the serial port.
+ * Start a SerialPortreader and interpret the incoming bytes from
+ * the serial port.
  *
- *        @author Hunter Massey and Rajesh Kuni
- *        @version $Id$
- *        @see SerialPortController
- *        @Pt.ProposedRating Yellow Hunter
- *        @Pt.AcceptedRating
-*/
-
+ * @author Hunter Massey and Rajesh Kuni
+ * @version $Id$
+ * @see SerialPortController
+ * @Pt.ProposedRating Yellow Hunter
+ * @Pt.AcceptedRating
+ */
 public class ReaderM extends Thread {
 
     /** Construct a ReaderM.

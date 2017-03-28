@@ -1,6 +1,6 @@
-/* Black-box optimizer class - to be modified
+/* Black-box optimizer class.
 
- Copyright (c) 1998-2016 The Regents of the University of California.
+ Copyright (c) 1998-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -81,10 +81,6 @@ public class Optimizer extends TypedAtomicActor {
      *  can then change the name with setName(). If the workspace
      *  argument is null, then use the default workspace.
      *  @param workspace The workspace that will list the actor.
-     *  @exception IllegalActionException If the name has a period in it, or
-     *   the director is not compatible with the specified container.
-     *  @exception NameDuplicationException If the container already contains
-     *   an entity with the specified name.
      */
     public Optimizer(Workspace workspace) {
         super(workspace);

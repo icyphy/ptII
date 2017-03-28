@@ -1,5 +1,5 @@
 /*
- * Copyright (c) 2003-2016 The Regents of the University of California.
+ * Copyright (c) 2003-2017 The Regents of the University of California.
  * All rights reserved.
  *
  * '$Author$'
@@ -92,7 +92,7 @@ import ptolemy.kernel.util.Workspace;
  * ports correspond to R variables used in the R script.
  * 
  * <p>Note that RExpression2 uses the Java/R interface from 
- * <a rhef="https://rforge.net/JRI/#in_browser">https://rforge.net/JRI/</a>
+ * <a href="https://rforge.net/JRI/#in_browser">https://rforge.net/JRI/</a>
  * which requires that native libraries be installed in your java.library.path.
  * </p>
  *

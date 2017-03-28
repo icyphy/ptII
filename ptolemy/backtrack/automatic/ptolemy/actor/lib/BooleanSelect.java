@@ -80,9 +80,8 @@ import ptolemy.kernel.util.Workspace;
  * SDF because the number of tokens it consumes is not fixed.
  * It probably also does not make sense to use it
  * with SR or DE, because it takes two firings to transfer
- * a token to the output. In those domains,{
-@link BooleanMultiplexor}
- makes more sense.
+ * a token to the output. In those domains, {@link ptolemy.actor.lib.BooleanMultiplexor}
+ *  makes more sense.
  * Unlike BooleanMultiplexor actor, this actor
  * does not discard input tokens on the port that it does not read.
  * @author Steve Neuendorffer, Adam Cataldo, Edward A. Lee, Gang Zhou

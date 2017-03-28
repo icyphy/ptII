@@ -52,8 +52,8 @@ public class Injector {
   /**
    * Get implementation for the provided interface based on the
    * mappings loaded into the injector.
+   * Class<T> is the implementation.
    *
-   * @param T The implementation.
    * @param type The interface type to load.
    * @return The implementation of the interface.
    */

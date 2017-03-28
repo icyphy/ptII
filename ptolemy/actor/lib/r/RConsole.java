@@ -122,7 +122,7 @@ public class RConsole implements RMainLoopCallbacks {
     /** Load the history.
      * In this class, do nothing.
      * @param re The R engine 
-     * @filename The file that contains the history.
+     * @param filename The file that contains the history.
      */
     public void rLoadHistory(Rengine re, String filename) {
     }

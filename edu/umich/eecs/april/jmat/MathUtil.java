@@ -120,11 +120,11 @@ public class MathUtil {
 
     /** Quickly compute e^x for all x.
 
-        Accuracy for x>0:
-        x<0.5, absolute error < .0099
-        x>0.5, relative error 0.36%
+        Accuracy for x&gt;0:
+        x&lt;0.5, absolute error &gt; .0099
+        x&lt;0.5, relative error 0.36%
 
-        For x<0, we internally compute the reciprocal form; error is
+        For x&lt;0, we internally compute the reciprocal form; error is
         magnified.
 
         This approximation is also monotonic.

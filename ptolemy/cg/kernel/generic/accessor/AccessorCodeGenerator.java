@@ -82,7 +82,7 @@ import ptolemy.util.StringUtilities;
  *  not set, then <code>-timeout</code> argument is not passed to the
  *  Node Accessor host.</p>
  *
- *  <p>For more information, see <a href="https://accessors.org/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
+ *  <p>For more information, see <a href="https://accessors.org/wiki/Main/CapeCodeHost#CodeGeneration#in_browser">https://accessors.org/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
  *
  *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
  *  @version $Id$
@@ -229,7 +229,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
      *  In this class, the "npm install" command is added
      *  if the value of the <i>npmInstall</i> parameter is true and
      *  the value of the <i>modules</i> parameter is not empty.
-     *  @param return The list of commands.
+     *  @return The list of commands.
      *  @exception IllegalActionException If there is a problem getting
      *  the value of the <i>modules</i> parameter
      */

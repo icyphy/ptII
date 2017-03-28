@@ -413,7 +413,7 @@ public class ConfigurationApplication implements ExecutionListener {
 
     /** Return the array of possible configuration directories.
      *  in basePath.
-     *  @param The base path, typically "ptolemy/configs".
+     *  @param basePath The base path, typically "ptolemy/configs".
      *  @return the possible configuration directories.
      *  @exception IOException If the basePath cannot be found.
      *  @exception URISyntaxException If the URI of the basePath is incorrect.

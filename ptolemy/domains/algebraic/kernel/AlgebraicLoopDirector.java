@@ -600,7 +600,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
      <pre>
          -----------
          |  -----  |
-         -->| g |---
+         --&gt;| g |---
          x  -----
      </pre>
      where <i>x</i> is initially the vector of values corresponding to input
@@ -1024,7 +1024,7 @@ public class AlgebraicLoopDirector extends StaticSchedulingDirector {
         /** This method solves u - lambda F(u) = 0
          *  with initial values u=0 and lambda=0.
          *
-         * The solution, for lambda=1, is a fixed point of F : Re^n -> Re^n.
+         * The solution, for lambda=1, is a fixed point of F : Re^n -&gt; Re^n.
          *
          * To allow a non-zero initial guess for the loop function, the problem
          * is reformulated as H(s, lambda, x0) = s - lambda (g(s+x0)-x0),
