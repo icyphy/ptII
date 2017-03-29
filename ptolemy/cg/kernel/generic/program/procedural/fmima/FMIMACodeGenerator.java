@@ -250,6 +250,7 @@ public class FMIMACodeGenerator extends ProceduralCodeGenerator /*GenericCodeGen
     @Override
     protected void _writeMakefile(CompositeEntity container,
             String currentDirectory) throws IllegalActionException {
+        _updateSubstituteMap();
         _substituteMap.put("@PTCGPPCompiler@", "g++");
         _substituteMap.put("@PTCGCompiler@", "gcc");
 

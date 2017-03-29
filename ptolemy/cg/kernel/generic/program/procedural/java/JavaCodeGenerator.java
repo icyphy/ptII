@@ -2220,7 +2220,8 @@ public class JavaCodeGenerator extends ProceduralCodeGenerator {
     @Override
     protected void _writeMakefile(CompositeEntity container,
             String currentDirectory) throws IllegalActionException {
-
+        _updateSubstituteMap();
+        
         if (!_libraries.isEmpty()) {
             // Loop through the path elements in java.class.path and add
             // them as libraries.  We need this so that we can find the

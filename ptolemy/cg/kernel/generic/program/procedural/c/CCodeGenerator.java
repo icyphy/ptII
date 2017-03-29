@@ -3044,6 +3044,8 @@ public class CCodeGenerator extends ProceduralCodeGenerator {
     protected void _writeMakefile(CompositeEntity container,
             String currentDirectory) throws IllegalActionException {
 
+        _updateSubstituteMap();
+        
         if (generatorPackageList.stringValue().contains("arduino")) {
             // FIXME: Temporary hack to set up platform dependent -I
             // directive for the Arduino, see
