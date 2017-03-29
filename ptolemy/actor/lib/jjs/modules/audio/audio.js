@@ -48,10 +48,6 @@
 var AudioHelper = Java.type('ptolemy.actor.lib.jjs.modules.audio.AudioHelper');
 var EventEmitter = require('events').EventEmitter;
 
-// Reference to the Java class documented at:
-//    http://terra.eecs.berkeley.edu:8080/job/ptII/javadoc/ptolemy/media/javasound/LiveSound.html
-var LiveSound = Java.type('ptolemy.media.javasound.LiveSound');
-
 // Clip playback uses javafx instead of Ptolemy SoundReader since javafx supports mp3
 var AudioClip = Java.type('javafx.scene.media.AudioClip');
 
@@ -77,31 +73,40 @@ exports.outputFormats = function () {
  *  <li> play(data): Play the specified array.
  *  <li> stop(): Stop playback and free the audio resources.
  *  </ul>
- *  @param options A JSON object with fields 'FIXME' and 'FIXME' that give the
+ *  @param playbackFormat A JSON object with fields 'FIXME' and 'FIXME' that give the
  *   FIXME properties of the audio such as sample rate, etc. Provide reasonable
  *   defaults.
  */
-exports.Player = function (options) {
-    // Provide default values for options using the following common JavaScript idiom.
-    options = options || {};
-    this.foo = options.foo || 80;
+exports.Player = function (playbackOptions, playbackFormat) {
+    this.helper = new AudioHelper(actor, this);
 
-    LiveSound.setSampleRate(8000);
+    playbackOptions = playbackOptions || {};
+    playbackOptions.bitsPerSample = playbackOptions.bitsPerSample || 16;
+    playbackOptions.channels = playbackOptions.channels || 1;
+    playbackOptions.sampleRate = playbackOptions.sampleRate || 8000;
+
+    this.helper.setPlaybackParameters(playbackOptions, playbackFormat);
+    
+    this.playbackFormat = playbackFormat;
+
     // Start playback.
-    LiveSound.startPlayback(this);
+    this.helper.startPlayback();
 };
 
-/** Play audio data.
- *  @param data An array of numbers in the range -1 to 1 to be played.
+/** Play audio data. This function returns immediately, but this does not
+ *  mean that the samples have been played. In fact, they have not even been
+ *  queued to audio system, necessarily.
+ *  @param data An array of arrays of numbers in the range -1 to 1 to be played.
+ *  @param callback A callback function to invoke when the samples have been
+ *   queued to the audio system.
  */
-exports.Player.prototype.play = function (data) {
-    // NOTE: Convert array into 2-D array required by LiveSound.
-    LiveSound.putSamples(this, [data]);
+exports.Player.prototype.play = function (data, callback) {
+    this.helper.putSamples(data, callback);
 };
 
-/** Stop the player and free audio resources. */
+/** Stop playback. */
 exports.Player.prototype.stop = function () {
-    LiveSound.stopPlayback(this);
+    this.helper.stopPlayback();
 };
 
 
