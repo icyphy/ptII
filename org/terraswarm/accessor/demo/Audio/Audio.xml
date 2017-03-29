@@ -7,7 +7,11 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 490.0]">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 15.0}">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={253, 133, 945, 676}, maximized=false}">
@@ -16,38 +20,12 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0870580209385436">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{333.58614173419255, 384.736119549516}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{306.1000499636628, 228.01315406976744}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="At the right is an instance of the AudioPlayer accessor.&#10;In its original (incomplete) form for this exercise, it has no&#10;input port. It just plays a fixed sinusoidal sound when it is&#10;initialized. You should augment the accessor definition to&#10;endow it with an input, and then plug in in place of the &#10;Plotter below to generate a chirp signal.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates a simple use of the AudioPlayer&#10;accessor to play a synthesized sound.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 155.0]">
-        </property>
-    </property>
-    <property name="Arrow" class="ptolemy.vergil.kernel.attributes.ArrowAttribute">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[465.0, 285.0]">
-        </property>
-        <property name="lineWidth" class="ptolemy.data.expr.Parameter" value="5.0">
-        </property>
-        <property name="lineColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.2,0.6,1.0,1.0}">
-        </property>
-        <property name="x" class="ptolemy.data.expr.Parameter" value="0.0">
-        </property>
-        <property name="y" class="ptolemy.data.expr.Parameter" value="-50.0">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The composition semantics in this model is DE (discrete events),&#10;where components send each other time-stamped events.&#10;The parameters of the Clock and Ramp actors control the frequency&#10;of the sinusoidal signal that is generated.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 470.0]">
-        </property>
-    </property>
-    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Extra credit: Replace the lower Ramp with some other accessor, such&#10;as StockTick, to control the frequency of the signal based on stock prices.&#10;Alternatively, use accessors to create a web socket connection to another&#10;machine to control the frequency from another machine.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 550.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{-5.0, 45.0}">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -57,121 +35,75 @@
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Template for Accessor Exercise">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Synthesize a Sound">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 125.0]">
-        </property>
-    </property>
-    <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Download the&#10;accessor source,&#10;store on your&#10;local disk,&#10;change the&#10;accessorSource&#10;parameter of&#10;the accessor&#10;to point to your&#10;local copy, and&#10;click Reload.&#10;Now you can&#10;modify the&#10;accessor design.&#10;Click Reload&#10;for each update.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, -20.0}">
         </property>
     </property>
     <entity name="AudioPlayer" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;&#10;/** Accessor to play an audio signal.&#10; *  FIXME: This accessor is a placeholder.&#10; *  It just plays 2 seconds of fixed audio in initialize().&#10; *  You should update it to accept an input and play that.&#10; *&#10; *  @accessor audio/AudioPlayer&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals exports, require*/&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;// Set up the accessor.&#10;exports.setup = function () {&#10;    // FIXME: Define your inputs and outputs here.&#10;};&#10;&#10;var player = null;&#10;var audio = require(&quot;audio&quot;);&#10;&#10;exports.initialize = function () {&#10;        // Create an empty array.&#10;        var sinusoid = [];&#10;        // As a test, produce about 2 seconds of sound in 128-sample chunks.&#10;        var n = 0;&#10;        player = new audio.Player();&#10;        for (var j = 0; j &lt; 128; j++) {&#10;            for (var i = 0; i &lt; 128; i++) {&#10;                // Note that in JavaScript, arrays don't have fixed size.&#10;                // They grow as needed.&#10;                sinusoid[i] = Math.sin(2 * Math.PI * 440 * n++/ 8000);&#10;                }&#10;                player.play(sinusoid);&#10;            }&#10;        };&#10;&#10;        exports.wrapup = function () {&#10;            if (player !== null) {&#10;                player.stop();&#10;                player = null;&#10;            }&#10;        };&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Accessor to play an audio signal.&#10; *  This accessor accepts as input an array of arrays of audio samples,&#10; *  one per channel. The samples are numbers in the range between -1.0 to 1.0.&#10; *  It queues the data in the array to be played by the audio system.&#10; *  When the data has been accepted by the audio system to be played,&#10; *  it produces an output with value true. That output should be used&#10; *  as a trigger to provide more output data. If that new output data&#10; *  is provided before the previously data has been drained by the audio&#10; *  queue, then continuous audio with no gaps is possible.&#10; *  If on the other hand input data is provided too quickly, then it&#10; *  will overwrite the data in the output buffer, thereby creating&#10; *  considerable distortion.&#10; *  &#10; *  FIXME: This accessor is incomplete. It should accept more formats&#10; *  compatible with AudioCapture.&#10; *  &#10; *  @input input The audio data.&#10; *  @output accepted An indicator that the audio data has been queued&#10; *   to the audio system.&#10; *&#10; *  @accessor audio/AudioPlayer&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals exports, require*/&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;// Set up the accessor.&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('accepted', {&#10;        type: 'boolean',&#10;        spontaneous: true,&#10;    });&#10;};&#10;&#10;var player = null;&#10;var audio = require(&quot;audio&quot;);&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    player = new audio.Player(null, &quot;raw&quot;);&#10;    self.addInputHandler('input', function() {&#10;        // FIXME: Input format.&#10;        player.play(self.get('input'), function() {&#10;            self.send('accepted', true);&#10;        });&#10;    });&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (player !== null) {&#10;        player.stop();&#10;        player = null;&#10;    }&#10;};&#10;">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/audio/AudioPlayer.js">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 135.0}">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor to play an audio signal.&#10; FIXME: This accessor is a placeholder.&#10; It just plays 2 seconds of fixed audio in initialize().&#10; You should update it to accept an input and play that.&lt;/p&gt;">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor to play an audio signal.&#10; FIXME: This accessor is a placeholder.&lt;/p&gt;">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
             </property>
             <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
             </property>
-        </property>
-    </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={817, 513, 500, 344}, maximized=false}">
-        </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[470.0, 335.0]">
-        </property>
-        <configure>
-<?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
-"http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
-<plot>
-<title>Chirp Signal</title>
-<xLabel></xLabel>
-<yLabel></yLabel>
-<xRange min="0.0" max="4.0"/>
-<yRange min="-1.0" max="1.0"/>
-</plot>?>
-        </configure>
-    </entity>
-    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="1.0/8000.0">
-        </property>
-        <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 305.0]">
-        </property>
-    </entity>
-    <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
-        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="620">
-        </property>
-        <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 315.0]">
-        </property>
-    </entity>
-    <entity name="Expression" class="ptolemy.actor.lib.Expression">
-        <property name="expression" class="ptolemy.kernel.util.StringAttribute" value="sin(2*PI*n/8000)">
-        </property>
-        <property name="_icon" class="ptolemy.vergil.icon.BoxedValueIcon">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="expression">
-            </property>
-            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="60">
-            </property>
-            <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The audio data.">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[330.00000000000006, 315.0]">
-        </property>
-        <port name="n" class="ptolemy.actor.TypedIOPort">
+        <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
+        </port>
+        <port name="accepted" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
         </port>
     </entity>
-    <entity name="DiscreteClock2" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.02">
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('trigger');&#10;	this.output('audio');&#10;}&#10;exports.initialize = function() {&#10;	var self = this;&#10;	var n = 0;&#10;	function generateSamples() {&#10;		var samples = [];&#10;		for (var i = 0; i &lt; 128; i++) {&#10;			samples[i] = Math.sin(2 * Math.PI * 440 * n++/ 8000);&#10;		}&#10;		self.send('audio', [samples]);&#10;	}&#10;	this.addInputHandler('trigger', generateSamples);&#10;	generateSamples();&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
         </property>
-        <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 410.0]">
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
         </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 135.0}">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="audio" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
     </entity>
-    <entity name="Ramp2" class="ptolemy.actor.lib.Ramp">
-        <property name="init" class="ptolemy.actor.parameters.PortParameter" value="220">
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AudioPlayer.input&quot;,x=215.0,y=135.0}, tail={id=&quot;JavaScript.audio&quot;,x=80.0,y=135.0}, points={} } }">
         </property>
-        <property name="step" class="ptolemy.actor.parameters.PortParameter" value="2">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.trigger&quot;,x=80.0,y=135.0}, tail={id=&quot;AudioPlayer.accepted&quot;,x=215.0,y=135.0}, points={0.0,135.0,0.0,95.0,300.0,95.0,300.0,135.0} } }">
         </property>
-        <doc>Create a sequence of tokens with increasing value</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 420.0]">
-        </property>
-    </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <link port="TimedPlotter.input" relation="relation5"/>
-    <link port="DiscreteClock.output" relation="relation"/>
-    <link port="Ramp.output" relation="relation2"/>
-    <link port="Ramp.trigger" relation="relation"/>
-    <link port="Ramp.step" relation="relation4"/>
-    <link port="Expression.output" relation="relation5"/>
-    <link port="Expression.n" relation="relation2"/>
-    <link port="DiscreteClock2.output" relation="relation3"/>
-    <link port="Ramp2.output" relation="relation4"/>
-    <link port="Ramp2.trigger" relation="relation3"/>
+    <link port="AudioPlayer.input" relation="relation6"/>
+    <link port="AudioPlayer.accepted" relation="relation7"/>
+    <link port="JavaScript.trigger" relation="relation7"/>
+    <link port="JavaScript.audio" relation="relation6"/>
 </entity>
