@@ -35,8 +35,8 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, exports, require */
-/*jshint globalstrict: true*/
+/*globals Java, exports, print, require */
+/*jshint globalstrict: true, moz: true*/
 "use strict";
 
 var env = {};
@@ -70,6 +70,6 @@ exports.exit = function(code) {
     var StringUtilities = Java.type('ptolemy.util.StringUtilities');
     print("ptolemy/actor/lib/jjs/modules/process/process.js: called exit()");
     StringUtilities.exit(code);
-}
+};
 
 exports.env = env;
