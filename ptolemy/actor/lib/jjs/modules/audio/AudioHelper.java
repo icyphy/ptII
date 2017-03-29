@@ -110,10 +110,12 @@ public class AudioHelper extends VertxHelperBase {
      */
     public void putSamples(double[][] samplesArray, final Runnable callback)
             throws IllegalStateException {
-        if (!_playbackIsActive) {
-            throw new IllegalStateException(
-                    "Attempted to play audio data, but "
-                    + "playback is inactive.  Try to startPlayback().");
+        synchronized(this) {
+            if (!_playbackIsActive) {
+                throw new IllegalStateException(
+                        "Attempted to play audio data, but "
+                                + "playback is inactive.  Try to startPlayback().");
+            }
         }
         // Convert array of double valued samples into
         // the proper byte array format.
@@ -188,7 +190,7 @@ public class AudioHelper extends VertxHelperBase {
         }
         _outputFormat = outputFormat;
         
-        // FIXME: Only supporting PCM_SIGNED, big-endian data.
+        // NOTE: Only supporting PCM_SIGNED, big-endian data.
         // Should more alternatives be provided?
         boolean bigEndian = true;
         // For PCM data, the size of a frame (in bytes) is always
@@ -269,7 +271,7 @@ public class AudioHelper extends VertxHelperBase {
         }
         _playbackFileFormat = playbackFormat;
         
-        // FIXME: Only supporting PCM_SIGNED, big-endian data.
+        // NOTE: Only supporting PCM_SIGNED, big-endian data.
         // Should more alternatives be provided?
         boolean bigEndian = true;
         // For PCM data, the size of a frame (in bytes) is always
@@ -585,8 +587,10 @@ System.out.println("intValue: " + intValue);
      *  or if stopPlayback() has already been called.
      */
     private void _putSamples(byte[] playbackData) throws IllegalStateException {
-        if (!_playbackIsActive) {
-            return;
+        synchronized(this) {
+            if (!_playbackIsActive) {
+                return;
+            }
         }
         // Now write the array to output device.
         int written = _sourceLine.write(playbackData, 0, playbackData.length);
