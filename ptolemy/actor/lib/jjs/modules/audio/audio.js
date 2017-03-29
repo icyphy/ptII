@@ -28,9 +28,15 @@
 
 /**
  * Module to access audio hardware on the host.
- * FIXME: This is very incomplete! Just a placeholder for now.
+ * This module defines three key classes, Player, ClipPlayer, and
+ * Capture.  The Player class accepts audio data in a variety of formats
+ * and plays them through the default audio output device on the host
+ * platform. The ClipPlayer accepts a URL specifying an audio source
+ * file and plays that.  The Capture class records audio from the default
+ * audio input device, such as a microphone, on the host platform.
+ * 
  * @module audio
- * @author Edward A. Lee
+ * @author Edward A. Lee and Beth Osyk
  */
 
 // Stop extra messages from jslint.  Note that there should be no
@@ -45,6 +51,7 @@ var EventEmitter = require('events').EventEmitter;
 // Reference to the Java class documented at:
 //    http://terra.eecs.berkeley.edu:8080/job/ptII/javadoc/ptolemy/media/javasound/LiveSound.html
 var LiveSound = Java.type('ptolemy.media.javasound.LiveSound');
+
 // Clip playback uses javafx instead of Ptolemy SoundReader since javafx supports mp3
 var AudioClip = Java.type('javafx.scene.media.AudioClip');
 
@@ -99,29 +106,21 @@ exports.Player.prototype.stop = function () {
 
 
 /** Construct an instance of a ClipPlayer object type.  A ClipPlayer plays
- * audio from a URL source. This should be instantiated in your JavaScript code as:
+ *  audio from a URL source. This should be instantiated in your JavaScript code as:
  *  <pre>
  *     var audio = require("audio");
- *     var player = new audio.ClipPlayer();
+ *     var player = new audio.ClipPlayer(url);
  *  </pre>
  *  An instance of this object type implements the following functions:
  *  <ul>
- *  <li> load(url) : Load audio from the specified url.
- *  <li> play(): Play the audio from the previously loaded url.
+ *  <li> play(): Play the audio from the specified url.
  *  <li> stop(): Stop playback.
  *  </ul>
  */
 
-/** Create a ClipPlayer.
+/** Create a ClipPlayer to play the specified URL.
  */
-exports.ClipPlayer = function () {
-    this.clip = null;
-};
-
-/** Load audio from the specified URL.
- * @param url  The URL to load audio from.
- */
-exports.ClipPlayer.prototype.load = function (url) {
+exports.ClipPlayer = function (url) {
     try {
         this.clip = new AudioClip(url);
     } catch (err) {
@@ -133,6 +132,7 @@ exports.ClipPlayer.prototype.load = function (url) {
  */
 exports.ClipPlayer.prototype.play = function () {
     if (this.clip !== null) {
+        this.clip.stop();
         this.clip.play();
     } else {
         error("No audio clip to play.  Please load a url first.");
