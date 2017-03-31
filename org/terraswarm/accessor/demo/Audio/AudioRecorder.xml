@@ -1,0 +1,176 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="AudioRecorder" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10.0">
+        </property>
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 45.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={25, 23, 945, 676}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[711, 566]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.5, 283.0}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo Records five seconds of sound and then&#10;plays it back.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 80.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
+        </property>
+        <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Record and Play Back a Sound">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{120.0, -20.0}">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Here, AudioCapture and AudioPlayer formats are both&#10;set to &quot;raw&quot; so that no transcoding is performed.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 245.0]">
+        </property>
+    </property>
+    <entity name="AudioPlayer" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Accessor to play an audio signal.&#10; *  This accessor accepts as input in a variety of formats and plays&#10; *  back the audio encoded in those input values.&#10; *  &#10; *  This accessor queues the data to be played by the audio system.&#10; *  When the data has been accepted by the audio system to be played,&#10; *  it produces an output with value true. That output should be used&#10; *  as a trigger to provide more audio data. If that new output data&#10; *  is provided before the previously data has been drained by the audio&#10; *  queue, then continuous audio with no gaps is possible.&#10; *  If on the other hand input data is provided too quickly, then it&#10; *  will overwrite the data in the output buffer, thereby creating&#10; *  considerable distortion. If it is provided too slowly, then there&#10; *  will be gaps in the output audio.&#10; *&#10; *  The _inputFormat_ parameter specifies the form in which the audio&#10; *  input will be provided. The available formats include:&#10; *  &#10; *  * &quot;raw&quot;: The input is a byte array representing audio data exactly as&#10; *    captured by default on the host.&#10; *  * &quot;array&quot;: The audio input data is an array of arrays of numbers,&#10; *    where each number is in the range from -1.0 to 1.0.&#10; *    The first index of the input specifies the channel number.&#10; *  * &quot;encoded&quot;: The audio input data is a byte array containing audio&#10; *    data encoded in one of the file format standards such as &#10; *    AIFF (historically associated with Apple computers),&#10; *    AIFF-C (a compressed version of AIFF),&#10; *    AU (historically associated with Sun Microsystems and Unix computers), or&#10; *    WAVE (historically associated with Windows PCs).&#10; *  &#10; *  The _playbackOptions_ parameter is an object with the following properties,&#10; *  all of which are optional:&#10; *  &#10; *  * _bitsPerSample_: The number of bits per sample. This is an integer that&#10; *    defaults to 16.&#10; *  * _channels_: The number of channels. This defaults to 1.&#10; *  * _sampleRate_: The sample rate. This is an integer that defaults to 8000.&#10; *    Typical supported sample rates are 8000, 11025, 22050, 44100, and 48000.&#10; *   &#10; *  This accessor requires the optional 'audio' module, which may or may&#10; *  not be provided by an accessor host. Moreover, a host may not support&#10; *  all capture formats and all output formats.&#10; *  &#10; *  @input input The audio data.&#10; *  @output accepted An indicator that the audio data has been queued&#10; *   to the audio system.&#10; *  @parameter inputFormat The format of the input data.&#10; *  @parameter playbackOptions The playback options.&#10; *&#10; *  @accessor audio/AudioPlayer&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals exports, require*/&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;// Set up the accessor.&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('accepted', {&#10;        type: 'boolean',&#10;        spontaneous: true,&#10;    });&#10;    this.parameter('inputFormat', {&#10;        type: 'string',&#10;        value: 'raw',&#10;        options: ['raw', 'array', 'encoded']&#10;    });&#10;    this.parameter('playbackOptions', {&#10;        value: {bitsPerSample: 16, channels: 1, sampleRate: 8000}&#10;    });&#10;};&#10;&#10;var player = null;&#10;var audio = require(&quot;audio&quot;);&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    player = new audio.Player(&#10;            self.getParameter('inputFormat'),&#10;            self.getParameter('playbackOptions'));&#10;    self.addInputHandler('input', function() {&#10;        // FIXME: Input format.&#10;        player.play(self.get('input'), function() {&#10;            self.send('accepted', true);&#10;        });&#10;    });&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (player !== null) {&#10;        player.stop();&#10;        player = null;&#10;    }&#10;};&#10;">
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/audio/AudioPlayer.js">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 165.0]">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor to play an audio signal.&#10; This accessor accepts as input an array of arrays of audio samples,&#10; one per channel. The samples are numbers in the range between -1.0 to 1.0.&#10; It queues the data in the array to be played by the audio system.&#10; When the data has been accepted by the audio system to be played,&#10; it produces an output with value true. That output should be used&#10; as a trigger to provide more output data. If that new output data&#10; is provided before the previously data has been drained by the audio&#10; queue, then continuous audio with no gaps is possible.&#10; If on the other hand input data is provided too quickly, then it&#10; will overwrite the data in the output buffer, thereby creating&#10; considerable distortion.&lt;/p&gt;&#10;&lt;p&gt; FIXME: This accessor is incomplete. It should accept more formats&#10; compatible with AudioCapture.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The audio data.">
+            </property>
+            <property name="accepted (port)" class="ptolemy.kernel.util.StringAttribute" value="An indicator that the audio data has been queued&#10;  to the audio system.">
+            </property>
+        </property>
+        <property name="inputFormat" class="ptolemy.data.expr.Parameter" value="raw">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="playbackOptions" class="ptolemy.data.expr.Parameter" value="{bitsPerSample = 16, channels = 1, sampleRate = 8000}">
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="accepted" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// This accessor collects input data until it has a specified&#10;// number of them. Once it has collected the specified number,&#10;// then it produces on the output the first of the input data chunks,&#10;// and then subsequently, on receiving a trigger input, produces the&#10;// remaining chunks. Then it stops responding.&#10;exports.setup = function() {&#10;	this.input('in');&#10;	this.input('trigger');&#10;	this.output('out');&#10;	this.parameter('numberOfSegments', {type: 'int', value: 16});&#10;}&#10;exports.initialize = function() {&#10;	var self = this;&#10;	var inputCount = 0;&#10;	var outputCount = 0;&#10;	var buffer = [];&#10;	var target = self.getParameter('numberOfSegments');&#10;	&#10;	this.addInputHandler('in', function() {&#10;		// Ignore input if we have already collected enough.&#10;		if (inputCount &lt; target) {&#10;			var data = self.get('in');&#10;			buffer[inputCount++] = data;&#10;			if (inputCount == target) {&#10;				// Produce the first output.&#10;				self.send('out', buffer[0]);&#10;				console.log('Producing first output.');&#10;				outputCount = 1;&#10;			}&#10;		}&#10;	});&#10;	this.addInputHandler('trigger', function() {&#10;		if (inputCount == target &amp;&amp; outputCount &lt; target) {&#10;			// More outputs to produce.&#10;			self.send('out', buffer[outputCount++]);&#10;		}&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 165.0]">
+        </property>
+        <property name="numberOfSegments" class="ptolemy.data.expr.Parameter" value="50">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="in" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="out" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="AudioCapture" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Capture audio from the default audio source on the host (typically the&#10; *  microphone or line in).&#10; *  &#10; *  If the _triggered_ parameter is true (the default), then capture starts&#10; *  when an event appears on the _trigger_ input port and stops after capturing&#10; *  one segment of audio. Otherwise, the accessor continuously captures segments&#10; *  of audio, initiating a new capture after each segment is completed.&#10; *  The _captureTime_ parameter specifies the duration of each segment&#10; *  of audio that is captured (in milliseconds).&#10; *  &#10; *  The _outputFormat_ parameter specifies the form in which the audio&#10; *  should appear on the output. The available formats may include:&#10; *  &#10; *  * &quot;raw&quot;: The output is a byte array representing audio data exactly as&#10; *    captured by default on the host. This is the default and is&#10; *    supported by all hosts.&#10; *  * &quot;array&quot;: The audio data is converted into an array of arrays of numbers (one&#10; *    array per channel), where each number is in the range from -1.0 to 1.0.&#10; *    The output is an array of arrays, where the first index specifies&#10; *    the channel number.&#10; *  * &quot;samples&quot;: The audio data is converted into numbers, where&#10; *    each number is in the range from -1.0 to 1.0, and each individual sample&#10; *    is produced on the output as a number (if there is only one channel) or&#10; *    as an array of numbers (if there is more than one channel).&#10; *    Note that this format introduces quite a lot of overhead, and probably&#10; *    your swarmlet will not able to capture continuous audio.&#10; *  * &quot;aiff&quot;: The audio data is converted into the AIFF file format historically&#10; *    associated with Apple computers.&#10; *  * &quot;aifc&quot;: The audio data is converted into the AIFF-C, a compressed version&#10; *    of AIFF.&#10; *  * &quot;au&quot;: The audio data is converted into the AU file format historically&#10; *    associated with Sun Microsystems and Unix computers.&#10; *  * &quot;wav&quot;: The audio data is converted into the WAVE file format historically&#10; *    associated with Windows PCs.&#10; *  &#10; *  The _captureFormat_ parameter is an object with the following properties,&#10; *  all of which are optional:&#10; *  &#10; *  * _bitsPerSample_: The number of bits per sample. This is an integer that&#10; *    defaults to 16.&#10; *  * _channels_: The number of channels. This defaults to 1.&#10; *  * _sampleRate_: The sample rate. This is an integer that defaults to 8000.&#10; *    Typical supported sample rates are 8000, 11025, 22050, 44100, and 48000.&#10; *   &#10; *  This accessor requires the optional 'audio' module, which may or may&#10; *  not be provided by an accessor host. Moreover, a host may not support&#10; *  all capture formats and all output formats.&#10; *&#10; *  @accessor audio/AudioCapture&#10; *  @author  Edward A. Lee and Ilge Akkya&#10; *  @input trigger A trigger input for triggered mode.&#10; *   The value is ignored and can be anything.&#10; *  @output {Object} signal The audio output.&#10; *  @parameter captureFormat The details of the audio format as an object.&#10; *   This defaults to {bitsPerSample: 16, channels: 1, sampleRate: 8000}.&#10; *  @parameter {int} captureTime The length of time for each audio capture&#10; *   (in milliseconds).&#10; *   This defaults to 1000, capturing 1 second of audio at a time.&#10; *  @parameter {string} outputFormat The format of the output data representing&#10; *   captured audio. This is a string that defaults to 'raw', meaning that&#10; *   the raw bytes are produced on the output.&#10; *  @parameter {boolean} triggered If true, use triggered mode.&#10; *   Otherwise, use open-loop mode. This is a boolean that defaults to true.&#10; *   This parameter is checked only upon initialization.&#10;&#10; *  @version $$Id$$&#10; *  @input trigger Input that triggers recording.&#10; *  @output {number} signal A sequence of numbers representing the captured audio signal.&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals addInputHandler, exports, input, output, removeInputHandler, require, send */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var audio = require(&quot;audio&quot;);&#10;&#10;exports.setup = function () {&#10;    this.input('trigger');&#10;    this.parameter('captureFormat', {&#10;        value: {bitsPerSample: 16, channels: 1, sampleRate: 8000}&#10;    });&#10;    this.parameter('captureTime', {&#10;        type: 'int',&#10;        value: 1000&#10;    });&#10;    this.parameter('outputFormat', {&#10;        type: 'string',&#10;        value: 'raw'&#10;    });&#10;    this.parameter('triggered', {&#10;        type: 'boolean',&#10;        value: true&#10;    });&#10;    this.output('signal');&#10;    &#10;    // Retrieve the supported outputFormat options from the audio module.&#10;    // This is in a try-catch so that this accessor can be instantiated even if the&#10;    // host does not provide a audio module.&#10;    try {&#10;        this.parameter('outputFormat', {&#10;            type: 'string',&#10;            value: 'raw',&#10;            'options': audio.byteFormats()&#10;        });&#10;    } catch (err) {&#10;        error(err);&#10;    }&#10;};&#10;&#10;var recorder = null;&#10;var cacheLength = 128;&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;    recorder = new audio.Capture(&#10;            self.getParameter('captureTime'),&#10;            self.getParameter('outputFormat'),&#10;            self.getParameter('captureFormat')&#10;    );&#10;    recorder.on('capture', function(audioData) {&#10;        self.send('signal', audioData);&#10;        if (self.getParameter('triggered')) {&#10;            recorder.stop();&#10;        }&#10;    });&#10;    &#10;    if (self.getParameter('triggered')) {&#10;        this.addInputHandler(&quot;trigger&quot;, function() {&#10;            recorder.start();&#10;        });&#10;    } else {&#10;        recorder.start();&#10;    }&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (recorder !== null) {&#10;        recorder.stop();&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/audio/AudioCapture.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Capture audio from the default audio source on the host (typically the&#10; microphone or line in).&lt;/p&gt;&#10;&lt;p&gt; If the &lt;em&gt;triggered&lt;/em&gt; parameter is true (the default), then capture starts&#10; when an event appears on the &lt;em&gt;trigger&lt;/em&gt; input port and stops after capturing&#10; one segment of audio. Otherwise, the accessor continuously captures segments&#10; of audio, initiating a new capture after each segment is completed.&#10; The &lt;em&gt;captureTime&lt;/em&gt; parameter specifies the duration of each segment&#10; of audio that is captured (in milliseconds).&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;outputFormat&lt;/em&gt; parameter specifies the form in which the audio&#10; should appear on the output. The available formats may include:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&amp;quot;raw&amp;quot;: The output is a byte array representing audio data exactly as&#10;captured in the specified capture format. This is the default and is&#10;supported by all hosts.&lt;/li&gt;&#10;&lt;li&gt;&amp;quot;array&amp;quot;: The audio data is converted into arrays of numbers (one per&#10;channel), where each number is in the range from -1.0 to 1.0.&#10;The output is an array of arrays, where the first index specifies&#10;the channel number.&lt;/li&gt;&#10;&lt;li&gt;&amp;quot;samples&amp;quot;: The audio data is converted into numbers, where&#10;each number is in the range from -1.0 to 1.0, and each individual sample&#10;is produced on the output as a number (if there is only one channel) or&#10;as an array of numbers (if there is more than one channel).&#10;Note that this format introduces quite a lot of overhead, and probably&#10;your swarmlet will not able to capture continuous audio.&lt;/li&gt;&#10;&lt;li&gt;&amp;quot;aiff&amp;quot;: The audio data is converted into the AIFF file format historically&#10;associated with Apple computers.&lt;/li&gt;&#10;&lt;li&gt;&amp;quot;aifc&amp;quot;: The audio data is converted into the AIFF-C, a compressed version&#10;of AIFF.&lt;/li&gt;&#10;&lt;li&gt;&amp;quot;au&amp;quot;: The audio data is converted into the AU file format historically&#10;associated with Sun Microsystems and Unix computers.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&amp;quot;wav&amp;quot;: The audio data is converted into the WAVE file format historically&#10;associated with Windows PCs.&lt;/p&gt;&#10;&lt;p&gt;The &lt;em&gt;captureFormat&lt;/em&gt; argument is an object with the following properties,&#10;all of which are optional:&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;em&gt;bitsPerSample&lt;/em&gt;: The number of bits per sample. This is an integer that&#10;defaults to 16.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;&lt;em&gt;channels&lt;/em&gt;: The number of channels. This defaults to 1.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;em&gt;sampleRate&lt;/em&gt;: The sample rate. This is an integer that defaults to 8000.&#10;Typical supported sample rates are 8000, 11025, 22050, 44100, and 48000.&lt;/p&gt;&#10;&lt;p&gt;This accessor requires the optional 'audio' module, which may or may&#10;not be provided by an accessor host. Moreover, a host may not support&#10;all capture formats and all output formats.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee and Ilge Akkya">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="Input that triggers recording.">
+            </property>
+            <property name="signal (port)" class="ptolemy.kernel.util.StringAttribute" value="A sequence of numbers representing the captured audio signal.">
+            </property>
+            <property name="captureTime (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The length of time for each audio capture&#10;  (in milliseconds).&#10;  This defaults to 1000, capturing 1 second of audio at a time.">
+            </property>
+            <property name="outputFormat (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The format of the output data representing&#10;  captured audio. This is a string that defaults to 'raw', meaning that&#10;  the raw bytes are produced on the output.">
+            </property>
+            <property name="triggered (parameter)" class="ptolemy.kernel.util.StringAttribute" value="If true, use triggered mode.&#10;  Otherwise, use open-loop mode. This is a boolean that defaults to true.&#10;  This parameter is checked only upon initialization.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="outputFormat" class="ptolemy.data.expr.Parameter" value="raw">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{95.0, 175.0}">
+        </property>
+        <property name="captureTime" class="ptolemy.data.expr.Parameter" value="100">
+        </property>
+        <property name="triggered" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="signal" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;AudioPlayer.input&quot;,x=380.0,y=165.0}, tail={id=&quot;JavaScript.out&quot;,x=255.0,y=165.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.trigger&quot;,x=255.0,y=165.0}, tail={id=&quot;AudioPlayer.accepted&quot;,x=380.0,y=165.0}, points={180.0,155.0,180.0,125.0,465.0,125.0,465.0,165.0} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="AudioPlayer.input" relation="relation"/>
+    <link port="AudioPlayer.accepted" relation="relation2"/>
+    <link port="JavaScript.trigger" relation="relation2"/>
+    <link port="JavaScript.in" relation="relation3"/>
+    <link port="JavaScript.out" relation="relation"/>
+    <link port="AudioCapture.signal" relation="relation3"/>
+</entity>
