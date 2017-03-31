@@ -51,15 +51,16 @@ var EventEmitter = require('events').EventEmitter;
 // Clip playback uses javafx instead of Ptolemy SoundReader since javafx supports mp3
 var AudioClip = Java.type('javafx.scene.media.AudioClip');
 
-/** Return an array of capture formats currently available
- *  on the current host. This includes at least 'raw'.
+/** Return an array of byte formats currently available for audio capture
+ *  on the current host. This includes at least 'raw', which is whatever
+ *  byte format the host audio hardware happens to provide when capturing
+ *  audio from the microphone.
  *  @return An array of capture formats.
  */
-exports.outputFormats = function () {
+exports.byteFormats = function () {
     // The Java.from() Nashorn extension converts a Java array into a JavaScript array.
-    return Java.from(AudioHelper.outputFormats());
+    return Java.from(AudioHelper.byteFormats());
 };
-
 
 /** Construct an instance of an Player object type. This should be instantiated in your
  *  JavaScript code as
@@ -68,16 +69,49 @@ exports.outputFormats = function () {
  *     var player = new audio.Player();
  *  </pre>
  *  An instance of this object type implements the following functions:
- *  (FIXME: replace with your design)
  *  <ul>
- *  <li> play(data): Play the specified array.
+ *  <li> play(data, callback): Play the specified array, and call the specified
+ *       callback function when the data has been accepted.
  *  <li> stop(): Stop playback and free the audio resources.
  *  </ul>
- *  @param playbackFormat A JSON object with fields 'FIXME' and 'FIXME' that give the
- *   FIXME properties of the audio such as sample rate, etc. Provide reasonable
- *   defaults.
+ *  
+ *  The callback function should be used to construct the next batch of
+ *  audio data to be played. The callback function will be called as soon
+ *  as the specified data has been queued to the audio system.
+ *  You should not call the play() function again until the callback has
+ *  been called or you might overwrite the audio data.
+ *  
+ *  The _playbackFormat_ argument specifies the form in which the audio
+ *  data will be provided. The available formats include:
+ *  
+ *  * "raw": The data is a byte array representing audio data exactly as
+ *    captured by default on the host.
+ *  * "array": The audio input data is an array of arrays of numbers,
+ *    where each number is in the range from -1.0 to 1.0.
+ *    The first index of the input specifies the channel number.
+ *  * "encoded": The audio input data is a byte array containing audio
+ *    data encoded in one of the file format standards such as 
+ *    AIFF (historically associated with Apple computers),
+ *    AIFF-C (a compressed version of AIFF),
+ *    AU (historically associated with Sun Microsystems and Unix computers), or
+ *    WAVE (historically associated with Windows PCs).
+ *  
+ *  The optional _playbackOptions_ argument is an object with the following properties,
+ *  all of which are optional:
+ *  
+ *  * _bitsPerSample_: The number of bits per sample. This is an integer that
+ *    defaults to 16.
+ *  * _channels_: The number of channels. This defaults to 1.
+ *  * _sampleRate_: The sample rate. This is an integer that defaults to 8000.
+ *    Typical supported sample rates are 8000, 11025, 22050, 44100, and 48000.
+ *    
+ *  The audio data will be converted to this specified format before being sent
+ *  to the audio hardware.
+ *  
+ *  @param playbackFormat The format of the input data.
+ *  @param playbackOptions The playback options.
  */
-exports.Player = function (playbackOptions, playbackFormat) {
+exports.Player = function (playbackFormat, playbackOptions) {
     this.helper = new AudioHelper(actor, this);
 
     playbackOptions = playbackOptions || {};
@@ -88,20 +122,26 @@ exports.Player = function (playbackOptions, playbackFormat) {
     this.helper.setPlaybackParameters(playbackOptions, playbackFormat);
     
     this.playbackFormat = playbackFormat;
-
-    // Start playback.
-    this.helper.startPlayback();
 };
 
 /** Play audio data. This function returns immediately, but this does not
  *  mean that the samples have been played. In fact, they have not even been
  *  queued to audio system, necessarily.
+ *  This function should not be called again before the callback has
+ *  been invoked.
  *  @param data An array of arrays of numbers in the range -1 to 1 to be played.
  *  @param callback A callback function to invoke when the samples have been
  *   queued to the audio system.
  */
 exports.Player.prototype.play = function (data, callback) {
-    this.helper.putSamples(data, callback);
+    // Start playback, if it isn't already running.
+    this.helper.startPlayback();
+
+    if (this.playbackFormat === 'array') {
+        this.helper.putSamples(data, callback);
+    } else {
+        this.helper.putBytes(data, callback);
+    }
 };
 
 /** Stop playback. */
@@ -175,13 +215,6 @@ exports.ClipPlayer.prototype.stop = function () {
  *    channel), where each number is in the range from -1.0 to 1.0.
  *    The argument passed to the "capture" event is an array of arrays,
  *    where the first index specifies the channel number.
- *  * "samples": The audio data is converted into numbers, where
- *    each number is in the range from -1.0 to 1.0, and each individual sample
- *    is emitted as a "capture" event with an argument that is
- *    a number (if there is only one channel) or
- *    as an array of numbers (if there is more than one channel).
- *    Note that this format introduces quite a lot of overhead, and using
- *    it may prevent you from capturing continuous audio.
  *  * "aiff": The audio data is converted into the AIFF file format historically
  *    associated with Apple computers.
  *  * "aifc": The audio data is converted into the AIFF-C, a compressed version
@@ -191,7 +224,7 @@ exports.ClipPlayer.prototype.stop = function () {
  *  * "wav": The audio data is converted into the WAVE file format historically
  *    associated with Windows PCs.
  *    
- *  The optional _captureFormat_ argument is an object with the following properties,
+ *  The optional _captureOptions_ argument is an object with the following properties,
  *  all of which are optional:
  *  
  *  * _bitsPerSample_: The number of bits per sample. This is an integer that
@@ -204,15 +237,15 @@ exports.ClipPlayer.prototype.stop = function () {
  *  @param outputFormat The format of the data passed to the "capture" event
  *   listeners as specified above.
  */
-exports.Capture = function (captureTime, outputFormat, captureFormat) {
+exports.Capture = function (captureTime, outputFormat, captureOptions) {
     this.helper = new AudioHelper(actor, this);
 
-    captureFormat = captureFormat || {};
-    captureFormat.bitsPerSample = captureFormat.bitsPerSample || 16;
-    captureFormat.channels = captureFormat.channels || 1;
-    captureFormat.sampleRate = captureFormat.sampleRate || 8000;
+    captureOptions = captureOptions || {};
+    captureOptions.bitsPerSample = captureOptions.bitsPerSample || 16;
+    captureOptions.channels = captureOptions.channels || 1;
+    captureOptions.sampleRate = captureOptions.sampleRate || 8000;
 
-    this.helper.setCaptureParameters(captureFormat, captureTime, outputFormat);
+    this.helper.setCaptureParameters(captureOptions, captureTime, outputFormat);
     
     this.outputFormat = outputFormat;
 };
@@ -240,6 +273,7 @@ exports.Capture.prototype._captureData = function(audioData) {
         }
         this.emit('capture', channels);
     } else if (this.outputFormat == 'samples') {
+        // NOTE: This is not documented nor encouraged anymore.
         if (audioData.length === 1) {
             for (var i = 0; i < audioData[0].length; i++) {
                 this.emit('capture', audioData[0][i]);

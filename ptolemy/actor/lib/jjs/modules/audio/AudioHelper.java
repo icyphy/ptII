@@ -30,6 +30,7 @@ package ptolemy.actor.lib.jjs.modules.audio;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Map;
 
 import javax.sound.sampled.AudioFileFormat;
@@ -42,6 +43,7 @@ import javax.sound.sampled.Line.Info;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.SourceDataLine;
 import javax.sound.sampled.TargetDataLine;
+import javax.sound.sampled.UnsupportedAudioFileException;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
@@ -73,16 +75,23 @@ public class AudioHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
-    /** Return an array of supported capture formats.
+    /** Return an array of supported byte formats for audio.
      *  @return An array of strings.
      */
-    public static String[] outputFormats() {
-        return _OUTPUT_FORMATS;
+    public static String[] byteFormats() {
+        String[] result = new String[_BYTE_FORMATS.values().length];
+        int i = 0;
+        for (_BYTE_FORMATS value : _BYTE_FORMATS.values()) {
+            result[i++] = value.toString();
+        }
+        return result;
     }
     
     /** Play an array of audio samples. This method returns immediately
      *  and invokes the specified callback function when the samples
      *  have been successfully queued into the audio system.
+     *  This method should not be called again before the callback has
+     *  been invoked.
      *  <p>
      *  The samples should be in the range (-1, 1). Samples that are
      *  outside this range will be hard-clipped so that they fall
@@ -105,11 +114,11 @@ public class AudioHelper extends VertxHelperBase {
      *   to access the audio playback resources.
      *
      *  @exception IllegalStateException If audio playback is currently
-     *  inactive. That is, If startPlayback() has not yet been called
-     *  or if stopPlayback() has already been called.
+     *   inactive. That is, If startPlayback() has not yet been called
+     *   or if stopPlayback() has already been called.
      */
     public void putSamples(double[][] samplesArray, final Runnable callback)
-            throws IllegalStateException {
+            throws IllegalStateException, IOException {
         synchronized(this) {
             if (!_playbackIsActive) {
                 throw new IllegalStateException(
@@ -123,7 +132,72 @@ public class AudioHelper extends VertxHelperBase {
         
         Thread worker = new Thread() {
             public void run() {
+                // The following function call will block if the buffer gets full.
                 _putSamples(playbackData);
+                
+                // Invoke the callback.
+                if (callback != null) {
+                    _issueResponse(() -> {
+                        callback.run();
+                    });
+                }
+            }
+        };
+        worker.start();
+    }
+
+    /** Play an array of audio samples given as a byte array.
+     *  This method returns immediately
+     *  and invokes the specified callback function when the samples
+     *  have been successfully queued into the audio system.
+     *  This method should not be called again before the callback has
+     *  been invoked.
+     *
+     *  @param audioData Byte array to play.
+     *  @param callback A callback function to invoke when the samples
+     *   have been queued into the audio system.
+     *
+     *  @exception IOException If the calling program does not have permission
+     *   to access the audio playback resources.
+     *  @exception IllegalStateException If audio playback is currently
+     *   inactive. That is, If startPlayback() has not yet been called
+     *   or if stopPlayback() has already been called.
+     *  @throws UnsupportedAudioFileException If the audioData provided is
+     *   not in a supported format.
+     */
+    public void putBytes(byte[] audioData, final Runnable callback)
+            throws IllegalStateException, IOException, UnsupportedAudioFileException {
+        synchronized(this) {
+            if (!_playbackIsActive) {
+                throw new IllegalStateException(
+                        "Attempted to play audio data, but "
+                                + "playback is inactive.  Try to startPlayback().");
+            }
+        }
+        
+        if (!_playbackFileFormat.equals("raw")) {
+            // Input data is encoded. Attempt to transcode it to the specified output format.
+            ByteArrayInputStream stream = new ByteArrayInputStream(audioData);
+            AudioInputStream audioStream = AudioSystem.getAudioInputStream(stream);
+            AudioInputStream targetStream = AudioSystem.getAudioInputStream(_playbackFormat, audioStream);
+            long length = targetStream.getFrameLength();
+            if (length > Integer.MAX_VALUE) {
+                throw new UnsupportedAudioFileException("Audio segment is too long.");
+            }
+            int bufferSize = ((int) length) * targetStream.getFormat().getFrameSize();
+            if (_playbackData == null || _playbackData.length != bufferSize) {
+                // Hopefully, the allocation is done only once.
+                _playbackData = new byte[bufferSize];
+            }
+            targetStream.read(_playbackData, 0, bufferSize);
+        } else {
+            _playbackData = audioData;
+        }
+        
+        Thread worker = new Thread() {
+            public void run() {
+                // The following function call will block if the buffer gets full.
+                _putSamples(_playbackData);
                 
                 // Invoke the callback.
                 if (callback != null) {
@@ -178,17 +252,11 @@ public class AudioHelper extends VertxHelperBase {
         _maxSampleReciprocal = 1.0 / (1L << bitsPerSample);
                 
         // Make sure the outputFormat matches one of those supported.
-        boolean found = false;
-        for (int i = 0; i < _OUTPUT_FORMATS.length; i++) {
-            if (_OUTPUT_FORMATS[i].equals(outputFormat)) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
+        try {
+            _outputFormat = _BYTE_FORMATS.valueOf(outputFormat);
+        } catch (IllegalArgumentException ex) {
             _formatError(outputFormat);
         }
-        _outputFormat = outputFormat;
         
         // NOTE: Only supporting PCM_SIGNED, big-endian data.
         // Should more alternatives be provided?
@@ -225,8 +293,7 @@ public class AudioHelper extends VertxHelperBase {
     /** Set the playback parameters for audio.
      *  This will stop any active playback and restart it.
      *  
-     *  The captureOptions argument contains the following
-     *  entries:
+     *  The playbackOptions argument contains the following entries:
      *  <ol>
      *  <li> bitsPerSample: The number of bits per sample.
      *  <li> channels: The number of channels.
@@ -236,9 +303,8 @@ public class AudioHelper extends VertxHelperBase {
      *  22050, 44100, and 48000 Hz. If this method is not invoked,
      *  then the default value of 8000 Hz is used.
      *
-     *  @param playbackOptions The parameters for capture.
-     *  @param captureTime The amount of time (in ms) per capture.
-     *  @param playbackFormat The requested output format.
+     *  @param playbackOptions The parameters for playback.
+     *  @param playbackFormat The expected format of the input data.
      *
      *  @exception IOException If the specified sample rate is
      *   not supported by the audio hardware or by Java.
@@ -257,20 +323,7 @@ public class AudioHelper extends VertxHelperBase {
         // Set persistent variables that depend on the parameters.
         _playbackChannels = channels;
         _playbackBytesPerSample = bitsPerSample / 8;
-                
-        // Make sure the playbackFormat matches one of those supported.
-        boolean found = false;
-        for (int i = 0; i < _OUTPUT_FORMATS.length; i++) {
-            if (_OUTPUT_FORMATS[i].equals(playbackFormat)) {
-                found = true;
-                break;
-            }
-        }
-        if (!found) {
-            _formatError(playbackFormat);
-        }
-        _playbackFileFormat = playbackFormat;
-        
+                        
         // NOTE: Only supporting PCM_SIGNED, big-endian data.
         // Should more alternatives be provided?
         boolean bigEndian = true;
@@ -280,6 +333,7 @@ public class AudioHelper extends VertxHelperBase {
         float frameRate = sampleRate;
         _playbackFormat = new AudioFormat(AudioFormat.Encoding.PCM_SIGNED, sampleRate, bitsPerSample,
                 channels, frameSize, frameRate, bigEndian);
+        _playbackFileFormat = playbackFormat;
         
         synchronized(this) {
             if (_playbackIsActive) {
@@ -315,7 +369,7 @@ public class AudioHelper extends VertxHelperBase {
     /** Stop audio capture if it is active.
      */
     public synchronized void stopCapture() {
-        if (_captureIsActive) {
+        if (!_captureIsActive) {
             return;
         }
         _captureIsActive = false;
@@ -325,7 +379,7 @@ public class AudioHelper extends VertxHelperBase {
     /** Stop audio playback if it is active.
      */
     public synchronized void stopPlayback() {
-        if (_playbackIsActive) {
+        if (!_playbackIsActive) {
             return;
         }
         _playbackIsActive = false;
@@ -385,7 +439,7 @@ public class AudioHelper extends VertxHelperBase {
      *  output format and return an object containing the converted
      *  data. The nature of the object will depend on the format.
      *  <p>
-     *  If the output format is "array" or "samples", then
+     *  If the output format is "array", then
      *  the returned object is an array of arrays containing
      *  audio samples will have values in the range
      *  [-1.0, 1.0], regardless of the audio bit resolution (bits per
@@ -397,10 +451,11 @@ public class AudioHelper extends VertxHelperBase {
      *  @return Converted data.
      *  @throws IOException If the output format is not supported.
      */
-    private Object _convertFormat(byte[] rawData, String outputFormat) throws IOException {
-        if (outputFormat.equals("raw")) {
+    private Object _convertBytesToFormat(byte[] rawData, _BYTE_FORMATS outputFormat) throws IOException {
+        switch(outputFormat) {
+        case raw:
             return rawData;
-        } else if (outputFormat.equals("array") || outputFormat.equals("samples")) {
+        case array:
             // Check whether we need to reallocate.
             if (_captureChannels != _audioInDoubleArray.length
                     || _captureTransferSize != _audioInDoubleArray[0].length) {
@@ -411,40 +466,47 @@ public class AudioHelper extends VertxHelperBase {
             // Convert byte array to double array.
             _byteArrayToDoubleArray(_audioInDoubleArray, rawData);
             return _audioInDoubleArray;
-        } else {
+        default:
             ByteArrayInputStream byteStream = new ByteArrayInputStream(rawData);
             AudioInputStream rawStream = new AudioInputStream(byteStream, _captureFormat, _captureTransferSize);
             ByteArrayOutputStream codedStream = new ByteArrayOutputStream();
-            if (outputFormat.equals("wav")) {
-                AudioSystem.write(rawStream, AudioFileFormat.Type.WAVE, codedStream);
-            } else if (outputFormat.equals("aiff")) {
-                AudioSystem.write(rawStream, AudioFileFormat.Type.AIFF, codedStream);
-            } else if (outputFormat.equals("aifc")) {
-                AudioSystem.write(rawStream, AudioFileFormat.Type.AIFC, codedStream);
-            } else if (outputFormat.equals("au")) {
-                AudioSystem.write(rawStream, AudioFileFormat.Type.AU, codedStream);
-            } else {
-                _formatError(outputFormat);
+            AudioFileFormat.Type type = null;
+            switch(outputFormat) {
+            case wav:
+                type = AudioFileFormat.Type.WAVE;
+                break;
+            case aiff:
+                type = AudioFileFormat.Type.AIFF;
+                break;
+            case aifc:
+                type = AudioFileFormat.Type.AIFC;
+                break;
+            case au:
+                type = AudioFileFormat.Type.AU;
+                break;
+            default:
+                _formatError(outputFormat.name());
             }
+            AudioSystem.write(rawStream, type, codedStream);
             return codedStream.toByteArray();
         }
     }
-
+    
     /** Convert a double array of audio samples into a byte array of
-     * audio samples in linear signed PCM big endian format. The
-     * samples contained in <i>doubleArray</i> should be in the
-     * range (-1, 1). Samples outside this range will be hard clipped
-     * to the range (-1, 1).
-     * @param doubleArray Two dimensional array holding audio samples.
-     *  For each channel, m, doubleArray[m] is a single dimensional
-     *  array containing samples for channel m. All channels are
-     *  required to have the same number of samples, but this is
-     *  not checked.
-     * @return The linear signed PCM big endian byte array formatted
-     *  array representation of <i>doubleArray</i>. The length of
-     *  the returned array is (doubleArray[i].length*bytesPerSample*channels).
+     *  audio samples in linear signed PCM big endian format. The
+     *  samples contained in <i>doubleArray</i> should be in the
+     *  range (-1, 1). Samples outside this range will be hard clipped
+     *  to the range (-1, 1).
+     *  @param doubleArray Two dimensional array holding audio samples.
+     *   For each channel, m, doubleArray[m] is a single dimensional
+     *   array containing samples for channel m. All channels are
+     *   required to have the same number of samples, but this is
+     *   not checked.
+     *  @return The linear signed PCM big endian byte array formatted
+     *   array representation of <i>doubleArray</i>. The length of
+     *   the returned array is (doubleArray[i].length*bytesPerSample*channels).
      */
-    protected byte[] _doubleArrayToByteArray(double[][] doubleArray) {
+    private byte[] _doubleArrayToByteArray(double[][] doubleArray) {
         // This method is most efficient if repeated calls pass the same size
         // array. In this case, it does not re-allocate the byte array that
         // it returns, but rather reuses the same array on the heap.
@@ -468,7 +530,6 @@ public class AudioHelper extends VertxHelperBase {
                 } else if (sample < -1.0) {
                     sample = -1.0;
                 }
-System.out.println("sample: " + sample);
 
                 // signed integer representation of current sample of the
                 // current channel.
@@ -479,7 +540,6 @@ System.out.println("sample: " + sample);
                 if (intValue == scaleFactor) {
                     intValue--;
                 }
-System.out.println("intValue: " + intValue);
 
                 int base = currSamp * _playbackBytesPerSample * _playbackChannels
                         + _playbackBytesPerSample * currChannel;
@@ -557,17 +617,9 @@ System.out.println("intValue: " + intValue);
      *  @throws IOException Always thrown.
      */
     private void _formatError(String format) throws IOException {
-        // Construct an informative error message.
-        StringBuffer list = new StringBuffer();
-        for (int i = 0; i < _OUTPUT_FORMATS.length; i++) {
-            if (i > 0) {
-                list.append(", ");
-            }
-            list.append(_OUTPUT_FORMATS[i]);
-        }
         throw new IOException(
                 "Unrecognized format: " + format
-                + "\nThe supported formats are:\n" + list);
+                + "\nThe supported formats are:\n" + Arrays.toString(byteFormats()));
     }
 
     /** Play audio data, blocking until they are queued.
@@ -655,7 +707,7 @@ System.out.println("intValue: " + intValue);
                             if (_captureIsActive) {
                                 try {
                                     // This conversion should occur in a new thread, and we should switch buffers.
-                                    Object outputData = _convertFormat(rawData, _outputFormat);
+                                    Object outputData = _convertBytesToFormat(rawData, _outputFormat);
                                     _currentObj.callMember("_captureData", outputData);
                                 } catch (IOException e) {
                                     // This should not occur because setCaptureParameters checks outputFormat.
@@ -673,11 +725,11 @@ System.out.println("intValue: " + intValue);
     
     /** Start playback.
      *  @throws IOException If the format is not supported or if the line
-     *   is not avaialble.
+     *   is not available.
      */
     private void _startPlayback() throws IOException {
         // Source DataLine is really a target for
-        // audio data, not a source.
+        // audio data, not a source. Dumb name.
         try {
             _sourceLine = AudioSystem.getSourceDataLine(_playbackFormat);
             _sourceLine.open(_playbackFormat);
@@ -701,6 +753,7 @@ System.out.println("intValue: " + intValue);
         if (_targetLine != null) {
             if (_targetLine.isOpen() == true) {
                 _targetLine.stop();
+                _targetLine.flush();
                 _targetLine.close();
                 _targetLine = null;
             }
@@ -711,8 +764,11 @@ System.out.println("intValue: " + intValue);
      */
     private void _stopPlayback() {
         if (_sourceLine != null) {
-            _sourceLine.drain();
+            // Do not drain. Stop immediately.
+            // _sourceLine.drain();
             _sourceLine.stop();
+            // Discard queued data.
+            _sourceLine.flush();
             _sourceLine.close();
         }
 
@@ -724,6 +780,9 @@ System.out.println("intValue: " + intValue);
 
     /** Array of audio samples in double format. */
     private double[][] _audioInDoubleArray;
+
+    /** List of formats for byte stream encoding of audio. */
+    private enum _BYTE_FORMATS {raw, array, aiff, aifc, au, wav};
 
     /** The number of bytes per sample, default 2. */
     private int _captureBytesPerSample = 2;
@@ -742,16 +801,17 @@ System.out.println("intValue: " + intValue);
     
     /** true is audio capture is currently active. */
     private boolean _captureIsActive = false;
-        
+
+    /** The number of audio samples to transfer per channel when
+     * getSamples() is invoked. */
+    private int _captureTransferSize = 128;
+
     /** Maximum value for the given number of bits. */
     private double _maxSampleReciprocal = 1.0 / (1L << 16);
     
     /** Specification of the output format to use. */
-    private String _outputFormat = "raw";
+    private _BYTE_FORMATS _outputFormat = _BYTE_FORMATS.raw;
     
-    /** List of formats for the output. */
-    private static final String[] _OUTPUT_FORMATS = {"raw", "array", "samples", "aiff", "aifc", "au", "wav"};
-
     /** Number of playback bytes per sample. */
     private int _playbackBytesPerSample = 2;
 
@@ -771,15 +831,11 @@ System.out.println("intValue: " + intValue);
     private boolean _playbackIsActive = false;
     
     /** Line into which to send audio data to be played over the speakers. */
-    SourceDataLine _sourceLine;
+    private SourceDataLine _sourceLine;
     
     /** Information about the data line. */
     private Info _targetInfo;
 
     /** Interface to the hardware for producing sound. */
     private TargetDataLine _targetLine;
-    
-    /** The number of audio samples to transfer per channel when
-     * getSamples() is invoked. */
-    private int _captureTransferSize = 128;
 }
