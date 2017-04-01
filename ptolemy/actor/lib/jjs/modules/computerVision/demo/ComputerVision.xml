@@ -1,0 +1,646 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="ComputerVision" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[120.0, 60.0]">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={98, 29, 1103, 686}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[875, 569]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9925095711035898">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{502.7640597048301, 313.87500000000006}">
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test Computer Vision module.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 45.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Elizabeth Osyk">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 555.0]">
+        </property>
+    </property>
+    <entity name="ComputerVision" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// A computer vision accessor.&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** A computer vision accessor.  This accessor takes an input image, applies&#10; *  a computer vision transformation, and outputs the modified image.&#10; *  &#10; *  The input may be an image or a path to a local image.  Remote images are not&#10; *  supported due to browser security restrictions - a browser will not allow&#10; *  a remote image to be exported from a canvas.&#10; * &#10; *  This accessor uses the computer vision library from UC Irvine, &#10; *  https://github.com/ucisysarch/opencvjs&#10; *  Please cvlicense.txt in /accessor/web/hosts/browser/modules/cvlicense.txt&#10; *  &#10; *  To run, please point your browser to:&#10; *  https://www.terraswarm.org/accessors/hosts/browser/demo/computervision/computervision.html&#10; *  &#10; *  @accessor image/ComputerVision&#10; *  @input input (string or image) An image or path to a local image.  Remote &#10; *  images are not supported due to browser security restrictions - a browser &#10; *  will not allow a remote image to be exported from a canvas.&#10; *  @output output (image) A modified image.&#10; *  @parameter options (JSON) Options for the selected transform, if any.&#10; *  @parameter transform (string) The transform to apply to the image.  Selected&#10; *   from a list.&#10; *  @author Sajjad Taheri (CV code), Elizabeth Osyk (accesorization)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&#10;var cv = require(&quot;computerVision&quot;);&#10;&#10;/** Create inputs, outputs and parameters for the accessor.&#10; */&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.parameter('options', {&#10;    	type: 'JSON'&#10;    });&#10;    this.parameter('transform', {&#10;    	type: 'string',&#10;    	options: cv.filters,&#10;    	value: 'makeGray'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;/** Register an input handler to apply the selected transformation on each input &#10; * image.&#10; */&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;    this.addInputHandler('input', function() {&#10;        var image = this.get('input');&#10;        var options = this.getParameter('options');&#10;        var transform = this.getParameter('transform');&#10;        &#10;        var result = cv.filter(image, transform, options, function(result) {&#10;        	self.send('output', result);&#10;        });&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ComputerVision.js">
+        </property>
+        <property name="checkoutOrUpdateAccessorsRepository" class="ptolemy.actor.parameters.SharedParameter" value="true">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 125.0]">
+        </property>
+        <property name="options" class="ptolemy.data.expr.Parameter" value="{&quot;blurSize&quot; : 15}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="transform" class="ptolemy.data.expr.Parameter" value="blur">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Blur" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={91, 179, 453, 395}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[440.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="terraswarm.jpg">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="SingleEvent" class="ptolemy.actor.lib.SingleEvent">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[100.0, 125.0]">
+        </property>
+    </entity>
+    <entity name="ComputerVision2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// A computer vision accessor.&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** A computer vision accessor.  This accessor takes an input image, applies&#10; *  a computer vision transformation, and outputs the modified image.&#10; *  &#10; *  The input may be an image or a path to a local image.  Remote images are not&#10; *  supported due to browser security restrictions - a browser will not allow&#10; *  a remote image to be exported from a canvas.&#10; * &#10; *  This accessor uses the computer vision library from UC Irvine, &#10; *  https://github.com/ucisysarch/opencvjs&#10; *  Please cvlicense.txt in /accessor/web/hosts/browser/modules/cvlicense.txt&#10; *  &#10; *  To run, please point your browser to:&#10; *  https://www.terraswarm.org/accessors/hosts/browser/demo/computervision/computervision.html&#10; *  &#10; *  @accessor image/ComputerVision&#10; *  @input input (string or image) An image or path to a local image.  Remote &#10; *  images are not supported due to browser security restrictions - a browser &#10; *  will not allow a remote image to be exported from a canvas.&#10; *  @output output (image) A modified image.&#10; *  @parameter options (JSON) Options for the selected transform, if any.&#10; *  @parameter transform (string) The transform to apply to the image.  Selected&#10; *   from a list.&#10; *  @author Sajjad Taheri (CV code), Elizabeth Osyk (accesorization)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&#10;var cv = require(&quot;computerVision&quot;);&#10;&#10;/** Create inputs, outputs and parameters for the accessor.&#10; */&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.parameter('options', {&#10;    	type: 'JSON'&#10;    });&#10;    this.parameter('transform', {&#10;    	type: 'string',&#10;    	options: cv.filters,&#10;    	value: 'makeGray'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;/** Register an input handler to apply the selected transformation on each input &#10; * image.&#10; */&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;    this.addInputHandler('input', function() {&#10;        var image = this.get('input');&#10;        var options = this.getParameter('options');&#10;        var transform = this.getParameter('transform');&#10;        &#10;        var result = cv.filter(image, transform, options, function(result) {&#10;        	self.send('output', result);&#10;        });&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ComputerVision.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 210.0]">
+        </property>
+        <property name="options" class="ptolemy.data.expr.Parameter" value="{&quot;erosionSize&quot; : 12}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="transform" class="ptolemy.data.expr.Parameter" value="dilate">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Dilate" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={353, 273, 453, 395}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 210.0]">
+        </property>
+    </entity>
+    <entity name="ComputerVision3" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// A computer vision accessor.&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** A computer vision accessor.  This accessor takes an input image, applies&#10; *  a computer vision transformation, and outputs the modified image.&#10; *  &#10; *  The input may be an image or a path to a local image.  Remote images are not&#10; *  supported due to browser security restrictions - a browser will not allow&#10; *  a remote image to be exported from a canvas.&#10; * &#10; *  This accessor uses the computer vision library from UC Irvine, &#10; *  https://github.com/ucisysarch/opencvjs&#10; *  Please cvlicense.txt in /accessor/web/hosts/browser/modules/cvlicense.txt&#10; *  &#10; *  To run, please point your browser to:&#10; *  https://www.terraswarm.org/accessors/hosts/browser/demo/computervision/computervision.html&#10; *  &#10; *  @accessor image/ComputerVision&#10; *  @input input (string or image) An image or path to a local image.  Remote &#10; *  images are not supported due to browser security restrictions - a browser &#10; *  will not allow a remote image to be exported from a canvas.&#10; *  @output output (image) A modified image.&#10; *  @parameter options (JSON) Options for the selected transform, if any.&#10; *  @parameter transform (string) The transform to apply to the image.  Selected&#10; *   from a list.&#10; *  @author Sajjad Taheri (CV code), Elizabeth Osyk (accesorization)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&#10;var cv = require(&quot;computerVision&quot;);&#10;&#10;/** Create inputs, outputs and parameters for the accessor.&#10; */&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.parameter('options', {&#10;    	type: 'JSON'&#10;    });&#10;    this.parameter('transform', {&#10;    	type: 'string',&#10;    	options: cv.filters,&#10;    	value: 'makeGray'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;/** Register an input handler to apply the selected transformation on each input &#10; * image.&#10; */&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;    this.addInputHandler('input', function() {&#10;        var image = this.get('input');&#10;        var options = this.getParameter('options');&#10;        var transform = this.getParameter('transform');&#10;        &#10;        var result = cv.filter(image, transform, options, function(result) {&#10;        	self.send('output', result);&#10;        });&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ComputerVision.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 290.0]">
+        </property>
+        <property name="options" class="ptolemy.data.expr.Parameter" value="{&quot;erosionSize&quot; : 2}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="transform" class="ptolemy.data.expr.Parameter" value="erode">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Erode" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={545, 216, 453, 395}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 290.0]">
+        </property>
+    </entity>
+    <entity name="ComputerVision4" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// A computer vision accessor.&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** A computer vision accessor.  This accessor takes an input image, applies&#10; *  a computer vision transformation, and outputs the modified image.&#10; *  &#10; *  The input may be an image or a path to a local image.  Remote images are not&#10; *  supported due to browser security restrictions - a browser will not allow&#10; *  a remote image to be exported from a canvas.&#10; * &#10; *  This accessor uses the computer vision library from UC Irvine, &#10; *  https://github.com/ucisysarch/opencvjs&#10; *  Please cvlicense.txt in /accessor/web/hosts/browser/modules/cvlicense.txt&#10; *  &#10; *  To run, please point your browser to:&#10; *  https://www.terraswarm.org/accessors/hosts/browser/demo/computervision/computervision.html&#10; *  &#10; *  @accessor image/ComputerVision&#10; *  @input input (string or image) An image or path to a local image.  Remote &#10; *  images are not supported due to browser security restrictions - a browser &#10; *  will not allow a remote image to be exported from a canvas.&#10; *  @output output (image) A modified image.&#10; *  @parameter options (JSON) Options for the selected transform, if any.&#10; *  @parameter transform (string) The transform to apply to the image.  Selected&#10; *   from a list.&#10; *  @author Sajjad Taheri (CV code), Elizabeth Osyk (accesorization)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&#10;var cv = require(&quot;computerVision&quot;);&#10;&#10;/** Create inputs, outputs and parameters for the accessor.&#10; */&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.parameter('options', {&#10;    	type: 'JSON'&#10;    });&#10;    this.parameter('transform', {&#10;    	type: 'string',&#10;    	options: cv.filters,&#10;    	value: 'makeGray'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;/** Register an input handler to apply the selected transformation on each input &#10; * image.&#10; */&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;    this.addInputHandler('input', function() {&#10;        var image = this.get('input');&#10;        var options = this.getParameter('options');&#10;        var transform = this.getParameter('transform');&#10;        &#10;        var result = cv.filter(image, transform, options, function(result) {&#10;        	self.send('output', result);&#10;        });&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ComputerVision.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 365.0]">
+        </property>
+        <property name="options" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="transform" class="ptolemy.data.expr.Parameter" value="findContours">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="FindContours" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={545, 216, 453, 395}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 365.0]">
+        </property>
+    </entity>
+    <entity name="ComputerVision6" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// A computer vision accessor.&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** A computer vision accessor.  This accessor takes an input image, applies&#10; *  a computer vision transformation, and outputs the modified image.&#10; *  &#10; *  The input may be an image or a path to a local image.  Remote images are not&#10; *  supported due to browser security restrictions - a browser will not allow&#10; *  a remote image to be exported from a canvas.&#10; * &#10; *  This accessor uses the computer vision library from UC Irvine, &#10; *  https://github.com/ucisysarch/opencvjs&#10; *  Please cvlicense.txt in /accessor/web/hosts/browser/modules/cvlicense.txt&#10; *  &#10; *  To run, please point your browser to:&#10; *  https://www.terraswarm.org/accessors/hosts/browser/demo/computervision/computervision.html&#10; *  &#10; *  @accessor image/ComputerVision&#10; *  @input input (string or image) An image or path to a local image.  Remote &#10; *  images are not supported due to browser security restrictions - a browser &#10; *  will not allow a remote image to be exported from a canvas.&#10; *  @output output (image) A modified image.&#10; *  @parameter options (JSON) Options for the selected transform, if any.&#10; *  @parameter transform (string) The transform to apply to the image.  Selected&#10; *   from a list.&#10; *  @author Sajjad Taheri (CV code), Elizabeth Osyk (accesorization)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&#10;var cv = require(&quot;computerVision&quot;);&#10;&#10;/** Create inputs, outputs and parameters for the accessor.&#10; */&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.parameter('options', {&#10;    	type: 'JSON'&#10;    });&#10;    this.parameter('transform', {&#10;    	type: 'string',&#10;    	options: cv.filters,&#10;    	value: 'makeGray'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;/** Register an input handler to apply the selected transformation on each input &#10; * image.&#10; */&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;    this.addInputHandler('input', function() {&#10;        var image = this.get('input');&#10;        var options = this.getParameter('options');&#10;        var transform = this.getParameter('transform');&#10;        &#10;        var result = cv.filter(image, transform, options, function(result) {&#10;        	self.send('output', result);&#10;        });&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ComputerVision.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[315.0, 520.0]">
+        </property>
+        <property name="options" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="transform" class="ptolemy.data.expr.Parameter" value="gaussianBlur">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="GaussianBlur" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={545, 216, 453, 395}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 520.0]">
+        </property>
+    </entity>
+    <entity name="ComputerVision5" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// A computer vision accessor.&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** A computer vision accessor.  This accessor takes an input image, applies&#10; *  a computer vision transformation, and outputs the modified image.&#10; *  &#10; *  The input may be an image or a path to a local image.  Remote images are not&#10; *  supported due to browser security restrictions - a browser will not allow&#10; *  a remote image to be exported from a canvas.&#10; * &#10; *  This accessor uses the computer vision library from UC Irvine, &#10; *  https://github.com/ucisysarch/opencvjs&#10; *  Please cvlicense.txt in /accessor/web/hosts/browser/modules/cvlicense.txt&#10; *  &#10; *  To run, please point your browser to:&#10; *  https://www.terraswarm.org/accessors/hosts/browser/demo/computervision/computervision.html&#10; *  &#10; *  @accessor image/ComputerVision&#10; *  @input input (string or image) An image or path to a local image.  Remote &#10; *  images are not supported due to browser security restrictions - a browser &#10; *  will not allow a remote image to be exported from a canvas.&#10; *  @output output (image) A modified image.&#10; *  @parameter options (JSON) Options for the selected transform, if any.&#10; *  @parameter transform (string) The transform to apply to the image.  Selected&#10; *   from a list.&#10; *  @author Sajjad Taheri (CV code), Elizabeth Osyk (accesorization)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&#10;var cv = require(&quot;computerVision&quot;);&#10;&#10;/** Create inputs, outputs and parameters for the accessor.&#10; */&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.parameter('options', {&#10;    	type: 'JSON'&#10;    });&#10;    this.parameter('transform', {&#10;    	type: 'string',&#10;    	options: cv.filters,&#10;    	value: 'makeGray'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;/** Register an input handler to apply the selected transformation on each input &#10; * image.&#10; */&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;    this.addInputHandler('input', function() {&#10;        var image = this.get('input');&#10;        var options = this.getParameter('options');&#10;        var transform = this.getParameter('transform');&#10;        &#10;        var result = cv.filter(image, transform, options, function(result) {&#10;        	self.send('output', result);&#10;        });&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ComputerVision.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 440.0]">
+        </property>
+        <property name="options" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="transform" class="ptolemy.data.expr.Parameter" value="findEdges">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="FindEdges" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={545, 216, 453, 395}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[445.0, 440.0]">
+        </property>
+    </entity>
+    <entity name="ComputerVision8" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// A computer vision accessor.&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** A computer vision accessor.  This accessor takes an input image, applies&#10; *  a computer vision transformation, and outputs the modified image.&#10; *  &#10; *  The input may be an image or a path to a local image.  Remote images are not&#10; *  supported due to browser security restrictions - a browser will not allow&#10; *  a remote image to be exported from a canvas.&#10; * &#10; *  This accessor uses the computer vision library from UC Irvine, &#10; *  https://github.com/ucisysarch/opencvjs&#10; *  Please cvlicense.txt in /accessor/web/hosts/browser/modules/cvlicense.txt&#10; *  &#10; *  To run, please point your browser to:&#10; *  https://www.terraswarm.org/accessors/hosts/browser/demo/computervision/computervision.html&#10; *  &#10; *  @accessor image/ComputerVision&#10; *  @input input (string or image) An image or path to a local image.  Remote &#10; *  images are not supported due to browser security restrictions - a browser &#10; *  will not allow a remote image to be exported from a canvas.&#10; *  @output output (image) A modified image.&#10; *  @parameter options (JSON) Options for the selected transform, if any.&#10; *  @parameter transform (string) The transform to apply to the image.  Selected&#10; *   from a list.&#10; *  @author Sajjad Taheri (CV code), Elizabeth Osyk (accesorization)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&#10;var cv = require(&quot;computerVision&quot;);&#10;&#10;/** Create inputs, outputs and parameters for the accessor.&#10; */&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.parameter('options', {&#10;    	type: 'JSON'&#10;    });&#10;    this.parameter('transform', {&#10;    	type: 'string',&#10;    	options: cv.filters,&#10;    	value: 'makeGray'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;/** Register an input handler to apply the selected transformation on each input &#10; * image.&#10; */&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;    this.addInputHandler('input', function() {&#10;        var image = this.get('input');&#10;        var options = this.getParameter('options');&#10;        var transform = this.getParameter('transform');&#10;        &#10;        var result = cv.filter(image, transform, options, function(result) {&#10;        	self.send('output', result);&#10;        });&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ComputerVision.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 235.0]">
+        </property>
+        <property name="options" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="transform" class="ptolemy.data.expr.Parameter" value="makeBGRA">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="MakeBGRA" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={545, 216, 453, 395}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 235.0]">
+        </property>
+    </entity>
+    <entity name="ComputerVision9" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// A computer vision accessor.&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** A computer vision accessor.  This accessor takes an input image, applies&#10; *  a computer vision transformation, and outputs the modified image.&#10; *  &#10; *  The input may be an image or a path to a local image.  Remote images are not&#10; *  supported due to browser security restrictions - a browser will not allow&#10; *  a remote image to be exported from a canvas.&#10; * &#10; *  This accessor uses the computer vision library from UC Irvine, &#10; *  https://github.com/ucisysarch/opencvjs&#10; *  Please cvlicense.txt in /accessor/web/hosts/browser/modules/cvlicense.txt&#10; *  &#10; *  To run, please point your browser to:&#10; *  https://www.terraswarm.org/accessors/hosts/browser/demo/computervision/computervision.html&#10; *  &#10; *  @accessor image/ComputerVision&#10; *  @input input (string or image) An image or path to a local image.  Remote &#10; *  images are not supported due to browser security restrictions - a browser &#10; *  will not allow a remote image to be exported from a canvas.&#10; *  @output output (image) A modified image.&#10; *  @parameter options (JSON) Options for the selected transform, if any.&#10; *  @parameter transform (string) The transform to apply to the image.  Selected&#10; *   from a list.&#10; *  @author Sajjad Taheri (CV code), Elizabeth Osyk (accesorization)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&#10;var cv = require(&quot;computerVision&quot;);&#10;&#10;/** Create inputs, outputs and parameters for the accessor.&#10; */&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.parameter('options', {&#10;    	type: 'JSON'&#10;    });&#10;    this.parameter('transform', {&#10;    	type: 'string',&#10;    	options: cv.filters,&#10;    	value: 'makeGray'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;/** Register an input handler to apply the selected transformation on each input &#10; * image.&#10; */&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;    this.addInputHandler('input', function() {&#10;        var image = this.get('input');&#10;        var options = this.getParameter('options');&#10;        var transform = this.getParameter('transform');&#10;        &#10;        var result = cv.filter(image, transform, options, function(result) {&#10;        	self.send('output', result);&#10;        });&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ComputerVision.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 310.0]">
+        </property>
+        <property name="options" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="transform" class="ptolemy.data.expr.Parameter" value="makeGray">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="MakeGray" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={545, 216, 453, 395}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 310.0]">
+        </property>
+    </entity>
+    <entity name="ComputerVision10" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// A computer vision accessor.&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** A computer vision accessor.  This accessor takes an input image, applies&#10; *  a computer vision transformation, and outputs the modified image.&#10; *  &#10; *  The input may be an image or a path to a local image.  Remote images are not&#10; *  supported due to browser security restrictions - a browser will not allow&#10; *  a remote image to be exported from a canvas.&#10; * &#10; *  This accessor uses the computer vision library from UC Irvine, &#10; *  https://github.com/ucisysarch/opencvjs&#10; *  Please cvlicense.txt in /accessor/web/hosts/browser/modules/cvlicense.txt&#10; *  &#10; *  To run, please point your browser to:&#10; *  https://www.terraswarm.org/accessors/hosts/browser/demo/computervision/computervision.html&#10; *  &#10; *  @accessor image/ComputerVision&#10; *  @input input (string or image) An image or path to a local image.  Remote &#10; *  images are not supported due to browser security restrictions - a browser &#10; *  will not allow a remote image to be exported from a canvas.&#10; *  @output output (image) A modified image.&#10; *  @parameter options (JSON) Options for the selected transform, if any.&#10; *  @parameter transform (string) The transform to apply to the image.  Selected&#10; *   from a list.&#10; *  @author Sajjad Taheri (CV code), Elizabeth Osyk (accesorization)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&#10;var cv = require(&quot;computerVision&quot;);&#10;&#10;/** Create inputs, outputs and parameters for the accessor.&#10; */&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.parameter('options', {&#10;    	type: 'JSON'&#10;    });&#10;    this.parameter('transform', {&#10;    	type: 'string',&#10;    	options: cv.filters,&#10;    	value: 'makeGray'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;/** Register an input handler to apply the selected transformation on each input &#10; * image.&#10; */&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;    this.addInputHandler('input', function() {&#10;        var image = this.get('input');&#10;        var options = this.getParameter('options');&#10;        var transform = this.getParameter('transform');&#10;        &#10;        var result = cv.filter(image, transform, options, function(result) {&#10;        	self.send('output', result);&#10;        });&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ComputerVision.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 390.0]">
+        </property>
+        <property name="options" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="transform" class="ptolemy.data.expr.Parameter" value="makeHSV">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="MakeHSV" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={596, 214, 453, 395}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 390.0]">
+        </property>
+    </entity>
+    <entity name="ComputerVision11" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// A computer vision accessor.&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** A computer vision accessor.  This accessor takes an input image, applies&#10; *  a computer vision transformation, and outputs the modified image.&#10; *  &#10; *  The input may be an image or a path to a local image.  Remote images are not&#10; *  supported due to browser security restrictions - a browser will not allow&#10; *  a remote image to be exported from a canvas.&#10; * &#10; *  This accessor uses the computer vision library from UC Irvine, &#10; *  https://github.com/ucisysarch/opencvjs&#10; *  Please cvlicense.txt in /accessor/web/hosts/browser/modules/cvlicense.txt&#10; *  &#10; *  To run, please point your browser to:&#10; *  https://www.terraswarm.org/accessors/hosts/browser/demo/computervision/computervision.html&#10; *  &#10; *  @accessor image/ComputerVision&#10; *  @input input (string or image) An image or path to a local image.  Remote &#10; *  images are not supported due to browser security restrictions - a browser &#10; *  will not allow a remote image to be exported from a canvas.&#10; *  @output output (image) A modified image.&#10; *  @parameter options (JSON) Options for the selected transform, if any.&#10; *  @parameter transform (string) The transform to apply to the image.  Selected&#10; *   from a list.&#10; *  @author Sajjad Taheri (CV code), Elizabeth Osyk (accesorization)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&#10;var cv = require(&quot;computerVision&quot;);&#10;&#10;/** Create inputs, outputs and parameters for the accessor.&#10; */&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.parameter('options', {&#10;    	type: 'JSON'&#10;    });&#10;    this.parameter('transform', {&#10;    	type: 'string',&#10;    	options: cv.filters,&#10;    	value: 'makeGray'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;/** Register an input handler to apply the selected transformation on each input &#10; * image.&#10; */&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;    this.addInputHandler('input', function() {&#10;        var image = this.get('input');&#10;        var options = this.getParameter('options');&#10;        var transform = this.getParameter('transform');&#10;        &#10;        var result = cv.filter(image, transform, options, function(result) {&#10;        	self.send('output', result);&#10;        });&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ComputerVision.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 480.0]">
+        </property>
+        <property name="options" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="transform" class="ptolemy.data.expr.Parameter" value="makeYUV">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="MakeYUV" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={791, 204, 453, 395}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 480.0]">
+        </property>
+    </entity>
+    <entity name="ComputerVision7" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// A computer vision accessor.&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** A computer vision accessor.  This accessor takes an input image, applies&#10; *  a computer vision transformation, and outputs the modified image.&#10; *  &#10; *  The input may be an image or a path to a local image.  Remote images are not&#10; *  supported due to browser security restrictions - a browser will not allow&#10; *  a remote image to be exported from a canvas.&#10; * &#10; *  This accessor uses the computer vision library from UC Irvine, &#10; *  https://github.com/ucisysarch/opencvjs&#10; *  Please cvlicense.txt in /accessor/web/hosts/browser/modules/cvlicense.txt&#10; *  &#10; *  To run, please point your browser to:&#10; *  https://www.terraswarm.org/accessors/hosts/browser/demo/computervision/computervision.html&#10; *  &#10; *  @accessor image/ComputerVision&#10; *  @input input (string or image) An image or path to a local image.  Remote &#10; *  images are not supported due to browser security restrictions - a browser &#10; *  will not allow a remote image to be exported from a canvas.&#10; *  @output output (image) A modified image.&#10; *  @parameter options (JSON) Options for the selected transform, if any.&#10; *  @parameter transform (string) The transform to apply to the image.  Selected&#10; *   from a list.&#10; *  @author Sajjad Taheri (CV code), Elizabeth Osyk (accesorization)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&#10;var cv = require(&quot;computerVision&quot;);&#10;&#10;/** Create inputs, outputs and parameters for the accessor.&#10; */&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.parameter('options', {&#10;    	type: 'JSON'&#10;    });&#10;    this.parameter('transform', {&#10;    	type: 'string',&#10;    	options: cv.filters,&#10;    	value: 'makeGray'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;/** Register an input handler to apply the selected transformation on each input &#10; * image.&#10; */&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;    this.addInputHandler('input', function() {&#10;        var image = this.get('input');&#10;        var options = this.getParameter('options');&#10;        var transform = this.getParameter('transform');&#10;        &#10;        var result = cv.filter(image, transform, options, function(result) {&#10;        	self.send('output', result);&#10;        });&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ComputerVision.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{525.0, 155.0}">
+        </property>
+        <property name="options" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="transform" class="ptolemy.data.expr.Parameter" value="histogram">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Histogram" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={791, 204, 316, 360}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{685.0, 155.0}">
+        </property>
+    </entity>
+    <entity name="ComputerVision12" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// A computer vision accessor.&#10;// Copyright (c) 2015 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** A computer vision accessor.  This accessor takes an input image, applies&#10; *  a computer vision transformation, and outputs the modified image.&#10; *  &#10; *  The input may be an image or a path to a local image.  Remote images are not&#10; *  supported due to browser security restrictions - a browser will not allow&#10; *  a remote image to be exported from a canvas.&#10; * &#10; *  This accessor uses the computer vision library from UC Irvine, &#10; *  https://github.com/ucisysarch/opencvjs&#10; *  Please cvlicense.txt in /accessor/web/hosts/browser/modules/cvlicense.txt&#10; *  &#10; *  To run, please point your browser to:&#10; *  https://www.terraswarm.org/accessors/hosts/browser/demo/computervision/computervision.html&#10; *  &#10; *  @accessor image/ComputerVision&#10; *  @input input (string or image) An image or path to a local image.  Remote &#10; *  images are not supported due to browser security restrictions - a browser &#10; *  will not allow a remote image to be exported from a canvas.&#10; *  @output output (image) A modified image.&#10; *  @parameter options (JSON) Options for the selected transform, if any.&#10; *  @parameter transform (string) The transform to apply to the image.  Selected&#10; *   from a list.&#10; *  @author Sajjad Taheri (CV code), Elizabeth Osyk (accesorization)&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&#10;var cv = require(&quot;computerVision&quot;);&#10;&#10;/** Create inputs, outputs and parameters for the accessor.&#10; */&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.parameter('options', {&#10;    	type: 'JSON'&#10;    });&#10;    this.parameter('transform', {&#10;    	type: 'string',&#10;    	options: cv.filters,&#10;    	value: 'makeGray'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;/** Register an input handler to apply the selected transformation on each input &#10; * image.&#10; */&#10;exports.initialize = function() {&#10;	var self = this;&#10;	&#10;    this.addInputHandler('input', function() {&#10;        var image = this.get('input');&#10;        var options = this.getParameter('options');&#10;        var transform = this.getParameter('transform');&#10;        &#10;        var result = cv.filter(image, transform, options, function(result) {&#10;        	self.send('output', result);&#10;        });&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ComputerVision.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 555.0]">
+        </property>
+        <property name="options" class="ptolemy.data.expr.Parameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="transform" class="ptolemy.data.expr.Parameter" value="medianBlur">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="MedianBlur" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={791, 204, 453, 395}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[685.0, 555.0]">
+        </property>
+    </entity>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[255.0, 125.0]">
+        </vertex>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation11" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <link port="ComputerVision.input" relation="relation2"/>
+    <link port="ComputerVision.output" relation="relation3"/>
+    <link port="Blur.input" relation="relation3"/>
+    <link port="ImageReader.output" relation="relation2"/>
+    <link port="ImageReader.trigger" relation="relation"/>
+    <link port="SingleEvent.output" relation="relation"/>
+    <link port="ComputerVision2.input" relation="relation2"/>
+    <link port="ComputerVision2.output" relation="relation4"/>
+    <link port="Dilate.input" relation="relation4"/>
+    <link port="ComputerVision3.input" relation="relation2"/>
+    <link port="ComputerVision3.output" relation="relation5"/>
+    <link port="Erode.input" relation="relation5"/>
+    <link port="ComputerVision4.input" relation="relation2"/>
+    <link port="ComputerVision4.output" relation="relation6"/>
+    <link port="FindContours.input" relation="relation6"/>
+    <link port="ComputerVision6.input" relation="relation2"/>
+    <link port="ComputerVision6.output" relation="relation7"/>
+    <link port="GaussianBlur.input" relation="relation7"/>
+    <link port="ComputerVision5.input" relation="relation2"/>
+    <link port="ComputerVision5.output" relation="relation8"/>
+    <link port="FindEdges.input" relation="relation8"/>
+    <link port="ComputerVision8.input" relation="relation2"/>
+    <link port="ComputerVision8.output" relation="relation9"/>
+    <link port="MakeBGRA.input" relation="relation9"/>
+    <link port="ComputerVision9.input" relation="relation2"/>
+    <link port="ComputerVision9.output" relation="relation10"/>
+    <link port="MakeGray.input" relation="relation10"/>
+    <link port="ComputerVision10.input" relation="relation2"/>
+    <link port="ComputerVision10.output" relation="relation11"/>
+    <link port="MakeHSV.input" relation="relation11"/>
+    <link port="ComputerVision11.input" relation="relation2"/>
+    <link port="ComputerVision11.output" relation="relation12"/>
+    <link port="MakeYUV.input" relation="relation12"/>
+    <link port="ComputerVision7.input" relation="relation2"/>
+    <link port="ComputerVision7.output" relation="relation13"/>
+    <link port="Histogram.input" relation="relation13"/>
+    <link port="ComputerVision12.input" relation="relation2"/>
+    <link port="ComputerVision12.output" relation="relation14"/>
+    <link port="MedianBlur.input" relation="relation14"/>
+</entity>
