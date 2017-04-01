@@ -25,19 +25,17 @@
 //
 // Ptolemy II includes the work of others, to see those copyrights, follow
 // the copyright link on the splash page or see copyright.htm.
-/** A module to detect faces.
- *  
- *  This module provides an interface to OpenCV face detection.
- * 
- *  To run, please point your browser to:
- *  <a href="https://accessors.org/hosts/browser/demo/faceDetector/faceDetector.html#in_browser">https://accessors.org/hosts/browser/demo/faceDetector/faceDetector.html</a>
- *  
- *  This module uses the UC Irvine computer vision library; see <a href="https://accessors.org/hosts/browser/modules/cvlicense.txt#in_browser">https://accessors.org/hosts/browser/modules/cvlicense.txt#in_browser"></a>
+
+/** Module offering OpenCV image processing.
  *
- *  Based on code from examples in:  <a href="http://ucisysarch.github.io/opencvjs/examples/face_detect.html#in_browser">http://ucisysarch.github.io/opencvjs/examples/face_detect.html</a>
- *    
- *  @module faceDetector
- *  @author Sajjad Taheri, Ilga Akkaya, Elizabeth Osyk
+ *  The filter architecture follows the pattern defined by Jerry Huxtable
+ *  in the JH Labs Java Image Processing library, available from:
+ *    http://www.jhlabs.com/ip/filters
+ *  and licensed under the Apache License, Version 2.0
+ *  (http://www.apache.org/licenses/LICENSE-2.0).
+ *
+ *  @module computerVision
+ *  @author Elizabeth Osyk
  *  @version $$Id$$
  */
 
@@ -52,49 +50,51 @@
 
 var Filter;
 try {
-    Filter = Java.type('org.ptolemy.opencv.FaceRecognizer');
+    Filter = Java.type('org.ptolemy.opencv.ComputerVision');
 } catch (e) {
-    throw new Error('Could not find the org.ptolemy.opencv.FaceRecognizer class, perhaps OpenCV was not installed. The OpenCV API can be downloaded from http://opencv.org.  Under Mac OS X, try:  :sudo port install opencv +python27 +java".See org/ptolemy/opencv/package.html for installation help.');
+    throw new Error('Could not find the org.ptolemy.opencv.ComputerVision class, perhaps OpenCV was not installed. The OpenCV API can be downloaded from http://opencv.org.  Under Mac OS X, try:  :sudo port install opencv +python27 +java".See org/ptolemy/opencv/package.html for installation help.');
 }
 var filter = new Filter();
 
 ////////////////////////////////////////////////////////////
 //// Functions provided in this module.
 
-/** Detect faces in an image and return the image with squares around the faces. 
- *  
- *  Options:
- *  MinFaceSize - The minimum face size.  (In pixels?)
- *  MaxFaceSize - The maximum face size.  (In pixels?)
- *  
+/** Apply a filter to an image using (optional) options.
  *  Any unrecognized options are ignored.
  *  Note that previously applied options for a given filter will still be
  *  used, even if they are not set in this call.
- *  @param image The image or path to image to detect faces in.
+ *  @param image The image to filter.
+ *  @param transform The name of the transform to apply to the image.
  *  @param options An object whose fields specify filter options.
- *  @param callback The callback to invoke when the result image is ready.  
- *   Needed since there may be a delay if the input image is loaded from a file.
+ *  @param callback The callback to invoke once the result image is ready.
  */
-exports.filter = function (image, options, callback) {
+exports.filter = function (image, transform, options, callback) {
     image = image.asAWTImage();
+    
     if (options) {
         for (var optionName in options) {
+        	var setterName = optionName.substring(0,1).toUpperCase() + 
+        		optionName.substring(1);
+        	
             // Look for a setter function for the option.
-            var setter = 'set' + optionName;
+            var setter = 'set' + setterName;
             if (typeof filter[setter] === 'function') {
                 // Invoke the setter function.
                 filter[setter](options[optionName]);
             }
         }
     }
+    
+    
     // The second (null) argument declines to give a destination image.
-    var result = filter.filter(image, null);
+    var result = filter.filter(image, transform);
     callback(result);
 };
 
-/** Return number of detected faces
- *  @return The number of detected faces.
+/** Return an array of filters provided by this module.
  */
-exports.numberOfFaces = function () {
-    return filter.getFaceCount();
+exports.filters = function() {
+	return ['blur', 'dilate', 'erode', 'findEdges', 'findContours', 
+	        'gaussianBlur', 'histogram', 'makeBGRA', 'makeGray', 'makeHSV',
+	        'makeYUV', 'medianBlur'];
 };

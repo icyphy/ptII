@@ -1,0 +1,13 @@
+{
+  "name": "computerVision",
+  "version": "0.1.0",
+  "main": "computerVision.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+      {"name" : "Sajjad Taheri"
+    , "email" : "sajjadt@uci.edu"},
+    {"name" : "Elizabeth Osyk"
+    , "email" : "beth@berkeley.edu"}
+  ],
+  "description": "A module for computer vision using OpenCV."
+}
