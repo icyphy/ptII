@@ -18,7 +18,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9925095711035898">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{502.76405970483006, 313.87500000000006}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{502.76405970483, 313.87500000000006}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test Computer Vision module.">
@@ -107,7 +107,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 210.0]">
         </property>
-        <property name="options" class="ptolemy.data.expr.Parameter" value="{&quot;erosionSize&quot; : 12}">
+        <property name="options" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">

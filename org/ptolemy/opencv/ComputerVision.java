@@ -78,15 +78,9 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
 import java.awt.image.DataBuffer;
-import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-import java.net.URL;
 import java.util.ArrayList;
-import java.util.Vector;
 
 import org.opencv.core.Core;
 import org.opencv.core.CvType;
@@ -94,16 +88,12 @@ import org.opencv.core.Mat;
 import org.opencv.core.MatOfFloat;
 import org.opencv.core.MatOfInt;
 import org.opencv.core.MatOfPoint;
-import org.opencv.core.MatOfRect;
 import org.opencv.core.Point;
-import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
 import org.opencv.imgproc.*;
-import org.opencv.objdetect.CascadeClassifier;
 
 import ptolemy.kernel.util.IllegalActionException;
-import ptolemy.util.FileUtilities;
 
 import com.jhlabs.image.AbstractBufferedImageOp;
 
@@ -330,7 +320,7 @@ public class ComputerVision {
             Mat element = Imgproc.getStructuringElement(erosionType, erosionSize);
             Mat result = new Mat();
             // Note: Browser version additionally specifies border arguments.
-            Imgproc.dilate(source, result, element, new Point(-1, -1), 1);
+            Imgproc.dilate(converted, result, element, new Point(-1, -1), 1);
             
             return mat2BufferedImage(result);
         }
@@ -355,7 +345,7 @@ public class ComputerVision {
             Mat element = Imgproc.getStructuringElement(erosionType, erosionSize);
             Mat result = new Mat();
             // Note: Browser version additionally specifies border arguments.
-            Imgproc.erode(source, result, element, new Point(-1,-1), 1);
+            Imgproc.erode(converted, result, element, new Point(-1,-1), 1);
             
             return mat2BufferedImage(result);
         }
@@ -446,7 +436,7 @@ public class ComputerVision {
             Mat result = new Mat();
             Size blurSize = new Size(2*_blurSize+1, 2*_blurSize+1);
             // Note : Browser version also includes border argument.
-            Imgproc.GaussianBlur(source, result, blurSize, 0, 0);
+            Imgproc.GaussianBlur(converted, result, blurSize, 0, 0);
             
             return mat2BufferedImage(result);
         }
@@ -536,14 +526,9 @@ public class ComputerVision {
          */
         @Override
         public BufferedImage filter(BufferedImage src, BufferedImage dest) {
-            Mat source = bufferedImage2Mat(src);
-            Mat result = new Mat();
-            // Note: This result differs from the browser.  The browser 
-            // alters the colors (R -> B, B -> R) whereas the Java version 
-            // does not.
-            Imgproc.cvtColor(source, result, Imgproc.COLOR_RGBA2BGRA, 0);
-
-            return mat2BufferedImage(result);
+            // bufferedImage2Mat returns BGRA, so just return that.
+            Mat source = bufferedImage2Mat(src);       
+            return mat2BufferedImage(source);
         }
     }
     

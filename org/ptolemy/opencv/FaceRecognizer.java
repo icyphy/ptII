@@ -78,13 +78,8 @@ import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-import java.awt.image.DataBufferInt;
 import java.awt.image.DataBuffer;
-import java.io.File;
 import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.IntBuffer;
-
 import java.net.URL;
 
 import org.opencv.core.Core;
@@ -170,11 +165,14 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
 
         // Get OpenCV image.
         Mat inputImage = bufferedImage2Mat(source);
+        
+        Mat converted = new Mat();
+        Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
 
         // Detect faces in image.
         Rect[] faceRectangles;
         try {
-            faceRectangles = detectFaces(inputImage);
+            faceRectangles = detectFaces(converted);
         } catch (IOException ex) {
             // The super class throws no exceptions, so we can't throw IOException here.
             throw new RuntimeException(ex);
@@ -184,13 +182,13 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         for (int i= 0; i < faceRectangles.length; i++) {
             Rect rect = faceRectangles[i];
             // Draw bounding rectangle around face.
-            Imgproc.rectangle(inputImage, new Point(rect.x,rect.y),
-                    new Point(rect.x+rect.width,rect.y+rect.height),new Scalar(0,0,255));
+            Imgproc.rectangle(converted, new Point(rect.x,rect.y),
+                    new Point(rect.x+rect.width,rect.y+rect.height),new Scalar(255,0,0), 2);
         }
 
         _facesDetected = faceRectangles.length;
 
-        return mat2BufferedImage(inputImage);
+        return mat2BufferedImage(converted);
 
     }
 
@@ -264,7 +262,7 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         Imgproc.cvtColor(img, gray, Imgproc.COLOR_RGB2GRAY);
         
         MatOfRect faces = new MatOfRect();
-        _cascade.detectMultiScale(img, faces, 1.05, 5, 0, new Size(_minFaceSize,_minFaceSize),
+        _cascade.detectMultiScale(gray, faces, 1.1, 5, 0, new Size(_minFaceSize,_minFaceSize),
                 new Size(_maxFaceSize,_maxFaceSize));
         Rect[] fbox = faces.toArray();
         return fbox;
@@ -320,8 +318,8 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
     private int _facesDetected = 0;
 
     /** Minimum face size to be considered in face recognition. */
-    private int _minFaceSize = 30;
+    private int _minFaceSize = 0;
 
     /** Maximum face size to be considered in face recognition. */
-    private int _maxFaceSize = 400;
+    private int _maxFaceSize = 0;
 }

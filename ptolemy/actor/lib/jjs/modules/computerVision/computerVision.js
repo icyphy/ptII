@@ -33,6 +33,40 @@
  *    http://www.jhlabs.com/ip/filters
  *  and licensed under the Apache License, Version 2.0
  *  (http://www.apache.org/licenses/LICENSE-2.0).
+ *  
+ * To use, import the module:
+ * var cv = require('computerVision');
+ * 
+ * To obtain a list of filters:
+ * var filters = cv.filters;
+ * 
+ * Invoke a filter and handle the result.  For example, in an accessor with an 
+ * input "image" and output "result", to run findEdges():
+ * 
+ * var self = this;
+ * 
+ * this.addinputHandler('input', function() {
+ * 	var image = this.get('input');
+ *  var options = {};
+ *  options.cannyThreshold = 20;
+ *  
+ *  cv.filter(image, 'findEdges', options, function(result) {
+ *  	self.send('output', result);
+ *  });
+ * });
+ *
+ * The module supports these transforms:
+ * Filter.blur(options): Blur the image, optionally passing in options.blurSize (1-25).
+ * Filter.dilate(options): Dilate the image, optionally passing in options.erosionSize (0-21).
+ * Filter.erode(options): Erode the image, optionally passing in options.erosionSize (0-21).
+ * Filter.findContours(options): Find contours of an image, optionally passing in options.cannyThreshold (10-150).
+ * Filter.findEdges(options): Find edges of an image, optionally passing in options.cannyThreshold (10-150).
+ * Filter.gaussianBlur(options): Blur the image, optionally passing in options.blurSize (1-25).
+ * Filter.histogram(): Create a histogram from the image showing red, green and blue content.
+ * Filter.makeBGRA(): Convert image to blue, green, red, alpha colorspace.
+ * Filter.makeGray(): Convert image to grayscale.
+ * Filter.makeHSV(): Convert image to hue, saturation, value colorspace.
+ * Filter.makeYUV(): Convert image to luminance, chroma colorspace. 
  *
  *  @module computerVision
  *  @author Elizabeth Osyk
