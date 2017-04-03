@@ -1766,6 +1766,13 @@ public class HlaManager extends AbstractInitializableAttribute
 
                 // case 1:
 
+		// Before the loop, is proposeTime < hlaNextPointInTime ?
+                //if (_debugging) {
+		//	_debug("Comparing proposeTime " + proposedTimeInString
+		//	       + "and hlaNextPointInTime "
+		//	       + hlaNextPointInTime.getDoubleValue());
+		//}
+
                 while (proposedTime.compareTo(hlaNextPointInTime) > 0) {
                     if (_debugging) {
                         _debug("        proposeTime(" + proposedTimeInString
@@ -2001,10 +2008,7 @@ public class HlaManager extends AbstractInitializableAttribute
      * @exception IllegalActionException if hlaTimeStep is NULL.
      */
     private Time _getHlaNextPointInTime() throws IllegalActionException {
-        Double time = _getHlaCurrentTime().add(_hlaTimeStep).getDoubleValue();
-        return _convertToPtolemyTime(new CertiLogicalTime(time));
-        //return _getHlaCurrentTime().add(_hlaTimeStep);
-
+        return _getHlaCurrentTime().add(_hlaTimeStep);
     }
 
     /**
@@ -2991,7 +2995,6 @@ public class HlaManager extends AbstractInitializableAttribute
                 throws InvalidFederationTime, TimeAdvanceWasNotInProgress,
                 FederateInternalError {
             double time = ((CertiLogicalTime) theTime).getTime();
-            time = _hlaTimeUnitValue * time;
 
             logicalTimeHLA = new CertiLogicalTime(time);
             //* ((CertiLogicalTime) theTime).getTime());
@@ -3005,7 +3008,7 @@ public class HlaManager extends AbstractInitializableAttribute
 
             if (_debugging) {
                 _debug("timeAdvanceGrant() - TAG(" + logicalTimeHLA.toString()
-                        + ") received");
+                        + "(HLA Time Unit)) received");
             }
         }
 
