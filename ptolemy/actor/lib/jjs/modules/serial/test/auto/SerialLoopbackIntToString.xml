@@ -27,7 +27,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="14">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use the loopback port of the Serial accessor with unsigned ints&#10;converted to strings.&#10;&#10;Note that we get one less output than the number of inputs.&#10;&#10;We start with 65, which is the ASCII value of 'A'.&#10;&#10;Stop if we get invalid data.  &#10;Hopefully the invalid data occurs before the last received data.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Use the loopback port of the Serial accessor with ints&#10;converted to strings.&#10;&#10;Note that we get one less output than the number of inputs.&#10;&#10;We start with 65, which is the ASCII value of 'A'.&#10;&#10;Stop if we get invalid data.  &#10;Hopefully the invalid data occurs before the last received data.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[40.0, 280.0]">
         </property>
@@ -87,7 +87,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="sendType" class="ptolemy.data.expr.Parameter" value="unsignedint">
+        <property name="sendType" class="ptolemy.data.expr.Parameter" value="int">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
