@@ -82,6 +82,12 @@ $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Random.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Solarize.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Threshold.xml
 $CLASSPATH/org/terraswarm/accessor/demo/IMUSensor/IMUSensor.xml
+$CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreClient.xml
+$CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreServer.xml
+$CLASSPATH/org/terraswarm/accessor/demo/Kubi/Kubi.xml
+$CLASSPATH/org/terraswarm/accessor/demo/MoC/MoC.xml
+$CLASSPATH/org/terraswarm/accessor/demo/MotionDetector/MotionDetector.xml
+$CLASSPATH/org/terraswarm/accessor/demo/MotionLights/MotionLights.xml
 $CLASSPATH/org/terraswarm/accessor/demo/NaturalLanguage/NaturalLanguage.xml
 $CLASSPATH/org/terraswarm/accessor/demo/OccupancyCount/OccupancyCount.xml
 $CLASSPATH/org/terraswarm/accessor/demo/OccupancyLights/OccupancyLights.xml
@@ -187,6 +193,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/Audio.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/browser/demo/HelloBrowser/HelloBrowser.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Capture/Capture.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Capture/CaptureOpenLoop.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/computerVision/demo/ComputerVision/ComputerVision.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/contextAware/demo/ContextAware/ContextAware.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/crypto/demo/AsymmetricEncrypt/AsymmetricEncrypt.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/crypto/demo/MessageDigest/MessageDigest.xml
@@ -197,6 +204,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/DiscoveryJS.xm
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/AudioFFT.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/SinusoidFFT.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetector/FaceDetector.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPBrowser/GDPBrowser.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogSubscribe/GDPLogSubscribe.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogWriteRead/GDPLogWriteRead.xml
