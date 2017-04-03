@@ -60,7 +60,7 @@
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/audio/ClipPlayer.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;An accessor for playing a sound clip.&lt;/p&gt;">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;An accessor for playing a sound clip from a URL.&lt;/p&gt;">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Elizabeth Osyk (beth@berkeley.edu)">
             </property>
@@ -71,6 +71,8 @@
             <property name="stop (port)" class="ptolemy.kernel.util.StringAttribute" value="A trigger to stop playback.&#10;  The value is ignored and can be anything.">
             </property>
             <property name="clipURL (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The URL to retrieve the sound clip from.">
+            </property>
+            <property name="clipURL (port)" class="ptolemy.kernel.util.StringAttribute" value="The URL to retrieve the sound clip from.">
             </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">

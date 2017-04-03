@@ -145,6 +145,13 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
+        <property name="start" class="ptolemy.actor.parameters.PortParameter">
+        </property>
+        <port name="clipURL" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
         <port name="stop" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -156,11 +163,6 @@
         </port>
         <port name="signal" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-        </port>
-        <port name="clipURL" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="Cat" class="org.terraswarm.accessor.JSAccessor">
@@ -200,6 +202,13 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
+        <property name="start" class="ptolemy.actor.parameters.PortParameter">
+        </property>
+        <port name="clipURL" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
         <port name="stop" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -211,11 +220,6 @@
         </port>
         <port name="signal" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-        </port>
-        <port name="clipURL" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="Bird" class="org.terraswarm.accessor.JSAccessor">
@@ -255,6 +259,13 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
+        <property name="start" class="ptolemy.actor.parameters.PortParameter">
+        </property>
+        <port name="clipURL" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
         <port name="stop" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -266,11 +277,6 @@
         </port>
         <port name="signal" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-        </port>
-        <port name="clipURL" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="Mouse?" class="org.terraswarm.accessor.JSAccessor">
@@ -310,6 +316,13 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
+        <property name="start" class="ptolemy.actor.parameters.PortParameter">
+        </property>
+        <port name="clipURL" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
         <port name="stop" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -321,11 +334,6 @@
         </port>
         <port name="signal" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-        </port>
-        <port name="clipURL" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">

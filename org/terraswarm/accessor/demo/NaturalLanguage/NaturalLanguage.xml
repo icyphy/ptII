@@ -190,6 +190,22 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Respond to textual inputs using the natural-language server from&#10; Google called API.AI (see http://api.ai). To use this, you need to&#10; create an agent at API.AI, using for example the tutorial here:&lt;/p&gt;&#10;&lt;p&gt;   https://developers.google.com/actions/develop/apiai/tutorials/getting-started&lt;/p&gt;&#10;&lt;p&gt; An agent parses input text (natural language) and matches queries against&#10; rules defined in the agent to issue responses. For example, the above&#10; tutorial walks you through creating an agent that asks for your favorite&#10; number and color and then constructs a silly name by concatenating the two.&lt;/p&gt;&#10;&lt;p&gt; Once you have created an agent, you should set the '''clientAccessToken'''&#10; parameter to the hex key that identifies the agent. Without this token&#10; this accessor will not do anything.&lt;/p&gt;&#10;&lt;p&gt; This accessor is just a starting point. It should be extended&#10; to support multiple languages, for example. Also, it would be nice&#10; if there were a public agent that we could provide a default client&#10; access token for so that the accessor would work out of the box, without&#10; having to go create your own agent.&lt;/p&gt;&#10;&lt;p&gt; This accessor uses the apiai modeul, which is supported by at least&#10; the Nashorn (and CapeCode) hosts and the Node.js host.&#10; To use this under the Node.js host, install the apiai NPM module&#10; as follows:&#10; &lt;pre&gt;&#10;   npm apiai&#10; &lt;/pre&gt;&#10; For the Nashorn host, CapeCode includes a port of the apiai module&#10; that works under Nashorn.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="clientAccessToken (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The client access token for the service.">
+            </property>
+            <property name="textQuery (port)" class="ptolemy.kernel.util.StringAttribute" value="A query that the service is to respond to.">
+            </property>
+            <property name="response (port)" class="ptolemy.kernel.util.StringAttribute" value="The full response from the service.">
+            </property>
+            <property name="fulfillment (port)" class="ptolemy.kernel.util.StringAttribute" value="The fulfillment text within the response.">
+            </property>
+        </property>
         <port name="textQuery" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>

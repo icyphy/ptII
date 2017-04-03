@@ -168,6 +168,18 @@
         </property>
         <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Retrieve a stock price from a Yahoo server.&#10; This accessor reacts to a &lt;em&gt;symbol&lt;/em&gt; input by issuing a query to a web server&#10; for the most recent trade prices of the common stock whose symbol is given&#10; by the input. When the server replies, this accessor produces the most&#10; recent trade price on the &lt;em&gt;price&lt;/em&gt; output.&lt;/p&gt;&#10;&lt;p&gt; This accessor does not block waiting for the response, but if any additional&#10; &lt;em&gt;symbol&lt;/em&gt; input is received before a pending request has received a response&#10; or timed out, then the new request will be queued and sent out only after&#10; the pending request has completed. This strategy ensures that outputs are&#10; produced in the same order as the input requests.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires the optional 'httpClient' module, which may or may&#10; not be provided by an accessor host. Most hosts will provide this module.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="price (port)" class="ptolemy.kernel.util.StringAttribute" value="The most recent trade price for the stock.">
+            </property>
+            <property name="symbol (port)" class="ptolemy.kernel.util.StringAttribute" value="The stock symbol. Default value is 'YHOO'.">
+            </property>
+        </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">

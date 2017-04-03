@@ -67,6 +67,16 @@
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
             </property>
         </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Send a heartbeat to a mothership monitoring web server.&lt;/p&gt;&#10;&lt;p&gt;This accessor is not of much use because it requires the Mothership&#10;server, which is not yet available.&lt;/p&gt;&#10;&lt;p&gt;The Mothership server require a key string from the Heartbeat client.&lt;/p&gt;&#10;&lt;p&gt;This accessor looks for key in $KEYSTORE/heartbeatKey, which&#10;resolves to $HOME/.ptKeystore/heartbeatKey.&lt;/p&gt;&#10;&lt;p&gt;The key is found in the swarmbox git repo, which not public.&#10;Look for swarmbox/heartbeat/key&#10;See https://www.terraswarm.org/testbeds/wiki/Main/SwarmboxGitRepo&lt;/p&gt;&#10;&lt;p&gt;To download the repo using a repo.eecs.berkeley.edu username and&#10;password (possibly different than your terraswarm website username&#10;and password):&lt;/p&gt;&#10;&lt;p&gt;  git clone https://repo.eecs.berkeley.edu/git/projects/terraswarm/swarmbox.git&lt;/p&gt;&#10;&lt;p&gt;If you uploaded your SSH key to repo.eecs, then use:&lt;/p&gt;&#10;&lt;p&gt;  git clone repoman@repo.eecs.berkeley.edu:projects/terraswarm/swarmbox.git&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks, based on heartbeat.js by Marten Lohstroh.">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="ipAddress (port)" class="ptolemy.kernel.util.StringAttribute" value="The IP address of the host">
+            </property>
+        </property>
         <port name="ipAddress" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -94,6 +104,18 @@
         </property>
         <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor outputs the IP address of the local machine.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Elizabeth Latronico (beth@berkeley.edu), based on IPAddress actor&#10; by Christopher Brooks">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="Send a token here to produce an output.">
+            </property>
+            <property name="IPAddress (port)" class="ptolemy.kernel.util.StringAttribute" value="The IP address of the local machine.">
             </property>
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
@@ -128,6 +150,18 @@
         </property>
         <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="interval (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The interval between outputs in milliseconds.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="Output for the counting sequence, of type number.">
             </property>
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
