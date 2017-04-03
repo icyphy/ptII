@@ -34,7 +34,7 @@ ME =		ptolemy/actor/lib/jjs/modules/computerVision/demo/ComputerVision
 # Root of the Java directory
 ROOT =		../../../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
