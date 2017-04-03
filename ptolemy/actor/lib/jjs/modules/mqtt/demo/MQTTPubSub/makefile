@@ -34,7 +34,7 @@ ME =		ptolemy/actor/lib/jjs/modules/mqtt/demo/MQTTPubSub
 # Root of the Java directory
 ROOT =		../../../../../../../..
 
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTJAVASCRIPT_JAR)
+CLASSPATH =	$(ROOT)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
