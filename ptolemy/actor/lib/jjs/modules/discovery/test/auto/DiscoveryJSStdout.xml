@@ -71,7 +71,7 @@
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/net/Discovery.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor discovers devices on the local area network.&#10; It requires the discovery module.  Please see:&#10; https://accessors.org/wiki/Version0/Discovery&lt;/p&gt;">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor discovers devices on the local area network.&#10; It requires the discovery module.  Please see:&#10; https://www.icyphy.org/accessors/wiki/Version0/Discovery&lt;/p&gt;">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Elizabeth Latronico (beth@berkeley.edu)">
             </property>

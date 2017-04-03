@@ -59,27 +59,37 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <port name="input" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;A face detector accessor.&#10; This accessor detects faces in an input stream.&lt;/p&gt;&#10;&lt;p&gt; The options parameter can include the following fields:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;em&gt;value&lt;/em&gt;: The MinFaceSize and MaxFaceSize, which defaults to 50 and 400.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;em&gt;type&lt;/em&gt;: If set to 'JSON'&lt;/p&gt;&#10;&lt;p&gt;The implementation for the Ptolemy II host uses &#10;&lt;a href=&quot;openCV&quot;&gt;https://opencv.org&lt;/a&gt; which is licensed under a BSD 3-clause license.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
             </property>
-        </port>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Ilge Akkaya.  Contributor: Christopher Brooks">
             </property>
-        </port>
-        <port name="faceCount" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
             </property>
-        </port>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="A stream of images.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The results of filtering the image according to the options">
+            </property>
+            <property name="faceCount (port)" class="ptolemy.kernel.util.StringAttribute" value="The number of faces">
+            </property>
+            <property name="options (port)" class="ptolemy.kernel.util.StringAttribute" value="The value and type options.">
+            </property>
+        </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="faceCount" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
         </port>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
