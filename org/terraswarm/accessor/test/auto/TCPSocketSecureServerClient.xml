@@ -20,14 +20,14 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.984191109922165">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{316.81884765624983, 312.08080240885386}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{316.81884765624983, 312.0808024088538}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
         <property name="bold" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstrate the secure servers and clients over SSL/TLS.&#10;SSL/TLS is enabled for both the servers and clients.&#10;Required files are strored under certs/.&#10;See certs/README for generation of required files.&#10;&#10;ServerA does not require a certificate for the client in this demo.&#10;&#10;ServerB requires a certificate for the client.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demonstrate the secure servers and clients over SSL/TLS.&#10;SSL/TLS is enabled for both the servers and clients.&#10;Required files are stored under certs/.&#10;See certs/README for generation of required files.&#10;&#10;ServerA does not require a certificate for the client in this demo.&#10;&#10;ServerB requires a certificate for the client.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 5.0]">
         </property>
