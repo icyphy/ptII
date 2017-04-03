@@ -34,6 +34,7 @@ import java.awt.Window;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
+import java.io.IOException;
 import java.io.File;
 import java.net.URI;
 import java.util.HashMap;
@@ -311,8 +312,12 @@ ValueListener, ChangeListener, CloseListener {
 
                         if (modelURI != null) {
                             if (modelURI.getScheme().equals("file")) {
-                                File modelFile = new File(modelURI);
-                                directory = modelFile.getParentFile();
+                                try {
+                                    File modelFile = new File(modelURI);
+                                    directory = modelFile.getParentFile();
+                                } catch (Throwable ex) {
+                                    throw new RuntimeException("Failed to create a File for modelURI: " + ex);
+                                }
                             }
                         }
 
