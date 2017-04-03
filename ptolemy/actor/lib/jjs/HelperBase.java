@@ -43,7 +43,6 @@ import javax.xml.bind.DatatypeConverter;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import jdk.nashorn.internal.objects.NativeArray;
 import ptolemy.data.ImageToken;
-import ptolemy.data.LongToken;
 import ptolemy.data.UnsignedByteToken;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.InternalErrorException;
@@ -108,12 +107,21 @@ public class HelperBase {
         IMAGE,
         INT,
         JSON,
-        LONG,
+
+        // Unsigned ints cannot be represented as a JavaScript number.
+        // Interestingly, signed ints can be, because they are
+        // losslessly convertible to double.  But neither longs nor
+        // unsigned ints are losslessly convertible to double.
+
+        // LONG,
+
         NUMBER,
         SHORT,
         STRING,
         UNSIGNEDBYTE,
-        UNSIGNEDINT,
+
+        // UNSIGNEDINT,
+
         UNSIGNEDSHORT
     };
 
@@ -219,9 +227,9 @@ public class HelperBase {
             case INT:
                 buffer.appendInt(((Number)data).intValue());
                 break;
-            case LONG:
-                buffer.appendLong(((Number)data).longValue());
-                break;
+            //case LONG:
+            //    buffer.appendLong(((Number)data).longValue());
+            //    break;
             case SHORT:
                 buffer.appendShort(((Number)data).shortValue());
                 break;
@@ -229,10 +237,10 @@ public class HelperBase {
                 // Number class can't extract an unsigned byte, so we use short.
                 buffer.appendUnsignedByte(((Number)data).shortValue());
                 break;
-            case UNSIGNEDINT:
+            //case UNSIGNEDINT:
                 // Number class can't extract an unsigned int, so we use long.
-                buffer.appendUnsignedInt(((Number)data).longValue());
-                break;
+            //    buffer.appendUnsignedInt(((Number)data).longValue());
+            //    break;
             case UNSIGNEDSHORT:
                 // Number class can't extract an unsigned short, so we use int.
                 buffer.appendUnsignedShort(((Number)data).intValue());
@@ -241,11 +249,11 @@ public class HelperBase {
                 _error("Unsupported type for buffer: "
                         + type.toString());
             }
-        } else if (data instanceof LongToken) {
-            // JavaScript has no long data type, and long is not convertible to
-            // "number" (which is double), so the Ptolemy host will pass in a
-            // LongToken.  Handle this specially.
-            buffer.appendLong(((LongToken)data).longValue());
+        // } else if (data instanceof LongToken) {
+        //     // JavaScript has no long data type, and long is not convertible to
+        //     // "number" (which is double), so the Ptolemy host will pass in a
+        //     // LongToken.  Handle this specially.
+        //     buffer.appendLong(((LongToken)data).longValue());
         } else {
             _toTypeError(type, data);
         }
@@ -321,17 +329,17 @@ public class HelperBase {
                 return buffer.getFloat(position);
             case INT:
                 return buffer.getInt(position);
-            case LONG:
+            //case LONG:
                 // Note that long is not representable in JavaScript.
                 // Hence, we return a LongToken.
-                long result = buffer.getLong(position);
-                return new LongToken(result);
+            //    long result = buffer.getLong(position);
+            //    return new LongToken(result);
             case SHORT:
                 return buffer.getShort(position);
             case UNSIGNEDBYTE:
                 return buffer.getUnsignedByte(position);
-            case UNSIGNEDINT:
-                return buffer.getUnsignedInt(position);
+            //case UNSIGNEDINT:
+                //return buffer.getUnsignedInt(position);
             case UNSIGNEDSHORT:
                 return buffer.getUnsignedShort(position);
             default:
@@ -398,14 +406,14 @@ public class HelperBase {
             return Float.BYTES;
         case INT:
             return Integer.BYTES;
-        case LONG:
-            return Long.BYTES;
+        //case LONG:
+        //    return Long.BYTES;
         case SHORT:
             return Short.BYTES;
         case UNSIGNEDBYTE:
             return Byte.BYTES;
-        case UNSIGNEDINT:
-            return Integer.BYTES;
+        //case UNSIGNEDINT:
+        //    return Integer.BYTES;
         case UNSIGNEDSHORT:
             return Short.BYTES;
         default:
@@ -461,9 +469,9 @@ public class HelperBase {
                 else if (value instanceof Integer) {
                     result[i] = ((Integer) value).byteValue();
                 }
-                else if (value instanceof Long) {
-                    result[i] = ((Long) value).byteValue();
-                }
+                // else if (value instanceof Long) {
+                //     result[i] = ((Long) value).byteValue();
+                // }
                 else if (value instanceof Short) {
                     result[i] = ((Short) value).byteValue();
                 }
