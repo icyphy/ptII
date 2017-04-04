@@ -36,7 +36,7 @@ DIRS = AprilTags Audio Browser Camera Foscam HappySadStock \
 	Heartbeat HueToggle \
 	IMUSensor ImageAnnotate ImageFilters Kubi \
 	KeyValueStoreClient \
-	MoC MotionDetector MotionLights \
+	MotionDetector MotionLights \
 	OccupancyLights Scarab SecureSocket StockTick \
 	SwarmAcousticService TCPSocket \
 	UDPSocket VertxBus \
@@ -77,7 +77,6 @@ PTCLASSALLJARS = \
 	ImageFilters/ImageFilters.jar \
 	KeyValueStoreClient/KeyValueStoreClient.jar \
 	Kubi/Kubi.jar \
-	MoC/MoC.jar \
 	MotionDetector/MotionDetector.jar \
 	StockTick/StockTick.jar \
 	SwarmAcousticService/SwarmAcousticService.jar \
