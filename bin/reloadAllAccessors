@@ -16,6 +16,13 @@ modelsFile=/tmp/reloadAllAccessors.models.$$
 echo "$0: This script reloads all the JSAccessors in all the .xml files that are part of the ptII tree."
 echo "To reload just a few files, try:"
 echo "  $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors model1.xml model2.xml"
+
+if [ "$commit" = "true" ]; then
+    echo "Updating the accessors and ptII repos."
+    (cd $PTII/org/terraswarm/accessor/accessors/web; svn update)
+    (cd $PTII; svn update)
+fi
+
 echo ""
 echo "$0: Generating the list of .xml files"
 cd $PTII
@@ -27,10 +34,19 @@ jsaccessors=/tmp/reloadAllAccessors.jsaccessors.$$
 cat $modelsFile | xargs grep 'org.terraswarm.accessor.JSAccessor' | awk -F : '{print $1}' | sort | uniq > $jsaccessors
 
 echo "0: Reloading Accessors in `wc -l $jsaccessors | awk '{print $1}'` models."
-cat $jsaccessors | xargs $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors
+#cat $jsaccessors | xargs $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors
 
 if [ "$commit" = "true" ]; then
-    svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors" `cat $jsaccessors | grep -v /vendors/`
+    # Commit only models that are marked with M in svn status so that we avoid
+    # attempting to commit models that have not been checked in.
+    jsaccessorsNoVendors=`cat $jsaccessors | grep -v /vendors/`
+    jsaccessorsToBeCommitted=`svn status $jsaccessorsNoVendors | egrep "^M" | awk '{print $2}'`
+
+    # Commit to the accessor repo.
+    svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors." `$jsaccessorsToBeCommitted | grep org/terraswarm/accessor/accessors/web'`
+
+    # Commit to the ptII repo.
+    svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors." `$jsaccessorsToBeCommitted | grep -v org/terraswarm/accessor/accessors/web'`
 fi    
 
 rm -f $modelsFiles $jsaccessors

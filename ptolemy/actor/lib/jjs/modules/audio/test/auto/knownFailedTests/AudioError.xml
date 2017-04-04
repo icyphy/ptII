@@ -61,22 +61,26 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
+        <property name="start" class="ptolemy.actor.parameters.PortParameter">
+        </property>
+        <port name="clipURL" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
         <port name="stop" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
-        <port name="start" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-        </port>
         <port name="signal" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-        </port>
-        <port name="clipURL" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="Const" class="ptolemy.actor.lib.Const">
