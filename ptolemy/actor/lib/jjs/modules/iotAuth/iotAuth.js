@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2016 The Regents of the University of California.
+// Copyright (c) 2016-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -91,14 +91,15 @@ exports.SESSION_KEY_ID_SIZE = SESSION_KEY_ID_SIZE;
 exports.HANDSHAKE_NONCE_SIZE = HANDSHAKE_NONCE_SIZE;
 
 function numToVarLenInt(num) {
+    var extraBuf;
     var buf = new buffer.Buffer(0);
     while (num > 127) {
-        var extraBuf = new buffer.Buffer(1);
+        extraBuf = new buffer.Buffer(1);
         extraBuf.writeUInt8(128 | num & 127);
         buf = buffer.concat([buf, extraBuf]);
         num >>= 7;
     }
-    var extraBuf = new buffer.Buffer(1);
+    extraBuf = new buffer.Buffer(1);
     extraBuf.writeUInt8(num);
     buf = buffer.concat([buf, extraBuf]);
     return buf;
@@ -121,7 +122,7 @@ function varLenIntToNum(buf, offset) {
 
 function serializeStringParam(stringParam) {
     var result;
-    if (stringParam == null) {
+    if (stringParam === null) {
         result = numToVarLenInt(0);
     }
     else {
@@ -130,17 +131,17 @@ function serializeStringParam(stringParam) {
         result = buffer.concat([strLenBuf, strBuf]);
     }
     return result;
-};
+}
 
 function parseStringParam(buf, offset) {
     var ret = varLenIntToNum(buf, offset);
-    if (ret.bufLen == 0) {
+    if (ret.bufLen === 0) {
         return {len: 1, str: null};
     }
     var strLen = ret.num;
     var str = buf.toString(offset + ret.bufLen, offset + ret.bufLen + strLen);
     return {len: ret.bufLen + strLen, str: str};
-};
+}
 
 /*
     IoTSP (IoT Secure Protocol) Message
@@ -258,11 +259,12 @@ var parseSessionKey = function (buf) {
 };
 
 var parseSessionKeyResp = function (buf) {
-    var replyNonce = buf.slice(0, AUTH_NONCE_SIZE);
-    var curIndex = AUTH_NONCE_SIZE;
-
-    var ret = parseStringParam(buf, curIndex);
     var cryptoSpecStr = ret.str;
+    var curIndex = AUTH_NONCE_SIZE;
+    var i;
+    var replyNonce = buf.slice(0, AUTH_NONCE_SIZE);
+    var ret = parseStringParam(buf, curIndex);
+
     curIndex += ret.len;
 
     var sessionKeyCount = buf.readUInt32BE(curIndex);
@@ -270,8 +272,8 @@ var parseSessionKeyResp = function (buf) {
     curIndex += 4;
     var sessionKeyList = [];
 
-    for (var i = 0; i < sessionKeyCount; i++) {
-        var ret = parseSessionKey(buf.slice(curIndex));
+    for (i = 0; i < sessionKeyCount; i++) {
+        ret = parseSessionKey(buf.slice(curIndex));
         var sessionKey = ret.sessionKey;
         sessionKeyList.push(sessionKey);
         curIndex += ret.totalLen;
@@ -287,7 +289,7 @@ var parseAuthAlert = function (buf) {
     return {
         code: code
     };
-}
+};
 
 ///////////////////////////////////////////////////////////////////
 ////           Functions for Entity packet handling            ////
@@ -307,11 +309,11 @@ var serializeHandshake = function (obj) {
 
     // indicates existance of nonces
     var indicator = 0;
-    if (obj.nonce != undefined) {
+    if (obj.nonce !== undefined) {
         indicator += 1;
         obj.nonce.copy(buf, 1);
     }
-    if (obj.replyNonce != undefined) {
+    if (obj.replyNonce !== undefined) {
         indicator += 2;
         obj.replyNonce.copy(buf, 1 + HANDSHAKE_NONCE_SIZE);
     }
@@ -324,11 +326,11 @@ var serializeHandshake = function (obj) {
 var parseHandshake = function (buf) {
     var obj = {};
     var indicator = buf.readUInt8(0);
-    if ((indicator & 1) != 0) {
+    if ((indicator & 1) !== 0) {
         // nonce exists
         obj.nonce = buf.slice(1, 1 + HANDSHAKE_NONCE_SIZE);
     }
-    if ((indicator & 2) != 0) {
+    if ((indicator & 2) !== 0) {
         // replayNonce exists
         obj.replyNonce = buf.slice(1 + HANDSHAKE_NONCE_SIZE, 1 + HANDSHAKE_NONCE_SIZE * 2);
     }
@@ -372,19 +374,19 @@ exports.loadPrivateKey = function (path) {
 };
 
 function symmetricEncryptAuthenticate(buf, symmetricKey, cryptoSpec) {
-    var cryptoSpec = crypto.parseSymmetricCryptoSpec(cryptoSpec);
+    cryptoSpec = crypto.parseSymmetricCryptoSpec(cryptoSpec);
     return crypto.symmetricEncryptWithHash(buf.getArray(),
         symmetricKey.cipherKeyVal.getArray(), symmetricKey.macKeyVal.getArray(),
         cryptoSpec.cipher, cryptoSpec.mac);
-};
+}
 
 function symmetricDecryptVerify(buf, symmetricKey, cryptoSpec) {
-    var cryptoSpec = crypto.parseSymmetricCryptoSpec(cryptoSpec);
+    cryptoSpec = crypto.parseSymmetricCryptoSpec(cryptoSpec);
     return crypto.symmetricDecryptWithHash(buf.getArray(),
         symmetricKey.cipherKeyVal.getArray(), symmetricKey.macKeyVal.getArray(),
         cryptoSpec.cipher, cryptoSpec.mac);
 
-};
+}
 
 ///////////////////////////////////////////////////////////////////
 ////           Functions for accessing Auth service            ////
@@ -423,9 +425,10 @@ function processSessionKeyResponse(options, sessionKeyRespBuf, distributionKey, 
     return {
         sessionKeyList: sessionKeyResp.sessionKeyList
     };
-};
+}
 
 function handleSessionKeyResponse(options, obj, myNonce, sessionKeyResponseCallback, callbackParameters) {
+    var ret;
     if (obj.msgType == msgType.SESSION_KEY_RESP_WITH_DIST_KEY) {
         console.log('received session key response with distribution key attached!');
         var distKeyBuf = obj.payload.slice(0, 512);
@@ -443,7 +446,7 @@ function handleSessionKeyResponse(options, obj, myNonce, sessionKeyResponseCallb
         distKeyBuf = new buffer.Buffer(
             crypto.privateDecrypt(pubEncData, options.entityPrivateKey, options.publicKeyCryptoSpec.cipher));
         var receivedDistKey = parseDistributionKey(distKeyBuf);
-        var ret = processSessionKeyResponse(options, sessionKeyRespBuf, receivedDistKey, myNonce);
+        ret = processSessionKeyResponse(options, sessionKeyRespBuf, receivedDistKey, myNonce);
         if (ret.error) {
             sessionKeyResponseCallback({
                 error: ret.error
@@ -455,7 +458,7 @@ function handleSessionKeyResponse(options, obj, myNonce, sessionKeyResponseCallb
         }, receivedDistKey, ret.sessionKeyList, callbackParameters);
     } else if (obj.msgType == msgType.SESSION_KEY_RESP) {
         console.log('Received session key response encrypted with distribution key');
-        var ret = processSessionKeyResponse(options, obj.payload, options.distributionKey, myNonce);
+        ret = processSessionKeyResponse(options, obj.payload, options.distributionKey, myNonce);
         if (ret.error) {
             sessionKeyResponseCallback({
                 error: ret.error
@@ -490,7 +493,7 @@ function handleSessionKeyResponse(options, obj, myNonce, sessionKeyResponseCallb
         });
         return;
     }
-};
+}
 
 exports.sendSessionKeyRequest = function (options, sessionKeyResponseCallback, callbackParameters) {
     options.publicKeyCryptoSpec = crypto.parsePublicKeyCryptoSpec(options.publicKeyCryptoSpec);
@@ -557,14 +560,15 @@ exports.sendSessionKeyRequest = function (options, sessionKeyResponseCallback, c
             };
             var reqMsgType;
             var reqPayload;
-            if (options.distributionKey == null || options.distributionKey.absValidity < new Date()) {
-                if (options.distributionKey != null) {
+            var sessionKeyReqBuf;
+            if (options.distributionKey ===null || options.distributionKey.absValidity < new Date()) {
+                if (options.distributionKey !== null) {
                     console.log('Distribution key expired, requesting new distribution key as well...');
                 } else {
                     console.log('No distribution key yet, requesting new distribution key as well...');
                 }
                 reqMsgType = msgType.SESSION_KEY_REQ_IN_PUB_ENC;
-                var sessionKeyReqBuf = serializeSessionKeyReq(sessionKeyReq);
+                sessionKeyReqBuf = serializeSessionKeyReq(sessionKeyReq);
                 reqPayload = new buffer.Buffer(
                     crypto.publicEncryptAndSign(sessionKeyReqBuf.getArray(),
                         options.authPublicKey, options.entityPrivateKey,
@@ -572,11 +576,11 @@ exports.sendSessionKeyRequest = function (options, sessionKeyResponseCallback, c
             } else {
                 console.log('distribution key available! ');
                 reqMsgType = msgType.SESSION_KEY_REQ;
-                var sessionKeyReqBuf = serializeSessionKeyReq(sessionKeyReq);
+                sessionKeyReqBuf = serializeSessionKeyReq(sessionKeyReq);
                 var encryptedSessionKeyReqBuf = new buffer.Buffer(
                     symmetricEncryptAuthenticate(sessionKeyReqBuf, options.distributionKey, options.distributionCryptoSpec));
                 reqPayload = serializeSessionKeyReqWithDistributionKey(options.entityName,
-                    encryptedSessionKeyReqBuf)
+                                                                       encryptedSessionKeyReqBuf);
             }
             var toSend = exports.serializeIoTSP({
                 msgType: reqMsgType,
@@ -584,7 +588,7 @@ exports.sendSessionKeyRequest = function (options, sessionKeyResponseCallback, c
             }).getArray();
             authClientSocket.send(toSend);
         } else {
-            console.log('Session key response arrived.')
+            console.log('Session key response arrived.');
             handleSessionKeyResponse(options, obj, myNonce, sessionKeyResponseCallback, callbackParameters);
             authClientSocket.close();
         }
@@ -701,9 +705,9 @@ IoTSecureSocket.prototype.receive = function (payload) {
 };
 
 IoTSecureSocket.prototype.inspect = function () {
-    var ret = 'sessionKey: ' + this.sessionKey.toString();
-    ret += ' writeSeqNum: ' + this.writeSeqNum;
-    ret += ' readSeqNum: ' + this.readSeqNum;
+    var ret = 'sessionKey: ' + this.sessionKey.toString() +
+        ' writeSeqNum: ' + this.writeSeqNum +
+        ' readSeqNum: ' + this.readSeqNum;
     return ret;
 };
 
@@ -727,7 +731,7 @@ eventHandlers = {
 }
 */
 exports.initializeSecureCommunication = function (options, eventHandlers) {
-    if (options.sessionKey == null) {
+    if (options.sessionKey === null) {
         eventHandlers.onError('Comm init failed: No available key');
         return;
     }
@@ -787,6 +791,7 @@ exports.initializeSecureCommunication = function (options, eventHandlers) {
     entityClientSocket.on('data', function (data) {
         console.log('data received from server');
         var buf = new buffer.Buffer(data);
+        var ret;
         if (!expectingMoreData) {
             obj = exports.parseIoTSP(buf);
             if (obj.payload.length < obj.payloadLen) {
@@ -814,14 +819,14 @@ exports.initializeSecureCommunication = function (options, eventHandlers) {
                 entityClientSocket.close();
                 return;
             }
-            var ret = symmetricDecryptVerify(obj.payload, options.sessionKey, options.sessionCryptoSpec);
+            ret = symmetricDecryptVerify(obj.payload, options.sessionKey, options.sessionCryptoSpec);
             if (!ret.hashOk) {
                 eventHandlers.onError('Comm init failed: Received hash for handshake2 is NOT ok');
                 entityClientSocket.close();
                 return;
             }
             console.log('Received hash for handshake2 is ok');
-            var buf = new buffer.Buffer(ret.data);
+            buf = new buffer.Buffer(ret.data);
             var handshake2 = parseHandshake(buf);
             if (!handshake2.replyNonce.equals(myNonce)) {
                 eventHandlers.onError('Comm init failed: Server nonce NOT verified');
@@ -849,7 +854,7 @@ exports.initializeSecureCommunication = function (options, eventHandlers) {
         } else if (obj.msgType == msgType.SECURE_COMM_MSG) {
             console.log('received secure communication message!');
             if (entityClientState == entityClientCommState.IN_COMM) {
-                var ret = iotSecureSocket.receive(obj.payload);
+                ret = iotSecureSocket.receive(obj.payload);
                 if (!ret.success) {
                     eventHandlers.onError(ret.error);
                     return;
@@ -991,7 +996,7 @@ exports.initializeSecureServer = function (options, eventHandlers) {
             entityServerState = entityServerCommState.HANDSHAKE_2_SENT;
 
             serverSocket.send(toSend);
-        };
+        }
 
         console.log('A client connected from ' +
             entityServerSocket.remoteHost() + ':' + entityServerSocket.remotePort());
@@ -1024,6 +1029,7 @@ exports.initializeSecureServer = function (options, eventHandlers) {
         var iotSecureSocket = null;
         entityServerSocket.on('data', function (data) {
             console.log('received data from client');
+            var ret;
             var buf = new buffer.Buffer(data);
             if (!expectingMoreData) {
                 obj = exports.parseIoTSP(buf);
@@ -1063,14 +1069,14 @@ exports.initializeSecureServer = function (options, eventHandlers) {
                     entityServerSocket.close();
                     return;
                 }
-                var ret = symmetricDecryptVerify(obj.payload, entityServerSessionKey, options.sessionCryptoSpec);
+                ret = symmetricDecryptVerify(obj.payload, entityServerSessionKey, options.sessionCryptoSpec);
                 if (!ret.hashOk) {
                     eventHandlers.onServerError('Error during comm init - received hash for handshake 3 is NOT ok, disconnecting...');
                     entityServerSocket.close();
                     return;
                 }
                 console.log('received hash for handshake 3 is ok');
-                var buf = new buffer.Buffer(ret.data);
+                buf = new buffer.Buffer(ret.data);
                 var handshake3 = parseHandshake(buf);
                 if (!handshake3.replyNonce.equals(myNonce)) {
                     eventHandlers.onServerError('Error during comm init - client nonce NOT verified');
@@ -1094,7 +1100,7 @@ exports.initializeSecureServer = function (options, eventHandlers) {
                 eventHandlers.onConnection(socketInstance, iotSecureSocket);
             } else if (obj.msgType == msgType.SECURE_COMM_MSG) {
                 if (entityServerState == entityServerCommState.IN_COMM) {
-                    var ret = iotSecureSocket.receive(obj.payload);
+                    ret = iotSecureSocket.receive(obj.payload);
                     if (!ret.success) {
                         eventHandlers.onError(ret.error, socketID);
                         return;

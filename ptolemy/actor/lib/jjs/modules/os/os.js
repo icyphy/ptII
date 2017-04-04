@@ -63,5 +63,5 @@ exports.hostname = function() {
         return host;
     }
     return null;
-}
+};
 

@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015-2016 The Regents of the University of California.
+// Copyright (c) 2015-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -41,7 +41,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, error, exports */
+/*globals actor, Java, error, exports, require, util */
 /*jshint globalstrict: true*/
 "use strict";
 
@@ -265,22 +265,23 @@ exports.Capture.prototype.stop = function () {
  *  @param audioData The audio data.
  */
 exports.Capture.prototype._captureData = function(audioData) {
+    var i = 0;
     if (this.outputFormat == 'array') {
         // Use Nashorn-specific conversion to convert to a JavaScript array.
         var channels = Java.from(audioData);
-        for (var i = 0; i < channels.length; i++) {
+        for (i = 0; i < channels.length; i++) {
             channels[i] = Java.from(channels[i]);
         }
         this.emit('capture', channels);
     } else if (this.outputFormat == 'samples') {
         // NOTE: This is not documented nor encouraged anymore.
         if (audioData.length === 1) {
-            for (var i = 0; i < audioData[0].length; i++) {
+            for (i = 0; i < audioData[0].length; i++) {
                 this.emit('capture', audioData[0][i]);
             }
         } else {
             // Assume all channels have the same length.
-            for (var i = 0; i < audioData[0].length; i++) {
+            for (i = 0; i < audioData[0].length; i++) {
                 var output = [];
                 for (var j = 0; j < audioData.length; j++) {
                     output[j] = audioData[j][i];
@@ -292,4 +293,4 @@ exports.Capture.prototype._captureData = function(audioData) {
         // Emit a byte array.
         this.emit('capture', Java.from(audioData));
     }
-}
+};

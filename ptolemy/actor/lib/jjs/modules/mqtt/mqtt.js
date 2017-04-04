@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2014-2016 The Regents of the University of California.
+// Copyright (c) 2014-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -66,7 +66,7 @@ function Client(port, host, options) {
     if (typeof host != 'string') {
         throw "Invalid MQTT broker host";
     }
-    if (options == null) {
+    if (options === null) {
         options = {};
     }
 
@@ -74,7 +74,7 @@ function Client(port, host, options) {
         options.clientId = MqttHelper.getDefaultId();
     }
 
-    if (options.rawBytes == null) {
+    if (options.rawBytes === null) {
         options.rawBytes = false;
     }
     
