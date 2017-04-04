@@ -960,7 +960,7 @@ public class JSAccessor extends JavaScript {
                 return result.toString();
             } else if (extension.equals("xml")) {
                 // XML specification.
-
+                // For this to work the CLASSPATH should include $PTII/lib/saxon8.jar:${PTII}/lib/saxon8-dom.jar
                 TransformerFactory factory = TransformerFactory.newInstance();
                 String xsltLocation = "$CLASSPATH/org/terraswarm/accessor/XMLJSToMoML.xslt";
                 Source xslt = new StreamSource(FileUtilities.nameToFile(
