@@ -38,7 +38,8 @@ if {[string compare test [info procs test]] == 1} then {
 } {}
 
 test reloadAllAccessors-1.1 {Reload all the accessors} {
-    exec -stderrok make reloadAllAccessors
+    set output [exec -stderrok make reloadAllAccessors]
+    puts $output
     # Success is not crashing
     list {}
 } {{}}
