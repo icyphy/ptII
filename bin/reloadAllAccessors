@@ -43,10 +43,10 @@ if [ "$commit" = "true" ]; then
     jsaccessorsToBeCommitted=`svn status $jsaccessorsNoVendors | egrep "^M" | awk '{print $2}'`
 
     # Commit to the accessor repo.
-    svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors." `echo $jsaccessorsToBeCommitted | grep org/terraswarm/accessor/accessors/web'`
+    svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors." `echo $jsaccessorsToBeCommitted | grep org/terraswarm/accessor/accessors/web`
 
     # Commit to the ptII repo.
-    svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors." `echo $jsaccessorsToBeCommitted | grep -v org/terraswarm/accessor/accessors/web'`
+    svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors." `echo $jsaccessorsToBeCommitted | grep -v org/terraswarm/accessor/accessors/web`
 fi    
 
 rm -f $modelsFiles $jsaccessors
