@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2016 The Regents of the University of California.
+// Copyright (c) 2016-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -31,22 +31,25 @@
  * @version $$Id$$
  */
 
+/*globals actor, Java, error, exports, require, util */
+/*jshint globalstrict: true*/
 "use strict";
 
 exports.Buffer = function (param) {
+    var i = 0;
     if (typeof param === 'number') {
         this.array = new Array(param);
-        for (var i = 0; i < this.array.length; i++) {
+        for (i = 0; i < this.array.length; i++) {
             this.array[i] = 0;
         }
     } else if (typeof param === 'string') {
         this.array = new Array(param.length);
-        for (var i = 0; i < this.array.length; i++) {
+        for (i = 0; i < this.array.length; i++) {
             this.array[i] = (param.charCodeAt(i) & 255);
         }
     } else if (Array.isArray(param)) {
         this.array = new Array(param.length);
-        for (var i = 0; i < this.array.length; i++) {
+        for (i = 0; i < this.array.length; i++) {
             if (typeof param[i] !== 'number') {
                 throw 'Unsupported type of array for initializing Buffer! - Array but not number!';
             }
@@ -65,7 +68,7 @@ exports.Buffer = function (param) {
 exports.Buffer.prototype.inspect = function () {
     var ret = '[';
     for (var i = 0; i < this.array.length; i++) {
-        if (i != 0) {
+        if (i !== 0) {
             ret += ', ';
         }
         ret += this.array[i];
@@ -75,10 +78,10 @@ exports.Buffer.prototype.inspect = function () {
 };
 
 exports.Buffer.prototype.toString = function (begin, end) {
-    if (begin == undefined) {
+    if (begin === undefined) {
         begin = 0;
     }
-    if (end == undefined) {
+    if (end === undefined) {
         end = this.array.length;
     }
     var ret = '';
@@ -97,18 +100,18 @@ exports.Buffer.prototype.getArray = function () {
 };
 
 exports.Buffer.prototype.slice = function (begin, end) {
-    if (end == undefined) {
+    if (end === undefined) {
         end = this.array.length;
     }
     return new exports.Buffer(this.array.slice(begin, end));
 };
 
 exports.Buffer.prototype.equals = function (other) {
-    if (this.array.length != other.length) {
+    if (this.array.length !== other.length) {
         return false;
     }
     for (var i = 0; i < this.array.length; i++) {
-        if (this.get(i) != other.get(i)) {
+        if (this.get(i) !== other.get(i)) {
             return false;
         }
     }
@@ -116,13 +119,13 @@ exports.Buffer.prototype.equals = function (other) {
 };
 
 exports.Buffer.prototype.copy = function (target, targetStart, sourceStart, sourceEnd) {
-    if (sourceEnd == undefined) {
+    if (sourceEnd === undefined) {
         sourceEnd = this.array.length;
     }
-    if (sourceStart == undefined) {
+    if (sourceStart === undefined) {
         sourceStart = 0;
     }
-    if (targetStart == undefined) {
+    if (targetStart === undefined) {
         targetStart = 0;
     }
     for (var i = 0; i < (sourceEnd - sourceStart); i++) {
@@ -135,7 +138,7 @@ exports.Buffer.prototype.readUInt8 = function (offset) {
 };
 
 exports.Buffer.prototype.writeUInt8 = function (value, offset) {
-    if (offset == undefined) {
+    if (offset === undefined) {
         offset = 0;
     }
     this.array[offset] = (255 & value);
@@ -151,7 +154,7 @@ exports.Buffer.prototype.readUInt32BE = function (offset) {
 };
 
 exports.Buffer.prototype.writeUInt32BE = function (value, offset) {
-    if (offset == undefined) {
+    if (offset === undefined) {
         offset = 0;
     }
     for (var i = offset + 3; i >= offset; i--) {
@@ -171,7 +174,7 @@ exports.Buffer.prototype.readUIntBE = function (offset, size) {
 };
 
 exports.Buffer.prototype.writeUIntBE = function (value, offset, size) {
-    if (offset == undefined) {
+    if (offset === undefined) {
         offset = 0;
     }
     for (var i = offset + size - 1; i >= offset; i--) {
@@ -181,18 +184,19 @@ exports.Buffer.prototype.writeUIntBE = function (value, offset, size) {
 };
 
 exports.concat = function (bufList) {
+    var i;
     var totalLen = 0;
-    for (var i = 0; i < bufList.length; i++) {
+    for (i = 0; i < bufList.length; i++) {
         totalLen += bufList[i].length;
     }
     var tempArray = new Array(totalLen);
 
     var k = 0;
-    for (var i = 0; i < bufList.length; i++) {
+    for (i = 0; i < bufList.length; i++) {
         for (var j = 0; j < bufList[i].length; j++) {
             tempArray[k] = bufList[i].get(j);
             k++;
         }
     }
     return new exports.Buffer(tempArray);
-}
+};

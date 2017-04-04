@@ -1,4 +1,4 @@
-// Copyright (c) 2015-2016 The Regents of the University of California.
+// Copyright (c) 2015-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -34,7 +34,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals exports, Java, require, util */
+/*globals actor, console, exports, Java, require, util */
 /*jshint globalstrict: true */
 "use strict";
 

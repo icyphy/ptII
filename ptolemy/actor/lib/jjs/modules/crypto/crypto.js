@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2016 The Regents of the University of California.
+// Copyright (c) 2016-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -39,6 +39,7 @@
 var CryptoHelper = Java.type('ptolemy.actor.lib.jjs.modules.crypto.CryptoHelper');
 var EventEmitter = require('events').EventEmitter;
 
+// FIXME: jshint warns: If a strict mode function is executed using function invocation, its 'this' value will be undefined.
 this.helper = new CryptoHelper(actor, this);
 
 function unsigendByteArrayEquals(a, b) {
@@ -60,11 +61,11 @@ function unsigendByteArrayEquals(a, b) {
 
 exports.getHashLength = function (hashAlgorithm) {
     return this.helper.getHashLength(hashAlgorithm);
-}
+};
 
 exports.getKeySize = function (key) {
     return this.helper.getKeySize(key);
-}
+};
 
 /** Calculate hash value using a secure hash function.
  */
@@ -89,19 +90,19 @@ exports.parsePublicKeyCryptoSpec = function (cryptoSpec) {
 
 exports.loadPrivateKey = function (filePath) {
     return this.helper.loadPrivateKey(filePath);
-}
+};
 
 exports.loadPublicKey = function (filePath) {
     return this.helper.loadPublicKey(filePath);
-}
+};
 
 exports.privateDecrypt = function (input, privateKey, cipherAlgorithm) {
     return this.helper.privateDecrypt(input, privateKey, cipherAlgorithm);
-}
+};
 
 exports.publicEncrypt = function (input, publicKey, cipherAlgorithm) {
     return this.helper.publicEncrypt(input, publicKey, cipherAlgorithm);
-}
+};
 
 exports.publicEncryptAndSign = function (input, publicKey, privateKey, cipherAlgorithm, signAlgorithm) {
     var encryptedData = exports.publicEncrypt(input, publicKey, cipherAlgorithm);
@@ -117,11 +118,11 @@ exports.randomBytes = function (size) {
 
 exports.signWithPrivateKey = function (input, privateKey, signAlgorithm) {
     return this.helper.signWithPrivateKey(input, privateKey, signAlgorithm);
-}
+};
 
 exports.verifySignature = function (data, signature, publicKey, signAlgorithm) {
     return this.helper.verifySignature(data, signature, publicKey, signAlgorithm);
-}
+};
 
 ///////////////////////////////////////////////////////////////////
 ////                   Symmetric Cryptography                  ////
@@ -174,14 +175,15 @@ exports.symmetricEncrypt = function (input, key, cipherAlgorithm) {
 
 exports.symmetricEncryptWithHash = function (input, cipherKeyVal, macKeyVal,
     cipherAlgorithm, macAlgorithm) {
+    var i;
     if (typeof input === 'string') {
         var temp = [];
         if (input.startsWith('0x')) {
-            for (var i = 2; i < (input.length - 1); i += 2) {
+            for (i = 2; i < (input.length - 1); i += 2) {
                 temp.push(parseInt(input.substring(i, i + 2), 16));
             }
         } else {
-            for (var i = 0; i < input.length; i++) {
+            for (i = 0; i < input.length; i++) {
                 temp.push(input.charCodeAt(i));
             }
         }

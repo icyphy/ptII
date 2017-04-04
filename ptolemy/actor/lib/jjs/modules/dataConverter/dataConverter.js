@@ -1,4 +1,4 @@
-// Copyright (c) 2016-2016 The Regents of the University of California.
+// Copyright (c) 2016-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -38,12 +38,13 @@
 
 var DataConverterHelper = Java.type('ptolemy.actor.lib.jjs.modules.dataConverter.DataConverterHelper');
 
+// FIXME: jshint says: If a strict mode function is executed using function invocation, its 'this' value will be undefined.
 this.helper = new DataConverterHelper(actor, this);
 
 exports.imageToJSArray = function (image) {
     return this.helper.imageToJSArray(image);
-}
+};
 
 exports.jsArrayToImage = function (jsArray) {
     return this.helper.jsArrayToImage(jsArray);
-}
+};

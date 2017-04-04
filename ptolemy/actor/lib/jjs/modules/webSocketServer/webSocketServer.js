@@ -52,7 +52,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals exports, Java, require, util */
+/*globals actor, exports, Java, require, util */
 /*jshint globalstrict: true */
 "use strict";
 

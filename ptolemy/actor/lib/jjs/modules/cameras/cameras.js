@@ -1,6 +1,4 @@
-// Below is the copyright agreement for the Ptolemy II system.
-//
-// Copyright (c) 2015-2016 The Regents of the University of California.
+// Copyright (c) 2015-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -38,7 +36,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, exports, require, util */
+/*globals actor, Java, exports, require, util */
 /*jshint globalstrict: true*/
 "use strict";
 
