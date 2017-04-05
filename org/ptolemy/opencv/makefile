@@ -51,6 +51,7 @@ PTCLASSJAR =	$(PTPACKAGE).jar
 
 # Java Sources, keep these alphabetical,
 JSRCS = \
+    ComputerVision.java \
 	FaceRecognizer.java \
 	OpenCVLoader.java
 
