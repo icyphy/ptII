@@ -259,11 +259,11 @@ var parseSessionKey = function (buf) {
 };
 
 var parseSessionKeyResp = function (buf) {
+    var ret = parseStringParam(buf, curIndex);
     var cryptoSpecStr = ret.str;
     var curIndex = AUTH_NONCE_SIZE;
     var i;
     var replyNonce = buf.slice(0, AUTH_NONCE_SIZE);
-    var ret = parseStringParam(buf, curIndex);
 
     curIndex += ret.len;
 
