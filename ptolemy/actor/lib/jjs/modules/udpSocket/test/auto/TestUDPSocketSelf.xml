@@ -51,9 +51,11 @@
         </property>
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/net/test/auto">
+        </property>
         <property name="run" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node nodeHostInvoke.js -timeout 15000 hosts/node/@modelName@">
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../hosts/node/nodeHostInvoke.js -timeout 15000 net/test/auto/@modelName@">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 65.0]">
         </property>
