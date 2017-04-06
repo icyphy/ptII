@@ -40,7 +40,7 @@ if [ "$commit" = "true" ]; then
     # Commit only models that are marked with M in svn status so that we avoid
     # attempting to commit models that have not been checked in.
     jsaccessorsNoVendors=`cat $jsaccessors | grep -v /vendors/`
-    jsaccessorsToBeCommitted=`svn status $jsaccessorsNoVendors | egrep "^M" | awk '{print $2}'`
+    jsaccessorsToBeCommitted=`svn status $jsaccessorsNoVendors | egrep "^M" | awk '{print $2}' | grep -v diva.jar`
 
     echo "$0: Commit to the accessor repo"
     svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors." `echo $jsaccessorsToBeCommitted | grep org/terraswarm/accessor/accessors/web`
