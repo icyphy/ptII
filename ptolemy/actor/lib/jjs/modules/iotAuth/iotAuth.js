@@ -259,19 +259,22 @@ var parseSessionKey = function (buf) {
 };
 
 var parseSessionKeyResp = function (buf) {
-    var ret = parseStringParam(buf, curIndex);
-    var cryptoSpecStr = ret.str;
-    var curIndex = AUTH_NONCE_SIZE;
-    var i;
-    var replyNonce = buf.slice(0, AUTH_NONCE_SIZE);
+    // Do not change the reading order from serialized buffer
+    // Must follow the order written in buffer:
+    // replyNonce, cryptoSpecStr, sessionKeyCount, session keys
+    var curIndex = 0;
+    var replyNonce = buf.slice(curIndex, AUTH_NONCE_SIZE);
+    curIndex += AUTH_NONCE_SIZE;
 
+    var ret = parseStringParam(buf, curIndex);
     curIndex += ret.len;
+    var cryptoSpecStr = ret.str;
 
     var sessionKeyCount = buf.readUInt32BE(curIndex);
-
     curIndex += 4;
-    var sessionKeyList = [];
 
+    var sessionKeyList = [];
+    var i;
     for (i = 0; i < sessionKeyCount; i++) {
         ret = parseSessionKey(buf.slice(curIndex));
         var sessionKey = ret.sessionKey;
