@@ -15,7 +15,7 @@ var CRLF = '\r\n';
 
 util.inherits(VoiceRequest, QueryRequest);
 
-function VoiceRequest (application, options) {
+function VoiceRequest(application, options) {
     var self = this;
     self.boundary = self._generateBoundary();
 
@@ -24,11 +24,11 @@ function VoiceRequest (application, options) {
     self._sendMetaData();
 }
 
-VoiceRequest.prototype._generateBoundary = function() {
+VoiceRequest.prototype._generateBoundary = function () {
     return (new Date()).getTime().toString();
 };
 
-VoiceRequest.prototype._headers = function() {
+VoiceRequest.prototype._headers = function () {
     var self = this;
 
     var headers = VoiceRequest.super_.prototype._headers.apply(this, arguments);
@@ -39,7 +39,7 @@ VoiceRequest.prototype._headers = function() {
     return headers;
 };
 
-VoiceRequest.prototype._sendMetaData = function() {
+VoiceRequest.prototype._sendMetaData = function () {
     var self = this;
 
     var data = '--' + self.boundary + CRLF;
@@ -55,7 +55,7 @@ VoiceRequest.prototype._sendMetaData = function() {
     self.write(data);
 };
 
-VoiceRequest.prototype.end = function() {
+VoiceRequest.prototype.end = function () {
     var self = this;
 
     var lastDataChunk = CRLF + '--' + self.boundary + '--' + CRLF;

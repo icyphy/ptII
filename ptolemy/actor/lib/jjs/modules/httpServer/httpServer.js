@@ -101,10 +101,10 @@ exports.HttpServer = function (options) {
     }
     this.hostInterface = options.hostInterface || 'localhost';
     this.helper = HttpServerHelper.getOrCreateServer(
-            actor,
-            this,
-            this.hostInterface,
-            this.port
+        actor,
+        this,
+        this.hostInterface,
+        this.port
     );
 };
 util.inherits(exports.HttpServer, EventEmitter);

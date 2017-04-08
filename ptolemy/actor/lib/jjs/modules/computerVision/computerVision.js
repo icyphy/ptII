@@ -104,12 +104,12 @@ var filter = new Filter();
  */
 exports.filter = function (image, transform, options, callback) {
     image = image.asAWTImage();
-    
+
     if (options) {
         for (var optionName in options) {
-        	var setterName = optionName.substring(0,1).toUpperCase() + 
-        		optionName.substring(1);
-        	
+            var setterName = optionName.substring(0, 1).toUpperCase() +
+                optionName.substring(1);
+
             // Look for a setter function for the option.
             var setter = 'set' + setterName;
             if (typeof filter[setter] === 'function') {
@@ -118,8 +118,8 @@ exports.filter = function (image, transform, options, callback) {
             }
         }
     }
-    
-    
+
+
     // The second (null) argument declines to give a destination image.
     var result = filter.filter(image, transform);
     callback(result);
@@ -127,8 +127,9 @@ exports.filter = function (image, transform, options, callback) {
 
 /** Return an array of filters provided by this module.
  */
-exports.filters = function() {
-	return ['blur', 'dilate', 'erode', 'findEdges', 'findContours', 
-	        'gaussianBlur', 'histogram', 'makeBGRA', 'makeGray', 'makeHSV',
-	        'makeYUV', 'medianBlur'];
+exports.filters = function () {
+    return ['blur', 'dilate', 'erode', 'findEdges', 'findContours',
+        'gaussianBlur', 'histogram', 'makeBGRA', 'makeGray', 'makeHSV',
+        'makeYUV', 'medianBlur'
+    ];
 };

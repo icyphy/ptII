@@ -20,7 +20,7 @@ function TTSRequest(application, text, options) {
 
     self.language = options.language || options.lang || 'en-US';
 
-    if('writeStream' in options){
+    if ('writeStream' in options) {
         self.writeStream = options.writeStream;
     } else {
         throw new Error('\'writeStream\' cannot be empty.');
@@ -29,7 +29,7 @@ function TTSRequest(application, text, options) {
     TTSRequest.super_.apply(this, [application, options]);
 }
 
-TTSRequest.prototype._headers = function() {
+TTSRequest.prototype._headers = function () {
     var self = this;
     var headers = TTSRequest.super_.prototype._headers.apply(this, arguments);
 
@@ -38,7 +38,7 @@ TTSRequest.prototype._headers = function() {
     return headers;
 };
 
-TTSRequest.prototype._requestOptions = function() {
+TTSRequest.prototype._requestOptions = function () {
     var self = this;
     var request_options = TTSRequest.super_.prototype._requestOptions.apply(this, arguments);
 
@@ -48,8 +48,7 @@ TTSRequest.prototype._requestOptions = function() {
     return request_options;
 };
 
-TTSRequest.prototype._handleResponse = function(response) {
+TTSRequest.prototype._handleResponse = function (response) {
     var self = this;
     response.pipe(self.writeStream);
 };
-

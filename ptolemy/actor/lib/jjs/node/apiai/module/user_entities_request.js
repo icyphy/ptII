@@ -21,7 +21,7 @@ function UserEntitiesRequest(application, user_entities_body, options) {
     UserEntitiesRequest.super_.apply(this, [application, options]);
 }
 
-UserEntitiesRequest.prototype._headers = function() {
+UserEntitiesRequest.prototype._headers = function () {
     var headers = UserEntitiesRequest.super_.prototype._headers.apply(this, arguments);
 
     headers['Content-Type'] = 'application/json; charset=utf-8';
@@ -29,7 +29,7 @@ UserEntitiesRequest.prototype._headers = function() {
     return headers;
 };
 
-UserEntitiesRequest.prototype._requestOptions = function() {
+UserEntitiesRequest.prototype._requestOptions = function () {
     var request_options = UserEntitiesRequest.super_.prototype._requestOptions.apply(this, arguments);
 
     request_options.path = this.endpoint + 'userEntities';
@@ -38,14 +38,13 @@ UserEntitiesRequest.prototype._requestOptions = function() {
     return request_options;
 };
 
-UserEntitiesRequest.prototype.end = function() {
+UserEntitiesRequest.prototype.end = function () {
     var self = this;
 
     if (
         (!('user_entities_body' in self)) ||
         (!('entities' in self.user_entities_body))
-       )
-    {
+    ) {
         throw Error(
             'Data format for user untities request was changed. \n' +
             'See details: https://docs.api.ai/docs/userentities \n' +

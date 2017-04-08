@@ -13,7 +13,7 @@ exports.QueryRequest = module.exports.QueryRequest = QueryRequest;
 
 util.inherits(QueryRequest, JSONApiRequest);
 
-function QueryRequest (application, options) {
+function QueryRequest(application, options) {
     var self = this;
 
     self.language = application.language;
@@ -61,7 +61,7 @@ function QueryRequest (application, options) {
     QueryRequest.super_.apply(this, arguments);
 }
 
-QueryRequest.prototype._requestOptions = function() {
+QueryRequest.prototype._requestOptions = function () {
     var self = this;
 
     var path = 'query';
@@ -78,7 +78,7 @@ QueryRequest.prototype._requestOptions = function() {
     return request_options;
 };
 
-QueryRequest.prototype._jsonRequestParameters = function() {
+QueryRequest.prototype._jsonRequestParameters = function () {
     var self = this;
 
     var json = {

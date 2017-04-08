@@ -82,7 +82,7 @@ function evaluateCode(accessorName, code) {
         'setInterval': setInterval,
         'setParameter': setParameter,
         'setTimeout': setTimeout,
-        'stop' : stop,
+        'stop': stop,
         'superSend': superSend
     };
     return new commonHost.Accessor(accessorName, code, getAccessorCode, bindings);
@@ -469,11 +469,11 @@ function convertFromToken(value, isJSON) {
         return resultRecord;
     }
     if (value instanceof DateToken) {
-	// Under Mac OS X and Java 1.8.0_101, we need to add 0 to the
-	// ms returned by DateToken.getValue() so that we avoid
-	// getting an 'Invalid Date' from JavaScript date.
-	// See $PTII/ptolemy/actor/lib/jjs/test/auto/JavaScriptReceiveDate.xml
-	var ms = value.getValue() + 0;
+        // Under Mac OS X and Java 1.8.0_101, we need to add 0 to the
+        // ms returned by DateToken.getValue() so that we avoid
+        // getting an 'Invalid Date' from JavaScript date.
+        // See $PTII/ptolemy/actor/lib/jjs/test/auto/JavaScriptReceiveDate.xml
+        var ms = value.getValue() + 0;
         return new Date(ms);
     }
     if (value instanceof ActorToken) {
@@ -556,7 +556,7 @@ function convertToToken(value, isJSON) {
         if (value instanceof Date) {
             // NOTE: DateToken constructor takes a long, which JavaScript doesn't support.
             // But the following seems to work. Consequences?
-	    console.log('localFunctions.js: convertToToken(' + value + ', ' + value.getTime() + ', ' + new Date(value.getTime()));
+            console.log('localFunctions.js: convertToToken(' + value + ', ' + value.getTime() + ', ' + new Date(value.getTime()));
             return new DateToken(value.getTime());
         }
         if (value instanceof Entity) {

@@ -55,12 +55,9 @@
 //// Java dependencies.
 
 // Java classes that define some static functions to call from JS.
-var FileUtilities
-        = Java.type('ptolemy.util.FileUtilities');
-var NashornAccessorHostApplication
-        = Java.type('ptolemy.actor.lib.jjs.NashornAccessorHostApplication');
-var System
-    = Java.type('java.lang.System');
+var FileUtilities = Java.type('ptolemy.util.FileUtilities');
+var NashornAccessorHostApplication = Java.type('ptolemy.actor.lib.jjs.NashornAccessorHostApplication');
+var System = Java.type('java.lang.System');
 
 ////////////////////////////////////////////////////////////////////////////
 //// Global variables.
@@ -72,8 +69,8 @@ var debug = false;
 //// Variables supporting module loading and accessor loading.
 
 var __moduleFile = FileUtilities.nameToFile(
-        '$CLASSPATH/ptolemy/actor/lib/jjs/',
-        null
+    '$CLASSPATH/ptolemy/actor/lib/jjs/',
+    null
 );
 
 /** A string giving the full path to the root directory for installed modules. */
@@ -85,42 +82,44 @@ if (_moduleRoot.indexOf("!/") !== -1 || _moduleRoot.indexOf("!\\") !== -1) {
 }
 
 var __accessorFile = FileUtilities.nameToFile(
-        '$CLASSPATH/org/terraswarm/accessor/accessors/web/',
-        null
+    '$CLASSPATH/org/terraswarm/accessor/accessors/web/',
+    null
 );
 
 var _accessorRoot = __accessorFile.getAbsolutePath();
 
 // Check to see if _accessorRoot is a Jar URL like. Windows: check !\\.
 if (_accessorRoot.indexOf("!/") !== -1 || _accessorRoot.indexOf("!\\") !== -1) {
-_accessorRoot = "jar:" + __accessorFile.toString();
+    _accessorRoot = "jar:" + __accessorFile.toString();
 }
 
 /** An array that gives the search path for modules to be required. */
 var _modulePath = [_moduleRoot + '/',
-      _moduleRoot + '/modules/',
-      _moduleRoot + '/node/',
-      _moduleRoot + '/node_modules/',
-      _accessorRoot + '/hosts/',
-      _accessorRoot + '/'];
+    _moduleRoot + '/modules/',
+    _moduleRoot + '/node/',
+    _moduleRoot + '/node_modules/',
+    _accessorRoot + '/hosts/',
+    _accessorRoot + '/'
+];
 
 /** An array that gives the search path for modules to be required relative to the classpath. */
 var _moduleClasspath = ['$CLASSPATH/ptolemy/actor/lib/jjs/modules/',
-          '$CLASSPATH/ptolemy/actor/lib/jjs/node/',
-          '$CLASSPATH/ptolemy/actor/lib/jjs/node_modules/',
-          '$CLASSPATH/org/terraswarm/accessor/accessors/web/hosts/',
-          '$CLASSPATH/org/terraswarm/accessor/accessors/web/'];
+    '$CLASSPATH/ptolemy/actor/lib/jjs/node/',
+    '$CLASSPATH/ptolemy/actor/lib/jjs/node_modules/',
+    '$CLASSPATH/org/terraswarm/accessor/accessors/web/hosts/',
+    '$CLASSPATH/org/terraswarm/accessor/accessors/web/'
+];
 
 /** A string giving the full path to the root directory for installed accessors. */
 var _accessorRoot = FileUtilities.nameToFile(
-        '$CLASSPATH/org/terraswarm/accessor/accessors/web/',
-        null
+    '$CLASSPATH/org/terraswarm/accessor/accessors/web/',
+    null
 ).getAbsolutePath();
 
 /** A string giving the full path to the root directory for test accessors. */
 var _testAccessors = FileUtilities.nameToFile(
-        '$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/',
-        null
+    '$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/',
+    null
 ).getAbsolutePath();
 
 
@@ -241,14 +240,14 @@ function error(message) {
 var require = null;
 try {
     require = load(_moduleRoot + '/external/require.js')(
-	// Invoke the function returned by 'load' immediately with the following arguments.
-	//    - a root directory in which to look for modules.
-	//    - an array of paths in which to look for modules.
-	//    - an optional hook object that includes two callback functions for notification.
-	_moduleRoot,
-	_modulePath
+        // Invoke the function returned by 'load' immediately with the following arguments.
+        //    - a root directory in which to look for modules.
+        //    - an array of paths in which to look for modules.
+        //    - an optional hook object that includes two callback functions for notification.
+        _moduleRoot,
+        _modulePath
     );
-} catch(err) {
+} catch (err) {
     // We could be under Windows, try using Nashorn's load() "classpath:" extension.
     // See http://stackoverflow.com/questions/28221006/is-it-possible-to-have-nashorn-load-scripts-from-classpath,
     // See https://wiki.openjdk.java.net/display/Nashorn/Nashorn+extensions
@@ -323,15 +322,15 @@ function getAccessorCode(name) {
         }
     }
     if (!code) {
-	for (i = 0; i < _accessorClasspath.length; i++) {
-		location = _accessorClasspath[i].concat(name);
-		try {
-			code = FileUtilities.getFileAsString(location);
-			break;
-		} catch (err) {
-			continue;
-		}
-	}
+        for (i = 0; i < _accessorClasspath.length; i++) {
+            location = _accessorClasspath[i].concat(name);
+            try {
+                code = FileUtilities.getFileAsString(location);
+                break;
+            } catch (err) {
+                continue;
+            }
+        }
     }
     if (!code) {
         throw ('Accessor ' + name + ' not found on path: ' + _accessorPath + ' or relative path: ' + _accessorClasspath);
@@ -348,13 +347,13 @@ function getAccessorCode(name) {
  *  @param accessorClass Fully qualified accessor class name, e.g. 'net/REST'.
  */
 function instantiate(accessorName, accessorClass) {
-    
+
     // NOTE: The definition of the require var in this file may be overridden if
     // capeCodeHost.js is evaluated after this file is evaluated.
     var bindings = {
         'require': require,
     };
-    
+
     // If the variable actor does not exist, then create an orchestrator
     // to provide an event loop for executing this accessor.
     var orchestrator = null;
@@ -366,7 +365,7 @@ function instantiate(accessorName, accessorClass) {
     var instance = new commonHost.instantiateAccessor(
         accessorName, accessorClass, getAccessorCode, bindings);
     console.log('Instantiated accessor ' + accessorName + ' with class ' + accessorClass);
-    
+
     if (orchestrator) {
         console.log('Starting event loop for ' + accessorName);
         // Make it so that 'this.actor' refers to the orchestrator.
@@ -398,32 +397,32 @@ function processCommandLineArguments(argv) {
     // nodeHost has a similar method.
 
     var result = commonHost.processCommandLineArguments(
-	// Command-line arguments.
+        // Command-line arguments.
         // Java.from is Nashorn-specific
-	Java.from(argv),
-	// Function to read a file and return a string.
-	FileUtilities.getFileAsString,
-	// Function to instantiate accessors with their own event loop.
-	instantiateTopLevel,
-	// Function terminate to call upon termination.
-	function() {
-	    // Do let failure to stop accessors block exiting.
-	    try {
-	        commonHost.stopAllAccessors();
-	    } catch(e) {
-	        console.error("Failed to stop accessors: " + e);
-	    }
+        Java.from(argv),
+        // Function to read a file and return a string.
+        FileUtilities.getFileAsString,
+        // Function to instantiate accessors with their own event loop.
+        instantiateTopLevel,
+        // Function terminate to call upon termination.
+        function () {
+            // Do let failure to stop accessors block exiting.
+            try {
+                commonHost.stopAllAccessors();
+            } catch (e) {
+                console.error("Failed to stop accessors: " + e);
+            }
             // Ptolemy defines a process module that defines exit()
             // that invokes ptolemy.util.StringUtilities.exit(), which
             // checks environment variables before possibly exiting.
             process.exit(0);
-	}
+        }
     );
     if (!result) {
-	// No accessors were initialized and the keepalive argument
-	// was not given, so there is presumably no more to do.
-	print('No standalone accessors were instantiated');
-	//process.exit(0);
+        // No accessors were initialized and the keepalive argument
+        // was not given, so there is presumably no more to do.
+        print('No standalone accessors were instantiated');
+        //process.exit(0);
     }
 }
 

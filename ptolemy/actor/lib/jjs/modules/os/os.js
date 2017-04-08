@@ -43,15 +43,14 @@
 /** Get the hostname.
  *  @return The hostname
  */
-exports.hostname = function() {
+exports.hostname = function () {
     var InetAddress = Java.type('java.net.InetAddress');
     try {
         var result = InetAddress.getLocalHost().getHostName();
         if (result.length() !== 0) {
             return result;
         }
-    } catch (e) {
-    }
+    } catch (e) {}
 
     var System = Java.type('java.lang.System');
     host = System.getenv("HOSTNAME");
@@ -64,4 +63,3 @@ exports.hostname = function() {
     }
     return null;
 };
-

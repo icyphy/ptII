@@ -124,8 +124,7 @@ function serializeStringParam(stringParam) {
     var result;
     if (stringParam === null) {
         result = numToVarLenInt(0);
-    }
-    else {
+    } else {
         var strLenBuf = numToVarLenInt(stringParam.length);
         var strBuf = new buffer.Buffer(stringParam);
         result = buffer.concat([strLenBuf, strBuf]);
@@ -136,11 +135,17 @@ function serializeStringParam(stringParam) {
 function parseStringParam(buf, offset) {
     var ret = varLenIntToNum(buf, offset);
     if (ret.bufLen === 0) {
-        return {len: 1, str: null};
+        return {
+            len: 1,
+            str: null
+        };
     }
     var strLen = ret.num;
     var str = buf.toString(offset + ret.bufLen, offset + ret.bufLen + strLen);
-    return {len: ret.bufLen + strLen, str: str};
+    return {
+        len: ret.bufLen + strLen,
+        str: str
+    };
 }
 
 /*
@@ -188,8 +193,8 @@ var parseAuthHello = function (buf) {
 
 var serializeSessionKeyReq = function (obj) {
     if (typeof obj.nonce === 'undefined' || typeof obj.replyNonce === 'undefined' ||
-	typeof obj.sender === 'undefined' || typeof obj.purpose === 'undefined' ||
-	typeof obj.numKeysPerRequest === 'undefined') {
+        typeof obj.sender === 'undefined' || typeof obj.purpose === 'undefined' ||
+        typeof obj.numKeysPerRequest === 'undefined') {
         console.log('Error: SessionKeyReq nonce or replyNonce ' +
             'or purpose or numKeysPerRequest is missing.');
         return;
@@ -564,7 +569,7 @@ exports.sendSessionKeyRequest = function (options, sessionKeyResponseCallback, c
             var reqMsgType;
             var reqPayload;
             var sessionKeyReqBuf;
-            if (options.distributionKey ===null || options.distributionKey.absValidity < new Date()) {
+            if (options.distributionKey === null || options.distributionKey.absValidity < new Date()) {
                 if (options.distributionKey !== null) {
                     console.log('Distribution key expired, requesting new distribution key as well...');
                 } else {
@@ -583,7 +588,7 @@ exports.sendSessionKeyRequest = function (options, sessionKeyResponseCallback, c
                 var encryptedSessionKeyReqBuf = new buffer.Buffer(
                     symmetricEncryptAuthenticate(sessionKeyReqBuf, options.distributionKey, options.distributionCryptoSpec));
                 reqPayload = serializeSessionKeyReqWithDistributionKey(options.entityName,
-                                                                       encryptedSessionKeyReqBuf);
+                    encryptedSessionKeyReqBuf);
             }
             var toSend = exports.serializeIoTSP({
                 msgType: reqMsgType,

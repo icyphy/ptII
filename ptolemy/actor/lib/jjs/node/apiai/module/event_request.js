@@ -20,7 +20,7 @@ function EventRequest(application, event, options) {
     self.event = event;
 }
 
-EventRequest.prototype._headers = function() {
+EventRequest.prototype._headers = function () {
     var headers = EventRequest.super_.prototype._headers.apply(this, arguments);
 
     headers['Content-Type'] = 'application/json; charset=utf-8';
@@ -28,7 +28,7 @@ EventRequest.prototype._headers = function() {
     return headers;
 };
 
-EventRequest.prototype._jsonRequestParameters = function() {
+EventRequest.prototype._jsonRequestParameters = function () {
     var self = this;
 
     var json = EventRequest.super_.prototype._jsonRequestParameters.apply(this, arguments);
@@ -38,7 +38,7 @@ EventRequest.prototype._jsonRequestParameters = function() {
     return json;
 };
 
-EventRequest.prototype.end = function() {
+EventRequest.prototype.end = function () {
     var self = this;
 
     self.write(JSON.stringify(self._jsonRequestParameters()));
