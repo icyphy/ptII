@@ -183,7 +183,7 @@
             // it's a module named like so ... 'events' , 'net/http'
             for (var i = 0; i < modulePaths.length; i++) {
                 var modulePath = modulePaths[i];
-                // Windows? 
+                // Windows?
                 if (moduleFilePath.indexOf('\\') != -1) {
                     modulePath = modulePath.replace(/\//g, '\\');
                 }

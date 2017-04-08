@@ -26,16 +26,16 @@
 // Ptolemy II includes the work of others, to see those copyrights, follow
 // the copyright link on the splash page or see copyright.htm.
 /** A module to detect faces.
- *  
+ *
  *  This module provides an interface to OpenCV face detection.
- * 
+ *
  *  To run, please point your browser to:
  *  <a href="https://accessors.org/hosts/browser/demo/faceDetector/faceDetector.html#in_browser">https://accessors.org/hosts/browser/demo/faceDetector/faceDetector.html</a>
- *  
+ *
  *  This module uses the UC Irvine computer vision library; see <a href="https://accessors.org/hosts/browser/modules/cvlicense.txt#in_browser">https://accessors.org/hosts/browser/modules/cvlicense.txt#in_browser"></a>
  *
  *  Based on code from examples in:  <a href="http://ucisysarch.github.io/opencvjs/examples/face_detect.html#in_browser">http://ucisysarch.github.io/opencvjs/examples/face_detect.html</a>
- *    
+ *
  *  @module faceDetector
  *  @author Sajjad Taheri, Ilga Akkaya, Elizabeth Osyk
  *  @version $$Id$$
@@ -61,18 +61,18 @@ var filter = new Filter();
 ////////////////////////////////////////////////////////////
 //// Functions provided in this module.
 
-/** Detect faces in an image and return the image with squares around the faces. 
- *  
+/** Detect faces in an image and return the image with squares around the faces.
+ *
  *  Options:
  *  MinFaceSize - The minimum face size.  (In pixels?)
  *  MaxFaceSize - The maximum face size.  (In pixels?)
- *  
+ *
  *  Any unrecognized options are ignored.
  *  Note that previously applied options for a given filter will still be
  *  used, even if they are not set in this call.
  *  @param image The image or path to image to detect faces in.
  *  @param options An object whose fields specify filter options.
- *  @param callback The callback to invoke when the result image is ready.  
+ *  @param callback The callback to invoke when the result image is ready.
  *   Needed since there may be a delay if the input image is loaded from a file.
  */
 exports.filter = function (image, options, callback) {

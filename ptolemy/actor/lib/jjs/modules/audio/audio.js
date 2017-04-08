@@ -34,7 +34,7 @@
  * platform. The ClipPlayer accepts a URL specifying an audio source
  * file and plays that.  The Capture class records audio from the default
  * audio input device, such as a microphone, on the host platform.
- * 
+ *
  * @module audio
  * @author Edward A. Lee and Beth Osyk
  */
@@ -74,40 +74,40 @@ exports.byteFormats = function () {
  *       callback function when the data has been accepted.
  *  <li> stop(): Stop playback and free the audio resources.
  *  </ul>
- *  
+ *
  *  The callback function should be used to construct the next batch of
  *  audio data to be played. The callback function will be called as soon
  *  as the specified data has been queued to the audio system.
  *  You should not call the play() function again until the callback has
  *  been called or you might overwrite the audio data.
- *  
+ *
  *  The _playbackFormat_ argument specifies the form in which the audio
  *  data will be provided. The available formats include:
- *  
+ *
  *  * "raw": The data is a byte array representing audio data exactly as
  *    captured by default on the host.
  *  * "array": The audio input data is an array of arrays of numbers,
  *    where each number is in the range from -1.0 to 1.0.
  *    The first index of the input specifies the channel number.
  *  * "encoded": The audio input data is a byte array containing audio
- *    data encoded in one of the file format standards such as 
+ *    data encoded in one of the file format standards such as
  *    AIFF (historically associated with Apple computers),
  *    AIFF-C (a compressed version of AIFF),
  *    AU (historically associated with Sun Microsystems and Unix computers), or
  *    WAVE (historically associated with Windows PCs).
- *  
+ *
  *  The optional _playbackOptions_ argument is an object with the following properties,
  *  all of which are optional:
- *  
+ *
  *  * _bitsPerSample_: The number of bits per sample. This is an integer that
  *    defaults to 16.
  *  * _channels_: The number of channels. This defaults to 1.
  *  * _sampleRate_: The sample rate. This is an integer that defaults to 8000.
  *    Typical supported sample rates are 8000, 11025, 22050, 44100, and 48000.
- *    
+ *
  *  The audio data will be converted to this specified format before being sent
  *  to the audio hardware.
- *  
+ *
  *  @param playbackFormat The format of the input data.
  *  @param playbackOptions The playback options.
  */
@@ -208,7 +208,7 @@ exports.ClipPlayer.prototype.stop = function () {
  *  to a listener for that event will be audio data in a format
  *  given by the _outputFormat_ argument, which is one of the
  *  following strings:
- *  
+ *
  *  * "raw": The argument is a byte array representing audio data exactly as
  *    captured in the specified capture format.
  *  * "array": The audio data is converted into arrays of numbers (one per
@@ -223,15 +223,15 @@ exports.ClipPlayer.prototype.stop = function () {
  *    associated with Sun Microsystems and Unix computers.
  *  * "wav": The audio data is converted into the WAVE file format historically
  *    associated with Windows PCs.
- *    
+ *
  *  The optional _captureOptions_ argument is an object with the following properties,
  *  all of which are optional:
- *  
+ *
  *  * _bitsPerSample_: The number of bits per sample. This is an integer that
  *    defaults to 16.
  *  * _channels_: The number of channels. This defaults to 1.
  *  * _sampleRate_: The sample rate. This is an integer that defaults to 8000.
- *  
+ *
  *  @param captureTime The length of time for each audio capture (in milliseconds).
  *   This is an integer that defaults to 1000, capturing 1 second of audio at a time.
  *  @param outputFormat The format of the data passed to the "capture" event

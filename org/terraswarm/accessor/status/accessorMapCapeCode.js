@@ -1,7 +1,7 @@
 // @version: $$Id$$
-// Calculate maps of accessors to test cases and accessors to hosts, by 
+// Calculate maps of accessors to test cases and accessors to hosts, by
 // examining the contents of the accessors repository.
-// Requires the glob package, 
+// Requires the glob package,
 // npm install -g glob
 // https://github.com/isaacs/node-glob
 
@@ -27,15 +27,15 @@ module.exports = (function () {
 
     /** calculate() determines the set of accessors that are fully functional
      *  on each host.
-     *  This is a three-step process.  The steps are independent; any ordering 
+     *  This is a three-step process.  The steps are independent; any ordering
      *  is fine.
-     *  
+     *
      *  1) Determine the modules supported by each host.
-     *  
-     *  2) Determine the modules required by each accessor.  
+     *
+     *  2) Determine the modules required by each accessor.
      *     Now we know the accessors supported by each host.
-     *     
-     *  3) Determine the accessors used by each test case.  
+     *
+     *  3) Determine the accessors used by each test case.
      *     This gives which accessors are fully functional on each host.
      */
     var calculate = function () {
@@ -43,7 +43,7 @@ module.exports = (function () {
         findAccessors();
 
         // Host to modules:
-        // Scan ptolemy/actor/lib/jjs//modules subdirectories to ascertain 
+        // Scan ptolemy/actor/lib/jjs//modules subdirectories to ascertain
         // supported modules.
         // So far, only browser and node offer additional modules.
         // hosts/browser/modules
@@ -56,7 +56,7 @@ module.exports = (function () {
      * fs.readFile() doesn't return a promise, so can't wait on set of promises.
      */
     var checkIfDone = function () {
-        // Assume at least one test case.  Array may not be populated before 
+        // Assume at least one test case.  Array may not be populated before
         // this is checked.
         if (Object.keys(testsToAccessors).length === (testcases.length - testsError.length) &&
             testcases.length > 0) {
@@ -81,7 +81,7 @@ module.exports = (function () {
 
                                     // FIXME:  Add common host.
                                     /*
-                                    if (!hostsToModules[host].includes(module) && 
+                                    if (!hostsToModules[host].includes(module) &&
                                     		!hostsToModules.common.includes(module)) {
                                     	hasAllModules = false;
                                     }
@@ -141,7 +141,7 @@ module.exports = (function () {
     var findTestCases = function () {
         // Test cases are located at:
         // ptolemy/actor/lib/jjs/modules/<modulename>/test/auto/*.xml
-        // and 
+        // and
         // org/terraswarm/accessor/test/auto/*.xml
 
         glob('./ptolemy/actor/lib/jjs/modules/**/test/auto/*.xml', function (err, files) {
@@ -177,7 +177,7 @@ module.exports = (function () {
                         accessorsError.push(filepath);
                     } else {
 
-                        // Extract accessor name from filename. 
+                        // Extract accessor name from filename.
                         // Filepath is the full platform-dependent path.
                         // Extract part after */accessors/web/
                         var i = filepath.indexOf('accessors/web');
@@ -188,7 +188,7 @@ module.exports = (function () {
                         accessorsToModules[filepath] = [];
 
                         // Look for matches to:
-                        // require('something') where quotes may be double 
+                        // require('something') where quotes may be double
                         // quotes or single quotes.  Ignore whitespace.
                         // This will return, for example:
                         // require('cameras'
@@ -222,10 +222,10 @@ module.exports = (function () {
     };
 
     /** Scan the given directory for all subdirectories.  These subdirectories
-     *  are the hosts.  Then, scan each host directory for modules.  Any *.js 
-     *  file or subdirectory is considered a module.  Store results in 
+     *  are the hosts.  Then, scan each host directory for modules.  Any *.js
+     *  file or subdirectory is considered a module.  Store results in
      *  hostsToModules object.
-     *  @param baseDir The directory containing host subdirectories.  
+     *  @param baseDir The directory containing host subdirectories.
      */
     var scanHosts = function (baseDir) {
 
@@ -284,7 +284,7 @@ module.exports = (function () {
     };
 
     /** Record the names of accessors used in the given test file.
-     *  @param The path to the test file. 
+     *  @param The path to the test file.
      */
     var scanTestcase = function (filepath) {
 
@@ -300,7 +300,7 @@ module.exports = (function () {
                         testsError.push(filepath);
                     } else {
                         // Look for a match to:
-                        // <property name="accessorSource" 
+                        // <property name="accessorSource"
                         // with a value tag:
                         // value="path/to/accessorname.js
                         // e.g.:
