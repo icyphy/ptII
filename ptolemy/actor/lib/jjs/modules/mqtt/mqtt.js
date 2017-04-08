@@ -66,11 +66,11 @@ function Client(port, host, options) {
     if (typeof host != 'string') {
         throw "Invalid MQTT broker host";
     }
-    if (options === null) {
+    if (options === null || options === undefined) {
         options = {};
     }
 
-    if (!options.clientId) {
+    if (options.clientId === undefined) {
         options.clientId = MqttHelper.getDefaultId();
     }
 
