@@ -123,4 +123,3 @@ exports.SerialPort.prototype.send = function (data) {
     }
     this.helper.send(data);
 };
-

@@ -94,7 +94,7 @@ function createApplication() {
     }
 }
 
-function Application (clientAccessToken, options) {
+function Application(clientAccessToken, options) {
     var self = this;
 
     self.language = options.language || language;
@@ -116,7 +116,7 @@ function Application (clientAccessToken, options) {
     self._http = http;
 }
 
-Application.prototype.contextsRequest = function(contexts, options) {
+Application.prototype.contextsRequest = function (contexts, options) {
     var self = this;
 
     var opt = options || {};
@@ -133,7 +133,7 @@ Application.prototype.contextsRequest = function(contexts, options) {
  * @param  {object} options Options for DeleteContextsRequest. Should contain sessionId.
  * @return {ContextsRequest}           Returns a ContextsRequest object.
  */
-Application.prototype.deleteContextsRequest = function(options) {
+Application.prototype.deleteContextsRequest = function (options) {
     var self = this;
 
     var opt = options || {};
@@ -145,7 +145,7 @@ Application.prototype.deleteContextsRequest = function(options) {
     return new DeleteContextsRequest(self, opt);
 }
 
-Application.prototype.textRequest = function(query, options) {
+Application.prototype.textRequest = function (query, options) {
     var self = this;
     var opt = options || {};
 
@@ -160,7 +160,7 @@ Application.prototype.textRequest = function(query, options) {
     return new TextRequest(self, query, opt);
 };
 
-Application.prototype.eventRequest = function(event, options) {
+Application.prototype.eventRequest = function (event, options) {
     var self = this;
     var opt = options || {};
 
@@ -183,7 +183,7 @@ Application.prototype.eventRequest = function(event, options) {
  * @return {VoiceRequest}         [description]
  * @deprecated since version 2.0
  */
-Application.prototype.voiceRequest = function(options) {
+Application.prototype.voiceRequest = function (options) {
     var self = this;
     var opt = options || {};
 
@@ -198,7 +198,7 @@ Application.prototype.voiceRequest = function(options) {
     return new VoiceRequest(self, opt);
 };
 
-Application.prototype.userEntitiesRequest = function(user_entities_body, options) {
+Application.prototype.userEntitiesRequest = function (user_entities_body, options) {
     var self = this;
     var opt = options || {};
 
@@ -209,7 +209,7 @@ Application.prototype.userEntitiesRequest = function(user_entities_body, options
     return new UserEntitiesRequest(self, user_entities_body, opt);
 };
 
-Application.prototype.ttsRequest = function(text, options) {
+Application.prototype.ttsRequest = function (text, options) {
     var self = this;
     var opt = options || {};
 

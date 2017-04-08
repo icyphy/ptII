@@ -45,7 +45,7 @@ var env = {};
 var System = Java.type('java.lang.System');
 // 'for each' is a Nashorn extension, so jsdoc will complain.
 // See https://wiki.openjdk.java.net/display/Nashorn/Nashorn+extensions
-for each (var javaVariable in System.env.entrySet()) {
+for each(var javaVariable in System.env.entrySet()) {
     env[javaVariable.key] = javaVariable.value;
 }
 
@@ -66,7 +66,7 @@ for each (var javaVariable in System.env.entrySet()) {
  *
  *  @param code If non-zero, then typically an error.
  */
-exports.exit = function(code) {
+exports.exit = function (code) {
     var StringUtilities = Java.type('ptolemy.util.StringUtilities');
     print("ptolemy/actor/lib/jjs/modules/process/process.js: called exit()");
     StringUtilities.exit(code);

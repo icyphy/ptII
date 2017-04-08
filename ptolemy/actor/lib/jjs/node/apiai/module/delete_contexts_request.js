@@ -21,7 +21,7 @@ function DeleteContextsRequest(application, options) {
     DeleteContextsRequest.super_.apply(this, [application, options]);
 }
 
-DeleteContextsRequest.prototype._headers = function() {
+DeleteContextsRequest.prototype._headers = function () {
     var headers = DeleteContextsRequest.super_.prototype._headers.apply(this, arguments);
 
     headers['Content-Type'] = 'application/json; charset=utf-8';
@@ -29,7 +29,7 @@ DeleteContextsRequest.prototype._headers = function() {
     return headers;
 };
 
-DeleteContextsRequest.prototype._requestOptions = function() {
+DeleteContextsRequest.prototype._requestOptions = function () {
     var request_options = DeleteContextsRequest.super_.prototype._requestOptions.apply(this, arguments);
 
     request_options.path = this.endpoint + 'contexts?sessionId=' + this.sessionId;

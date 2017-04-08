@@ -15,13 +15,13 @@ exports.JSONApiRequest = module.exports.JSONApiRequest = JSONApiRequest;
 
 util.inherits(JSONApiRequest, Request);
 
-function JSONApiRequest () {
+function JSONApiRequest() {
     JSONApiRequest.super_.apply(this, arguments);
 }
 
-JSONApiRequest.prototype._handleResponse = function(response) {
+JSONApiRequest.prototype._handleResponse = function (response) {
     var self = this;
-    
+
     if (response.statusCode >= 200 && response.statusCode <= 299) {
         try {
             var json_body = JSON.parse(response.body);

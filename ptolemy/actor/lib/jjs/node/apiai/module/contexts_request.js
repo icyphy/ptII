@@ -22,7 +22,7 @@ function ContextsRequest(application, contexts, options) {
     ContextsRequest.super_.apply(this, [application, options]);
 }
 
-ContextsRequest.prototype._headers = function() {
+ContextsRequest.prototype._headers = function () {
     var headers = ContextsRequest.super_.prototype._headers.apply(this, arguments);
 
     headers['Content-Type'] = 'application/json; charset=utf-8';
@@ -30,7 +30,7 @@ ContextsRequest.prototype._headers = function() {
     return headers;
 };
 
-ContextsRequest.prototype._requestOptions = function() {
+ContextsRequest.prototype._requestOptions = function () {
     var request_options = ContextsRequest.super_.prototype._requestOptions.apply(this, arguments);
 
     request_options.path = this.endpoint + 'contexts?sessionId=' + this.sessionId;
@@ -39,7 +39,7 @@ ContextsRequest.prototype._requestOptions = function() {
     return request_options;
 };
 
-ContextsRequest.prototype.end = function() {
+ContextsRequest.prototype.end = function () {
     var self = this;
 
     self.write(JSON.stringify(self.contexts));

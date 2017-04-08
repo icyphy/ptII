@@ -120,7 +120,7 @@ exports.Player = function (playbackFormat, playbackOptions) {
     playbackOptions.sampleRate = playbackOptions.sampleRate || 8000;
 
     this.helper.setPlaybackParameters(playbackOptions, playbackFormat);
-    
+
     this.playbackFormat = playbackFormat;
 };
 
@@ -246,7 +246,7 @@ exports.Capture = function (captureTime, outputFormat, captureOptions) {
     captureOptions.sampleRate = captureOptions.sampleRate || 8000;
 
     this.helper.setCaptureParameters(captureOptions, captureTime, outputFormat);
-    
+
     this.outputFormat = outputFormat;
 };
 util.inherits(exports.Capture, EventEmitter);
@@ -264,7 +264,7 @@ exports.Capture.prototype.stop = function () {
 /** Callback function used by the helper to deliver data.
  *  @param audioData The audio data.
  */
-exports.Capture.prototype._captureData = function(audioData) {
+exports.Capture.prototype._captureData = function (audioData) {
     var i = 0;
     if (this.outputFormat == 'array') {
         // Use Nashorn-specific conversion to convert to a JavaScript array.

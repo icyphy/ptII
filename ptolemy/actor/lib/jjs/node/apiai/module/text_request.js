@@ -13,14 +13,14 @@ exports.TextRequest = module.exports.TextRequest = TextRequest;
 
 util.inherits(TextRequest, QueryRequest);
 
-function TextRequest (application, query, options) {
+function TextRequest(application, query, options) {
     TextRequest.super_.apply(this, [application, options]);
 
     var self = this;
     self.query = query;
 }
 
-TextRequest.prototype._headers = function() {
+TextRequest.prototype._headers = function () {
     var headers = TextRequest.super_.prototype._headers.apply(this, arguments);
 
     headers['Content-Type'] = 'application/json; charset=utf-8';
@@ -28,7 +28,7 @@ TextRequest.prototype._headers = function() {
     return headers;
 };
 
-TextRequest.prototype._jsonRequestParameters = function() {
+TextRequest.prototype._jsonRequestParameters = function () {
     var self = this;
 
     var json = TextRequest.super_.prototype._jsonRequestParameters.apply(this, arguments);
@@ -38,7 +38,7 @@ TextRequest.prototype._jsonRequestParameters = function() {
     return json;
 };
 
-TextRequest.prototype.end = function() {
+TextRequest.prototype.end = function () {
     var self = this;
 
     self.write(JSON.stringify(self._jsonRequestParameters()));

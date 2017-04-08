@@ -77,7 +77,7 @@ function Client(port, host, options) {
     if (options.rawBytes === null) {
         options.rawBytes = false;
     }
-    
+
     var helper = MqttHelper.getOrCreateHelper(actor, this);
 
     this.javaClient = new MqttHelper.MqttClientWrapper(helper, this, port, host, options.clientId, options.rawBytes);

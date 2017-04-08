@@ -37,8 +37,12 @@
 // print everything to stdout using print(), which is defined in
 // Nashorn.
 var actor = actor || {
-    'error' : function(message) {print(message);},
-    'log' : function(message) {print(message);},
+    'error': function (message) {
+        print(message);
+    },
+    'log': function (message) {
+        print(message);
+    },
 }
 
 // Stop extra messages from jslint.  Note that there should be no

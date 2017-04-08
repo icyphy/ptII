@@ -12,7 +12,7 @@ exports.ServerError = module.exports.ServerError = ServerError;
 
 util.inherits(ServerError, Error);
 
-function ServerError (statusCode, responseBody, message) {
+function ServerError(statusCode, responseBody, message) {
     var self = this;
 
     Error.captureStackTrace(this, ServerError);

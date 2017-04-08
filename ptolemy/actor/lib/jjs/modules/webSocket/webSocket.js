@@ -165,20 +165,20 @@ exports.Client = function (options) {
     this.discardMessagesBeforeOpen = options.discardMessagesBeforeOpen || false;
     this.throttleFactor = options.throttleFactor || 0;
     this.helper = WebSocketHelper.createClientSocket(
-            actor,
-            this,
-            this.host,
-            this.sslTls,
-            this.port,
-            this.receiveType,
-            this.sendType,
-            this.connectTimeout,
-            this.numberOfRetries,
-            this.timeBetweenRetries,
-            this.trustAll,
-            this.trustedCACertPath,
-            this.discardMessagesBeforeOpen,
-            this.throttleFactor);
+        actor,
+        this,
+        this.host,
+        this.sslTls,
+        this.port,
+        this.receiveType,
+        this.sendType,
+        this.connectTimeout,
+        this.numberOfRetries,
+        this.timeBetweenRetries,
+        this.trustAll,
+        this.trustedCACertPath,
+        this.discardMessagesBeforeOpen,
+        this.throttleFactor);
 };
 util.inherits(exports.Client, EventEmitter);
 
