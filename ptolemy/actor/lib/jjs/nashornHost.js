@@ -25,14 +25,14 @@
 /** JavaScript functions for the Nashorn host, which uses
  *  Java's Nashorn JavaScript engine.
  *  This host supports version 1 accessors.
- *  
+ *
  *  This host is almost entirely independent of Ptolemy II,
- *  except for some utility functions in 
+ *  except for some utility functions in
  *  FileUtilities (which could easily be factored out).
  *  Also, modules that are required by accessors are loaded
  *  from $PTII/ptolemy/actor/lib/jjs, and some of those modules
  *  may have dependencies on Ptolemy II.
- *  
+ *
  *  To invoke this, the accessors repository has a script in
  *  accessors/web/hosts/nashorn called nashornAccessorHost.
  *  Execute that script with command-line arguments (e.g. a composite

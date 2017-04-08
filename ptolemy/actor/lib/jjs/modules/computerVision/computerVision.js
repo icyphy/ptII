@@ -33,23 +33,23 @@
  *    http://www.jhlabs.com/ip/filters
  *  and licensed under the Apache License, Version 2.0
  *  (http://www.apache.org/licenses/LICENSE-2.0).
- *  
+ *
  * To use, import the module:
  * var cv = require('computerVision');
- * 
+ *
  * To obtain a list of filters:
  * var filters = cv.filters;
- * 
- * Invoke a filter and handle the result.  For example, in an accessor with an 
+ *
+ * Invoke a filter and handle the result.  For example, in an accessor with an
  * input "image" and output "result", to run findEdges():
- * 
+ *
  * var self = this;
- * 
+ *
  * this.addinputHandler('input', function() {
  * 	var image = this.get('input');
  *  var options = {};
  *  options.cannyThreshold = 20;
- *  
+ *
  *  cv.filter(image, 'findEdges', options, function(result) {
  *  	self.send('output', result);
  *  });
@@ -66,7 +66,7 @@
  * Filter.makeBGRA(): Convert image to blue, green, red, alpha colorspace.
  * Filter.makeGray(): Convert image to grayscale.
  * Filter.makeHSV(): Convert image to hue, saturation, value colorspace.
- * Filter.makeYUV(): Convert image to luminance, chroma colorspace. 
+ * Filter.makeYUV(): Convert image to luminance, chroma colorspace.
  *
  *  @module computerVision
  *  @author Elizabeth Osyk
