@@ -1,6 +1,6 @@
 /* Base class for code generators.
 
-   Copyright (c) 2005-2016 The Regents of the University of California.
+   Copyright (c) 2005-2017 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -758,7 +758,8 @@ Decorator {
     public static void main(String[] args) throws Exception {
         ActorModuleInitializer.initializeInjector();
 
-        generateCode(args);
+        int returnValue = generateCode(args);
+        StringUtilities.exit(returnValue);
     }
 
     /** This method is used to set the code generator for a adapter class.
