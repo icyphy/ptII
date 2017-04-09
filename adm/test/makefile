@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 1997-2015 The Regents of the University of California.
+# @Copyright (c) 1997-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -137,7 +137,7 @@ missingDocPackages: $(JAVAFILENAMES)
 	@comm -23 /tmp/missingDocPackages.p /tmp/missingDocPackages.d | 2>&1 egrep -v "(\.apps\.|\.demo|\.test$$|Entering directory|Exiting directory|ptolemy\.actor\.lib\.opencv|test\.junit|test\.system|test\.system\.junit|vendors\.|\.jsoriginal)"; rm -f /tmp/missingDocPackages.d /tmp/missingDocPackages.p
 
 reloadAllAccessors:
-	(cd $(PTII);./bin/reloadAllAccessors -commit)
+	(cd $(PTII);./bin/reloadAllAccessors -reload -cg -commit)
 
 # Invoked in Release.tcl by the test that does a svn status.
 # Needed because it is hard to remove files that have dollar signs in them with tcl.

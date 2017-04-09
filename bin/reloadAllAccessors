@@ -7,19 +7,24 @@
 
 cg=false
 commit=false
+reload=false
 for arg in "$@"
 do
     case "$arg" in
         -cg)
             echo "$0: Code will be generated after reloading."
-            cg="true";
+            cg="true"
             ;;
         -commit)
             echo "$0: Will commit any changed models."
-            commit="true";
+            commit="true"
+            ;;
+        -reload)
+            echo "$0: Will reload accessors."
+            reload="true"
             ;;
         *)
-            echo "$0: Usage: $0 [-cg] [-commit]"
+            echo "$0: Usage: $0 [-cg] [-commit] [-reload]"
             exit 2
             ;;
     esac
@@ -52,15 +57,16 @@ cat $modelsFile | xargs grep 'org.terraswarm.accessor.JSAccessor' | awk -F : '{p
 overallReturnValue=0
 failedModels=""
 
-echo "$0: Reloading Accessors in `wc -l $jsaccessors | awk '{print $1}'` models."
-#cat $jsaccessors | xargs $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors
+if [ "$reload" = "true" ]; then
+    echo "$0: Reloading Accessors in `wc -l $jsaccessors | awk '{print $1}'` models."
+    cat $jsaccessors | xargs $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors
 
-reloadReturnValue=$?
-if [ "$reloadReturnValue" != "0" ]; then
-    overallReturnValue=$reloadReturnValue;
-    reloadAccessorMessage="Reloading accessors failed."
+    reloadReturnValue=$?
+    if [ "$reloadReturnValue" != "0" ]; then
+        overallReturnValue=$reloadReturnValue;
+        reloadAccessorMessage="Reloading accessors failed."
+    fi
 fi
-
 
 
 if [ "$cg" = "true" ]; then
@@ -112,6 +118,9 @@ fi
 rm -f $modelsFiles $jsaccessors
 
 if [ "$overallReturnValue" != "0" ]; then
+    echo "$0: a subprocess returned a non-zero value of $overallReturnValue"
     echo "$0: $reloadAccessorMessage"
-    echo "$0: $failedModels"
+    if [ "$cg" = "true" ]; then
+        echo "$0: The following models returned non-zero $failedModels"
+    fi
 fi    
