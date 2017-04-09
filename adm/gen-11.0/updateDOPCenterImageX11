@@ -1,15 +1,17 @@
 #!/bin/sh
 # $Id$
-# Start Xvfb, save the DOPCenter image, stop Xvfb
+# Save the DOPCenter image
 
-echo "Killing Xvfb"
-pkill Xvfb
-pkill -9 Xvfb
-rm -f /tmp/.X7-lock
+# We used to start and stop Xvfb, but now Jenkins does that.
 
-echo "Starting Xvfb"
-Xvfb :7 -screen 0 1024x768x24 &
-export DISPLAY=localhost:7.0
+# echo "Killing Xvfb"
+# pkill Xvfb
+# pkill -9 Xvfb
+# rm -f /tmp/.X7-lock
+
+# echo "Starting Xvfb"
+# Xvfb :7 -screen 0 1024x768x24 &
+# export DISPLAY=localhost:7.0
 
 echo "Be sure that everything is built"
 cd $PTII; ./configure; ant
@@ -25,8 +27,9 @@ $PTII/ptolemy/domains/space/demo/DOPCenter/updateDOPCenterImage
 
 ls -l $PTII/ptolemy/domains/space/demo/DOPCenter/DOPCenter.png
 
-echo "Killing Xvfb"
-pkill Xvfb
-pkill -9 Xvfb
-rm -f /tmp/.X1-lock
+# echo "Killing Xvfb"
+# pkill Xvfb
+# pkill -9 Xvfb
+# rm -f /tmp/.X1-lock
+
 exit 0
