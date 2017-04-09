@@ -256,7 +256,7 @@
         </port>
     </entity>
     <entity name="JavaScriptTrueToken" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;  this.output('output', {'type': 'boolean'});&#10;}&#10;&#10;var handle;&#10;&#10;exports.initialize  = function() {&#10;  var self = this;&#10;  handle = this.addInputHandler('input', function() {&#10;     self.send('output', true);&#10;  });&#10;}&#10;&#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptTrueToken.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;  this.output('output', {'type': 'boolean'});&#10;}&#10;&#10;var handle;&#10;&#10;exports.initialize  = function() {&#10;  var self = this;&#10;  handle = this.addInputHandler('input', function() {&#10;     self.send('output', true);&#10;  });&#10;}&#10;&#10;exports.wrapup = function() {&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
