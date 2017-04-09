@@ -2,18 +2,34 @@
 # $Id$
 # Reload all the accessors in the models that have JSAccessors actors
 # See https://accessors.org/wiki/Main/CapeCodeHost#ReloadAllAccessors
+#
+# Usage: $PTII/bin/reloadAllAccessors  [-cg] [-commit]
 
+cg=false
 commit=false
-if [ $# -ge 1 ]; then
-    if [ $1 = "-commit" ]; then
-        echo "$0: Will commit any changed models."
-        commit="true";
-    fi
-fi    
+for arg in "$@"
+do
+    case "$arg" in
+        -cg)
+            echo "$0: Code will be generated after reloading."
+            cg="true";
+            ;;
+        -commit)
+            echo "$0: Will commit any changed models."
+            commit="true";
+            ;;
+        *)
+            echo "$0: Usage: $0 [-cg] [-commit]"
+            exit 2
+            ;;
+    esac
+done
 
 modelsFile=/tmp/reloadAllAccessors.models.$$
 
 echo "$0: This script reloads all the JSAccessors in all the .xml files that are part of the ptII tree."
+echo "    -cg: regenerate the composite accessors if AccessorCodeGenerator is present."
+echo "    -commit: commit any changed files."
 echo "To reload just a few files, try:"
 echo "  $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors model1.xml model2.xml"
 
@@ -33,8 +49,40 @@ echo "$0: Generating the list of .xml files that contain JSAccessor.  This will 
 jsaccessors=/tmp/reloadAllAccessors.jsaccessors.$$
 cat $modelsFile | xargs grep 'org.terraswarm.accessor.JSAccessor' | awk -F : '{print $1}' | sort | uniq > $jsaccessors
 
+overallReturnValue=0
+failedModels=""
+
 echo "$0: Reloading Accessors in `wc -l $jsaccessors | awk '{print $1}'` models."
-cat $jsaccessors | xargs $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors
+#cat $jsaccessors | xargs $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors
+
+reloadReturnValue=$?
+if [ "$reloadReturnValue" != "0" ]; then
+    overallReturnValue=$reloadReturnValue;
+    reloadAccessorMessage="Reloading accessors failed."
+fi
+
+
+
+if [ "$cg" = "true" ]; then
+    echo "$0: Generating a list of models that contain AccessorCodeGenerator"
+    cgModels=`cat $jsaccessors | xargs grep AccessorCodeGenerator | awk -F : '{print $1}' | sort | uniq`
+    echo "$0: Regenerating code for `echo "$cgModels" | wc -l ` models that contain AccessorCodeGenerator"
+    for cgModel in $cgModels
+    do
+        TIMEOUT=30
+        ($PTII/bin/ptinvoke ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $cgModel) & pid=$!
+        ( sleep $TIMEOUT && kill -HUP $pid ) 2>/dev/null & watcher=$!
+        wait $pid 2>/dev/null
+        cgReturnValue=$?
+        pkill -HUP -P $watcher
+        echo "cgReturnValue = $cgReturnValue"
+        if [ "$cgReturnValue" != "0" ]; then
+            overallReturnValue=$cgReturnValue;
+            failedModels="$failedModels $cgModel"
+        fi            
+
+    done        
+fi    
 
 if [ "$commit" = "true" ]; then
     # Commit only models that are marked with M in svn status so that we avoid
@@ -59,6 +107,11 @@ if [ "$commit" = "true" ]; then
     else
         echo "$0: No files need be committed in the ptII repo."
     fi        
-fi    
+fi
 
 rm -f $modelsFiles $jsaccessors
+
+if [ "$overallReturnValue" != "0" ]; then
+    echo "$0: $reloadAccessorMessage"
+    echo "$0: $failedModels"
+fi    
