@@ -96,6 +96,8 @@ public class HttpServerHelper extends VertxHelperBase {
                     || (hostInterface != null && hostInterface.equals(((HttpServerHelper)helper)._hostInterface)))
                     && port == ((HttpServerHelper)helper)._port) {
                 // All the interface match.
+                // May have a new JavaScript object, however.
+                ((HttpServerHelper) helper)._currentObj = currentObj;
                 return (HttpServerHelper)helper;
             }
         }
