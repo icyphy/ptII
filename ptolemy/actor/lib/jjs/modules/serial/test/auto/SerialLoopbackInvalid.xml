@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.5">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="4.5">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -116,6 +116,8 @@
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TrainableTest.js">
         </property>
+        <property name="checkoutOrUpdateAccessorsRepository" class="ptolemy.actor.parameters.SharedParameter" value="false">
+        </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Compare the input with a known good input.&#10; If you set ''trainingMode'' to true and provide inputs, then the&#10; inputs will be recorded in the ''correctValues'' parameters.&#10; Otherwise, the inputs will be compared against those in the&#10; ''correctValue'' parameter.&lt;/p&gt;">
             </property>
@@ -136,7 +138,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 135.0]">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;a&quot;, &quot;ab&quot;, &quot;abb&quot;, &quot;abbb&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;a&quot;, &quot;ab&quot;, &quot;abb&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -217,7 +219,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 200.0]">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;a&quot;, &quot;ab&quot;, &quot;abb&quot;, &quot;abbb&quot;, &quot;abbbb&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;a&quot;, &quot;ab&quot;, &quot;abb&quot;, &quot;abbb&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
