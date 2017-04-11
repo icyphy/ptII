@@ -35,6 +35,7 @@ modelsFile=/tmp/reloadAllAccessors.models.$$
 echo "$0: This script reloads all the JSAccessors in all the .xml files that are part of the ptII tree."
 echo "    -cg: regenerate the composite accessors if AccessorCodeGenerator is present."
 echo "    -commit: commit any changed files."
+echo "    -reload: reload accessors."
 echo "To reload just a few files, try:"
 echo "  $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors model1.xml model2.xml"
 
