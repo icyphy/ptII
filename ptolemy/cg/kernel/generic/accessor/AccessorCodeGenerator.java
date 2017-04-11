@@ -194,7 +194,6 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
      */
     @Override
     protected int _generateCode(StringBuffer code) throws KernelException {
-        new Exception("ACG._generateCode(" + code + ")").printStackTrace();
         URI uri = URIAttribute.getModelURI(toplevel());
         String modelURI = "";
         String PTII = StringUtilities.getProperty("ptolemy.ptII.dir");
