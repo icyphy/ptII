@@ -171,32 +171,35 @@ public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter 
         _codeGenerator = codeGenerator;
     }
 
-    // /**
-    //  * Get the corresponding type in the target language
-    //  * from the given Ptolemy type.
-    //  * @param ptType The given Ptolemy type.
-    //  * @return The target language data type.
-    //  */
-    // public String targetType(Type ptType) {
-    //     String returnValue = null;
-    //     if (ptType == BaseType.INT) {
-    //         returnValue = "int";
-    //     } else if ( ptType == BaseType.STRING) {
-    //         returnValue = "string";
-    //     } else if ( ptType == BaseType.DOUBLE) {
-    //         returnValue = "number";
-    //     } else if ( ptType == BaseType.BOOLEAN) {
-    //         returnValue = "boolean";
-    //     } else if ( ptType == BaseType.LONG) {
-    //         returnValue = "number";
-    //     } else if ( ptType == BaseType.UNSIGNED_BYTE) {
-    //         returnValue = "number";
-    //     } else {
-    //         returnValue = ptType.toString();
-    //     }
-    //     throw new RuntimeException("ACGA targetType(" + ptType + "): " + returnValue);
-    //     //return returnValue;
-    // }
+    /**
+     * Get the corresponding type in the target language
+     * from the given Ptolemy type.
+     * @param ptType The given Ptolemy type.
+     * @return The target language data type.
+     */
+    public String targetType(Type ptType) {
+        // targetType() is called by
+        // ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/TypedCompositeActor.java
+        
+        String returnValue = null;
+        if (ptType == BaseType.INT) {
+            returnValue = "int";
+        } else if ( ptType == BaseType.STRING) {
+            returnValue = "string";
+        } else if ( ptType == BaseType.DOUBLE) {
+            returnValue = "number";
+        } else if ( ptType == BaseType.BOOLEAN) {
+            returnValue = "boolean";
+        } else if ( ptType == BaseType.LONG) {
+            returnValue = "number";
+        } else if ( ptType == BaseType.UNSIGNED_BYTE) {
+            returnValue = "number";
+        } else {
+            returnValue = ptType.toString();
+        }
+        throw new RuntimeException("ACGA targetType(" + ptType + "): " + returnValue);
+        //return returnValue;
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
