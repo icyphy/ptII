@@ -3578,7 +3578,7 @@ test_setup:  test_setup_start test_setup_make_fast_install test_setup_test test_
 
 test_setup_start: test_setup_announce setup_jar setup setup_mac_app_tar test_setup_installerTest 
 
-test_setup_test: test_setup_XvfbStart test_setup_make_tests test_setup_end
+test_setup_test: test_setup_make_tests test_setup_end
 
 
 test_setup_announce:
@@ -3614,7 +3614,7 @@ test_setup_make_fast_install:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	ls -l $(PTIIDIST)/lib/lib*.so $(PTIIDIST)/lib/linux-x86-64-rhel/
-	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` sources fast install)
+	(cd test/installerTest; chmod a+x ./configure; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` sources fast install)
 
 test_setup_make_tests:
 	@echo "#"
@@ -3622,13 +3622,13 @@ test_setup_make_tests:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` tests)
+	(cd test/installerTest; chmod a+x ./configure; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` tests)
 
 
 test_setup_ant: test/installerTest
-	(cd test/installerTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant clean; PTII=`pwd` ant; PTII=`pwd` ant jars; PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest; PTII=`pwd` ant clean; cp build.default.xml build.xml; PTII=`pwd` ant) 
+	(cd test/installerTest; chmod a+x ./configure; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure; PTII=`pwd` ant clean; PTII=`pwd` ant; PTII=`pwd` ant jars; PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest; PTII=`pwd` ant clean; cp build.default.xml build.xml; PTII=`pwd` ant) 
 
-test_setup_end: test_setup_XvfbStop
+test_setup_end: 
 
 test_setup_XvfbStop:
 	@echo "#"
@@ -3680,7 +3680,7 @@ test_capecode_setup_make_fast_install:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd test/capeCodeTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` sources fast install)
+	(cd test/capeCodeTest; chmod a+x ./configure; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` sources fast install)
 
 test_capecode_setup_make_tests:
 	@echo "#"
@@ -3688,21 +3688,21 @@ test_capecode_setup_make_tests:
 	@echo "#"
 	@echo "$@ `date`"
 	@echo "`uptime`"
-	(cd test/capeCodeTest; chmod a+x ./configure; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` tests)
+	(cd test/capeCodeTest; chmod a+x ./configure; echo "DISPLAY=$$DISPLAY"; PTII=`pwd` ./configure --enable-verbose; cat mk/ptII.mk; PTII=`pwd` make -k PTII=`pwd` tests)
 
 
 test_capecode_setup_ant: test/capeCodeTest
 	# Test configure and build.xml.in
-	(cd test/capeCodeTest; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; \
+	(cd test/capeCodeTest; echo "DISPLAY=$$DISPLAY"; \
 		chmod a+x ./configure; PTII=`pwd` ./configure; \
 		PTII=`pwd` ant clean; \
 		PTII=`pwd` ant build test.report reports; \
 		PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
 	# Run the accessors tests.
-	(cd test/capeCodeTest/org/terraswarm/accessor/accessors/web; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; \
+	(cd test/capeCodeTest/org/terraswarm/accessor/accessors/web; echo "DISPLAY=$$DISPLAY"; \
 		ant tests.jenkins)
 	# Test build.default.xml first, which does not compile everything.
-	(cd test/capeCodeTest; export DISPLAY=localhost:8.0; echo "DISPLAY=$$DISPLAY"; \
+	(cd test/capeCodeTest; echo "DISPLAY=$$DISPLAY"; \
 		cp build.default.xml build.xml; \
 		PTII=`pwd` ant clean; PTII=`pwd` ant; \
 		PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
