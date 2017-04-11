@@ -193,9 +193,10 @@ public class DiscoveryHelper {
         JSONArray jArray = new JSONArray();
 
         // Return a string representation of a JSON array of JSON objects
+        
         if (_ipMap.size() > 0) {
             for (Entry<String, JSONObject> entry : _ipMap.entrySet()) {
-                jArray.put(entry.getKey());
+                jArray.put(entry.getValue());
             }
             return jArray.toString();
         } else {
@@ -203,6 +204,7 @@ public class DiscoveryHelper {
                     + "no devices found? Returning [].");
             return jArray.toString();
         }
+        
     }
 
     /** Return the IP address of the host machine.
