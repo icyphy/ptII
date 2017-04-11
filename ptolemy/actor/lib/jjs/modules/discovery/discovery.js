@@ -71,11 +71,9 @@ exports.DiscoveryService = DiscoveryService;
 
 /** A DiscoveryService "class" that polls the local network for available
  *  devices.  A device is considered available if it responds to a ping
- *  request.  Emits an event once device polling is complete.
+ *  request.  
  */
 function DiscoveryService() {
-    EventEmitter.call(this);
-    var self = this;
     var helper = new DiscoveryHelper();
 
     /** Discover devices on the local area network.
@@ -83,8 +81,7 @@ function DiscoveryService() {
      * @param IPAddress The IP address of the host machine.
      * @param discoveryMethod  Optional. The discovery method to use, e.g. nmap.
      */
-    this.discoverDevices = function (IPAddress, discoveryMethod) {
-
+    this.discoverDevices = function (IPAddress, discoveryMethod, callback) {
         var devices;
         if (typeof discoveryMethod !== 'undefined') {
             devices = helper.discoverDevices(IPAddress, discoveryMethod);
@@ -95,14 +92,10 @@ function DiscoveryService() {
         // Use JSON.parse() here, since discoverDevices() returns a string
         // representation of a JSON array.  Problems occurred if a JSONArray
         // object was directly returned instead of a string.
-        self.emit('discovered', JSON.parse(devices));
+        callback(JSON.parse(devices));
     };
 
     this.getHostAddress = function () {
         return helper.getHostAddress();
     };
 }
-//DiscoveryService emits events.  See:
-//http://smalljs.org/object/events/event-emitter/
-//http://www.sitepoint.com/nodejs-events-and-eventemitter/
-DiscoveryService.prototype = new EventEmitter();
