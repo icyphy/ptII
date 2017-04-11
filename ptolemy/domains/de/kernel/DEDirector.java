@@ -2269,6 +2269,12 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                             while (!_stopRequested && !_stopFireRequested) {
                                 lastFoundEvent = _eventQueue.get();
                                 currentTime = lastFoundEvent.timeStamp();
+                                
+                                if (currentTime.compareTo(getModelStopTime()) > 0) {
+                                    // Next event is past the stop time of the model.
+                                    // Do not stall.
+                                    break;
+                                }
 
                                 long elapsedTime = elapsedTimeSinceStart();
 
@@ -2280,6 +2286,7 @@ public class DEDirector extends Director implements SuperdenseTimeDirector {
                                 ptolemy.actor.util.Time elapsed = new ptolemy.actor.util.Time(
                                         this, elapsedTimeInSeconds);
                                 if (currentTime.compareTo(elapsed) <= 0) {
+                                    // Enough real time has passed already. Do not stall.
                                     break;
                                 }
 
