@@ -178,7 +178,13 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
      *  model is <code>Foo</code> and the <i>generatorPackage</i>
      *  is <code>ptolemy.cg.kernel.generic.accessor</code>, then the file that is
      *  written will be <code>$HOME/cg/Foo.js</code>
-     *  This method is the main entry point to generate js.
+     *
+     *  <p>This method is the main entry point to generate js.</p>
+     *  
+     *  <p>This method invokes the top level generateAccessor(), which
+     *  is typically defined in
+     *  ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java
+     *  </p>
      *
      *  @param code The given string buffer.
      *  @return The return value of the last subprocess that was executed.
@@ -188,6 +194,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
      */
     @Override
     protected int _generateCode(StringBuffer code) throws KernelException {
+        new Exception("ACG._generateCode(" + code + ")").printStackTrace();
         URI uri = URIAttribute.getModelURI(toplevel());
         String modelURI = "";
         String PTII = StringUtilities.getProperty("ptolemy.ptII.dir");
@@ -212,8 +219,11 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                 + INDENT1 + comment(" $PTII/bin/ptinvoke ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor " + modelURI)
                 + INDENT1 + comment(" to edit the model, run:")
                 + INDENT1 + comment(" $PTII/bin/vergil -capecode " + modelURI)
-                + ((AccessorCodeGeneratorAdapter) getAdapter(toplevel()))
-                .generateAccessor()
+
+                        // Here's where we generate the rest of the accessor code.
+                        // See generateAccessor() in ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java
+
+                + ((AccessorCodeGeneratorAdapter) getAdapter(toplevel())).generateAccessor()
                 + "};" + _eol);
         } catch (IOException ex) {
             throw new IllegalActionException(_model, "Failed to get the canonical path of " + codeDirectory);
