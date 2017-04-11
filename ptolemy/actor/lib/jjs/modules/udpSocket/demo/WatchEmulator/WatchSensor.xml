@@ -130,7 +130,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks and Edward A. Lee">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Moto360SensorListener.js 1458 2017-04-04 21:39:05Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Moto360SensorListener.js 1496 2017-04-08 19:21:11Z cxh $$">
             </property>
             <property name="listeningAddress (port)" class="ptolemy.kernel.util.StringAttribute" value="The interface to listen on for incoming messages.&#10;  This defaults to &quot;0.0.0.0&quot;, which means to listen on all network interfaces.">
             </property>

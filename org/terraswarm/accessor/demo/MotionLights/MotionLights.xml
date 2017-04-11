@@ -72,7 +72,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Camera.js 1318 2017-01-29 21:19:52Z beth@berkeley.edu $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Camera.js 1494 2017-04-08 16:36:21Z cxh $$">
             </property>
             <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="A trigger input for triggered mode.&#10;  The value is ignored and can be anything.">
             </property>
@@ -244,7 +244,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee, Marcus Pan, Elizabeth Osyk, Marten Lohstroh">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Hue.js 1117 2016-11-23 00:59:47Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Hue.js 1496 2017-04-08 19:21:11Z cxh $$">
             </property>
             <property name="bridgeIP (port)" class="ptolemy.kernel.util.StringAttribute" value="The bridge IP address (and port, if needed).">
             </property>

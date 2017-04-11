@@ -60,7 +60,7 @@
             </property>
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;A face detector accessor.&#10; This accessor detects faces in an input stream.&lt;/p&gt;&#10;&lt;p&gt; The options parameter can include the following fields:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;em&gt;value&lt;/em&gt;: The MinFaceSize and MaxFaceSize, which defaults to 50 and 400.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;em&gt;type&lt;/em&gt;: If set to 'JSON'&lt;/p&gt;&#10;&lt;p&gt;The implementation for the Ptolemy II host uses &#10;&lt;a href=&quot;openCV&quot;&gt;https://opencv.org&lt;/a&gt; which is licensed under a BSD 3-clause license.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;A face detector accessor.&#10; This accessor detects faces in an input stream.&lt;/p&gt;&#10;&lt;p&gt; The options parameter can include the following fields:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;em&gt;value&lt;/em&gt;: The MinFaceSize and MaxFaceSize, which defaults to 50 and 400.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;em&gt;type&lt;/em&gt;: If set to 'JSON'&lt;/p&gt;&#10;&lt;p&gt;The implementation for the Ptolemy II host uses&#10;&lt;a href=&quot;openCV&quot;&gt;https://opencv.org&lt;/a&gt; which is licensed under a BSD 3-clause license.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Ilge Akkaya.  Contributor: Christopher Brooks">
             </property>

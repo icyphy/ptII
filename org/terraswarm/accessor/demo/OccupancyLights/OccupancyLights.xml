@@ -69,7 +69,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Camera.js 1318 2017-01-29 21:19:52Z beth@berkeley.edu $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Camera.js 1494 2017-04-08 16:36:21Z cxh $$">
             </property>
             <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="A trigger input for triggered mode.&#10;  The value is ignored and can be anything.">
             </property>
@@ -143,11 +143,11 @@
             </property>
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;A face detector accessor.&#10; This accessor detects faces in an input stream.&lt;/p&gt;&#10;&lt;p&gt; The options parameter can include the following fields:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;em&gt;value&lt;/em&gt;: The MinFaceSize and MaxFaceSize, which defaults to 50 and 400.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;em&gt;type&lt;/em&gt;: If set to 'JSON'&lt;/p&gt;&#10;&lt;p&gt;The implementation for the Ptolemy II host uses &#10;&lt;a href=&quot;openCV&quot;&gt;https://opencv.org&lt;/a&gt; which is licensed under a BSD 3-clause license.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;A face detector accessor.&#10; This accessor detects faces in an input stream.&lt;/p&gt;&#10;&lt;p&gt; The options parameter can include the following fields:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;em&gt;value&lt;/em&gt;: The MinFaceSize and MaxFaceSize, which defaults to 50 and 400.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;em&gt;type&lt;/em&gt;: If set to 'JSON'&lt;/p&gt;&#10;&lt;p&gt;The implementation for the Ptolemy II host uses&#10;&lt;a href=&quot;openCV&quot;&gt;https://opencv.org&lt;/a&gt; which is licensed under a BSD 3-clause license.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Ilge Akkaya.  Contributor: Christopher Brooks">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: FaceDetector.js 1423 2017-03-26 03:12:18Z beth@berkeley.edu $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: FaceDetector.js 1490 2017-04-08 09:01:07Z cxh $$">
             </property>
             <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="A stream of images.">
             </property>
@@ -193,7 +193,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee, Marcus Pan, Elizabeth Osyk, Marten Lohstroh">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Hue.js 1117 2016-11-23 00:59:47Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Hue.js 1496 2017-04-08 19:21:11Z cxh $$">
             </property>
             <property name="bridgeIP (port)" class="ptolemy.kernel.util.StringAttribute" value="The bridge IP address (and port, if needed).">
             </property>

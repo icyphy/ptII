@@ -141,7 +141,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee, Nitesh Mor. Contributor: Christopher Brooks">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogRead.js 1150 2016-12-12 01:24:19Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogRead.js 1488 2017-04-08 08:51:47Z cxh $$">
             </property>
             <property name="debugLevel (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value of the GDP debug flag.&#10; See gdp/README-developers.md for a complete summary.  The value is&#10; typically &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To&#10; see the patterns, use the &quot;what&quot; command or strings&#10; $PTII/lib/libgdp* | grep '@(#)'.  Use &quot;*=40&quot; to set the debug&#10; level to 40 for all components. The value of level is not usually&#10; over 127.  Values over 100 may modify the behavior.">
             </property>
@@ -259,7 +259,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogCreate.js 1150 2016-12-12 01:24:19Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogCreate.js 1488 2017-04-08 08:51:47Z cxh $$">
             </property>
             <property name="debugLevel (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value of the GDP debug flag.  See&#10; gdp/README.md for a complete summary.  The value is typically&#10; &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To see the&#10; patterns, use the &quot;what&quot; command or strings $PTII/lib/libgdp* |&#10; grep '@(#)'.  Use &quot;*=40&quot; to set the debug level to 40 for all&#10; components. The value of level is not usually over 127.  Values&#10; over 100 may modify the behavior.">
             </property>
@@ -327,7 +327,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks, Edward A. Lee, Nitesh Mor">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogSubscribe.js 1150 2016-12-12 01:24:19Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogSubscribe.js 1488 2017-04-08 08:51:47Z cxh $$">
             </property>
             <property name="logname (port)" class="ptolemy.kernel.util.StringAttribute" value="The GDP logname.  By convention, a log name should be&#10;  a reverse fully qualified name like &quot;org.terraswarm.accessor.demo.MyDemoName&quot;.&#10;  If this input is an empty string, then no subscription will&#10;  occur until a non-empty value is provided.&#10;  By default, this is empty.&#10;  Providing an empty string will unsubscribe from any previously subscribed-to log.">
             </property>
@@ -392,7 +392,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks, Edward A. Lee, Nitesh Mor">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogAppend.js 1306 2017-01-20 00:34:12Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogAppend.js 1488 2017-04-08 08:51:47Z cxh $$">
             </property>
             <property name="data (port)" class="ptolemy.kernel.util.StringAttribute" value="The data to be written.">
             </property>

@@ -159,7 +159,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee, Marcus Pan, Elizabeth Osyk, Marten Lohstroh">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Hue.js 1117 2016-11-23 00:59:47Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Hue.js 1496 2017-04-08 19:21:11Z cxh $$">
             </property>
             <property name="bridgeIP (port)" class="ptolemy.kernel.util.StringAttribute" value="The bridge IP address (and port, if needed).">
             </property>

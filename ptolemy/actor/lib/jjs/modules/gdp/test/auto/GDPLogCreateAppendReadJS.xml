@@ -90,7 +90,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee, Nitesh Mor. Contributor: Christopher Brooks">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogRead.js 1150 2016-12-12 01:24:19Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogRead.js 1488 2017-04-08 08:51:47Z cxh $$">
             </property>
             <property name="debugLevel (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value of the GDP debug flag.&#10; See gdp/README-developers.md for a complete summary.  The value is&#10; typically &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To&#10; see the patterns, use the &quot;what&quot; command or strings&#10; $PTII/lib/libgdp* | grep '@(#)'.  Use &quot;*=40&quot; to set the debug&#10; level to 40 for all components. The value of level is not usually&#10; over 127.  Values over 100 may modify the behavior.">
             </property>
@@ -159,7 +159,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogCreate.js 1150 2016-12-12 01:24:19Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogCreate.js 1488 2017-04-08 08:51:47Z cxh $$">
             </property>
             <property name="debugLevel (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value of the GDP debug flag.  See&#10; gdp/README.md for a complete summary.  The value is typically&#10; &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To see the&#10; patterns, use the &quot;what&quot; command or strings $PTII/lib/libgdp* |&#10; grep '@(#)'.  Use &quot;*=40&quot; to set the debug level to 40 for all&#10; components. The value of level is not usually over 127.  Values&#10; over 100 may modify the behavior.">
             </property>
@@ -363,7 +363,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks based on the Ptolemy NonStrictTest actor by Paul Whitaker, Christopher Hylands, Edward A. Lee">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TrainableTest.js 1473 2017-04-06 21:35:34Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: TrainableTest.js 1499 2017-04-08 20:27:56Z cxh $$">
             </property>
             <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="The input value.">
             </property>
@@ -456,7 +456,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks, Edward A. Lee, Nitesh Mor">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogAppend.js 1306 2017-01-20 00:34:12Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: GDPLogAppend.js 1488 2017-04-08 08:51:47Z cxh $$">
             </property>
             <property name="data (port)" class="ptolemy.kernel.util.StringAttribute" value="The data to be written.">
             </property>
