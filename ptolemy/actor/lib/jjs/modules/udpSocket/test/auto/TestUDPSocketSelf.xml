@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5.0">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -55,7 +55,7 @@
         </property>
         <property name="run" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../hosts/node/nodeHostInvoke.js -timeout 15000 net/test/auto/@modelName@">
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../hosts/node/nodeHostInvoke.js @timeoutFlagAndValue@ net/test/auto/@modelName@">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[590.0, 65.0]">
         </property>
@@ -257,13 +257,13 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[&quot;a1&quot;,&quot;a2&quot;,&quot;a3&quot;,&quot;a4&quot;,&quot;a5&quot;,&quot;a6&quot;,&quot;a7&quot;,&quot;a8&quot;,&quot;a9&quot;,&quot;a10&quot;]">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="[&quot;a1&quot;,&quot;a2&quot;,&quot;a3&quot;,&quot;a4&quot;]">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 235.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{365.0, 235.0}">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -291,7 +291,7 @@
         </port>
     </entity>
     <entity name="JavaScriptStop" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;}&#10;&#10;var handle;&#10;exports.initialize  = function() {&#10;  handle = this.addInputHandler('input', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;    var value = this.get('input');&#10;    if (value === true) {&#10;        console.log(&quot;JavaScriptStop: about to call stop().&quot;);&#10;        // stop() is defined for all accessors, though it might not actually do anything.&#10;        stop.call(this);&#10;        // An accessor host might not get to the next line.&#10;        console.log(&quot;JavaScriptStop: done calling stop() on container&quot;);&#10;    }&#10;}&#10; &#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptStop.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;  this.input('input');&#10;}&#10;&#10;var handle;&#10;exports.initialize  = function() {&#10;  handle = this.addInputHandler('input', handler.bind(this));&#10;}&#10;&#10;function handler() {&#10;    var value = this.get('input');&#10;    if (value === true) {&#10;        console.log(&quot;JavaScriptStop: about to call stop().&quot;);&#10;        // stop() is defined for all accessors, though it might not actually do anything.&#10;        this.stop.call(this);&#10;        // An accessor host might not get to the next line.&#10;        console.log(&quot;JavaScriptStop: done calling stop() on container&quot;);&#10;    }&#10;}&#10; &#10;exports.wrapup = function() {&#10;    console.log(&quot;JavaScriptStop.wrapup()&quot;);&#10;    if (typeof handle !== undefined) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;}">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="16">
                 </property>
