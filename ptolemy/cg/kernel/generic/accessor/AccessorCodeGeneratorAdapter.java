@@ -31,7 +31,9 @@ import ptolemy.actor.lib.conversions.json.TokenToJSON;
 import ptolemy.cg.kernel.generic.CodeGeneratorAdapter;
 import ptolemy.cg.kernel.generic.GenericCodeGenerator;
 import ptolemy.data.Token;
+import ptolemy.data.StringToken;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.Variable;
 import ptolemy.data.type.BaseType;
 import ptolemy.data.type.Type;
 import ptolemy.kernel.util.IllegalActionException;
@@ -129,7 +131,34 @@ public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter 
         // referring to other parameters in scope. The code generator needs to
         // juse use the value of the token.
         Token token = parameter.getToken();
-        return TokenToJSON.constructJSON(token);
+
+        // if (parameter.getName().equals("correctValues")) {
+        //     new Exception("ACGA: targetExpression(): parameter: " + parameter + " parameter.getType(): " + parameter.getType()
+        //                   + ", parameter.isStringMode(): " + parameter.isStringMode()
+        //                   + "\n        token: " + token + "\n        token.getType(): " + token.getType() + ", parameter.getAttribute(\"_JSON\"): " + parameter.getAttribute("_JSON") + ", token instanceof StringToken: " + (token instanceof ptolemy.data.StringToken)).printStackTrace();
+        // }
+
+        String returnValue = TokenToJSON.constructJSON(token);
+
+        // FIXME: It turns out that StringTokens that have a _JSON parameter attached to them are special.
+        // So, we undo a bunch of the backslashing.  This is not robust, but it will get us moving again.
+        // To replicate:
+        // $PTII/bin/ptinvoke ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $PTII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/TestRESTPut.xml
+        if (parameter.getAttribute("_JSON") != null && (token instanceof StringToken)) {
+
+            returnValue = returnValue.replace("\\\"", "\"");
+            // System.out.println("ACGA.targetExpression: returnValue0: " + returnValue);
+            returnValue = returnValue.replace("\\\\n", "\\n");
+            // System.out.println("ACGA.targetExpression: returnValue1: " + returnValue);
+            returnValue = returnValue.replace("\\\"", "\"");
+            // System.out.println("ACGA.targetExpression: returnValue2: " + returnValue);
+            returnValue = returnValue.replace("\\\\\"", "\"");
+            // System.out.println("ACGA.targetExpression: returnValue2a: " + returnValue);
+            returnValue = returnValue.substring(1, returnValue.length() - 1);
+            // System.out.println("ACGA.targetExpression: returnValue3: " + returnValue);
+        }
+
+        return returnValue;
     }
 
     /** Set the code generator associated with this adapter class.
@@ -142,27 +171,32 @@ public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter 
         _codeGenerator = codeGenerator;
     }
 
-    /**
-     * Get the corresponding type in the target language
-     * from the given Ptolemy type.
-     * @param ptType The given Ptolemy type.
-     * @return The target language data type.
-     */
-    public String targetType(Type ptType) {
-        return ptType == BaseType.INT ? "int"
-                : ptType == BaseType.STRING ? "string"
-                        : ptType == BaseType.DOUBLE ? "number"
-                                : ptType == BaseType.BOOLEAN ? "boolean"
-                                        : ptType == BaseType.LONG ? "number"
-                                                : ptType == BaseType.UNSIGNED_BYTE ? "number"
-                                                        // FIXME: Why do we have to use equals with BaseType.OBJECT?
-                                                        // Object and Complex types are not primitive types.
-                                                        // $PTII/bin/ptcg -language java $PTII/ptolemy/cg/kernel/generic/program/procedural/java/test/auto/ObjectToken1.xml
-                                                        //: ptType.equals(BaseType.OBJECT) ? "Object"
-                                                        //: ptType == BaseType.OBJECT ? "Object"
-                                                        //: ptType == PointerToken.POINTER ? "void*"
-            : ptType.toString();
-    }
+    // /**
+    //  * Get the corresponding type in the target language
+    //  * from the given Ptolemy type.
+    //  * @param ptType The given Ptolemy type.
+    //  * @return The target language data type.
+    //  */
+    // public String targetType(Type ptType) {
+    //     String returnValue = null;
+    //     if (ptType == BaseType.INT) {
+    //         returnValue = "int";
+    //     } else if ( ptType == BaseType.STRING) {
+    //         returnValue = "string";
+    //     } else if ( ptType == BaseType.DOUBLE) {
+    //         returnValue = "number";
+    //     } else if ( ptType == BaseType.BOOLEAN) {
+    //         returnValue = "boolean";
+    //     } else if ( ptType == BaseType.LONG) {
+    //         returnValue = "number";
+    //     } else if ( ptType == BaseType.UNSIGNED_BYTE) {
+    //         returnValue = "number";
+    //     } else {
+    //         returnValue = ptType.toString();
+    //     }
+    //     throw new RuntimeException("ACGA targetType(" + ptType + "): " + returnValue);
+    //     //return returnValue;
+    // }
 
     ///////////////////////////////////////////////////////////////////
     ////                         protected variables               ////
