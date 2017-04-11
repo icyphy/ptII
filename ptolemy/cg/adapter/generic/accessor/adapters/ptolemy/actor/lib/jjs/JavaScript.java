@@ -1,6 +1,6 @@
 /* An adapter class for ptolemy.actor.lib.jjs.JavaScript
 
- Copyright (c) 2016 The Regents of the University of California.
+ Copyright (c) 2016-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -58,7 +58,7 @@ public class JavaScript extends AccessorCodeGeneratorAdapter {
         super(actor);
     }
 
-        /** Generate Accessor code.
+    /** Generate Accessor code.
      *  @return The generated Accessor.
      *  @exception IllegalActionException If there is a problem getting the adapter, getting
      *  the director or generating Accessor for the director.
