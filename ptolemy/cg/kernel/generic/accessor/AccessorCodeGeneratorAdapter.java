@@ -197,8 +197,7 @@ public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter 
         } else {
             returnValue = ptType.toString();
         }
-        throw new RuntimeException("ACGA targetType(" + ptType + "): " + returnValue);
-        //return returnValue;
+        return returnValue;
     }
 
     ///////////////////////////////////////////////////////////////////
