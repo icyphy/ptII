@@ -48,7 +48,7 @@ typedef long long __int64;
 // files depending on the matlab version or define our own mxGet wrapper
 // macros that select the right one... Either way, Ptolemy would have to
 // build and jar two versions of the DLL for webstart and
-// ptolemy.matlab.Engine would have to know (via a java property?) which
+// ptolemy.matlab.impl.impl.mathworks.MathworksEngine would have to know (via a java property?) which
 // version of the ptmatlab shared library to load...
 #define V5_COMPAT
 

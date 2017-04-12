@@ -3,7 +3,7 @@ dnl	generate the file "configure", which is run to configure the
 dnl	Makefile in this directory.
 
 # Version: $Id$
-# Copyright (c) 1997-2016 The Regents of the University of California.
+# Copyright (c) 1997-2017 The Regents of the University of California.
 # All rights reserved. 
 #
 # Permission is hereby granted, without written agreement and without
@@ -2959,6 +2959,68 @@ fi
 
 if test -z "$PTJAVAMAIL_DIR"; then
    updateExcludes "ptolemy/actor/lib/mail/"
+fi 
+
+#--------------------------------------------------------------------
+#       JMathLib is "A Java Clone of Octave, SciLab, Freemat and Matlab."
+#	http://www.jmathlib.de/
+#--------------------------------------------------------------------
+
+# Set to jmathlib and used in
+# $PTII/ptolemy/matlab/impl/backends/makefile if JMathLib was found.
+PTJMATHLIB_DIR=
+
+# JMathLib Directory.  JMathLib is available from
+# http://www.jmathlib.de/
+JMATHLIB_DIR='${PTII}/vendors/misc/jmathlib'
+
+# JMathLib jar files.   Used to compile the JMathLib Matlab implementation.
+PTJMATHLIB_JARS=
+
+JMATHLIB_USER_DIR="$PTII/ptolemy/matlab/impl/backends/jmathlib"
+# We only need to look for JMathLib if $JMATHLIB_USER_DIR
+if test ! -d "$JMATHLIB_USER_DIR"; then
+    PT_MSG_STATUS([$JMATHLIB_USER_DIR is not present,
+    so we need not find the JMathLib interface.])
+else
+    AC_MSG_CHECKING([for JMathLib directory])
+    AC_ARG_WITH(jmathlib, [  --with-jmathlib=DIRECTORY       use JMathLib interface from DIRECTORY,
+                          defaults to \$PTII/vendors/misc/jmathlib],
+	JMATHLIB_DIR=$withval,
+	JMATHLIB_DIR=$PTII/vendors/misc/jmathlib)
+
+    if test -f "$JMATHLIB_DIR/bin/jmathlib/core/interpreter/Interpreter.class"; then
+	PTJMATHLIB_DIR=jmathlib
+	PTJMATHLIB_PACKAGES="ptolemy.matlab.impl.backends.jmathlib"
+
+	PTJMATHLIB_JARS="${JMATHLIB_DIR}/bin"
+        updateClasspath "$JMATHLIB_DIR/bin"
+	PT_MSG_RESULT([$JMATHLIB_DIR])
+    fi
+
+    if test "$PTJMATHLIB_DIR" = ""; then
+        AC_MSG_WARN([Failed to find bin/jmathlib/core/interpreter/Interpreter.class
+    in $JMATHLIB_DIR
+    perhaps the JMathLib interface is not installed?
+    You need not download the JMathLib interface unless you
+    plan on using the Ptolemy Matlab actor with JMathLib
+    The JMathLib interface can be downloaded from
+    http://www.jmathlib.de/
+      
+      cd $PTII/vendors/misc
+      mkdir jmathlib
+      cd jmathlib
+      wget http://www.jmathlib.de/download/JMathLib_0.9.4-all.zip
+      unzip JMathLib_0.9.4-all.zip
+      cd $PTII
+      ./configure])
+	# Note that we don't substitute in the ${PTII} here
+	JMATHLIB_DIR='${PTII}/vendors/misc/jmathlib'
+    fi
+fi
+
+if test -z "$PTJMATHLIB_DIR"; then
+   updateExcludes "ptolemy/matlab/impl/backends/jmathlib"
 fi 
 
 #--------------------------------------------------------------------
@@ -7032,15 +7094,14 @@ AC_SUBST(PTJAVA32_DIR)
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 AC_SUBST(PTJAVA3D_DIR)
 
-# Set to mail and used in
-# $PTII/ptolemy/actor/lib/makefile if JavaMail's javax.mail.jar was found.
+# Set to mail and used in $PTII/ptolemy/actor/lib/makefile if
+# JavaMail's javax.mail.jar was found.
 AC_SUBST(PTJAVAMAIL_DIR)
 
-# Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.
+# JavaMail jar files.   Used to compile the mail actors.
 AC_SUBST(PTJAVAMAIL_JARS)
 
-# Ptolemy II packages that use JavaMail framework.
-# PTJMF_PACKAGES is used in ptII/doc/makefile.
+# Ptolemy II packages that use JavaMail framework, is used in ptII/doc/makefile.
 AC_SUBST(PTJAVAMAIL_PACKAGES)
 
 # lib/jcerti.jar, used by ptolemy/apps/hlacerti
@@ -7051,6 +7112,17 @@ AC_SUBST(PTJETTY_JAR)
 
 # Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn (present in Java 1.8) is found.
 AC_SUBST(PTJJS_DIR)
+
+# Set to jmathlib and used in
+# $PTII/ptolemy/matlab/impl/backends/makefile if JMathLib was found.
+AC_SUBST(PTJMATHLIB_DIR)
+
+# JMathLib jar files
+AC_SUBST(PTJMATHLIB_JARS)
+
+# Ptolemy II packages that use JMathLib.
+# PTMATHLIB_PACKAGES is used in ptII/doc/makefile.
+AC_SUBST(PTJMATHLIB_PACKAGES)
 
 # Set to jmf if jmf.jar was found
 AC_SUBST(PTJMF_DIR)

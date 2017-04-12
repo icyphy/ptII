@@ -38,7 +38,7 @@ import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.math.Complex;
-import ptolemy.matlab.Engine;
+import ptolemy.matlab.impl.impl.mathworks.MathworksEngine;
 
 ///////////////////////////////////////////////////////////////////////////
 //// TestEngine
