@@ -98,7 +98,7 @@ if [ "$commit" = "true" ]; then
     jsaccessorsToBeCommitted=`svn status $jsaccessorsNoVendors | egrep "^M" | awk '{print $2}' | grep -v diva.jar`
 
     accessorsRepoCommits=`echo $jsaccessorsToBeCommitted | grep org/terraswarm/accessor/accessors/web | sed 's@org/terraswarm/accessors/accessors/web@@g'`
-    if [ ! -z "$accessorRepoCommits" ]; then
+    if [ ! -z "$accessorsRepoCommits" ]; then
         echo "$0: Commit to the accessor repo"
         echo "$0: accessorsRepoCommits: $accessorsRepoCommits"
         (cd org/terraswarm/accessors/accessors/web; svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors."  $accessorsRepoCommits)
@@ -106,7 +106,7 @@ if [ "$commit" = "true" ]; then
         echo "$0: No files need be committed in the accessors repo."
     fi 
 
-    ptIIRepoCommits=`$jsaccessorsToBeCommitted | grep -v org/terraswarm/accessor/accessors/web`
+    ptIIRepoCommits=`echo $jsaccessorsToBeCommitted | grep -v org/terraswarm/accessor/accessors/web`
     if [ ! -z "$ptIIRepoCommits" ]; then
         echo "$0: Commit to the ptII repo."
         echo "$0: ptIIRepoCommits: $ptIIRepoCommits"
