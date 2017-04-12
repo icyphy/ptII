@@ -8888,7 +8888,8 @@ $as_echo "$as_me: WARNING: Failed to find bin/jmathlib/core/interpreter/Interpre
 fi
 
 if test -z "$PTJMATHLIB_DIR"; then
-   updateExcludes "ptolemy/matlab/impl/backends/jmathlib"
+   updateExcludes "ptolemy/matlab/impl/backends/jmathlib/"
+   updateExcludes "ptolemy/matlab/test/utests/impl/backends/jmathlib/"
 fi
 
 #--------------------------------------------------------------------
