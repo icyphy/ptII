@@ -751,6 +751,9 @@ PTJMODELICA_PACKAGES
 PTJMODELICA_DIR
 PTJMF_PACKAGES
 PTJMF_DIR
+PTJMATHLIB_PACKAGES
+PTJMATHLIB_JARS
+PTJMATHLIB_DIR
 PTJJS_DIR
 PTJETTY_JAR
 PTJCERTI_JAR
@@ -1013,6 +1016,7 @@ with_servlet
 with_smack
 with_smackx
 with_javamail
+with_jmathlib
 with_jna_jar
 with_gdp_jar
 with_joystick_jar
@@ -1737,6 +1741,8 @@ Optional Packages:
                           defaults to \$PTII/lib/smackx.jar
   --with-javamail=DIRECTORY       use JavaMail interface from DIRECTORY,
                           defaults to \$PTII/lib
+  --with-jmathlib=DIRECTORY       use JMathLib interface from DIRECTORY,
+                          defaults to \$PTII/vendors/misc/jmathlib
   --with-jna-jar=JARFILE       use JNA from JARFILE,
                           defaults to \$PTII/jna-4.0.0-variadic.jar
   --with-gdp-jar=JARFILE       use GDP from JARFILE,
@@ -8800,6 +8806,92 @@ if test -z "$PTJAVAMAIL_DIR"; then
 fi
 
 #--------------------------------------------------------------------
+#       JMathLib is "A Java Clone of Octave, SciLab, Freemat and Matlab."
+#	http://www.jmathlib.de/
+#--------------------------------------------------------------------
+
+# Set to jmathlib and used in
+# $PTII/ptolemy/matlab/impl/backends/makefile if JMathLib was found.
+PTJMATHLIB_DIR=
+
+# JMathLib Directory.  JMathLib is available from
+# http://www.jmathlib.de/
+JMATHLIB_DIR='${PTII}/vendors/misc/jmathlib'
+
+# JMathLib jar files.   Used to compile the JMathLib Matlab implementation.
+PTJMATHLIB_JARS=
+
+JMATHLIB_USER_DIR="$PTII/ptolemy/matlab/impl/backends/jmathlib"
+# We only need to look for JMathLib if $JMATHLIB_USER_DIR
+if test ! -d "$JMATHLIB_USER_DIR"; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JMATHLIB_USER_DIR is not present,
+    so we need not find the JMathLib interface." >&5
+$as_echo "$JMATHLIB_USER_DIR is not present,
+    so we need not find the JMathLib interface." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for JMathLib directory" >&5
+$as_echo_n "checking for JMathLib directory... " >&6; }
+
+# Check whether --with-jmathlib was given.
+if test "${with_jmathlib+set}" = set; then :
+  withval=$with_jmathlib; JMATHLIB_DIR=$withval
+else
+  JMATHLIB_DIR=$PTII/vendors/misc/jmathlib
+fi
+
+
+    if test -f "$JMATHLIB_DIR/bin/jmathlib/core/interpreter/Interpreter.class"; then
+	PTJMATHLIB_DIR=jmathlib
+	PTJMATHLIB_PACKAGES="ptolemy.matlab.impl.backends.jmathlib"
+
+	PTJMATHLIB_JARS="${JMATHLIB_DIR}/bin"
+        updateClasspath "$JMATHLIB_DIR/bin"
+	if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $JMATHLIB_DIR" >&5
+$as_echo "$JMATHLIB_DIR" >&6; }; fi
+    fi
+
+    if test "$PTJMATHLIB_DIR" = ""; then
+        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find bin/jmathlib/core/interpreter/Interpreter.class
+    in $JMATHLIB_DIR
+    perhaps the JMathLib interface is not installed?
+    You need not download the JMathLib interface unless you
+    plan on using the Ptolemy Matlab actor with JMathLib
+    The JMathLib interface can be downloaded from
+    http://www.jmathlib.de/
+
+      cd $PTII/vendors/misc
+      mkdir jmathlib
+      cd jmathlib
+      wget http://www.jmathlib.de/download/JMathLib_0.9.4-all.zip
+      unzip JMathLib_0.9.4-all.zip
+      cd $PTII
+      ./configure" >&5
+$as_echo "$as_me: WARNING: Failed to find bin/jmathlib/core/interpreter/Interpreter.class
+    in $JMATHLIB_DIR
+    perhaps the JMathLib interface is not installed?
+    You need not download the JMathLib interface unless you
+    plan on using the Ptolemy Matlab actor with JMathLib
+    The JMathLib interface can be downloaded from
+    http://www.jmathlib.de/
+
+      cd $PTII/vendors/misc
+      mkdir jmathlib
+      cd jmathlib
+      wget http://www.jmathlib.de/download/JMathLib_0.9.4-all.zip
+      unzip JMathLib_0.9.4-all.zip
+      cd $PTII
+      ./configure" >&2;}
+	# Note that we don't substitute in the ${PTII} here
+	JMATHLIB_DIR='${PTII}/vendors/misc/jmathlib'
+    fi
+fi
+
+if test -z "$PTJMATHLIB_DIR"; then
+   updateExcludes "ptolemy/matlab/impl/backends/jmathlib"
+fi
+
+#--------------------------------------------------------------------
 #       Ptolemy includes one or more FMUs that use JModelica
 #
 #--------------------------------------------------------------------
@@ -14502,15 +14594,14 @@ fi
 # $PTII/ptolemy/domains/makefile if Java 3D was found
 
 
-# Set to mail and used in
-# $PTII/ptolemy/actor/lib/makefile if JavaMail's javax.mail.jar was found.
+# Set to mail and used in $PTII/ptolemy/actor/lib/makefile if
+# JavaMail's javax.mail.jar was found.
 
 
-# Java OpenGL (JavaMail) jar files.   Used to compile the mail actors.
+# JavaMail jar files.   Used to compile the mail actors.
 
 
-# Ptolemy II packages that use JavaMail framework.
-# PTJMF_PACKAGES is used in ptII/doc/makefile.
+# Ptolemy II packages that use JavaMail framework, is used in ptII/doc/makefile.
 
 
 # lib/jcerti.jar, used by ptolemy/apps/hlacerti
@@ -14520,6 +14611,17 @@ fi
 
 
 # Set to jjs and used in org/terraswarm/accessors/makefile if Nashorn (present in Java 1.8) is found.
+
+
+# Set to jmathlib and used in
+# $PTII/ptolemy/matlab/impl/backends/makefile if JMathLib was found.
+
+
+# JMathLib jar files
+
+
+# Ptolemy II packages that use JMathLib.
+# PTMATHLIB_PACKAGES is used in ptII/doc/makefile.
 
 
 # Set to jmf if jmf.jar was found

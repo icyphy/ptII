@@ -142,7 +142,7 @@ $(PTLIB): ptmatlab.cc Engine.class
 	    echo "# The file command reports that $@ is: "; \
 	    file $@; \
         else \
-	    CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.Engine; \
+	    CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.impl.impl.mathworks.MathworksEngine; \
 	    "$(PTMATLAB_CC)" $(PTMATLAB_CC_FLAGS) \
 		"-I$(MATLAB_DIR)/extern/include" \
 		"-I$(PTJNI_INCLUDE)" \
@@ -153,7 +153,7 @@ $(PTLIB): ptmatlab.cc Engine.class
 PTLIB_32 = $(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlab32.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 PTLIB_64 = $(PTJNI_SHAREDLIBRARY_PREFIX)ptmatlab64.$(PTJNI_SHAREDLIBRARY_SUFFIX)
 $(PTLIB_32): ptmatlab.cc Engine.class
-	CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.Engine
+	CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.impl.impl.mathworks.MathworksEngine
 	"$(PTMATLAB_CC)" $(PTMATLAB_CC_FLAGS) \
 		"-I$(MATLAB_DIR)/extern/include" \
 		"-I$(PTJNI_INCLUDE)" \
@@ -161,7 +161,7 @@ $(PTLIB_32): ptmatlab.cc Engine.class
 		$(PTMATLAB_LD_ARGS)
 
 $(PTLIB_64): ptmatlab.cc Engine.class
-	CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.Engine
+	CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.impl.impl.mathworks.MathworksEngine
 	"$(PTMATLAB_CC)" $(PTMATLAB_CC_FLAGS) -m64 \
 		"-I$(MATLAB_DIR)/extern/include" \
 		"-I$(PTJNI_INCLUDE)" \
@@ -176,7 +176,7 @@ $(MAC_UNIVERSAL_LIB): $(PTLIB_32) $(PTLIB_64)
 
 # Rule to build under Microsoft Visual C
 $(PTLIB)_msvc: ptmatlab.cc Engine.class
-	CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.Engine
+	CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.impl.impl.mathworks.MathworksEngine
 	cl \
 		"-I$(MATLAB_DIR)/extern/include" \
 		"-I$(PTJAVA_HOME)/../include" \
@@ -199,7 +199,7 @@ $(PTLIB)_msvc: ptmatlab.cc Engine.class
 # "Invalid access to memory location" errors
 ptlib_gcc: $(PTLIB)_gcc
 $(PTLIB)_gcc: ptmatlab.cc Engine.class
-	CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.Engine
+	CLASSPATH="$(CLASSPATH)" "$(JAVAH)" -jni -o ptmatlab.h ptolemy.matlab.impl.impl.mathworks.MathworksEngine
 	$(PTCC) -shared \
 		"-I$(MATLAB_DIR)/extern/include" \
 		"-I$(PTJAVA_HOME)/../include" \
