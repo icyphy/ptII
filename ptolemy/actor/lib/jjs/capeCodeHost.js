@@ -44,7 +44,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, actor, commonHost, getAccessorCode, load */
+/*globals Java, actor, console, debug, getAccessorCode, load */
 /*jshint globalstrict: true */
 /*jslint nomen: true */
 "use strict";
