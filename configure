@@ -4535,6 +4535,7 @@ $as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 i
 	updateExcludes $package
     done
 else
+
         # Packages that do not use vertx or other packages, but do use Java 1.8.
         PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.audio ptolemy.actor.lib.jjs.modules.contextAware ptolemy.actor.lib.jjs.modules.contextAwareTest ptolemy.actor.lib.jjs.modules.crypto ptolemy.actor.lib.jjs.modules.dataConverter ptolemy.actor.lib.jjs.modules.iotAuth ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.shell"
         # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
@@ -4543,7 +4544,90 @@ else
         # list org.terraswarm.accessor with jjs/JavaScript
         PTACCESSOR_DIR=accessor
         PTACCESSOR_DIR_FULL="$PTII/org/terraswarm/$PTACCESSOR_DIR"
+
         if test -d "$PTACCESSOR_DIR_FULL" ; then
+
+           ACCESSORS_ANONYMOUS_REPO=https://repo.eecs.berkeley.edu/svn-anon/projects/icyphy/accessors/trunk/accessors
+           ACCESSORS_RW_REPO=https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors
+
+           if test -d "$PTACCESSOR_DIR_FULL/accessors" ; then
+               # Extract the first word of "svn", so it can be a program name with args.
+set dummy svn; ac_word=$2
+{ $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
+$as_echo_n "checking for $ac_word... " >&6; }
+if ${ac_cv_path_SVN+:} false; then :
+  $as_echo_n "(cached) " >&6
+else
+  case $SVN in
+  [\\/]* | ?:[\\/]*)
+  ac_cv_path_SVN="$SVN" # Let the user override the test with a path.
+  ;;
+  *)
+  as_save_IFS=$IFS; IFS=$PATH_SEPARATOR
+for as_dir in $PATH
+do
+  IFS=$as_save_IFS
+  test -z "$as_dir" && as_dir=.
+    for ac_exec_ext in '' $ac_executable_extensions; do
+  if as_fn_executable_p "$as_dir/$ac_word$ac_exec_ext"; then
+    ac_cv_path_SVN="$as_dir/$ac_word$ac_exec_ext"
+    $as_echo "$as_me:${as_lineno-$LINENO}: found $as_dir/$ac_word$ac_exec_ext" >&5
+    break 2
+  fi
+done
+  done
+IFS=$as_save_IFS
+
+  ;;
+esac
+fi
+SVN=$ac_cv_path_SVN
+if test -n "$SVN"; then
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: $SVN" >&5
+$as_echo "$SVN" >&6; }
+else
+  { $as_echo "$as_me:${as_lineno-$LINENO}: result: no" >&5
+$as_echo "no" >&6; }
+fi
+
+
+               if test ! -x "$SVN"; then
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find a svn binary so we can't check org/terraswarm/accessor/accessors" >&5
+$as_echo "$as_me: WARNING: Could not find a svn binary so we can't check org/terraswarm/accessor/accessors" >&2;}
+               else
+                   { $as_echo "$as_me:${as_lineno-$LINENO}: checking that the correct accessors svn repo is checked out." >&5
+$as_echo_n "checking that the correct accessors svn repo is checked out.... " >&6; }
+                   ACCESSORS_URL=`$SVN info --non-interactive --trust-server-cert org/terraswarm/accessor/accessors | grep 'URL:' | awk '{print $NF}' | head -1`
+                   if test "$ACCESSORS_URL" = "$ACCESSORS_ANONYMOUS_REPO" -o "$ACCESSORS_URL" = "$ACCESSORS_RW_REPO"; then
+                       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; fi
+                   else
+                       { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: The Repository Root of $PTACCESSOR_DIR_FULL/accessors is $ACCESSORS_REPOSITORY_ROOT,
+    which is incorrect, it should be
+    $ACCESSORS_ANONYMOUS_REPO
+    or
+    $ACCESSORS_RW_REPO.
+    Perhaps the repo moved?" >&5
+$as_echo "$as_me: WARNING: The Repository Root of $PTACCESSOR_DIR_FULL/accessors is $ACCESSORS_REPOSITORY_ROOT,
+    which is incorrect, it should be
+    $ACCESSORS_ANONYMOUS_REPO
+    or
+    $ACCESSORS_RW_REPO.
+    Perhaps the repo moved?" >&2;}
+                       if test ! -d "$PTACCESSOR_DIR_FULL/accessors-wrong-repository-root"; then
+                           { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Moving $PTACCESSOR_DIR_FULL/accessors to $PTACCESSOR_DIR_FULL/accessors-wrong-repository-root so that we can check out a new version" >&5
+$as_echo "$as_me: WARNING: Moving $PTACCESSOR_DIR_FULL/accessors to $PTACCESSOR_DIR_FULL/accessors-wrong-repository-root so that we can check out a new version" >&2;}
+                           mv "$PTACCESSOR_DIR_FULL/accessors" "$PTACCESSOR_DIR_FULL/accessors-wrong-repository-root"
+                       else
+                           as_fn_error $? "$PTACCESSOR_DIR_FULL/accessors-wrong-repository-root already exists?
+    It is likely that the accessors repository moved and you have an old version of the repo.
+    See http://accessors.org/svn.html" "$LINENO" 5
+                       fi
+                   fi
+               fi
+           fi
+
            if test ! -d "$PTACCESSOR_DIR_FULL/accessors" ; then
               # The accessors mechanism needs to have a repo checked out.  svn:externals won't work.
               # See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Subversion#svnExternals
@@ -4598,7 +4682,7 @@ $as_echo "$as_me: WARNING: Could not find a svn binary so accessors that extend 
 $as_echo_n "checking Attempting to get a local copy of the accessors svn repo... " >&6; }
 
                   # Default to anonymous read-only access.
-                  ACCESSORS_REPO=https://repo.eecs.berkeley.edu/svn-anon/projects/icyphy/accessors/trunk/accessors
+                  ACCESSORS_REPO=$ACCESSORS_ANONYMOUS_REPO
 
                   # If the the PTII tree was not checked out with svn, then default to using anonymous read-only access
                   if test ! -d "$PTII/.svn"; then
@@ -4618,8 +4702,9 @@ $as_echo "$PTII/.svn does exist, so we will determine whether to use anonymous r
                       REPOSITORY_ROOT=`$SVN info --non-interactive --trust-server-cert | grep 'Repository Root' | awk '{print $NF}'`
                       if test "$REPOSITORY_ROOT" = "https://repo.eecs.berkeley.edu/svn/projects/eal/ptII"; then
                           # Read/Write access.
-                          ACCESSORS_REPO=https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors
+                          ACCESSORS_REPO=$ACCESSORS_RW_REPO
                       fi
+
                   fi
 
                   SVN_CO_COMMAND="svn co --trust-server-cert --non-interactive $ACCESSORS_REPO"
@@ -4662,6 +4747,8 @@ $as_echo "ok" >&6; }; fi
            fi
         fi
 fi
+
+set +x
 
 #####################################################################
 #####################################################################
