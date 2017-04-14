@@ -199,10 +199,12 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
         try {
             String stopTime = ((CompositeActor) _model).getDirector().stopTime.getExpression();
             Double stopTimeValue = 0.0;
-            try {
-                stopTimeValue = Double.parseDouble(stopTime) * 1000.0;
-            } catch (NumberFormatException ex) {
-                throw new IllegalActionException(_model, ex, "Could not parse " + stopTime);
+            if (stopTime.length() > 0) {
+                try {
+                    stopTimeValue = Double.parseDouble(stopTime) * 1000.0;
+                } catch (NumberFormatException ex) {
+                    System.out.println("Could not parse stop time \"" + stopTime + "\". The generated composite accessor will not call stopAt().");
+                }
             }
 
             code.append("exports.setup = function() {" + _eol
@@ -219,8 +221,13 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                         // See generateAccessor() in ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java
 
                 + ((AccessorCodeGeneratorAdapter) getAdapter(toplevel())).generateAccessor()
-                + "};" + _eol
-                + "this.stopAt(" + stopTimeValue + ");" + _eol);
+                + "};" + _eol);
+
+            if (stopTimeValue > 0.0)  {
+                code.append("this.stopAt(" + stopTimeValue + ");" + _eol);
+            } else {
+                code.append(comment("The stopTime parameter of the directory in the model was 0, so this.stopAt() is not being generated." + _eol));
+            }
 
         } catch (IOException ex) {
             throw new IllegalActionException(_model, "Failed to get the canonical path of " + codeDirectory);
