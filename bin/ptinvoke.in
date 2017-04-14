@@ -963,6 +963,24 @@ case $commandname in
         jarfile="${ALL_JAR}"
         javaflag="${ALL_JFLAG} -Dorg.xml.sax.driver=org.apache.crimson.parser.XMLReaderImpl"
         ;;
+    capecode)
+        case "`uname -s`" in
+            Darwin*) 
+                iconflag="-Xdock:icon=$PTII/doc/img/ptolemyMacIcon.tif"
+                ;;
+        esac
+
+	help="Invoke the Ptolemy II User Interface, for example: \
+              $commandname \
+              $commandname $PTII_CLEAN/org/terraswarm/accessor/demo/ImageFilters/Random.xml \
+              NOTE: properties are read from \$CLASSPATH/lib/ptII.properties \
+              "
+              
+	javastartupclass=ptolemy.vergil.VergilApplication
+	javasourcedir=ptolemy/vergil
+	jarfile="$ALL_JAR${SINGLE_WINDOW_JARS}"
+        set -- -capecode $@
+        ;;
     convertToLazy)
 	help="Convert to lazy loading (improves startup time for large models)" 
 	invokeHelp="Usage: $commandname model.xml [numberOfDeepEntities]"
