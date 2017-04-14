@@ -71,18 +71,6 @@ import ptolemy.util.StringUtilities;
  *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -generatorPackage ptolemy.cg.kernel.generic.accessor -generatorPackageList generic.accessor $PTII/ptolemy/cg/adapter/generic/accessor/adapters/org/test/auto/TestComposite.xml; cat ~/cg/TestComposite.js
  *  </pre>
  *
- *  <p>The <code>@timeoutFlagAndValue@</code> string in the default
- *  <i>runCommand</i> used to set the <code>-timeout</code> argument
- *  to the Node Accessor host.  The Node Accessor host assumes that
- *  the value of the <code>-timeout</code> command line argument is
- *  the maximum number of milliseconds the script may run.  If the
- *  <i>stopTime</i> parameter of the director is set, then it is
- *  assumed to be the number of seconds to run the accessor and is
- *  multiplied by 1000.0 and passed to the Node Accessor host along
- *  with <code>-timeout</code>.  If the <i>stopTime</i> parameter is
- *  not set, then <code>-timeout</code> argument is not passed to the
- *  Node Accessor host.</p>
- *
  *  <p>For more information, see <a href="https://accessors.org/wiki/Main/CapeCodeHost#CodeGeneration#in_browser">https://accessors.org/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
  *
  *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
@@ -115,7 +103,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
         // @codeDirectory@ and @modelName@ are set in
         // RunnableCodeGenerator._executeCommands().
         // Run the accessors for 2000 ms.
-        runCommand.setExpression("node nodeHostInvoke.js @timeoutFlagAndValue@ hosts/node/@modelName@");
+        runCommand.setExpression("node nodeHostInvoke.js hosts/node/@modelName@");
 
         modules = new StringParameter(this, "modules");
         modules.setExpression("");
@@ -209,6 +197,14 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
         }
 
         try {
+            String stopTime = ((CompositeActor) _model).getDirector().stopTime.getExpression();
+            Double stopTimeValue = 0.0;
+            try {
+                stopTimeValue = Double.parseDouble(stopTime) * 1000.0;
+            } catch (NumberFormatException ex) {
+                throw new IllegalActionException(_model, ex, "Could not parse " + stopTime);
+            }
+
             code.append("exports.setup = function() {" + _eol
                 + INDENT1 + comment(" This composite accessor was created by Cape Code.")
                 + INDENT1 + comment(" To run the code, run: ")
@@ -223,7 +219,9 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                         // See generateAccessor() in ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java
 
                 + ((AccessorCodeGeneratorAdapter) getAdapter(toplevel())).generateAccessor()
-                + "};" + _eol);
+                + "};" + _eol
+                + "this.stopAt(" + stopTimeValue + ");" + _eol);
+
         } catch (IOException ex) {
             throw new IllegalActionException(_model, "Failed to get the canonical path of " + codeDirectory);
         }
@@ -294,9 +292,6 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
     /** Update the substitute map for the setup and run commands
      *  The base class adds @codeDirectory@, @modelName@
      *  and @PTII@ to the map.
-     *  This method adds the @timeoutFlagAndValue@ if the
-     *  director has a non-empty <i>stopTime</i> parameter.
-     *  See the class comment for details.
      *
      *  @exception IllegalActionException If the @stopTime@ parameter
      *  cannot be parsed as a Double.
@@ -314,20 +309,25 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
             _substituteMap.put("@modules@", "");
         }
 
-        // If stopTime is set in the director, then multiply it by
-        // 1000 and use it as the timeout of the accessor.
-        if (_model instanceof CompositeActor) {
-            String stopTime = ((CompositeActor) _model).getDirector().stopTime.getExpression();
-            String timeoutFlagAndValue = "";
-            if (stopTime.length() > 0) {
-                try {
-                    timeoutFlagAndValue = "-timeout " + Double.toString(Double.parseDouble(stopTime) * 1000.0);
-                } catch (NumberFormatException ex) {
-                    throw new IllegalActionException(_model, ex, "Could not parse " + stopTime);
-                }
-            }
-            _substituteMap.put("@timeoutFlagAndValue@", timeoutFlagAndValue);
-        }
+        // // If stopTime is set in the director, then multiply it by
+        // // 1000 and use it as the timeout of the accessor.
+        // if (_model instanceof CompositeActor) {
+        //     String stopTime = ((CompositeActor) _model).getDirector().stopTime.getExpression();
+        //     String timeoutFlagAndValue = "";
+        //     if (stopTime.length() > 0) {
+        //         try {
+        //             timeoutFlagAndValue = "-timeout " + Double.toString(Double.parseDouble(stopTime) * 1000.0);
+        //         } catch (NumberFormatException ex) {
+        //             throw new IllegalActionException(_model, ex, "Could not parse " + stopTime);
+        //         }
+        //     }
+        //     _substituteMap.put("@timeoutFlagAndValue@", timeoutFlagAndValue);
+        // }
+
+        // If @timeoutFlagAndValue is present, then substitute in the
+        // empty string because we are invoking stopAt().
+        _substituteMap.put("@timeoutFlagAndValue@", "");
+
     }
 
     ///////////////////////////////////////////////////////////////////
