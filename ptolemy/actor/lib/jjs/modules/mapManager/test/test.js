@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015-2016 The Regents of the University of California.
+// Copyright (c) 2015-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -48,7 +48,7 @@ badMap = new mapManager.Map("badMapName", mapManager.SpaceTypeEnum.EUCLIDEAN, my
 console.log("Adding myMapName");
 console.log(mapManager.addMap(myMap));
 console.log("Adding myMap again, should print false");
-console.log(mapManager.addMap(myMap))
+console.log(mapManager.addMap(myMap));
 mapManager.addMap(yourMap);
 mapManager.addMap(badMap);
 

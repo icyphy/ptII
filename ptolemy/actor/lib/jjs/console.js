@@ -1,6 +1,6 @@
 // JavaScript module for outputting messages.
 //
-// Copyright (c) 2014-2016 The Regents of the University of California.
+// Copyright (c) 2014-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -33,6 +33,13 @@
  *  @version $$Id$$
  */
 
+// Stop extra messages from jslint.  Note that there should be no
+// space between the / and the * and global.
+/*globals console, exports, print, require */
+/*jshint globalstrict: true */
+/*jslint nomen: true */
+"use strict";
+
 // If a variable 'actor' is defined, delegate to it. Otherwise,
 // print everything to stdout using print(), which is defined in
 // Nashorn.
@@ -43,14 +50,7 @@ var actor = actor || {
     'log': function (message) {
         print(message);
     },
-}
-
-// Stop extra messages from jslint.  Note that there should be no
-// space between the / and the * and global.
-/*globals actor, console, exports, print, require */
-/*jshint globalstrict: true */
-/*jslint nomen: true */
-"use strict";
+};
 
 // Requires the util module.
 var util = require('util');

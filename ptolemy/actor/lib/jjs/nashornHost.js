@@ -1,5 +1,6 @@
 // JavaScript functions for a Ptolemy II (Nashorn) accessor host.
-// Copyright (c) 2016-2016 The Regents of the University of California.
+//
+// Copyright (c) 2016-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -46,7 +47,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, commonHost, getAccessorCode, load */
+/*globals Java, actor, getAccessorCode, load, process, print */
 /*jshint globalstrict: true */
 /*jslint nomen: true */
 "use strict";
@@ -359,7 +360,7 @@ function instantiate(accessorName, accessorClass) {
     var orchestrator = null;
     if (typeof actor === 'undefined') {
         orchestrator = NashornAccessorHostApplication.createOrchestrator(accessorName);
-        bindings['actor'] = orchestrator;
+        bindings.actor = orchestrator;
     }
 
     var instance = new commonHost.instantiateAccessor(
@@ -369,7 +370,7 @@ function instantiate(accessorName, accessorClass) {
     if (orchestrator) {
         console.log('Starting event loop for ' + accessorName);
         // Make it so that 'this.actor' refers to the orchestrator.
-        instance['actor'] = orchestrator;
+        instance.actor = orchestrator;
         // The following will start a thread to handle the event loop for this accessor.
         orchestrator.setTopLevelAccessor(instance);
     }

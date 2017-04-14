@@ -1,5 +1,6 @@
 // JavaScript functions for a Ptolemy II (Nashorn) accessor host.
-// Copyright (c) 2014-2016 The Regents of the University of California.
+//
+// Copyright (c) 2014-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -30,12 +31,11 @@
  * @since Ptolemy II 11.0
  */
 
-/*jslint nomen: true */
-
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals Java, actor, channel, clearInterval, clearTimeout, error, getAccessorCode, getParameter, httpRequest, input, java, output, parameter, readURL, require, send, setDefault, setInterval, setAccessor, setParameter, setTimeout, superSend, _accessorPath */
+/*globals Java, actor, channel, clearInterval, clearTimeout, console, error, getAccessorCode, getParameter, httpRequest, input, java, output, parameter, readURL, require, send, setDefault, setInterval, setAccessor, setParameter, setTimeout, superSend, _accessorPath */
 /*jshint globalstrict: true*/
+/*jslint nomen: true */
 "use strict";
 
 // The commonHost is defined in the accessors repo, but we have a local copy
