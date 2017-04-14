@@ -222,7 +222,7 @@
 
 // Stop extra messages from jslint and jshint.
 // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint
-/*globals actor, alert, console, Duktape, exports, instance, java, Packages, process, require, setInterval, setTimeout, window */
+/*globals actor, alert, console, Duktape, exports, instance, java, Packages, process, require, setInterval, setIntervalDet, setTimeout, setTimeoutDet, clearInterval, clearIntervalDet, clearTimeout, clearTimeoutDet, window, Map, getResource */
 /*jshint globalstrict: true, multistr: true */
 'use strict';
 
@@ -243,7 +243,8 @@ var accessorHostsEnum = {
     DEFAULT: 3,
     DUKTAPE: 4,
     NODE: 5,
-    NASHORN: 6
+    NASHORN: 6,
+    CORDOVA:7
 };
 
 var accessorHost = accessorHostsEnum.DEFAULT;
@@ -255,9 +256,13 @@ exports.accessorHostsEnum = accessorHostsEnum;
 exports.accessorHost = accessorHost;
 
 // In alphabetical order.
-// FIXME: This should not be needed!!! Remove it.
-if (typeof window !== 'undefined' && window.hasOwnProperty('browserJSLoaded')) {
-    accessorHost = accessorHostsEnum.BROWSER;
+// FIXME: This should not be needed!!! Remove it. 
+if (typeof window !== 'undefined') {
+    if (typeof cordova !== 'undefined') {
+        accessorHost = accessorHostsEnum.CORDOVA;
+    } else if (window.hasOwnProperty('browserJSLoaded')) {
+        accessorHost = accessorHostsEnum.BROWSER;
+    }
 } else if (typeof actor !== 'undefined' && typeof Packages !== 'undefined' && typeof Packages.java.util.Vector === 'function') {
     accessorHost = accessorHostsEnum.CAPECODE;
 } else if (typeof Duktape === 'object') {
@@ -271,10 +276,28 @@ if (typeof window !== 'undefined' && window.hasOwnProperty('browserJSLoaded')) {
 if (accessorHost === accessorHostsEnum.DUKTAPE) {
     var util = require('../common/modules/util.js');
     var EventEmitter = require('../common/modules/events.js').EventEmitter;
+} else if(accessorHost === accessorHostsEnum.CORDOVA) {
+    var util = require('cordova/utils');
 } else {
     // The node host will load the core util module here and not access the file system.
     var util = require('util');
     var EventEmitter = require('events').EventEmitter;
+}
+
+if (accessorHost === accessorHostsEnum.CAPECODE || accessorHost === accessorHostsEnum.NASHORN) {
+    ; // Then no deterministic temporal semantics
+} else if (accessorHost === accessorHostsEnum.BROWSER) {
+    var deterministicTemporalSemantics = require('/accessors/hosts/common/modules/deterministicTemporalSemantics');
+} else if (accessorHost === accessorHostsEnum.CORDOVA) {
+    // The module should be already loaded. But for more more convenience when binding to the deterministic behavior,
+    // then we add the following
+    var deterministicTemporalSemantics = {};
+    deterministicTemporalSemantics.setTimeoutDet = setTimeoutDet;
+    deterministicTemporalSemantics.setIntervalDet = setIntervalDet;
+    deterministicTemporalSemantics.clearTimeoutDet = clearTimeoutDet;
+    deterministicTemporalSemantics.clearIntervalDet = clearIntervalDet;
+} else {    
+    var deterministicTemporalSemantics = require('../common/modules/deterministicTemporalSemantics.js');
 }
 
 ///////////////////////////////////////////////////////////////////
@@ -461,28 +484,28 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
         this.monitor = {};
 
         // Monitoring initialize events
-        this.monitor['initialize'] = {
+        this.monitor.initialize = {
             'count': 0,
             'firstOccurrenceDate': {},
             'latestOccurrenceDate': {}
         };
 
         // Monitoring react events
-        this.monitor['reactStart'] = {
+        this.monitor.reactStart = {
             'count': 0,
             'firstOccurrenceDate': {},
             'latestOccurrenceDate': {}
         };
 
         // Monitoring react events
-        this.monitor['reactEnd'] = {
+        this.monitor.reactEnd = {
             'count': 0,
             'firstOccurrenceDate': {},
             'latestOccurrenceDate': {}
         };
 
         // Monitoring wrapup events
-        this.monitor['wrapup'] = {
+        this.monitor.wrapup = {
             'count': 0,
             'firstOccurrenceDate': {},
             'latestOccurrenceDate': {}
@@ -527,7 +550,11 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
     if (bindings && bindings.setInterval) {
         this.setInterval = bindings.setInterval;
     } else if (typeof setInterval !== 'undefined') {
-        this.setInterval = setInterval;
+        if (deterministicTemporalSemantics) {
+            this.setInterval = deterministicTemporalSemantics.setIntervalDet;
+        } else {
+            this.setInterval = setInterval;
+        }
     } else {
         throw new Error('Host does not define required setInterval function.');
     }
@@ -535,9 +562,37 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
     if (bindings && bindings.setTimeout) {
         this.setTimeout = bindings.setTimeout;
     } else if (typeof setTimeout !== 'undefined') {
-        this.setTimeout = setTimeout;
+        if (deterministicTemporalSemantics) {
+            this.setTimeout = deterministicTemporalSemantics.setTimeoutDet;
+        } else {
+            this.setTimeout = setTimeout;
+        }
     } else {
         throw new Error('Host does not define required setTimeout function.');
+    }
+
+    if (bindings && bindings.clearInterval) {
+        this.clearInterval = bindings.clearInterval;
+    } else if (typeof clearInterval !== 'undefined') {
+        if (deterministicTemporalSemantics) {
+            this.clearInterval = deterministicTemporalSemantics.clearIntervalDet;
+        } else {
+            this.clearInterval = clearInterval;
+        }
+    } else {
+        throw new Error('Host does not define required clearInterval function.');
+    }
+
+    if (bindings && bindings.clearTimeout) {
+        this.clearTimeout = bindings.clearTimeout;
+    } else if (typeof clearTimeout !== 'undefined') {
+        if (deterministicTemporalSemantics) {
+            this.clearTimeout = deterministicTemporalSemantics.clearTimeoutDet;
+        } else {
+            this.clearTimeout = clearTimeout;
+        }
+    } else {
+        throw new Error('Host does not define required clearTimeout function.');
     }
 
     if (bindings && bindings.alert) {
@@ -562,7 +617,9 @@ httpRequest, \
 readURL, \
 require, \
 setInterval, \
-setTimeout',
+setTimeout, \
+clearInterval, \
+clearTimeout',
         code);
     wrapper.call(this,
         this.alert,
@@ -573,7 +630,9 @@ setTimeout',
         this.readURL,
         this.require,
         this.setInterval,
-        this.setTimeout);
+        this.setTimeout,
+        this.clearInterval,
+        this.clearTimeout);
 
     // Mark that the accessor has not been initialized
     this.initialized = false;
@@ -696,7 +755,18 @@ setTimeout',
         };
     }
 }
-util.inherits(Accessor, EventEmitter);
+if (accessorHost === accessorHostsEnum.CORDOVA) {
+    Accessor.prototype = Object.create(EventEmitter.prototype, {
+        constructor: {
+            value: Accessor,
+            enumerable: false,
+            writable: true,
+            configurable: true
+        }
+    });
+} else {
+    util.inherits(Accessor, EventEmitter);
+}
 
 /** Add an input handler for the specified input and return a handle that
  *  can be used to remove the input handler.
@@ -1295,16 +1365,16 @@ Accessor.prototype.instantiate = function (instanceName, accessorClass) {
     // If 'this' defines setTimeout(), etc., use that instead of current definitions.
     if (this && this.clearInterval) {
         insideBindings.clearInterval = this.clearInterval;
-    };
+    }
     if (this && this.clearTimeout) {
         insideBindings.clearTimeout = this.clearTimeout;
-    };
+    }
     if (this && this.setInterval) {
         insideBindings.setInterval = this.setInterval;
-    };
+    }
     if (this && this.setTimeout) {
         insideBindings.setTimeout = this.setTimeout;
-    };
+    }
 
     // FIXME: Do we need to ensure that 'actor' or 'accessor' is bound here?
     instanceName = this.accessorName + '.' + instanceName;
@@ -1341,11 +1411,9 @@ Accessor.prototype.module = {
     'id': 'unspecified'
 };
 
-/** Default implementation of the function to define an accessor input.
- *  Accessors that override this should probably invoke this default explicitly
- *  by referencing the prototype.
- *  @param name The name of the input.
- *  @param options The options for the input.
+/** Default implementation of the function to define a mutableAccessor.
+ *  If this is a mutableAccessor, then add the corresponding properties.
+ *  @param value The value, which should be 'true'
  */
 Accessor.prototype.mutable = function (value) {
     if (value === 'true') {
@@ -1354,7 +1422,7 @@ Accessor.prototype.mutable = function (value) {
         ///////////////////////////////////////////////////////////////////
         //// Set up the mutableAccessor properties.
         /*if (extendedBy || implementedBy) {
-        	throw new Error('An extended or implementing Accessor cannot be a mutableAccessor.');
+                throw new Error('An extended or implementing Accessor cannot be a mutableAccessor.');
         }*/
 
         ////////////////////////////////////////////////////////////////////
@@ -1372,7 +1440,7 @@ Accessor.prototype.mutable = function (value) {
         //// Support for additional monitoring information
 
         // Monitoring reify events
-        this.monitor['reify'] = {
+        this.monitor.reify = {
             'count': 0,
             'firstOccurrenceDate': {},
             'latestOccurrenceDate': {}
@@ -1634,7 +1702,7 @@ Accessor.prototype.realize = function (name, options) {
  *  The accessor should be a top level one.
  *  This is a type refinement, hence the function returns true if
  *   *  the set of inputs of 'accessor' are included in the set of inputs of
- *   	'mutableAccessor'
+ *           'mutableAccessor'
  *   *  and the set of outputs of 'mutableAccessor' are included in the set of
  *      outputs of 'accessor'.
  *
@@ -1665,7 +1733,7 @@ Accessor.prototype.realize = function (name, options) {
 Accessor.prototype.reifiableBy = function (accessor, options, strict) {
     // Note that we could just use this instead of this.root because of the
     // prototype chain, but in a deep hierarchy, this will be more efficient.
-    var thiz = this.root;
+    var thiz = this.root, i;
 
     // Check that this is a mutableAccessor
     if (!thiz.mutable) {
@@ -1685,7 +1753,7 @@ Accessor.prototype.reifiableBy = function (accessor, options, strict) {
     }
 
     // Check if the mutableAccessor and accessor realizes similar features
-    if (thiz.realizesList.length == 0 || accessor.realizesList.length == 0) {
+    if (thiz.realizesList.length === 0 || accessor.realizesList.length === 0) {
         console.log('reifiableBy(): Realized features are needed to check reification.');
         // For compatibility reasons with the previous accessors, the function
         // will continue executing.
@@ -1694,7 +1762,7 @@ Accessor.prototype.reifiableBy = function (accessor, options, strict) {
     // Check is realized features are compatible
     // As a first step, this is reduced to equality checking
     // The next step is to perform this tak using ontologies
-    for (var i = 0; i < thiz.realizesList.length; i++) {
+    for (i = 0; i < thiz.realizesList.length; i++) {
         var myRealizesInList = thiz.realizesList[i];
         var myRealizes = thiz.realizes[myRealizesInList];
 
@@ -1714,13 +1782,14 @@ Accessor.prototype.reifiableBy = function (accessor, options, strict) {
     var outputsMap = new Map();
     var parametersMap = new Map();
 
+    var myInputInList, myInput, accInputInList, accInput;
     // Look for mapping the accessor inputs to the mutableAccesssor inputs
-    for (var i = 0; i < accessor.inputList.length; i++) {
-        var accInputInList = accessor.inputList[i];
-        var accInput = accessor.inputs[accInputInList];
+    for (i = 0; i < accessor.inputList.length; i++) {
+        accInputInList = accessor.inputList[i];
+        accInput = accessor.inputs[accInputInList];
 
-        var myInputInList = thiz.inputList[thiz.inputList.indexOf(accInputInList)];
-        var myInput = thiz.inputs[myInputInList];
+        myInputInList = thiz.inputList[thiz.inputList.indexOf(accInputInList)];
+        myInput = thiz.inputs[myInputInList];
 
         // Check the input name
         if (!myInputInList)
@@ -1734,9 +1803,9 @@ Accessor.prototype.reifiableBy = function (accessor, options, strict) {
     }
 
     // If 'strict' is not passed, proceed with mapping the accessor parameters
-    for (var i = 0; i < thiz.inputList.length; i++) {
-        var myInputInList = thiz.inputList[i];
-        var myInput = thiz.inputs[myInputInList];
+    for (i = 0; i < thiz.inputList.length; i++) {
+        myInputInList = thiz.inputList[i];
+        myInput = thiz.inputs[myInputInList];
 
         if (inputsMap.has(myInputInList))
             continue;
@@ -1753,7 +1822,7 @@ Accessor.prototype.reifiableBy = function (accessor, options, strict) {
     }
 
     // Look for mapping the accessor inputs to the mutableAccesssor inputs
-    for (var i = 0; i < thiz.outputList.length; i++) {
+    for (i = 0; i < thiz.outputList.length; i++) {
         var myOutputInList = thiz.outputList[i];
         var myOutput = thiz.outputs[myOutputInList];
 
@@ -1820,7 +1889,7 @@ Accessor.prototype.reify = function (accessor) {
 
     // Check if an accessor is passed
     if (!accessor) {
-        if (thiz.reifyingAccessorsList.length == 0) {
+        if (thiz.reifyingAccessorsList.length === 0) {
             console.log('reify(): no found accessor to reify.');
             return false;
         }
@@ -2043,7 +2112,6 @@ Accessor.prototype.send = function (name, value) {
             throw new Error('send(name, value): No output or input named ' + name);
         }
         // Make the input available in the _next_ reaction.
-        console.log('call setTimeout');
         setTimeout(function () {
             thiz.provideInput(name, value);
             // If this accessor has a container, then provideInput()
@@ -2162,13 +2230,26 @@ Accessor.prototype.setParameter = function (name, value) {
  *  accessor and invoking wrapup() on it.
  */
 Accessor.prototype.stop = function () {
+    console.log("commonHost.js: stop");
     var container = this;
     // Find the top-level container.
     while (container.container) {
         container = container.container;
     }
+    console.log("commonHost.js: stop: container: " + container);
     container.wrapup();
-}
+};
+
+/** Stop execution of the enclosing swarmlet by finding the top-level
+ *  accessor and invoking wrapup() on it.
+ *  @param timeout When this time is reached, stop() is called.
+ */
+Accessor.prototype.stopAt = function (timeout) {
+    var self = this;
+    setTimeout(function() {
+        self.stop();
+    }, timeout);
+};
 
 /** Updates the monitoring information (count, date/time of the first event and date/time
  *  of the last event).
@@ -2181,17 +2262,17 @@ Accessor.prototype.updateMonitoringInformation = function (info) {
 
     // Increment the events count
     var monitor = thiz.monitor[info];
-    monitor['count'] = monitor['count'] + 1;
+    monitor.count = monitor.count + 1;
 
     // Update the first occurrence date, if not defined yet
-    if (!(monitor['firstOccurrenceDate']['Date&Time'])) {
-        monitor['firstOccurrenceDate'] = {
+    if (!(monitor.firstOccurrenceDate['Date&Time'])) {
+        monitor.firstOccurrenceDate = {
             'Date&Time': new Date().toLocaleString()
         };
     }
 
     // Update the last occurrence date
-    monitor['latestOccurrenceDate'] = {
+    monitor.latestOccurrenceDate = {
         'Date&Time': new Date().toLocaleString()
     };
 };
@@ -2312,7 +2393,7 @@ function getMonitoringInformation() {
             type = 'topLevel';
         } else {
             type = 'composite';
-        };
+        }
 
         result[name] = {
             'type': type,
@@ -2361,9 +2442,9 @@ function instantiateAccessor(
     // In case bindings is not defined.
     bindings = bindings || {};
     if (trustedAccessorsAllowed && accessorClass.startsWith('trusted/')) {
-        bindings['getTopLevelAccessors'] = getTopLevelAccessors;
+        bindings.getTopLevelAccessors = getTopLevelAccessors;
     } else {
-        bindings['getTopLevelAccessors'] = function () {
+        bindings.getTopLevelAccessors = function () {
             throw new Error('getTopLevelAccessors(): Accessors are not permitted' +
                 ' to access peer accessors in this host.');
         };
@@ -2515,7 +2596,7 @@ function processCommandLineArguments(argv, fileReader, instantiateTopLevel, term
         case '--e':
         case '-echo':
         case '--echo':
-            console.log(argv)
+            console.log(argv);
             break;
 
         case '-h':
@@ -2681,7 +2762,7 @@ function stopAllAccessors() {
         throw new Error("commonHost.js: stopAllAccessors(): while invoking wrapup() of all accessors," +
             " an exception was thrown: " + initialThrowable + ":" + initialThrowable.stack);
     }
-};
+}
 
 /** Return a name that is unique in the specified container based on the specified
  *  seed. If no container is given, then return a name that is unique among top-level
@@ -2747,3 +2828,4 @@ exports.getTopLevelAccessors = getTopLevelAccessors;
 exports.processCommandLineArguments = processCommandLineArguments;
 exports.stopAllAccessors = stopAllAccessors;
 exports.uniqueName = uniqueName;
+
