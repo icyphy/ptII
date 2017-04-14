@@ -1,10 +1,39 @@
-// @version: $$Id$$
-// Calculate maps of accessors to test cases and accessors to hosts, by
-// examining the contents of the accessors repository.
-// Requires the glob package,
-// npm install -g glob
-// https://github.com/isaacs/node-glob
+// Copyright (c) 2017 The Regents of the University of California.
+// All rights reserved.
+//
+// Permission is hereby granted, without written agreement and without
+// license or royalty fees, to use, copy, modify, and distribute this
+// software and its documentation for any purpose, provided that the above
+// copyright notice and the following two paragraphs appear in all copies
+// of this software.
+//
+// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+// SUCH DAMAGE.
+//
+// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+// PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+// ENHANCEMENTS, OR MODIFICATIONS.
 
+/** Calculate maps of accessors to test cases and accessors to hosts, by
+ * examining the contents of the accessors repository.
+ * Requires the glob package,
+ *
+ * npm install -g glob
+ *
+ * See https://github.com/isaacs/node-glob
+ *
+ * See [http://accessors.org/accessors/wiki/Notes/Status](http://accessors.org/accessors/wiki/Notes/Status).
+ *
+ * @module accessorMapCapeCode
+ * @author Beth Osyk, contributor: Christopher Brooks
+ * @version: $$Id$$
+ */
 
 var fs = require('fs');
 var glob = require('glob');
@@ -58,6 +87,13 @@ module.exports = (function () {
     var checkIfDone = function () {
         // Assume at least one test case.  Array may not be populated before
         // this is checked.
+
+        // console.log('accessorMapCapeCode.js: checkIfDone(): Object.keys(testsToAccessors).length: ' +
+        //             Object.keys(testsToAccessors).length +
+        //             ' ' + (testcases.length - testsError.length)  +
+        //             ' ' + (testcases.length > 0)
+        //            );
+
         if (Object.keys(testsToAccessors).length === (testcases.length - testsError.length) &&
             testcases.length > 0) {
             if (Object.keys(accessorsToModules).length ===
@@ -114,6 +150,7 @@ module.exports = (function () {
                         console.log('Error writing results file: ' + err);
                     }
                 });
+                console.log('accessorMapCapeCode.js: checkIfDone(): wrote ' + resultsFile);
 
 
             }
@@ -133,6 +170,7 @@ module.exports = (function () {
             files.forEach(function (filepath) {
                 scanAccessorFile(filepath);
             });
+            console.log('accessorMapCapeCode.js: findAccessors(): found ' + accessors.length + ' possible accessor files.');
         });
     };
 
@@ -157,6 +195,7 @@ module.exports = (function () {
             files.forEach(function (filepath) {
                 scanTestcase(filepath);
             });
+            console.log('accessorMap.js: findTestCases(): found ' + testcases.length + ' test/auto/** *.js testcase files.');
         });
     };
 
