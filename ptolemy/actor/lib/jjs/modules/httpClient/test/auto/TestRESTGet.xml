@@ -8,24 +8,24 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8000000000000002">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{303.96403894472365, 162.49144158291452}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="5">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="12">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 55.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[89.55078125, 55.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test GET requests using the REST accessor.&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, 50.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[164.55078125, 50.0]">
         </property>
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
@@ -35,25 +35,25 @@
         </property>
         <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../hosts/node/nodeHostInvoke.js @timeoutFlagAndValue@ net/test/auto/@modelName@">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 75.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[559.55078125, 75.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test HTTP">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[234.55078125, 105.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test HTTPS">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[229.55078125, 240.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test ability to receive JSON">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[235.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[229.55078125, 375.0]">
         </property>
     </property>
     <entity name="TestSpontaneousOnce" class="org.terraswarm.accessor.JSAccessor">
@@ -71,7 +71,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[72.94921875, 180.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[67.5, 180.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -108,7 +108,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[267.94921875, 170.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[262.5, 170.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -157,6 +157,8 @@
             </property>
             <property name="arguments (port)" class="ptolemy.kernel.util.StringAttribute" value="Arguments to the command.">
             </property>
+        </property>
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -208,7 +210,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 160.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[384.55078125, 160.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -256,7 +258,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 315.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[69.55078125, 315.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -293,7 +295,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[264.55078125, 305.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -342,6 +344,8 @@
             </property>
             <property name="arguments (port)" class="ptolemy.kernel.util.StringAttribute" value="Arguments to the command.">
             </property>
+        </property>
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -393,7 +397,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[390.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[384.55078125, 295.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -441,7 +445,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 450.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[69.55078125, 450.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -478,7 +482,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[270.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[264.55078125, 440.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -527,6 +531,8 @@
             </property>
             <property name="arguments (port)" class="ptolemy.kernel.util.StringAttribute" value="Arguments to the command.">
             </property>
+        </property>
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -578,7 +584,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 430.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[414.55078125, 430.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
