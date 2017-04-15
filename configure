@@ -4550,7 +4550,7 @@ else
            ACCESSORS_ANONYMOUS_REPO=https://repo.eecs.berkeley.edu/svn-anon/projects/icyphy/accessors/trunk/accessors
            ACCESSORS_RW_REPO=https://repo.eecs.berkeley.edu/svn/projects/icyphy/accessors/trunk/accessors
 
-           if test -d "$PTACCESSOR_DIR_FULL/accessors" ; then
+           if test -d "$PTACCESSOR_DIR_FULL/accessors/.svn" ; then
                # Extract the first word of "svn", so it can be a program name with args.
 set dummy svn; ac_word=$2
 { $as_echo "$as_me:${as_lineno-$LINENO}: checking for $ac_word" >&5
