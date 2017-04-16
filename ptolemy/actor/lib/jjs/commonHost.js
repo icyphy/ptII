@@ -2230,13 +2230,13 @@ Accessor.prototype.setParameter = function (name, value) {
  *  accessor and invoking wrapup() on it.
  */
 Accessor.prototype.stop = function () {
-    console.log("commonHost.js: stop");
+    // console.log("commonHost.js: stop");
     var container = this;
     // Find the top-level container.
     while (container.container) {
         container = container.container;
     }
-    console.log("commonHost.js: stop: container: " + container);
+    // console.log("commonHost.js: stop: container: " + container);
     container.wrapup();
 };
 
@@ -2245,6 +2245,7 @@ Accessor.prototype.stop = function () {
  *  @param timeout When this time is reached, stop() is called.
  */
 Accessor.prototype.stopAt = function (timeout) {
+    this.stopAtTime = timeout;
     var self = this;
     setTimeout(function() {
         self.stop();
