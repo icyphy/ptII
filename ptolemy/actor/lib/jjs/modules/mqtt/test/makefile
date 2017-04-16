@@ -35,7 +35,7 @@ ME =		ptolemy/actor/lib/jjs/modules/mqtt/test
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
 
-CLASSPATH =	$(ROOT)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTPAHO_MQTT_JAR)
 
 # Get configuration info
 CONFIG =	$(ROOT)/mk/ptII.mk
