@@ -5,7 +5,7 @@
 #
 # @Version: : mkpttest 72874 2015-07-26 21:01:52Z cxh $
 #
-# @Copyright (c) 2016 The Regents of the University of California.
+# @Copyright (c) 2016-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -43,7 +43,8 @@ CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(JUNIT_JARS)$(CLASSPATHSEPARATOR)$(PTJA
 CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
-JSRCS = 	JUnitCGAccessorTest.java
+JSRCS = 	JUnitCGAccessorTest.java \
+		JUnitTclTest.java
 
 # Non-graphical Java tests written in Tcl
 # If there are no tests, we use a dummy file so that the script that builds
@@ -76,6 +77,7 @@ JCLASS =	$(JSRCS:%.java=%.class)
 # JUNIT_JAVA_ARGS is set in /Users/cxh/ptII/mk/ptII.mk
 tests:: $(EXTRA_SRCS) jclass test_java #test_jsimple
 	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.cg.kernel.generic.accessor.test.junit.JUnitCGAccessorTest)
+	(cd ..; CLASSPATH="$(PTII)$(CLASSPATHSEPARATOR)$(CLASSPATH)" "$(JAVA)" $(JUNIT_JAVA_ARGS) org.junit.runner.JUnitCore ptolemy.cg.kernel.generic.accessor.test.junit.JUnitTclTest);
 
 test_java: jclass
 
