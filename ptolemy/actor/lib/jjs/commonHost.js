@@ -284,7 +284,7 @@ if (accessorHost === accessorHostsEnum.DUKTAPE) {
     var EventEmitter = require('events').EventEmitter;
 }
 
-if (accessorHost === accessorHostsEnum.CAPECODE || accessorHost === accessorHostsEnum.NASHORN) {
+if (accessorHost === accessorHostsEnum.CAPECODE || accessorHost === accessorHostsEnum.NASHORN || accessorHost === accessorHostsEnum.DUKTAPE) {
     ; // Then no deterministic temporal semantics
 } else if (accessorHost === accessorHostsEnum.BROWSER) {
     var deterministicTemporalSemantics = require('/accessors/hosts/common/modules/deterministicTemporalSemantics');
