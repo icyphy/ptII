@@ -1,4 +1,7 @@
-#!/bin/sh
+#!/bin/bash -e
+#
+# Use -e so that we exit if anything returns with a non-zero status.
+#
 # $Id$
 # A script that deploys a composite accessor to a remote machine.
 #
