@@ -48,6 +48,7 @@ module.exports = (function () {
     var testsError = [];
     var accessorsToModules = {};
     var accessorsError = [];
+    var accessorExtends = {};
     var hostsToModules = {};
     var hostsError = [];
 
@@ -99,7 +100,21 @@ module.exports = (function () {
             if (Object.keys(accessorsToModules).length ===
                 (accessors.length - accessorsError.length)) {
 
-                // Calculate accessors to hosts
+            	// Calculate modules from superclass accessors.
+            	for (var accessor in accessorExtends) {
+            		if (accessorExtends[accessor].length > 0) {
+            			accessorExtends[accessor].forEach(function(superclass) {
+            				var modules = accessorsToModules[superclass + ".js"];
+            				if (modules.length > 0) {
+            					modules.forEach(function(module) {
+            						accessorsToModules[accessor].push(module);
+            					});
+            				}
+            			});
+            		}
+            	}
+            	
+                // Calculate accessors to hosts.
                 var accessorsToHosts = {};
                 var hosts, modules, hasAllModules;
 
@@ -155,7 +170,7 @@ module.exports = (function () {
 
             }
         }
-    }
+    };
 
     /** Find all accessor source files.
      */
@@ -225,6 +240,32 @@ module.exports = (function () {
                         }
 
                         accessorsToModules[filepath] = [];
+                        accessorExtends[filepath] = [];
+                        
+                        // Look for matches to:
+                        // extend('package/accessor') where quotes may be double 
+                        // quotes or single quotes.  Ignore whitespace.
+                        // This will return, for example:
+                        // extend('net/TCPSocketClient'
+                        // Use /g at the end to find all matches.
+                        var exp = /extend\(\s*['"]\s*\w+\/\w+\s*['"]/g; 
+                        var matches = data.match(exp);
+                        
+                        if (matches !== null && typeof matches !== 'undefined' &&
+                                matches.length > 0) {
+                                matches.forEach(function(match) {
+                                    // Module name is from ' or " to end-1
+                                    var quote = match.indexOf('\'');
+                                    if (quote < 0) {
+                                        quote = match.indexOf('\"');
+                                    }
+                                    if (quote >= 0) {
+                                        match = match.substring(quote + 1, match.length - 1);
+                                    }
+
+                                    accessorExtends[filepath].push(match);
+                                });
+                        }
 
                         // Look for matches to:
                         // require('something') where quotes may be double
