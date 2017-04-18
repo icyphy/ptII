@@ -1,0 +1,11 @@
+{
+  "name": "imageDisplay",
+  "version": "0.1.0",
+  "main": "imageDisplay.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Edward A. Lee"
+    , "email" : "eal@eecs.berkeley.edu"}
+  ],
+  "description": "A module for accessing camera hardware on the host."
+}
