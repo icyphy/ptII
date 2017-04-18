@@ -4537,7 +4537,7 @@ $as_echo "$as_me: WARNING: A version of Java ($JVERSION) earlier than Java 1.8 i
 else
 
         # Packages that do not use vertx or other packages, but do use Java 1.8.
-        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.audio ptolemy.actor.lib.jjs.modules.contextAware ptolemy.actor.lib.jjs.modules.contextAwareTest ptolemy.actor.lib.jjs.modules.crypto ptolemy.actor.lib.jjs.modules.dataConverter ptolemy.actor.lib.jjs.modules.iotAuth ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.shell"
+        PTJAVA18_PACKAGES="org.ptolemy.machineLearning.hsmm org.ptolemy.machineLearning.particleFilter org.ptolemy.ssm ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.audio ptolemy.actor.lib.jjs.modules.contextAware ptolemy.actor.lib.jjs.modules.contextAwareTest ptolemy.actor.lib.jjs.modules.crypto ptolemy.actor.lib.jjs.modules.dataConverter ptolemy.actor.lib.jjs.imageDisplay ptolemy.actor.lib.jjs.modules.iotAuth ptolemy.actor.lib.jjs.modules.discovery ptolemy.actor.lib.jjs ptolemy.actor.lib.jjs.modules.shell"
         # Set to accessor and used in org/terraswarm/accessors/makefile if Nashorn is found.
         PTJJS_DIR=jjs
         # org.terraswarm.accessor depends on jjs/JavaScript.java so we
