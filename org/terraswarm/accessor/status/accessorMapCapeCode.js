@@ -42,8 +42,13 @@ var glob = require('glob');
 module.exports = (function () {
 
     var baseDir = "./ptolemy/actor/lib/jjs/modules";
+
     var resultsFile = "./org/terraswarm/accessor/status/accessorMapCapeCode.txt";
 
+    // testsToAccessors is a JSON object with the test file name (with
+    // the .xml) followed by an array of accessors without the .js.
+    // For example:
+    // {"testToAccessors":{"ptolemy/actor/libl/jjs/modules/test/auto/GDPLogCreateAppendRead.xml":["gdp/GDPLogRead","gdp/GDPLogCreate"] ...
     var testsToAccessors = {};
     var testsError = [];
     var accessorsToModules = {};
@@ -115,6 +120,13 @@ module.exports = (function () {
             	}
             	
                 // Calculate accessors to hosts.
+
+                // accessorsToHosts is a JSON variable where each
+                // accessor is followed by an array containing the
+                // names of the hosts that implement it
+
+                // For example: "accessorsToHosts":{"audio/AudioPlayer.js":["browser"],...
+
                 var accessorsToHosts = {};
                 var hosts, modules, hasAllModules;
 
@@ -179,7 +191,7 @@ module.exports = (function () {
         // Find *.js files not in /test/auto or in any excluded directory.
         glob('./org/terraswarm/accessor/accessors/web/!(demo|hosts|jsdoc|library|obsolete|reports|styles|wiki)**/*.js', function (err, files) {
             accessors = files; // So we can check all finished later.
-            // Accessors to modules:
+            // Accessors to modules:s
             // Any file not under a /test/auto directory with a .js extension.
             // Look for require() statements.
             files.forEach(function (filepath) {
@@ -201,7 +213,9 @@ module.exports = (function () {
             testcases.push.apply(testcases, files); // So we can check all finished later.
             files.forEach(function (filepath) {
                 scanTestcase(filepath);
+                // console.log('accessorMapCapeCode.js: findTestCases0: ' + filepath);
             });
+            console.log('accessorMapCapeCode.js: findTestCases()0: found ' + files.length + ' ./ptolemy/actor/lib/jjs/modules/**/test/auto/*.xml testcase files. Total testcases: ' + testcases.length);
         });
 
         glob('./org/terraswarm/accessor/test/auto/*.xml', function (err, files) {
@@ -209,8 +223,9 @@ module.exports = (function () {
 
             files.forEach(function (filepath) {
                 scanTestcase(filepath);
+                // console.log('accessorMapCapeCode.js: findTestCases1: ' + filepath);
             });
-            console.log('accessorMap.js: findTestCases(): found ' + testcases.length + ' test/auto/** *.js testcase files.');
+            console.log('accessorMapCapeCode.js: findTestCases(): found ' + testcases.length + ' ./org/terraswarm/accessor/test/auto/*.js testcase files. Total test cases: ' + testcases.length);
         });
     };
 
@@ -391,6 +406,7 @@ module.exports = (function () {
                         var matches = data.match(exp);
                         filepath = filepath.substring(2);
 
+                        // console.log('accessorMapCapeCode.js: matches: ' + matches + ' filepath: ' + filepath);
                         if (matches !== null && typeof matches !== 'undefined' &&
                             matches.length > 0) {
                             if (!testsToAccessors.hasOwnProperty(filepath)) {
@@ -404,12 +420,15 @@ module.exports = (function () {
                                 if (value !== -1) {
                                     var fullpath = match.substring(value + 7);
 
-                                    var index = fullpath.indexOf('accessors/');
+                                    var index = fullpath.indexOf('accessors.org/');
                                     if (index !== -1) {
-                                        var path = fullpath.substring(index + 10,
+                                        var path = fullpath.substring(index + 14,
                                             fullpath.length - 4);
+                                        // console.log('accessorMapCapeCode.js: match: ' + match + ', index: ' + index + ' path: ' + path);
 
                                         testsToAccessors[filepath].push(path);
+                                    } else {    
+                                        console.log('The following file refers to an accessor not on accessors.org: ' + filepath + ': ' + value);
                                     }
                                 }
                             });
