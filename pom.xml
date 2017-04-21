@@ -31,6 +31,7 @@
     <module>org.ptolemy.core.test</module>
     <module>org.ptolemy.core.test.actor</module>
     <module>org.ptolemy.testsupport</module>
+    <!-- <module>org.terraswarm.accessor</module> -->
     <module>ptolemy.actor.lib</module>
     <module>ptolemy.actor.lib.gui</module>
     <module>ptolemy.core</module>
@@ -41,6 +42,16 @@
     <module>releng</module>
   </modules>
 
+
+<dependencies>
+  <!-- https://mvnrepository.com/artifact/io.vertx/vertx-core -->
+  <dependency>
+    <groupId>io.vertx</groupId>
+    <artifactId>vertx-core</artifactId>
+    <version>3.3.3</version>
+  </dependency>
+</dependencies>
+
   <!-- See http://www.vogella.com/tutorials/EclipseTycho/article.html#using-p2-update-sites-for-dependencies-resolution -->
   <repositories>
     <repository>
@@ -48,6 +59,12 @@
       <url>http://download.eclipse.org/releases/neon</url>
       <layout>p2</layout>
     </repository>
+
+    <repository>
+          <id>staging</id>
+          <url>https://oss.sonatype.org/content/repositories/iovertx-3295</url>
+    </repository>
+    
   </repositories>
   
   <build>
@@ -113,6 +130,35 @@
         <version>${tycho-version}</version>
         <configuration>
           <includeAllDependencies>true</includeAllDependencies>
+        </configuration>
+      </plugin>
+
+
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-jarsigner-plugin</artifactId>
+        <version>1.4</version>
+        <executions>
+          <execution>
+            <id>sign</id>
+            <goals>
+              <goal>sign</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- storetype etc. are defined in ~/.m2/settings.xml.
+               See http://stackoverflow.com/questions/3598424/jar-signing-strategy-in-maven-projects
+               mvn -Pcodesigning -Dkeystore.password=`cat ~/.certpw` package
+          -->
+          <storetype>${keystore.type}</storetype>
+          <!-- See /users/ptII/adm/certs/ptkeystore on terra.eecs.berkeley.edu -->
+          <keystore>${keystore.path}</keystore>
+          <!-- Use 'keytool -list -keystore ptkeystore -storepass xxxx' to get the alias. -->
+          <alias>${keystore.alias}</alias>
+          <!-- See ~jenkins/.certpw on terra.eecs.berkeley.edu -->
+          <storepass>${keystore.store.password}</storepass>
+          <keypass>${keystore.key.password}</keypass>
         </configuration>
       </plugin>
 
