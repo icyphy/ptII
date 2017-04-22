@@ -6,10 +6,10 @@
       For osgi-2-0 specific instructions, see
       https://wiki.eclipse.org/Triquetrum/Ptolemy/osgi-2-0
 
-      For general information, see
-      http://www.vogella.com/tutorials/EclipseTycho/article.html
+For general information, see
+http://www.vogella.com/tutorials/EclipseTycho/article.html
 
-      $Id$
+$Id$
   -->
   
   <properties>
@@ -43,14 +43,14 @@
   </modules>
 
 
-<dependencies>
-  <!-- https://mvnrepository.com/artifact/io.vertx/vertx-core -->
-  <dependency>
-    <groupId>io.vertx</groupId>
-    <artifactId>vertx-core</artifactId>
-    <version>3.3.3</version>
-  </dependency>
-</dependencies>
+  <dependencies>
+    <!-- https://mvnrepository.com/artifact/io.vertx/vertx-core -->
+    <dependency>
+      <groupId>io.vertx</groupId>
+      <artifactId>vertx-core</artifactId>
+      <version>3.3.3</version>
+    </dependency>
+  </dependencies>
 
   <!-- See http://www.vogella.com/tutorials/EclipseTycho/article.html#using-p2-update-sites-for-dependencies-resolution -->
   <repositories>
@@ -60,11 +60,6 @@
       <layout>p2</layout>
     </repository>
 
-    <repository>
-          <id>staging</id>
-          <url>https://oss.sonatype.org/content/repositories/iovertx-3295</url>
-    </repository>
-    
   </repositories>
   
   <build>
@@ -134,52 +129,64 @@
       </plugin>
 
 
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-jarsigner-plugin</artifactId>
-        <version>1.4</version>
-        <executions>
-          <execution>
-            <id>sign</id>
-            <goals>
-              <goal>sign</goal>
-            </goals>
-          </execution>
-        </executions>
-        <configuration>
-          <!-- storetype etc. are defined in ~/.m2/settings.xml.
-               See http://stackoverflow.com/questions/3598424/jar-signing-strategy-in-maven-projects
-               mvn -Pcodesigning -Dkeystore.password=`cat ~/.certpw` package
-          -->
-          <storetype>${keystore.type}</storetype>
-          <!-- See /users/ptII/adm/certs/ptkeystore on terra.eecs.berkeley.edu -->
-          <keystore>${keystore.path}</keystore>
-          <!-- Use 'keytool -list -keystore ptkeystore -storepass xxxx' to get the alias. -->
-          <alias>${keystore.alias}</alias>
-          <!-- See ~jenkins/.certpw on terra.eecs.berkeley.edu -->
-          <storepass>${keystore.store.password}</storepass>
-          <keypass>${keystore.key.password}</keypass>
-        </configuration>
-      </plugin>
-
       <!-- To create source bundles, run mvn org.eclipse.tycho:tycho-source-plugin:plugin-source
 	   See https://eclipse.org/tycho/sitedocs/tycho-source-plugin/plugin-info.html
-	-->
-<!--       <plugin> -->
-<!-- 	<groupId>org.eclipse.tycho</groupId> -->
-<!-- 	<artifactId>tycho-source-plugin</artifactId> -->
-<!-- 	<version>${tycho-version}</version> -->
-<!-- 	<executions> -->
-<!-- 	  <execution> -->
-<!-- 	    <id>plugin-source</id> -->
-<!-- 	    <goals> -->
-<!-- 	      <goal>plugin-source</goal> -->
-<!-- 	    </goals> -->
-<!-- 	  </execution> -->
-<!-- 	</executions> -->
-<!--       </plugin> -->
+      -->
+      <!--       <plugin> -->
+      <!-- 	<groupId>org.eclipse.tycho</groupId> -->
+      <!-- 	<artifactId>tycho-source-plugin</artifactId> -->
+      <!-- 	<version>${tycho-version}</version> -->
+      <!-- 	<executions> -->
+      <!-- 	  <execution> -->
+      <!-- 	    <id>plugin-source</id> -->
+      <!-- 	    <goals> -->
+      <!-- 	      <goal>plugin-source</goal> -->
+      <!-- 	    </goals> -->
+      <!-- 	  </execution> -->
+      <!-- 	</executions> -->
+      <!--       </plugin> -->
 
     </plugins>
-
   </build>
+
+  <profiles>
+    <profile>
+      <!-- Sign the Ptolemy jars.
+           https://wiki.eclipse.org/Triquetrum/Ptolemy/osgi-2-0#Signing_the_Ptolemy_II_osgi-2-0_Jar_Files
+      -->
+      
+      <id>codesigning</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jarsigner-plugin</artifactId>
+            <version>1.4</version>
+            <executions>
+              <execution>
+                <id>sign</id>
+                <goals>
+                  <goal>sign</goal>
+                </goals>
+              </execution>
+            </executions>
+            <configuration>
+              <!-- storetype etc. are defined in ~/.m2/settings.xml.
+                   See http://stackoverflow.com/questions/3598424/jar-signing-strategy-in-maven-projects
+                   mvn -Pcodesigning -Dkeystore.password=`cat ~/.certpw` package
+              -->
+              <storetype>${keystore.type}</storetype>
+              <!-- See /users/ptII/adm/certs/ptkeystore on terra.eecs.berkeley.edu -->
+              <keystore>${keystore.path}</keystore>
+              <!-- Use 'keytool -list -keystore ptkeystore -storepass xxxx' to get the alias. -->
+              <alias>${keystore.alias}</alias>
+              <!-- See ~jenkins/.certpw on terra.eecs.berkeley.edu -->
+              <storepass>${keystore.store.password}</storepass>
+              <keypass>${keystore.key.password}</keypass>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>
