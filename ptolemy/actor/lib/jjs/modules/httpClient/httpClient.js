@@ -390,7 +390,8 @@ ClientRequest.prototype._response = function (response, body) {
  */
 ClientRequest.prototype._errorResponse = function (response, body) {
     if (response !== null) {
-        this.emit('response', response);
+    	var message = new IncomingMessage(response, body);
+        this.emit('response', message);
     }
     this._handleError(body);
 };
