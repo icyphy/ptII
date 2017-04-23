@@ -23,9 +23,16 @@
 
 /**
  * Module supporting web servers.
- * This module defines one class, HttpServer.
- *
- * FIXME
+ * This module defines one class, HttpServer, which runs a web server on the 
+ * given port and host interface (e.g. localhost).  
+ * 
+ * HttpServer generates two events:
+ * A listening event after the server has been started and is ready, and
+ * Request events for each incoming request.  The request event includes
+ * the request data plus a requestID number.
+ * 
+ * Accessors should provide a complete response back to HttpServer and include
+ * the matching requestID.  
  *
  * @module httpServer
  * @author Edward A. Lee amd Elizabeth Osyk
@@ -62,7 +69,7 @@ var EventEmitter = require('events').EventEmitter;
  *    which is the default HTTP port).
  *  * **timeout**: The time in milliseconds to wait after emitting a request
  *    event for a response to be provided by invoking the respond() function.
- *   This is a long that defaults to 30,000.
+ *   This is a long that defaults to 10,000.
  *   If this time expires before respond() is invoked, then this module
  *   will issue a generic timeout response to the HTTP request.
  *
@@ -71,9 +78,8 @@ var EventEmitter = require('events').EventEmitter;
  *  * **listening**: Emitted when the server is listening.
  *  * **request**: Emitted when an HTTP request has been received.
  *
- *
- *  FIXME: Detail what is emitted with a request.
- *
+ *	A request event contains an object with fields for the requestID, method, 
+ *  path, and body (if any).  If there is no body, the body field is absent.
  *
  *  A typical usage pattern looks like this:
  *
@@ -109,12 +115,12 @@ exports.HttpServer = function (options) {
 };
 util.inherits(exports.HttpServer, EventEmitter);
 
-/** Respond to a request. The provided response will be
- *  sent to the oldest request that has not already been sent a response.
+/** Respond to a request. The provided response will be matched to the request 
+ *  with the specified requestID.
  *  @param requestID An object that uniquely identifies the request.
  *   This should be the value of the requestID property of the object
  *   that was emitted as a 'request' event.
- *  @param response FIXME
+ *  @param response A complete text/html response.
  */
 exports.HttpServer.prototype.respond = function (requestID, response) {
     this.helper.respond(requestID, response);
