@@ -1,11 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/org.ptolemy.tycho.feature_1.0.0.qualifier.jar" id="org.ptolemy.tycho.feature" version="1.0.0.qualifier">
+  <feature url="features/org.ptolemy.tycho.feature_1.0.0.qualifier.jar"
+           id="org.ptolemy.tycho.feature"
+           version="1.0.0.qualifier">
       <category name="ptolemy"/>
    </feature>
+
    <category-def name="ptolemy" label="Ptolemy II Modeling and Simulation Engine">
       <description>
          Ptolemy II is an open-source software framework supporting experimentation with actor-oriented design. Actors are software components that execute concurrently and communicate through messages sent via interconnected ports. A model is a hierarchical interconnection of actors. In Ptolemy II, the semantics of a model is not determined by the framework, but rather by a software component in the model called a director, which implements a model of computation.  Ptolemy II is used by Triquetrum.
       </description>
    </category-def>
+
+   <feature
+           id="org.ptolemy.tycho.feature.source"
+           version="1.0.0.qualifier">
+      <category name="source_components"/>
+   </feature>
+   <category-def name="source_components" label="Developer Resources"/>
 </site>
