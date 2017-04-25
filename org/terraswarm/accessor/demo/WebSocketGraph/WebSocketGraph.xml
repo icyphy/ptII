@@ -4,13 +4,13 @@
 <entity name="WebSocketGraph" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={150, 8, 1062, 660}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={150, 23, 1068, 653}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[834, 543]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0524967230479882">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.4501498939258, 210.3324391910938}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{368.4501498939258, 210.33243919109375}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="">
@@ -20,16 +20,6 @@
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, -15.0]">
-        </property>
-    </property>
-    <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/net/test/auto">
-        </property>
-        <property name="run" class="ptolemy.data.expr.Parameter" value="false">
-        </property>
-        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../hosts/node/nodeHostInvoke.js -timeout 16000 net/test/auto/@modelName@">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, -10.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -60,10 +50,6 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 165.0]">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
         </property>
         <property name="interval" class="ptolemy.data.expr.Parameter" value="2500">
         </property>
@@ -99,10 +85,6 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 165.0]">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
         </property>
         <property name="hostInterface" class="ptolemy.data.expr.Parameter" value="localhost">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -190,10 +172,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 175.0]">
         </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data on the console.&lt;/p&gt;">
             </property>
@@ -226,10 +204,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 265.0]">
         </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
             </property>
@@ -261,10 +235,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 265.0]">
         </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -288,10 +258,6 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[350.0, 265.0]">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that connects with a browser on the local host.&#10; This is intended to be used by a swarmlet to interact with users,&#10; for example by providing forms to be filled in.&#10; For now, however, it simply displays HTML provided to its input.&lt;/p&gt;">
