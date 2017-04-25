@@ -144,7 +144,12 @@ public abstract class AccessorCodeGeneratorAdapter extends CodeGeneratorAdapter 
         // So, we undo a bunch of the backslashing.  This is not robust, but it will get us moving again.
         // To replicate:
         // $PTII/bin/ptinvoke ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $PTII/ptolemy/actor/lib/jjs/modules/httpClient/test/auto/TestRESTPut.xml
-        if (parameter.getAttribute("_JSON") != null && (token instanceof StringToken)) {
+        if (parameter.getAttribute("_JSON") != null
+            && (token instanceof StringToken)
+            // If the returnValue is the empty string (""), then don't do the subsitution mambo.
+            // To replicate:
+            // $PTII/bin/capecode $PTII/ptolemy/actor/lib/jjs/modules/httpServer/test/auto/WebServerTimeout.xml
+            && !returnValue.equals("\"\"")) {
 
             returnValue = returnValue.replace("\\\"", "\"");
             // System.out.println("ACGA.targetExpression: returnValue0: " + returnValue);
