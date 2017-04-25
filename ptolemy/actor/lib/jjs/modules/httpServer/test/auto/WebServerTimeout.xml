@@ -16,7 +16,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{76.36973571777344, 37.2265625}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={64, 38, 1119, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={64, 38, 1125, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[891, 524]">
     </property>
@@ -52,7 +52,7 @@
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/net/test/auto">
         </property>
-        <property name="run" class="ptolemy.data.expr.Parameter" value="false">
+        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../hosts/node/nodeHostInvoke.js @timeoutFlagAndValue@ net/test/auto/@modelName@">
         </property>
