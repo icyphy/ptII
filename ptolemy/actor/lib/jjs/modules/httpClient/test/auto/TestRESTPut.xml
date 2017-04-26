@@ -23,7 +23,7 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test POST request using the REST accessor.&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test PUT request using the REST accessor.&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 50.0]">
         </property>
