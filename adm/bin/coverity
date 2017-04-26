@@ -9,12 +9,27 @@ if [ ! -d $coverityPtII ]; then
     mkdir $coverityPtII
 fi
 
-cd $coverityPtII
-
-ptIIDir=$coverityPtII/ptII
-if [ ! -d $ptIIDir ]; then
-    https://repo.eecs.berkeley.edu/svn-anon/projects/eal/ptII/trunk ptII
+export PTII=$coverityPtII/ptII
+if [ ! -d $PTII ]; then
+    cd $coverityPtII
+    svn co  https://repo.eecs.berkeley.edu/svn-anon/projects/eal/ptII/trunk ptII
 fi
+
+if [ ! -d $PTII ]; then
+    echo "$0: Could not find $PTII"
+    exit 2
+fi
+
+cd $PTII
+./configure
+ant
+
+# Remove files that define setTimeout() that cause this warnings.
+accessorsDir=$PTII/org/terraswarm/accessor/accessors
+rm -f $accessorsDir/web/hosts/duktape/duktape/examples/eventloop/ecma_eventloop.js
+rm -f $accessorsDir/web/hosts/duktape/duktape2/examples/eventloop/ecma_eventloop.js
+rm -f $accessorsDir/web/hosts/duktape/eduk/c_eventloop.js
+rm -f $accessorsDir/web/hosts/duktape/eduk2/c_eventloop.js
 
 rm -rf reports/cov-int
 mkdir reports/cov-int
@@ -23,9 +38,9 @@ mkdir reports/cov-int
 # Use --fs-capture-search so that we get JavaScript and Java.  See https://scan.coverity.com/download?tab=other
 /home/hudson/src/cov-analysis-linux64/bin/cov-build --dir reports/cov-int --fs-capture-search ./ ant
 
-(cd $ptIIDir/reports; tar czvf myproject.tgz cov-int)
+(cd $PTII/reports; tar czvf myproject.tgz cov-int)
 
-VERSION=`egrep ^PTVERSION $ptIIDir/makefile | awk '{print $NF}'`.`date +%Y%M%d`
+VERSION=`egrep ^PTVERSION $PTII/makefile | awk '{print $NF}'`.`date +%Y%M%d`
 
 
 # Old:

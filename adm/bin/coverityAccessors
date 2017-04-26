@@ -20,6 +20,8 @@ fi
 # Remove files that define setTimeout() that cause this warnings.
 rm -f accessors/web/hosts/duktape/duktape/examples/eventloop/ecma_eventloop.js
 rm -f accessors/web/hosts/duktape/duktape2/examples/eventloop/ecma_eventloop.js
+rm -f accessors/web/hosts/duktape/eduk/c_eventloop.js
+rm -f accessors/web/hosts/duktape/eduk2/c_eventloop.js
 
 rm -rf reports/accessors/cov-int
 mkdir -p reports/accessors/cov-int
@@ -27,7 +29,7 @@ mkdir -p reports/accessors/cov-int
 # Use --fs-capture-search so that we get JavaScript and Java.  See https://scan.coverity.com/download?tab=other
 /home/hudson/src/cov-analysis-linux64/bin/cov-build --dir reports/accessors/cov-int --no-command --fs-capture-search accessors/web
 
-(cd $accessorsDir/reports/accessors; tar czvf myproject.tgz cov-int)
+(cd reports/accessors; tar czvf myproject.tgz cov-int)
 
 VERSION=`date +%Y%M%d`
 
