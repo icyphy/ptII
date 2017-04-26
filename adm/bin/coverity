@@ -22,7 +22,8 @@ fi
 
 cd $PTII
 ./configure
-ant
+ant clean
+# Don't run ant here, the cov-build process will do that for us.
 
 # Remove files that define setTimeout() that cause this warnings.
 accessorsDir=$PTII/org/terraswarm/accessor/accessors
