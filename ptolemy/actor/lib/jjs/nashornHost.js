@@ -416,6 +416,7 @@ function processCommandLineArguments(argv) {
             // Ptolemy defines a process module that defines exit()
             // that invokes ptolemy.util.StringUtilities.exit(), which
             // checks environment variables before possibly exiting.
+            var process = require('process');
             process.exit(0);
         }
     );
