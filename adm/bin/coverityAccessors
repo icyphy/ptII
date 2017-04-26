@@ -3,17 +3,33 @@
 
 echo "$PTII/adm/bin/coverityAccessors started at `date`"
 
-cd $PTII
+
+coverityAccessors=/tmp/coverityAccessors
+
+if [ ! -d $coverityAccessors ]; then
+    mkdir $coverityAccessors
+fi
+
+cd $coverityAccessors
+
+accessorsDir=$coverityAccessors/accessors
+if [ ! -d $accessorsDir ]; then
+    svn co https://repo.eecs.berkeley.edu/svn-anon/projects/icyphy/accessors/trunk/accessors
+fi
+
+# Remove files that define setTimeout() that cause this warnings.
+rm accessors/web/hosts/duktape/duktape/examples/eventloop/ecma_eventloop.js
+rm accessors/web/hosts/duktape/duktape2/examples/eventloop/ecma_eventloop.js
 
 rm -rf reports/accessors/cov-int
 mkdir reports/accessors/cov-int
 
 # Use --fs-capture-search so that we get JavaScript and Java.  See https://scan.coverity.com/download?tab=other
-/home/hudson/src/cov-analysis-linux64/bin/cov-build --dir reports/accessors/cov-int --no-command --fs-capture-search org/terraswarm/accessor/accessors/web
+/home/hudson/src/cov-analysis-linux64/bin/cov-build --dir reports/accessors/cov-int --no-command --fs-capture-search accessors/web
 
-(cd $PTII/reports/accessors; tar czvf myproject.tgz cov-int)
+(cd $accessorsDir/reports/accessors; tar czvf myproject.tgz cov-int)
 
-VERSION=`egrep ^PTVERSION $PTII/makefile | awk '{print $NF}'`.`date +%Y%M%d`
+VERSION=`date +%Y%M%d`
 
 
 # Old:
@@ -22,8 +38,10 @@ VERSION=`egrep ^PTVERSION $PTII/makefile | awk '{print $NF}'`.`date +%Y%M%d`
 curl --form token=zmkem_JmcyjWLZBXP1fhvw \
      --form email=cxh@eecs.berkeley.edu \
      --form file=@reports/accessors/myproject.tgz \
-     --form version="Version" \
-     --form description="Description" \
+     --form version="$VERSION" \
+     --form description="Started by ptII/adm/bin/coverityAccessors" \
      https://scan.coverity.com/builds?project=accessors
+
+rm -rf $coverityAccessors
 
 echo "$PTII/adm/bin/coverityAccessors ended at `date`"
