@@ -2,19 +2,30 @@
 # Upload stats to coverity.
 
 echo "$PTII/adm/bin/coverity started at `date`"
-cd $PTII
+
+coverityPtII=/tmp/coverityPtII
+
+if [ ! -d $coverityPtII ]; then
+    mkdir $coverityPtII
+fi
+
+cd $coverityPtII
+
+ptIIDir=$coverityPtII/ptII
+if [ ! -d $ptIIDir ]; then
+    https://repo.eecs.berkeley.edu/svn-anon/projects/eal/ptII/trunk ptII
+fi
 
 rm -rf reports/cov-int
 mkdir reports/cov-int
 
-ant clean
 
 # Use --fs-capture-search so that we get JavaScript and Java.  See https://scan.coverity.com/download?tab=other
 /home/hudson/src/cov-analysis-linux64/bin/cov-build --dir reports/cov-int --fs-capture-search ./ ant
 
-(cd $PTII/reports; tar czvf myproject.tgz cov-int)
+(cd $ptIIDir/reports; tar czvf myproject.tgz cov-int)
 
-VERSION=`egrep ^PTVERSION $PTII/makefile | awk '{print $NF}'`.`date +%Y%M%d`
+VERSION=`egrep ^PTVERSION $ptIIDir/makefile | awk '{print $NF}'`.`date +%Y%M%d`
 
 
 # Old:
@@ -26,5 +37,7 @@ curl --form token=Z11RGxhJDN81JVxPjgszbw \
   --form version="$VERSION" \
   --form description="nightly" \
   https://scan.coverity.com/builds?project=Ptolemy+II
+
+rm -rf $coverityPtII
 
 echo "$PTII/adm/bin/coverity ended at `date`"
