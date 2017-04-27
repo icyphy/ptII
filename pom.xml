@@ -32,9 +32,7 @@ $Id$
     <module>org.ptolemy.core.test</module>
     <module>org.ptolemy.core.test.actor</module>
     <module>org.ptolemy.testsupport</module>
-    <!--
     <module>org.terraswarm.accessor</module>
-    !-->
     <module>ptolemy.actor.lib</module>
     <module>ptolemy.actor.lib.gui</module>
     <module>ptolemy.core</module>
@@ -74,6 +72,7 @@ $Id$
         <artifactId>target-platform-configuration</artifactId>
         <version>${tycho-version}</version>
         <configuration>
+          <pomDependencies>consider</pomDependencies>
           <environments>
             <environment>
               <os>linux</os>
