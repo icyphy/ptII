@@ -27,12 +27,18 @@ $Id$
   <modules>
     <module>features</module>
     <module>diva</module>
+    <!-- org.json is not a module
+    <module>org.json</module>
+    -->
     <module>org.ptolemy.actor.gui.test</module>
     <module>org.ptolemy.commons</module>
     <module>org.ptolemy.core.test</module>
     <module>org.ptolemy.core.test.actor</module>
     <module>org.ptolemy.testsupport</module>
     <module>org.terraswarm.accessor</module>
+    <!-- org.vertx.core is not a module
+    <module>org.vertx.core</module>
+    -->
     <module>ptolemy.actor.lib</module>
     <module>ptolemy.actor.lib.gui</module>
     <module>ptolemy.core</module>

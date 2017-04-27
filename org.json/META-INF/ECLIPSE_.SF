@@ -1,0 +1,74 @@
+Signature-Version: 1.0
+SHA1-Digest-Manifest: Q0ZWGtZT1nQ3hBBVlBdcl/07s1Q=
+Created-By: 1.6.0 (IBM Corporation)
+SHA1-Digest-Manifest-Main-Attributes: Ozp4Y9+l/1GaV+rggE8vwnTLFk0=
+
+Name: org/json/JSONWriter.class
+SHA1-Digest: 9zfv9Xop71p1D87Kv7pxdjAEqcQ=
+
+Name: about_files/NOTICE
+SHA1-Digest: bcuYOooTMhdKnKURb7AqkkHLi/s=
+
+Name: META-INF/eclipse.inf
+SHA1-Digest: SAqY+5ITAL0mkdYeijlSRhyIaZk=
+
+Name: org/json/XML.class
+SHA1-Digest: c8H66VRsGzPzDpzbQbLpZ4IQ3TY=
+
+Name: org/json/CookieList.class
+SHA1-Digest: 4CkwJCtwq14jzPPi8rGxShT8kvU=
+
+Name: org/json/Cookie.class
+SHA1-Digest: MsljPlsrytDmT7MnF/d+fNOZPq8=
+
+Name: org/json/JSONTokener.class
+SHA1-Digest: YUQ8krWgPyyrcUZiXCpSHQTDuy4=
+
+Name: org/json/JSONStringer.class
+SHA1-Digest: vl/4uvKuHwXctQnYJ2gTMXrIeBw=
+
+Name: about.html
+SHA1-Digest: b3uLkSIaBHG2DxWlF0nMmGlP3bA=
+
+Name: org/json/HTTPTokener.class
+SHA1-Digest: EPF6xYgLGLV2QSdVtBQk7HXJLDA=
+
+Name: org/json/JSONObject.class
+SHA1-Digest: YGssm+ht5jjJbJsuwj0JkccG2/c=
+
+Name: org/json/JSONML.class
+SHA1-Digest: QqqlxDH6p0bsBDM4ky4NXADt9BA=
+
+Name: org/json/HTTP.class
+SHA1-Digest: Kc3Gn6IQ6ThHKMnFzyJFT09Pxmc=
+
+Name: org/json/JSONObject$Null.class
+SHA1-Digest: Lp8kE1evONtRBMqerBCDW5lq2ek=
+
+Name: org/json/JSONException.class
+SHA1-Digest: 5sE8hWHBcIO2KWG5O+RwH/TxrVc=
+
+Name: org/json/XMLTokener.class
+SHA1-Digest: 7RzP3R0BX3EcfZ96Rw7I+iTkIgE=
+
+Name: about_files/LICENSE
+SHA1-Digest: OztIgnKm703gfS3LRFEVajEFuYU=
+
+Name: org/json/Test$1$Obj.class
+SHA1-Digest: kNwPvr5Ni9xWe3Ej9z5FI7yOxKk=
+
+Name: org/json/Test.class
+SHA1-Digest: eC6GYYYxAR803DzVwXVTl8F1A6s=
+
+Name: org/json/CDL.class
+SHA1-Digest: fQUdl1o/iIgiz1HfOjOoLjvF0Y8=
+
+Name: org/json/JSONArray.class
+SHA1-Digest: hpaQbsczoGfos1fXyj/PkPQGiLc=
+
+Name: bundle.properties
+SHA1-Digest: hWSxaLkWGqsxdGbeQBweQV5C4Cs=
+
+Name: org/json/JSONString.class
+SHA1-Digest: MoKSLjf/4NvEk/WqUvg2ovFa150=
+

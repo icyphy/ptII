@@ -658,14 +658,14 @@ public class JavaScript extends TypedAtomicActor {
 
         try {
             engine.eval(FileUtilities.openForReading(
-                    "C:/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
+                    "/Users/cxh/src/osgi-2-0/org.terraswarm.accessor/original-src/ptolemy/actor/lib/jjs/capeCodeHost.js", null,
                     null));
         } catch (Throwable throwable) {
             throw new IllegalActionException(actor, throwable,
                     "Failed to load capeCodeHost.js");
         }
 
-        String localFunctionsPath = "C:/ptolemy/actor/lib/jjs/localFunctions.js";
+        String localFunctionsPath = "/Users/cxh/src/osgi-2-0/org.terraswarm.accessor/original-src/ptolemy/actor/lib/jjs/localFunctions.js";
         try {
             engine.eval(FileUtilities.openForReading(localFunctionsPath, null, null));
         } catch (Throwable throwable) {
