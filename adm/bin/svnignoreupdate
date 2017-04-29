@@ -65,6 +65,24 @@ do
     svn propset svn:ignore -F $svnIgnoreFile $PtDocDir
 done
 
+targetDirs=`egrep "target$" $statusFile | xargs -n 1 dirname | sort | uniq`
+for targetDir in $targetDirs
+do
+    echo $targetDir
+    svn propget svn:ignore $targetDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+    echo 'target' >> $svnIgnoreFile
+    svn propset svn:ignore -F $svnIgnoreFile $targetDir
+done
+
+binDirs=`egrep "bin$" $statusFile | xargs -n 1 dirname | sort | uniq`
+for binDir in $binDirs
+do
+    echo $binDir
+    svn propget svn:ignore $binDir | awk 'length($0) > 0 {print $0}' > $svnIgnoreFile
+    echo 'bin' >> $svnIgnoreFile
+    svn propset svn:ignore -F $svnIgnoreFile $binDir
+done
+
 jarDirs=`egrep "\.jar$" $statusFile | xargs -n 1 dirname | sort | uniq`
 for jarDir in $jarDirs
 do
