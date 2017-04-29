@@ -98,12 +98,12 @@ import ptolemy.util.StringUtilities;
  *
  * <p>To run a very simple test:</p>
  * <pre>
- * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -timeout 10000 -js hosts/nashorn/test/testNashornHost.js)
+ * (cd $PTII/org/terraswarm/accessor/accessors/web; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -timeout 10000 -js hosts/nashorn/test/testNashornHost.js)
  * </pre>
  *
  * <p>To run a composite accessor:</p>
  * <pre>
- * (cd $PTII/org/terraswarm/accessor/accessors/web/hosts; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -timeout 10000 test/auto/RampJSDisplay.js)
+ * (cd $PTII/org/terraswarm/accessor/accessors/web; $PTII/bin/ptinvoke ptolemy.actor.lib.jjs.NashornAccessorHostApplication -timeout 10000 test/auto/RampJSDisplay.js)
  * </pre>
  *
  * <p> The command line syntax is:</p>
