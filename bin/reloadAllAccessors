@@ -76,18 +76,23 @@ if [ "$cg" = "true" ]; then
     echo "$0: Regenerating code for `echo "$cgModels" | wc -l ` models that contain AccessorCodeGenerator"
     for cgModel in $cgModels
     do
-        TIMEOUT=30
-        ($PTII/bin/ptinvoke ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $cgModel) & pid=$!
-        ( sleep $TIMEOUT && kill -HUP $pid ) 2>/dev/null & watcher=$!
-        wait $pid 2>/dev/null
-        cgReturnValue=$?
-        pkill -HUP -P $watcher
-        echo "cgReturnValue = $cgReturnValue"
-        if [ "$cgReturnValue" != "0" ]; then
-            overallReturnValue=$cgReturnValue;
-            failedModels="$failedModels $cgModel"
-        fi            
-
+        echo $cgModel | grep -q knownFailedTests
+        retval=$?
+        if [ $retval = 0 ]; then
+            echo "$0: $cgModel is in knownFailedTests, so we won't generate code."
+        else
+            TIMEOUT=30
+            ($PTII/bin/ptinvoke ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $cgModel) & pid=$!
+            ( sleep $TIMEOUT && kill -HUP $pid ) 2>/dev/null & watcher=$!
+            wait $pid 2>/dev/null
+            cgReturnValue=$?
+            pkill -HUP -P $watcher
+            echo "cgReturnValue = $cgReturnValue"
+            if [ "$cgReturnValue" != "0" ]; then
+                overallReturnValue=$cgReturnValue;
+                failedModels="$failedModels $cgModel"
+            fi            
+        fi
     done        
 fi    
 
