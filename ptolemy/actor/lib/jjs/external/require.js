@@ -181,6 +181,27 @@
             '$CLASSPATH/ptolemy/actor/lib/jjs/', null).getAbsolutePath();
         if (moduleName.match(/^[^\.\/]/)) {
             // it's a module named like so ... 'events' , 'net/http'
+
+            // Replace '@accessor-modules' with 'modules'.
+            // See https://www.icyphy.org/accessors/wiki/Notes/NPM#CapeCodeNPMDesignDecisions
+            moduleName = moduleName.replace(/@accessors-modules/, 'modules');
+
+            // Convert names like http-client to httpClient because Java does
+            // not support package names with hyphens.
+            if (moduleName.indexOf('-') != -1) {
+                var newModuleName = "";
+                for (var i = 0; i < moduleName.length; i++) {
+                    var char = moduleName.charAt(i)
+                    if (char !== '-') {
+                        newModuleName = newModuleName + char;
+                    } else {
+                        i = i + 1;
+                        newModuleName = newModuleName + moduleName.charAt(i).toUpperCase();
+                    }
+                }
+                moduleName = newModuleName;
+            }
+
             for (var i = 0; i < modulePaths.length; i++) {
                 var modulePath = modulePaths[i];
                 // Windows?
