@@ -32,6 +32,9 @@ rm -f $accessorsDir/web/hosts/duktape/duktape2/examples/eventloop/ecma_eventloop
 rm -f $accessorsDir/web/hosts/duktape/eduk/c_eventloop.js
 rm -f $accessorsDir/web/hosts/duktape/eduk2/c_eventloop.js
 
+rm -f accessors/web/node_modules/@accessors-hosts/duktape/duktape2/examples/eventloop/ecma_eventloop.js 
+rm -f accessors/web/node_modules/@accessors-hosts/duktape/eduk2/c_eventloop.js
+
 rm -rf reports/cov-int
 mkdir reports/cov-int
 
