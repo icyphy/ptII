@@ -55,7 +55,7 @@ static void print_pop_error(duk_context *ctx, FILE *f) {
          * Note that getting the stack trace may throw an error
          * so this also needs to be safe call wrapped.
          */
-        (void) duk_safe_call(ctx, get_stack_raw, 1 /*nargs*/, 1 /*nrets*/);
+	(void) duk_safe_call(ctx, get_stack_raw, NULL /*udata*/, 1 /*nargs*/, 1 /*nrets*/);
         fprintf(f, "%s\n", duk_safe_to_string(ctx, -1));
         fflush(f);
         duk_pop(ctx);
@@ -194,7 +194,7 @@ static int handle_eval(duk_context *ctx, char *code) {
 
         interactive_mode = 0;  /* global */
 
-        rc = duk_safe_call(ctx, wrapped_compile_execute, 3 /*nargs*/, 1 /*nret*/);
+        rc = duk_safe_call(ctx, wrapped_compile_execute, NULL /*udata*/, 3 /*nargs*/, 1 /*nret*/);
 
 #if defined(DUK_CMDLINE_AJSHEAP)
         ajsheap_clear_exec_timeout();
