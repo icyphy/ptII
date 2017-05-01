@@ -32,8 +32,8 @@ DEBUG = -ggdb
 # Use -Wall so we have better code.
 WARNING_CC_FLAGS = -Wall
 
-# FIXME: We should eventually copy the files we wnt
-DUKTAPE = $(PTII)/org/terraswarm/accessor/accessors/web/hosts/duktape/duktape
+# FIXME: We should eventually copy the files we want.
+DUKTAPE = $(PTII)/org/terraswarm/accessor/accessors/web/node_modules/@accessors-hosts/duktape/duktape2
 
 DUKTAPE_INCLUDES=-I$(DUKTAPE)/src
 
