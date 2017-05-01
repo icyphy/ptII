@@ -209,8 +209,8 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
 
             code.append("exports.setup = function() {" + _eol
                 + INDENT1 + comment(" This composite accessor was created by Cape Code.")
-                + INDENT1 + comment(" PTII: " + PTII) + _eol
-                + INDENT1 + comment(" codeDirectory.asFile().getCanonicalPath().replace('\\', '/'): " + codeDirectory.asFile().getCanonicalPath().replace('\\', '/')) + _eol
+                        // + INDENT1 + comment(" PTII: " + PTII) + _eol
+                        // + INDENT1 + comment(" codeDirectory.asFile().getCanonicalPath().replace('\\', '/'): " + codeDirectory.asFile().getCanonicalPath().replace('\\', '/')) + _eol
                 + INDENT1 + comment(" To run the code, run: ")
                 + INDENT1 + comment(" (cd " + codeDirectory.asFile().getCanonicalPath().replace('\\', '/').replace(PTII.replace('\\', '/'), "$PTII") + "; "
                                     + _runCommand() + ")")
