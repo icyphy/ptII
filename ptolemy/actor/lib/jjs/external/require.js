@@ -190,9 +190,17 @@
             // not support package names with hyphens.
             if (moduleName.indexOf('-') != -1) {
                 var newModuleName = "";
+                var lastSlashIndex = moduleName.length;
+                // Don't replace hypens in filenames.
+                if (moduleName.lastIndexOf('/') != -1 && moduleName.endsWith('.js')) {
+                    lastSlashIndex = moduleName.lastIndexOf('/') - 1;
+                }
                 for (var i = 0; i < moduleName.length; i++) {
                     var char = moduleName.charAt(i)
-                    if (char !== '-') {
+                    // If the last part of the module name is a
+                    // filename with a hyphen, then don't replace the
+                    // -.  MochaTest requires this.
+                    if (i >= lastSlashIndex || char !== '-') {
                         newModuleName = newModuleName + char;
                     } else {
                         i = i + 1;
