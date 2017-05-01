@@ -19,7 +19,7 @@
         </property>
         <property name="run" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../hosts/node/nodeHostInvoke.js test/auto/@modelName@">
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../node_modules/@accessors-hosts/node/nodeHostInvoke.js test/auto/@modelName@">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{205.0, 35.0}">
         </property>

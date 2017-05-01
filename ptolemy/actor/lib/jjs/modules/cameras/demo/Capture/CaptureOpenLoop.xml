@@ -56,7 +56,7 @@
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/cameras/demo">
         </property>
-        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../hosts/node/nodeHostInvoke.js cameras/demo/@modelName@">
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../node_modules/@accessors-hosts/node/nodeHostInvoke.js cameras/demo/@modelName@">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{105, 330}">
         </property>
