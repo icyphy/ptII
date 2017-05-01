@@ -26,7 +26,7 @@
 
 var EventEmitter = require('events').EventEmitter;
 var util = require('util');
-var WindowMock = require('testing/window-mock/window-mock.js');
+var WindowMock = require('testing/windowMock/window-mock.js');
 
 /** Create a Testing object for managing tests. 
  * 
