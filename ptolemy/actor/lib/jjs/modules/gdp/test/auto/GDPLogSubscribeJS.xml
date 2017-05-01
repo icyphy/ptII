@@ -53,7 +53,7 @@
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/gdp/test/auto">
         </property>
-        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../hosts/node/nodeHostInvoke.js -timeout 12000 gdp/test/auto/@modelName@">
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../node_modules/@accessors-hosts/node/nodeHostInvoke.js gdp/test/auto/@modelName@">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[322.4329955399926, 22.7049929206051]">
         </property>
