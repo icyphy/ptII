@@ -31,6 +31,10 @@
         </property>
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/node_modules/@accessors-hosts/node">
+        </property>
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node nodeHostInvoke.js node_modules/@accessors-hosts/node/@modelName@">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[205.0, 55.0]">
         </property>
     </property>
