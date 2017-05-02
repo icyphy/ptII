@@ -244,14 +244,6 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="keyStorePassword" class="ptolemy.data.expr.Parameter" value="">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="keyStorePath" class="ptolemy.data.expr.Parameter" value="">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
         <property name="receiveType" class="ptolemy.data.expr.Parameter" value="$type">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
