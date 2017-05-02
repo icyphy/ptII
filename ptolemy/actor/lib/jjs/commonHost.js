@@ -215,7 +215,7 @@
  *     the output using console.log().
  *
  *
- *  @module commonHost
+ *  @module @accessors-hosts/commonHost
  *  @author Edward A. Lee and Chris Shaver.  Contributor: Christopher Brooks
  *  @version $$Id$$
  */
@@ -287,7 +287,7 @@ if (accessorHost === accessorHostsEnum.DUKTAPE) {
 if (accessorHost === accessorHostsEnum.CAPECODE || accessorHost === accessorHostsEnum.NASHORN || accessorHost === accessorHostsEnum.DUKTAPE) {
     ; // Then no deterministic temporal semantics
 } else if (accessorHost === accessorHostsEnum.BROWSER) {
-    var deterministicTemporalSemantics = require('/accessors/hosts/common/modules/deterministicTemporalSemantics');
+    var deterministicTemporalSemantics = require('/accessors/node_modules/@accessors-hosts/common/modules/deterministicTemporalSemantics');
 } else if (accessorHost === accessorHostsEnum.CORDOVA) {
     // The module should be already loaded. But for more more convenience when binding to the deterministic behavior,
     // then we add the following
@@ -1281,7 +1281,7 @@ Accessor.prototype.getParameter = function (name) {
         throw new Error('getParameter(name): No parameter named ' + name);
     }
     // If this.setParameter() has been called, return that value.
-    if (parameter.currentValue) {
+    if (typeof parameter.currentValue !== 'undefined') {
         return parameter.currentValue;
     }
     // If necessary, convert the value to the match the type.
