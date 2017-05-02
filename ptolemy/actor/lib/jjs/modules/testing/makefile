@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2015-2016 The Regents of the University of California.
+# @Copyright (c) 2015-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/testing
 
-DIRS = 		chai demo mocha window-mock test
+DIRS = 		chai demo mocha windowMock test
 
 # Root of the Java directory
 ROOT =		../../../../../..
