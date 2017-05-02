@@ -96,14 +96,14 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
         // The output file extension is .js.
         super(container, name, "js");
 
-        codeDirectory.setExpression("$PTII/org/terraswarm/accessor/accessors/web/hosts/node");
+        codeDirectory.setExpression("$PTII/org/terraswarm/accessor/accessors/web/node_modules/@accessors-hosts/node");
 
         generatorPackageList.setExpression("generic.accessor");
 
         // @codeDirectory@ and @modelName@ are set in
         // RunnableCodeGenerator._executeCommands().
         // Run the accessors for 2000 ms.
-        runCommand.setExpression("node nodeHostInvoke.js hosts/node/@modelName@");
+        runCommand.setExpression("node nodeHostInvoke.js node_modules/@accessors-hosts/node/@modelName@");
 
         modules = new StringParameter(this, "modules");
         modules.setExpression("");
@@ -209,7 +209,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
 
             code.append("exports.setup = function() {" + _eol
                 + INDENT1 + comment(" This composite accessor was created by Cape Code.")
-                        // + INDENT1 + comment(" PTII: " + PTII) + _eol
+o                        // + INDENT1 + comment(" PTII: " + PTII) + _eol
                         // + INDENT1 + comment(" codeDirectory.asFile().getCanonicalPath().replace('\\', '/'): " + codeDirectory.asFile().getCanonicalPath().replace('\\', '/')) + _eol
                 + INDENT1 + comment(" To run the code, run: ")
                 + INDENT1 + comment(" (cd " + codeDirectory.asFile().getCanonicalPath().replace('\\', '/').replace(PTII.replace('\\', '/'), "$PTII") + "; "
