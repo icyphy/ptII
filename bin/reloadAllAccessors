@@ -106,7 +106,7 @@ if [ "$commit" = "true" ]; then
     if [ ! -z "$accessorsRepoCommits" ]; then
         echo "$0: Commit to the accessor repo"
         echo "$0: accessorsRepoCommits: $accessorsRepoCommits"
-        (cd org/terraswarm/accessors/accessors/web; svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors."  $accessorsRepoCommits)
+        (cd $PTII/org/terraswarm/accessors/accessors/web; svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors."  $accessorsRepoCommits)
     else
         echo "$0: No files need be committed in the accessors repo."
     fi 
@@ -115,7 +115,7 @@ if [ "$commit" = "true" ]; then
     if [ ! -z "$ptIIRepoCommits" ]; then
         echo "$0: Commit to the ptII repo."
         echo "$0: ptIIRepoCommits: $ptIIRepoCommits"
-        svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors." `echo $jsaccessorsToBeCommitted | grep -v org/terraswarm/accessor/accessors/web`
+        (cd $PTII; svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors." `echo $jsaccessorsToBeCommitted | grep -v org/terraswarm/accessor/accessors/web`)
     else
         echo "$0: No files need be committed in the ptII repo."
     fi        
