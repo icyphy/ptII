@@ -209,21 +209,19 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
 
             code.append("exports.setup = function() {" + _eol
                 + INDENT1 + comment(" This composite accessor was created by Cape Code.")
-o                        // + INDENT1 + comment(" PTII: " + PTII) + _eol
-                        // + INDENT1 + comment(" codeDirectory.asFile().getCanonicalPath().replace('\\', '/'): " + codeDirectory.asFile().getCanonicalPath().replace('\\', '/')) + _eol
                 + INDENT1 + comment(" To run the code, run: ")
                 + INDENT1 + comment(" (cd " + codeDirectory.asFile().getCanonicalPath().replace('\\', '/').replace(PTII.replace('\\', '/'), "$PTII") + "; "
                                     + _runCommand() + ")")
                 + INDENT1 + comment(" To regenerate this composite accessor, run:")
                 + INDENT1 + comment(" $PTII/bin/ptinvoke ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor " + modelURI)
                 + INDENT1 + comment(" to edit the model, run:")
-                                    + INDENT1 + comment(" $PTII/bin/capecode " + modelURI)
+                + INDENT1 + comment(" $PTII/bin/capecode " + modelURI)
 
-                        // Here's where we generate the rest of the accessor code.
-                        // See generateAccessor() in ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java
+                // Here's where we generate the rest of the accessor code.
+                // See generateAccessor() in ptolemy/cg/adapter/generic/accessor/adapters/ptolemy/actor/lib/jjs/JavaScript.java
 
                 + ((AccessorCodeGeneratorAdapter) getAdapter(toplevel())).generateAccessor()
-                + "};" + _eol);
+                        + "};" + _eol);
 
             if (stopTimeValue > 0.0)  {
                 code.append("this.stopAt(" + stopTimeValue + ");" + _eol);
