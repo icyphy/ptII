@@ -106,7 +106,7 @@ if [ "$commit" = "true" ]; then
     if [ ! -z "$accessorsRepoCommits" ]; then
         echo "$0: Commit to the accessor repo"
         echo "$0: accessorsRepoCommits: $accessorsRepoCommits"
-        (cd $PTII/org/terraswarm/accessors/accessors/web; svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors."  $accessorsRepoCommits)
+        (cd $PTII/org/terraswarm/accessor/accessors/web; svn commit -m "Reloaded accessors using $PTII/bin/reloadAllAccessors."  $accessorsRepoCommits)
     else
         echo "$0: No files need be committed in the accessors repo."
     fi 
