@@ -104,7 +104,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
         // @codeDirectory@ and @modelName@ are set in
         // RunnableCodeGenerator._executeCommands().
         // Run the accessors for 2000 ms.
-        runCommand.setExpression("node ../node_modules/@accessors-hosts/node/nodeHostInvoke.js node_modules/@accessors-hosts/node/@modelName@");
+        runCommand.setExpression("node ../node_modules/@accessors-hosts/node/nodeHostInvoke.js cg/@modelName@");
 
         modules = new StringParameter(this, "modules");
         modules.setExpression("");
