@@ -536,6 +536,7 @@ public class SocketHelper extends VertxHelperBase {
                 boolean rawBytes,
                 boolean emitBatchDataAsAvailable) {
             _eventEmitter = eventEmitter;
+            System.out.println("SocketHelper.SocketWrapper(): _eventEmitter: " +  _eventEmitter.get("iama"));
             _rawBytes = rawBytes;
             _emitBatchDataAsAvailable = emitBatchDataAsAvailable;
             _socket = (NetSocket)socket;
@@ -589,7 +590,8 @@ public class SocketHelper extends VertxHelperBase {
             });
             // Handler for received data.
             _socket.handler(buffer -> {
-                _processBuffer(buffer);
+                    System.out.println("SocketHelper.SocketWrapper(): _eventEmitter: " +  _eventEmitter.get("iama") + " _socket.handler()");
+                    _processBuffer(buffer);
             });
         }
         /** Close the socket and remove all event listeners on the associated
@@ -613,6 +615,7 @@ public class SocketHelper extends VertxHelperBase {
          *  @param data The data to send.
          */
         public void send(final Object data) {
+            System.out.println("SocketHelper.SocketWrapper.send(): _eventEmitter: " +  _eventEmitter.get("iama"));
             // NOTE: This might be called in a vert.x thread, which can cause a deadlock.
             // In particular, the wait() below will block draining the socket if it is
             // called in the same thread. Hence, the wait is deferred to the director thread.
@@ -658,18 +661,27 @@ public class SocketHelper extends VertxHelperBase {
                 Buffer buffer = Buffer.buffer();
                 // Handle the case where data is an array.
                 if (data instanceof Object[]) {
+                    System.out.println("SocketHelper.SocketWrapper.send(" + data + "): handle case where data is an array.");
                     for (Object element : (Object[]) data) {
                         // JavaScript arrays can have holes, and moreover,
                         // it seems that Nashorn's Java.to() function creates
                         // a bigger array than needed with trailing null elements.
                         if (element != null) {
                             _appendToBuffer(element, _sendType, _sendImageType, buffer);
+                            byte [] bytes = buffer.getBytes();
+                            StringBuilder builder = new StringBuilder(bytes.length * 2);
+                            for(byte b: bytes) {
+                                builder.append(String.format("%02x", b));
+                            }
+                            System.out.println("SocketHelper.SocketWrapper.send(" + data + "): added element " + element + " to buffer: " + buffer + " or " + builder) ;
                         }
                     }
                 } else {
+                    System.out.println("SocketHelper.SocketWrapper.send(" + data + "): is not an array.");
                     _appendToBuffer(data, _sendType, _sendImageType, buffer);
                 }
                 if (!_rawBytes) {
+                    System.out.println("SocketHelper.SocketWrapper.send(" + data + "): !rawBytes");
                     // Prepend the buffer with message length information.
                     // Note that unlike the WebSocket standard, we don't need
                     // to break the message into frames. The underlying TCP
@@ -689,7 +701,9 @@ public class SocketHelper extends VertxHelperBase {
                     newBuffer.appendBuffer(buffer);
                     buffer = newBuffer;
                 }
+                System.out.println("SocketHelper.SocketWrapper.send(" + data + "): about to invoke write() on socket " + _socket + ", remoteAddress: " + _socket.remoteAddress() + ".  Writing buffer: " + buffer + ": _eventEmitter: " + _eventEmitter.get("iama"));
                 _socket.write(buffer);
+                System.out.println("SocketHelper.SocketWrapper.send(" + data + "): after write() on socket " + _socket + ".");
             });
         }
         /** Extract a length from the head of the buffer. Return the number of
@@ -719,6 +733,7 @@ public class SocketHelper extends VertxHelperBase {
          *  @param buffer The buffer, or null to process previously received data.
          */
         private void _processBuffer(Buffer buffer) {
+            System.out.println("SocketHelper.SocketWrapper._processBuffer() start: _eventEmitter: " + _eventEmitter.get("iama"));
             if (!_rawBytes) {
                 // Only issue a response when a complete message has arrived.
                 Buffer residual = null;
@@ -837,6 +852,7 @@ public class SocketHelper extends VertxHelperBase {
             // (with the same time stamp) on the accessor output.
             _issueResponse(() -> {
                 if (_receiveType == DATA_TYPE.STRING) {
+                    System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: String emit");
                     _eventEmitter.callMember("emit", "data", finalBuffer.getString(0, finalBuffer.length()));
                 } else if (_receiveType == DATA_TYPE.IMAGE) {
                     try {
@@ -855,6 +871,7 @@ public class SocketHelper extends VertxHelperBase {
                         // that we have a complete image. Thus, we emit a byte array and not an image
                         // token.
                         if (_rawBytes) {
+                            System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: _rawBytes emit");
                             _eventEmitter.callMember("emit", "data", bytes);
                         } else {
                             BufferedImage image = ImageIO.read(_byteStream);
@@ -865,6 +882,7 @@ public class SocketHelper extends VertxHelperBase {
                                             + " buffers. Consider increasing buffer size.");
                                 }
                                 ImageToken token = new AWTImageToken(image);
+                                System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: !_rawBytes emit");
                                 _eventEmitter.callMember("emit", "data", token);
                             } else {
                                 _error(_eventEmitter, "Received corrupted image.");
@@ -879,11 +897,15 @@ public class SocketHelper extends VertxHelperBase {
                     int length = finalBuffer.length();
                     int numberOfElements = length / size;
                     if (numberOfElements == 1) {
+                        System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: Numeric numberOfElements == 1 emit");
                         _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, _receiveType, 0));
                     } else if (numberOfElements > 1) {
                         if (_rawBytes && !_emitBatchDataAsAvailable) {
                             int position = 0;
                             for (int i = 0; i < numberOfElements; i++) {
+                                System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: Numeric A: numberOfElements > 1 emit: " + _eventEmitter);
+
+                                System.out.println("SocketHelper.SocketWrapper._processBuffer(): " +  _eventEmitter.get("iama"));
                                 _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, _receiveType, position));
                                 position += size;
                             }
@@ -900,10 +922,12 @@ public class SocketHelper extends VertxHelperBase {
                             // dance here which is probably very inefficient (almost
                             // certainly... the array gets copied).
                             try {
+                                System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: Numeric B: numberOfElements > 1 emit");
                                 _eventEmitter.callMember("emit", "data", _actor.toJSArray(result));
                             } catch (Exception e) {
                                 _error(_eventEmitter, "Failed to convert to a JavaScript array: "
                                         + e);
+                                System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: Numeric failed emit");
                                 _eventEmitter.callMember("emit", "data", result);
                             }
                         }

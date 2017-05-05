@@ -248,6 +248,7 @@ var defaultClientOptions = {
  *  @param options The options.
  */
 exports.SocketClient = function (port, host, options) {
+    this.iama = 'SocketClient(' + port + ', ' + host;
     // Set default values of arguments.
     // Careful: port == 0 means to find an available port, I think.
     this.port = port;
@@ -281,6 +282,7 @@ exports.SocketClient.prototype._opened = function (netSocket) {
 
     // Because we are creating an inner class, the first argument needs to be
     // the instance of the enclosing socketHelper class.
+    console.log('socket.js SocketClient._opened: about to call new SocketHelper.SocketWrapper()');
     this.wrapper = new SocketHelper.SocketWrapper(
         this.helper,
         this,
@@ -307,13 +309,17 @@ exports.SocketClient.prototype._opened = function (netSocket) {
  *  @param data The data to send.
  */
 exports.SocketClient.prototype.send = function (data) {
+    console.log('socket.js: SocketClient.send(' + data + ')');
     if (this.wrapper) {
         if (Array.isArray(data)) {
             data = Java.to(data);
+            console.log('socket.js: SocketClient.send(' + data + '): converted from array');
         }
+        console.log('socket.js: SocketClient.send(' + data + '): calling this.wrapper.send()');
         this.wrapper.send(data);
     } else {
         if (!this.options.discardMessagesBeforeOpen) {
+            console.log('socket.js: SocketClient.send(' + data + '): ! discardMessagesBeforeOpen');
             this.pendingSends.push(data);
             var maxUnsentMessages = this.options.maxUnsentMessages;
             if (maxUnsentMessages > 0 && this.pendingSends.length >= maxUnsentMessages) {
@@ -332,6 +338,7 @@ exports.SocketClient.prototype.send = function (data) {
  *  will be sent, but data may still be received from the server.
  */
 exports.SocketClient.prototype.close = function () {
+    console.log('socket.js: SocketClient.close()');
     if (this.wrapper) {
         this.wrapper.close();
         //} else {
@@ -493,6 +500,9 @@ var defaultServerOptions = {
  *  @param options The options.
  */
 exports.SocketServer = function (options) {
+    this.iama = 'SocketServer()';
+
+    console.log('socket.js: SocketServer()');
     // Fill in default values.
     this.options = options || {};
     this.options = util._extend(defaultServerOptions, this.options);
@@ -503,11 +513,13 @@ util.inherits(exports.SocketServer, EventEmitter);
 
 /** Start the server. */
 exports.SocketServer.prototype.start = function () {
+    console.log('socket.js: SocketServe.start(): port: ' + this.options.port + ', host: ' + this.options.host);
     this.helper.startServer(this, this.options);
 };
 
 /** Stop the server and close all sockets. */
 exports.SocketServer.prototype.stop = function () {
+    console.log('socket.js: SocketServe.stop()');
     if (this.server) {
         this.server.close();
         this.server = null;
@@ -519,6 +531,7 @@ exports.SocketServer.prototype.stop = function () {
  *  @param netServer The Vert.x NetServer object.
  */
 exports.SocketServer.prototype._serverCreated = function (netServer) {
+    console.log('socket.js: SocketServer._serverCreated()');
     this.server = netServer;
 };
 
@@ -533,6 +546,7 @@ exports.SocketServer.prototype._serverCreated = function (netServer) {
  *  @param server The Vert.x NetServer object.
  */
 exports.SocketServer.prototype._socketCreated = function (netSocket) {
+    console.log('socket.js: SocketServer._socketCreated(): netSocket localPort: ' + netSocket.localPort + ', remotePort: ' + netSocket.remotePort);
     var socket = new exports.Socket(
         this.helper,
         netSocket,
@@ -541,6 +555,7 @@ exports.SocketServer.prototype._socketCreated = function (netSocket) {
         this.options.rawBytes,
         this.options.emitBatchDataAsAvailable
     );
+    console.log('socket.js: SocketServer._socketCreated(): socket localPort: ' + socket.localPort + ', remotePort(): ' + socket.remotePort());
     this.emit('connection', socket);
 };
 
@@ -570,10 +585,12 @@ exports.SocketServer.prototype._socketCreated = function (netSocket) {
  *   all available TCP stream data will be emitted in a single data event.
  */
 exports.Socket = function (helper, netSocket, sendType, receiveType, rawBytes, emitBatchDataAsAvailable) {
+    this.iama = 'Socket()';
     // For a server side socket, this instance of Socket will be the event emitter.
 
     // Because we are creating an inner class, the first argument needs to be
     // the instance of the enclosing socketHelper class.
+    console.log('socket.js Socket(): about to call new SocketHelper.SocketWrapper()');
     this.wrapper = new SocketHelper.SocketWrapper(
         helper,
         this,
@@ -599,6 +616,7 @@ exports.Socket.prototype.close = function () {
  *  @return The remote host, a string.
  */
 exports.Socket.prototype.remoteHost = function () {
+    console.log('socket.js: Socket.remoteHost()');
     var remoteAddress = this.netSocket.remoteAddress();
     return remoteAddress.host();
 };
@@ -607,6 +625,7 @@ exports.Socket.prototype.remoteHost = function () {
  *  @return The remote port, a number.
  */
 exports.Socket.prototype.remotePort = function () {
+    console.log('socket.js: Socket.remotePort()');
     var remoteAddress = this.netSocket.remoteAddress();
     return remoteAddress.port();
 };
@@ -615,6 +634,7 @@ exports.Socket.prototype.remotePort = function () {
  *  @param data The data to send.
  */
 exports.Socket.prototype.send = function (data) {
+    console.log('socket.js: Socket.send(): ' + data);
     if (Array.isArray(data)) {
         data = Java.to(data);
     }
