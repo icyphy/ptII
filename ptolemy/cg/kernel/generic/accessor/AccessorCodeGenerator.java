@@ -96,14 +96,15 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
         // The output file extension is .js.
         super(container, name, "js");
 
-        codeDirectory.setExpression("$PTII/org/terraswarm/accessor/accessors/web/node_modules/@accessors-hosts/node");
+        // Use accessors/web/cg because the code generated can be used by multiple accessor hosts, not just the node accessor host.
+        codeDirectory.setExpression("$PTII/org/terraswarm/accessor/accessors/web/cg");
 
         generatorPackageList.setExpression("generic.accessor");
 
         // @codeDirectory@ and @modelName@ are set in
         // RunnableCodeGenerator._executeCommands().
         // Run the accessors for 2000 ms.
-        runCommand.setExpression("node nodeHostInvoke.js node_modules/@accessors-hosts/node/@modelName@");
+        runCommand.setExpression("node ../node_modules/@accessors-hosts/node/nodeHostInvoke.js node_modules/@accessors-hosts/node/@modelName@");
 
         modules = new StringParameter(this, "modules");
         modules.setExpression("");
