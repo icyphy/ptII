@@ -64,7 +64,7 @@ import ptolemy.util.StringUtilities;
  *
  *  <p>To generate an Accessor version of a model, use:</p>
  *  <pre>
- *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $PTII/ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml; cat $PTII/org/terraswarm/accessor/accessors/web/hosts/node/TestComposite.js
+ *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $PTII/ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml; cat $PTII/org/terraswarm/accessor/accessors/web/node_modules/@accessors-hosts/node/TestComposite.js
  *  </pre>
  *  which is shorthand for:
  *  <pre>
@@ -73,7 +73,7 @@ import ptolemy.util.StringUtilities;
  *
  *  <p>For more information, see <a href="https://accessors.org/wiki/Main/CapeCodeHost#CodeGeneration#in_browser">https://accessors.org/wiki/Main/CapeCodeHost#CodeGeneration</a>.</p>
  *
- *  @author Christopher Brooks.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
+ *  @author Christopher Brooks.  Contributor: Edward A. Lee.  Based on HTMLCodeGenerator by Man-Kit Leung, Bert Rodiers
  *  @version $Id$
  *  @since Ptolemy II 11.0
  *  @Pt.ProposedRating red (cxh)
@@ -224,9 +224,22 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                         + "};" + _eol);
 
             if (stopTimeValue > 0.0)  {
-                code.append("this.stopAt(" + stopTimeValue + ");" + _eol);
+                code.append(_eol
+                            + comment("To update the initialize code below, modify")
+                            + comment("  $PTII/ptolemy/cg/kernel/generic/accessor/AccessorCodeGenerator.java")
+                            + "if (exports.initialize) {" + _eol
+                            + "    var originalInitialize = exports.initialize;" + _eol
+                            + "    exports.initialize = function() {" + _eol
+                            + "        originalInitialize();" + _eol
+                            + "        this.stopAt(" + stopTimeValue + ");" + _eol
+                            + "    }" + _eol
+                            + "} else {" + _eol
+                            + "    exports.initialize = function() {" + _eol
+                            + "        this.stopAt(" + stopTimeValue + ");" + _eol
+                            + "    }" + _eol
+                            + "}" + _eol);
             } else {
-                code.append(comment("The stopTime parameter of the directory in the model was 0, so this.stopAt() is not being generated." + _eol));
+                code.append(_eol + comment("The stopTime parameter of the directory in the model was 0, so this.stopAt() is not being generated." + _eol));
             }
 
         } catch (IOException ex) {
