@@ -357,7 +357,7 @@ public class HelperBase {
      *  If this is called within the director thread and the associated actor
      *  is in its fire() method, then the response is executed immediately.
      *  Otherwise, it is deferred using the director's fireAtCurrentTime() function.
-     *  This is useful, for example, when a response
+o     *  This is useful, for example, when a response
      *  produces multiple output events or errors, because it ensures that all those
      *  output events and errors are simultaneous in the DE sense. It also prevents
      *  threading issues from having the response execute concurrently
