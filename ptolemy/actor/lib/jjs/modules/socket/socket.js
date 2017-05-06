@@ -419,7 +419,7 @@ var defaultServerOptions = {
  *  message, replace the above 'data' handler as follows:
  *
  *     serverSocket.on('data', function(data) {
- *        socket.send('Reply message');
+ *        serverSocket.send('Reply message');
  *     });
  *
  *  The Socket object also has a close() function that allows the server to close
