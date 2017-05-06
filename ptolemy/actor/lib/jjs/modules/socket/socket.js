@@ -248,7 +248,8 @@ var defaultClientOptions = {
  *  @param options The options.
  */
 exports.SocketClient = function (port, host, options) {
-    this.iama = 'SocketClient(' + port + ', ' + host;
+    console.log('socket.js: SocketClient(' + port + ', ' + host + ', options');
+    this.iama = 'SocketClient(' + port + ', ' + host + ', options)';
     // Set default values of arguments.
     // Careful: port == 0 means to find an available port, I think.
     this.port = port;
@@ -268,6 +269,7 @@ util.inherits(exports.SocketClient, EventEmitter);
 
 /** Open the client. Call this after setting up listeners. */
 exports.SocketClient.prototype.open = function () {
+    console.log('socket.js: SocketClient.open(): ' + this.port + ", " + this.host);
     this.helper.openClientSocket(this, this.port, this.host, this.options);
 };
 
@@ -282,7 +284,7 @@ exports.SocketClient.prototype._opened = function (netSocket) {
 
     // Because we are creating an inner class, the first argument needs to be
     // the instance of the enclosing socketHelper class.
-    console.log('socket.js SocketClient._opened: about to call new SocketHelper.SocketWrapper()');
+    console.log('socket.js: SocketClient._opened: about to call new SocketHelper.SocketWrapper()');
     this.wrapper = new SocketHelper.SocketWrapper(
         this.helper,
         this,

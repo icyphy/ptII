@@ -44,6 +44,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Map;
 
@@ -673,15 +674,15 @@ public class SocketHelper extends VertxHelperBase {
                             for(byte b: bytes) {
                                 builder.append(String.format("%02x", b));
                             }
-                            System.out.println("SocketHelper.SocketWrapper.send(" + data + "): added element " + element + " to buffer: " + buffer + " or " + builder) ;
+                            System.out.println("SocketHelper.SocketWrapper.send(" + data +"): added element " + element + " to buffer: 0x" + builder) ;
                         }
                     }
                 } else {
-                    System.out.println("SocketHelper.SocketWrapper.send(" + data + "): is not an array.");
+                    System.out.println("SocketHelper.SocketWrapper.send(" + data +"): is not an array.");
                     _appendToBuffer(data, _sendType, _sendImageType, buffer);
                 }
                 if (!_rawBytes) {
-                    System.out.println("SocketHelper.SocketWrapper.send(" + data + "): !rawBytes");
+                    System.out.println("SocketHelper.SocketWrapper.send(" + data +"): !rawBytes");
                     // Prepend the buffer with message length information.
                     // Note that unlike the WebSocket standard, we don't need
                     // to break the message into frames. The underlying TCP
@@ -701,9 +702,14 @@ public class SocketHelper extends VertxHelperBase {
                     newBuffer.appendBuffer(buffer);
                     buffer = newBuffer;
                 }
-                System.out.println("SocketHelper.SocketWrapper.send(" + data + "): about to invoke write() on socket " + _socket + ", remoteAddress: " + _socket.remoteAddress() + ".  Writing buffer: " + buffer + ": _eventEmitter: " + _eventEmitter.get("iama"));
+                byte [] bytes = buffer.getBytes();
+                StringBuilder builder = new StringBuilder(bytes.length * 2);
+                for(byte b: bytes) {
+                    builder.append(String.format("%02x", b));
+                }
+                System.out.println("SocketHelper.SocketWrapper.send(" + data +"): about to invoke write() on socket " + _socket + ", local: " + _socket.localAddress().host() + ":" + _socket.localAddress().port() + ", remote: " + _socket.remoteAddress().host() + ":" + _socket.remoteAddress().port() + ".  Writing buffer: " + builder);
                 _socket.write(buffer);
-                System.out.println("SocketHelper.SocketWrapper.send(" + data + "): after write() on socket " + _socket + ".");
+                System.out.println("SocketHelper.SocketWrapper.send(" + data +"): after write() on socket " + _socket + ".");
             });
         }
         /** Extract a length from the head of the buffer. Return the number of
@@ -903,9 +909,8 @@ public class SocketHelper extends VertxHelperBase {
                         if (_rawBytes && !_emitBatchDataAsAvailable) {
                             int position = 0;
                             for (int i = 0; i < numberOfElements; i++) {
-                                System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: Numeric A: numberOfElements > 1 emit: " + _eventEmitter);
+                                System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: Numeric A: numberOfElements > 1 emit: " + _eventEmitter.get("iama") + " Reading: " + _extractFromBuffer(finalBuffer, _receiveType, position));
 
-                                System.out.println("SocketHelper.SocketWrapper._processBuffer(): " +  _eventEmitter.get("iama"));
                                 _eventEmitter.callMember("emit", "data", _extractFromBuffer(finalBuffer, _receiveType, position));
                                 position += size;
                             }
