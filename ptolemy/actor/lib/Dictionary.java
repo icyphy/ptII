@@ -68,7 +68,7 @@ import ptolemy.util.MessageHandler;
    This actor stores key-value pairs and provides an interface for retrieving
    them one at a time or in groups.
 
-   @author Shuhei Emoto, Edward A. Lee, Kentaro Mizouchi
+   @author Shuhei Emoto, Edward A. Lee, Kentaro Mizouchi, Tetsuya Suga
    @version $Id$
    @since Ptolemy II 10.0
    @Pt.ProposedRating Yellow (cxh)
@@ -111,7 +111,14 @@ public class Dictionary extends TypedAtomicActor {
         triggerKeys = new TypedIOPort(this, "triggerKeys", true, false);
         new SingletonParameter(triggerKeys, "_showName").setExpression("true");
         new StringAttribute(triggerKeys, "_cardinal").setExpression("SOUTH");
-
+        
+        triggerValues = new TypedIOPort(this, "triggerValues", true, false);
+        new SingletonParameter(triggerValues, "_showName").setExpression("true");
+        new StringAttribute(triggerValues, "_cardinal").setExpression("SOUTH");
+        
+        values = new TypedIOPort(this, "values", false, true);
+        new SingletonParameter(values, "_showName").setExpression("true");      
+        
         value = new TypedIOPort(this, "value", true, false);
         new SingletonParameter(value, "_showName").setExpression("true");
 
@@ -127,6 +134,7 @@ public class Dictionary extends TypedAtomicActor {
         readKeyArray.setTypeAtLeast(ArrayType.arrayOf(readKey));
         result.setTypeSameAs(value);
         resultArray.setTypeAtLeast(ArrayType.arrayOf(value));
+        values.setTypeAtLeast(ArrayType.arrayOf(value));
         notFound.setTypeEquals(new ArrayType(BaseType.STRING));
 
         _store = new HashMap<String, Token>();
@@ -135,7 +143,7 @@ public class Dictionary extends TypedAtomicActor {
         updateFile = new Parameter(this, "updateFile");
         updateFile.setTypeEquals(BaseType.BOOLEAN);
         updateFile.setExpression("false");
-
+        
         loggingDirectory = new FileParameter(this, "loggingDirectory");
     }
 
@@ -245,6 +253,21 @@ public class Dictionary extends TypedAtomicActor {
      *  in the dictionary. The order is arbitrary.
      */
     public TypedIOPort triggerKeys;
+    
+    /** Upon receiving any token at this port, this actor will produce
+     *  on the values output an array containing all the values of entries
+     *  in the dictionary. The order is arbitrary.
+     */
+    public TypedIOPort triggerValues;
+    
+    /** Upon receiving any token at the triggerValues port, this actor
+     *  will produce on this output an array containing all the values
+     *  of entries in the dictionary. The order is arbitrary.
+     *  If there are no entries in the dictionary, then send an
+     *  empty array.
+     *  The type is array of token.
+     */
+    public TypedIOPort values;
 
     /** If set to true, and if a <i>file</i> parameter is given, then
      *  upon each update to the dictionary, the contents of the dictionary
@@ -288,6 +311,8 @@ public class Dictionary extends TypedAtomicActor {
                     .setTypeAtLeast(ArrayType.arrayOf(newObject.writeKey));
             newObject.result.setTypeSameAs(newObject.value);
             newObject.resultArray.setTypeAtLeast(ArrayType
+                    .arrayOf(newObject.value));
+            newObject.values.setTypeAtLeast(ArrayType
                     .arrayOf(newObject.value));
         } catch (IllegalActionException ex) {
             CloneNotSupportedException exception = new CloneNotSupportedException(
@@ -413,6 +438,19 @@ public class Dictionary extends TypedAtomicActor {
                 // Send an empty array.
                 keys.send(0, new ArrayToken(BaseType.STRING));
             }
+        }
+        if (triggerValues.getWidth() > 0 && triggerValues.hasToken(0)) {
+            // Must consume the trigger, or DE will fire me again.
+        	triggerValues.get(0);
+        	
+        	Token[] theResult = new Token[_store.values().size()];
+            int i = 0;
+            for (Token value : _store.values()) {
+            	theResult[i] = value;
+                i++;
+            }
+            ArrayToken resultToken = new ArrayToken(value.getType(), theResult);
+            values.send(0, resultToken);
         }
     }
 
@@ -615,7 +653,7 @@ public class Dictionary extends TypedAtomicActor {
                 throws IllegalActionException {
             return null;
         }
-
+        
         /** Return the list of identifiers within the scope.
          *  @return The list of identifiers within the scope.
          */
