@@ -416,7 +416,7 @@
   </target>
 
   <target name="build"
-	  depends="build-message, build-subprojects, build-project, build-bin"
+	  depends="build-message, build-subprojects, ptdoc, build-project, build-bin"
 	  description="Build Ptolemy II by compiling the .java files and possibly the scripts in $PTII/bin.  This is the default ant target.  Run 'ant build-all' to build everything."/>
 
   <target name="build-all"

@@ -264,7 +264,7 @@
   </target>
 
   <target name="build"
-	  depends="build-message, build-subprojects, build-project, build-bin"
+	  depends="build-message, build-subprojects, ptdoc, build-project, build-bin"
 	  description="Build Ptolemy II by compiling the .java files and possibly the scripts in $PTII/bin.  This is the default ant target.  Run 'ant build-all' to build everything."/>
 
   <target name="build-all"
@@ -421,6 +421,8 @@ For example:
 	       includes="**/*.class" />
       <fileset dir="${basedir}"
 	       includes="*_l4j.xml" />
+      <fileset dir="${basedir}"
+	       includes="**/*PtDoc.xml" />
     </delete>
   </target>
 
@@ -777,6 +779,8 @@ For example:
     </javadoc>
   </target>
 
+  <!-- Run ptdoc so that when a user drags in an accessor, the accessor will get a DocAttribute from
+       the *PtDoc.xml file. -->
   <target name="ptdoc"
           depends="jsdoc-update"
           description="Invoke jsdoc to read *.js files and generate *PtDoc.xml files suitable for Ptolemy">
