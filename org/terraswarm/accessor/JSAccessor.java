@@ -1,30 +1,30 @@
 /* An component accessor that consists of an interface and a script.
 
- Copyright (c) 2015-2016 The Regents of the University of California.
- All rights reserved.
- Permission is hereby granted, without written agreement and without
- license or royalty fees, to use, copy, modify, and distribute this
- software and its documentation for any purpose, provided that the above
- copyright notice and the following two paragraphs appear in all copies
- of this software.
+   Copyright (c) 2015-2017 The Regents of the University of California.
+   All rights reserved.
+   Permission is hereby granted, without written agreement and without
+   license or royalty fees, to use, copy, modify, and distribute this
+   software and its documentation for any purpose, provided that the above
+   copyright notice and the following two paragraphs appear in all copies
+   of this software.
 
- IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
- FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
- ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
- THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
- SUCH DAMAGE.
+   IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+   FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+   ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+   THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+   SUCH DAMAGE.
 
- THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
- MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
- PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
- CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
- ENHANCEMENTS, OR MODIFICATIONS.
+   THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+   INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+   MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+   PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+   CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+   ENHANCEMENTS, OR MODIFICATIONS.
 
- PT_COPYRIGHT_VERSION_2
- COPYRIGHTENDKEY
+   PT_COPYRIGHT_VERSION_2
+   COPYRIGHTENDKEY
 
- */
+*/
 package org.terraswarm.accessor;
 
 import java.io.BufferedReader;
@@ -38,6 +38,7 @@ import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -78,8 +79,10 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
+import ptolemy.util.StreamExec;
 import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
@@ -87,43 +90,43 @@ import ptolemy.util.StringUtilities;
 //// JSAccessor
 
 /**
- An component accessor that consists of an interface and a script.
+   An component accessor that consists of an interface and a script.
 
- <p>The "<a href="#VisionOfSwarmLets">Vision of Swarmlets</a>" paper
- defines three types of accessors: Interface, Component and Composite.
- The paper states: "A component accessor has an interface and a
- script...  The script defines one or more functions that are invoked
- by the swarmlet host."</p>
+   <p>The "<a href="#VisionOfSwarmLets">Vision of Swarmlets</a>" paper
+   defines three types of accessors: Interface, Component and Composite.
+   The paper states: "A component accessor has an interface and a
+   script...  The script defines one or more functions that are invoked
+   by the swarmlet host."</p>
 
- <p>This is a specialized JavaScript actor that hides the script
- from casual users by putting it in "expert" mode.
- It also sets the actor to "restricted" mode, which restricts
- the functionality of the methods methods and variables
- provided in the JavaScript context.</p>
+   <p>This is a specialized JavaScript actor that hides the script
+   from casual users by putting it in "expert" mode.
+   It also sets the actor to "restricted" mode, which restricts
+   the functionality of the methods methods and variables
+   provided in the JavaScript context.</p>
 
- <p>FIXME: This should support versioning of accessors.
- It should check the accessorSource for updates and replace
- itself if there is a newer version and the user agrees to
- the replacement. This will be tricky because any parameters
- and connections previously set should be preserved.</p>
+   <p>FIXME: This should support versioning of accessors.
+   It should check the accessorSource for updates and replace
+   itself if there is a newer version and the user agrees to
+   the replacement. This will be tricky because any parameters
+   and connections previously set should be preserved.</p>
 
- <p>This actor extends {@link ptolemy.actor.lib.jjs.JavaScript}
- and thus requires Nashorn, which is present in Java-1.8 and
- later.</p>
+   <p>This actor extends {@link ptolemy.actor.lib.jjs.JavaScript}
+   and thus requires Nashorn, which is present in Java-1.8 and
+   later.</p>
 
- <h2>References</h2>
+   <h2>References</h2>
 
- <p><a name="VisionOfSwarmLets">Elizabeth Latronico, Edward A. Lee, Marten Lohstroh, Chris Shaver, Armin Wasicek, Matt Weber.</a>
- <a href="https://www.terraswarm.org/pubs/332.html">A Vision of Swarmlets</a>,
- <i>IEEE Internet Computing, Special Issue on Building Internet of Things Software</i>,
- 19(2):20-29, March 2015.</p>
+   <p><a name="VisionOfSwarmLets">Elizabeth Latronico, Edward A. Lee, Marten Lohstroh, Chris Shaver, Armin Wasicek, Matt Weber.</a>
+   <a href="https://www.terraswarm.org/pubs/332.html">A Vision of Swarmlets</a>,
+   <i>IEEE Internet Computing, Special Issue on Building Internet of Things Software</i>,
+   19(2):20-29, March 2015.</p>
 
- @author Edward A. Lee, Contributor: Christopher Brooks
- @version $Id$
- @since Ptolemy II 11.0
- @Pt.ProposedRating Red (eal)
- @Pt.AcceptedRating Red (cxh)
- */
+   @author Edward A. Lee, Contributor: Christopher Brooks
+   @version $Id$
+   @since Ptolemy II 11.0
+   @Pt.ProposedRating Red (eal)
+   @Pt.AcceptedRating Red (cxh)
+*/
 public class JSAccessor extends JavaScript {
 
     /** Construct an accessor with the given container and name.
@@ -135,7 +138,7 @@ public class JSAccessor extends JavaScript {
      *   actor with this name.
      */
     public JSAccessor(CompositeEntity container, String name)
-            throws NameDuplicationException, IllegalActionException {
+        throws NameDuplicationException, IllegalActionException {
         super(container, name);
 
         accessorSource = new ActionableAttribute(this, "accessorSource");
@@ -159,7 +162,7 @@ public class JSAccessor extends JavaScript {
         (new SingletonParameter(script.getPort(), "_hide")).setExpression("true");
 
         checkoutOrUpdateAccessorsRepository = new SharedParameter(this, "checkoutOrUpdateAccessorsRepository", getClass(),
-                "true");
+                                                                  "true");
         checkoutOrUpdateAccessorsRepository.setTypeEquals(BaseType.BOOLEAN);
     }
 
@@ -213,7 +216,7 @@ public class JSAccessor extends JavaScript {
      *  specified.
      */
     public static String accessorToMoML(final String urlSpec)
-            throws IOException, TransformerConfigurationException, IllegalActionException {
+        throws IOException, TransformerConfigurationException, IllegalActionException {
         return JSAccessor.accessorToMoML(urlSpec, true);
     }
 
@@ -241,8 +244,8 @@ public class JSAccessor extends JavaScript {
      *  @exception IllegalActionException If no source file is specified.
      */
     public static String accessorToMoML(final String urlSpec,
-            boolean obeyCheckoutOrUpdateRepositoryParameter)
-            throws IllegalActionException, IOException, TransformerConfigurationException {
+                                        boolean obeyCheckoutOrUpdateRepositoryParameter)
+        throws IllegalActionException, IOException, TransformerConfigurationException {
 
         // This method is a separate method so that we can use it for
         // testing the reimportation of accessors.  See
@@ -289,8 +292,8 @@ public class JSAccessor extends JavaScript {
             // to do that.
             StringToken newScript = (StringToken)script.getToken();
             if (_previousScript == null
-                    || _previousScript.equals(_INITIAL_SCRIPT)
-                    || _INITIAL_SCRIPT.equals(newScript)) {
+                || _previousScript.equals(_INITIAL_SCRIPT)
+                || _INITIAL_SCRIPT.equals(newScript)) {
                 // FIXME: Should this be MAX_VALUE or 1?
                 attribute.setDerivedLevel(Integer.MAX_VALUE);
                 // The above will have the side effect that a script will not be saved
@@ -331,9 +334,9 @@ public class JSAccessor extends JavaScript {
      */
     public static void getAccessorsRepository() throws IOException {
         boolean updateNeeded =
-                _checkoutOrUpdateAccessorsRepository
-                && !_checkoutOrUpdateFailed
-                && (_lastRepoUpdateTime < 0
+            _checkoutOrUpdateAccessorsRepository
+            && !_checkoutOrUpdateFailed
+            && (_lastRepoUpdateTime < 0
                 || (System.currentTimeMillis() - _lastRepoUpdateTime > 43200000L)); // 12 hours
         if (!updateNeeded) {
             return;
@@ -392,8 +395,8 @@ public class JSAccessor extends JavaScript {
                 if (newCheckout) {
                     MessageHandler.status("Failed to check out the accessors repository.");
                     throw new IOException("Failed to check out the accessors repository with:\n"
-                            + _commands + "\n"
-                            + "The output was: " + exec.buffer);
+                                          + _commands + "\n"
+                                          + "The output was: " + exec.buffer);
                 } else {
                     String message = "Could not update the accessors repository. Using local version.";
                     if (exec.buffer.toString().indexOf("Unable to conect to a repository") != -1
@@ -416,10 +419,10 @@ public class JSAccessor extends JavaScript {
             if (newCheckout) {
                 MessageHandler.status("Failed to check out the accessors repository.");
                 IOException ioException = new IOException("Failed to check out the accessors repository with:\n"
-                        + _commands + "\n"
-                        + "Perhaps you don't have read access?  "
-                        + "The accessors repository is under development.\n"
-                        + "The output was: " + exec.buffer);
+                                                          + _commands + "\n"
+                                                          + "Perhaps you don't have read access?  "
+                                                          + "The accessors repository is under development.\n"
+                                                          + "The output was: " + exec.buffer);
                 ioException.initCause(throwable);
                 throw ioException;
             } else {
@@ -435,58 +438,7 @@ public class JSAccessor extends JavaScript {
             _checkoutOrUpdateFailed = true;
         }
 
-        // If the accessors/web directory exists, run ant there.
-        File accessorsRepoWebDirectory = new File(accessorsRepoDirectory, "web");
-        if (accessorsRepoWebDirectory.isDirectory()) {
-            MessageHandler.status("Updating documentation for accessors.");
-            String antPath = "";
-            try {
-                StringBufferExec antExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
-                antExec.setWorkingDirectory(accessorsRepoWebDirectory);
-                List execCommands = new LinkedList<String>();
-                // $PTII/configure looks for "ant" in the path and stores it $PTII/lib/ptII.properties
-                antPath = StringUtilities.getProperty("ptolemy.ant.path");
-
-                // Common text for error messages.
-                String defaultAnt = "This property is set by $PTII/configure and stored in "
-                    + "$PTII/lib/ptII.properties.  "
-                    + "Defaulting to using \"ant\", "
-                    + "which may or may not be in your path.";
-
-                if (antPath.length() == 0) {
-                    System.out.println("The ptolemy.ant.path property was not set. "
-                            + defaultAnt);
-                    antPath = "ant";
-                } else {
-                    File antExecutableFile = new File(antPath);
-                    if (!antExecutableFile.isFile()) {
-                        System.out.println("The value of the ptolemy.ant.path property was \""
-                                + antPath + "\", which is not a file.  "
-                                + defaultAnt);
-                        antPath = "ant";
-                    }
-                }
-                execCommands.add(antPath);
-                antExec.setCommands(execCommands);
-                antExec.setWaitForLastSubprocess(true);
-                antExec.start();
-                if (antExec.getLastSubprocessReturnCode() == 0) {
-                    MessageHandler.status("Updated documentation for accessors.");
-                } else {
-                    MessageHandler.status("Update of documentation failed. Using default docs.");
-                    System.err.println("Failed: \"" + antPath
-                            + "\" in " + accessorsRepoWebDirectory
-                            + "\n"
-                            + "Output was: " + antExec.buffer);
-                }
-            } catch (Throwable throwable) {
-                MessageHandler.status("Update of documentation failed. Using default docs.");
-                System.err.println("Warning: Failed to run \"" + antPath
-                        + "\" in " + accessorsRepoWebDirectory
-                        + ".  Defaulting to using the documentation from the website."
-                        + "Error message was: " + throwable);
-            }
-        }
+        JSAccessor._ptDoc();
     }
 
     /** If the URL can be found locally, return it, otherwise return
@@ -559,16 +511,16 @@ public class JSAccessor extends JavaScript {
      *  @param y The y-axis value of the actor to be created.
      */
     public static void handleAccessorMoMLChangeRequest(Object originator,
-            final String urlSpec,
-            NamedObj context, String changeRequest,
-            final double x, final double y) {
+                                                       final String urlSpec,
+                                                       NamedObj context, String changeRequest,
+                                                       final double x, final double y) {
 
         // This method is a separate method because it makes sense
         // to move it away from the gui code in
         // ptolemy/vergil/basic/imprt/accessor/ImportAccessorAction.java
 
         MoMLChangeRequest request = new MoMLChangeRequest(originator, context,
-                changeRequest) {
+                                                          changeRequest) {
                 @Override
                 protected void _postParse(MoMLParser parser) {
                     List<NamedObj> topObjects = parser.topObjectsCreated();
@@ -577,7 +529,7 @@ public class JSAccessor extends JavaScript {
                     }
                     for (NamedObj object : topObjects) {
                         Location location = (Location) object
-                                .getAttribute("_location");
+                            .getAttribute("_location");
                         // Set the location.
                         if (location == null) {
                             try {
@@ -675,7 +627,7 @@ public class JSAccessor extends JavaScript {
         }
         String moml = "<group>"
             + JSAccessor._accessorToMoML(accessorSource.asURL().toExternalForm(),
-                    obeyCheckoutOrUpdateRepositoryParameter)
+                                         obeyCheckoutOrUpdateRepositoryParameter)
             + "</group>";
         final NamedObj context = this;
         MoMLChangeRequest request = new MoMLChangeRequest(context, context, moml) {
@@ -686,8 +638,8 @@ public class JSAccessor extends JavaScript {
                     } catch (Exception e) {
                         // FIXME: Can we undo?
                         throw new IllegalActionException(context, e,
-                                "Failed to reload accessor. Perhaps changes are too extensive."
-                                + " Try re-importing the accessor.");
+                                                         "Failed to reload accessor. Perhaps changes are too extensive."
+                                                         + " Try re-importing the accessor.");
                     }
                     // Indicate that the script is not overridden.
                     // In other words, each time you reload the script,
@@ -720,7 +672,7 @@ public class JSAccessor extends JavaScript {
      *  be created from the xslt file.
      */
     public static boolean reloadAllAccessors(CompositeEntity composite)
-            throws IllegalActionException, IOException, TransformerConfigurationException {
+        throws IllegalActionException, IOException, TransformerConfigurationException {
         // This method is use by the test harness.
         if (composite == null) {
             return false;
@@ -733,11 +685,11 @@ public class JSAccessor extends JavaScript {
                 containsJSAccessors = true;
                 if (!_invokedReloadAllAccessorsOnce) {
                     System.out.println("This is the first time that the reloadAllAccessors "
-                            + "method has been invoked in this JVM, so the the accessors "
-                            + "repo will be checked out or updated and JSDoc invoked. "
-                            + "Note that running the tests may end up invoking a new "
-                            + "JVM for each directory, so the repo may be checked out "
-                            + "or updated and JSDoc invoked more than once when the tests are run.");
+                                       + "method has been invoked in this JVM, so the the accessors "
+                                       + "repo will be checked out or updated and JSDoc invoked. "
+                                       + "Note that running the tests may end up invoking a new "
+                                       + "JVM for each directory, so the repo may be checked out "
+                                       + "or updated and JSDoc invoked more than once when the tests are run.");
                 }
                 // The first time, we checkout or update the accessors
                 // repo and invoke JSDoc.  The second and subsequent
@@ -769,8 +721,8 @@ public class JSAccessor extends JavaScript {
      * @exception MalformedURLException If the URL specification is malformed.
      */
     protected static URL _sourceToURL(
-            final String urlSpec, final boolean updateRepository)
-            throws IllegalActionException, IOException, MalformedURLException {
+                                      final String urlSpec, final boolean updateRepository)
+        throws IllegalActionException, IOException, MalformedURLException {
         if (urlSpec == null || urlSpec.trim().equals("")) {
             throw new IllegalActionException("No source file specified.");
         }
@@ -787,9 +739,9 @@ public class JSAccessor extends JavaScript {
             JSAccessor.getAccessorsRepository();
         } catch (Throwable throwable) {
             System.err.println("Failed to checkout or update the accessors repo.  "
-                    + "This could happen if you don't have read access to the repo.  "
-                    + "The message was:\n"
-                    + throwable);
+                               + "This could happen if you don't have read access to the repo.  "
+                               + "The message was:\n"
+                               + throwable);
         }
         try {
             accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
@@ -807,9 +759,9 @@ public class JSAccessor extends JavaScript {
                     accessorURL = FileUtilities.nameToURL(urlSpec.trim(), null, null);
                 } catch (IOException ex2) {
                     IOException ioException = new IOException(ex.getMessage()
-                            + "In addition, tried checking out the accessors repo with \n"
-                            + JSAccessor._commands + "\n"
-                            + "but that failed with: " + ex2.getMessage());
+                                                              + "In addition, tried checking out the accessors repo with \n"
+                                                              + JSAccessor._commands + "\n"
+                                                              + "but that failed with: " + ex2.getMessage());
                     ioException.initCause(ex2);
                     throw ioException;
                 } finally {
@@ -820,7 +772,7 @@ public class JSAccessor extends JavaScript {
 
         if (accessorURL == null) {
             throw new IOException("Failed to find accessor file: " + urlSpec.trim()
-                    + "\nWhich is converted to: " + accessorURL);
+                                  + "\nWhich is converted to: " + accessorURL);
         }
 
         // Use the local file if possible.  See the method comment for
@@ -861,7 +813,7 @@ public class JSAccessor extends JavaScript {
         File accessorDirectory = new File(ptII, "org/terraswarm/accessor");
         if ( !accessorDirectory.isDirectory()) {
             throw new IOException("The accessor directory \""
-                    + accessorDirectory + "\" does not exist or is not a directory.");
+                                  + accessorDirectory + "\" does not exist or is not a directory.");
         }
         return accessorDirectory;
     }
@@ -904,8 +856,8 @@ public class JSAccessor extends JavaScript {
      *  @exception IllegalActionException If no source file is specified.
      */
     private static String _accessorToMoML(
-            final String urlSpec, final boolean updateRepository)
-            throws IOException, TransformerConfigurationException, IllegalActionException {
+                                          final String urlSpec, final boolean updateRepository)
+        throws IOException, TransformerConfigurationException, IllegalActionException {
 
         // This method is a separate method so that we can use it for
         // testing the reimportation of accessors.  See
@@ -920,7 +872,7 @@ public class JSAccessor extends JavaScript {
             // up to 10 redirects.  Otherwise, we just
             // call URL.getInputStream().
             in = new BufferedReader(new InputStreamReader(
-                  FileUtilities.openStreamFollowingRedirects(url), StandardCharsets.UTF_8));
+                                                          FileUtilities.openStreamFollowingRedirects(url), StandardCharsets.UTF_8));
             StringBuffer contents = new StringBuffer();
             String input;
             while ((input = in.readLine()) != null) {
@@ -943,10 +895,10 @@ public class JSAccessor extends JavaScript {
                 try {
                     result.append(_getPtDoc(accessorURL.toExternalForm()));
                 } catch (IOException ex) {
-                    // FIXME: What to do here?
                     System.err.println("Cannot find PtDoc file for "
-                            + urlSpec.trim()
-                            + ". Importing without documentation. Exception was: " + ex);
+                                       + urlSpec.trim()
+                                       + ". Importing without documentation. Exception was: " + ex);
+                    JSAccessor._ptDoc();
                 }
 
                 result.append("<property name=\"script\" value=\"");
@@ -964,7 +916,7 @@ public class JSAccessor extends JavaScript {
                 TransformerFactory factory = TransformerFactory.newInstance();
                 String xsltLocation = "$CLASSPATH/org/terraswarm/accessor/XMLJSToMoML.xslt";
                 Source xslt = new StreamSource(FileUtilities.nameToFile(
-                        xsltLocation, null));
+                                                                        xsltLocation, null));
                 Transformer transformer = factory.newTransformer(xslt);
 
                 // If the URL starts with http, then we follow
@@ -1020,7 +972,7 @@ public class JSAccessor extends JavaScript {
 
 
                     Source source = new SAXSource(xmlReader, new InputSource(new InputStreamReader(
-                                                                                               FileUtilities.openStreamFollowingRedirects(url))));
+                                                                                                   FileUtilities.openStreamFollowingRedirects(url))));
 
 
                     transformer.setOutputProperty(OutputKeys.OMIT_XML_DECLARATION,"yes");
@@ -1030,8 +982,8 @@ public class JSAccessor extends JavaScript {
                     contents = outWriter.getBuffer();
                 } catch (Throwable throwable) {
                     IOException ioException = new IOException("Failed to parse \""
-                            + url
-                            + "\".");
+                                                              + url
+                                                              + "\".");
                     ioException.initCause(throwable);
                     throw ioException;
                 }
@@ -1078,7 +1030,7 @@ public class JSAccessor extends JavaScript {
 	//InputStream in = null;
         try {
             in = new BufferedReader(new InputStreamReader(
-                    FileUtilities.openStreamFollowingRedirects(url)));
+                                                          FileUtilities.openStreamFollowingRedirects(url)));
             String line = in.readLine();
             // We used to call availavble() on the inputStream, but that
             // does not always work.  See
@@ -1086,9 +1038,9 @@ public class JSAccessor extends JavaScript {
             if (line == null || line.length() == 0) {
 		//if ( in.available() == 0) {
                 throw new IOException("Could not find PtDoc for urlSpec: \"" + urlSpec + "\"."
-                    + "The url \"" + url + "\" was opened, but had 0 bytes available?  "
-                    + "Perhaps the file has a zero length because there are no "
-                    + "JSDoc directives in it?");
+                                      + "The url \"" + url + "\" was opened, but had 0 bytes available?  "
+                                      + "Perhaps the file has a zero length because there are no "
+                                      + "JSDoc directives in it?");
             }
         } finally {
             if (in != null) {
@@ -1100,36 +1052,35 @@ public class JSAccessor extends JavaScript {
         // the docs on reload, whereas using the previous method below
         // does not.
         return "<input source=\""
-                + StringUtilities.escapeForXML(url.toExternalForm())
-                + "\"/>";
+            + StringUtilities.escapeForXML(url.toExternalForm())
+            + "\"/>";
 
         /* Old version below:
-        BufferedReader in = null;
-        try {
-            in = new BufferedReader(new InputStreamReader(
-                    url.openStream()));
-            StringBuffer contents = new StringBuffer();
-            String input;
-            while ((input = in.readLine()) != null) {
-                contents.append(input);
-                contents.append("\n");
-            }
-            return contents.toString();
-        } catch (IOException ex) {
-            // FIXME: Look for a .html file in the same location as
-            // the .js file.
-            System.err.println("JSAccessor._getPtDoc(" + url + "): "
-                    + " Could not find PtDoc file" + ex);
-            //throw ex;
-        } finally {
-            if (in != null) {
-                in.close();
-            }
-        }
-        return "";
+           BufferedReader in = null;
+           try {
+           in = new BufferedReader(new InputStreamReader(
+           url.openStream()));
+           StringBuffer contents = new StringBuffer();
+           String input;
+           while ((input = in.readLine()) != null) {
+           contents.append(input);
+           contents.append("\n");
+           }
+           return contents.toString();
+           } catch (IOException ex) {
+           // FIXME: Look for a .html file in the same location as
+           // the .js file.
+           System.err.println("JSAccessor._getPtDoc(" + url + "): "
+           + " Could not find PtDoc file" + ex);
+           //throw ex;
+           } finally {
+           if (in != null) {
+           in.close();
+           }
+           }
+           return "";
         */
     }
-
 
     /** Return true if the ptII tree was checked out with svn
      *  read/write access.  Return false if the ptII tree was not
@@ -1161,7 +1112,7 @@ public class JSAccessor extends JavaScript {
         int returnCode = exec.getLastSubprocessReturnCode();
         if (returnCode != 0) {
             MessageHandler.status("In " + ptII + ", \"svn info\" returned " + returnCode
-                    + ".  The output was: " + exec.buffer);
+                                  + ".  The output was: " + exec.buffer);
             return false;
         }
 
@@ -1181,6 +1132,78 @@ public class JSAccessor extends JavaScript {
         }
 
         return false;
+    }
+
+    /** Build the ptdoc files.
+     *  @return 0 if ant and node were found and ant returned 0.   
+     */
+    private static int _ptDoc() throws IOException {
+        File accessorsRepoWebDirectory = new File(JSAccessor._accessorDirectory(), "accessors/web");
+        if (accessorsRepoWebDirectory.isDirectory()) {
+            // This is similar to code in ptolemy/vergil/actor/DocBuilder.java
+            // If the accessors/web directory exists, run ant there.
+            MessageHandler.status("Updating documentation for accessors.");
+            String antPath = "";
+            try {
+                StringBufferExec antExec = new StringBufferExec(true /*appendToStderrAndStdout*/);
+                antExec.setWorkingDirectory(accessorsRepoWebDirectory);
+                List execCommands = new LinkedList<String>();
+                // $PTII/configure looks for "ant" in the path and stores it $PTII/lib/ptII.properties
+                antPath = StringUtilities.getProperty("ptolemy.ant.path");
+
+                // Common text for error messages.
+                String defaultAnt = "This property is set by $PTII/configure and stored in "
+                    + "$PTII/lib/ptII.properties.  "
+                    + "Defaulting to using \"ant\", "
+                    + "which may or may not be in your path.";
+
+                if (antPath.length() == 0) {
+                    antPath = "ant";
+                } else {
+                    File antExecutableFile = new File(antPath);
+                    if (!antExecutableFile.isFile()) {
+                        System.out.println("The value of the ptolemy.ant.path property was \""
+                                           + antPath + "\", which is not a file.  "
+                                           + defaultAnt);
+                        antPath = "ant";
+                    }
+                }
+                if (!FileUtilities.inPath("ant")) {
+                    System.out.println("Could not find the \"ant\" executable in your path, to build the accessor docs, please install ant from http://ant.apache.org/");
+                    MessageHandler.status("Could not find \"ant\". Accessor docs will not be generated.");
+
+                    return -1;
+                }
+
+                if (!FileUtilities.inPath("node")) {
+                    System.out.println("Could not find the \"node\" executable in your path, to build the accessor docs, please install ant from https://nodejs.org/");
+                    MessageHandler.status("Could not find \"node\". Accessor docs will not be generated.");
+                    return -2;
+                }
+                execCommands.add(antPath + " ptdoc");
+                antExec.setCommands(execCommands);
+                antExec.setWaitForLastSubprocess(true);
+                antExec.start();
+                if (antExec.getLastSubprocessReturnCode() == 0) {
+                    MessageHandler.status("Updated documentation for accessors.");
+                } else {
+                    MessageHandler.status("Update of documentation failed. Using default docs.");
+                    System.err.println("Failed: \"" + antPath
+                                       + "\" in " + accessorsRepoWebDirectory
+                                       + "\n"
+                                       + "Output was: " + antExec.buffer);
+                }
+                return antExec.getLastSubprocessReturnCode();
+            } catch (Throwable throwable) {
+                MessageHandler.status("Update of documentation failed. Using default docs.");
+                System.err.println("Warning: Failed to run \"" + antPath
+                                   + "\" in " + accessorsRepoWebDirectory
+                                   + ".  Defaulting to using the documentation from the website."
+                                   + "Error message was: " + throwable);
+                throwable.printStackTrace();
+            }
+        }
+        return -3;
     }
 
     /** Cached version of the checkoutOrUpdateAccessorsRepository parameter.
@@ -1232,7 +1255,7 @@ public class JSAccessor extends JavaScript {
          *  @exception NameDuplicationException If the base class throws it.
          */
         public ActionableAttribute(NamedObj container, String name)
-                throws IllegalActionException, NameDuplicationException {
+            throws IllegalActionException, NameDuplicationException {
             super(container, name);
         }
 
