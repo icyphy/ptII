@@ -862,7 +862,6 @@ public class JSAccessor extends JavaScript {
         // This method is a separate method so that we can use it for
         // testing the reimportation of accessors.  See
         // https://accessors.org/wiki/Main/TestAPtolemyAccessorImport
-
         URL accessorURL = _sourceToURL(urlSpec, updateRepository);
 
         final URL url = accessorURL;
@@ -897,8 +896,14 @@ public class JSAccessor extends JavaScript {
                 } catch (IOException ex) {
                     try {
                         // Attempt to run "ant ptdoc".  This requires ant, node, npm and a network connection.
-                        JSAccessor._ptDoc();
-                        result.append(_getPtDoc(accessorURL.toExternalForm()));
+                        if (_ptDocFailed || JSAccessor._ptDoc() != 0) {
+                            // Epicycles all the way down.
+                            _ptDocFailed = true;
+                            System.out.println("Building ptdoc failed, so we are going to try the website.");
+                            result.append(_getPtDoc(urlSpec));
+                        } else {
+                            result.append(_getPtDoc(accessorURL.toExternalForm()));
+                        }
                     } catch (IOException ex2) {
                         System.err.println("Cannot find PtDoc file for "
                                            + urlSpec.trim()
@@ -1241,6 +1246,11 @@ public class JSAccessor extends JavaScript {
      *  not been set.
      */
     private StringToken _previousScript = null;
+
+    /** Set to true of the _ptDoc() method returned non-zero,
+     *  Indicating that "ant ptdoc" failed.
+     */        
+    private static boolean _ptDocFailed = false;
 
     /** Local url specifications that have been printed because
      *  the are local.
