@@ -286,7 +286,7 @@ public class GetDocumentationAction extends FigureAction {
                 } else {
                     if (VersionAttribute.CURRENT_VERSION.getExpression()
                             .indexOf(".devel") != -1) {
-                        tentativeRemoteDocumentationURLBase = "http://chess.eecs.berkeley.edu/ptexternal/src/ptII/";
+                        tentativeRemoteDocumentationURLBase = "https://chess.eecs.berkeley.edu/ptexternal/src/ptII/";
                     } else {
                         tentativeRemoteDocumentationURLBase = "http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII"
                                 + VersionAttribute.majorCurrentVersion()
