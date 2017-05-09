@@ -49,6 +49,8 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Enumeration;
+import java.util.Arrays;
+import java.util.List;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.zip.ZipEntry;
@@ -322,6 +324,24 @@ public class FileUtilities {
         URL url = FileUtilities.nameToURL(path, null, null);
         byte[] encoded = FileUtilities.binaryReadURLToByteArray(url);
         return new String(encoded, Charset.defaultCharset());
+    }
+
+    /** Return true if the command can be found in the directories
+     *  listed in the directories contained in the PATH environment
+     *  variable.
+     *  @param command The command for which to search.
+     *  @return True if the command can be found in $PATH
+     */   
+    public static boolean inPath(String command) {
+	String path = System.getenv("PATH");
+	List <String> directories = Arrays.asList(path.split(File.pathSeparator));
+	for (String directory : directories) {
+	    File file = new File(directory, command);
+	    if (file.exists() && file.canExecute()) {
+		return true;
+	    }
+	}
+	return false;
     }
 
     /** Extract the contents of a jar file.
