@@ -581,11 +581,14 @@ For example:
   </target>
 
   <target depends="clean" name="cleanall" 
-	  description="Remove all the class files, the ${ptII.reports} directory and any codeDoc directories.">
+	  description="Remove all the class files, the ${ptII.reports} directory, any codeDoc directories and runs clean in accessors.">
     <delete quiet="true" verbose="no" includeemptydirs="true">
       <fileset dir="${basedir}" includes="reports/**" defaultexcludes="false"/>
       <fileset dir="${basedir}" includes="**/codeDoc*/**" defaultexcludes="false"/>
     </delete>
+    <subant target="clean" genericantfile="${basedir}/org/terraswarm/accessor/accessors/web/build.xml">
+      <dirset dir="." includes="org/terraswarm/accessor/accessors/web"/>
+    </subant>
   </target>
 
   <target name="doccheck"
