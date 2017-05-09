@@ -895,10 +895,16 @@ public class JSAccessor extends JavaScript {
                 try {
                     result.append(_getPtDoc(accessorURL.toExternalForm()));
                 } catch (IOException ex) {
-                    System.err.println("Cannot find PtDoc file for "
-                                       + urlSpec.trim()
-                                       + ". Importing without documentation. Exception was: " + ex);
-                    JSAccessor._ptDoc();
+                    try {
+                        // Attempt to run "ant ptdoc".  This requires ant, node, npm and a network connection.
+                        JSAccessor._ptDoc();
+                        result.append(_getPtDoc(accessorURL.toExternalForm()));
+                    } catch (IOException ex2) {
+                        System.err.println("Cannot find PtDoc file for "
+                                           + urlSpec.trim()
+                                           + ". Importing without documentation. Initial exception was: " + ex
+                                           + "\n Exception after attempting \"ant ptdoc\" was:" + ex2);
+                    }
                 }
 
                 result.append("<property name=\"script\" value=\"");
