@@ -1,6 +1,6 @@
 /* A parser for DocML (Doc Markup Language).
 
- Copyright (c) 2006-2016 The Regents of the University of California.
+ Copyright (c) 2006-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -56,6 +56,7 @@ import ptolemy.kernel.util.Instantiable;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.StringAttribute;
+import ptolemy.util.FileUtilities;
 import ptolemy.vergil.basic.DocAttribute;
 
 ///////////////////////////////////////////////////////////////////
@@ -486,13 +487,14 @@ public class DocManager extends HandlerBase {
 
             if (toRead == null && _remoteDocumentationURLBase != null) {
                 // Try searching on a remote host.
-
                 // Loop through each docNamesIterator and try to open
                 // a stream.  Stop if once we open a stream.
                 Iterator docNameIterator = docNameList.iterator();
                 while (docNameIterator.hasNext()) {
                     String docName = (String) docNameIterator.next();
-                    toRead = new URL(_remoteDocumentationURLBase + docName);
+                    // Handle redirects for http -> https
+                    toRead = FileUtilities.followRedirects(new URL(_remoteDocumentationURLBase + docName));
+
                     if (toRead != null) {
                         InputStream toReadStream = null;
                         try {
@@ -1122,6 +1124,7 @@ public class DocManager extends HandlerBase {
      */
     public static void setRemoteDocumentationURLBase(
             String remoteDocumentationURLBase) {
+        System.out.println("DocManager.setRemoteDocumentationURLBase: " + remoteDocumentationURLBase);
         _remoteDocumentationURLBase = remoteDocumentationURLBase;
     }
 
