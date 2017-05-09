@@ -1281,7 +1281,7 @@ Accessor.prototype.getParameter = function (name) {
         throw new Error('getParameter(name): No parameter named ' + name);
     }
     // If this.setParameter() has been called, return that value.
-    if (typeof parameter.currentValue !== 'undefined') {
+    if (parameter.currentValue) {
         return parameter.currentValue;
     }
     // If necessary, convert the value to the match the type.
@@ -2247,7 +2247,7 @@ Accessor.prototype.stop = function () {
 Accessor.prototype.stopAt = function (timeout) {
     this.stopAtTime = timeout;
     var self = this;
-    setTimeout(function() {
+    self.setTimeout(function() {
         self.stop();
     }, timeout);
 };
