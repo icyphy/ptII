@@ -1066,6 +1066,7 @@ For example:
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
 	  <patternset refid="test.capeCode.includes" />
+	  <exclude name="adm/**" />
 	</fileset>
       </batchtest>
       <formatter type="${junit.formatter}"/>
@@ -1096,6 +1097,7 @@ For example:
 	<fileset defaultexcludes="yes"
 		 dir="${basedir}">
 	  <patternset refid="test.capeCode.includes" />
+	  <exclude name="adm/**" />
 	</fileset>
       </batchtest>
       <formatter type="${junit.formatter}"/>
