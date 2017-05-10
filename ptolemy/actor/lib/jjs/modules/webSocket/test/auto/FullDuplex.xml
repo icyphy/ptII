@@ -58,6 +58,25 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 155.0]">
         </property>
     </property>
+    <property name="portNumber" class="ptolemy.data.expr.Parameter" value="8050">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[305.0, 125.0]">
+        </property>
+    </property>
     <entity name="Ramp" class="ptolemy.actor.lib.Ramp">
         <doc>Create a sequence of tokens with increasing value</doc>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{210.0, 180.0}">
@@ -222,7 +241,7 @@
             <property name="sslTls (parameter)" class="ptolemy.kernel.util.StringAttribute" value="Whether SSL/TLS is enabled. This defaults to false.">
             </property>
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8092">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="portNumber">
         </property>
         <property name="receiveType" class="ptolemy.data.expr.Parameter" value="application/json">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
