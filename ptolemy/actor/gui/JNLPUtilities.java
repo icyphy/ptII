@@ -362,14 +362,13 @@ public class JNLPUtilities {
 
         File temporaryFile = null;
         try {
+
             temporaryFile = File.createTempFile(prefix, suffix, directory);
-        } catch (IOException ex) {
-            IOException ioex = new IOException("While trying to save a jar URL \"" + jarURLName
+        } catch (Exception ex) {
+            throw new IOException("While trying to save a jar URL \"" + jarURLName
                                                + "\", failed to create temporary file with prefix: \"" + prefix
                                                + "\", suffix: \"" + suffix
                                                + "\", directory: \"" + directory);
-            ioex.initCause(ex);
-            throw ioex;
         }
         temporaryFile.deleteOnExit();
 

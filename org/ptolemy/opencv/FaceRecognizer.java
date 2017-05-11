@@ -79,6 +79,7 @@ import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.awt.image.DataBuffer;
+import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
@@ -93,6 +94,7 @@ import org.opencv.core.Size;
 import org.opencv.imgproc.*;
 import org.opencv.objdetect.CascadeClassifier;
 
+import ptolemy.actor.gui.JNLPUtilities;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.util.FileUtilities;
 
@@ -142,6 +144,14 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         URL url = FileUtilities.nameToURL(trainingFile, null, null);
         if (url == null) {
             throw new IOException("Could not load " + trainingFile);
+        }
+
+        // If the training file was found in a jar file, then copy it
+        // to a location in the classpath so that _cascade.load() can find
+        // it.
+        if (url.toString().indexOf("!/") != -1) {
+            File temporaryTrainingFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(url.toString());
+            url = temporaryTrainingFile.toURI().toURL();
         }
 
         boolean loaded = _cascade.load(url.getPath());
