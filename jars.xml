@@ -1748,6 +1748,7 @@
 	<include name="ptolemy/actor/lib/jjs/external/*.js"/>
 	<include name="ptolemy/actor/lib/jjs/node/README.txt"/>
 	<include name="ptolemy/actor/lib/jjs/node/apiai/*"/>
+	<include name="ptolemy/actor/lib/jjs/node/apiai/module/*"/>
 	<include name="ptolemy/actor/lib/jjs/node/*.js"/>
 	<include name="ptolemy/actor/lib/jjs/node_modules/*/*.js"/>
 	<include name="ptolemy/actor/lib/jjs/node_modules/*/*.json"/>
