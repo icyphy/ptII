@@ -256,12 +256,25 @@ public class FMUFile {
         try {
             files = unzip(fmuFileName);
         } catch (IOException ex) {
-            // Java 1.5 does not support IOException(String, Throwable).
-            // We sometimes compile this with gcj, which is Java 1.5
-            IOException exception = new IOException("Failed to unzip \""
-                    + fmuFileName + "\".");
-            exception.initCause(ex);
-            throw exception;
+            boolean throwOriginalException = true;
+            // Substitute a spaces for %20s.
+            if (fmuFileName.indexOf("%20") != -1) {
+                throwOriginalException = false;
+                String fmuFileName2 = fmuFileName.replaceAll("%20", " ");
+                try {
+                    files = unzip(fmuFileName2);
+                } catch (IOException ex2) {
+                    throwOriginalException = true;
+                }
+            }
+            if (throwOriginalException) {
+                // Java 1.5 does not support IOException(String, Throwable).
+                // We sometimes compile this with gcj, which is Java 1.5
+                IOException exception = new IOException("Failed to unzip \""
+                                                        + fmuFileName + "\".");
+                exception.initCause(ex);
+                throw exception;
+            }
         }
 
         // Find the modelDescription.xml file.
