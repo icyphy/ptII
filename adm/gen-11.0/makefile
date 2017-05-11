@@ -3804,13 +3804,16 @@ IZPACK2APP=$(IZPACKDIR)/utils/wrappers/izpack2app/izpack2app.py
 setup_mac_app: $(PTSETUP_MAC).app
 $(PTSETUP_MAC).app: $(PTSETUP_MAC).jar
 	python $(IZPACK2APP) $^ $@ 
+	# Touch the directories and files in the Mac .app so that when it is untar'd, it has a recent mod time.
 	find $@ -type f -exec touch {} \; 
+	find $@ -type d -exec touch {} \; 
 	#cp $(PTIIHOME)/bin/macContents/Contents/Resources/ptolemy.icns $(PTSETUP_MAC).app/Contents/Resources/izpack.icns
 
 capecode_setup_mac_app: $(CAPECODE_SETUP_MAC).app
 $(CAPECODE_SETUP_MAC).app: $(CAPECODE_SETUP_MAC).jar
 	python $(IZPACK2APP) $^ $@ 
 	find $@ -type f -exec touch {} \; 
+	find $@ -type d -exec touch {} \; 
 
 # https://stackoverflow.com/questions/286419/how-to-build-a-dmg-mac-os-x-file-on-a-non-mac-platform 
 #"mkdir -p dmgdir/progname.app/Contents/{MacOS,Resources}"
