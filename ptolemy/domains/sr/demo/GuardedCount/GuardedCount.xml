@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="GuardedCount" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="8.1.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 22, 931, 621}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={3, 23, 952, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[718, 511]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[718, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{359.0, 255.5}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{359.0, 261.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model illustrates the use of SR primitive actors&#10;to make a CountDown actor. This (composite) actor outputs&#10;a true on the ready port when it is ready to count. In&#10;the same tick of the clock, the Sequence actor provides it&#10;with a starting number. It then counts down to zero on&#10;each subsequent tick of the clock, emitting true on ready&#10;when it again reaches zero.">
@@ -68,7 +68,7 @@
         <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Prevent outputs if the&#10;count drops below zero&#10;(which can happen if no&#10;new start input is provided).">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[5.0, 20.0]">
+            <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[5.0, 20.0]">
                 <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="When">
                 </property>
                 <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -78,7 +78,7 @@
         <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Output true&#10;when the count&#10;is &lt;= 0.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[35.0, -95.0]">
+            <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[35.0, -95.0]">
                 <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Comparator">
                 </property>
                 <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -88,7 +88,7 @@
         <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Restart the count&#10;whenever the start&#10;input is not absent.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-120.0, -120.0]">
+            <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-120.0, -120.0]">
                 <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="Default">
                 </property>
                 <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
@@ -98,7 +98,7 @@
         <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
             <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Decrement&#10;the count.">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.RelativeLocation" value="[-70.0, 40.0]">
+            <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[-70.0, 40.0]">
                 <property name="relativeTo" class="ptolemy.kernel.util.StringAttribute" value="AddSubtract">
                 </property>
                 <property name="relativeToElementName" class="ptolemy.kernel.util.StringAttribute" value="entity">
