@@ -14,7 +14,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{76.36973571777344, 37.2265625}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 23, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1, 23, 917, 627}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -29,7 +29,7 @@
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple test of the WebServer accessor.&#10;This starts a web server on localhost on port 8088&#10;and sends back a simple &quot;Hello World&quot; response to&#10;one request.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Simple test of the WebServer accessor.&#10;This starts a web server on localhost on port 8188&#10;and sends back a simple &quot;Hello World&quot; response to&#10;one request.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{145.0, -15.0}">
         </property>
@@ -80,7 +80,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{125.0, 295.0}">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8088">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8188">
         </property>
         <port name="response" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -137,7 +137,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://localhost:8088&quot;">
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://localhost:8188&quot;">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
@@ -398,7 +398,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[210.0, 210.0]">
         </property>
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{8088}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{8188}">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
