@@ -246,17 +246,17 @@ release_terra_update_ftp:
 	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc update_ftp
 
 ####
-release_sisyphus:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc clean all src.jar
+release_wessel:
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-8-openjdk-amd64/bin/jar JAVADOC=/usr/lib/jvm/java-8-openjdk-amd64/bin/javadoc clean all src.jar
 
-release_sisyphus_setup:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc setup
+release_wessel_setup:
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-8-openjdk-amd64/bin/jar JAVADOC=/usr/lib/jvm/java-8-openjdk-amd64/bin/javadoc setup
 
-release_sisyphus_remote4_test:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc remote4_Test
+release_wessel_remote4_test:
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-8-openjdk-amd64/bin/jar JAVADOC=/usr/lib/jvm/java-8-openjdk-amd64/bin/javadoc remote4_test
 
-release_sisyphus_update_ftp:
-	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-1.6.0/bin/jar JAVADOC=/usr/lib/jvm/jdk1.8.0_91/bin/javadoc update_ftp
+release_wessel_update_ftp:
+	make USER=cxh PTIIHOME=/home/cxh/src/ptII11.0.devel PTIIADM=/home/cxh/src/ptII11.0.devel/adm TAR=/bin/tar JAR=/usr/lib/jvm/java-8-openjdk-amd64/bin/jar JAVADOC=/usr/lib/jvm/java-8-openjdk-amd64/bin/javadoc update_ftp
 
 ####
 release_windows:
@@ -3887,7 +3887,7 @@ $(CAPECODE_SETUP_MAC).app.tar.gz: $(CAPECODE_SETUP_MAC).app
 JNLPDIST=test/ptII$(VERSION)
 jnlpdist: $(JNLPDIST)/signed
 $(JNLPDIST): $(GENLOG_DIR)
-	$(MAKE)	release_sisyphus_remote4_test
+	$(MAKE)	release_wessel_remote4_test
 
 
 # Directory that should be in vendors so that we build the jar files
