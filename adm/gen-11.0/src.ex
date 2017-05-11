@@ -109,8 +109,6 @@ doc/ojdcheck.htm
 doc/uml
 doc/uml/*
 doc/img/*.psd
-duk2
-eduk2
 hs_err_pid*
 java.hprof.txt
 jsdatabase

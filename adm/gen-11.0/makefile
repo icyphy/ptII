@@ -578,7 +578,7 @@ $(PTIIDIST)/jar_dist:
 	if [ ! -d "$@" ] ; then \
 	    echo "Running $(MAKE) -k  jar_dist and other commands in $(PTIIDIST)"; \
 	    (cd $(PTIIDIST); PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` JAVADOC=$(JAVADOC) ./configure; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)`; ant; \
-		(cd $(PTIIDIST)/doc; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` make JAVADOC=$(JAVADOC) clean all_packages install); \
+		(cd $(PTIIDIST)/doc; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` make JAVADOC=$(JAVADOC) clean clean_accessors all_packages install); \
 		echo "About to run ant jars"; \
 		ant jars; \
 		echo "Rebuild ptiny.exe so that vergil_l4j.jar gets built so that $(PTIIDIST)/jar_dist can use vergil_l4j.jar"; \
@@ -674,7 +674,7 @@ $(PTII_SRC): $(PTII_FULL)
 		cd ptII$(VERSION); \
 		echo "About to configure `pwd`"; \
 		echo "PATH: ${PATH}"; \
-		PTII=`$(GENDIR)/ptcygpwd`  ./configure --enable-verbose; make -k clean; \
+		PTII=`$(GENDIR)/ptcygpwd`  ./configure --enable-verbose; make -k clean clean_accessors; \
 		touch mk/ptII.mk.in; \
 		echo "(0)About to remove class files in `pwd`"; \
 		find . -name "*.class" -ls -exec rm {} \; ;\
@@ -1736,7 +1736,7 @@ ptII$(WINDOWS_VERSION)_src.zip:
 # Make the distribution, run htmlchek
 htmlchek:
 	-(cd $(PTIIHOME); svn update)
-	$(MAKE) clean
+	$(MAKE) clean clean_accessors
 	$(MAKE)
 	(cd $(PTIIDIST); PTII=$(PTIIDIST) make htmlchek) > $(PTIIDIST)/htmlchek.out 2>&1
 	(cd $(PTIIDIST); ls -d `cat htmlchekout.HREF | grep -v '#' | grep -v http: | grep -v mailto: | grep -v ftp:` | grep 'not found' 2>&1)
@@ -1772,7 +1772,7 @@ ptclean:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	(cd $(PTIIHOME); \
-		$(MAKE) clean)
+		$(MAKE) clean clean_accessors)
 	# Don't remove codeDoc directories in the reviews directory
 	cd $(PTIIHOME); \
 		find . -xdev -name reviews -prune -name codeDoc -exec rm -rf {} \;
@@ -2116,7 +2116,7 @@ remote1distclean:
 	@echo "#ptIInightly-mail#: Starting make clean at `date`"
 	@echo "`uptime`"
 	(cd $(REMOTE1PTIIDIST); \
-		$(MAKE) clean)
+		$(MAKE) clean clean_accessors)
 	-(cd $(REMOTE1PTIIDIST); \
 		find . -name codeDoc -exec rm -rf {} \;)
 
@@ -2715,7 +2715,7 @@ remote2distclean:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	(cd $(REMOTE2PTIIDIST); \
-		$(OTHERMAKE) clean; \
+		$(OTHERMAKE) clean clean_accessors; \
 		find . -name codeDoc -exec rm -rf {} \;)
 
 
@@ -2825,7 +2825,7 @@ remote3distclean:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	(cd $(REMOTE3PTIIDIST); \
-		$(OTHERMAKE) clean; \
+		$(OTHERMAKE) clean clean_accessors; \
 		find . -name codeDoc -exec rm -rf {} \;)
 
 
@@ -3012,7 +3012,7 @@ remote4distclean:
 	@echo "$@ `date`"
 	@echo "`uptime`"
 	(cd $(REMOTE4PTIIDIST); \
-		$(MAKE) clean; \
+		$(MAKE) clean clean_accessors; \
 		find . -name codeDoc -exec rm -rf {} \;)
 
 remote4distjavadocs:
@@ -3234,7 +3234,7 @@ remote6buildjsall:
 			echo making jsall in $$x ; \
 			$(MAKE) $(MFLAGS) $(MAKEVARS) \
 				"JTCLSHFLAGS=-Dptolemy.ptII.isHeadless=true -Dptolemy.ptII.isRunningNightlyBuild=true -Xmx1500M" \
-				jsoriginal clean jsbuild JSINSTRFLAGS=;\
+				jsoriginal clean clean_accessors jsbuild JSINSTRFLAGS=;\
 			);  \
 		    fi ; \
 		done ; \
@@ -3331,7 +3331,7 @@ cleanSrc:
 	@echo "# cleanSrc: removing files created by configure"
 	@echo "# `date`"
 	if [ -f src/ptII$(VERSION)/mk/ptII.mk ]; then \
-		(cd src/ptII$(VERSION)/bin; mv CapeCode.app Ptiny.app Vergil.app ..; $(MAKE) clean; mv ../CapeCode.app ../Ptiny.app ../Vergil.app ../Ptiny.app .); \
+		(cd src/ptII$(VERSION)/bin; mv CapeCode.app Ptiny.app Vergil.app ..; $(MAKE) clean clean_accessors; mv ../CapeCode.app ../Ptiny.app ../Vergil.app ../Ptiny.app .); \
 	fi
 	rm -f src/ptII$(VERSION)/mk/ptII.mk
 	rm -f src/ptII$(VERSION)/.classpath
