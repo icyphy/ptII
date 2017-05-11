@@ -81,7 +81,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="clipURL" class="ptolemy.actor.parameters.PortParameter" value="http://music.berkeley.edu/files/2014/02/jcime_odwalla1.mp3">
+        <property name="clipURL" class="ptolemy.actor.parameters.PortParameter" value="http://cdn.music2ten.com/mp3/pd4u/GershwinWhiteman-RhapsodyInBluePart1.mp3">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
