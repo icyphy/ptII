@@ -190,18 +190,6 @@ antInstallMessage:
 	@echo "----------------"
 	@echo "Warning: Please consider running 'ant jars' instead of make install, it is faster.  See $$PTII/doc/coding/ant.htm"
 	@echo "----------------"
-# Glimpse is a tool that prepares an index of a directory tree.
-# glimpse is not included with Ptolemy II, see http://glimpse.cs.arizona.edu
-GLIMPSEINDEX =	/usr/local/bin/glimpseindex
-glimpse: .glimpse_exclude
-	@echo "Saving .glimpse_exclude, removing the .glimpse* files"
-	rm -f glimpse_exclude
-	cp .glimpse_exclude glimpse_exclude
-	rm -f .glimpse*
-	cp  glimpse_exclude .glimpse_exclude
-	$(GLIMPSEINDEX) -n -H `pwd` `pwd`
-	chmod a+r .glimpse_*
-	rm -f glimpse_exclude
 
 # Generate ptII.mk by running configure
 mk/ptII.mk: configure mk/ptII.mk.in
@@ -342,6 +330,10 @@ svn_delete_clean_shipping:
 	        fi \
 	done 
 
+clean_accessors:
+	if [ -d org/terraswarm/accessor/accessors/web ]; then \
+		(cd org/terraswarm/accessor/accessors/web; ant clean); \
+	fi
 
 # Include rules to build Web Start JNLP files
 include $(ROOT)/mk/jnlp.mk
