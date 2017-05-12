@@ -602,9 +602,10 @@ $(PTII_FULL): $(PTIIDIST)
 	(cd $(PTIIDIST); chmod -R a+rX .)
 	@echo "For some reason under Cygwin, we need to build the compressed"
 	@echo "  tar file or we get errors"
+	@echo "Don't use -v with tar and Jenkins, avoid '/bin/tar: write error'. See http://stackoverflow.com/questions/37540792/jenkins-script-tar-write-error"
 	(cd $(PTIIDIST)/..; \
 		rm -f $(PTIIDIST)/build.xml build.xml; \
-		$(TAR) -c -v --no-anchored -X $(GENDIR)/src.ex \
+		$(TAR) -c --no-anchored -X $(GENDIR)/src.ex \
 		 -f $@ \
 		ptII$(VERSION))
 	#(cd $(PTIIDIST)/..; \
