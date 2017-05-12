@@ -3706,7 +3706,7 @@ test_capecode_setup_ant: test/capeCodeTest
 		PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
 	# $@ Run the accessors tests.
 	(cd test/capeCodeTest/org/terraswarm/accessor/accessors/web; echo "DISPLAY=$$DISPLAY"; \
-		find . -name "*.h" -ls; ant clean; ant; find . -name "*.h" \
+		find . -name "*.h" -ls; ant clean; ant; find . -name "*.h" -ls; \
 		ant tests.jenkins)
 	# $@ Test build.default.xml first, which does not compile everything.
 	(cd test/capeCodeTest; echo "DISPLAY=$$DISPLAY"; \
