@@ -1,6 +1,6 @@
 /* A face detector that uses OpenCV.
 
-   @Copyright (c) 2015-2016 The Regents of the University of California.
+   @Copyright (c) 2015-2017 The Regents of the University of California.
    All rights reserved.
 
    Permission is hereby granted, without written agreement and without
@@ -152,6 +152,9 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         if (url.toString().indexOf("!/") != -1) {
             File temporaryTrainingFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(url.toString());
             url = temporaryTrainingFile.toURI().toURL();
+            if (url == null) {
+                throw new IOException("Could not load " + url + ", which was found as " + temporaryTrainingFile);
+            }
         }
 
         boolean loaded = _cascade.load(url.getPath());
