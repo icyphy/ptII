@@ -3692,16 +3692,22 @@ test_capecode_setup_make_tests:
 
 
 test_capecode_setup_ant: test/capeCodeTest
-	# Test configure and build.xml.in
+	@echo "#"
+	@echo "# Now testing ant"
+	@echo "#"
+	@echo "$@ `date`"
+	@echo "`uptime`"
+	# $@ Test configure and build.xml.in
 	(cd test/capeCodeTest; echo "DISPLAY=$$DISPLAY"; \
 		chmod a+x ./configure; PTII=`pwd` ./configure; \
 		PTII=`pwd` ant clean; \
 		PTII=`pwd` ant build test.report reports; \
 		PTII=`pwd` ant test.single -Dtest.name=ptolemy.kernel.test.junit.JUnitTclTest)
-	# Run the accessors tests.
+	# $@ Run the accessors tests.
 	(cd test/capeCodeTest/org/terraswarm/accessor/accessors/web; echo "DISPLAY=$$DISPLAY"; \
+		find . -name "*.h" -ls; ant clean; ant; find . -name "*.h" \
 		ant tests.jenkins)
-	# Test build.default.xml first, which does not compile everything.
+	# $@ Test build.default.xml first, which does not compile everything.
 	(cd test/capeCodeTest; echo "DISPLAY=$$DISPLAY"; \
 		cp build.default.xml build.xml; \
 		PTII=`pwd` ant clean; PTII=`pwd` ant; \
