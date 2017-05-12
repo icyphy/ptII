@@ -4,13 +4,13 @@
 <entity name="WebSocketClientJS" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={599, 23, 810, 869}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={228, 23, 810, 671}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[576, 759]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[576, 561]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{220.91099654796508, 290.7795694040698}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{288.0, 280.5}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15.0">
@@ -19,13 +19,13 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, -15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[102.5, 37.5]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test the maximum data size that can be transmitted in a single send() function&#10;by the Web Socket. &#10;&#10;The JavaScript accessor builds  a long string using a for loop. Change the &#10;loop's end point to modify the string length. ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test the maximum data size that can be transmitted in a single send() function&#10;by the Web Socket. &#10;&#10;The JavaScript accessor builds a long string using a for loop. Change the &#10;loop's end point to modify the string length. ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 15.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[12.5, 67.5]">
         </property>
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
@@ -33,7 +33,26 @@
         </property>
         <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../node_modules/@accessors-hosts/node/nodeHostInvoke.js net/test/auto/@modelName@">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{195.0, -10.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[252.5, 42.5]">
+        </property>
+    </property>
+    <property name="port" class="ptolemy.data.expr.Parameter" value="8181">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[367.5, 42.5]">
         </property>
     </property>
     <entity name="WebSocketClient" class="org.terraswarm.accessor.JSAccessor">
@@ -49,7 +68,7 @@
         </property>
         <property name="throttleFactor" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[197.5, 202.5]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor sends and/or receives messages from a web socket at&#10; the specified host and port.&#10; &lt;a href=&quot;https://en.wikipedia.org/wiki/WebSocket&quot;&gt;WebSockets&lt;/a&gt;&#10; provide full-duplex communication channels over a single TCP/IP connection.&#10; In &lt;code&gt;initialize()&lt;/code&gt;, it  begins connecting to the web socket server.&#10; Once the connection is established, a &lt;code&gt;true&lt;/code&gt; boolean is sent to&#10; the &lt;code&gt;connected&lt;/code&gt; output.&#10; If connection is not established immediately, the accessor will attempt to&#10; reconnect &lt;em&gt;numberOfRetries&lt;/em&gt; times at an interval of &lt;em&gt;reconnectInterval&lt;/em&gt;.&lt;/p&gt;&#10;&lt;p&gt; Whenever an input is received on the &lt;code&gt;toSend&lt;/code&gt;&#10; input, the message is sent to the socket. If the socket is not yet open,&#10; this accessor will, by default, queue the message to send when the socket opens,&#10; unless the &lt;code&gt;discardMessagesBeforeOpen&lt;/code&gt; parameter is true, in which case,&#10; input messages that are received before the socket is opened will be&#10; discarded. If messages are queued and &lt;code&gt;throttleFactor&lt;/code&gt; is non-zero, then&#10; whenever a message is queued to be later sent, the accessor's input handler will stall&#10; by a number of milliseconds given by the queue size times the throttleFactor.&#10; The longer the queue, the longer the stall. Note that this will likely block&#10; the host from executing, so this feature should be used with caution.&lt;/p&gt;&#10;&lt;p&gt; Whenever a message is received from the socket, that message is&#10; produced on the &lt;code&gt;'received'&lt;/code&gt; output. Note that the message may actually be sent&#10; over multiple 'frames', but the frames will be aggregated and produced as one&#10; message.&lt;/p&gt;&#10;&lt;p&gt; When &lt;code&gt;wrapup()&lt;/code&gt; is invoked, this accessor closes the&#10; connection.&lt;/p&gt;&#10;&lt;p&gt; If the connection is dropped midway, the swarmlet may monitor the 'connected'&#10; output for a value 'false' and attempt a reconnection by providing either a&#10; port or server input.&lt;/p&gt;&#10;&lt;p&gt; The default type for both sending and receiving&#10; is 'application/json', which allows sending and receiving anything that has&#10; a string representation in JSON. The types supported by this implementation&#10; include at least:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;strong&gt;application/json&lt;/strong&gt;: The this.send() function uses JSON.stringify() and sends the&#10;result with a UTF-8 encoding. An incoming byte stream will be parsed as JSON,&#10;and if the parsing fails, will be provided as a string interpretation of the byte&#10;stream.&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;text/*&lt;/strong&gt;: Any text type is sent as a string encoded in UTF-8.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;strong&gt;image/x&lt;/strong&gt;: Where &lt;strong&gt;x&lt;/strong&gt; is one of &lt;strong&gt;json&lt;/strong&gt;, &lt;strong&gt;png&lt;/strong&gt;, &lt;strong&gt;gif&lt;/strong&gt;,&#10;and more.&#10;In this case, the data passed to this.send() is assumed to be an image, as encoded&#10;on the host, and the image will be encoded as a byte stream in the specified&#10;format before sending.  A received byte stream will be decoded as an image,&#10;if possible.&lt;/p&gt;&#10;&lt;p&gt;When a model with an instance of this accessor stops executing, there&#10;are two mechanisms by which data in transit can be lost. In both cases, warning&#10;messages or error messages will be issued to the host to be displayed or otherwise&#10;handled as the host sees fit.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;First, there might be queued messages that were received on &lt;code&gt;toSend&lt;/code&gt; but have not yet&#10;been sent, either because the socket has not yet been opened or because&#10;it was closed from the other side.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;Second, a message might be received from the server after shutdown has commenced.&#10;In particular, received messages are handled asynchronously by a handler function&#10;that can be invoked at any time, and that handler might be invoked after it is no&#10;longer possible for this accessor to produce outputs (it has entered its wrapup&#10;phase of execution).&lt;/p&gt;&#10;&lt;p&gt;The server might similarly lose messages by the same two mechanisms occurring&#10;on the server side. In that case, messages will presumably be displayed on the&#10;server side.&lt;/p&gt;&#10;&lt;p&gt;Accessors that extend this one can override the &lt;code&gt;toSendInputHandler&lt;/code&gt; function&#10;to customize what is sent. See &lt;code&gt;RosPublisher.js&lt;/code&gt; for an example.&lt;/p&gt;&#10;&lt;p&gt;This accessor requires the 'webSocket' module.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
@@ -111,7 +130,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="8087">
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="port">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -150,9 +169,9 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8087">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="port">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 415.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor starts a server that listens for web socket&#10; connection requests on the specified hostInterface and port.  The&#10; hostInterface is needed only if the host machine has more than one&#10; network interface (e.g. Ethernet and WiFi) and 'localhost' does&#10; not resolve to the desired interface.&lt;/p&gt;&#10;&lt;p&gt; The output &lt;code&gt;connection&lt;/code&gt; reports the when a&#10; connection is opened or closed.&lt;/p&gt;&#10;&lt;p&gt; When a message arrives on a connection, a &lt;code&gt;received&lt;/code&gt;&#10; output is produced with that message. Note that the message may arrive in&#10; multiple frames, but it will be produced as a single message.&lt;/p&gt;&#10;&lt;p&gt; When an input arrives on &lt;code&gt;toSend&lt;/code&gt;, then a message is&#10; sent to one or all of the open socket connections.&lt;/p&gt;&#10;&lt;p&gt; When &lt;code&gt;wrapup()&lt;/code&gt; is invoked, this accessor closes the&#10; server and all connections.&lt;/p&gt;&#10;&lt;p&gt; The default type for both sending and receiving&#10; is 'application/json', which allows sending and receiving anything that has&#10; a string representation in JSON. The types supported by this implementation&#10; include at least:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;strong&gt;application/json&lt;/strong&gt;: The this.send() function uses JSON.stringify() and sends the&#10;result with a UTF-8 encoding. An incoming byte stream will be parsed as JSON,&#10;and if the parsing fails, will be provided as a string interpretation of the byte&#10;stream.&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;text/*&lt;/strong&gt;: Any text type is sent as a string encoded in UTF-8.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;strong&gt;image/x&lt;/strong&gt;: Where &lt;strong&gt;x&lt;/strong&gt; is one of &lt;strong&gt;json&lt;/strong&gt;, &lt;strong&gt;png&lt;/strong&gt;, &lt;strong&gt;gif&lt;/strong&gt;,&#10;and more.&#10;In this case, the data passed to this.send() is assumed to be an image, as encoded&#10;on the host, and the image will be encoded as a byte stream in the specified&#10;format before sending.  A received byte stream will be decoded as an image,&#10;if possible.&lt;/p&gt;&#10;&lt;p&gt;This accessor requires the module webSocket.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
@@ -230,7 +249,7 @@
                 </property>
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[197.5, 307.5]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -276,7 +295,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[392.5, 207.5]">
         </property>
         <property name="trainingMode" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -316,7 +335,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[449.2432098388672, 163.22550201416016]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[506.7432098388672, 215.72550201416016]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
