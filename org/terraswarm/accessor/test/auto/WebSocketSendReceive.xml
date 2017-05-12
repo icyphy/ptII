@@ -4,7 +4,7 @@
 <entity name="WebSocketSendReceive" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={118, 23, 969, 653}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={240, 208, 969, 653}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[735, 543]">
     </property>
@@ -36,6 +36,25 @@
         <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../node_modules/@accessors-hosts/node/nodeHostInvoke.js net/test/auto/@modelName@">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, -10.0]">
+        </property>
+    </property>
+    <property name="port" class="ptolemy.data.expr.Parameter" value="8184">
+        <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+            <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+            </property>
+        </property>
+        <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+            <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">-P-</text>
+      </svg>
+    </configure>
+        </property>
+        <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{435, 0}">
         </property>
     </property>
     <entity name="JavaScript2" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -133,7 +152,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="8083">
+        <property name="port" class="ptolemy.actor.parameters.PortParameter" value="port">
         </property>
         <property name="receiveType" class="ptolemy.data.expr.Parameter" value="text/html">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -232,7 +251,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8083">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="port">
         </property>
         <property name="pfxKeyCertPassword" class="ptolemy.data.expr.Parameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
