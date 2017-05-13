@@ -1646,6 +1646,11 @@ EOFL2
                        "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
   <dict>
+    <key>LSEnvironment</key>
+    <dict>
+        <key>JAVA_HOME</key>
+        <string>../../jdk</string>
+    </dict>
     <key>CFBundleName</key>
     <string>Ptolemy</string>
     <key>CFBundleShortVersionString</key>
@@ -1783,68 +1788,72 @@ EOF6
 		   echo "$0: JAVA_HOME = '${JAVA_HOME}', which is either empty or does not exist."
 		   echo "   not setting up the JVM for the app."
                else
-		   echo "Copying the jre into $MACAPP_APP"
 		   # Copy the jvm
 		   ContentsDirectory=`dirname "${JAVA_HOME}"`
 		   jdkVersionDirectory=`dirname ${ContentsDirectory}`
 		   jdkVersion=`basename "${jdkVersionDirectory}"`
-		   jdkApp=$MACAPP_APP/Contents/PlugIns/$jdkVersion
-		   jreApp=$jdkApp/Contents/Home/jre
-		   mkdir -p $jreApp/lib
+		   #jdkApp=$MACAPP_APP/Contents/PlugIns/$jdkVersion/Contents/Home
+                   jdkApp=$PTII/jdk
 
-		   cp $ContentsDirectory/Info.plist $jdkApp/Contents/
+                   if [ ! -d "$PTII/jdk" ]; then
+		       echo "Copying the jre into $jdkApp"
+		       jreApp=$jdkApp/jre
+		       mkdir -p $jreApp/lib
 
-		   cp $JAVA_HOME/jre/{COPYRIGHT,LICENSE,README,THIRDPARTYLICENSEREADME-JAVAFX.txt,THIRDPARTYLICENSEREADME.txt,Welcome.html} $jreApp
+		       #cp $ContentsDirectory/Info.plist $jdkApp/Contents/
 
-		   (cd $JAVA_HOME/jre; tar -cf - lib) | (cd $jreApp; tar -xf -)
-		   rm -rf $jreApp/lib/{applet,deploy.jar,javaws.jar,libdeploy.dylib,plugin.jar}
+		       cp $JAVA_HOME/jre/{COPYRIGHT,LICENSE,README,THIRDPARTYLICENSEREADME-JAVAFX.txt,THIRDPARTYLICENSEREADME.txt,Welcome.html} $jdkApp
 
-		   # Deal with extensions
-		   # Java3D
-		   JAVA3D_DIR="$PTII/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental"
-		   if [ ! -d "$JAVA3D_DIR" ]; then
-		       echo "$0: Java 3D directory \"$JAVA3D_DIR\" not found.  Java 3D probably won't work."
-                   else 
-		       cp $JAVA3D_DIR/lib/ext/*.jar $jreApp/lib/ext/ 
-		       cp $JAVA3D_DIR/*.txt $jreApp
-  		       # Jogl, needed by Java 3D
-		       JOGL_DIR=$PTII/vendors/jogl/jogamp-all-platforms/    
-		       if [ ! -d "$JOGL_DIR" ]; then
-			   echo "$0: Jogl directory \"$JOGL_DIR\" not found.  Java 3D probably won't work."
-		       else
-		           cp $JOGL_DIR/lib/macosx-universal/*.jnilib $MACAPP_APP/Contents/MacOS/
-		           cp "$JOGL_DIR/jar/jogl-all.jar" $jreApp/lib/ext/ 
-		           cp "$JOGL_DIR/jar/gluegen.jar" $jreApp/lib/ext/ 
+		       (cd $JAVA_HOME; tar -cf - bin db include jre lib man release) | (cd $jdkApp; tar -xf -)
+		       #(cd $JAVA_HOME/jre; tar -cf - lib) | (cd $jreApp; tar -xf -)
+		       rm -rf $jreApp/lib/{applet,deploy.jar,javaws.jar,libdeploy.dylib,plugin.jar}
+
+		       # Deal with extensions
+		       # Java3D
+		       JAVA3D_DIR="$PTII/vendors/j3d/Darwin/j3d-1.6.0-pre11-daily-experimental"
+		       if [ ! -d "$JAVA3D_DIR" ]; then
+		           echo "$0: Java 3D directory \"$JAVA3D_DIR\" not found.  Java 3D probably won't work."
+                       else 
+		           cp $JAVA3D_DIR/lib/ext/*.jar $jreApp/lib/ext/ 
+		           cp $JAVA3D_DIR/*.txt $jreApp
+  		           # Jogl, needed by Java 3D
+		           JOGL_DIR=$PTII/vendors/jogl/jogamp-all-platforms/    
+		           if [ ! -d "$JOGL_DIR" ]; then
+			       echo "$0: Jogl directory \"$JOGL_DIR\" not found.  Java 3D probably won't work."
+		           else
+		               cp $JOGL_DIR/lib/macosx-universal/*.jnilib $MACAPP_APP/Contents/MacOS/
+		               cp "$JOGL_DIR/jar/jogl-all.jar" $jreApp/lib/ext/ 
+		               cp "$JOGL_DIR/jar/gluegen.jar" $jreApp/lib/ext/ 
+                           fi
                        fi
+
+		       # Java Media Framework (JMF)
+		       files="customizer.jar jmf.jar mediaplayer.jar multiplayer.jar"
+		       for file in $files
+		       do
+		           if [ -f /Library/Java/Extensions/$file ]; then
+			       cp /Library/Java/Extensions/$file $jreApp/lib/ext/
+                           fi
+                       done
+
+		       # Matlab
+		       cp $PTII/lib/libptmatlab.jnilib $MACAPP_APP/Contents/MacOS/
+
+		       # RXTX SerialComm
+		       #if [ -f /Library/Java/Extensions/librxtxSerial.jnilib ]; then
+		       #    cp /Library/Java/Extensions/librxtxSerial.jnilib $MACAPP_APP/Contents/MacOS/
+		       #fi
+		       #if [ -f /Library/Java/Extensions/RXTXcomm.jar ]; then
+		       #    cp /Library/Java/Extensions/RXTXcomm.jar $jreApp/lib/ext/ 
+		       #fi
+		       #cp $PTII/ptolemy/actor/lib/io/comm/rxtx-copyright.htm $jreApp
                    fi
-
-		   # Java Media Framework (JMF)
-		   files="customizer.jar jmf.jar mediaplayer.jar multiplayer.jar"
-		   for file in $files
-		   do
-		       if [ -f /Library/Java/Extensions/$file ]; then
-			   cp /Library/Java/Extensions/$file $jreApp/lib/ext/
-                       fi
-                   done
-
-		   # Matlab
-		   cp $PTII/lib/libptmatlab.jnilib $MACAPP_APP/Contents/MacOS/
-
-		   # RXTX SerialComm
-		   #if [ -f /Library/Java/Extensions/librxtxSerial.jnilib ]; then
-		   #    cp /Library/Java/Extensions/librxtxSerial.jnilib $MACAPP_APP/Contents/MacOS/
-		   #fi
-		   #if [ -f /Library/Java/Extensions/RXTXcomm.jar ]; then
-		   #    cp /Library/Java/Extensions/RXTXcomm.jar $jreApp/lib/ext/ 
-		   #fi
-		   #cp $PTII/ptolemy/actor/lib/io/comm/rxtx-copyright.htm $jreApp
-
-
 	       fi
            else
 	       # Check for a tar file that contains the Mac OS X JVM and if it exists, untar it
-	       if [ -f ${PTII}/adm/gen-10.0/MacJVM.tar ]; then
-		   (cd $MACAPP_APP/Contents/; tar -xf ${PTII}/adm/gen-10.0/MacJVM.tar)
+	       if [ -f ${PTII}/adm/gen-11.0/MacJVM.tar ]; then
+		   #(cd $MACAPP_APP/Contents/; tar -xf ${PTII}/adm/gen-10.0/MacJVM.tar)
+		   (cd $ptII/; tar -xf ${PTII}/adm/gen-11.0/MacJVM.tar)
 	       fi	   
 	   fi # Darwin
            fi # JAVA16
