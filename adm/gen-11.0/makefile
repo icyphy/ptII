@@ -577,7 +577,8 @@ $(PTIIDIST)/jar_dist:
 	@echo "$@ `date`"
 	if [ ! -d "$@" ] ; then \
 	    echo "Running $(MAKE) -k  jar_dist and other commands in $(PTIIDIST)"; \
-	    (cd $(PTIIDIST); PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` JAVADOC=$(JAVADOC) ./configure; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)`; ant; \
+	    (cd $(PTIIDIST); PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` JAVADOC=$(JAVADOC) ./configure; rm -rf bin/*.app; \
+		PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)`; ant; \
 		(cd $(PTIIDIST)/doc; PTII=`$(GENDIR)/ptcygpath $(PTIIDIST)` make JAVADOC=$(JAVADOC) clean all_packages install); \
 		echo "About to run ant jars"; \
 		ant jars; \
@@ -3767,14 +3768,14 @@ PTINY_APP = $(PTIIDIST)/bin/Ptiny.app
 Ptiny.app: $(PTINY_APP)
 $(PTINY_APP): 
 	if [ ! -f $@ ]; then \
-		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  make CapeCode.app Ptiny.app Vergil.app); \
+		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; make CapeCode.app Ptiny.app Vergil.app); \
         fi
 
 CAPECODE_APP = $(PTIIDIST)/bin/CapeCode.app
 CapeCode.app: $(CAPECODE_APP)
 $(CAPECODE_APP): 
 	if [ ! -f $@ ]; then \
-		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  make CapeCode.app); \
+		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; make CapeCode.app); \
         fi
 
 setup_mac_jar: $(PTSETUP_MAC).jar
