@@ -137,6 +137,9 @@ The Ptiny pack is required.
             <file src="../dists/ptII11.0.devel/copyright.htm" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.devel/copyright.txt" targetdir="$INSTALL_PATH"/>
 
+<!-- Mac: The makefile substitutes a directive to include the jdk directory for the next line. -->
+<!-- MacJDKDirectory -->	    
+	    
 <!--/MacOSInclude-->
             <file src="../dists/ptII11.0.devel/ptiny.exe" targetdir="$INSTALL_PATH"/>
             <file src="../dists/ptII11.0.devel/doc/img/ptiny.ico"
