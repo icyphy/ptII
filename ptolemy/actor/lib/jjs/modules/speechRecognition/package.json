@@ -1,0 +1,11 @@
+{
+  "name": "speechRecognition",
+  "version": "0.1.0",
+  "main": "speechRecognition.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Christopher Brooks"
+    , "email" : "cxh@eecs.berkeley.edu"}
+  ],
+  "description": "A simple package for speech recognition."
+}
