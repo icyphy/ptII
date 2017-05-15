@@ -69,7 +69,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 290.0]">
         </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;value&quot;: &quot;http://api.openweathermap.org&quot;}">
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://api.openweathermap.org&quot;">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
