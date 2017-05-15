@@ -348,6 +348,7 @@ $CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpeci
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorRegulatorProtectorWithSpecificationAsAspect.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/GeneratorTester.xml
 $CLASSPATH/ptolemy/demo/ElectricPowerSystem/Overview.xml
+$CLASSPATH/ptolemy/demo/EnterpriseOntology/EnterpriseOntology.xml
 $CLASSPATH/ptolemy/demo/ExecDemos/Demos/BouncingBall.xml
 $CLASSPATH/ptolemy/demo/ExecDemos/Demos/Collisions.xml
 $CLASSPATH/ptolemy/demo/ExecDemos/Demos/Controllers.xml
