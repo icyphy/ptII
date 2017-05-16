@@ -200,6 +200,11 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         }
 
         _facesDetected = faceRectangles.length;
+        _facesRectDetected = faceRectangles;
+
+        for(Rect rect : _facesRectDetected){
+          System.out.println(rect.toString());
+        }
 
         return mat2BufferedImage(converted);
 
@@ -288,6 +293,13 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         return _facesDetected;
     }
 
+    /** Return the number of faces detected.
+     *  @return The number of faces detected.
+     */
+    public Rect[] getFaceRectangles() {
+        return _facesRectDetected;
+    }
+
     /** Set the minimum face size.
      *  @param size the minimum face size, which must be positive.
      *  @exception IllegalActionException If the value of the size parameter is less than 0.
@@ -329,6 +341,9 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
     
     /** Indicator that motion has been detected by the filter operation. */
     private int _facesDetected = 0;
+
+    /** Indicator that motion has been detected by the filter operation. */
+    private Rect[] _facesRectDetected = null;
 
     /** Minimum face size to be considered in face recognition. */
     private int _minFaceSize = 0;
