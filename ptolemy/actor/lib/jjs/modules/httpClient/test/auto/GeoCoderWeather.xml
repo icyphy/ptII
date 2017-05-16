@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="21">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -30,226 +30,18 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0664605873261206">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 255.181640625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.49999999999983, 244.2280174365942}">
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/services/test/auto">
         </property>
         <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../hosts/node/nodeHostInvoke.js services/test/auto/@modelName@">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 410}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 410.0}">
         </property>
     </property>
-    <entity name="Weather" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Retrieve weather information for a given location using&#10; *  http://openweathermap.org .&#10; *  The location input is given as an object with two numeric fields,&#10; *  &quot;latitude&quot; and &quot;longitude&quot;. The default is&#10; *  `{&quot;latitude&quot;: 37.85, &quot;longitude&quot;: -122.26}`, which is&#10; *  the location of Berkeley, California.&#10; *&#10; *  This accessor requires a key for the API, which you can&#10; *  obtain for free at http://openweathermap.org/appid .&#10; *&#10; *  This accessor looks for key in $KEYSTORE/weatherKey, which&#10; *  resolves to $HOME/.ptKeystore/weatherKey.&#10; *&#10; *  This accessor does not block waiting for the response, but if any additional&#10; *  *location* input is received before a pending request has received a response&#10; *  or timed out, then the new request will be queued and sent out only after&#10; *  the pending request has completed. This strategy ensures that outputs are&#10; *  produced in the same order as the input requests.&#10; *&#10; *  @accessor services/Weather&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; *  @input location The location, an object with two fields (default is Berkeley).&#10; *  @parameter {string} temperature One of 'Fahrenheit', 'Celsius', or 'Kelvin'.&#10; *  @output response An object containing the raw response from the service.&#10; *  @output weather An object containing more readable weather data.&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals addInputHandler, addInputParameter, error, exports, extend, input, get, getParameter, output, parameter, send */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10;&#10;// The key from http://openweathermap.org/appid that should be placed in $HOME/.ptKeystore/weatherKey.&#10;var key = '';&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function () {&#10;    this.extend('net/REST');&#10;    this.input('location', {&#10;        'value': {&#10;            &quot;latitude&quot;: 37.85,&#10;            &quot;longitude&quot;: -122.26&#10;        }&#10;    });&#10;    this.output('weather');&#10;    this.parameter('temperature', {&#10;        'type': 'string',&#10;        'options': ['Fahrenheit', 'Celsius', 'Kelvin'],&#10;        'value': 'Fahrenheit'&#10;    });&#10;    // See the accessor comment for how to get the key.&#10;    var keyFile = '$KEYSTORE/weatherKey';&#10;    try {&#10;        key = getResource(keyFile, 1000).trim();&#10;    } catch (e) {&#10;        console.log('Weather.js: Could not get ' + keyFile + &quot;:  &quot; + e +&#10;                    '\nThe key is not public, so this accessor is only useful ' +&#10;                    'If you have the key.  See ' +&#10;                    'https://www.icyphy.org/accessors/library/index.html?accessor=services.Weather');&#10;        key = 'ThisIsNotAPipeNorIsItAWorkingKeySeeTheGeoCoderAccessorDocs';&#10;    }&#10;    // Change default values of the base class inputs.&#10;    // Also, hide base class inputs, except trigger.&#10;    this.input('options', {&#10;        'visibility': 'expert',&#10;        'value': '&quot;http://api.openweathermap.org&quot;'&#10;    });&#10;    this.input('command', {&#10;        'visibility': 'expert',&#10;        'value': '/data/2.5/weather'&#10;    });&#10;    this.input('arguments', {&#10;        'visibility': 'expert',&#10;        'value': '{&quot;lat&quot;:37.85, &quot;lon&quot;:-122.26}'&#10;    });&#10;    this.input('body', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.input('trigger', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.output('headers', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.output('status', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.parameter('outputCompleteResponsesOnly', {&#10;        'visibility': 'expert'&#10;    });&#10;};&#10;&#10;/** Convert the temperature in kelvins to the units specified in the&#10; *  temperature parameter. Also, round the result to a precision of&#10; *  0.01 degrees.&#10; *  @param kelvin The temperature in degrees Kelvin.&#10; *  @param units The units to convert to, one of 'Fahrenheit' or 'Celsius'.&#10; *  @return The temperature in the desired units.&#10; */&#10;var convertTemperature = function (kelvin, units) {&#10;    var result = kelvin;&#10;    if (units == 'Fahrenheit') {&#10;        result = (kelvin - 273.15) * 1.8 + 32.00;&#10;    } else if (units == 'Celsius') {&#10;        result = kelvin - 273.15;&#10;    }&#10;    return (Math.round(result * 100) / 100);&#10;};&#10;&#10;exports.initialize = function () {&#10;    // Be sure to call the superclass so that the trigger input handler gets registered.&#10;    exports.ssuper.initialize.call(this);&#10;&#10;    var self = this;&#10;&#10;    // Handle location information.&#10;    this.addInputHandler('location', function () {&#10;        var location = this.get('location');&#10;        if (location &amp;&amp;&#10;            typeof location.latitude === 'number' &amp;&amp;&#10;            typeof location.longitude === 'number') {&#10;            var reformatted = {&#10;                'lat': location.latitude,&#10;                'lon': location.longitude,&#10;                'APPID': key&#10;            };&#10;            self.send('arguments', reformatted);&#10;            self.send('trigger', true);&#10;        } else {&#10;            if (location == -null) {&#10;                error('Weather: No location information.');&#10;            } else {&#10;                error('Weather: Malformed location: ' + location +&#10;                    '\nExpecting {&quot;latitude&quot;:number, &quot;longitude&quot;:number}');&#10;            }&#10;            self.send('weather', null);&#10;        }&#10;    });&#10;};&#10;&#10;/** Filter the response, extracting the weather information and&#10; *  outputting it on the weather output. The full response is produced&#10; *  on the 'response' output.&#10; */&#10;exports.filterResponse = function (response) {&#10;    if (response) {&#10;        // Note that for some hosts, the response is a string, needing to parsed,&#10;        // and for some, its already been parsed.&#10;        var parsed = response;&#10;        if (typeof parsed === 'string') {&#10;            try {&#10;                parsed = JSON.parse(response);&#10;            } catch (err) {&#10;                error('Weather: Unable to parse response: ' + err.message +&#10;                    '\nResponse was: ' + response);&#10;                // So that downstream actors don't just a previous location, send null.&#10;                this.send('weather', null);&#10;            }&#10;        }&#10;        var weather = {};&#10;        // Look for a description field.&#10;        if (parsed.weather &amp;&amp;&#10;            Array.isArray(parsed.weather) &amp;&amp;&#10;            parsed.weather[0] &amp;&amp;&#10;            parsed.weather[0].description) {&#10;            weather.description = parsed.weather[0].description;&#10;        }&#10;        if (parsed.main) {&#10;            if (parsed.main.temp) {&#10;                weather.temperature = convertTemperature(&#10;                    parsed.main.temp,&#10;                    this.getParameter('temperature'));&#10;            }&#10;            if (parsed.main.pressure) {&#10;                weather['pressure (hPa)'] = parsed.main.pressure;&#10;            }&#10;            if (parsed.main.humidity) {&#10;                weather['humidity (percent)'] = parsed.main.humidity;&#10;            }&#10;            if (parsed.main.temp_min) {&#10;                weather['minimum temperature'] = convertTemperature(&#10;                    parsed.main.temp_min,&#10;                    this.getParameter('temperature'));&#10;            }&#10;            if (parsed.main.temp_max) {&#10;                weather['maximum temperature'] = convertTemperature(&#10;                    parsed.main.temp_max,&#10;                    this.getParameter('temperature'));&#10;            }&#10;            if (parsed.main.wind) {&#10;                if (parsed.main.wind.speed) {&#10;                    weather['wind speed (meters/second)'] = parsed.main.wind.speed;&#10;                }&#10;                if (parsed.main.wind.deg) {&#10;                    var deg = parsed.main.wind.deg;&#10;                    var directions = [&#10;                        &quot;North&quot;,&#10;                        &quot;North Northeast&quot;,&#10;                        &quot;Northeast&quot;,&#10;                        &quot;East Northeast&quot;,&#10;                        &quot;East&quot;,&#10;                        &quot;East Southeast&quot;,&#10;                        &quot;Southeast&quot;,&#10;                        &quot;South Southeast&quot;,&#10;                        &quot;South&quot;,&#10;                        &quot;South Southwest&quot;,&#10;                        &quot;Southwest&quot;,&#10;                        &quot;West Southwest&quot;,&#10;                        &quot;West&quot;,&#10;                        &quot;West Northwest&quot;,&#10;                        &quot;Northwest&quot;,&#10;                        &quot;North Northwest&quot;&#10;                    ];&#10;                    var index = Math.floor(((deg + 11.25) % 360) / 22.5);&#10;                    weather['wind direction'] = directions[index];&#10;                }&#10;            }&#10;            if (parsed.name) {&#10;                weather['place name'] = parsed.name;&#10;            }&#10;        }&#10;        this.send('weather', weather);&#10;    }&#10;    return response;&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/services/Weather.js">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="outputCompleteResponsesOnly" class="ptolemy.data.expr.Parameter">
-        </property>
-        <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="{&quot;lat&quot;:37.85, &quot;lon&quot;:-122.26}">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="location" class="ptolemy.actor.parameters.PortParameter" value="{latitude = 37.85, longitude = -122.26}">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 290.0]">
-        </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;http://api.openweathermap.org&quot;">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="/data/2.5/weather">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="temperature" class="ptolemy.data.expr.Parameter" value="Fahrenheit">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Retrieve weather information for a given location using&#10; http://openweathermap.org .&#10; The location input is given as an object with two numeric fields,&#10; &amp;quot;latitude&amp;quot; and &amp;quot;longitude&amp;quot;. The default is&#10; &lt;code&gt;{&amp;quot;latitude&amp;quot;: 37.85, &amp;quot;longitude&amp;quot;: -122.26}&lt;/code&gt;, which is&#10; the location of Berkeley, California.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires a &amp;quot;key&amp;quot; for the API, which you can&#10; obtain for free at http://openweathermap.org/appid .&lt;/p&gt;&#10;&lt;p&gt; This accessor does not block waiting for the response, but if any additional&#10; &lt;em&gt;location&lt;/em&gt; input is received before a pending request has received a response&#10; or timed out, then the new request will be queued and sent out only after&#10; the pending request has completed. This strategy ensures that outputs are&#10; produced in the same order as the input requests.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
-            </property>
-            <property name="temperature (parameter)" class="ptolemy.kernel.util.StringAttribute" value="One of 'Fahrenheit', 'Celsius', or 'Kelvin'.">
-            </property>
-            <property name="response (port)" class="ptolemy.kernel.util.StringAttribute" value="An object containing the raw response from the service.">
-            </property>
-            <property name="location (port)" class="ptolemy.kernel.util.StringAttribute" value="The location, an object with two fields (default is Berkeley).">
-            </property>
-            <property name="weather (port)" class="ptolemy.kernel.util.StringAttribute" value="An object containing more readable weather data.">
-            </property>
-            <property name="key (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The key for the openweathermap.org service.">
-            </property>
-        </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <property name="_expertMode" class="ptolemy.kernel.util.SingletonAttribute">
-        </property>
-        <port name="arguments" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </port>
-        <port name="location" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </port>
-        <port name="command" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="body" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="response" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="status" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="headers" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="weather" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
-    <entity name="GeoCoder" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Retrieve a location given an address.&#10; *  The location is given as an object with two numeric fields,&#10; *  &quot;latitude&quot; and &quot;longitude&quot;. For example,&#10; *  `{&quot;latitude&quot;: 37.85, &quot;longitude&quot;: -122.26}` is&#10; *  the location of Berkeley, California.&#10; *&#10; *  This accessor requires a &quot;key&quot; for the Google Geocoding API, which you can&#10; *  obtain for free at https://developers.google.com/maps/documentation/geocoding/intro .&#10; *&#10; *  This accessor looks for key in $KEYSTORE/geoCoderKey, which&#10; *  resolves to $HOME/.ptKeystore/geoCoderKey.&#10; *&#10; *  This accessor does not block waiting for the response, but if any additional&#10; *  *address* input is received before a pending request has received a response&#10; *  or timed out, then the new request will be queued and sent out only after&#10; *  the pending request has completed. This strategy ensures that outputs are&#10; *  produced in the same order as the input requests.&#10; *&#10; *  @accessor services/GeoCoder&#10; *  @input {string} address The address, for example &quot;Berkeley, CA&quot;.&#10; *  @output location The location, as an object with a 'latitude' and 'longitude'&#10; *   property.&#10; *  @output response An object containing the location information.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals addInputHandler, get, getParameter, error, exports, extend, get, input, output, parameter, require, send */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10;&#10;// The key from https://developers.google.com/maps/documentation/geocoding/intro&#10;var key = '';&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function () {&#10;    this.extend('net/REST');&#10;    this.input('address');&#10;    this.output('location');&#10;&#10;    // See the accessor comment for how to get the key.&#10;    var keyFile = '$KEYSTORE/geoCoderKey';&#10;    try {&#10;        key = getResource(keyFile, 1000).trim();&#10;    } catch (e) {&#10;        console.log('GeoCoder.js: Could not get ' + keyFile + &quot;:  &quot; + e +&#10;                    '\nThe key is not public, so this accessor is only useful ' +&#10;                    'If you have the key.  See ' +&#10;                    'https://www.icyphy.org/accessors/library/index.html?accessor=services.GeoCoder');&#10;        key = 'ThisIsNotAPipeNorIsItAWorkingKeySeeTheGeoCoderAccessorDocs';&#10;    }&#10;    // Change default values of the base class inputs.&#10;    // Also, hide base class inputs, except trigger.&#10;    // Note the need for quotation marks on the options parameter.&#10;    this.input('options', {&#10;        'visibility': 'expert',&#10;        'value': '&quot;https://maps.googleapis.com&quot;'&#10;    });&#10;    this.input('command', {&#10;        'visibility': 'expert',&#10;        'value': 'maps/api/geocode/json'&#10;    });&#10;    // NOTE: The value can be given as a JSON string or a JavaScript object.&#10;    this.input('arguments', {&#10;        'visibility': 'expert',&#10;        'value': {&#10;            &quot;address&quot;: &quot;Berkeley, CA&quot;,&#10;            &quot;key&quot;: &quot;Enter Key Here&quot;&#10;        }&#10;    });&#10;    this.input('body', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.input('trigger', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.output('headers', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.output('status', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.parameter('outputCompleteResponseOnly', {&#10;        'visibility': 'expert'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    // Be sure to call the superclass so that the trigger input handler gets registered.&#10;    exports.ssuper.initialize.call(this);&#10;&#10;    var self = this;&#10;&#10;    // Handle location information.&#10;    this.addInputHandler('address', function () {&#10;        var address = this.get('address');&#10;        if (address) {&#10;            // arguments is a reserved word, so we use args.&#10;            var args = {&#10;                'address': address,&#10;                'key': self.key&#10;            };&#10;            self.send('arguments', args);&#10;            self.send('trigger', true);&#10;        } else {&#10;            throw 'GeoCoder: No address.';&#10;        }&#10;    });&#10;};&#10;&#10;/** Filter the response, extracting the latitude and longitude and&#10; *  formatting.&#10; */&#10;exports.filterResponse = function (response) {&#10;    if (response) {&#10;        // Note that for some hosts, the response is a string, needing to parsed,&#10;        // and for some, its already been parsed.&#10;        var parsed = response;&#10;        if (typeof parsed === 'string') {&#10;            try {&#10;                parsed = JSON.parse(response);&#10;            } catch (err) {&#10;                error('GeoCoder: Unable to parse response: ' + err.message +&#10;                    '\nResponse was: ' + response);&#10;                // So that downstream actors don't just a previous location, send null.&#10;                this.send('location', null);&#10;            }&#10;        }&#10;        // NOTE: All of the following should be replaced with a generic&#10;        // schema transformation utility.&#10;        // FIXME: Just taking the first result if there are multiple matches.&#10;        if (parsed.results &amp;&amp;&#10;            parsed.results[0] &amp;&amp;&#10;            parsed.results[0].geometry &amp;&amp;&#10;            parsed.results[0].geometry.location &amp;&amp;&#10;            parsed.results[0].geometry.location.lat &amp;&amp;&#10;            parsed.results[0].geometry.location.lng) {&#10;            this.send('location', {&#10;                &quot;latitude&quot;: parsed.results[0].geometry.location.lat,&#10;                &quot;longitude&quot;: parsed.results[0].geometry.location.lng&#10;            });&#10;        } else {&#10;            error('GeoCoder: No matching location.');&#10;            // So that downstream actors don't just a previous location, send null.&#10;            this.send('location', null);&#10;        }&#10;    }&#10;    return response;&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/services/GeoCoder.js">
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="outputCompleteResponsesOnly" class="ptolemy.data.expr.Parameter">
-        </property>
-        <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="{&quot;address&quot;:&quot;Berkeley, CA&quot;,&quot;key&quot;:&quot;Enter Key Here&quot;}">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 250.0]">
-        </property>
-        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="&quot;https://maps.googleapis.com&quot;">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="maps/api/geocode/json">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Retrieve a location given an address.&#10; The location is given as an object with two numeric fields,&#10; &amp;quot;latitude&amp;quot; and &amp;quot;longitude&amp;quot;. For example,&#10; &lt;code&gt;{&amp;quot;latitude&amp;quot;: 37.85, &amp;quot;longitude&amp;quot;: -122.26}&lt;/code&gt; is&#10; the location of Berkeley, California.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires a &amp;quot;key&amp;quot; for the Google Geocoding API, which you can&#10; obtain for free at https://developers.google.com/maps/documentation/geocoding/intro .&lt;/p&gt;&#10;&lt;p&gt; This accessor does not block waiting for the response, but if any additional&#10; &lt;em&gt;address&lt;/em&gt; input is received before a pending request has received a response&#10; or timed out, then the new request will be queued and sent out only after&#10; the pending request has completed. This strategy ensures that outputs are&#10; produced in the same order as the input requests.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
-            </property>
-            <property name="key (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The key for the Google geocoding API.">
-            </property>
-            <property name="response (port)" class="ptolemy.kernel.util.StringAttribute" value="An object containing the location information.">
-            </property>
-            <property name="address (port)" class="ptolemy.kernel.util.StringAttribute" value="The address, for example &quot;Berkeley, CA&quot;.">
-            </property>
-            <property name="location (port)" class="ptolemy.kernel.util.StringAttribute" value="The location, as an object with a 'latitude' and 'longitude'&#10;  property.">
-            </property>
-        </property>
-        <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000">
-        </property>
-        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
-            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
-            </property>
-        </property>
-        <port name="arguments" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </port>
-        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </port>
-        <port name="command" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="body" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="response" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="status" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="headers" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="address" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="location" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-    </entity>
     <entity name="JavaScriptConst" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Output a const&#10; *&#10; *  @accessor test/Const&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @param step The amount by which the output is incremented. The&#10; *  default is 1.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;exports.setup = function() {&#10;    this.input('trigger');&#10;    this.output('output');&#10;};&#10;&#10;exports.fire = function() {&#10;	var value = &quot;Berkeley, CA&quot;;&#10;    this.send('output', value);&#10;};">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
@@ -428,22 +220,296 @@
             <property name="input"/>
         </port>
     </entity>
-    <relation name="relation" class="ptolemy.actor.TypedIORelation">
-    </relation>
+    <entity name="TestDisplay" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display data on the console.&#10;//&#10;// Copyright (c) 2016-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data on the console.&#10; *&#10; *  @accessor test/TestDisplay&#10; *  @param input The output&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output');&#10;};&#10;&#10;exports.initialize = function () {&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = this.get('input');&#10;        console.log(this.accessorName + ': ' + inputValue);&#10;        this.send('output', inputValue);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data on the console.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{480, 220}">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="TestDisplay2" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display data on the console.&#10;//&#10;// Copyright (c) 2016-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display data on the console.&#10; *&#10; *  @accessor test/TestDisplay&#10; *  @param input The output&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output');&#10;};&#10;&#10;exports.initialize = function () {&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = this.get('input');&#10;        console.log(this.accessorName + ': ' + inputValue);&#10;        this.send('output', inputValue);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display data on the console.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[595.0, 250.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="GeoCoder" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Retrieve a location given an address.&#10; *  The location is given as an object with two numeric fields,&#10; *  &quot;latitude&quot; and &quot;longitude&quot;. For example,&#10; *  `{&quot;latitude&quot;: 37.85, &quot;longitude&quot;: -122.26}` is&#10; *  the location of Berkeley, California.&#10; *&#10; *  This accessor requires a &quot;key&quot; for the Google Geocoding API, which you can&#10; *  obtain for free at https://developers.google.com/maps/documentation/geocoding/intro .&#10; *&#10; *  This accessor looks for key in $KEYSTORE/geoCoderKey, which&#10; *  resolves to $HOME/.ptKeystore/geoCoderKey.&#10; *&#10; *  This accessor does not block waiting for the response, but if any additional&#10; *  *address* input is received before a pending request has received a response&#10; *  or timed out, then the new request will be queued and sent out only after&#10; *  the pending request has completed. This strategy ensures that outputs are&#10; *  produced in the same order as the input requests.&#10; *&#10; *  @accessor services/GeoCoder&#10; *  @input {string} address The address, for example &quot;Berkeley, CA&quot;.&#10; *  @output location The location, as an object with a 'latitude' and 'longitude'&#10; *   property.&#10; *  @output response An object containing the location information.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals addInputHandler, get, getParameter, error, exports, extend, get, input, output, parameter, require, send */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10;&#10;// The key from https://developers.google.com/maps/documentation/geocoding/intro&#10;var key = '';&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function () {&#10;    this.extend('net/REST');&#10;    this.input('address');&#10;    this.output('location');&#10;&#10;    // See the accessor comment for how to get the key.&#10;    var keyFile = '$KEYSTORE/geoCoderKey';&#10;    try {&#10;        key = getResource(keyFile, 1000).trim();&#10;    } catch (e) {&#10;        console.log('GeoCoder.js: Could not get ' + keyFile + &quot;:  &quot; + e +&#10;                    '\nThe key is not public, so this accessor is only useful ' +&#10;                    'If you have the key.  See ' +&#10;                    'https://www.icyphy.org/accessors/library/index.html?accessor=services.GeoCoder');&#10;        key = 'ThisIsNotAPipeNorIsItAWorkingKeySeeTheGeoCoderAccessorDocs';&#10;    }&#10;    // Change default values of the base class inputs.&#10;    // Also, hide base class inputs, except trigger.&#10;    // Note the need for quotation marks on the options parameter.&#10;    this.input('options', {&#10;        'visibility': 'expert',&#10;        'value': '{&quot;url&quot;: &quot;https://maps.googleapis.com&quot;}'&#10;    });&#10;    this.input('command', {&#10;        'visibility': 'expert',&#10;        'value': 'maps/api/geocode/json'&#10;    });&#10;    // NOTE: The value can be given as a JSON string or a JavaScript object.&#10;    this.input('arguments', {&#10;        'visibility': 'expert',&#10;        'value': {&#10;            &quot;address&quot;: &quot;Berkeley, CA&quot;,&#10;            &quot;key&quot;: &quot;Enter Key Here&quot;&#10;        }&#10;    });&#10;    this.input('body', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.input('trigger', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.output('headers', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.output('status', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.parameter('outputCompleteResponseOnly', {&#10;        'visibility': 'expert'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    // Be sure to call the superclass so that the trigger input handler gets registered.&#10;    exports.ssuper.initialize.call(this);&#10;&#10;    var self = this;&#10;&#10;    // Handle location information.&#10;    this.addInputHandler('address', function () {&#10;        var address = this.get('address');&#10;        if (address) {&#10;            // arguments is a reserved word, so we use args.&#10;            console.log('GeoCoder: address: ' + address + ' key: ' + key);&#10;            var args = {&#10;                'address': address,&#10;                'key': key&#10;            };&#10;            self.send('arguments', args);&#10;            self.send('trigger', true);&#10;        } else {&#10;            throw 'GeoCoder: No address.';&#10;        }&#10;    });&#10;};&#10;&#10;/** Filter the response, extracting the latitude and longitude and&#10; *  formatting.&#10; */&#10;exports.filterResponse = function (response) {&#10;    if (response) {&#10;        // Note that for some hosts, the response is a string, needing to parsed,&#10;        // and for some, its already been parsed.&#10;        var parsed = response;&#10;        if (typeof parsed === 'string') {&#10;            try {&#10;                parsed = JSON.parse(response);&#10;            } catch (err) {&#10;                error('GeoCoder: Unable to parse response: ' + err.message +&#10;                    '\nResponse was: ' + response);&#10;                // So that downstream actors don't just a previous location, send null.&#10;                this.send('location', null);&#10;            }&#10;        }&#10;        // NOTE: All of the following should be replaced with a generic&#10;        // schema transformation utility.&#10;        // FIXME: Just taking the first result if there are multiple matches.&#10;        if (parsed.results &amp;&amp;&#10;            parsed.results[0] &amp;&amp;&#10;            parsed.results[0].geometry &amp;&amp;&#10;            parsed.results[0].geometry.location &amp;&amp;&#10;            parsed.results[0].geometry.location.lat &amp;&amp;&#10;            parsed.results[0].geometry.location.lng) {&#10;            this.send('location', {&#10;                &quot;latitude&quot;: parsed.results[0].geometry.location.lat,&#10;                &quot;longitude&quot;: parsed.results[0].geometry.location.lng&#10;            });&#10;        } else {&#10;            error('GeoCoder: No matching location.');&#10;            // So that downstream actors don't just a previous location, send null.&#10;            this.send('location', null);&#10;        }&#10;    }&#10;    return response;&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/services/GeoCoder.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Retrieve a location given an address.&#10; The location is given as an object with two numeric fields,&#10; &amp;quot;latitude&amp;quot; and &amp;quot;longitude&amp;quot;. For example,&#10; &lt;code&gt;{&amp;quot;latitude&amp;quot;: 37.85, &amp;quot;longitude&amp;quot;: -122.26}&lt;/code&gt; is&#10; the location of Berkeley, California.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires a &amp;quot;key&amp;quot; for the Google Geocoding API, which you can&#10; obtain for free at https://developers.google.com/maps/documentation/geocoding/intro .&lt;/p&gt;&#10;&lt;p&gt; This accessor does not block waiting for the response, but if any additional&#10; &lt;em&gt;address&lt;/em&gt; input is received before a pending request has received a response&#10; or timed out, then the new request will be queued and sent out only after&#10; the pending request has completed. This strategy ensures that outputs are&#10; produced in the same order as the input requests.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="address (port)" class="ptolemy.kernel.util.StringAttribute" value="The address, for example &quot;Berkeley, CA&quot;.">
+            </property>
+            <property name="location (port)" class="ptolemy.kernel.util.StringAttribute" value="The location, as an object with a 'latitude' and 'longitude'&#10;  property.">
+            </property>
+            <property name="response (port)" class="ptolemy.kernel.util.StringAttribute" value="An object containing the location information.">
+            </property>
+            <property name="key (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The key for the Google geocoding API.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;url&quot;: &quot;https://maps.googleapis.com&quot;}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="maps/api/geocode/json">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="{&quot;address&quot;:&quot;Berkeley, CA&quot;,&quot;key&quot;:&quot;Enter Key Here&quot;}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{270, 240}">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000">
+        </property>
+        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="command" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="arguments" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="body" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="status" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="headers" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="address" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="location" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Weather" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Retrieve weather information for a given location using&#10; *  http://openweathermap.org .&#10; *  The location input is given as an object with two numeric fields,&#10; *  &quot;latitude&quot; and &quot;longitude&quot;. The default is&#10; *  `{&quot;latitude&quot;: 37.85, &quot;longitude&quot;: -122.26}`, which is&#10; *  the location of Berkeley, California.&#10; *&#10; *  This accessor requires a key for the API, which you can&#10; *  obtain for free at http://openweathermap.org/appid .&#10; *&#10; *  This accessor looks for key in $KEYSTORE/weatherKey, which&#10; *  resolves to $HOME/.ptKeystore/weatherKey.&#10; *&#10; *  This accessor does not block waiting for the response, but if any additional&#10; *  *location* input is received before a pending request has received a response&#10; *  or timed out, then the new request will be queued and sent out only after&#10; *  the pending request has completed. This strategy ensures that outputs are&#10; *  produced in the same order as the input requests.&#10; *&#10; *  @accessor services/Weather&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; *  @input location The location, an object with two fields (default is Berkeley).&#10; *  @parameter {string} temperature One of 'Fahrenheit', 'Celsius', or 'Kelvin'.&#10; *  @output response An object containing the raw response from the service.&#10; *  @output weather An object containing more readable weather data.&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should&#10;// be no space between the / and the * and global. See&#10;// https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*globals addInputHandler, addInputParameter, error, exports, extend, input, get, getParameter, output, parameter, send */&#10;/*jshint globalstrict: true*/&#10;'use strict';&#10;&#10;// The key from http://openweathermap.org/appid that should be placed in $HOME/.ptKeystore/weatherKey.&#10;var key = '';&#10;&#10;/** Set up the accessor by defining the inputs and outputs.&#10; */&#10;exports.setup = function () {&#10;    this.extend('net/REST');&#10;    this.input('location', {&#10;        'value': {&#10;            &quot;latitude&quot;: 37.85,&#10;            &quot;longitude&quot;: -122.26&#10;        }&#10;    });&#10;    this.output('weather');&#10;    this.parameter('temperature', {&#10;        'type': 'string',&#10;        'options': ['Fahrenheit', 'Celsius', 'Kelvin'],&#10;        'value': 'Fahrenheit'&#10;    });&#10;    // See the accessor comment for how to get the key.&#10;    var keyFile = '$KEYSTORE/weatherKey';&#10;    try {&#10;        key = getResource(keyFile, 1000).trim();&#10;    } catch (e) {&#10;        console.log('Weather.js: Could not get ' + keyFile + &quot;:  &quot; + e +&#10;                    '\nThe key is not public, so this accessor is only useful ' +&#10;                    'If you have the key.  See ' +&#10;                    'https://www.icyphy.org/accessors/library/index.html?accessor=services.Weather');&#10;        key = 'ThisIsNotAPipeNorIsItAWorkingKeySeeTheGeoCoderAccessorDocs';&#10;    }&#10;    // Change default values of the base class inputs.&#10;    // Also, hide base class inputs, except trigger.&#10;    this.input('options', {&#10;        'visibility': 'expert',&#10;        'value': '{ &quot;url&quot;: &quot;http://api.openweathermap.org&quot;}'&#10;    });&#10;    this.input('command', {&#10;        'visibility': 'expert',&#10;        'value': '/data/2.5/weather'&#10;    });&#10;    this.input('arguments', {&#10;        'visibility': 'expert',&#10;        'key': 'Enter Key Here',&#10;        'value': '{&quot;lat&quot;:37.85, &quot;lon&quot;:-122.26, &quot;key&quot;:&quot;Set ~/.ptkeystore/weatherKey&quot;}'&#10;    });&#10;    this.input('body', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.input('trigger', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.output('headers', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.output('status', {&#10;        'visibility': 'expert'&#10;    });&#10;    this.parameter('outputCompleteResponseOnly', {&#10;        'visibility': 'expert'&#10;    });&#10;};&#10;&#10;/** Convert the temperature in kelvins to the units specified in the&#10; *  temperature parameter. Also, round the result to a precision of&#10; *  0.01 degrees.&#10; *  @param kelvin The temperature in degrees Kelvin.&#10; *  @param units The units to convert to, one of 'Fahrenheit' or 'Celsius'.&#10; *  @return The temperature in the desired units.&#10; */&#10;var convertTemperature = function (kelvin, units) {&#10;    var result = kelvin;&#10;    if (units == 'Fahrenheit') {&#10;        result = (kelvin - 273.15) * 1.8 + 32.00;&#10;    } else if (units == 'Celsius') {&#10;        result = kelvin - 273.15;&#10;    }&#10;    return (Math.round(result * 100) / 100);&#10;};&#10;&#10;exports.initialize = function () {&#10;    // Be sure to call the superclass so that the trigger input handler gets registered.&#10;    exports.ssuper.initialize.call(this);&#10;&#10;    var self = this;&#10;&#10;    // Handle location information.&#10;    this.addInputHandler('location', function () {&#10;        var location = this.get('location');&#10;        if (location &amp;&amp;&#10;            typeof location.latitude === 'number' &amp;&amp;&#10;            typeof location.longitude === 'number') {&#10;            console.log('Weather: lat: ' + location.latitude + ', lon: ' + location.longitude + ', key: ' + key);&#10;            var reformatted = {&#10;                'lat': location.latitude,&#10;                'lon': location.longitude,&#10;                'APPID': key&#10;            };&#10;            self.send('arguments', reformatted);&#10;            self.send('trigger', true);&#10;        } else {&#10;            if (location == -null) {&#10;                error('Weather: No location information.');&#10;            } else {&#10;                error('Weather: Malformed location: ' + location +&#10;                    '\nExpecting {&quot;latitude&quot;:number, &quot;longitude&quot;:number}');&#10;            }&#10;            self.send('weather', null);&#10;        }&#10;    });&#10;};&#10;&#10;/** Filter the response, extracting the weather information and&#10; *  outputting it on the weather output. The full response is produced&#10; *  on the 'response' output.&#10; */&#10;exports.filterResponse = function (response) {&#10;    console.log('Weather.js filterResponse(' + response);&#10;    console.log(response);&#10;    if (response) {&#10;        // Note that for some hosts, the response is a string, needing to parsed,&#10;        // and for some, its already been parsed.&#10;        var parsed = response;&#10;        if (typeof parsed === 'string') {&#10;            try {&#10;                parsed = JSON.parse(response);&#10;            } catch (err) {&#10;                error('Weather: Unable to parse response: ' + err.message +&#10;                    '\nResponse was: ' + response);&#10;                // So that downstream actors don't just a previous location, send null.&#10;                this.send('weather', null);&#10;            }&#10;        }&#10;        var weather = {};&#10;        // Look for a description field.&#10;        if (parsed.weather &amp;&amp;&#10;            Array.isArray(parsed.weather) &amp;&amp;&#10;            parsed.weather[0] &amp;&amp;&#10;            parsed.weather[0].description) {&#10;            weather.description = parsed.weather[0].description;&#10;        }&#10;        if (parsed.main) {&#10;            if (parsed.main.temp) {&#10;                weather.temperature = convertTemperature(&#10;                    parsed.main.temp,&#10;                    this.getParameter('temperature'));&#10;            }&#10;            if (parsed.main.pressure) {&#10;                weather['pressure (hPa)'] = parsed.main.pressure;&#10;            }&#10;            if (parsed.main.humidity) {&#10;                weather['humidity (percent)'] = parsed.main.humidity;&#10;            }&#10;            if (parsed.main.temp_min) {&#10;                weather['minimum temperature'] = convertTemperature(&#10;                    parsed.main.temp_min,&#10;                    this.getParameter('temperature'));&#10;            }&#10;            if (parsed.main.temp_max) {&#10;                weather['maximum temperature'] = convertTemperature(&#10;                    parsed.main.temp_max,&#10;                    this.getParameter('temperature'));&#10;            }&#10;            if (parsed.main.wind) {&#10;                if (parsed.main.wind.speed) {&#10;                    weather['wind speed (meters/second)'] = parsed.main.wind.speed;&#10;                }&#10;                if (parsed.main.wind.deg) {&#10;                    var deg = parsed.main.wind.deg;&#10;                    var directions = [&#10;                        &quot;North&quot;,&#10;                        &quot;North Northeast&quot;,&#10;                        &quot;Northeast&quot;,&#10;                        &quot;East Northeast&quot;,&#10;                        &quot;East&quot;,&#10;                        &quot;East Southeast&quot;,&#10;                        &quot;Southeast&quot;,&#10;                        &quot;South Southeast&quot;,&#10;                        &quot;South&quot;,&#10;                        &quot;South Southwest&quot;,&#10;                        &quot;Southwest&quot;,&#10;                        &quot;West Southwest&quot;,&#10;                        &quot;West&quot;,&#10;                        &quot;West Northwest&quot;,&#10;                        &quot;Northwest&quot;,&#10;                        &quot;North Northwest&quot;&#10;                    ];&#10;                    var index = Math.floor(((deg + 11.25) % 360) / 22.5);&#10;                    weather['wind direction'] = directions[index];&#10;                }&#10;            }&#10;            if (parsed.name) {&#10;                weather['place name'] = parsed.name;&#10;            }&#10;        }&#10;        this.send('weather', weather);&#10;    }&#10;    return response;&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/services/Weather.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Retrieve weather information for a given location using&#10; http://openweathermap.org .&#10; The location input is given as an object with two numeric fields,&#10; &amp;quot;latitude&amp;quot; and &amp;quot;longitude&amp;quot;. The default is&#10; &lt;code&gt;{&amp;quot;latitude&amp;quot;: 37.85, &amp;quot;longitude&amp;quot;: -122.26}&lt;/code&gt;, which is&#10; the location of Berkeley, California.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires a &amp;quot;key&amp;quot; for the API, which you can&#10; obtain for free at http://openweathermap.org/appid .&lt;/p&gt;&#10;&lt;p&gt; This accessor does not block waiting for the response, but if any additional&#10; &lt;em&gt;location&lt;/em&gt; input is received before a pending request has received a response&#10; or timed out, then the new request will be queued and sent out only after&#10; the pending request has completed. This strategy ensures that outputs are&#10; produced in the same order as the input requests.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="location (port)" class="ptolemy.kernel.util.StringAttribute" value="The location, an object with two fields (default is Berkeley).">
+            </property>
+            <property name="response (port)" class="ptolemy.kernel.util.StringAttribute" value="An object containing the raw response from the service.">
+            </property>
+            <property name="weather (port)" class="ptolemy.kernel.util.StringAttribute" value="An object containing more readable weather data.">
+            </property>
+            <property name="temperature (parameter)" class="ptolemy.kernel.util.StringAttribute" value="One of 'Fahrenheit', 'Celsius', or 'Kelvin'.">
+            </property>
+            <property name="key (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The key for the openweathermap.org service.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{ &quot;url&quot;: &quot;http://api.openweathermap.org&quot;}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="command" class="ptolemy.actor.parameters.PortParameter" value="/data/2.5/weather">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="arguments" class="ptolemy.actor.parameters.PortParameter" value="{&quot;lat&quot;:37.85, &quot;lon&quot;:-122.26, &quot;key&quot;:&quot;Set ~/.ptkeystore/weatherKey&quot;}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="temperature" class="ptolemy.data.expr.Parameter" value="Fahrenheit">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="location" class="ptolemy.actor.parameters.PortParameter" value="{latitude = 37.85, longitude = -122.26}">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{360, 300}">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <property name="timeout" class="ptolemy.data.expr.Parameter" value="10000">
+        </property>
+        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="command" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="arguments" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="body" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="response" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="status" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="headers" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="location" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+        </port>
+        <port name="weather" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="Weather.location" relation="relation"/>
-    <link port="Weather.weather" relation="relation4"/>
-    <link port="GeoCoder.address" relation="relation3"/>
-    <link port="GeoCoder.location" relation="relation"/>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{420.0, 310.0}">
+        </vertex>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="JavaScriptConst.trigger" relation="relation2"/>
     <link port="JavaScriptConst.output" relation="relation3"/>
     <link port="TestSpontaneousOnce.output" relation="relation2"/>
@@ -452,4 +518,11 @@
     <link port="JavaScriptGetTemperature.input" relation="relation4"/>
     <link port="JavaScriptGetTemperature.temperature" relation="relation5"/>
     <link port="Stop.stop" relation="relation6"/>
+    <link port="TestDisplay.input" relation="relation7"/>
+    <link port="TestDisplay2.input" relation="relation4"/>
+    <link port="GeoCoder.response" relation="relation7"/>
+    <link port="GeoCoder.address" relation="relation3"/>
+    <link port="GeoCoder.location" relation="relation"/>
+    <link port="Weather.location" relation="relation"/>
+    <link port="Weather.weather" relation="relation4"/>
 </entity>
