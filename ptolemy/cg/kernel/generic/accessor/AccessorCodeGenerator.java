@@ -64,7 +64,7 @@ import ptolemy.util.StringUtilities;
  *
  *  <p>To generate an Accessor version of a model, use:</p>
  *  <pre>
- *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $PTII/ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml; cat $PTII/org/terraswarm/accessor/accessors/web/node_modules/@accessors-hosts/node/TestComposite.js
+ *  java -classpath $PTII ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator -language accessor $PTII/ptolemy/cg/kernel/generic/accessor/demo/TestComposite/TestComposite.xml; cat $PTII/org/terraswarm/accessor/accessors/web/cg/TestComposite.js
  *  </pre>
  *  which is shorthand for:
  *  <pre>
@@ -104,7 +104,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
         // @codeDirectory@ and @modelName@ are set in
         // RunnableCodeGenerator._executeCommands().
         // Run the accessors for 2000 ms.
-        runCommand.setExpression("node ../node_modules/@accessors-hosts/node/nodeHostInvoke.js cg/@modelName@");
+        runCommand.setExpression("node ../hosts/node/nodeHostInvoke.js cg/@modelName@");
 
         modules = new StringParameter(this, "modules");
         modules.setExpression("");
