@@ -117,8 +117,8 @@
         <panel classname="InstallPanel"/>
         <panel classname="ShortcutPanel" condition="showShortCutPanel"/>
  	<panel classname="UserInputPanel" condition="capeCodePackSelected" id="startApplicationPanelCapeCode"/>
- 	<panel classname="UserInputPanel" condition="fullPackSelected"     id="startApplicationPanelFull"/>
- 	<panel classname="UserInputPanel" condition="ptinyPackSelected"    id="startApplicationPanelPtiny"/>
+ 	<panel classname="UserInputPanel" condition="fullPackSelected+!capeCodePackSelected" id="startApplicationPanelFull"/>
+ 	<panel classname="UserInputPanel" condition="ptinyPackSelected+!capeCodePackSelected+!fullPackSelected" id="startApplicationPanelPtiny"/>
         <panel classname="ProcessPanel" condition="startCapeCode|startPtiny|startVergil"/>
         <!-- panel classname="SimpleFinishPanel"/ -->
         <panel classname="FinishPanel"/>
