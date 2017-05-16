@@ -3,7 +3,7 @@
 # Author:  Christopher Hylands
 # Version: $Id$
 #
-# Copyright (c) 1998-2016 The Regents of the University of California.
+# Copyright (c) 1998-2017 The Regents of the University of California.
 # 	All Rights Reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -1851,9 +1851,11 @@ EOF6
 	       fi
            else
 	       # Check for a tar file that contains the Mac OS X JVM and if it exists, untar it
-	       if [ -f ${PTII}/adm/gen-11.0/MacJVM.tar ]; then
+	       MacJVMTar="${PTII}/adm/gen-11.0/MacJVM.tar"
+	       if [ -f "$MacJVMTar" ]; then
 		   #(cd $MACAPP_APP/Contents/; tar -xf ${PTII}/adm/gen-10.0/MacJVM.tar)
-		   (cd $ptII/; tar -xf ${PTII}/adm/gen-11.0/MacJVM.tar)
+		   echo "Untaring $MacJVMTar in $PTII/"
+		   (cd $PTII/; tar -xf "$MacJVMTar")
 	       fi	   
 	   fi # Darwin
            fi # JAVA16
