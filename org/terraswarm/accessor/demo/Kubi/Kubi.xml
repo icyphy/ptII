@@ -18,9 +18,9 @@
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1046, 664]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.5120000000000023">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6400000000000035">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{523.0000000000031, 331.9999999999991}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{118.69173533413414, 290.8451996222619}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.6,0.6,0.6,1.0}">
@@ -260,24 +260,198 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-295.0, 310.0]">
         </property>
     </entity>
+    <entity name="FaceDetector" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** A face detector accessor.&#10; *  This accessor detects faces in an input stream.&#10; *&#10; *  The options parameter can include the following fields:&#10; *  * _value_: The MinFaceSize and MaxFaceSize, which defaults to 50 and 400.&#10; *  * _type_: If set to 'JSON'&#10; *&#10; *  The implementation for the Ptolemy II host uses&#10; *  [https://opencv.org](openCV) which is licensed under a BSD 3-clause license.&#10; *&#10; *  @accessor image/FaceDetector&#10; *  @input input A stream of images.&#10; *  @input options The value and type options.&#10; *  @output output The results of filtering the image according to the options&#10; *  @output {int} faceCount The number of faces&#10; *  @author Ilge Akkaya.  Contributor: Christopher Brooks&#10; *  @version $$Id: FaceDetector.xml 75904 2017-04-11 00:49:24Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getParameter, input, output, removeInputHandler, require, send  */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var faceDetector = require('faceDetector');&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output');&#10;    this.output('faceRectangles');&#10;    this.output('faceCount', {&#10;        'type': 'int'&#10;    });&#10;    this.input('options', {&#10;        'value': '{&quot;MinFaceSize&quot;: 50, &quot;MaxFaceSize&quot;: 400}',&#10;        'type': 'JSON'&#10;    });&#10;};&#10;&#10;exports.initialize = function () {&#10;    var self = this;&#10;&#10;    this.addInputHandler('input', function () {&#10;        var options = this.get('options');&#10;        var image = this.get('input');&#10;        var result = faceDetector.filter(image, options, function (result) {&#10;            self.send('output', result);&#10;            var numFaces = faceDetector.numberOfFaces();&#10;            self.send('faceCount', numFaces);&#10;            var faceRectangles = faceDetector.faceRectangles();&#10;            if (faceRectangles.length &gt; 0) {&#10;            	console.log(faceRectangles);&#10;            	self.send('faceRectangles', faceRectangles);&#10;            }&#10;        });&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/FaceDetector.js">
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 430.0]">
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="{&quot;MinFaceSize&quot;: 50, &quot;MaxFaceSize&quot;: 400}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;A face detector accessor.&#10; This accessor detects faces in an input stream.&lt;/p&gt;&#10;&lt;p&gt; The options parameter can include the following fields:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;em&gt;value&lt;/em&gt;: The MinFaceSize and MaxFaceSize, which defaults to 50 and 400.&lt;/li&gt;&#10;&lt;li&gt;&lt;p&gt;&lt;em&gt;type&lt;/em&gt;: If set to 'JSON'&lt;/p&gt;&#10;&lt;p&gt;The implementation for the Ptolemy II host uses&#10;&lt;a href=&quot;openCV&quot;&gt;https://opencv.org&lt;/a&gt; which is licensed under a BSD 3-clause license.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Ilge Akkaya.  Contributor: Christopher Brooks">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: FaceDetector.xml 75904 2017-04-11 00:49:24Z cxh $$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="A stream of images.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The results of filtering the image according to the options">
+            </property>
+            <property name="faceCount (port)" class="ptolemy.kernel.util.StringAttribute" value="The number of faces">
+            </property>
+            <property name="options (port)" class="ptolemy.kernel.util.StringAttribute" value="The value and type options.">
+            </property>
+        </property>
+        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="faceCount" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="faceRectangles" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+    </entity>
+    <entity name="ImageDisplay2" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={254, 67, 640, 524}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 420.0]">
+        </property>
+    </entity>
+    <entity name="MonitorValue" class="ptolemy.actor.lib.gui.MonitorValue">
+        <doc>Monitor and display values</doc>
+        <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="20">
+        </property>
+        <property name="_icon" class="ptolemy.vergil.icon.UpdatedValueIcon">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="value">
+            </property>
+            <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="displayWidth">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 550.0]">
+        </property>
+    </entity>
+    <entity name="TimedDisplay" class="ptolemy.actor.lib.gui.TimedDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1280, 773}, maximized=true}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1280, 729]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[644.3329728947133, 750.6164212958749]">
+        </property>
+    </entity>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;exports.setup = function() {&#10;	this.input('faces');&#10;	this.parameter('speed', {type: 'string', value: 100});&#10;	this.parameter('width', {value: 360});&#10;	this.parameter('height', {value: 480});&#10;	this.parameter('precision', {value: 10});&#10;	this.output('movement');&#10;}&#10;&#10;var last_move_ts = new Date();&#10;var network_time = 500;&#10;&#10;function tagsReaction() {&#10;	var width = this.getParameter('width');&#10;	var height = this.getParameter('height');&#10;	var precision = this.getParameter('precision');;&#10;	var speed = this.getParameter('speed');&#10;	&#10;	var faces = JSON.parse(this.get('faces'));&#10;	var face = faces[0];&#10;	// example: faces = [{x: 21, y: 31, width:200, height: 344}, {x: 21, y: 31, width:200, height: 344}]&#10;	var firstFaceCenterX = face.x + (face.width / 2);&#10;	var firstFaceCenterY = face.y + (face.height / 2);&#10;	&#10;	var x = (width/2) - firstFaceCenterX;&#10;	var y = (height/2) - firstFaceCenterY;&#10;&#10;	var absX = Math.abs(x);&#10;	var absY = Math.abs(y);&#10;	console.log(&quot;April is &quot; + ((x &gt; 0) ? &quot;right&quot; : &quot;left&quot;) + &quot; by &quot; + absX + &quot;px&quot;);&#10;	&#10;	var pan = Math.log(precision*absX)*(x/absX);&#10;	var tilt = Math.log(precision*absY)*(y/absY);&#10;	if ((new Date()-last_move_ts) &gt; network_time) {&#10;		this.send('movement', {pan: pan, panSpeed: speed, tilt: tilt, tiltSpeed: speed, face: faces});&#10;		console.log(&quot;Movement sent&quot; + pan);&#10;		last_move_ts = new Date();&#10;	}&#10;}&#10;&#10;exports.initialize = function () {&#10;	this.addInputHandler('faces', tagsReaction);&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[335.0, 700.0]">
+        </property>
+        <property name="speed" class="ptolemy.data.expr.Parameter" value="100">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="faces" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="movement" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Kubi2" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2016 The Regents of the University of California.&#10;// All rights reserved.&#10;&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;&#10;/** &#10; * Controls a Revolverobotics's Kubi via a iOS Kubi Server app.&#10; * To use it, you need to provide the IP address of the iOS device &#10; * which you can find in Wifi's settings.&#10; * &#10; * First, follow iOS Kubi Server simple steps to start the server given in&#10; * the app itself. Autoconnect toggle lets you start this setup automaticaly&#10; * next time you open the app. CAUTION: Camera streaming will start too &#10; * if Autoconnect is activated!&#10; * &#10; * Second,&#10; * FIXME: What to do next?&#10; *  &#10; * @author Victor Nouvellet &#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearTimeout, console, error, exports, httpRequest, require, setTimeout  */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var http = require('httpClient');&#10;&#10;// Node Host needs util defined.&#10;var util = require('util');&#10;&#10;/** Inputs and outputs definition **/&#10;exports.setup = function() {&#10;    this.input('command');&#10;    this.parameter('kubiLocalServerIP', {&#10;        type: &quot;string&quot;,&#10;        value: &quot;&quot;&#10;    });&#10;    this.parameter('kubiLocalServerPort', {&#10;        type: &quot;string&quot;,&#10;        value: &quot;8080&quot;&#10;    });&#10;    this.parameter('incremental', {type: 'boolean', value: true});&#10;    this.output('urlRequested', {&#10;        type: &quot;string&quot;&#10;    });&#10;};&#10;&#10;function Kubi() {&#10;    var kubi = {};&#10;    &#10;    kubi.lastUrlRequested = &quot;&quot;;&#10;&#10;    // Private variables&#10;    var debug = true;&#10;    var ipAddress = &quot;&quot;;&#10;    var port = &quot;&quot;;&#10;    var path = &quot;&quot;;&#10;    var url = &quot;&quot;;&#10;    var connected = false;&#10;    &#10;    // Use self in contained functions so the caller does not have to bind &quot;this&quot;&#10;    // on each function call.&#10;    var self = this;&#10;    &#10;    //Private functions.&#10;&#10;     /**&#10;     *  Parse command to create a command object&#10;     */&#10;     function parseCommand(command) {&#10;        var commandObject = {};&#10;&#10;        if (typeof command === 'string') {&#10;            command = JSON.parse(command);&#10;        }&#10;&#10;        // Check whether input is valid&#10;        if (Object.keys(command).length &lt; 1) {&#10;            self.error(&quot;Command is empty: &quot; + command);&#10;        } else {&#10;            // Get interresting properties&#10;            if (typeof command.pan !== 'undefined') {&#10;                commandObject.pan = command.pan;&#10;            }&#10;            if (typeof command.panDelta !== 'undefined') {&#10;                commandObject.pan = command.panDelta;&#10;            }&#10;            if (typeof command.tilt !== 'undefined') {&#10;                commandObject.tilt = command.tilt;&#10;            }&#10;            if ( typeof command.tiltDelta !== 'undefined') {&#10;                commandObject.tilt = command.tiltDelta;&#10;            }&#10;            if (typeof command.tiltSpeed !== 'undefined') {&#10;                commandObject.tiltSpeed = command.tiltSpeed;&#10;            }&#10;            if (typeof command.panSpeed !== 'undefined') {&#10;                commandObject.panSpeed = command.panSpeed;&#10;            }&#10;            //FIXME: Use commandObject.pan = command.pan || command.panDelta || 0; instead?&#10;        }&#10;&#10;        return commandObject;&#10;     }&#10;&#10;     /**&#10;     *  Build URL to request with commands&#10;     */&#10;     function buildGetUrl(incremental, correctCommand) {&#10;        var requestUrl = url;&#10;        var panVar, tiltVar;&#10;        var panSpeedVar = &quot;panSpeed&quot;;&#10;        var tiltSpeedVar = &quot;tiltSpeed&quot;;&#10;&#10;        console.log(&quot;Building URL...&quot;);&#10;&#10;        if (incremental == true) {&#10;            panVar = &quot;panDelta&quot;;&#10;            tiltVar = &quot;tiltDelta&quot;;&#10;        } else {&#10;            panVar = &quot;pan&quot;;&#10;            tiltVar = &quot;tilt&quot;;&#10;        }&#10;        requestUrl += &quot;?&quot; + panVar + &quot;=&quot; + correctCommand.pan + &quot;&amp;&quot;&#10;                                             + panSpeedVar + &quot;=&quot; + correctCommand.panSpeed + &quot;&amp;&quot;&#10;                                             + tiltVar + &quot;=&quot; + correctCommand.tilt + &quot;&amp;&quot;&#10;                                             + tiltSpeedVar + &quot;=&quot; + correctCommand.tiltSpeed;&#10;        return requestUrl;&#10;     }&#10;&#10;     /**&#10;     *  Report all server errors if they exist and return true in this case.&#10;     */&#10;     function reportIfError(response) {&#10;        var body = response.body;&#10;        //FIXME: Server not ready to give json...&#10;        return true; //Remove this line after server update&#10;        &#10;        if (typeof body == &quot;string&quot;) {&#10;            body = JSON.parse(body);&#10;        }&#10;&#10;        if (body instanceof Array &amp;&amp; obj.length &gt; 0 &amp;&amp; body[0].error) {&#10;            self.error(&quot;Server error report: &quot; + error.description);&#10;            return true;&#10;        }&#10;        return false;&#10;     }&#10;    &#10;    // Public functions.&#10;    &#10;    kubi.connect = function() {&#10;        if (debug) {&#10;            console.log(&quot;Kubi.js: Connecting...&quot;);&#10;        }&#10;        ipAddress = self.getParameter('kubiLocalServerIP');&#10;        port = self.getParameter('kubiLocalServerPort') || &quot;8080&quot;;&#10;        path = self.getParameter('incremental') ? &quot;/incremental&quot; : &quot;/absolute&quot;;&#10;        &#10;        if (ipAddress === null || ipAddress.trim() === &quot;&quot;) {&#10;            throw &quot;No IP Address is given for the Kubi server.&quot;;&#10;        }&#10;        &#10;        url = &quot;http://&quot; + ipAddress + &quot;:&quot; + port + path;&#10;        &#10;        connected = true;&#10;        //TODO: Implement token auth on server side&#10;     };&#10;     &#10;     /**&#10;     *  Issue a command to the server.&#10;     */&#10;     kubi.issueCommand = function () {&#10;        var command = self.get('command');&#10;        if (debug) {&#10;            console.log(&quot;Kubi.js: issueCommand(): &quot; + util.inspect(command));&#10;        }&#10;         //TODO: check authentification, queue command until server authentification&#10;         &#10;         kubi.processCommand(command);&#10;     };&#10;     &#10;     /**&#10;     *  Process received command after authentification and connectivity checks.&#10;     */&#10;     kubi.processCommand = function (command) {&#10;        console.log(&quot;Proccessing command&quot;);&#10;        var commandObject = parseCommand(command);&#10;        console.log(&quot;Got command object &quot;);&#10;        if (typeof commandObject !== 'undefined') {&#10;            var requestUrl = buildGetUrl(self.getParameter('incremental'), commandObject);&#10;            &#10;            http.get(requestUrl, function(response) {&#10;            	if (response !== null) {&#10;	                if (false) {&#10;	                    console.log(&quot;Kubi.js: processCommands(): response status: &quot; + response.statusMessage);&#10;	                    console.log(&quot;Kubi.js: processCommands(): response body: &quot; + response.body);&#10;	                }&#10;	                kubi.lastUrlRequested = requestUrl;&#10;	                reportIfError(response);&#10;            	} else {&#10;            		self.error(&quot;Unable to connect to the server on &quot; + requestUrl);&#10;            	}&#10;            	&#10;            	self.send('urlRequested', requestUrl);&#10;            });&#10;            &#10;            return;&#10;        } else {&#10;            console.log(&quot;commandObject undefined&quot;);&#10;        }&#10;     };&#10;     &#10;     &#10;     return kubi;&#10;}&#10;&#10;exports.initialize = function() {&#10;    this.kubi = Kubi.call(this);&#10;    &#10;    console.log(&quot;Kubi.js: Initializing...&quot;);&#10;    this.addInputHandler('command', this.kubi.issueCommand);&#10;    console.log(&quot;Kubi.js: Handler added&quot;);&#10;    this.kubi.connect();&#10;};&#10;&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[645.0, 635.0]">
+        </property>
+        <property name="kubiLocalServerIP" class="ptolemy.data.expr.Parameter" value="$KubiServerIPAddress">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="kubiLocalServerPort" class="ptolemy.data.expr.Parameter" value="8080">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="incremental" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <port name="script" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="_hide" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="command" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="urlRequested" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="[475.0, 700.0]">
+        </vertex>
     </relation>
     <link port="ClockKubiInterface.movement" relation="relation"/>
     <link port="ClockKubiInterface.tags" relation="relation2"/>
     <link port="Kubi.command" relation="relation"/>
     <link port="ImageDisplay.input" relation="relation4"/>
-    <link port="AprilTags.input" relation="relation8"/>
     <link port="AprilTags.output" relation="relation4"/>
     <link port="AprilTags.tags" relation="relation2"/>
     <link port="iOSCamera.trigger" relation="relation3"/>
     <link port="iOSCamera.image" relation="relation8"/>
     <link port="DiscreteClock.output" relation="relation3"/>
+    <link port="FaceDetector.input" relation="relation8"/>
+    <link port="FaceDetector.output" relation="relation5"/>
+    <link port="FaceDetector.faceCount" relation="relation6"/>
+    <link port="FaceDetector.faceRectangles" relation="relation7"/>
+    <link port="ImageDisplay2.input" relation="relation5"/>
+    <link port="MonitorValue.input" relation="relation6"/>
+    <link port="TimedDisplay.input" relation="relation9"/>
+    <link port="JavaScript.faces" relation="relation7"/>
+    <link port="JavaScript.movement" relation="relation9"/>
+    <link port="Kubi2.command" relation="relation9"/>
 </entity>
