@@ -302,7 +302,7 @@
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/services/GeoCoder.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Retrieve a location given an address.&#10; The location is given as an object with two numeric fields,&#10; &amp;quot;latitude&amp;quot; and &amp;quot;longitude&amp;quot;. For example,&#10; &lt;code&gt;{&amp;quot;latitude&amp;quot;: 37.85, &amp;quot;longitude&amp;quot;: -122.26}&lt;/code&gt; is&#10; the location of Berkeley, California.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires a &amp;quot;key&amp;quot; for the Google Geocoding API, which you can&#10; obtain for free at https://developers.google.com/maps/documentation/geocoding/intro .&lt;/p&gt;&#10;&lt;p&gt; This accessor does not block waiting for the response, but if any additional&#10; &lt;em&gt;address&lt;/em&gt; input is received before a pending request has received a response&#10; or timed out, then the new request will be queued and sent out only after&#10; the pending request has completed. This strategy ensures that outputs are&#10; produced in the same order as the input requests.&lt;/p&gt;">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Retrieve a location given an address.&#10; The location is given as an object with two numeric fields,&#10; &amp;quot;latitude&amp;quot; and &amp;quot;longitude&amp;quot;. For example,&#10; &lt;code&gt;{&amp;quot;latitude&amp;quot;: 37.85, &amp;quot;longitude&amp;quot;: -122.26}&lt;/code&gt; is&#10; the location of Berkeley, California.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires a &amp;quot;key&amp;quot; for the Google Geocoding API, which you can&#10; obtain for free at https://developers.google.com/maps/documentation/geocoding/intro .&lt;/p&gt;&#10;&lt;p&gt; This accessor looks for key in $KEYSTORE/geoCoderKey, which&#10; resolves to $HOME/.ptKeystore/geoCoderKey.&lt;/p&gt;&#10;&lt;p&gt; This accessor does not block waiting for the response, but if any additional&#10; &lt;em&gt;address&lt;/em&gt; input is received before a pending request has received a response&#10; or timed out, then the new request will be queued and sent out only after&#10; the pending request has completed. This strategy ensures that outputs are&#10; produced in the same order as the input requests.&lt;/p&gt;">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
@@ -398,7 +398,7 @@
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/services/Weather.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Retrieve weather information for a given location using&#10; http://openweathermap.org .&#10; The location input is given as an object with two numeric fields,&#10; &amp;quot;latitude&amp;quot; and &amp;quot;longitude&amp;quot;. The default is&#10; &lt;code&gt;{&amp;quot;latitude&amp;quot;: 37.85, &amp;quot;longitude&amp;quot;: -122.26}&lt;/code&gt;, which is&#10; the location of Berkeley, California.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires a &amp;quot;key&amp;quot; for the API, which you can&#10; obtain for free at http://openweathermap.org/appid .&lt;/p&gt;&#10;&lt;p&gt; This accessor does not block waiting for the response, but if any additional&#10; &lt;em&gt;location&lt;/em&gt; input is received before a pending request has received a response&#10; or timed out, then the new request will be queued and sent out only after&#10; the pending request has completed. This strategy ensures that outputs are&#10; produced in the same order as the input requests.&lt;/p&gt;">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Retrieve weather information for a given location using&#10; http://openweathermap.org .&#10; The location input is given as an object with two numeric fields,&#10; &amp;quot;latitude&amp;quot; and &amp;quot;longitude&amp;quot;. The default is&#10; &lt;code&gt;{&amp;quot;latitude&amp;quot;: 37.85, &amp;quot;longitude&amp;quot;: -122.26}&lt;/code&gt;, which is&#10; the location of Berkeley, California.&lt;/p&gt;&#10;&lt;p&gt; This accessor requires a key for the API, which you can&#10; obtain for free at http://openweathermap.org/appid .&lt;/p&gt;&#10;&lt;p&gt; This accessor looks for key in $KEYSTORE/weatherKey, which&#10; resolves to $HOME/.ptKeystore/weatherKey.&lt;/p&gt;&#10;&lt;p&gt; This accessor does not block waiting for the response, but if any additional&#10; &lt;em&gt;location&lt;/em&gt; input is received before a pending request has received a response&#10; or timed out, then the new request will be queued and sent out only after&#10; the pending request has completed. This strategy ensures that outputs are&#10; produced in the same order as the input requests.&lt;/p&gt;">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
             </property>
@@ -470,6 +470,11 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
+        <port name="location" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -484,9 +489,6 @@
         </port>
         <port name="headers" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-        </port>
-        <port name="location" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
         </port>
         <port name="weather" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
