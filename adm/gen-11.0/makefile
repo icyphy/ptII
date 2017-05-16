@@ -398,8 +398,13 @@ $(PTIIDIST):
 	cp $(PTIIHOME)/vendors/jogl/jogamp-all-platforms/jar/gluegen.jar $(PTIIDIST)/vendors/jogl/jogamp-all-platforms/jar/
 	#
 	# Install jsdoc from the npm repo
-	(cd $(PTIIDIST); mkdir -p node_modules; if [ ! -d node_modules/@terraswarm/jsdoc ]; then npm install @terraswarm/jsdoc; fi)
+	(cd $(PTIIDIST); rm -rf node_modules; mkdir -p node_modules; if [ ! -d node_modules/@terraswarm/jsdoc ]; then npm install @terraswarm/jsdoc; fi)
 	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web; ant jsdoc-install)
+	# Accessors node_modules
+	rm -rf $(PTIIDIST)/org/terraswarm/accessor/accessors/node_modules
+	rm -rf $(PTIIDIST)/org/terraswarm/accessor/accessors/web/node_modules
+	mkdir $(PTIIDIST)/org/terraswarm/accessor/accessors/web/node_modules
+	(cd $(PTIIDIST)/org/terraswarm/accessor/accessors/web/node_modules; ln -s ../hosts @accessors-hosts)
 	#
 	# Serial
 	mkdir -p $(PTIIDIST)/vendors/misc/rxtx/
@@ -3754,7 +3759,7 @@ $(PTSETUP_MAC).xml: $(PTSETUP).xml macOSInclude.awk #makefile
 	    sed -e 's@<!-- Vergil.app -->@<file src="../dists/ptII11.0.devel/bin/Vergil.app" targetdir="$$INSTALL_PATH/bin"/> <executable targetfile="$$INSTALL_PATH/bin/Vergil.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
 	    -e 's@<!-- Ptiny.app -->@<file src="../dists/ptII11.0.devel/bin/Ptiny.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/Ptiny.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
 	    -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
-	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$$INSTALL_PATH/jdk" os="mac"/>@' \
+	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
@@ -3763,7 +3768,7 @@ capecode_setup_mac: $(CAPECODE_SETUP_MAC).xml
 $(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk $(CAPECODE_APP) #makefile
 	awk -f macOSInclude.awk $(CAPECODE_SETUP).xml | \
 	    sed -e 's@<!-- CapeCode.app -->@<file src="../dists/ptII11.0.devel/bin/CapeCode.app" targetdir="$$INSTALL_PATH/bin"/>  <executable targetfile="$$INSTALL_PATH/bin/CapeCode.app/Contents/MacOS/universalJavaApplicationStub" stage="never" keep="true"/>@' \
-	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$$INSTALL_PATH/jdk" os="mac"/>@' \
+	    -e 's@<!-- MacJDKDirectory -->@<file src="../dists/ptII11.0.devel/jdk" targetdir="$$INSTALL_PATH" os="mac"/>@' \
 	    -e 's@ptmatlab.dll@libptmatlab.jnilib@' \
 	    -e 's@os="windows"@os="mac"@' \
 	    > $@
