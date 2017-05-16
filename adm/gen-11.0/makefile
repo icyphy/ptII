@@ -3772,14 +3772,14 @@ PTINY_APP = $(PTIIDIST)/bin/Ptiny.app
 Ptiny.app: $(PTINY_APP)
 $(PTINY_APP): 
 	if [ ! -f $@ ]; then \
-		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; make CapeCode.app Ptiny.app Vergil.app); \
+		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; make PTII=$(PTIIDIST) CapeCode.app Ptiny.app Vergil.app); \
         fi
 
 CAPECODE_APP = $(PTIIDIST)/bin/CapeCode.app
 CapeCode.app: $(CAPECODE_APP)
 $(CAPECODE_APP): 
 	if [ ! -f $@ ]; then \
-		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; make CapeCode.app); \
+		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; make PTII=$(PTIIDIST) CapeCode.app); \
         fi
 
 setup_mac_jar: $(PTSETUP_MAC).jar
