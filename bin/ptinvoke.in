@@ -1856,6 +1856,16 @@ EOF6
 		   #(cd $MACAPP_APP/Contents/; tar -xf ${PTII}/adm/gen-10.0/MacJVM.tar)
 		   echo "Untaring $MacJVMTar in $PTII/"
 		   (cd $PTII/; tar -xf "$MacJVMTar")
+	       else
+		   # When we are building a release PTII might be set to dists/ptII11.0.devel so MacJVM.tar won't be found.
+		   echo "$0: Could not find MacJVMTar in $MacJVMTar"
+		   MacJVMTar=/home/jenkins/workspace/ptII/adm/gen-11.0/MacJVM.tar 
+		   if [ -f "$MacJVMTar" ]; then
+		       echo "Untaring $MacJVMTar in $PTII/"
+		       (cd $PTII/; tar -xf "$MacJVMTar")
+		   else
+		       echo "$0: Could not find MacJVMTar in $MacJVMTar"
+		   fi
 	       fi	   
 	   fi # Darwin
            fi # JAVA16
