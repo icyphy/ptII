@@ -237,6 +237,11 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
+        <port name="location" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -251,9 +256,6 @@
         </port>
         <port name="headers" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-        </port>
-        <port name="location" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
         </port>
         <port name="weather" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
