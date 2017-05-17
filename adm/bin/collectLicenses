@@ -2,7 +2,7 @@
 # Collect license files and create a html file that includes them.
 # $Id$
 
-licenseFiles=`find . -name "*License*" -o -name "*LICENSE*" | grep -v '~' | sed 's@^./@@'`
+licenseFiles=`find . -name "*icense*" -o -name "*LICENSE*" | grep -v '~' | sed 's@^./@@' | grep -v jjs-license | grep -v htm`
 for file in $licenseFiles
 do
     cat <<EOF
@@ -10,7 +10,7 @@ do
 <p><code>$file</code> contains the following license:</p>
 <pre>
 EOF
-
+    
     cat $file
 echo "</pre>"
 done    
