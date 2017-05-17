@@ -3776,15 +3776,21 @@ $(CAPECODE_SETUP_MAC).xml: $(CAPECODE_SETUP).xml macOSInclude.awk $(CAPECODE_APP
 PTINY_APP = $(PTIIDIST)/bin/Ptiny.app
 Ptiny.app: $(PTINY_APP)
 $(PTINY_APP): 
+	@echo "#"
+	@echo "# Now building Ptiny.app $@"
+	@echo "# `date`"
 	if [ ! -f $@ ]; then \
-		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; make PTII=$(PTIIDIST) CapeCode.app Ptiny.app Vergil.app); \
+		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; make PTII=$(PTIIDIST) CapeCode.app Ptiny.app Vergil.app); ls -l $(PTIIDIST)/jdk; \
         fi
 
 CAPECODE_APP = $(PTIIDIST)/bin/CapeCode.app
 CapeCode.app: $(CAPECODE_APP)
 $(CAPECODE_APP): 
+	@echo "#"
+	@echo "# Now building CapeCode.app $@"
+	@echo "# `date`"
 	if [ ! -f $@ ]; then \
-		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; make PTII=$(PTIIDIST) CapeCode.app); \
+		(cd $(PTIIDIST); PTII=$(PTIIDIST) ./configure; cd bin;  rm -rf *.app; make PTII=$(PTIIDIST) CapeCode.app; ls -l $(PTIIDIST)/jdk); \
         fi
 
 setup_mac_jar: $(PTSETUP_MAC).jar
@@ -3792,7 +3798,7 @@ $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIID
 	@echo "#"
 	@echo "# Now building target setup_mac_jar: (PTSETUP_MAC).jar: $@"
 	@echo "# `date`"
-	ls -ldg $(PTINY_APP)
+	ls -ldg $(PTINY_APP) $(PTIIDIST)/jdk
 	$(IZPACK_COMMAND) $@ $<
 	if [ ! -f $@ ];  then \
 		error "$@ does not exist?"; \
