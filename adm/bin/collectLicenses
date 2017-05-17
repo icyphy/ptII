@@ -1,0 +1,16 @@
+#!/bin/sh
+# Collect license files and create a html file that includes them.
+# $Id$
+
+licenseFiles=`find . -name "*License*" -o -name "*LICENSE*" | grep -v '~' | sed 's@^./@@'`
+for file in $licenseFiles
+do
+    cat <<EOF
+<h2>$file</h2>
+<p><code>$file</code> contains the following license:</p>
+<pre>
+EOF
+
+    cat $file
+echo "</pre>"
+done    
