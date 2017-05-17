@@ -231,7 +231,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
                             + "if (exports.initialize) {" + _eol
                             + "    var originalInitialize = exports.initialize;" + _eol
                             + "    exports.initialize = function() {" + _eol
-                            + "        originalInitialize();" + _eol
+                            + "        originalInitialize.call(this);" + _eol
                             + "        this.stopAt(" + stopTimeValue + ");" + _eol
                             + "    }" + _eol
                             + "} else {" + _eol
