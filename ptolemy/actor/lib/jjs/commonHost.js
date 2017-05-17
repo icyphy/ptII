@@ -741,7 +741,7 @@ clearTimeout',
         };
 
         this.wrapup = function () {
-            // console.log('wrapup for accessor: '+this.accessorName);
+            // console.log('wrapup for accessor: ' + this.accessorName);
             // Mark that this accessor has not been initialized.
             this.initialized = false;
 
@@ -755,11 +755,7 @@ clearTimeout',
 
             // Reset all timers
             var thiz = this;
-            Object.keys(this.timers).forEach(function(key) {
-                thiz.clearIntervalDeterministic(key);
-                thiz.clearTimeoutDeterministic(key);
-            });
-            this.timers = {};
+            thiz.clearTimers();
             
             // Invoke wrapup on contained accessors.
             if (this.containedAccessors && this.containedAccessors.length > 0) {
@@ -1143,9 +1139,9 @@ Accessor.prototype.connect = function (a, b, c, d) {
  */
 Accessor.prototype.clearIntervalDeterministic = function(cbId) {
     var thiz = this;
-    if (thiz.timers[cbId] === true) {
-       deterministicTemporalSemantics.clearIntervalDet(cbId);
-       delete(thiz.timers[cbId]);
+    if (thiz.timers[cbId]) {
+        deterministicTemporalSemantics.clearIntervalDet(Number(cbId));
+        delete(thiz.timers[cbId]);
     }
 }
 
@@ -1157,10 +1153,32 @@ Accessor.prototype.clearIntervalDeterministic = function(cbId) {
  */
 Accessor.prototype.clearTimeoutDeterministic = function(cbId) {
     var thiz = this;
-    if (thiz.timers[cbId] === true) {
-        deterministicTemporalSemantics.clearTimeoutDet(cbId); 
+    if (thiz.timers[cbId]) {
+        deterministicTemporalSemantics.clearTimeoutDet(Number(cbId)); 
         delete(thiz.timers[cbId]);
     }
+}
+
+/** Clears all the timers by removing them from the callbackQueue and the
+ *  delayedCallbacks object, and then setting this.timers to the empty object. 
+ */
+Accessor.prototype.clearTimers = function() {
+    var thiz = this;
+    
+    // Parse all timers to remove them from the callbackQueue and the
+    // delayedCallbacks, if deterministicTemporalSemantics is defined 
+    if (deterministicTemporalSemantics) {
+        Object.keys(thiz.timers).forEach(function(key) {
+            deterministicTemporalSemantics.clearTimeoutDet(Number(key));
+            deterministicTemporalSemantics.clearIntervalDet(Number(key));
+        });
+    } else {
+        Object.keys(thiz.timers).forEach(function(key) {
+            clearTimeout(key);
+            clearInterval(key);
+        });
+    }
+    thiz.timers = {};
 }
 
 /** Disconnects the specified inputs and outputs.
@@ -1548,6 +1566,18 @@ Accessor.prototype.provideInput = function (name, value) {
         throw new Error('provideInput(): Accessor has no input named ' + name);
     }
 
+    // If input.pendingHandler is true, then this value should be
+    // queued rather than overwriting the currentValue. Then at the end of
+    // react, or when pendingHandler is reset, the value should be extracted
+    // from the queue and provideInput() should be called again.
+    if (input.pendingHandler) {
+        if (!input.queuedInputs) {
+            input.queuedInputs = [];
+        }
+        input.queuedInputs.push(value);
+        return;
+    }
+
     value = convertType(value, input, name);
     input.currentValue = value;
 
@@ -1595,6 +1625,9 @@ Accessor.prototype.provideInput = function (name, value) {
  *  @param name The name of the input.
  */
 Accessor.prototype.react = function (name) {
+    // FIXME: The accessor specification says nothing about a name argument to react()
+    // and this does not appear to be used anywhere. Remove it?
+
     // console.log(this.accessorName + ": ================== react(" + name + ")");
 
     this.emit('reactStart');
@@ -1672,10 +1705,21 @@ Accessor.prototype.react = function (name) {
             moreInputsPossiblyAvailable = false;
             for (var i = 0; i < thiz.inputList.length; i++) {
                 name = thiz.inputList[i];
-                if (thiz.inputs[name].pendingHandler) {
-                    thiz.inputs[name].pendingHandler = false;
+                var input = thiz.inputs[name];
+                if (input.pendingHandler) {
+                    input.pendingHandler = false;
+                    // The handler may send data to an input of this same accessor,
+                    // so it is possible that after invoking the handler, there will
+                    // be more inputs available.
                     moreInputsPossiblyAvailable = true;
                     invokeSpecificHandler(name);
+
+                    // If there are queued inputs for this port, then dequeue
+                    // them here.
+                    if (input.queuedInputs && input.queuedInputs.length> 0) {
+                        var value = input.queuedInputs.shift();
+                        thiz.provideInput(name, value);
+                    }
                 }
             }
         }
@@ -2767,6 +2811,10 @@ function processCommandLineArguments(argv, fileReader, instantiateTopLevel, term
                     terminator();
                 } else {
                     stopAllAccessors();
+                    console.log('stop all accessors');
+                    if (deterministicTemporalSemantics) {
+                        deterministicTemporalSemantics.reset();
+                    }
                 }
             }, timeout);
             break;
@@ -2926,4 +2974,3 @@ exports.getTopLevelAccessors = getTopLevelAccessors;
 exports.processCommandLineArguments = processCommandLineArguments;
 exports.stopAllAccessors = stopAllAccessors;
 exports.uniqueName = uniqueName;
-
