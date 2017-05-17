@@ -736,7 +736,7 @@ For example:
     <javadoc destdir="doc/codeDoc"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
-	     maxmemory="${java.maxmemory}"
+	     maxmemory="${java.maxmemory.large}"
 	     sourcepath="${basedir}" >
       <classpath>
 	<path refid="ptII.classpath" />
