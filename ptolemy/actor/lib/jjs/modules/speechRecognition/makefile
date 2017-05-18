@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/speechRecognition
 
-DIRS = 		test demo
+DIRS = 		#test demo
 
 # Root of the Java directory
 ROOT =		../../../../../..
@@ -47,8 +47,7 @@ PTPACKAGE = 	speechRecognition
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS = \
-	UDPSocketHelper.java \
+JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	package.json \
@@ -58,24 +57,14 @@ EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =	test
+MISC_FILES =	#test
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	$(PTCLASSJAR) \
-	'UDPSocketHelper$$1.class' \
-	'UDPSocketHelper$$1$$1.class' \
-	'UDPSocketHelper$$2.class' \
-	'UDPSocketHelper$$UDPSocket$$1$$1.class' \
-	'UDPSocketHelper$$UDPSocket$$1$$2.class' \
-	'UDPSocketHelper$$UDPSocket$$1$$3.class' \
-	'UDPSocketHelper$$UDPSocket$$1.class' \
-	'UDPSocketHelper$$UDPSocket$$2.class' \
-	'UDPSocketHelper$$UDPSocket.class' \
-
+	$(PTCLASSJAR)
 
 JCLASS = $(JSRCS:%.java=%.class)
 
