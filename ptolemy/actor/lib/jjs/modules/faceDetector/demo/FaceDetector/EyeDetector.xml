@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="FaceDetector" class="ptolemy.actor.TypedCompositeActor">
+<entity name="EyeDetector" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -12,22 +12,22 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="68.0, 32.0">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 75, 928, 639}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={219, 75, 928, 617}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 500]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 255.265625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 244.265625}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test FaceDetector module.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test eye detection of face detector module.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[150.0, 20.0]">
         </property>
     </property>
     <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
-        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetector/terraswarm.jpg">
+        <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="terraswarmeyes.jpg">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 105.0]">
         </property>
@@ -75,7 +75,7 @@
             <property name="options (port)" class="ptolemy.kernel.util.StringAttribute" value="The value and type options.">
             </property>
         </property>
-        <property name="transform" class="ptolemy.data.expr.Parameter" value="faces">
+        <property name="transform" class="ptolemy.data.expr.Parameter" value="eyes">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -97,11 +97,11 @@
         </port>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={456, 186, 437, 370}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={456, 186, 436, 414}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
-        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[421, 310]">
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[437, 335]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{415, 105}">
         </property>

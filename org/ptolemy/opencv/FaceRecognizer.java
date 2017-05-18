@@ -123,7 +123,7 @@ import com.jhlabs.image.AbstractBufferedImageOp;
  *  @Pt.ProposedRating Yellow (cxh)
  *  @Pt.AcceptedRating Red (cxh)
  */
-public class FaceRecognizer extends AbstractBufferedImageOp {
+public class FaceRecognizer {
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -133,13 +133,15 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
      */
     public FaceRecognizer() throws IOException {
         super();
+        _eyes = new Eyes();
+        _faces = new Faces();
         
         /** Load Native C Library for OpenCV */
         //System.loadLibrary(Core.NATIVE_LIBRARY_NAME);
         // Use a better loader that looks for the shared library for the Mac.
         OpenCVLoader.loadOpenCV(Core.NATIVE_LIBRARY_NAME);
         
-        _cascade = new CascadeClassifier();
+        _faceCascade = new CascadeClassifier();
         String trainingFile = "$CLASSPATH/org/ptolemy/opencv/haarcascade_frontalface_default.xml";
         URL url = FileUtilities.nameToURL(trainingFile, null, null);
         if (url == null) {
@@ -149,66 +151,66 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         // If the training file was found in a jar file, then copy it
         // to a location in the classpath so that _cascade.load() can find
         // it.
+        File temporaryTrainingFile;
         if (url.toString().indexOf("!/") != -1) {
-            File temporaryTrainingFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(url.toString());
+            temporaryTrainingFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(url.toString());
             url = temporaryTrainingFile.toURI().toURL();
             if (url == null) {
                 throw new IOException("Could not load " + url + ", which was found as " + temporaryTrainingFile);
             }
         }
 
-        boolean loaded = _cascade.load(url.getPath());
+        boolean loaded = _faceCascade.load(url.getPath());
         if (!loaded) {
             // Try without leading / on Windows.
-            loaded = _cascade.load(url.getPath().substring(1, url.getPath().length()));
+            loaded = _faceCascade.load(url.getPath().substring(1, url.getPath().length()));
+            if (!loaded) {
+                throw new IOException("Could not load " + url.getPath());
+            }
+        }
+        
+        // If the training file was found in a jar file, then copy it
+        // to a location in the classpath so that _cascade.load() can find
+        // it.
+        if (url.toString().indexOf("!/") != -1) {
+            temporaryTrainingFile = JNLPUtilities.getResourceSaveJarURLAsTempFile(url.toString());
+            url = temporaryTrainingFile.toURI().toURL();
+            if (url == null) {
+                throw new IOException("Could not load " + url + ", which was found as " + temporaryTrainingFile);
+            }
+        }
+        
+        _eyeCascade = new CascadeClassifier();
+        trainingFile = "$CLASSPATH/org/ptolemy/opencv/haarcascade_eye.xml";
+        url = FileUtilities.nameToURL(trainingFile, null, null);
+        if (url == null) {
+            throw new IOException("Could not load " + trainingFile);
+        }
+
+        loaded = _eyeCascade.load(url.getPath());
+        if (!loaded) {
+            // Try without leading / on Windows.
+            loaded = _eyeCascade.load(url.getPath().substring(1, url.getPath().length()));
             if (!loaded) {
                 throw new IOException("Could not load " + url.getPath());
             }
         }
     }
 
-    /** Scan the source image and place blue squares around any faces detected. 
-
-     *  @param source The source image to scan for faces.
-     *  @param destination Not used here.  Required by superclass.
-     *  @return The image with blue squares around any faces.
+    /** Apply the specified filter to the source image. 
+     *  @param source The source image to transform.
+     *  @param filterName "eyes" or "faces".
+     *  @return The transformed image.
      */
-    @Override
-    public BufferedImage filter(BufferedImage source, BufferedImage destination) {
+   public BufferedImage filter(BufferedImage source, String filterName) 
+           throws IllegalActionException {
 
-        // Get OpenCV image.
-        Mat inputImage = bufferedImage2Mat(source);
-        
-        Mat converted = new Mat();
-        Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
-
-        // Detect faces in image.
-        Rect[] faceRectangles;
-        try {
-            faceRectangles = detectFaces(converted);
-        } catch (IOException ex) {
-            // The super class throws no exceptions, so we can't throw IOException here.
-            throw new RuntimeException(ex);
-        }
-
-        // Draw rectangles around each detected face.
-        for (int i= 0; i < faceRectangles.length; i++) {
-            Rect rect = faceRectangles[i];
-            // Draw bounding rectangle around face.
-            Imgproc.rectangle(converted, new Point(rect.x,rect.y),
-                    new Point(rect.x+rect.width,rect.y+rect.height),new Scalar(255,0,0), 2);
-        }
-
-        _facesDetected = faceRectangles.length;
-        _facesRectDetected = faceRectangles;
-
-        for(Rect rect : _facesRectDetected){
-          System.out.println(rect.toString());
-        }
-
-        return mat2BufferedImage(converted);
-
-    }
+       switch (filterName) {
+           case "eyes" : return _eyes.filter(source, null);
+           case "faces" : return _faces.filter(source,  null);
+           default: throw new IllegalActionException("ComputerVision: No filter found for " + filterName);
+       }
+   }
 
     /**
      * Convert a BufferedImage object to OpenCV's Mat representation.
@@ -280,7 +282,7 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         Imgproc.cvtColor(img, gray, Imgproc.COLOR_RGB2GRAY);
         
         MatOfRect faces = new MatOfRect();
-        _cascade.detectMultiScale(gray, faces, 1.1, 5, 0, new Size(_minFaceSize,_minFaceSize),
+        _faceCascade.detectMultiScale(gray, faces, 1.1, 5, 0, new Size(_minFaceSize,_minFaceSize),
                 new Size(_maxFaceSize,_maxFaceSize));
         Rect[] fbox = faces.toArray();
         return fbox;
@@ -332,12 +334,135 @@ public class FaceRecognizer extends AbstractBufferedImageOp {
         return "FaceRecognitionFilter";
     }
 
+    ///////////////////////////////////////////////////////////////////
+    ////                         inner classes                     ////
+    
+    /** A filter that detects eyes and faces. 
+     */
+    public class Eyes extends AbstractBufferedImageOp {
+        /** Detect eyes and faces in the source image. 
+         *  @param source The source image.
+         *  @param destination Not used here.  Required by superclass.
+         *  @return The image with squares around any eyes and faces.
+         */
+        @Override
+        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
+            // Get OpenCV image.
+            Mat inputImage = bufferedImage2Mat(src);
+            
+            Mat converted = new Mat();
+            Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
+
+            // Detect faces in image.
+            Rect[] faceRectangles;
+            try {
+                faceRectangles = detectFaces(converted);
+            } catch (IOException ex) {
+                // The super class throws no exceptions, so we can't throw IOException here.
+                throw new RuntimeException(ex);
+            }
+
+            // Draw rectangles around each detected face.
+            for (int i= 0; i < faceRectangles.length; i++) {
+                Rect rect = faceRectangles[i];
+                // Draw bounding rectangle around face.
+                Imgproc.rectangle(converted, new Point(rect.x,rect.y),
+                        new Point(rect.x+rect.width,rect.y+rect.height),new Scalar(255,0,0), 2);
+            }
+
+            _facesDetected = faceRectangles.length;
+            
+            for (int i = 0; i < _facesDetected; i++) {
+                Rect faceRect = faceRectangles[i];
+                int x = faceRect.x;
+                int y = faceRect.y;
+                int w = faceRect.width;
+                int h = faceRect.height;
+                Point p1 = new Point(x, y);
+                Point p2 = new Point(x+w,y+h);
+                
+                Scalar color = new Scalar(255,0,0);
+                Scalar gcolor = new Scalar(0,255,0);
+                
+                Imgproc.rectangle(converted, p1 , p2 , color ,2, 8, 0);
+                
+                Rect roiRect = new Rect(x,y,w,h) ;
+                Mat roi_gray = inputImage.submat(roiRect).clone();
+
+                Size s1 = new Size(0,0);
+                Size s2 = new Size(0,0);
+                
+                MatOfRect eyes = new MatOfRect();
+                
+                _eyeCascade.detectMultiScale(roi_gray, eyes, 1.2, 3, 0, s1, s2);
+                Rect[] eyeRectangles = eyes.toArray();
+                
+                for (int j = 0;j < eyeRectangles.length; j++){
+                    Rect eyeRect = eyeRectangles[j];
+                    p1 = new Point(x+eyeRect.x,y+eyeRect.y);
+                    p2 = new Point(x+eyeRect.x+eyeRect.width,y+eyeRect.y+eyeRect.height);
+
+                    Imgproc.rectangle(converted, p1 , p2 , gcolor ,2, 8, 0);
+                }
+            }
+            
+            return mat2BufferedImage(converted);
+        }
+    }
+    
+    /** A filter that detects faces. 
+     */
+    public class Faces extends AbstractBufferedImageOp {
+        /** Detect eyes and faces in the source image. 
+         *  @param source The source image.
+         *  @param destination Not used here.  Required by superclass.
+         *  @return The image with squares around any eyes and faces.
+         */
+        @Override
+        public BufferedImage filter(BufferedImage src, BufferedImage dest) {
+            // Get OpenCV image.
+            Mat inputImage = bufferedImage2Mat(src);
+            
+            Mat converted = new Mat();
+            Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
+
+            // Detect faces in image.
+            Rect[] faceRectangles;
+            try {
+                faceRectangles = detectFaces(converted);
+            } catch (IOException ex) {
+                // The super class throws no exceptions, so we can't throw IOException here.
+                throw new RuntimeException(ex);
+            }
+
+            // Draw rectangles around each detected face.
+            for (int i= 0; i < faceRectangles.length; i++) {
+                Rect rect = faceRectangles[i];
+                // Draw bounding rectangle around face.
+                Imgproc.rectangle(converted, new Point(rect.x,rect.y),
+                        new Point(rect.x+rect.width,rect.y+rect.height),new Scalar(255,0,0), 2);
+            }
+
+            _facesDetected = faceRectangles.length;
+            
+            return mat2BufferedImage(converted);
+        }
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
     
+    /** The eye recognition classifier.  */
+    private CascadeClassifier _eyeCascade;
+    
+    /** Transform to detect eyes. */
+    private Eyes _eyes;
+    
     /** The face recognition classifier.  */
-    private CascadeClassifier _cascade;
+    private CascadeClassifier _faceCascade;
+    
+    /** Transform to detect faces.  */
+    private Faces _faces;
     
     /** Indicator that motion has been detected by the filter operation. */
     private int _facesDetected = 0;
