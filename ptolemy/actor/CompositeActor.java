@@ -278,6 +278,8 @@ FiringsRecordable {
         _director = null;
         Set<Executable> oldPiggybacks = _piggybacks;
         _piggybacks = null;
+        LinkedList<ActorFiringListener> oldActorFiringListeners = _actorFiringListeners;
+        _actorFiringListeners = null;
 
         CompositeActor newObject = (CompositeActor) super.clone(workspace);
 
@@ -286,6 +288,7 @@ FiringsRecordable {
         _publisherRelations = oldPublisherRelations;
         _director = oldDirector;
         _piggybacks = oldPiggybacks;
+        _actorFiringListeners = oldActorFiringListeners;
 
         newObject._actorFiringListeners = null;
         newObject._notifyingActorFiring = false;
