@@ -58,15 +58,27 @@ try {
 }
 var filter = new Filter();
 
-var Rect;
-try {
-    Rect = Java.type('org.opencv.core.Rect');
-} catch (e) {
-    throw new Error('Could not find the org.opencv.core.Rect class, perhaps OpenCV was not installed. The OpenCV API can be downloaded from http://opencv.org.  Under Mac OS X, try:  :sudo port install opencv +python27 +java".See org/ptolemy/opencv/package.html for installation help.');
-}
-
 ////////////////////////////////////////////////////////////
 //// Functions provided in this module.
+
+/** Return the detected faces rectangles
+ *  @return An array of detected faces rectangles.
+ */
+exports.faceRectangles = function () {
+    var rects = filter.getFaceRectangles();
+    for (var i = rects.length - 1; i >= 0; i--) {
+        var parsedObject = rects[i].toString().replace('{', '').replace('}', '').replace('x', ',').split(',');
+        var rectangle = {
+            x: Number(parsedObject[0].trim()),
+            y: Number(parsedObject[1].trim()),
+            width: Number(parsedObject[2].trim()),
+            height: Number(parsedObject[3].trim()),
+        };
+        rectangles = [rectangle];
+    }
+
+    return rectangles;
+};
 
 /** Detect faces in an image and return the image with squares around the faces.
  *
@@ -82,7 +94,7 @@ try {
  *  @param callback The callback to invoke when the result image is ready.
  *   Needed since there may be a delay if the input image is loaded from a file.
  */
-exports.filter = function (image, options, callback) {
+exports.filter = function (image, transform, options, callback) {
     image = image.asAWTImage();
     if (options) {
         for (var optionName in options) {
@@ -95,9 +107,14 @@ exports.filter = function (image, options, callback) {
         }
     }
     // The second (null) argument declines to give a destination image.
-    var result = filter.filter(image, null);
+    var result = filter.filter(image, transform);
     callback(result);
 };
+
+
+/** A list of available filters.
+ */
+exports.filters = ['eyes', 'faces'];
 
 /** Return number of detected faces
  *  @return The number of detected faces.
@@ -106,22 +123,3 @@ exports.numberOfFaces = function () {
     return filter.getFaceCount();
 };
 
-/** Return the detected faces rectangles
- *  @return An array of detected faces rectangles.
- */
-exports.faceRectangles = function () {
-    var rectangles = [];
-    var rects = filter.getFaceRectangles();
-    for (var i = rects.length - 1; i >= 0; i--) {
-        var parsedObject = rects[i].toString().replace('{', '').replace('}', '').replace('x', ',').split(',');
-        var rectangle = {
-            x: Number(parsedObject[0].trim()),
-            y: Number(parsedObject[1].trim()),
-            width: Number(parsedObject[2].trim()),
-            height: Number(parsedObject[3].trim()),
-        };
-        rectangles = [rectangle];
-    }
-
-    return rectangles;
-};
