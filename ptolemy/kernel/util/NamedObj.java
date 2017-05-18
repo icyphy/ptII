@@ -544,6 +544,32 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
 
                     try {
                         newParameter.setContainer(newObject);
+                        // PortParameters are
+                        // AbstractInitializableParameters that end up
+                        // adding HierarchyListeners to the
+                        // initializable container of the actor.  This
+                        // results in a memory leak, so we remove
+                        // parameters that are HierarchyListeners.
+                        // See https://projects.ecoinformatics.org/ecoinfo/issues/7190
+                        if (newParameter instanceof HierarchyListener) {
+                            if (newParameter.getContainer() != null) {
+                                NamedObj newContainerContainer = newParameter.getContainer().getContainer();
+                                NamedObj oldContainer = getContainer();
+                                // FIXME: This is probably a serious
+                                // problem that the container of the
+                                // container of the parameter in the
+                                // clone is the same as the container
+                                // of original master NamedObj.  Part
+                                // of the issue here is that NamedObj
+                                // does not have setContainer().  What
+                                // we would really like to do is to
+                                // set the container to null during
+                                // cloning.
+                                if (newContainerContainer == oldContainer) {
+                                    newContainerContainer.removeHierarchyListener((HierarchyListener)newParameter);
+                                }
+                            }
+                        }
                     } catch (KernelException exception) {
                         throw new CloneNotSupportedException(
                                 "Failed to clone attribute "
