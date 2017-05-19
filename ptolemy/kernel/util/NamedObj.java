@@ -565,7 +565,7 @@ DebugListener, Derivable, MoMLExportable, ModelErrorHandler, Moveable {
                                 // we would really like to do is to
                                 // set the container to null during
                                 // cloning.
-                                if (newContainerContainer == oldContainer) {
+                                if (newContainerContainer != null && newContainerContainer == oldContainer) {
                                     newContainerContainer.removeHierarchyListener((HierarchyListener)newParameter);
                                 }
                             }
