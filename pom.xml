@@ -35,7 +35,10 @@ $Id$
     <module>org.ptolemy.core.test</module>
     <module>org.ptolemy.core.test.actor</module>
     <module>org.ptolemy.testsupport</module>
-    <module>org.terraswarm.accessor</module>
+
+    <!-- exclude org.terraswarm.accessor for now
+         <module>org.terraswarm.accessor</module>
+    -->
     <!-- org.vertx.core is not a module
     <module>org.vertx.core</module>
     -->
