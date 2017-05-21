@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2016 The Regents of the University of California.
+# @Copyright (c) 2016-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -56,6 +56,7 @@ JSRCS = \
 	OpenCVLoader.java
 
 OTHER_FILES_TO_BE_JARED = \
+	haarcascade_eye.xml \
 	haarcascade_frontalface_default.xml
 
 # Files that are not compiled, such as .tcl and .itcl files.
