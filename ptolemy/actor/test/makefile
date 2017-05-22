@@ -47,6 +47,7 @@ TCL_SRCS = \
 
 JSRCS = \
 	IdentityActor.java \
+	ManagerLeak.java \
 	RemoveIOPortEventListener.java \
 	TestAbstractReceiver.java \
 	TestActor.java \
@@ -85,7 +86,7 @@ JSIMPLE_TESTS = \
 JGRAPHICAL_TESTS = \
 	dummy.tcl
 
-EXTRA_SRCS =	$(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
+EXTRA_SRCS =	ManagerLeak.tcl $(TCL_SRCS) $(JSRCS) $(JSIMPLE_TESTS) #$(JGRAPHICAL_TESTS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.

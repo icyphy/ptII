@@ -145,7 +145,6 @@ public class Manager extends NamedObj implements Runnable {
      */
     public Manager() {
         super();
-        _registerShutdownHook();
     }
 
     /** Construct a manager in the default workspace with the given name.
@@ -157,7 +156,6 @@ public class Manager extends NamedObj implements Runnable {
      */
     public Manager(String name) throws IllegalActionException {
         super(name);
-        _registerShutdownHook();
     }
 
     /** Construct a manager in the given workspace with the given name.
@@ -173,7 +171,6 @@ public class Manager extends NamedObj implements Runnable {
     public Manager(Workspace workspace, String name)
             throws IllegalActionException {
         super(workspace, name);
-        _registerShutdownHook();
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -351,6 +348,11 @@ public class Manager extends NamedObj implements Runnable {
 
         try {
             try {
+                // Register the shutdown hook each time we register as
+                // opposed to each time a Manager is instantiated.
+                // See
+                // https://projects.ecoinformatics.org/ecoinfo/issues/7189
+                _registerShutdownHook();
                 initialize();
                 _afterInitTime = System.currentTimeMillis();
                 if (_afterInitTime - startTime > minimumStatisticsTime) {
@@ -447,6 +449,10 @@ public class Manager extends NamedObj implements Runnable {
                     _notifyListenersOfSuccessfulCompletion();
                 }
 
+                // Remove the _shutdownThread.
+                // See https://projects.ecoinformatics.org/ecoinfo/issues/7189
+                _disposeOfThreads();
+
                 // Handle throwable with exception handlers,
                 // if there are any.
                 if (initialThrowable != null) {
@@ -542,7 +548,7 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         if (_state == IDLE) {
-            if (_thread != null) {
+            if (_thread != null || _shutdownThread != null) {
                 _disposeOfThreads();
             }
             return;
@@ -1254,8 +1260,12 @@ public class Manager extends NamedObj implements Runnable {
             // If running tried to load in some native code using JNI
             // then we may get an Error here
             notifyListenersOfThrowable(throwable);
-        } finally {
-            _disposeOfThreads();
+
+            // Used to call _disposeOfThreads() here, but now exeucte()
+            // calls it in its finally block.
+            // } finally {
+            //  _disposeOfThreads();
+            
         }
     }
 
