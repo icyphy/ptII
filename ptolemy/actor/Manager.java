@@ -1,6 +1,6 @@
 /* A Manager governs the execution of a model.
 
- Copyright (c) 1997-2016 The Regents of the University of California.
+ Copyright (c) 1997-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -548,9 +548,12 @@ public class Manager extends NamedObj implements Runnable {
         }
 
         if (_state == IDLE) {
-            if (_thread != null || _shutdownThread != null) {
-                _disposeOfThreads();
-            }
+            // Don't need to invoke _disposeOfThreads()
+            // here because it is invoked in the finally clause
+            // of execute().
+            // if (_thread != null || _shutdownThread != null) {
+            //     _disposeOfThreads();
+            // }
             return;
         }
 
