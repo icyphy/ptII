@@ -1,6 +1,6 @@
 # Makefile to create tar files for distribution
 # Version: $Id$
-# Copyright (c) 1994-2016 The Regents of the University of California.
+# Copyright (c) 1994-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -3312,7 +3312,15 @@ indent_all:
 IZPACKDIR=$(PTIIHOME)/vendors/izpack
 IZPACK_COMPILE=$(IZPACKDIR)/bin/compile
 IZPACK_COMMAND=IZPACK_OPTS=-Djava.util.logging.config.file=$(GENDIR)/izpackLogging.txt sh "$(IZPACK_COMPILE)" -o
-IZPACK_JAR=izpack-dist-5.0.10.jar
+
+# IzpackSetup creates a link for accessors/web/node_modules/@accessors-hosts
+# To build it use: make PTIIHOME=$PTII IzpackSetup.class
+# See https://izpack.atlassian.net/wiki/display/IZPACK/Executing+a+Java+Class+with+ProcessPanel
+IzpackSetup.class: IzpackSetup.java
+	javac -classpath `ls -1 $(IZPACKDIR)/lib/izpack-api-*.jar | head -1 | awk '{print $$1}'`:`ls -1 $(IZPACKDIR)/lib/izpack-panel-*jar | head -1 | awk '{print $$1}'` IzpackSetup.java
+
+izpacksetup.jar: IzpackSetup.class
+	$(JAR) cf $@ $<
 
 # If you get "makefile:2660: *** target pattern contains no `%'.
 # Stop.", then the problem is that $PTII has a semicolon in it and you
@@ -4303,4 +4311,5 @@ test_capeCodeNonGUI.tar.gz: capeCodeNonGUI.tar.gz
 	cp $(PTII)/ptolemy/actor/lib/jjs/modules/discovery/test/auto/DiscoveryJSStdout.xml /tmp/capeCodeNonGUI
 	# Running DiscoveryJSStdout.xml, this could take a minute or two.
 	(cd /tmp/capeCodeNonGUI; ./capeCodeNonGUI ./DiscoveryJSStdout.xml)
+
 
