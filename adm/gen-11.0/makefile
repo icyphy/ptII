@@ -1127,6 +1127,13 @@ src_jar: #$(PTII_SRC)
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign2-software.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/ptIIdesign3-domains.pdf
 	rm -f src_jar/ptII$(VERSION)/doc/design/visualsense.pdf
+	@echo "About to clean up node_modules in src_jar/ptII$(VERSION)"
+	(cd src_jar/ptII$(VERSION); rm -rf node_modules; mkdir -p node_modules; if [ ! -d node_modules/@terraswarm/jsdoc ]; then npm install @terraswarm/jsdoc; fi)
+	rm -rf src_jar/ptII$(VERSION)/org/terraswarm/accessor/accessors/node_modules
+	rm -rf src_jar/ptII$(VERSION)/org/terraswarm/accessor/accessors/web/node_modules
+	mkdir src_jar/ptII$(VERSION)/org/terraswarm/accessor/accessors/web/node_modules
+	(cd src_jar/ptII$(VERSION)/org/terraswarm/accessor/accessors/web/node_modules; ln -s ../hosts @accessors-hosts)
+	@echo "About to run $(FINDCLEAN)"
 	(cd src_jar/ptII$(VERSION); $(FINDCLEAN))
 	(cd src_jar/ptII$(VERSION); rm -rf `cat ../../src.ex`)
 	echo "About to remove unneeded sources from `pwd`"; \
@@ -3355,7 +3362,7 @@ cleanSrc:
 BOOK_PDF=PtolemyII_DigitalV1_02.pdf
 PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # 32 bit IzPack installer
-setup_jar: $(PTSETUP).jar
+setup_jar: $(PTSETUP).jar izpacksetup.jar
 $(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF) jre32
 	@echo "#"
 	@echo "# Now building target setup_jar (PTSETUP).jar: $@"
@@ -3376,7 +3383,7 @@ $(PTSETUP)_64.xml: $(PTSETUP).xml
 	sed 's/ShellLink.dll/ShellLink_x64.dll/' \
 	     $^ > $@
 
-setup64_jar: $(PTSETUP)_64.jar
+setup64_jar: $(PTSETUP)_64.jar izpacksetup.jar
 $(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe $(PTIIDIST)/bin/vergil cleanSrc jre64
 	@echo "#"
 	@echo "# Now building target setup64_jar: PTSETUP_64.jar: $@"
@@ -3406,7 +3413,7 @@ $(CAPECODE_SETUP_64).xml: $(CAPECODE_SETUP).xml
 	     $^ > $@
 
 capecode_setup_64_jar: $(CAPECODE_SETUP_64).jar
-$(CAPECODE_SETUP_64).jar: $(CAPECODE_SETUP_64).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/capecode.exe cleanSrc jre64
+$(CAPECODE_SETUP_64).jar: $(CAPECODE_SETUP_64).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/capecode.exe cleanSrc jre64 izpacksetup.jar
 	@echo "#"
 	@echo "# Now building target capecode_setup_64_jar: (CAPECODE_SETUP_64).jar: $@"
 	@echo "# `date`"

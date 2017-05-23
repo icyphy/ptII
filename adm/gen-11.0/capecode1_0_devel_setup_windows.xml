@@ -98,6 +98,7 @@
         <res src="ProcessPanel.Spec.xml" id="ProcessPanel.Spec.xml"/>
     </resources>
     
+    <jar src="izpacksetup.jar" stage="install"/>
 
     <!-- 
         The panels section.
