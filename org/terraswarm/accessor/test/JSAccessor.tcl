@@ -57,7 +57,7 @@ test JSAccessor-1.1 {Test out importing of accessors} {
     # This is similar to ptolemy/actor/lib/fmi/test/FMUImport.tcl
 
     set e1 [sdfModel 5]
-    set accessorFile [java::call ptolemy.util.FileUtilities nameToFile {$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml} [java::null]]
+    set accessorFile [java::call ptolemy.util.FileUtilities nameToFile {$CLASSPATH/org/terraswarm/accessor/accessors/web/test/TestAccessor.js} [java::null]]
     set urlSpec [$accessorFile getCanonicalPath]
 
     # This call to accessorToMoML will checkout or update the accessor repo and run JSDoc
@@ -65,48 +65,44 @@ test JSAccessor-1.1 {Test out importing of accessors} {
 
     java::call org.terraswarm.accessor.JSAccessor handleAccessorMoMLChangeRequest $e1 $urlSpec $e1 $changeRequestText 100 100
 
-    set accessor [$e1 getEntity {Accessor}]
+    set accessor [$e1 getEntity {TestAccessor}]
     set moml [$accessor exportMoML]
-    regsub {value=".*/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml"} $moml {value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml"} moml2
+    regsub {value=".*/org/terraswarm/accessor/accessors/web/test/TestAccessor.js"} $moml {value="$CLASSPATH/org/terraswarm/accessor/accessors/test/TestAccessor.js"} moml2
     # Deal with backslashes in MS-DOS-based systems.  Why we need to do this in this day and age is beyond me.
-    regsub {value=".*\\org\\terraswarm\\accessor\\test\\auto\\accessors\Accessor1.xml"} $moml2 {value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml"} moml3
+    regsub {value=".*\\org\\terraswarm\\accessor\\accessors\\test\\TestAccessor.js"} $moml2 {value="$CLASSPATH/org/terraswarm/accessor/accessors/test/TestAccessor.js"} moml3
     list $moml3
-} {{<entity name="Accessor" class="org.terraswarm.accessor.JSAccessor">
-    <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;	exports.fire = function() {&#10;	  var stringValue = this.get('stringInput');&#10;	  this.send('stringOutput', stringValue);&#10;	  var numericValue = this.get('numericInput');&#10;	  this.send('numericOutput', numericValue);&#10;	  stringValue = this.get('stringInputWithoutValue');&#10;	  this.send('stringOutputWithoutValue', stringValue);&#10;	  this.send('inputIsAbsent', stringValue == null);&#10;	}&#10;	// &#10;  ">
+} {{<entity name="TestAccessor" class="org.terraswarm.accessor.JSAccessor">
+    <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Test accessor with various input and output types and handlers.&#10;//&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Test accessor with various input and output types and handlers.&#10; *  This accessor is designed to be instantiable on any host, including&#10; *  the common host, which does not implement the require() function&#10; *  nor provide any mechanism for loading accessors.&#10; *&#10; *  @accessor test/TestAccessor&#10; *  @parameter p A parameter with default value 42.&#10; *  @input untyped An untyped input that will accept any JavaScript object.&#10; *  @input numeric A numeric input.&#10; *  @input boolean A boolean input.&#10; *  @output typeOfUntyped Produces the type (a string) of the input named 'untyped'.&#10; *  @output jsonOfUntyped Produces a JSON representation of the input named 'untyped',&#10; *   created using JSON.toString().&#10; *  @output numericPlusP Produces the value of the 'numeric' input plus 'p'.&#10; *  @output negation Produces the negation of the 'boolean' input.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.input('untyped'); // Untyped input.&#10;    this.input('numeric', {&#10;        'type': 'number',&#10;        'value': 0&#10;    }); // Numeric input.&#10;    this.input('boolean', {&#10;        'type': 'boolean'&#10;    }); // Boolean input.&#10;    this.output('typeOfUntyped', {&#10;        'type': 'string'&#10;    }); // Type of untyped input.&#10;    this.output('jsonOfUntyped', {&#10;        'type': 'string'&#10;    }); // JSON of untyped input.&#10;    this.output('numericPlusP', {&#10;        'type': 'number'&#10;    }); // Numeric input plus p.&#10;    this.output('negation', {&#10;        'type': 'boolean'&#10;    }); // Negation of boolean input.&#10;    this.parameter('p', {&#10;        'value': 42&#10;    }); // Untyped, with numeric value.&#10;};&#10;&#10;// Base class variable that is visible to subclasses through inheritance.&#10;exports.variable = 'hello';&#10;&#10;exports.initialize = function () {&#10;    // Respond to any input by updating them all.&#10;    this.addInputHandler('untyped', function () {&#10;        this.send('typeOfUntyped', typeof this.get('untyped'));&#10;        // Refer to the function using 'this.exports' rather than 'exports'&#10;        // to allow an override. Note that we choose here to invoke formatOutput&#10;        // with 'this' bound to 'this.exports'.&#10;        this.send('jsonOfUntyped', this.exports.formatOutput(this.get('untyped')));&#10;    });&#10;    this.addInputHandler('numeric', function () {&#10;        this.send('numericPlusP', this.get('numeric') + this.getParameter('p'));&#10;    });&#10;    this.addInputHandler('boolean', function () {&#10;        this.send('negation', !this.get('boolean'));&#10;    });&#10;};&#10;&#10;/** Define a function that can be overridden in subclasses. */&#10;exports.formatOutput = function (value) {&#10;    return 'JSON for untyped input: ' + JSON.stringify(value);&#10;};&#10;&#10;exports.fire = function () {&#10;    console.log('TestAccessor.fire() invoked.');&#10;};&#10;">
         <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
             <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
             </property>
         </property>
     </property>
-    <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/Accessor1.xml">
+    <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/accessors/test/TestAccessor.js">
     </property>
     <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-        <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&#10;    &#10;This is a test accessor used to test Import--&gt;Accessor.&#10;It also tests handling of absent inputs and sending null to an output.&#10;	&#10;  ">
+        <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor with various input and output types and handlers.&#10; This accessor is designed to be instantiable on any host, including&#10; the common host, which does not implement the require() function&#10; nor provide any mechanism for loading accessors.&lt;/p&gt;">
         </property>
         <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
         </property>
-        <property name="version" class="ptolemy.kernel.util.StringAttribute" value="0.1">
+        <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
         </property>
-        <property name="error (port)" class="ptolemy.kernel.util.StringAttribute" value="The error message if an error occurs. If this port is not connected and an error occurs, then an exception is thrown instead.">
+        <property name="untyped (port)" class="ptolemy.kernel.util.StringAttribute" value="An untyped input that will accept any JavaScript object.">
         </property>
-        <property name="stringInput (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="String input.">
+        <property name="numeric (port)" class="ptolemy.kernel.util.StringAttribute" value="A numeric input.">
         </property>
-        <property name="numericInput (port-parameter)" class="ptolemy.kernel.util.StringAttribute" value="Numeric input.">
+        <property name="boolean (port)" class="ptolemy.kernel.util.StringAttribute" value="A boolean input.">
         </property>
-        <property name="stringInputWithoutValue (port)" class="ptolemy.kernel.util.StringAttribute" value="String input without a value attribute.">
+        <property name="typeOfUntyped (port)" class="ptolemy.kernel.util.StringAttribute" value="Produces the type (a string) of the input named 'untyped'.">
         </property>
-        <property name="stringOutput (port)" class="ptolemy.kernel.util.StringAttribute" value="String output.">
+        <property name="jsonOfUntyped (port)" class="ptolemy.kernel.util.StringAttribute" value="Produces a JSON representation of the input named 'untyped',&#10;  created using JSON.toString().">
         </property>
-        <property name="numericOutput (port)" class="ptolemy.kernel.util.StringAttribute" value="Numeric output.">
+        <property name="numericPlusP (port)" class="ptolemy.kernel.util.StringAttribute" value="Produces the value of the 'numeric' input plus 'p'.">
         </property>
-        <property name="stringOutputWithoutValue (port)" class="ptolemy.kernel.util.StringAttribute" value="String output for input without a value field.">
+        <property name="negation (port)" class="ptolemy.kernel.util.StringAttribute" value="Produces the negation of the 'boolean' input.">
         </property>
-        <property name="inputIsAbsent (port)" class="ptolemy.kernel.util.StringAttribute" value="Output used to indicate that an input is missing.">
+        <property name="p (parameter)" class="ptolemy.kernel.util.StringAttribute" value="A parameter with default value 42.">
         </property>
-    </property>
-    <property name="stringInput" class="ptolemy.actor.parameters.PortParameter" value="&quot;Foo&quot;">
-    </property>
-    <property name="numericInput" class="ptolemy.actor.parameters.PortParameter" value="0">
     </property>
     <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
         <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
@@ -116,39 +112,39 @@ test JSAccessor-1.1 {Test out importing of accessors} {
     </property>
     <property name="_location" class="ptolemy.kernel.util.Location" value="{100.0, 100.0}">
     </property>
-    <port name="stringInput" class="ptolemy.actor.parameters.ParameterPort">
+    <port name="untyped" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
     </port>
-    <port name="numericInput" class="ptolemy.actor.parameters.ParameterPort">
+    <port name="numeric" class="ptolemy.actor.parameters.ParameterPort">
         <property name="input"/>
         <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
     </port>
-    <port name="stringInputWithoutValue" class="ptolemy.actor.TypedIOPort">
+    <port name="boolean" class="ptolemy.actor.TypedIOPort">
         <property name="input"/>
-        <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
     </port>
-    <port name="stringOutput" class="ptolemy.actor.TypedIOPort">
+    <port name="typeOfUntyped" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
     </port>
-    <port name="numericOutput" class="ptolemy.actor.TypedIOPort">
+    <port name="jsonOfUntyped" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_type" class="ptolemy.actor.TypeAttribute" value="double">
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
     </port>
-    <port name="stringOutputWithoutValue" class="ptolemy.actor.TypedIOPort">
+    <port name="numericPlusP" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_type" class="ptolemy.actor.TypeAttribute" value="string">
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
     </port>
-    <port name="inputIsAbsent" class="ptolemy.actor.TypedIOPort">
+    <port name="negation" class="ptolemy.actor.TypedIOPort">
         <property name="output"/>
-        <property name="_type" class="ptolemy.actor.TypeAttribute" value="boolean">
+        <property name="defaultValue" class="ptolemy.data.expr.Parameter">
         </property>
     </port>
 </entity>
