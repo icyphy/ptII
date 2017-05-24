@@ -699,16 +699,13 @@ clearTimeout',
         this.initialize = function () {
             var thiz = this;
             // Clearing all timers before initializing
-            Object.keys(this.timers).forEach(function(key) {
-                thiz.clearIntervalDeterministic(key);
-                thiz.clearTimeoutDeterministic(key);
-            });
-            this.timers = {};
-
+            // thiz.clearTimers();
+            
             if (this.containedAccessors && this.containedAccessors.length > 0) {
                 this.assignPriorities();
                 this.eventQueue = [];
                 for (var i = 0; i < this.containedAccessors.length; i++) {
+                    //console.log('Priority of: ' + this.containedAccessors[i].accessorName + ' is: ' + this.containedAccessors[i].priority);
                     if (this.containedAccessors[i].initialize) {
                         this.containedAccessors[i].initialize();
                     }
@@ -1035,6 +1032,78 @@ Accessor.prototype.assignImpliedPrioritiesUpstream = function (accessor, cyclePr
     }
 };
 
+/** Delete the delayed callback identifier from the timers list. This function may be
+ *  called by the deterministic temporal semantics module, in order to remove from the
+ *  the timers attribute, the identifiers of the callbacks that already executed. 
+ *  The callback identifier is given as parameter. 
+ *  
+ *  @param cbId this parameter is required. It is the cbIndentifier to remove from 
+ *    timers attribute.
+ */
+Accessor.prototype.cleanTimersAfterExecution = function(cbId) {
+    var thiz = this;
+    delete(thiz.timers[cbId]);
+}
+
+/** Delete the delayed periodic callback using the deterministic temporal semantics.
+ *  The callback identifier is given as parameter. It is first searched in the timers 
+ *  list. If found, it is cleared and removed from the accessor timers
+ *  
+ *  @param cbId this parameter is required. It is the cbIndentifier.
+ */
+Accessor.prototype.clearIntervalDeterministic = function(cbId) {
+    var thiz = this;
+    if (thiz.timers[cbId]) {
+        if (deterministicTemporalSemantics) {
+            deterministicTemporalSemantics.clearIntervalDet(Number(cbId));
+        } else {
+            clearInterval(cbId);
+        }
+        delete(thiz.timers[cbId]);
+    }
+}
+
+/** Delete the delayed one time callback using the deterministic temporal semantics.
+ *  The callback identifier is given as parameter. It is first serached in the timers 
+ *  list. If found, it is cleared and removed from the accessor timers
+ *  
+ *  @param cbId this parameter is required. It is the cbIndentifier.
+ */
+Accessor.prototype.clearTimeoutDeterministic = function(cbId) {
+    var thiz = this;
+    if (thiz.timers[cbId]) {
+        if (deterministicTemporalSemantics) {
+            deterministicTemporalSemantics.clearTimeoutDet(Number(cbId));
+        } else {
+            clearTimeout(cbId);
+        }
+        delete(thiz.timers[cbId]);
+    }
+}
+
+/** Clears all the timers by removing them from the callbackQueue and the
+ *  delayedCallbacks object, and then setting this.timers to the empty object. 
+ */
+Accessor.prototype.clearTimers = function() {
+    var thiz = this;
+    
+    // Parse all timers to remove them from the callbackQueue and the
+    // delayedCallbacks, if deterministicTemporalSemantics is defined 
+    if (deterministicTemporalSemantics) {
+        Object.keys(thiz.timers).forEach(function(key) {
+            deterministicTemporalSemantics.clearTimeoutDet(Number(key));
+            deterministicTemporalSemantics.clearIntervalDet(Number(key));
+        });
+    } else {
+        Object.keys(thiz.timers).forEach(function(key) {
+            clearTimeout(key);
+            clearInterval(key);
+        });
+    }
+    thiz.timers = {};
+}
+
+
 /** Connect the specified inputs and outputs.
  *  There are four forms of this function:
  *
@@ -1130,56 +1199,6 @@ Accessor.prototype.connect = function (a, b, c, d) {
         }
     }
 };
-
-/** Delete the delayed periodic callback using the deterministic temporal semantics.
- *  The callback identifier is given as parameter. It is first searched in the timers 
- *  list. If found, it is cleared and removed from the accessor timers
- *  
- *  @param cbId this parameter is required. It is the cbIndentifier.
- */
-Accessor.prototype.clearIntervalDeterministic = function(cbId) {
-    var thiz = this;
-    if (thiz.timers[cbId]) {
-        deterministicTemporalSemantics.clearIntervalDet(Number(cbId));
-        delete(thiz.timers[cbId]);
-    }
-}
-
-/** Delete the delayed one time callback using the deterministic temporal semantics.
- *  The callback identifier is given as parameter. It is first serached in the timers 
- *  list. If found, it is cleared and removed from the accessor timers
- *  
- *  @param cbId this parameter is required. It is the cbIndentifier.
- */
-Accessor.prototype.clearTimeoutDeterministic = function(cbId) {
-    var thiz = this;
-    if (thiz.timers[cbId]) {
-        deterministicTemporalSemantics.clearTimeoutDet(Number(cbId)); 
-        delete(thiz.timers[cbId]);
-    }
-}
-
-/** Clears all the timers by removing them from the callbackQueue and the
- *  delayedCallbacks object, and then setting this.timers to the empty object. 
- */
-Accessor.prototype.clearTimers = function() {
-    var thiz = this;
-    
-    // Parse all timers to remove them from the callbackQueue and the
-    // delayedCallbacks, if deterministicTemporalSemantics is defined 
-    if (deterministicTemporalSemantics) {
-        Object.keys(thiz.timers).forEach(function(key) {
-            deterministicTemporalSemantics.clearTimeoutDet(Number(key));
-            deterministicTemporalSemantics.clearIntervalDet(Number(key));
-        });
-    } else {
-        Object.keys(thiz.timers).forEach(function(key) {
-            clearTimeout(key);
-            clearInterval(key);
-        });
-    }
-    thiz.timers = {};
-}
 
 /** Disconnects the specified inputs and outputs.
  *  This function is buit from connect() function. Therefore, it uses the same
@@ -1591,7 +1610,8 @@ Accessor.prototype.provideInput = function (name, value) {
         // If there is a container accessor, then put this accessor in its
         // event queue for handling in its fire() function.
         if (this.container) {
-            this.container.scheduleEvent(this);
+            // Pass the priority of this accessor to schedule the event
+            this.container.scheduleEvent(this, this.priority);
         }
 
         // If the input is connected on the inside, then provide the same input
@@ -1693,7 +1713,7 @@ Accessor.prototype.react = function (name) {
 
     if (name) {
         // Handling a specific input.
-        //console.log("commonHost.js: react(" + name + "): Handling a specific input.");
+        // console.log("commonHost.js: react(" + name + "): Handling a specific input.");
         invokeSpecificHandler(name);
     } else {
         // No specific input has been given.
@@ -2125,8 +2145,10 @@ Accessor.prototype.require = function () {
  *  there is already such a pending reaction request.
  *
  *  @param accessor The accessor.
+ *  @param priority an optional argument passing the priority for scheduling the reaction
  */
-Accessor.prototype.scheduleEvent = function (accessor) {
+Accessor.prototype.scheduleEvent = function (accessor, priority) {
+    // console.log('Accessor '+this.accessorName+' is scheduling an event with priority: '+priority);
     var thiz = this.root;
     var queue = thiz.eventQueue;
 
@@ -2135,15 +2157,37 @@ Accessor.prototype.scheduleEvent = function (accessor) {
     // If there is a container accessor, then put this accessor in its
     // event queue for handling in its react() function.
     if (thiz.container) {
-        thiz.container.scheduleEvent(this);
+        if (priority) {
+            thiz.container.scheduleEvent(this, priority);
+        } else {
+            thiz.container.scheduleEvent(this, thiz.priority);
+        }
     } else {
         // The container has no container, so request a reaction if one
         // has not already been requested.
         if (!thiz.reactRequestedAlready) {
             thiz.reactRequestedAlready = true;
-            thiz.setTimeoutDeterministic(function () {
-                thiz.react();
-            }, 0);
+            if (priority) {
+                if (deterministicTemporalSemantics) {
+                    thiz.setTimeoutDeterministic(function () {
+                        thiz.react();
+                    }, 0, undefined, priority);
+                } else {
+                    thiz.setTimeoutDeterministic(function () {
+                        thiz.react();
+                    }, 0);
+                }
+            } else {
+                if (deterministicTemporalSemantics) {
+                    thiz.setTimeoutDeterministic(function () {
+                        thiz.react();
+                    }, 0, undefined, thiz.priority);
+                } else {
+                    thiz.setTimeoutDeterministic(function () {
+                        thiz.react();
+                    }, 0);
+                }
+            } 
         }
     }
 
@@ -2201,6 +2245,7 @@ Accessor.prototype.scheduleEvent = function (accessor) {
  *  @param value The output value.
  */
 Accessor.prototype.send = function (name, value) {
+    // console.log(this.accessorName + ' is sending ' + value + ' on output: '+name);
     var thiz = this.root;
     var output = thiz.outputs[name];
     if (!output) {
@@ -2210,21 +2255,39 @@ Accessor.prototype.send = function (name, value) {
             throw new Error('send(name, value): No output or input named ' + name);
         }
         // Make the input available in the _next_ reaction.
-        thiz.setTimeoutDeterministic(function () {
-            thiz.provideInput(name, value);
-            // If this accessor has a container, then provideInput()
-            // above will take care of scheduling a future reaction.
-            // However, if it has no container, then no such reaction
-            // will be requested. Request that reaction here.
-            if (!thiz.container) {
-                if (!thiz.reactRequestedAlready) {
-                    thiz.reactRequestedAlready = true;
-                    thiz.setTimeoutDeterministic(function () {
-                        thiz.react();
-                    }, 0);
+        if (deterministicTemporalSemantics) {
+            thiz.setTimeoutDeterministic(function () {
+                thiz.provideInput(name, value);
+                // If this accessor has a container, then provideInput()
+                // above will take care of scheduling a future reaction.
+                // However, if it has no container, then no such reaction
+                // will be requested. Request that reaction here.
+                if (!thiz.container) {
+                    if (!thiz.reactRequestedAlready) {
+                        thiz.reactRequestedAlready = true;
+                        thiz.setTimeoutDeterministic(function () {
+                            thiz.react();
+                        }, 0, null, thiz.priority);
+                    }
                 }
-            }
-        }, 0);
+            }, 0, null, thiz.priority);
+        } else {
+            thiz.setTimeoutDeterministic(function () {
+                thiz.provideInput(name, value);
+                // If this accessor has a container, then provideInput()
+                // above will take care of scheduling a future reaction.
+                // However, if it has no container, then no such reaction
+                // will be requested. Request that reaction here.
+                if (!thiz.container) {
+                    if (!thiz.reactRequestedAlready) {
+                        thiz.reactRequestedAlready = true;
+                        thiz.setTimeoutDeterministic(function () {
+                            thiz.react();
+                        }, 0, null, thiz.priority);
+                    }
+                }
+            }, 0);
+        }
         return;
     }
     // If necessary, convert the value to the match the type.
@@ -2313,19 +2376,48 @@ Accessor.prototype.setDefaultInput = function (name, value) {
  *  @param callback the callback function
  *  @param timeout the timeout of the asynchronous execution
  *  @param llcd An optional argument for the labeled logical clock domain
+ *  @param priority An optional argument for the priority over other delayed callbacks. If not
+ *   provided, the value is defaulted to the accessor priority
+ *  @param errorCallback An optional argument that provides the callback to execute in case
+ *   the delayed callbacks execution raised an error. If not provided, the value is defaulted 
+ *   to the accessor error function prototype
+ *  @param cleanCallback An optional argument that provides the callback to execute after 
+ *   the delayed callbacks has executed successfully. If not provided, the value is defaulted 
+ *   to the accessor cleanTimersAfterExecution function prototype
  *  @return the unique Id of setTimeout call
  */
-Accessor.prototype.setIntervalDeterministic = function(callback, timeout, llcd) {
-    var thiz = this;
-    var tempo = deterministicTemporalSemantics.setIntervalDet(callback, timeout, llcd);
+Accessor.prototype.setIntervalDeterministic = function(callback, timeout, llcd, 
+        priority, errorCallback, cleanCallback) {
 
+    var thiz = this;
+    var tempo;
+    var _priority, _errorCallback, _cleanCallback ;
+        
+    // Set default values for priority, errorCallback and cleanCallback
+    if (!priority) {
+        _priority = thiz.priority;
+    } else {
+        _priority = priority;
+    }
+    if (!errorCallback) {
+        _errorCallback = thiz.error.bind(thiz);
+    } else {
+        _errorCallback = errorCallback;
+    }
+    if (!cleanCallback) {
+        _cleanCallback = thiz.cleanTimersAfterExecution.bind(thiz);
+    } else {
+        _cleanCallback = cleanCallback;
+    }
+    
+    tempo = deterministicTemporalSemantics.setIntervalDet(callback, timeout, llcd);//, _priority, _errorCallback, _cleanCallback);
+    
     // Add the delayed callback identifier to the Accessors timers
     // This is useful for resetting timers when wrapping up
     thiz.timers[tempo] = true;
 
     return tempo;
 }
-
 
 /** Set a parameter of the specified accessor to the specified value.
  *  @param name The name of the parameter to set.
@@ -2352,11 +2444,41 @@ Accessor.prototype.setParameter = function (name, value) {
  *  @param callback the callback function
  *  @param timeout the timeout of the asynchronous execution
  *  @param llcd An optional argument for the labeled logical clock domain
+ *  @param priority An optional argument for the priority over other delayed callbacks. If not
+ *   provided, the value is defaulted to the accessor priority
+ *  @param errorCallback An optional argument that provides the callback to execute in case
+ *   the delayed callbacks execution raised an error. If not provided, the value is defaulted 
+ *   to the accessor error function prototype
+ *  @param cleanCallback An optional argument that provides the callback to execute after 
+ *   the delayed callbacks has executed successfully. If not provided, the value is defaulted 
+ *   to the accessor cleanTimersAfterExecution function prototype
  *  @return the unique Id of setTimeout call
  */
-Accessor.prototype.setTimeoutDeterministic = function(callback, timeout, llcd) {
+Accessor.prototype.setTimeoutDeterministic = function(callback, timeout, llcd,
+        priority, errorCallback, cleanCallback) {
+
     var thiz = this;
-    var tempo = deterministicTemporalSemantics.setTimeoutDet(callback, timeout, llcd);
+    var tempo;
+    var _priority, _errorCallback, _cleanCallback ;
+
+
+    // Set default values for priority, errorCallback and cleanCallback
+    if (!priority) {
+        _priority = thiz.priority;
+    } else {
+        _priority = priority;
+    }
+    if (!errorCallback) {
+        _errorCallback = thiz.error.bind(thiz);
+    } else {
+        _errorCallback = errorCallback;
+    }
+    if (!cleanCallback) {
+        _cleanCallback = thiz.cleanTimersAfterExecution.bind(thiz);
+    } else {
+        _cleanCallback = cleanCallback;
+    }
+    tempo = deterministicTemporalSemantics.setTimeoutDet(callback, timeout, llcd);//, _priority, _errorCallback, _cleanCallback);
     
     // Add the delayed callback identifier to the Accessors timers
     // This is useful for resetting timers when wrapping up
@@ -2369,16 +2491,23 @@ Accessor.prototype.setTimeoutDeterministic = function(callback, timeout, llcd) {
  *  accessor and invoking wrapup() on it.
  */
 Accessor.prototype.stop = function () {
-    // console.log("commonHost.js: stop");
     // Schedule the stop event after finishing the already scheduled events
     var container = this;
     // Find the top-level container.
     while (container.container) {
         container = container.container;
     }
-    container.setTimeoutDeterministic(function() {
-        container.wrapup();
-    }, 0);
+    if (deterministicTemporalSemantics) {
+        container.setTimeoutDeterministic(function() {
+            // console.log('Executing stop');
+            container.wrapup();
+        }, 0, null, this.priority);
+    } else {
+        container.setTimeoutDeterministic(function() {
+            // console.log('Executing stop');
+            container.wrapup();
+        }, 0);
+    }
 };
 
 /** Stop execution of the enclosing swarmlet by finding the top-level
@@ -2388,9 +2517,15 @@ Accessor.prototype.stop = function () {
 Accessor.prototype.stopAt = function (timeout) {
     this.stopAtTime = timeout;
     var self = this;
-    self.setTimeoutDeterministic(function() {
-        self.stop();
-    }, timeout);
+    if (deterministicTemporalSemantics) {
+        self.setTimeoutDeterministic(function() {
+            self.stop();
+        }, timeout, null, self.priority);
+    } else {
+        self.setTimeoutDeterministic(function() {
+            self.stop();
+        }, timeout);
+    }
 };
 
 /** Updates the monitoring information (count, date/time of the first event and date/time
