@@ -208,7 +208,7 @@ public class FaceRecognizer {
        switch (filterName) {
            case "eyes" : return _eyes.filter(source, null);
            case "faces" : return _faces.filter(source,  null);
-           default: throw new IllegalActionException("ComputerVision: No filter found for " + filterName);
+           default: throw new IllegalActionException("FaceDetector: No filter found for " + filterName);
        }
    }
 
@@ -349,10 +349,16 @@ public class FaceRecognizer {
         public BufferedImage filter(BufferedImage src, BufferedImage dest) {
             // Get OpenCV image.
             Mat inputImage = bufferedImage2Mat(src);
-            
             Mat converted = new Mat();
-            Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
-
+            
+            // Webcam images are type 0: Type_INT_RGB.
+            // Images loaded from files are type 5: Type_3BYTE_BGR
+            // We might need to handle other types in the future.
+            if (src.getType() != 0) {
+            	Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
+            } else {
+            	converted = inputImage;
+            }
             // Detect faces in image.
             Rect[] faceRectangles;
             try {
@@ -422,9 +428,16 @@ public class FaceRecognizer {
         public BufferedImage filter(BufferedImage src, BufferedImage dest) {
             // Get OpenCV image.
             Mat inputImage = bufferedImage2Mat(src);
-            
             Mat converted = new Mat();
-            Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
+            
+            // Webcam images are type 0: Type_INT_RGB.
+            // Images loaded from files are type 5: Type_3BYTE_BGR
+            // We might need to handle other types in the future.
+            if (src.getType() != 0) {
+            	Imgproc.cvtColor(inputImage, converted, Imgproc.COLOR_RGB2BGRA);
+            } else {
+            	converted = inputImage;
+            }
 
             // Detect faces in image.
             Rect[] faceRectangles;
@@ -464,10 +477,10 @@ public class FaceRecognizer {
     /** Transform to detect faces.  */
     private Faces _faces;
     
-    /** Indicator that motion has been detected by the filter operation. */
+    /** The number of faces detected. */
     private int _facesDetected = 0;
 
-    /** Indicator that motion has been detected by the filter operation. */
+    /** The faces detected. */
     private Rect[] _facesRectDetected = null;
 
     /** Minimum face size to be considered in face recognition. */
