@@ -1053,14 +1053,14 @@ Accessor.prototype.cleanTimersAfterExecution = function(cbId) {
  */
 Accessor.prototype.clearIntervalDeterministic = function(cbId) {
     var thiz = this;
-    if (thiz.timers[cbId]) {
+    //if (thiz.timers[cbId]) {
         if (deterministicTemporalSemantics) {
             deterministicTemporalSemantics.clearIntervalDet(Number(cbId));
         } else {
             clearInterval(cbId);
         }
         delete(thiz.timers[cbId]);
-    }
+   // }
 }
 
 /** Delete the delayed one time callback using the deterministic temporal semantics.
@@ -1071,14 +1071,14 @@ Accessor.prototype.clearIntervalDeterministic = function(cbId) {
  */
 Accessor.prototype.clearTimeoutDeterministic = function(cbId) {
     var thiz = this;
-    if (thiz.timers[cbId]) {
+    //if (thiz.timers[cbId]) {
         if (deterministicTemporalSemantics) {
             deterministicTemporalSemantics.clearTimeoutDet(Number(cbId));
         } else {
             clearTimeout(cbId);
         }
         delete(thiz.timers[cbId]);
-    }
+    //}
 }
 
 /** Clears all the timers by removing them from the callbackQueue and the
@@ -2148,7 +2148,8 @@ Accessor.prototype.require = function () {
  *  @param priority an optional argument passing the priority for scheduling the reaction
  */
 Accessor.prototype.scheduleEvent = function (accessor, priority) {
-    // console.log('Accessor '+this.accessorName+' is scheduling an event with priority: '+priority);
+    //console.log(this.accessorName + ' is scheduling an event for accessor '+ accessor.accessorName + ' with priority: '+priority);
+
     var thiz = this.root;
     var queue = thiz.eventQueue;
 
@@ -2246,6 +2247,7 @@ Accessor.prototype.scheduleEvent = function (accessor, priority) {
  */
 Accessor.prototype.send = function (name, value) {
     // console.log(this.accessorName + ' is sending ' + value + ' on output: '+name);
+    
     var thiz = this.root;
     var output = thiz.outputs[name];
     if (!output) {
@@ -2265,12 +2267,18 @@ Accessor.prototype.send = function (name, value) {
                 if (!thiz.container) {
                     if (!thiz.reactRequestedAlready) {
                         thiz.reactRequestedAlready = true;
-                        thiz.setTimeoutDeterministic(function () {
-                            thiz.react();
-                        }, 0, null, thiz.priority);
+                        if (deterministicTemporalSemantics) {
+                            thiz.setTimeoutDeterministic(function () {
+                                thiz.react();
+                            }, 0, undefined, thiz.priority);
+                        } else {
+                            thiz.setTimeoutDeterministic(function () {
+                                thiz.react();
+                            }, 0);
+                        }
                     }
                 }
-            }, 0, null, thiz.priority);
+            }, 0, undefined, thiz.priority);
         } else {
             thiz.setTimeoutDeterministic(function () {
                 thiz.provideInput(name, value);
@@ -2281,9 +2289,15 @@ Accessor.prototype.send = function (name, value) {
                 if (!thiz.container) {
                     if (!thiz.reactRequestedAlready) {
                         thiz.reactRequestedAlready = true;
-                        thiz.setTimeoutDeterministic(function () {
-                            thiz.react();
-                        }, 0, null, thiz.priority);
+                        if (deterministicTemporalSemantics) {
+                            thiz.setTimeoutDeterministic(function () {
+                                thiz.react();
+                            }, 0, undefined, thiz.priority);
+                        } else {
+                            thiz.setTimeoutDeterministic(function () {
+                                thiz.react();
+                            }, 0);
+                        }
                     }
                 }
             }, 0);
@@ -2394,23 +2408,23 @@ Accessor.prototype.setIntervalDeterministic = function(callback, timeout, llcd,
     var _priority, _errorCallback, _cleanCallback ;
         
     // Set default values for priority, errorCallback and cleanCallback
-    if (!priority) {
+    if (priority == undefined) {
         _priority = thiz.priority;
     } else {
         _priority = priority;
     }
-    if (!errorCallback) {
+    if (!errorCallback || errorCallback == undefined) {
         _errorCallback = thiz.error.bind(thiz);
     } else {
         _errorCallback = errorCallback;
     }
-    if (!cleanCallback) {
+    if (!cleanCallback || cleanCallback == undefined) {
         _cleanCallback = thiz.cleanTimersAfterExecution.bind(thiz);
     } else {
         _cleanCallback = cleanCallback;
     }
     
-    tempo = deterministicTemporalSemantics.setIntervalDet(callback, timeout, llcd);//, _priority, _errorCallback, _cleanCallback);
+    tempo = deterministicTemporalSemantics.setIntervalDet(callback, timeout, llcd, _priority, _errorCallback, _cleanCallback);
     
     // Add the delayed callback identifier to the Accessors timers
     // This is useful for resetting timers when wrapping up
@@ -2463,22 +2477,22 @@ Accessor.prototype.setTimeoutDeterministic = function(callback, timeout, llcd,
 
 
     // Set default values for priority, errorCallback and cleanCallback
-    if (!priority) {
+    if (priority == undefined) {
         _priority = thiz.priority;
     } else {
         _priority = priority;
     }
-    if (!errorCallback) {
+    if (!errorCallback || errorCallback == undefined) {
         _errorCallback = thiz.error.bind(thiz);
     } else {
         _errorCallback = errorCallback;
     }
-    if (!cleanCallback) {
+    if (!cleanCallback || cleanCallback == undefined) {
         _cleanCallback = thiz.cleanTimersAfterExecution.bind(thiz);
     } else {
         _cleanCallback = cleanCallback;
     }
-    tempo = deterministicTemporalSemantics.setTimeoutDet(callback, timeout, llcd);//, _priority, _errorCallback, _cleanCallback);
+    tempo = deterministicTemporalSemantics.setTimeoutDet(callback, timeout, llcd, _priority, _errorCallback, _cleanCallback);
     
     // Add the delayed callback identifier to the Accessors timers
     // This is useful for resetting timers when wrapping up
@@ -2501,7 +2515,7 @@ Accessor.prototype.stop = function () {
         container.setTimeoutDeterministic(function() {
             // console.log('Executing stop');
             container.wrapup();
-        }, 0, null, this.priority);
+        }, 0, undefined, this.priority);
     } else {
         container.setTimeoutDeterministic(function() {
             // console.log('Executing stop');
@@ -2520,7 +2534,7 @@ Accessor.prototype.stopAt = function (timeout) {
     if (deterministicTemporalSemantics) {
         self.setTimeoutDeterministic(function() {
             self.stop();
-        }, timeout, null, self.priority);
+        }, timeout, undefined, self.priority);
     } else {
         self.setTimeoutDeterministic(function() {
             self.stop();
