@@ -326,8 +326,6 @@
         </port>
         <port name="faces" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="ImageDisplay2" class="ptolemy.actor.lib.image.ImageDisplay">
