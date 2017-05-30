@@ -3363,7 +3363,7 @@ BOOK_PDF=PtolemyII_DigitalV1_02.pdf
 PTSETUP=ptII$(WINDOWS_VERSION)_setup_windows
 # 32 bit IzPack installer
 setup_jar: $(PTSETUP).jar izpacksetup.jar
-$(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF) jre32
+$(PTSETUP).jar: $(PTSETUP).xml $(PTIIDIST)/jar_dist $(PTIIDIST)/ptiny.exe cleanSrc $(PTIIDIST)/bin/vergil $(PTIIDIST)/ptolemy/matlab/ptmatlab.dll $(PTIIDIST)/doc/books/systems/$(BOOK_PDF) jre32 izpacksetup.jar
 	@echo "#"
 	@echo "# Now building target setup_jar (PTSETUP).jar: $@"
 	@echo "# `date`"
@@ -3384,7 +3384,7 @@ $(PTSETUP)_64.xml: $(PTSETUP).xml
 	     $^ > $@
 
 setup64_jar: $(PTSETUP)_64.jar izpacksetup.jar
-$(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe $(PTIIDIST)/bin/vergil cleanSrc jre64
+$(PTSETUP)_64.jar: $(PTSETUP)_64.xml $(PTIIDIST)/ptiny.exe $(PTIIDIST)/bin/vergil cleanSrc jre64 izpacksetup.jar
 	@echo "#"
 	@echo "# Now building target setup64_jar: PTSETUP_64.jar: $@"
 	@echo "# `date`"
@@ -3809,7 +3809,7 @@ $(CAPECODE_APP):
         fi
 
 setup_mac_jar: $(PTSETUP_MAC).jar
-$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIIDIST)/bin/vergil cleanSrc
+$(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIIDIST)/bin/vergil cleanSrc izpacksetup.jar
 	@echo "#"
 	@echo "# Now building target setup_mac_jar: (PTSETUP_MAC).jar: $@"
 	@echo "# `date`"
@@ -3822,7 +3822,7 @@ $(PTSETUP_MAC).jar: $(PTSETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) $(PTIID
 	fi
 
 setup_mac_jar: $(CAPECODE_SETUP_MAC).jar
-$(CAPECODE_SETUP_MAC).jar: $(CAPECODE_SETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) cleanSrc
+$(CAPECODE_SETUP_MAC).jar: $(CAPECODE_SETUP_MAC).xml $(PTIIDIST)/jar_dist $(PTINY_APP) cleanSrc izpacksetup.jar
 	@echo "#"
 	@echo "# Now building target setup_mac_jar: (CAPECODE_SETUP_MAC): $@"
 	@echo "# `date`"
