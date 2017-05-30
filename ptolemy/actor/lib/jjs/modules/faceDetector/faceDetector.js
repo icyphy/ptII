@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2016-2016 The Regents of the University of California.
+// Copyright (c) 2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -62,10 +62,14 @@ var filter = new Filter();
 //// Functions provided in this module.
 
 /** Return the detected faces rectangles
- *  @return An array of detected faces rectangles.
+ *  @return An array of detected faces rectangles.  If there are no
+ *  faces detected, then an empty array is returned.
  */
 exports.faceRectangles = function () {
     var rects = filter.getFaceRectangles();
+    if (rects === undefined || rects === null) {
+        return [];
+    }
     for (var i = rects.length - 1; i >= 0; i--) {
         var parsedObject = rects[i].toString().replace('{', '').replace('}', '').replace('x', ',').split(',');
         var rectangle = {
