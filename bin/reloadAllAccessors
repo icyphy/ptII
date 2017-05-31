@@ -2,12 +2,15 @@
 # $Id$
 # Reload all the accessors in the models that have JSAccessors actors
 # See https://accessors.org/wiki/Main/CapeCodeHost#ReloadAllAccessors
+# This script is run as part of the nightly test suite, see
+# $PTII/adm/test/ReloadAllAccessors.tcl
 #
-# Usage: $PTII/bin/reloadAllAccessors  [-cg] [-commit]
+# Usage: $PTII/bin/reloadAllAccessors  [-cg] [-commit] [-reload] [-updateCommonHost]
 
 cg=false
 commit=false
 reload=false
+updateCommonHost=false
 for arg in "$@"
 do
     case "$arg" in
@@ -23,8 +26,12 @@ do
             echo "$0: Will reload accessors."
             reload="true"
             ;;
+        -updateCommonHost)
+            echo "$0: Will update ptolemy/actor/lib/jjs/commonHost.js or web/hosts/common/commonHost.js"
+            updateCommonHost="true"
+            ;;
         *)
-            echo "$0: Usage: $0 [-cg] [-commit] [-reload]"
+            echo "$0: Usage: $0 [-cg] [-commit] [-reload] [-updateCommonHost]"
             exit 2
             ;;
     esac
@@ -36,6 +43,7 @@ echo "$0: This script reloads all the JSAccessors in all the .xml files that are
 echo "    -cg: regenerate the composite accessors if AccessorCodeGenerator is present."
 echo "    -commit: commit any changed files."
 echo "    -reload: reload accessors."
+echo "    -updateCommonHost: update ptolemy/actor/lib/jjs/commonHost.js or web/hosts/common/commonHost.js"
 echo "To reload just a few files, try:"
 echo "  $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors model1.xml model2.xml"
 
@@ -44,6 +52,32 @@ if [ "$commit" = "true" ]; then
     (cd $PTII/org/terraswarm/accessor/accessors/web; svn update)
     (cd $PTII; svn update)
 fi
+
+if [ "$updateCommonHost" = "true" ]; then
+    capeCodeFile=$PTII/ptolemy/actor/lib/jjs/commonHost.js
+    accessorsFile=$PTII/org/terraswarm/accessor/accessors/web/hosts/common/commonHost.js
+    diff $capeCodeFile $accessorsFile >& /dev/null
+    retval=$?
+    if [ "$retval" == "0" ]; then
+        echo "$0: $capeCodeFile and $accessorsFile are the same"
+    else
+        echo "$0: $capeCodeFile and $accessorsFile are different"
+        diff $capeCodeFile $accessorsFile
+        if [ "$capeCodeFile" -nt "$accessorsFile" ]; then
+            echo "$0: $capeCodeFile is newer than $accessorsFile, so $accessorsFile will be updated"
+            cp $capeCodeFile $accessorsFile
+            if [ "$commit" = "true" ]; then
+                svn commit -m 'Updated from CapeCode version by $PTII/bin/reloadAllAccessors' $accessorsFile
+            fi
+        else
+            echo "$0: $capeCodeFile is older than $accessorsFile, so $capeCodeFile will be updated"
+            cp $accessorsFile $capeCodeFile 
+            if [ "$commit" = "true" ]; then
+                svn commit -m 'Updated from CapeCode version by $PTII/bin/reloadAllAccessors' $capeCodeFile
+            fi
+        fi            
+    fi        
+fi    
 
 echo ""
 echo "$0: Generating the list of .xml files"
