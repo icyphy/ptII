@@ -43,3 +43,12 @@ test reloadAllAccessors-1.1 {Reload all the accessors} {
     # Success is not crashing
     list {}
 } {{}}
+
+test reloadAllAccessors-2.1 {Check that commonHost.js has been updated} {
+    set accessorsSize [file size $PTII/org/terraswarm/accessor/accessors/web/hosts/common/commonHost.js]
+    set capeCodeSize [file size $PTII/ptolemy/actor/lib/jjs/commonHost.js]
+    if { $accessorsSize != $capeCodeSize } {
+        error "The size of $PTII/org/terraswarm/accessor/accessors/web/hosts/common/commonHost.js ($accessorsSize) is not the same as the size of $PTII/ptolemy/actor/lib/jjs/commonHost.js ($capeCodeSize)"
+    }
+    list {}
+} {{}}
