@@ -237,7 +237,7 @@ var trustedAccessorsAllowed = false;
 // Determine which accessor host is in use.
 // See https://www.icyphy.org/accessors/wiki/Main/ResourcesForHostAuthors#Differentiating
 // See https://stijndewitt.com/2014/01/26/enums-in-javascript/
-var accessorHostsEnum = {
+var platformEnum = {
     BROWSER: 1,
     CAPECODE: 2,
     DEFAULT: 3,
@@ -247,55 +247,54 @@ var accessorHostsEnum = {
     CORDOVA:7
 };
 
-var accessorHost = accessorHostsEnum.DEFAULT;
+exports.platformEnum = platformEnum;
+
+/** 
+ * Determine the platform in use.
+ */
+exports.getPlatform = function() { // FIXME: This should not be needed!!! Remove it. 
+    if (typeof window !== 'undefined') {
+        if (typeof cordova !== 'undefined') {
+            return platformEnum.CORDOVA;
+        } else if (window.hasOwnProperty('browserJSLoaded')) {
+            return platformEnum.BROWSER;
+        }
+    } else if (typeof actor !== 'undefined' && typeof Packages !== 'undefined' && typeof Packages.java.util.Vector === 'function') {
+        return platformEnum.CAPECODE;
+    } else if (typeof Duktape === 'object') {
+        return platformEnum.DUKTAPE;
+    } else if (typeof Packages !== 'undefined' && typeof Packages.java.util.Vector === 'function') {
+        return platformEnum.NASHORN;
+    } else if (typeof process !== 'undefined' && typeof process.version === 'string') {
+        return platformEnum.NODE;
+    }
+}
+
+// The current platform in use.
+var platform = exports.getPlatform();
 
 // Be sure to export these variables before any require()s of the util module because util.js
 // require()s commonHost.  Do not put these at the end of the file.
 // To test, run "ant tests.duk"
-exports.accessorHostsEnum = accessorHostsEnum;
-exports.accessorHost = accessorHost;
+exports.platform = platform;
 
-// In alphabetical order.
-// FIXME: This should not be needed!!! Remove it. 
-if (typeof window !== 'undefined') {
-    if (typeof cordova !== 'undefined') {
-        accessorHost = accessorHostsEnum.CORDOVA;
-    } else if (window.hasOwnProperty('browserJSLoaded')) {
-        accessorHost = accessorHostsEnum.BROWSER;
-    }
-} else if (typeof actor !== 'undefined' && typeof Packages !== 'undefined' && typeof Packages.java.util.Vector === 'function') {
-    accessorHost = accessorHostsEnum.CAPECODE;
-} else if (typeof Duktape === 'object') {
-    accessorHost = accessorHostsEnum.DUKTAPE;
-} else if (typeof Packages !== 'undefined' && typeof Packages.java.util.Vector === 'function') {
-    accessorHost = accessorHostsEnum.NASHORN;
-} else if (typeof process !== 'undefined' && typeof process.version === 'string') {
-    accessorHost = accessorHostsEnum.NODE;
-}
-
-if (accessorHost === accessorHostsEnum.DUKTAPE) {
+// FIXME: This needs to be gotten rid of. The search path for modules should the same for
+// every host.
+if (platform === platformEnum.DUKTAPE) {
     var util = require('../common/modules/util.js');
     var EventEmitter = require('../common/modules/events.js').EventEmitter;
-} else if(accessorHost === accessorHostsEnum.CORDOVA) {
-    var util = require('cordova/utils');
 } else {
     // The node host will load the core util module here and not access the file system.
     var util = require('util');
     var EventEmitter = require('events').EventEmitter;
 }
 
-if (accessorHost === accessorHostsEnum.CAPECODE || accessorHost === accessorHostsEnum.NASHORN || accessorHost === accessorHostsEnum.DUKTAPE) {
+if (platform === platformEnum.CAPECODE || platform === platformEnum.NASHORN || platform === platformEnum.DUKTAPE) {
     ; // Then no deterministic temporal semantics
-} else if (accessorHost === accessorHostsEnum.BROWSER) {
+} else if (platform === platformEnum.BROWSER) {
     var deterministicTemporalSemantics = require('/accessors/node_modules/@accessors-hosts/common/modules/deterministicTemporalSemantics');
-} else if (accessorHost === accessorHostsEnum.CORDOVA) {
-    // The module should be already loaded. But for more more convenience when binding to the deterministic behavior,
-    // then we add the following
-    var deterministicTemporalSemantics = {};
-    deterministicTemporalSemantics.setTimeoutDet = setTimeoutDet;
-    deterministicTemporalSemantics.setIntervalDet = setIntervalDet;
-    deterministicTemporalSemantics.clearTimeoutDet = clearTimeoutDet;
-    deterministicTemporalSemantics.clearIntervalDet = clearIntervalDet;
+} else if (platform === platformEnum.CORDOVA) {
+    var deterministicTemporalSemantics = require('common/modules/deterministicTemporalSemantics.js');
 } else {    
     var deterministicTemporalSemantics = require('../common/modules/deterministicTemporalSemantics.js');
 }
@@ -686,6 +685,11 @@ clearTimeout',
     if (typeof this.exports.setup === 'function') {
         // console.log('setup for accessor: '+this.accessorName);
         this.exports.setup.call(this);
+        // Add an error port. Since Accessor.prototype.output uses 
+        // pushIfNotPresent, then we will finish by having only one
+        // error port per Accessor 
+        // FIXME: Should we keep this?
+        this.output('error');
     }
 
     ///////////////////////////////////////////////////////////////////
@@ -773,18 +777,7 @@ clearTimeout',
         };
     }
 }
-if (accessorHost === accessorHostsEnum.CORDOVA) {
-    Accessor.prototype = Object.create(EventEmitter.prototype, {
-        constructor: {
-            value: Accessor,
-            enumerable: false,
-            writable: true,
-            configurable: true
-        }
-    });
-} else {
-    util.inherits(Accessor, EventEmitter);
-}
+util.inherits(Accessor, EventEmitter);
 
 /** Add an input handler for the specified input and return a handle that
  *  can be used to remove the input handler.
@@ -1677,7 +1670,7 @@ Accessor.prototype.react = function (name) {
                         // If the exception was thrown because of
                         // Java, we should get the Java stacktrace.
                         var stacktrace = exception.stack;
-                        if (typeof stacktrace === 'undefined' && accessorHost === accessorHostsEnum.CAPECODE || accessorHost === accessorHostsEnum.NASHORN) {
+                        if (typeof stacktrace === 'undefined' && platform === platformEnum.CAPECODE || platform === platformEnum.NASHORN) {
                             try {
                                 // This code is Cape Code Host-specific because it uses Java.
                                 var StringWriter = java.io.StringWriter,
