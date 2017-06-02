@@ -996,7 +996,8 @@ ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="jni/test/jni/meaningOfLife/"/>
 <exclude name="jni/test/jni/testDeux/"/>
 <exclude name="jni/test/jni/testTrois/"/>
-<exclude name="org/terraswarm/accessor/accessors/web/node_modules/*" />
+<exclude name="org/terraswarm/accessor/accessors/web/node_modules/" />
+<exclude name="org/terraswarm/accessor/accessors/web/hosts/cordova/demo/" />
 <exclude name="pt-modules/"/>
 <exclude name="ptolemy/apps/agilent/"/>
 <exclude name="ptolemy/apps/anytimecontrol/"/>
