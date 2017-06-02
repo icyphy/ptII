@@ -77,7 +77,7 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="JavaScriptRamp" class="ptolemy.actor.lib.jjs.JavaScript">
+    <entity name="JavaScript Ramp With Spaces In Its Name" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/** Output a sequence with a given step in values.&#10; *&#10; *  @accessor test/TestRamp&#10; *  @param init The value produced on its first iteration.  The&#10; *  initial default is 0.&#10; *  @input trigger The trigger&#10; *  @output output The output&#10; *  @param step The amount by which the output is incremented. The&#10; *  default is 1.&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;exports.setup = function() {&#10;    // FIXME: this only supports numbers, unlike the Cape Code Ramp&#10;    // actor, which supports many types.&#10;    this.parameter('init', {'type':'number', 'value':0});&#10;    this.input('trigger');&#10;    this.output('output', {'type':'number'});&#10;    this.parameter('step', {'type':'number', 'value':1});&#10;};&#10;&#10;var _lastValue = 0;&#10;&#10;exports.initialize = function() {&#10;    _lastValue = this.getParameter('init');&#10;}&#10;exports.fire = function() {&#10;    _lastValue += this.getParameter('step');&#10;    this.send('output', _lastValue);&#10;};">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
@@ -118,7 +118,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{555, 105}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 130.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -165,7 +165,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 105.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 130.0]">
         </property>
         <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
@@ -191,8 +191,8 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="TestSpontaneous.output" relation="relation"/>
-    <link port="JavaScriptRamp.trigger" relation="relation"/>
-    <link port="JavaScriptRamp.output" relation="relation4"/>
+    <link port="JavaScript Ramp With Spaces In Its Name.trigger" relation="relation"/>
+    <link port="JavaScript Ramp With Spaces In Its Name.output" relation="relation4"/>
     <link port="Stop.stop" relation="relation3"/>
     <link port="TrainableTest2.input" relation="relation4"/>
     <link port="TrainableTest2.output" relation="relation3"/>
