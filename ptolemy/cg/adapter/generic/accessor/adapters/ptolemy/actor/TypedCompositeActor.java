@@ -40,6 +40,7 @@ import ptolemy.cg.kernel.generic.accessor.AccessorCodeGeneratorAdapter;
 import ptolemy.data.Token;
 import ptolemy.kernel.Port;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.util.StringUtilities;
 
 
 //////////////////////////////////////////////////////////////////////////
@@ -122,7 +123,7 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
                         code.append(", " + connectedPort.getName());
                     } else {
                         // Port to contained Actor connection
-                        code.append("', " + connectedPort.getContainer().getName()
+                        code.append("', " + StringUtilities.sanitizeName(connectedPort.getContainer().getName())
                                 + ", '" + connectedPort.getName());
                     }
                     code.append("');" + _eol);
@@ -144,7 +145,7 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
                         // Port to Port connections would have been handled with the input ports.
                         // Port to contained Actor connection.
                         code.append(_INDENT1 + "this.connect("
-                                + connectedPort.getContainer().getName()
+                                + StringUtilities.sanitizeName(connectedPort.getContainer().getName())
                                 + ", '" + connectedPort.getName()
                                 + "', '" + ioPort.getName()
                                 + "');" + _eol);
@@ -167,9 +168,9 @@ public class TypedCompositeActor extends AccessorCodeGeneratorAdapter {
                     // Skip ports at the toplevel.
                     if (sourcePort.getContainer() != getComponent()) {
                         code.append(_INDENT1 + "this.connect("
-                                + sourcePort.getContainer().getName()
+                                + StringUtilities.sanitizeName(sourcePort.getContainer().getName())
                                 + ", '" + sourcePort.getName()
-                                + "', " + inputPort.getContainer().getName()
+                                    + "', " +  StringUtilities.sanitizeName(inputPort.getContainer().getName())
                                 + ", '" + inputPort.getName()
                                 + "');" + _eol);
                     }

@@ -118,7 +118,7 @@ public class JavaScript extends AccessorCodeGeneratorAdapter {
                     setter = "setDefault";
                 }
 
-                code.append(namedObj.getName() + "." + setter + "('" + parameter.getName() + "', "
+                code.append(StringUtilities.sanitizeName(namedObj.getName()) + "." + setter + "('" + parameter.getName() + "', "
                         + targetExpression(parameter)
                         + ");" + _eol);
             }
