@@ -7,7 +7,7 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="startTime" class="ptolemy.data.expr.Parameter" value="">
         </property>
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="20">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="19">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -22,7 +22,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1296412032383896">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.94682447594863, 216.50586581230158}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{410.9468244759485, 216.50586581230158}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The WebServer will timeout since &#10;no reponse is provided.">
@@ -54,9 +54,19 @@
         </property>
         <property name="run" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../node_modules/@accessors-hosts/node/nodeHostInvoke.js  net/test/auto/@modelName@">
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../../hosts/node/nodeHostInvoke.js  net/test/auto/@modelName@">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 100.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Don't set the stop time to more than 20 because &#10;mocha tests have a timeout of 20000 ms.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[135.0, 45.0]">
         </property>
     </property>
     <entity name="WebServer" class="org.terraswarm.accessor.JSAccessor">
