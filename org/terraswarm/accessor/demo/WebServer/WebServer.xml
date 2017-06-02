@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{76.36973571777344, 37.2265625}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={298, 63, 928, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={298, 63, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -111,7 +111,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[125.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{155.0, 290.0}">
         </property>
         <property name="port" class="ptolemy.data.expr.Parameter" value="8080">
         </property>
@@ -186,7 +186,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[265.0, 110.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 110.0}">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -230,7 +230,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Requests">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{320.0, 245.0}">
         </property>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
@@ -240,7 +240,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Responses">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{405.0, 100.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 100.0}">
         </property>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -256,7 +256,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[320.0, 330.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{350.0, 300.0}">
         </property>
         <port name="request" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -272,7 +272,7 @@
         </property>
         <property name="title" class="ptolemy.data.expr.StringParameter" value="Request errors">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 200.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{410.0, 180.0}">
         </property>
     </entity>
     <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">
@@ -302,7 +302,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[84.140625, 117.265625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{75.0, 120.0}">
         </property>
         <property name="interval" class="ptolemy.data.expr.Parameter" value="3000.0">
         </property>
@@ -311,22 +311,28 @@
         </port>
     </entity>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;REST.response&quot;,x=270.0,y=110.0}, tail={id=&quot;Display2.input&quot;,x=410.0,y=100.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;REST.error&quot;,x=270.0,y=110.0}, tail={id=&quot;Display3.input&quot;,x=410.0,y=180.0}, points={270.0,180.0} } }">
+        </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[240.0, 330.0]">
+        <vertex name="vertex1" value="{270.0, 300.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation4.vertex1&quot;,x=240.0,y=305.0}, tail={id=&quot;Display.input&quot;,x=295.0,y=245.0}, points={240.0,245.0} },{ head={id=&quot;WebServer.request&quot;,x=125.0,y=295.0}, tail={id=&quot;relation4.vertex1&quot;,x=240.0,y=305.0}, points={} },{ head={id=&quot;JavaScript.request&quot;,x=320.0,y=305.0}, tail={id=&quot;relation4.vertex1&quot;,x=240.0,y=305.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JavaScript.request&quot;,x=350.0,y=300.0}, tail={id=&quot;relation4.vertex1&quot;,x=270.0,y=300.0}, points={} },{ head={id=&quot;Display.input&quot;,x=320.0,y=245.0}, tail={id=&quot;relation4.vertex1&quot;,x=270.0,y=300.0}, points={270.0,245.0} },{ head={id=&quot;WebServer.request&quot;,x=155.0,y=290.0}, tail={id=&quot;relation4.vertex1&quot;,x=270.0,y=300.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;WebServer.response&quot;,x=125.0,y=295.0}, tail={id=&quot;JavaScript.response&quot;,x=320.0,y=305.0}, points={25.0,295.0,25.0,370.0,400.0,370.0,400.0,305.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;WebServer.response&quot;,x=155.0,y=290.0}, tail={id=&quot;JavaScript.response&quot;,x=350.0,y=300.0}, points={55.0,290.0,55.0,370.0,430.0,370.0,430.0,300.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;REST.trigger&quot;,x=270.0,y=110.0}, tail={id=&quot;TestSpontaneous.output&quot;,x=75.0,y=120.0}, points={} } }">
+        </property>
     </relation>
     <link port="WebServer.response" relation="relation3"/>
     <link port="WebServer.request" relation="relation4"/>
