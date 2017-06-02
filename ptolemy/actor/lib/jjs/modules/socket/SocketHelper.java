@@ -707,7 +707,7 @@ public class SocketHelper extends VertxHelperBase {
                 for(byte b: bytes) {
                     builder.append(String.format("%02x", b));
                 }
-                System.out.println("SocketHelper.SocketWrapper.send(" + data +"): about to invoke write() on socket " + _socket + ", local: " + _socket.localAddress().host() + ":" + _socket.localAddress().port() + ", remote: " + _socket.remoteAddress().host() + ":" + _socket.remoteAddress().port() + ".  Writing buffer: " + builder);
+                System.out.println("SocketHelper.SocketWrapper.send(" + data +"): about to invoke write() on socket " + _socket + ", local: " + _socket.localAddress().host() + ":" + _socket.localAddress().port() + ", remote: " + _socket.remoteAddress().host() + ":" + _socket.remoteAddress().port() + ".  Writing buffer: " + builder + " of length " + buffer.length());
                 _socket.write(buffer);
                 System.out.println("SocketHelper.SocketWrapper.send(" + data +"): after write() on socket " + _socket + ".");
             });
@@ -908,6 +908,7 @@ public class SocketHelper extends VertxHelperBase {
                     } else if (numberOfElements > 1) {
                         if (_rawBytes && !_emitBatchDataAsAvailable) {
                             int position = 0;
+                            System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: Numeric A: numberOfElements > 1: number of elements: " + numberOfElements + " buffer length: " + finalBuffer.length());
                             for (int i = 0; i < numberOfElements; i++) {
                                 System.out.println("SocketHelper.SocketWrapper._processBuffer() issueResponse: Numeric A: numberOfElements > 1 emit: " + _eventEmitter.get("iama") + " Reading: " + _extractFromBuffer(finalBuffer, _receiveType, position));
 
