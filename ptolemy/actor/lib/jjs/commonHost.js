@@ -278,17 +278,10 @@ var platform = exports.getPlatform();
 // To test, run "ant tests.duk"
 exports.platform = platform;
 
-// FIXME: This needs to be gotten rid of. The search path for modules should the same for
-// every host.
-if (platform === platformEnum.DUKTAPE) {
-    var util = require('../common/modules/util.js');
-    var EventEmitter = require('../common/modules/events.js').EventEmitter;
-} else {
-    // The node host will load the core util module here and not access the file system.
-    var util = require('util');
-    var EventEmitter = require('events').EventEmitter;
-}
+var util = require('util');
+var EventEmitter = require('events').EventEmitter;
 
+// FIXME: Remove this platform dependency
 if (platform === platformEnum.CAPECODE || platform === platformEnum.NASHORN || platform === platformEnum.DUKTAPE) {
     ; // Then no deterministic temporal semantics
 } else if (platform === platformEnum.BROWSER) {
