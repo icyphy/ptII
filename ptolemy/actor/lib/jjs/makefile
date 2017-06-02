@@ -68,6 +68,7 @@ OTHER_FILES_TO_BE_JARED = \
 	capeCodeHost.js \
 	commonHost.js \
 	console.js \
+	deterministicTemporalSemantics.js \
 	JavaScriptIcon.xml \
 	jjs-license.htm \
 	js.xml \
