@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="19">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="18">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -32,7 +32,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0664605873261206">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.4999999999997, 244.2280174365942}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{338.49999999999966, 244.2280174365942}">
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
         <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/services/test/auto">
