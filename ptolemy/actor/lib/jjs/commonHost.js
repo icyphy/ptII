@@ -231,7 +231,7 @@
 var allAccessors = [];
 
 // If set to true, then accessors whose class name begins with 'trusted/'
-// will have a binding for the getTopLevelAccessors() function.
+// and custom accessors will have a binding for the getTopLevelAccessors() function.
 var trustedAccessorsAllowed = false;
 
 // Determine which accessor host is in use.
@@ -607,7 +607,7 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
 
     // By default, the root property is this instance.
     this.root = this;
-
+    
     var wrapper = new Function('\
 alert, \
 error, \
@@ -1340,6 +1340,48 @@ Accessor.prototype.get = function (name) {
     return value;
 };
 
+/** Return the default function bindings to use when instantiating accessors.
+ *  @param accessorClass The accessor class name, if there is one.
+ *  @return An object with a property for each function that the accessor may invoke
+ *   that is implemented by this host.
+ */
+Accessor.prototype.getDefaultInsideBindings = function(accessorClass) {
+    // For functions that access ports, etc., we want the default implementation
+    // when instantiating the contained accessor.
+    var insideBindings = {
+        'error': this.error,
+        'httpRequest': this.httpRequest,
+        'readURL': this.readURL,
+        'require': this.require,
+    };
+    // If 'this' defines setTimeout(), etc., use that instead of current definitions.
+    if (this && this.clearInterval) {
+        insideBindings.clearInterval = this.clearInterval;
+    }
+    if (this && this.clearTimeout) {
+        insideBindings.clearTimeout = this.clearTimeout;
+    }
+    if (this && this.setInterval) {
+        insideBindings.setInterval = this.setInterval;
+    }
+    if (this && this.setTimeout) {
+        insideBindings.setTimeout = this.setTimeout;
+    }
+    // Note that if there is no accessorClass given, then we assume that this
+    // accessor is a custom script provided as part of the swarmlet.
+    // We trust all such scripts, since they are part of the swarmlet definition,
+    // and therefore authored by the author of the swarmlet.
+    if (trustedAccessorsAllowed && (!accessorClass || accessorClass.startsWith('trusted/'))) {
+        insideBindings.getTopLevelAccessors = getTopLevelAccessors;
+    } else {
+        insideBindings.getTopLevelAccessors = function () {
+            throw new Error('getTopLevelAccessors(): Accessors are not permitted' +
+                ' to access peer accessors in this host.');
+        };
+    }
+    return insideBindings;
+}
+
 /** Default implementation of this.getParameter(), which reads the current value of the
  *  parameter provided by this.setParameter(), or the default value if none has been provided,
  *  or null if neither has been provided.
@@ -1411,7 +1453,7 @@ Accessor.prototype.input = function (name, options) {
     this.inputs[name] = mergeObjects(this.inputs[name], options);
 };
 
-/** Instantiate the specified accessor as a contained accessor.
+/** Instantiate the specified accessor as a contained accessor given its class name.
  *  This will throw an exception if no getAccessorCode() function
  *  has been specified.
  *  @param instanceName A name to give to this instance, which will be prepended
@@ -1426,31 +1468,43 @@ Accessor.prototype.instantiate = function (instanceName, accessorClass) {
     }
     // For functions that access ports, etc., we want the default implementation
     // when instantiating the contained accessor.
-    var insideBindings = {
-        'error': this.error,
-        'httpRequest': this.httpRequest,
-        'readURL': this.readURL,
-        'require': this.require,
-    };
-    // If 'this' defines setTimeout(), etc., use that instead of current definitions.
-    if (this && this.clearInterval) {
-        insideBindings.clearInterval = this.clearInterval;
-    }
-    if (this && this.clearTimeout) {
-        insideBindings.clearTimeout = this.clearTimeout;
-    }
-    if (this && this.setInterval) {
-        insideBindings.setInterval = this.setInterval;
-    }
-    if (this && this.setTimeout) {
-        insideBindings.setTimeout = this.setTimeout;
-    }
-
-    // FIXME: Do we need to ensure that 'actor' or 'accessor' is bound here?
+    var insideBindings = this.getDefaultInsideBindings(accessorClass);
     instanceName = this.accessorName + '.' + instanceName;
     instanceName = uniqueName(instanceName, this);
     var containedInstance = instantiateAccessor(
         instanceName, accessorClass, this.getAccessorCode, insideBindings);
+    containedInstance.container = this;
+    this.containedAccessors.push(containedInstance);
+    return containedInstance;
+};
+
+/** Instantiate the specified accessor as a contained accessor given the code
+ *  that implements the accessor.
+ *  @param instanceName A name to give to this instance, which will be prepended
+ *   with the container name, separated by a period. If the container already
+ *   contains an object with that name, then an index will be appended to the name,
+ *   starting with 2, to ensure that the name is unique in the container.
+ *  @param code The code for the accessor.
+ */
+Accessor.prototype.instantiateFromCode = function (instanceName, code) {
+    // Only need the getAccessorCode function if the code uses inheritance, so
+    // we don't require it.
+    var getAccessorCode = null;
+    if (this.getAccessorCode) {
+        getAccessorCode = this.getAccessorCode;
+    }
+    // For functions that access ports, etc., we want the default implementation
+    // when instantiating the contained accessor.
+    var bindings = this.getDefaultInsideBindings(null);
+
+    instanceName = this.accessorName + '.' + instanceName;
+    instanceName = uniqueName(instanceName, this);
+
+    // Last three arguments are extendedBy, implementedBy, and mutable.
+    // None of these apply.
+    var containedInstance = new Accessor(
+            instanceName, code, getAccessorCode, bindings, null, null, null);
+    allAccessors.push(containedInstance);
     containedInstance.container = this;
     this.containedAccessors.push(containedInstance);
     return containedInstance;
@@ -2523,7 +2577,9 @@ Accessor.prototype.updateMonitoringInformation = function (info) {
 //// Module functions.
 
 /** If called with argument true, then accessors that are subsequently
- *  instantiated whose class name begins with 'trusted/' will have a
+ *  instantiated whose class name begins with 'trusted/' and accessors
+ *  that have no class at all (they are given as custom script in the
+ *  swarmlet definition) will have a
  *  binding for the getTopLevelAccessors() function. Such accessors
  *  can see and manipulate peer accessors, so a host that allows such
  *  trusted accessors should ensure that all trusted accessors are
@@ -2683,14 +2739,6 @@ function instantiateAccessor(
     var code = getAccessorCode(accessorClass);
     // In case bindings is not defined.
     bindings = bindings || {};
-    if (trustedAccessorsAllowed && accessorClass.startsWith('trusted/')) {
-        bindings.getTopLevelAccessors = getTopLevelAccessors;
-    } else {
-        bindings.getTopLevelAccessors = function () {
-            throw new Error('getTopLevelAccessors(): Accessors are not permitted' +
-                ' to access peer accessors in this host.');
-        };
-    }
     var instance = new Accessor(
         accessorName, code, getAccessorCode, bindings, extendedBy, implementedBy, mutable);
     instance.accessorClass = accessorClass;
