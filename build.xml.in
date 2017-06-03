@@ -585,6 +585,11 @@ For example:
      Generate doc/codeDoc/allNamedObjs.txt for use by javadoc.actorIndex
      For details, see $PTII/ptolemy/vergil/basic/docViewerHelp.htm
     </echo>
+
+    <!-- java.maxmemory of 1400m might not work here, so we use
+    java.maxmemory.large, which could cause problems for 32-bit
+    jvms. -->
+
     <javadoc destdir="doc/codeDoc"
 	     packagenames="${javadoc.packagenames}"
 	     excludepackagenames="${javadoc.excludepackagenames}"
@@ -606,9 +611,14 @@ For example:
      Create the actor index.
      For details, see $PTII/ptolemy/vergil/basic/docViewerHelp.htm
     </echo>
+
+    <!-- java.maxmemory of 1400m might not work here, so we use
+    java.maxmemory.large, which could cause problems for 32-bit
+    jvms. -->
+
     <java classname="ptolemy.moml.filter.ActorIndex"
 	  fork="true"
-	  maxmemory="${java.maxmemory}"
+	  maxmemory="${java.maxmemory.large}"
 	  >
       <arg line="doc/codeDoc/allNamedObjs.txt ptolemy/configs/doc/models.txt doc/codeDoc"/>
       <classpath>
