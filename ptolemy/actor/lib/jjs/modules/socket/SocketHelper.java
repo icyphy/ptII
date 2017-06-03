@@ -708,7 +708,9 @@ public class SocketHelper extends VertxHelperBase {
                 //     builder.append(String.format("%02x", b));
                 // }
                 // System.out.println("SocketHelper.SocketWrapper.send(" + data +"): about to invoke write() on socket " + _socket + ", local: " + _socket.localAddress().host() + ":" + _socket.localAddress().port() + ", remote: " + _socket.remoteAddress().host() + ":" + _socket.remoteAddress().port() + ".  Writing buffer: " + builder + " of length " + buffer.length());
-                // _socket.write(buffer);
+
+                _socket.write(buffer);
+
                 // System.out.println("SocketHelper.SocketWrapper.send(" + data +"): after write() on socket " + _socket + ".");
             });
         }
