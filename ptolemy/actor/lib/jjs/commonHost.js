@@ -2623,14 +2623,20 @@ function convertType(value, destination, name) {
             }
         } else {
             try {
-            	// Sometimes string type values do not have leading/trailing "".
-            	// Add these.
-                if ( (value[0] !== '\"' && value[0] !== '\'') && 
-                		(value[value.length -1] !== '\"' && value[value.length -1] !== '\'') ) {
-                	value = '\"' + value + '\"';
-                	console.log('adding quation marks to ' + value);
-                }
-                value = JSON.parse(value);
+            	// Check if it is a JSON object - first character will be {.
+            	// If so, parse as a JSON object.  Otherwise, look for 
+            	// quotation marks (adding if not present) and try to parse 
+            	// again to get a string literal (which is valid JSON).
+            	if (value[0] === '{') {
+            		value = JSON.parse(value);
+            	} else {
+                    if ( (value[0] !== '\"' && value[0] !== '\'') && 
+                    		(value[value.length -1] !== '\"' && 
+                    				value[value.length -1] !== '\'') ) {
+                    	value = '\"' + value + '\"';
+                    }
+                    value = JSON.parse(value);
+            	}
             } catch (error) {
                 throw new Error('Failed to convert value to destination type: ' +
                     name +

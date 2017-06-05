@@ -10,13 +10,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[180.0, -140.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 873}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1680, 947}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 763]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1446, 837]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0846965729120612">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{642.5791446749582, 148.5361818039296}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{753.2091613973665, 182.6471036266721}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Swarm acoustic service (sas) demo using accessors. The service &#10;receives sensor data from an Android app that can be downloaded at &#10;https://play.google.com/store/apps/details?id=com.longle1.spectrogram.&#10;&#10;Author: Long Le &lt;longle1@illinois.edu&gt;&#10;University of Illinois at Urbana-Champaign">
@@ -56,7 +56,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: REST.js 1833 2017-06-04 13:47:02Z beth@berkeley.edu $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: REST.js 1597 2017-04-29 15:41:50Z cxh $$">
             </property>
             <property name="outputCompleteResponseOnly (parameter)" class="ptolemy.kernel.util.StringAttribute" value="If true (the default), the produce a&#10;  'response' output only upon receiving the entire response.">
             </property>
