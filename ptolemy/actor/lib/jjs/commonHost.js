@@ -234,65 +234,9 @@ var allAccessors = [];
 // and custom accessors will have a binding for the getTopLevelAccessors() function.
 var trustedAccessorsAllowed = false;
 
-// // Determine which accessor host is in use.
-// // See https://www.icyphy.org/accessors/wiki/Main/ResourcesForHostAuthors#Differentiating
-// // See https://stijndewitt.com/2014/01/26/enums-in-javascript/
-// var platformEnum = {
-//     BROWSER: 1,
-//     CAPECODE: 2,
-//     DEFAULT: 3,
-//     DUKTAPE: 4,
-//     NODE: 5,
-//     NASHORN: 6,
-//     CORDOVA:7
-// };
-
-// exports.platformEnum = platformEnum;
-
-// /** 
-//  * Determine the platform in use.
-//  */
-// exports.getPlatform = function() { // FIXME: This should not be needed!!! Remove it. 
-//     if (typeof window !== 'undefined') {
-//         if (typeof cordova !== 'undefined') {
-//             return platformEnum.CORDOVA;
-//         } else if (window.hasOwnProperty('browserJSLoaded')) {
-//             return platformEnum.BROWSER;
-//         }
-//     } else if (typeof actor !== 'undefined' && typeof Packages !== 'undefined' && typeof Packages.java.util.Vector === 'function') {
-//         return platformEnum.CAPECODE;
-//     } else if (typeof Duktape === 'object') {
-//         return platformEnum.DUKTAPE;
-//     } else if (typeof Packages !== 'undefined' && typeof Packages.java.util.Vector === 'function') {
-//         return platformEnum.NASHORN;
-//     } else if (typeof process !== 'undefined' && typeof process.version === 'string') {
-//         return platformEnum.NODE;
-//     }
-// }
-
-// // The current platform in use.
-// var platform = exports.getPlatform();
-
-// // Be sure to export these variables before any require()s of the util module because util.js
-// // require()s commonHost.  Do not put these at the end of the file.
-// // To test, run "ant tests.duk"
-// exports.platform = platform;
-
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
-
 var deterministicTemporalSemantics = require('./modules/deterministicTemporalSemantics');
-
-// // FIXME: Remove this platform dependency
-// if (platform === platformEnum.CAPECODE || platform === platformEnum.NASHORN || platform === platformEnum.DUKTAPE) {
-//     ; // Then no deterministic temporal semantics
-// } else if (platform === platformEnum.BROWSER) {
-//     var deterministicTemporalSemantics = require('/accessors/node_modules/@accessors-hosts/common/modules/deterministicTemporalSemantics');
-// } else if (platform === platformEnum.CORDOVA) {
-//     var deterministicTemporalSemantics = require('common/modules/deterministicTemporalSemantics.js');
-// } else {    
-//     var deterministicTemporalSemantics = require('../common/modules/deterministicTemporalSemantics.js');
-// }
 
 ///////////////////////////////////////////////////////////////////
 //// Accessor class and its functions.
@@ -2613,8 +2557,9 @@ function convertType(value, destination, name) {
             }
         }
     } else if (typeof value === 'string') {
-        // Provided value is a string, but
-        // destination type is boolean, number, int, or JSON.
+        // Provided value is a reported to be a string.  Note that it might
+    	// actually be a JSON object but is reported to be a string.  
+    	// Destination type is boolean, number, int, or JSON.
         if (value === '') {
             // If the value is an empty string, then convert
             // to null, unless the destination type is JSON.
