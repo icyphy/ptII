@@ -2623,6 +2623,13 @@ function convertType(value, destination, name) {
             }
         } else {
             try {
+            	// Sometimes string type values do not have leading/trailing "".
+            	// Add these.
+                if ( (value[0] !== '\"' && value[0] !== '\'') && 
+                		(value[value.length -1] !== '\"' && value[value.length -1] !== '\'') ) {
+                	value = '\"' + value + '\"';
+                	console.log('adding quation marks to ' + value);
+                }
                 value = JSON.parse(value);
             } catch (error) {
                 throw new Error('Failed to convert value to destination type: ' +
