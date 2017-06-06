@@ -84,9 +84,7 @@ public class JavaScript extends AccessorCodeGeneratorAdapter {
                 // FIXME: Need a way to escape the JavaScript code.
                 + actor.script.getExpression().replace("\"", "\\\"").replace("'", "\\\'").replace("\n", "\\n")
                 + "');"
-                + _eol
-                + _INDENT1 + name + ".container = this;" + _eol
-                + _INDENT1 + "this.containedAccessors.push("+ name + ");" + _eol);
+                + _eol);
 
         code.append(_generateJavaScriptParameters(actor));
         return code.toString();
