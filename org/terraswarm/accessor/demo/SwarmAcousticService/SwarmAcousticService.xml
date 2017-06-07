@@ -56,7 +56,7 @@
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: REST.js 1597 2017-04-29 15:41:50Z cxh $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: REST.js 1833 2017-06-04 13:47:02Z beth@berkeley.edu $$">
             </property>
             <property name="outputCompleteResponseOnly (parameter)" class="ptolemy.kernel.util.StringAttribute" value="If true (the default), the produce a&#10;  'response' output only upon receiving the entire response.">
             </property>
