@@ -23,7 +23,7 @@ cat $modelsFile | grep /demo/ | awk -F / '{for (i=2;i<=NF;i++) {printf("%s/", $i
 
 # Look for demo directories that are not listed in completeDemos
 demos2=/tmp/missingDemos.demos2.$$
-(cd $PTII; find . -name demo -type d | egrep -v '(adm|reports|signed|vendors)' | sed 's@^\./@@' | sed 's@demo/$@demo@' | sort ) | egrep -v '(com/microstar/xml/demo|diva/canvas/demo|doc/codeDoc/.*/demo|doc/doccheck/diva/canvas/demo|org/terraswarm/gdp/src/gdp.*/demo|web/deterministicTemporalSemantics/demo|web/mutable/demo|ptolemy/apps|ptolemy/actor/lib/jjs/modules/contextAwareTest/demo|node_modules|org/terraswarm/accessor/demo|web/hosts/browser/demo|org/terraswarm/accessor/accessors/web/hosts/cordova/cordova2/demo|org/terraswarm/accessor/accessors/web/cameras/demo|org/terraswarm/accessor/accessors/web/image/demo)' > $demos2
+(cd $PTII; find . -name demo -type d | egrep -v '(adm|reports|signed|vendors)' | sed 's@^\./@@' | sed 's@demo/$@demo@' | sort ) | egrep -v '(com/microstar/xml/demo|diva/canvas/demo|doc/codeDoc/.*/demo|doc/doccheck/diva/canvas/demo|org/terraswarm/gdp/src/gdp.*/demo|web/deterministicTemporalSemantics/demo|web/mutable/demo|ptolemy/apps|ptolemy/actor/lib/jjs/modules/contextAwareTest/demo|node_modules|org/terraswarm/accessor/demo|web/hosts/browser/demo|org/terraswarm/accessor/accessors/web/hosts/cordova/demo|org/terraswarm/accessor/accessors/web/hosts/cordova/cordova2/demo|org/terraswarm/accessor/accessors/web/cameras/demo|org/terraswarm/accessor/accessors/web/image/demo)' > $demos2
 
 if [ $verbose = "yes" ]; then 
     echo "### Demo directories that are not listed in $PTII/ptolemy/configs/doc/completeDemos.htm"
