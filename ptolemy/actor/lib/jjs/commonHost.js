@@ -2151,7 +2151,7 @@ Accessor.prototype.scheduleEvent = function (accessor, priority) {
                 if (deterministicTemporalSemantics) {
                     thiz.setTimeoutDeterministic(function () {
                         thiz.react();
-                    }, 0, undefined, priority);
+                    }, 0, null, priority);
                 } else {
                     thiz.setTimeoutDeterministic(function () {
                         thiz.react();
@@ -2161,7 +2161,7 @@ Accessor.prototype.scheduleEvent = function (accessor, priority) {
                 if (deterministicTemporalSemantics) {
                     thiz.setTimeoutDeterministic(function () {
                         thiz.react();
-                    }, 0, undefined, thiz.priority);
+                    }, 0, null, thiz.priority);
                 } else {
                     thiz.setTimeoutDeterministic(function () {
                         thiz.react();
@@ -2249,7 +2249,7 @@ Accessor.prototype.send = function (name, value) {
                         if (deterministicTemporalSemantics) {
                             thiz.setTimeoutDeterministic(function () {
                                 thiz.react();
-                            }, 0, undefined, thiz.priority);
+                            }, 0, null, thiz.priority);
                         } else {
                             thiz.setTimeoutDeterministic(function () {
                                 thiz.react();
@@ -2257,7 +2257,7 @@ Accessor.prototype.send = function (name, value) {
                         }
                     }
                 }
-            }, 0, undefined, thiz.priority);
+            }, 0, null, thiz.priority);
         } else {
             thiz.setTimeoutDeterministic(function () {
                 thiz.provideInput(name, value);
@@ -2271,7 +2271,7 @@ Accessor.prototype.send = function (name, value) {
                         if (deterministicTemporalSemantics) {
                             thiz.setTimeoutDeterministic(function () {
                                 thiz.react();
-                            }, 0, undefined, thiz.priority);
+                            }, 0, null, thiz.priority);
                         } else {
                             thiz.setTimeoutDeterministic(function () {
                                 thiz.react();
@@ -2380,7 +2380,7 @@ Accessor.prototype.setIntervalDeterministic = function(callback, timeout, llcd, 
     var tempPriority, errorCallback, cleanCallback;
         
     // Set default values for priority, errorCallback and cleanCallback
-    if (priority == undefined) {
+    if (priority === null) {
         tempPriority = thiz.priority;
     } else {
         tempPriority = priority;
@@ -2433,7 +2433,7 @@ Accessor.prototype.setTimeoutDeterministic = function(callback, timeout, llcd, p
 
 
     // Set default values for priority, errorCallback and cleanCallback
-    if (priority == undefined) {
+    if (priority === null) {
         tempPriority = thiz.priority;
     } else {
         tempPriority = priority;
@@ -2464,7 +2464,7 @@ Accessor.prototype.stop = function () {
         container.setTimeoutDeterministic(function() {
             // console.log('Executing stop');
             container.wrapup();
-        }, 0, undefined, this.priority);
+        }, 0, null, this.priority);
     } else {
         container.setTimeoutDeterministic(function() {
             // console.log('Executing stop');
@@ -2483,7 +2483,7 @@ Accessor.prototype.stopAt = function (timeout) {
     if (deterministicTemporalSemantics) {
         self.setTimeoutDeterministic(function() {
             self.stop();
-        }, timeout, undefined, self.priority);
+        }, timeout, null, self.priority);
     } else {
         self.setTimeoutDeterministic(function() {
             self.stop();
