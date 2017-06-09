@@ -4,18 +4,18 @@
 <entity name="Browser" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 46, 928, 641}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 46, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1276453126496224">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{246.60351562500034, 259.8030740489132}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{246.6035156250004, 259.8030740489132}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model reads HTML from a StringConst &#10;and sends it to a Browser accessor &#10;that creates a server and then invokes the&#10;browser on a URL served by the server.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-45.0, 235.0]">
         </property>
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
@@ -25,7 +25,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 80.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 60.0]">
         </property>
     </property>
     <entity name="StringConst" class="ptolemy.actor.lib.StringConst">
@@ -46,7 +46,7 @@
             <property name="displayHeight" class="ptolemy.data.expr.Parameter" value="10">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 140.0]">
         </property>
     </entity>
     <entity name="TestSpontaneousOnce" class="org.terraswarm.accessor.JSAccessor">
@@ -101,7 +101,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[380.0, 240.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[480.0, 140.0]">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
             <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that connects with a browser on the local host.&#10; This is intended to be used by a swarmlet to interact with users,&#10; for example by providing forms to be filled in.&#10; For now, however, it simply displays HTML provided to its input.&lt;/p&gt;">

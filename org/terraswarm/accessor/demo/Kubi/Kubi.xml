@@ -55,7 +55,7 @@
             </property>
         </property>
     </property>
-    <property name="KubiServerIPAddress" class="ptolemy.data.expr.Parameter" value="&quot;10.123.45.678&quot;">
+    <property name="KubiServerIPAddress" class="ptolemy.data.expr.Parameter" value="&quot;169.254.206.120&quot;">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
         </property>
         <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
