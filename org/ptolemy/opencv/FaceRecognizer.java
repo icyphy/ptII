@@ -285,6 +285,8 @@ public class FaceRecognizer {
         _faceCascade.detectMultiScale(gray, faces, 1.1, 5, 0, new Size(_minFaceSize,_minFaceSize),
                 new Size(_maxFaceSize,_maxFaceSize));
         Rect[] fbox = faces.toArray();
+        _facesRectDetected = fbox;
+        _facesDetected = fbox.length;
         return fbox;
     }
 
@@ -376,6 +378,7 @@ public class FaceRecognizer {
                         new Point(rect.x+rect.width,rect.y+rect.height),new Scalar(255,0,0), 2);
             }
 
+            _facesRectDetected = faceRectangles;
             _facesDetected = faceRectangles.length;
             
             for (int i = 0; i < _facesDetected; i++) {
@@ -487,5 +490,5 @@ public class FaceRecognizer {
     private int _minFaceSize = 0;
 
     /** Maximum face size to be considered in face recognition. */
-    private int _maxFaceSize = 0;
+    private int _maxFaceSize = 5000;
 }
