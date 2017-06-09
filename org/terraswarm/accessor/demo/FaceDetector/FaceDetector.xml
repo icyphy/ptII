@@ -170,6 +170,14 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 110.0}">
         </property>
     </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={780, 523, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{520, 260}">
+        </property>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FaceDetector.output&quot;,x=365.0,y=100.0}, tail={id=&quot;ImageDisplay.input&quot;,x=510.0,y=90.0}, points={} } }">
         </property>
@@ -186,12 +194,16 @@
         <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;FaceDetector.input&quot;,x=365.0,y=100.0}, tail={id=&quot;Camera.image&quot;,x=220.0,y=110.0}, points={} } }">
         </property>
     </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="FaceDetector.input" relation="relation"/>
     <link port="FaceDetector.output" relation="relation3"/>
     <link port="FaceDetector.faceCount" relation="relation4"/>
+    <link port="FaceDetector.faces" relation="relation2"/>
     <link port="ImageDisplay.input" relation="relation3"/>
     <link port="MonitorValue.input" relation="relation4"/>
     <link port="Camera.trigger" relation="relation5"/>
     <link port="Camera.image" relation="relation"/>
     <link port="DiscreteClock.output" relation="relation5"/>
+    <link port="Display.input" relation="relation2"/>
 </entity>
