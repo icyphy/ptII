@@ -2568,27 +2568,17 @@ function convertType(value, destination, name) {
             }
         } else {
             try {
-            	// Check if it is a JSON object - first character will be {.
-            	// If so, parse as a JSON object.  Otherwise, look for 
-            	// quotation marks (adding if not present) and try to parse 
-            	// again to get a string literal (which is valid JSON).
-            	if (value[0] === '{') {
-            		value = JSON.parse(value);
-            	} else {
-                    if ( (value[0] !== '\"' && value[0] !== '\'') && 
-                    		(value[value.length -1] !== '\"' && 
-                    				value[value.length -1] !== '\'') ) {
-                    	value = '\"' + value + '\"';
-                    }
-                    value = JSON.parse(value);
-            	}
+            	// Try to parse JSON.  This sometimes fails for strings
+            	// which are not enclosed in quotation marks.  Note also
+            	// the Javascript type (here, string) does not necessarily 
+            	// match the type of the parsed JSON (e.g. could be an object).
+            	var originalValue = value;
+            	
+                value = JSON.parse(value);
             } catch (error) {
-                throw new Error('Failed to convert value to destination type: ' +
-                    name +
-                    ' expected a ' +
-                    destination.type +
-                    ' but received: ' +
-                    value);
+            	// Assume it is a string.
+            	// Note this approach does not allow us to catch malformed JSON.
+            	value = originalValue;
             }
         }
     } else if (destination.type === 'boolean' && typeof value !== 'boolean') {
