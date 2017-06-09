@@ -54,6 +54,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/Audio/Audio.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/Browser.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/Camera.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/CaptureOpenLoop.xml
+$CLASSPATH/org/terraswarm/accessor/demo/FaceDetector/FaceDetector.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Foscam/Foscam.xml
 $CLASSPATH/org/terraswarm/accessor/demo/HappySadStock/HappySadStock.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Heartbeat/Heartbeat.xml
@@ -204,7 +205,6 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/DiscoveryJS.xm
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/AudioFFT.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/SinusoidFFT.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/faceDetector/demo/FaceDetector/FaceDetector.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPBrowser/GDPBrowser.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogSubscribe/GDPLogSubscribe.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogWriteRead/GDPLogWriteRead.xml
