@@ -67,8 +67,9 @@ var filter = new Filter();
  */
 exports.faceRectangles = function () {
     var rects = filter.getFaceRectangles();
+    var rectangles = [];
     if (rects === undefined || rects === null) {
-        return [];
+        return rectangles;
     }
     for (var i = rects.length - 1; i >= 0; i--) {
         var parsedObject = rects[i].toString().replace('{', '').replace('}', '').replace('x', ',').split(',');
@@ -78,7 +79,8 @@ exports.faceRectangles = function () {
             width: Number(parsedObject[2].trim()),
             height: Number(parsedObject[3].trim()),
         };
-        rectangles = [rectangle];
+        console.log('x ' + rectangle.x + ', y ' + rectangle.y + ', width ' + rectangle.width + ', height ' + rectangle.height);
+        rectangles.push(rectangle);
     }
 
     return rectangles;
