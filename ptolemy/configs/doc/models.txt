@@ -55,7 +55,6 @@ $CLASSPATH/org/terraswarm/accessor/demo/Audio/AudioClipPlayer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/Browser.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/Camera.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/CaptureOpenLoop.xml
-$CLASSPATH/org/terraswarm/accessor/demo/Camera/FaceDetector.xml
 $CLASSPATH/org/terraswarm/accessor/demo/FaceDetector/FaceDetector.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Foscam/Foscam.xml
 $CLASSPATH/org/terraswarm/accessor/demo/HappySadStock/HappySadStock.xml
