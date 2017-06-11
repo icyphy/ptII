@@ -47,7 +47,7 @@ echo "    -updateCommonHost: update ptolemy/actor/lib/jjs/commonHost.js or web/h
 echo "To reload just a few files, try:"
 echo "  $PTII/bin/ptinvoke ptolemy.vergil.basic.imprt.accessor.ReloadAccessors model1.xml model2.xml"
 
-if [ "$commit" = "true" -o "$updateCommonHost" = "true"]; then
+if [ "$commit" = "true" -o "$updateCommonHost" = "true" ]; then
     echo "Updating the accessors and ptII repos."
     (cd $PTII/org/terraswarm/accessor/accessors/web; svn update)
     (cd $PTII; svn update)
