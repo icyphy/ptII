@@ -47,7 +47,7 @@ if {[info procs jdkCapture] == "" } then {
 #
 #
 
-set manager [java::new ptolemy.actor.Manager]
+# set manager [java::new ptolemy.actor.Manager]
 
 ######################################################################
 ####
@@ -102,3 +102,8 @@ test Manager-11.0 {Test execution by execute method} {
     $manager execute
     enumToTokenValues [$rec getRecord 0]
 } {0 1}
+
+$e0 setManager [java::null]
+$e0 setContainer [java::null]
+
+java::call System gc
