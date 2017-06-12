@@ -52,6 +52,7 @@ $CLASSPATH/org/ptolemy/ssm/demo/StatePrediction/StatePrediction.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AprilTags/AprilTags.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Audio/Audio.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Audio/AudioClipPlayer.xml
+$CLASSPATH/org/terraswarm/accessor/demo/Audio/AudioRecorder.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/Browser.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/Camera.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/CaptureOpenLoop.xml
