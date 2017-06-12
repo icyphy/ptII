@@ -79,7 +79,6 @@ exports.faceRectangles = function () {
             width: Number(parsedObject[2].trim()),
             height: Number(parsedObject[3].trim()),
         };
-        console.log('x ' + rectangle.x + ', y ' + rectangle.y + ', width ' + rectangle.width + ', height ' + rectangle.height);
         rectangles.push(rectangle);
     }
 
