@@ -1,0 +1,413 @@
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<entity name="AprilTagImageAnnotate" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+    </property>
+    <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="200.0">
+        </property>
+        <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 40.0}">
+        </property>
+    </property>
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={21, 23, 1259, 634}, maximized=false}">
+    </property>
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1025, 524]">
+    </property>
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0293220513551842">
+    </property>
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{495.04296875, 261.8605430264779}">
+    </property>
+    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
+        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.05">
+        </property>
+        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        </property>
+        <doc>Create periodic timed events.</doc>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 200.0}">
+        </property>
+    </entity>
+    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={112, 160, 640, 524}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        </property>
+        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{935.0, 170.0}">
+        </property>
+    </entity>
+    <entity name="ImageAnnotate" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** This accessor annotates an image provided at the _image_ input&#10; *  by rendering an SVG graphic overlaid on the image.&#10; *&#10; *  The _graphic_ input, if provided, gives an SVG specification of the graphic.&#10; *  Alternatively, if a _graphic_ input is not provided, or the _graphic_ input&#10; *  is empty, the _graphicURI_ input can provide a resource identifier for the graphic.&#10; *  This can be a URL or a local resource (a file) available on the host.&#10; *  Note that most hosts will restrict locations from which files can be read.&#10; *  Usually they will allow to read files in the directory where the swarmlet is located&#10; *  on the file system, or in a subdirectory of that directory.&#10; *  To read such a file, give a path relative to the location of the swarmlet.&#10; *&#10; *  The _translate_&#10; *  input can be used to shift the graphic in the X and Y directions,&#10; *  and the _rotate_ input can used to rotate the graphic.&#10; *&#10; *  The _options_ input can have the following fields:&#10; *  * __XOffset__: The horizontal offset for the graphic. If this is specified&#10; *    and a _translate_ input is also provided, the both offsets are applied.&#10; *  * __YOffset__: The vertical offset for the graphic. If this is specified&#10; *    and a _translate_ input is also provided, the both offsets are applied.&#10; *&#10; *  @accessor image/ImageAnnotate&#10; *  @input image The image to annotate.&#10; *  @input graphic The location of an SVG graphic to overlay on the image.&#10; *  @input translate An offset to apply to the graphic, as two element array specifying&#10; *   horizontal and vertical offsets in pixels.&#10; *  @input options A JSON object specifying options.&#10; *  @output output The filtered image.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, getResource, input, output, removeInputHandler, require, send */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var imageFilters = require('imageFilters');&#10;&#10;exports.setup = function () {&#10;    this.input('image');&#10;    this.input('graphic', {&#10;        'value': '',&#10;        'type': 'string'&#10;    });&#10;    this.input('graphicURI', {&#10;        'value': '',&#10;        'type': 'string'&#10;    });&#10;    this.input('scale', {&#10;        'value': 1.0,&#10;        'type': 'number'&#10;    });&#10;    this.input('rotation', {&#10;        'value': 0.0,&#10;        'type': 'number'&#10;    });&#10;    this.input('translate');&#10;    this.input('options', {&#10;        'value': '',&#10;        'type': 'JSON'&#10;    });&#10;    this.output('output');&#10;};&#10;&#10;exports.initialize = function () {&#10;    this.addInputHandler('image', function () {&#10;        var image = this.get('image');&#10;        var options = this.get('options');&#10;        if (!options) {&#10;            options = {};&#10;        }&#10;&#10;        var scale = this.get('scale');&#10;        if (scale !== null) {&#10;            // Combine with scale options, if specified.&#10;            if (options.Scale) {&#10;                scale *= options.Scale;&#10;            }&#10;            options.Scale = scale;&#10;        }&#10;&#10;        var rotation = this.get('rotation');&#10;        if (rotation !== null) {&#10;            // Combine with rotation options, if specified.&#10;            if (options.Rotation) {&#10;                rotation += options.Rotation;&#10;            }&#10;            options.Rotation = rotation;&#10;        }&#10;&#10;        var translate = this.get('translate');&#10;        if (translate !== null &amp;&amp; translate[0] !== null &amp;&amp; translate[1] !== null) {&#10;            // Combine with offset options, if specified.&#10;            var xOffset = translate[0];&#10;            if (options.XOffset) {&#10;                xOffset += options.XOffset;&#10;            }&#10;            options.XOffset = xOffset;&#10;&#10;            var yOffset = translate[1];&#10;            if (options.YOffset) {&#10;                yOffset += options.YOffset;&#10;            }&#10;            options.YOffset = yOffset;&#10;        }&#10;        var graphic = this.get('graphic');&#10;        if (graphic) {&#10;            options.Graphic = graphic;&#10;        } else {&#10;            var graphicURI = this.get('graphicURI');&#10;            if (graphicURI) {&#10;                // Second argument is a timeout.&#10;                options.Graphic = this.getResource(graphicURI, 3000);&#10;            }&#10;        }&#10;        var result = imageFilters.filter(image, 'Annotate', options);&#10;        this.send('output', result);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ImageAnnotate.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;This accessor annotates an image provided at the &lt;em&gt;image&lt;/em&gt; input&#10; by rendering an SVG graphic overlaid on the image.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;graphic&lt;/em&gt; input, if provided, gives an SVG specification of the graphic.&#10; Alternatively, if a &lt;em&gt;graphic&lt;/em&gt; input is not provided, or the &lt;em&gt;graphic&lt;/em&gt; input&#10; is empty, the &lt;em&gt;graphicURI&lt;/em&gt; input can provide a resource identifier for the graphic.&#10; This can be a URL or a local resource (a file) available on the host.&#10; Note that most hosts will restrict locations from which files can be read.&#10; Usually they will allow to read files in the directory where the swarmlet is located&#10; on the file system, or in a subdirectory of that directory.&#10; To read such a file, give a path relative to the location of the swarmlet.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;translate&lt;/em&gt;&#10; input can be used to shift the graphic in the X and Y directions,&#10; and the &lt;em&gt;rotate&lt;/em&gt; input can used to rotate the graphic.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;options&lt;/em&gt; input can have the following fields:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;strong&gt;XOffset&lt;/strong&gt;: The horizontal offset for the graphic. If this is specified&#10;and a &lt;em&gt;translate&lt;/em&gt; input is also provided, the both offsets are applied.&lt;/li&gt;&#10;&lt;li&gt;&lt;strong&gt;YOffset&lt;/strong&gt;: The vertical offset for the graphic. If this is specified&#10;and a &lt;em&gt;translate&lt;/em&gt; input is also provided, the both offsets are applied.&lt;/li&gt;&#10;&lt;/ul&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="image (port)" class="ptolemy.kernel.util.StringAttribute" value="The image to annotate.">
+            </property>
+            <property name="translate (port)" class="ptolemy.kernel.util.StringAttribute" value="An offset to apply to the graphic, as two element array specifying&#10;  horizontal and vertical offsets in pixels.">
+            </property>
+            <property name="options (port)" class="ptolemy.kernel.util.StringAttribute" value="A JSON object specifying options.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="The filtered image.">
+            </property>
+            <property name="graphic (port)" class="ptolemy.kernel.util.StringAttribute" value="The location of an SVG graphic to overlay on the image.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{795.0, 170.0}">
+        </property>
+        <property name="graphic" class="ptolemy.actor.parameters.PortParameter" value="&lt;svg&gt;&#10;  &lt;desc&gt;Star shape&lt;/desc&gt;&#10; &lt;polygon style=&quot;fill:red; stroke:blue; stroke-width:4;&quot;&#10;                 points=&quot;0.5,-32 8.5,-8 33.5,-8 13.5,8 20.5,32 0.5,18 -20.5,32 -13.5,8 -33.5,-8 -7.5,-8&quot;/&gt;&#10;&lt;/svg&gt;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="graphicURI" class="ptolemy.actor.parameters.PortParameter" value="Star.svg">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="scale" class="ptolemy.actor.parameters.PortParameter" value="1">
+        </property>
+        <property name="rotation" class="ptolemy.actor.parameters.PortParameter" value="7056.376953125">
+        </property>
+        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="graphic" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="graphicURI" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="scale" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="rotation" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="image" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="translate" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** An accessor for a camera on the local host. This can be a built-in camera or&#10; *  a USB-connected camera. This accessor has two modes of operation, &quot;triggered&quot;&#10; *  and &quot;open loop.&quot; In triggered mode, it captures an image whenever a trigger&#10; *  input is received and produces that image on its output. In open-loop mode,&#10; *  it captures every image produced by the camera, at the speed of the camera,&#10; *  and produces on the output a stream of such images.&#10; *&#10; *  @accessor cameras/Camera&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @input trigger A trigger input for triggered mode.&#10; *   The value is ignored and can be anything.&#10; *  @output {Object} image A stream of captured images.&#10; *  @parameter {boolean} triggered If true, use triggered mode.&#10; *   Otherwise, use open-loop mode. This is a boolean that defaults to true.&#10; *  @parameter {string} camera The name of the camera to use.&#10; *   A list of available cameras is presented as options.&#10; *   This is a string that defaults to &quot;default camera&quot;,&#10; *   which uses the system default, if there is one.&#10; *  @parameter {{width: number, height: number}} viewSize The view size&#10; *   to use for capture, in pixels. A list of available view sizes for&#10; *   the selected camara is presented as options. This is a JSON specification&#10; *   with a &quot;width&quot; and &quot;height&quot; field, as in for example {&quot;width&quot;:640, &quot;height&quot;:480}.&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*global addInputHandler, error, exports, getParameter, input, output, parameter, removeInputHandler, require, send */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var cameras = require(&quot;@accessors-modules/cameras&quot;);&#10;var camera;&#10;var handle = null;&#10;&#10;/** Create the inputs, outputs, and parameters, and update the parameters for the selected camera. */&#10;exports.setup = function () {&#10;    this.input('trigger');&#10;    this.output('image');&#10;    this.parameter('triggered', {&#10;        'type': 'boolean',&#10;        'value': true&#10;    });&#10;    // NOTE: The following assumes that setup() is reinvoked whenever a parameter&#10;    // value changes, since the camera will change and so will the available options.&#10;    this.parameter('camera', {&#10;        'type': 'string',&#10;        'value': 'default camera'&#10;    });&#10;    this.parameter('viewSize', {&#10;        'type': 'JSON'&#10;    });&#10;    // This is in a try-catch so that this accessor can be instantiated even if the&#10;    // host does not provide a cameras module.&#10;    try {&#10;        this.parameter('camera', {&#10;            'options': cameras.cameras()&#10;        });&#10;        camera = new cameras.Camera(this.getParameter('camera'));&#10;        this.parameter('viewSize', {&#10;            'value': camera.getViewSize(),&#10;            'options': camera.viewSizes()&#10;        });&#10;    } catch (err) {&#10;        error(err);&#10;    }&#10;};&#10;&#10;/** Set the view size of the camera, open it, and depending on the triggered mode, either&#10; *  set up an input handler for the trigger input or set up a handler for the 'image'&#10; *  event notification from the camera.&#10; */&#10;exports.initialize = function () {&#10;    camera.setViewSize(this.getParameter('viewSize'));&#10;    camera.open();&#10;    var self = this;&#10;    if (this.getParameter('triggered')) {&#10;        // Request a snapshot.  Note the video stream might not be playing.&#10;        // An event will be generated when a snapshot is available.&#10;        camera.on('snapshot', function (image) {&#10;            self.send('image', image);&#10;        });&#10;&#10;        handle = this.addInputHandler('trigger', function () {&#10;            camera.snapshot();&#10;        });&#10;    } else {&#10;        camera.on('image', function (image) {&#10;            self.send('image', image);&#10;        });&#10;    }&#10;};&#10;&#10;/** Remove handlers and close the camera. */&#10;exports.wrapup = function () {&#10;    camera.removeAllListeners('image');&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;    camera.close();&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/cameras/Camera.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;An accessor for a camera on the local host. This can be a built-in camera or&#10; a USB-connected camera. This accessor has two modes of operation, &amp;quot;triggered&amp;quot;&#10; and &amp;quot;open loop.&amp;quot; In triggered mode, it captures an image whenever a trigger&#10; input is received and produces that image on its output. In open-loop mode,&#10; it captures every image produced by the camera, at the speed of the camera,&#10; and produces on the output a stream of such images.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="trigger (port)" class="ptolemy.kernel.util.StringAttribute" value="A trigger input for triggered mode.&#10;  The value is ignored and can be anything.">
+            </property>
+            <property name="image (port)" class="ptolemy.kernel.util.StringAttribute" value="A stream of captured images.">
+            </property>
+            <property name="triggered (parameter)" class="ptolemy.kernel.util.StringAttribute" value="If true, use triggered mode.&#10;  Otherwise, use open-loop mode. This is a boolean that defaults to true.">
+            </property>
+            <property name="camera (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The name of the camera to use.&#10;  A list of available cameras is presented as options.&#10;  This is a string that defaults to &quot;default camera&quot;,&#10;  which uses the system default, if there is one.">
+            </property>
+            <property name="viewSize (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The view size&#10;  to use for capture, in pixels. A list of available view sizes for&#10;  the selected camara is presented as options. This is a JSON specification&#10;  with a &quot;width&quot; and &quot;height&quot; field, as in for example {&quot;width&quot;:640, &quot;height&quot;:480}.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="triggered" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="camera" class="ptolemy.data.expr.Parameter" value="default camera">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="viewSize" class="ptolemy.data.expr.Parameter" value="{&quot;width&quot;:640, &quot;height&quot;:480}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 200.0}">
+        </property>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="image" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="AprilTags" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/**&#10;Accessor to detect AprilTags in an image or stream of images.&#10;An AprilTag is a pattern of dark and light squares similar to a QR code but easier for&#10;cameras to detect robustly and at a distance.&#10;AprilTags were created by Associate Professor Edwin Olson (ebolson@umich.edu),&#10;EECS, University of Michigan. See [https://april.eecs.umich.edu/](https://april.eecs.umich.edu/#in_browser).&#10;&#10;The implementation of this accessor on the Ptolemy II/Nashorn accessor host&#10;uses an older Java implementation of the AprilTags detector written by Edwin Olson&#10;and more recently supplanted by a C version that performs much better. But this Java&#10;version is more easily included in Ptolemy II in a portable way. If you need better&#10;performance, consider replacing this with the C implementation and using JNI to interface&#10;to Ptolemy II.&#10;&#10;The input to this accessor is an image or a stream of images, e.g. from the Camera&#10;accessor.  There are two outputs. The one named _output_ is a modified version&#10;of the input image that outlines any detected AprilTags in the image&#10;and indicates their center and ID.  The _tags_ output is an array of&#10;objects representing the detected tags. Each object includes the following fields:&#10;&#10;+ _id_: The ID of the detected tag.&#10;+ _center_: An array with two doubles giving the center of the tag in pixel coordinates.&#10;+ _perimeter_: An array with four arrays, each of which gives the x and y coordinates of&#10;  a corner of the AprilTag.&#10;&#10;The AprilTags detector has a large number of parameters that can be tuned via&#10;the _options_ input. To set an option, provide a JSON object with a field matching&#10;the option name.  The options are described below using descriptions provided by&#10;by Edwin Olson in his Java implementation of an AprilTag detector:&#10;&#10;+ _MagThresh_: When growing components, the intra component variation is&#10;  allowed to grow when the component is small in size. This&#10;  threshold affects how much. The default is 1200.&#10;+ _MaxEdgeCost_: Set the maximum angle range allowed for the gradient directions&#10;  when connecting edges, in radians. This defaults to the radian&#10;  equivalent of 30 degrees.&#10;+ _MinMag_: Set the gradient magnitude threshold for ignoring pixels.&#10;  Do not consider pixels whose gradient magnitude is less than&#10;  minMag. Small values make the detector more sensitive, but also&#10;  force us to consider many more edges resulting in slower&#10;  computation time. A value of 0.001 is very sensitive. A value&#10;  of 0.01 is quite fast. The default is 0.004.&#10;+ _SegDecimate_: Set whether decimating before segmenting is enabled.&#10;  Instead of blurring the input image before segmentation, we&#10;  can achieve similar effects by decimating the image by a factor&#10;  of two. When enabled, this option applies a block LPF filter of&#10;  width 2, then decimates the image. With this option, not only&#10;  can we safely set segSigma = 0, but the slowest part of the&#10;  algorithm (the segmentation) runs about 4 times faster. The&#10;  downside is that the position of the targets is determined&#10;  based on the segmentation: lower resolution will result in more&#10;  localization error. However, the effect on quality is quite&#10;  modest, and this optimization is generally recommended (along&#10;  with segSigma = 0). If segSigma is non-zero, the filtering by&#10;  segSigma occurs first, followed by the block LPF, and the&#10;  decimation. This defaults to false, indicating that the option&#10;  is not enabled.&#10;+ _SegSigma_: Set the Gaussian smoothing kernel applied to image (0 == no filter)&#10;  used when detecting the outline of the box. It is almost always&#10;  useful to have some filtering, since the loss of small details&#10;  won't hurt. Recommended value = 0.8 (the default). The case where sigma ==&#10;  segsigma has been optimized to avoid a redundant filter&#10;  operation.&#10;+ _Sigma_: Set the Gaussian smoothing kernel applied to image (0 == no filter, the default)&#10;  used when sampling bits. Filtering is a good idea in cases&#10;  where A) a cheap camera is introducing artifical sharpening, B)&#10;  the bayer pattern is creating artifcats, C) the sensor is very&#10;  noisy and/or has hot/cold pixels. However, filtering makes it&#10;  harder to decode very small tags. Reasonable values are 0, or&#10;  [0.8, 1.5].&#10;+ _TagFamily_: Set the name of the tag family being detected.&#10;  This defaults to &quot;Tag36h11&quot;.&#10;  The supported families are &quot;Tag16h5&quot;, &quot;Tag25h7&quot;, &quot;Tag25h9&quot;, &quot;Tag36h10&quot;, and &quot;Tag36h11&quot;.&#10;  The default family seems least susceptible to false positives.&#10;+ _ThetaThresh_: When growing components, the intra component variation is&#10;  allowed to grow when the component is small in size. This&#10;  threshold affects how much. The default is 100.&#10;&#10;  @accessor image/AprilTags&#10;  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10;  @input input An input image.&#10;  @output output An output image, with detected AprilTags outlined in green and identified.&#10;  @output tags An array of objects, one object for each tag detected in the image.&#10;  @parameter options The options for the detector. This is a JSON object with fields defined above.&#10;  It defaults to an empty object, meaning to use default values for all the otpions.&#10;  @version $$Id$$&#10;*/&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, exports, get, input, output, removeInputHandler, require, send,  */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var aprilTags = require('aprilTags');&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output');&#10;    this.output('tags');&#10;    this.input('options', {&#10;        'type': 'JSON',&#10;        'value': ''&#10;    });&#10;};&#10;&#10;var handle;&#10;exports.initialize = function () {&#10;    handle = this.addInputHandler('input', function () {&#10;        var options = this.get('options');&#10;        var image = this.get('input');&#10;        var result = aprilTags.filter(image, options);&#10;        this.send('output', result);&#10;        var tags = aprilTags.tags();&#10;        if (tags) {&#10;            this.send('tags', tags);&#10;        }&#10;    });&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (handle) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/AprilTags.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor to detect AprilTags in an image or stream of images.&#10;An AprilTag is a pattern of dark and light squares similar to a QR code but easier for&#10;cameras to detect robustly and at a distance.&#10;AprilTags were created by Associate Professor Edwin Olson (ebolson@umich.edu),&#10;EECS, University of Michigan. See &lt;a href=&quot;https://april.eecs.umich.edu/#in_browser&quot;&gt;https://april.eecs.umich.edu/&lt;/a&gt;.&lt;/p&gt;&#10;&lt;p&gt;The implementation of this accessor on the Ptolemy II/Nashorn accessor host&#10;uses an older Java implementation of the AprilTags detector written by Edwin Olson&#10;and more recently supplanted by a C version that performs much better. But this Java&#10;version is more easily included in Ptolemy II in a portable way. If you need better&#10;performance, consider replacing this with the C implementation and using JNI to interface&#10;to Ptolemy II.&lt;/p&gt;&#10;&lt;p&gt;The input to this accessor is an image or a stream of images, e.g. from the Camera&#10;accessor.  There are two outputs. The one named &lt;em&gt;output&lt;/em&gt; is a modified version&#10;of the input image that outlines any detected AprilTags in the image&#10;and indicates their center and ID.  The &lt;em&gt;tags&lt;/em&gt; output is an array of&#10;objects representing the detected tags. Each object includes the following fields:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;em&gt;id&lt;/em&gt;: The ID of the detected tag.&lt;/li&gt;&#10;&lt;li&gt;&lt;em&gt;center&lt;/em&gt;: An array with two doubles giving the center of the tag in pixel coordinates.&lt;/li&gt;&#10;&lt;li&gt;&lt;em&gt;perimeter&lt;/em&gt;: An array with four arrays, each of which gives the x and y coordinates of&#10;a corner of the AprilTag.&lt;/li&gt;&#10;&lt;/ul&gt;&#10;&lt;p&gt;The AprilTags detector has a large number of parameters that can be tuned via&#10;the &lt;em&gt;options&lt;/em&gt; input. To set an option, provide a JSON object with a field matching&#10;the option name.  The options are described below using descriptions provided by&#10;by Edwin Olson in his Java implementation of an AprilTag detector:&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;em&gt;MagThresh&lt;/em&gt;: When growing components, the intra component variation is&#10;allowed to grow when the component is small in size. This&#10;threshold affects how much. The default is 1200.&lt;/li&gt;&#10;&lt;li&gt;&lt;em&gt;MaxEdgeCost&lt;/em&gt;: Set the maximum angle range allowed for the gradient directions&#10;when connecting edges, in radians. This defaults to the radian&#10;equivalent of 30 degrees.&lt;/li&gt;&#10;&lt;li&gt;&lt;em&gt;MinMag&lt;/em&gt;: Set the gradient magnitude threshold for ignoring pixels.&#10;Do not consider pixels whose gradient magnitude is less than&#10;minMag. Small values make the detector more sensitive, but also&#10;force us to consider many more edges resulting in slower&#10;computation time. A value of 0.001 is very sensitive. A value&#10;of 0.01 is quite fast. The default is 0.004.&lt;/li&gt;&#10;&lt;li&gt;&lt;em&gt;SegDecimate&lt;/em&gt;: Set whether decimating before segmenting is enabled.&#10;Instead of blurring the input image before segmentation, we&#10;can achieve similar effects by decimating the image by a factor&#10;of two. When enabled, this option applies a block LPF filter of&#10;width 2, then decimates the image. With this option, not only&#10;can we safely set segSigma = 0, but the slowest part of the&#10;algorithm (the segmentation) runs about 4 times faster. The&#10;downside is that the position of the targets is determined&#10;based on the segmentation: lower resolution will result in more&#10;localization error. However, the effect on quality is quite&#10;modest, and this optimization is generally recommended (along&#10;with segSigma = 0). If segSigma is non-zero, the filtering by&#10;segSigma occurs first, followed by the block LPF, and the&#10;decimation. This defaults to false, indicating that the option&#10;is not enabled.&lt;/li&gt;&#10;&lt;li&gt;&lt;em&gt;SegSigma&lt;/em&gt;: Set the Gaussian smoothing kernel applied to image (0 == no filter)&#10;used when detecting the outline of the box. It is almost always&#10;useful to have some filtering, since the loss of small details&#10;won't hurt. Recommended value = 0.8 (the default). The case where sigma ==&#10;segsigma has been optimized to avoid a redundant filter&#10;operation.&lt;/li&gt;&#10;&lt;li&gt;&lt;em&gt;Sigma&lt;/em&gt;: Set the Gaussian smoothing kernel applied to image (0 == no filter, the default)&#10;used when sampling bits. Filtering is a good idea in cases&#10;where A) a cheap camera is introducing artifical sharpening, B)&#10;the bayer pattern is creating artifcats, C) the sensor is very&#10;noisy and/or has hot/cold pixels. However, filtering makes it&#10;harder to decode very small tags. Reasonable values are 0, or&#10;[0.8, 1.5].&lt;/li&gt;&#10;&lt;li&gt;&lt;em&gt;TagFamily&lt;/em&gt;: Set the name of the tag family being detected.&#10;This defaults to &amp;quot;Tag36h11&amp;quot;.&#10;The supported families are &amp;quot;Tag16h5&amp;quot;, &amp;quot;Tag25h7&amp;quot;, &amp;quot;Tag25h9&amp;quot;, &amp;quot;Tag36h10&amp;quot;, and &amp;quot;Tag36h11&amp;quot;.&#10;The default family seems least susceptible to false positives.&lt;/li&gt;&#10;&lt;li&gt;&lt;em&gt;ThetaThresh&lt;/em&gt;: When growing components, the intra component variation is&#10;allowed to grow when the component is small in size. This&#10;threshold affects how much. The default is 100.&lt;/li&gt;&#10;&lt;/ul&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="input (port)" class="ptolemy.kernel.util.StringAttribute" value="An input image.">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="An output image, with detected AprilTags outlined in green and identified.">
+            </property>
+            <property name="tags (port)" class="ptolemy.kernel.util.StringAttribute" value="An array of objects, one object for each tag detected in the image.">
+            </property>
+            <property name="options (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The options for the detector. This is a JSON object with fields defined above.&#10;  It defaults to an empty object, meaning to use default values for all the otpions.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="options" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 190.0}">
+        </property>
+        <port name="options" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="tags" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={750, 508, 499, 208}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{560.0, 155.0}">
+        </property>
+    </entity>
+    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('tags');&#10;	this.input('powerblade');&#10;	this.output('translation');&#10;	this.output('graphic', {type: 'string'});&#10;}&#10;var lumens = 0;&#10;exports.initialize = function() {&#10;	this.addInputHandler('tags', function() {&#10;		var tags = this.get('tags');&#10;		if (tags.length &gt; 0) {&#10;			this.send('translation', tags[0].center);&#10;			var color = 'green';&#10;			if (lumens &gt; 40) {&#10;				if (lumens &gt; 400) {&#10;					color = 'red';&#10;				} else {&#10;					color = 'yellow';&#10;				}&#10;			}&#10;			var graphic = '&lt;svg&gt;&lt;polygon style=&quot;fill:' + color + '; stroke:blue; stroke-width:4;&quot; points=&quot;0.5,-32 8.5,-8 33.5,-8 13.5,8 20.5,32 0.5,18 -20.5,32 -13.5,8 -33.5,-8 -7.5,-8&quot;/&gt;&lt;/svg&gt;';&#10;			this.send('graphic', graphic);&#10;		}&#10;	});&#10;	this.addInputHandler('powerblade', function() {&#10;		var powerblade = this.get('powerblade');&#10;		powerblade = JSON.parse(powerblade);&#10;console.log('--------------- ');&#10;console.log(util.inspect(powerblade));&#10;console.log(powerblade['light_lux']);&#10;console.log('--------------- ');&#10;		lumens = powerblade['light_lux'];&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 210.0]">
+        </property>
+        <port name="tags" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="translation" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="powerblade" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="graphic" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="GDPLogSubscribe" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/* Subscribe to a log. */&#10;&#10;// Copyright (c) 2015-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Subscribe to a Global Data Plane (GDP) log.&#10; *&#10; *  FIXME: What is the meaning of the startrec and numrec arguments? Makes no sense for subscription.&#10; *&#10; *  @output {string} data The data that is read from the log.&#10; *&#10; *  @input {string} logname The GDP logname.  By convention, a log name should be&#10; *   a reverse fully qualified name like &quot;org.terraswarm.accessor.demo.MyDemoName&quot;.&#10; *   If this input is an empty string, then no subscription will&#10; *   occur until a non-empty value is provided.&#10; *   By default, this is empty.&#10; *   Providing an empty string will unsubscribe from any previously subscribed-to log.&#10; *&#10; *  @input {string} logdname The name of a logd server.  If empty,&#10; *   then the hostname of the local machine is used. This server is&#10; *   a gateway into the GDP.&#10; *   FIXME: Shouldn't this be a parameter rather than input?&#10; *&#10; *  @input {int} numrec The number of records to read.&#10; *&#10; *  @input {int} startrec The record number to be read.  In the GDP,&#10; *  the first record is record 1.&#10; *&#10; *  @input {int} timeout The timeout in milliseconds.&#10; *&#10; *  @parameter {string} debugLevel The value of the GDP debug flag.&#10; *  See gdp/README-developers.md for a complete summary.  The value is&#10; *  typically &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To&#10; *  see the patterns, use the &quot;what&quot; command or strings&#10; *  $PTII/lib/libgdp* | grep '@(#)'.  Use &quot;*=40&quot; to set the debug&#10; *  level to 40 for all components. The value of level is not usually&#10; *  over 127.  Values over 100 may modify the behavior.&#10; *&#10; *  @accessor gdp/GDPLogSubscribe&#10; *  @author Christopher Brooks, Edward A. Lee, Nitesh Mor&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, console, exports, getParameter, input, output, parameter, removeInputHandler, require, send */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var GDP = require('@accessors-modules/gdp');&#10;var log = null;&#10;var handle = null;&#10;var oldLogname = null;&#10;&#10;// If getNextData() returns null data, then set sawNull to true.&#10;var sawNull = false;&#10;&#10;/** Setup the parameters and ports. */&#10;exports.setup = function () {&#10;    this.output('data', {&#10;        'type': 'string'&#10;    });&#10;    this.parameter('debugLevel', {&#10;        'type': 'string'&#10;    });&#10;    this.input('logname', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    this.input('logdname', {&#10;        'type': 'string',&#10;        'value': 'edu.berkeley.eecs.gdp-01.gdplogd'&#10;    });&#10;    this.parameter('numrec', {&#10;        'type': 'int',&#10;        'value': 0&#10;    });&#10;    this.parameter('startrec', {&#10;        'type': 'int',&#10;        'value': 0&#10;    });&#10;    this.parameter('timeout', {&#10;        'type': 'int',&#10;        'value': 0&#10;    });&#10;};&#10;&#10;/** Add an input handler that will subscribe to a log. */&#10;exports.initialize = function () {&#10;    var self = this;&#10;&#10;    // Set an input handler to unsubscribe and then invoke this initialize()&#10;    // function when a new logname is provided.&#10;    this.addInputHandler('logname', function () {&#10;        // If there is an open subscription, close it.&#10;        self.exports.wrapup.call(self);&#10;        // Open the new subscription.&#10;        self.exports.subscribe.call(self);&#10;    });&#10;    self.exports.subscribe.call(self);&#10;};&#10;&#10;/** If a non-empty logname is given, subscribe to the log. */&#10;exports.subscribe = function () {&#10;    var self = this,&#10;        logname = this.get('logname'),&#10;        logdname = this.get('logdname');&#10;&#10;    if (logname === '') {&#10;        // Nothing more to do.&#10;        error('No log name');&#10;    }&#10;&#10;    // Create or connect to a log.&#10;    // The second argument specifies to open the log &quot;read only.&quot;&#10;    log = new GDP.GDP(logname, 1, logdname);&#10;&#10;    // Listen for data from the log.&#10;    log.on('data', function (data) {&#10;        console.log('****** received: ' + data);&#10;        self.send('data', data);&#10;        console.log('****** sent data: ' + data);&#10;    });&#10;&#10;    log.setDebugLevel(this.getParameter('debugLevel'));&#10;&#10;    // Subscribe to the log so that 'data' events are emitted.&#10;    log.subscribe(&#10;        this.getParameter('startrec'),&#10;        this.getParameter('numrec'),&#10;        this.getParameter('timeout')&#10;    );&#10;};&#10;&#10;/** Unsubscribe to the log. */&#10;exports.wrapup = function () {&#10;    if (log !== null) {&#10;        log.unsubscribe();&#10;        // The GDP close() method has a significant bug where calling&#10;        // close() twice might abort or segfault.&#10;        log = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/gdp/GDPLogSubscribe.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Subscribe to a Global Data Plane (GDP) log.&lt;/p&gt;&#10;&lt;p&gt; FIXME: What is the meaning of the startrec and numrec arguments? Makes no sense for subscription.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks, Edward A. Lee, Nitesh Mor">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="logname (port)" class="ptolemy.kernel.util.StringAttribute" value="The GDP logname.  By convention, a log name should be&#10;  a reverse fully qualified name like &quot;org.terraswarm.accessor.demo.MyDemoName&quot;.&#10;  If this input is an empty string, then no subscription will&#10;  occur until a non-empty value is provided.&#10;  By default, this is empty.&#10;  Providing an empty string will unsubscribe from any previously subscribed-to log.">
+            </property>
+            <property name="logdname (port)" class="ptolemy.kernel.util.StringAttribute" value="The name of a logd server.  If empty,&#10;  then the hostname of the local machine is used. This server is&#10;  a gateway into the GDP.&#10;  FIXME: Shouldn't this be a parameter rather than input?">
+            </property>
+            <property name="numrec (port)" class="ptolemy.kernel.util.StringAttribute" value="The number of records to read.">
+            </property>
+            <property name="startrec (port)" class="ptolemy.kernel.util.StringAttribute" value="The record number to be read.  In the GDP,&#10; the first record is record 1.">
+            </property>
+            <property name="timeout (port)" class="ptolemy.kernel.util.StringAttribute" value="The timeout in milliseconds.">
+            </property>
+            <property name="data (port)" class="ptolemy.kernel.util.StringAttribute" value="The data that is read from the log.">
+            </property>
+            <property name="debugLevel (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The value of the GDP debug flag.&#10; See gdp/README-developers.md for a complete summary.  The value is&#10; typically &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To&#10; see the patterns, use the &quot;what&quot; command or strings&#10; $PTII/lib/libgdp* | grep '@(#)'.  Use &quot;*=40&quot; to set the debug&#10; level to 40 for all components. The value of level is not usually&#10; over 127.  Values over 100 may modify the behavior.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="debugLevel" class="ptolemy.data.expr.Parameter" value="40">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="edu.berkeley.eecs.swarmlab.device.c098e5300003">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="logdname" class="ptolemy.actor.parameters.PortParameter" value="edu.berkeley.eecs.gdp-01.gdplogd">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 295.0}">
+        </property>
+        <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="logdname" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 369, 1153, 347}, maximized=false}">
+        </property>
+        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1153, 303]">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 300.0]">
+        </property>
+    </entity>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{305.0, 200.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Camera.image&quot;,x=220.0,y=200.0}, tail={id=&quot;relation2.vertex1&quot;,x=305.0,y=200.0}, points={} },{ head={id=&quot;ImageAnnotate.image&quot;,x=755.0,y=140.0}, tail={id=&quot;relation2.vertex1&quot;,x=305.0,y=170.0}, points={695.0,160.0,695.0,205.0,245.0,205.0} },{ head={id=&quot;AprilTags.input&quot;,x=400.0,y=190.0}, tail={id=&quot;relation2.vertex1&quot;,x=305.0,y=200.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation3" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=935.0,y=170.0}, tail={id=&quot;ImageAnnotate.output&quot;,x=795.0,y=170.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=70.0,y=200.0}, tail={id=&quot;Camera.trigger&quot;,x=220.0,y=200.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.image&quot;,x=795.0,y=170.0}, tail={id=&quot;AprilTags.output&quot;,x=400.0,y=190.0}, points={705.0,190.0,705.0,115.0,480.0,115.0,480.0,180.0} } }">
+        </property>
+    </relation>
+    <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{510.0, 200.0}">
+        </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Display.input&quot;,x=560.0,y=155.0}, tail={id=&quot;relation6.vertex1&quot;,x=510.0,y=200.0}, points={510.0,155.0} },{ head={id=&quot;AprilTags.tags&quot;,x=400.0,y=190.0}, tail={id=&quot;relation6.vertex1&quot;,x=510.0,y=200.0}, points={} },{ head={id=&quot;JavaScript.tags&quot;,x=600.0,y=210.0}, tail={id=&quot;relation6.vertex1&quot;,x=510.0,y=200.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation8" class="ptolemy.actor.TypedIORelation">
+        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+        </property>
+        <vertex name="vertex1" value="{485.0, 255.0}">
+        </vertex>
+    </relation>
+    <link port="DiscreteClock.output" relation="relation"/>
+    <link port="ImageDisplay.input" relation="relation3"/>
+    <link port="ImageAnnotate.graphic" relation="relation7"/>
+    <link port="ImageAnnotate.image" relation="relation4"/>
+    <link port="ImageAnnotate.translate" relation="relation5"/>
+    <link port="ImageAnnotate.output" relation="relation3"/>
+    <link port="Camera.trigger" relation="relation"/>
+    <link port="Camera.image" relation="relation2"/>
+    <link port="AprilTags.input" relation="relation2"/>
+    <link port="AprilTags.output" relation="relation4"/>
+    <link port="AprilTags.tags" relation="relation6"/>
+    <link port="Display.input" relation="relation6"/>
+    <link port="JavaScript.tags" relation="relation6"/>
+    <link port="JavaScript.translation" relation="relation5"/>
+    <link port="JavaScript.powerblade" relation="relation8"/>
+    <link port="JavaScript.graphic" relation="relation7"/>
+    <link port="GDPLogSubscribe.data" relation="relation8"/>
+    <link port="Display2.input" relation="relation8"/>
+</entity>
