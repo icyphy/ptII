@@ -228,8 +228,10 @@ JAVAWS =	@JAVAWS@
 # -breakiterator is only present in jdk1.4 and later
 JDOCBREAKITERATOR = @JDOCBREAKITERATOR@
 
-# Increase the amount of memory that javadoc uses.
-JDOCMEMORY =	-J-Xmx1500m
+# Increase the amount of memory that javadoc uses for 64-bit JVMs.  
+JDOCMEMORY =	-J-Xmx7654m
+# 32-bit JVMs would use 
+#JDOCMEMORY =	-J-Xmx1500m
 
 # Allow @Pt.AcceptedRating and @Pt.ProposedRating tags.
 JDOCTAG = 	@JDOCTAG@
