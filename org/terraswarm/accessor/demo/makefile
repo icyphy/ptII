@@ -32,7 +32,7 @@
 # Root of Ptolemy II directory
 ROOT = ../../../..
 
-DIRS = AprilTags AprilTagsImageAnnotate \
+DIRS = AprilTags AprilTagImageAnnotate \
         Audio Browser Camera Foscam HappySadStock \
 	Heartbeat HueToggle \
 	IMUSensor ImageAnnotate ImageFilters Kubi \
