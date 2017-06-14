@@ -1746,6 +1746,7 @@
 	<include name="ptolemy/actor/lib/jjs/external/*.md"/>
 	<include name="ptolemy/actor/lib/jjs/external/*.htm"/>
 	<include name="ptolemy/actor/lib/jjs/external/*.js"/>
+        <include name="ptolemy/actor/lib/jjs/modules/deterministicTemporalSemantics.js"/>
 	<include name="ptolemy/actor/lib/jjs/node/README.txt"/>
 	<include name="ptolemy/actor/lib/jjs/node/apiai/*"/>
 	<include name="ptolemy/actor/lib/jjs/node/apiai/module/*"/>
@@ -1799,7 +1800,7 @@
         <include name="ptolemy/actor/lib/jjs/modules/*/demo/*.xml"/>
         <include name="ptolemy/actor/lib/jjs/modules/testing/chai/*.js"/>
         <include name="ptolemy/actor/lib/jjs/modules/testing/mocha/*.js"/>
-        <include name="ptolemy/actor/lib/jjs/modules/testing/window-mock/*.js"/>
+        <include name="ptolemy/actor/lib/jjs/modules/testing/windowMock/*.js"/>
       </fileset>
     </jar>
 
