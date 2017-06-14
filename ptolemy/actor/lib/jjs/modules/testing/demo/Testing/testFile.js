@@ -9,6 +9,7 @@ var chai = require('testing/chai/chai.js');
 var assert = chai.assert;        
 var should = chai.should();
 
+console.log('Start of Common host: Basic');
 describe('Common host: Basic', function () {
         before(function() {
                 // Read the accessor source code.
@@ -57,7 +58,9 @@ describe('Common host: Basic', function () {
                 instance.latestOutput('negation').should.equal(false);
         });
 });
+console.log('End of Common host: Basic');
 
+console.log('Start of Common host: Composite accessors');
 describe('Common host: Composite accessors', function(){
         before(function() {
                 // Have to provide an implementation of this.instantiate(), which in this case will only
@@ -81,7 +84,10 @@ describe('Common host: Composite accessors', function(){
                 a.latestOutput('output').should.equal(25);
         });
 });
+console.log('Start of Common host: Spontaneous accessors');
 
+
+console.log('Start of Common host: Spontaneous accessors');
 describe('Common host: Spontaneous accessors', function(){
         // Increase default mocha timeout (originally 2000).  See https://mochajs.org/#timeouts
     this.timeout(3000);
@@ -94,21 +100,30 @@ describe('Common host: Spontaneous accessors', function(){
                 
         });
         
-        it('Spontaneous accessor produces correct outputs after 1 and 2 seconds.', function(done){
+        var testDescription = 'Spontaneous accessor produces correct outputs after 1 and 2 seconds.';
+        console.log('Before ' + testDescription);
+        it(testDescription, function(done){
                 // Note that the following two tests will run concurrently (!)
                 // initialize() must go in the test case, not in before(), since a 
                 // spontaneous accessor will start producing inputs after initialize().
                 b.initialize();
                 setTimeout(function() {
+                        if (typeof(b.latestOutput('output')) === 'undefined') {
+                            throw new Error(testDescription + ": timeout 1500: b.latestOutput('output') is unknown?");
+                        }
                         b.latestOutput('output').should.equal(0);
                 }, 1500);
                 
                 setTimeout(function() {
+                        if (typeof(b.latestOutput('output')) === 'undefined') {
+                            throw new Error(testDescription + ": timeout 2500: b.latestOutput('output') is unknown?");
+                        }
                         b.latestOutput('output').should.equal(1);
                     b.wrapup();
                     done();
                 }, 2500);
         });
+        console.log('After ' + testDescription);
         
         it('Composite spontaneous accessor produces correct outputs after 1 and 2 seconds.', function(done){
                 // Note that the following two tests will run concurrently (!)
@@ -125,7 +140,10 @@ describe('Common host: Spontaneous accessors', function(){
                 }, 2500);
         });
 });
+console.log('End of Common host: Spontaneous accessors');
         
+
+console.log('Start of Common host: Inheritance');
 describe('Common host: Inheritance', function(){
         before(function(){
                 d = commonHost.instantiateAccessor(
@@ -168,3 +186,4 @@ describe('Common host: Inheritance', function(){
                 g.latestOutput('out2').should.equal(2);
         });
 });
+console.log('End of Common host: Inheritance');
