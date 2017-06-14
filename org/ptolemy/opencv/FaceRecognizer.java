@@ -145,7 +145,7 @@ public class FaceRecognizer {
         String trainingFile = "$CLASSPATH/org/ptolemy/opencv/haarcascade_frontalface_default.xml";
         URL url = FileUtilities.nameToURL(trainingFile, null, null);
         if (url == null) {
-            throw new IOException("Could not load " + trainingFile);
+            throw new IOException("Could not find the face training file: " + trainingFile);
         }
 
         // If the training file was found in a jar file, then copy it
@@ -165,10 +165,18 @@ public class FaceRecognizer {
             // Try without leading / on Windows.
             loaded = _faceCascade.load(url.getPath().substring(1, url.getPath().length()));
             if (!loaded) {
-                throw new IOException("Could not load " + url.getPath());
+                throw new IOException("Could not load the face file: " + url.getPath());
             }
         }
         
+        
+        _eyeCascade = new CascadeClassifier();
+        trainingFile = "$CLASSPATH/org/ptolemy/opencv/haarcascade_eye.xml";
+        url = FileUtilities.nameToURL(trainingFile, null, null);
+        if (url == null) {
+            throw new IOException("Could not find the eye training file in the $CLASSPATH:  " + trainingFile);
+        }
+
         // If the training file was found in a jar file, then copy it
         // to a location in the classpath so that _cascade.load() can find
         // it.
@@ -179,20 +187,13 @@ public class FaceRecognizer {
                 throw new IOException("Could not load " + url + ", which was found as " + temporaryTrainingFile);
             }
         }
-        
-        _eyeCascade = new CascadeClassifier();
-        trainingFile = "$CLASSPATH/org/ptolemy/opencv/haarcascade_eye.xml";
-        url = FileUtilities.nameToURL(trainingFile, null, null);
-        if (url == null) {
-            throw new IOException("Could not load " + trainingFile);
-        }
 
         loaded = _eyeCascade.load(url.getPath());
         if (!loaded) {
             // Try without leading / on Windows.
             loaded = _eyeCascade.load(url.getPath().substring(1, url.getPath().length()));
             if (!loaded) {
-                throw new IOException("Could not load " + url.getPath());
+                throw new IOException("Could not load the eye training file: " + url.getPath());
             }
         }
     }
