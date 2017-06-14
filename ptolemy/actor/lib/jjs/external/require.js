@@ -175,6 +175,8 @@
      *  @return the file that corresponds with the module.
      */
     var resolveModuleToFile = function (moduleName, parentDir, modulePaths) {
+        // print('require.js: moduleName: ' + moduleName );
+
         // --- Modified from original by cxh@eecs.berkeley.edu to search in the classpath.
         var JNLPUtilities = Java.type('ptolemy.actor.gui.JNLPUtilities');
         var moduleFilePath = Java.type('ptolemy.util.FileUtilities').nameToFile(
@@ -210,6 +212,7 @@
                 moduleName = newModuleName;
             }
 
+            // print('require.js: moduleName: ' + moduleName );
             for (var i = 0; i < modulePaths.length; i++) {
                 var modulePath = modulePaths[i];
                 // Windows?
@@ -250,17 +253,26 @@
                 startIndex = 3;
                 newParentDirectory = parentDir.getParent();
             }
-            var classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(newParentDirectory + "/" + moduleName.substr(startIndex));
+            var testPath = newParentDirectory + "/" + moduleName.substr(startIndex)
+            // print('require.js: ./ or ../ moduleName: ' + moduleName + ' testPath: ' + testPath);
+            var classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(testPath);
             if (classPathFile2 !== null && classPathFile2.isFile()) {
+                // print('require.js: moduleName: ' + moduleName + ' returning ' + classPathFile2);
                 return classPathFile2;
             } else {
                 // try appending a .js to the end
-                classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(newParentDirectory + "/" + moduleName + ".js");
+                testPath = newParentDirectory + "/" + moduleName + ".js";
+                // print('require.js: moduleName: ' + moduleName + ' testPath: ' + testPath);
+                classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(testPath);
                 if (classPathFile2 !== null && classPathFile2.isFile()) {
+                    // print('require.js: moduleName: ' + moduleName + ' returning ' + classPathFile2);
                     return classPathFile2;
                 } else {
-                    classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(moduleName + ".js");
+                    testPath = moduleName + ".js";
+                    // print('require.js: moduleName: ' + moduleName + ' testPath: ' + testPath);
+                    classPathFile2 = JNLPUtilities.getResourceSaveJarURLAsTempFile(testPath);
                     if (classPathFile2 !== null && classPathFile2.isFile()) {
+                        // print('require.js: moduleName: ' + moduleName + ' returning ' + classPathFile2);
                         return classPathFile2;
                     }
                 }
@@ -376,11 +388,9 @@
         try {
             // Uncomment the code below if you want to see what files
             // are being required.
-            // try {
-            //     console.log("require.js: " + canonizedFilename);
-            // } catch (e) {
-            //     //Ignore
-            // }
+            // print is a Nashorn built-in. If we use console.log(), then
+            // we would need to put it in a try/catch block.
+            // print("require.js: " + canonizedFilename + " read from: " + file);
             compiledWrapper = eval(code);
         } catch (e) {
             var message = e.message;
