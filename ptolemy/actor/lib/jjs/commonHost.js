@@ -236,7 +236,7 @@ var trustedAccessorsAllowed = false;
 
 var util = require('util');
 var EventEmitter = require('events').EventEmitter;
-var deterministicTemporalSemantics = require('./modules/deterministicTemporalSemantics');
+var deterministicTemporalSemantics = require('deterministicTemporalSemantics');
 
 ///////////////////////////////////////////////////////////////////
 //// Accessor class and its functions.
