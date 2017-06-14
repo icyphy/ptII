@@ -104,7 +104,8 @@ var _modulePath = [_moduleRoot + '/',
 ];
 
 /** An array that gives the search path for modules to be required relative to the classpath. */
-var _moduleClasspath = ['$CLASSPATH/ptolemy/actor/lib/jjs/modules/',
+var _moduleClasspath = ['$CLASSPATH/ptolemy/actor/lib/jjs/',
+    '$CLASSPATH/ptolemy/actor/lib/jjs/modules/',
     '$CLASSPATH/ptolemy/actor/lib/jjs/node/',
     '$CLASSPATH/ptolemy/actor/lib/jjs/node_modules/',
     '$CLASSPATH/org/terraswarm/accessor/accessors/web/hosts/',
