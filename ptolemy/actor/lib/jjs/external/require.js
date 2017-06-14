@@ -175,7 +175,7 @@
      *  @return the file that corresponds with the module.
      */
     var resolveModuleToFile = function (moduleName, parentDir, modulePaths) {
-        // print('require.js: moduleName: ' + moduleName );
+        // print('require.js: moduleName: ' + moduleName + " parentDir: " + parentDir);
 
         // --- Modified from original by cxh@eecs.berkeley.edu to search in the classpath.
         var JNLPUtilities = Java.type('ptolemy.actor.gui.JNLPUtilities');
@@ -274,10 +274,17 @@
                     if (classPathFile2 !== null && classPathFile2.isFile()) {
                         // print('require.js: moduleName: ' + moduleName + ' returning ' + classPathFile2);
                         return classPathFile2;
+                    } else {
+                        // FIXME: This is not quite right if we are running using all jar files
+                        // because we end up not keeping track of the parentDir because we are
+                        // copying files from the jar file to a temporary location.
+                        moduleName = moduleName.substr(startIndex);
+                        return resolveModuleToFile(moduleName, parentDir, modulePaths);
                     }
                 }
             }
         }
+
         // --- End of modified section.
 
         // --- Modified from original by eal@berkeley.edu to search cwd last rather than first.
