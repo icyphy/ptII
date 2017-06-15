@@ -107,14 +107,14 @@ describe('Common host: Spontaneous accessors', function(){
                 // initialize() must go in the test case, not in before(), since a 
                 // spontaneous accessor will start producing inputs after initialize().
                 b.initialize();
-                setTimeoutDeterministic(function() {
+                b.setTimeoutDeterministic(function() {
                         if (typeof(b.latestOutput('output')) === 'undefined') {
                             throw new Error(testDescription + ": timeout 1500: b.latestOutput('output') is unknown?");
                         }
                         b.latestOutput('output').should.equal(0);
                 }, 1500);
                 
-                setTimeoutDeterministic(function() {
+                b.setTimeoutDeterministic(function() {
                         if (typeof(b.latestOutput('output')) === 'undefined') {
                             throw new Error(testDescription + ": timeout 2500: b.latestOutput('output') is unknown?");
                         }
@@ -130,10 +130,10 @@ describe('Common host: Spontaneous accessors', function(){
                 // initialize() must go in the test case, not in before(), since a 
                 // spontaneous accessor will start producing inputs after initialize().
                 c.initialize();
-                setTimeoutDeterministic(function() {
+                c.setTimeoutDeterministic(function() {
                         c.latestOutput('output').should.equal(0);
                 }, 1500);
-                setTimeoutDeterministic(function() {
+                c.setTimeoutDeterministic(function() {
                         c.latestOutput('output').should.equal(4);
                     c.wrapup();
                     done();
