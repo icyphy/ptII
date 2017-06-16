@@ -1,7 +1,7 @@
 /* An actor that reads a URL naming a directory and outputs each
  element of the directory one at a time.
 
- @Copyright (c) 1998-2015 The Regents of the University of California.
+ @Copyright (c) 1998-2017 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -48,6 +48,7 @@ import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.FileUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// URLDirectoryReader
@@ -324,7 +325,9 @@ public class URLDirectoryReader extends URLReader {
      *  nor a directory, or if there is some other problem.  */
     private static String[] _listFileOrURL(String source, String endsWith)
             throws MalformedURLException, IOException {
-        URL url = new URL(source);
+        // Follow redirects such as http -> https.
+        URL url = FileUtilities.followRedirects(new URL(source));
+        
         URLConnection urlConnection = url.openConnection();
         String contentType = urlConnection.getContentType();
 
