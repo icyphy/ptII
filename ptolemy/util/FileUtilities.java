@@ -191,7 +191,7 @@ public class FileUtilities {
         if (Files.isReadable(newLink)) {
             try {
                 // Save the directory that will be replaced by the link.
-                System.out.println("Moving " + newLink + " to " + temporary);
+                // System.out.println("Moving " + newLink + " to " + temporary);
                 Files.move(newLink, temporary);
             } catch (Throwable throwable) {
                 IOException exception = new IOException("Could not move " + newLink + " to " + temporary);
@@ -208,7 +208,7 @@ public class FileUtilities {
                 + newLink + " to " + target + ": " + ex;
             if (moveBack) {
                 try {
-                    System.out.println("Moving " + temporary + " to " + newLink);
+                    // System.out.println("Moving " + temporary + " to " + newLink);
                     Files.move(temporary, newLink);
 
                 } catch (Throwable throwable) {
@@ -221,7 +221,7 @@ public class FileUtilities {
             throw exception;
         } catch (UnsupportedOperationException ex2) {
             try {
-                System.out.println("Creating link from " + newLink + " to " + temporary);
+                // System.out.println("Creating link from " + newLink + " to " + temporary);
                 Files.createLink(newLink, target);
             } catch (Throwable ex3) {
                 String message = "Failed to create symbolic link or hard link from "
@@ -229,7 +229,7 @@ public class FileUtilities {
 
                 if (moveBack) {
                     try {
-                        System.out.println("Moving " + temporary + " to " + newLink);
+                        // System.out.println("Moving " + temporary + " to " + newLink);
                         Files.move(temporary, newLink);
                     } catch (Throwable throwable) {
                         message += " In addition, could not move " + temporary
@@ -245,12 +245,8 @@ public class FileUtilities {
 
         if (moveBack) {
             try {
-                //if (Files.isSymbolicLink(temporary)) {
-                //    Files.delete(temporary);
-                //} else {
-                    System.out.println("Deleting " + temporary);
-                    FileUtilities.deleteDirectory(temporary.toFile());
-                    //}
+                // System.out.println("Deleting " + temporary);
+                FileUtilities.deleteDirectory(temporary.toFile());
             } catch (Throwable throwable) {
                 IOException exception = new IOException("Failed to delete " + temporary);
                 exception.initCause(throwable);
@@ -264,7 +260,6 @@ public class FileUtilities {
      *  @return true if the toplevel directory was deleted.
      */
     static public boolean deleteDirectory(File directory) {
-        System.out.println("FileUtilities: deleteDirectory( File " + directory + ")");
         boolean deletedAllFiles = true;
         if (directory.exists()) {
             if (Files.isSymbolicLink(directory.toPath())) {
