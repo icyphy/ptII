@@ -1,6 +1,6 @@
 /* Utilities used to manipulate files
 
- Copyright (c) 2004-2016 The Regents of the University of California.
+ Copyright (c) 2004-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -32,6 +32,7 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -47,6 +48,7 @@ import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Enumeration;
 import java.util.Arrays;
@@ -170,6 +172,83 @@ public class FileUtilities {
         return _binaryReadStream(sourceURL.openStream());
     }
 
+    /** Create a link.
+     *  @param newLink the link to be created
+     *  @param temporary the path to the temporary location where the directory to be replaced by the link should be placed.
+     *  @param target the target of the link to be created.
+     *  @exception IOException If there are problems creating the link
+     */ 
+    public static void createLink(Path newLink, Path temporary, Path target) throws IOException {
+        // 
+        //     Path currentRelativePath = Paths.get(".");
+        //     throw new IOException(newLink + " does not exist?  That directory should be "
+        //                           + " in the jar file so that we can move it aside.  "
+        //                           + "The current relative path is "
+        //                           + currentRelativePath.toAbsolutePath());
+        // }
+
+        boolean moveBack = false;
+        if (Files.isReadable(newLink)) {
+            try {
+                // Save the directory that will be replaced by the link.
+                Files.move(newLink, temporary);
+            } catch (Throwable throwable) {
+                IOException exception = new IOException("Could not move " + newLink + " to " + temporary);
+                exception.initCause(throwable);
+                throw exception;
+            }
+            moveBack = true;
+        }
+
+        try {
+            Files.createSymbolicLink(newLink, target);
+        } catch (IOException ex) {
+            String message = "Failed to create symbolic link or hard link from "
+                + newLink + " to " + target + ": " + ex;
+            if (moveBack) {
+                try {
+                    Files.move(temporary, newLink);
+                } catch (Throwable throwable) {
+                message += " In addition, could not move " + temporary + " back to "
+                    + newLink + ": " + throwable;
+                }
+            }
+            IOException exception = new IOException(message);
+            exception.initCause(ex);
+            throw exception;
+        } catch (UnsupportedOperationException ex2) {
+            try {
+                Files.createLink(newLink, target);
+            } catch (Throwable ex3) {
+                String message = "Failed to create symbolic link or hard link from "
+                    + newLink + " to " + target + ": " + ex3;
+
+                if (moveBack) {
+                    try {
+                        Files.move(temporary, newLink);
+                    } catch (Throwable throwable) {
+                        message += " In addition, could not move " + temporary
+                            + " back to " + newLink + ": " + throwable;
+                    }
+                }
+
+                IOException exception = new IOException(message);
+                exception.initCause(ex3);
+                throw exception;
+            }
+        }
+
+        if (moveBack) {
+            try {
+                FileUtilities.deleteDirectory(temporary.toFile());
+            } catch (Throwable throwable) {
+                IOException exception = new IOException("Failed to delete " + temporary);
+                exception.initCause(throwable);
+                throw exception;
+            }
+        }
+    }
+
     /**
      * Delete a directory and all of its content.
      * If the path is a file, then it is deleted.  If the path is a directory
@@ -247,6 +326,46 @@ public class FileUtilities {
         }
     }
 
+    /** If necessary, unjar the entire jar file that contains a target
+     *  file.
+     *
+     *  @param targetFileName If the file exists relative to the
+     *  directoryName, then do nothing.  Otherwise, look for the
+     *  targetFile in the classpath and unjar the jar file in which it
+     *  is found in the directory named by the <i>directoryName</i>
+     *  parameter.
+     *  @param directoryName The name of the directory in which to
+     *  search for the file named by the <i>targetFileName</i>
+     *  parameter and in which the jar file is possibly unjared.
+     *  @exception IOException If there is problem finding the target
+     *  file or extracting the jar file.
+     */
+    public static void extractJarFileIfNecessary(String targetFileName,
+                                                 String directoryName)
+        throws IOException {
+        File targetFile = new File(directoryName + File.separator + targetFileName);
+        if ( targetFile.exists()) {
+            return;
+        } else {
+            URL targetFileURL = FileUtilities.nameToURL("$CLASSPATH/" + targetFileName, null, null);
+            if (targetFileURL == null) {
+                throw new FileNotFoundException("Could not find " + targetFileName
+                                                + " as a file or in the CLASSPATH.");
+            }
+            
+            String targetFileURLName = targetFileURL.toString();
+            // Remove the jar:file: and everything after !/
+            String jarFileName = targetFileURLName.substring(9, targetFileURLName.indexOf("!/"));
+            FileUtilities.extractJarFile(jarFileName, directoryName);
+            targetFile = new File(directoryName + File.separator + targetFileName);
+            if ( !targetFile.exists()) {
+                throw new FileNotFoundException("Could not find " + targetFileName
+                                                + " after extracting " + jarFileName);
+            }
+        }
+    }
+
+    ///////////////////////////////////////////////////////////////////
     /** Delete a directory.
      *  @param directory the File naming the directory.
      *  @return true if the toplevel directory was deleted.

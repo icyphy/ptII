@@ -30,6 +30,8 @@ package ptolemy.cg.kernel.generic.accessor;
 
 import java.io.File;
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.net.URI;
 import java.util.List;
 
@@ -46,6 +48,7 @@ import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
+import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
 
 ///////////////////////////////////////////////////////////////////
@@ -126,7 +129,7 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
     public String comment(String comment) {
         return "// " + comment + _eol;
     }
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                     parameters                            ////
 
@@ -185,6 +188,12 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
         URI uri = URIAttribute.getModelURI(toplevel());
         String modelURI = "";
         String PTII = StringUtilities.getProperty("ptolemy.ptII.dir").replace('\\', '/');
+
+        try {
+            AccessorCodeGenerator._setupAccessorsDirectory(PTII);
+        } catch (IOException ex) {
+            throw new IllegalActionException(_model, ex, "Failed to set up accessors directory.");
+        }
 
         if (uri != null) {
             modelURI = uri.toString();
@@ -358,4 +367,28 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
      *  Derived classes like AccessorSSHCodeGenerator set this to false.
      */
     protected boolean _checkForLocalModules = true;
+
+    ///////////////////////////////////////////////////////////////////
+    ////                         private methods                   ////
+
+    /** Set up the accessors directory.
+     *  @param PTII The home directory of PTII.
+     */
+    private static void _setupAccessorsDirectory(String PTII) throws IOException {
+        // If necessary, unjar the accessors jar file.
+        String nodeHostPath = "org/terraswarm/accessor/accessors/web/hosts/node/nodeHost.js";
+        
+        FileUtilities.extractJarFileIfNecessary(nodeHostPath, PTII);
+
+        // Create the Path in a platform-indendent manner.
+        Path newLink = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-hosts");
+        Path temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-hosts.IzpackSetupTemp");
+        Path target = Paths.get("..", "hosts");
+        FileUtilities.createLink(newLink, temporary, target);
+
+        newLink = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common");
+        temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common.IzpackSetupTemp");
+        target = Paths.get("..", "common");
+        FileUtilities.createLink(newLink, temporary, target);
+    }
 }
