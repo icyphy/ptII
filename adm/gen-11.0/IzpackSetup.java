@@ -77,22 +77,26 @@ public class IzpackSetup {
         try {
             Files.createSymbolicLink(newLink, target);
         } catch (IOException ex) {
-            String message = "Failed to create symbolic link or hard link from " + newLink + " to " + target + ": " + ex;
+            String message = "Failed to create symbolic link or hard link from "
+                + newLink + " to " + target + ": " + ex;
             try {
                 Files.move(temporary, newLink);
             } catch (Throwable throwable) {
-                message += " In addition, could not move " + temporary + " back to " + newLink + ": " + throwable;
+                message += " In addition, could not move " + temporary + " back to "
+                    + newLink + ": " + throwable;
             }
             return message;
         } catch (UnsupportedOperationException ex2) {
             try {
                 Files.createLink(newLink, target);
             } catch (Throwable ex3) {
-                String message = "Failed to create symbolic link or hard link from " + newLink + " to " + target + ": " + ex3;
+                String message = "Failed to create symbolic link or hard link from "
+                    + newLink + " to " + target + ": " + ex3;
                 try {
                     Files.move(temporary, newLink);
                 } catch (Throwable throwable) {
-                    message += " In addition, could not move " + temporary + " back to " + newLink + ": " + throwable;
+                    message += " In addition, could not move " + temporary
+                        + " back to " + newLink + ": " + throwable;
                         }
                 return message;
             }
@@ -101,12 +105,16 @@ public class IzpackSetup {
         try {
             IzpackSetup.deleteDirectory(temporary.toFile());
         } catch (Throwable throwable) {
-            message += "  In addition, failed to delete " + temporary + ": " + throwable;
+            message += "  In addition, failed to delete " + temporary + ": "
+                + throwable;
         }
         return message;
     }
 
-    /** Delete a directory.                                                                                                                                     *  @param directory the File naming the directory.                                                                                                         *  @return true if the toplevel directory was deleted.                                                                                                     */
+    /** Delete a directory.
+     * @param directory the File naming the directory.
+     * @return true if the toplevel directory was deleted.
+     */
     static public boolean deleteDirectory(File directory) {
         boolean deletedAllFiles = true;
 	if (directory.exists()) {
