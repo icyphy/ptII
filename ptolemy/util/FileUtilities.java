@@ -191,6 +191,7 @@ public class FileUtilities {
         if (Files.isReadable(newLink)) {
             try {
                 // Save the directory that will be replaced by the link.
+                System.out.println("Moving " + newLink + " to " + temporary);
                 Files.move(newLink, temporary);
             } catch (Throwable throwable) {
                 IOException exception = new IOException("Could not move " + newLink + " to " + temporary);
@@ -207,7 +208,9 @@ public class FileUtilities {
                 + newLink + " to " + target + ": " + ex;
             if (moveBack) {
                 try {
+                    System.out.println("Moving " + temporary + " to " + newLink);
                     Files.move(temporary, newLink);
+
                 } catch (Throwable throwable) {
                 message += " In addition, could not move " + temporary + " back to "
                     + newLink + ": " + throwable;
@@ -218,6 +221,7 @@ public class FileUtilities {
             throw exception;
         } catch (UnsupportedOperationException ex2) {
             try {
+                System.out.println("Creating link from " + newLink + " to " + temporary);
                 Files.createLink(newLink, target);
             } catch (Throwable ex3) {
                 String message = "Failed to create symbolic link or hard link from "
@@ -225,6 +229,7 @@ public class FileUtilities {
 
                 if (moveBack) {
                     try {
+                        System.out.println("Moving " + temporary + " to " + newLink);
                         Files.move(temporary, newLink);
                     } catch (Throwable throwable) {
                         message += " In addition, could not move " + temporary
@@ -240,7 +245,12 @@ public class FileUtilities {
 
         if (moveBack) {
             try {
-                FileUtilities.deleteDirectory(temporary.toFile());
+                //if (Files.isSymbolicLink(temporary)) {
+                //    Files.delete(temporary);
+                //} else {
+                    System.out.println("Deleting " + temporary);
+                    FileUtilities.deleteDirectory(temporary.toFile());
+                    //}
             } catch (Throwable throwable) {
                 IOException exception = new IOException("Failed to delete " + temporary);
                 exception.initCause(throwable);
@@ -249,41 +259,44 @@ public class FileUtilities {
         }
     }
 
-    /**
-     * Delete a directory and all of its content.
-     * If the path is a file, then it is deleted.  If the path is a directory
-     * then
-     * @param filepath The path for the directory or file to be deleted.
-     * @return false if one or more files or directories cannot be deleted.
+    /** Delete a directory.
+     *  @param directory the File naming the directory.
+     *  @return true if the toplevel directory was deleted.
      */
-    public static boolean deleteDirectory(String filepath) {
-        boolean returnValue = true;
-        File path = new File(filepath);
-
-        if (path.exists()) {
-            if (!path.isDirectory()) {
-                if (!path.delete()) {
-                    returnValue = false;
+    static public boolean deleteDirectory(File directory) {
+        System.out.println("FileUtilities: deleteDirectory( File " + directory + ")");
+        boolean deletedAllFiles = true;
+        if (directory.exists()) {
+            if (Files.isSymbolicLink(directory.toPath())) {
+                if (!directory.delete()) {
+                    deletedAllFiles = false;
                 }
             } else {
-                File[] files = path.listFiles();
+                File[] files = directory.listFiles();
                 if (files != null) {
                     for (int i = 0; i < files.length; i++) {
-                        if (files[i].isDirectory()) {
-                            FileUtilities.deleteDirectory(files[i].getAbsolutePath());
-                            if (!files[i].delete()) {
-                                returnValue = false;
-                            }
+                        if (files[i].isDirectory()
+                            && !Files.isSymbolicLink(files[i].toPath())) {
+                            deleteDirectory(files[i]);
                         } else {
                             if (!files[i].delete()) {
-                                returnValue = false;
+                                deletedAllFiles = false;
                             }
                         }
                     }
                 }
             }
         }
-        return returnValue;
+        return directory.delete() && deletedAllFiles;
+    }
+
+    /**
+     * Delete a directory and all of its content.
+     * @param filepath The path for the directory or file to be deleted.
+     * @return false if one or more files or directories cannot be deleted.
+     */
+    public static boolean deleteDirectory(String filepath) {
+        return FileUtilities.deleteDirectory(new File(filepath));
     }
 
     /** Extract a jar file into a directory.  This is a trivial
@@ -363,30 +376,6 @@ public class FileUtilities {
                                                 + " after extracting " + jarFileName);
             }
         }
-    }
-
-    ///////////////////////////////////////////////////////////////////
-    /** Delete a directory.
-     *  @param directory the File naming the directory.
-     *  @return true if the toplevel directory was deleted.
-     */
-    static public boolean deleteDirectory(File directory) {
-        boolean deletedAllFiles = true;
-        if (directory.exists()) {
-            File[] files = directory.listFiles();
-            if (files != null) {
-                for (int i = 0; i < files.length; i++) {
-                    if (files[i].isDirectory()) {
-                        deleteDirectory(files[i]);
-                    } else {
-                        if (!files[i].delete()) {
-                            deletedAllFiles = false;
-                        }
-                    }
-                }
-            }
-        }
-        return directory.delete() && deletedAllFiles;
     }
 
     /** Given a URL, if it starts with http, the follow up to 10 redirects.

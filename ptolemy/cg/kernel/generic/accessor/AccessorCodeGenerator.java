@@ -382,12 +382,12 @@ public class AccessorCodeGenerator extends RunnableCodeGenerator {
 
         // Create the Path in a platform-indendent manner.
         Path newLink = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-hosts");
-        Path temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-hosts.IzpackSetupTemp");
+        Path temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "node_modules", "@accessors-hosts.AccessorCodeGenerator");
         Path target = Paths.get("..", "hosts");
         FileUtilities.createLink(newLink, temporary, target);
 
         newLink = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common");
-        temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common.IzpackSetupTemp");
+        temporary = Paths.get(PTII, "org", "terraswarm", "accessor", "accessors", "web", "hosts", "browser", "common.AccessorCodeGenerator");
         target = Paths.get("..", "common");
         FileUtilities.createLink(newLink, temporary, target);
     }
