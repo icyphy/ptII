@@ -1,6 +1,6 @@
 /* A parser for MoML (modeling markup language)
 
- Copyright (c) 1998-2016 The Regents of the University of California.
+ Copyright (c) 1998-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -92,6 +92,7 @@ import ptolemy.kernel.util.Settable;
 import ptolemy.kernel.util.Singleton;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.util.FileUtilities;
+import ptolemy.util.FileUtilities.StreamAndURL;
 import ptolemy.util.CancelException;
 import ptolemy.util.ClassUtilities;
 import ptolemy.util.MessageHandler;
@@ -1300,9 +1301,15 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
             // user clicks "Cancel".
             String protocol = result.getProtocol();
 
+            // To test this code:
+            // $PTII/bin/vergil $PTII/ptolemy/moml/demo/Networked/Networked.xml
             if (protocol != null
-                    && protocol.trim().toLowerCase(Locale.getDefault())
-                    .equals("http")) {
+                    && (protocol.trim().toLowerCase(Locale.getDefault())
+                        .equals("http")
+                        ||
+                        protocol.trim().toLowerCase(Locale.getDefault())
+                        .equals("https"))) {
+
                 SecurityManager security = System.getSecurityManager();
                 boolean withinUntrustedApplet = false;
 
@@ -1358,7 +1365,17 @@ public class MoMLParser extends HandlerBase implements ChangeListener {
                 }
             }
 
-            input = FileUtilities.openStreamFollowingRedirects(result);
+
+            // Get the InputStream and possibly redirected url.
+
+            // This method returns an object that contains the
+            // InputStream and URL which means we don't need to follow
+            // redirects twice.
+
+            StreamAndURL streamAndURL = FileUtilities.openStreamFollowingRedirectsReturningBoth(result);
+            result = streamAndURL.url();
+            input = streamAndURL.stream();
+
         } catch (IOException ioException) {
             errorMessage.append("-- " + ioException.getMessage() + "\n");
 
