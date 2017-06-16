@@ -1568,6 +1568,10 @@ if [ "$error" = "none" ]; then
 	echo "pause" >> $commandname.bat
     else
 	if [ "$makeapp" = "1" ]; then   
+	    if [ "$windows" = "yes" ]; then
+                echo "$0: makeapp not supported under Windows.";
+                exit
+            fi
 	    # Create a Mac OS X .app file
 	    PTVERSION=11.0.devel
 	    MACAPP_BASE=`basename $MACAPP_APP .app`
@@ -1600,6 +1604,7 @@ if [ "$error" = "none" ]; then
             if [ ! -f "$STUB" ]; then
 		# Unfortunately, under RHEL, having LD_LIBRARY_PATH set can cause problems
 	        # with git.
+
                 (cd $PTII/vendors; LD_LIBRARY_PATH="" git clone https://github.com/tofi86/universalJavaApplicationStub.git)
             fi
 
@@ -1617,6 +1622,7 @@ if [ "$error" = "none" ]; then
             # Create the license file.
             STUB_LICENSE=$MACAPP_APP/Contents/MacOS/universalJavaApplicationStub-license.html
             if [ ! -f "$STUB_LICENSE" ]; then
+                 mkdir -p `dirname "$STUB_LICENSE`
                  cat > $STUB_LICENSE <<EOFL
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
