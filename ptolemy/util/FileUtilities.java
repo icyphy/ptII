@@ -884,15 +884,65 @@ public class FileUtilities {
      */
     public static InputStream openStreamFollowingRedirects(URL url)
         throws IOException {
+        return openStreamFollowingRedirectsReturningBoth(url).stream();
+    }
+
+    /** A class that contains an InputStream and a URL
+     * so that we don't have to follow redirects twice.
+     */
+    public static class StreamAndURL {
+        /** Create an object containing an InputStream
+         *  and a URL.
+         */   
+        public StreamAndURL(InputStream stream, URL url) {
+            _stream = stream;
+            _url = url;
+        }
+
+        /** Return the stream
+         *  @return The stream.
+         */
+        public InputStream stream() {
+            return _stream;
+        }
+
+        /** Return the url.
+         *  @return The url.
+         */
+        public URL url() {
+            return _url;
+        }
+
+        private InputStream _stream;
+        private URL _url;
+    }
+
+    /** Given a URL, open a stream and return an object containing
+     *  both the inputStream and the possibly redirected URL.
+     * 
+     *  <p>If the URL starts with "http", then follow up to 10 redirects
+     *  and return the the final HttpURLConnection.</p>
+     *
+     *  <p>If the URL does not start with "http", then call
+     *  URL.openStream().</p>
+     *
+     *  @param url The URL to be opened.
+     *  @return The input stream
+     *  @exception IOException If there is a problem opening the URL or
+     *  if there are more than 10 redirects.
+     */
+    public static StreamAndURL openStreamFollowingRedirectsReturningBoth(URL url)
+        throws IOException {
 
         if (!url.getProtocol().startsWith("http")) {
-            return url.openStream();
+            return new StreamAndURL(url.openStream(), url);
         }
 
 	// followRedirects() also calls openConnection() and then closes
 	// the connection with disconnect().  We could duplicate the code
 	// here, but it seems safer to avoid the duplication.
-        return FileUtilities.followRedirects(url).openStream();
+        URL redirectedURL = FileUtilities.followRedirects(url);
+        return new StreamAndURL(redirectedURL.openStream(), redirectedURL);
     }
 
     /** Utility method to read a string from an input stream.
