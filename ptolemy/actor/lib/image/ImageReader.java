@@ -1,7 +1,7 @@
 /* An actor that reads an image from a FileParameter and outputs
  an AWTImageToken.
 
- @Copyright (c) 2001-2016 The Regents of the University of California.
+ @Copyright (c) 2001-2017 The Regents of the University of California.
  All rights reserved.
 
  Permission is hereby granted, without written agreement and without
@@ -42,6 +42,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
 import ptolemy.kernel.util.NameDuplicationException;
+import ptolemy.util.FileUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// ImageReader
@@ -144,7 +145,7 @@ public class ImageReader extends Source {
         }
 
         try {
-            _image = ImageIO.read(_url);
+            _image = ImageIO.read(FileUtilities.followRedirects(_url));
         } catch (IOException e) {
             throw new IllegalActionException(this, e,
                     "Failed to read image.");
