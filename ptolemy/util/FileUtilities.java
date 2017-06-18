@@ -257,11 +257,14 @@ public class FileUtilities {
 
     /** Delete a directory.
      *  @param directory the File naming the directory.
-     *  @return true if the toplevel directory was deleted.
+     *  @return true if the toplevel directory was deleted or does not
+     *  exist.
      */
     static public boolean deleteDirectory(File directory) {
         boolean deletedAllFiles = true;
-        if (directory.exists()) {
+        if (!directory.exists()) {
+            return true;
+        } else {
             if (Files.isSymbolicLink(directory.toPath())) {
                 if (!directory.delete()) {
                     deletedAllFiles = false;
