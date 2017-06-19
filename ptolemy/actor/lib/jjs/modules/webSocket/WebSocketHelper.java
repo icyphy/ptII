@@ -36,6 +36,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 import javax.imageio.ImageIO;
@@ -361,11 +362,16 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     public static String[] supportedReceiveTypes() {
         String[] imageTypes = ImageIO.getReaderFormatNames();
-        String[] result = new String[imageTypes.length + 2];
-        result[0] = "application/json";
-        result[1] = "text/plain";
-        System.arraycopy(imageTypes, 0, result, 2, imageTypes.length);
-        return result;
+        
+        // Image names from ImageIO are not case-sensitive, so duplicates may occur. 
+        // Remove duplicates.  Prepend "image/" for proper MIME type. 
+        TreeSet<String> typeSet = new TreeSet<String>();
+        for (int i = 0; i < imageTypes.length; i++) {
+        	typeSet.add("image/" + imageTypes[i].toLowerCase());
+        }
+        typeSet.add("application/json");
+        typeSet.add("text/plain");
+        return typeSet.toArray(new String[typeSet.size()]);
     }
 
     /** Return an array of the types supported by the current host for
@@ -375,11 +381,16 @@ public class WebSocketHelper extends VertxHelperBase {
      */
     public static String[] supportedSendTypes() {
         String[] imageTypes = ImageIO.getWriterFormatNames();
-        String[] result = new String[imageTypes.length + 2];
-        result[0] = "application/json";
-        result[1] = "text/plain";
-        System.arraycopy(imageTypes, 0, result, 2, imageTypes.length);
-        return result;
+        
+        // Image names from ImageIO are not case-sensitive, so duplicates may occur. 
+        // Remove duplicates.  Prepend "image/" for proper MIME type. 
+        TreeSet<String> typeSet = new TreeSet<String>();
+        for (int i = 0; i < imageTypes.length; i++) {
+        	typeSet.add("image/" + imageTypes[i].toLowerCase());
+        }
+        typeSet.add("application/json");
+        typeSet.add("text/plain");
+        return typeSet.toArray(new String[typeSet.size()]);
     }
 
     ///////////////////////////////////////////////////////////////////
