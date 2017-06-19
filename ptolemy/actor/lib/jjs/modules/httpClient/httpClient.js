@@ -411,6 +411,7 @@ ClientRequest.prototype._errorResponse = function (response, body) {
  *  <ul>
  *  <li> body: a string with the body of the response. </li>
  *  <li> cookies: an array of strings with cookies returned. </li>
+ *  <li> location: The value of Location in the header. </li>
  *  <li> statusCode: an integer indicating the status of the response. </li>
  *  <li> statusMessage: a string with the status message of the response. </li>
  *  </ul>
@@ -422,6 +423,11 @@ function IncomingMessage(response, body) {
     this.body = body;
     if (typeof response.cookies === 'function') {
         this.cookies = response.cookies();
+    }
+    if (typeof response.getHeader === 'function') {
+        this.location = response.getHeader('Location');
+    } else {
+        this.location = '';
     }
     if (typeof response.statusCode === 'function') {
         this.statusCode = response.statusCode();

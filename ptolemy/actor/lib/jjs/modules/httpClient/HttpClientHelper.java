@@ -313,6 +313,20 @@ public class HttpClientHelper extends VertxHelperBase {
             MultiMap headers = response.headers();
 
             // If the response is a redirect, handle that here.
+
+            // We used to handle redirects here, instead redirects
+            // should be handled by the caller, which is how Vert.x
+            // does it.  Vert.x HttpClient does not handle redirects,
+            // instead WebClient does.  See
+            // https://groups.google.com/forum/#!msg/vertx-dev/LzFm1YXUYMY/7qB6OSIXCAAJ
+            
+            // For how Vert.x handles redirects, see
+            // https://github.com/eclipse/vert.x/blob/master/src/main/java/io/vertx/core/http/impl/HttpClientRequestImpl.java
+
+            // For how we handle redirects in Ptolemy, see
+            // FileUtilities.followRedirects() and
+            // FileUtilities.openStreamFollowingRedirectsReturningBoth()
+            
             if (status >= 300 && status <= 308 && status != 306) {
                 _pendingRequests--;
                 String newLocation = headers.get("Location");
@@ -320,12 +334,14 @@ public class HttpClientHelper extends VertxHelperBase {
                     // True argument indicates that this request is done.
                     _issueOrDeferResponse(_requestNumber, true, new Runnable() {
                         public void run() {
-                            // FIXME: How to handle the redirect?
-                            _requestObj.callMember("_errorResponse", response,
-                                    "Redirect to "
-                                            + newLocation
-                                            + " not yet handled by HttpClientHelper. "
-                                            + status + ": " + response.statusMessage());
+                            _requestObj.callMember("_response", response, "<p>HttpClientHelper.java redirect body.</p>");
+
+                            // Here is the old code that would just emit an error if we had a redirect:
+                            // _requestObj.callMember("_errorResponse", response,
+                            //         "Redirect to "
+                            //                 + newLocation
+                            //                 + " not yet handled by HttpClientHelper. "
+                            //                 + status + ": " + response.statusMessage());
                         }
                     });
                     _client.close();
