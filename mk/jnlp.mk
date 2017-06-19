@@ -3,7 +3,7 @@
 # @Author: Christopher Brooks
 # @Version: $Id$
 #
-# Copyright (c) 2001-2016 The Regents of the University of California.
+# Copyright (c) 2001-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -47,6 +47,10 @@
 # files _before_ building installers.
 
 # To test a file, run:    make jnlp_run
+
+# For information about our code signing certificate, see
+# https://chess.eecs.berkeley.edu/ptolemy/sysadmin/certificates.htm (login required)
+# The key is stored on the nightly build machine in ~/.certpw
 
 # To display our key:
 #   make key_list STOREPASSWORD="-storepass xxx" KEYSTORE=/users/ptII/adm/certs/ptkeystore
@@ -1688,7 +1692,7 @@ key_list:
 # Update a location with the files necessary to download
 DIST_BASE = ptolemyII/ptII11.0/jnlp-$(PTVERSION)
 DIST_DIR = /home/www/ptweb/$(DIST_BASE)
-DIST_URL = http://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
+DIST_URL = https://ptolemy.eecs.berkeley.edu/$(DIST_BASE)
 OTHER_FILES_TO_BE_DISTED = doc/img/PtolemyIISmall.gif \
 	ptolemy/configs/hyvisual/hyvisualPlanet.gif \
 
@@ -1745,7 +1749,7 @@ update_applet_files:
 	tar -cf - $(APPLET_FILES_TO_BE_UPDATED) | ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_JAR); tar -xvf -"
 	ssh $(WEBSERVER_USER)@$(WEBSERVER) "cd $(DIST_JAR)/doc; jar -xf codeDoc.jar; mv doc/codeDoc .; rmdir doc"
 
-#make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=http://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
+#make KEYALIAS=ptolemy STOREPASSWORD="-storepass xxx" KEYPASSWORD="-keypass xxx" KEYSTORE=ptkeystore PTII_LOCALURL=https://ptolemy.eecs.berkeley.edu/ptolemyII/ptII4.0/jnlp-4.0 jnlp_sign
 
 jnlp_dist_update_remote:
 	scp doc/webStartHelp.htm $(WEBSERVER_USER)@$(WEBSERVER):$(DIST_DIR)
@@ -1843,7 +1847,7 @@ doc/books/systems/$(PTBOOK_PDF):
 		cp $(HOME)/Downloads/$(PTBOOK_PDF) .; \
 	else \
 		echo "Downloading $(PTBOOK_PDF)"; \
-		wget http://ptolemy.eecs.berkeley.edu/books/Systems/$(PTBOOK_PDF); \
+		wget https://ptolemy.eecs.berkeley.edu/books/Systems/$(PTBOOK_PDF); \
 	fi; \
 	mv $(PTBOOK_PDF) $@
 	chmod a+x doc/books/systems/$(PTBOOK_PDF)
