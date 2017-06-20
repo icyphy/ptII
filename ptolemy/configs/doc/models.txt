@@ -213,6 +213,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPBrowser/GDPBrowser.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogSubscribe/GDPLogSubscribe.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPLogWriteRead/GDPLogWriteRead.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPTestGenerator/GDPTestGenerator.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/gdp/demo/GDPToWebSocket/GDPToWebSocket.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/httpServer/demo/HttpServer/HttpServer.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommClient/SecureCommClient.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/iotAuth/demo/SecureCommServer/SecureCommServer.xml
