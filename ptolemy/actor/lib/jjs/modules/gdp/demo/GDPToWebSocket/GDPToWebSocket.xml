@@ -43,9 +43,13 @@
     <property name="AccessorSSHCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator">
         <property name="modules" class="ptolemy.data.expr.StringParameter" value="@accessors-modules/gdp,@accessors-modules/web-socket-server">
         </property>
-        <property name="userHost" class="ptolemy.data.expr.StringParameter" value="terra.eecs.berkeley.edu">
+        <property name="runForever" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 455.0]">
+        <property name="stopForeverAccessors" class="ptolemy.data.expr.Parameter" value="false">
+        </property>
+        <property name="userHost" class="ptolemy.data.expr.StringParameter" value="sbuser@terra.eecs.berkeley.edu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 460.0]">
         </property>
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
@@ -119,7 +123,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 205.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8085">
+        <property name="port" class="ptolemy.data.expr.Parameter" value="8098">
         </property>
         <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
             <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
