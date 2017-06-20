@@ -18,18 +18,26 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[45.0, 300.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={61, 238, 934, 634}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={141, 70, 939, 659}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[705, 549]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 256.181640625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{357.5, 268.681640625}">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Append to a GDP log named &quot;edu.berkeley.eecs.testlog&quot; a sequence of JSON data.&#10;A new output is produced once per second and the values cycle through a specified range.&#10;This is intended to be a test log that can be relied to be always producing data.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[30.0, 25.0]">
+        </property>
+    </property>
+    <property name="AccessorSSHCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator">
+        <property name="modules" class="ptolemy.data.expr.StringParameter" value="@accessors-modules/gdp">
+        </property>
+        <property name="userHost" class="ptolemy.data.expr.StringParameter" value="terra.eecs.berkeley.edu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{545.0, 175.0}">
         </property>
     </property>
     <entity name="GDPLogAppend" class="org.terraswarm.accessor.JSAccessor">
@@ -59,7 +67,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="edu.berkeley.eecs.testlog">
+        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="edu.berkeley.eecs.testlog.2">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -72,6 +80,10 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 220.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
         </property>
         <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -116,6 +128,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 230.0]">
         </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
+        </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
@@ -134,6 +150,10 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[220.0, 230.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -168,6 +188,10 @@
             </property>
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[375.0, 140.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
