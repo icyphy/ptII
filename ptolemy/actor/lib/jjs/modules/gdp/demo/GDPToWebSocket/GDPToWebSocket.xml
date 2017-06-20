@@ -9,7 +9,7 @@
         </property>
         <property name="synchronizeToRealTime" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 30.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 55.0]">
         </property>
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 59, 934, 634}, maximized=false}">
@@ -23,13 +23,13 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="GDP web socket subscription server.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{135.0, 20.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 25.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model accepts web socket  connections on the port specified in&#10;the WebSocketServer's port parameter. Upon establishing a connection,&#10;this model waits for an incoming message. That message is expected to&#10;be a log name, and upon receiving it, this model subscribes to the specified&#10;log and forwards any posts to that log to the client over the web socket.&#10;&#10;Multiple clients can subscribe to the same log. When all connections that&#10;subscribe to a given log are closed, then this model unsubscribes to the GDP log.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 280.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -37,7 +37,19 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: As you will see on the command line, even after unsubscribing to&#10;a log, the GDP code continues with all sorts of activity. So unsubscribing&#10;appears to not actually work.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 320.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 100.0]">
+        </property>
+    </property>
+    <property name="AccessorSSHCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator">
+        <property name="modules" class="ptolemy.data.expr.StringParameter" value="@accessors-modules/gdp,@accessors-modules/web-socket-server">
+        </property>
+        <property name="userHost" class="ptolemy.data.expr.StringParameter" value="terra.eecs.berkeley.edu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[385.0, 455.0]">
+        </property>
+    </property>
+    <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 460}">
         </property>
     </property>
     <entity name="WebSocketServer" class="org.terraswarm.accessor.JSAccessor">
@@ -105,9 +117,17 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{110.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 205.0]">
         </property>
         <property name="port" class="ptolemy.data.expr.Parameter" value="8085">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
         </property>
         <port name="toSend" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -141,10 +161,18 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 105.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[325.0, 205.0]">
         </property>
         <property name="logdname" class="ptolemy.actor.parameters.PortParameter" value="edu.berkeley.eecs.gdp-01.gdplogd">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_AccessorSSHCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorSSHCodeGenerator">
+            </property>
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
             </property>
         </property>
         <port name="logdname" class="ptolemy.actor.parameters.ParameterPort">
@@ -163,15 +191,15 @@
         </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;WebSocketServer.received&quot;,x=110.0,y=105.0}, tail={id=&quot;JavaScript.request&quot;,x=300.0,y=105.0}, points={210.0,95.0,210.0,105.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;WebSocketServer.received&quot;,x=130.0,y=205.0}, tail={id=&quot;JavaScript.request&quot;,x=325.0,y=205.0}, points={235.0,195.0,235.0,205.0} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;WebSocketServer.connection&quot;,x=110.0,y=105.0}, tail={id=&quot;JavaScript.connection&quot;,x=300.0,y=105.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;WebSocketServer.connection&quot;,x=130.0,y=205.0}, tail={id=&quot;JavaScript.connection&quot;,x=325.0,y=205.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;WebSocketServer.toSend&quot;,x=110.0,y=105.0}, tail={id=&quot;JavaScript.data&quot;,x=300.0,y=105.0}, points={15.0,105.0,15.0,65.0,365.0,65.0,365.0,105.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;WebSocketServer.toSend&quot;,x=130.0,y=205.0}, tail={id=&quot;JavaScript.data&quot;,x=325.0,y=205.0}, points={40.0,205.0,40.0,165.0,390.0,165.0,390.0,205.0} } }">
         </property>
     </relation>
     <link port="WebSocketServer.toSend" relation="relation2"/>
