@@ -406,15 +406,21 @@ ClientRequest.prototype._errorResponse = function (response, body) {
 
 /** Incoming message object type.  This should not be constructed by the user,
  *  but rather is constructed by the _response function above.
+ *
  *  An instance of this object type will be passed to the callback passed to the
  *  request() or this.get() functions. The instance contains:
  *  <ul>
  *  <li> body: a string with the body of the response. </li>
  *  <li> cookies: an array of strings with cookies returned. </li>
- *  <li> location: The value of Location in the header. </li>
+ *  <li> headers: message header names and values. Names are lower case. </li>
  *  <li> statusCode: an integer indicating the status of the response. </li>
  *  <li> statusMessage: a string with the status message of the response. </li>
  *  </ul>
+ *
+ *  This object should match the interface of the Node 
+ *  [http.IncomingMessage](https://nodejs.org/api/http.html#http_class_http_incomingmessage).
+ *  Do not add fields here, otherwise the node host will fail.
+ *
  *  @constructor
  *  @param response An instance of the Java class org.vertx.java.core.http.HttpClientResponse.
  */
@@ -425,9 +431,16 @@ function IncomingMessage(response, body) {
         this.cookies = response.cookies();
     }
     if (typeof response.getHeader === 'function') {
-        this.location = response.getHeader('Location');
+        // headersMap is of type org.vertx.java.core.MultiMap
+        var headersMap = response.headers();
+        var headers = {};
+        for each (var name in headersMap.names()) {
+            // Vert.x header keys are in lowercase.
+            headers[name.toLowerCase()] = headersMap.get(name);
+        }
+        this.headers = headers;
     } else {
-        this.location = '';
+        this.headers = '';
     }
     if (typeof response.statusCode === 'function') {
         this.statusCode = response.statusCode();
