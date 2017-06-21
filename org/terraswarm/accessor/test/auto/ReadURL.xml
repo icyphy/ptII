@@ -28,7 +28,7 @@
     </entity>
     <entity name="ReadURL" class="org.terraswarm.accessor.JSAccessor">
         <display name="Modified&#10;StockTick&#10;Accessor"/>
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    exports.fire = function() {&#10;        var stock = this.get('symbol');&#10;        var url = &quot;https://ptolemy.eecs.berkeley.edu&quot;;&#10;        var result = readURL(url);&#10;        this.send('price', result);&#10;    }&#10;	// &#10;  ">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;    // &#10;    exports.fire = function() {&#10;        var stock = this.get('symbol');&#10;        var url = &quot;http://ptolemy.org&quot;;&#10;        var result = readURL(url);&#10;        this.send('price', result);&#10;    }&#10;	// &#10;  ">
         </property>
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="$CLASSPATH/org/terraswarm/accessor/test/auto/accessors/ReadURL.xml">
         </property>
