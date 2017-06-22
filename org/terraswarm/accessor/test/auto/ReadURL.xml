@@ -66,7 +66,7 @@
         </port>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE html PUBLIC \&quot;-//W3C//DTD XHTML&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE HTML PUBLIC \&quot;-//IETF//DTD HTML&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
