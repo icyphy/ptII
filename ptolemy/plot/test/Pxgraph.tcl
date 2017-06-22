@@ -1010,7 +1010,7 @@ test Pxgraph-4.1 {Test out file args} {
 
 test Pxgraph-4.2 {Test out file args} {
     # Test out file args
-    pxgraphTest  http://ptolemy.eecs.berkeley.edu/java/ptplot/demo/data.plt
+    pxgraphTest  https://ptolemy.eecs.berkeley.edu/java/ptplot/demo/data.plt
 } {<?xml version="1.0" standalone="no"?>
 <!DOCTYPE plot SYSTEM "Usually, the DTD would go here">
 <plot>
