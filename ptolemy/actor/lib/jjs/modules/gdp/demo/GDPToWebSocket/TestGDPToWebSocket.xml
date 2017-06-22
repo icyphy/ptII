@@ -85,7 +85,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="server" class="ptolemy.actor.parameters.PortParameter" value="terra.eecs.berkeley.edu">
+        <property name="server" class="ptolemy.actor.parameters.PortParameter" value="localhost">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
