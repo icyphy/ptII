@@ -2,15 +2,15 @@
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="HttpPut" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 74, 1095, 615}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={67, 74, 1101, 632}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[867, 498]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[867, 522]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{423.5, 239.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{423.5, 251.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Test HttpPut, using Ptolemy website&#10;The website returns an error message since a PUT operation is not allowed&#10;Therefore, the output of the HttpPut actor should not depend on the webpage content">
@@ -46,7 +46,7 @@ occur on all operating systems</text></svg></configure>
         </property>
     </property>
     <entity name="HttpPut" class="org.ptolemy.ptango.lib.HttpPut">
-        <property name="url" class="ptolemy.actor.parameters.PortParameter" value="http://ptolemy.eecs.berkeley.edu/">
+        <property name="url" class="ptolemy.actor.parameters.PortParameter" value="https://ptolemy.eecs.berkeley.edu/">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[365.0, 215.0]">
         </property>
@@ -79,7 +79,7 @@ occur on all operating systems</text></svg></configure>
         </property>
     </entity>
     <entity name="Test" class="ptolemy.actor.lib.Test">
-        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE HTML PUBLIC \&quot;-//IETF//DTD HTML 2.0//EN\&quot;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;405 Method Not Allowed&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Method Not Allowed&lt;/h1&gt;&lt;p&gt;The requested method PUT is not allowed for the URL /index.html.&lt;/p&gt;&lt;hr&gt;&lt;address&gt;Apache/2.2.15 (Red Hat) Server at ptolemy.eecs.berkeley.edu Port 80&lt;/address&gt;&lt;/body&gt;&lt;/html&gt;&quot;}">
+        <property name="correctValues" class="ptolemy.data.expr.Parameter" value="{&quot;&lt;!DOCTYPE HTML PUBLIC \&quot;-//IETF//DTD HTML 2.0//EN\&quot;&gt;&lt;html&gt;&lt;head&gt;&lt;title&gt;405 Method Not Allowed&lt;/title&gt;&lt;/head&gt;&lt;body&gt;&lt;h1&gt;Method Not Allowed&lt;/h1&gt;&lt;p&gt;The requested method PUT is not allowed for the URL /index.html.&lt;/p&gt;&lt;hr&gt;&lt;address&gt;Apache/2.2.15 (Red Hat) Server at ptolemy.eecs.berkeley.edu Port 443&lt;/address&gt;&lt;/body&gt;&lt;/html&gt;&quot;}">
         </property>
         <property name="trainingMode" class="ptolemy.actor.parameters.SharedParameter" value="false">
         </property>
