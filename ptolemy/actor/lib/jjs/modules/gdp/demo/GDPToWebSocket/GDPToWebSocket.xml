@@ -12,7 +12,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 55.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 59, 917, 627}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={69, 59, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
@@ -41,7 +41,13 @@
         </property>
     </property>
     <property name="AccessorSSHCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorSSHCodeGenerator">
-        <property name="modules" class="ptolemy.data.expr.StringParameter" value="@accessors-modules/gdp,@accessors-modules/web-socket-server">
+        <property name="run" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="@PTII@/ptolemy/cg/kernel/generic/accessor/accessorInvokeSSH @userHost@ @codeDirectory@/@modelName@.js -timeout 86400000 @modulesFlagAndValue@ @npmInstall@ @runForever@ @stopForeverAccessors@">
+        </property>
+        <property name="modules" class="ptolemy.data.expr.StringParameter" value="@terraswarm/gdp">
+        </property>
+        <property name="npmInstall" class="ptolemy.data.expr.Parameter" value="true">
         </property>
         <property name="runForever" class="ptolemy.data.expr.Parameter" value="true">
         </property>
@@ -121,7 +127,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[130.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{130.0, 205.0}">
         </property>
         <property name="port" class="ptolemy.data.expr.Parameter" value="8098">
         </property>
