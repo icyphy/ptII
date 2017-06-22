@@ -12,20 +12,20 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{55.0, 40.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={21, 23, 1259, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={21, 23, 1389, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1025, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1155, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{512.5, 262.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{577.5, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo detects AprilTags in a video feed from the camera&#10;and reads data from a sensor using the GDP.&#10;&#10;It modifies the camera image to outline the tag, indicate its center,&#10;and indicate its ID and value.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo detects AprilTags in a video feed from the camera and reads data from a sensor using the GDP.&#10;It is reading a test log called edu.berkeley.eecs.testlog.&#10;&#10;It modifies the camera image to outline the tag, indicate its center, and indicate its ID and value.">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{10.0, 340.0}">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[120.0, 20.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -33,13 +33,13 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="To test this, you can print out the following sample tag&#10;and hold it in the field of view of the camera:">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[10.0, 435.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="{10.0, 435.0}">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="tag36_11_00586.pdf">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[105.0, 480.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{105.0, 480.0}">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="tag36_11_00586.pdf">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -68,7 +68,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="For more information about AprilTags,&#10;see the documentation of the AprilTags&#10;accessor (right click and select Get Documenation).">
         </property>
-        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[170.0, 90.0]">
+        <property name="_location" class="ptolemy.vergil.basic.RelativeLocation" value="[515.0, 345.0]">
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -76,7 +76,26 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Unfortunately, running this model requires that a number of libraries be installed.&#10;To install these packages, invoke &#10;$PTII/org/terraswarm/accessor/accessors/web/gdp/adm/gdp-setup.sh&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, 440.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{430.0, 440.0}">
+        </property>
+    </property>
+    <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
+        <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
+            <display name="Include decorations"/>
+        </property>
+        <property name="spacing" class="ptolemy.actor.parameters.DoubleRangeParameter" value="2.0">
+            <display name="Object spacing"/>
+        </property>
+        <property name="logAspectRatio" class="ptolemy.actor.parameters.DoubleRangeParameter" value="-1.0">
+            <display name="Aspect ratio"/>
+        </property>
+    </property>
+    <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0, 0.0, 0.0, 1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This subscribes to a test log that is (hopefully)&#10;always running. However, if no data is produced,&#10;then something has gone wrong with the GDP or&#10;the test log generator.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 310.0]">
         </property>
     </property>
     <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
@@ -85,17 +104,17 @@
         <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
         </property>
         <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 200.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 175.0}">
         </property>
     </entity>
     <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={112, 160, 640, 524}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={109, 181, 640, 524}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
         </property>
         <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{935.0, 170.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{990.0, 215.0}">
         </property>
     </entity>
     <entity name="ImageAnnotate" class="org.terraswarm.accessor.JSAccessor">
@@ -137,7 +156,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{795.0, 170.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{855.0, 215.0}">
         </property>
         <property name="graphic" class="ptolemy.actor.parameters.PortParameter" value="&lt;svg&gt;&#10;  &lt;desc&gt;Star shape&lt;/desc&gt;&#10; &lt;polygon style=&quot;fill:red; stroke:blue; stroke-width:4;&quot;&#10;                 points=&quot;0.5,-32 8.5,-8 33.5,-8 13.5,8 20.5,32 0.5,18 -20.5,32 -13.5,8 -33.5,-8 -7.5,-8&quot;/&gt;&#10;&lt;/svg&gt;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -155,7 +174,7 @@
         </property>
         <property name="scale" class="ptolemy.actor.parameters.PortParameter" value="1">
         </property>
-        <property name="rotation" class="ptolemy.actor.parameters.PortParameter" value="7056.376953125">
+        <property name="rotation" class="ptolemy.actor.parameters.PortParameter" value="0.0">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -239,7 +258,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{220.0, 200.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{235.0, 175.0}">
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -285,7 +304,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 190.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{400.0, 165.0}">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -309,36 +328,8 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{560.0, 155.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{645.0, 175.0}">
         </property>
-    </entity>
-    <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('tags');&#10;	this.input('powerblade');&#10;	this.output('translation');&#10;	this.output('graphic', {type: 'string'});&#10;}&#10;var lumens = 0;&#10;exports.initialize = function() {&#10;	this.addInputHandler('tags', function() {&#10;		var tags = this.get('tags');&#10;		if (tags.length &gt; 0) {&#10;			this.send('translation', tags[0].center);&#10;			var color = 'green';&#10;			if (lumens &gt; 40) {&#10;				if (lumens &gt; 400) {&#10;					color = 'red';&#10;				} else {&#10;					color = 'yellow';&#10;				}&#10;			}&#10;			var graphic = '&lt;svg&gt;&lt;polygon style=&quot;fill:' + color + '; stroke:blue; stroke-width:4;&quot; points=&quot;0.5,-32 8.5,-8 33.5,-8 13.5,8 20.5,32 0.5,18 -20.5,32 -13.5,8 -33.5,-8 -7.5,-8&quot;/&gt;&lt;/svg&gt;';&#10;			this.send('graphic', graphic);&#10;		}&#10;	});&#10;	this.addInputHandler('powerblade', function() {&#10;		var powerblade = this.get('powerblade');&#10;		powerblade = JSON.parse(powerblade);&#10;console.log('--------------- ');&#10;console.log(util.inspect(powerblade));&#10;console.log(powerblade['light_lux']);&#10;console.log('--------------- ');&#10;		lumens = powerblade['light_lux'];&#10;	});&#10;}&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[600.0, 210.0]">
-        </property>
-        <port name="tags" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="translation" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="powerblade" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="graphic" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="GDPLogSubscribe" class="org.terraswarm.accessor.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="/* Subscribe to a log. */&#10;&#10;// Copyright (c) 2015-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Subscribe to a Global Data Plane (GDP) log.&#10; *&#10; *  FIXME: What is the meaning of the startrec and numrec arguments? Makes no sense for subscription.&#10; *&#10; *  @output {string} data The data that is read from the log.&#10; *&#10; *  @input {string} logname The GDP logname.  By convention, a log name should be&#10; *   a reverse fully qualified name like &quot;org.terraswarm.accessor.demo.MyDemoName&quot;.&#10; *   If this input is an empty string, then no subscription will&#10; *   occur until a non-empty value is provided.&#10; *   By default, this is empty.&#10; *   Providing an empty string will unsubscribe from any previously subscribed-to log.&#10; *   See the [GDP Infrastructure wiki[(https://gdp.cs.berkeley.edu/redmine/projects/gdp-sensor-and-actuator-deployments/wiki/Berkeley_Sensor_Deployments)&#10; *   for a list of GDP logs.&#10; *  @input {string} logdname The name of a logd server.  If empty,&#10; *   then the hostname of the local machine is used. This server is&#10; *   a gateway into the GDP.&#10; *   FIXME: Shouldn't this be a parameter rather than input?&#10; *&#10; *  @input {int} numrec The number of records to read.&#10; *&#10; *  @input {int} startrec The record number to be read.  In the GDP,&#10; *  the first record is record 1.&#10; *&#10; *  @input {int} timeout The timeout in milliseconds.&#10; *&#10; *  @parameter {string} debugLevel The value of the GDP debug flag.&#10; *  See gdp/README-developers.md for a complete summary.  The value is&#10; *  typically &quot;pattern=level&quot;, for example &quot;gdplogd.physlog=39&quot;.  To&#10; *  see the patterns, use the &quot;what&quot; command or strings&#10; *  $PTII/lib/libgdp* | grep '@(#)'.  Use &quot;*=40&quot; to set the debug&#10; *  level to 40 for all components. The value of level is not usually&#10; *  over 127.  Values over 100 may modify the behavior.&#10; *&#10; *  @accessor gdp/GDPLogSubscribe&#10; *  @author Christopher Brooks, Edward A. Lee, Nitesh Mor&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals addInputHandler, console, exports, getParameter, input, output, parameter, removeInputHandler, require, send */&#10;/*jshint globalstrict: true */&#10;&quot;use strict&quot;;&#10;&#10;var GDP = require('@accessors-modules/gdp');&#10;var log = null;&#10;var handle = null;&#10;var oldLogname = null;&#10;&#10;// If getNextData() returns null data, then set sawNull to true.&#10;var sawNull = false;&#10;&#10;/** Setup the parameters and ports. */&#10;exports.setup = function () {&#10;    this.output('data', {&#10;        'type': 'string'&#10;    });&#10;    this.parameter('debugLevel', {&#10;        'type': 'string'&#10;    });&#10;    this.input('logname', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    this.input('logdname', {&#10;        'type': 'string',&#10;        'value': 'edu.berkeley.eecs.gdp-01.gdplogd'&#10;    });&#10;    this.parameter('numrec', {&#10;        'type': 'int',&#10;        'value': 0&#10;    });&#10;    this.parameter('startrec', {&#10;        'type': 'int',&#10;        'value': 0&#10;    });&#10;    this.parameter('timeout', {&#10;        'type': 'int',&#10;        'value': 0&#10;    });&#10;};&#10;&#10;/** Add an input handler that will subscribe to a log. */&#10;exports.initialize = function () {&#10;    var self = this;&#10;&#10;    // Set an input handler to unsubscribe and then invoke this initialize()&#10;    // function when a new logname is provided.&#10;    this.addInputHandler('logname', function () {&#10;        // If there is an open subscription, close it.&#10;        self.exports.wrapup.call(self);&#10;        // Open the new subscription.&#10;        self.exports.subscribe.call(self);&#10;    });&#10;    self.exports.subscribe.call(self);&#10;};&#10;&#10;/** If a non-empty logname is given, subscribe to the log. */&#10;exports.subscribe = function () {&#10;    var self = this,&#10;        logname = this.get('logname'),&#10;        logdname = this.get('logdname');&#10;&#10;    if (logname === '') {&#10;        // Nothing more to do.&#10;        // ptolemy/actor/lib/jjs/modules/gdp/test/auto/GDPLogSubscribe.xml and&#10;        // ptolemy/actor/lib/jjs/modules/gdp/test/auto/GDPLogSubscribeJS.xml&#10;        // both end up calling subscribe() with an empty log name&#10;        // during start up.&#10;        return;&#10;    }&#10;&#10;    // Create or connect to a log.&#10;    // The second argument specifies to open the log &quot;read only.&quot;&#10;    log = new GDP.GDP(logname, 1, logdname);&#10;&#10;    // Listen for data from the log.&#10;    log.on('data', function (data) {&#10;        console.log('****** received: ' + data);&#10;        self.send('data', data);&#10;        console.log('****** sent data: ' + data);&#10;    });&#10;&#10;    log.setDebugLevel(this.getParameter('debugLevel'));&#10;&#10;    // Subscribe to the log so that 'data' events are emitted.&#10;    log.subscribe(&#10;        this.getParameter('startrec'),&#10;        this.getParameter('numrec'),&#10;        this.getParameter('timeout')&#10;    );&#10;};&#10;&#10;/** Unsubscribe to the log. */&#10;exports.wrapup = function () {&#10;    if (log !== null) {&#10;        log.unsubscribe();&#10;        // The GDP close() method has a significant bug where calling&#10;        // close() twice might abort or segfault.&#10;        log = null;&#10;    }&#10;};&#10;">
@@ -381,7 +372,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="edu.berkeley.eecs.swarmlab.device.c098e5300003">
+        <property name="logname" class="ptolemy.actor.parameters.PortParameter" value="edu.berkeley.eecs.testlog">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
@@ -389,7 +380,7 @@
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{370.0, 295.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{225.0, 265.0}">
         </property>
         <port name="logname" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -406,56 +397,114 @@
         </port>
     </entity>
     <entity name="Display2" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={127, 369, 1153, 347}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={132, 549, 1153, 347}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[1153, 303]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[555.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{515.0, 215.0}">
         </property>
     </entity>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+    <entity name="JavaScript2" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put a graphic at the location of the first detected tag.&#10;exports.setup = function() {&#10;	this.input('tags');&#10;	this.input('graphicSVG');&#10;	this.output('translation');&#10;	this.output('graphic', {type: 'string'});&#10;}&#10;var graphic = '&lt;svg&gt;&lt;polygon style=&quot;fill:red; stroke:blue; stroke-width:4;&quot; points=&quot;0.5,-32 8.5,-8 33.5,-8 13.5,8 20.5,32 0.5,18 -20.5,32 -13.5,8 -33.5,-8 -7.5,-8&quot;/&gt;&lt;/svg&gt;';&#10;exports.initialize = function() {&#10;	this.addInputHandler('tags', function() {&#10;		var tags = this.get('tags');&#10;		if (tags.length &gt; 0) {&#10;			this.send('translation', tags[0].center);&#10;			this.send('graphic', graphic);&#10;		}&#10;	});&#10;	this.addInputHandler('graphicSVG', function() {&#10;		graphic = this.get('graphicSVG');&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
         </property>
-        <vertex name="vertex1" value="{305.0, 200.0}">
-        </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Camera.image&quot;,x=220.0,y=200.0}, tail={id=&quot;relation2.vertex1&quot;,x=305.0,y=200.0}, points={} },{ head={id=&quot;ImageAnnotate.image&quot;,x=755.0,y=140.0}, tail={id=&quot;relation2.vertex1&quot;,x=305.0,y=170.0}, points={695.0,160.0,695.0,205.0,245.0,205.0} },{ head={id=&quot;AprilTags.input&quot;,x=400.0,y=190.0}, tail={id=&quot;relation2.vertex1&quot;,x=305.0,y=200.0}, points={} } }">
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
         </property>
-    </relation>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{685.0, 255.0}">
+        </property>
+        <port name="tags" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="translation" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="graphic" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="graphicSVG" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+    </entity>
+    <entity name="JSONtoSVG2" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('json');&#10;	this.output('svg', {'type':'string'});&#10;	this.parameter('padding', {'type':'number', 'value':10});&#10;	this.parameter('verticalSpacing', {'type':'number', 'value':25});&#10;}&#10;exports.initialize = function() {&#10;	this.addInputHandler('json', function() {&#10;		var json = this.get('json');&#10;		try {&#10;			json = JSON.parse(json);&#10;		} catch(err) {&#10;			json = {'error': err.message};&#10;		}&#10;console.log(json);&#10;		var width = 300; // FIXME: Calculate based on contents&#10;		var nameColumnWidth = 120; // FIXME: Calculate based on contents&#10;&#10;		var nameColumn = '';&#10;		var valueColumn = '';&#10;		var padding = this.getParameter('padding');&#10;		var verticalSpacing = this.getParameter('verticalSpacing');&#10;		var y = padding;&#10;		for (property in json) {&#10;			nameColumn += '&lt;tspan x=&quot;'&#10;					+ padding&#10;					+ '&quot; y=&quot;'&#10;					+ y&#10;					+ '&quot;&gt;'&#10;					+ property&#10;					+ '&lt;/tspan&gt;';&#10;			valueColumn += '&lt;tspan x=&quot;'&#10;					+ (padding + nameColumnWidth)&#10;					+ '&quot; y=&quot;'&#10;					+ y&#10;					+ '&quot;&gt;'&#10;					+ json[property]&#10;					+ '&lt;/tspan&gt;';&#10;			y += verticalSpacing;&#10;		};&#10;		var height = y + padding;&#10;		var svg = '&lt;svg width=&quot;'  // Opening svg tag.&#10;				+ width&#10;				+ '&quot; height=&quot;'&#10;				+ height&#10;				+ '&quot;&gt;'&#10;				+ '&lt;rect width=&quot;' // Background rectangle.&#10;				+ width&#10;				+ '&quot; height=&quot;'&#10;				+ height&#10;				+ '&quot; style=&quot;fill:white;stroke:red;stroke-width:2;opacity:0.7&quot;'&#10;				+ '&gt;&lt;/rect&gt;'&#10;				+ '&lt;text x=&quot;'     // Name column.&#10;				+ padding&#10;				+ '&quot; y=&quot;'&#10;				+ padding&#10;				+ '&quot;&gt;'&#10;				+ nameColumn&#10;				+ '&lt;/text&gt;'&#10;				+ '&lt;text x=&quot;'     // Value column.&#10;				+ (padding + nameColumnWidth)&#10;				+ '&quot; y=&quot;'&#10;				+ padding&#10;				+ '&quot;&gt;'&#10;				+ valueColumn&#10;				+ '&lt;/text&gt;'&#10;				+ '&lt;/svg&gt;';       // Closing.&#10;		this.send('svg', svg);&#10;	});&#10;}&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{530.0, 265.0}">
+        </property>
+        <port name="json" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="svg" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=935.0,y=170.0}, tail={id=&quot;ImageAnnotate.output&quot;,x=795.0,y=170.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageDisplay.input&quot;,x=990.0,y=215.0}, tail={id=&quot;ImageAnnotate.output&quot;,x=855.0,y=215.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=70.0,y=200.0}, tail={id=&quot;Camera.trigger&quot;,x=220.0,y=200.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;DiscreteClock.output&quot;,x=70.0,y=175.0}, tail={id=&quot;Camera.trigger&quot;,x=235.0,y=175.0}, points={} } }">
         </property>
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.image&quot;,x=795.0,y=170.0}, tail={id=&quot;AprilTags.output&quot;,x=400.0,y=190.0}, points={705.0,190.0,705.0,115.0,480.0,115.0,480.0,180.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.image&quot;,x=855.0,y=215.0}, tail={id=&quot;AprilTags.output&quot;,x=400.0,y=165.0}, points={770.0,235.0,770.0,140.0,470.0,140.0,470.0,155.0} } }">
         </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{510.0, 200.0}">
+        <vertex name="vertex1" value="{600.0, 175.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Display.input&quot;,x=560.0,y=155.0}, tail={id=&quot;relation6.vertex1&quot;,x=510.0,y=200.0}, points={510.0,155.0} },{ head={id=&quot;AprilTags.tags&quot;,x=400.0,y=190.0}, tail={id=&quot;relation6.vertex1&quot;,x=510.0,y=200.0}, points={} },{ head={id=&quot;JavaScript.tags&quot;,x=600.0,y=210.0}, tail={id=&quot;relation6.vertex1&quot;,x=510.0,y=200.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation6.vertex1&quot;,x=600.0,y=175.0}, tail={id=&quot;JavaScript2.tags&quot;,x=685.0,y=255.0}, points={600.0,245.0} },{ head={id=&quot;Display.input&quot;,x=645.0,y=175.0}, tail={id=&quot;relation6.vertex1&quot;,x=600.0,y=175.0}, points={} },{ head={id=&quot;AprilTags.tags&quot;,x=400.0,y=165.0}, tail={id=&quot;relation6.vertex1&quot;,x=600.0,y=175.0}, points={} } }">
         </property>
-    </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation7" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{485.0, 255.0}">
+        <vertex name="vertex1" value="{470.0, 265.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation8.vertex1&quot;,x=470.0,y=265.0}, tail={id=&quot;JSONtoSVG2.json&quot;,x=530.0,y=265.0}, points={} },{ head={id=&quot;GDPLogSubscribe.data&quot;,x=225.0,y=265.0}, tail={id=&quot;relation8.vertex1&quot;,x=470.0,y=265.0}, points={} },{ head={id=&quot;Display2.input&quot;,x=515.0,y=215.0}, tail={id=&quot;relation8.vertex1&quot;,x=470.0,y=265.0}, points={470.0,215.0} } }">
+        </property>
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;JSONtoSVG2.svg&quot;,x=530.0,y=265.0}, tail={id=&quot;JavaScript2.graphicSVG&quot;,x=685.0,y=255.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.translate&quot;,x=855.0,y=215.0}, tail={id=&quot;JavaScript2.translation&quot;,x=685.0,y=255.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.graphic&quot;,x=855.0,y=215.0}, tail={id=&quot;JavaScript2.graphic&quot;,x=685.0,y=255.0}, points={770.0,195.0,770.0,265.0} } }">
+        </property>
+    </relation>
+    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Camera.image&quot;,x=235.0,y=175.0}, tail={id=&quot;AprilTags.input&quot;,x=400.0,y=165.0}, points={} } }">
+        </property>
     </relation>
     <link port="DiscreteClock.output" relation="relation"/>
     <link port="ImageDisplay.input" relation="relation3"/>
-    <link port="ImageAnnotate.graphic" relation="relation7"/>
+    <link port="ImageAnnotate.graphic" relation="relation10"/>
     <link port="ImageAnnotate.image" relation="relation4"/>
-    <link port="ImageAnnotate.translate" relation="relation5"/>
+    <link port="ImageAnnotate.translate" relation="relation9"/>
     <link port="ImageAnnotate.output" relation="relation3"/>
     <link port="Camera.trigger" relation="relation"/>
     <link port="Camera.image" relation="relation2"/>
@@ -463,10 +512,12 @@
     <link port="AprilTags.output" relation="relation4"/>
     <link port="AprilTags.tags" relation="relation6"/>
     <link port="Display.input" relation="relation6"/>
-    <link port="JavaScript.tags" relation="relation6"/>
-    <link port="JavaScript.translation" relation="relation5"/>
-    <link port="JavaScript.powerblade" relation="relation8"/>
-    <link port="JavaScript.graphic" relation="relation7"/>
     <link port="GDPLogSubscribe.data" relation="relation8"/>
     <link port="Display2.input" relation="relation8"/>
+    <link port="JavaScript2.tags" relation="relation6"/>
+    <link port="JavaScript2.translation" relation="relation9"/>
+    <link port="JavaScript2.graphic" relation="relation10"/>
+    <link port="JavaScript2.graphicSVG" relation="relation5"/>
+    <link port="JSONtoSVG2.json" relation="relation8"/>
+    <link port="JSONtoSVG2.svg" relation="relation5"/>
 </entity>
