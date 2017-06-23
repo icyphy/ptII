@@ -33,10 +33,18 @@ package ptolemy.actor.lib.jjs.modules.browser;
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
 import io.vertx.core.Vertx;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServer;
+import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
+
+import java.io.IOException;
+import java.util.HashMap;
+
+import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import ptolemy.actor.lib.jjs.HelperBase;
 
 ///////////////////////////////////////////////////////////////////
 //// VertxHelper
@@ -49,7 +57,18 @@ import io.vertx.ext.web.handler.StaticHandler;
    @Pt.ProposedRating Yellow (pd)
    @Pt.AcceptedRating Red (pd)
  */
-public class VertxBrowserHelper {
+public class VertxBrowserHelper extends HelperBase {
+
+    /** Create the system default camera.
+     *  If the system does not have a physical camera, then the dummy
+     *  is used.
+     *  @exception IOException If there is no such camera.
+     *  @param actor The actor associated with this camera.
+     *  @param currentObj The JavaScript object that this is helping.
+     */
+    public VertxBrowserHelper(Object actor, ScriptObjectMirror currentObj) throws IOException {
+        super(actor, currentObj);
+    }
 
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
@@ -58,7 +77,7 @@ public class VertxBrowserHelper {
      *  @param port The port to listen for requests on.
      *  @return A new VertxHelper.
      */
-    public static Server createServer(int port) {
+    public Server createServer(int port) {
         return new Server(port);
     }
 
@@ -67,7 +86,7 @@ public class VertxBrowserHelper {
 
     /** A http server that gets and sets responses.
      */
-    public static class Server {
+    public class Server {
 
         ///////////////////////////////////////////////////////////////////
         ////                     public methods                        ////
@@ -91,12 +110,24 @@ public class VertxBrowserHelper {
                 // Handle dynamic content (requests to / ).
                 _router.route().handler(routingContext -> {
                     HttpServerResponse response = routingContext.response();
-                    response.putHeader("content-type", "text/html");
-                    response.setChunked(true);
-                    response.write(_getResponse());
-                    response.end();
+                    HttpServerRequest request = routingContext.request();
+                    String path = request.path();
+                    Buffer buffer = _resourceData.get(path);
+                    if (buffer != null) {
+                        // Path matches a resource that has been added using addResource().
+                        response.putHeader("content-type", _resourceContentType.get(path));
+                        response.setChunked(true);
+                        response.write(buffer);
+                        response.end();
+                    } else {
+                        // Serve the default content.
+                        response.putHeader("content-type", "text/html");
+                        response.setChunked(true);
+                        response.write(_getResponse());
+                        response.end();
+                    }
                 });
-
+                
                 _server.requestHandler(_router::accept);
 
                 firstStart = true;
@@ -121,6 +152,22 @@ public class VertxBrowserHelper {
                         });
             }
 
+        }
+        
+        /** Add a resource to be served by the server.
+         *  @param path The path to the resource.
+         *  @param resource The resource to serve upon a request for this path.
+         *  @param contentType The content type.
+         */
+        public void addResource(final String path, Object resource, String contentType) {
+            Buffer buffer = Buffer.buffer();
+            // FIXME: byte content is fixed here to IMAGEs in JPEG format.
+            // Need to convert the contentType into a DATA_TYPE and image type (null below
+            // to default to jpg).  Perhaps that conversion should be done in a utility
+            // function in HelperBase.
+            _appendToBuffer(resource, HelperBase.DATA_TYPE.IMAGE, null, buffer);
+            _resourceData.put(path, buffer);
+            _resourceContentType.put(path, contentType);
         }
 
         /** Set the response.
@@ -162,6 +209,12 @@ public class VertxBrowserHelper {
         /** The server's response.
          */
         private String _response = "No data yet";
+        
+        /** Resource data indexed by path. */
+        private HashMap<String,Buffer> _resourceData = new HashMap<String,Buffer>();
+
+        /** Resource contentType indexed by path. */
+        private HashMap<String,String> _resourceContentType = new HashMap<String,String>();
 
         /** The HTTP server.  Currently, only a single server at a time is
          * supported.
