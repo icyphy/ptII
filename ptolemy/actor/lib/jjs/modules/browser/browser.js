@@ -41,12 +41,29 @@
 
 exports.Browser = function () {
     this.server = null;
-    this.helper = Java
+    var VertxBrowserHelper = Java
         .type('ptolemy.actor.lib.jjs.modules.browser.VertxBrowserHelper');
+    this.helper = new VertxBrowserHelper(actor, this);
+    
     // FIXME: Use a port selection algorithm here to avoid port conflicts.
     this.port = 8080;
     this.browserLauncher = Java.type('ptolemy.actor.gui.BrowserLauncher');
 };
+
+/** Add a resource to be served by the server.
+ *  @param path The path to the resource.
+ *  @param resource The resource to serve.
+ *  @param contentType The content type of the resource.
+ */
+exports.Browser.prototype.addResource = function (path, resource, contentType) {
+    if (!path.startsWith('/')) {
+        path = '/' + path;
+    }
+    if (this.server === null) {
+        this.server = this.helper.createServer(this.port);
+    }
+    this.server.addResource(path, resource, contentType);
+}
 
 /** Display the specified HTML text.
  *  @param html The HTML to display.
