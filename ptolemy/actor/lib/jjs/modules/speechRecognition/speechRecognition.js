@@ -34,6 +34,9 @@
 /*jshint globalstrict: true */
 "use strict";
 
+// Java types used
+var SpeechRecognitionHelper = Java.type('ptolemy.actor.lib.jjs.modules.speechRecognition.SpeechRecognitionHelper');
+
 // TODO:  Should this be a singleton, since probably only one instance can 
 // can access the microphone at a time?
 var EventEmitter = require('events').EventEmitter;
@@ -43,56 +46,11 @@ var EventEmitter = require('events').EventEmitter;
  * recognition automatically after one phrase has been detected.
  */
 exports.SpeechRecognition = function(options) {
-    var self = this;
-    this.resultCount = 0;        // If used in continuous mode, keep track of 
-    // results we've already emitted.
+	
+    this.recognition = new SpeechRecognitionHelper(actor, this); 
         
-    var SpeechRecognition = SpeechRecognition || webkitSpeechRecognition;
-    var SpeechGrammarList = SpeechGrammarList || webkitSpeechGrammarList;
-    var SpeechRecognitionEvent = SpeechRecognitionEvent || webkitSpeechRecognitionEvent;
-        
-    this.recognition = new SpeechRecognition(); 
-        
-    // TODO:  Allow optional gramm
-    // recognition.grammars = speechRecognitionList;
-    this.recognition.continuous = false;
-    this.recognition.lang = 'en-US';
-    this.recognition.interimResults = false;
-    this.recognition.maxAlternatives = 1;
-
-    if (options !== null && options.hasOwnProperty('continuous')) {
-        this.recognition.continuous = options.continuous;
-    }
-        
-    // Propagate events. 
-    // List of Web Speech API event handlers:
-    // https://developer.mozilla.org/en-US/docs/Web/API/SpeechRecognition#Event_handlers
-    this.recognition.onresult = function(event) {
-        // The event is SpeechRecognitionResultList object which is an array of
-        // SpeechRecognitionResult objects.  Each object contains a 
-        // .transcript and .confidence.
-        self.emit('result', event.results[self.resultCount][0].transcript);
-        if (options.continuous) {
-            self.resultCount ++;
-        }
-    };
-        
-    this.recognition.onerror = function(err) {
-        error('Error: ' + err);
-    };
-    /* Useful for debugging.
-          
-       this.recognition.onsoundstart = function() {
-       console.log('sound started');
-       };
-        
-       this.recognition.onsoundend = function() {
-       console.log('sound ended');
-       };
-        
-    */
-        
-    // TODO:  Handler for onnomatch?
+	// TODO:  Implement options.  Right now this only works in continuous mode
+	// for English.
 };
 
 util.inherits(exports.SpeechRecognition, EventEmitter);
@@ -100,19 +58,14 @@ util.inherits(exports.SpeechRecognition, EventEmitter);
 /** Set options.
  * @param options.continuous true to operate in continuous mode, false to stop
  */
+// TODO:  Set options.
 exports.SpeechRecognition.prototype.setOptions = function(options) {
-    if (options !== null && options.hasOwnProperty('continuous')) {
-        this.recognition.continuous = options.continuous;
-    }
 };
 
 /** Start recognizing speech.
  * 
  */
 exports.SpeechRecognition.prototype.start = function() {
-    // FIXME:  Throws an error if already started (e.g. if in continuous mode).
-    // Figure out how to check for this.
-    this.resultCount = 0;
     this.recognition.start();
 };
 
