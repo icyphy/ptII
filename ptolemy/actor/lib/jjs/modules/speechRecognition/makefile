@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/speechRecognition
 
-DIRS = 		#test demo
+DIRS = 		demo
 
 # Root of the Java directory
 ROOT =		../../../../../..
@@ -51,7 +51,8 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	package.json \
-	speechRecognition.js
+	speechRecognition.js \ 
+	SpeechRecognitionHelper.java 
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 
