@@ -222,7 +222,7 @@
 
 // Stop extra messages from jslint and jshint.
 // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint
-/*globals actor, alert, console, Duktape, exports, instance, java, Packages, process, require, setInterval, setIntervalDet, setTimeout, setTimeoutDet, clearInterval, clearIntervalDet, clearTimeout, clearTimeoutDet, window, Map, getResource */
+/*globals actor, alert, console, Duktape, exports, instance, java, Packages, process, require, setInterval, setIntervalDet, setTimeout, setTimeoutDet, clearInterval, clearIntervalDet, clearTimeout, clearTimeoutDet, window, getResource */
 /*jshint globalstrict: true, multistr: true */
 'use strict';
 
@@ -310,11 +310,11 @@ var deterministicTemporalSemantics = require('./modules/deterministicTemporalSem
  *  * **reifyingAccessorsList**: An array of the reifying accessors, together with some
  *    information (such as Location...) that will be relevant for sorting. This list should
  *    be ordered using a given sorting function.
- *  * **inputsMap**: An array that maps the mutableAccessor inputs to the reifying accessor
+ *  * **inputsMap**: An object that maps the mutableAccessor inputs to the reifying accessor
  *    inputs.
- *  * **outputsMap**: An array that maps the mutableAccessor outputs to the reifying accessor
+ *  * **outputsMap**: An object that maps the mutableAccessor outputs to the reifying accessor
  *    outputs.
- *  * **parametersMap**: An array that maps the non mapped mutableAccessor inputs to, possibly,
+ *  * **parametersMap**: An object that maps the non mapped mutableAccessor inputs to, possibly,
  *    the reifying accessor non connected inputs.
  *  Notes: (i) When a mutableAccessor is reified, the attribute containedAccessors will contain
  *  he selected accessor for reification (ii) A mutableAccessor cannot extend another accessor.
@@ -1486,7 +1486,7 @@ Accessor.prototype.module = {
  *  @param value The value, which should be 'true'
  */
 Accessor.prototype.mutable = function (value) {
-    if (value === 'true') {
+    if (value === 'true' || value === true) {
         this.mutable = true;
 
         ///////////////////////////////////////////////////////////////////
@@ -1500,9 +1500,9 @@ Accessor.prototype.mutable = function (value) {
 
         this.reifyingAccessorsList = [];
 
-        this.inputsMap = new Map();
-        this.outputsMap = new Map();
-        this.parametersMap = new Map();
+        this.inputsMap = {};
+        this.outputsMap = {};
+        this.parametersMap = {};
 
         this.status = 'instantiated';
 
@@ -1875,11 +1875,11 @@ Accessor.prototype.reifiableBy = function (accessor, options, strict) {
         // FIXME: To be further improved
     }
 
-    // Map objects for inputs, outputs and possibly parameters between the mutableAccessor
+    // Mapping objects for inputs, outputs and possibly parameters between the mutableAccessor
     // and the accessor
-    var inputsMap = new Map();
-    var outputsMap = new Map();
-    var parametersMap = new Map();
+    var inputsMap = {};
+    var outputsMap = {};
+    var parametersMap = {};
 
     var myInputInList, myInput, accInputInList, accInput;
     // Look for mapping the accessor inputs to the mutableAccesssor inputs
@@ -1898,7 +1898,7 @@ Accessor.prototype.reifiableBy = function (accessor, options, strict) {
         if (accInput.type !== myInput.type)
             return false;
 
-        inputsMap.set(myInputInList, accInputInList);
+        inputsMap[myInputInList] = accInputInList;
     }
 
     // If 'strict' is not passed, proceed with mapping the accessor parameters
@@ -1906,7 +1906,7 @@ Accessor.prototype.reifiableBy = function (accessor, options, strict) {
         myInputInList = thiz.inputList[i];
         myInput = thiz.inputs[myInputInList];
 
-        if (inputsMap.has(myInputInList))
+        if (inputsMap[myInputInList])
             continue;
 
         // If the input is not already mapped to an accessor input,
@@ -1917,7 +1917,7 @@ Accessor.prototype.reifiableBy = function (accessor, options, strict) {
         if (accParameterInList)
         // Then check the type, if such attribute exists
             if (myInput.type === accParameter.type)
-            parametersMap.set(myInputInList, accParameterInList);
+            parametersMap[myInputInList] = accParameterInList;
     }
 
     // Look for mapping the accessor inputs to the mutableAccesssor inputs
@@ -1936,7 +1936,7 @@ Accessor.prototype.reifiableBy = function (accessor, options, strict) {
         if (accOutput.type !== myOutput.type)
             return false;
 
-        outputsMap.set(accOutputInList, myOutputInList);
+        outputsMap[accOutputInList] = myOutputInList;
     }
 
     // Create the object to be saved in the mutableAccessor reifyingAccessorsList
@@ -2025,13 +2025,13 @@ Accessor.prototype.reify = function (accessor) {
     thiz.outputsMap = reifying.outputsMap;
     thiz.parametersMap = reifying.parametersMap;
 
-    // Establish the connections
-    thiz.inputsMap.forEach(function (key, value) {
-        thiz.connect(key, reifying.accessor, value);
+    // Establish the connectionsObjects.keys(
+    Object.keys(thiz.inputsMap).forEach(function (key) {
+        thiz.connect(key, reifying.accessor, thiz.inputsMap[key]);
     });
 
-    thiz.outputsMap.forEach(function (key, value) {
-        thiz.connect(reifying.accessor, key, value);
+    Object.keys(thiz.outputsMap).forEach(function (key) {
+        thiz.connect(reifying.accessor, key, thiz.outputsMap[key]);
     });
 
     // Update the mutableAccessor status and history
@@ -2058,18 +2058,18 @@ Accessor.prototype.removeReification = function () {
     var acc = thiz.containedAccessors.pop();
     if (acc.container) acc.container = null;
 
-    thiz.inputsMap.forEach(function (key, value) {
-        thiz.disconnect(key, acc, value);
+    Object.keys(thiz.inputsMap).forEach(function (key) {
+        thiz.disconnect(key, acc, thiz.inputsMap[key]);
     });
 
-    thiz.outputsMap.forEach(function (key, value) {
-        thiz.disconnect(acc, key, value);
+    Object.keys(thiz.outputsMap).forEach(function (key) {
+        thiz.disconnect(acc, key, thiz.outputsMap[key]);
     });
 
 
-    thiz.inputsMap.clear();
-    thiz.outputsMap.clear();
-    if (thiz.parametersMap) thiz.parametersMap.clear();
+    thiz.inputsMap = {};
+    thiz.outputsMap = {};
+    if (thiz.parametersMap) thiz.parametersMap = {};
 
     // Update the mutableAccessor status and history
     thiz.status = 'instantiated';
