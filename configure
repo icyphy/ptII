@@ -653,6 +653,9 @@ PTGIOTTO_DIR
 PTTINYOS_DIR
 PTTINI_DIR
 PTSTRUCTURALCODER_JAR
+PTSPHINX4_DIR
+PTSPHINX4_DATA_JAR
+PTSPHINX4_CORE_JAR
 PTSPACEDOMAIN_PACKAGES
 PTSPACEDOMAIN_JAR
 PTSPACE_DIR
@@ -680,6 +683,7 @@ PTSVGSALAMANDER_JAR
 PTSVGSALAMANDER_DIR
 PTSVG_JAR
 PTSVG_DIR
+SPHINX4_JAR
 PTRSYNTAXTEXTAREA_PACKAGES
 PTRSYNTAXTEXTAREA_JAR
 PTRSYNTAXTEXTAREA_DIR
@@ -1042,6 +1046,8 @@ with_soot
 with_javasystemjar
 with_mysql
 with_ojdbc
+with_sphinx_data
+with_sphinx_core
 with_pdfrenderer
 with_batikjar
 with_svgsalamanderjar
@@ -1800,6 +1806,10 @@ Optional Packages:
                           defaults to \$PTII/ptolemy/actor/lib/database/$MYSQL_TARGET_JAR
   --with-ojdbc=/path/to/ojdbcN.jar  path to ojdbc.jar
                           defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar or ojdbc5.jar $OJDBC_TARGET_JAR
+  --with-sphinx-data-jar=/path/to/sphinx4-data-5prealpha.jar  path to
+                          defaults to \$PTII/lib/sphinx4-data-5prealpha.jar
+  --with-sphinx-core-jar=/path/to/sphinx4-core-5prealpha.jar  path to
+                          defaults to \$PTII/lib/sphinx4-core-5prealpha.jar
   --with-pdfrenderer=PDFRENDERER_JAR     use PDFRenderer PDFRENDERER_JAR
                           defaults to \$PTII/lib/PDFRenderer.jar
   --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
@@ -12853,6 +12863,73 @@ else
 fi
 
 #--------------------------------------------------------------------
+#       Sphinx4 is a speech recognition engine developed at Carnegie Mellon University.
+#       PtolemyII includes an Accessor for speech recognition using sphinx4 at
+#       ptolemy/actor/lib/jjs/modules/speechRecognition
+#--------------------------------------------------------------------
+
+# PTSPHINX4_DIR is set to sphinx.
+PTSPHINX4_DIR=
+
+# The Sphinx4 core Jar file.
+PTSPHINX4_CORE_JAR=
+
+PTSPHINX4_DATA_JAR=
+
+# We only need to look for Sphinx if this directory is present:
+SPHINX4_USER_DIR="$PTII/ptolemy/actor/lib/jjs/modules/speechRecognition"
+
+if test ! -d "$SPHINX4_USER_DIR" ; then
+    if test "${PTVERBOSE:-none}" != "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: $SPHINX4_USER_DIR is not present,
+    so we need not find Sphinx4 - Speech recognition engine API." >&5
+$as_echo "$SPHINX4_USER_DIR is not present,
+    so we need not find Sphinx4 - Speech recognition engine API." >&6; }; fi
+else
+    { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Sphinx4 Speech recognition data jar API" >&5
+$as_echo_n "checking for Sphinx4 Speech recognition data jar API... " >&6; }
+
+# Check whether --with-sphinx-data was given.
+if test "${with_sphinx_data+set}" = set; then :
+  withval=$with_sphinx_data; PTSPHINX4_DATA_JAR=$withval
+else
+  PTSPHINX4_DATA_JAR=$PTII/lib/sphinx4-data-5prealpha.jar
+fi
+
+    if test -f "$PTSPHINX4_DATA_JAR"; then
+       if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSPHINX4_DATA_JAR" >&5
+$as_echo "$PTSPHINX4_DATA_JAR" >&6; }; fi
+       { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Sphinx4 Speech recognition core jar API" >&5
+$as_echo_n "checking for Sphinx4 Speech recognition core jar API... " >&6; }
+
+# Check whether --with-sphinx-core was given.
+if test "${with_sphinx_core+set}" = set; then :
+  withval=$with_sphinx_core; PTSPHINX4_CORE_JAR=$withval
+else
+  PTSPHINX4_CORE_JAR=$PTII/lib/sphinx4-core-5prealpha.jar
+fi
+
+       if test -f "$PTSPHINX4_CORE_JAR"; then
+           if test "${PTVERBOSE:-none}" = "none"; then { $as_echo "$as_me:${as_lineno-$LINENO}: result: ok" >&5
+$as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTSPHINX4_CORE_JAR" >&5
+$as_echo "$PTSPHINX4_CORE_JAR" >&6; }; fi
+           PTSPHINX4_DIR="$PTII/ptolemy/actor/lib/jjs/modules/speechRecognition"
+       fi
+    fi
+fi
+
+if test -z "$PTSPHINX4_DIR"; then
+    { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find the sphinx4 jar files.
+    These files are only necessary for the accessor in
+    ptolemy/actor/lib/jjs/modules/speechRecognition." >&5
+$as_echo "$as_me: WARNING: Could not find the sphinx4 jar files.
+    These files are only necessary for the accessor in
+    ptolemy/actor/lib/jjs/modules/speechRecognition." >&2;}
+
+    updateExcludes "ptolemy/actor/lib/jjs/modules/speechRecognition"
+fi
+
+#--------------------------------------------------------------------
 #       PDFRenderer used to display PDF in vergil.
 #	Source may be found at https://pdf-renderer.dev.java.net/
 #--------------------------------------------------------------------
@@ -14855,6 +14932,9 @@ fi
 # Java packages that use RSyntaxTextArea, typically ptolemy.actor.gui.syntax.
 
 
+# Jar file for Sphinx speech recognition
+
+
 # PTSVG_DIR is set to svg and used in
 # $PTII/diva/util/java2d/makefile if Batik SVG jar files were found
 
@@ -14945,6 +15025,16 @@ fi
 
 # PTSPACEDOMAIN_PACKAGES is set if ojdbc6.jar was found and
 # used in ptII/doc/makefile
+
+
+# PTSPHINX4_CORE_JAR is set to the Sphinx4 speech recognition core jar.
+
+
+# PTSPHINX4_DATA_JAR is set to the Sphinx4 speech recognition data jar.
+
+
+# PTSPHINX4_DIR is set to speechRecognition and used in
+# ptolemy/actor/lib/jjs/modules/makefile if the Sphinx 4 jars are found.
 
 
 # PTSTRUCTURALCODER_JAR is set if $PTII/lib/StructuralCoder.jar was found
