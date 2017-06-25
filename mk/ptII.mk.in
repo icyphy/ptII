@@ -1018,6 +1018,16 @@ PTSPACEDOMAIN_JAR =	@PTSPACEDOMAIN_JAR@
 # used in ptII/doc/makefile
 PTSPACEDOMAIN_PACKAGES = @PTSPACEDOMAIN_PACKAGES@
 
+# PTSPHINX4_CORE_JAR is set to the Sphinx4 speech recognition core jar.
+PTSPHINX4_CORE_JAR = @PTSPHINX4_CORE_JAR@
+
+# PTSPHINX4_DATA_JAR is set to the Sphinx4 speech recognition data jar.
+PTSPHINX4_DATA_JAR = @PTSPHINX4_DATA_JAR@
+
+# PTSPHINX4_DIR is set to speechRecognition and used in
+# ptolemy/actor/lib/jjs/modules/makefile if the Sphinx 4 jars are found.
+PTSPHINX4_DIR = @PTSPHINX4_DIR@
+
 # PTSTRUCTURALCODER_JAR is set if $PTII/lib/StructuralCoder.jar was found
 # and used in ptolemy/vergil/actor/g4ltl/makefile
 PTSTRUCTURALCODER_JAR = @PTSTRUCTURALCODER_JAR@

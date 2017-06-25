@@ -40,11 +40,12 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTIMUSENSOR_DIR is set to IMUSensor if the Java Communications API (RXTX) jars are found by configure.
 # PTPAHO_MQTT_DIR is set to localStorage if the $PTII/lib/org.eclipse.paho.client.mqttv3.jar is found by configure.
 # PTSERIAL_DIR is set to serial if the Java Communication API is found by configure.
+# PTSPHINX4_DIR is set to speechRecognition if the Sphinx4 jar files are found
 # PTUDPSOCKET_DIR is set to udpSocket if the Vertx jars are found by configure.
 # PTVERTX_SOCKET_DIR is set to socket if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
 # PTXBEE_DIR is set to xbee if the XBee Java Interface was found
-DIRS = 		audio $(PTBROWSER_DIR) buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto dataConverter discovery dsp $(PTEVENTBUS_DIR) $(PTGDP_DIR) $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) imageDisplay $(PTIMUSENSOR_DIR) iotAuth localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign os process $(PTSERIAL_DIR) shell speechRecognition testing $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) $(PTXBEE_DIR)
+DIRS = 		audio $(PTBROWSER_DIR) buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto dataConverter discovery dsp $(PTEVENTBUS_DIR) $(PTGDP_DIR) $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) imageDisplay $(PTIMUSENSOR_DIR) iotAuth localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign os process $(PTSERIAL_DIR) $(PTSPHINX4_DIR) shell speechRecognition testing $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) $(PTXBEE_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..
