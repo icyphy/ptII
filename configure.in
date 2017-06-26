@@ -5694,6 +5694,7 @@ else
            PTSPHINX4_DIR="$PTII/ptolemy/actor/lib/jjs/modules/speechRecognition"
            updateClasspath "$PTSPHINX4_DATA_JAR"
            updateClasspath "$PTSPHINX4_CORE_JAR"
+           updateExcludes "vendors/misc/sphinx4-5prealpha-src/"
        fi    
     fi    
 fi
@@ -5709,7 +5710,7 @@ if test -z "$PTSPHINX4_DIR"; then
     4. Build with gradle compileJava
     5. Rerun (cd $PTII; ./configure)])
 
-    updateExcludes "ptolemy/actor/lib/jjs/modules/speechRecognition"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/speechRecognition/"
 fi
 
 #--------------------------------------------------------------------
