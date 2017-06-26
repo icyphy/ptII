@@ -1807,9 +1807,9 @@ Optional Packages:
   --with-ojdbc=/path/to/ojdbcN.jar  path to ojdbc.jar
                           defaults to \$PTII/ptolemy/actor/lib/database/ojdbc6.jar or ojdbc5.jar $OJDBC_TARGET_JAR
   --with-sphinx-data-jar=/path/to/sphinx4-data-5prealpha.jar  path to
-                          defaults to \$PTII/lib/sphinx4-data-5prealpha.jar
+                          defaults to \$PTII/vendors/misc/sphinx4-5prealpha-src/sphinx4-core/build/libs/sphinx4-data-5prealpha-SNAPSHOT.jar
   --with-sphinx-core-jar=/path/to/sphinx4-core-5prealpha.jar  path to
-                          defaults to \$PTII/lib/sphinx4-core-5prealpha.jar
+                          defaults to \$PTII/vendors/misc/sphinx4-5prealpha-src/sphinx4-core/build/libs/sphinx4-core-5prealpha-SNAPSHOT.jar
   --with-pdfrenderer=PDFRENDERER_JAR     use PDFRenderer PDFRENDERER_JAR
                           defaults to \$PTII/lib/PDFRenderer.jar
   --with-batikjar=BATIK_JAR     use Batik jar BATIK_JAR,
@@ -12892,7 +12892,7 @@ $as_echo_n "checking for Sphinx4 Speech recognition data jar API... " >&6; }
 if test "${with_sphinx_data+set}" = set; then :
   withval=$with_sphinx_data; PTSPHINX4_DATA_JAR=$withval
 else
-  PTSPHINX4_DATA_JAR=$PTII/lib/sphinx4-data-5prealpha.jar
+  PTSPHINX4_DATA_JAR=$PTII/vendors/misc/sphinx4-5prealpha-src/sphinx4-data/build/libs/sphinx4-data-5prealpha-SNAPSHOT.jar
 fi
 
     if test -f "$PTSPHINX4_DATA_JAR"; then
@@ -12906,7 +12906,7 @@ $as_echo_n "checking for Sphinx4 Speech recognition core jar API... " >&6; }
 if test "${with_sphinx_core+set}" = set; then :
   withval=$with_sphinx_core; PTSPHINX4_CORE_JAR=$withval
 else
-  PTSPHINX4_CORE_JAR=$PTII/lib/sphinx4-core-5prealpha.jar
+  PTSPHINX4_CORE_JAR=$PTII/vendors/misc/sphinx4-5prealpha-src/sphinx4-core/build/libs/sphinx4-core-5prealpha-SNAPSHOT.jar
 fi
 
        if test -f "$PTSPHINX4_CORE_JAR"; then
@@ -12923,10 +12923,22 @@ fi
 if test -z "$PTSPHINX4_DIR"; then
     { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Could not find the sphinx4 jar files.
     These files are only necessary for the accessor in
-    ptolemy/actor/lib/jjs/modules/speechRecognition." >&5
+    ptolemy/actor/lib/jjs/modules/speechRecognition.
+    To install Sphinx4:
+    1. Download https://sourceforge.net/projects/cmusphinx/files/sphinx4/5prealpha/
+    2. unzip in $PTII/vendors/misc so that $PTII/vendors/misc/sphinx4-5prealpha-src is created
+    3. Install gradle.  Under Mac, use HomeBrew and run brew install gradle
+    4. Build with gradle compileJava
+    5. Rerun (cd $PTII; ./configure)" >&5
 $as_echo "$as_me: WARNING: Could not find the sphinx4 jar files.
     These files are only necessary for the accessor in
-    ptolemy/actor/lib/jjs/modules/speechRecognition." >&2;}
+    ptolemy/actor/lib/jjs/modules/speechRecognition.
+    To install Sphinx4:
+    1. Download https://sourceforge.net/projects/cmusphinx/files/sphinx4/5prealpha/
+    2. unzip in $PTII/vendors/misc so that $PTII/vendors/misc/sphinx4-5prealpha-src is created
+    3. Install gradle.  Under Mac, use HomeBrew and run brew install gradle
+    4. Build with gradle compileJava
+    5. Rerun (cd $PTII; ./configure)" >&2;}
 
     updateExcludes "ptolemy/actor/lib/jjs/modules/speechRecognition"
 fi
