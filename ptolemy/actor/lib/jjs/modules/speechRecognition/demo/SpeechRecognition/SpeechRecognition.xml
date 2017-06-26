@@ -20,12 +20,18 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{355.0, 255.181640625}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 261.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Transcribe speech.  Stop after 20 seconds.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 25.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses the Sphinx4 speech recognition library,&#10;which must be installed separately because of its size.&#10;&#10;To install Sphinx4:&#10;    1. Download https://sourceforge.net/projects/cmusphinx/files/sphinx4/5prealpha/&#10;    2. unzip in $PTII/vendors/misc so that $PTII/vendors/misc/sphinx4-5prealpha-src is created&#10;    3. Install gradle.  Under Mac, use HomeBrew and run &quot;brew install gradle&quot;&#10;    4. Build with gradle compileJava&#10;    5. Rerun (cd $PTII; ./configure)])">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 305.0]">
         </property>
     </property>
     <entity name="TestSpontaneousOnce" class="org.terraswarm.accessor.JSAccessor">
