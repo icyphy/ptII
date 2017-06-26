@@ -52,7 +52,8 @@ JSRCS =
 OTHER_FILES_TO_BE_JARED = \
 	package.json \
 	speechRecognition.js \
-	SpeechRecognitionHelper.java 
+	SpeechRecognitionHelper.java \
+	sphinx-license.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
 

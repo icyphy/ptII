@@ -1,6 +1,6 @@
 /* Generate a web page that contains links for the appropriate copyrights
 
-   Copyright (c) 2003-2016 The Regents of the University of California.
+   Copyright (c) 2003-2017 The Regents of the University of California.
    All rights reserved.
    Permission is hereby granted, without written agreement and without
    license or royalty fees, to use, copy, modify, and distribute this
@@ -140,6 +140,9 @@ public class GenerateCopyrights {
 
         _addIfClassPresent(copyrightsMap, "edu.umich.eecs.april.image.AprilTagFilter",
                 "edu/umich/eecs/april/april-license.htm");
+
+        _addIfClassPresent(copyrightsMap, "edu.cmu.sphinx.api.LiveSpeechRecognizer",
+                "ptolemy/actor/lib/jjs/modules/speechRecognition/sphinx-license.htm");
 
         _addIfClassPresent(copyrightsMap, "g4ltl.SolverUtility",
                 "lib/g4ltl-license.htm");
@@ -1077,6 +1080,7 @@ public class GenerateCopyrights {
             { "smack", " ", " ", "Y", "Y", "Apache License" },
             { "socketio", " ", " ", "Y", "Y", "BSD" },
             { "soot", " ", " ", "Y", "Y", "BSD + LGPL 2" },
+            { "sphinx", " ", " ", "N", "N", "BSD-like" },
             { "svgSalamander", " ", " ", "Y", " ", "BSD" },
             { "thalesSingleWindow", " ", " ", "Y", " ", "BSD" },
             { "udunits", " ", " ", "Y", " ",
