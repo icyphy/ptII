@@ -379,6 +379,10 @@
     <patternset refid="ptII.excludes" />
   </fileset>
   
+  <tstamp>
+    <format property="DATE" pattern="yyyy-mmmm-dd HH:mm:ss:sss zzz"/>
+  </tstamp>
+  
   <!-- Ant targets. Alphabetize and add a description, please.  -->
 
   <!-- Targets that start with "-" are not meant to be run by users.
@@ -528,7 +532,7 @@ For example:
 
   <target name="build-subprojects"
 	  depends="build-pt-modules"
-	  description="Build subprojects."/>
+	  description="Build subprojects. "/>
 
   <target name="build-project">
     <echo message="${ant.project.name}: ${ant.file}" />
@@ -976,6 +980,8 @@ For example:
     </javadoc>
   </target>
 
+  <!-- Run ptdoc so that when a user drags in an accessor, the accessor will get a DocAttribute from
+       the *PtDoc.xml file. -->
   <target name="ptdoc"
           depends="jsdoc-update, -ptdoc-no-node"
           description="Invoke jsdoc to read *.js files and generate *PtDoc.xml files suitable for Ptolemy"
@@ -1154,6 +1160,7 @@ For example:
     <echo> 
       To run code coverage on just one test, use 
       ant test.cobertura.single
+      ${DATE}
     </echo>
     <property name="instrumented.dir" value="${ptII.reports}/instrumented" />
     <property name="coveragereport.dir" value="${ptII.reports}/coveragereport" />
@@ -1200,7 +1207,7 @@ For example:
 	 run for each test so that we run the test from the test directory.
       -->
 
-    <echo> Run the short tests with timeout=${timeout.short} </echo>
+    <echo> test.cobertura: Run the short tests with timeout=${timeout.short} ${DATE}</echo>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
@@ -1233,7 +1240,7 @@ For example:
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
-    <echo> Run the 32-bit tests with timeout=${timeout.short} </echo>
+    <echo> test.cobertura: Run the 32-bit tests with timeout=${timeout.short} ${DATE}</echo>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir32"
@@ -1265,7 +1272,7 @@ For example:
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
-    <echo> Run the long tests with timeout=${timeout.long} </echo>
+    <echo> test.cobertura: Run the long tests with timeout=${timeout.long} ${DATE}</echo>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
@@ -1297,7 +1304,7 @@ For example:
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
-    <echo> Run the longest tests with timeout=${timeout.longest} </echo>
+    <echo> test.cobertura: Run the longest tests with timeout=${timeout.longest} ${DATE}</echo>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
