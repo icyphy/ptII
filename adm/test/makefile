@@ -119,7 +119,7 @@ checkClasspathDefaultMissing:
 # Ignore <property name="script" lines like what's in WebSocketImage.xml
 # Ignore <property name="codeDirectory" lines like what's in WebSocketGraph.xml
 dollarPTII:
-	-(cd $(PTII); cat ptolemy/configs/doc/models.txt | sed 's@\$$CLASSPATH/@@' | xargs grep '$PTII' |  egrep -v '(<property name="script"|<property name="codeDirectory"|StringAttribute|ptinyos/demo/.*/output|CoSimulation.xml|PROJECT_PATH|ptulip/demo/robot/robot.xml|WatchHandRaisingLight.xml|IOTAUTH_HOME)')
+	-(cd $(PTII); cat ptolemy/configs/doc/models.txt | sed 's@\$$CLASSPATH/@@' | xargs grep '$PTII' |  egrep -v '(accessorInvokeSSH|<property name="script"|<property name="codeDirectory"|StringAttribute|ptinyos/demo/.*/output|CoSimulation.xml|PROJECT_PATH|ptulip/demo/robot/robot.xml|WatchHandRaisingLight.xml|IOTAUTH_HOME)')
 
 PTIITXTFILES=adm/bin/ptIItxtfiles
 TXTFILENAMES=/tmp/txtfilenames
