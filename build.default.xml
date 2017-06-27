@@ -1157,6 +1157,7 @@ For example:
       To run code coverage on just one test, use 
       ant test.cobertura.single
     </echo>
+    <exec executable="date"/>
     <property name="instrumented.dir" value="${ptII.reports}/instrumented" />
     <property name="coveragereport.dir" value="${ptII.reports}/coveragereport" />
 
@@ -1203,6 +1204,7 @@ For example:
       -->
 
     <echo> test.cobertura: Run the short tests with timeout=${timeout.short}</echo>
+    <exec executable="date"/>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
@@ -1236,6 +1238,7 @@ For example:
     </junit>
 
     <echo> test.cobertura: Run the 32-bit tests with timeout=${timeout.short}</echo>
+    <exec executable="date"/>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir32"
@@ -1300,6 +1303,7 @@ For example:
     </junit>
 
     <echo> test.cobertura: Run the longest tests with timeout=${timeout.longest}</echo>
+    <exec executable="date"/>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
@@ -1343,6 +1347,7 @@ For example:
   <target name="test.cobertura.longest" depends="build, initReports">
     <echo>Run the longest tests using code coverage
     </echo>
+    <exec executable="date"/>
     <property name="instrumented.dir" value="${ptII.reports}/instrumented" />
     <property name="coveragereport.dir" value="${ptII.reports}/coveragereport" />
 
@@ -1438,6 +1443,7 @@ For example:
       The formatter is controlled by junit.single.formatter, which defaults to plain
       Other values are brief, failure and xml.
     </echo>
+    <exec executable="date"/>
     <property name="instrumented.dir" value="${ptII.reports}/instrumented" />
     <property name="coveragereport.dir" value="${ptII.reports}/coveragereport" />
 
