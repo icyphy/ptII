@@ -227,6 +227,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketDoubleArrayBatched/So
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketImage/SocketImage.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketString/SocketString.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketUnsignedShort.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml
