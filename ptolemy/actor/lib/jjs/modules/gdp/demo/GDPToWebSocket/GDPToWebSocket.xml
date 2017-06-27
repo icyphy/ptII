@@ -29,7 +29,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model accepts web socket  connections on the port specified in&#10;the WebSocketServer's port parameter. Upon establishing a connection,&#10;this model waits for an incoming message. That message is expected to&#10;be a log name, and upon receiving it, this model subscribes to the specified&#10;log and forwards any posts to that log to the client over the web socket.&#10;&#10;Multiple clients can subscribe to the same log. When all connections that&#10;subscribe to a given log are closed, then this model unsubscribes to the GDP log.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 280.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[35.0, 285.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -53,7 +53,7 @@
         </property>
         <property name="stopForeverAccessors" class="ptolemy.data.expr.Parameter" value="false">
         </property>
-        <property name="userHost" class="ptolemy.data.expr.StringParameter" value="sbuser@terra.eecs.berkeley.edu">
+        <property name="userHost" class="ptolemy.data.expr.StringParameter" value="sbuser@localhost">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 460.0]">
         </property>
@@ -64,6 +64,16 @@
         <property name="npmInstall" class="ptolemy.data.expr.Parameter" value="false">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{135, 460}">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="12">
+        </property>
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="In the AccessorSSHCodeGenerator the userHost&#10;has been changed to sbuser@localhost.&#10;For production, change it to&#10;sbuser@terra.eecs.berkeley.edu">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[415.0, 445.0]">
         </property>
     </property>
     <entity name="WebSocketServer" class="org.terraswarm.accessor.JSAccessor">
