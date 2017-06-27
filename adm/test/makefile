@@ -137,7 +137,7 @@ missingDocPackages: $(JAVAFILENAMES)
 	@comm -23 /tmp/missingDocPackages.p /tmp/missingDocPackages.d | 2>&1 egrep -v "(\.apps\.|\.demo|\.test$$|Entering directory|Exiting directory|ptolemy\.actor\.lib\.opencv|test\.junit|test\.system|test\.system\.junit|vendors\.|\.jsoriginal)"; rm -f /tmp/missingDocPackages.d /tmp/missingDocPackages.p
 
 reloadAllAccessors:
-	(cd $(PTII);./bin/reloadAllAccessors -reload -cg -commit -updateCommonHost)
+	(cd $(PTII);./bin/reloadAllAccessors -reload -cg -commit -updateCommonHost) | tee /tmp/reloadAllAccessors.$$$$.out
 
 # Invoked in Release.tcl by the test that does a svn status.
 # Needed because it is hard to remove files that have dollar signs in them with tcl.
