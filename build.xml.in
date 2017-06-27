@@ -224,10 +224,6 @@
     <patternset refid="ptII.excludes" />
   </fileset>
 
-  <tstamp>
-    <format property="DATE" pattern="yyyy-mmmm-dd HH:mm:ss:sss zzz"/>
-  </tstamp>
-
   <!-- Ant targets. Alphabetize and add a description, please.  -->
 
   <!-- Targets that start with "-" are not meant to be run by users.
@@ -1009,7 +1005,6 @@ For example:
     <echo> 
       To run code coverage on just one test, use 
       ant test.cobertura.single
-      ${DATE}
     </echo>
     <property name="instrumented.dir" value="${ptII.reports}/instrumented" />
     <property name="coveragereport.dir" value="${ptII.reports}/coveragereport" />
@@ -1056,7 +1051,7 @@ For example:
 	 run for each test so that we run the test from the test directory.
       -->
 
-    <echo> test.cobertura: Run the short tests with timeout=${timeout.short} ${DATE}</echo>
+    <echo> test.cobertura: Run the short tests with timeout=${timeout.short}</echo>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
@@ -1089,7 +1084,7 @@ For example:
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
-    <echo> test.cobertura: Run the 32-bit tests with timeout=${timeout.short} ${DATE}</echo>
+    <echo> test.cobertura: Run the 32-bit tests with timeout=${timeout.short}</echo>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir32"
@@ -1121,7 +1116,7 @@ For example:
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
-    <echo> test.cobertura: Run the long tests with timeout=${timeout.long} ${DATE}</echo>
+    <echo> test.cobertura: Run the long tests with timeout=${timeout.long}</echo>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
@@ -1153,7 +1148,7 @@ For example:
       <sysproperty key="net.sourceforge.cobertura.datafile" file="${basedir}/cobertura.ser" />
     </junit>
 
-    <echo> test.cobertura: Run the longest tests with timeout=${timeout.longest} ${DATE}</echo>
+    <echo> test.cobertura: Run the longest tests with timeout=${timeout.longest}</echo>
     <junit fork="yes"
 	   forkmode="perTest"
 	   jvm="ptolemy/util/test/junit/javachdir"
