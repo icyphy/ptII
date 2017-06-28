@@ -46,6 +46,7 @@
 "use strict";
 
 var AudioHelper = Java.type('ptolemy.actor.lib.jjs.modules.audio.AudioHelper');
+var ClipPlayerHelper = Java.type('ptolemy.actor.lib.jjs.modules.audio.ClipPlayerHelper');
 var EventEmitter = require('events').EventEmitter;
 
 // Clip playback uses javafx instead of Ptolemy SoundReader since javafx supports mp3
@@ -166,31 +167,29 @@ exports.Player.prototype.stop = function () {
 /** Create a ClipPlayer to play the specified URL.
  */
 exports.ClipPlayer = function (url) {
-    try {
-        this.clip = new AudioClip(url);
-    } catch (err) {
-        error("Error connecting to audio URL " + url);
-    }
+    this.clipHelper = new ClipPlayerHelper(actor, this);
+    this.clipHelper.setURL(url);
 };
+
+util.inherits(exports.ClipPlayer, EventEmitter);
 
 /** Play the currently loaded audio clip.
  */
-exports.ClipPlayer.prototype.play = function () {
-    if (this.clip !== null) {
-        this.clip.stop();
-        this.clip.play();
-    } else {
-        error("No audio clip to play.  Please load a url first.");
-    }
-};
+
+exports.ClipPlayer.prototype.play = function() {
+	if (this.clipHelper !== null) {
+		this.clipHelper.play();	// Helper handles stop and restart.
+	}
+}
 
 /** Stop playback.
  */
-exports.ClipPlayer.prototype.stop = function () {
-    if (this.clip !== null) {
-        this.clip.stop();
-    }
-};
+
+exports.ClipPlayer.prototype.stop = function() {
+	if (this.clipHelper !== null) {
+		this.clipHelper.stop();
+	}
+}
 
 /** Construct an instance of a Capture object type. This should be instantiated in your
  *  JavaScript code as
