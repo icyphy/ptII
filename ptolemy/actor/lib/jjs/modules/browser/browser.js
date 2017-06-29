@@ -39,6 +39,8 @@
 /*jshint globalstrict: true*/
 "use strict";
 
+var listeners = {};
+
 exports.Browser = function () {
     this.server = null;
     var VertxBrowserHelper = Java
@@ -63,6 +65,28 @@ exports.Browser.prototype.addResource = function (path, resource, contentType) {
         this.server = this.helper.createServer(this.port);
     }
     this.server.addResource(path, resource, contentType);
+}
+
+/** Add a listener for data posted on a specific path. Only one
+ *  listener can be active for a given path. The last-added listener
+ *  will be used.
+ *  @param path The path to listen for POST requests on.
+ *  @param listener A callback function with one argument.
+ */
+exports.Browser.prototype.addListener = function (path, listener) {
+  listeners[path] = listener;
+};
+
+/** Invoke registered listeners upon the receipt of POST data.
+ *  @param path The path where the POST was received.
+ *  @param data The data that was transmitted.
+ */
+exports.Browser.prototype.post = function (path, data) {
+  if (listeners[path]) {
+    listeners[path].apply(null, [data]);
+  } else {
+    console.log("No listener registered for path: " + path);
+  }
 }
 
 /** Display the specified HTML text.
