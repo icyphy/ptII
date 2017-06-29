@@ -2055,8 +2055,9 @@ Accessor.prototype.removeReification = function () {
         return false;
     }
 
-    var acc = thiz.containedAccessors.pop();
+   	var acc = thiz.containedAccessors.pop();
     if (acc.container) acc.container = null;
+	acc.wrapup();
 
     Object.keys(thiz.inputsMap).forEach(function (key) {
         thiz.disconnect(key, acc, thiz.inputsMap[key]);
