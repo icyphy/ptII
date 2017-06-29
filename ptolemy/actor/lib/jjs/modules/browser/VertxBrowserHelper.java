@@ -32,16 +32,19 @@ package ptolemy.actor.lib.jjs.modules.browser;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
+import io.vertx.core.MultiMap;
 import io.vertx.core.Vertx;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerRequest;
 import io.vertx.core.http.HttpServerResponse;
+import io.vertx.core.json.JsonObject;
 import io.vertx.ext.web.Router;
 import io.vertx.ext.web.handler.StaticHandler;
 
 import java.io.IOException;
 import java.util.HashMap;
+import java.util.Map;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
@@ -103,12 +106,31 @@ public class VertxBrowserHelper extends HelperBase {
                 // Serve static content.  This assumes the accessors repo is
                 // installed locally at $PTII/org/terraswarm/accessor
                 _router = Router.router(_vertx);
-                _router.route("/accessors/*").handler(StaticHandler.create("org/terraswarm/accessor/accessors/web"));
+                _router.get("/accessors/*").handler(StaticHandler.create("org/terraswarm/accessor/accessors/web"));
 
                 // new Exception("Start of Server(" + port + ")").printStackTrace();
 
+                _router.post().handler(routingContext -> {
+                	System.out.println("Receiving data...");
+                	HttpServerResponse response = routingContext.response();
+                    HttpServerRequest request = routingContext.request();
+                    String path = request.path();
+                    // FIXME: handle cases where POST is not form data?
+                    request.setExpectMultipart(true);
+                    request.endHandler(v -> {
+                    	// The body has now been fully read, so retrieve the form attributes
+                    	MultiMap formAttributes = request.formAttributes();
+                    	JsonObject json = new JsonObject();
+                    	for (Map.Entry<String, String> entry : formAttributes.entries()) {
+                    	    json.put(entry.getKey(), entry.getValue());
+                    	}
+                    	_currentObj.callMember("post", path, json);
+                    });
+
+                });
+                
                 // Handle dynamic content (requests to / ).
-                _router.route().handler(routingContext -> {
+                _router.get().handler(routingContext -> {
                     HttpServerResponse response = routingContext.response();
                     HttpServerRequest request = routingContext.request();
                     String path = request.path();
@@ -169,7 +191,7 @@ public class VertxBrowserHelper extends HelperBase {
             _resourceData.put(path, buffer);
             _resourceContentType.put(path, contentType);
         }
-
+        
         /** Set the response.
          *  @param response The response.
          */
@@ -211,10 +233,10 @@ public class VertxBrowserHelper extends HelperBase {
         private String _response = "No data yet";
         
         /** Resource data indexed by path. */
-        private HashMap<String,Buffer> _resourceData = new HashMap<String,Buffer>();
+        private HashMap<String, Buffer> _resourceData = new HashMap<String, Buffer>();
 
         /** Resource contentType indexed by path. */
-        private HashMap<String,String> _resourceContentType = new HashMap<String,String>();
+        private HashMap<String, String> _resourceContentType = new HashMap<String, String>();
 
         /** The HTTP server.  Currently, only a single server at a time is
          * supported.
