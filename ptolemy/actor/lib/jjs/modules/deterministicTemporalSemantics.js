@@ -139,6 +139,12 @@
  *  @version $$Id$$   
  */
 
+// Save the default engine's setTimeout, setInterval, clearTimeout and clearInterval 
+// in other varibales, so that they can be redefined later (see end of the file)
+var originalSetTimeout = setTimeout;
+var originalSetInterval = setInterval;
+var originalClearTimeout = clearTimeout;
+var originalClearInterval = clearInterval;
 
 // This variable keeps track of all delayedCallback objects. These objects are accessed
 // by the labeled logical clock domain and their unique identifier
@@ -296,7 +302,7 @@ var executeAndSetNextTick = function() {
     }
     
     // Set the next Tick
-    tick = setTimeout(executeAndSetNextTick, Math.max(nextScheduledTick - Date.now(), 0));        
+    tick = originalSetTimeout(executeAndSetNextTick, Math.max(nextScheduledTick - Date.now(), 0));        
 };
 
 /** This function executes delayed callback such that their next execution time
@@ -504,7 +510,7 @@ function putInCallbackQueue(label, id) {
  */
 function reset() {
     // Clear tick
-    clearTimeout(tick);
+    originalClearTimeout(tick);
     
     // Make sure delayedCallbacks and callbackQueue are reset
     delayedCallbacks = null;
@@ -626,9 +632,9 @@ function setDelayedCallback(callback, timeout, repeat, llcd, priority, errorCall
     
     // Update the next tick if necessary
     if (nextScheduledTick > newDelayedCallback.nextExecutionTime) {
-        clearTimeout(tick);
+        originalClearTimeout(tick);
         nextScheduledTick = newDelayedCallback.nextExecutionTime;
-        tick = setTimeout(executeAndSetNextTick, Math.max(nextScheduledTick - Date.now(), 0));
+        tick = originalSetTimeout(executeAndSetNextTick, Math.max(nextScheduledTick - Date.now(), 0));
     }
     
     // return the callback identifier, useful for clearInterval
@@ -744,7 +750,12 @@ Object.size = function(obj) {
     return size;
 };
 
-
+// Redirecting setTimeout, setInterval, clearTimeout, clearInterval to the 
+// deterministic ones
+setTimeout = setTimeoutDet;
+setInterval = setIntervalDet;
+clearInterval = clearIntervalDet;
+clearTimeout = clearTimeoutDet;
 
 ///////////////////////////////////////////////////////////////////
 //// Exports
