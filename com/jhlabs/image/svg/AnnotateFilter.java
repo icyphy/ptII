@@ -28,6 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package com.jhlabs.image.svg;
 
 import java.awt.Graphics2D;
+import java.awt.RenderingHints;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
 import java.io.Reader;
@@ -35,11 +36,13 @@ import java.io.StringReader;
 import java.net.URI;
 import java.net.URL;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
+import ptolemy.util.FileUtilities;
 
 import com.jhlabs.image.AbstractBufferedImageOp;
 import com.kitfox.svg.app.beans.SVGIcon;
-
-import ptolemy.util.FileUtilities;
 
 /** An image filter that overlays SVG graphics.
  *  The graphic can be specified by invoking
@@ -154,7 +157,13 @@ public class AnnotateFilter extends AbstractBufferedImageOp {
         translation.setToTranslation(_xOffset, _yOffset);
         transform.preConcatenate(translation);
         g.transform(transform);
-
+        // Make sure anti-aliasing is turned on.
+        Map<RenderingHints.Key,Object> hints = new HashMap<RenderingHints.Key,Object>();
+        hints.put(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        hints.put(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON);
+        g.addRenderingHints(hints);
+        // Above seems insufficient. Have to set it in the icon too.
+        icon.setAntiAlias(true);
         icon.paintIcon(null, g, 0, 0);
 
         g.dispose();
