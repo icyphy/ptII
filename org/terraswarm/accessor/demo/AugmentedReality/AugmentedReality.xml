@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.060870593061538">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{560.802734375, 368.6104187421351}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{560.8027343749999, 368.61041874213515}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -37,6 +37,14 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model looks for AR tags in an image, then using the ID of the AR tag, looks up an&#10;accessor, reifies it, and then overlays the sensor data provided by the accessor on the image.&#10;If the accessor provides a schema, then it will also construct a form for data entry to be sent&#10;back to the accessor.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 120.0]">
+        </property>
+    </property>
+    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Chadlia Jerad, Edward A. Lee, Marten Lohstroh">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 410.0]">
         </property>
     </property>
     <entity name="ObjectRecognizer" class="org.terraswarm.accessor.JSAccessor">
