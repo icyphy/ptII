@@ -182,6 +182,9 @@
 	    <!-- Exception managment -->
 	    <input source="ptolemy/actor/lib/exception.xml"/>
 
+      <!-- gem5 architectural simulator -->
+            <input source="ptolemy/actor/lib/gem5/gem5.xml"/>
+
 	    <!-- Don't add the FMUImport actor here, instead we do File - Import - Import FMU -->
             <!-- input source="ptolemy/actor/lib/fmi/fmi.xml"/ -->
             <!-- Graph transformation library -->

@@ -78,6 +78,7 @@ DIRS = 		aspect conversions gui logic hoc image test \
 		vhdl \
 		video \
 		xslt \
+		gem5 \
 		$(PTCOLT_DIR) $(PTDATABASE_DIR) $(PTFMI_DIR) \
 		$(PTEXCEL_DIR) $(PTJAI_DIR) $(PTJAVAMAIL_DIR) \
 		$(PTJMF_DIR) $(PTJOYSTICK_DIR) \
@@ -123,7 +124,8 @@ PTCLASSALLJARS = \
 	security/security.jar \
 	vhdl/vhdl.jar \
 	video/video.jar \
-	xslt/xslt.jar
+	xslt/xslt.jar \
+	gem5/gem5.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
