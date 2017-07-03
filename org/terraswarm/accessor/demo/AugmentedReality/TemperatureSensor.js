@@ -21,15 +21,16 @@
 // ENHANCEMENTS, OR MODIFICATIONS.
 //
 
-/** A dummy accessor for a vibration sensor that outputs a range of vibrations
- *  varying from a low of 0 m/s^2 to 100 m/s^2 in steps that default to 5 m/s^2
- *  every second. The control input can be used to vary the step size.
+/** A dummy accessor for a temperature sensor that outputs a range of temperatures
+ *  varying from a low of 0 degrees centigrade up to 100 degrees in steps that default
+ *  to 10 degrees every second.
+ *  The control input can be used to vary the step size.
  *  The output is a JSON object with the following properties:
- *  * name: "Vibration sensor"
- *  * units: "m/s^2"
- *  * vibration: a number.
+ *  * name: "Temperature sensor"
+ *  * units: "Degree centigrade"
+ *  * temperature: a number.
  *
- *  @accessor VibrationSensor
+ *  @accessor TemperatureSensor
  *  @author Edward A. Lee (eal@eecs.berkeley.edu)
  *  @input control A JSON object that is expected to have one property, "step", a number.
  *  @output data A JSON object.
@@ -47,7 +48,7 @@ exports.setup = function() {
 
 	this.input('control', {
 		'type': 'JSON',
-		'value': {'step': 5}
+		'value': {'step': 10}
 	});
 	this.output('data', {
 		'type': 'JSON'
@@ -62,7 +63,7 @@ var handle = null;
 exports.initialize = function() {
 	var thiz = this;
 	
-	var vibration = 0;
+	var temperature = 0;
 	var step = thiz.get('control')['step'];
 
 	// At initialize, send the schema;
@@ -70,11 +71,11 @@ exports.initialize = function() {
 
 	handle = setInterval(function() {
 		thiz.send('data', {
-		    'name': "Vibration sensor",
-            'units': "m/s^2",
-            'vibration': vibration
+		    'name': "Temperature sensor",
+            'units': "Degrees centigrade",
+            'temperature': temperature
 		});
-		vibration += step;
+		temperature += step;
 	}, 1000);
 
 	this.addInputHandler('control', function() {
