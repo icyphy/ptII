@@ -111,20 +111,27 @@ public class VertxBrowserHelper extends HelperBase {
                 // new Exception("Start of Server(" + port + ")").printStackTrace();
 
                 _router.post().handler(routingContext -> {
-                	System.out.println("Receiving data...");
-                	HttpServerResponse response = routingContext.response();
+                    // System.out.println("FIXME: Receiving data...");
+                    
+                    // Respond OK.
+                    HttpServerResponse response = routingContext.response();
+                    // Status code 204 means No Content.
+                    // The server successfully processed the request and is not returning any content.
+                    response.setStatusCode(204);
+                    response.end();
+                    
                     HttpServerRequest request = routingContext.request();
                     String path = request.path();
                     // FIXME: handle cases where POST is not form data?
                     request.setExpectMultipart(true);
                     request.endHandler(v -> {
-                    	// The body has now been fully read, so retrieve the form attributes
-                    	MultiMap formAttributes = request.formAttributes();
-                    	JsonObject json = new JsonObject();
-                    	for (Map.Entry<String, String> entry : formAttributes.entries()) {
-                    	    json.put(entry.getKey(), entry.getValue());
-                    	}
-                    	_currentObj.callMember("post", path, json);
+                        // The body has now been fully read, so retrieve the form attributes
+                        MultiMap formAttributes = request.formAttributes();
+                        JsonObject json = new JsonObject();
+                        for (Map.Entry<String, String> entry : formAttributes.entries()) {
+                            json.put(entry.getKey(), entry.getValue());
+                        }
+                        _currentObj.callMember("post", path, json);
                     });
 
                 });
@@ -163,11 +170,12 @@ public class VertxBrowserHelper extends HelperBase {
                 _server.listen(port, "127.0.0.1",
                         new Handler<AsyncResult<HttpServer>>() {
                             public void handle(AsyncResult<HttpServer> asyncResult) {
-                                System.err.println("Server(" + port
-                                        + ").handle(<AsyncResult> " + asyncResult
-                                        + ")" + " Listen succeeded? "
-                                        + asyncResult.succeeded() + " cause: "
-                                        + asyncResult.cause());
+                                if (!asyncResult.succeeded()) {
+                                    System.err.println("Server(" + port
+                                            + ").handle(<AsyncResult>) failed. "
+                                            + " Cause: "
+                                            + asyncResult.cause());
+                                }
                                 // FIXME: Called when the server actually starts listening.
                                 // Probably need to have a callback back to JavaScript here.
                             }
@@ -196,7 +204,7 @@ public class VertxBrowserHelper extends HelperBase {
          *  @param response The response.
          */
         public void setResponse(String response) {
-            System.err.println("setResponse(" + response + ")");
+            // System.err.println("setResponse(" + response + ")");
             _response = response;
         }
 
@@ -217,7 +225,7 @@ public class VertxBrowserHelper extends HelperBase {
          *  @return The response.
          */
         private String _getResponse() {
-            System.err.println("getResponse(): " + _response);
+            // System.err.println("getResponse(): " + _response);
             return _response;
         }
 
