@@ -98,7 +98,7 @@ var schema = {
     "step": {
       "type": "number",
       "title": "step size",
-      "description": "The increment by which vibration is increased each second"
+      "description": "The increment by which data is increased each second"
     }
   }
 };
