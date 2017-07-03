@@ -289,6 +289,7 @@ public class Gem5Wrapper extends SequenceSource {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
+        String pipePathPrifix = "/Users/hokeunkim/Development/ee219dproject/gem5-stable_2015_09_03/";
         try {
         	if (process != null) {
         		process.destroy();
@@ -297,12 +298,12 @@ public class Gem5Wrapper extends SequenceSource {
         		is = null;
         	}
         	
-        	String outputFileName = "/Users/hokeunkim/Development/EE219D/gem5/read_pipe";
+        	String outputFileName = pipePathPrifix + "/read_pipe";
         	os = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(outputFileName))));
 
 			os.newLine();
 			os.flush();
-        	String inputFileName = "/Users/hokeunkim/Development/EE219D/gem5/write_pipe";
+        	String inputFileName = pipePathPrifix + "/write_pipe";
         	is = new InputStreamReader(new FileInputStream(new File(inputFileName)));
 			//process = pb.start();
 		} catch (IOException e) {
@@ -319,7 +320,7 @@ public class Gem5Wrapper extends SequenceSource {
 					e.printStackTrace();
 				}
         	}
-			br = new BufferedReader(new FileReader("/Users/hokeunkim/Development/EE219D/gem5/temp_pipe"));
+			br = new BufferedReader(new FileReader(pipePathPrifix + "/temp_pipe"));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
