@@ -1118,7 +1118,7 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
      *  If the accessor is not restricted, the $KEYSTORE is resolved to
      *  $HOME/.ptKeystore.
      *  @param uri A specification for the resource.
-     *  @param timeout The timeout in milliseconds.
+     *  @param timeout The timeout in milliseconds (this is ignored in this implementation).
      *  @return The resource
      *  @exception IllegalActionException If the uri specifies any protocol other
      *   than "http" or "https", or if the uri contains any "../", or if the uri
