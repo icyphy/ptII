@@ -20,7 +20,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.060870593061538">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{560.8027343749999, 368.61041874213515}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{560.802734375, 368.6104187421351}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -36,15 +36,7 @@
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model looks for AR tags in an image, then using the ID of the AR tag, looks up an&#10;accessor, reifies it, and then overlays the sensor data provided by the accessor on the image.&#10;If the accessor provides a schema, then it will also construct a form for data entry to be sent&#10;back to the accessor.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 120.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Chadlia Jerad, Edward A. Lee, Marten Lohstroh">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 410.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 410.0]">
         </property>
     </property>
     <entity name="ObjectRecognizer" class="org.terraswarm.accessor.JSAccessor">
@@ -206,7 +198,7 @@
         </property>
     </entity>
     <entity name="GraphicOverlay" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('translation');&#10;	this.input('json');&#10;	this.output('svg', {'type':'string'});&#10;	this.output('latestTranslation');&#10;	this.parameter('padding', {'type':'number', 'value':10});&#10;	this.parameter('rowPadding', {'type':'number', 'value':5});&#10;	// Font size in pixels.&#10;	this.parameter('fontSize', {'type':'number', 'value':20});&#10;	// Average character width (hint for box width)&#10;	this.parameter('averageCharacterWidth', {'type':'number', 'value':0.75});&#10;}&#10;exports.initialize = function() {&#10;	var fontSize = this.get('fontSize');&#10;	// Hack to estimate the width of text to make the box:&#10;	var averageCharacterWidth = this.get('averageCharacterWidth');&#10;	var padding = this.getParameter('padding');&#10;	var rowPadding = this.getParameter('rowPadding');&#10;	// Default graphic.&#10;	var noData = '&lt;svg&gt;'&#10;		+ '&lt;rect style=&quot;fill:white;stroke:red;stroke-width:2;opacity:0.7&quot; width=&quot;'&#10;		+ (7*fontSize*averageCharacterWidth)&#10;		+ '&quot; height=&quot;'&#10;		+ (fontSize + 2*padding)&#10;		+ '&quot;/&gt;'&#10;		+ '&lt;text x=&quot;'&#10;		+ padding&#10;		+ '&quot; y=&quot;'&#10;		+ (padding + fontSize)&#10;		+ '&quot; style=&quot;font-size:'&#10;		+ fontSize &#10;		+ 'px&quot;&gt;No data&lt;/text&gt;'&#10;		+ '&lt;/svg&gt;';&#10;	var graphic = noData;&#10;	&#10;	this.addInputHandler('json', function() {&#10;		var json = this.get('json');&#10;		try {&#10;			json = JSON.parse(json);&#10;		} catch(err) {&#10;			json = {'error': err.message};&#10;		}&#10;		if (!json || Object.keys(json).length === 0) {&#10;			graphic = noData;&#10;			return;&#10;		}&#10;		var nameColumn = '';&#10;		var valueColumn = '';&#10;		var y = padding + fontSize;&#10;		var nameColumnWidth = 0;&#10;		for (property in json) {&#10;			nameColumn += '&lt;tspan x=&quot;'&#10;					+ padding&#10;					+ '&quot; y=&quot;'&#10;					+ y&#10;					+ '&quot;&gt;'&#10;					+ property&#10;					+ '&lt;/tspan&gt;';&#10;			y += (rowPadding + fontSize);&#10;			if (nameColumnWidth &lt; property.length) {&#10;				nameColumnWidth = property.length;&#10;			}&#10;		}&#10;		y = padding + fontSize;&#10;		var valueColumnWidth = 0;&#10;		var x = (padding + nameColumnWidth * fontSize * averageCharacterWidth);&#10;		for (property in json) {&#10;			value = util.inspect(json[property]);&#10;			valueColumn += '&lt;tspan x=&quot;'&#10;					+ x&#10;					+ '&quot; y=&quot;'&#10;					+ y&#10;					+ '&quot;&gt;'&#10;					+ value&#10;					+ '&lt;/tspan&gt;';&#10;			y += (rowPadding + fontSize);&#10;			if (valueColumnWidth &lt; value.length) {&#10;				valueColumnWidth = value.length;&#10;			}&#10;		};&#10;		var height = y;&#10;		var width = (nameColumnWidth + valueColumnWidth) &#10;				* fontSize * averageCharacterWidth&#10;				+ (2 * padding);&#10;		graphic = '&lt;svg width=&quot;'  // Opening svg tag.&#10;				+ width&#10;				+ '&quot; height=&quot;'&#10;				+ height&#10;				+ '&quot;&gt;'&#10;				+ '&lt;rect width=&quot;' // Background rectangle.&#10;				+ width&#10;				+ '&quot; height=&quot;'&#10;				+ height&#10;				+ '&quot; style=&quot;fill:white;stroke:red;stroke-width:2;opacity:0.7&quot;'&#10;				+ '&gt;&lt;/rect&gt;'&#10;				+ '&lt;text style=&quot;font-size:'   // Name column.&#10;				+ fontSize &#10;				+ 'px&quot; x=&quot;'     &#10;				+ padding&#10;				+ '&quot; y=&quot;'&#10;				+ padding&#10;				+ '&quot;&gt;'&#10;				+ nameColumn&#10;				+ '&lt;/text&gt;'&#10;				+ '&lt;text style=&quot;font-size:'   // Value column.&#10;				+ fontSize &#10;				+ 'px&quot; x=&quot;'     &#10;				+ padding&#10;				+ '&quot; y=&quot;'&#10;				+ (padding + fontSize)&#10;				+ '&quot;&gt;'&#10;				+ valueColumn&#10;				+ '&lt;/text&gt;'&#10;				+ '&lt;/svg&gt;';       // Closing.&#10;	});&#10;	this.addInputHandler('translation', function() {&#10;		var translation = this.get('translation');&#10;		this.send('latestTranslation',translation);&#10;		this.send('svg', graphic);&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('reset');&#10;	this.input('translation');&#10;	this.input('json');&#10;	this.output('svg', {'type':'string'});&#10;	this.output('latestTranslation');&#10;	this.parameter('padding', {'type':'number', 'value':10});&#10;	this.parameter('rowPadding', {'type':'number', 'value':5});&#10;	// Font size in pixels.&#10;	this.parameter('fontSize', {'type':'number', 'value':20});&#10;	// Average character width (hint for box width)&#10;	this.parameter('averageCharacterWidth', {'type':'number', 'value':0.75});&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	&#10;	var fontSize = this.get('fontSize');&#10;	// Hack to estimate the width of text to make the box:&#10;	var averageCharacterWidth = this.get('averageCharacterWidth');&#10;	var padding = this.getParameter('padding');&#10;	var rowPadding = this.getParameter('rowPadding');&#10;	// Default graphic.&#10;	var noData = '&lt;svg&gt;'&#10;		+ '&lt;rect style=&quot;fill:white;stroke:red;stroke-width:2;opacity:0.7&quot; width=&quot;'&#10;		+ (7*fontSize*averageCharacterWidth)&#10;		+ '&quot; height=&quot;'&#10;		+ (fontSize + 2*padding)&#10;		+ '&quot;/&gt;'&#10;		+ '&lt;text x=&quot;'&#10;		+ padding&#10;		+ '&quot; y=&quot;'&#10;		+ (padding + fontSize)&#10;		+ '&quot; style=&quot;font-size:'&#10;		+ fontSize &#10;		+ 'px&quot;&gt;No data&lt;/text&gt;'&#10;		+ '&lt;/svg&gt;';&#10;	var graphic = noData;&#10;	&#10;	this.addInputHandler('reset', function() {&#10;		if (thiz.get('reset')) {&#10;			graphic = noData;&#10;		}&#10;	});&#10;	this.addInputHandler('json', function() {&#10;		var json = thiz.get('json');&#10;		try {&#10;			json = JSON.parse(json);&#10;		} catch(err) {&#10;			json = {'error': err.message};&#10;		}&#10;		if (!json || Object.keys(json).length === 0) {&#10;			graphic = noData;&#10;			return;&#10;		}&#10;		var nameColumn = '';&#10;		var valueColumn = '';&#10;		var y = padding + fontSize;&#10;		var nameColumnWidth = 0;&#10;		for (property in json) {&#10;			nameColumn += '&lt;tspan x=&quot;'&#10;					+ padding&#10;					+ '&quot; y=&quot;'&#10;					+ y&#10;					+ '&quot;&gt;'&#10;					+ property&#10;					+ '&lt;/tspan&gt;';&#10;			y += (rowPadding + fontSize);&#10;			if (nameColumnWidth &lt; property.length) {&#10;				nameColumnWidth = property.length;&#10;			}&#10;		}&#10;		y = padding + fontSize;&#10;		var valueColumnWidth = 0;&#10;		var x = (padding + nameColumnWidth * fontSize * averageCharacterWidth);&#10;		for (property in json) {&#10;			value = util.inspect(json[property]);&#10;			valueColumn += '&lt;tspan x=&quot;'&#10;					+ x&#10;					+ '&quot; y=&quot;'&#10;					+ y&#10;					+ '&quot;&gt;'&#10;					+ value&#10;					+ '&lt;/tspan&gt;';&#10;			y += (rowPadding + fontSize);&#10;			if (valueColumnWidth &lt; value.length) {&#10;				valueColumnWidth = value.length;&#10;			}&#10;		};&#10;		var height = y;&#10;		var width = (nameColumnWidth + valueColumnWidth) &#10;				* fontSize * averageCharacterWidth&#10;				+ (2 * padding);&#10;		graphic = '&lt;svg width=&quot;'  // Opening svg tag.&#10;				+ width&#10;				+ '&quot; height=&quot;'&#10;				+ height&#10;				+ '&quot;&gt;'&#10;				+ '&lt;rect width=&quot;' // Background rectangle.&#10;				+ width&#10;				+ '&quot; height=&quot;'&#10;				+ height&#10;				+ '&quot; style=&quot;fill:white;stroke:red;stroke-width:2;opacity:0.7&quot;'&#10;				+ '&gt;&lt;/rect&gt;'&#10;				+ '&lt;text style=&quot;font-size:'   // Name column.&#10;				+ fontSize &#10;				+ 'px&quot; x=&quot;'     &#10;				+ padding&#10;				+ '&quot; y=&quot;'&#10;				+ padding&#10;				+ '&quot;&gt;'&#10;				+ nameColumn&#10;				+ '&lt;/text&gt;'&#10;				+ '&lt;text style=&quot;font-size:'   // Value column.&#10;				+ fontSize &#10;				+ 'px&quot; x=&quot;'     &#10;				+ padding&#10;				+ '&quot; y=&quot;'&#10;				+ (padding + fontSize)&#10;				+ '&quot;&gt;'&#10;				+ valueColumn&#10;				+ '&lt;/text&gt;'&#10;				+ '&lt;/svg&gt;';       // Closing.&#10;	});&#10;	this.addInputHandler('translation', function() {&#10;		var translation = thiz.get('translation');&#10;		thiz.send('latestTranslation',translation);&#10;		thiz.send('svg', graphic);&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -218,19 +210,28 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[675.0, 250.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{675.0, 250.0}">
         </property>
-        <port name="translation" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="json" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
         <port name="svg" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
         </port>
         <port name="latestTranslation" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+        </port>
+        <port name="reset" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="translation" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="json" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
     </entity>
     <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">
@@ -267,7 +268,7 @@
         </port>
     </entity>
     <entity name="TagToAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var httpClient = require('@accessors-modules/http-client');&#10;&#10;var IdToResource = {&#10;	'127': 'PressureSensor.js',&#10;	'435': 'VibrationSensor.js',&#10;	'105': 'PressureSensor.js'	&#10;};&#10;&#10;exports.setup = function() {&#10;	// Inputs&#10;	this.input('tags');&#10;	this.input('index', {&#10;		'type':'int', &#10;		'value':0&#10;	});&#10;	&#10;	// Outputs&#10;	this.output('accessor', {&#10;		'type': 'string',&#10;		'value': ''&#10;	});&#10;	this.output('translation');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var previousIndex = -1;&#10;	&#10;	this.addInputHandler('tags', function() {&#10;		var tags = thiz.get('tags');&#10;		var index = thiz.get('index');&#10;		&#10;		if (index != previousIndex) {&#10;			// Index has changed. Look up an accessor and produce it.&#10;			if (tags &amp;&amp; tags.length &gt; index) {&#10;				var id = tags[index].id;&#10;				// FIXME: Change getResource API.&#10;				var accessor = getResource(IdToResource[id], 2000);&#10;				if (accessor) {&#10;					thiz.send('accessor', accessor);&#10;				}&#10;			}&#10;			previousIndex = index;&#10;		}&#10;		thiz.send('translation', tags[index].center);&#10;	});&#10;}&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var httpClient = require('@accessors-modules/http-client');&#10;&#10;var IdToResource = {&#10;	'127': 'PressureSensor.js',&#10;	'435': 'VibrationSensor.js',&#10;	'105': 'TemperatureSensor.js'	&#10;};&#10;&#10;exports.setup = function() {&#10;	// Inputs&#10;	this.input('tags');&#10;	this.input('index', {&#10;		'type':'int', &#10;		'value':0&#10;	});&#10;	&#10;	// Outputs&#10;	this.output('accessor', {&#10;		'type': 'string',&#10;		'value': ''&#10;	});&#10;	this.output('translation');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var previousIndex = -1;&#10;	&#10;	this.addInputHandler('tags', function() {&#10;		var tags = thiz.get('tags');&#10;		var index = thiz.get('index');&#10;		&#10;		if (index != previousIndex) {&#10;			// Index has changed. Look up an accessor and produce it.&#10;			if (tags &amp;&amp; tags.length &gt; index) {&#10;				var id = tags[index].id;&#10;				// FIXME: Change getResource API.&#10;				var accessor = getResource(IdToResource[id], 2000);&#10;				if (accessor) {&#10;					thiz.send('accessor', accessor);&#10;				}&#10;			}&#10;			previousIndex = index;&#10;		}&#10;		thiz.send('translation', tags[index].center);&#10;	});&#10;}&#10;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -351,7 +352,7 @@
         </port>
     </entity>
     <entity name="IndexGenerator" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Upon receiving the first non-empty array of tags at the input, this script&#10;// outputs a 0 to specify to use the first tag. After it has received&#10;// holdCount more inputs, it outputs a 1 to select the second tag, if there&#10;// is one. It continues like this cycling back to 0 whenever there are not&#10;// enough tags to select the next index.&#10;&#10;exports.setup = function() {&#10;	this.input('tags');&#10;	this.output('index', {&#10;		'type': 'int'&#10;	});&#10;	this.parameter('holdCount', {&#10;		'type': 'int',&#10;		'value': 5&#10;	});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	&#10;	var first = true;&#10;	var index = 0;&#10;	var count = 0;&#10;	var holdCount = thiz.get('holdCount');&#10;	&#10;	this.addInputHandler('tags', function() {&#10;		var tags = thiz.get('tags');&#10;		if (first &amp;&amp; tags &amp;&amp; tags.length &gt; 0) {&#10;			thiz.send('index', index);&#10;			first = false;&#10;			return;&#10;		}&#10;		count++;&#10;		if (count &gt;= holdCount) {&#10;			count = 0;&#10;			// Only switch if there is more than one tag.&#10;			if (tags &amp;&amp; tags.length &gt; 1) {&#10;				index++;&#10;				if (index &gt;= tags.length) {&#10;					index = 0;&#10;				}&#10;				thiz.send('index', index);&#10;			}&#10;		}&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Upon receiving the first non-empty array of tags at the input, this script&#10;// outputs a 0 to specify to use the first tag. After it has received&#10;// holdCount more inputs, it outputs a 1 to select the second tag, if there&#10;// is one. It continues like this cycling back to 0 whenever there are not&#10;// enough tags to select the next index.  This also outputs true on the&#10;// reset output each time the index changes or if there are no tags.&#10;&#10;exports.setup = function() {&#10;	this.input('tags');&#10;	this.output('reset', {&#10;		'type': 'boolean'&#10;	});&#10;	this.output('index', {&#10;		'type': 'int'&#10;	});&#10;	this.parameter('holdCount', {&#10;		'type': 'int',&#10;		'value': 10&#10;	});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	&#10;	var first = true;&#10;	var index = 0;&#10;	var count = 0;&#10;	var holdCount = thiz.get('holdCount');&#10;	&#10;	this.addInputHandler('tags', function() {&#10;		var tags = thiz.get('tags');&#10;		if (first &amp;&amp; tags &amp;&amp; tags.length &gt; 0) {&#10;			thiz.send('index', index);&#10;			first = false;&#10;			thiz.send('reset', true);&#10;			return;&#10;		}&#10;		count++;&#10;		if (count &gt;= holdCount) {&#10;			count = 0;&#10;			// Only switch if there is more than one tag.&#10;			if (tags &amp;&amp; tags.length &gt; 1) {&#10;				index++;&#10;				if (index &gt;= tags.length) {&#10;					index = 0;&#10;				}&#10;				thiz.send('index', index);&#10;				thiz.send('reset', true);&#10;			}&#10;		}&#10;		if (!tags) {&#10;			thiz.send('reset', true);&#10;		}&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -370,12 +371,19 @@
         <port name="tags" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
+        <port name="reset" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
         <port name="index" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
         </port>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('image');&#10;	this.input('spec', {'type':'JSON'});&#10;	this.output('html', {'type':'string'});&#10;	this.output('resources');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	&#10;	var htmlSent = false;&#10;	var spec = null;&#10;	&#10;	this.addInputHandler('spec', function() {&#10;		spec = thiz.get('spec');&#10;	});&#10;	this.addInputHandler('image', function() {&#10;		var image = this.get('image');&#10;		this.send('resources', {&#10;			'image.jpg': {&#10;				'data': image,&#10;				'contentType': 'image/jpeg'&#10;			}&#10;		});&#10;		var html = '&lt;!DOCTYPE html&gt;\n &lt;html&gt;&lt;head&gt;&lt;title&gt;AugmentedReality Demo&lt;/title&gt;&lt;meta charset=&quot;utf-8&quot;/&gt; \n\&#10;		&lt;h1&gt;Augmented Reality Demo&lt;/h1&gt;\n';&#10;		&#10;		if (spec) {&#10;		html += '\&#10;		&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/brutusin.json-forms/1.3.2/css/brutusin-json-forms.min.css&quot;/&gt; \n\&#10;		&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css&quot;/&gt; \n\&#10;		&lt;script src=&quot;https://code.jquery.com/jquery-1.12.2.min.js&quot;&gt;&lt;/script&gt; \n\&#10;		&lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js&quot;&gt;&lt;/script&gt; \n\&#10;		&lt;script src=&quot;https://cdn.jsdelivr.net/brutusin.json-forms/1.3.2/js/brutusin-json-forms.min.js&quot;&gt;&lt;/script&gt; \n\&#10;		&lt;script src=&quot;https://cdn.jsdelivr.net/brutusin.json-forms/1.3.2/js/brutusin-json-forms-bootstrap.min.js&quot;&gt;&lt;/script&gt; \n\&#10;		&lt;script type=&quot;text/javascript&quot;&gt; \n\&#10;		var BrutusinForms = brutusin[&quot;json-forms&quot;]; \n \&#10;		var bf = null; \n \&#10;		function submit() { \n \&#10;	      var form = document.getElementById(&quot;container&quot;).getElementsByTagName(&quot;form&quot;)[0]; \n \&#10;	      if (!bf.validate()) { \n \&#10;	        alert(&quot;Invalid form data.&quot;); \n \&#10;	      } else { \n \&#10;	        form.submit();\n \&#10;	      } \n \&#10;	    } \n \&#10;		BrutusinForms.postRender = function() {\n \&#10;	      var form = document.getElementById(&quot;container&quot;).getElementsByTagName(&quot;form&quot;)[0]; \n \&#10;	      form.setAttribute(&quot;method&quot;, &quot;POST&quot;); \n \&#10;	      form.setAttribute(&quot;action&quot;, &quot;&quot;)\n \&#10;	      console.log(&quot;Post render&quot;)\n \&#10;	    }\n\&#10;		bf = BrutusinForms.create( \n';&#10;		html += spec;&#10;		html += '); \n\&#10;	  window.onload = function () { \n \&#10;	    var container = document.getElementById(&quot;container&quot;); \n\&#10;	    bf.render(container); \n\&#10;      }; \n \&#10;	  &lt;/script&gt; \n';&#10;		}&#10;		html += '&lt;/head&gt; \n\&#10;	  &lt;body&gt; \n\&#10;	  &lt;img src=&quot;image.jpg&quot; id=&quot;image&quot; width=&quot;600&quot;/&gt;\n \&#10;      &lt;script&gt;var count = 0;\n \&#10;      setInterval(function() {\n \&#10;         var e = document.getElementById(&quot;image&quot;);\n \&#10;         e.src = &quot;image.jpg?count=&quot; + (count++);\n \&#10;      }, 1000);\n \&#10;      &lt;/script&gt;\n';&#10;      if (spec) {&#10;      	html += '\&#10;      &lt;div id=&quot;container&quot;&gt;&lt;/div&gt; \n\&#10;	  &lt;button class=&quot;btn btn-primary&quot; onclick=&quot;submit()&quot;&gt;Submit&lt;/button&gt;\n';&#10;		}&#10;		html += '&lt;/body&gt;&lt;/html&gt;';&#10;		// FIXME: First attempt based on: https://stackoverflow.com/questions/12905849/generating-html-forms-from-json-or-xml-feed-using-jquery&#10;		// A proper Form generator will require a DOM parser to insert things into an existing HTML source. This is just a one-off accessor.&#10;		if (!htmlSent) {&#10;			thiz.send('html', html);&#10;			htmlSent = true;&#10;		}&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;	this.input('image');&#10;	this.input('spec', {'type':'JSON'});&#10;	this.output('html', {'type':'string'});&#10;	this.output('resources');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	&#10;	var htmlSent = false;&#10;	var spec = null;&#10;	&#10;	this.addInputHandler('spec', function() {&#10;		var newSpec = JSON.stringify(thiz.get('spec'));&#10;		if (newSpec != spec) {&#10;			// Force a new web page.&#10;			// FIXME: Surely there is a better way?&#10;			htmlSent = false;&#10;			spec = newSpec;&#10;		}&#10;	});&#10;	this.addInputHandler('image', function() {&#10;		var image = this.get('image');&#10;		this.send('resources', {&#10;			'image.jpg': {&#10;				'data': image,&#10;				'contentType': 'image/jpeg'&#10;			}&#10;		});&#10;		var html = '&lt;!DOCTYPE html&gt;\n &lt;html&gt;&lt;head&gt;&lt;title&gt;AugmentedReality Demo&lt;/title&gt;&lt;meta charset=&quot;utf-8&quot;/&gt; \n\&#10;		&lt;h1&gt;Augmented Reality Demo&lt;/h1&gt;\n';&#10;		&#10;		if (spec) {&#10;		html += '\&#10;		&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/brutusin.json-forms/1.3.2/css/brutusin-json-forms.min.css&quot;/&gt; \n\&#10;		&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css&quot;/&gt; \n\&#10;		&lt;script src=&quot;https://code.jquery.com/jquery-1.12.2.min.js&quot;&gt;&lt;/script&gt; \n\&#10;		&lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js&quot;&gt;&lt;/script&gt; \n\&#10;		&lt;script src=&quot;https://cdn.jsdelivr.net/brutusin.json-forms/1.3.2/js/brutusin-json-forms.min.js&quot;&gt;&lt;/script&gt; \n\&#10;		&lt;script src=&quot;https://cdn.jsdelivr.net/brutusin.json-forms/1.3.2/js/brutusin-json-forms-bootstrap.min.js&quot;&gt;&lt;/script&gt; \n\&#10;		&lt;script type=&quot;text/javascript&quot;&gt; \n\&#10;		var BrutusinForms = brutusin[&quot;json-forms&quot;]; \n \&#10;		var bf = null; \n \&#10;		function submit() { \n \&#10;	      var form = document.getElementById(&quot;container&quot;).getElementsByTagName(&quot;form&quot;)[0]; \n \&#10;	      if (!bf.validate()) { \n \&#10;	        alert(&quot;Invalid form data.&quot;); \n \&#10;	      } else { \n \&#10;	        form.submit();\n \&#10;	      } \n \&#10;	    } \n \&#10;		BrutusinForms.postRender = function() {\n \&#10;	      var form = document.getElementById(&quot;container&quot;).getElementsByTagName(&quot;form&quot;)[0]; \n \&#10;	      form.setAttribute(&quot;method&quot;, &quot;POST&quot;); \n \&#10;	      form.setAttribute(&quot;action&quot;, &quot;&quot;)\n \&#10;	      console.log(&quot;Post render&quot;)\n \&#10;	    }\n\&#10;		bf = BrutusinForms.create( \n';&#10;		html += spec;&#10;		html += '); \n\&#10;	  window.onload = function () { \n \&#10;	    var container = document.getElementById(&quot;container&quot;); \n\&#10;	    bf.render(container); \n\&#10;      }; \n \&#10;	  &lt;/script&gt; \n';&#10;		}&#10;		html += '&lt;/head&gt; \n\&#10;	  &lt;body&gt; \n\&#10;	  &lt;img src=&quot;image.jpg&quot; id=&quot;image&quot; width=&quot;600&quot;/&gt;\n \&#10;      &lt;script&gt;var count = 0;\n \&#10;      setInterval(function() {\n \&#10;         var e = document.getElementById(&quot;image&quot;);\n \&#10;         e.src = &quot;image.jpg?count=&quot; + (count++);\n \&#10;      }, 1000);\n \&#10;      &lt;/script&gt;\n';&#10;      if (spec) {&#10;      	html += '\&#10;      &lt;div id=&quot;container&quot;&gt;&lt;/div&gt; \n\&#10;	  &lt;button class=&quot;btn btn-primary&quot; onclick=&quot;submit()&quot;&gt;Submit&lt;/button&gt;\n';&#10;		}&#10;		html += '&lt;/body&gt;&lt;/html&gt;';&#10;		// FIXME: First attempt based on: https://stackoverflow.com/questions/12905849/generating-html-forms-from-json-or-xml-feed-using-jquery&#10;		// A proper Form generator will require a DOM parser to insert things into an existing HTML source. This is just a one-off accessor.&#10;		if (!htmlSent) {&#10;			thiz.send('html', html);&#10;			htmlSent = true;&#10;		}&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -467,8 +475,6 @@
         <vertex name="vertex1" value="[320.0, 240.0]">
         </vertex>
     </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
@@ -479,9 +485,15 @@
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <vertex name="vertex1" value="{585.0, 145.0}">
+        </vertex>
     </relation>
     <link port="ObjectRecognizer.input" relation="relation"/>
     <link port="ObjectRecognizer.tags" relation="relation3"/>
@@ -491,20 +503,22 @@
     <link port="ImageAnnotate.output" relation="relation13"/>
     <link port="ImageReader.output" relation="relation"/>
     <link port="ImageReader.trigger" relation="relation10"/>
-    <link port="GraphicOverlay.translation" relation="relation2"/>
-    <link port="GraphicOverlay.json" relation="relation12"/>
     <link port="GraphicOverlay.svg" relation="relation6"/>
     <link port="GraphicOverlay.latestTranslation" relation="relation7"/>
+    <link port="GraphicOverlay.reset" relation="relation17"/>
+    <link port="GraphicOverlay.translation" relation="relation12"/>
+    <link port="GraphicOverlay.json" relation="relation2"/>
     <link port="TestSpontaneous.output" relation="relation10"/>
     <link port="TagToAccessor.index" relation="relation4"/>
     <link port="TagToAccessor.tags" relation="relation3"/>
-    <link port="TagToAccessor.translation" relation="relation2"/>
+    <link port="TagToAccessor.translation" relation="relation12"/>
     <link port="TagToAccessor.accessor" relation="relation14"/>
     <link port="MutableAccessor.accessor" relation="relation14"/>
     <link port="MutableAccessor.control" relation="relation11"/>
-    <link port="MutableAccessor.data" relation="relation12"/>
+    <link port="MutableAccessor.data" relation="relation2"/>
     <link port="MutableAccessor.schema" relation="relation5"/>
     <link port="IndexGenerator.tags" relation="relation3"/>
+    <link port="IndexGenerator.reset" relation="relation17"/>
     <link port="IndexGenerator.index" relation="relation4"/>
     <link port="JavaScript.image" relation="relation13"/>
     <link port="JavaScript.spec" relation="relation5"/>
