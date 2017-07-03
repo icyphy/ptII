@@ -28,6 +28,7 @@
 /**
  * Module to use the default browser as a display and a GUI.
  * NOTE: This is very incomplete! Just a placeholder for now.
+ * 
  * @module browser
  * @author Edward A. Lee
  * @version $$Id$$
@@ -41,14 +42,16 @@
 
 var listeners = {};
 
-exports.Browser = function () {
+exports.Browser = function (port) {
     this.server = null;
     var VertxBrowserHelper = Java
         .type('ptolemy.actor.lib.jjs.modules.browser.VertxBrowserHelper');
     this.helper = new VertxBrowserHelper(actor, this);
     
-    // FIXME: Use a port selection algorithm here to avoid port conflicts.
-    this.port = 8080;
+    this.port = port;
+    if (!port) {
+        this.port = 8080;
+    }
     this.browserLauncher = Java.type('ptolemy.actor.gui.BrowserLauncher');
 };
 
