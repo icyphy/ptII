@@ -80,7 +80,7 @@ exports.initialize = function() {
 
 	this.addInputHandler('control', function() {
 	    step = thiz.get('control')['step'];
-        if (typeof step === undefined) {
+        if (!step) {
             step = 0;
         }
 	});
