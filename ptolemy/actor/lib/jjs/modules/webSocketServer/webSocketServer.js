@@ -30,7 +30,7 @@
  * from a TCP socket in that the connection is established through HTTP
  * and is supported by most web browsers.
  *
- * This module defines twp classes, Server, and Socket.
+ * This module defines two classes, Server, and Socket.
  * To make a connection, create an instance of Server, set up event listeners,
  * and start the server. On another machine (or the same machine), create
  * an instance of Client (defined in the webSocketClient module)
@@ -98,6 +98,11 @@ exports.supportedSendTypes = function () {
  *    See the Client documentation for supported types.
  *  * sendType: The MIME type for outgoing messages, which defaults to 'application/json'.
  *    See the Client documentation for supported types.
+ *  * sslTls: True to accept secure connections.
+ *  * pfxKeyCertPassword: The password to open the file specified in pfxKeyCertPath
+ *    (required only if sslTls is true).
+ *  * pfxKeyCertPath: The path of the file storing the server's private key
+ *    and certificate in PFX (in PKCS#12) format (required only if sslTls is true).
  *
  *  This subclasses EventEmitter, emitting events 'listening' and 'connection'.
  *  A typical usage pattern looks like this:

@@ -32,14 +32,24 @@ package ptolemy.actor.lib.jjs.modules.webSocket;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
+import io.vertx.core.MultiMap;
+import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpServer;
 import io.vertx.core.http.HttpServerOptions;
+import io.vertx.core.http.HttpServerRequest;
+import io.vertx.core.http.HttpServerResponse;
 import io.vertx.core.http.ServerWebSocket;
+import io.vertx.core.json.JsonObject;
 import io.vertx.core.net.PfxOptions;
+import io.vertx.ext.web.Router;
+import io.vertx.ext.web.handler.StaticHandler;
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.actor.lib.jjs.VertxHelperBase;
 import ptolemy.util.FileUtilities;
 
@@ -47,9 +57,10 @@ import ptolemy.util.FileUtilities;
 //// WebSocketServerHelper
 
 /**
-   A helper class for the webSocket module's Server object in JavaScript.
-   Instances of this class are helpers for a server that can support multiple sockets.
-   See the documentation of that module for instructions.
+   A helper class for the webSocketServer and browser modules' Server object in JavaScript.
+   Instances of this class are helpers for a server that can support multiple sockets
+   and also responds to HTTP GET and POST requests.
+   See the documentation of those modules for instructions.
    This uses Vert.x for the implementation.
 
    @see WebSocketHelper
@@ -64,6 +75,22 @@ public class WebSocketServerHelper extends VertxHelperBase {
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
+    /** Add a resource to be served by the server.
+     *  @param path The path to the resource.
+     *  @param resource The resource to serve upon a request for this path.
+     *  @param contentType The content type.
+     */
+    public void addResource(final String path, Object resource, String contentType) {
+        Buffer buffer = Buffer.buffer();
+        // FIXME: byte content is fixed here to IMAGEs in JPEG format.
+        // Need to convert the contentType into a DATA_TYPE and image type (null below
+        // to default to jpg).  Perhaps that conversion should be done in a utility
+        // function in HelperBase.
+        _appendToBuffer(resource, HelperBase.DATA_TYPE.IMAGE, null, buffer);
+        _resourceData.put(path, buffer);
+        _resourceContentType.put(path, contentType);
+    }
+    
     /** Close the web socket server. Note that this closing happens
      *  asynchronously. The server may not be closed when this returns.
      */
@@ -100,6 +127,14 @@ public class WebSocketServerHelper extends VertxHelperBase {
                 port, receiveType, sendType);
     }
 
+    /** Set the response.
+     *  @param response The response.
+     */
+    public void setResponse(String response) {
+        // System.err.println("setResponse(" + response + ")");
+        _response = response;
+    }
+
     /** Create and start the server and beginning listening for
      *  connections. When a new connection request is received and
      *  a socket has been opened, emit the 'connection' event with the
@@ -107,10 +142,10 @@ public class WebSocketServerHelper extends VertxHelperBase {
      */
     public void startServer() {
             // Ask the verticle to start the server.
-            submit(() -> {
-                HttpServerOptions serverOptions = new HttpServerOptions();
-                serverOptions.setSsl(_sslTls);
-                if (serverOptions.isSsl()) {
+        submit(() -> {
+            HttpServerOptions serverOptions = new HttpServerOptions();
+            serverOptions.setSsl(_sslTls);
+            if (serverOptions.isSsl()) {
                 PfxOptions pfxOptions = new PfxOptions();
                 File pfxKeyCertFile = FileUtilities.nameToFile(_pfxKeyCertPath, null);
                 if (pfxKeyCertFile == null) {
@@ -125,34 +160,98 @@ public class WebSocketServerHelper extends VertxHelperBase {
                 }
                 pfxOptions.setPassword(_pfxKeyCertPassword);
                 serverOptions.setPfxKeyCertOptions(pfxOptions);
+            }
+            _server = _vertx.createHttpServer(serverOptions);
+            _server.websocketHandler(new Handler<ServerWebSocket>() {
+                @Override
+                public void handle(ServerWebSocket serverWebSocket) {
+                    // Notify of a new connection by emitting a 'connection' event.
+                    // This will have the side effect of creating a new JS Socket
+                    // object, which is an event emitter.
+                    // This has to be done in the verticle thread, not later in the
+                    // director thread, because it will set up listeners to the socket.
+                    // If that is deferred, then the server could miss messages that are
+                    // sent after the connection is established.
+                    // Pass this helper to ensure that the verticle and event bus handler
+                    // of this verticle is used rather than creating a new one.
+                    _currentObj.callMember(
+                            "_socketCreated", serverWebSocket, WebSocketServerHelper.this);
                 }
-                _server = _vertx.createHttpServer(serverOptions);
-                _server.websocketHandler(new Handler<ServerWebSocket>() {
-                    @Override
-                    public void handle(ServerWebSocket serverWebSocket) {
-                        // Notify of a new connection by emitting a 'connection' event.
-                        // This will have the side effect of creating a new JS Socket
-                        // object, which is an event emitter.
-                        // This has to be done in the verticle thread, not later in the
-                        // director thread, because it will set up listeners to the socket.
-                        // If that is deferred, then the server could miss messages that are
-                        // sent after the connection is established.
-                        // Pass this helper to ensure that the verticle and event bus handler
-                        // of this verticle is used rather than creating a new one.
-                        _currentObj.callMember(
-                                "_socketCreated", serverWebSocket, WebSocketServerHelper.this);
+            });
+            
+            // Next, set up HTTP handling for GET and POST.
+
+            // Serve static content, specifically the contents of the accessors repo.
+            // This assumes the accessors repo is
+            // installed locally at $PTII/org/terraswarm/accessor
+            Router router = Router.router(_vertx);
+            router.get("/accessors/*").handler(StaticHandler.create("org/terraswarm/accessor/accessors/web"));
+
+            // new Exception("Start of Server(" + port + ")").printStackTrace();
+
+            router.post().handler(routingContext -> {
+                // System.out.println("FIXME: Receiving data...");
+
+                // Respond OK.
+                HttpServerResponse response = routingContext.response();
+                // Status code 204 means No Content.
+                // The server successfully processed the request and is not returning any content.
+                response.setStatusCode(204);
+                response.end();
+
+                HttpServerRequest request = routingContext.request();
+                String path = request.path();
+                // FIXME: handle cases where POST is not form data?
+                request.setExpectMultipart(true);
+                request.endHandler(v -> {
+                    // The body has now been fully read, so retrieve the form attributes
+                    MultiMap formAttributes = request.formAttributes();
+                    JsonObject json = new JsonObject();
+                    for (Map.Entry<String, String> entry : formAttributes.entries()) {
+                        json.put(entry.getKey(), entry.getValue());
+                    }
+                    _currentObj.callMember("post", path, json);
+                });
+
+            });
+
+            // Handle dynamic content (requests to / ).
+            router.get().handler(routingContext -> {
+                // Make the request in the verticle.
+                submit(() -> {
+                    HttpServerResponse response = routingContext.response();
+                    HttpServerRequest request = routingContext.request();
+                    String path = request.path();
+                    Buffer buffer = _resourceData.get(path);
+                    if (buffer != null) {
+                        // Path matches a resource that has been added using addResource().
+                        response.putHeader("content-type", _resourceContentType.get(path));
+                        response.setChunked(true);
+                        response.write(buffer);
+                        response.end();
+                    } else {
+                        // Serve the default content.
+                        response.putHeader("content-type", "text/html");
+                        response.setChunked(true);
+                        response.write(_response);
+                        response.end();
                     }
                 });
-                _server.listen(_port, _hostInterface,
-                        new Handler<AsyncResult<HttpServer>>() {
-                    @Override
-                    public void handle(AsyncResult<HttpServer> result) {
-                        // Do this in the vertx thread, not the director thread, so that the
-                        // listening event is assured of occurring before the 'connection'
-                        // event, which is emitted above by _socketCreated().
-                        _currentObj.callMember("emit", "listening");
-                    }
-                });
+            });
+
+            _server.requestHandler(router::accept);
+            
+            // Start the server listening.
+            _server.listen(_port, _hostInterface,
+                    new Handler<AsyncResult<HttpServer>>() {
+                @Override
+                public void handle(AsyncResult<HttpServer> result) {
+                    // Do this in the vertx thread, not the director thread, so that the
+                    // listening event is assured of occurring before the 'connection'
+                    // event, which is emitted above by _socketCreated().
+                    _currentObj.callMember("emit", "listening");
+                }
+            });
         });
     }
 
@@ -194,9 +293,6 @@ public class WebSocketServerHelper extends VertxHelperBase {
     /** The host interface. */
     private String _hostInterface;
 
-    /** Whether the server runs on SSL/TLS. */
-    private boolean _sslTls;
-
     /** The password for pfx key-cert file. */
     private String _pfxKeyCertPassword;
 
@@ -206,6 +302,18 @@ public class WebSocketServerHelper extends VertxHelperBase {
     /** The port on which the server listens. */
     private int _port;
 
+    /** The server's response. */
+    private String _response = "No data yet";
+    
+    /** Resource data indexed by path. */
+    private HashMap<String, Buffer> _resourceData = new HashMap<String, Buffer>();
+
+    /** Resource contentType indexed by path. */
+    private HashMap<String, String> _resourceContentType = new HashMap<String, String>();
+
     /** The internal http server created by Vert.x */
     private HttpServer _server = null;
+
+    /** Whether the server runs on SSL/TLS. */
+    private boolean _sslTls;
 }

@@ -54,6 +54,7 @@ import ptolemy.actor.lib.jjs.HelperBase;
 
 /** A helper class for the Vert.x browser API.
 
+   @deprecated The browser module is now using WebSocketServerHelper and WebSocketHelper.
    @author Edward A. Lee
    @version $Id$
    @since Ptolemy II 11.0
@@ -103,7 +104,8 @@ public class VertxBrowserHelper extends HelperBase {
             if (_server == null) {
                 _server = _vertx.createHttpServer();
 
-                // Serve static content.  This assumes the accessors repo is
+                // Serve static content, specifically the contents of the accessors repo.
+                // This assumes the accessors repo is
                 // installed locally at $PTII/org/terraswarm/accessor
                 _router = Router.router(_vertx);
                 _router.get("/accessors/*").handler(StaticHandler.create("org/terraswarm/accessor/accessors/web"));
@@ -181,7 +183,6 @@ public class VertxBrowserHelper extends HelperBase {
                             }
                         });
             }
-
         }
         
         /** Add a resource to be served by the server.
@@ -236,8 +237,7 @@ public class VertxBrowserHelper extends HelperBase {
          */
         private int _port = 8080;
 
-        /** The server's response.
-         */
+        /** The server's response. */
         private String _response = "No data yet";
         
         /** Resource data indexed by path. */

@@ -371,6 +371,7 @@ public class WebSocketHelper extends VertxHelperBase {
         }
         typeSet.add("application/json");
         typeSet.add("text/plain");
+        typeSet.add("text/html");
         return typeSet.toArray(new String[typeSet.size()]);
     }
 
@@ -390,6 +391,7 @@ public class WebSocketHelper extends VertxHelperBase {
         }
         typeSet.add("application/json");
         typeSet.add("text/plain");
+        typeSet.add("text/html");
         return typeSet.toArray(new String[typeSet.size()]);
     }
 
