@@ -1,4 +1,4 @@
-/* An actor that outputs a sequence with a given step in values.
+/* An actor that interacts with gem5 architectural simulator
 
  Copyright (c) 1998-2013 The Regents of the University of California.
  All rights reserved.
@@ -43,6 +43,7 @@ import ptolemy.data.RecordToken;
 import ptolemy.data.StringToken;
 import ptolemy.data.Token;
 import ptolemy.data.expr.Parameter;
+import ptolemy.data.expr.StringParameter;
 import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
@@ -51,28 +52,14 @@ import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.Workspace;
 
 ///////////////////////////////////////////////////////////////////
-//// Ramp
+//// Gem5Wrapper
 
 /**
- Produce an output token on each firing with a value that is
- incremented by the specified step each iteration. The
- first output is given by the <i>init</i> parameter, and the
- increment may be given either by the <i>step</i> parameter or by
- the associated <i>step</i> port. Note that the increment will show
- up in the output only on the next iteration. If you need it to show
- up on the current iteration, use the
- {@link ptolemy.actor.lib.Accumulator Accumulator} actor.
- The type of the output is determined by the constraint that it must
- be greater than or equal to the types of the parameter (and/or the
- <i>step</i> port, if it is connected).
- Thus, this actor is
- polymorphic in the sense that its output data type can be that
- of any token type that supports addition.
+  An actor that interacts with gem5 architectural simulator.
 
- @see Accumulator
- @author Yuhong Xiong, Edward A. Lee
- @version $Id: Ramp.java 67679 2013-10-13 03:48:10Z cxh $
- @since Ptolemy II 0.2
+ @author Hokeun Kim
+ @version $Id: Gem5Wrapper.java 67679 2013-10-13 03:48:10Z cxh $
+ @since Ptolemy II 11.0
  @Pt.ProposedRating Green (eal)
  @Pt.AcceptedRating Green (bilung)
  */
@@ -95,6 +82,10 @@ public class Gem5Wrapper extends SequenceSource {
         init = new PortParameter(this, "init");
         init.setExpression("0");
         new Parameter(init.getPort(), "_showName", BooleanToken.TRUE);
+
+        pipePathPrifix = new StringParameter(this, "pipePathPrifix");
+        pipePathPrifix.setExpression("");
+        
         step = new PortParameter(this, "step");
         step.setExpression("1");
         new Parameter(step.getPort(), "_showName", BooleanToken.TRUE);
@@ -130,11 +121,16 @@ public class Gem5Wrapper extends SequenceSource {
      */
     public PortParameter init;
 
+    /** The prefix of the file path for the pipe used for communicating
+     *  with gem5 simulator.
+     */
+    public StringParameter pipePathPrifix;
+
     /** The amount by which the ramp output is incremented on each iteration.
      *  The default value of this parameter is the integer 1.
      */
     public PortParameter step;
-
+    
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
 
@@ -289,7 +285,7 @@ public class Gem5Wrapper extends SequenceSource {
     public void initialize() throws IllegalActionException {
         super.initialize();
 
-        String pipePathPrifix = "/Users/hokeunkim/Development/ee219dproject/gem5-stable_2015_09_03/";
+        //String pipePathPrifix = "/Users/hokeunkim/Development/ee219dproject/gem5-stable_2015_09_03/";
         try {
         	if (process != null) {
         		process.destroy();
@@ -298,12 +294,12 @@ public class Gem5Wrapper extends SequenceSource {
         		is = null;
         	}
         	
-        	String outputFileName = pipePathPrifix + "/read_pipe";
+        	String outputFileName = pipePathPrifix.getValueAsString() + "/read_pipe";
         	os = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(new File(outputFileName))));
 
 			os.newLine();
 			os.flush();
-        	String inputFileName = pipePathPrifix + "/write_pipe";
+        	String inputFileName = pipePathPrifix.getValueAsString() + "/write_pipe";
         	is = new InputStreamReader(new FileInputStream(new File(inputFileName)));
 			//process = pb.start();
 		} catch (IOException e) {
@@ -320,7 +316,7 @@ public class Gem5Wrapper extends SequenceSource {
 					e.printStackTrace();
 				}
         	}
-			br = new BufferedReader(new FileReader(pipePathPrifix + "/temp_pipe"));
+			br = new BufferedReader(new FileReader(pipePathPrifix.getValueAsString() + "/temp_pipe"));
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

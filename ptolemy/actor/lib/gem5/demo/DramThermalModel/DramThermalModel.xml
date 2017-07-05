@@ -4,7 +4,7 @@
 <entity name="DramThermalModel" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1440, 604, 1440, 675}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 225, 1440, 675}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 565]">
     </property>
@@ -142,7 +142,7 @@
     <entity name="DRAMModel" class="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="{270.0, 400.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1783, 918}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1783, 918}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1549, 808]">
         </property>
@@ -1995,7 +1995,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[585.0, 250.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 22, 1945, 949}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1945, 949}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1711, 839]">
         </property>
@@ -2344,7 +2344,7 @@
         <entity name="DRAMPowerToTemp" class="ptolemy.actor.TypedCompositeActor">
             <property name="_location" class="ptolemy.kernel.util.Location" value="[571.75, 457.5]">
             </property>
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={453, 80, 1920, 970}, maximized=false}">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={353, 211, 1920, 970}, maximized=false}">
             </property>
             <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1686, 860]">
             </property>
@@ -2724,7 +2724,7 @@
         <link relation1="relation24" relation2="relation25"/>
     </entity>
     <entity name="AMBTemperaturePlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={30, 266, 1050, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1431, 486, 1050, 634}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1050, 590]">
         </property>
@@ -2737,13 +2737,13 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="0.0998"/>
+<yRange min="27.0" max="27.000006055748212"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="DramTemperaturePlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 427, 1010, 473}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={1087, 394, 1010, 473}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1010, 429]">
         </property>
@@ -2756,15 +2756,15 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.0" max="0.0998"/>
+<yRange min="27.0" max="27.000002667488843"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="AMBPower" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 330, 937, 570}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={193, 707, 444, 285}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[937, 526]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[444, 241]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 430.0]">
         </property>
@@ -2775,15 +2775,15 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="4.0E-4" max="0.0998"/>
+<yRange min="4.000336766242981" max="4.026422053575516"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="DRAMPower" class="ptolemy.actor.lib.gui.TimedPlotter">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 330, 937, 570}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={749, 740, 638, 325}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[937, 526]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[638, 281]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[690.0, 490.0]">
         </property>
@@ -2794,13 +2794,13 @@
 <title>TimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="2.0E-4" max="0.0998"/>
+<yRange min="0.9853524971008301" max="1.0816243696212768"/>
 </plot>?>
         </configure>
     </entity>
     <entity name="AMBTemperatureMax" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-559, -11, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 484, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
@@ -2808,7 +2808,7 @@
         </property>
     </entity>
     <entity name="DRAMTemperatureMax" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1030, -19, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 484, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
@@ -2836,7 +2836,7 @@
         </property>
     </entity>
     <entity name="DRAMPowerAvg" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-1071, -242, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 484, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
@@ -2844,7 +2844,7 @@
         </property>
     </entity>
     <entity name="AMBPowerAvg" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-580, -238, 484, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 484, 208}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[484, 164]">
         </property>
@@ -2896,6 +2896,8 @@
         </property>
     </entity>
     <entity name="Gem5Wrapper" class="ptolemy.actor.lib.gem5.Gem5Wrapper">
+        <property name="pipePathPrifix" class="ptolemy.data.expr.StringParameter" value="/Users/hokeunkim/Development/ee219dproject/gem5-stable_2015_09_03/">
+        </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 400.0]">
         </property>
     </entity>
