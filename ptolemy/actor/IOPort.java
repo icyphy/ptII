@@ -1389,12 +1389,16 @@ public class IOPort extends ComponentPort {
         }
     }
 
-    /** Get the IOPortEventListeners.
-     *  @return the IOPortEventListeners.
+    /** Get the listeners for IOPortEvents.
+     * @return The a copy of the list of listeners for IOPortEvents,
+     * if any. Otherwise an empty list.
      */
     public List<IOPortEventListener> getIOPortEventListeners() {
-        // This method is used by kepler/provenance/src/org/kepler/provenance/RecordPlayer.java
-        return _portEventListeners;
+        List<IOPortEventListener> listeners = new LinkedList<IOPortEventListener>();
+        if (_hasPortEventListeners) {
+            listeners.addAll(_portEventListeners);
+        }
+        return listeners;
     }
     
     /**
