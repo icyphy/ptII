@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 69602 2014-07-30 14:20:15Z cxh $
 #
-# @Copyright (c) 2004-2014 The Regents of the University of California.
+# @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/security/demo/Signature
+ME =		ptolemy/actor/lib/gem5/demo/DramThermalModel
 
 # Root of the Java directory
 ROOT =		../../../../../..
@@ -41,7 +41,7 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Signature
+PTPACKAGE = 	DramThermalModel
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
@@ -51,8 +51,7 @@ OTHER_FILES_TO_BE_JARED = \
 
 EXTRA_SRCS = \
 	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED) \
-	
+	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
@@ -66,14 +65,14 @@ OPTIONAL_FILES = \
 JCLASS = $(JSRCS:%.java=%.class)
 
 # 'make fast' will create $(EXTRA_TARGETS)
-EXTRA_TARGETS = ptKeystore
+EXTRA_TARGETS =
 
 # Make clean removes $(KRUFT)
-KRUFT = ptKeystore
+KRUFT =
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass ptKeystore
+all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
 install: all $(PTCLASSJAR)
