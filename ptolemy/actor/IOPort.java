@@ -1389,6 +1389,14 @@ public class IOPort extends ComponentPort {
         }
     }
 
+    /** Get the IOPortEventListeners.
+     *  @return the IOPortEventListeners.
+     */
+    public List<IOPortEventListener> getIOPortEventListeners() {
+        // This method is used by kepler/provenance/src/org/kepler/provenance/RecordPlayer.java
+        return _portEventListeners;
+    }
+    
     /**
      * Retrieve the index of the relation at the port.
      * In case the relation is not connected with this port -1
