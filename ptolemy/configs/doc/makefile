@@ -151,22 +151,35 @@ docsPtinyKepler.htm: docsPtiny.htm
 
 # models.txt contains a list of model file names
 models.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class completeDemos.htm
-	"$(JAVA)" -Xmx1500m "-Dptolemy.ptII.dir=$(PTII)" \
+	@echo "#"
+	@echo "# Starting to build models.txt: `date`"
+	@echo "#"
+	@echo "# See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/Finalizers for why we set DISPLAY"
+	DISPLAY="" "$(JAVA)"  -Xmx1500m "-Dptolemy.ptII.dir=$(PTII)" \
 		-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(COMPLETE_CLASSPATH)" \
 		ptolemy.actor.gui.HTMLAbout 
 	# Include the models in the ExecDemos directory.
 	ls -1 $(PTII)/ptolemy/demo/ExecDemos/Demos/*.xml | sed "s@$(PTII)@\$$CLASSPATH@" >> models.txt
 	LC_ALL=C sort -f models.txt | uniq > /tmp/models.txt
 	mv /tmp/models.txt models.txt
+	@echo "#"
+	@echo "# Done builing models.txt: `date`"
+	@echo "#"
 
 demosModels.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class demos.htm models.txt
-	"$(JAVA)" "-Dptolemy.ptII.dir=$(PTII)" \
+	@echo "#"
+	@echo "# Starting to build demosModels.txt: `date`"
+	@echo "#"
+	DISPLAY= "" "$(JAVA)" "-Dptolemy.ptII.dir=$(PTII)" \
 		-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" \
 		ptolemy.actor.gui.HTMLAbout demos.htm demosModels.txt
 	# Include the models in the ExecDemos directory.
 	ls -1 $(PTII)/ptolemy/demo/ExecDemos/Demos/*.xml | sed "s@$(PTII)@\$$CLASSPATH@" >> demosModels.txt
 	LC_ALL=C sort -f demosModels.txt | uniq > /tmp/demosModels.txt
 	mv /tmp/demosModels.txt demosModels.txt
+	@echo "#"
+	@echo "# Done building demosModels.txt: `date`"
+	@echo "#"
 
 # Check for models in demos.htm that are not in completeDemos.htm
 missingDemos: demosModels.txt models.txt
