@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="EU_RENT_0501_1527" class="ptolemy.actor.TypedCompositeActor">
+<entity name="EnterpriseOntology" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1306, 776}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 873}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1086, 670]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 763]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8816326530612302">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6381524934452714">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{525.1147171040416, 239.43934952540627}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{801.0800962815405, 201.01562500000006}">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
@@ -714,7 +714,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 60.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-4, -4, 1306, 776}, maximized=true}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 873}, maximized=true}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1086, 670]">
         </property>
@@ -921,7 +921,7 @@
             </property>
             <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[1408.9592911557795, 1244.6053728140705]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 125.0]">
             </property>
         </property>
         <port name="in" class="ptolemy.actor.TypedIOPort">
@@ -957,7 +957,7 @@
             </property>
         </port>
         <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Put your JavaScript program here.&#10;// Add ports and parameters.&#10;// Define JavaScript functions initialize(), fire(), and/or wrapup().&#10;// Refer to parameters in scope using dollar-sign{parameterName}.&#10;// In the fire() function, use get(parameterName, channel) to read inputs.&#10;// Send to output ports using send(value, portName, channel).&#10;counter = 0&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.input('new_objs');&#10;    this.output('output_main');&#10;    this.output('output_sub');&#10;    this.output('output_toC2');&#10;}&#10;exports.fire = function() {&#10;    var objs = this.get('input');&#10;    if (objs === null) return;&#10;    &#10;    var new_objs = this.get('new_objs');&#10;    &#10;    var ObjectType = Java.type('ptolemy.data.type.ObjectType');&#10;    var objectType = new ObjectType();&#10;    //alert(objs.Contracted_Rental.specializing_Paid_Rental.toString() == &quot;object(null)&quot;)&#10;    //alert(objs.Contracted_Rental.specializing_Paid_Rental == objectType)&#10;    if (objs.Completed_Registration.specializing_DevicePKRetrieved_Registration.toString() == &quot;object(null)&quot;) {// TODO&#10;    	// TODO&#10;    	new_objs.main.DevicePKRetrieved_Registration.ID = counter;&#10;    	new_objs.main.DevicePKRetrieved_Registration.specializedFrom_Completed_Registration = objs.Completed_Registration.ID;&#10;    	new_objs.main.DevicePKRetrieved_Registration.Registraction = objs.Completed_Registration.Registraction;&#10;    	this.send('output_toC2', new_objs.main);&#10;    	objs.Completed_Registration.specializing_DevicePKRetrieved_Registration = new_objs.main.DevicePKRetrieved_Registration.ID;&#10;    	this.send('output_main', objs);&#10;    	//this.send('output_main');&#10;    	//this.send('output_sub');&#10;    } else {&#10;		/*&#10;		var flag_paymentPMed= false;&#10;		for (var i = 0; i &lt; input_fromC3.length; i++){&#10;			if (objs.Contracted_Rental.specializing_Paid_Rental.toString() === input_fromC3[i].Objs.Paid_Rental.ID.toString()){&#10;				&#10;				if (input_fromC3[i].Intention.toString() === &quot;pm&quot;){&#10;					flag_paymentPMed = true;	&#10;				}&#10;			}&#10;		}&#10;    	&#10;    	if (flag_paymentPMed){&#10;    		this.send('output_main', objs);&#10;    		//this.send('output_sub');&#10;    		//this.send('output_toC1');&#10;    		//this.send('output_toC2');&#10;    	} else {&#10;    		//this.send('output_main');&#10;    		//this.send('output_sub');&#10;    		this.send('output_toC1', objs);&#10;    		//this.send('output_toC2');&#10;    	}&#10;    	*/&#10;		/*&#10;    	if (input_fromC3 === null) {&#10;    		print(typeof input_fromC3);&#10;    	} else {&#10;    		&#10;    		var array = input_fromC3.getValue();&#10;			print(array);&#10;    	}&#10;    	*/&#10;&#10;    	&#10;    }&#10;    &#10;    counter = counter + 1;&#10;	//this.send('output_main', objs);&#10;	//this.send('output_sub', objs);&#10;}">
+            <property name="script" class="ptolemy.actor.parameters.PortParameter" value="&#10;counter = 0&#10;exports.setup = function() {&#10;    this.input('input');&#10;    this.input('new_objs');&#10;    this.output('output_main');&#10;    this.output('output_sub');&#10;    this.output('output_toC2');&#10;}&#10;exports.fire = function() {&#10;    var objs = this.get('input');&#10;    if (objs === null) return;&#10;    &#10;    var new_objs = this.get('new_objs');&#10;    &#10;    var ObjectType = Java.type('ptolemy.data.type.ObjectType');&#10;    var objectType = new ObjectType();&#10;    //alert(objs.Contracted_Rental.specializing_Paid_Rental.toString() == &quot;object(null)&quot;)&#10;    //alert(objs.Contracted_Rental.specializing_Paid_Rental == objectType)&#10;    if (objs.Completed_Registration.specializing_DevicePKRetrieved_Registration.toString() == &quot;object(null)&quot; &amp;&amp; new_objs !== null) {// TODO&#10;    	// TODO&#10;    	new_objs.main.DevicePKRetrieved_Registration.ID = counter;&#10;    	if (objs.Completed_Registration !== null) {&#10;    	    new_objs.main.DevicePKRetrieved_Registration.specializedFrom_Completed_Registration = objs.Completed_Registration.ID;&#10;    	}&#10;    	new_objs.main.DevicePKRetrieved_Registration.Registraction = objs.Completed_Registration.Registraction;&#10;    	this.send('output_toC2', new_objs.main);&#10;    	objs.Completed_Registration.specializing_DevicePKRetrieved_Registration = new_objs.main.DevicePKRetrieved_Registration.ID;&#10;    	this.send('output_main', objs);&#10;    	//this.send('output_main');&#10;    	//this.send('output_sub');&#10;    } else {&#10;		/*&#10;		var flag_paymentPMed= false;&#10;		for (var i = 0; i &lt; input_fromC3.length; i++){&#10;			if (objs.Contracted_Rental.specializing_Paid_Rental.toString() === input_fromC3[i].Objs.Paid_Rental.ID.toString()){&#10;				&#10;				if (input_fromC3[i].Intention.toString() === &quot;pm&quot;){&#10;					flag_paymentPMed = true;	&#10;				}&#10;			}&#10;		}&#10;    	&#10;    	if (flag_paymentPMed){&#10;    		this.send('output_main', objs);&#10;    		//this.send('output_sub');&#10;    		//this.send('output_toC1');&#10;    		//this.send('output_toC2');&#10;    	} else {&#10;    		//this.send('output_main');&#10;    		//this.send('output_sub');&#10;    		this.send('output_toC1', objs);&#10;    		//this.send('output_toC2');&#10;    	}&#10;    	*/&#10;		/*&#10;    	if (input_fromC3 === null) {&#10;    		print(typeof input_fromC3);&#10;    	} else {&#10;    		&#10;    		var array = input_fromC3.getValue();&#10;			print(array);&#10;    	}&#10;    	*/&#10;&#10;    	&#10;    }&#10;    &#10;    counter = counter + 1;&#10;	//this.send('output_main', objs);&#10;	//this.send('output_sub', objs);&#10;}">
                 <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                     <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                     </property>
@@ -1009,7 +1009,7 @@
                 <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
                 </property>
             </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 430.0]">
+            <property name="_location" class="ptolemy.kernel.util.Location" value="[460.0, 425.0]">
             </property>
             <port name="input" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
