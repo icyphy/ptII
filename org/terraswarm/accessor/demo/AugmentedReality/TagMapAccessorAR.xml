@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={242, 423, 1436, 639}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 133, 1436, 639}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1202, 529]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6851742780660489">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.35080923036981726">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{555.7050781249999, 368.9221355259017}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{555.7050781250002, 368.9221355259016}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -45,6 +45,12 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: As this display shows, the&#10;form data received via post is empty.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 490.0]">
+        </property>
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Created a variant of the augmented reality demo. In the original, TagToAccessor knows upon initialization &#10;the mapping between april tag index and accessor. In the interest of making the demo more realistic,&#10;TagMapAccessorAR uses an accessor to get the mapping. For now there is just a dummy TagMap accessor, but in&#10;the future this could be replaced with a real accessor for a swarmbox which could return the mapping &#10;particular to the room where the swarmlet is run.&#10;&#10;Changes to the original demo are minor, but now the TagToAccessor must first wait for the IdToResource&#10;to be obtained from DummyTagMapAccessor before it can start sending accessors to the MutableAccessor.&#10;As a result, the new version fails to display data on the first actionable index obtained from IndexGenerator. It&#10;might be possible to 'fix' this problem by having the IndexGenerator wait another tick before sending&#10;an index, but once the dummy accessor is replaced by a real one we'd be in the same situation.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 535.0]">
         </property>
     </property>
     <entity name="ObjectRecognizer" class="org.terraswarm.accessor.JSAccessor">
