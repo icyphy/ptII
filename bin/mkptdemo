@@ -68,7 +68,7 @@ if [ ! -f $demoDirectory/makefile ]; then
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id: makefile 60082 2010-12-26 19:07:30Z cxh $
+# @Version: \$Id: makefile 60082 2010-12-26 19:07:30Z cxh \$
 #
 # @Copyright (c) $year The Regents of the University of California.
 # All rights reserved.
@@ -112,17 +112,18 @@ PTCLASSJAR = 	\$(PTPACKAGE).jar
 
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
+OTHER_FILES_TO_BE_JARED = \\
 	$demoName.xml
 EOF
 
     # List the .xml files in the directory.
-    (cd $demoDirectory; find . -name "*.xml" | awk '{printf("\t%s\\\n", $1)}' >> makefile)
+    (cd $demoDirectory; find . -name "*.xml" | awk '{printf("\t%s \\\n", $1)}' | grep -v $demoName.xml >> makefile)
 
     # Continue creating the makefile.
     cat >> $demoDirectory/makefile <<EOF2
-EXTRA_SRCS = \
-	\$(JSRCS) \
+
+EXTRA_SRCS = \\
+	\$(JSRCS) \\
 	\$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
@@ -131,7 +132,7 @@ MISC_FILES = \$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = \
+OPTIONAL_FILES = \\
 	doc
 
 JCLASS = \$(JSRCS:%.java=%.class)
