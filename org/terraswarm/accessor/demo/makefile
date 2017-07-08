@@ -33,16 +33,24 @@
 ROOT = ../../../..
 
 DIRS = AprilTags AprilTagImageAnnotate \
-        Audio Browser Camera CameraWebSocket Foscam HappySadStock \
+        Audio \
+	AugmentedReality \
+	Browser Camera CameraWebSocket \
+	FaceDetector \
+	Foscam HappySadStock \
 	Heartbeat HueToggle \
 	IMUSensor ImageAnnotate ImageFilters Kubi \
 	KeyValueStoreClient \
 	MotionDetector MotionLights \
-	OccupancyLights Scarab SecureSocket StockTick \
+	NaturalLanguage OccupancyCount \
+	OccupancyLights REST \
+	Scarab SecureSocket \
+	SpeechSynthesis \
+	StockTick \
 	SwarmAcousticService TCPSocket \
 	UDPSocket VertxBus \
 	WatchHandRaisingLight \
-	Weather WebSocketChat WebSocketClient \
+	Weather WebServer WebSocketChat WebSocketClient \
 	WebSocketGraph WebSocketImage WebSocketLog \
 	XBeeHelloWorld
 
@@ -67,9 +75,11 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 PTCLASSALLJARS = \
 	AprilTags/AprilTags.jar \
 	Audio/Audio.jar \
+	AugmentedReality/AugmentedReality.jar \
 	Browser/Browser.jar \
 	Camera/Camera.jar \
 	CameraWebSocket/CameraWebSocket.jar \
+	FaceDetector/FaceDetector.jar \
 	Foscam/Foscam.jar \
 	HappySadStock/HappySadStock.jar \
 	Heartbeat/Heartbeat.jar \
@@ -80,6 +90,10 @@ PTCLASSALLJARS = \
 	KeyValueStoreClient/KeyValueStoreClient.jar \
 	Kubi/Kubi.jar \
 	MotionDetector/MotionDetector.jar \
+	NaturalLanguage/NaturalLanguage.jar \
+	OccupancyCount/OccupancyCount.jar \
+	REST/REST.jar \
+	SpeechSynthesis/SpeechSynthesis.jar \
 	StockTick/StockTick.jar \
 	SwarmAcousticService/SwarmAcousticService.jar \
 	TCPSocket/TCPSocket.jar \
@@ -87,6 +101,7 @@ PTCLASSALLJARS = \
 	VertxBus/VertxBus.jar \
 	WatchHandRaisingLight/WatchHandRaisingLight.jar \
 	Weather/Weather.jar \
+	WebServer/WebServer.jar \
 	WebSocketChat/WebSocketChat.jar \
 	WebSocketClient/WebSocketClient.jar \
 	WebSocketGraph/WebSocketGraph.jar \
