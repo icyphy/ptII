@@ -5,6 +5,8 @@ $CLASSPATH/org/hlacerti/demo/2Billes2Fed/2Billes2Fed.xml
 $CLASSPATH/org/hlacerti/demo/Billard/Billard.xml
 $CLASSPATH/org/hlacerti/demo/BillardHit/BillardHit.xml
 $CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14HLAr74766.xml
+$CLASSPATH/org/hlacerti/demo/MicrostepReset/DistributedReceiver.xml
+$CLASSPATH/org/hlacerti/demo/MicrostepReset/DistributedSender.xml
 $CLASSPATH/org/hlacerti/demo/MicrostepReset/MicrostepReset.xml
 $CLASSPATH/org/hlacerti/demo/MultiDataTypes/MultiDataTypes.xml
 $CLASSPATH/org/hlacerti/demo/SimpleProducerConsumerMulti/SimpleProducerConsumerMulti.xml
