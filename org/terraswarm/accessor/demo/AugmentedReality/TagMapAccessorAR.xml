@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={19, 133, 1436, 639}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={4, 133, 1436, 639}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1202, 529]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.35080923036981726">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.6169516540726326">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{555.7050781250002, 368.9221355259016}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{963.0400390625, 546.6164264038905}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
