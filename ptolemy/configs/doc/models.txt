@@ -5,6 +5,7 @@ $CLASSPATH/org/hlacerti/demo/2Billes2Fed/2Billes2Fed.xml
 $CLASSPATH/org/hlacerti/demo/Billard/Billard.xml
 $CLASSPATH/org/hlacerti/demo/BillardHit/BillardHit.xml
 $CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14HLAr74766.xml
+$CLASSPATH/org/hlacerti/demo/MicrostepReset/MicrostepReset.xml
 $CLASSPATH/org/hlacerti/demo/MultiDataTypes/MultiDataTypes.xml
 $CLASSPATH/org/hlacerti/demo/SimpleProducerConsumerMulti/SimpleProducerConsumerMulti.xml
 $CLASSPATH/org/hlacerti/demo/SimpleProducerMultipleConsumerTAR/SimpleProducerMultipleConsumerTAR.xml
@@ -54,6 +55,9 @@ $CLASSPATH/org/terraswarm/accessor/demo/AprilTags/AprilTags.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Audio/Audio.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Audio/AudioClipPlayer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Audio/AudioRecorder.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedReality.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityBasic.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/TagMapAccessorAR.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/Browser.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/Camera.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/CaptureOpenLoop.xml
@@ -98,6 +102,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/OccupancyLights/OccupancyLights.xml
 $CLASSPATH/org/terraswarm/accessor/demo/REST/REST.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Scarab/Scarab.xml
 $CLASSPATH/org/terraswarm/accessor/demo/SecureSocket/SecureSocket.xml
+$CLASSPATH/org/terraswarm/accessor/demo/SpeechSynthesis/SpeechSynthesis.xml
 $CLASSPATH/org/terraswarm/accessor/demo/StockTick/StockTick.xml
 $CLASSPATH/org/terraswarm/accessor/demo/SwarmAcousticService/SwarmAcousticService.xml
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocket.xml
@@ -166,6 +171,7 @@ $CLASSPATH/ptolemy/actor/lib/fmi/demo/FMUTwoBallCollision/FMUTwoBallCollision.xm
 $CLASSPATH/ptolemy/actor/lib/fmi/jni/demo/FourInFourOutsDymola/FourInFourOutsDymola.xml
 $CLASSPATH/ptolemy/actor/lib/fmi/jni/demo/FourInFourOutsDymola/FourInFourOutsDymolaJNI.xml
 $CLASSPATH/ptolemy/actor/lib/fmi/jni/demo/FourInFourOutsDymola/FourInFourOutsDymolaWindows.xml
+$CLASSPATH/ptolemy/actor/lib/gem5/demo/DramThermalModel/DramThermalModel.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/ApplyFFT/ApplyFFT.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/Case/Case.xml
 $CLASSPATH/ptolemy/actor/lib/hoc/demo/DFTSubSet/DFTSubSet.xml
