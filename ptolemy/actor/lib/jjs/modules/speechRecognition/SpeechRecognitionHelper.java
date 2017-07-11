@@ -28,13 +28,18 @@
 
 package ptolemy.actor.lib.jjs.modules.speechRecognition;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-import edu.cmu.sphinx.api.Configuration;
-import edu.cmu.sphinx.api.LiveSpeechRecognizer;
+import java.lang.reflect.InvocationTargetException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLClassLoader;
+
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
 import ptolemy.actor.lib.jjs.HelperBase;
+import ptolemy.kernel.util.IllegalActionException;
 
 ///////////////////////////////////////////////////////////////////
 //// SpeechRecognitionHelper
@@ -46,6 +51,8 @@ import ptolemy.actor.lib.jjs.HelperBase;
 
    This helper only handles live speech at the moment.  Sphinx also supports reading speech from 
    a file.  This could be added in the future.
+   
+   TODO:  Add notes on how to downlaod the libraries.
    
    @author Elizabeth Osyk
    @version $Id: SpeechRecognitionHelper.java 75909 2017-04-11 03:01:21Z beth@berkeley.edu $
@@ -60,50 +67,117 @@ public class SpeechRecognitionHelper extends HelperBase {
 	 * @param actor  The PtolemyII actor associated with this helper.
 	 * @param helping  The Javascript object this helper is helping.
 	 */
-	public SpeechRecognitionHelper(Object actor, ScriptObjectMirror helping) {
+	public SpeechRecognitionHelper(Object actor, ScriptObjectMirror helping) throws IllegalActionException {
 		super(actor, helping);
 		 _worker = null;
-	     Configuration configuration = new Configuration();
-	     configuration.setAcousticModelPath(_acousticModel);
-	     configuration.setDictionaryPath(_dictionaryPath);
-	     configuration.setLanguageModelPath(_languageModel);
-	     
-	     configuration.setUseGrammar(false);
-	     
-	     // Disable Sphinx logging to console.
-	     // See:  https://stackoverflow.com/questions/35560969/disable-console-mess-in-cmusphinx4
+		 
 	     Logger cmRootLogger = Logger.getLogger("default.config");
 	     cmRootLogger.setLevel(java.util.logging.Level.OFF);
 	     String conFile = System.getProperty("java.util.logging.config.file");
 	     if (conFile == null) {
 	           System.setProperty("java.util.logging.config.file", "ignoreAllSphinx4LoggingOutput");
 	     }
-	     
+		 
+		 // Load speech recognizer by reflection since .jar files are not included with Ptolemy due to size.
+ 			
 	     try {
-	    	 _recognizer = new LiveSpeechRecognizer(configuration);
-	     } catch(IOException e) {
-	    	 _currentObj.callMember("emit", "onerror", "SpeechRecognitionHelper failed to instantiate: " + e.getMessage());
+			File jarFile = new File("vendors/misc/sphinx/sphinx4-core-5prealpha.jar");
+			URL urls[] = { new URL("jar:file:" + jarFile.getCanonicalPath() + "!/") };
+			
+			URLClassLoader loader = URLClassLoader.newInstance(urls);
+			_configurationClass = loader.loadClass("edu.cmu.sphinx.api.Configuration");
+			_recognizerClass = loader.loadClass("edu.cmu.sphinx.api.LiveSpeechRecognizer");
+			
+			try {
+		        _configuration = _configurationClass.getConstructor().newInstance();
+		        
+		        Class<?>[] booleanType = {boolean.class};
+		        Class<?>[] stringType = {String.class};
+		        Class<?>[] configurationType = {_configuration.getClass()};
+		        
+		        _configuration.getClass().getMethod("setAcousticModelPath", stringType).invoke(_configuration, _acousticModel);
+		        _configuration.getClass().getMethod("setDictionaryPath", stringType).invoke(_configuration, _dictionaryPath);
+		        _configuration.getClass().getMethod("setLanguageModelPath", stringType).invoke(_configuration, _languageModel);
+		        _configuration.getClass().getMethod("setUseGrammar", booleanType).invoke(_configuration, false);
+		        
+		        _recognizer = _recognizerClass.getConstructor(configurationType).newInstance(_configuration);
+
+	       } catch(InvocationTargetException e) {
+		        _currentObj.callMember("emit", "onerror", "Failed to instantiate speech recognizer: " + e.getMessage());
+		        
+	       } catch(IllegalAccessException e2) {
+		        _currentObj.callMember("emit", "onerror", "Failed to instantiate speech recognizer: " + e2.getMessage());
+	       } catch(NoSuchMethodException e3) {
+		        _currentObj.callMember("emit", "onerror", "Failed to instantiate speech recognizer: " + e3.getMessage());
+	       } catch(InstantiationException e4) {
+	    	   _currentObj.callMember("emit", "onerror", "Failed to instantiate speech recognizer: " + e4.getMessage());
+	       }
+			
+	     } catch(MalformedURLException e) {
+	    	 _currentObj.callMember("emit", "onerror", "Failed to load speech recognition .jar file.  This file must be downloaded separately. " + e.getMessage());
+	     } catch(IOException e2) {
+	    	 _currentObj.callMember("emit", "onerror", "Failed to load speech recognition .jar file.  This file must be downloaded separately. " + e2.getMessage());
+	     } catch(ClassNotFoundException e3) {
+	    	 _currentObj.callMember("emit", "onerror", "Failed to load speech recognition classes.  The .jar file must be downloaded separately. " + e3.getMessage());
 	     }
 	}
 	
 	/** Start speech recognition.  The recognizer runs in a separate thread, since it runs continuously.
 	 */
+	
 	public void start() {
+		Class<?>[] booleanType = {boolean.class};
+
+		if (_recognizer == null) {
+			_currentObj.callMember("emit", "onerror", "Cannot start speech recognizer.  Speech recognizer failed to initialize.");
+			return;
+		}
+		
 		if (_worker == null) {
-			_recognizer.startRecognition(true);
+			try {
+				_recognizer.getClass().getMethod("startRecognition", booleanType).invoke(_recognizer, true);
+			} catch(InvocationTargetException e) {
+				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to start: " + e.getMessage());
+			} catch(NoSuchMethodException e2) {
+				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to start: " + e2.getMessage());
+			} catch(IllegalAccessException e3) {
+				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to start: " + e3.getMessage());
+			}
 			
 	        // Start a thread to transcribe speech until stopped.
 	        _worker = new Thread() {
 	            public void run() {
 	            	while (true) {
 		            	if (Thread.interrupted()) {
-		            		_recognizer.stopRecognition();
+		        			try {
+		        				_recognizer.getClass().getMethod("stopRecognition", booleanType).invoke(_recognizer, true);
+		        			} catch(InvocationTargetException e) {
+		        				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to stop: " + e.getMessage());
+		        			} catch(NoSuchMethodException e2) {
+		        				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to stop: " + e2.getMessage());
+		        			} catch(IllegalAccessException e3) {
+		        				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to stop: " + e3.getMessage());
+		        			}
 		            		_worker = null;
 		            		break;
 		            	} 
 		            	
-			            String utterance = _recognizer.getResult().getHypothesis();
-			            _currentObj.callMember("emit", "result", utterance);
+		            	String utterance;
+		            	
+		    			try {
+		    				_speechResult = _recognizer.getClass().getMethod("getResult").invoke(_recognizer);
+		    				
+			    			if (_speechResult != null) {
+			    				utterance = (String) _speechResult.getClass().getMethod("getHypothesis").invoke(_speechResult);
+			    				_currentObj.callMember("emit", "result", utterance);
+			    			}
+		    			} catch(InvocationTargetException e) {
+		    				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to start: " + e.getMessage());
+		    			} catch(NoSuchMethodException e2) {
+		    				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to start: " + e2.getMessage());
+		    			} catch(IllegalAccessException e3) {
+		    				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to start: " + e3.getMessage());
+		    			}
 	            	}
 	            	return;
 	            }
@@ -115,6 +189,7 @@ public class SpeechRecognitionHelper extends HelperBase {
 	
 	/** Stop speech recognition.  
 	 */
+	
 	public void stop() {
 		if (_worker != null) {
 			_worker.interrupt();
@@ -127,14 +202,26 @@ public class SpeechRecognitionHelper extends HelperBase {
 	/** The acoustic model for the speech recognizer.  Here, US English.  */
 	private String _acousticModel = "resource:/edu/cmu/sphinx/models/en-us/en-us";
 	
+	/** The instance of edu.cmu.sphinx.api.Configuration. */
+	private Object _configuration;
+	
+	/** The class of edu.cmu.sphinx.api.Configuration. */
+	private Class<?> _configurationClass;
+	
 	/** The dictionary for the speech recognizer.  Here, US English. */
 	private String _dictionaryPath = "resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict";
 	
 	/** The language model for the speech recognizer.  Here, US English.  */
 	private String _languageModel = "resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin";
 	
-	/** The speech recognizing engine. */
-	private LiveSpeechRecognizer _recognizer;
+	/** The instance of edu.cmu.sphinx.api.LiveSpeechRecognizer. */
+	private Object _recognizer;
+	
+	/** The class of edu.cmu.sphinx.api.LiveSpeechRecognizer. */
+	private Class<?> _recognizerClass;
+	
+	/** The instance of edu.cmu.sphinx.api.SpeechResult. */
+	private Object _speechResult;
 	
 	/** A separate thread to run the speech recognizer in.  */
 	private Thread _worker;
