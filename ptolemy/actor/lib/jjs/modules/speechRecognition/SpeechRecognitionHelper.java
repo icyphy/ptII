@@ -52,7 +52,9 @@ import ptolemy.kernel.util.IllegalActionException;
    This helper only handles live speech at the moment.  Sphinx also supports reading speech from 
    a file.  This could be added in the future.
    
-   TODO:  Add notes on how to downlaod the libraries.
+   Sphinx4 requires some large .jar files which must be downlaoded separately.  Please see 
+   ptolemy/vendors/misc/sphinx/README.txt
+   for instructions.
    
    @author Elizabeth Osyk
    @version $Id: SpeechRecognitionHelper.java 75909 2017-04-11 03:01:21Z beth@berkeley.edu $
