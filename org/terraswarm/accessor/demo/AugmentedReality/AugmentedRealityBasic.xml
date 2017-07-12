@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 256, 1436, 639}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 41, 2560, 1399}, maximized=true}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1202, 529]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[2239, 1210]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0705848094782007">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.0014029574342715">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{555.705078125, 368.9221355259019}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{555.8593749999999, 426.49282890309547}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -37,14 +37,6 @@
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model looks for AR tags in an image, then using the ID of the AR tag, looks up an&#10;accessor, reifies it, and then overlays the sensor data provided by the accessor on the image.&#10;If the accessor provides a schema, then it will also construct a form for data entry to be sent&#10;back to the accessor.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 410.0]">
-        </property>
-    </property>
-    <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.0,0.2,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="FIXME: As this display shows, the&#10;form data received via post is empty.">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[575.0, 490.0]">
         </property>
     </property>
     <entity name="ObjectRecognizer" class="org.terraswarm.accessor.JSAccessor">
@@ -381,7 +373,7 @@
         </port>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// First attempt based on: https://stackoverflow.com/questions/12905849/generating-html-forms-from-json-or-xml-feed-using-jquery&#10;// A proper Form generator will require a DOM parser to insert things into an existing HTML source. This is just a one-off accessor.&#10;&#10;exports.setup = function() {&#10;	this.input('image');&#10;	this.input('spec', {'type':'JSON'});&#10;	this.output('html', {'type':'string'});&#10;	this.output('resources');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	&#10;	var htmlSent = false;&#10;	var spec = null;&#10;	&#10;	this.addInputHandler('spec', function() {&#10;		var newSpec = JSON.stringify(thiz.get('spec'));&#10;		if (newSpec != spec) {&#10;			// Force a new web page if a new form has to be generated.&#10;			htmlSent = false;&#10;			spec = newSpec;&#10;		}&#10;	});&#10;	this.addInputHandler('image', function() {&#10;		var image = this.get('image');&#10;		this.send('resources', {&#10;			'image.jpg': {&#10;				'data': image,&#10;				'contentType': 'image/jpeg'&#10;			}&#10;		});&#10;		var html = '&lt;h1&gt;Augmented Reality Demo&lt;/h1&gt;\n';&#10;		&#10;		if (spec) {&#10;		html += '\&#10;		&lt;script type=&quot;text/javascript&quot;&gt; \n\&#10;		var BrutusinForms = brutusin[&quot;json-forms&quot;]; \n \&#10;		var bf = null; \n \&#10;		function submit() { \n \&#10;	      var form = document.getElementById(&quot;container&quot;).getElementsByTagName(&quot;form&quot;)[0]; \n \&#10;	      if (!bf.validate()) { \n \&#10;	        alert(&quot;Invalid form data.&quot;); \n \&#10;	      } else { \n \&#10;	        form.submit();\n \&#10;	      } \n \&#10;	    } \n \&#10;		BrutusinForms.postRender = function() {\n \&#10;	      var form = document.getElementById(&quot;container&quot;).getElementsByTagName(&quot;form&quot;)[0]; \n \&#10;	      form.setAttribute(&quot;method&quot;, &quot;POST&quot;); \n \&#10;	      form.setAttribute(&quot;action&quot;, &quot;&quot;)\n \&#10;	      console.log(&quot;Post render&quot;)\n \&#10;	    }\n\&#10;		bf = BrutusinForms.create( \n';&#10;		html += spec;&#10;		html += '); \n\&#10;	    var container = document.getElementById(&quot;container&quot;); \n\&#10;	    bf.render(container); \n\&#10;	  &lt;/script&gt; \n';&#10;		}&#10;		// For the image, we use a timed update to avoid the web page&#10;		// flashing on reloading the whole thing.  The ?count=number&#10;		// appended to the image file name forces the browser to reload&#10;		// the image, but the server ignores this additional information&#10;		// and just serves the latest version of the image.&#10;		html += '&lt;img src=&quot;image.jpg&quot; id=&quot;image&quot; width=&quot;600&quot;/&gt;\n \&#10;      &lt;script&gt;var count = 0;\n \&#10;      setInterval(function() {\n \&#10;         var e = document.getElementById(&quot;image&quot;);\n \&#10;         e.src = &quot;image.jpg?count=&quot; + (count++);\n \&#10;      }, 1000);\n \&#10;      &lt;/script&gt;\n';&#10;      if (spec) {&#10;      	html += '\&#10;      &lt;div id=&quot;container&quot;&gt;&lt;/div&gt; \n\&#10;	  &lt;button class=&quot;btn btn-primary&quot; onclick=&quot;submit()&quot;&gt;Submit&lt;/button&gt;\n';&#10;		}&#10;		if (!htmlSent) {&#10;			thiz.send('html', html);&#10;			htmlSent = true;&#10;		}&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// First attempt based on: https://stackoverflow.com/questions/12905849/generating-html-forms-from-json-or-xml-feed-using-jquery&#10;// A proper Form generator will require a DOM parser to insert things into an existing HTML source. This is just a one-off accessor.&#10;&#10;exports.setup = function() {&#10;	this.input('image');&#10;	this.input('spec', {'type':'JSON'});&#10;	this.output('html', {'type':'string'});&#10;	this.output('resources');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	&#10;	var htmlSent = false;&#10;	var spec = null;&#10;	&#10;	this.addInputHandler('spec', function() {&#10;		var newSpec = JSON.stringify(thiz.get('spec'));&#10;		if (newSpec != spec) {&#10;			// Force a new web page if a new form has to be generated.&#10;			htmlSent = false;&#10;			spec = newSpec;&#10;		}&#10;	});&#10;	this.addInputHandler('image', function() {&#10;		var image = this.get('image');&#10;		this.send('resources', {&#10;			'image.jpg': {&#10;				'data': image,&#10;				'contentType': 'image/jpeg'&#10;			}&#10;		});&#10;		var html = '&lt;h1&gt;Augmented Reality Demo&lt;/h1&gt;\n';&#10;		&#10;		if (spec) {&#10;		html += '\&#10;		&lt;script type=&quot;text/javascript&quot;&gt; \n\&#10;		var BrutusinForms = brutusin[&quot;json-forms&quot;]; \n \&#10;		var bf = null; \n \&#10;		function submit() { \n \&#10;	      bf.validate(); \n \&#10;	      alert(JSON.stringify(bf.getData())); \n \&#10;	      $.post( &quot;/&quot;, bf.getData()); \n \&#10;	    } \n \&#10;		bf = BrutusinForms.create( \n';&#10;		html += spec;&#10;		html += '); \n\&#10;	    var container = document.getElementById(&quot;container&quot;); \n\&#10;	    bf.render(container); \n\&#10;	  &lt;/script&gt; \n';&#10;		}&#10;		// For the image, we use a timed update to avoid the web page&#10;		// flashing on reloading the whole thing.  The ?count=number&#10;		// appended to the image file name forces the browser to reload&#10;		// the image, but the server ignores this additional information&#10;		// and just serves the latest version of the image.&#10;		html += '&lt;img src=&quot;image.jpg&quot; id=&quot;image&quot; width=&quot;600&quot;/&gt;\n \&#10;      &lt;script&gt;var count = 0;\n \&#10;      setInterval(function() {\n \&#10;         var e = document.getElementById(&quot;image&quot;);\n \&#10;         e.src = &quot;image.jpg?count=&quot; + (count++);\n \&#10;      }, 1000);\n \&#10;      &lt;/script&gt;\n';&#10;      if (spec) {&#10;      	html += '\&#10;      &lt;div id=&quot;container&quot;&gt;&lt;/div&gt; \n\&#10;      &lt;button class=&quot;btn btn-primary&quot; onclick=&quot;submit()&quot;&gt;Submit&lt;/button&gt;\n';&#10;		}&#10;		if (!htmlSent) {&#10;			thiz.send('html', html);&#10;			htmlSent = true;&#10;		}&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -464,7 +456,7 @@
         </port>
     </entity>
     <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={189, 649, 499, 208}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={189, 641, 499, 275}, maximized=false}">
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
