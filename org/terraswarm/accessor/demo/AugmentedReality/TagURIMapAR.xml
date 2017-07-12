@@ -462,13 +462,9 @@
         </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="location" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="TagURIBuilder" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -488,18 +484,12 @@
         </property>
         <port name="location" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="tag" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="tagURI" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="TagSelector" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -519,25 +509,19 @@
         </property>
         <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
         </property>
-        <port name="tags" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
         <port name="index" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
             <property name="defaultValue" class="ptolemy.data.expr.Parameter">
             </property>
         </port>
+        <port name="tags" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
         <port name="tag" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="translation" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="DummyTagURIMap" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -557,13 +541,9 @@
         </property>
         <port name="tagURI" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
         <port name="accessor" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
@@ -686,8 +666,8 @@
     <link port="TagURIBuilder.location" relation="relation18"/>
     <link port="TagURIBuilder.tag" relation="relation10"/>
     <link port="TagURIBuilder.tagURI" relation="relation19"/>
-    <link port="TagSelector.tags" relation="relation3"/>
     <link port="TagSelector.index" relation="relation4"/>
+    <link port="TagSelector.tags" relation="relation3"/>
     <link port="TagSelector.tag" relation="relation10"/>
     <link port="TagSelector.translation" relation="relation12"/>
     <link port="DummyTagURIMap.tagURI" relation="relation19"/>
