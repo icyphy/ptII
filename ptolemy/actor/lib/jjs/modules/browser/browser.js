@@ -27,21 +27,48 @@
 // the copyright link on the splash page or see copyright.htm.
 
 /**
- * Module supporting interaction through a browser. The Server object starts
+ * Implementation for Nashorn and CapeCode of the module supporting accessor
+ * interaction through a browser. The Server object starts
  * a server that accepts web socket connections and HTTP GET and POST requests.
  *
  * This module defines one class, Browser.  After constructing an instance of
  * Browser (using new), you can request that the browser display HTML that
  * you provide using the display() function. Whenever display() is called,
- * whatever was previously displayed is replaced in the browser.
+ * whatever was previously displayed is replaced with your content in the browser.
  * 
  * You can also specify resources that the HTML references (such as images)
  * by using the addResource() function. You should call this before providing
  * HTML that requires those resources.
+ * Note that updating a resource with the same name will not normally result
+ * in the web page being updated because browsers normally cache such resources.
+ * If HTML content refers to a resource that has already been loaded (or more
+ * precisely, that has the same name as a resource that has already been loaded),
+ * then the browser will not load the resource again, but rather will use the
+ * previous version.  You can force the browser to reload a resource by augmenting
+ * the name with parameters (which will be ignored). For example, if you have
+ * a resource named "image.jpg" that you wish to update it, then you can
+ * specify HTML like this:
+ * 
+ *     &lt;img src="image.jpg?count=n"/&gt;
+ * 
+ * where **n** is a unique integer not previously seen by the browser.
+ * This will force the browser to go back to the server to retrieve the resource.
  * 
  * You can also add listeners for data sent by the browser using POST using
  * the addListener() function. So your HTML can include forms and buttons,
  * for example, that will POST JSON data.
+ * 
+ * You can specify optional header content when you construct the Browser object.
+ * This is a good place to include scripts.  The HTML content provided to
+ * Browser.display() can also include scripts. Those scripts can invoke functions
+ * defined in the header or reference variables defined in the header.
+ * 
+ * Scripts in the header can invoke a require(**module**) function to use any
+ * module supported by the browser host.  The 'util.js' module is automatically
+ * included, so there is no need to explicitly require it.  For example, to use
+ * the web-socket-client module, your script could include:
+ * 
+ *   var ws = require('web-socket-client.js');
  * 
  * The way this module works is that it starts a web server that accepts
  * websocket connections and HTTP GET and POST requests, and then it invokes
@@ -103,13 +130,18 @@ var WebSocketServerHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.W
  *  
  *  @param options The port and hostInterface options.
  *  @param header HTML to include in the page header.
+ *  @param content HTML content to include in the page.
  */
-exports.Browser = function (options, header) {
+exports.Browser = function (options, header, content) {
     this.server = null;
     this.listeners = {};
     this.header = '';
     if (header) {
         this.header = header;
+    }
+    this.content = '';
+    if (content) {
+        this.content = content;
     }
     this.open = false;
     
@@ -136,6 +168,13 @@ exports.Browser = function (options, header) {
     this.server.startServer();
     
     this.browserLauncher = Java.type('ptolemy.actor.gui.BrowserLauncher');
+    
+    // If there is content to display already, then open the page.
+    // Otherwise, wait until there is content.
+    if (content) {
+        createTemplatePage.call(this);
+        this.open = true;
+    }
 };
 util.inherits(exports.Browser, EventEmitter);
 
@@ -179,33 +218,7 @@ exports.Browser.prototype.post = function (path, data) {
  */
 exports.Browser.prototype.display = function (html) {
     if (!this.open) {
-        // Create the template page.
-        // This uses jquery because of its html() function, which unlike
-        // just setting innerHTML, evaluates any scripts that might be contained.
-        var script = '<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>\n\
-            <script>\n\
-            if ("WebSocket" in window) {\n\
-                var socket = new WebSocket("ws://localhost:'
-            + this.port
-            + '");\n\
-                socket.onmessage = function(event) {\n\
-                    var fr = new FileReader();\n\
-                    fr.onloadend = function() {\n\
-                        var result = fr.result;\n\
-                        $("#contents").html(result);\n\
-                    };\n\
-                    fr.readAsText(event.data);\n\
-                };\n\
-            } else {\n\
-                document.getElementById("result").innerHTML = "Your browser does not support websockets.";\n\
-            }\n\
-            </script>\n';
-        var template = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Browser Swarmlet Interface</title>'
-                + script
-                + this.header
-                + '</head><body><div id="contents"></div></body></html>'
-        this.server.setResponse(template);
-        this.browserLauncher.openURL('http://localhost:' + this.port);
+        createTemplatePage.call(this);
         this.open = true;
     }
     // If there is a websocket connection, send the HTML over the
@@ -258,6 +271,7 @@ exports.Browser.prototype._socketCreated = function (serverWebSocket, helper) {
  */
 exports.Browser.prototype._notifyIncoming = function (message) {
     try {
+        console.log('FIXME:' + message);
         message = JSON.parse(message);
     } catch (error) {
         this.emit('error', error);
@@ -266,3 +280,49 @@ exports.Browser.prototype._notifyIncoming = function (message) {
     // Assume the helper has already provided the correct type.
     this.emit("message", message);
 };
+
+/** Create the template page, which pulls in jquery, defines the
+ *  require() function, and includes the util module. It uses the
+ *  browsers WebSocket to open a socket to the server to listen
+ *  for updates to the content. And it constructs the default page
+ *  using the specified header and content.
+ *  Finally, it launches the browser.
+ */
+function createTemplatePage() {
+    // Create the template page.
+    // This uses jquery because of its html() function, which unlike
+    // just setting innerHTML, evaluates any scripts that might be contained.
+    // NOTE: Using jquery installed in the browser host. Could use a more modern version, e.g.
+    // https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js
+    // But should use a local copy.
+    // This assumes the browser host is installed here.
+    var script = '<script src="/accessors/hosts/browser/modules/jquery.js"></script>\n\
+        <script src="/accessors/hosts/browser/modules/require.js"></script>\n\
+        <script>\n\
+        var util = require("util.js");\n\
+        if ("WebSocket" in window) {\n\
+            var socket = new WebSocket("ws://localhost:'
+        + this.port
+        + '");\n\
+            // Listen for new HTML content\n\
+            socket.onmessage = function(event) {\n\
+                var fr = new FileReader();\n\
+                fr.onloadend = function() {\n\
+                    var result = fr.result;\n\
+                    $("#contents").html(result);\n\
+                };\n\
+                fr.readAsText(event.data);\n\
+            };\n\
+        } else {\n\
+            document.getElementById("result").innerHTML = "Your browser does not support websockets.";\n\
+        }\n\
+        </script>\n';
+    var template = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Browser Swarmlet Interface</title>'
+            + script
+            + this.header
+            + '</head><body><div id="contents">'
+            + this.content
+            + '</div></body></html>'
+    this.server.setResponse(template);
+    this.browserLauncher.openURL('http://localhost:' + this.port);
+}

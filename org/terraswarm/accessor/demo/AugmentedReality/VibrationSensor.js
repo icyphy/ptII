@@ -72,7 +72,8 @@ exports.initialize = function() {
 		thiz.send('data', {
 		    'name': "Vibration sensor",
             'units': "m/s^2",
-            'vibration': vibration
+            'vibration': vibration,
+            'foo' : vibration * 2
 		});
 		vibration += step;
 	}, 1000);
