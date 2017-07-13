@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 41, 2560, 1399}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[2239, 1210]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="2.0014029574342715">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0770794856911685">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{555.8593749999999, 426.49282890309547}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{557.205078125, 365.1394524717809}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -194,7 +194,7 @@
     <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="MechanicalRoom.jpg">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[152.0, 352.625]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{150.0, 350.0}">
         </property>
     </entity>
     <entity name="GraphicOverlay" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -226,39 +226,6 @@
         </port>
         <port name="json" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-        </port>
-    </entity>
-    <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Test accessor that spontaneously produces outputs once per time interval.&#10;//&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Test accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor test/TestSpontaneous&#10; *  @parameter interval The interval between outputs in milliseconds.&#10; *  @output output Output for the counting sequence, of type number.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearInterval, exports, require, setInterval */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.parameter('interval', {&#10;        'type': 'number',&#10;        'value': 1000&#10;    });&#10;    this.output('output', {&#10;        'type': 'number'&#10;    });&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;var count = 0;&#10;&#10;exports.initialize = function () {&#10;    count = 0;&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;    handle = setInterval(function () {&#10;        thiz.send('output', count);&#10;        count += 1;&#10;    }, this.getParameter('interval'));&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (handle) {&#10;        clearInterval(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestSpontaneous.js">
-        </property>
-        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
-            </property>
-            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
-            </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
-            </property>
-            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="Output for the counting sequence, of type number.">
-            </property>
-            <property name="interval (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The interval between outputs in milliseconds.">
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[22.0, 352.625]">
-        </property>
-        <port name="output" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
         </port>
     </entity>
     <entity name="TagToAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -306,7 +273,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 270.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 295.0]">
         </property>
         <property name="accessor" class="ptolemy.actor.parameters.PortParameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -437,8 +404,6 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[1067.5, 295.0]">
         </property>
-        <property name="port" class="ptolemy.data.expr.Parameter" value="8080">
-        </property>
         <property name="header" class="ptolemy.data.expr.Parameter" value="&lt;title&gt;AugmentedReality Demo&lt;/title&gt;&#10;&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/brutusin.json-forms/1.3.2/css/brutusin-json-forms.min.css&quot;/&gt;&#10;&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css&quot;/&gt;&#10;&lt;script src=&quot;https://code.jquery.com/jquery-1.12.2.min.js&quot;&gt;&lt;/script&gt;&#10;&lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;&#10;&lt;script src=&quot;https://cdn.jsdelivr.net/brutusin.json-forms/1.3.2/js/brutusin-json-forms.min.js&quot;&gt;&lt;/script&gt;&#10;&lt;script src=&quot;https://cdn.jsdelivr.net/brutusin.json-forms/1.3.2/js/brutusin-json-forms-bootstrap.min.js&quot;&gt;&lt;/script&gt;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
@@ -465,21 +430,44 @@
             </property>
         </port>
     </entity>
-    <entity name="Display" class="ptolemy.actor.lib.gui.Display">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={189, 641, 499, 275}, maximized=false}">
+    <entity name="Clock" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Accessor that spontaneously produces outputs once per time interval.&#10;//&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor test/Clock&#10; *  @parameter interval The interval between outputs in milliseconds.&#10; *  @output output Output for the counting sequence, of type number.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearInterval, exports, require, setInterval */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.parameter('interval', {&#10;        'type': 'number',&#10;        'value': 1000&#10;    });&#10;    this.output('output', {&#10;        'type': 'number'&#10;    });&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;var count = 0;&#10;&#10;exports.initialize = function () {&#10;    count = 0;&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;&#10;    // Send an output and then call setInterval&#10;    thiz.send('output', count);&#10;    count += 1;&#10;    &#10;    handle = setInterval(function () {&#10;        thiz.send('output', count);&#10;        count += 1;&#10;    }, this.getParameter('interval'));&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (handle) {&#10;        clearInterval(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/Clock.js">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[540.0, 515.0]">
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="Output for the counting sequence, of type number.">
+            </property>
+            <property name="interval (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The interval between outputs in milliseconds.">
+            </property>
         </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{25.0, 350.0}">
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
     </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[217.0, 352.625]">
+        <vertex name="vertex1" value="[220.0, 350.0]">
         </vertex>
     </relation>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -488,7 +476,7 @@
         </vertex>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[747.0, 352.625]">
+        <vertex name="vertex1" value="{745.0, 350.0}">
         </vertex>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
@@ -517,6 +505,8 @@
         <vertex name="vertex1" value="{585.0, 145.0}">
         </vertex>
     </relation>
+    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ObjectRecognizer.input" relation="relation"/>
     <link port="ObjectRecognizer.tags" relation="relation3"/>
     <link port="ImageAnnotate.graphic" relation="relation6"/>
@@ -524,13 +514,12 @@
     <link port="ImageAnnotate.translate" relation="relation7"/>
     <link port="ImageAnnotate.output" relation="relation13"/>
     <link port="ImageReader.output" relation="relation"/>
-    <link port="ImageReader.trigger" relation="relation10"/>
+    <link port="ImageReader.trigger" relation="relation16"/>
     <link port="GraphicOverlay.svg" relation="relation6"/>
     <link port="GraphicOverlay.latestTranslation" relation="relation7"/>
     <link port="GraphicOverlay.reset" relation="relation17"/>
     <link port="GraphicOverlay.translation" relation="relation12"/>
     <link port="GraphicOverlay.json" relation="relation2"/>
-    <link port="TestSpontaneous.output" relation="relation10"/>
     <link port="TagToAccessor.index" relation="relation4"/>
     <link port="TagToAccessor.tags" relation="relation3"/>
     <link port="TagToAccessor.translation" relation="relation12"/>
@@ -549,6 +538,6 @@
     <link port="Browser.html" relation="relation9"/>
     <link port="Browser.resources" relation="relation15"/>
     <link port="Browser.post" relation="relation11"/>
-    <link port="Display.input" relation="relation11"/>
+    <link port="Clock.output" relation="relation16"/>
     <link relation1="relation" relation2="relation8"/>
 </entity>
