@@ -218,8 +218,13 @@ exports.Browser.prototype.post = function (path, data) {
  */
 exports.Browser.prototype.display = function (html) {
     if (!this.open) {
+        // Make sure the initial HTML is put in right from the start in case
+        // the header or content includes onload callbacks.
+        this.content = html;
         createTemplatePage.call(this);
         this.open = true;
+        // No need to send the HTML over the websocket.
+        return;
     }
     // If there is a websocket connection, send the HTML over the
     // websocket. Otherwise, save the HTML to send it when the socket is
@@ -271,7 +276,7 @@ exports.Browser.prototype._socketCreated = function (serverWebSocket, helper) {
  */
 exports.Browser.prototype._notifyIncoming = function (message) {
     try {
-        console.log('FIXME:' + message);
+        console.log("FIXME:" + message);
         message = JSON.parse(message);
     } catch (error) {
         this.emit('error', error);
