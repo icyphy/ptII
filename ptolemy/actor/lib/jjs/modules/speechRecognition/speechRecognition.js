@@ -47,7 +47,8 @@ var EventEmitter = require('events').EventEmitter;
  */
 exports.SpeechRecognition = function(options) {
 	
-    this.recognition = new SpeechRecognitionHelper(actor, this); 
+    this.recognition = new SpeechRecognitionHelper(actor, this, options); 
+    
         
 	// TODO:  Implement options.  Right now this only works in continuous mode
 	// for English.
