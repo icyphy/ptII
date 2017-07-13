@@ -5,7 +5,7 @@
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
-        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="25">
+        <property name="stopTime" class="ptolemy.data.expr.Parameter" value="35">
         </property>
         <property name="stopWhenQueueIsEmpty" class="ptolemy.data.expr.Parameter" value="false">
         </property>
@@ -14,24 +14,24 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{70.0, 35.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={310, 73, 934, 632}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={388, 89, 934, 632}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0000000000000002">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 261.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.00000000000017, 261.00000000000006}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Transcribe speech.  Stop after 20 seconds.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Transcribe speech.  Stop after 30 seconds.&#10;&#10;This demo illustrates the use of a custom dictionary and language model.&#10;&#10;New dictionaries and language models can be generate from a file of sentences &#10;using the Sphinx lmtool:  http://www.speech.cs.cmu.edu/tools/lmtool-new.html&#10;Download the generated .dic and .lm files.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 25.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses the Sphinx4 speech recognition library,&#10;which must be installed separately because of its size.&#10;&#10;To install Sphinx4:&#10;    1. Download https://sourceforge.net/projects/cmusphinx/files/sphinx4/5prealpha/&#10;    2. unzip in $PTII/vendors/misc so that $PTII/vendors/misc/sphinx4-5prealpha-src is created&#10;    3. Install gradle.  Under Mac, use HomeBrew and run &quot;brew install gradle&quot;&#10;    4. Build with gradle compileJava&#10;    5. Rerun (cd $PTII; ./configure)])">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model uses the Sphinx4 speech recognition library,&#10;which must be installed separately because of its size.&#10;&#10;Download these .jar files and place in ptolemy/vendors/misc/sphinx:&#10;sphinx4-core-5prealpha.jar: https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-core&amp;v=5prealpha&amp;e=jar&#10;sphinx4-data-5prealpha.jar: https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&amp;g=net.sf.phat&amp;a=sphinx4-data&amp;v=5prealpha&amp;e=jar&#10;then run &#10;cd $PTII&#10;./configure&#10;&#10;Or, to install Sphinx4 from source:&#10;    1. Download https://sourceforge.net/projects/cmusphinx/files/sphinx4/5prealpha/&#10;    2. unzip in $PTII/vendors/misc so that $PTII/vendors/misc/sphinx4-5prealpha-src is created&#10;    3. Install gradle.  Under Mac, use HomeBrew and run &quot;brew install gradle&quot;&#10;    4. Build with gradle compileJava&#10;    5. Rerun (cd $PTII; ./configure)">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 305.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 355.0]">
         </property>
     </property>
     <entity name="TestSpontaneousOnce" class="org.terraswarm.accessor.JSAccessor">
@@ -63,7 +63,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 115.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 195.0]">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -100,9 +100,9 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{80.0, 215.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 295.0]">
         </property>
-        <property name="delay" class="ptolemy.data.expr.Parameter" value="20000">
+        <property name="delay" class="ptolemy.data.expr.Parameter" value="30000">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -111,7 +111,7 @@
         </port>
     </entity>
     <entity name="SpeechRecognition" class="org.terraswarm.accessor.JSAccessor">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Speech recognition accessor.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Speech recognition accessor.  This accessor opens an audio channel, listens&#10; * for speech, then returns text.&#10; *&#10; *  @accessor services/SpeechRecognition&#10; *  @input start Start listening for speech.  &#10; *  @input stop Stop listening for speech.&#10; *  @output text The text of any detected speech.&#10; *  @author Elizabeth Osyk&#10; *  @version $$Id: SpeechRecognition.js 1679 2017-05-13 15:33:16Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var speechRecognition = require('@accessors-modules/speech-recognition');&#10;&#10;/** Create a SpeechRecognition accessor.&#10; */&#10;exports.setup = function () {&#10;    this.parameter('continuous', {&#10;                'type' : 'boolean', &#10;                'value' : false&#10;            });&#10;        &#10;    this.input('start', {&#10;                'type': 'boolean'&#10;                    });&#10;        &#10;    this.input('stop', {&#10;                'type': 'boolean'&#10;                    });&#10;                &#10;    this.output('text', {&#10;                'type': 'string'&#10;                    });&#10;};&#10;&#10;/** Register input handlers for start and stop events and set up event handler&#10; * for recognition results.&#10; */&#10;exports.initialize = function () {&#10;    var self = this;&#10;        &#10;    var options = {};&#10;    options.continuous = this.getParameter('continuous');&#10;    this.recognition = new speechRecognition.SpeechRecognition(options);&#10;        &#10;    this.recognition.on('result', function(result) {&#10;                self.send('text', result);&#10;            });&#10;        &#10;    this.addInputHandler('start', function() {&#10;                // Recheck continuous mode parameter in case it has changed.&#10;                options.continuous = self.getParameter('continuous');&#10;                self.recognition.setOptions(options);&#10;                &#10;                if (self.get('start')) {&#10;                    self.recognition.start();&#10;                }&#10;            });&#10;        &#10;    this.addInputHandler('stop', function() {&#10;                if (self.get('stop')) {&#10;                    self.recognition.stop();&#10;                }&#10;            });&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Speech recognition accessor.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Speech recognition accessor.  This accessor opens an audio channel, listens&#10; * for speech, then returns text.&#10; *&#10; *  @accessor services/SpeechRecognition&#10; *  @input start Start listening for speech.  &#10; *  @input stop Stop listening for speech.&#10; *  @output text The text of any detected speech.&#10; *  @author Elizabeth Osyk&#10; *  @version $$Id: SpeechRecognition.js 1679 2017-05-13 15:33:16Z cxh $$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var speechRecognition = require('@accessors-modules/speech-recognition');&#10;&#10;/** Create a SpeechRecognition accessor.&#10; */&#10;exports.setup = function () {&#10;    this.parameter('continuous', {&#10;                'type' : 'boolean', &#10;                'value' : true&#10;    				});&#10;    &#10;    this.parameter('dictionaryPath', {&#10;		'type' : 'string',&#10;		'value' : ''&#10;			});&#10;    &#10;    this.parameter('languageModelPath', {&#10;    			'type' : 'string',&#10;    			'value' : ''&#10;    				});&#10;        &#10;    this.input('start', {&#10;                'type': 'boolean'&#10;                    });&#10;        &#10;    this.input('stop', {&#10;                'type': 'boolean'&#10;                    });&#10;                &#10;    this.output('text', {&#10;                'type': 'string'&#10;                    });&#10;};&#10;&#10;/** Register input handlers for start and stop events and set up event handler&#10; * for recognition results.&#10; */&#10;exports.initialize = function () {&#10;    var self = this;&#10;        &#10;    var options = {};&#10;    options.continuous = this.getParameter('continuous');&#10;    options.dictionaryPath = this.getParameter('dictionaryPath');&#10;    options.languageModelPath = this.getParameter('languageModelPath');&#10;    &#10;    this.recognition = new speechRecognition.SpeechRecognition(options);&#10;        &#10;    this.recognition.on('result', function(result) {&#10;                self.send('text', result);&#10;            });&#10;        &#10;    this.addInputHandler('start', function() {&#10;                // Recheck continuous mode parameter in case it has changed.&#10;                options.continuous = self.getParameter('continuous');&#10;                self.recognition.setOptions(options);&#10;                &#10;                if (self.get('start')) {&#10;                    self.recognition.start();&#10;                }&#10;            });&#10;        &#10;    this.addInputHandler('stop', function() {&#10;                if (self.get('stop')) {&#10;                    self.recognition.stop();&#10;                }&#10;            });&#10;};&#10;&#10;/** Stop the recognizer.  The helper class takes care of multiple stops.&#10; */&#10;exports.wrapup = function() {&#10;	console.log('calling wrapup');&#10;	if (this.recognition !== null &amp;&amp; typeof this.recognition !== &quot;undefined&quot;) {&#10;		this.recognition.stop();&#10;	}&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -139,7 +139,17 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{290.0, 165.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 245.0]">
+        </property>
+        <property name="continuous" class="ptolemy.data.expr.Parameter" value="true">
+        </property>
+        <property name="dictionaryPath" class="ptolemy.data.expr.Parameter" value="$PTII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/weather.dic">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="languageModelPath" class="ptolemy.data.expr.Parameter" value="$PTII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/weather.lm">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
         </property>
         <port name="start" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -174,7 +184,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[420.0, 165.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[405.0, 245.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
