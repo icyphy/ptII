@@ -431,8 +431,6 @@
         </port>
         <port name="update" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
         </port>
     </entity>
     <entity name="Clock" class="org.terraswarm.accessor.JSAccessor">
