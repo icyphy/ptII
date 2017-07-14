@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={2, 23, 1436, 729}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-27, 391, 1436, 729}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1202, 619]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.916162544061901">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.732930035249521">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{647.5395836830139, 459.54624336237873}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{647.5395836830137, 459.5462433623788}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -48,7 +48,7 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A variant of the augmented reality demo. In the original, TagToAccessor knows upon initialization &#10;the mapping between april tag index and accessor. In the interest of making the demo more realistic,&#10;TagMapAccessorAR uses an accessor to get the mapping. For now there is just a dummy TagMap accessor, but in&#10;the future this could be replaced with a real accessor for a swarmbox which could return the mapping &#10;particular to the room where the swarmlet is run.&#10;&#10;Changes to the original demo are minor, but now the TagToAccessor must first wait for the IdToResource&#10;to be obtained from DummyTagMapAccessor before it can start sending accessors to the MutableAccessor.&#10;As a result, the new version fails to display data on the first actionable index obtained from IndexGenerator. It&#10;might be possible to 'fix' this problem by having the IndexGenerator wait another tick before sending&#10;an index, but once the dummy accessor is replaced by a real one we'd be in the same situation.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="A variant of the augmented reality demo. All changes from the original are inside the TagToAccessorComposite.&#10;&#10;In the original, TagToAccessor knows upon initialization &#10;the mapping between april tag index and accessor. In the interest of making the demo more realistic,&#10;TagMapAccessorAR uses an accessor to get the mapping. For now there is just a dummy TagMap accessor, but in&#10;the future this could be replaced with a real accessor for a swarmbox which could return the mapping &#10;particular to the room where the swarmlet is run.&#10;&#10;Changes to the original demo are minor, but now the TagToAccessor must first wait for the IdToResource&#10;to be obtained from DummyTagMapAccessor before it can start sending accessors to the MutableAccessor.&#10;As a result, the new version fails to display data on the first actionable index obtained from IndexGenerator. It&#10;might be possible to 'fix' this problem by having the IndexGenerator wait another tick before sending&#10;an index, but once the dummy accessor is replaced by a real one we'd be in the same situation.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 445.0]">
         </property>
@@ -90,7 +90,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[400.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{375.0, 225.0}">
         </property>
         <port name="options" class="ptolemy.actor.parameters.ParameterPort">
             <property name="input"/>
@@ -148,7 +148,7 @@
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1035.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1240.0, 210.0}">
         </property>
         <property name="graphic" class="ptolemy.actor.parameters.PortParameter" value="">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -208,7 +208,7 @@
     <entity name="ImageReader" class="ptolemy.actor.lib.image.ImageReader">
         <property name="fileOrURL" class="ptolemy.data.expr.FileParameter" value="MechanicalRoom.jpg">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 225.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{215.0, 235.0}">
         </property>
     </entity>
     <entity name="GraphicOverlay" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -224,7 +224,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[865.0, 215.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1045.0, 200.0}">
         </property>
         <port name="svg" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
@@ -269,45 +269,10 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 280.0}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 290.0}">
         </property>
         <port name="output" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-        </port>
-    </entity>
-    <entity name="TagToAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var httpClient = require('@accessors-modules/http-client');&#10;&#10;var IdToResource = null;&#10;&#10;exports.setup = function() {&#10;	// Inputs&#10;	this.input('tags');&#10;	this.input('IdToResource');&#10;	this.input('index', {&#10;		'type':'int', &#10;		'value':0&#10;	});&#10;	&#10;	// Outputs&#10;	this.output('accessor', {&#10;		'type': 'string',&#10;		'value': ''&#10;	});&#10;	this.output('translation');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var previousIndex = -1;&#10;	&#10;	this.addInputHandler('IdToResource', function() {&#10;		IdToResource = thiz.get('IdToResource');&#10;	});&#10;	&#10;	this.addInputHandler('tags', function() {&#10;		var tags = thiz.get('tags');&#10;		var index = thiz.get('index');&#10;		&#10;		if (index != previousIndex) {&#10;			// Index has changed. Look up an accessor and produce it.&#10;			if (IdToResource &amp;&amp; tags &amp;&amp; tags.length &gt; index) {&#10;				var id = tags[index].id;&#10;				// FIXME: Change getResource API.&#10;				var accessor = getResource(IdToResource[id], 2000);&#10;				if (accessor) {&#10;					thiz.send('accessor', accessor);&#10;				}&#10;			}&#10;			previousIndex = index;&#10;		}&#10;		thiz.send('translation', tags[index].center);&#10;	});&#10;}&#10;&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[640.0, 225.0]">
-        </property>
-        <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
-        </property>
-        <port name="index" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="tags" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="translation" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="accessor" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
-        <port name="IdToResource" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
         </port>
     </entity>
     <entity name="MutableAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -323,7 +288,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[740.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{870.0, 255.0}">
         </property>
         <property name="accessor" class="ptolemy.actor.parameters.PortParameter" value="">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
@@ -375,7 +340,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 164.78804779052734]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{550.0, 175.0}">
         </property>
         <property name="holdCount" class="ptolemy.data.expr.Parameter" value="10">
         </property>
@@ -422,7 +387,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1245.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1545.0, 255.0}">
         </property>
         <property name="header" class="ptolemy.data.expr.Parameter" value="&lt;title&gt;AugmentedReality Demo&lt;/title&gt;&#10;&lt;link rel=&quot;stylesheet&quot; href=&quot;https://cdn.jsdelivr.net/brutusin.json-forms/1.3.2/css/brutusin-json-forms.min.css&quot;/&gt;&#10;&lt;link rel=&quot;stylesheet&quot; href=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css&quot;/&gt;&#10;&lt;script src=&quot;https://code.jquery.com/jquery-1.12.2.min.js&quot;&gt;&lt;/script&gt;&#10;&lt;script src=&quot;https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js&quot;&gt;&lt;/script&gt;&#10;&lt;script src=&quot;https://cdn.jsdelivr.net/brutusin.json-forms/1.3.2/js/brutusin-json-forms.min.js&quot;&gt;&lt;/script&gt;&#10;&lt;script src=&quot;https://cdn.jsdelivr.net/brutusin.json-forms/1.3.2/js/brutusin-json-forms-bootstrap.min.js&quot;&gt;&lt;/script&gt;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
@@ -455,30 +420,8 @@
         </property>
         <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute" value="[499, 164]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[725.0, 396.29857635498047]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1670.0, 315.0}">
         </property>
-    </entity>
-    <entity name="DummyTagMapAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="//This is a dummy accessor (it already contains all the information it&#10;//&quot;accesses&quot;) that is supposed to be a placeholder for a domain accessor&#10;//for a swarmbox maintained IdToResource mapping. The next step is to&#10;//move the data to an actual swarmbox and perhaps obtain a different&#10;//mapping if running the swarmlet in a different room &#10;&#10;var IdToResource = {&#10;	'127': 'PressureSensor.js',&#10;	'435': 'VibrationSensor.js',&#10;	'105': 'TemperatureSensor.js'	&#10;};&#10;&#10;exports.setup = function() {&#10;	//Inputs&#10;	this.input('trigger');&#10;	&#10;	//Outputs&#10;	this.output('IdToResource');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	&#10;	this.addInputHandler('trigger' , function () {&#10;		thiz.send( 'IdToResource', IdToResource);&#10;	});&#10;}&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[255.0, 280.0]">
-        </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-        </port>
-        <port name="IdToResource" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-        </port>
     </entity>
     <entity name="JavaScript2" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// First attempt based on: https://stackoverflow.com/questions/12905849/generating-html-forms-from-json-or-xml-feed-using-jquery&#10;// A proper Form generator will require a DOM parser to insert things into an existing HTML source. This is just a one-off accessor.&#10;&#10;exports.setup = function() {&#10;	this.input('image');&#10;	this.input('spec', {'type':'JSON'});&#10;	this.output('html', {'type':'string'});&#10;	this.output('resources');&#10;}&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	&#10;	var htmlSent = false;&#10;	var spec = null;&#10;	&#10;	this.addInputHandler('spec', function() {&#10;		var newSpec = JSON.stringify(thiz.get('spec'));&#10;		if (newSpec != spec) {&#10;			// Force a new web page if a new form has to be generated.&#10;			htmlSent = false;&#10;			spec = newSpec;&#10;		}&#10;	});&#10;	this.addInputHandler('image', function() {&#10;		var image = this.get('image');&#10;		this.send('resources', {&#10;			'image.jpg': {&#10;				'data': image,&#10;				'contentType': 'image/jpeg'&#10;			}&#10;		});&#10;		var html = '&lt;h1&gt;Augmented Reality Demo&lt;/h1&gt;\n';&#10;		&#10;		if (spec) {&#10;		html += '\&#10;		&lt;script type=&quot;text/javascript&quot;&gt; \n\&#10;		var BrutusinForms = brutusin[&quot;json-forms&quot;]; \n \&#10;		var bf = null; \n \&#10;		function submit() { \n \&#10;	      bf.validate(); \n \&#10;	      alert(JSON.stringify(bf.getData())); \n \&#10;	      $.post( &quot;/&quot;, bf.getData()); \n \&#10;	    } \n \&#10;		bf = BrutusinForms.create( \n';&#10;		html += spec;&#10;		html += '); \n\&#10;	    var container = document.getElementById(&quot;container&quot;); \n\&#10;	    bf.render(container); \n\&#10;	  &lt;/script&gt; \n';&#10;		}&#10;		// For the image, we use a timed update to avoid the web page&#10;		// flashing on reloading the whole thing.  The ?count=number&#10;		// appended to the image file name forces the browser to reload&#10;		// the image, but the server ignores this additional information&#10;		// and just serves the latest version of the image.&#10;		html += '&lt;img src=&quot;image.jpg&quot; id=&quot;image&quot; width=&quot;600&quot;/&gt;\n \&#10;      &lt;script&gt;var count = 0;\n \&#10;      setInterval(function() {\n \&#10;         var e = document.getElementById(&quot;image&quot;);\n \&#10;         e.src = &quot;image.jpg?count=&quot; + (count++);\n \&#10;      }, 1000);\n \&#10;      &lt;/script&gt;\n';&#10;      if (spec) {&#10;      	html += '\&#10;      &lt;div id=&quot;container&quot;&gt;&lt;/div&gt; \n\&#10;      &lt;button class=&quot;btn btn-primary&quot; onclick=&quot;submit()&quot;&gt;Submit&lt;/button&gt;\n';&#10;		}&#10;		if (!htmlSent) {&#10;			thiz.send('html', html);&#10;			htmlSent = true;&#10;		}&#10;	});&#10;}&#10;">
@@ -493,7 +436,7 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[1105.0, 300.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{1385.0, 255.0}">
         </property>
         <port name="image" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -510,59 +453,118 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="TagToAccessorComposite" class="ptolemy.actor.lib.jjs.JavaScript">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function(){&#10;	&#10;	//Inputs&#10;	this.input('trigger');&#10;	this.input('tags');&#10;    this.input('index', {&#10;    	'type':'int', &#10;        'value':0&#10;    });&#10;    &#10;    //Outputs&#10;    this.output('translation');&#10;    this.output('accessor', {&#10;        'type': 'string',&#10;        'value': ''&#10;    });&#10;    &#10;    //Accessors&#10;    var DummyTagMapAccessorCode = getResource('VariantAccessors/DummyTagMapAccessor.js', 2000);&#10;    var DummyTagMapAccessor = this.instantiateFromCode('DummyTagMapAccessor', DummyTagMapAccessorCode);&#10;    &#10;    var TagToAccessorVariant1Code = getResource('VariantAccessors/TagToAccessorVariant1.js', 2000);&#10;    var TagToAccessorVariant1 = this.instantiateFromCode('TagToAccessorVariant1', TagToAccessorVariant1Code);&#10;&#10;	//Connections&#10;	this.connect('trigger', DummyTagMapAccessor, 'trigger');&#10;	&#10;	this.connect('tags', TagToAccessorVariant1, 'tags');&#10;	this.connect('index', TagToAccessorVariant1, 'index');&#10;	&#10;	this.connect(DummyTagMapAccessor, 'IdToResource', TagToAccessorVariant1, 'IdToResource');&#10;	&#10;	this.connect(TagToAccessorVariant1, 'translation', 'translation');&#10;	this.connect(TagToAccessorVariant1, 'accessor', 'accessor');&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{710.0, 235.0}">
+        </property>
+        <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
+        </property>
+        <port name="index" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="trigger" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="tags" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="translation" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+        <port name="accessor" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation7" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.translate&quot;,x=1240.0,y=210.0}, tail={id=&quot;GraphicOverlay.latestTranslation&quot;,x=1045.0,y=200.0}, points={1150.0,240.0,1150.0,210.0} } }">
+        </property>
     </relation>
     <relation name="relation6" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.graphic&quot;,x=1240.0,y=210.0}, tail={id=&quot;GraphicOverlay.svg&quot;,x=1045.0,y=200.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation11" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[668.0, 356.29857635498047]">
+        <vertex name="vertex1" value="{1615.0, 315.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MutableAccessor.control&quot;,x=870.0,y=255.0}, tail={id=&quot;relation11.vertex1&quot;,x=1615.0,y=315.0}, points={795.0,265.0,795.0,315.0} },{ head={id=&quot;Display.input&quot;,x=1670.0,y=315.0}, tail={id=&quot;relation11.vertex1&quot;,x=1615.0,y=315.0}, points={} },{ head={id=&quot;Browser.post&quot;,x=1545.0,y=255.0}, tail={id=&quot;relation11.vertex1&quot;,x=1615.0,y=315.0}, points={1605.0,255.0,1605.0,315.0} } }">
+        </property>
     </relation>
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[500.0, 224.78804779052734]">
+        <vertex name="vertex1" value="{490.0, 235.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;IndexGenerator.tags&quot;,x=760.0,y=165.0}, tail={id=&quot;relation3.vertex1&quot;,x=700.0,y=225.0}, points={700.0,165.0} },{ head={id=&quot;ObjectRecognizer.tags&quot;,x=585.0,y=215.0}, tail={id=&quot;relation3.vertex1&quot;,x=700.0,y=225.0}, points={} },{ head={id=&quot;TagToAccessor.tags&quot;,x=940.0,y=225.0}, tail={id=&quot;relation3.vertex1&quot;,x=700.0,y=225.0}, points={} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;IndexGenerator.tags&quot;,x=550.0,y=175.0}, tail={id=&quot;relation3.vertex1&quot;,x=490.0,y=235.0}, points={490.0,175.0} },{ head={id=&quot;ObjectRecognizer.tags&quot;,x=375.0,y=225.0}, tail={id=&quot;relation3.vertex1&quot;,x=490.0,y=235.0}, points={} },{ head={id=&quot;TagToAccessorComposite.tags&quot;,x=710.0,y=235.0}, tail={id=&quot;relation3.vertex1&quot;,x=490.0,y=235.0}, points={} } }">
         </property>
     </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation12" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;GraphicOverlay.json&quot;,x=1045.0,y=200.0}, tail={id=&quot;MutableAccessor.data&quot;,x=870.0,y=255.0}, points={965.0,210.0,965.0,245.0} } }">
+        </property>
     </relation>
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="{135.0, 280.0}">
+        <vertex name="vertex1" value="{135.0, 290.0}">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation16.vertex1&quot;,x=135.0,y=280.0}, tail={id=&quot;DummyTagDomainAccessor.trigger&quot;,x=350.0,y=280.0}, points={} },{ head={id=&quot;TestSpontaneous.output&quot;,x=20.0,y=280.0}, tail={id=&quot;relation16.vertex1&quot;,x=135.0,y=280.0}, points={} },{ head={id=&quot;ImageReader.trigger&quot;,x=215.0,y=225.0}, tail={id=&quot;relation16.vertex1&quot;,x=135.0,y=280.0}, points={135.0,225.0} } }">
-        </property>
-    </relation>
-    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TagToAccessor.IdToResource&quot;,x=940.0,y=225.0}, tail={id=&quot;DummyTagDomainAccessor.IdToResource&quot;,x=350.0,y=280.0}, points={845.0,235.0,845.0,280.0} } }">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TestSpontaneous.output&quot;,x=20.0,y=290.0}, tail={id=&quot;relation16.vertex1&quot;,x=135.0,y=290.0}, points={} },{ head={id=&quot;ImageReader.trigger&quot;,x=215.0,y=235.0}, tail={id=&quot;relation16.vertex1&quot;,x=135.0,y=290.0}, points={135.0,235.0} },{ head={id=&quot;relation16.vertex1&quot;,x=135.0,y=290.0}, tail={id=&quot;TagToAccessorComposite.trigger&quot;,x=710.0,y=235.0}, points={635.0,290.0,635.0,225.0} } }">
         </property>
     </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[335.0, 225.0]">
+        <vertex name="vertex1" value="{300.0, 235.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;relation8.vertex1&quot;,x=480.0,y=145.0}, tail={id=&quot;relation.vertex1&quot;,x=300.0,y=235.0}, points={300.0,145.0} },{ head={id=&quot;ImageReader.output&quot;,x=215.0,y=235.0}, tail={id=&quot;relation.vertex1&quot;,x=300.0,y=235.0}, points={} },{ head={id=&quot;ObjectRecognizer.input&quot;,x=375.0,y=225.0}, tail={id=&quot;relation.vertex1&quot;,x=300.0,y=235.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation8" class="ptolemy.actor.TypedIORelation">
-        <vertex name="vertex1" value="[335.0, 305.0]">
+        <vertex name="vertex1" value="{480.0, 145.0}">
         </vertex>
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.image&quot;,x=1240.0,y=210.0}, tail={id=&quot;relation8.vertex1&quot;,x=480.0,y=145.0}, points={1155.0,230.0,1155.0,145.0} } }">
+        </property>
     </relation>
     <relation name="relation17" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;GraphicOverlay.reset&quot;,x=1045.0,y=200.0}, tail={id=&quot;IndexGenerator.reset&quot;,x=550.0,y=175.0}, points={965.0,190.0,965.0,165.0} } }">
+        </property>
     </relation>
     <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;MutableAccessor.schema&quot;,x=870.0,y=255.0}, tail={id=&quot;JavaScript2.spec&quot;,x=1385.0,y=255.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;ImageAnnotate.output&quot;,x=1240.0,y=210.0}, tail={id=&quot;JavaScript2.image&quot;,x=1385.0,y=255.0}, points={1320.0,210.0,1320.0,245.0} } }">
+        </property>
     </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Browser.resources&quot;,x=1545.0,y=255.0}, tail={id=&quot;JavaScript2.resources&quot;,x=1385.0,y=255.0}, points={} } }">
+        </property>
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;Browser.html&quot;,x=1545.0,y=255.0}, tail={id=&quot;JavaScript2.html&quot;,x=1385.0,y=255.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation9" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TagToAccessorComposite.index&quot;,x=710.0,y=235.0}, tail={id=&quot;IndexGenerator.index&quot;,x=550.0,y=175.0}, points={640.0,245.0,640.0,185.0} } }">
+        </property>
+    </relation>
+    <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TagToAccessorComposite.accessor&quot;,x=710.0,y=235.0}, tail={id=&quot;MutableAccessor.accessor&quot;,x=870.0,y=255.0}, points={} } }">
+        </property>
+    </relation>
+    <relation name="relation4" class="ptolemy.actor.TypedIORelation">
+        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;GraphicOverlay.translation&quot;,x=1045.0,y=200.0}, tail={id=&quot;TagToAccessorComposite.translation&quot;,x=710.0,y=235.0}, points={795.0,200.0,795.0,225.0} } }">
+        </property>
     </relation>
     <link port="ObjectRecognizer.input" relation="relation"/>
     <link port="ObjectRecognizer.tags" relation="relation3"/>
@@ -575,30 +577,28 @@
     <link port="GraphicOverlay.svg" relation="relation6"/>
     <link port="GraphicOverlay.latestTranslation" relation="relation7"/>
     <link port="GraphicOverlay.reset" relation="relation17"/>
-    <link port="GraphicOverlay.translation" relation="relation12"/>
+    <link port="GraphicOverlay.translation" relation="relation4"/>
     <link port="GraphicOverlay.json" relation="relation2"/>
     <link port="TestSpontaneous.output" relation="relation16"/>
-    <link port="TagToAccessor.index" relation="relation4"/>
-    <link port="TagToAccessor.tags" relation="relation3"/>
-    <link port="TagToAccessor.translation" relation="relation12"/>
-    <link port="TagToAccessor.accessor" relation="relation14"/>
-    <link port="TagToAccessor.IdToResource" relation="relation10"/>
-    <link port="MutableAccessor.accessor" relation="relation14"/>
+    <link port="MutableAccessor.accessor" relation="relation10"/>
     <link port="MutableAccessor.control" relation="relation11"/>
     <link port="MutableAccessor.data" relation="relation2"/>
     <link port="MutableAccessor.schema" relation="relation18"/>
     <link port="IndexGenerator.tags" relation="relation3"/>
     <link port="IndexGenerator.reset" relation="relation17"/>
-    <link port="IndexGenerator.index" relation="relation4"/>
+    <link port="IndexGenerator.index" relation="relation9"/>
     <link port="Browser.html" relation="relation15"/>
     <link port="Browser.resources" relation="relation13"/>
     <link port="Browser.post" relation="relation11"/>
     <link port="Display.input" relation="relation11"/>
-    <link port="DummyTagMapAccessor.trigger" relation="relation16"/>
-    <link port="DummyTagMapAccessor.IdToResource" relation="relation10"/>
     <link port="JavaScript2.image" relation="relation5"/>
     <link port="JavaScript2.spec" relation="relation18"/>
     <link port="JavaScript2.html" relation="relation15"/>
     <link port="JavaScript2.resources" relation="relation13"/>
+    <link port="TagToAccessorComposite.index" relation="relation9"/>
+    <link port="TagToAccessorComposite.trigger" relation="relation16"/>
+    <link port="TagToAccessorComposite.tags" relation="relation3"/>
+    <link port="TagToAccessorComposite.translation" relation="relation4"/>
+    <link port="TagToAccessorComposite.accessor" relation="relation10"/>
     <link relation1="relation" relation2="relation8"/>
 </entity>
