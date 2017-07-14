@@ -25,12 +25,10 @@ exports.initialize = function() {
     var thiz = this;
     
     this.addInputHandler('location' , function () {
-        console.log("getting location");
         location = thiz.get('location');
     });
     
     this.addInputHandler('tag' , function () {
-        console.log("should be handling a tag");
         if(location){
             var uri = location + "/" + thiz.get('tag');
             thiz.send( 'tagURI', uri);
