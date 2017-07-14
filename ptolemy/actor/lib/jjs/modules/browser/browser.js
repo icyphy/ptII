@@ -134,6 +134,8 @@ var WebSocketServerHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.W
  */
 exports.Browser = function (options, header, content) {
     this.server = null;
+    this.count = 0;
+    this.pendingSends = [];
     this.listeners = {};
     this.header = '';
     if (header) {
@@ -214,6 +216,7 @@ exports.Browser.prototype.post = function (path, data) {
 }
 
 /** Display the specified HTML text.
+ *  This replaces the main body of the page.
  *  @param html The HTML to display.
  */
 exports.Browser.prototype.display = function (html) {
@@ -229,10 +232,17 @@ exports.Browser.prototype.display = function (html) {
     // If there is a websocket connection, send the HTML over the
     // websocket. Otherwise, save the HTML to send it when the socket is
     // opened.
+    var toSend = html.toString();
+    // The string we send may have a prefix of the form <<id<<type<<
+    // (see update() below), so if the html starts with '<<' we escape it.
+    // Normally, it will not start that way since that is invalid HTML.
+    if (toSend.startsWith('<<')) {
+        toSend = toSend.replace('<<', 'REMOVEME<<');
+    }
     if (this.helper && this.helper.isOpen()) {
-        this.helper.send(html.toString());
+        this.helper.send(toSend);
     } else {
-        this.pendingHTML = html.toString();
+        this.pendingSends.push(toSend);
     }
 };
 
@@ -249,6 +259,33 @@ exports.Browser.prototype.stop = function () {
     }
 };
 
+/** Update a DOM object with the specified ID.
+ *  @param id The ID.
+ *  @param property The type of the update. If this is "html", then the
+ *   DOM object is updated by invoking the jQuery html() function it
+ *   with the specified content as an argument. Otherwise, the property
+ *   with name *property* is assigned the value of the content.
+ *   If *property* is 'src', then in addition, the content is augmented
+ *   with a suffix of the form '?count=*n*', where *n* is a unique number.
+ *   This is so that the browser will be forced to reload the src rather than
+ *   using any cached version it may have. This can be used, for example,
+ *   to force an update to an img tag where a new image has been provided
+ *   using addResource().
+ *  @param content The content of the update, typically HTML to insert or
+ *   a property value like src to set.
+ */
+exports.Browser.prototype.update = function(id, property, content) {
+    if (property.equals('src')) {
+        content += '?count=' + (this.count++);
+    }
+    var toSend = '<<' + id + '<<' + property + '<<' + content;
+    if (this.helper && this.helper.isOpen()) {
+        this.helper.send(toSend);
+    } else {
+        this.pendingSends.push(toSend);
+    }
+}
+
 /** Notify that a handshake was successful and a websocket has been created.
  *  This is called by the helper class is not meant to be called by the JavaScript
  *  programmer. This server supports only one socket connection at a time, so if
@@ -262,8 +299,11 @@ exports.Browser.prototype._socketCreated = function (serverWebSocket, helper) {
     }
     this.helper = WebSocketHelper.createServerSocket(actor,
             this, serverWebSocket, helper, 'application/json', 'text/html');
-    if (this.pendingHTML) {
-        this.helper.send(this.pendingHTML);
+    if (this.pendingSends.length > 0) {
+        for (var i = 0; i < this.pendingSends.length; i++) {
+            this.helper.send(this.pendingSends[i]);
+        }
+        this.pendingSends = [];
     }
 };
 
@@ -276,7 +316,6 @@ exports.Browser.prototype._socketCreated = function (serverWebSocket, helper) {
  */
 exports.Browser.prototype._notifyIncoming = function (message) {
     try {
-        console.log("FIXME:" + message);
         message = JSON.parse(message);
     } catch (error) {
         this.emit('error', error);
@@ -314,7 +353,27 @@ function createTemplatePage() {
                 var fr = new FileReader();\n\
                 fr.onloadend = function() {\n\
                     var result = fr.result;\n\
-                    $("#contents").html(result);\n\
+                    if (result.startsWith("<<")) {\n\
+                        // Received an update instead of HTML\n\
+                        var split = result.split("<<");\n\
+                        // NOTE: first item is an empty string.\n\
+                        var id = split[1];\n\
+                        var property = split[2];\n\
+                        var content = split[3];\n\
+                        if (property == "html") {\n\
+                            // Use jQuery html function here so scripts in content are evaluated.\n\
+                            $("#" + id).html(content);\n\
+                        } else {\n\
+                            var element = document.getElementById(id);\n\
+                            var dom = element[property];\n\
+                            element[property] = content;\n\
+                        }\n\
+                    } else {\n\
+                        if (result.startsWith("REMOVEME<<")) {\n\
+                            result = result.replace("REMOVEME<<", "<<");\n\
+                        }\n\
+                        $("#contents").html(result);\n\
+                    }\n\
                 };\n\
                 fr.readAsText(event.data);\n\
             };\n\
