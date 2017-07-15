@@ -364,11 +364,11 @@
         <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/Browser.js">
         </property>
         <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
-            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that connects with a browser on the local host.&#10; This is intended to be used by a swarmlet to interact with users,&#10; for example by displaying content and providing forms to be filled in.&#10; Initial content on the page may be specified using the &lt;em&gt;content&lt;/em&gt;&#10; parameter and HTML header content may be specified using &lt;em&gt;header&lt;/em&gt;.&lt;/p&gt;&#10;&lt;p&gt; Whatever text is received on the &lt;em&gt;html&lt;/em&gt; input port will replace the content&#10; of the web page. Normally, this will be HTML text without any DOCTYPE or&#10; header and without a body tag. Each time new text is received, the content&#10; of the page will be updated.&lt;/p&gt;&#10;&lt;p&gt; The page will be opened upon initialize if &lt;em&gt;content&lt;/em&gt; is not empty.&#10; Otherwise, it will be opened when the first &lt;em&gt;html&lt;/em&gt; input is received.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;resources&lt;/em&gt; input can be used to provide resources, such as images,&#10; that will be used by the HTML content provided on the &lt;em&gt;html&lt;/em&gt; input.&#10; Note that updating a resource with the same name will not normally result&#10; in the web page being updated because browsers normally cache such resources.&#10; If HTML content refers to a resource that has already been loaded (or more&#10; precisely, that has the same name as a resource that has already been loaded),&#10; then the browser will not load the resource again, but rather will use the&#10; previous version.  You can force the browser to reload a resource by augmenting&#10; the name with parameters (which will be ignored). For example, if you have&#10; a resource named &amp;quot;image.jpg&amp;quot; that you wish to update it, then you can&#10; specify HTML like this:&#10; &lt;pre&gt;&#10;    &amp;lt;img src=&amp;quot;image.jpg?count=n&amp;quot;/&amp;gt;&#10; &lt;/pre&gt;&#10; where &lt;em&gt;n&lt;/em&gt; is a unique integer not previously seen by the browser.&#10; This will force the browser to go back to the server to retrieve the resource.&lt;/p&gt;&#10;&lt;p&gt; The way this accessor works on most hosts is that it starts a web server on localhost&#10; at the specified port that serves the specified web page and then instructs&#10; the system default browser to load the default page from that server.&#10; The page served by the server includes a script that listens for websocket&#10; connections that are used to provide HTML content to display on the page.&#10; Some hosts, however, such as the cordova and browser hosts, natively use&#10; a browser as part of the host, so in these cases, no web server nor socket&#10; connection is needed and the &lt;em&gt;port&lt;/em&gt; parameter will be ignored.&lt;/p&gt;">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Accessor that uses a browser on the local host for interaction with a user.&#10; The initial content on the page may be specified using the &lt;em&gt;content&lt;/em&gt;&#10; parameter and HTML header content may be specified using &lt;em&gt;header&lt;/em&gt;.&lt;/p&gt;&#10;&lt;p&gt; Whatever text is received on the &lt;em&gt;html&lt;/em&gt; input port will replace the content&#10; of the web page. Normally, this will be HTML text without any DOCTYPE or&#10; header and without a body tag. Each time new text is received, the content&#10; of the page will be replaced.&lt;/p&gt;&#10;&lt;p&gt; The page will be opened upon initialize if &lt;em&gt;content&lt;/em&gt; is not empty.&#10; Otherwise, it will be opened when the first &lt;em&gt;html&lt;/em&gt; input is received.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;resources&lt;/em&gt; input can be used to provide resources, such as images,&#10; that will be used by the HTML content provided on the &lt;em&gt;html&lt;/em&gt; input.&#10; Note that you probably will also have to provide an &lt;em&gt;update&lt;/em&gt; input (see below)&#10; to force the browser to update the page using the specified resource.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;update&lt;/em&gt; input can be used to instruct the browser to replace content&#10; within the page, vs. the &lt;em&gt;html&lt;/em&gt; input which replaces the entire page.&#10; The value of an &lt;em&gt;update&lt;/em&gt; input is expected to be an object with three properties,&#10; &lt;em&gt;id&lt;/em&gt;, &lt;em&gt;property&lt;/em&gt;, and &lt;em&gt;content&lt;/em&gt;.&lt;/p&gt;&#10;&lt;p&gt; The &lt;em&gt;id&lt;/em&gt; property refers to a the ID of&#10; a DOM element in the content of the page, where the content has been provided&#10; either via the &lt;em&gt;content&lt;/em&gt; parameter or the &lt;em&gt;html&lt;/em&gt; input. For example, your&#10; page may include:&#10; &lt;pre&gt;&#10;    &amp;lt;div id=&amp;quot;foo&amp;quot;&amp;gt;&amp;lt;/div&amp;gt;&#10; &lt;/pre&gt;&#10; or&#10; &lt;pre&gt;&#10;    &amp;lt;img id=&amp;quot;bar&amp;quot; src=&amp;quot;image.jpg&amp;quot;/&amp;gt;&#10; &lt;/pre&gt;&lt;/p&gt;&#10;&lt;ul&gt;&#10;&lt;li&gt;&lt;p&gt;@param id The ID.&#10;The &lt;em&gt;property&lt;/em&gt; field specifies what property of the DOM element with the&#10;specified ID is to be updated. If &lt;em&gt;property&lt;/em&gt; is &amp;quot;html&amp;quot;, then the&#10;DOM object is updated by invoking the jQuery html() function&#10;with the specified &lt;em&gt;content&lt;/em&gt; as an argument. For example, if &lt;em&gt;id&lt;/em&gt; is &amp;quot;foo&amp;quot;,&#10;&lt;em&gt;property&lt;/em&gt; is &amp;quot;html&amp;quot;, and &lt;em&gt;content&lt;/em&gt; is &amp;quot;Hello World!&amp;quot;, then the above div&#10;will be populated with the text &amp;quot;Hello World!&amp;quot; on the web page.&#10;The &lt;em&gt;content&lt;/em&gt; can include any HTML markup or even scripts, which will be executed.&lt;/p&gt;&#10;&lt;p&gt;If &lt;em&gt;property&lt;/em&gt; is anything other than 'html', then the DOM element's &lt;em&gt;property&lt;/em&gt;&#10;attribute will be assigned the value of &lt;em&gt;content&lt;/em&gt;.&#10;A &lt;em&gt;property&lt;/em&gt; value of 'src', however, is treated specially.&#10;A &lt;em&gt;property&lt;/em&gt; value of 'src' can be used, for example, to replace the image in the above img tag.&#10;Just send the updated image to the &lt;em&gt;resources&lt;/em&gt; input and send this to the&#10;&lt;em&gt;update&lt;/em&gt; input:&lt;/p&gt;&#10;&lt;pre&gt;&#10;{'id':'bar', 'property':'src', 'content':'image.jpg'}&#10;&lt;/pre&gt;&#10;&#10;&lt;p&gt;Note that to get the browser to actually replace the image, we have to play some tricks.&#10;A browser normally caches an image that it has previously retrieved&#10;and it will use the cached version of the image rather than obtaining the new image&#10;from the server.  To force the browser to refresh the image, this accessor&#10;treats a &lt;em&gt;property&lt;/em&gt; value of 'src' specially.&#10;Specifically, it appends to the &lt;em&gt;content&lt;/em&gt; a suffix of the form '?count=&lt;em&gt;n&lt;/em&gt;',&#10;where &lt;em&gt;n&lt;/em&gt; is a unique number. This forces the browser to retrieve the image&#10;from the server rather than use its cached version because the URI is&#10;different from that of the cached version. The server, on the other hand, ignores&#10;the parameter 'count' that has been appended to this URI and simply returns the&#10;updated image.&lt;/p&gt;&#10;&lt;p&gt;The way this accessor works on most hosts is that it starts a web server on localhost&#10;at the specified port that serves the specified web page and then instructs&#10;the system default browser to load the default page from that server.&#10;The page served by the server includes a script that listens for websocket&#10;connections that are used to provide HTML content and udpates to display on the page.&#10;Some hosts, however, such as the cordova and browser hosts, natively use&#10;a browser as part of the host, so in these cases, no web server nor socket&#10;connection is needed and the &lt;em&gt;port&lt;/em&gt; parameter will be ignored.&lt;/p&gt;&#10;&lt;/li&gt;&#10;&lt;/ul&gt;">
             </property>
             <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee (eal@eecs.berkeley.edu)">
             </property>
-            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Browser.js 1929 2017-07-13 13:50:02Z eal $$">
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id: Browser.js 1931 2017-07-14 11:18:58Z eal $$">
             </property>
             <property name="html (port)" class="ptolemy.kernel.util.StringAttribute" value="HTML content to render in the body of the page displayed&#10;  by the browser.">
             </property>
@@ -379,6 +379,8 @@
             <property name="content (parameter)" class="ptolemy.kernel.util.StringAttribute" value="HTML content to include in the main body of the page.&#10;  If this is non-empty, then the page is opened upon initialize.&#10;  Otherwise, the page is opened when the first *html* input is received.">
             </property>
             <property name="port (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The port to use, if needed, for websocket communication between this&#10;  accessor (which updates the HTML content of the web page) and the browser.&#10;  The web page will listen on this socket for content and display whatever arrives&#10;  on that port. This is ignored on hosts that do not need to invoke an external browser.">
+            </property>
+            <property name="update (port)" class="ptolemy.kernel.util.StringAttribute" value="An object with three properties, 'id', 'property', and 'content',&#10;  that specifies an update to a DOM element on the page.">
             </property>
         </property>
         <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
@@ -469,8 +471,6 @@
         </property>
         <port name="index" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
@@ -478,8 +478,6 @@
         </port>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
@@ -487,8 +485,6 @@
         </port>
         <port name="tags" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
@@ -496,8 +492,6 @@
         </port>
         <port name="translation" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
@@ -505,8 +499,6 @@
         </port>
         <port name="accessor" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
             </property>
             <property name="_location" class="ptolemy.kernel.util.Location" value="{0.0, 0.0}">
@@ -529,13 +521,9 @@
             </property>
             <port name="trigger" class="ptolemy.actor.TypedIOPort">
                 <property name="input"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
             </port>
             <port name="IdToResource" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
             </port>
         </entity>
         <entity name="TagToAccessorVariant1" class="ptolemy.actor.lib.jjs.JavaScript">
@@ -555,30 +543,22 @@
             </property>
             <property name="index" class="ptolemy.actor.parameters.PortParameter" value="0">
             </property>
-            <port name="tags" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
-            </port>
-            <port name="IdToResource" class="ptolemy.actor.TypedIOPort">
-                <property name="input"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
-            </port>
             <port name="index" class="ptolemy.actor.parameters.ParameterPort">
                 <property name="input"/>
                 <property name="defaultValue" class="ptolemy.data.expr.Parameter">
                 </property>
             </port>
+            <port name="tags" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
+            <port name="IdToResource" class="ptolemy.actor.TypedIOPort">
+                <property name="input"/>
+            </port>
             <port name="accessor" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
             </port>
             <port name="translation" class="ptolemy.actor.TypedIOPort">
                 <property name="output"/>
-                <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-                </property>
             </port>
         </entity>
         <relation name="relation" class="ptolemy.actor.TypedIORelation">
@@ -600,9 +580,9 @@
         <link port="accessor" relation="relation5"/>
         <link port="DummyTagMapAccessor.trigger" relation="relation"/>
         <link port="DummyTagMapAccessor.IdToResource" relation="relation4"/>
+        <link port="TagToAccessorVariant1.index" relation="relation3"/>
         <link port="TagToAccessorVariant1.tags" relation="relation2"/>
         <link port="TagToAccessorVariant1.IdToResource" relation="relation4"/>
-        <link port="TagToAccessorVariant1.index" relation="relation3"/>
         <link port="TagToAccessorVariant1.accessor" relation="relation5"/>
         <link port="TagToAccessorVariant1.translation" relation="relation6"/>
     </entity>
