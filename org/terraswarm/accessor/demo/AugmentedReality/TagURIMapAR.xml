@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[80.0, 85.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 531, 1436, 639}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={7, 103, 1436, 639}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1202, 529]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9639869594884888">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{601.9790152616279, 318.3619640261628}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{601.9790152616278, 318.3619640261628}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -461,9 +461,9 @@
         </property>
     </entity>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{530.0, 155.0}">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={101, 495, 934, 632}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={101, 219, 934, 632}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 522]">
         </property>
@@ -471,13 +471,6 @@
         </property>
         <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{347.0, 426.873046875}">
         </property>
-        <port name="trigger" class="ptolemy.actor.TypedIOPort">
-            <property name="input"/>
-            <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-            <property name="_location" class="ptolemy.kernel.util.Location" value="{20.0, 200.0}">
-            </property>
-        </port>
         <port name="tags" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
             <property name="_showName" class="ptolemy.data.expr.SingletonParameter" value="true">
@@ -607,10 +600,6 @@
                 <property name="output"/>
             </port>
         </entity>
-        <relation name="relation" class="ptolemy.actor.TypedIORelation">
-        </relation>
-        <relation name="relation2" class="ptolemy.actor.TypedIORelation">
-        </relation>
         <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         </relation>
         <relation name="relation4" class="ptolemy.actor.TypedIORelation">
@@ -623,15 +612,20 @@
         </relation>
         <relation name="relation8" class="ptolemy.actor.TypedIORelation">
         </relation>
-        <link port="trigger" relation="relation"/>
-        <link port="tags" relation="relation2"/>
+        <relation name="relation" class="ptolemy.actor.TypedIORelation">
+            <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
+            </property>
+            <vertex name="vertex1" value="{155.0, 260.0}">
+            </vertex>
+        </relation>
+        <link port="tags" relation="relation"/>
         <link port="index" relation="relation3"/>
         <link port="accessor" relation="relation8"/>
         <link port="translation" relation="relation6"/>
         <link port="DummyHostLocation.trigger" relation="relation"/>
         <link port="DummyHostLocation.location" relation="relation4"/>
         <link port="TagSelector.index" relation="relation3"/>
-        <link port="TagSelector.tags" relation="relation2"/>
+        <link port="TagSelector.tags" relation="relation"/>
         <link port="TagSelector.tag" relation="relation5"/>
         <link port="TagSelector.translation" relation="relation6"/>
         <link port="TagURIBuilder.location" relation="relation4"/>
@@ -651,10 +645,8 @@
     <relation name="relation3" class="ptolemy.actor.TypedIORelation">
         <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
         </property>
-        <vertex name="vertex1" value="[360.0, 195.0]">
+        <vertex name="vertex1" value="[365.0, 195.0]">
         </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;IndexGenerator.tags&quot;,x=550.0,y=280.0}, tail={id=&quot;relation3.vertex1&quot;,x=490.0,y=280.0}, points={} },{ head={id=&quot;ObjectRecognizer.tags&quot;,x=375.0,y=270.0}, tail={id=&quot;relation3.vertex1&quot;,x=490.0,y=280.0}, points={} },{ head={id=&quot;TagToAccessorComposite.tags&quot;,x=710.0,y=240.0}, tail={id=&quot;relation3.vertex1&quot;,x=490.0,y=280.0}, points={640.0,240.0,640.0,340.0,490.0,340.0} } }">
-        </property>
     </relation>
     <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -670,14 +662,6 @@
         <vertex name="vertex1" value="[555.0, 80.0]">
         </vertex>
     </relation>
-    <relation name="relation16" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="-1">
-        </property>
-        <vertex name="vertex1" value="[130.0, 255.0]">
-        </vertex>
-        <property name="_layoutHint" class="ptolemy.vergil.actor.LayoutHint" value="{ { head={id=&quot;TestSpontaneous.output&quot;,x=20.0,y=185.0}, tail={id=&quot;relation16.vertex1&quot;,x=135.0,y=185.0}, points={} },{ head={id=&quot;ImageReader.trigger&quot;,x=215.0,y=185.0}, tail={id=&quot;relation16.vertex1&quot;,x=135.0,y=185.0}, points={} },{ head={id=&quot;.DummyHostLocation.trigger&quot;,x=345.0,y=245.0}, tail={id=&quot;relation16.vertex1&quot;,x=135.0,y=245.0}, points={} },{ head={id=&quot;TagToAccessorComposite.trigger&quot;,x=710.0,y=240.0}, tail={id=&quot;relation16.vertex1&quot;,x=135.0,y=185.0}, points={135.0,230.0} } }">
-        </property>
-    </relation>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[260.0, 270.0]">
         </vertex>
@@ -692,6 +676,8 @@
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
+    </relation>
     <link port="ObjectRecognizer.input" relation="relation"/>
     <link port="ObjectRecognizer.tags" relation="relation3"/>
     <link port="ImageAnnotate.graphic" relation="relation6"/>
@@ -699,13 +685,13 @@
     <link port="ImageAnnotate.translate" relation="relation7"/>
     <link port="ImageAnnotate.output" relation="relation13"/>
     <link port="ImageReader.output" relation="relation"/>
-    <link port="ImageReader.trigger" relation="relation16"/>
+    <link port="ImageReader.trigger" relation="relation14"/>
     <link port="GraphicOverlay.svg" relation="relation6"/>
     <link port="GraphicOverlay.latestTranslation" relation="relation7"/>
     <link port="GraphicOverlay.reset" relation="relation17"/>
     <link port="GraphicOverlay.translation" relation="relation12"/>
     <link port="GraphicOverlay.json" relation="relation2"/>
-    <link port="TestSpontaneous.output" relation="relation16"/>
+    <link port="TestSpontaneous.output" relation="relation14"/>
     <link port="MutableAccessor.accessor" relation="relation10"/>
     <link port="MutableAccessor.control" relation="relation11"/>
     <link port="MutableAccessor.data" relation="relation2"/>
@@ -721,7 +707,6 @@
     <link port="Browser.resources" relation="relation15"/>
     <link port="Browser.post" relation="relation11"/>
     <link port="Display.input" relation="relation11"/>
-    <link port="CompositeActor.trigger" relation="relation16"/>
     <link port="CompositeActor.tags" relation="relation3"/>
     <link port="CompositeActor.index" relation="relation4"/>
     <link port="CompositeActor.accessor" relation="relation10"/>
