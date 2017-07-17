@@ -168,7 +168,7 @@
  *  be stored. When calling 'reify' function on a particular accessor X, the mutableAccessor
  *  will connect to X, making it equivalent to X itself. This is enabled by the composition
  *  mechanism that is done on runtime.
- *  this.emit
+ *  
  *  The choice of the accessor to be used for reification can be forced (by giving the accessor
  *  as parameter) or by giving a sorting function. Depending on a bunch of options provided
  *  by the swarmlet designer, 'sort' function will select the best match.
@@ -301,11 +301,11 @@ var deterministicTemporalSemantics = require('./modules/deterministicTemporalSem
  *    will reference it in their root property.
  *  * **ssuper**: If this accessor extends another, this is a reference to the instance
  *    of the accessor it extends.
- *  * **mutable**: If this accessor is a mutableAccessor, this attribute will be set.
+ *  * **isMutable**: If this accessor is a mutableAccessor, this attribute will be set.
  *
  *  If the returned instance is a mutableAccessor, then it will include these additional
  *  properties:
- *  * **status**: indicates the current state among all the states of the lifecycle of a
+ *  * **state**: indicates the current state among all the states of the lifecycle of a
  *    given mutableAccessor
  *  * **reifyingAccessorsList**: An array of the reifying accessors, together with some
  *    information (such as Location...) that will be relevant for sorting. This list should
@@ -317,7 +317,7 @@ var deterministicTemporalSemantics = require('./modules/deterministicTemporalSem
  *  * **parametersMap**: An object that maps the non mapped mutableAccessor inputs to, possibly,
  *    the reifying accessor non connected inputs.
  *  Notes: (i) When a mutableAccessor is reified, the attribute containedAccessors will contain
- *  he selected accessor for reification (ii) A mutableAccessor cannot extend another accessor.
+ *  the selected accessor for reification (ii) A mutableAccessor cannot extend another accessor.
  *  FIXME: Check if a  mutableAccessor can implement another accessor.
  *
  *  The bindings parameter provides function bindings for functions that are used by
@@ -1328,6 +1328,50 @@ Accessor.prototype.getDefaultInsideBindings = function(accessorClass) {
     return insideBindings;
 }
 
+/** Return an object that contains the accessor name, type (one or a combination of 
+ *  'mutable', 'extended', 'implemented', 'toplevel' or 'composite'), the accessor's 
+ *  monitor object, and an array of the contained accessors' monitoring information,
+ *  if the current one is a composite.  *
+ *  @return an object with the monitoring information of the accessor and its contained
+ *   accessors.
+ */
+Accessor.prototype.getMonitor = function () {
+    var obj = {};
+    var type = '';
+
+    // Get the type of the accessor
+    // FIXME: Needs further refinement!!!
+    if (this.isMutable) {
+       type += 'mutable';
+    } else if (this.extendedBy) {
+        type += 'extended';
+    } else if (this.implementedBy) {
+        type += 'implemented';
+    } 
+
+    if (!this.container) {
+        type += '::topLevel';
+    } else {
+        type += '::composite';
+    }
+
+    // Fill the object to return
+    obj = {
+    	'name': this.accessorName,
+        'type': type,
+        'monitoringInformation': this.monitor,
+        'composites': []
+    };
+
+    if (this.containedAccessors && this.containedAccessors.length > 0) {        
+		for (var i = 0; i < this.containedAccessors.length; i++) {
+            obj.composites.push(this.containedAccessors[i].getMonitor());
+        }
+    }
+
+    return obj;
+}
+
 /** Default implementation of this.getParameter(), which reads the current value of the
  *  parameter provided by this.setParameter(), or the default value if none has been provided,
  *  or null if neither has been provided.
@@ -1419,6 +1463,7 @@ Accessor.prototype.instantiate = function (instanceName, accessorClass) {
     instanceName = uniqueName(instanceName, this);
     var containedInstance = instantiateAccessor(
         instanceName, accessorClass, this.getAccessorCode, insideBindings);
+    allAccessors.push(containedInstance);
     containedInstance.container = this;
     this.containedAccessors.push(containedInstance);
     return containedInstance;
@@ -1446,13 +1491,67 @@ Accessor.prototype.instantiateFromCode = function (instanceName, code) {
     instanceName = this.accessorName + '.' + instanceName;
     instanceName = uniqueName(instanceName, this);
 
-    // Last three arguments are extendedBy, implementedBy, and mutable.
+    // Last two arguments are extendedBy and implementedBy
     // None of these apply.
     var containedInstance = new Accessor(
-            instanceName, code, getAccessorCode, bindings, null, null, null);
+            instanceName, code, getAccessorCode, bindings, null, null);
     allAccessors.push(containedInstance);
     containedInstance.container = this;
     this.containedAccessors.push(containedInstance);
+    return containedInstance;
+};
+
+/** Instantiate the specified accessor only, given its class name. Unlike instantiate,
+ *  the new accessor is not added as a contained accessor and it has no container.
+ *  This will throw an exception if no getAccessorCode() function
+ *  has been specified.
+ *  @param instanceName A name to give to this instance, that will be unique. Although
+ *   the name is prepended with the instantiating accessor name, no containment 
+ *   relation is established.
+ *  @param accessorClass Fully qualified accessor class name, e.g. 'net/REST'.
+ */
+Accessor.prototype.instantiateOnly = function (instanceName, accessorClass) {
+    if (!this.getAccessorCode) {
+        throw new Error('instantiate() is not supported by this swarmlet host.');
+    }
+    // For functions that access ports, etc., we want the default implementation
+    // when instantiating the contained accessor.
+    var insideBindings = this.getDefaultInsideBindings(accessorClass);
+    instanceName = this.accessorName + '.' + instanceName;
+    instanceName = uniqueName(instanceName, this);
+    var containedInstance = instantiateAccessor(
+        instanceName, accessorClass, this.getAccessorCode, insideBindings);
+    allAccessors.push(containedInstance);
+    return containedInstance;
+};
+
+/** Instantiate the specified accessor only, given the code that implements the 
+ *  accessor. Unlike instantiateFromCode, the new accessor is not added as a 
+ *  contained accessor and it has no container.
+ *  @param instanceName A name to give to this instance, that will be unique. Although
+ *   the name is prepended with the instantiating accessor name, no containment 
+ *   relation is established.
+ *  @param code The code for the accessor.
+ */
+Accessor.prototype.instantiateOnlyFromCode = function (instanceName, code) {
+    // Only need the getAccessorCode function if the code uses inheritance, so
+    // we don't require it.
+    var getAccessorCode = null;
+    if (this.getAccessorCode) {
+        getAccessorCode = this.getAccessorCode;
+    }
+    // For functions that access ports, etc., we want the default implementation
+    // when instantiating the contained accessor.
+    var bindings = this.getDefaultInsideBindings(null);
+
+    instanceName = this.accessorName + '.' + instanceName;
+    instanceName = uniqueName(instanceName, this);
+
+    // Last two arguments are extendedBy and implementedBy.
+    // None of these apply.
+    var containedInstance = new Accessor(
+            instanceName, code, getAccessorCode, bindings);
+    allAccessors.push(containedInstance);
     return containedInstance;
 };
 
@@ -1482,12 +1581,12 @@ Accessor.prototype.module = {
 };
 
 /** Default implementation of the function to define a mutableAccessor.
- *  If this is a mutableAccessor, then add the corresponding properties.
+ *  If this is a mutableAccessor, then add attributes to the accessor.
  *  @param value The value, which should be 'true'
  */
 Accessor.prototype.mutable = function (value) {
-    if (value === 'true' || value === true) {
-        this.mutable = true;
+    if (value == 'true' || value == true) {
+        this.isMutable = true;
 
         ///////////////////////////////////////////////////////////////////
         //// Set up the mutableAccessor properties.
@@ -1504,18 +1603,22 @@ Accessor.prototype.mutable = function (value) {
         this.outputsMap = {};
         this.parametersMap = {};
 
-        this.status = 'instantiated';
+        this.state = 'instantiated';
 
         ////////////////////////////////////////////////////////////////////
         //// Support for additional monitoring information
 
-        // Monitoring reify events
-        this.monitor.reify = {
+        // Monitoring reification events
+        this.monitor.reified = {
             'count': 0,
             'firstOccurrenceDate': {},
             'latestOccurrenceDate': {}
         };
-
+        this.monitor.removedReification = {
+            'count': 0,
+            'firstOccurrenceDate': {},
+            'latestOccurrenceDate': {}
+        };
     }
 
 };
@@ -1835,7 +1938,7 @@ Accessor.prototype.reifiableBy = function (accessor, options, strict) {
     var thiz = this.root, i;
 
     // Check that this is a mutableAccessor
-    if (!thiz.mutable) {
+    if (!thiz.isMutable) {
         console.log('Only mutableAccessors can be tested for reification.');
         return false;
     }
@@ -1971,7 +2074,7 @@ Accessor.prototype.reify = function (accessor) {
     var thiz = this.root;
 
     // Check that this is a mutableAccessor
-    if (!thiz.mutable) {
+    if (!thiz.isMutable) {
         console.log('Only mutableAccessors can be reified.');
         return false;
     }
@@ -2034,9 +2137,11 @@ Accessor.prototype.reify = function (accessor) {
         thiz.connect(reifying.accessor, key, thiz.outputsMap[key]);
     });
 
-    // Update the mutableAccessor status and history
-    thiz.status = 'reified';
-    thiz.updateMonitoringInformation('reify');
+    reifying.accessor.initialize();
+
+    // Update the mutableAccessor state and history
+    thiz.state = 'reified';
+    thiz.updateMonitoringInformation('reified');
 
     return true;
 };
@@ -2055,28 +2160,35 @@ Accessor.prototype.removeReification = function () {
         return false;
     }
 
+    // Remove the containment relationship
    	var acc = thiz.containedAccessors.pop();
-    if (acc.container) acc.container = null;
-	acc.wrapup();
+    if (acc.container) {
+    	acc.container = null;
+    }
 
+	// Disconnect the mutableAccessor from the reifying one
     Object.keys(thiz.inputsMap).forEach(function (key) {
         thiz.disconnect(key, acc, thiz.inputsMap[key]);
     });
-
     Object.keys(thiz.outputsMap).forEach(function (key) {
         thiz.disconnect(acc, key, thiz.outputsMap[key]);
     });
 
+	// Wrapup the accessor to remove
+	acc.wrapup();
 
+	// Empty mapping objects 
     thiz.inputsMap = {};
     thiz.outputsMap = {};
-    if (thiz.parametersMap) thiz.parametersMap = {};
+    if (thiz.parametersMap) {
+    	thiz.parametersMap = {};
+    }
 
-    // Update the mutableAccessor status and history
-    thiz.status = 'instantiated';
+    // Update the mutableAccessor state and history
+    thiz.state = 'instantiated';
+    thiz.updateMonitoringInformation('removedReification');
 
     return true;
-
 };
 
 /** Remove the input handler with the specified handle, if it exists.
@@ -2620,35 +2732,18 @@ function convertType(value, destination, name) {
 }
 
 /** Return an object of objects. Each object (referenced by the accessor name)
- *  contains: the accessor type (mutable, top level, extended, implemented),
+ *  contains: the accessor type (mutable, top level, composite, extended, implemented),
  *  and all the monitoring information.
  *
  *  @return an object of names the top level accessors that have been created thus far.
  */
 function getMonitoringInformation() {
+    var topLevelAccessors = getTopLevelAccessors();
     var result = {};
-    for (var i = 0; i < allAccessors.length; i++) {
-        var type;
-        var name = allAccessors[i].accessorName;
-
-        // Get the type of the accessor
-        if (allAccessors[i].mutable) {
-            type = 'mutable';
-        } else if (allAccessors[i].extendedBy) {
-            type = 'extended';
-        } else if (allAccessors[i].implementedBy) {
-            type = 'implemented';
-        } else if (!allAccessors[i].container) {
-            type = 'topLevel';
-        } else {
-            type = 'composite';
-        }
-
-        result[name] = {
-            'type': type,
-            'monitoringInformation': allAccessors[i].monitor
-        };
-    }
+    for (var i = 0; i < topLevelAccessors.length; i++) {
+        result[topLevelAccessors[i].accessorName] = 
+       			topLevelAccessors[i].getMonitor();
+    };
     return result;
 }
 
@@ -2686,12 +2781,12 @@ function getTopLevelAccessors() {
  *   ignored (the instance inherits those properties from the implementer).
  */
 function instantiateAccessor(
-    accessorName, accessorClass, getAccessorCode, bindings, extendedBy, implementedBy, mutable) {
+    accessorName, accessorClass, getAccessorCode, bindings, extendedBy, implementedBy) {
     var code = getAccessorCode(accessorClass);
     // In case bindings is not defined.
     bindings = bindings || {};
     var instance = new Accessor(
-        accessorName, code, getAccessorCode, bindings, extendedBy, implementedBy, mutable);
+        accessorName, code, getAccessorCode, bindings, extendedBy, implementedBy);
     instance.accessorClass = accessorClass;
     allAccessors.push(instance);
     return instance;
