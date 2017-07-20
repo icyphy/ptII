@@ -138,6 +138,7 @@ exports.Browser = function (options, header, content) {
     this.pendingSends = [];
     this.listeners = {};
     this.header = '';
+    this.listening = false;
     if (header) {
         this.header = header;
     }
@@ -167,16 +168,19 @@ exports.Browser = function (options, header, content) {
     this.server = WebSocketServerHelper.createServer(actor,
             this, this.hostInterface, false, '', '',
             this.port, 'application/json', 'text/html');
+    var self = this;
+    this.on('listening', function() {
+        this.listening = true;
+        // If there is content to display already, then open the page.
+        // Otherwise, wait until there is content.
+        if (self.content) {
+            createTemplatePage.call(self);
+            self.open = true;
+        }        
+    });
     this.server.startServer();
     
     this.browserLauncher = Java.type('ptolemy.actor.gui.BrowserLauncher');
-    
-    // If there is content to display already, then open the page.
-    // Otherwise, wait until there is content.
-    if (content) {
-        createTemplatePage.call(this);
-        this.open = true;
-    }
 };
 util.inherits(exports.Browser, EventEmitter);
 
@@ -220,12 +224,20 @@ exports.Browser.prototype.post = function (path, data) {
  *  @param html The HTML to display.
  */
 exports.Browser.prototype.display = function (html) {
+    var self = this;
     if (!this.open) {
         // Make sure the initial HTML is put in right from the start in case
         // the header or content includes onload callbacks.
         this.content = html;
-        createTemplatePage.call(this);
-        this.open = true;
+        if (this.listening) {
+            createTemplatePage.call(this);
+            this.open = true;
+        } else {
+            this.on('listening', function() {
+                createTemplatePage.call(self);
+                self.open = true;
+            });
+        }
         // No need to send the HTML over the websocket.
         return;
     }
@@ -257,6 +269,7 @@ exports.Browser.prototype.stop = function () {
         this.server.closeServer();
         this.server = null;
     }
+    this.listening = false;
 };
 
 /** Update a DOM object with the specified ID.
@@ -362,6 +375,7 @@ function createTemplatePage() {
                         var content = split[3];\n\
                         if (property == "html") {\n\
                             // Use jQuery html function here so scripts in content are evaluated.\n\
+                            // FIXME: Doesnt work in Firefox.\n\
                             $("#" + id).html(content);\n\
                         } else {\n\
                             var element = document.getElementById(id);\n\
@@ -380,6 +394,16 @@ function createTemplatePage() {
         } else {\n\
             document.getElementById("result").innerHTML = "Your browser does not support websockets.";\n\
         }\n\
+        // To ensure that the current page is unchanged after a POST, override\n\
+        // the default submit behavior for any form.\n\
+        jQuery(document).ready(function() {\n\
+            var form = jQuery("form");\n\
+            form.submit(function() {\n\
+                var data = jQuery(this).serialize();\n\
+                jQuery.post("/", data);\n\
+                return false; // Prevent default handler from going to a new page.\n\
+            });\n\
+        });\n\
         </script>\n';
     var template = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Browser Swarmlet Interface</title>'
             + script
