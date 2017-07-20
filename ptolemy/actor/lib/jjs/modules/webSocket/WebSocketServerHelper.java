@@ -194,8 +194,10 @@ public class WebSocketServerHelper extends VertxHelperBase {
 
                 // Respond OK.
                 HttpServerResponse response = routingContext.response();
-                // Status code 204 means No Content.
-                // The server successfully processed the request and is not returning any content.
+                // Ideally, we would just respond with status code 204 meaning No Content.
+                // Pathetically, this works in Chrome and Safari, but not Firefox.
+                // Firefox thinks it's on a new page with no content, so it doesn't invoke
+                // any scripts associated with it.
                 response.setStatusCode(204);
                 response.end();
 
