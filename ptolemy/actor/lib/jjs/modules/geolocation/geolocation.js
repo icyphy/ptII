@@ -48,10 +48,8 @@ exports.getPosition = function(onSuccess, onError, options) {
 			var loc = JSON.parse(response.body).loc;
 			loc = loc.split(',');
 			location.latitude = Number(loc[0]);
-			location.latitude = Number(loc[1]);
-		   	location.altitudeAccuracy = undefined;  
-		   	location.heading = undefined;
-		   	location.speed = undefined;
+			location.longitude = Number(loc[1]);
+		   	location.accuracy = 'low';  
 		   	location.timestamp = response.headers.date;
 		   	location.error = false;
 			onSuccess.call(this, location);
