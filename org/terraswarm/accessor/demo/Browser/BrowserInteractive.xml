@@ -45,7 +45,7 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{1.0,0.2,0.2,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Open this actor to see how&#10;to construct the &quot;update&quot; input&#10;to the Browser accessor given&#10;JSON data to display.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Open this actor to see how&#10;to construct the &quot;update&quot; input&#10;to the Browser accessor given&#10;JSON data from the browser form.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 160.0]">
         </property>
@@ -85,13 +85,17 @@
             <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
             </property>
         </property>
-        <property name="header" class="ptolemy.data.expr.Parameter" value="">
+        <property name="header" class="ptolemy.data.expr.Parameter" value="&lt;style&gt;&#10;fieldset {&#10;    background-color: lightblue;&#10;    display: inline;&#10;}&#10;&lt;/style&gt;">
+            <property name="style" class="ptolemy.actor.gui.style.TextStyle">
+                <property name="height" class="ptolemy.data.expr.Parameter" value="10">
+                </property>
+                <property name="width" class="ptolemy.data.expr.Parameter" value="30">
+                </property>
+            </property>
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
-            <property name="style" class="ptolemy.actor.gui.style.LineStyle">
-            </property>
         </property>
-        <property name="content" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Swarmlet Interactivity&lt;/h1&gt;&#10;&lt;p&gt;&#10;This page shows how a swarmlet can build an interactive GUI using HTML5.&#10;&lt;/p&gt;&#10;&lt;form action=&quot;/&quot;&gt;&#10;  &lt;fieldset&gt;&#10;    &lt;legend&gt;Data to send to the swarmlet:&lt;/legend&gt;&#10;    Name: &lt;input type=&quot;text&quot; name=&quot;name&quot; placeholder=&quot;Your Name&quot;/&gt;&lt;br/&gt;&#10;    Age: &lt;input type=&quot;text&quot; name=&quot;age&quot;/&gt;&lt;br/&gt;&#10;    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;&lt;br/&gt;&#10;  &lt;/fieldset&gt;&#10;&lt;/form&gt;&#10;&lt;h2&gt;Your response:&lt;/h2&gt;&#10;&lt;p&gt;&#10;&lt;div id=&quot;response&quot;&gt;No response yet&lt;/div&gt;&#10;&lt;/p&gt;">
+        <property name="content" class="ptolemy.data.expr.Parameter" value="&lt;h1&gt;Swarmlet Interactivity&lt;/h1&gt;&#10;&lt;p&gt;&#10;This page shows how a swarmlet can build an interactive GUI using HTML5.&#10;&lt;/p&gt;&#10;&lt;form action=&quot;/&quot;&gt;&#10;  &lt;fieldset&gt;&#10;    &lt;table&gt;&#10;      &lt;tr&gt;&#10;        &lt;td&gt;Name:&lt;/td&gt;&#10;        &lt;td&gt;&lt;input type=&quot;text&quot; name=&quot;name&quot; placeholder=&quot;Your Name&quot;/&gt;&lt;/td&gt;&#10;      &lt;/tr&gt;&#10;      &lt;tr&gt;&#10;        &lt;td&gt;Age:&lt;/td&gt;&#10;        &lt;td&gt;&lt;input type=&quot;number&quot; name=&quot;age&quot; placeholder=&quot;Your Age&quot;/&gt;&lt;/td&gt;&#10;      &lt;/tr&gt;&#10;    &lt;/table&gt;&#10;    &lt;input type=&quot;submit&quot; value=&quot;Submit&quot;/&gt;&lt;br/&gt;&#10;  &lt;/fieldset&gt;&#10;&lt;/form&gt;&#10;&lt;h2&gt;Response:&lt;/h2&gt;&#10;&lt;p&gt;&#10;&lt;div id=&quot;response&quot;&gt;No response yet&lt;/div&gt;&#10;&lt;/p&gt;">
             <property name="style" class="ptolemy.actor.gui.style.TextStyle">
                 <property name="height" class="ptolemy.data.expr.Parameter" value="10">
                 </property>
@@ -123,7 +127,7 @@
         </port>
     </entity>
     <entity name="JavaScript" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Given JSON input, display it in a div with id &quot;response&quot;&#10;exports.setup = function() {&#10;	this.input('response', {'type':'JSON'});&#10;	this.output('update', {'type':'JSON'});&#10;}&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('response', function() {&#10;		var response = self.get('response');&#10;		var html = 'Received JSON: ' + util.inspect(response);&#10;		self.send('update', {&#10;			'id':'response',&#10;			'property':'html',&#10;			'content':html&#10;		});&#10;	});&#10;}&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Given JSON input, display it in a div with id &quot;response&quot;&#10;exports.setup = function() {&#10;	this.input('response', {'type':'JSON'});&#10;	this.output('update', {'type':'JSON'});&#10;}&#10;exports.initialize = function() {&#10;	var self = this;&#10;	this.addInputHandler('response', function() {&#10;		var response = self.get('response');&#10;		var name = response.name;&#10;		if (!name) {&#10;			name = &quot;Anonymous&quot;;&#10;		}&#10;		var html = 'Hello ' + name;&#10;		if (response.age) {&#10;			var age = parseInt(response.age);&#10;			if (age &gt;= 80) {&#10;				html += '. Wow, you are quite old.';&#10;			} else if (age &gt;= 50) {&#10;				html += '. You are getting old.';&#10;			} else if (age &lt;= 25) {&#10;				html += '. You are quite young.';&#10;			} else {&#10;				html += '. You are in the prime of your life!';&#10;			}&#10;		}&#10;		self.send('update', {&#10;			'id':'response',&#10;			'property':'html',&#10;			'content':html&#10;		});&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
