@@ -1,0 +1,133 @@
+Federate f2 with NER:
+This federate produces internal events. The Ptolemy time t_ptII is set to
+the timestamp of these internal events.
+
+Federate HlaManager
+preinitialize() - Launch RTIG process
+initializeTimeValues() - Effective HLA lookahead is 0.1
+INNER timeConstrainedEnabled() - timeConstrained = true
+INNER timeRegulationEnabled() - timeRegulator = true
+_initializeTimeAspects() - initialize() - Time Management policies: is Constrained = true and is Regulator = true
+INNER announceSynchronizationPoint() - inPause = true
+_doInitialSynchronization() - initialize() - Synchronisation point Simulating satisfied !
+_doInitialSynchronization() - initialize() - Waiting for simulation phase !
+INNER federationSynchronized() - inPause = false
+starting proposeTime(t(lastFoundEvent)=0) - current status - t_ptII = 0; t_hla = 0.0
+    proposeTime(0) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=0) - current status - t_ptII = 0; t_hla = 0.0
+    proposeTime(0) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=0) - current status - t_ptII = 0; t_hla = 0.0
+    proposeTime(0) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=0) - current status - t_ptII = 0; t_hla = 0.0
+    proposeTime(0) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=1) - current status - t_ptII = 0; t_hla = 0.0
+    proposeTime(t(lastFoudEvent)=(1) - calling _eventsBasedTimeAdvance(1)
+        proposeTime(t(lastFoundEvent)=1) - _eventsBasedTimeAdvance(1) - calling CERTI NER(proposedTime*hlaTimeUnitValue = 1.0)
+        proposeTime(t(lastFoundEvent)=1) - _eventsBasedTimeAdvance(1) -  waiting for CERTI TAG(1.0) by calling tick2()
+timeAdvanceGrant() - TAG(1.0(HLA Time Unit)) received
+        proposeTime(1) - _eventBasedTimeAdvance(1)  - Checking if we've received any RAV events.
+starting proposeTime(t(lastFoundEvent)=1) - current status - t_ptII = 1; t_hla = 1.0
+    proposeTime(1) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=1) - current status - t_ptII = 1; t_hla = 1.0
+    proposeTime(1) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=2) - current status - t_ptII = 1; t_hla = 1.0
+    proposeTime(t(lastFoudEvent)=(2) - calling _eventsBasedTimeAdvance(2)
+        proposeTime(t(lastFoundEvent)=2) - _eventsBasedTimeAdvance(2) - calling CERTI NER(proposedTime*hlaTimeUnitValue = 2.0)
+        proposeTime(t(lastFoundEvent)=2) - _eventsBasedTimeAdvance(2) -  waiting for CERTI TAG(2.0) by calling tick2()
+timeAdvanceGrant() - TAG(2.0(HLA Time Unit)) received
+        proposeTime(2) - _eventBasedTimeAdvance(2)  - Checking if we've received any RAV events.
+starting proposeTime(t(lastFoundEvent)=2) - current status - t_ptII = 2; t_hla = 2.0
+    proposeTime(2) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=2) - current status - t_ptII = 2; t_hla = 2.0
+    proposeTime(2) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=3) - current status - t_ptII = 2; t_hla = 2.0
+    proposeTime(t(lastFoudEvent)=(3) - calling _eventsBasedTimeAdvance(3)
+        proposeTime(t(lastFoundEvent)=3) - _eventsBasedTimeAdvance(3) - calling CERTI NER(proposedTime*hlaTimeUnitValue = 3.0)
+        proposeTime(t(lastFoundEvent)=3) - _eventsBasedTimeAdvance(3) -  waiting for CERTI TAG(3.0) by calling tick2()
+timeAdvanceGrant() - TAG(3.0(HLA Time Unit)) received
+        proposeTime(3) - _eventBasedTimeAdvance(3)  - Checking if we've received any RAV events.
+starting proposeTime(t(lastFoundEvent)=3) - current status - t_ptII = 3; t_hla = 3.0
+    proposeTime(3) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=3) - current status - t_ptII = 3; t_hla = 3.0
+    proposeTime(3) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=4) - current status - t_ptII = 3; t_hla = 3.0
+    proposeTime(t(lastFoudEvent)=(4) - calling _eventsBasedTimeAdvance(4)
+        proposeTime(t(lastFoundEvent)=4) - _eventsBasedTimeAdvance(4) - calling CERTI NER(proposedTime*hlaTimeUnitValue = 4.0)
+        proposeTime(t(lastFoundEvent)=4) - _eventsBasedTimeAdvance(4) -  waiting for CERTI TAG(4.0) by calling tick2()
+timeAdvanceGrant() - TAG(4.0(HLA Time Unit)) received
+        proposeTime(4) - _eventBasedTimeAdvance(4)  - Checking if we've received any RAV events.
+starting proposeTime(t(lastFoundEvent)=4) - current status - t_ptII = 4; t_hla = 4.0
+    proposeTime(4) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=4) - current status - t_ptII = 4; t_hla = 4.0
+    proposeTime(4) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=5) - current status - t_ptII = 4; t_hla = 4.0
+    proposeTime(t(lastFoudEvent)=(5) - calling _eventsBasedTimeAdvance(5)
+        proposeTime(t(lastFoundEvent)=5) - _eventsBasedTimeAdvance(5) - calling CERTI NER(proposedTime*hlaTimeUnitValue = 5.0)
+        proposeTime(t(lastFoundEvent)=5) - _eventsBasedTimeAdvance(5) -  waiting for CERTI TAG(5.0) by calling tick2()
+timeAdvanceGrant() - TAG(5.0(HLA Time Unit)) received
+        proposeTime(5) - _eventBasedTimeAdvance(5)  - Checking if we've received any RAV events.
+starting proposeTime(t(lastFoundEvent)=5) - current status - t_ptII = 5; t_hla = 5.0
+    proposeTime(5) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=5) - current status - t_ptII = 5; t_hla = 5.0
+    proposeTime(5) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=6) - current status - t_ptII = 5; t_hla = 5.0
+    proposeTime(t(lastFoudEvent)=(6) - calling _eventsBasedTimeAdvance(6)
+        proposeTime(t(lastFoundEvent)=6) - _eventsBasedTimeAdvance(6) - calling CERTI NER(proposedTime*hlaTimeUnitValue = 6.0)
+        proposeTime(t(lastFoundEvent)=6) - _eventsBasedTimeAdvance(6) -  waiting for CERTI TAG(6.0) by calling tick2()
+timeAdvanceGrant() - TAG(6.0(HLA Time Unit)) received
+        proposeTime(6) - _eventBasedTimeAdvance(6)  - Checking if we've received any RAV events.
+starting proposeTime(t(lastFoundEvent)=6) - current status - t_ptII = 6; t_hla = 6.0
+    proposeTime(6) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=6) - current status - t_ptII = 6; t_hla = 6.0
+    proposeTime(6) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=7) - current status - t_ptII = 6; t_hla = 6.0
+    proposeTime(t(lastFoudEvent)=(7) - calling _eventsBasedTimeAdvance(7)
+        proposeTime(t(lastFoundEvent)=7) - _eventsBasedTimeAdvance(7) - calling CERTI NER(proposedTime*hlaTimeUnitValue = 7.0)
+        proposeTime(t(lastFoundEvent)=7) - _eventsBasedTimeAdvance(7) -  waiting for CERTI TAG(7.0) by calling tick2()
+timeAdvanceGrant() - TAG(7.0(HLA Time Unit)) received
+        proposeTime(7) - _eventBasedTimeAdvance(7)  - Checking if we've received any RAV events.
+starting proposeTime(t(lastFoundEvent)=7) - current status - t_ptII = 7; t_hla = 7.0
+    proposeTime(7) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=7) - current status - t_ptII = 7; t_hla = 7.0
+    proposeTime(7) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=8) - current status - t_ptII = 7; t_hla = 7.0
+    proposeTime(t(lastFoudEvent)=(8) - calling _eventsBasedTimeAdvance(8)
+        proposeTime(t(lastFoundEvent)=8) - _eventsBasedTimeAdvance(8) - calling CERTI NER(proposedTime*hlaTimeUnitValue = 8.0)
+        proposeTime(t(lastFoundEvent)=8) - _eventsBasedTimeAdvance(8) -  waiting for CERTI TAG(8.0) by calling tick2()
+timeAdvanceGrant() - TAG(8.0(HLA Time Unit)) received
+        proposeTime(8) - _eventBasedTimeAdvance(8)  - Checking if we've received any RAV events.
+starting proposeTime(t(lastFoundEvent)=8) - current status - t_ptII = 8; t_hla = 8.0
+    proposeTime(8) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=8) - current status - t_ptII = 8; t_hla = 8.0
+    proposeTime(8) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=9) - current status - t_ptII = 8; t_hla = 8.0
+    proposeTime(t(lastFoudEvent)=(9) - calling _eventsBasedTimeAdvance(9)
+        proposeTime(t(lastFoundEvent)=9) - _eventsBasedTimeAdvance(9) - calling CERTI NER(proposedTime*hlaTimeUnitValue = 9.0)
+        proposeTime(t(lastFoundEvent)=9) - _eventsBasedTimeAdvance(9) -  waiting for CERTI TAG(9.0) by calling tick2()
+timeAdvanceGrant() - TAG(9.0(HLA Time Unit)) received
+        proposeTime(9) - _eventBasedTimeAdvance(9)  - Checking if we've received any RAV events.
+starting proposeTime(t(lastFoundEvent)=9) - current status - t_ptII = 9; t_hla = 9.0
+    proposeTime(9) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=9) - current status - t_ptII = 9; t_hla = 9.0
+    proposeTime(9) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=10) - current status - t_ptII = 9; t_hla = 9.0
+    proposeTime(t(lastFoudEvent)=(10) - calling _eventsBasedTimeAdvance(10)
+        proposeTime(t(lastFoundEvent)=10) - _eventsBasedTimeAdvance(10) - calling CERTI NER(proposedTime*hlaTimeUnitValue = 10.0)
+        proposeTime(t(lastFoundEvent)=10) - _eventsBasedTimeAdvance(10) -  waiting for CERTI TAG(10.0) by calling tick2()
+timeAdvanceGrant() - TAG(10.0(HLA Time Unit)) received
+        proposeTime(10) - _eventBasedTimeAdvance(10)  - Checking if we've received any RAV events.
+starting proposeTime(t(lastFoundEvent)=10) - current status - t_ptII = 10; t_hla = 10.0
+    proposeTime(10) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=10) - current status - t_ptII = 10; t_hla = 10.0
+    proposeTime(10) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=11) - current status - t_ptII = 10; t_hla = 10.0
+    proposeTime(11) - called but the proposedTime is bigger than the stopTime -> SKIP RTI -> returning stopTime
+Data
+ number of TARs: 0
+ number of NERs: 10
+ number of TAGs: 10
+wrapup() - ... so termination
+wrapup() - Resign Federation execution
+wrapup() - Destroy Federation execution - no fail
+wrapup() - Destroy RTIG process (if authorized)
+-----------------------

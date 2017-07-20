@@ -1,0 +1,64 @@
+Federate f1, with TAR
+
+Federate HlaManager
+preinitialize() - Launch RTIG process
+initialize() - WARNING: FederationExecutionAlreadyExists
+initializeTimeValues() - Effective HLA lookahead is 0.1
+INNER timeConstrainedEnabled() - timeConstrained = true
+INNER timeRegulationEnabled() - timeRegulator = true
+_initializeTimeAspects() - initialize() - Time Management policies: is Constrained = true and is Regulator = true
+INNER synchronizationPointRegistrationSucceeded() - synchronizationSuccess = true
+INNER announceSynchronizationPoint() - inPause = true
+_doInitialSynchronization() - initialize() - Synchronisation point Simulating satisfied !
+_doInitialSynchronization() - initialize() - Waiting for simulation phase !
+INNER federationSynchronized() - inPause = false
+starting proposeTime(0)) - current status - t_ptII = 0; t_hla = 0.0
+    proposeTime(0) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(10)) - current status - t_ptII = 0; t_hla = 0.0
+    proposeTime(10) - calling _timeSteppedBasedTimeAdvance(10)
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) - the lastFoundEvent's timestamp >= hlaNextPointInTime- calling CERTI TAR(proposedTime*hlaTimeUnitValue = 1.0)
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) -  waiting for CERTI TAG(1.0) by calling tick2()
+timeAdvanceGrant() - TAG(1.0(HLA Time Unit)) received
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10)  - Checking if we've received any RAV events.
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) - the lastFoundEvent's timestamp >= hlaNextPointInTime- calling CERTI TAR(proposedTime*hlaTimeUnitValue = 2.0)
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) -  waiting for CERTI TAG(2.0) by calling tick2()
+timeAdvanceGrant() - TAG(2.0(HLA Time Unit)) received
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10)  - Checking if we've received any RAV events.
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) - the lastFoundEvent's timestamp >= hlaNextPointInTime- calling CERTI TAR(proposedTime*hlaTimeUnitValue = 3.0)
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) -  waiting for CERTI TAG(3.0) by calling tick2()
+timeAdvanceGrant() - TAG(3.0(HLA Time Unit)) received
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10)  - Checking if we've received any RAV events.
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) - the lastFoundEvent's timestamp >= hlaNextPointInTime- calling CERTI TAR(proposedTime*hlaTimeUnitValue = 4.0)
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) -  waiting for CERTI TAG(4.0) by calling tick2()
+timeAdvanceGrant() - TAG(4.0(HLA Time Unit)) received
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10)  - Checking if we've received any RAV events.
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) - the lastFoundEvent's timestamp >= hlaNextPointInTime- calling CERTI TAR(proposedTime*hlaTimeUnitValue = 5.0)
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) -  waiting for CERTI TAG(5.0) by calling tick2()
+timeAdvanceGrant() - TAG(5.0(HLA Time Unit)) received
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10)  - Checking if we've received any RAV events.
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) - the lastFoundEvent's timestamp >= hlaNextPointInTime- calling CERTI TAR(proposedTime*hlaTimeUnitValue = 6.0)
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) -  waiting for CERTI TAG(6.0) by calling tick2()
+timeAdvanceGrant() - TAG(6.0(HLA Time Unit)) received
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10)  - Checking if we've received any RAV events.
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) - the lastFoundEvent's timestamp >= hlaNextPointInTime- calling CERTI TAR(proposedTime*hlaTimeUnitValue = 7.0)
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) -  waiting for CERTI TAG(7.0) by calling tick2()
+timeAdvanceGrant() - TAG(7.0(HLA Time Unit)) received
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10)  - Checking if we've received any RAV events.
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) - the lastFoundEvent's timestamp >= hlaNextPointInTime- calling CERTI TAR(proposedTime*hlaTimeUnitValue = 8.0)
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) -  waiting for CERTI TAG(8.0) by calling tick2()
+timeAdvanceGrant() - TAG(8.0(HLA Time Unit)) received
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10)  - Checking if we've received any RAV events.
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) - the lastFoundEvent's timestamp >= hlaNextPointInTime- calling CERTI TAR(proposedTime*hlaTimeUnitValue = 9.0)
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) -  waiting for CERTI TAG(9.0) by calling tick2()
+timeAdvanceGrant() - TAG(9.0(HLA Time Unit)) received
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10)  - Checking if we've received any RAV events.
+        proposeTime(10) - _timeSteppedBasedTimeAdvance(10) - the lastFoundEvent (timeStamp = 10) has its timeStamp < nextPointInTime - no TAR will be made and the event will be processed.
+Data
+ number of TARs: 9
+ number of NERs: 0
+ number of TAGs: 9
+wrapup() - ... so termination
+wrapup() - Resign Federation execution
+wrapup() - Destroy Federation execution - no fail
+wrapup() - Destroy RTIG process (if authorized)
+-----------------------

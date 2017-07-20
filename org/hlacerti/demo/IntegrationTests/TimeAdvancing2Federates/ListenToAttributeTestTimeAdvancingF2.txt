@@ -1,0 +1,30 @@
+Federate f2, with NER
+
+Federate HlaManager
+preinitialize() - Launch RTIG process
+initializeTimeValues() - Effective HLA lookahead is 0.1
+INNER timeConstrainedEnabled() - timeConstrained = true
+INNER timeRegulationEnabled() - timeRegulator = true
+_initializeTimeAspects() - initialize() - Time Management policies: is Constrained = true and is Regulator = true
+INNER announceSynchronizationPoint() - inPause = true
+_doInitialSynchronization() - initialize() - Synchronisation point Simulating satisfied !
+_doInitialSynchronization() - initialize() - Waiting for simulation phase !
+INNER federationSynchronized() - inPause = false
+starting proposeTime(t(lastFoundEvent)=0) - current status - t_ptII = 0; t_hla = 0.0
+    proposeTime(0) - called but the currentTime is equal to the proposedTime -> SKIP RTI -> returning currentTime
+starting proposeTime(t(lastFoundEvent)=8) - current status - t_ptII = 0; t_hla = 0.0
+    proposeTime(t(lastFoudEvent)=(8) - calling _eventsBasedTimeAdvance(8)
+        proposeTime(t(lastFoundEvent)=8) - _eventsBasedTimeAdvance(8) - calling CERTI NER(proposedTime*hlaTimeUnitValue = 8.0)
+        proposeTime(t(lastFoundEvent)=8) - _eventsBasedTimeAdvance(8) -  waiting for CERTI TAG(8.0) by calling tick2()
+timeAdvanceGrant() - TAG(8.0(HLA Time Unit)) received
+        proposeTime(8) - _eventBasedTimeAdvance(8)  - Checking if we've received any RAV events.
+Data
+ number of TARs: 0
+ number of NERs: 1
+ number of TAGs: 1
+wrapup() - ... so termination
+wrapup() - Resign Federation execution
+wrapup() - WARNING: FederatesCurrentlyJoined
+wrapup() - Destroy Federation execution - no fail
+wrapup() - Destroy RTIG process (if authorized)
+-----------------------
