@@ -1,0 +1,14 @@
+{
+    "name": "geolocation",
+    "version": "1.0.0",
+    "description": "A GeoLocation module",
+    "main": "geolocation.js",
+    "author": "Chadlia Jerad",
+    "license": "Apache-2.0",
+    "dependencies": "httpClient",
+    "interface": {
+        "functions": {
+            "getPosition": ["successCallback", "errorCallback", "options"]
+        }
+    }
+}
