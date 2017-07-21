@@ -113,7 +113,6 @@ PTCLASSJAR = 	\$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \\
-	$demoName.xml
 EOF
 
     # List the .xml files in the directory.
@@ -121,6 +120,7 @@ EOF
 
     # Continue creating the makefile.
     cat >> $demoDirectory/makefile <<EOF2
+	$demoName.xml
 
 EXTRA_SRCS = \\
 	\$(JSRCS) \\
