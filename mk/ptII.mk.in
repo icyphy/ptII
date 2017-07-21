@@ -1028,6 +1028,9 @@ PTSPHINX4_DATA_JAR = @PTSPHINX4_DATA_JAR@
 # ptolemy/actor/lib/jjs/modules/makefile if the Sphinx 4 jars are found.
 PTSPHINX4_DIR = @PTSPHINX4_DIR@
 
+# PTSPHINX4_PACKAGES is used in doc/makefile
+PTSPHINX4_PACKAGES = @PTSPHINX4_PACKAGES@
+
 # PTSTRUCTURALCODER_JAR is set if $PTII/lib/StructuralCoder.jar was found
 # and used in ptolemy/vergil/actor/g4ltl/makefile
 PTSTRUCTURALCODER_JAR = @PTSTRUCTURALCODER_JAR@

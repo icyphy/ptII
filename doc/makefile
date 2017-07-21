@@ -465,6 +465,7 @@ BCVTB_DOCS = \
 # Packages used by CapeCode
 CAPECODEPACKAGES = \
 	$(APRILPACKAGES) \
+	ptolemy.actor.lib.gem5 \
 	$(COMPACKAGES) \
 	$(COREPACKAGES) \
 	$(HYVISUALPACKAGES) \
@@ -478,6 +479,7 @@ CAPECODEPACKAGES = \
 	$(PTMACHINE_LEARNING_PACKAGES) \
 	$(PTPAHO_MQTT_PACKAGES) \
 	$(PTRXTX_PACKAGES) \
+	$(PTSPHINX4_PACKAGES) \
 	$(PTVERTX_PACKAGES) \
 	$(PTWEBCAMCAPTURE_PACKAGES) \
 	$(PTXBJLIB_PACKAGES) \
@@ -641,6 +643,7 @@ ALLPACKAGES = \
 	$(PTRXTX_PACKAGES) \
 	$(PTSERVER_PACKAGES) \
 	$(PTSPACEDOMAIN_PACKAGES) \
+	$(PTSPHINX4_PACKAGES) \
 	$(PTSVGSALAMANDER_PACKAGES) \
 	$(PTVERTX_PACKAGES) \
 	$(PTWEBCAMCAPTURE_PACKAGES) \
@@ -658,6 +661,7 @@ ALLPACKAGES = \
 	org.ptolemy.qss.util \
 	ptolemy.actor.process \
 	ptolemy.actor.lib.aspect \
+	ptolemy.actor.lib.gem5 \
 	ptolemy.actor.lib.mbed \
 	ptolemy.actor.lib.net \
 	ptolemy.actor.lib.video \
