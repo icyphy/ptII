@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 23, 1440, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 80, 1323, 605}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1206, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1106, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0770794856911685">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8616635885529349">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{557.2050781250005, 365.1394524717809}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{510.7832488503351, 365.13945247178094}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -261,7 +261,7 @@
         </port>
     </entity>
     <entity name="MutableAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// This script defines a MutableAccessor that can be reified&#10;// by accessors having a control input and data and schema outputs.&#10;&#10;exports.setup = function() {&#10;	// First, set that this is a mutable accessor that&#10;	// realizes 'controling' functionality&#10;	this.mutable(true);	&#10;	this.realize('controllableSensor');&#10;&#10;	// Defining inputs&#10;	// the MutableAccessor will receive in this input the acessor code&#10;	this.input('accessor', {&#10;		'type': 'string',&#10;		'value': ''&#10;	});&#10;	// This input can be used by the reified accessor&#10;	this.input('control', {&#10;		'type': 'JSON',&#10;	});&#10;&#10;	// Defining outputs&#10;	this.output('data', { 'spontaneous':true,&#10;		'type': 'JSON',&#10;		'value': null		&#10;	});&#10;	this.output('schema', { 'spontaneous':true,&#10;		'type': 'JSON',&#10;		'value': null&#10;	});&#10;};&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;&#10;	this.addInputHandler('accessor', function() {&#10;		var accessorCode = this.get('accessor');&#10;		if (accessorCode &amp;&amp; accessorCode.length &gt; 0) {&#10;			try {&#10;				var accessor = this.instantiateFromCode('aa', accessorCode);&#10;			&#10;				accessor.container = null;&#10;				thiz.containedAccessors.splice(thiz.containedAccessors.indexOf(accessor), 1);&#10;				&#10;				// Reification test&#10;				if (thiz.reifiableBy(accessor)) {&#10;					// If the new accessor is reifiable, then remove &#10;					// the previous reification , if any&#10;					if (thiz.status === 'reified') {&#10;						// console.log('removing reification');&#10;						thiz.removeReification();&#10;						// Send null to indicate that the new reification&#10;						// has not produced any data.&#10;						thiz.send('data', null);&#10;					};&#10;					// thiz.send('data' , {'AccName': accessor.accessorName});&#10;					// Then reify the new one&#10;					thiz.reify(accessor);&#10;					accessor.initialize();&#10;				};&#10;			} catch (e) {&#10;				thiz.send('data', null);&#10;			}&#10;		}&#10;	});&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// This script defines a MutableAccessor that can be reified&#10;// by accessors having a control input and data and schema outputs.&#10;&#10;exports.setup = function() {&#10;	// First, set that this is a mutable accessor that&#10;	// realizes 'controling' functionality&#10;	this.mutable(true);	&#10;	this.realize('controllableSensor');&#10;&#10;	// Defining inputs&#10;	// the MutableAccessor will receive in this input the acessor code&#10;	this.input('accessor', {&#10;		'type': 'string',&#10;		'value': ''&#10;	});&#10;	// This input can be used by the reified accessor&#10;	this.input('control', {&#10;		'type': 'JSON',&#10;	});&#10;&#10;	// Defining outputs&#10;	this.output('data', { 'spontaneous':true,&#10;		'type': 'JSON',&#10;		'value': null		&#10;	});&#10;	this.output('schema', { 'spontaneous':true,&#10;		'type': 'JSON',&#10;		'value': null&#10;	});&#10;};&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;&#10;	this.addInputHandler('accessor', function() {&#10;		var accessorCode = this.get('accessor');&#10;		if (accessorCode &amp;&amp; accessorCode.length &gt; 0) {&#10;			try {&#10;				var accessor = this.instantiateFromCode('aa', accessorCode);&#10;			&#10;				accessor.container = null;&#10;				thiz.containedAccessors.splice(thiz.containedAccessors.indexOf(accessor), 1);&#10;				&#10;				// Reification test&#10;				if (thiz.reifiableBy(accessor)) {&#10;					// If the new accessor is reifiable, then remove &#10;					// the previous reification , if any&#10;					if (thiz.state === 'reified') {&#10;						// console.log('removing reification');&#10;						thiz.removeReification();&#10;						// Send null to indicate that the new reification&#10;						// has not produced any data.&#10;						thiz.send('data', null);&#10;					};&#10;					// thiz.send('data' , {'AccName': accessor.accessorName});&#10;					// Then reify the new one&#10;					thiz.reify(accessor);&#10;				};&#10;			} catch (e) {&#10;				thiz.send('data', null);&#10;			}&#10;		}&#10;	});&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -370,8 +370,6 @@
         </port>
         <port name="update" class="ptolemy.actor.TypedIOPort">
             <property name="output"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
             <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </port>
