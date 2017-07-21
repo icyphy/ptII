@@ -906,7 +906,7 @@ docs: $(FULL_DOCS)
 codeDocPtiny/tree.html:
 	if [ ! -d codeDocPtiny ]; then mkdir -p codeDocPtiny; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m"'
+	@echo 'make JDOCFLAGS="-author -version $(JDOCMEMORY)"'
 	-(cd ..; CLASSPATH=".$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocPtiny $(PTINYPACKAGES) )
 
 
@@ -1000,7 +1000,7 @@ codeDoc/tree.html:	../ptolemy/plot/*.java \
 			../ptolemy/vergil/unit/*.java
 	if [ ! -d codeDoc ]; then mkdir -p codeDoc; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m $(JDOCBREAKITERATOR)"'
+	@echo 'make JDOCFLAGS="-author -version $(JDOCMEMORY) $(JDOCBREAKITERATOR)"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDoc $(ALLPACKAGES) )
 
 # Rule to check that ALLPACKAGES names directories that exist
@@ -1032,7 +1032,7 @@ PTDOCFLAGS = -d doc/codeDoc
 ptdoc: codeDoc/ptolemy/actor/lib/Ramp.xml	
 codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" -J-Xmx1500m \
+		"$(JAVADOC)" $(JDOCMEMORY)
 			$(PTDOCFLAGS) \
 			$(PTDOCLET) \
 			$(PTDOCPACKAGES) )
@@ -1077,13 +1077,13 @@ codeDocBcvtb.jar: $(BCVTB_DOCS)
 codeDocBcvtb/doc/codeDoc/tree.html:
 	if [ ! -d codeDocBcvtb ]; then mkdir -p codeDocBcvtb; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m"'
+	@echo 'make JDOCFLAGS="-author -version $(JDOCMEMORY)"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocBcvtb/doc/codeDoc $(BCVTBPACKAGES) $(COREPACKAGES) )
 
 # Rules to build for Bcvtb
 codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" -J-Xmx1500m \
+		"$(JAVADOC)" $(JDOCMEMORY) \
 			-d doc/codeDocBcvtb/doc/codeDoc \
 			$(PTDOCLET) \
 			$(BCVTBPACKAGES) )
@@ -1126,13 +1126,13 @@ codeDocCapeCode.jar: $(CAPECODE_DOCS)
 codeDocCapeCode/doc/codeDoc/tree.html:
 	if [ ! -d codeDocCapeCode ]; then mkdir -p codeDocCapeCode; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m"'
+	@echo 'make JDOCFLAGS="-author -version $(JDOCMEMORY)"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocCapeCode/doc/codeDoc $(CAPECODEPACKAGES) $(COREPACKAGES) )
 
 # Rules to build for CapeCode
 codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" -J-Xmx1500m \
+		"$(JAVADOC)" $(JDOCMEMORY) \
 			-d doc/codeDocCapeCode/doc/codeDoc \
 			$(PTDOCLET) \
 			$(CAPECODEPACKAGES) )
@@ -1175,13 +1175,13 @@ codeDocHyVisual.jar: $(HYVISUAL_DOCS)
 codeDocHyVisual/doc/codeDoc/tree.html:
 	if [ ! -d codeDocHyVisual ]; then mkdir -p codeDocHyVisual; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m"'
+	@echo 'make JDOCFLAGS="-author -version $(JDOCMEMORY)"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocHyVisual/doc/codeDoc $(HYVISUALPACKAGES) $(COREPACKAGES) )
 
 # Rules to build for HyVisual
 codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" -J-Xmx1500m \
+		"$(JAVADOC)" $(JDOCMEMORY) \
 			-d doc/codeDocHyVisual/doc/codeDoc \
 			$(PTDOCLET) \
 			$(HYVISUALPACKAGES) )
@@ -1224,13 +1224,13 @@ codeDocViptos.jar: $(VIPTOS_DOCS)
 codeDocViptos/doc/codeDoc/tree.html:
 	if [ ! -d codeDocViptos ]; then mkdir -p codeDocViptos; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m"'
+	@echo 'make JDOCFLAGS="-author -version $(JDOCMEMORY)"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocViptos/doc/codeDoc $(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES))
 
 # Run PtDoclet
 codeDocViptos/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" -J-Xmx1500m \
+		"$(JAVADOC)" $(JDOCMEMORY) \
 			-d doc/codeDocViptos/doc/codeDoc \
 			$(PTDOCLET) \
 	$(VIPTOSPACKAGES) $(VISUALSENSEPACKAGES) $(PTINYPACKAGES) $(COREPACKAGES))
@@ -1274,13 +1274,13 @@ codeDocVisualSense.jar: $(VISUALSENSE_DOCS)
 codeDocVisualSense/doc/codeDoc/tree.html:
 	if [ ! -d codeDocVisualSense ]; then mkdir -p codeDocVisualSense; fi
 	@echo "If this fails because of memory problems, try"
-	@echo 'make JDOCFLAGS="-author -version -J-Xmx1500m"'
+	@echo 'make JDOCFLAGS="-author -version $(JDOCMEMORY)"'
 	-(cd ..; CLASSPATH="$(CLASSPATH)" "$(JAVADOC)" $(JDOCFLAGS) -d doc/codeDocVisualSense/doc/codeDoc $(VISUALSENSEPACKAGES) $(PTINYPACKAGES) $(COREPACKAGES))
 
 # Run PtDoclet
 codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" -J-Xmx1500m \
+		"$(JAVADOC)" $(JDOCMEMORY) \
 			-d doc/codeDocVisualSense/doc/codeDoc \
 			$(PTDOCLET) \
 		$(VISUALSENSEPACKAGES) $(PTINYPACKAGES) $(COREPACKAGES))
