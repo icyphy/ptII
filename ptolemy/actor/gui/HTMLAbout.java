@@ -488,8 +488,10 @@ public class HTMLAbout {
         writeDemoURLs(demoFileName, outputFileName);
         try {
             Class clazz = Class.forName("ptolemy.actor.lib.jjs.VertxHelperBase");
-            Method method = clazz.getMethod("closeVertx");
-            method.invoke(null);
+            if (clazz != null) {
+                Method method = clazz.getMethod("closeVertx");
+                method.invoke(null);
+            }
         } catch (Throwable throwable) {
             System.err.println("HTMLAbout: Failed to invoke VertxHelperBase.closeVertx() during exit.  This can be ignored. Error was: " + throwable);
         }
@@ -633,6 +635,7 @@ public class HTMLAbout {
             parser.resetAll();
             List myFilters = BackwardCompatibility.allFilters();
             MoMLParser.addMoMLFilters(myFilters, workspace);
+            System.out.println("Parsing " + demo);
             NamedObj namedObj = parser.parseFile(demo);
             if (namedObj instanceof CompositeEntity) {
                 CompositeEntity model = (CompositeEntity) namedObj;
