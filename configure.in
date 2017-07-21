@@ -5670,6 +5670,7 @@ PTSPHINX4_CORE_JAR=
 
 PTSPHINX4_DATA_JAR=
 
+PTSPHINX4_PACKAGES=
 # We only need to look for Sphinx if this directory is present:
 SPHINX4_USER_DIR="$PTII/ptolemy/actor/lib/jjs/modules/speechRecognition"
 
@@ -5692,6 +5693,7 @@ else
        if test -f "$PTSPHINX4_CORE_JAR"; then
            PT_MSG_RESULT([$PTSPHINX4_CORE_JAR])
            PTSPHINX4_DIR="$PTII/ptolemy/actor/lib/jjs/modules/speechRecognition"
+	   PTSPHINX4_PACKAGES=ptolemy.actor.lib.jjs.modules.speechRecognition
            updateClasspath "$PTSPHINX4_DATA_JAR"
            updateClasspath "$PTSPHINX4_CORE_JAR"
            updateExcludes "vendors/misc/sphinx4-5prealpha-src/"
@@ -7496,6 +7498,9 @@ AC_SUBST(PTSPHINX4_DATA_JAR)
 # PTSPHINX4_DIR is set to speechRecognition and used in
 # ptolemy/actor/lib/jjs/modules/makefile if the Sphinx 4 jars are found.
 AC_SUBST(PTSPHINX4_DIR)
+
+# PTSPHINX4_PACKAGES is used in doc/makefile
+AC_SUBST(PTSPHINX4_PACKAGES)
 
 # PTSTRUCTURALCODER_JAR is set if $PTII/lib/StructuralCoder.jar was found
 # and used in ptolemy/vergil/actor/g4ltl/makefile
