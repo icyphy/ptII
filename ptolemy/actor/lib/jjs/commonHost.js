@@ -1985,7 +1985,7 @@ Accessor.prototype.reify = function (accessor) {
     // Check the accessor parameter type
     if (!accessor) {
     	// Report an error if no parameter is passed
-        thiz.error('reify(): You need to pass an accessor to reify.');
+        thiz.error('reify(): Missing parameter.');
         return false;
     } else if(accessor.accessorName) {
     	// Case where and accessor object is passed
@@ -2015,6 +2015,7 @@ Accessor.prototype.reify = function (accessor) {
 			    accessorInstance = new Accessor(
 			    	instanceName, accessorCode, getAccessorCode, insideBindings, null, null);
 		    } catch(ee) {
+		    	thiz.error('Parameter supplied is not a valid accessor object, accessor class or accessor code');
 		    	return false;
 		    };
 	    };
