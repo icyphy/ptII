@@ -2,9 +2,15 @@ $CLASSPATH/lbnl/demo/CRoom/CRoom.xml
 $CLASSPATH/lbnl/demo/MatlabRoom/MatlabRoom.xml
 $CLASSPATH/lbnl/demo/SystemCommand/SystemCommand.xml
 $CLASSPATH/org/hlacerti/demo/2Billes2Fed/2Billes2Fed.xml
+$CLASSPATH/org/hlacerti/demo/2Billes2Fed/BillardBall1.xml
+$CLASSPATH/org/hlacerti/demo/2Billes2Fed/BillardBall2.xml
+$CLASSPATH/org/hlacerti/demo/2Billes2Fed/BillardTable.xml
 $CLASSPATH/org/hlacerti/demo/Billard/Billard.xml
 $CLASSPATH/org/hlacerti/demo/BillardHit/BillardHit.xml
+$CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14Aircraft.xml
+$CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14AutoPilot.xml
 $CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14HLAr74766.xml
+$CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14PilotStick.xml
 $CLASSPATH/org/hlacerti/demo/MicrostepReset/DistributedReceiver.xml
 $CLASSPATH/org/hlacerti/demo/MicrostepReset/DistributedSender.xml
 $CLASSPATH/org/hlacerti/demo/MicrostepReset/MicrostepReset.xml
@@ -63,7 +69,13 @@ $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/TagMapAccessorAR.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/TagURIMapAR.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityGDP/AugmentedRealityGDP.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/Browser.xml
+$CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserFixedPage.xml
+$CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserInteractive.xml
+$CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserRamp.xml
+$CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserUpdate.xml
+$CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserVideo.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/Camera.xml
+$CLASSPATH/org/terraswarm/accessor/demo/Camera/Capture.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/CaptureOpenLoop.xml
 $CLASSPATH/org/terraswarm/accessor/demo/CameraWebSocket/CameraWebSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/FaceDetector/FaceDetector.xml
@@ -216,6 +228,8 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/crypto/demo/RandomBytes/RandomBytes.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/crypto/demo/SymmetricEncrypt/SymmetricEncrypt.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/Discovery.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/DiscoveryJS.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/PopulateSwarmboxMap.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/discovery/demo/Discovery/PostSwarmboxDevices.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/AudioFFT.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/dsp/demo/AudioFFT/SinusoidFFT.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/eventbus/demo/VertxChat/VertxChat.xml
@@ -619,6 +633,7 @@ $CLASSPATH/ptolemy/domains/qss/demo/HelloWorld/HelloWorldQSS2.xml
 $CLASSPATH/ptolemy/domains/qss/demo/Lorenz/Lorenz.xml
 $CLASSPATH/ptolemy/domains/qss/demo/RLC/RLC.xml
 $CLASSPATH/ptolemy/domains/qss/demo/SecondOrder/SecondOrder.xml
+$CLASSPATH/ptolemy/domains/qss/demo/SecondOrder/SecondOrderContinuous.xml
 $CLASSPATH/ptolemy/domains/qss/demo/SmoothToken/SmoothToken.xml
 $CLASSPATH/ptolemy/domains/qss/demo/Thermal/Thermal.xml
 $CLASSPATH/ptolemy/domains/rendezvous/demo/Barrier/Barrier.xml
@@ -704,6 +719,7 @@ $CLASSPATH/ptolemy/vergil/basic/export/html/demo/PageAssembler/PageAssembler.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/Arbitor/Arbitor.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/AutomaticDoor/AutomaticDoor.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandling.xml
+$CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/ErrorHandling/ErrorHandlingSynthesized.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/HydraulicRamp/HydraulicRamp.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/Numerical/Numerical.xml
 $CLASSPATH/ptolemy/vergil/basic/imprt/g4ltl/demo/PriorityArbitor/PriorityArbitor.xml
