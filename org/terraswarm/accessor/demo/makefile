@@ -35,6 +35,7 @@ ROOT = ../../../..
 DIRS = AprilTags AprilTagImageAnnotate \
         Audio \
 	AugmentedReality \
+	AugmentedRealityGDP \
 	Browser Camera CameraWebSocket \
 	FaceDetector \
 	Foscam HappySadStock \
@@ -76,6 +77,7 @@ PTCLASSALLJARS = \
 	AprilTags/AprilTags.jar \
 	Audio/Audio.jar \
 	AugmentedReality/AugmentedReality.jar \
+	AugmentedRealityGDP/AugmentedRealityGDP.jar \
 	Browser/Browser.jar \
 	Camera/Camera.jar \
 	CameraWebSocket/CameraWebSocket.jar \

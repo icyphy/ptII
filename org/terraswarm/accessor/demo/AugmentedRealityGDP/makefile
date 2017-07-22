@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/AugmentedReality
+ME =		org/terraswarm/accessor/demo/AugmentedRealityGDP
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -41,20 +41,18 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	AugmentedReality
+PTPACKAGE = 	AugmentedRealityGDP
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	AugmentedReality.xml \
-	AugmentedRealityBasic.xml \
+	AugmentedRealityGDP.xml \
+	AugmentedRealityBasicGDP.xml \
 	MechanicalRoom.jpg \
 	PressureSensor.js \
 	TagMapAccessorAR.xml \
-	TagURIMapAR.xml \
 	TemperatureSensor.js \
-	VariantAccessors \
 	VibrationSensor.js
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
