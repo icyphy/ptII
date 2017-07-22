@@ -48,7 +48,11 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	Browser.xml \
+	BrowserFixedPage.xml \
+	BrowserInteractive.xml \
+	BrowserUpdate.xml \
 	BrowserRamp.xml \
+	BrowserVideo.xml \
 	Geolocation.html
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
