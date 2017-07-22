@@ -654,14 +654,25 @@ public class HTMLAbout {
                             Object innerObject = innerAttributes.nextElement();
                             if (innerObject instanceof LiveLink) {
                                 LiveLink liveLink = (LiveLink)innerObject;
-                                if (liveLink.stringValue().contains("CLASSPATH")
-                                        && liveLink.stringValue().endsWith(".xml")) {
-                                    File liveLinkFile = liveLink.asFile();
+                                File liveLinkFile = liveLink.asFile();
+                                String liveLinkValue = liveLink.stringValue();
+                                if (liveLinkValue.contains("CLASSPATH")
+                                        && liveLinkValue.endsWith(".xml")) {
                                     // Look for the value of $PTII and substitute in $CLASSPATH
                                     // so that we can use FileUtilities.nameToURL() from within
                                     // ptolemy.moml.filter.ActorIndex
                                     fileWriter.write(StringUtilities.substitute(liveLinkFile.getCanonicalPath(), ptII,
                                                 "$CLASSPATH") + "\n");
+                                } else if (!liveLinkValue.contains("/")
+                                           && !liveLinkValue.contains("\\")
+                                           && liveLinkValue.endsWith(".xml")) {                                           
+                                    // The link target is in the same directory as the model.
+                                    // FIXME: It could be that models with relative LiveLinks will not be found when
+                                    // the system is using jar files.
+                                    String demoPath = StringUtilities.substitute(liveLinkFile.getCanonicalPath(), ptII,
+                                                                                 "$CLASSPATH");
+                                    // System.out.println( demo + ": contains a LiveLink: " + demoPath);
+                                    fileWriter.write(demoPath + "\n");
                                 }
                             }
                         }
