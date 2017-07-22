@@ -60,6 +60,8 @@ $CLASSPATH/org/terraswarm/accessor/demo/Audio/AudioRecorder.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedReality.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityBasic.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/TagMapAccessorAR.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/TagURIMapAR.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityGDP/AugmentedRealityGDP.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/Browser.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/Camera.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/CaptureOpenLoop.xml
