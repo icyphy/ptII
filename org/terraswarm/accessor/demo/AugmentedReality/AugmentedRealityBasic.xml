@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 80, 1340, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 92, 1323, 577}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1106, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1106, 496]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9870226725062882">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9870122560400748">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{557.2050781249999, 386.91027386519164}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{557.2109375000001, 365.63505075273724}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -229,7 +229,7 @@
         </port>
     </entity>
     <entity name="TagToAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var httpClient = require('@accessors-modules/http-client');&#10;&#10;var IdToResource = {&#10;	'127': 'PressureSensor.js',&#10;	'435': 'VibrationSensor.js',&#10;	'105': 'TemperatureSensor.js'	&#10;};&#10;&#10;exports.setup = function() {&#10;	// Inputs&#10;	this.input('tags');&#10;	this.input('index', {&#10;		'type':'int', &#10;		'value':0&#10;	});&#10;	&#10;	// Outputs&#10;	this.output('accessor', {&#10;		'type': 'string',&#10;		'value': ''&#10;	});&#10;	this.output('translation');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var previousIndex = -1;&#10;	&#10;	this.addInputHandler('tags', function() {&#10;		var tags = thiz.get('tags');&#10;		var index = thiz.get('index');&#10;		&#10;		if (index != previousIndex) {&#10;			// Index has changed. Look up an accessor and produce it.&#10;			if (tags &amp;&amp; tags.length &gt; index) {&#10;				var id = tags[index].id;&#10;				// FIXME: Change getResource API.&#10;				var accessor = getResource(IdToResource[id], 2000);&#10;				if (accessor) {&#10;					thiz.send('accessor', accessor);&#10;				}&#10;			}&#10;			previousIndex = index;&#10;		}&#10;		thiz.send('translation', tags[index].center);&#10;	});&#10;}&#10;&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="var httpClient = require('@accessors-modules/http-client');&#10;&#10;var IdToResource = {&#10;	'127': 'PressureSensor.js',&#10;	'435': 'VibrationSensor.js',&#10;	'105': 'TemperatureSensor.js'	&#10;};&#10;&#10;exports.setup = function() {&#10;	// Inputs&#10;	this.input('tags');&#10;	this.input('index', {&#10;		'type':'int', &#10;		'value':0&#10;	});&#10;	&#10;	// Outputs&#10;	this.output('accessor', {&#10;		'type': 'string',&#10;		'value': ''&#10;	});&#10;	this.output('translation');&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	var previousIndex = -1;&#10;	&#10;	this.addInputHandler('tags', function() {&#10;		var tags = thiz.get('tags');&#10;		var index = thiz.get('index');&#10;		&#10;		if (index != previousIndex) {&#10;			// Index has changed. Look up an accessor and produce it.&#10;			if (tags &amp;&amp; tags.length &gt; index) {&#10;				var id = tags[index].id;&#10;				// FIXME: Change getResource API.&#10;				var accessor = getResource(IdToResource[id], 2000);&#10;				if (accessor) {&#10;					thiz.send('accessor', accessor);&#10;				}&#10;			} else {&#10;				thiz.send('accessor', '');&#10;			}&#10;			previousIndex = index;&#10;		}&#10;		thiz.send('translation', tags[index].center);&#10;	});&#10;}&#10;&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -261,7 +261,7 @@
         </port>
     </entity>
     <entity name="MutableAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// This script defines a MutableAccessor that can be reified&#10;// by accessors having a control input and data and schema outputs.&#10;&#10;exports.setup = function() {&#10;	// First, set that this is a mutable accessor that&#10;	// realizes 'controling' functionality&#10;	this.mutable(true);	&#10;	this.realize('controllableSensor');&#10;&#10;	// Defining inputs&#10;	// the MutableAccessor will receive in this input the acessor code&#10;	this.input('accessor', {&#10;		'type': 'string',&#10;		'value': ''&#10;	});&#10;	// This input can be used by the reified accessor&#10;	this.input('control', {&#10;		'type': 'JSON',&#10;	});&#10;&#10;	// Defining outputs&#10;	this.output('data', { 'spontaneous':true,&#10;		'type': 'JSON',&#10;		'value': null		&#10;	});&#10;	this.output('schema', { 'spontaneous':true,&#10;		'type': 'JSON',&#10;		'value': null&#10;	});&#10;};&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;&#10;	this.addInputHandler('accessor', function() {&#10;		var accessorCode = this.get('accessor');&#10;		if (accessorCode &amp;&amp; accessorCode.length &gt; 0) {&#10;			try {&#10;				var accessor = this.instantiateFromCode('aa', accessorCode);&#10;			&#10;				accessor.container = null;&#10;				thiz.containedAccessors.splice(thiz.containedAccessors.indexOf(accessor), 1);&#10;				&#10;				// Reification test&#10;				if (thiz.reifiableBy(accessor)) {&#10;					// If the new accessor is reifiable, then remove &#10;					// the previous reification , if any&#10;					if (thiz.state === 'reified') {&#10;						// console.log('removing reification');&#10;						thiz.removeReification();&#10;						// Send null to indicate that the new reification&#10;						// has not produced any data.&#10;						thiz.send('data', null);&#10;					};&#10;					// thiz.send('data' , {'AccName': accessor.accessorName});&#10;					// Then reify the new one&#10;					thiz.reify(accessor);&#10;				} else {&#10;					error('Accessor supplied cannot reify this MutableAccessor.');&#10;				}&#10;			} catch (e) {&#10;				thiz.send('data', null);&#10;				throw e;&#10;			}&#10;		}&#10;	});&#10;};&#10;">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// This script defines a MutableAccessor that can be reified&#10;// by accessors having a control input and data and schema outputs.&#10;&#10;exports.setup = function() {&#10;	// First, set that this is a mutable accessor that&#10;	// realizes 'controling' functionality&#10;	this.mutable(true);	&#10;	this.realize('controllableSensor');&#10;&#10;	// Defining inputs&#10;	// the MutableAccessor will receive in this input the acessor code&#10;	this.input('accessor', {&#10;		'type': 'string',&#10;		'value': ''&#10;	});&#10;	// This input can be used by the reified accessor&#10;	this.input('control', {&#10;		'type': 'JSON',&#10;	});&#10;&#10;	// Defining outputs&#10;	this.output('data', { 'spontaneous':true,&#10;		'type': 'JSON',&#10;		'value': null		&#10;	});&#10;	this.output('schema', { 'spontaneous':true,&#10;		'type': 'JSON',&#10;		'value': null&#10;	});&#10;};&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;&#10;	this.addInputHandler('accessor', function() {&#10;		var accessorCode = this.get('accessor');&#10;		thiz.send('data', null);&#10;		if (accessorCode &amp;&amp; accessorCode.length &gt; 0) {&#10;			thiz.reify(accessorCode);&#10;		} else {&#10;			thiz.unreify();&#10;		}&#10;	});&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
                 <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
                 </property>
@@ -507,8 +507,6 @@
     </relation>
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
@@ -522,6 +520,8 @@
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
     <link port="ObjectRecognizer.input" relation="relation"/>
     <link port="ObjectRecognizer.tags" relation="relation3"/>
