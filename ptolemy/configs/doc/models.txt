@@ -67,7 +67,9 @@ $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedReality.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/AugmentedRealityBasic.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/TagMapAccessorAR.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/TagURIMapAR.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityGDP/AugmentedRealityBasicGDP.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityGDP/AugmentedRealityGDP.xml
+$CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityGDP/TagMapAccessorAR.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/Browser.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserFixedPage.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserInteractive.xml
@@ -75,7 +77,6 @@ $CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserRamp.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserUpdate.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserVideo.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/Camera.xml
-$CLASSPATH/org/terraswarm/accessor/demo/Camera/Capture.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/CaptureOpenLoop.xml
 $CLASSPATH/org/terraswarm/accessor/demo/CameraWebSocket/CameraWebSocket.xml
 $CLASSPATH/org/terraswarm/accessor/demo/FaceDetector/FaceDetector.xml
