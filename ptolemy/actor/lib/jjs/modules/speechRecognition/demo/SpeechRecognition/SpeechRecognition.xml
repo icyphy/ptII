@@ -143,11 +143,11 @@
         </property>
         <property name="continuous" class="ptolemy.data.expr.Parameter" value="true">
         </property>
-        <property name="dictionaryPath" class="ptolemy.data.expr.Parameter" value="$PTII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/weather.dic">
+        <property name="dictionaryPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/weather.dic">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
-        <property name="languageModelPath" class="ptolemy.data.expr.Parameter" value="$PTII/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/weather.lm">
+        <property name="languageModelPath" class="ptolemy.data.expr.Parameter" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/weather.lm">
             <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
         </property>
