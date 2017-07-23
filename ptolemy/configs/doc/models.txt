@@ -11,6 +11,7 @@ $CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14Aircraft.xml
 $CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14AutoPilot.xml
 $CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14HLAr74766.xml
 $CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14PilotStick.xml
+$CLASSPATH/org/hlacerti/demo/IntegrationTests/IntegrationTests.xml
 $CLASSPATH/org/hlacerti/demo/MicrostepReset/DistributedReceiver.xml
 $CLASSPATH/org/hlacerti/demo/MicrostepReset/DistributedSender.xml
 $CLASSPATH/org/hlacerti/demo/MicrostepReset/MicrostepReset.xml
