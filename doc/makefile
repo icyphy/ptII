@@ -1036,7 +1036,7 @@ PTDOCFLAGS = -d doc/codeDoc
 ptdoc: codeDoc/ptolemy/actor/lib/Ramp.xml	
 codeDoc/ptolemy/actor/lib/Ramp.xml:
 	-(cd ..; CLASSPATH="$(CLASSPATH)" \
-		"$(JAVADOC)" $(JDOCMEMORY)
+		"$(JAVADOC)" $(JDOCMEMORY) \
 			$(PTDOCFLAGS) \
 			$(PTDOCLET) \
 			$(PTDOCPACKAGES) )
