@@ -182,8 +182,14 @@ public class Gem5Wrapper extends SequenceSource {
 
         // FIXME: init and step should go away.
         // set the type constraints.
-        newObject.output.setTypeAtLeast(newObject.init);
-        newObject.output.setTypeAtLeast(newObject.step);
+        // newObject.output.setTypeAtLeast(newObject.init);
+        // newObject.output.setTypeAtLeast(newObject.step);
+
+        RecordType recordType = new RecordType(_labels, _types);
+        ArrayType arrayOfRecordsType = new ArrayType(recordType);
+        output.setTypeEquals(arrayOfRecordsType);
+        output.setAutomaticTypeConversion(false);
+
         return newObject;
     }
 
@@ -376,7 +382,7 @@ public class Gem5Wrapper extends SequenceSource {
     ///////////////////////////////////////////////////////////////////
     ////                         private variables                 ////
 
-    private String[] _labels = {"cmd", "cmd_time", "rank", "bank", "service_time"};
+    private static String[] _labels =  {"cmd", "cmd_time", "rank", "bank", "service_time"};
 
     /** The pipePathPrefix/temp_pipe. */
     private BufferedReader _tempPipe;
@@ -389,7 +395,7 @@ public class Gem5Wrapper extends SequenceSource {
     private int _systemClockPeriod = 1000;
     private int _sampleTime = 500 * 1000;        // 0.5 ms
         
-    private Type[] _types = {BaseType.STRING, BaseType.INT, BaseType.INT, BaseType.INT, BaseType.INT};
+    private static Type[] _types = {BaseType.STRING, BaseType.INT, BaseType.INT, BaseType.INT, BaseType.INT};
 
     /** The pipePathPrefix/write_pipe. */
     private InputStreamReader _writePipe;
