@@ -24,7 +24,7 @@
    PT_COPYRIGHT_VERSION_2
    COPYRIGHTENDKEY
 
- */
+*/
 
 package ptolemy.actor.lib.jjs.modules.audio;
 
@@ -37,6 +37,9 @@ import ptolemy.actor.lib.jjs.HelperBase;
 /** Helper for the ClipPlayer in the audio.js module.
  *  See the module for documentation.
  *  
+ *  Note that this class requires a graphical display because
+ *  instantiating a JFXPanel attempts to connect to the display.
+ *
  *  @author Elizabeth Osyk 
  *  @version $Id: CliPlayerHelper.java 75850 2017-04-03 21:53:00Z cxh $
  *  @since Ptolemy II 11.0
@@ -46,94 +49,106 @@ import ptolemy.actor.lib.jjs.HelperBase;
  */
 public class ClipPlayerHelper extends HelperBase {
 
-	/** Construct a new ClipPlayerHelper
-	 * 
-	 * @param actor  The actor associated with this ClipPlayerHelper.
-	 * @param helping The Javascript object being helped.
-	 */
-	public ClipPlayerHelper(Object actor, ScriptObjectMirror helping) {
-		super(actor, helping);
-	}
-	
+    /** Construct a new ClipPlayerHelper
+     * 
+     * @param actor  The actor associated with this ClipPlayerHelper.
+     * @param helping The Javascript object being helped.
+     */
+    public ClipPlayerHelper(Object actor, ScriptObjectMirror helping) {
+        super(actor, helping);
+    }
+       
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-	
-	/** Play the sound clip.
-	 */
-	public void play() {
-		if (_player == null) {
-			_error("No URL specified.  Cannot play clip.");
-		} else {
-			if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
-				_player.stop();
-			}
-			_player.play();
-		}
-	}
-	
-	/** Set the URL of the clip to load and construct a new MediaPlayer to it.
-	 * 
-	 * @param url The URL of the clip to load.
-	 */
-	public void setURL(String url) {
-		if (_player != null && _player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
-			_player.stop();
-		}
-		
-		// Wait for stop callback?
-		_player = new MediaPlayer(new Media(url));
-		_player.setOnError(new Runnable() {
-			@Override
-			public void run() {
-				if (_player != null && _player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
-					_player.stop();
-				}
-				_error("Error in ClipPlayer: " + _player.getError().getMessage());
-			}
-		});
-		
-		// Stop the player at the end of the clip so we can emit a "done" event on stop.
-		_player.setOnEndOfMedia(new Runnable() {
-			@Override
-			public void run() {
-				_player.stop();
-			}
-		});
-		
-		// Emit a "done" event on stop.
-		_player.setOnStopped(new Runnable() {
-			@Override
-			public void run() {
-				_currentObj.callMember("emit", "done", true);
-			}
-		});
-		
-		// For debugging.
-		/*
-		_player.setOnReady(new Runnable() {
-			@Override
-			public void run() {
-				System.out.println("ClipPlayer is ready");
-			}
-			
-		});
-		*/
-	}
-	
-	/** Stop playback, if playing.
-	 */
-	public void stop() {
-		if (_player != null && _player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
-			_player.stop();
-		}
-	}
-	
+       
+    /** Play the sound clip.
+     */
+    public void play() {
+        if (_player == null) {
+            _error("No URL specified.  Cannot play clip.");
+        } else {
+            if (_player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+                _player.stop();
+            }
+            _player.play();
+        }
+    }
+       
+    /** Set the URL of the clip to load and construct a new MediaPlayer to it.
+     * 
+     * @param url The URL of the clip to load.
+     */
+    public void setURL(String url) {
+        if (_player != null && _player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+            _player.stop();
+        }
+              
+        // Wait for stop callback?
+        _player = new MediaPlayer(new Media(url));
+        _player.setOnError(new Runnable() {
+                @Override
+                public void run() {
+                    if (_player != null && _player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+                        _player.stop();
+                    }
+                    _error("Error in ClipPlayer: " + _player.getError().getMessage());
+                }
+            });
+              
+        // Stop the player at the end of the clip so we can emit a "done" event on stop.
+        _player.setOnEndOfMedia(new Runnable() {
+                @Override
+                public void run() {
+                    _player.stop();
+                }
+            });
+              
+        // Emit a "done" event on stop.
+        _player.setOnStopped(new Runnable() {
+                @Override
+                public void run() {
+                    _currentObj.callMember("emit", "done", true);
+                }
+            });
+              
+        // For debugging.
+        /*
+          _player.setOnReady(new Runnable() {
+          @Override
+          public void run() {
+          System.out.println("ClipPlayer is ready");
+          }
+                     
+          });
+        */
+    }
+       
+    /** Stop playback, if playing.
+     */
+    public void stop() {
+        if (_player != null && _player.getStatus().equals(MediaPlayer.Status.PLAYING)) {
+            _player.stop();
+        }
+    }
+       
     ///////////////////////////////////////////////////////////////////
     ////                         public methods                    ////
-	
-	/** This initiates a JavaFXRuntime to avoid a "Toolkit not initialized" exception. */
-	private static final JFXPanel _fxPanel = new JFXPanel();
-	
-	/** The sound clip player. */
-	private MediaPlayer _player = null;
+       
+    private static JFXPanel _fxPanel;
+       
+    /** Instantiate a JavaFXRuntime to avoid a "Toolkit not
+     *  initialized" exception.
+     *  Instantiating a JFXPanel requires that there is a graphical
+     *  display.
+     */
+    static {
+        try {
+            _fxPanel = new JFXPanel();
+        } catch (UnsupportedOperationException ex) {
+            System.out.println("ClipPlayerHelper: failed to instantiate a JFXPanel, "
+                    + "which can happen if a graphical display is not present: " + ex);
+        }
+    }
+    /** The sound clip player. */
+    private MediaPlayer _player = null;
 }
