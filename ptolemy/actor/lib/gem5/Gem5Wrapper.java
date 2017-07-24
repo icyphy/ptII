@@ -400,7 +400,13 @@ public class Gem5Wrapper extends SequenceSource {
     /** The pipePathPrefix/write_pipe. */
     private InputStreamReader _writePipe;
 
-    public class SortByCommandTime implements Comparator<RecordToken> {
+    /** Sort by the difference between the command times. */
+    public static class SortByCommandTime implements Comparator<RecordToken> {
+        /** Return the difference between time 1 and time2
+         *  @param t1 The record token containing the first time.
+         *  @param t2 The record token containing the first time.
+         *  @return The difference between the two times.
+         */
         public int compare(RecordToken t1, RecordToken t2) {
             int time1 = ((IntToken)t1.get(_labels[1])).intValue();
             int time2 = ((IntToken)t2.get(_labels[1])).intValue();
