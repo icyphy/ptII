@@ -2,9 +2,9 @@
 #
 # @Authors: Gilles Lasnier, based on a file by Christopher H. Brooks
 #
-# @Version: $Id$
+# @Version: $Id: makefile 66384 2013-05-21 02:06:28Z glasnier $
 #
-# @Copyright (c) 2013-2015 The Regents of the University of California.
+# @Copyright (c) 2013 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        org/hlacerti/demo/legacy/SimpleProducerConsumer
+ME =        ptolemy/apps/hlacerti/demo/MultiProducerConsumer
 
 # Root of the Java directory
 ROOT =      ../../../../..
@@ -41,17 +41,21 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     SimpleProducerConsumer
+PTPACKAGE =     MultiProducerConsumer
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	consumer.xml \
-	producer.xml \
-	SimpleProducerConsumer.xml \
-	SimpleProducerConsumer.fed
+	consumer1.xml \
+	consumer2.xml \
+	prodcons3.xml \
+	prodcons4.xml \
+	producer5.xml \
+	producer6.xml \
+	MultiProducerConsumer.xml \
+	MultiProducerConsumer.fed
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED) \
@@ -78,14 +82,22 @@ install: all
 demo: demo_ptolemy demo_vergil
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" consumer.xml
-	"$(PTII)/bin/ptolemy" producer.xml
-	"$(PTII)/bin/ptolemy" SimpleProducerConsumer.xml
+	"$(PTII)/bin/ptolemy" consumer1.xml
+	"$(PTII)/bin/ptolemy" consumer2.xml
+	"$(PTII)/bin/ptolemy" MultiProducerConsumer.xml
+	"$(PTII)/bin/ptolemy" prodcons3.xml
+	"$(PTII)/bin/ptolemy" prodcons4.xml
+	"$(PTII)/bin/ptolemy" producer5.xml
+	"$(PTII)/bin/ptolemy" producer6.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" consumer.xml
-	"$(PTII)/bin/vergil" producer.xml
-	"$(PTII)/bin/vergil" SimpleProducerConsumer.xml
+	"$(PTII)/bin/vergil" consumer1.xml
+	"$(PTII)/bin/vergil" consumer2.xml
+	"$(PTII)/bin/VERGIL" MultiProducerConsumer.xml
+	"$(PTII)/bin/vergil" prodcons3.xml
+	"$(PTII)/bin/vergil" prodcons4.xml
+	"$(PTII)/bin/vergil" producer5.xml
+	"$(PTII)/bin/vergil" producer6.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

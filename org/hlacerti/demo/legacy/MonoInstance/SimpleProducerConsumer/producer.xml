@@ -1,4 +1,6 @@
-<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN" "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
+<?xml version="1.0" standalone="no"?>
+<!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
+    "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
 <entity name="producer" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
@@ -8,7 +10,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="{115, 55}">
         </property>
     </property>
-    <property name="producer" class="org.hlacerti.lib.HlaManager">
+    <property name="producer" class="ptolemy.apps.hlacerti.lib.HlaManager">
         <display name="producer"/>
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;producer&quot;">
             <display name="Federate's name"/>
@@ -75,7 +77,7 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 260.0]">
         </property>
     </property>
-    <entity name="val" class="org.hlacerti.lib.HlaPublisher">
+    <entity name="val" class="ptolemy.apps.hlacerti.lib.HlaPublisher">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[295.0, 145.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">

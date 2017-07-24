@@ -1,24 +1,20 @@
-Janette Cardoso, update July, 24, 2017
-
-This demo would work with dynamic multiple instances (David Come)
-but does not seems to work.
-Waiting for new tests or remove from the repository
-
----------------------
+J. Cardoso, July, 24, 2017:
+This simulation is very slow!
+--------------------------
 
 README of the F14 HLA demo
 
 -- Author: Gilles Lasnier - SUPAERO ISAE - gilles.lasnier@gmail.com
 
--- $Id$
+-- $Id: README.txt 70349 2014-10-12 22:45:57Z cxh $
 
 
 DOCUMENTATION:
  
  - This folder contains the F14 HLA demo. This demo is based on the one provided
    by MATLAB. This demo shows how we can distribute a PtolemyII simulation using
-   HLA/CERTI. The co-simulation framework PtolemyII - HLA/CERTI is used for
-   this demo.
+   HLA/CERTI (see ./initial-centralized-f14/f14_initial.xml). 
+   The co-simulation framework PtolemyII - HLA/CERTI is used for this demo.
 
 REQUIREMENTS:
 
