@@ -116,12 +116,14 @@ public class SpeechRecognitionHelper extends HelperBase {
 		 _worker = null;
 		 
 		 // Disable Sphinx console log messages.  Sphinx produces a lot of them.
+		 /*
 	     Logger cmRootLogger = Logger.getLogger("default.config");
 	     cmRootLogger.setLevel(java.util.logging.Level.OFF);
 	     String conFile = System.getProperty("java.util.logging.config.file");
 	     if (conFile == null) {
 	           System.setProperty("java.util.logging.config.file", "ignoreAllSphinx4LoggingOutput");
 	     }
+	     */
 		 
 		 // Load speech recognizer by reflection since .jar files are not included with Ptolemy due to size.
  			
