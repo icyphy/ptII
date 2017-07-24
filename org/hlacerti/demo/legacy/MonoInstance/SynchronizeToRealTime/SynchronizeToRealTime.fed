@@ -1,0 +1,22 @@
+;; synchronizeToRealTime 
+
+(Fed
+  (Federation synchronizeToRealTime)
+  (FedVersion v1.3)
+  (Spaces
+  )
+  (Objects
+    (Class ObjectRoot
+      (Attribute privilegeToDelete reliable timestamp)
+      (Class RTIprivate)
+	(Class clock
+		(Attribute clockValue RELIABLE TIMESTAMP)
+	)
+    )
+  )
+  (Interactions
+    (Class InteractionRoot BEST_EFFORT RECEIVE
+      (Class RTIprivate BEST_EFFORT RECEIVE)
+    )
+  )
+)

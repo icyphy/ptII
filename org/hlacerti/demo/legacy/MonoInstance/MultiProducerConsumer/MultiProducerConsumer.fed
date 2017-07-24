@@ -1,0 +1,32 @@
+;; MultiProducerConsumer 
+
+(Fed
+  (Federation MultiProducerConsumer)
+  (FedVersion v1.3)
+  (Federate "consumer1" "Public")
+  (Federate "consumer2" "Public")
+  (Federate "prodcons3" "Public")
+  (Federate "prodcons4" "Public")
+  (Federate "producer5" "Public")
+  (Federate "producer6" "Public")
+  (Spaces
+  )
+  (Objects
+    (Class ObjectRoot
+      (Attribute privilegeToDelete reliable timestamp)
+      (Class RTIprivate)
+	(Class myObjectClass
+		(Attribute val RELIABLE TIMESTAMP)
+        (Attribute val1 RELIABLE TIMESTAMP)
+        (Attribute val2 RELIABLE TIMESTAMP)
+        (Attribute val3 RELIABLE TIMESTAMP)
+        (Attribute val4 RELIABLE TIMESTAMP)
+	)
+    )
+  )
+  (Interactions
+    (Class InteractionRoot BEST_EFFORT RECEIVE
+      (Class RTIprivate BEST_EFFORT RECEIVE)
+    )
+  )
+)

@@ -1,0 +1,8 @@
+Janette Cardoso July, 24, 2017
+
+These demos work for the HLA/Certi cosimulation framework, for revision
+71843. In this revision, a federate can discover only one instance of a class.
+It is a so called Mono Instance version.
+
+T
+

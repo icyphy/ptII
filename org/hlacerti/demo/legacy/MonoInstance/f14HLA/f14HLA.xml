@@ -1,25 +1,23 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="2Billes2Fed" class="ptolemy.actor.TypedCompositeActor">
-    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
+<entity name="f14HLA" class="ptolemy.actor.TypedCompositeActor">
+    <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="10.0.devel">
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
-        </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains links to the Ptolemy federates for the &#10;Billiard Federation. It can interoperate with CERTI Billard demo&#10;(c++ federates Billard.cc).&#10;&#10;1. For running only Ptolemy federates, set the parameter &quot;creator&quot;&#10;in federate BilliardTable.xml. Launch the federates in this order:&#10;- Ball 1 and Ball 2 models  (BillardBall1.xmal and BillardBall2.xml),&#10;- Billiard table Model (BilliardTable.xml). &#10;&#10;2. For running with a C++ federate, set the parameter &quot;creator&quot; in&#10;federate BilliardTable.xml to &quot;&quot;. Launch the federates in this order:&#10;- C++ federate: in a terminal, type: billard -n1 -fTest -FTest.fed -t10&#10;- launch PtII federates BillardBall1, BillardBall2.xml and BilliardTable.xml in any order&#10;- come back to the terminal, and press &quot;Enter&quot;. The simulation starts.&#10;&#10;To open the models of Ptolemy HLA/CERTI Federates, click on the&#10;links below.&#10;&#10;If necessary kill the rtig. Be sure you have $PTII and $CERTI_HOME.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model contains links to the Ptolemy federates of the F14 HLA example.&#10;Each model is a Ptolemy HLA/CERTI Federate.&#10;&#10;To open the models, click on the link below, in the order they are presented&#10;(the last one to be lauched is the creator of the synchronization point).&#10;&#10;">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 5.0]">
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Billiard ball 1 Model">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Aircraft Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 135.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BillardBall1.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14_Aircraft.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -39,20 +37,20 @@
             </property>
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={566, 22, 709, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={256, 110, 695, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[475, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[461, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.895703524141813">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{263.57249662801297, 295.9252973479538}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{255.7574107080297, 295.925297347954}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Billiard table Model">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="AutoPilot Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 375.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 165.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BillardTable.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14_AutoPilot.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -73,11 +71,11 @@
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Billard ball 2 Model">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="PilotStick Model">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 355.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[70.0, 195.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BillardBall2.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="f14_PilotStick.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -98,11 +96,13 @@
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.4,0.4,1.0}">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="8">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo works up to version 76430 using dynamic discovering&#10;of multi-instances.">
+        <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.4,0.4,0.4,1.0}">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 410.0]">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Authors: Gilles Lasnier - SUPAERO ISAE - gilles.lasnier@gmail.com&#10;               Janette Cardoso - SUPAERO ISAE - janette.cardoso@isae.fr&#10;               Pierre Siron - SUPAERO ISAE / ONERA - pierre.siron@isae.fr&#10;">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[200.0, 235.0]">
         </property>
     </property>
 </entity>
