@@ -37,6 +37,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 import java.util.Collections;
@@ -401,7 +402,7 @@ public class Gem5Wrapper extends SequenceSource {
     private InputStreamReader _writePipe;
 
     /** Sort by the difference between the command times. */
-    public static class SortByCommandTime implements Comparator<RecordToken> {
+    public static class SortByCommandTime implements Comparator<RecordToken>, Serializable {
         /** Return the difference between time 1 and time2
          *  @param t1 The record token containing the first time.
          *  @param t2 The record token containing the first time.
