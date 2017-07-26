@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 66384 2013-05-21 02:06:28Z glasnier $
 #
-# @Copyright (c) 2017 The Regents of the University of California.
+# @Copyright (c) 2013-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -53,7 +53,6 @@ OTHER_FILES_TO_BE_JARED = \
 	f14HLA.fed \
 	f14HLA.xml \
 	f14PilotStick.xml \
-	initialCentralizedF14 \
 	README.txt
 
 EXTRA_SRCS = \
