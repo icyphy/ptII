@@ -1,3 +1,11 @@
+$CLASSPATH$CLASSPATH/org/hlacerti/demo/Billard/Autorun.xml
+$CLASSPATH$CLASSPATH/org/hlacerti/demo/Billard/DisplayWithFedName.xml
+$CLASSPATH$CLASSPATH/org/hlacerti/demo/Billard/DisplayWithoutPort.xml
+$CLASSPATH$CLASSPATH/org/hlacerti/demo/Billard/PoolTable2.xml
+$CLASSPATH$CLASSPATH/org/hlacerti/demo/Billard/PoolTable3.xml
+$CLASSPATH$CLASSPATH/org/hlacerti/demo/Billard/SingleBillardBall.xml
+$CLASSPATH$CLASSPATH/org/hlacerti/demo/Billard/Synchro.xml
+$CLASSPATH$CLASSPATH/org/hlacerti/demo/Billard/TwoBilliardBalls.xml
 $CLASSPATH/lbnl/demo/CRoom/CRoom.xml
 $CLASSPATH/lbnl/demo/MatlabRoom/MatlabRoom.xml
 $CLASSPATH/lbnl/demo/SystemCommand/SystemCommand.xml
@@ -12,6 +20,9 @@ $CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14AutoPilot.xml
 $CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14HLAr74766.xml
 $CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14PilotStick.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/IntegrationTests.xml
+$CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing1Federate/TimeAdvancing1Federate.xml
+$CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/TimeAdvancing2Federates.xml
+$CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2FederatesIntervalEvents/TimeAdvancing2FederatesIntervalEvents.xml
 $CLASSPATH/org/hlacerti/demo/MicrostepReset/DistributedReceiver.xml
 $CLASSPATH/org/hlacerti/demo/MicrostepReset/DistributedSender.xml
 $CLASSPATH/org/hlacerti/demo/MicrostepReset/MicrostepReset.xml
