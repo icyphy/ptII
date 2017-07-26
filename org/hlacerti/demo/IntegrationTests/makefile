@@ -47,13 +47,25 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	./TimeAdvancing1Federate/TimeAdvancing1Federate.xml \
-	./TimeAdvancing2Federates/Federation2federatesAdvancingTime.xml \
-	./TimeAdvancing2Federates/testTimeAdvancingF1.xml \
-	./TimeAdvancing2Federates/testTimeAdvancingF2.xml \
-	./TimeAdvancing2FederatesIntervalEvents/Federation2federatesAdvancingTimeInternalEvents.xml \
-	./TimeAdvancing2FederatesIntervalEvents/testTimeAdvancingF1.xml \
-	./TimeAdvancing2FederatesIntervalEvents/TimeAdvancing2FederatesIntervalEvents.xml \
+	TimeAdvancing1Federate/priseV2.fed \
+	TimeAdvancing1Federate/README.txt \
+	TimeAdvancing1Federate/testTimeAdvancingAloneNER.txt \
+	TimeAdvancing1Federate/testTimeAdvancingAloneTAR.txt \
+	TimeAdvancing1Federate/TimeAdvancing1Federate.xml \
+	TimeAdvancing2FederatesIntervalEvents/ListenToAttributeTestTimeAdvancingF1.txt \
+	TimeAdvancing2FederatesIntervalEvents/ListenToAttributeTestTimeAdvancingF2InternalEvents.txt \
+	TimeAdvancing2FederatesIntervalEvents/priseV2.fed \
+	TimeAdvancing2FederatesIntervalEvents/README.txt \
+	TimeAdvancing2FederatesIntervalEvents/testTimeAdvancingF1.xml \
+	TimeAdvancing2FederatesIntervalEvents/testTimeAdvancingF2InternalEvent.xml \
+	TimeAdvancing2FederatesIntervalEvents/TimeAdvancing2FederatesIntervalEvents.xml \
+	TimeAdvancing2Federates/ListenToAttributeTestTimeAdvancingF1.txt \
+	TimeAdvancing2Federates/ListenToAttributeTestTimeAdvancingF2.txt \
+	TimeAdvancing2Federates/priseV2.fed \
+	TimeAdvancing2Federates/README.txt \
+	TimeAdvancing2Federates/testTimeAdvancingF1.xml \
+	TimeAdvancing2Federates/testTimeAdvancingF2.xml \
+	TimeAdvancing2Federates/TimeAdvancing2Federates.xml \
 	IntegrationTests.xml
 
 EXTRA_SRCS = \
@@ -67,7 +79,10 @@ MISC_FILES = $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
-	doc
+	doc \
+	TimeAdvancing1Federate \
+	TimeAdvancing2Federates \
+	TimeAdvancing2FederatesIntervalEvents
 
 JCLASS = $(JSRCS:%.java=%.class)
 
