@@ -48,7 +48,8 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
 JSRCS = \
-    AudioHelper.java
+	AudioHelper.java \
+	ClipPlayerHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
 	audio.js \
@@ -65,7 +66,15 @@ MISC_FILES =	test #doc
 OPTIONAL_FILES = \
 	demo \
 	doc \
-	$(PTCLASSJAR)
+	$(PTCLASSJAR) \
+	'AudioHelper$$1.class' \
+	'AudioHelper$$2.class' \
+	'AudioHelper$$3.class' \
+	'AudioHelper$$4.class' \
+	'AudioHelper$$_BYTE_FORMATS.class' \
+	'ClipPlayerHelper$$1.class' \
+	'ClipPlayerHelper$$2.class' \
+	'ClipPlayerHelper$$3.class'
 
 JCLASS = $(JSRCS:%.java=%.class)
 
