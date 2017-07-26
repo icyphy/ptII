@@ -48,6 +48,7 @@ JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
 	Browser.xml \
+	BrowserBrowser.xml \
 	BrowserFixedPage.xml \
 	BrowserInteractive.xml \
 	BrowserUpdate.xml \
