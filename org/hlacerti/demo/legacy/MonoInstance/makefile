@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II - HLA/CERTI demos f14
+# Makefile for Ptolemy II - HLA/CERTI demos
 #
-# @Authors: Gilles Lasnier, based on a file by Christopher H. Brooks
+# @Authors: Christopher Brooks
 #
-# @Version: $Id: makefile 66384 2013-05-21 02:06:28Z glasnier $
+# @Version: $Id: makefile 72850 2015-07-26 14:09:42Z cxh $
 #
-# @Copyright (c) 2013-2017 The Regents of the University of California.
+# @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,14 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/apps/hlacerti/demo/legacy/MonoInstance/f14HLA
+ME =        org/hlacerti/demo/legacy/MonoInstance
+
+DIRS = CoSimulationFunctional f14HLA \
+	MultiDataTypes MultiProducerConsumer \
+	SimpleProducerConsumer SynchronizeToRealTime
 
 # Root of the Java directory
-ROOT =      ../../../../../..
+ROOT =      ../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -41,56 +45,37 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     f14HLA
-PTCLASSJAR =    $(PTPACKAGE).jar
+PTPACKAGE =     MonoInstance
 
-JSRCS = 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	CoSimulationFunctional/CoSimulationFunctional.jar \
+	f14HLA/f14HLA.jar \
+	MultiDataTypes/MultiDataTypes.jar \
+	MultiProducerConsumer/MultiProducerConsumer.jar \
+	SimpleProducerConsumer/SimpleProducerConsumer.jar \
+	SynchronizeToRealTime/SynchronizeToRealTime.jar
 
-OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
-	f14Aircraft.xml \
-	f14AutoPilot.xml \
-	f14HLA.fed \
-	f14HLA.xml \
-	f14Initial.xml \
-	f14PilotStick.xml \
-	README.txt
+PTCLASSALLJAR= $(PTPACKAGE).jar
 
-EXTRA_SRCS = \
-    $(OTHER_FILES_TO_BE_JARED) \
-
+EXTRA_SRCS = README.txt
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES =
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
+all: jclass
 	@echo "To run all the demos, run 'make demo'"
 
+install: all jars
 
-install: all
-
-demo: demo_ptolemy demo_vergil
-
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" CoSimulationFunctional.xml
-	"$(PTII)/bin/ptolemy" consumer.xml
-	"$(PTII)/bin/ptolemy" producerFunct.xml
-	"$(PTII)/bin/ptolemy" producerSkel.xml
-
-demo_vergil:
-	"$(PTII)/bin/vergil" CoSimulationFunctional.xml
-	"$(PTII)/bin/vergil" consumer.xml
-	"$(PTII)/bin/vergil" producerFunct.xml
-	"$(PTII)/bin/vergil" producerSkel.xml
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

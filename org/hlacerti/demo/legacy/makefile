@@ -32,7 +32,9 @@
 ME =        org/hlacerti/demo/legacy
 
 DIRS = CoSimulation CoSimulationFunctional CoSimulationNetwork1 \
-	MultiProducerConsumer SimpleProducerConsumer f14HLA
+	MonoInstance \
+	MultiProducerConsumer f14HLA \
+	StaticMultiInstance
 
 # Root of the Java directory
 ROOT =      ../../../..
@@ -52,7 +54,6 @@ PTCLASSALLJARS = \
 	CoSimulationFunctional/CoSimulationFunctional.jar \
 	CoSimulationNetwork1/CoSimulationNetwork1.jar \
 	MultiProducerConsumer/MultiProducerConsumer.jar \
-	SimpleProducerConsumer/SimpleProducerConsumer.jar \
 	f14HLA/f14HLA.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
