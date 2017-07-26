@@ -1,16 +1,16 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="billard-hit" class="ptolemy.actor.TypedCompositeActor">
+<entity name="BillardHit" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={113, 313, 1339, 630}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={96, 210, 851, 549}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1118, 524]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[617, 439]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1344511020594141">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.14895176893972">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{583.04931640625, 243.72291643094496}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{361.15382107821375, 203.87355041503906}">
     </property>
     <property name="Director" class="ptolemy.actor.Director">
         <doc>Simple director that executes actors in the order in which they were created.</doc>
@@ -20,9 +20,9 @@
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model will execute the billard demonstration for the Ptolemy/HLA framework.&#10;Just run it and should execute the simulation. Pooltable is the model responsible for&#10;synchronizing the federation at the begining.&#10;ThIs model will run PoolTable2.xml as displayer. it has 3 instances plugged into an XYArrayPlotter.&#10;If there were more than 3 instances of &quot;bille&quot;, the model would create new instances, but they would not be plugged into&#10;the display (yet)&#10;&#10;The order the actors are fired is the creation order. It can be seen in the Tree tab on the left.&#10;Since Pooltable is reponsible for the federation's synchronization, it has to be the last federate started. ">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This model will execute the billard demonstration for the&#10;Ptolemy/HLA framework. Just run it and should execute the&#10;simulation. Pooltable is the model responsible for&#10;synchronizing the federation at the begining.&#10;ThIs model will run PoolTable3.xml as displayer. &#10;&#10;The order the actors are fired is the creation order. It can be&#10;seen in the Tree tab on the left. Since Pooltable is reponsible&#10;for the federation's synchronization, it has to be the last&#10;federate started. ">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 100.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[190.0, 85.0]">
         </property>
     </property>
     <property name="_defaultWebExportParameters" class="ptolemy.vergil.basic.export.web.WebExportParameters">
@@ -50,7 +50,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author : David Come">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[245.0, 335.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[300.0, 330.0]">
         </property>
     </property>
     <entity name="BIllard" class="ptolemy.vergil.actor.lib.VisualModelReference">
@@ -82,7 +82,7 @@
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{145, 195}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 170.0]">
         </property>
     </entity>
     <entity name="Sleep" class="ptolemy.actor.lib.Sleep">
@@ -94,7 +94,7 @@
             <property name="displayWidth" class="ptolemy.data.expr.Parameter" value="40">
             </property>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 220.0]">
         </property>
     </entity>
     <entity name="PoolTable" class="ptolemy.vergil.actor.lib.VisualModelReference">
@@ -110,11 +110,11 @@
         </property>
         <property name="closeOnPostfire" class="ptolemy.data.expr.StringParameter" value="do nothing">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 325.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 275.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[145.0, 380.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 330.0]">
         </property>
     </entity>
 </entity>

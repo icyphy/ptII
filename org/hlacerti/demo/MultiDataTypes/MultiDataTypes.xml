@@ -6,25 +6,25 @@
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={0, 0, 1600, 874}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 22, 875, 521}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1383, 771]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[641, 411]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.882807607239403">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4712241044306396">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{243.33008793969827, 51.26192330185421}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-125.55272507440475, -31.537286086309535}">
     </property>
     <property name="Director" class="ptolemy.actor.Director">
         <doc>Simple director that executes actors in the order in which they were created.</doc>
         <property name="iterations" class="ptolemy.data.expr.Parameter" value="0">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-290.0, -155.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-285.0, -140.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run this model to see a simple/producer (both Ptolemy models) exchanging data with several types&#10;in a distributed manner with HLA">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Run this model to see a simple/producer&#10;(both Ptolemy models) exchanging data with&#10;several types in a distributed manner with HLA.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-70.0, -140.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-235.0, -95.0]">
         </property>
     </property>
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -32,7 +32,7 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author : David Come">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-65.0, -95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-115.0, 60.0]">
         </property>
     </property>
     <entity name="Consumer" class="ptolemy.vergil.actor.lib.VisualModelReference">
@@ -56,11 +56,11 @@
         </property>
         <property name="openOnFiring" class="ptolemy.data.expr.StringParameter" value="open in Vergil">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="{-300, 35}">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-300.0, -5.0]">
         </property>
     </entity>
     <entity name="Stop" class="ptolemy.actor.lib.Stop">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-305.0, 115.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-305.0, 60.0]">
         </property>
     </entity>
 </entity>

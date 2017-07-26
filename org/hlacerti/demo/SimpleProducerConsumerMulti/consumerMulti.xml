@@ -27,13 +27,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[140.0, 50.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, -1, 1604, 877}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={552, 229, 814, 530}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1383, 771]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[580, 420]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.8900626828249062">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1982831716956015">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{594.0351938100961, 359.1800255408653}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{214.84027576446533, 188.2597337187382}">
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="15">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -52,6 +52,12 @@
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-5.0, 80.0]">
+        </property>
+    </property>
+    <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The model needs to have only one free instance of myObjectClass. &#10;After the first discovering, new myObjectClass will be created, one&#10;by following discovered instance.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 200.0]">
         </property>
     </property>
     <class name="myObjectClass" extends="ptolemy.actor.TypedCompositeActor">
@@ -95,11 +101,11 @@
     <entity name="ConsumerTimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="A,B,C">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 123, 487, 342}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={878, 123, 483, 340}, maximized=false}">
         </property>
         <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[483, 296]">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[225.0, 295.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, 145.0]">
         </property>
         <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
@@ -108,20 +114,18 @@
 <title>ConsumerTimedPlotter</title>
 <xLabel></xLabel>
 <yLabel></yLabel>
-<xRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
-<yRange min="1.7976931348623157E308" max="-1.7976931348623157E308"/>
+<xRange min="0.1" max="10.1"/>
+<yRange min="0.0" max="20.0"/>
 <default connected="no" marks="various"/>
 </plot>?>
         </configure>
     </entity>
-    <entity name="proto" class=".consumerMulti.myObjectClass">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[85.0, 295.0]">
+    <entity name="InstanceOfmyObjectClass" class="myObjectClass">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 145.0]">
         </property>
     </entity>
-    <relation name="producer1 producer1 out" class="ptolemy.actor.TypedIORelation">
-        <property name="width" class="ptolemy.data.expr.Parameter" value="Auto">
-        </property>
+    <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="ConsumerTimedPlotter.input" relation="producer1 producer1 out"/>
-    <link port="proto.out" relation="producer1 producer1 out"/>
+    <link port="ConsumerTimedPlotter.input" relation="relation"/>
+    <link port="InstanceOfmyObjectClass.out" relation="relation"/>
 </entity>
