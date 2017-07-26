@@ -5680,23 +5680,22 @@ if test ! -d "$SPHINX4_USER_DIR" ; then
 else
     AC_MSG_CHECKING([for Sphinx4 Speech recognition data jar API])
     AC_ARG_WITH(sphinx-data, [  --with-sphinx-data-jar=/path/to/sphinx4-data-5prealpha.jar  path to 
-                          defaults to \$PTII/vendors/misc/sphinx4-5prealpha-src/sphinx4-core/build/libs/sphinx4-data-5prealpha-SNAPSHOT.jar],
+                          defaults to \$PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar],
 	PTSPHINX4_DATA_JAR=$withval,
-	PTSPHINX4_DATA_JAR=$PTII/vendors/misc/sphinx4-5prealpha-src/sphinx4-data/build/libs/sphinx4-data-5prealpha-SNAPSHOT.jar)
+	PTSPHINX4_DATA_JAR=$PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar)
     if test -f "$PTSPHINX4_DATA_JAR"; then
        PT_MSG_RESULT([$PTSPHINX4_DATA_JAR])
        AC_MSG_CHECKING([for Sphinx4 Speech recognition core jar API])
-       AC_ARG_WITH(sphinx-core, [  --with-sphinx-core-jar=/path/to/sphinx4-core-5prealpha.jar  path to 
-                          defaults to \$PTII/vendors/misc/sphinx4-5prealpha-src/sphinx4-core/build/libs/sphinx4-core-5prealpha-SNAPSHOT.jar],
+       AC_ARG_WITH(sphinx-core, [  --with-sphinx-core-jar=/path/to/sphinx4-core-5prealpha.jar path to 
+                          defaults to \$PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar],
 	  PTSPHINX4_CORE_JAR=$withval,
-	  PTSPHINX4_CORE_JAR=$PTII/vendors/misc/sphinx4-5prealpha-src/sphinx4-core/build/libs/sphinx4-core-5prealpha-SNAPSHOT.jar)
+	  PTSPHINX4_CORE_JAR=$PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar)
        if test -f "$PTSPHINX4_CORE_JAR"; then
            PT_MSG_RESULT([$PTSPHINX4_CORE_JAR])
            PTSPHINX4_DIR="$PTII/ptolemy/actor/lib/jjs/modules/speechRecognition"
 	   PTSPHINX4_PACKAGES=ptolemy.actor.lib.jjs.modules.speechRecognition
            updateClasspath "$PTSPHINX4_DATA_JAR"
            updateClasspath "$PTSPHINX4_CORE_JAR"
-           updateExcludes "vendors/misc/sphinx4-5prealpha-src/"
        fi    
     fi    
 fi
@@ -5706,11 +5705,15 @@ if test -z "$PTSPHINX4_DIR"; then
     These files are only necessary for the accessor in 
     ptolemy/actor/lib/jjs/modules/speechRecognition.
     To install Sphinx4:
-    1. Download https://sourceforge.net/projects/cmusphinx/files/sphinx4/5prealpha/
-    2. unzip in $PTII/vendors/misc so that $PTII/vendors/misc/sphinx4-5prealpha-src is created
-    3. Install gradle.  Under Mac, use HomeBrew and run brew install gradle
-    4. Build with gradle compileJava
-    5. Rerun (cd $PTII; ./configure)])
+    1. mkdir $PTII/vendors/misc/sphinx4
+    2. Download these .jar files and place in ptolemy/vendors/misc/sphinx:
+
+      wget -O $PTII/vendors/misc/sphinx4/sphinx4-core-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-core&v=5prealpha&e=jar'
+
+      wget -O $PTII/vendors/misc/sphinx4/sphinx4-data-5prealpha.jar 'https://oss.sonatype.org/service/local/artifact/maven/redirect?r=releases&g=net.sf.phat&a=sphinx4-data&v=5prealpha&e=jar'
+
+    3. Rerun
+      (cd $PTII; ./configure)])
 
     updateExcludes "ptolemy/actor/lib/jjs/modules/speechRecognition/"
 fi
