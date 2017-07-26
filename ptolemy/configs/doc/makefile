@@ -170,7 +170,7 @@ demosModels.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class demos.htm models.txt
 	@echo "#"
 	@echo "# Starting to build demosModels.txt: `date`"
 	@echo "#"
-	DISPLAY= "" "$(JAVA)" "-Dptolemy.ptII.dir=$(PTII)" \
+	DISPLAY="" "$(JAVA)" "-Dptolemy.ptII.dir=$(PTII)" \
 		-classpath "$(CLASSPATH)$(CLASSPATHSEPARATOR)$(AUXCLASSPATH)" \
 		ptolemy.actor.gui.HTMLAbout demos.htm demosModels.txt
 	# Include the models in the ExecDemos directory.
