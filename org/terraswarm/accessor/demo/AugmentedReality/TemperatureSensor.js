@@ -43,19 +43,7 @@
 "use strict";
 
 exports.setup = function() {
-    // Indicate that this can reify a MutableAccessor that expects a controllableSensor.
-    this.realize('controllableSensor');
-
-	this.input('control', {
-		'type': 'JSON',
-		'value': {'step': 10}
-	});
-	this.output('data', {
-		'type': 'JSON'
-	});
-	this.output('schema', {
-		'type': 'JSON'
-	});
+	this.implement('ControllableSensor');
 };
 
 var handle = null;
@@ -64,7 +52,12 @@ exports.initialize = function() {
 	var thiz = this;
 	
 	var temperature = 0;
+
+	// Get or set to a default a step size.
 	var step = thiz.get('control')['step'];
+	if (step !== 0 && !step) {
+		step = 10;
+	}
 
 	// At initialize, send the schema;
 	this.send('schema', schema);

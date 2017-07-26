@@ -311,6 +311,15 @@ function getAccessorCode(name) {
     if (name[0] === '/' || name[0] === '\\') {
         code = FileUtilities.getFileAsString(name);
         return code;
+    } else {
+        try {
+            // Handle URLs and pathnames relative the current model directory.
+            code = getResource(name);
+            return code;
+        } catch(e) {
+            // console.log(e.toString());
+            // Ignore and continue.
+        }
     }
 
     // _accessorPath is defined in basicFunctions.js.
