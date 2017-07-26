@@ -11,9 +11,9 @@ README of the F14 HLA demo
 
 DOCUMENTATION:
  
- - This folder contains the F14 HLA demo. This demo is based on the one provided
-   by MATLAB. This demo shows how we can distribute a PtolemyII simulation using
-   HLA/CERTI (see ./initial-centralized-f14/f14_initial.xml). 
+ - This folder contains the F14 HLA demo. This demo shows how we can distribute a
+   centralized PtolemyII simulation using HLA/CERTI (see ./initial-centralized-f14/
+   f14_initial.xml based on a MATLAB demo f14). 
    The co-simulation framework PtolemyII - HLA/CERTI is used for this demo.
 
 REQUIREMENTS:

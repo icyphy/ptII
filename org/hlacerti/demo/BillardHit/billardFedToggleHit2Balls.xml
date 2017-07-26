@@ -4,13 +4,13 @@
 <entity name="billardFedToggleHit2Balls" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={308, 141, 843, 630}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={586, 22, 856, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[622, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.071081208267091">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.6329940010430646">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{181.95021984924625, 277.5893530150754}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{123.78405284881593, 289.0319788471546}">
     </property>
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="endTime">
@@ -48,7 +48,6 @@
         </property>
     </property>
     <property name="billeHit" class="org.hlacerti.lib.HlaManager">
-        <display name="billeHit"/>
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;billeHit&quot;">
             <display name="Federate's name"/>
         </property>
@@ -89,7 +88,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="11">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The function checkBallCollision in Ball.cc  uses this formula:&#10;std::sqrt((x + dx - ab-&gt;x) * (x + dx - ab-&gt;x) +&#10;   (y + dy - ab-&gt;y) * (y + dy - ab-&gt;y)) &lt;= 2 * radius;&#10;dx(3.0), dy(3.0), radius(10.0)&#10;&#10;Here is checked abs(X-X2) &lt; er">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The function checkBallCollision in Ball.cc  uses this formula:&#10;std::sqrt((x + dx - ab-&gt;x) * (x + dx - ab-&gt;x) +&#10;   (y + dy - ab-&gt;y) * (y + dy - ab-&gt;y)) &lt;= 2 * radius;&#10;dx(3.0), dy(3.0), radius(10.0)&#10;&#10;Here is checked abs(X-X2) &lt; er.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-10.0, 365.0]">
         </property>
@@ -97,13 +96,13 @@
     <class name="Bille" extends="ptolemy.actor.TypedCompositeActor">
         <property name="_location" class="ptolemy.kernel.util.Location" value="[250.0, 175.0]">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 22, 562, 602}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 22, 602, 632}, maximized=false}">
         </property>
-        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[341, 496]">
+        <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[368, 268]">
         </property>
-        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.4563698029465715">
+        <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1196576664327207">
         </property>
-        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{-4.361280174063381, 9.034866713837488}">
+        <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{25.370293721385366, -42.60457227969994}">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="endTime">
@@ -121,7 +120,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[25.0, 30.0]">
             </property>
         </port>
-        <entity name="Position" class="ptolemy.actor.lib.gui.TimedPlotter">
+        <entity name="PositionFromBilleHit2" class="ptolemy.actor.lib.gui.TimedPlotter">
             <property name="fillOnWrapup" class="ptolemy.data.expr.Parameter" value="false">
             </property>
             <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute">
@@ -173,8 +172,8 @@
         </relation>
         <link port="X" relation="relation2"/>
         <link port="Y" relation="relation3"/>
-        <link port="Position.input" relation="relation2"/>
-        <link port="Position.input" relation="relation3"/>
+        <link port="PositionFromBilleHit2.input" relation="relation2"/>
+        <link port="PositionFromBilleHit2.input" relation="relation3"/>
         <link port="HlaSubscriber3.output" relation="relation2"/>
         <link port="HlaSubscriber4.output" relation="relation3"/>
     </class>
@@ -210,7 +209,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[430.0, -70.0]">
             </property>
         </property>
-        <property name="Vx" class="ptolemy.data.expr.Parameter" value="-1.0">
+        <property name="Vx" class="ptolemy.data.expr.Parameter" value="1.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -229,7 +228,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[165.0, -70.0]">
             </property>
         </property>
-        <property name="Vy" class="ptolemy.data.expr.Parameter" value="1.0">
+        <property name="Vy" class="ptolemy.data.expr.Parameter" value="-1.0">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -361,7 +360,7 @@
             <property name="_location" class="ptolemy.kernel.util.Location" value="[155.0, -60.0]">
             </property>
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 187, 998, 634}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={117, 187, 998, 632}, maximized=false}">
         </property>
         <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[764, 402]">
         </property>
@@ -678,12 +677,12 @@
         <link port="Expression4.Y2" relation="relation14"/>
         <link port="SingleEvent.output" relation="relation4"/>
     </entity>
-    <entity name="TimedPlotter" class="ptolemy.actor.lib.gui.TimedPlotter">
+    <entity name="TPbilleHit" class="ptolemy.actor.lib.gui.TimedPlotter">
         <property name="legend" class="ptolemy.kernel.util.StringAttribute" value="X,Y,X2,Y2">
         </property>
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={35, 414, 1139, 426}, maximized=false}">
+        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={45, 270, 619, 285}, maximized=false}">
         </property>
-        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[1135, 380]">
+        <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[619, 241]">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[240.0, 335.0]">
         </property>
@@ -721,20 +720,18 @@
     </entity>
     <entity name="InstanceOfBille" class="Bille">
         <display name="billeHit2 BilleHit1"/>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[-50.0, 255.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 255.0]">
         </property>
-        <entity name="Position" class="ptolemy.actor.lib.gui.TimedPlotter">
-            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={545, 274, 504, 346}, maximized=false}">
+        <entity name="PositionFromBilleHit2" class="ptolemy.actor.lib.gui.TimedPlotter">
+            <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={666, 268, 507, 295}, maximized=false}">
             </property>
-            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[500, 300]">
+            <property name="_plotSize" class="ptolemy.actor.gui.SizeAttribute" value="[507, 251]">
             </property>
             <configure>
 <?plotml <!DOCTYPE plot PUBLIC "-//UC Berkeley//DTD PlotML 1//EN"
 "http://ptolemy.eecs.berkeley.edu/xml/dtd/PlotML_1.dtd">
 <plot>
-<title>Position</title>
-<xRange min="0.1" max="364.1"/>
-<yRange min="-1.0" max="400.0"/>
+<title>PositionFromBilleHit2</title>
 </plot>?>
             </configure>
         </entity>
@@ -775,10 +772,10 @@
     <link port="BilleHit1.Y" relation="relation"/>
     <link port="BilleHit1.X2" relation="relation5"/>
     <link port="BilleHit1.Y2" relation="relation2"/>
-    <link port="TimedPlotter.input" relation="relation3"/>
-    <link port="TimedPlotter.input" relation="relation"/>
-    <link port="TimedPlotter.input" relation="relation6"/>
-    <link port="TimedPlotter.input" relation="relation4"/>
+    <link port="TPbilleHit.input" relation="relation3"/>
+    <link port="TPbilleHit.input" relation="relation"/>
+    <link port="TPbilleHit.input" relation="relation6"/>
+    <link port="TPbilleHit.input" relation="relation4"/>
     <link port="PositionX.input" relation="relation3"/>
     <link port="PositionY.input" relation="relation"/>
     <link port="InstanceOfBille.X" relation="relation5"/>

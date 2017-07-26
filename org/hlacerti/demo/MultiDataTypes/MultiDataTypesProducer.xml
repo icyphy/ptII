@@ -7,11 +7,10 @@
     <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
         <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[50.0, -30.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[160.0, 50.0]">
         </property>
     </property>
     <property name="producer" class="org.hlacerti.lib.HlaManager">
-        <display name="producer"/>
         <property name="federateName" class="ptolemy.data.expr.Parameter" value="&quot;producer&quot;">
             <display name="Federate's name"/>
         </property>
@@ -24,16 +23,16 @@
         <property name="isCreator" class="ptolemy.data.expr.Parameter" value="true">
             <display name="Is synchronization point creator ?"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[170.0, -35.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="{300.0, 60.0}">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={-2, 299, 1604, 877}, maximized=true}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={32, 22, 853, 491}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1383, 771]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[619, 381]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9900903680182993">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.2214329351828275">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{690.3710519516051, 318.9919481091926}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{348.2973549582742, 174.05244307084516}">
     </property>
     <property name="stopTime" class="ptolemy.data.expr.Parameter" value="10">
         <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -51,7 +50,7 @@
         </property>
         <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[5.0, 0.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[115.0, 80.0]">
         </property>
     </property>
     <property name="enableBackwardTypeInference" class="ptolemy.data.expr.Parameter" value="false">
@@ -59,9 +58,9 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="10">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates data types handled by the&#10;HlaManager for the Ptolemy II - HLA/CERTI &#10;cooperation. Float, Short, Long, Unsigned_Byte &#10;data types are also supported but not have not been&#10;tested yet.&#10;&#10;The CERTI Message Buffer test shows how a basic &#10;types such as Double or Integer can be encapsulate &#10;in a specific structure according to the HLA standard.&#10;This structure facilitates data representation and their&#10;exhanges between heterogeneous execution platform.&#10;&#10;To encapsulate a basic type in a CERTI Message Buffer&#10;double-click on the HLA actors (publisher or susbcriber)&#10;and enable the corresponding option.&#10;&#10;The consumer.xml model of this demo has to be&#10;launched in first.&#10;&#10;&#10;">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="This demo illustrates data types handled by&#10;the HlaManager for the Ptolemy II - HLA/CERTI &#10;cooperation. Float, Short, Long, Unsigned_Byte &#10;data types are also supported but not have not &#10;been tested yet.&#10;&#10;The CERTI Message Buffer test shows how a basic &#10;types such as Double or Integer can be encapsulate &#10;in a specific structure according to the HLA standard.&#10;This structure facilitates data representation and their&#10;exhanges between heterogeneous execution platform.&#10;&#10;To encapsulate a basic type in a CERTI Message Buffer&#10;double-click on the HLA actors (publisher or susbcriber)&#10;and enable the corresponding option.&#10;&#10;The consumer.xml model of this demo has to be&#10;launched in first.&#10;&#10;&#10;">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[0.0, 225.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[95.0, 95.0]">
         </property>
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
@@ -71,15 +70,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Author: Gilles Lasnier (SUPAERO - ISAE).&#10;Update by David Come (SUPAERO - ISAE).">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[10.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[410.0, 275.0]">
         </property>
     </property>
     <entity name="val" class="org.hlacerti.lib.HlaPublisher">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 20.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 70.0]">
         </property>
     </entity>
     <entity name="val1" class="org.hlacerti.lib.HlaPublisher">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[560.0, 95.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 110.0]">
         </property>
     </entity>
     <entity name="val2" class="org.hlacerti.lib.HlaPublisher">
@@ -87,7 +86,7 @@
         </property>
     </entity>
     <entity name="val3" class="org.hlacerti.lib.HlaPublisher">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[565.0, 195.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[535.0, 190.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -100,7 +99,7 @@
         <property name="useCertiMessageBuffer" class="ptolemy.data.expr.Parameter" value="true">
             <display name="use CERTI message buffer"/>
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[530.0, 285.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[525.0, 225.0]">
         </property>
         <port name="input" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
@@ -110,7 +109,7 @@
         </port>
     </entity>
     <entity name="CompositeActor" class="ptolemy.actor.TypedCompositeActor">
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[275.0, 150.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[370.0, 150.0]">
         </property>
         <property name="DE Director" class="ptolemy.domains.de.kernel.DEDirector">
             <property name="stopTime" class="ptolemy.data.expr.Parameter" value="stopTime">

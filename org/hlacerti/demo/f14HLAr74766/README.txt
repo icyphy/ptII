@@ -1,15 +1,19 @@
 README of the F14 HLA PRISE demo
 
 -- Author: Gilles Lasnier - ISAE SUPAERO - gilles.lasnier@gmail.com
-           Janette Cadoso - ISAE SUPAERO - cardoso@isae.fr (updated on May, 9,2016.)
+           Janette Cadoso - ISAE SUPAERO - cardoso@isae.fr (updated on May, 9,2016;
+	   July,25,2017)
 
 -- $Id$
 
 
 DOCUMENTATION:
  
- - This folder contains the F14 HLA PRISE demo. This demo is based on the one 
-   provided by MATLAB. This demo shows how we can execute distributed and
+ - This Demo works from revision 74766 to the current revision 76434 on July, 25, 2017.
+ - This folder contains the F14 HLA PRISE demo. This demo is based on the 
+   centralized PtolemyII simulation (see ./initial-centralized-f14/
+   f14_initial.xml based on a MATLAB demo f14).
+   This demo shows how we can execute distributed and
    hardware-in-the-loop simulation using PtolemyII and the PRISE platform based
    on HLA/CERTI. The co-simulation framework PtolemyII - HLA/CERTI is used for
    this demo.
