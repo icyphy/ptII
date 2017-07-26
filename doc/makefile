@@ -1050,7 +1050,7 @@ codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDoc/allNamedObjs.txt \
 			../ptolemy/configs/doc/models.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
-	"$(JAVA)" -Xmx1500m \
+	"$(JAVA)" -Xmx7654m \
 	        -Dptolemy.ptII.batchMode=true \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
@@ -1100,7 +1100,7 @@ codeDocBcvtb/doc/codeDoc/allNamedObjs.txt: \
 codeDocBcvtb/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocBcvtb/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/bcvtb/bcvtbModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
-	"$(JAVA)" -Xmx1500m \
+	"$(JAVA)" -Xmx7654m \
 	        -Dptolemy.ptII.batchMode=true \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
@@ -1149,7 +1149,7 @@ codeDocCapeCode/doc/codeDoc/allNamedObjs.txt: \
 codeDocCapeCode/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocCapeCode/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/capecode/capecodeModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
-	"$(JAVA)" -Xmx1500m \
+	"$(JAVA)" -Xmx7654m \
 	        -Dptolemy.ptII.batchMode=true \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
@@ -1198,7 +1198,7 @@ codeDocHyVisual/doc/codeDoc/allNamedObjs.txt: \
 codeDocHyVisual/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: codeDocHyVisual/doc/codeDoc/allNamedObjs.txt ../ptolemy/configs/hyvisual/hyvisualModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
-	"$(JAVA)" -Xmx1500m \
+	"$(JAVA)" -Xmx7654m \
 	        -Dptolemy.ptII.batchMode=true \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
@@ -1248,7 +1248,7 @@ codeDocViptos/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		../ptolemy/configs/viptos/viptosModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See $PTII/ptolemy/vergil/basic/docViewerHelp.htm"
-	"$(JAVA)" -Xmx1500m \
+	"$(JAVA)" -Xmx7654m \
 	        -Dptolemy.ptII.batchMode=true \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
@@ -1298,7 +1298,7 @@ codeDocVisualSense/doc/codeDoc/ptolemy/actor/lib/RampIdx.xml: \
 		../ptolemy/configs/visualsense/visualsenseModels.txt
 	@echo "# Create the actor index."  
 	@echo "# For details, See \$PTII/ptolemy/vergil/basic/docViewerHelp.htm"
-	"$(JAVA)" -Xmx1500m \
+	"$(JAVA)" -Xmx7654m \
 	        -Dptolemy.ptII.batchMode=true \
 		-classpath "$(ROOT)$(CLASSPATHSEPARATOR)$(CLASSPATH)" \
 		ptolemy.moml.filter.ActorIndex \
