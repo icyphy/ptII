@@ -9,6 +9,9 @@ $CLASSPATH$CLASSPATH/org/hlacerti/demo/Billard/TwoBilliardBalls.xml
 $CLASSPATH/lbnl/demo/CRoom/CRoom.xml
 $CLASSPATH/lbnl/demo/MatlabRoom/MatlabRoom.xml
 $CLASSPATH/lbnl/demo/SystemCommand/SystemCommand.xml
+$CLASSPATH/org/hlacerti/demo/2Billes1Fed/2Billes1Fed.xml
+$CLASSPATH/org/hlacerti/demo/2Billes1Fed/PoolTable2.xml
+$CLASSPATH/org/hlacerti/demo/2Billes1Fed/TwoBilliardBalls.xml
 $CLASSPATH/org/hlacerti/demo/2Billes2Fed/2Billes2Fed.xml
 $CLASSPATH/org/hlacerti/demo/2Billes2Fed/BillardBall1.xml
 $CLASSPATH/org/hlacerti/demo/2Billes2Fed/BillardBall2.xml
@@ -83,6 +86,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityGDP/AugmentedRealityBasi
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityGDP/AugmentedRealityGDP.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityGDP/TagMapAccessorAR.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/Browser.xml
+$CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserBrowser.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserFixedPage.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserInteractive.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserRamp.xml
