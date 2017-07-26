@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II - HLA/CERTI demos
+# Makefile for Ptolemy II - HLA/CERTI demos f14
 #
 # @Authors: Gilles Lasnier, based on a file by Christopher H. Brooks
 #
 # @Version: $Id: makefile 66384 2013-05-21 02:06:28Z glasnier $
 #
-# @Copyright (c) 2013-2017 The Regents of the University of California.
+# @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/apps/hlacerti/demo/legacy/MultiProducerConsumer
+ME =        ptolemy/apps/hlacerti/demo/legacy/MonoInstance/f14HLA
 
 # Root of the Java directory
 ROOT =      ../../../../../..
@@ -41,21 +41,20 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     MultiProducerConsumer
+PTPACKAGE =     f14HLA
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	consumer1.xml \
-	consumer2.xml \
-	prodcons3.xml \
-	prodcons4.xml \
-	producer5.xml \
-	producer6.xml \
-	MultiProducerConsumer.xml \
-	MultiProducerConsumer.fed
+	f14Aircraft.xml \
+	f14AutoPilot.xml \
+	f14HLA.fed \
+	f14HLA.xml \
+	f14PilotStick.xml \
+	initialCentralizedF14 \
+	README.txt
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED) \
@@ -82,22 +81,16 @@ install: all
 demo: demo_ptolemy demo_vergil
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" consumer1.xml
-	"$(PTII)/bin/ptolemy" consumer2.xml
-	"$(PTII)/bin/ptolemy" MultiProducerConsumer.xml
-	"$(PTII)/bin/ptolemy" prodcons3.xml
-	"$(PTII)/bin/ptolemy" prodcons4.xml
-	"$(PTII)/bin/ptolemy" producer5.xml
-	"$(PTII)/bin/ptolemy" producer6.xml
+	"$(PTII)/bin/ptolemy" CoSimulationFunctional.xml
+	"$(PTII)/bin/ptolemy" consumer.xml
+	"$(PTII)/bin/ptolemy" producerFunct.xml
+	"$(PTII)/bin/ptolemy" producerSkel.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" consumer1.xml
-	"$(PTII)/bin/vergil" consumer2.xml
-	"$(PTII)/bin/VERGIL" MultiProducerConsumer.xml
-	"$(PTII)/bin/vergil" prodcons3.xml
-	"$(PTII)/bin/vergil" prodcons4.xml
-	"$(PTII)/bin/vergil" producer5.xml
-	"$(PTII)/bin/vergil" producer6.xml
+	"$(PTII)/bin/vergil" CoSimulationFunctional.xml
+	"$(PTII)/bin/vergil" consumer.xml
+	"$(PTII)/bin/vergil" producerFunct.xml
+	"$(PTII)/bin/vergil" producerSkel.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 66816 2013-07-05 16:14:55Z glasnier $
 #
-# @Copyright (c) 2013 The Regents of the University of California.
+# @Copyright (c) 2013-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,10 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/apps/hlacerti/demo/SynchronizeToRealTime
+ME =        ptolemy/apps/hlacerti/demo/legacy/SynchronizeToRealTime
 
 # Root of the Java directory
-ROOT =      ../../../../..
+ROOT =      ../../../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -89,6 +89,6 @@ demo_vergil:
 	"$(PTII)/bin/vergil" clockHLA.xml
 	"$(PTII)/bin/vergil" clockTransmitter.xml
 	"$(PTII)/bin/vergil" SynchronizeToRealTime.xml
-	
+
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
