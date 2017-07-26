@@ -353,6 +353,8 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
     this.code = code;
 
     this.bindings = bindings;
+    
+    this.isMutable = false;
 
     ///////////////////////////////////////////////////////////////////
     //// Override using specified bindings.
@@ -1336,10 +1338,11 @@ Accessor.prototype.getDefaultInsideBindings = function(accessorClass) {
 Accessor.prototype.getMonitor = function () {
     var obj = {};
     var type = '';
+    var thiz = this.root;
 
     // Get the type of the accessor
     // FIXME: Needs further refinement!!!
-    if (this.isMutable) {
+    if (thiz.isMutable) {
        type += 'mutable';
     } else if (this.extendedBy) {
         type += 'extended';
@@ -1530,8 +1533,8 @@ Accessor.prototype.module = {
  *  @param value The value, which should be 'true' in case this a mutable
  */
 Accessor.prototype.mutable = function (value) {
-    if (value == 'true' || value == true) {
-        this.isMutable = true;
+    if (value) {
+        this.root.isMutable = true;
 
         ////////////////////////////////////////////////////////////////////
         //// For a mutableAccessor, define additional attributes
@@ -1557,7 +1560,6 @@ Accessor.prototype.mutable = function (value) {
             'latestOccurrenceDate': {}
         };
     }
-
 };
 
 /** Define an accessor output.
@@ -1862,7 +1864,8 @@ Accessor.prototype.realize = function (name, options) {
 Accessor.prototype.reifiableBy = function (accessor) {
     // Note that we could just use this instead of this.root because of the
     // prototype chain, but in a deep hierarchy, this will be more efficient.
-    var thiz = this, i;
+    var thiz = this.root; 
+    var i;
 
     // Check that this is a mutableAccessor
     if (!thiz.isMutable) {
@@ -1969,8 +1972,8 @@ Accessor.prototype.reifiableBy = function (accessor) {
 Accessor.prototype.reify = function (accessor) {
     // Note that we could just use this instead of this.root because of the
     // prototype chain, but in a deep hierarchy, this will be more efficient.
-    var thiz = this;
-
+    var thiz = this.root;
+        
     // Check that this is a mutableAccessor
     if (!thiz.isMutable) {
         thiz.error('Cannot call reify on an accessor that is not Mutable.');
@@ -2024,7 +2027,6 @@ Accessor.prototype.reify = function (accessor) {
 	// Check that the accessor instance is a possible reification
 	var mapObject = this.reifiableBy(accessorInstance);
 
-	console.log('mapObject = '+mapObject);
 	if (mapObject) {
 		this.unreify();
 		// Add the accessor to the list of all accessors if it is a new one
@@ -2672,10 +2674,10 @@ function getTopLevelAccessors() {
     return result;
 }
 
-/** Instantiate an accessor given its fully qualified name, a function to retrieve
- *  the code, and a require function to retrieve modules.
+/** Instantiate an accessor given its fully qualified class name, a function to retrieve
+ *  the code, and bindings that include at least a require function to retrieve modules.
  *  The returned object will have a property **accessorClass** with the value of the
- *  name parameter passed in here.
+ *  class name parameter passed in here.
  *  @param accessorName A name to give to the accessor instance.
  *  @param accessorClass Fully qualified accessor class, e.g. 'net/REST'.
  *  @param getAccessorCode A function that will retrieve the source code of a specified

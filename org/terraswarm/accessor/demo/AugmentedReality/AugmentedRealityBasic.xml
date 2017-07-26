@@ -14,13 +14,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 155.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 92, 1323, 577}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={43, 92, 1340, 634}, maximized=false}">
     </property>
-    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1106, 496]">
+    <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[1106, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="0.9870122560400748">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{557.2109375000001, 365.63505075273724}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{557.2109375000001, 379.8192717837591}">
     </property>
     <property name="_layoutConfiguration" class="ptolemy.vergil.basic.layout.ActorLayoutConfiguration">
         <property name="includeDecorations" class="ptolemy.data.expr.Parameter" value="false">
@@ -260,58 +260,6 @@
             <property name="output"/>
         </port>
     </entity>
-    <entity name="MutableAccessor" class="ptolemy.actor.lib.jjs.JavaScript">
-        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// This script defines a MutableAccessor that can be reified&#10;// by accessors having a control input and data and schema outputs.&#10;&#10;exports.setup = function() {&#10;	// First, set that this is a mutable accessor that&#10;	// realizes 'controling' functionality&#10;	this.mutable(true);	&#10;	this.realize('controllableSensor');&#10;&#10;	// Defining inputs&#10;	// the MutableAccessor will receive in this input the acessor code&#10;	this.input('accessor', {&#10;		'type': 'string',&#10;		'value': ''&#10;	});&#10;	// This input can be used by the reified accessor&#10;	this.input('control', {&#10;		'type': 'JSON',&#10;	});&#10;&#10;	// Defining outputs&#10;	this.output('data', { 'spontaneous':true,&#10;		'type': 'JSON',&#10;		'value': null		&#10;	});&#10;	this.output('schema', { 'spontaneous':true,&#10;		'type': 'JSON',&#10;		'value': null&#10;	});&#10;};&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;&#10;	this.addInputHandler('accessor', function() {&#10;		var accessorCode = this.get('accessor');&#10;		thiz.send('data', null);&#10;		if (accessorCode &amp;&amp; accessorCode.length &gt; 0) {&#10;			thiz.reify(accessorCode);&#10;		} else {&#10;			thiz.unreify();&#10;		}&#10;	});&#10;};&#10;">
-            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
-                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
-                </property>
-            </property>
-        </property>
-        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
-            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
-            </property>
-            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
-            </property>
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[510.0, 295.0]">
-        </property>
-        <property name="accessor" class="ptolemy.actor.parameters.PortParameter" value="">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <property name="control" class="ptolemy.actor.parameters.PortParameter" value="0">
-            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </property>
-        <port name="accessor" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-        </port>
-        <port name="control" class="ptolemy.actor.parameters.ParameterPort">
-            <property name="input"/>
-            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
-            </property>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-        </port>
-        <port name="data" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-        <port name="schema" class="ptolemy.actor.TypedIOPort">
-            <property name="output"/>
-            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
-            </property>
-            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
-            </property>
-        </port>
-    </entity>
     <entity name="IndexGenerator" class="ptolemy.actor.lib.jjs.JavaScript">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Upon receiving the first non-empty array of tags at the input, this script&#10;// outputs a 0 to specify to use the first tag. After it has received&#10;// holdCount more inputs, it outputs a 1 to select the second tag, if there&#10;// is one. It continues like this cycling back to 0 whenever there are not&#10;// enough tags to select the next index.  This also outputs true on the&#10;// reset output each time the index changes or if there are no tags.&#10;&#10;exports.setup = function() {&#10;	this.input('tags');&#10;	this.output('reset', {&#10;		'type': 'boolean'&#10;	});&#10;	this.output('index', {&#10;		'type': 'int'&#10;	});&#10;	this.parameter('holdCount', {&#10;		'type': 'int',&#10;		'value': 10&#10;	});&#10;}&#10;&#10;exports.initialize = function() {&#10;	var thiz = this;&#10;	&#10;	var first = true;&#10;	var index = 0;&#10;	var count = 0;&#10;	var holdCount = thiz.get('holdCount');&#10;	&#10;	this.addInputHandler('tags', function() {&#10;		var tags = thiz.get('tags');&#10;		if (first &amp;&amp; tags &amp;&amp; tags.length &gt; 0) {&#10;			thiz.send('index', index);&#10;			first = false;&#10;			thiz.send('reset', true);&#10;			return;&#10;		}&#10;		count++;&#10;		if (count &gt;= holdCount) {&#10;			count = 0;&#10;			// Only switch if there is more than one tag.&#10;			if (tags &amp;&amp; tags.length &gt; 1) {&#10;				index++;&#10;				if (index &gt;= tags.length) {&#10;					index = 0;&#10;				}&#10;				thiz.send('index', index);&#10;				thiz.send('reset', true);&#10;			}&#10;		}&#10;		if (!tags) {&#10;			thiz.send('reset', true);&#10;		}&#10;	});&#10;}&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
@@ -477,6 +425,74 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="Mutable" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="exports.setup = function() {&#10;    this.extend('utilities/MutableBase');&#10;    this.implement('ControllableSensor');&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/utilities/Mutable.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Template for mutable accessors. A mutable accessor is an accessor&#10; that does nothing until it is 'reified' by another accessor. Once&#10; reified, the reifying accessor will react to inputs to this mutable and&#10; produce outputs. The reifying accessor is required to be compatible with&#10; this instance of mutable. To be compatible, every input of the reifying&#10; accessor must have a matching input in this instance of mutable, and&#10; every output of this instance of mutable must have a matching output&#10; in the reifying accessor.&lt;/p&gt;&#10;&lt;p&gt; To use this, add interface information&#10; to the setup function that matches the interface that you require,&#10; and then provide on the &lt;em&gt;accessor&lt;/em&gt; input port the source code for&#10; accessors that you want to reify this mutable. E.g.:&lt;/p&gt;&#10;&lt;pre class=&quot;prettyprint source lang-javascript&quot;&gt;&lt;code&gt; exports.setup = function() {&#10;     this.extend('utilities/MutableBase');&#10;     ... add your inputs, outputs, and parameters here ...&#10; };&lt;/code&gt;&lt;/pre&gt;&lt;p&gt; A good way to add your inputs, outputs, and parameters is to define&#10; an interface and then implement it as follows:&lt;/p&gt;&#10;&lt;pre class=&quot;prettyprint source lang-javascript&quot;&gt;&lt;code&gt; exports.setup = function() {&#10;     this.extend('utilities/MutableBase');&#10;     this.implement('MyInterfaceDefinition');&#10; };&lt;/code&gt;&lt;/pre&gt;&lt;p&gt; Your interface definition should look something like this:&lt;/p&gt;&#10;&lt;pre class=&quot;prettyprint source lang-javascript&quot;&gt;&lt;code&gt; exports.setup = function() {&#10;     this.realize('MyOntologyConcept');&#10;     this.input('in');&#10;     this.output('out');&#10;  };&lt;/code&gt;&lt;/pre&gt;&lt;p&gt; This should be put into a file named MyInterfaceDefinition.js. If that&#10; file is in the same directory as the swarmlet that uses this Mutable, then&#10; the host will be able to find the file.&lt;/p&gt;&#10;&lt;p&gt; The call to realize() associates with the interface an ontology concept,&#10; which as of this writing is just an arbitrary string. Any accessor provided&#10; at the &lt;em&gt;accessor&lt;/em&gt; input must also realize this same ontology concept in order&#10; to be able to reify the mutable.  It must also have an input named 'in'&#10; and an output named 'out', since those are the inputs and outputs defined&#10; in this interface.  The accessor provided at the &lt;em&gt;accessor&lt;/em&gt; input could&#10; simply realize this same interface.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Chadlia Jerad and Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="accessor (port)" class="ptolemy.kernel.util.StringAttribute" value="Accessor code to reify.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="accessor" class="ptolemy.actor.parameters.PortParameter" value="">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[505.0, 295.0]">
+        </property>
+        <property name="control" class="ptolemy.actor.parameters.PortParameter" value="{}">
+            <property name="_stringMode" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </property>
+        <port name="accessor" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+        </port>
+        <port name="control" class="ptolemy.actor.parameters.ParameterPort">
+            <property name="input"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+        </port>
+        <port name="data" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+        <port name="schema" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+            <property name="defaultValue" class="ptolemy.data.expr.Parameter">
+            </property>
+            <property name="_JSON" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_spontaneous" class="ptolemy.data.expr.SingletonParameter" value="true">
+            </property>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
         <vertex name="vertex1" value="[220.0, 350.0]">
         </vertex>
@@ -499,8 +515,6 @@
         <vertex name="vertex1" value="[320.0, 240.0]">
         </vertex>
     </relation>
-    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
-    </relation>
     <relation name="relation13" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation9" class="ptolemy.actor.TypedIORelation">
@@ -508,8 +522,6 @@
     <relation name="relation15" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation4" class="ptolemy.actor.TypedIORelation">
-    </relation>
-    <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation12" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -520,6 +532,10 @@
     <relation name="relation16" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation10" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation18" class="ptolemy.actor.TypedIORelation">
+    </relation>
+    <relation name="relation5" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation14" class="ptolemy.actor.TypedIORelation">
     </relation>
@@ -535,15 +551,11 @@
     <link port="GraphicOverlay.latestTranslation" relation="relation7"/>
     <link port="GraphicOverlay.reset" relation="relation17"/>
     <link port="GraphicOverlay.translation" relation="relation12"/>
-    <link port="GraphicOverlay.json" relation="relation2"/>
+    <link port="GraphicOverlay.json" relation="relation14"/>
     <link port="TagToAccessor.index" relation="relation4"/>
     <link port="TagToAccessor.tags" relation="relation3"/>
     <link port="TagToAccessor.translation" relation="relation12"/>
-    <link port="TagToAccessor.accessor" relation="relation14"/>
-    <link port="MutableAccessor.accessor" relation="relation14"/>
-    <link port="MutableAccessor.control" relation="relation11"/>
-    <link port="MutableAccessor.data" relation="relation2"/>
-    <link port="MutableAccessor.schema" relation="relation5"/>
+    <link port="TagToAccessor.accessor" relation="relation18"/>
     <link port="IndexGenerator.tags" relation="relation3"/>
     <link port="IndexGenerator.reset" relation="relation17"/>
     <link port="IndexGenerator.index" relation="relation4"/>
@@ -557,5 +569,9 @@
     <link port="Browser.post" relation="relation11"/>
     <link port="Browser.update" relation="relation10"/>
     <link port="Clock.output" relation="relation16"/>
+    <link port="Mutable.accessor" relation="relation18"/>
+    <link port="Mutable.control" relation="relation11"/>
+    <link port="Mutable.data" relation="relation14"/>
+    <link port="Mutable.schema" relation="relation5"/>
     <link relation1="relation" relation2="relation8"/>
 </entity>
