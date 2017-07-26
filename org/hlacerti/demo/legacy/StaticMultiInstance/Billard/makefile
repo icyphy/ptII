@@ -29,7 +29,7 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/apps/hlacerti/demo/legacy/MonoInstance/f14HLA
+ME =        ptolemy/apps/hlacerti/demo/legacy/StaticMultiInstance/2Billes2Fed
 
 # Root of the Java directory
 ROOT =      ../../../../../..
@@ -41,24 +41,21 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     f14HLA
+PTPACKAGE =     Billard
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
-	$(JSRCS) \
-	f14Aircraft.xml \
-	f14AutoPilot.xml \
-	f14HLA.fed \
-	f14HLA.xml \
-	f14Initial.xml \
-	f14PilotStick.xml \
-	README.txt
+	BillardTable.xml \
+	Billard.xml \
+	README.txt \
+	SingleBillardBall.xml \
+	Test.fed \
+	TwoBilliardBalls.xml
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED) \
-
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
