@@ -51,7 +51,7 @@ OTHER_FILES_TO_BE_JARED = \
 	BillardBall1.xml \
 	BillardBall2.xml \
 	BillardTable.xml \
-	2Billes2fed.xml \
+	2Billes2Fed.xml \
 	README.txt \
 	Test.fed
 

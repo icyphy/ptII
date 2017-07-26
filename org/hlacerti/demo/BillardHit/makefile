@@ -47,16 +47,14 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	billardFedToggleHit2BallsBis.xml \
+	billardFedToggleHit2Balls.xml \
 	BillardHit.xml \
+	centralized/centralizedBillardToggleHit2Balls.xml \
+	centralized/centralizedToggleHit.xml \
 	PoolTable3.xml \
 	README.txt \
-	SingleBillardBall.xml \
-	Test.fed \
-	TwoBilliardBalls.xml \
-	billardFedToggleHit2Balls.xml \
-	billardFedToggleHit2BallsBis.xml \
-	billardToggleHit.xml \
-	billardToggleHit2Balls.xml
+	Test.fed
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
@@ -66,7 +64,8 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	doc
+OPTIONAL_FILES = 	doc \
+	centralized
 
 JCLASS = $(JSRCS:%.java=%.class)
 
