@@ -80,55 +80,24 @@ public class SpeechRecognitionHelper extends HelperBase {
 	public SpeechRecognitionHelper(Object actor, ScriptObjectMirror helping, ScriptObjectMirror options) throws IllegalActionException {
 		super(actor, helping);
 		
-		if (options.containsKey("continuous")) {
-			_continuous = (Boolean) options.get("continuous");
-		} else {
-			_continuous = true;
-		}
-		
-		File testFile;
-		
-		// Set any language model and dictionary.  Check if they exist, since Sphinx fails silent if they don't.
-		if (options.containsKey("languageModelPath") && !options.get("languageModelPath").toString().isEmpty()) {
-			testFile = new File((String) options.get("languageModelPath"));
-			if(!testFile.exists() || !testFile.isFile()) { 
-				_currentObj.callMember("emit", "onerror", "SpeechRecognition:  Requested language model file does not "
-						+ "exist: " + (String) options.get("languageModelPath"));
-				_languageModelPath = _defaultLanguageModelPath;
-			}
-			_languageModelPath = (String) options.get("languageModelPath");
-		} else {
-			_languageModelPath = _defaultLanguageModelPath;
-		}
-		
-		if (options.containsKey("dictionaryPath") && !options.get("dictionaryPath").toString().isEmpty()) {
-			_dictionaryPath = (String) options.get("dictionaryPath");
-			testFile = new File((String) options.get("dictionaryPath"));
-			if(!testFile.exists() || !testFile.isFile()) { 
-				_currentObj.callMember("emit", "onerror", "SpeechRecognition:  Requested dictionary file does not "
-						+ "exist: " + (String) options.get("dictionaryPath"));
-				_dictionaryPath = _defaultDictionaryPath;
-			}
-		} else {
-			_dictionaryPath = _defaultDictionaryPath;
+		if (options != null) {
+			setOptions(options);
 		}
 		
 		 _worker = null;
 		 
 		 // Disable Sphinx console log messages.  Sphinx produces a lot of them.
-		 /*
 	     Logger cmRootLogger = Logger.getLogger("default.config");
 	     cmRootLogger.setLevel(java.util.logging.Level.OFF);
 	     String conFile = System.getProperty("java.util.logging.config.file");
 	     if (conFile == null) {
 	           System.setProperty("java.util.logging.config.file", "ignoreAllSphinx4LoggingOutput");
 	     }
-	     */
 		 
 		 // Load speech recognizer by reflection since .jar files are not included with Ptolemy due to size.
  			
 	     try {
-			File jarFile = new File("vendors/misc/sphinx/sphinx4-core-5prealpha.jar");
+	    	File jarFile = new File("vendors/misc/sphinx4-5prealpha-src/sphinx4-core/build/libs/sphinx4-core-5prealpha-SNAPSHOT.jar");
 			URL urls[] = { new URL("jar:file:" + jarFile.getCanonicalPath() + "!/") };
 			
 			URLClassLoader loader = URLClassLoader.newInstance(urls);
@@ -150,32 +119,71 @@ public class SpeechRecognitionHelper extends HelperBase {
 		        _recognizer = _recognizerClass.getConstructor(configurationType).newInstance(_configuration);
 
 	       } catch(InvocationTargetException e) {
-		        _currentObj.callMember("emit", "onerror", "Failed to instantiate speech recognizer: " + e.getMessage());
+	    	   _error("Failed to instantiate speech recognizer: " + e.getMessage());
 	       } catch(IllegalAccessException e2) {
-		        _currentObj.callMember("emit", "onerror", "Failed to instantiate speech recognizer: " + e2.getMessage());
+	    	   _error("Failed to instantiate speech recognizer: " + e2.getMessage());
 	       } catch(NoSuchMethodException e3) {
-		        _currentObj.callMember("emit", "onerror", "Failed to instantiate speech recognizer: " + e3.getMessage());
+	    	   _error("Failed to instantiate speech recognizer: " + e3.getMessage());
 	       } catch(InstantiationException e4) {
-	    	   _currentObj.callMember("emit", "onerror", "Failed to instantiate speech recognizer: " + e4.getMessage());
+	    	   _error("Failed to instantiate speech recognizer: " + e4.getMessage());
 	       }
 			
 	     } catch(MalformedURLException e) {
-	    	 _currentObj.callMember("emit", "onerror", "Failed to load speech recognition .jar file.  This file must be downloaded separately. " + e.getMessage());
+	    	 _error("Failed to load speech recognition .jar file.  This file must be downloaded separately. " + e.getMessage());
 	     } catch(IOException e2) {
-	    	 _currentObj.callMember("emit", "onerror", "Failed to load speech recognition .jar file.  This file must be downloaded separately. " + e2.getMessage());
+	    	 _error("Failed to load speech recognition .jar file.  This file must be downloaded separately. " + e2.getMessage());
 	     } catch(ClassNotFoundException e3) {
-	    	 _currentObj.callMember("emit", "onerror", "Failed to load speech recognition classes.  The .jar file must be downloaded separately. " + e3.getMessage());
+	    	 _error("Failed to load speech recognition classes.  The .jar file must be downloaded separately. " + e3.getMessage());
 	     }
+	}
+	
+	/** Set speech recognition options, including "continuous", "dictionaryPath", and "languageModelPath".
+	 * @param options  Speech recognition options, including "continuous", "dictionaryPath" and "languageModelPath".
+	 */
+	public void setOptions(ScriptObjectMirror options) {
+		if (options.containsKey("continuous")) {
+			_continuous = (Boolean) options.get("continuous");
+		} else {
+			_continuous = true;
+		}
+		
+		File testFile;
+		
+		_languageModelPath = _defaultLanguageModelPath;
+		
+		if (options.containsKey("languageModelPath") && !options.get("languageModelPath").toString().isEmpty()) {
+			testFile = new File((String) options.get("languageModelPath"));
+			if(!testFile.exists() || !testFile.isFile()) { 
+				_error("SpeechRecognition:  Requested language model file does not "
+						+ "exist: " + (String) options.get("languageModelPath") + ".  Using default language model.");
+			} else {
+				_languageModelPath = (String) options.get("languageModelPath");
+			}
+		}
+		
+		_dictionaryPath = _defaultDictionaryPath;
+		
+		if (options.containsKey("dictionaryPath") && !options.get("dictionaryPath").toString().isEmpty()) {
+			testFile = new File((String) options.get("dictionaryPath"));
+			if(!testFile.exists() || !testFile.isFile()) { 
+				_error("SpeechRecognition:  Requested dictionary file does not "
+						+ "exist: " + (String) options.get("dictionaryPath") + ". Using default dictionary.");
+				_dictionaryPath = _defaultDictionaryPath;
+			} else {
+				_dictionaryPath = (String) options.get("dictionaryPath");
+			}
+		} 
 	}
 	
 	/** Start speech recognition.  The recognizer runs in a separate thread, since it runs continuously.
 	 */
 	
 	public void start() {
+		_stopRequested = false;		// Clear any pending stops.
 		Class<?>[] booleanType = {boolean.class};
 
 		if (_recognizer == null) {
-			_currentObj.callMember("emit", "onerror", "Cannot start speech recognizer.  Speech recognizer failed to initialize.");
+			_error("Cannot start speech recognizer.  Speech recognizer failed to initialize.");
 			return;
 		}
 		
@@ -187,28 +195,14 @@ public class SpeechRecognitionHelper extends HelperBase {
 	    			try {
 	    				_recognizer.getClass().getMethod("startRecognition", booleanType).invoke(_recognizer, true);
 	    			} catch(InvocationTargetException e) {
-	    				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to start: " + e.getMessage());
+	    				_error("Speech recognizer failed to start: " + e.getMessage());
 	    			} catch(NoSuchMethodException e2) {
-	    				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to start: " + e2.getMessage());
+	    				_error("Speech recognizer failed to start: " + e2.getMessage());
 	    			} catch(IllegalAccessException e3) {
-	    				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to start: " + e3.getMessage());
+	    				_error("Speech recognizer failed to start: " + e3.getMessage());
 	    			}
 	    			
-	            	while (true) {
-		            	if (Thread.interrupted()) {
-		        			try {
-		        				_recognizer.getClass().getMethod("stopRecognition").invoke(_recognizer);
-		        				_worker = null;
-		        			} catch(InvocationTargetException e) {
-		        				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to stop: " + e.getMessage());
-		        			} catch(NoSuchMethodException e2) {
-		        				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to stop: " + e2.getMessage());
-		        			} catch(IllegalAccessException e3) {
-		        				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to stop: " + e3.getMessage());
-		        			}
-		            		return;
-		            	} 
-		            	
+	            	while (!_stopRequested) {
 		            	String utterance;
 		            	
 		    			try {
@@ -226,16 +220,29 @@ public class SpeechRecognitionHelper extends HelperBase {
 			    				}
 			    			}
 		    			} catch(InvocationTargetException e) {
-		    				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to start: " + e.getMessage());
+		    				_error("Speech recognizer failed to start: " + e.getMessage());
 		    				_worker.interrupt();
 		    			} catch(NoSuchMethodException e2) {
-		    				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to start: " + e2.getMessage());
+		    				_error("Speech recognizer failed to start: " + e2.getMessage());
 		    				_worker.interrupt();
 		    			} catch(IllegalAccessException e3) {
-		    				_currentObj.callMember("emit", "onerror", "Speech recognizer failed to start: " + e3.getMessage());
+		    				_error("Speech recognizer failed to start: " + e3.getMessage());
 		    				_worker.interrupt();
 		    			}
 	            	}
+	            	
+        			try {
+        				_recognizer.getClass().getMethod("stopRecognition").invoke(_recognizer);
+        				_stopRequested = false;
+        				_worker = null;
+        			} catch(InvocationTargetException e) {
+        				_error("Speech recognizer failed to stop: " + e.getMessage());
+        			} catch(NoSuchMethodException e2) {
+        				_error("Speech recognizer failed to stop: " + e2.getMessage());
+        			} catch(IllegalAccessException e3) {
+        				_error("Speech recognizer failed to stop: " + e3.getMessage());
+        			}
+            		return;
 	            }
 	        };
 	        
@@ -247,9 +254,7 @@ public class SpeechRecognitionHelper extends HelperBase {
 	 */
 	
 	public void stop() {
-		if (_worker != null) {
-			_worker.interrupt();
-		}
+		_stopRequested = true;
 	}
 	
     ///////////////////////////////////////////////////////////////////
@@ -287,6 +292,9 @@ public class SpeechRecognitionHelper extends HelperBase {
 	
 	/** The instance of edu.cmu.sphinx.api.SpeechResult. */
 	private Object _speechResult;
+	
+	/** Flag for stopping speech recognition.  */
+	private boolean _stopRequested;
 	
 	/** A separate thread to run the speech recognizer in.  */
 	private Thread _worker;
