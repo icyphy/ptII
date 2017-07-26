@@ -4,7 +4,7 @@
 #
 # @Version: $Id: makefile 66384 2013-05-21 02:06:28Z glasnier $
 #
-# @Copyright (c) 2013 The Regents of the University of California.
+# @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,10 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        ptolemy/apps/hlacerti/demo/MultiDataTypes
+ME =        ptolemy/apps/hlacerti/demo/legacy/MultiDataTypes
 
 # Root of the Java directory
-ROOT =      ../../../../..
+ROOT =      ../../../../../..
 
 CLASSPATH = $(ROOT)
 
