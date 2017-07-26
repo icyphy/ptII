@@ -67,7 +67,9 @@ PTCLASSALLJARS = \
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
-EXTRA_SRCS =
+OTHER_FILES_TO_BE_JARED = README.pdf
+
+EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
