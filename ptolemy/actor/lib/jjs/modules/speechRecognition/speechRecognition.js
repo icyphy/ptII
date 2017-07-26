@@ -22,7 +22,8 @@
 //
 
 /**
- * A module to support speech recognition
+ * A module to support speech recognition.  Only live speech recognition is 
+ * 
  * @module speechRecognition
  * @author Christopher Brooks, based on speech-recognition.js by Beth Osyk
  * @version $$Id: udpSocket.js 75575 2016-12-29 05:17:30Z eal $$
@@ -36,9 +37,6 @@
 
 // Java types used
 var SpeechRecognitionHelper = Java.type('ptolemy.actor.lib.jjs.modules.speechRecognition.SpeechRecognitionHelper');
-
-// TODO:  Should this be a singleton, since probably only one instance can 
-// can access the microphone at a time?
 var EventEmitter = require('events').EventEmitter;
 
 /** Create a SpeechRecognition object.  
@@ -46,12 +44,7 @@ var EventEmitter = require('events').EventEmitter;
  * recognition automatically after one phrase has been detected.
  */
 exports.SpeechRecognition = function(options) {
-	
     this.recognition = new SpeechRecognitionHelper(actor, this, options); 
-    
-        
-	// TODO:  Implement options.  Right now this only works in continuous mode
-	// for English.
 };
 
 util.inherits(exports.SpeechRecognition, EventEmitter);
@@ -61,6 +54,7 @@ util.inherits(exports.SpeechRecognition, EventEmitter);
  */
 // TODO:  Set options.
 exports.SpeechRecognition.prototype.setOptions = function(options) {
+	this.recognition.setOptions(options);
 };
 
 /** Start recognizing speech.
