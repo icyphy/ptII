@@ -10,7 +10,7 @@
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.1498641644896233">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{308.99868965148926, 255.6863013812308}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{308.9986896514893, 255.6863013812308}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- BrowserFixedPage: Display a fixed, static web page upon initialization.">
@@ -138,6 +138,31 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 200.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BrowserInteractive.xml">
+            <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
+            </property>
+            <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
+                <property name="_color" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 1.0, 1.0}">
+                </property>
+            </property>
+            <property name="_smallIconDescription" class="ptolemy.kernel.util.SingletonConfigurableAttribute">
+                <configure>
+      <svg>
+        <text x="20" style="font-size:14; font-family:SansSerif; fill:blue" y="20">LL</text>
+      </svg>
+    </configure>
+            </property>
+            <property name="_editorFactory" class="ptolemy.vergil.toolbox.VisibleParameterEditorFactory">
+            </property>
+            <property name="_location" class="ptolemy.kernel.util.Location" value="{50, 210}">
+            </property>
+        </property>
+    </property>
+    <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- BrowserBrowser: Launch a page plus browser host, load a WebSocket accessor, and update data.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 225.0]">
+        </property>
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BrowserBrowser.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
