@@ -375,7 +375,6 @@ function createTemplatePage() {
                         var content = split[3];\n\
                         if (property == "html") {\n\
                             // Use jQuery html function here so scripts in content are evaluated.\n\
-                            // FIXME: Doesnt work in Firefox.\n\
                             $("#" + id).html(content);\n\
                         } else {\n\
                             var element = document.getElementById(id);\n\
@@ -386,7 +385,7 @@ function createTemplatePage() {
                         if (result.startsWith("REMOVEME<<")) {\n\
                             result = result.replace("REMOVEME<<", "<<");\n\
                         }\n\
-                        $("#contents").html(result);\n\
+                        $("body").html(result);\n\
                     }\n\
                 };\n\
                 fr.readAsText(event.data);\n\
@@ -408,9 +407,9 @@ function createTemplatePage() {
     var template = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Browser Swarmlet Interface</title>'
             + script
             + this.header
-            + '</head><body><div id="contents">'
+            + '</head><body>'
             + this.content
-            + '</div></body></html>'
+            + '</body></html>'
     this.server.setResponse(template);
     this.browserLauncher.openURL('http://localhost:' + this.port);
 }
