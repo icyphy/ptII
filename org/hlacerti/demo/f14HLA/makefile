@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II 2Billes1Fed demo
+# Makefile for Ptolemy II f14HLA demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
 # @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
 #
-# @Copyright (c) 2015-2017 The Regents of the University of California.
+# @Copyright (c) 2016 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/hlacerti/demo/2Billes1Fed
+ME =		org/hlacerti/demo/f14HLA
 
 # Root of the Java directory
 ROOT =		../../../../
@@ -41,14 +41,20 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	2Billes1Fed
+PTPACKAGE = 	f14HLA
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	2Billes1Fed.xml \
-	Billard.xml
+	README.txt \
+	f14Aircraft.xml \
+	f14AutoPilot.xml \
+	f14HLA.xml \
+	f14PilotStick.xml \
+	priseStick/src/XML/Sources/prise_parameters.xml \
+	priseV2.fed \
+	initialCentralizedF14/f14CentralizedControllerDE.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
@@ -58,7 +64,10 @@ MISC_FILES = $(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
-OPTIONAL_FILES = 	doc
+OPTIONAL_FILES = \
+	doc \
+	initialCentralizedF14 \
+	priseStick
 
 JCLASS = $(JSRCS:%.java=%.class)
 
@@ -72,16 +81,16 @@ install: all $(PTCLASSJAR)
 demo: demo_ptolemy demo_vergil
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer 2Billes2Fed.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer f14HLA.htm
 
 #demo_applet_vergil:
 #	CLASSPATH="$(CLASSPATH)" appletviewer .htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" 2Billes2Fed.xml
+	"$(PTII)/bin/ptolemy" f14HLA.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" 2Billes2Fed.xml
+	"$(PTII)/bin/vergil" f14HLA.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
