@@ -11,6 +11,9 @@ BilliardTable is a federate which can display up to 3 instances of class Bille
 (see Test.fed file for the FOM description).
 TwoBilliardBalls.xml is a federate with 2 billiard balls (class Bille) while  SingleBillardBall.xml has only one instance of class Bille.
 
+
+Interaction with C++ federates from CERTI demo:
+----------------------------------------------
 For having a correct interaction between C++ and Ptolemy billiard federates, the patched version of billiard.cc must be used (/** pour recevoir la nouvelle position de la bille en 2 RAV avec un seul attribut par RAV */).
 
 There should be no memory effect with BilliarTable when running several simulations in a row. But in case of doubt, I advice to close it and re-open.
