@@ -31,7 +31,7 @@
 
 ME =        org/hlacerti/demo
 
-DIRS = 2Billes1Fed 2Billes2Fed Billard BillardHit f14HLAr74766 \
+DIRS = 2Billes1Fed 2Billes2Fed Billard BillardHit f14HLA \
 	IntegrationTests \
 	MicrostepReset ModelUpdater \
 	MultiDataTypes SimpleProducerConsumerMulti SynchronizeToRealTime \
@@ -55,7 +55,7 @@ PTCLASSALLJARS = \
 	2Billes2Fed/2Billes2Fed.jar \
 	Billard/Billard.jar \
 	BillardHit/BillardHit.jar \
-	f14HLAr74766/f14HLAr74766.jar \
+	f14HLA/f14HLA.jar \
 	IntegrationTests/IntegrationTests.jar \
 	MicrostepReset/MicrostepReset.jar \
 	ModelUpdater/ModelUpdater.jar \
