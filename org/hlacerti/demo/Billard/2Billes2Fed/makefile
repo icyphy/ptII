@@ -29,10 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/hlacerti/demo/2Billes2Fed
+ME =		org/hlacerti/demo/Billard/2Billes2Fed
 
 # Root of the Java directory
-ROOT =		../../../../
+ROOT =		../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
