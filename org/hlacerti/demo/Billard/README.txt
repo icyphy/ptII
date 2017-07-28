@@ -9,15 +9,16 @@ instances.
 instances, and a second one, BillardTable.xml that displays the two ball instances.
 A third federate, SingleBillardBall.xml can also be launched in this federation.
 
-Both demo can interact with C++ federates.
+- Others: 
+  - DisplayWithFedName.xml. It works only when launched with one federate, e.g.,
+    2Billes1Fed/SingleBillardBall.xml. A text file is created during the running and named
+    as the publishing instance, e.g., billiard Bille1A. Does not work with 2 instances.
+  - Autorun.xml must be corrected. It needs Synchro.xml (still in this folder) and 
+   federates publishing the ball and display it (they can be taken from 2Billes1Fed or
+   2Billes2Fed).
+  - Federate DisplayWithoutPort.xml does not work and will be deleted. 
 
-Other files in this folder:
-- DisplayWithFedName.xml. It works only when launched with one federate, e.g.,
-2Billes1Fed/SingleBillardBall.xml. A text file is created during the running and named
-as the publishing instance.
-- Autorun.xml must be corrected. It needs Synchro.xml (still in this folder) and federates publishing the ball and display it (they can be taken from 2Billes1Fed or 2Billes2Fed).
-
-Federate DisplayWithoutPort.xml does not work and will be deleted. 
+Both demo 2Billes1Fed  and 2Billes2Fed  can interact with C++ federates.
 
 Interaction with C++ federates:
 -------------------------------
