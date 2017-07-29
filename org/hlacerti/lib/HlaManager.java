@@ -1528,7 +1528,8 @@ public class HlaManager extends AbstractInitializableAttribute
                     if (!verify) {
                         throw new Exception();
                     }
-                    System.out.println(name);
+                    // Don't print the just the text file name, it is annoying.
+                    // System.out.println(name);
                     return file;
                 } catch (Exception e) {
                     System.out.println("Couldn't create the file.");
