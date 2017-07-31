@@ -263,8 +263,6 @@ var deterministicTemporalSemantics = require('./modules/deterministicTemporalSem
  *    This is used by this.removeInputHandler(). If the handler is one
  *    for any input, then nameOfInput is null and arrayIndexOfHandler
  *    specifies the position of the handler in the anyInputHandlers array.
- *  * **monitor**: An object that records the number of initializations, wrapups and
- *    reactions, as well as the dates of each first and last events.
  *  * **realizesList**: An array of realized features names (see below).
  *  * **realizes**: An object with one property per realized feature (see below).
  *
@@ -419,37 +417,6 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
         // List of contained accessors.
         this.containedAccessors = [];
 
-        ////////////////////////////////////////////////////////////////////
-        //// Support for monitoring.
-        this.monitor = {};
-
-        // Monitoring initialize events
-        this.monitor.initialize = {
-            'count': 0,
-            'firstOccurrenceDate': {},
-            'latestOccurrenceDate': {}
-        };
-
-        // Monitoring react events
-        this.monitor.reactStart = {
-            'count': 0,
-            'firstOccurrenceDate': {},
-            'latestOccurrenceDate': {}
-        };
-
-        // Monitoring react events
-        this.monitor.reactEnd = {
-            'count': 0,
-            'firstOccurrenceDate': {},
-            'latestOccurrenceDate': {}
-        };
-
-        // Monitoring wrapup events
-        this.monitor.wrapup = {
-            'count': 0,
-            'firstOccurrenceDate': {},
-            'latestOccurrenceDate': {}
-        };
     }
 
     // Define the exports object to be populated by the accessor code.
@@ -641,8 +608,7 @@ clearTimeout',
         // exports.initialize() and exports.wrapup(), if those are defined.
         this.initialize = function () {
             var thiz = this;
-            // Clearing all timers before initializing
-            // thiz.clearTimers();
+            this.emit('initializeStart');
             
             if (this.containedAccessors && this.containedAccessors.length > 0) {
                 this.assignPriorities();
@@ -662,11 +628,8 @@ clearTimeout',
                 this.exports.initialize.call(this);
             }
             this.initialized = true;
-            
-            // Update monitoring information
-            this.updateMonitoringInformation('initialize');
 
-            this.emit('initialize');
+            this.emit('initializeEnd');
         };
 
         this.fire = function () {
@@ -682,6 +645,7 @@ clearTimeout',
             // console.log('wrapup for accessor: ' + this.accessorName);
             // Mark that this accessor has not been initialized.
             this.initialized = false;
+            this.emit('wrapupStart');
 
             // Remove all input handlers.
             this.inputHandlers = {};
@@ -709,10 +673,7 @@ clearTimeout',
                 this.exports.wrapup.call(this);
             }
 
-            // Update monitoring information
-            this.updateMonitoringInformation('wrapup');
-
-            this.emit('wrapup');
+            this.emit('wrapupEnd');
         };
     }
 }
@@ -1328,49 +1289,16 @@ Accessor.prototype.getDefaultInsideBindings = function(accessorClass) {
     return insideBindings;
 }
 
-/** Return an object that contains the accessor name, type (one or a combination of 
- *  'mutable', 'extended', 'implemented', 'toplevel' or 'composite'), the accessor's 
- *  monitor object, and an array of the contained accessors' monitoring information,
- *  if the current one is a composite.
- *  @return an object with the monitoring information of the accessor and its contained
- *   accessors.
+/** Return an object that contains the accessor's monitor object. Prior to this, the 
+ *  total utilization is computed up to this point.
+ *
+ *  @return the accessor's monitor object.
  */
-Accessor.prototype.getMonitor = function () {
-    var obj = {};
-    var type = '';
-    var thiz = this.root;
-
-    // Get the type of the accessor
-    // FIXME: Needs further refinement!!!
-    if (thiz.isMutable) {
-       type += 'mutable';
-    } else if (this.extendedBy) {
-        type += 'extended';
-    } else if (this.implementedBy) {
-        type += 'implemented';
-    } 
-
-    if (!this.container) {
-        type += '::topLevel';
-    } else {
-        type += '::composite';
-    }
-
-    // Fill the object to return
-    obj = {
-    	'name': this.accessorName,
-        'type': type,
-        'monitoringInformation': this.monitor,
-        'composites': []
-    };
-
-    if (this.containedAccessors && this.containedAccessors.length > 0) {        
-		for (var i = 0; i < this.containedAccessors.length; i++) {
-            obj.composites.push(this.containedAccessors[i].getMonitor());
-        }
-    }
-
-    return obj;
+Accessor.prototype.getMonitoring = function() {
+	this.monitor.utilization = this.monitor.initialize.utilization +
+			this.monitor.react.utilization + 
+			this.monitor.wrapup.utilization;
+    return this.monitor;
 }
 
 /** Default implementation of this.getParameter(), which reads the current value of the
@@ -1541,24 +1469,8 @@ Accessor.prototype.mutable = function (value) {
 
         this.inputsMap = {};
         this.outputsMap = {};
-        this.parametersMap = {};
 
         this.state = 'instantiated';
-
-        ////////////////////////////////////////////////////////////////////
-        //// Support for additional monitoring information
-
-        // Monitoring reification events
-        this.monitor.reified = {
-            'count': 0,
-            'firstOccurrenceDate': {},
-            'latestOccurrenceDate': {}
-        };
-        this.monitor.unreified = {
-            'count': 0,
-            'firstOccurrenceDate': {},
-            'latestOccurrenceDate': {}
-        };
     }
 };
 
@@ -1672,8 +1584,6 @@ Accessor.prototype.react = function (name) {
     // console.log(this.accessorName + ": ================== react(" + name + ")");
 
     this.emit('reactStart');
-    // Update monitoring information
-    this.updateMonitoringInformation('reactStart');
 
     var thiz = this.root;
 
@@ -1805,9 +1715,6 @@ Accessor.prototype.react = function (name) {
         //console.log('commonHost.js react(' + name + '): invoking fire');
         this.exports.fire.call(this);
     }
-
-    // Update monitoring information
-    this.updateMonitoringInformation('reactEnd');
 
     this.emit('reactEnd');
 };
@@ -2055,7 +1962,8 @@ Accessor.prototype.reify = function (accessor) {
 
     	// Update the mutableAccessor state and history
     	thiz.state = 'reified';
-    	thiz.updateMonitoringInformation('reified');
+
+    	thiz.emit('reified');
     	return true;
     } else {
     	thiz.error('Accessor supplied cannot reify the mutableAccessor: ' + thiz.accessorName);
@@ -2437,6 +2345,72 @@ Accessor.prototype.setTimeoutDeterministic = function(callback, timeout, llcd, p
     return tempo;
 }
 
+/** Starts monitoring the accessor behavior. For this, a monitor object is created/
+ *  reinitialized. The monitor object records the start monitoring time, end 
+ *  monitoring time, total utilization and monitor objects for each of the events
+ *  'initialize', 'react' and 'wrapup'. Listeners are added to the events. 
+ *  If deeply parameter is set, then all the contained accessors will also call 
+ *  startMonitoring.
+ *
+ *  @param: deeply Boolean value. If set to true, it indicates to start monitoring 
+ *   all contained accessors.
+ */
+Accessor.prototype.startMonitoring = function(deeply) {
+	var thiz = this;
+
+	// Construct the monitor object
+	this.monitor = {};
+	this.monitor.utilization = 0;
+	this.monitor.startMonitoringTime = Date.now();
+
+	// Monitoring initialize events
+	this.monitor.initialize = {
+		'count': 0,
+		'utilization': 0,
+		'latestStart': 0,
+		'latestEnd': 0
+    };
+
+    // Monitoring react events
+    this.monitor.react = {
+		'count': 0,
+		'utilization': 0,
+		'latestStart': 0,
+		'latestEnd': 0
+    };
+
+    // Monitoring wrapup events
+    this.monitor.wrapup = {
+		'count': 0,
+		'utilization': 0,
+		'latestStart': 0,
+		'latestEnd': 0
+    };
+
+    // If needed, start monitoring all contained accessors.
+	if (deeply) {
+        if (this.containedAccessors && this.containedAccessors.length > 0) {
+            for (var i = 0; i < this.containedAccessors.length; i++) {
+                this.containedAccessors[i].startMonitoring(deeply);
+            }
+        }
+	}
+
+	if (this.monitoring) {
+        // Already monitoring. Just reset as above.
+        return;
+    }
+
+    // Add to each event listeners for 'start' and 'end'
+    this.monitoring = true;
+    thiz.addListener('initializeStart', _recordEventStart.bind(thiz, 'initialize'));
+    thiz.addListener('initializeEnd', _recordEventEnd.bind(thiz, 'initialize'));
+    thiz.addListener('reactStart', _recordEventStart.bind(thiz, 'react'));
+    thiz.addListener('reactEnd', _recordEventEnd.bind(thiz, 'react'));
+    thiz.addListener('wrapupStart', _recordEventStart.bind(thiz, 'wrapup'));
+    thiz.addListener('wrapupEnd', _recordEventEnd.bind(thiz, 'wrapup'));
+};
+
 /** Stop execution of the enclosing swarmlet by finding the top-level
  *  accessor and invoking wrapup() on it.
  */
@@ -2478,6 +2452,56 @@ Accessor.prototype.stopAt = function (timeout) {
     }
 };
 
+/** Stops monitoring the accessor's status. After the monitoring stop time is set,
+ *  all events utilizations are updated based on the monitoring stop time, listeners 
+ *  are removed, and monitoring is stopped for all contained accessors. Finally, 
+ *  monitor object is returned.
+ * 
+ *  @return the accessor's monitor object.
+ */
+Accessor.prototype.stopMonitoring = function() {
+	var thiz = this;
+	this.monitor.stopMonitoringTime = Date.now();
+
+	// Update utilization based on stopMonitoringTime, for each of the events
+	var events = ['initialize', 'react', 'wrapup'];
+	for (var event in events) {
+		if (this.monitor[events[event]].latestEnd > this.monitor[events[event]].latestStart) {
+			var latestUtilizationTime = this.monitor[events[event]].utilization * 
+					(this.monitor[events[event]].latestEnd - this.monitor.startMonitoringTime);
+			this.monitor[events[event]].utilization = latestUtilizationTime / 
+					(this.monitor.stopMonitoringTime - this.monitor.startMonitoringTime);
+		} else if (this.monitor[events[event]].latestStart > this.monitor[events[event]].latestEnd) {
+			var latestUtilizationTime = this.monitor[events[event]].utilization * 
+					(this.monitor[events[event]].latestEnd - this.monitor.startMonitoringTime);
+			this.monitor[events[event]].utilization = latestUtilizationTime + 
+					(this.stopMonitoringTime - this.monitor[events[event]].latestStart);
+			this.monitor[events[event]].utilization /= 
+					(this.monitor.stopMonitoringTime - this.monitor.startMonitoringTime);
+		}
+	}
+
+	var monitor = this.getMonitoring();
+	this.monitoring = false;
+
+	// Remove listeners
+    this.removeListener('initializeStart', _recordEventStart.bind(thiz, 'initialize'));
+    this.removeListener('initializeEnd', _recordEventEnd.bind(thiz, 'initialize'));
+    this.removeListener('reactStart', _recordEventStart.bind(thiz, 'react'));
+    this.removeListener('reactEnd', _recordEventEnd.bind(thiz, 'react'));
+    this.removeListener('wrapupStart', _recordEventStart.bind(thiz, 'wrapup'));
+    this.removeListener('wrapupEnd', _recordEventEnd.bind(thiz, 'wrapup'));
+
+	// Stop monitoring of all contained accessors
+    if (this.containedAccessors && this.containedAccessors.length > 0) {
+        for (var i = 0; i < this.containedAccessors.length; i++) {
+            this.containedAccessors[i].stopMonitoring();
+        }
+	}
+
+    return monitor;
+}
+
 /** Unreifies the mutableAccessor. Therefore, containment relation is removed.
  *  Then the connections between both objects and between their corresponding 
  *  inputs and outputs are removed. And finally the contained accessor wrapup.
@@ -2515,36 +2539,58 @@ Accessor.prototype.unreify = function () {
 
     // Update the mutableAccessor state and history
     thiz.state = 'instantiated';
-    thiz.updateMonitoringInformation('unreified');
+    thiz.emit('unreified');
 
     return true;
 };
 
-/** Updates the monitoring information (count, date/time of the first event and date/time
- *  of the last event).
- *  @param: info The name of the monitored event to update. info is a string
+///////////////////////////////////////////////////////////////////
+//// Listeners functions.
+
+/** Callback to be executed upon listing to the event name end.
+ *  This function is binded to the accessor's instance, when adding the listener.
+ *
+ *  @param event Name of the listened event that ended
  */
-Accessor.prototype.updateMonitoringInformation = function (info) {
-    // Note that we could just use this instead of this.root because of the
-    // prototype chain, but in a deep hierarchy, this will be more efficient.
-    var thiz = this.root;
+var _recordEventEnd = function(event) {
+    var end = Date.now();
 
-    // Increment the events count
-    var monitor = thiz.monitor[info];
-    monitor.count = monitor.count + 1;
+    if (this.monitor[event].latestStart != 0) {
+   		// Amount of time in reactions prior to this reaction
+   		var timePrior = this.monitor[event].latestEnd - this.monitor.startMonitoringTime;
+   		timePrior *=  Number(this.monitor[event].utilization);
 
-    // Update the first occurrence date, if not defined yet
-    if (!(monitor.firstOccurrenceDate['Date&Time'])) {
-        monitor.firstOccurrenceDate = {
-            'Date&Time': new Date().toLocaleString()
-        };
+   		// Amount of time in this reaction
+   		var timeThis = end - Number(this.monitor[event].latestStart);
+
+   		this.monitor[event].utilization = timePrior + timeThis;
+   		var totalElapsed = end - this.monitor.startMonitoringTime;
+   		this.monitor[event].utilization /= totalElapsed;
+    } else {
+    	this.monitor[event].utilization = 1;
+    	this.monitor[event].latestStart = this.monitor.startMonitoringTime;
     }
+    this.monitor[event].count++;
+    this.monitor[event].latestEnd = end;
+}
 
-    // Update the last occurrence date
-    monitor.latestOccurrenceDate = {
-        'Date&Time': new Date().toLocaleString()
-    };
-};
+/** Callback to be executed upon listening to the event's name start.
+ *  This function is binded to the accessor's instance, when adding the listener.
+ *
+ *  @param event Name of the listened event that started
+ */
+var _recordEventStart = function(event) {
+	switch(event) {
+		case 'initialize':
+			this.monitor.initialize.latestStart = Date.now();
+			break;
+		case 'react':
+			this.monitor.react.latestStart = Date.now();
+			break;
+		case 'wrapup':
+			this.monitor.wrapup.latestStart = Date.now();
+	}
+}
 
 ///////////////////////////////////////////////////////////////////
 //// Module functions.
@@ -2643,22 +2689,6 @@ function convertType(value, destination, name) {
         }
     }
     return value;
-}
-
-/** Return an object of objects. Each object (referenced by the accessor name)
- *  contains: the accessor type (mutable, top level, composite, extended, implemented),
- *  and all the monitoring information.
- *
- *  @return an object of names the top level accessors that have been created thus far.
- */
-function getMonitoringInformation() {
-    var topLevelAccessors = getTopLevelAccessors();
-    var result = {};
-    for (var i = 0; i < topLevelAccessors.length; i++) {
-        result[topLevelAccessors[i].accessorName] = 
-       			topLevelAccessors[i].getMonitor();
-    };
-    return result;
 }
 
 /** Return the top-level accessors that have been created thus far.
@@ -3077,7 +3107,6 @@ var _accessorInstanceTable = {};
 exports.Accessor = Accessor;
 exports.allowTrustedAccessors = allowTrustedAccessors;
 exports.instantiateAccessor = instantiateAccessor;
-exports.getMonitoringInformation = getMonitoringInformation;
 exports.getTopLevelAccessors = getTopLevelAccessors;
 exports.processCommandLineArguments = processCommandLineArguments;
 exports.stopAllAccessors = stopAllAccessors;
