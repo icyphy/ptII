@@ -1,9 +1,17 @@
 #!/bin/sh
 # Create a demo with LiveLinks to other demos
-# Sample Usage:
-#   cd $PTII
-#   $PTII/bin/mkptmklivelinkdemo ptolemy/data/ontologies/demo/ConstPropagation > ptolemy/data/ontologies/demo/ConstPropagation/ConstPropagation.xml
-#
+
+if [ $# -ne 1 ]; then
+    echo "Sample Usage:"
+    echo "  cd $PTII"
+    echo "  $PTII/bin/mkptmklivelinkdemo ptolemy/data/ontologies/demo/ConstPropagation > ptolemy/data/ontologies/demo/ConstPropagation/ConstPropagation.xml"
+    exit 4
+fi
+
+if [ "`pwd`" != "$PTII" ]; then
+   echo "$0: mkptlivelinkdemo must be run from \$PTII"
+    exit 2
+fi
 
 demoBase=`basename $1`
 
