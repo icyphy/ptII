@@ -47,17 +47,25 @@ exports.setup = function() {
 };
 
 var handle = null;
+var valve = 0.1;
+
+function updateValve() {
+	var control = this.get('control');
+	var v = control['valve'];
+	if (v === 0 || v) {
+		if (typeof v === 'string') {
+			v = JSON.parse(v);
+		}
+		valve = v;
+	}
+}
 
 exports.initialize = function() {
 	var thiz = this;
 	
 	var pressure = 100;
-
-	// Get or set to a default a step size.
-	var step = thiz.get('control')['step'];
-	if (step !== 0 && !step) {
-		step = 10;
-	}
+	
+	updateValve.call(this);
 
 	// At initialize, send the schema;
 	this.send('schema', schema);
@@ -68,14 +76,11 @@ exports.initialize = function() {
             'units': "kPa",
             'pressure': pressure
 		});
-		pressure += step;
+		pressure += valve * 100;
 	}, 1000);
 
 	this.addInputHandler('control', function() {
-	    step = thiz.get('control')['step'];
-        if (!step) {
-            step = 0;
-        }
+	    updateValve.call(thiz);
 	});
 };
 
@@ -89,10 +94,10 @@ var schema = {
   "$schema": "http://json-schema.org/draft-03/schema#",
   "type": "object",
   "properties": {
-    "step": {
-      "type": "number",
-      "title": "step size",
-      "description": "The increment by which data is increased each second"
+    "valve": {
+      "type": "text",
+      "title": "valve",
+      "description": "The valve opening, which determins by how much the pressure is increased each second"
     }
   }
 };
