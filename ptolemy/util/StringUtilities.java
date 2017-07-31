@@ -1,6 +1,6 @@
 /* Utilities used to manipulate strings.
 
- Copyright (c) 2002-2016 The Regents of the University of California.
+ Copyright (c) 2002-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -695,6 +695,13 @@ public class StringUtilities {
     }
 
     /** Return the preferences directory, creating it if necessary.
+     *  If the PTOLEMYII_DOT environment variable is set, then
+     *  that value is used, otherwise the Java user.home property
+     *  is used
+     *
+     *  The PTOLEMYII_DOT environment variable is used to support
+     *  invoking multiple Kepler processes.
+     *
      *  @return A string naming the preferences directory.  The last
      *  character of the string will have the file.separator character
      *  appended.
@@ -702,10 +709,22 @@ public class StringUtilities {
      *  @see #PREFERENCES_DIRECTORY
      */
     public static String preferencesDirectory() throws IOException {
-        String preferencesDirectoryName = StringUtilities
-                .getProperty("user.home")
-                + File.separator
-                + StringUtilities.PREFERENCES_DIRECTORY + File.separator;
+        String baseDirectory = System.getProperty("user.home");
+        try {
+            if (System.getenv("PTOLEMYII_DOT") != null) {
+                baseDirectory = System.getenv("PTOLEMYII_DOT");
+                if (baseDirectory.endsWith(File.separator)) {
+                    baseDirectory = baseDirectory.substring(0, baseDirectory.length() - 1);
+                }
+            }
+        } catch (SecurityException ex) {
+            // Ignore, we are probably in an applet.
+        }
+        String preferencesDirectoryName =
+            baseDirectory +
+            File.separator +
+            StringUtilities.PREFERENCES_DIRECTORY + File.separator; 
+
         File preferencesDirectory = new File(preferencesDirectoryName);
 
         if (!preferencesDirectory.isDirectory()) {
