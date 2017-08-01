@@ -27,7 +27,7 @@
  *  The control input can be used to vary the step size.
  *  The output is a JSON object with the following properties:
  *  * name: "Pressure sensor"
- *  * units: "kPa"
+ *  * units: "kPa"v 
  *  * pressure: a number.
  *
  *  @accessor PressureSensor
@@ -95,9 +95,9 @@ var schema = {
   "type": "object",
   "properties": {
     "valve": {
-      "type": "text",
+      "type": "number",
       "title": "valve",
-      "description": "The valve opening, which determins by how much the pressure is increased each second"
+      "description": "The valve opening, which determines by how much the pressure is increased each second"
     }
   }
 };

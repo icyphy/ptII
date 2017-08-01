@@ -24,7 +24,17 @@
 /** A dummy accessor for a temperature sensor that outputs a range of temperatures
  *  varying from a low of 0 degrees centigrade up to 100 degrees in steps that default
  *  to 10 degrees every second.
- *  The control input can be used to vary the step size.
+ *  
+ *  The control input can be used to vary the period of sampling.
+ *  To change the period, provide an input object with property "period"
+ *  that specifies the period in milliseconds.
+ *  The period defaults to 1 sample per second.
+ *  A period of 0 will stop the sampling.
+ *  
+ *  The control input can also be used to vary the increment added to each
+ *  sample. To change the increment, provide an input object with property
+ *  "step" that specifies the increment in degrees.
+ *
  *  The output is a JSON object with the following properties:
  *  * name: "Temperature sensor"
  *  * units: "Degree centigrade"
@@ -32,7 +42,8 @@
  *
  *  @accessor TemperatureSensor
  *  @author Edward A. Lee (eal@eecs.berkeley.edu)
- *  @input control A JSON object that is expected to have one property, "step", a number.
+ *  @input control A JSON object that can have two properties,
+ *   "step", a number and "period", also a number.
  *  @output data A JSON object.
  *  @version $$Id$$
  */
@@ -47,36 +58,54 @@ exports.setup = function() {
 };
 
 var handle = null;
+var step = 10;
+var period = 1000;
+var temperature = 0;
 
-exports.initialize = function() {
-	var thiz = this;
+function sendData() {
+	this.send('data', {
+		'name': "Temperature sensor",
+    	'units': "Degrees centigrade",
+  	 	'temperature': temperature
+	});
+	temperature += step;
+}
+
+function updateControl() {
+	var control = this.get('control');
 	
-	var temperature = 0;
-
-	// Get or set to a default a step size.
-	var step = thiz.get('control')['step'];
-	if (step !== 0 && !step) {
-		step = 10;
+	var s = control['step'];
+	if (s || s === 0) {
+		if (typeof s === 'string') {
+	    	s = JSON.parse(s);
+		}
+		step = s;
 	}
+	
+	var p = control['period'];
+	if (p || p === 0) {
+		if (typeof p === 'string') {
+	    	p = JSON.parse(p);
+		}
+		if (handle) {
+	    	clearInterval(handle);
+	    	handle = null;
+	    }
+		period = p;
+	}
+	if (period && !handle) {
+        // Nothing running. Start the sampling.
+        // Send an initial sample, then periodically.
+        sendData.call(this);
+        handle = setInterval(sendData.bind(this), period);
+    }
+}
 
+exports.initialize = function() {	
 	// At initialize, send the schema;
 	this.send('schema', schema);
-
-	handle = setInterval(function() {
-		thiz.send('data', {
-		    'name': "Temperature sensor",
-            'units': "Degrees centigrade",
-            'temperature': temperature
-		});
-		temperature += step;
-	}, 1000);
-
-	this.addInputHandler('control', function() {
-	    step = thiz.get('control')['step'];
-        if (!step) {
-            step = 0;
-        }
-	});
+	updateControl.call(this);
+	this.addInputHandler('control', updateControl.bind(this));
 };
 
 exports.wrapup = function() {
@@ -86,13 +115,17 @@ exports.wrapup = function() {
 };
 
 var schema = {
-  "$schema": "http://json-schema.org/draft-03/schema#",
   "type": "object",
   "properties": {
     "step": {
-      "type": "number",
-      "title": "step size",
-      "description": "The increment by which data is increased each second"
+      	"type": "number",
+      	"title": "step size",
+      	"description": "The increment by which data is increased each second"
+    },
+    "period": {
+      	"type": "number",
+      	"title": "sampling period",
+      	"description": "The time between samples in milliseconds"    	
     }
   }
 };
