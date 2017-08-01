@@ -1934,7 +1934,7 @@ Accessor.prototype.reify = function (accessor) {
 			    accessorInstance = new Accessor(
 			    	instanceName, accessorCode, getAccessorCode, insideBindings, null, null);
 		    } catch(ee) {
-		    	thiz.error('Parameter supplied is not a valid accessor object, accessor class or accessor code');
+		    	thiz.error('Parameter supplied is not a valid accessor object, accessor class or accessor code: ' + ee);
 		    	return false;
 		    };
 	    };
