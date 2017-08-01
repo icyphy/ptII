@@ -4,13 +4,13 @@
 <entity name="Billard" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={694, 164, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={880, 165, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
-    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
+    <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.529883790671641">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{239.50732421875, 196.9866154325181}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textSize" class="ptolemy.data.expr.Parameter" value="18">
@@ -25,7 +25,7 @@
     <property name="Annotation2" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="See the Others model and README.txt in Billard folder.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 205.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 165.0]">
         </property>
         <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/hlacerti/demo/Billard/Others/Others.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
@@ -116,7 +116,15 @@
         </property>
         <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The Autorun must be updated.">
         </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 175.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 135.0]">
+        </property>
+    </property>
+    <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="textSize" class="ptolemy.data.expr.Parameter" value="9">
+        </property>
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Skeleton created with bin/mkptlivelinkdemo and modified by J. Cardoso.">
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[15.0, 200.0]">
         </property>
     </property>
 </entity>

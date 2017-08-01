@@ -1,0 +1,12 @@
+Steps for automatically creating a Ptolemy file with only the links to the models of folder:
+
+- The folder in $PTII/org/hlacerti/demo must be named with first upper case letter, e.g.,
+  FolderName;
+- The Ptolemy file is created inside FolderName and is named FolderName.xml;
+- The command line must be launched at $PTII, e.g.:
+
+$PTII/bin/mkptlivelinkdemo org/hlacerti/demo/Billard/Others > org/hlacerti/demo/Billard/Others/Others.xml
+
+The file can then be updated with additional text if necessary.
+
+Remark: $PTII and $PWD must be exactly the same, e.g., with no extra "/" in $PTII.
