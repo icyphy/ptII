@@ -35,7 +35,7 @@
 
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
-/*globals console, exports, print, require */
+/*globals actor, console, exports, print, require */
 /*jshint globalstrict: true */
 /*jslint nomen: true */
 "use strict";
@@ -43,7 +43,7 @@
 // If a variable 'actor' is defined, delegate to it. Otherwise,
 // print everything to stdout using print(), which is defined in
 // Nashorn.
-var actor = actor || {
+var localActor = actor || {
     'error': function (message) {
         print(message);
     },
@@ -87,7 +87,7 @@ exports.assert = function (assertion, args) {
  */
 exports.dir = function (object, options) {
     var result = util.inspect(object, options);
-    actor.log(result);
+    localActor.log(result);
 };
 
 /** Same as console.log, but prefix the message with "ERROR: ".
@@ -118,7 +118,7 @@ exports.info = exports.log;
  */
 exports.log = function () {
     var formatted = util.format.apply(this, arguments);
-    actor.log(formatted);
+    localActor.log(formatted);
 };
 
 /** Same as console.log, but prefix the message with "WARNING: " and send to stderr
@@ -128,7 +128,7 @@ exports.log = function () {
  */
 exports.warn = function () {
     var formatted = util.format.apply(this, arguments);
-    actor.error('WARNING: ' + formatted);
+    localActor.error('WARNING: ' + formatted);
 };
 
 // Local variable for storing times.
@@ -161,5 +161,5 @@ exports.timeEnd = function (label) {
  */
 exports.trace = function () {
     var formatted = util.format.apply(this, arguments);
-    actor.error('TRACE: ' + (new Error(formatted)).stack);
+    localActor.error('TRACE: ' + (new Error(formatted)).stack);
 };

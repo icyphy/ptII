@@ -655,17 +655,6 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
             engine.put("_debug", false);
         }
         
-        // First load the Nashorn host, which defines functions that are independent
-        // of Ptolemy II.
-        try {
-            engine.eval(FileUtilities.openForReading(
-                    "$CLASSPATH/ptolemy/actor/lib/jjs/nashornHost.js", null,
-                    null));
-        } catch (Throwable throwable) {
-            throw new IllegalActionException(actor, throwable,
-                    "Failed to load nashornHost.js");
-        }
-
         // Define the actor and accessor variables.
         // capeCodeHost.js refers to actor at eval-time, so set it now.
         if (!restricted) {
@@ -679,6 +668,17 @@ public class JavaScript extends TypedAtomicActor implements AccessorOrchestrator
                     actor);
             engine.put("accessor", restrictedInterface);
             engine.put("actor", restrictedInterface);
+        }
+
+        // First load the Nashorn host, which defines functions that are independent
+        // of Ptolemy II.
+        try {
+            engine.eval(FileUtilities.openForReading(
+                    "$CLASSPATH/ptolemy/actor/lib/jjs/nashornHost.js", null,
+                    null));
+        } catch (Throwable throwable) {
+            throw new IllegalActionException(actor, throwable,
+                    "Failed to load nashornHost.js");
         }
 
         try {

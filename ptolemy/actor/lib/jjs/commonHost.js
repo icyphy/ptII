@@ -608,6 +608,10 @@ clearTimeout',
         // exports.initialize() and exports.wrapup(), if those are defined.
         this.initialize = function () {
             var thiz = this;
+            if (_debug) {
+                // The false argument says to not individually monitor contained accessors.
+                this.startMonitoring(false);
+            }
             this.emit('initializeStart');
             
             if (this.containedAccessors && this.containedAccessors.length > 0) {
@@ -674,6 +678,11 @@ clearTimeout',
             }
 
             this.emit('wrapupEnd');
+            if (_debug) {
+                var monitoringInfo = this.stopMonitoring();
+                console.log('**** Monitoring information for ' + this.accessorName + ':');
+                console.log(util.inspect(monitoringInfo));
+            }
         };
     }
 }
