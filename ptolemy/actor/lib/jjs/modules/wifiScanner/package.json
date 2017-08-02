@@ -1,0 +1,11 @@
+{
+  "name": "wifi-scanner",
+  "version": "0.1.0",
+  "main": "wifi-scanner.js",
+  "license" : "BSD-3-Clause",
+  "contributors": [
+    {"name" : "Matt Weber"
+    , "email" : "matt.weberl@berkeley.edu"}
+  ],
+  "description": "A module for scanning Wi-Fi."
+}
