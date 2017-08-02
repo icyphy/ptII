@@ -1,15 +1,12 @@
 $CLASSPATH/lbnl/demo/CRoom/CRoom.xml
 $CLASSPATH/lbnl/demo/MatlabRoom/MatlabRoom.xml
 $CLASSPATH/lbnl/demo/SystemCommand/SystemCommand.xml
-$CLASSPATH/org/hlacerti/demo/2Billes1Fed/2Billes1Fed.xml
-$CLASSPATH/org/hlacerti/demo/2Billes2Fed/2Billes2Fed.xml
 $CLASSPATH/org/hlacerti/demo/Billard/2Billes1Fed/2Billes1Fed.xml
 $CLASSPATH/org/hlacerti/demo/Billard/2Billes2Fed/2Billes2Fed.xml
 $CLASSPATH/org/hlacerti/demo/Billard/Billard.xml
 $CLASSPATH/org/hlacerti/demo/Billard/Others/Others.xml
 $CLASSPATH/org/hlacerti/demo/BillardHit/BillardHit.xml
 $CLASSPATH/org/hlacerti/demo/f14HLA/f14HLA.xml
-$CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14HLAr74766.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/IntegrationTests.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing1Federate/TimeAdvancing1Federate.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/TimeAdvancing2Federates.xml
@@ -114,7 +111,6 @@ $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Solarize.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Threshold.xml
 $CLASSPATH/org/terraswarm/accessor/demo/IMUSensor/IMUSensor.xml
 $CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreClient.xml
-$CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreServer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Kubi/Kubi.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MotionDetector/MotionDetector.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MotionLights/MotionLights.xml
@@ -145,7 +141,6 @@ $CLASSPATH/org/terraswarm/accessor/demo/WebSocketChat/SecureServer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketChat/Server.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketChat/WebSocketChat.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketClient.xml
-$CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketServer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketFullDuplex/WebSocketFullDuplex.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketGraph/WebSocketGraph.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketImage/WebSocketImage.xml
