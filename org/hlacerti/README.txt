@@ -1,6 +1,6 @@
 -- README for Ptolemy II - HLA/CERTI cooperation
 -- @version $Id$
--- @Author: Gilles Lasnier (gilles.lasnier@isae.fr)
+-- @Author: Gilles Lasnier (gilles.lasnier@isae.fr), Janette Cardoso (janette_cardoso@isae-supaero.fr)
 
 ####################
 ## Purpose:
@@ -17,7 +17,7 @@ JCERTI is a Java CERTI bindings.
 This environment integrates a Ptolemy model as a Federate of the 
 HLA/CERTI Federation. Three kinds of "co-simulation" are possible:
 - 1. one full-Federate in Ptolemy involved in the Federation
-- 2. one simple Federate in Ptolemy which models the functionnal 
+- 2. one simple Federate in Ptolemy which models the functional 
      part of a Federate. The skeleton part of the Federate is another
      Federate that could be implemented in C++, Java, Python or Ptolemy II.
 - 3. one full-Federate in Ptolemy is used to model the network
@@ -25,6 +25,12 @@ HLA/CERTI Federation. Three kinds of "co-simulation" are possible:
      
 The demo directory provides some examples of Ptolemy II models
 based on co-simulation strategies described above.
+
+For more information about creating Ptolemy federates and install CERTI, see:
+- manual-ptii-hla.pdf
+- https://www.icyphy.org/hla/wiki/ and https://www.icyphy.org/hla/wiki/Main/PtII-hlacerti.
+
+The text bellow need to be updated and will eventually be deleted.
 
 ####################
 ## Install:
