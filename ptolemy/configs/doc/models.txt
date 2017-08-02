@@ -9,7 +9,7 @@ $CLASSPATH/org/hlacerti/demo/Billard/Billard.xml
 $CLASSPATH/org/hlacerti/demo/Billard/Others/Others.xml
 $CLASSPATH/org/hlacerti/demo/BillardHit/BillardHit.xml
 $CLASSPATH/org/hlacerti/demo/f14HLA/f14HLA.xml
-$CLASSPATH/org/hlacerti/demo/f14HLAir74766/f14HLAr74766.xml
+$CLASSPATH/org/hlacerti/demo/f14HLAr74766/f14HLAr74766.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/IntegrationTests.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing1Federate/TimeAdvancing1Federate.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/TimeAdvancing2Federates.xml
