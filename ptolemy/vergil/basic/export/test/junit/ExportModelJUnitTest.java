@@ -318,12 +318,19 @@ public class ExportModelJUnitTest {
                 "jjs/modules/discovery/demo/Discovery/Discovery.xml", // Has links to other models
                 "jjs/modules/gdp/demo/", // Exclude the GDP demos for now.
                 // HLA Models that have links to other demos.
+                "2Billes1Fed.xml", // Has links to other models
                 "2Billes2Fed.xml", // Has links to other models
-                "org/hlacerti/demo/legacy/CoSimulation/CoSimulation.xml", // Has links to other demos and does not work
+                "Billard.xml", // Has links to other models
+                "BillardHit.xml", // Has links to other models
+                "IntegrationTests.xml", // Has links to other models
+                "Others.xml", // Has links to other models
+                "TimeAdvancing1Federate.xml", // Has links to other models
+                "TimeAdvancing2FederatesIntervalEvents", // Has links to other models
                 "org/hlacerti/demo/legacy/CoSimulationFunctional/CoSimulationFunctional.xml", // Has links to other demos and does not work
                 "org/hlacerti/demo/legacy/CoSimulationNetwork1/CoSimulationNetwork1.xml", // Has links to other demos and does not work
                 "org/hlacerti/demo/legacy/f14HLA/f14HLA.xml",  // Has links to other demos and does not work
                 "org/hlacerti/demo/legacy/MultiProducerConsumer/MultiProducerConsumer.xml", // Has links to other demos and does not work
+                "org/hlacerti/demo/MicrostepReset/DistributedReceiver", // Links.
                 "org/hlacerti/demo/legacy/SimpleProducerConsumer/SimpleProducerConsumer.xml", // Has links to other demos and does not work
 
                 "DimensionSystemExample.xml", // Has links to other models.
