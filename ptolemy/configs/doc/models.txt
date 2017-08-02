@@ -4,9 +4,7 @@ $CLASSPATH/lbnl/demo/SystemCommand/SystemCommand.xml
 $CLASSPATH/org/hlacerti/demo/Billard/2Billes1Fed/2Billes1Fed.xml
 $CLASSPATH/org/hlacerti/demo/Billard/2Billes2Fed/2Billes2Fed.xml
 $CLASSPATH/org/hlacerti/demo/Billard/Billard.xml
-$CLASSPATH/org/hlacerti/demo/Billard/Others/Autorun.xml
-$CLASSPATH/org/hlacerti/demo/Billard/Others/DisplayWithFedName.xml
-$CLASSPATH/org/hlacerti/demo/Billard/Others/Synchro.xml
+$CLASSPATH/org/hlacerti/demo/Billard/Others/Others.xml
 $CLASSPATH/org/hlacerti/demo/BillardHit/BillardHit.xml
 $CLASSPATH/org/hlacerti/demo/f14HLA/f14HLA.xml
 $CLASSPATH/org/hlacerti/demo/IntegrationTests/IntegrationTests.xml
