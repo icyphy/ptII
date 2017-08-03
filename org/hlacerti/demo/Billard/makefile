@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2013-2015 The Regents of the University of California.
+# @Copyright (c) 2013-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,6 +31,8 @@
 
 ME =        org/hlacerti/demo/Billard
 
+DIRS = 	2Billes1Fed 2Billes2Fed
+
 # Root of the Java directory
 ROOT =      ../../../..
 
@@ -42,31 +44,32 @@ include $(CONFIG)
 
 # Used to build jar files
 PTPACKAGE =     Billard
-PTCLASSJAR =    $(PTPACKAGE).jar
+#PTCLASSJAR =    $(PTPACKAGE).jar
+PTCLASSALLJAR= $(PTPACKAGE).jar
+
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	2Billes1Fed/2Billes1Fed.jar \
+	2Billes2Fed/2Billes2Fed.jar
 
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	Autorun.xml \
 	Billard.xml \
-	DisplayWithFedName.xml \
-	DisplayWithoutPort.xml \
 	README.txt \
-	PoolTable2.xml 	\
-	PoolTable3.xml 	\
-	Synchro.xml \
-	Test.fed \
-	TwoBilliardBalls.xml \
-	SingleBillardBall.xml 	\
-	Billard.xml
+	Others/Autorun.xml \
+	Others/DisplayWithFedName.xml \
+	Others/Others.xml \
+	Others/Synchro.xml
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES =
+MISC_FILES = $(DIRS) \
+	Others
 
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
@@ -80,17 +83,15 @@ all: jclass $(PTCLASSJAR)
 	@echo "To run all the demos, run 'make demo'"
 
 
-install: all
+install: all jars
 
 demo: demo_ptolemy demo_vergil
 
 demo_ptolemy:
 	"$(PTII)/bin/ptolemy" Billard.xml
-	"$(PTII)/bin/ptolemy" Autorun.xml
 
 demo_vergil:
 	"$(PTII)/bin/vergil" Billard.xml
-	"$(PTII)/bin/vergil" Autorun.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

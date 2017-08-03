@@ -31,7 +31,7 @@
 
 ME =        org/hlacerti/demo/legacy/StaticMultiInstance
 
-DIRS =	2Billes2Fed Billard
+DIRS =	2Billes2Fed Billard CoSimulationFunctional
 
 # Root of the Java directory
 ROOT =      ../../../../..

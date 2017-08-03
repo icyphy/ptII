@@ -4,7 +4,7 @@
 #
 # @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
 #
-# @Copyright (c) 2016 The Regents of the University of California.
+# @Copyright (c) 2016-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -47,14 +47,20 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	AllFederatesNER/f14Aircraft.xml \
+	AllFederatesNER/f14AutoPilot.xml \
+	AllFederatesNER/f14HlaNER.xml \
+	AllFederatesNER/f14PilotStick.xml \
+	AllFederatesNER/priseV2.fed \
+	AllFederatesTAR/f14Aircraft.xml \
+	AllFederatesTAR/f14AutoPilot.xml \
+	AllFederatesTAR/f14HlaTAR.xml \
+	AllFederatesTAR/f14PilotStick.xml \
+	AllFederatesTAR/priseV2.fed \
+	initialCentralizedF14/f14CentralizedControllerDE.xml \
 	README.txt \
-	f14Aircraft.xml \
-	f14AutoPilot.xml \
 	f14HLA.xml \
-	f14PilotStick.xml \
-	priseStick/src/XML/Sources/prise_parameters.xml \
-	priseV2.fed \
-	initialCentralizedF14/f14CentralizedControllerDE.xml
+	priseV2.fed
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
@@ -65,6 +71,8 @@ MISC_FILES = $(DIRS)
 # make checkjunk will not report OPTIONAL_FILES as trash
 # make realclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
+	AllFederatesNER \
+	AllFederatesTAR \
 	doc \
 	initialCentralizedF14 \
 	priseStick
