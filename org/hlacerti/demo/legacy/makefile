@@ -1,8 +1,8 @@
 # Makefile for Ptolemy II - HLA/CERTI demos
 #
-# @Authors: Christopher Brooks
+# @Authors: Christopher Brooks (makefile onlY)
 #
-# @Version: $Id: makefile 72850 2015-07-26 14:09:42Z cxh $
+# @Version: $Id$
 #
 # @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
@@ -29,14 +29,12 @@
 #                       PT_COPYRIGHT_VERSION_2
 #                       COPYRIGHTENDKEY
 
-ME =        org/hlacerti/demo/legacy/MonoInstance
+ME =    org/hlacerti/demo
 
-DIRS = CoSimulationFunctional f14HLA \
-	MultiDataTypes MultiProducerConsumer \
-	SimpleProducerConsumer SynchronizeToRealTime
+DIRS = 	MonoInstance StaticMultiInstance
 
 # Root of the Java directory
-ROOT =      ../../../../..
+ROOT =      ../../../..
 
 CLASSPATH = $(ROOT)
 
@@ -45,22 +43,16 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     MonoInstance
+PTPACKAGE =     legacy
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	CoSimulationFunctional/CoSimulationFunctional.jar \
-	f14HLA/f14HLA.jar \
-	MultiDataTypes/MultiDataTypes.jar \
-	MultiProducerConsumer/MultiProducerConsumer.jar \
-	SimpleProducerConsumer/SimpleProducerConsumer.jar \
-	SynchronizeToRealTime/SynchronizeToRealTime.jar
+	MonoInstance/MonoInstance.jar \
+	StaticMultiInstance/StaticMultiInstance.jar
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED = \
-	README.txt \
-	manual-ptii-hla-monoInstance.pdf
+OTHER_FILES_TO_BE_JARED = README.txt
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 

@@ -31,7 +31,7 @@
 
 ME =        org/hlacerti/demo
 
-DIRS = 2Billes1Fed 2Billes2Fed Billard BillardHit f14HLA \
+DIRS =  Billard BillardHit f14HLA \
 	IntegrationTests \
 	MicrostepReset ModelUpdater \
 	MultiDataTypes SimpleProducerConsumerMulti SynchronizeToRealTime \
@@ -51,8 +51,6 @@ PTPACKAGE =     demo
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	2Billes1Fed/2Billes1Fed.jar \
-	2Billes2Fed/2Billes2Fed.jar \
 	Billard/Billard.jar \
 	BillardHit/BillardHit.jar \
 	f14HLA/f14HLA.jar \
@@ -67,7 +65,8 @@ PTCLASSALLJARS = \
 
 PTCLASSALLJAR= $(PTPACKAGE).jar
 
-OTHER_FILES_TO_BE_JARED = README.pdf
+OTHER_FILES_TO_BE_JARED = \
+	CreatingXMLfilesWithLinks.txt
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 

@@ -41,25 +41,21 @@ CONFIG =    $(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE =     Billard
+PTPACKAGE =     2Billes1Fed
 PTCLASSJAR =    $(PTPACKAGE).jar
 
 JSRCS = 
 
 OTHER_FILES_TO_BE_JARED = \
 	$(JSRCS) \
-	Autorun.xml \
-	DisplayWithFedName.xml \
-	DisplayWithoutPort.xml \
-	FederationBillard.xml \
+	2Billes1Fed.xml \
+	Billard.xml \
+	PoolTable2.xml \
+	PoolTable3.xml \
 	README.txt \
-	PoolTable2.xml 	\
-	PoolTable3.xml 	\
-	Synchro.xml \
+	SingleBillardBall.xml \
 	Test.fed \
-	TwoBilliardBalls.xml \
-	SingleBillardBall.xml 	\
-	Billard.xml
+	TwoBilliardBalls.xml
 
 EXTRA_SRCS = \
     $(OTHER_FILES_TO_BE_JARED)
@@ -76,11 +72,11 @@ JCLASS = $(JSRCS:%.java=%.class)
 
 # Don't include all or install rules here, we want the user
 # to run 'make demos' to run the tests.
-all: jclass $(PTCLASSJAR)
+all: jclass $(PTCLASSJAR)n
 	@echo "To run all the demos, run 'make demo'"
 
 
-install: all
+install: all jars
 
 demo: demo_ptolemy demo_vergil
 
