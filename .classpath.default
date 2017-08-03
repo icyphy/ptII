@@ -17,7 +17,7 @@
         <classpathentry kind="lib" path="lib/commons-logging-1.1.1.jar"/>
         <classpathentry kind="lib" path="lib/diva.jar"/>
         <classpathentry kind="lib" path="lib/g4ltl.jar"/>
-        <classpathentry kind="lib" path="lib/gdp-0.7-2.jar"/>
+        <classpathentry kind="lib" path="lib/gdp-0.8-0.jar"/>
         <classpathentry kind="lib" path="lib/hazelcast-3.5.2.jar"/>
         <classpathentry kind="lib" path="lib/jackson-annotations-2.6.0.jar"/>
         <classpathentry kind="lib" path="lib/jackson-core-2.6.1.jar"/>
