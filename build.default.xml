@@ -118,7 +118,7 @@
     <pathelement location="lib/saxon8.jar" />
     <pathelement location="lib/saxon8-dom.jar" />
     <pathelement location="lib/chic.jar" />
-    <pathelement location="lib/gdp-0.7-2.jar" />
+    <pathelement location="lib/gdp-0.8-0.jar" />
     <pathelement location="lib/guava.jar" />
     <pathelement location="lib/jetty-all-8.1.5-v20120716.jar" />
     <pathelement location="lib/javax.servlet-api-3.0.1.jar" />
