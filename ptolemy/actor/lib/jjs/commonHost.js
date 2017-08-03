@@ -220,7 +220,7 @@
 
 // Stop extra messages from jslint and jshint.
 // See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint
-/*globals actor, alert, console, Duktape, exports, instance, java, Packages, process, require, setInterval, setIntervalDet, setTimeout, setTimeoutDet, clearInterval, clearIntervalDet, clearTimeout, clearTimeoutDet, window, getResource */
+/*globals actor, alert, console, Duktape, exports, instance, java, Packages, process, require, setInterval, setIntervalDet, setTimeout, setTimeoutDet, clearInterval, clearIntervalDet, clearTimeout, clearTimeoutDet, window, getResource, getTopLevelAccessors */
 /*jshint globalstrict: true, multistr: true */
 'use strict';
 
@@ -515,6 +515,12 @@ function Accessor(accessorName, code, getAccessorCode, bindings, extendedBy, imp
     } else {
         throw new Error('Host does not define required alert function.');
     }
+    
+    if (bindings && bindings.getTopLevelAccessors) {
+        this.getTopLevelAccessors = bindings.getTopLevelAccessors;
+    } else {
+        this.getTopLevelAccessors = getTopLevelAccessorsNotSupported;
+    }
 
     // By default, the root property is this instance.
     this.root = this;
@@ -524,6 +530,7 @@ alert, \
 error, \
 exports, \
 getResource, \
+getTopLevelAccessors, \
 httpRequest, \
 readURL, \
 require, \
@@ -537,6 +544,7 @@ clearTimeout',
         this.error,
         this.exports,
         this.getResource,
+        this.getTopLevelAccessors,
         this.httpRequest,
         this.readURL,
         this.require,
@@ -1290,10 +1298,7 @@ Accessor.prototype.getDefaultInsideBindings = function(accessorClass) {
     if (trustedAccessorsAllowed && (!accessorClass || accessorClass.startsWith('trusted/'))) {
         insideBindings.getTopLevelAccessors = getTopLevelAccessors;
     } else {
-        insideBindings.getTopLevelAccessors = function () {
-            throw new Error('getTopLevelAccessors(): Accessors are not permitted' +
-                ' to access peer accessors in this host.');
-        };
+        insideBindings.getTopLevelAccessors = getTopLevelAccessorsNotSupported;
     }
     return insideBindings;
 }
@@ -2711,6 +2716,13 @@ function getTopLevelAccessors() {
         }
     }
     return result;
+}
+
+/** Throw an error indicating that getTopLevelAccessors is not supported.
+ */
+function getTopLevelAccessorsNotSupported() {
+    throw new Error('getTopLevelAccessors(): Accessors are not permitted' +
+        ' to access peer accessors in this host.');
 }
 
 /** Instantiate an accessor given its fully qualified class name, a function to retrieve
