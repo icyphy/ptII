@@ -2744,7 +2744,8 @@ function getTopLevelAccessors() {
  */
 function getTopLevelAccessorsNotSupported() {
     throw new Error('getTopLevelAccessors(): Accessors are not permitted' +
-                    ' to access peer accessors in this host.');
+                    ' to access peer accessors in this host.' +
+                    ' To allow access to trusted accessors, consider setting commonHost.allowTrustedAccessors(true).');
 }
 
 /** Instantiate an accessor given its fully qualified class name, a function to retrieve
