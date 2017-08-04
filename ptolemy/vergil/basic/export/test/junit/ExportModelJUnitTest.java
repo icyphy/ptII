@@ -302,9 +302,10 @@ public class ExportModelJUnitTest {
                 "wireless/demo/AntennaPattern/AntennaModel.xml", // Used by other models.
                 "AntennaPattern.xml", // Has links to other models
                 "AudioFFT.xml", // Wrong Audio Hardware on the test machine.
+                "AugmentedReality.xml", // Has links to other models.
+                "AugmentedRealityGDP.xml", // Has links to other models.                          
                 "org/terraswarm/accessor/demo/Audio/Audio.xml", // Wrong Audio Hardware on the test machine.
                 "ConstScaleZeroDemoProductLattice.xml", // Lattice, used by other models.
-
                 // CRoom, MatlabRoom, SystemCommand
                 "lbnl/demo/", // FIXME: hangs, probably because the log window is not closed.
                 "g4ltl/demo/", // These demos require wiring.
@@ -326,12 +327,16 @@ public class ExportModelJUnitTest {
                 "Others.xml", // Has links to other models
                 "TimeAdvancing1Federate.xml", // Has links to other models
                 "TimeAdvancing2FederatesIntervalEvents", // Has links to other models
+                "org/hlacerti/demo/BillardHit/BillardHit.xml", // Has links to other models
                 "org/hlacerti/demo/legacy/CoSimulationFunctional/CoSimulationFunctional.xml", // Has links to other demos and does not work
                 "org/hlacerti/demo/legacy/CoSimulationNetwork1/CoSimulationNetwork1.xml", // Has links to other demos and does not work
                 "org/hlacerti/demo/legacy/f14HLA/f14HLA.xml",  // Has links to other demos and does not work
+                "org/hlacerti/demo/f14HLA/f14HLA.xml", // Has links to other demos.
                 "org/hlacerti/demo/legacy/MultiProducerConsumer/MultiProducerConsumer.xml", // Has links to other demos and does not work
+                "org/hlacerti/demo/MicrostepReset/MicrostepReset.xml", // Has Links to other models.
                 "org/hlacerti/demo/MicrostepReset/DistributedReceiver", // Links.
                 "org/hlacerti/demo/legacy/SimpleProducerConsumer/SimpleProducerConsumer.xml", // Has links to other demos and does not work
+                "org/hlacerti/demo/IntegrationTests/TimeAdvancing2Federates/TimeAdvancing2Federates.xml", // Has links to other demos.
 
                 "DimensionSystemExample.xml", // Has links to other models.
                 "distributed/demo/Sleep/Sleep.xml", // Requires jini.
