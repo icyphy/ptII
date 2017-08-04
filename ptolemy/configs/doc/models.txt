@@ -111,6 +111,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Solarize.xml
 $CLASSPATH/org/terraswarm/accessor/demo/ImageFilters/Threshold.xml
 $CLASSPATH/org/terraswarm/accessor/demo/IMUSensor/IMUSensor.xml
 $CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreClient.xml
+$CLASSPATH/org/terraswarm/accessor/demo/KeyValueStoreClient/KeyValueStoreServer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Kubi/Kubi.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MotionDetector/MotionDetector.xml
 $CLASSPATH/org/terraswarm/accessor/demo/MotionLights/MotionLights.xml
@@ -141,6 +142,7 @@ $CLASSPATH/org/terraswarm/accessor/demo/WebSocketChat/SecureServer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketChat/Server.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketChat/WebSocketChat.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketClient.xml
+$CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketServer.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketFullDuplex/WebSocketFullDuplex.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketGraph/WebSocketGraph.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WebSocketImage/WebSocketImage.xml
