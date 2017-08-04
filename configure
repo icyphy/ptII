@@ -629,6 +629,7 @@ PTVERTX_PACKAGES
 PTVERTX_DIR
 PTVERTX_JARS
 PTVERTX_SOCKET_DIR
+PTUSERINTERFACE_DIR
 PTUDPSOCKET_DIR
 GIOTTO_DIR
 GIOTTO_CLASSES
@@ -830,7 +831,6 @@ PTBSH_PACKAGES
 PTBSH_RUN_DIR
 PTBSH_MLC_DIR
 PTBSH_JAR
-PTBROWSER_DIR
 PTBOOST_INCLUDE_DIR
 PTBACKTRACK_ECLIPSE_PACKAGES
 PTBACKTRACK_ECLIPSE_JARS
@@ -13485,14 +13485,14 @@ PTVERTX_JARS=
 # Set to vertx if the Vertx jars are found
 PTVERTX_DIR=
 
-# Set to browser if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
-PTBROWSER_DIR=
-
 # Set to eventbus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTEVENTBUS_DIR=
 
 # Set to httpClient if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTHTTPCLIENT_DIR=
+
+# Set to userInterface if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTUSERINTERFACE_DIR=
 
 # Set to socket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTVERTX_SOCKET_DIR=
@@ -13537,17 +13537,15 @@ else
 fi
 
             if test -d "$PTVERTX_JAR_DIR"; then
-            PTBROWSER_DIR=browser
 	    PTEVENTBUS_DIR=eventbus
             PTHTTPCLIENT_DIR=httpClient
             PTHTTPSERVER_DIR=httpServer
             PTUDPSOCKET_DIR=udpSocket
+            PTUSERINTERFACE_DIR=userInterface
             PTVERTX_SOCKET_DIR=socket
     	    PTVERTX_DIR=vertx
 	    PTWEBSOCKET_DIR=webSocket
 	    # Keep these alphabetic
-            # Vert.x 2.x jars:
-            #jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar java-xmlhttprequest-*.jar netty-all-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-platform-*.jar"
 
 # Use changequote here to preserve square brackets
             # Vert.x 3.x jars:
@@ -13569,11 +13567,11 @@ $as_echo "$as_me: WARNING: Hmm, while searching for Vert.x jar files, could not 
 	         else
 	            { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to the Vertx file $jar in $PTVERTX_JAR_DIR." >&5
 $as_echo "$as_me: WARNING: Failed to the Vertx file $jar in $PTVERTX_JAR_DIR." >&2;}
-                    PTBROWSER_DIR=
 	            PTEVENTBUS_DIR=
                     PTHTTPCLIENT_DIR=
                     PTHTTPSERVER_DIR=
                     PTUDPSOCKET_DIR=
+                    PTUSERINTERFACE_DIR=
                     PTVERTX_SOCKET_DIR=
     	            PTVERTX_DIR=
 	            PTWEBSOCKET_DIR=
@@ -14443,9 +14441,6 @@ fi
 # and used in actor/lib/fmi/fmipp
 
 
-# Set to browser if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
-
-
 # Set to the BSH jar file and used to compile org/mlc
 
 
@@ -15140,6 +15135,9 @@ fi
 
 
 # Set to udpSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+
+
+# Set to userInterface if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 
 
 # Set to socket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
