@@ -146,9 +146,9 @@
 	          targetdir="$INSTALL_PATH/doc/img/"/>
 <!--MacOSInclude-->
 
-            <file src="../dists/ptII11.0.devel/lib/libgdp.0.7.so"
+            <file src="../dists/ptII11.0.devel/lib/libgdp.0.8.so"
                   targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/lib/linux-x86-64-rhel/libgdp.0.7.so"
+            <file src="../dists/ptII11.0.devel/lib/linux-x86-64-rhel/libgdp.0.8.so"
                   targetdir="$INSTALL_PATH/lib/linux-x86-64-rhel"/>
 
 	    <!-- The next line gets substituted for the mac by the makefile. -->
