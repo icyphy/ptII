@@ -1,6 +1,6 @@
 // Below is the copyright agreement for the Ptolemy II system.
 //
-// Copyright (c) 2015-2016 The Regents of the University of California.
+// Copyright (c) 2015-2017 The Regents of the University of California.
 // All rights reserved.
 //
 // Permission is hereby granted, without written agreement and without
@@ -28,39 +28,39 @@
 
 /**
  * Implementation for Nashorn and CapeCode of the module supporting accessor
- * interaction through a browser. The Server object starts
+ * interaction through a user interface. The Server object starts
  * a server that accepts web socket connections and HTTP GET and POST requests.
  *
- * This module defines one class, Browser.  After constructing an instance of
- * Browser (using new), you can request that the browser display HTML that
+ * This module defines one class, UserInterface.  After constructing an instance of
+ * UserInterface (using new), you can request that the user interface display HTML that
  * you provide using the display() function. Whenever display() is called,
- * whatever was previously displayed is replaced with your content in the browser.
+ * whatever was previously displayed is replaced with your content in the user interface.
  * 
  * You can also specify resources that the HTML references (such as images)
  * by using the addResource() function. You should call this before providing
  * HTML that requires those resources.
  * Note that updating a resource with the same name will not normally result
- * in the web page being updated because browsers normally cache such resources.
+ * in the web page being updated because user interfaces normally cache such resources.
  * If HTML content refers to a resource that has already been loaded (or more
  * precisely, that has the same name as a resource that has already been loaded),
- * then the browser will not load the resource again, but rather will use the
- * previous version.  You can force the browser to reload a resource by augmenting
+ * then the user interface will not load the resource again, but rather will use the
+ * previous version.  You can force the user interface to reload a resource by augmenting
  * the name with parameters (which will be ignored). For example, if you have
  * a resource named "image.jpg" that you wish to update it, then you can
  * specify HTML like this:
  * 
  *     &lt;img src="image.jpg?count=n"/&gt;
  * 
- * where **n** is a unique integer not previously seen by the browser.
- * This will force the browser to go back to the server to retrieve the resource.
+ * where **n** is a unique integer not previously seen by the user interface.
+ * This will force the user interface to go back to the server to retrieve the resource.
  * 
- * You can also add listeners for data sent by the browser using POST using
+ * You can also add listeners for data sent by the user interface using POST using
  * the addListener() function. So your HTML can include forms and buttons,
  * for example, that will POST JSON data.
  * 
- * You can specify optional header content when you construct the Browser object.
+ * You can specify optional header content when you construct the UserInterface object.
  * This is a good place to include scripts.  The HTML content provided to
- * Browser.display() can also include scripts. Those scripts can invoke functions
+ * UserInterface.display() can also include scripts. Those scripts can invoke functions
  * defined in the header or reference variables defined in the header.
  * 
  * Scripts in the header can invoke a require(**module**) function to use any
@@ -79,10 +79,10 @@
  * replacing whatever was there before. Hence, a highly dynamic stream of
  * pages can be provided.
  * 
- * The websocket can also accept incoming JSON data, in which case the Browser
+ * The websocket can also accept incoming JSON data, in which case the UserInterface
  * object will emit a 'message' event.
  * 
- * @module browser
+ * @module userInterface
  * @author Edward A. Lee
  * @version $$Id$$
  */
@@ -97,7 +97,7 @@ var EventEmitter = require('events').EventEmitter;
 var WebSocketHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketHelper');
 var WebSocketServerHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.WebSocketServerHelper');
 
-/** Constructor for a Browser server.
+/** Constructor for a UserInterface server.
  * 
  *  The options argument is a JSON object containing the following optional fields:
  *  * hostInterface: The IP address or name of the local interface for the server
@@ -117,7 +117,7 @@ var WebSocketServerHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.W
  *  A typical usage pattern looks like this:
  *
  *  <pre>
- *     var browser = new require('browser').Browser({'port':8082});
+ *     var browser = new require('browser').UserInterface({'port':8082});
  *     browser.display('<h1>Hello</h1>');
  *     setTimeout(function() {
  *        browser.display('<h1>World!</h1>');
@@ -126,13 +126,13 @@ var WebSocketServerHelper = Java.type('ptolemy.actor.lib.jjs.modules.webSocket.W
  *  </pre>
  *  
  *  This displays "Hello" and then changes it to "World!" after 5 seconds.
- *  The Browser is an event emitter, emitting events 'listening' and 'connection'.
+ *  The UserInterface is an event emitter, emitting events 'listening' and 'connection'.
  *  
  *  @param options The port and hostInterface options.
  *  @param header HTML to include in the page header.
  *  @param content HTML content to include in the page.
  */
-exports.Browser = function (options, header, content) {
+exports.UserInterface = function (options, header, content) {
     this.server = null;
     this.count = 0;
     this.pendingSends = [];
@@ -182,7 +182,7 @@ exports.Browser = function (options, header, content) {
     
     this.browserLauncher = Java.type('ptolemy.actor.gui.BrowserLauncher');
 };
-util.inherits(exports.Browser, EventEmitter);
+util.inherits(exports.UserInterface, EventEmitter);
 
 /** Add a listener for data posted on a specific path. Only one
  *  listener can be active for a given path. The last-added listener
@@ -190,7 +190,7 @@ util.inherits(exports.Browser, EventEmitter);
  *  @param path The path to listen for POST requests on.
  *  @param listener A callback function with one argument.
  */
-exports.Browser.prototype.addListener = function (path, listener) {
+exports.UserInterface.prototype.addListener = function (path, listener) {
     this.listeners[path] = listener;
 };
 
@@ -199,7 +199,7 @@ exports.Browser.prototype.addListener = function (path, listener) {
  *  @param resource The resource to serve.
  *  @param contentType The content type of the resource.
  */
-exports.Browser.prototype.addResource = function (path, resource, contentType) {
+exports.UserInterface.prototype.addResource = function (path, resource, contentType) {
     if (!path.startsWith('/')) {
         path = '/' + path;
     }
@@ -211,7 +211,7 @@ exports.Browser.prototype.addResource = function (path, resource, contentType) {
  *  @param path The path where the POST was received.
  *  @param data The data that was transmitted.
  */
-exports.Browser.prototype.post = function (path, data) {
+exports.UserInterface.prototype.post = function (path, data) {
   if (this.listeners[path]) {
     this.listeners[path].apply(null, [data]);
   } else {
@@ -223,7 +223,7 @@ exports.Browser.prototype.post = function (path, data) {
  *  This replaces the main body of the page.
  *  @param html The HTML to display.
  */
-exports.Browser.prototype.display = function (html) {
+exports.UserInterface.prototype.display = function (html) {
     var self = this;
     if (!this.open) {
         // Make sure the initial HTML is put in right from the start in case
@@ -261,7 +261,7 @@ exports.Browser.prototype.display = function (html) {
 /** Stop the server. Note that this closing happens
  *  asynchronously. The server may not be closed when this returns.
  */
-exports.Browser.prototype.stop = function () {
+exports.UserInterface.prototype.stop = function () {
     if (this.helper && this.helper.isOpen()) {
         this.helper.close();
     }
@@ -287,7 +287,7 @@ exports.Browser.prototype.stop = function () {
  *  @param content The content of the update, typically HTML to insert or
  *   a property value like src to set.
  */
-exports.Browser.prototype.update = function(id, property, content) {
+exports.UserInterface.prototype.update = function(id, property, content) {
     if (property.equals('src')) {
         content += '?count=' + (this.count++);
     }
@@ -306,7 +306,7 @@ exports.Browser.prototype.update = function(id, property, content) {
  *  @param serverWebSocket The Java ServerWebSocket object.
  *  @param helper The helper in charge of this socket.
  */
-exports.Browser.prototype._socketCreated = function (serverWebSocket, helper) {
+exports.UserInterface.prototype._socketCreated = function (serverWebSocket, helper) {
     if (this.helper && this.helper.isOpen()) {
         this.helper.close();
     }
@@ -327,7 +327,7 @@ exports.Browser.prototype._socketCreated = function (serverWebSocket, helper) {
  *  by the user of this module.
  *  @param message The incoming message.
  */
-exports.Browser.prototype._notifyIncoming = function (message) {
+exports.UserInterface.prototype._notifyIncoming = function (message) {
     try {
         message = JSON.parse(message);
     } catch (error) {
@@ -404,7 +404,7 @@ function createTemplatePage() {
             });\n\
         });\n\
         </script>\n';
-    var template = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>Browser Swarmlet Interface</title>'
+    var template = '<!DOCTYPE html><html><head><meta charset="UTF-8"><title>UserInterface Swarmlet Interface</title>'
             + script
             + this.header
             + '</head><body>'

@@ -6125,14 +6125,14 @@ PTVERTX_JARS=
 # Set to vertx if the Vertx jars are found
 PTVERTX_DIR=
 
-# Set to browser if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
-PTBROWSER_DIR=
-
 # Set to eventbus if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTEVENTBUS_DIR=
 
 # Set to httpClient if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTHTTPCLIENT_DIR=
+
+# Set to userInterface if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTUSERINTERFACE_DIR=
 
 # Set to socket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTVERTX_SOCKET_DIR=
@@ -6167,17 +6167,15 @@ else
             PTVERTX_JAR_DIR=$withval,
         PTVERTX_JAR_DIR=$PTII/lib)
             if test -d "$PTVERTX_JAR_DIR"; then
-            PTBROWSER_DIR=browser
 	    PTEVENTBUS_DIR=eventbus
             PTHTTPCLIENT_DIR=httpClient
             PTHTTPSERVER_DIR=httpServer
             PTUDPSOCKET_DIR=udpSocket
+            PTUSERINTERFACE_DIR=userInterface
             PTVERTX_SOCKET_DIR=socket
     	    PTVERTX_DIR=vertx
 	    PTWEBSOCKET_DIR=webSocket
 	    # Keep these alphabetic
-            # Vert.x 2.x jars:
-            #jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar java-xmlhttprequest-*.jar netty-all-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-platform-*.jar"
 
 # Use changequote here to preserve square brackets
 changequote(<<, >>)dnl
@@ -6201,11 +6199,11 @@ changequote([, ])dnl
 		    updateClasspath "$file"
 	         else
 	            AC_MSG_WARN([Failed to the Vertx file $jar in $PTVERTX_JAR_DIR.])
-                    PTBROWSER_DIR=
 	            PTEVENTBUS_DIR=
                     PTHTTPCLIENT_DIR=
                     PTHTTPSERVER_DIR=
                     PTUDPSOCKET_DIR=
+                    PTUSERINTERFACE_DIR=
                     PTVERTX_SOCKET_DIR=
     	            PTVERTX_DIR=
 	            PTWEBSOCKET_DIR=
@@ -6882,9 +6880,6 @@ AC_SUBST(PTBACKTRACK_ECLIPSE_PACKAGES)
 # Set to the directory that contains boost/numeric/odeint.hpp
 # and used in actor/lib/fmi/fmipp
 AC_SUBST(PTBOOST_INCLUDE_DIR)
-
-# Set to browser if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
-AC_SUBST(PTBROWSER_DIR)
 
 # Set to the BSH jar file and used to compile org/mlc
 AC_SUBST(PTBSH_JAR)
@@ -7581,6 +7576,9 @@ AC_SUBST(GIOTTO_DIR)
 
 # Set to udpSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 AC_SUBST(PTUDPSOCKET_DIR)
+
+# Set to userInterface if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+AC_SUBST(PTUSERINTERFACE_DIR)
 
 # Set to socket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 AC_SUBST(PTVERTX_SOCKET_DIR)

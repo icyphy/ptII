@@ -1,4 +1,4 @@
-# Makefile for Ptolemy II HelloBrowser demo
+# Makefile for Ptolemy II HelloUserInterface demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/browser/demo/HelloBrowser
+ME =		ptolemy/actor/lib/jjs/modules/browser/demo/HelloUserInterface
 
 # Root of the Java directory
 ROOT =		../../../../../../../..
@@ -41,13 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	HelloBrowser
+PTPACKAGE = 	HelloUserInterface
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	HelloBrowser.xml
+	HelloUserInterface.xml
 
 EXTRA_SRCS = \
 	$(JSRCS) \
@@ -76,10 +76,10 @@ demo: demo_ptolemy demo_vergil
 #_vergil:
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" HelloBrowser.xml
+	"$(PTII)/bin/ptolemy" HelloUserInterface.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" HelloBrowser.xml
+	"$(PTII)/bin/vergil" HelloUserInterface.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

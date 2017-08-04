@@ -28,7 +28,7 @@ ENHANCEMENTS, OR MODIFICATIONS.
 
 
  */
-package ptolemy.actor.lib.jjs.modules.browser;
+package ptolemy.actor.lib.jjs.modules.userInterface;
 
 import io.vertx.core.AsyncResult;
 import io.vertx.core.Handler;
