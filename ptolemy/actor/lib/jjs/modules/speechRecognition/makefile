@@ -47,12 +47,12 @@ PTPACKAGE = 	speechRecognition
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 # Keep this list alphabetized.
-JSRCS =
+JSRCS = \
+	SpeechRecognitionHelper.java
 
 OTHER_FILES_TO_BE_JARED = \
 	package.json \
 	speechRecognition.js \
-	SpeechRecognitionHelper.java \
 	sphinx-license.htm
 
 EXTRA_SRCS =	$(JSRCS) $(OTHER_FILES_TO_BE_JARED)
