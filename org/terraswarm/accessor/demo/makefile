@@ -36,7 +36,7 @@ DIRS = AprilTags AprilTagImageAnnotate \
         Audio \
 	AugmentedReality \
 	AugmentedRealityGDP \
-	Browser Camera CameraWebSocket \
+	Camera CameraWebSocket \
 	FaceDetector \
 	Foscam HappySadStock \
 	Heartbeat HueToggle \
@@ -49,7 +49,7 @@ DIRS = AprilTags AprilTagImageAnnotate \
 	SpeechSynthesis \
 	StockTick \
 	SwarmAcousticService TCPSocket \
-	UDPSocket VertxBus \
+	UDPSocket UserInterface VertxBus \
 	WatchHandRaisingLight \
 	Weather WebServer WebSocketChat WebSocketClient \
 	WebSocketGraph WebSocketImage WebSocketLog \
@@ -78,7 +78,6 @@ PTCLASSALLJARS = \
 	Audio/Audio.jar \
 	AugmentedReality/AugmentedReality.jar \
 	AugmentedRealityGDP/AugmentedRealityGDP.jar \
-	Browser/Browser.jar \
 	Camera/Camera.jar \
 	CameraWebSocket/CameraWebSocket.jar \
 	FaceDetector/FaceDetector.jar \
@@ -100,6 +99,7 @@ PTCLASSALLJARS = \
 	SwarmAcousticService/SwarmAcousticService.jar \
 	TCPSocket/TCPSocket.jar \
 	UDPSocket/UDPSocket.jar \
+	UserInterface/UserInterface.jar \
 	VertxBus/VertxBus.jar \
 	WatchHandRaisingLight/WatchHandRaisingLight.jar \
 	Weather/Weather.jar \
