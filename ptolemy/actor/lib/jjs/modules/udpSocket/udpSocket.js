@@ -86,7 +86,7 @@ exports.supportedSendTypes = function () {
  *  'listening', 'message', 'close', or 'error'.
  *  For example,
  *  <pre>
- *    var UDPSocket = require('udpSocket');
+ *    var UDPSocket = require('@accessors-modules/udp-socket');
  *    var socket = UDPSocket.createSocket();
  *    socket.on('message', function(message) {
  *      print('Received from web socket: ' + message);
