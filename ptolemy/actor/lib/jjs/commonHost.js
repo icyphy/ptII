@@ -633,7 +633,7 @@ clearTimeout',
                     }
                 }
             }
-            
+
             if (typeof this.exports.initialize === 'function') {
                 // Call with 'this' being the accessor instance, not the exports
                 // property.
@@ -686,11 +686,15 @@ clearTimeout',
             }
 
             this.emit('wrapupEnd');
+
             if (typeof _debug !== 'undefined' && _debug) {
                 var monitoringInfo = this.stopMonitoring();
                 console.log('**** Monitoring information for ' + this.accessorName + ':');
                 console.log(util.inspect(monitoringInfo));
             }
+
+            // FIXME: Should we keep this?
+            this.removeAllListeners();
         };
     }
 }
@@ -1309,9 +1313,32 @@ Accessor.prototype.getDefaultInsideBindings = function(accessorClass) {
  *  @return the accessor's monitor object.
  */
 Accessor.prototype.getMonitoring = function() {
-	this.monitor.utilization = this.monitor.initialize.utilization +
-			this.monitor.react.utilization + 
-			this.monitor.wrapup.utilization;
+	if (this.monitoring) {
+		// Update utilizations given the currentMonitoringTime
+		this.monitor.currentMonitoringTime = Date.now();
+
+		var events = ['initialize', 'react', 'wrapup'];
+		for (var event in events) {
+			if (this.monitor[events[event]].latestEnd > this.monitor[events[event]].latestStart) {
+				var latestUtilizationTime = this.monitor[events[event]].utilization * 
+						(this.monitor[events[event]].latestEnd - this.monitor.startMonitoringTime);
+				this.monitor[events[event]].utilization = latestUtilizationTime / 
+						(this.monitor.currentMonitoringTime - this.monitor.startMonitoringTime);
+			} else if (this.monitor[events[event]].latestStart > this.monitor[events[event]].latestEnd) {
+				var latestUtilizationTime = this.monitor[events[event]].utilization * 
+						(this.monitor[events[event]].latestEnd - this.monitor.startMonitoringTime);
+				this.monitor[events[event]].utilization = latestUtilizationTime + 
+						(this.monitor.currentMonitoringTime - this.monitor[events[event]].latestStart);
+				this.monitor[events[event]].utilization /= 
+						(this.monitor.currentMonitoringTime - this.monitor.startMonitoringTime);
+			} 
+		}
+
+		this.monitor.utilization = this.monitor.initialize.utilization +
+				this.monitor.react.utilization + 
+				this.monitor.wrapup.utilization;
+	}
+
     return this.monitor;
 }
 
@@ -2475,44 +2502,30 @@ Accessor.prototype.stopAt = function (timeout) {
  */
 Accessor.prototype.stopMonitoring = function() {
 	var thiz = this;
-	this.monitor.stopMonitoringTime = Date.now();
+	var monitor = this.getMonitoring();
 
-	// Update utilization based on stopMonitoringTime, for each of the events
-	var events = ['initialize', 'react', 'wrapup'];
-	for (var event in events) {
-		if (this.monitor[events[event]].latestEnd > this.monitor[events[event]].latestStart) {
-			var latestUtilizationTime = this.monitor[events[event]].utilization * 
-					(this.monitor[events[event]].latestEnd - this.monitor.startMonitoringTime);
-			this.monitor[events[event]].utilization = latestUtilizationTime / 
-					(this.monitor.stopMonitoringTime - this.monitor.startMonitoringTime);
-		} else if (this.monitor[events[event]].latestStart > this.monitor[events[event]].latestEnd) {
-			var latestUtilizationTime = this.monitor[events[event]].utilization * 
-					(this.monitor[events[event]].latestEnd - this.monitor.startMonitoringTime);
-			this.monitor[events[event]].utilization = latestUtilizationTime + 
-					(this.stopMonitoringTime - this.monitor[events[event]].latestStart);
-			this.monitor[events[event]].utilization /= 
-					(this.monitor.stopMonitoringTime - this.monitor.startMonitoringTime);
+	if (this.monitoring) {
+		this.monitor.stopMonitoringTime = this.monitor.currentMonitoringTime;
+		this.monitoring = false;
+
+		// Remove listeners
+	    this.removeListener('initializeStart', _recordEventStart(thiz, 'initialize'));
+	    this.removeListener('initializeEnd', _recordEventEnd(thiz, 'initialize'));
+	    this.removeListener('reactStart', _recordEventStart(thiz, 'react'));
+	    this.removeListener('reactEnd', _recordEventEnd(thiz, 'react'));
+	    this.removeListener('wrapupStart', _recordEventStart(thiz, 'wrapup'));
+	    this.removeListener('wrapupEnd', _recordEventEnd(thiz, 'wrapup'));
+
+		// Stop monitoring of all contained accessors
+	    if (this.containedAccessors && this.containedAccessors.length > 0) {
+	        for (var i = 0; i < this.containedAccessors.length; i++) {
+	            if (this.containedAccessors[i].monitoring) {
+	            	this.containedAccessors[i].stopMonitoring();
+	            }
+	        }
 		}
 	}
-
-	var monitor = this.getMonitoring();
-	this.monitoring = false;
-
-	// Remove listeners
-    this.removeListener('initializeStart', _recordEventStart.bind(thiz, 'initialize'));
-    this.removeListener('initializeEnd', _recordEventEnd.bind(thiz, 'initialize'));
-    this.removeListener('reactStart', _recordEventStart.bind(thiz, 'react'));
-    this.removeListener('reactEnd', _recordEventEnd.bind(thiz, 'react'));
-    this.removeListener('wrapupStart', _recordEventStart.bind(thiz, 'wrapup'));
-    this.removeListener('wrapupEnd', _recordEventEnd.bind(thiz, 'wrapup'));
-
-	// Stop monitoring of all contained accessors
-    if (this.containedAccessors && this.containedAccessors.length > 0) {
-        for (var i = 0; i < this.containedAccessors.length; i++) {
-            this.containedAccessors[i].stopMonitoring();
-        }
-	}
-
+	
     return monitor;
 }
 
