@@ -1299,6 +1299,15 @@ Accessor.prototype.getDefaultInsideBindings = function(accessorClass) {
     // accessor is a custom script provided as part of the swarmlet.
     // We trust all such scripts, since they are part of the swarmlet definition,
     // and therefore authored by the author of the swarmlet.
+
+    // String.startsWith was added in ECMA2015 and might not be present in Duktape.
+    // The definition of startsWith below is from https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/String/startsWith
+    if (!String.prototype.startsWith) {
+        String.prototype.startsWith = function(searchString, position){
+            return this.substr(position || 0, searchString.length) === searchString;
+        };
+    }
+
     if (trustedAccessorsAllowed && (!accessorClass || accessorClass.startsWith('trusted/'))) {
         insideBindings.getTopLevelAccessors = getTopLevelAccessors;
     } else {
