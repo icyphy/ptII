@@ -38,8 +38,11 @@ import java.net.URL;
 import java.net.URLClassLoader;
 
 import jdk.nashorn.api.scripting.ScriptObjectMirror;
+
 import ptolemy.actor.lib.jjs.HelperBase;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.KernelRuntimeException;
+import ptolemy.util.FileUtilities;
 
 ///////////////////////////////////////////////////////////////////
 //// SpeechRecognitionHelper
@@ -131,29 +134,23 @@ public class SpeechRecognitionHelper extends HelperBase {
                         
                 _recognizer = _recognizerClass.getConstructor(configurationType).newInstance(_configuration);
 
-            } catch(InvocationTargetException e) {
-                _error("Failed to instantiate speech recognizer: " + e.getMessage());
-            } catch(IllegalAccessException e2) {
-                _error("Failed to instantiate speech recognizer: " + e2.getMessage());
-            } catch(NoSuchMethodException e3) {
-                _error("Failed to instantiate speech recognizer: " + e3.getMessage());
-            } catch(InstantiationException e4) {
-                _error("Failed to instantiate speech recognizer: " + e4.getMessage());
+            } catch(Throwable throwable) {
+                throw new IllegalActionException(_actor, throwable, "Failed to instantiate speech recognizer.");
             }
                         
-        } catch(MalformedURLException e) {
-            _error("Failed to load speech recognition .jar file.  This file must be downloaded separately. " + e.getMessage());
-        } catch(IOException e2) {
-            _error("Failed to load speech recognition .jar file.  This file must be downloaded separately. " + e2.getMessage());
-        } catch(ClassNotFoundException e3) {
-            _error("Failed to load speech recognition classes.  The .jar file must be downloaded separately. " + e3.getMessage());
+        } catch(Throwable throwable) {
+            throw new IllegalActionException(_actor, throwable, "Failed to load speech recognition .jar file.  This file must be downloaded separately.");
         }
     }
         
-    /** Set speech recognition options, including "continuous", "dictionaryPath", and "languageModelPath".
-     * @param options  Speech recognition options, including "continuous", "dictionaryPath" and "languageModelPath".
+    /** Set speech recognition options, including "continuous",
+     *  "dictionaryPath", and "languageModelPath".
+     *  @param options Speech recognition options, including
+     *  "continuous", "dictionaryPath" and "languageModelPath".
+     *  @exception IllegalActionException If the language or
+     *  dictionary files do not exist.
      */
-    public void setOptions(ScriptObjectMirror options) {
+    public void setOptions(ScriptObjectMirror options) throws IllegalActionException {
         if (options.containsKey("continuous")) {
             _continuous = (Boolean) options.get("continuous");
         } else {
@@ -164,40 +161,50 @@ public class SpeechRecognitionHelper extends HelperBase {
                 
         _languageModelPath = _defaultLanguageModelPath;
                 
+        // FIXME: We should probably handle Jar URLs here by copying the file to a temporary location.
         if (options.containsKey("languageModelPath") && !options.get("languageModelPath").toString().isEmpty()) {
-            testFile = new File((String) options.get("languageModelPath"));
+            testFile = FileUtilities.nameToFile((String) options.get("languageModelPath"), null);
             if(!testFile.exists() || !testFile.isFile()) { 
-                _error("SpeechRecognition:  Requested language model file does not "
-                       + "exist: " + (String) options.get("languageModelPath") + ".  Using default language model.");
+                throw new IllegalActionException(_actor, "SpeechRecognition:  Requested language model file does not "
+                                                 + "exist: " + (String) options.get("languageModelPath"));
             } else {
-                _languageModelPath = (String) options.get("languageModelPath");
+                try {
+                    _languageModelPath = testFile.getCanonicalPath();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(_actor, "SpeechRecognition:  Could not get the canonical path of "
+                                                     + _languageModelPath);
+                }
             }
         }
                 
         _dictionaryPath = _defaultDictionaryPath;
                 
+        // FIXME: We should probably handle Jar URLs here by copying the file to a temporary location.
         if (options.containsKey("dictionaryPath") && !options.get("dictionaryPath").toString().isEmpty()) {
-            testFile = new File((String) options.get("dictionaryPath"));
+            testFile = FileUtilities.nameToFile((String) options.get("dictionaryPath"), null);
             if(!testFile.exists() || !testFile.isFile()) { 
-                _error("SpeechRecognition:  Requested dictionary file does not "
-                       + "exist: " + (String) options.get("dictionaryPath") + ". Using default dictionary.");
-                _dictionaryPath = _defaultDictionaryPath;
+                throw new IllegalActionException(_actor, "SpeechRecognition:  Requested dictionary file does not "
+                                                 + "exist: " + (String) options.get("dictionaryPath"));
             } else {
-                _dictionaryPath = (String) options.get("dictionaryPath");
+                try { 
+                    _dictionaryPath = testFile.getCanonicalPath();
+                } catch (IOException ex) {
+                    throw new IllegalActionException(_actor, "SpeechRecognition:  Could not get the canonical path of "
+                                                     + _languageModelPath);
+                }
             }
         } 
     }
         
-    /** Start speech recognition.  The recognizer runs in a separate thread, since it runs continuously.
+    /** Start speech recognition.  The recognizer runs in a separate
+     * thread, since it runs continuously.
      */
-        
-    public void start() {
+    public void start() throws IllegalActionException {
         _stopRequested = false;                // Clear any pending stops.
         Class<?>[] booleanType = {boolean.class};
 
         if (_recognizer == null) {
-            _error("Cannot start speech recognizer.  Speech recognizer failed to initialize.");
-            return;
+            throw new IllegalActionException(_actor, "Cannot start speech recognizer.  Speech recognizer failed to initialize.");
         }
                 
         if (_worker == null) {
@@ -207,12 +214,8 @@ public class SpeechRecognitionHelper extends HelperBase {
                     public void run() {
                         try {
                             _recognizer.getClass().getMethod("startRecognition", booleanType).invoke(_recognizer, true);
-                        } catch(InvocationTargetException e) {
-                            _error("Speech recognizer failed to start: " + e.getMessage());
-                        } catch(NoSuchMethodException e2) {
-                            _error("Speech recognizer failed to start: " + e2.getMessage());
-                        } catch(IllegalAccessException e3) {
-                            _error("Speech recognizer failed to start: " + e3.getMessage());
+                        } catch(Throwable throwable) {
+                            throw new KernelRuntimeException(_actor, null, throwable, "Speech recognizer failed to start.");
                         }
                                     
                         while (!_stopRequested) {
@@ -232,15 +235,9 @@ public class SpeechRecognitionHelper extends HelperBase {
                                         _worker.interrupt();
                                     }
                                 }
-                            } catch(InvocationTargetException e) {
-                                _error("Speech recognizer failed to start: " + e.getMessage());
+                            } catch (Throwable throwable) {
                                 _worker.interrupt();
-                            } catch(NoSuchMethodException e2) {
-                                _error("Speech recognizer failed to start: " + e2.getMessage());
-                                _worker.interrupt();
-                            } catch(IllegalAccessException e3) {
-                                _error("Speech recognizer failed to start: " + e3.getMessage());
-                                _worker.interrupt();
+                                throw new KernelRuntimeException(_actor, null, throwable, "Speech recognizer failed to start.");
                             }
                         }
                             
@@ -248,17 +245,22 @@ public class SpeechRecognitionHelper extends HelperBase {
                             _recognizer.getClass().getMethod("stopRecognition").invoke(_recognizer);
                             _stopRequested = false;
                             _worker = null;
-                        } catch(InvocationTargetException e) {
-                            _error("Speech recognizer failed to stop: " + e.getMessage());
-                        } catch(NoSuchMethodException e2) {
-                            _error("Speech recognizer failed to stop: " + e2.getMessage());
-                        } catch(IllegalAccessException e3) {
-                            _error("Speech recognizer failed to stop: " + e3.getMessage());
+                        } catch (Throwable throwable) {
+                            throw new KernelRuntimeException(_actor, null, throwable, "Speech recognizer failed to stop.");
                         }
                         return;
                     }
                 };
                 
+            // FIXME: We need a better way to report exceptions.
+            _worker.setDefaultUncaughtExceptionHandler(new Thread.
+                                                       UncaughtExceptionHandler() {
+                    public void uncaughtException(Thread t, Throwable e) {
+                        
+                        System.out.println(t + " throws exception: " + e);
+                        e.printStackTrace();
+                    }
+                });
             _worker.start();
         }
     }
