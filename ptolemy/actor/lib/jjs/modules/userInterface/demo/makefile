@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/browser/demo
 
-DIRS =		HelloBrowser
+DIRS =		HelloUserInterface
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -48,7 +48,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	HelloBrowser/HelloBrowser.jar
+	HelloUserInterface/HelloUserInterface.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 
