@@ -120,7 +120,7 @@ exports.supportedSendTypes = function () {
  *  For example,
  *
  *  <pre>
- *      var WebSocket = require('webSocket');
+ *      var WebSocket = require('@accessors-modules/web-socket');
  *      var client = new WebSocket.Client({'host': 'localhost', 'port': 8080});
  *      client.send({'foo': 'bar'});
  *      client.on('message', function(message) {

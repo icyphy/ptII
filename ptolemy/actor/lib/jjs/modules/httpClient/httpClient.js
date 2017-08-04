@@ -30,7 +30,7 @@
  * A simple use of this module is to request a web page and print its contents, as
  * illustrated by the following example:
  * <pre>
- *    var httpClient = require('httpClient');
+ *    var httpClient = require('@accessors-modules/http-client');
  *    httpClient.get('http://accessors.org', function(message) {
  *        print(message.body);
  *    });
