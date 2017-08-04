@@ -71,13 +71,6 @@ $CLASSPATH/org/terraswarm/accessor/demo/AugmentedReality/TagURIMapAR.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityGDP/AugmentedRealityBasicGDP.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityGDP/AugmentedRealityGDP.xml
 $CLASSPATH/org/terraswarm/accessor/demo/AugmentedRealityGDP/TagMapAccessorAR.xml
-$CLASSPATH/org/terraswarm/accessor/demo/Browser/Browser.xml
-$CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserBrowser.xml
-$CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserFixedPage.xml
-$CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserInteractive.xml
-$CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserRamp.xml
-$CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserUpdate.xml
-$CLASSPATH/org/terraswarm/accessor/demo/Browser/BrowserVideo.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/Camera.xml
 $CLASSPATH/org/terraswarm/accessor/demo/Camera/CaptureOpenLoop.xml
 $CLASSPATH/org/terraswarm/accessor/demo/CameraWebSocket/CameraWebSocket.xml
@@ -131,6 +124,13 @@ $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketSecureServerClient.xm
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketTwoClients.xml
 $CLASSPATH/org/terraswarm/accessor/demo/TCPSocket/TCPSocketUnsignedShort.xml
 $CLASSPATH/org/terraswarm/accessor/demo/UDPSocket/UDPSocket.xml
+$CLASSPATH/org/terraswarm/accessor/demo/UserInterface/UserInterface.xml
+$CLASSPATH/org/terraswarm/accessor/demo/UserInterface/UserInterfaceBrowser.xml
+$CLASSPATH/org/terraswarm/accessor/demo/UserInterface/UserInterfaceFixedPage.xml
+$CLASSPATH/org/terraswarm/accessor/demo/UserInterface/UserInterfaceInteractive.xml
+$CLASSPATH/org/terraswarm/accessor/demo/UserInterface/UserInterfaceRamp.xml
+$CLASSPATH/org/terraswarm/accessor/demo/UserInterface/UserInterfaceUpdate.xml
+$CLASSPATH/org/terraswarm/accessor/demo/UserInterface/UserInterfaceVideo.xml
 $CLASSPATH/org/terraswarm/accessor/demo/VertxBus/VertxBus.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WatchCommandUpdater/WatchCommandUpdater.xml
 $CLASSPATH/org/terraswarm/accessor/demo/WatchHandRaisingLight/WatchHandRaisingLight.xml
@@ -221,7 +221,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/ModelBuilder/ModelBuilder.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/Audio.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/browser/demo/HelloBrowser/HelloBrowser.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/browser/demo/HelloUserInterface/HelloUserInterface.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Capture/Capture.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Capture/CaptureOpenLoop.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/computerVision/demo/ComputerVision/ComputerVision.xml
