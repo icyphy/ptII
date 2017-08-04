@@ -221,7 +221,6 @@ $CLASSPATH/ptolemy/actor/lib/jjs/demo/Factorial/Factorial.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/JavaScriptShell/JavaScriptShell.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/demo/ModelBuilder/ModelBuilder.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/audio/demo/Audio/Audio.xml
-$CLASSPATH/ptolemy/actor/lib/jjs/modules/browser/demo/HelloUserInterface/HelloUserInterface.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Capture/Capture.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Capture/CaptureOpenLoop.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/computerVision/demo/ComputerVision/ComputerVision.xml
@@ -258,6 +257,7 @@ $CLASSPATH/ptolemy/actor/lib/jjs/modules/socket/demo/SocketUnsignedShort/SocketU
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/testing/demo/Testing/Testing.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/udpSocket/demo/WatchEmulator/WatchEmulator.xml
+$CLASSPATH/ptolemy/actor/lib/jjs/modules/userInterface/demo/HelloUserInterface/HelloUserInterface.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/SpeakingServerListeningClient/SpeakingServerListeningClient.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/TwoWebSockets/TwoWebSockets.xml
 $CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketsServerClient/WebSocketsServerClient.xml
