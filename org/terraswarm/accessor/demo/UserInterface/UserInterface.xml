@@ -1,7 +1,7 @@
 <?xml version="1.0" standalone="no"?>
 <!DOCTYPE entity PUBLIC "-//UC Berkeley//DTD MoML 1//EN"
     "http://ptolemy.eecs.berkeley.edu/xml/dtd/MoML_1.dtd">
-<entity name="Browser" class="ptolemy.actor.TypedCompositeActor">
+<entity name="UserInterface" class="ptolemy.actor.TypedCompositeActor">
     <property name="_createdBy" class="ptolemy.kernel.attributes.VersionAttribute" value="11.0.devel">
     </property>
     <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={162, 46, 1065, 634}, maximized=false}">
@@ -13,11 +13,11 @@
     <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{308.9986896514893, 255.6863013812308}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- BrowserFixedPage: Display a fixed, static web page upon initialization.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- UserInterfaceFixedPage: Display a fixed, static web page upon initialization.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 100.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BrowserFixedPage.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UserInterfaceFixedPage.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -52,17 +52,17 @@
         </property>
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0,0.0,0.0,1.0}">
         </property>
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demos for the Browser Accessor">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="Demos for the UserInterface Accessor">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 50.0]">
         </property>
     </property>
     <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- BrowserRamp: Replace the web page each time new data arrives.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- UserInterfaceRamp: Replace the web page each time new data arrives.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 125.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BrowserRamp.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UserInterfaceRamp.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -83,11 +83,11 @@
         </property>
     </property>
     <property name="Annotation4" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- BrowserVideo: Update a web page with a new image ten times per second.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- UserInterfaceVideo: Update a web page with a new image ten times per second.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{-25.0, 150.0}">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BrowserVideo.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UserInterfaceVideo.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -108,11 +108,11 @@
         </property>
     </property>
     <property name="Annotation5" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- BrowserUpdate: Update a web page with new data each time new data arrives using a web socket.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- UserInterfaceUpdate: Update a web page with new data each time new data arrives using a web socket.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 175.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BrowserUpdate.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UserInterfaceUpdate.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -133,11 +133,11 @@
         </property>
     </property>
     <property name="Annotation6" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- BrowserInteractive: Put a form on a web page and feed back the data from the form.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- UserInterfaceInteractive: Put a form on a web page and feed back the data from the form.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 200.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BrowserInteractive.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UserInterfaceInteractive.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -158,11 +158,11 @@
         </property>
     </property>
     <property name="Annotation7" class="ptolemy.vergil.kernel.attributes.TextAttribute">
-        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- BrowserBrowser: Launch a page plus browser host, load a WebSocket accessor, and update data.">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="- UserInterfaceUserInterface: Launch a page plus browser host, load a WebSocket accessor, and update data.">
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-25.0, 225.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="BrowserBrowser.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="UserInterfaceBrowser.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
