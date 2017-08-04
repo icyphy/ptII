@@ -119,6 +119,9 @@ TOOLS_JAR =	@TOOLS_JAR@
 # Set to udpSocket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTUDPSOCKET_DIR = @PTUDPSOCKET_DIR@
 
+# Set to userInterface if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
+PTUSERINTERFACE_DIR= @PTUSERINTERFACE_DIR@
+
 # Set to socket if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
 PTVERTX_SOCKET_DIR=	@PTVERTX_SOCKET_DIR@
 
@@ -392,9 +395,6 @@ PTANGO_JARS = @PTANGO_JARS@
 
 # PTANGO_PACKAGES is used in ptII/doc/makefile
 PTANGO_PACKAGES = @PTANGO_PACKAGES@
-
-# Set to browser if the Vertx jars are found and used in ptolemy/actor/lib/jjs/modules/makefile
-PTBROWSER_DIR = @PTBROWSER_DIR@
 
 # Set to the BSH jar file and used to compile org/mlc
 PTBSH_JAR = @PTBSH_JAR@
@@ -1046,6 +1046,7 @@ PTTINYOS_DIR =	@PTTINYOS_DIR@
 # Classpath for the PtinyOS utilities
 PTINYOS_DIR =   $(PTII)/ptolemy/domains/ptinyos
 PTINYOS_CLASSPATH = $(PTINYOS_DIR)/lib/jdom.jar$(CLASSPATHSEPARATOR)$(PTINYOS_DIR)/lib/nesc.jar
+
 
 # Set to waba and used in $PTII/ptolemy/makefile if the PalmOS WABA was found
 PTWABA_DIR =	@PTWABA_DIR@

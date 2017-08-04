@@ -31,7 +31,6 @@
 
 ME =		ptolemy/actor/lib/jjs/modules
 
-# PTBROWSER_DIR is set to browser if the Vertx jars are found by configure.
 # PTCAMERAS_DIR is set to cameras if the webcam-capture*.jar and other jars are found by configure.
 # PTEVENTBUS_DIR is set to eventbus if the Vertx jars are found by configure.
 # PTGDP_DIR is set to gdp if $PTII/lib/gdp*.jar was found by configure
@@ -42,10 +41,11 @@ ME =		ptolemy/actor/lib/jjs/modules
 # PTSERIAL_DIR is set to serial if the Java Communication API is found by configure.
 # PTSPHINX4_DIR is set to speechRecognition if the Sphinx4 jar files are found
 # PTUDPSOCKET_DIR is set to udpSocket if the Vertx jars are found by configure.
+# PTUSERINTERFACE_DIR is Set to userInterface if the Vertx jars are found by configure.
 # PTVERTX_SOCKET_DIR is set to socket if the Vertx jars are found by configure.
 # PTWEBSOCKET_DIR is set to webSocket if the Vertx jars are found by configure.
 # PTXBEE_DIR is set to xbee if the XBee Java Interface was found
-DIRS = 		audio $(PTBROWSER_DIR) buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto dataConverter discovery dsp $(PTEVENTBUS_DIR) $(PTGDP_DIR) $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) imageDisplay $(PTIMUSENSOR_DIR) iotAuth localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign os process $(PTSERIAL_DIR) $(PTSPHINX4_DIR) shell speechRecognition testing $(PTUDPSOCKET_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) wifiScanner $(PTXBEE_DIR)
+DIRS = 		audio buffer $(PTCAMERAS_DIR) contextAware contextAwareTest crypto dataConverter discovery dsp $(PTEVENTBUS_DIR) $(PTGDP_DIR) $(PTHTTPCLIENT_DIR) $(PTHTTPSERVER) imageDisplay $(PTIMUSENSOR_DIR) iotAuth localStorage mapManager motionDetector $(PTPAHO_MQTT_DIRS) objectAssign os process $(PTSERIAL_DIR) $(PTSPHINX4_DIR) shell speechRecognition testing $(PTUDPSOCKET_DIR) $(PTUSERINTERFACE_DIR) $(PTVERTX_SOCKET_DIR) $(PTWEBSOCKET_DIR) wifiScanner $(PTXBEE_DIR)
 
 # Root of the Java directory
 ROOT =		../../../../..
