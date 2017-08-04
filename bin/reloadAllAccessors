@@ -130,13 +130,14 @@ if [ "$cg" = "true" ]; then
     done        
 fi    
 
+set -x
 if [ "$commit" = "true" ]; then
     # Commit only models that are marked with M in svn status so that we avoid
     # attempting to commit models that have not been checked in.
     jsaccessorsNoVendors=`cat $jsaccessors | grep -v /vendors/`
     jsaccessorsToBeCommitted=`svn status $jsaccessorsNoVendors | egrep "^M" | awk '{print $2}' | grep -v diva.jar`
 
-    accessorsRepoCommits=`svn status $PTII/org/terraswarm/accessor/accessors/web | sed 's@org/terraswarm/accessors/accessors/web@@g' | egrep "^M" | awk '{print $2}' | egrep "js$"`
+    accessorsRepoCommits=`svn status $PTII/org/terraswarm/accessor/accessors/web | sed 's@org/terraswarm/accessors/accessors/web@@g' | egrep "^M" | awk '{print $2}' | egrep -v "js$|xml$"`
 
     if [ ! -z "$accessorsRepoCommits" ]; then
         echo "$0: Commit to the accessor repo"
@@ -146,7 +147,7 @@ if [ "$commit" = "true" ]; then
         echo "$0: No files need be committed in the accessors repo."
     fi 
 
-    ptIIRepoCommits=`echo $jsaccessorsToBeCommitted | grep -v org/terraswarm/accessor/accessors/web`
+    ptIIRepoCommits=`svn status $jsaccessorsNoVendors | egrep "^M" | awk '{print $2}' | grep -v diva.jar | grep -v org/terraswarm/accessor/accessors/web`
     if [ ! -z "$ptIIRepoCommits" ]; then
         echo "$0: Commit to the ptII repo."
         echo "$0: ptIIRepoCommits: $ptIIRepoCommits"
