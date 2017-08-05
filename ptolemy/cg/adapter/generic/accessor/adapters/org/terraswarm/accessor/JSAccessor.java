@@ -74,6 +74,13 @@ public class JSAccessor
         code.append(_eol + _INDENT1 + "// Start: " + getComponent().getName()
                 + ": ptolemy/cg/adapter/generic/accessor/adapters/org/terraswarm/accessor/JSAccessor.java" + _eol);
 
+        // If the script has local modifications, then emit the contents of the script.
+        // This code is needed for the Mutable accessors.
+        if (actor.script.isOverridden()) {
+            code.append(_INDENT1 + "// The script has local modifications, so it is being emitted." + _eol);
+            code.append(super.generateAccessor());
+            return code.toString();
+        }
 
         code.append(_INDENT1 + "var " + name + " = this.instantiate('" + name
                 + "', '"
