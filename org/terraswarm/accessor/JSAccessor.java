@@ -608,7 +608,7 @@ public class JSAccessor extends JavaScript {
            }
         */
         if (script.isOverridden()) {
-            if (!MessageHandler.yesNoQuestion("Overwrite local changes?")) {
+            if (!MessageHandler.yesNoQuestion("Overwrite local changes in " + getName() + "?")) {
                 return;
             }
         }
