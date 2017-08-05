@@ -685,6 +685,8 @@ clearTimeout',
                 this.exports.wrapup.call(this);
             }
 
+            // If you change wrapupEnd, then be sure to update the wrapupEnd
+            // listener in processCommandLineArguments().
             this.emit('wrapupEnd');
 
             if (typeof _debug !== 'undefined' && _debug) {
@@ -3022,7 +3024,7 @@ function processCommandLineArguments(argv, fileReader, instantiateTopLevel, term
             // Initialize the accessor.
             accessor.initialize();
 
-            accessor.on('wrapup', function () {
+            accessor.on('wrapupEnd', function () {
                 accessorsWrappedUp++;
                 if (terminator && accessorsWrappedUp >= accessorCount) {
                     // All initialized accessors have wrapped up.
