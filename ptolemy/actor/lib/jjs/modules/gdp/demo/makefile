@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/gdp/demo
 
-DIRS =		GDPBrowser GDPLogSubscribe GDPLogWriteRead GDPTestGenerator GDPToWebSocket
+DIRS =		AugmentedRealityGDP GDPBrowser GDPLogSubscribe GDPLogWriteRead GDPTestGenerator GDPToWebSocket
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -48,6 +48,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
+	AugmentedRealityGDP/AugmentedRealityGDP.jar
 	GDPBrowser/GDPBrowser.jar \
 	GDPLogSubscribe/GDPLogSubscribe.jar \
 	GDPLogWriteRead/GDPLogWriteRead.jar \

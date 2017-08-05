@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II AugmentedReality demo
+# Makefile for Ptolemy II FaceDetectorCamera demo
 #
 # @Authors: Christopher Brooks (makefile only)
 #
-# @Version: $Id$
+# @Version: : makefile 60082 2010-12-26 19:07:30Z cxh $
 #
-# @Copyright (c) 2017 The Regents of the University of California.
+# @Copyright (c) 2016 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,7 +29,7 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		org/terraswarm/accessor/demo/AugmentedRealityGDP
+ME =		org/terraswarm/accessor/demo/FaceDetectorCamera
 
 # Root of the Java directory
 ROOT =		../../../../../
@@ -41,19 +41,13 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	AugmentedRealityGDP
+PTPACKAGE = 	FaceDetectorCamera
 PTCLASSJAR = 	$(PTPACKAGE).jar
 
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	AugmentedRealityGDP.xml \
-	AugmentedRealityBasicGDP.xml \
-	MechanicalRoom.jpg \
-	PressureSensor.js \
-	TagMapAccessorAR.xml \
-	TemperatureSensor.js \
-	VibrationSensor.js
+	FaceDetectorCamera.xml
 
 EXTRA_SRCS = 	$(JSRCS) 	$(OTHER_FILES_TO_BE_JARED)
 
@@ -77,16 +71,16 @@ install: all $(PTCLASSJAR)
 demo: demo_ptolemy demo_vergil
 
 #demo_applet:
-#	CLASSPATH="$(CLASSPATH)" appletviewer AugmentedReality.htm
+#	CLASSPATH="$(CLASSPATH)" appletviewer FaceDetector.htm
 
 #demo_applet_vergil:
 #	CLASSPATH="$(CLASSPATH)" appletviewer .htm
 
 demo_ptolemy:
-	"$(PTII)/bin/ptolemy" AugmentedReality.xml
+	"$(PTII)/bin/ptolemy" FaceDetector.xml
 
 demo_vergil:
-	"$(PTII)/bin/vergil" AugmentedReality.xml
+	"$(PTII)/bin/vergil" FaceDetector.xml
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk

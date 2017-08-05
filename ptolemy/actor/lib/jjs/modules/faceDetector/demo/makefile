@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/faceDetector/demo
 
-DIRS =		FaceDetector
+DIRS =		FaceDetector FaceDetectorCamera
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -48,7 +48,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	FaceDetector/FaceDetector.jar
+	FaceDetector/FaceDetector.jar \
+	FaceDetectorCamera/FaceDetectorCamera.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

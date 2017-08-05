@@ -1,10 +1,10 @@
-# Makefile for Ptolemy II Captures demo
+# Makefile for Java Ptolemy II JavaScript demos
 #
-# @Authors: Christopher Brooks (makefile only)
+# @Authors: Christopher Brooks, based on a file by Thomas M. Parks
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2014-2015 The Regents of the University of California.
+# @Copyright (c) 2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -29,10 +29,12 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/cameras/demo/Capture
+ME =		ptolemy/actor/lib/jjs/modules/xbee/demo
 
-# Root of the Java directory
-ROOT =		../../../../../../../..
+DIRS =		XBeeHelloWorld
+
+# Root of the Ptolemy II directory
+ROOT =		../../../../../../..
 
 CLASSPATH =	$(ROOT)
 
@@ -41,44 +43,37 @@ CONFIG =	$(ROOT)/mk/ptII.mk
 include $(CONFIG)
 
 # Used to build jar files
-PTPACKAGE = 	Capture
-PTCLASSJAR = 	$(PTPACKAGE).jar
+PTPACKAGE = 	demo
+PTCLASSJAR =
 
+# Include the .class files from these jars in PTCLASSALLJAR
+PTCLASSALLJARS = \
+	XBeeHelloWorld/XBeeHelloWorld.jar
+
+PTCLASSALLJAR = $(PTPACKAGE).jar
+
+# Keep this list alphabetized.
 JSRCS =
 
-OTHER_FILES_TO_BE_JARED = \
-	Capture.xml \
-	CaptureOpenLoop.xml 
-
-EXTRA_SRCS = \
-	$(JSRCS) \
-	$(OTHER_FILES_TO_BE_JARED)
+EXTRA_SRCS =	$(JSRCS)
 
 # Sources that may or may not be present, but if they are present, we don't
 # want make checkjunk to barf on them.
-MISC_FILES = $(DIRS)
+MISC_FILES =	$(DIRS)
 
 # make checkjunk will not report OPTIONAL_FILES as trash
-# make realclean removes OPTIONAL_FILES
+# make distclean removes OPTIONAL_FILES
 OPTIONAL_FILES = \
 	doc
 
 JCLASS = $(JSRCS:%.java=%.class)
 
-# Don't include all or install rules here, we want the user
-# to run 'make demos' to run the tests.
 all: jclass
-	@echo "To run all the demos, run 'make demo'"
+	@echo "To run the demos, run 'make demo'"
 
-install: all $(PTCLASSJAR)
+install: jclass jars
 
-demo: demo_ptolemy demo_vergil
-
-demo_ptolemy:
-	"$(PTII)/bin/ptolemy" Capture.xml
-
-demo_vergil:
-	"$(PTII)/bin/vergil" Capture.xml
+demo: subdemo
 
 # Get the rest of the rules
 include $(ROOT)/mk/ptcommon.mk
