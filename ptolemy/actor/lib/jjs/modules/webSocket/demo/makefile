@@ -31,7 +31,9 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/webSocket/demo
 
-DIRS =		SpeakingServerListeningClient TwoWebSockets WebSocketsServerClient
+DIRS =		SpeakingServerListeningClient TwoWebSockets WebSocketsServerClient \
+		WebSocketChat WebSocketClient \
+		WebSocketGraph WebSocketImage WebSocketLog
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -51,6 +53,11 @@ PTCLASSALLJARS = \
 	SpeakingServerListeningClient/SpeakingServerListeningClient.jar \
 	TwoWebSockets/TwoWebSockets.jar \
 	WebSocketsServerClient/WebSocketsServerClient.jar
+	WebSocketChat/WebSocketChat.jar \
+	WebSocketClient/WebSocketClient.jar \
+	WebSocketGraph/WebSocketGraph.jar \
+	WebSocketImage/WebSocketImage.jar \
+	WebSocketLog/WebSocketLog.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

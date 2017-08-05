@@ -65,7 +65,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="{5.0, 160.0}">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://www.terraswarm.org/urbanheartbeat/wiki/Main/WatchAndroidStudioSetup#WatchSoftwareRepo#in_browser">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="https://www.terraswarm.org/urbanheartbeat/wiki/Main/WatchAndroidStudioSetup#in_browser">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">

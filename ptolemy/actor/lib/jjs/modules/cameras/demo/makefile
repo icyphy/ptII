@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2015 The Regents of the University of California.
+# @Copyright (c) 2015-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -31,7 +31,7 @@
 
 ME =		ptolemy/actor/lib/jjs/modules/cameras/demo
 
-DIRS =		Capture
+DIRS =		Camera CameraWebSocket
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -48,7 +48,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	Capture/Capture.jar
+	Camera/Camera.jar \
+	CameraWebSocket/CameraWebSocket.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

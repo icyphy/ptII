@@ -12,13 +12,13 @@
         <property name="_location" class="ptolemy.kernel.util.Location" value="[65.0, 30.0]">
         </property>
     </property>
-    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={432, 23, 934, 634}, maximized=false}">
+    <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={22, 23, 934, 634}, maximized=false}">
     </property>
     <property name="_vergilSize" class="ptolemy.actor.gui.SizeAttribute" value="[700, 524]">
     </property>
     <property name="_vergilZoomFactor" class="ptolemy.data.expr.ExpertParameter" value="1.0">
     </property>
-    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{340.0, 252.0}">
+    <property name="_vergilCenter" class="ptolemy.data.expr.ExpertParameter" value="{350.0, 262.0}">
     </property>
     <property name="Annotation" class="ptolemy.vergil.kernel.attributes.TextAttribute">
         <property name="textColor" class="ptolemy.actor.gui.ColorAttribute" value="{0.0, 0.0, 0.0, 1.0}">
@@ -33,7 +33,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[90.0, 265.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="CaptureOpenLoop.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/cameras/demo/Camera/CaptureOpenLoop.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
@@ -53,25 +53,20 @@
             </property>
         </property>
     </property>
-    <entity name="DiscreteClock" class="ptolemy.actor.lib.DiscreteClock">
-        <property name="period" class="ptolemy.actor.parameters.PortParameter" value="0.1">
+    <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/cameras/demo">
         </property>
-        <property name="values" class="ptolemy.data.expr.Parameter" value="{true}">
+        <property name="runCommand" class="ptolemy.data.expr.StringParameter" value="node ../../node_modules/@accessors-hosts/node/nodeHostInvoke.js cameras/demo/@modelName@">
         </property>
-        <doc>Create periodic timed events.</doc>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[55.0, 135.0]">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[75.0, 335.0]">
         </property>
-    </entity>
-    <entity name="ImageDisplay" class="ptolemy.actor.lib.image.ImageDisplay">
-        <property name="_windowProperties" class="ptolemy.actor.gui.WindowPropertiesAttribute" value="{bounds={5, 23, 640, 524}, maximized=false}">
+    </property>
+    <property name="Annotation3" class="ptolemy.vergil.kernel.attributes.TextAttribute">
+        <property name="text" class="ptolemy.kernel.util.StringAttribute" value="The code generator will generate a swarmlet that&#10;may be run by the Node accessor host.&#10;&#10;Note that the swarmlet requires the opencv&#10;npm module, which is installed when the&#10;swarmlet is run.&#10;&#10;Unfortunately, the opencv npm module does&#10;not always install correctly.">
         </property>
-        <property name="_paneSize" class="ptolemy.actor.gui.SizeAttribute">
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[20.0, 365.0]">
         </property>
-        <property name="_pictureSize" class="ptolemy.actor.gui.SizeAttribute" value="[640, 480]">
-        </property>
-        <property name="_location" class="ptolemy.kernel.util.Location" value="[345.0, 135.0]">
-        </property>
-    </entity>
+    </property>
     <entity name="Camera" class="org.terraswarm.accessor.JSAccessor">
         <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Copyright (c) 2015-2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** An accessor for a camera on the local host. This can be a built-in camera or&#10; *  a USB-connected camera. This accessor has two modes of operation, &quot;triggered&quot;&#10; *  and &quot;open loop.&quot; In triggered mode, it captures an image whenever a trigger&#10; *  input is received and produces that image on its output. In open-loop mode,&#10; *  it captures every image produced by the camera, at the speed of the camera,&#10; *  and produces on the output a stream of such images.&#10; *&#10; *  @accessor cameras/Camera&#10; *  @author Edward A. Lee (eal@eecs.berkeley.edu)&#10; *  @input trigger A trigger input for triggered mode.&#10; *   The value is ignored and can be anything.&#10; *  @output {Object} image A stream of captured images.&#10; *  @parameter {boolean} triggered If true, use triggered mode.&#10; *   Otherwise, use open-loop mode. This is a boolean that defaults to true.&#10; *  @parameter {string} camera The name of the camera to use.&#10; *   A list of available cameras is presented as options.&#10; *   This is a string that defaults to &quot;default camera&quot;,&#10; *   which uses the system default, if there is one.&#10; *  @parameter {{width: number, height: number}} viewSize The view size&#10; *   to use for capture, in pixels. A list of available view sizes for&#10; *   the selected camara is presented as options. This is a JSON specification&#10; *   with a &quot;width&quot; and &quot;height&quot; field, as in for example {&quot;width&quot;:640, &quot;height&quot;:480}.&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint and jshint.  Note that there should be no&#10;// space between the / and the * and global. See https://chess.eecs.berkeley.edu/ptexternal/wiki/Main/JSHint */&#10;/*global addInputHandler, error, exports, getParameter, input, output, parameter, removeInputHandler, require, send */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var cameras = require(&quot;@accessors-modules/cameras&quot;);&#10;var camera;&#10;var handle = null;&#10;&#10;/** Create the inputs, outputs, and parameters, and update the parameters for the selected camera. */&#10;exports.setup = function () {&#10;    this.input('trigger');&#10;    this.output('image');&#10;    this.parameter('triggered', {&#10;        'type': 'boolean',&#10;        'value': true&#10;    });&#10;    // NOTE: The following assumes that setup() is reinvoked whenever a parameter&#10;    // value changes, since the camera will change and so will the available options.&#10;    this.parameter('camera', {&#10;        'type': 'string',&#10;        'value': 'default camera'&#10;    });&#10;    this.parameter('viewSize', {&#10;        'type': 'JSON'&#10;    });&#10;    // This is in a try-catch so that this accessor can be instantiated even if the&#10;    // host does not provide a cameras module.&#10;    try {&#10;        this.parameter('camera', {&#10;            'options': cameras.cameras()&#10;        });&#10;        camera = new cameras.Camera(this.getParameter('camera'));&#10;        this.parameter('viewSize', {&#10;            'value': camera.getViewSize(),&#10;            'options': camera.viewSizes()&#10;        });&#10;    } catch (err) {&#10;        error(err);&#10;    }&#10;};&#10;&#10;/** Set the view size of the camera, open it, and depending on the triggered mode, either&#10; *  set up an input handler for the trigger input or set up a handler for the 'image'&#10; *  event notification from the camera.&#10; */&#10;exports.initialize = function () {&#10;    camera.setViewSize(this.getParameter('viewSize'));&#10;    camera.open();&#10;    var self = this;&#10;    if (this.getParameter('triggered')) {&#10;        // Request a snapshot.  Note the video stream might not be playing.&#10;        // An event will be generated when a snapshot is available.&#10;        camera.on('snapshot', function (image) {&#10;            self.send('image', image);&#10;        });&#10;&#10;        handle = this.addInputHandler('trigger', function () {&#10;            camera.snapshot();&#10;        });&#10;    } else {&#10;        camera.on('image', function (image) {&#10;            self.send('image', image);&#10;        });&#10;    }&#10;};&#10;&#10;/** Remove handlers and close the camera. */&#10;exports.wrapup = function () {&#10;    camera.removeAllListeners('image');&#10;    if (handle !== null) {&#10;        this.removeInputHandler(handle);&#10;    }&#10;    camera.close();&#10;};&#10;">
             <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
@@ -119,6 +114,10 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[185.0, 135.0]">
         </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
         <port name="trigger" class="ptolemy.actor.TypedIOPort">
             <property name="input"/>
         </port>
@@ -126,12 +125,87 @@
             <property name="output"/>
         </port>
     </entity>
+    <entity name="TestSpontaneous" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Test accessor that spontaneously produces outputs once per time interval.&#10;//&#10;// Copyright (c) 2015-2016 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Test accessor that spontaneously produces outputs once per time interval.&#10; *  This implementation produces a counting sequence.&#10; *&#10; *  @accessor test/TestSpontaneous&#10; *  @parameter interval The interval between outputs in milliseconds.&#10; *  @output output Output for the counting sequence, of type number.&#10; *  @author Edward A. Lee&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals clearInterval, exports, require, setInterval */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;exports.setup = function () {&#10;    this.parameter('interval', {&#10;        'type': 'number',&#10;        'value': 1000&#10;    });&#10;    this.output('output', {&#10;        'type': 'number'&#10;    });&#10;};&#10;&#10;// These variables will not be visible to subclasses.&#10;var handle = null;&#10;var count = 0;&#10;&#10;exports.initialize = function () {&#10;    count = 0;&#10;    // Need to record 'this' for use in the callback.&#10;    var thiz = this;&#10;    handle = setInterval(function () {&#10;        thiz.send('output', count);&#10;        count += 1;&#10;    }, this.getParameter('interval'));&#10;};&#10;&#10;exports.wrapup = function () {&#10;    if (handle) {&#10;        clearInterval(handle);&#10;        handle = null;&#10;    }&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/test/TestSpontaneous.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Test accessor that spontaneously produces outputs once per time interval.&#10; This implementation produces a counting sequence.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Edward A. Lee">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+            <property name="output (port)" class="ptolemy.kernel.util.StringAttribute" value="Output for the counting sequence, of type number.">
+            </property>
+            <property name="interval (parameter)" class="ptolemy.kernel.util.StringAttribute" value="The interval between outputs in milliseconds.">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[60.0, 135.0]">
+        </property>
+        <property name="interval" class="ptolemy.data.expr.Parameter" value="100.0">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
+    <entity name="ImageDisplay" class="org.terraswarm.accessor.JSAccessor">
+        <property name="script" class="ptolemy.actor.parameters.PortParameter" value="// Display an image on the console.&#10;//&#10;// Copyright (c) 2017 The Regents of the University of California.&#10;// All rights reserved.&#10;//&#10;// Permission is hereby granted, without written agreement and without&#10;// license or royalty fees, to use, copy, modify, and distribute this&#10;// software and its documentation for any purpose, provided that the above&#10;// copyright notice and the following two paragraphs appear in all copies&#10;// of this software.&#10;//&#10;// IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY&#10;// FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES&#10;// ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF&#10;// THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF&#10;// SUCH DAMAGE.&#10;//&#10;// THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,&#10;// INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;// MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE&#10;// PROVIDED HEREUNDER IS ON AN &quot;AS IS&quot; BASIS, AND THE UNIVERSITY OF&#10;// CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,&#10;// ENHANCEMENTS, OR MODIFICATIONS.&#10;//&#10;&#10;/** Display an image on the console.&#10; *&#10; *  @accessor image/ImageDisplay&#10; *  @param input The output&#10; *  @author Christopher Brooks&#10; *  @version $$Id$$&#10; */&#10;&#10;// Stop extra messages from jslint.  Note that there should be no&#10;// space between the / and the * and global.&#10;/*globals console, error, exports, require */&#10;/*jshint globalstrict: true*/&#10;&quot;use strict&quot;;&#10;&#10;var imageDisplay = require('@accessors-modules/image-display');&#10;var display = null;&#10;&#10;exports.setup = function () {&#10;    this.input('input');&#10;    this.output('output');&#10;};&#10;&#10;exports.initialize = function () {&#10;    if (display === null) {&#10;        display = new imageDisplay.ImageDisplay();&#10;    }&#10;&#10;    this.addInputHandler('input', function () {&#10;        var inputValue = this.get('input');&#10;        display.displayImage(inputValue);&#10;        this.send('output', inputValue);&#10;    });&#10;};&#10;">
+            <property name="style" class="ptolemy.actor.gui.style.NoteStyle">
+                <property name="note" class="ptolemy.kernel.util.StringAttribute" value="NOTE: To see the script, invoke Open Actor">
+                </property>
+            </property>
+        </property>
+        <property name="accessorSource" class="org.terraswarm.accessor.JSAccessor$ActionableAttribute" value="https://accessors.org/image/ImageDisplay.js">
+        </property>
+        <property name="documentation" class="ptolemy.vergil.basic.DocAttribute">
+            <property name="description" class="ptolemy.kernel.util.StringAttribute" value="&lt;p&gt;Display an image on the console.&lt;/p&gt;">
+            </property>
+            <property name="author" class="ptolemy.kernel.util.StringAttribute" value="Christopher Brooks">
+            </property>
+            <property name="version" class="ptolemy.kernel.util.StringAttribute" value="$$Id$$">
+            </property>
+        </property>
+        <property name="_tableauFactory" class="ptolemy.vergil.toolbox.TextEditorTableauFactory">
+            <property name="attributeName" class="ptolemy.kernel.util.StringAttribute" value="script">
+            </property>
+            <property name="syntaxStyle" class="ptolemy.kernel.util.StringAttribute" value="text/javascript">
+            </property>
+        </property>
+        <property name="_location" class="ptolemy.kernel.util.Location" value="[355.0, 135.0]">
+        </property>
+        <property name="DecoratorAttributesFor_AccessorCodeGenerator2" class="ptolemy.kernel.util.DecoratorAttributes">
+            <property name="decoratorName" class="ptolemy.kernel.util.StringAttribute" value="AccessorCodeGenerator">
+            </property>
+        </property>
+        <port name="input" class="ptolemy.actor.TypedIOPort">
+            <property name="input"/>
+        </port>
+        <port name="output" class="ptolemy.actor.TypedIOPort">
+            <property name="output"/>
+        </port>
+    </entity>
     <relation name="relation" class="ptolemy.actor.TypedIORelation">
     </relation>
     <relation name="relation2" class="ptolemy.actor.TypedIORelation">
     </relation>
-    <link port="DiscreteClock.output" relation="relation"/>
-    <link port="ImageDisplay.input" relation="relation2"/>
     <link port="Camera.trigger" relation="relation"/>
     <link port="Camera.image" relation="relation2"/>
+    <link port="TestSpontaneous.output" relation="relation"/>
+    <link port="ImageDisplay.input" relation="relation2"/>
 </entity>

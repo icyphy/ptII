@@ -32,12 +32,8 @@
 # Root of Ptolemy II directory
 ROOT = ../../../..
 
-DIRS = AprilTags AprilTagImageAnnotate \
-        Audio \
+DIRS = Audio \
 	AugmentedReality \
-	AugmentedRealityGDP \
-	Camera CameraWebSocket \
-	FaceDetector \
 	Foscam HappySadStock \
 	Heartbeat HueToggle \
 	IMUSensor ImageAnnotate ImageFilters Kubi \
@@ -51,9 +47,7 @@ DIRS = AprilTags AprilTagImageAnnotate \
 	SwarmAcousticService TCPSocket \
 	UDPSocket UserInterface VertxBus \
 	WatchHandRaisingLight \
-	Weather WebServer WebSocketChat WebSocketClient \
-	WebSocketGraph WebSocketImage WebSocketLog \
-	XBeeHelloWorld
+	Weather WebServer 
 
 # $(ME) is used in ptdir.mk
 ME =  org/terraswarm/accessor/demo
@@ -74,13 +68,8 @@ PTCLASSALLJAR = $(PTPACKAGE).jar
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	AprilTags/AprilTags.jar \
 	Audio/Audio.jar \
 	AugmentedReality/AugmentedReality.jar \
-	AugmentedRealityGDP/AugmentedRealityGDP.jar \
-	Camera/Camera.jar \
-	CameraWebSocket/CameraWebSocket.jar \
-	FaceDetector/FaceDetector.jar \
 	Foscam/Foscam.jar \
 	HappySadStock/HappySadStock.jar \
 	Heartbeat/Heartbeat.jar \

@@ -29,9 +29,10 @@
 # 						PT_COPYRIGHT_VERSION_2
 # 						COPYRIGHTENDKEY
 
-ME =		ptolemy/actor/lib/jjs/modules/userInterface/demo
+ME =		ptolemy/actor/lib/jjs/modules/aprilTags/demo
 
-DIRS =		HelloUserInterface
+DIRS =	AprilTagImageAnnotate \
+	AprilTags
 
 # Root of the Ptolemy II directory
 ROOT =		../../../../../../..
@@ -48,7 +49,8 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	HelloUserInterface/HelloUserInterface.jar
+	AprilTagImageAnnotate/AprilTagImageAnnotate.jar \
+	AprilTags/AprilTags.jar
 
 PTCLASSALLJAR = $(PTPACKAGE).jar
 

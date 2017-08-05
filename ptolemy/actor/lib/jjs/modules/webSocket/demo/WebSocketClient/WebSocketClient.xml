@@ -41,7 +41,7 @@
         </property>
         <property name="_location" class="ptolemy.kernel.util.Location" value="[-20.0, 325.0]">
         </property>
-        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/org/terraswarm/accessor/demo/WebSocketClient/WebSocketServer.xml">
+        <property name="LiveLink" class="ptolemy.actor.gui.LiveLink" value="$CLASSPATH/ptolemy/actor/lib/jjs/modules/webSocket/demo/WebSocketClient/WebSocketServer.xml">
             <property name="_hideName" class="ptolemy.kernel.util.SingletonAttribute">
             </property>
             <property name="_icon" class="ptolemy.vergil.icon.ValueIcon">
