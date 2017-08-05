@@ -163,7 +163,7 @@ models.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class completeDemos.htm
 	LC_ALL=C sort -f models.txt | uniq > /tmp/models.txt
 	mv /tmp/models.txt models.txt
 	@echo "#"
-	@echo "# Done builing models.txt: `date`"
+	@echo "# Done building models.txt: `date`"
 	@echo "#"
 
 demosModels.txt: $(ROOT)/ptolemy/actor/gui/HTMLAbout.class demos.htm models.txt
