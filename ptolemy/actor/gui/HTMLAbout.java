@@ -485,6 +485,7 @@ public class HTMLAbout {
         if (args.length == 2) {
             outputFileName = args[1];
         }
+        System.out.println("Printing '.' for regular models, 'P' for models with LiveLinks.");
         writeDemoURLs(demoFileName, outputFileName);
         try {
             Class clazz = Class.forName("ptolemy.actor.lib.jjs.VertxHelperBase");
@@ -635,7 +636,8 @@ public class HTMLAbout {
             parser.resetAll();
             List myFilters = BackwardCompatibility.allFilters();
             MoMLParser.addMoMLFilters(myFilters, workspace);
-            System.out.println("Parsing " + demo);
+            System.out.print("P");
+            //System.out.println("Parsing " + demo);
             NamedObj namedObj = parser.parseFile(demo);
             if (namedObj instanceof CompositeEntity) {
                 CompositeEntity model = (CompositeEntity) namedObj;
