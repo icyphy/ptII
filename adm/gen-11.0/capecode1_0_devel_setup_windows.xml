@@ -339,7 +339,7 @@
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/ptolemy/vergil/basic/export/html/jsoup/jsoup.jar"
                   targetdir="$INSTALL_PATH/ptolemy/vergil/basic/export/html/jsoup"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/gdp-0.7-2.jar"
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/gdp-0.8-0.jar"
 		  targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/javax.servlet-api-3.0.1.jar"
 		  targetdir="$INSTALL_PATH/lib"/>
