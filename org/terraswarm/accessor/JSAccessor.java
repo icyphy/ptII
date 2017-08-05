@@ -484,8 +484,9 @@ public class JSAccessor extends JavaScript {
                         }
                         if (!_urlSpecLocalFilesPrinted.contains(urlSpecLocalFile)) {
                             _urlSpecLocalFilesPrinted.add(urlSpecLocalFile);
-                            System.out.println("JSAccessor: urlSpec is " + urlSpec
-                                               + ", but " + urlSpecLocalFile + " exists, so the latter is being read. (This message is printed once per local file.)");
+                            // Don't print messages about the icons, it is annoying.
+                            //System.out.println("JSAccessor: urlSpec is " + urlSpec
+                            //                   + ", but " + urlSpecLocalFile + " exists, so the latter is being read. (This message is printed once per local file.)");
                         }
                         accessorOrPtDocURL = urlSpecLocalFile.toURI().toURL();
                     }
