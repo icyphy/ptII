@@ -925,7 +925,14 @@ public class JSAccessor extends JavaScript {
 
                 // Get the DocAttribute by looking for an adjacent *PtDoc.xml file.
                 try {
-                    result.append(_getPtDoc(accessorURL.toExternalForm()));
+                    if (urlSpec.endsWith("utilities/Mutable.js")) {
+                        System.out.println("The Mutable accessor has no documentation, so we are not running jsdoc.");
+                    } if (urlSpec.indexOf("test/auto") != -1) {
+                        System.out.println("Accessors in test/auto do not typically have documentation, so we are not "
+                                           + "running jsdoc on " + urlSpec);
+                    } else {
+                        result.append(_getPtDoc(accessorURL.toExternalForm()));
+                    }
                 } catch (IOException ex) {
                     try {
                         // Attempt to run "ant ptdoc".  This requires ant, node, npm and a network connection.
@@ -938,7 +945,7 @@ public class JSAccessor extends JavaScript {
                             result.append(_getPtDoc(accessorURL.toExternalForm()));
                         }
                     } catch (IOException ex2) {
-                        System.err.println("Cannot find PtDoc file for "
+                        System.err.println("\nWarning: Cannot find PtDoc file for "
                                            + urlSpec.trim()
                                            + ". Importing without documentation. Initial exception was: " + ex
                                            + "\n Exception after attempting \"ant ptdoc\" was:" + ex2);
