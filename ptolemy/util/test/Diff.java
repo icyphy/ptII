@@ -15,11 +15,10 @@ import ptolemy.util.FileUtilities;
 
 /**
  *  Read two files and compute the diff.
- *  <p>Based on <a href="http://introcs.cs.princeton.edu/96optimization/Diff.java">http://introcs.cs.princeton.edu/96optimization/Diff.java</a>, see
- *  <a href="http://introcs.cs.princeton.edu/96optimization">http://introcs.cs.princeton.edu/96optimization</a>.
+ *  <p>Based on <a href="http://introcs.cs.princeton.edu/96optimization/Diff.java#in_browser">http://introcs.cs.princeton.edu/96optimization/Diff.java</a>, from 2011, see
+ *  <a href="http://introcs.cs.princeton.edu/96optimization/#in_browser">http://introcs.cs.princeton.edu/96optimization</a>.
+ *  A current copy may be found at <a href="http://introcs.cs.princeton.edu/java/23recursion/Diff.java.html#in_browser">http://introcs.cs.princeton.edu/java/23recursion/Diff.java.html</a>
  *
- *  <p>Note that this code has a non-opensource copyright and should
- *  be
  *  <p>Limitations:</p>
  *  <ul>
  *   <li>"Could hash the lines to avoid potentially more expensive
@@ -80,9 +79,9 @@ public class Diff {
         // Append the remainder of the longer file.
         while (i < aNumberOfLines || j < bNumberOfLines) {
             if (i == aNumberOfLines) {
-                result.append("> " + aStringSplit[j++] + systemEol);
+                result.append("> " + bStringSplit[j++] + systemEol);
             } else if (j == bNumberOfLines) {
-                result.append("< " + bStringSplit[i++] + systemEol);
+                result.append("< " + aStringSplit[i++] + systemEol);
             }
         }
         return result.toString();
