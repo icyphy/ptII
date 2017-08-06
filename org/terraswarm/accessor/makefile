@@ -42,7 +42,7 @@ ME =		org/terraswarm/accessor
 # AccessorOne.java depends on JavaScript.java, which uses these
 # libraries.  If we run 'make fast', and JavaScript.class does not
 # exist, then we will need these jars in the classpath.
-CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)
+CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)$(PTOAUTHCLIENT_JAR)$(CLASSPATHSEPARATOR)$(PTOAUTHCOMMON_JAR)$(CLASSPATHSEPARATOR)$(PTSOCKETIO_JAR)$(CLASSPATHSEPARATOR)$(PTRTOOL_JARS)
 
 # True source directory
 VPATH =		$(ROOT)/$(ME)
