@@ -52,7 +52,7 @@ PTCLASSJAR =
 PTCLASSALLJARS = \
 	SpeakingServerListeningClient/SpeakingServerListeningClient.jar \
 	TwoWebSockets/TwoWebSockets.jar \
-	WebSocketsServerClient/WebSocketsServerClient.jar
+	WebSocketsServerClient/WebSocketsServerClient.jar \
 	WebSocketChat/WebSocketChat.jar \
 	WebSocketClient/WebSocketClient.jar \
 	WebSocketGraph/WebSocketGraph.jar \

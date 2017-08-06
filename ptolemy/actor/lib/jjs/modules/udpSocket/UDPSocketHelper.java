@@ -32,7 +32,6 @@ ENHANCEMENTS, OR MODIFICATIONS.
 package ptolemy.actor.lib.jjs.modules.udpSocket;
 
 import io.vertx.core.AsyncResult;
-import io.vertx.core.AsyncResultHandler;
 import io.vertx.core.Handler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.datagram.DatagramPacket;
@@ -153,7 +152,7 @@ public class UDPSocketHelper extends VertxHelperBase {
                 final String address,
                 final ScriptObjectMirror callback) {
             submit(() -> {
-                _socket.listen(port, address, new AsyncResultHandler<DatagramSocket>() {
+                _socket.listen(port, address, new Handler<AsyncResult<DatagramSocket>>() {
                     public void handle(AsyncResult<DatagramSocket> asyncResult) {
                         if (asyncResult.succeeded()) {
                             _isOpen = true;
