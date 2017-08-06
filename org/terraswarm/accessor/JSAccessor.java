@@ -639,16 +639,10 @@ public class JSAccessor extends JavaScript {
                 ex.printStackTrace();
             }
 
-            // FIXME: throw a dummy exception here so that we can get a scrollable window.
+            if (!MessageHandler.yesNoQuestion("Overwrite local changes in " + getName() + "?\n" +
+                                              "Below are the differences between the current contents of " +
+                                              "the script (<) and the proposed new contents (>)\n" + diff)) {
 
-            //            if (!MessageHandler.yesNoQuestion("Overwrite local changes in " + getName() + "?" + "\n" + diff)) {
-            // return;
-            // }
-
-            Exception exception = new Exception("\nBelow are the differences between the current contents of the script (<) and the proposed new contents (>)\n" + diff);
-            try {
-                MessageHandler.warning("Overwrite local changes in " + getName() + "?", exception);
-            } catch (CancelException ex) {
                 return;
             }
         }
