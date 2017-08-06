@@ -71,10 +71,14 @@ exports.initialize = function() {
 	}, 1000);
 
 	this.addInputHandler('control', function() {
-	    step = thiz.get('control')['step'];
-        if (!step) {
-            step = 0;
-        }
+		var control = thiz.get('control');
+		var s = control['step'];
+		if (s || s === 0) {
+			if (typeof s === 'string') {
+	    		s = JSON.parse(s);
+			}
+			step = s;
+		}
 	});
 };
 
