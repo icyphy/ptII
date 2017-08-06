@@ -79,6 +79,7 @@ import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
+import ptolemy.util.CancelException;
 import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
@@ -607,11 +608,7 @@ public class JSAccessor extends JavaScript {
            return;
            }
         */
-        if (script.isOverridden()) {
-            if (!MessageHandler.yesNoQuestion("Overwrite local changes in " + getName() + "?")) {
-                return;
-            }
-        }
+
         // Use FileParameter to preprocess the source to resolve
         // relative classpaths and references to $CLASSPATH, etc.
         // NOTE: This used to have name=\"doNotOverwriteOverrides\",
@@ -630,6 +627,32 @@ public class JSAccessor extends JavaScript {
             + JSAccessor._accessorToMoML(accessorSource.asURL().toExternalForm(),
                                          obeyCheckoutOrUpdateRepositoryParameter)
             + "</group>";
+
+        if (script.isOverridden()) {
+            String diff = "";
+            try {
+                String scriptValue = script.getExpression().replaceAll("&#10;", "\n");
+                String momlEscaped = StringUtilities.unescapeForXML(moml.replaceAll("&#10;", "\n"));
+                diff = ptolemy.util.test.Diff.diff(scriptValue, momlEscaped);
+            } catch (Throwable ex) {
+                diff = "Failed to diff? " + ex;
+                ex.printStackTrace();
+            }
+
+            // FIXME: throw a dummy exception here so that we can get a scrollable window.
+
+            //            if (!MessageHandler.yesNoQuestion("Overwrite local changes in " + getName() + "?" + "\n" + diff)) {
+            // return;
+            // }
+
+            Exception exception = new Exception("\nBelow are the differences between the current contents of the script (<) and the proposed new contents (>)\n" + diff);
+            try {
+                MessageHandler.warning("Overwrite local changes in " + getName() + "?", exception);
+            } catch (CancelException ex) {
+                return;
+            }
+        }
+
         final NamedObj context = this;
         MoMLChangeRequest request = new MoMLChangeRequest(context, context, moml) {
                 // Wrap this to give a more useful error message.
@@ -664,6 +687,9 @@ public class JSAccessor extends JavaScript {
      *  invoked, the checkout or update and JSDoc invocation will
      *  not occur.  This is done so as to make testing faster.
      *
+     *  If the script of a JSAccessor has local modifications, then
+     *  the accessor will not be reloaded.
+     *
      *  @param composite The composite that contains the JSAccessors
      *  @return true if the model contained any JSAccessors.
      *  @exception IllegalActionException If no source file is specified.
@@ -692,11 +718,17 @@ public class JSAccessor extends JavaScript {
                                        + "JVM for each directory, so the repo may be checked out "
                                        + "or updated and JSDoc invoked more than once when the tests are run.");
                 }
-                // The first time, we checkout or update the accessors
-                // repo and invoke JSDoc.  The second and subsequent
-                // times, we do not.  This is useful for testing.
-                ((JSAccessor)entity).reload(!_invokedReloadAllAccessorsOnce);
-                _invokedReloadAllAccessorsOnce = true;
+                if (((JSAccessor)entity).script.isOverridden()) {
+                    System.out.println("reloadAllAccesors: The script of "
+                                       + ((JSAccessor)entity).getFullName()
+                                       + " has local modifications, so we are not reloading the accessor.");
+                } else {
+                    // The first time, we checkout or update the accessors
+                    // repo and invoke JSDoc.  The second and subsequent
+                    // times, we do not.  This is useful for testing.
+                    ((JSAccessor)entity).reload(!_invokedReloadAllAccessorsOnce);
+                    _invokedReloadAllAccessorsOnce = true;
+                }
             }
         }
         return containsJSAccessors;
