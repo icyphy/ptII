@@ -1407,7 +1407,6 @@ public class ConfigurationApplication implements ExecutionListener {
                             _applicationInitializer.
                             -chad
                              */
-                            System.out.println("reading configuration");
                             _configuration = readConfiguration(inURL);
 
                         } catch (Exception ex) {
