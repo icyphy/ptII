@@ -74,7 +74,7 @@ import ptolemy.data.Token;
    (see the associated httpRequest.js JavaScript module, which defines
    this class and utility functions for creating it).
 
-   @author Marten Lohstroh, Edward A. Lee
+   @author Marten Lohstroh, Edward A. Lee, contributors: Ravi Akella, Christopher Brooks.
    @version $Id$
    @since Ptolemy II 11.0
    @Pt.ProposedRating Yellow (eal)
@@ -102,6 +102,9 @@ public class HttpClientHelper extends VertxHelperBase {
      *  <li> outputCompleteResponseOnly: If false, then the multiple invocations of the
      *       callback may be invoked for each request. This defaults to true, in which case
      *       there will be only one invocation of the callback.
+     *  <li> proxyHost: The name of the http proxy host, if any.
+     *  <li> proxyPort: The port number of the proxy host, if any.  A proxy host
+     *       will be used only if proxyHost and proxyPort are not empty.
      *  <li> timeout: The amount of time (in milliseconds) to wait for a response
      *       before triggering a null response and an error. This defaults to 5000.
      *  <li> url: A string that can be parsed as a URL, or an object containing
@@ -582,7 +585,28 @@ public class HttpClientHelper extends VertxHelperBase {
         public void run() {
             Map<String, Object> urlSpec = (Map<String, Object>) _options.get("url");
 
-            HttpClient client = _vertx.createHttpClient(
+            HttpClient client = null;
+            boolean useProxy = false;
+
+            Object proxyHostObject = urlSpec.get("proxyHost");
+            Object proxyPortObject = urlSpec.get("proxyPort");
+            if (proxyHostObject != null && proxyPortObject != null) {
+                useProxy = true;
+                String proxyHostSpec = proxyHostObject.toString().trim();
+                int proxyPortSpec = (int)proxyPortObject;
+                client = _vertx.createHttpClient(
+                    new HttpClientOptions()
+                    .setKeepAlive((boolean) _options.get("keepAlive"))
+                    // NOTE: We use the timeout parameter both for connect and response.
+                    // Should these be different numbers?
+                    .setConnectTimeout((Integer)_options.get("timeout"))
+                    .setSsl(urlSpec.get("protocol").toString().equalsIgnoreCase("https"))
+                    .setProxyOptions(new ProxyOptions()
+                                     .setType(ProxyType.HTTP)
+                                     .setHost(proxyHostSpec)
+                                     .setPort(proxyPortSpec)));
+            } else { 
+                client = _vertx.createHttpClient(
                     new HttpClientOptions()
                     .setDefaultHost((String) urlSpec.get("host"))
                     .setDefaultPort((int) urlSpec.get("port"))
@@ -592,6 +616,7 @@ public class HttpClientHelper extends VertxHelperBase {
                     .setConnectTimeout((Integer)_options.get("timeout"))
                     .setSsl(urlSpec.get("protocol").toString().equalsIgnoreCase("https"))
                     );
+            }
 
             String query = "";
             Object queryObject = urlSpec.get("query");
@@ -614,9 +639,22 @@ public class HttpClientHelper extends VertxHelperBase {
             // Set the method (GET, PUT, POST, etc.)
             HttpMethod httpMethod = HttpMethod.valueOf(((String) _options.get("method")).trim().toUpperCase());
 
-            HttpClientRequest request = client.request(httpMethod, uri,
-                    new HttpClientResponseHandler(
-                            _requestObj, client, outputCompleteResponseOnly, _requestNumber));
+            HttpClientRequest request = null;
+            if (useProxy) {
+                request = client.requestAbs(httpMethod,
+                                            (String) urlSpec.get("protocol") +
+                                            "://" + (String) urlSpec.get("host") + uri,
+                                            new HttpClientResponseHandler(_requestObj,
+                                                                          client,
+                                                                          outputCompleteResponseOnly,
+                                                                          _requestNumber));
+            } else {
+                request = client.request(httpMethod, uri,
+                                         new HttpClientResponseHandler(_requestObj,
+                                                                       client,
+                                                                       outputCompleteResponseOnly,
+                                                                       _requestNumber));
+            }
 
             // NOTE: We use the timeout parameter both for connect and response.
             // Should these be different numbers?
