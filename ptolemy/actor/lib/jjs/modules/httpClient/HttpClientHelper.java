@@ -588,8 +588,8 @@ public class HttpClientHelper extends VertxHelperBase {
             HttpClient client = null;
             boolean useProxy = false;
 
-            Object proxyHostObject = urlSpec.get("proxyHost");
-            Object proxyPortObject = urlSpec.get("proxyPort");
+            Object proxyHostObject = _options.get("proxyHost");
+            Object proxyPortObject = _options.get("proxyPort");
             if (proxyHostObject != null && proxyPortObject != null) {
                 useProxy = true;
                 String proxyHostSpec = proxyHostObject.toString().trim();
