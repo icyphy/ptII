@@ -6180,7 +6180,7 @@ else
 # Use changequote here to preserve square brackets
 changequote(<<, >>)dnl
             # Vert.x 3.x jars:
-            jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar netty-buffer-*.jar netty-codec-[^h]*.jar netty-codec-http-*.jar netty-common-*.jar netty-handler-*.jar netty-transport-*.jar vertx-codegen-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-lang-js-*jar vertx-service-proxy-*.jar vertx-web-*jar"
+            jars="hazelcast-*.jar jackson-annotations-*.jar jackson-core-*.jar jackson-databind-*.jar netty-buffer-*.jar netty-codec-[^dh]*.jar netty-codec-dns-*.jar netty-codec-http-*.jar netty-codec-http2-*.jar netty-common-*.jar netty-handler-*.jar netty-resolver-[0-9]*.jar netty-resolver-dns-*.jar netty-transport-*.jar vertx-codegen-*.jar vertx-core-*.jar vertx-hazelcast-*.jar vertx-lang-js-*jar vertx-service-proxy-*.jar vertx-web-*jar"
 changequote([, ])dnl
 
             for jar in $jars
