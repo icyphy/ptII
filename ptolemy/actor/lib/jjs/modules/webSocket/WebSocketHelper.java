@@ -1,6 +1,6 @@
 /* Support for the websocket accessor.
 
-@Copyright (c) 2015-2016 The Regents of the University of California.
+@Copyright (c) 2015-2017 The Regents of the University of California.
 All rights reserved.
 
 Permission is hereby granted, without written agreement and without
@@ -42,7 +42,6 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import javax.imageio.ImageIO;
 
 import io.vertx.core.Handler;
-import io.vertx.core.VoidHandler;
 import io.vertx.core.buffer.Buffer;
 import io.vertx.core.http.HttpClient;
 import io.vertx.core.http.HttpClientOptions;
@@ -720,9 +719,8 @@ public class WebSocketHelper extends VertxHelperBase {
 
     /** The event handler that is triggered when the web socket connection is closed.
      */
-    private class EndHandler extends VoidHandler {
-        @Override
-        protected void handle() {
+    private class EndHandler implements Handler<Void> {
+        public void handle(Void event) {
             _currentObj.callMember("emit", "close", "Stream has ended.");
             synchronized(WebSocketHelper.this) {
                 _wsIsOpen = false;
