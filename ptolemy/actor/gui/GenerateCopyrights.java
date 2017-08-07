@@ -223,15 +223,15 @@ public class GenerateCopyrights {
         // Vertx
         _addIfClassPresent(copyrightsMap,
                 "com.fasterxml.jackson.core.base.GeneratorBase",
-                "lib/jackson-2.6.1-license.htm");
+                "lib/jackson-license.htm");
 
         _addIfClassPresent(copyrightsMap,
                 "io.netty.handler.traffic.ChannelTrafficShapingHandler",
-                "lib/netty-all-4.0.31.Final-license.htm");
+                "lib/netty-license.htm");
 
         _addIfClassPresent(copyrightsMap,
                 "org.vertx.java.spi.cluster.impl.hazelcast.HazelcastAsyncMap",
-                "lib/hazelcast-3.5.2-license.htm");
+                "lib/hazelcast-license.htm");
 
         _addIfClassPresent(copyrightsMap, "io.vertx.core.Vertx",
                 "lib/vertx-license.htm");
