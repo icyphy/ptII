@@ -68,7 +68,7 @@ public class Diff {
         int bNumberOfLines = bStringSplit.length;
 
         // Find the Longest Common Subsequence (LCS).
-        int[][] lcs = new int[aNumberOfLines][bNumberOfLines];
+        int[][] lcs = new int[aNumberOfLines + 1][bNumberOfLines + 1];
         for (int aIndex = 1; aIndex < aNumberOfLines; aIndex++) {
             for (int bIndex = 1; bIndex < bNumberOfLines; bIndex++) {
                 if (aStringSplit[aIndex].equals(bStringSplit[bIndex])) {
