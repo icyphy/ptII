@@ -624,17 +624,18 @@ public class JSAccessor extends JavaScript {
             throw new NullPointerException("accessorSource.asURL() == null? accessorSource was: " + accessorSource
                                            + " This can happen if there is no accessorSource attribute in the MoML file because a JavaScript actor was replaced with a JSAccessor actor via an edit of the MoML file.");
         }
-        String moml = "<group>"
-            + JSAccessor._accessorToMoML(accessorSource.asURL().toExternalForm(),
-                                         obeyCheckoutOrUpdateRepositoryParameter)
-            + "</group>";
+        String moml = JSAccessor._accessorToMoML(accessorSource.asURL().toExternalForm(),
+                                                 obeyCheckoutOrUpdateRepositoryParameter);
 
         System.out.println("JSAccessor.reload(): " + getName() + " script.isOverridden: " + script.isOverridden());
         if (script.isOverridden()) {
             String diff = "";
             try {
                 String scriptValue = script.getExpression().replaceAll("&#10;", "\n");
+
                 String momlEscaped = StringUtilities.unescapeForXML(moml.replaceAll("&#10;", "\n"));
+                momlEscaped = momlEscaped.replace(JSAccessor._SCRIPT_MOML_START, "");
+                momlEscaped = momlEscaped.substring(0, momlEscaped.length() - JSAccessor._SCRIPT_MOML_END.length());
                 diff = Diff.diff(scriptValue, momlEscaped);
             } catch (Throwable ex) {
                 diff = "Failed to diff? " + ex;
@@ -648,6 +649,8 @@ public class JSAccessor extends JavaScript {
                 return;
             }
         }
+
+        moml = "<group>" + moml + "</group>";
 
         final NamedObj context = this;
         MoMLChangeRequest request = new MoMLChangeRequest(context, context, moml) {
@@ -975,14 +978,17 @@ public class JSAccessor extends JavaScript {
                     }
                 }
 
-                result.append("<property name=\"script\" value=\"");
-                // NOTE: The following is no longer relevant. Not doing variable substitution
-                // in the script.
-                // Since $ causes the expression parser to try to substitute a variable, we need
-                // to escape it.
-                // String escaped = contents.toString().replaceAll("$", "$$");
-                result.append(StringUtilities.escapeForXML(contents.toString()));
-                result.append("\"/>");
+                result.append(JSAccessor._SCRIPT_MOML_START +
+                              // NOTE: The following is no longer
+                              // relevant. Not doing variable
+                              // substitution in the script.  Since $
+                              // causes the expression parser to try
+                              // to substitute a variable, we need to
+                              // escape it.
+                              // String escaped = contents.toString().replaceAll("$", "$$");
+                              (StringUtilities.escapeForXML(contents.toString())) +
+                              JSAccessor._SCRIPT_MOML_END);
+
                 return result.toString();
             } else if (extension.equals("xml")) {
                 // XML specification.
@@ -1314,6 +1320,12 @@ public class JSAccessor extends JavaScript {
      *  Indicating that "ant ptdoc" failed.
      */        
     private static boolean _ptDocFailed = false;
+
+    /** The end text used used for the MoML value of the script parameter. */
+    private static final String _SCRIPT_MOML_END = "\"/>";
+
+    /** The start text used used for the MoML value of the script parameter. */
+    private static final String _SCRIPT_MOML_START = "<property name=\"script\" value=\"";
 
     /** Local url specifications that have been printed because
      *  the are local.
