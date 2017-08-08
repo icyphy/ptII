@@ -1,10 +1,31 @@
 /* A simple diff utility, implemented in Java.
 
-Copyright (C) 2000-2011, Robert Sedgewick and Kevin Wayne.
-All rights reserved.
+ Copyright (c) 2011-2017 The Regents of the University of California.
+ All rights reserved.
+ Permission is hereby granted, without written agreement and without
+ license or royalty fees, to use, copy, modify, and distribute this
+ software and its documentation for any purpose, provided that the above
+ copyright notice and the following two paragraphs appear in all copies
+ of this software.
+
+ IN NO EVENT SHALL THE UNIVERSITY OF CALIFORNIA BE LIABLE TO ANY PARTY
+ FOR DIRECT, INDIRECT, SPECIAL, INCIDENTAL, OR CONSEQUENTIAL DAMAGES
+ ARISING OUT OF THE USE OF THIS SOFTWARE AND ITS DOCUMENTATION, EVEN IF
+ THE UNIVERSITY OF CALIFORNIA HAS BEEN ADVISED OF THE POSSIBILITY OF
+ SUCH DAMAGE.
+
+ THE UNIVERSITY OF CALIFORNIA SPECIFICALLY DISCLAIMS ANY WARRANTIES,
+ INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF
+ MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE. THE SOFTWARE
+ PROVIDED HEREUNDER IS ON AN "AS IS" BASIS, AND THE UNIVERSITY OF
+ CALIFORNIA HAS NO OBLIGATION TO PROVIDE MAINTENANCE, SUPPORT, UPDATES,
+ ENHANCEMENTS, OR MODIFICATIONS.
+
+ PT_COPYRIGHT_VERSION_2
+ COPYRIGHTENDKEY
  */
 
-package ptolemy.util.test;
+package ptolemy.util;
 
 import java.io.File;
 import java.io.IOException;
@@ -15,17 +36,13 @@ import ptolemy.util.FileUtilities;
 
 /**
  *  Read two files and compute the diff.
- *  <p>Based on <a href="http://introcs.cs.princeton.edu/96optimization/Diff.java#in_browser">http://introcs.cs.princeton.edu/96optimization/Diff.java</a>, from 2011, see
+ *
+ *  <p>This file is based on <a href="http://introcs.cs.princeton.edu/96optimization/Diff.java#in_browser">http://introcs.cs.princeton.edu/96optimization/Diff.java</a>, from 2011, see
  *  <a href="http://introcs.cs.princeton.edu/96optimization/#in_browser">http://introcs.cs.princeton.edu/96optimization</a>.
  *  A current copy may be found at <a href="http://introcs.cs.princeton.edu/java/23recursion/Diff.java.html#in_browser">http://introcs.cs.princeton.edu/java/23recursion/Diff.java.html</a>
+ *  
  *
- *  <p>Limitations:</p>
- *  <ul>
- *   <li>"Could hash the lines to avoid potentially more expensive
- *     string comparisons."
- *  </ul>
- *
- * @author Robert Sedgewick and Kevin Wayne, Contributor: Christopher Brooks
+ * @author Christopher Brooks
  * @version $Id$
  * @since Ptolemy II 10.0
  * @Pt.ProposedRating Red (cxh)
@@ -41,7 +58,7 @@ public class Diff {
      */
     public static String diff(String aString, String bString) {
         String systemEol = System.getProperty("line.separator");
-        // since a string my be loaded from a file
+        // Since a string my be loaded from a file
         // that was saved on a different platform we must
         // allow any valid line separator to split the string
         String eol = "\r\n?|\n";
@@ -51,37 +68,38 @@ public class Diff {
         int bNumberOfLines = bStringSplit.length;
 
         // Find the Longest Common Subsequence (LCS).
-        int[][] lcs = new int[aNumberOfLines + 1][bNumberOfLines + 1];
-        for (int i = aNumberOfLines - 1; i >= 0; i--) {
-            for (int j = bNumberOfLines - 1; j >= 0; j--) {
-                if (aStringSplit[i].equals(bStringSplit[j])) {
-                    lcs[i][j] = lcs[i + 1][j + 1] + 1;
+        int[][] lcs = new int[aNumberOfLines][bNumberOfLines];
+        for (int aIndex = 1; aIndex < aNumberOfLines; aIndex++) {
+            for (int bIndex = 1; bIndex < bNumberOfLines; bIndex++) {
+                if (aStringSplit[aIndex].equals(bStringSplit[bIndex])) {
+                    lcs[aIndex][bIndex] = lcs[aIndex - 1][bIndex - 1] + 1;
                 } else {
-                    lcs[i][j] = Math.max(lcs[i + 1][j], lcs[i][j + 1]);
+                    lcs[aIndex][bIndex] = Math.max(lcs[aIndex][bIndex - 1], lcs[aIndex - 1][bIndex]);
                 }
             }
         }
 
         // Traverse the LCS and append the differences.
         StringBuffer result = new StringBuffer();
-        int i = 0, j = 0;
-        while (i < aNumberOfLines && j < bNumberOfLines) {
-            if (aStringSplit[i].equals(bStringSplit[j])) {
-                i++;
-                j++;
-            } else if (lcs[i + 1][j] >= lcs[i][j + 1]) {
-                result.append("< " + aStringSplit[i++] + systemEol);
+        int aIndex = 0;
+        int bIndex = 0;
+        while (aIndex < aNumberOfLines && bIndex < bNumberOfLines) {
+            if (aStringSplit[aIndex].equals(bStringSplit[bIndex])) {
+                aIndex++;
+                bIndex++;
+            } else if (lcs[aIndex + 1][bIndex] < lcs[aIndex][bIndex + 1]) {
+                result.append("> " + bStringSplit[bIndex++] + systemEol);
             } else {
-                result.append("> " + bStringSplit[j++] + systemEol);
+                result.append("< " + aStringSplit[aIndex++] + systemEol);
             }
         }
 
         // Append the remainder of the longer file.
-        while (i < aNumberOfLines || j < bNumberOfLines) {
-            if (i == aNumberOfLines) {
-                result.append("> " + bStringSplit[j++] + systemEol);
-            } else if (j == bNumberOfLines) {
-                result.append("< " + aStringSplit[i++] + systemEol);
+        while (aIndex < aNumberOfLines || bIndex < bNumberOfLines) {
+            if (aIndex == aNumberOfLines) {
+                result.append("> " + bStringSplit[bIndex++] + systemEol);
+            } else if (bIndex == bNumberOfLines) {
+                result.append("< " + aStringSplit[aIndex++] + systemEol);
             }
         }
         return result.toString();
@@ -113,8 +131,8 @@ public class Diff {
         URL urlA = new File(args[0]).toURI().toURL();
         URL urlB = new File(args[1]).toURI().toURL();
 
-        System.out.println(diff(
-                new String(FileUtilities.binaryReadURLToByteArray(urlA)),
-                new String(FileUtilities.binaryReadURLToByteArray(urlB))));
+        System.out.print(diff(
+                              new String(FileUtilities.binaryReadURLToByteArray(urlA)),
+                              new String(FileUtilities.binaryReadURLToByteArray(urlB))));
     }
 }

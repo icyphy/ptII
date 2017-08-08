@@ -61,7 +61,6 @@ TCL_SRCS = \
 	testDefs.tcl
 
 JSRCS = \
-	Diff.java \
 	InnerClassTest.java \
 	RecorderMessageHandler.java \
 	ThreadStreamExec.java \

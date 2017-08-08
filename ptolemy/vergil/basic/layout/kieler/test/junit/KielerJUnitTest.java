@@ -1,6 +1,6 @@
 /* JUnit test the Kieler Layout mechanism.
 
- Copyright (c) 2011-2016 The Regents of the University of California.
+ Copyright (c) 2011-2017 The Regents of the University of California.
  All rights reserved.
  Permission is hereby granted, without written agreement and without
  license or royalty fees, to use, copy, modify, and distribute this
@@ -45,7 +45,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
-import ptolemy.util.test.Diff;
+import ptolemy.util.Diff;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.PtolemyLayoutAction;
 import ptolemy.vergil.basic.layout.kieler.KielerLayoutAction;
