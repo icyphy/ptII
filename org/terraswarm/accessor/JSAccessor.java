@@ -683,7 +683,7 @@ public class JSAccessor extends JavaScript {
      *  not occur.  This is done so as to make testing faster.
      *
      *  If the script of a JSAccessor has local modifications, then
-     *  the accessor will not be reloaded.
+     *  the user is asked if they want to override them.
      *
      *  @param composite The composite that contains the JSAccessors
      *  @return true if the model contained any JSAccessors.
@@ -694,6 +694,30 @@ public class JSAccessor extends JavaScript {
      *  be created from the xslt file.
      */
     public static boolean reloadAllAccessors(CompositeEntity composite)
+        throws IllegalActionException, IOException, TransformerConfigurationException {
+        return JSAccessor.reloadAllAccessors(composite, true);
+    }
+
+    /** Reload all the JSAccessors in a CompositeEntity.
+     *  The first time this method is invoked, the accessors
+     *  repository will be checked out or updated and JSDoc
+     *  invoked.  The second and subsequent times the method is
+     *  invoked, the checkout or update and JSDoc invocation will
+     *  not occur.  This is done so as to make testing faster.
+     *
+     *  @param composite The composite that contains the JSAccessors
+     *  @param promptForOverrideOfLocalModifications If true, then
+     *  prompt the user and ask if they want to override local modifications
+     *  If false, then accessors with local modifications are not reloaded.
+     *  @return true if the model contained any JSAccessors.
+     *  @exception IllegalActionException If no source file is specified.
+     *  @exception IOException If the urlSpec cannot be converted, opened
+     *  read, parsed or closed.
+     *  @exception TransformerConfigurationException If a factory cannot
+     *  be created from the xslt file.
+     */
+    public static boolean reloadAllAccessors(CompositeEntity composite,
+                                             boolean promptForOverrideOfLocalModifications)
         throws IllegalActionException, IOException, TransformerConfigurationException {
         // This method is use by the test harness.
         if (composite == null) {
@@ -713,8 +737,9 @@ public class JSAccessor extends JavaScript {
                                        + "JVM for each directory, so the repo may be checked out "
                                        + "or updated and JSDoc invoked more than once when the tests are run.");
                 }
-                System.out.println("JSAccessor.reloadAllAccessors(): " + ((JSAccessor)entity).getName() + " script.isOverridden: " + ((JSAccessor)entity).script.isOverridden());
-                if (((JSAccessor)entity).script.isOverridden()) {
+                System.out.println("JSAccessor.reloadAllAccessors(): " + ((JSAccessor)entity).getFullName() + " script.isOverridden: " + ((JSAccessor)entity).script.isOverridden());
+                if (!promptForOverrideOfLocalModifications
+                    && ((JSAccessor)entity).script.isOverridden()) {
                     System.out.println("reloadAllAccesors: The script of "
                                        + ((JSAccessor)entity).getFullName()
                                        + " has local modifications, so we are not reloading the accessor.");

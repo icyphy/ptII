@@ -96,8 +96,9 @@ public class ReloadAccessors {
                         CompositeEntity model = ConfigurationApplication
                             .openModelOrEntity(modelFileName);
 
-                        // Reload the accessors.
-                        _accessorReloader.invoke(null, model);
+                        // Reload the accessors and don't reload
+                        // accessors that have local modifications.
+                        _accessorReloader.invoke(null, model, false);
 
                         // Save the model.
                         BasicGraphFrame basicGraphFrame = BasicGraphFrame.getBasicGraphFrame(model);
@@ -126,7 +127,7 @@ public class ReloadAccessors {
     static {
         try {
             Class accessorClass = Class.forName("org.terraswarm.accessor.JSAccessor");
-            _accessorReloader = accessorClass.getDeclaredMethod("reloadAllAccessors", new Class [] {CompositeEntity.class});
+            _accessorReloader = accessorClass.getDeclaredMethod("reloadAllAccessors", new Class [] {CompositeEntity.class, boolean.class});
         } catch (ClassNotFoundException ex) {
             throw new ExceptionInInitializerError(ex);
         } catch (NoSuchMethodException ex2) {
