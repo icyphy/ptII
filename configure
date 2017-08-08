@@ -13586,18 +13586,18 @@ $as_echo "ok" >&6; }; else { $as_echo "$as_me:${as_lineno-$LINENO}: result: $PTV
 $as_echo "$PTVERTX_JARS" >&6; }; fi
             # org.terraswarm.accessor depends on jjs/JavaScript.java so we
             # list org.terraswarm.accessor with jjs/JavaScript
-	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.jjs.modules.browser ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.httpServer ptolemy.actor.lib.jjs.modules.socket ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.webSocket"
+	    PTVERTX_PACKAGES="org.terraswarm.accessor ptolemy.actor.lib.jjs.modules.eventbus ptolemy.actor.lib.jjs.modules.httpClient ptolemy.actor.lib.jjs.modules.httpServer ptolemy.actor.lib.jjs.modules.socket ptolemy.actor.lib.jjs.modules.udpSocket ptolemy.actor.lib.jjs.modules.userInterface ptolemy.actor.lib.jjs.modules.webSocket"
         fi
     fi
 fi
 
 if test -z "$PTVERTX_DIR"; then
-    updateExcludes "ptolemy/actor/lib/jjs/modules/browser/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/eventbus/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/httpClient/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/httpServer/"
-    updateExcludes "ptolemy/actor/lib/jjs/modules/udpSocket/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/socket/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/udpSocket/"
+    updateExcludes "ptolemy/actor/lib/jjs/modules/userInterface/"
     updateExcludes "ptolemy/actor/lib/jjs/modules/webSocket/"
     if test -d "$PTVERTX_USER_DIR" -o -d "$PTWEBSOCKET_USER_DIR"; then
         { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Failed to find the the Vertx application platform interface jar files,
