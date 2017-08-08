@@ -45,7 +45,7 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.StringUtilities;
-import ptolemy.util.test.Diff;
+import ptolemy.util.Diff;
 import ptolemy.vergil.basic.BasicGraphFrame;
 import ptolemy.vergil.basic.PtolemyLayoutAction;
 import ptolemy.vergil.basic.layout.kieler.KielerLayoutAction;

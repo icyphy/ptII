@@ -80,6 +80,7 @@ import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
 import ptolemy.util.CancelException;
+import ptolemy.util.Diff;
 import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
@@ -634,7 +635,7 @@ public class JSAccessor extends JavaScript {
             try {
                 String scriptValue = script.getExpression().replaceAll("&#10;", "\n");
                 String momlEscaped = StringUtilities.unescapeForXML(moml.replaceAll("&#10;", "\n"));
-                diff = ptolemy.util.test.Diff.diff(scriptValue, momlEscaped);
+                diff = Diff.diff(scriptValue, momlEscaped);
             } catch (Throwable ex) {
                 diff = "Failed to diff? " + ex;
                 ex.printStackTrace();
