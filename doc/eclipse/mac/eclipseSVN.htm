@@ -37,7 +37,7 @@
 	<br/>The first time software is to be added the menu will be:
 	<code>Help</code> | <code>Install New Software</code> 
       </li>
-      <li>In the "Work with" field, select "Neon - http://download.eclipse.org/releases/neon" from the drop down.  The install facility will take a few moments to connect to the site and determine
+      <li>In the "Work with" field, select "Oxygen - http://download.eclipse.org/releases/oxygen" from the drop down.  The install facility will take a few moments to connect to the site and determine
 	what is available.
       </li>
       <li>Expand the "Collaboration" tab and check the box next to
@@ -57,11 +57,20 @@
       <li> The "Subversion Connector Discovery" window will pop up.  
 	<br/> If it does not, bring up the preferences window:
 	<br/> <code>Eclipse</code> | <code>Preferences</code>
-	<br/> Then do <code>Team</code> | <code>SVN</code> | <code>Console</code>.  When you click
-	on <code>SVN Repositories</code>, the "Subversion Connector Discovery" window
-	will pop up.  (See <a href="http://www.polarion.com/products/svn/subversive/connector_discovery.php#in_browser" target="_top">http://www.polarion.com/products/svn/subversive/connector_discovery.php</a>
-	for details.)
-      </li>
+	<br/> Then do <code>Team</code> | <code>SVN</code> | <code>SVN Connector</code>.  When you click
+	on <code>SVN Connector</code>, the "Subversion Connector Discovery" window
+	will pop up. 
+        <br/><b>If the "Subversion Connector Discovery" window does not pop up</b>, then a known bug
+        (<a href="https://bugs.eclipse.org/bugs/show_bug.cgi?id=518033">Bug 518033 - Not able to install connectors in Oxygen</a>) has been hit.  The workaround is:
+        <ol>
+          <li> <code>Help</code> | <code>Install New Software</code></li>
+          <li>In the "Work with" field, click on <code>Add...</code></li>
+          <li>In the "Add Repository" window, paste <code>http://community.polarion.com/projects/subversive/download/eclipse/6.0/update-site/.</code> in to the <code>Name</code> and <code>Location</code> fields, then click OK</li>
+          <li>In the "Available Software" window, expand "Subversive SVN Connectors" and select "SVNKit 1.8.14 Implementation (Optional)</li>
+          <li>Click on <code>Next</code>, <code>Next</code>, accept the license and restart Eclipse.</li>
+          <li>Then retry going to the <code>SVN Connector</code> preference as described above.</li>
+        </ol>
+
       <li> In the "Subversion Connector Discovery" window, select a
       Subversion connector compatible with the version of svn
       installed on your machine.
@@ -70,10 +79,11 @@
 	<pre>
 	  svn --version
 	</pre>
-	<br/>If <code>svn --versoin</code> returns 1.6 or earlier, then see below, you may
+	<br/>If <code>svn --version</code> returns 1.6 or earlier, then see below, you may
 	want to upgrade.
 	<br/>If <code>svn --version</code> returns 1.7, then install SVN Kit 1.7.13 or equivalent.
 	<br/>If <code>svn --version</code> returns 1.8, then install SVN Kit 1.8.5 or equivalent.
+	<br/>If <code>svn --version</code> returns 1.8, then install SVN Kit 1.8.14 or equivalent.
 
 	<p>Note: if you install a more recent version of the plugin than the
 	  version of the command line <code>svn</code> tool, then
