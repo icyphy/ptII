@@ -975,6 +975,7 @@ do
 done
 
 # Paths to always exclude in Ant's build.xml
+# IMPORTANT: If you update the list below, also update .classpath.in and .classpath.default
 ANT_ALWAYS_EXCLUDE='<exclude name="**/CVS/"/>
 <exclude name="**/adm/dists/" />
 <exclude name="**/adm/gen-*/" />
