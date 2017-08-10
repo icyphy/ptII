@@ -403,6 +403,7 @@ public class ExportModelJUnitTest {
                 "SmartChaseWithSmartIntruder.xml", // Needs the KeyValue model running.
                 "SmartIntruder.xml", // Needs the KeyValue model running.
                 "SoundSpectrum.xml", // "Audio Device Unavailable"
+                "ptolemy/actor/lib/jjs/modules/speechRecognition/demo/SpeechRecognition/SpeechRecognition.xml", // Audio Device Unavailable                          
                 "ptolemy/domains/ptides/demo/Speaker/Speaker.xml", // Luminary demo, Annotation says not to run.
 
                 "SwarmAcousticService.xml", // Times out while connecting to a port
@@ -424,6 +425,7 @@ public class ExportModelJUnitTest {
                 "// ptolemy/actor/lib/jjs/modules/vertxEventBus/demo/VertxBus/VertxBusServer.xml", // Requires that other demos run.
                 "UnitSystemExample.xml", // Has links to other models.
                 "VideoCapture.xml", // Requires a video camera.
+                "WatchCommandUpdater.xml", // Audio device unavailable.
                 "Weather.xml", // Skip because it requires a key
                 "WebSocketChat.xml", // Has links to other models.
                 "WebSocketClient.xml", // Times out unless the server is running.
