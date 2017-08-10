@@ -55,6 +55,7 @@
 
 exports.setup = function() {
 	// this.implement('ControllableSensor');
+	this.realize('controllableSensor');
 	this.input('control', {
 		'type': 'JSON',
 		'value': null
