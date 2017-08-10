@@ -45,7 +45,7 @@
  *  @input control A JSON object that can have two properties,
  *   "step", a number and "period", also a number.
  *  @output data A JSON object.
- *  @version $$Id$$
+ *  @version $$Id: TemperatureSensor.js 76591 2017-08-10 21:11:55Z chadlia.jerad $$
  */
 // Stop extra messages from jslint.  Note that there should be no
 // space between the / and the * and global.
@@ -54,78 +54,36 @@
 "use strict";
 
 exports.setup = function() {
-	this.implement('ControllableSensor');
+	// this.implement('ControllableSensor');
+	this.realize('controllableSensor');
+	this.input('control', {
+		'type': 'JSON',
+		'value': null
+	});
+
+	// Defining outputs
+	this.output('data', { 'spontaneous':true,
+		'type': 'JSON',
+		'value': null		
+	});
+	this.output('schema', { 'spontaneous':true,
+		'type': 'JSON',
+		'value': null
+	});
 };
 
-var handle = null;
 var step = 10;
-var period = 1000;
 var temperature = 0;
 
-function sendData() {
-	this.send('data', {
-		'name': "Temperature sensor",
-    	'units': "Degrees centigrade",
-  	 	'temperature': temperature
-	});
-	temperature += step;
-}
+exports.initialize = function() {
+	var thiz = this;
 
-function updateControl() {
-	var control = this.get('control');
-	
-	var s = control['step'];
-	if (s || s === 0) {
-		if (typeof s === 'string') {
-	    	s = JSON.parse(s);
-		}
-		step = s;
-	}
-	
-	var p = control['period'];
-	if (p || p === 0) {
-		if (typeof p === 'string') {
-	    	p = JSON.parse(p);
-		}
-		if (handle) {
-	    	clearInterval(handle);
-	    	handle = null;
-	    }
-		period = p;
-	}
-	if (period && !handle) {
-        // Nothing running. Start the sampling.
-        // Send an initial sample, then periodically.
-        sendData.call(this);
-        handle = setInterval(sendData.bind(this), period);
-    }
-}
-
-exports.initialize = function() {	
-	// At initialize, send the schema;
-	this.send('schema', schema);
-	updateControl.call(this);
-	this.addInputHandler('control', updateControl.bind(this));
-};
-
-exports.wrapup = function() {
-    if (handle) {
-        clearInterval(handle);
-    }
-};
-
-var schema = {
-  "type": "object",
-  "properties": {
-    "step": {
-      	"type": "number",
-      	"title": "step size",
-      	"description": "The increment by which data is increased each second"
-    },
-    "period": {
-      	"type": "number",
-      	"title": "sampling period",
-      	"description": "The time between samples in milliseconds"    	
-    }
-  }
+	setInterval(function() {
+		thiz.send('data', {
+			'name': "Temperature sensor",
+	    	'units': "Degrees centigrade",
+  		 	'temperature': temperature
+		});
+		temperature += step;
+	}, 1500);
 };
