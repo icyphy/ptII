@@ -54,7 +54,21 @@
 "use strict";
 
 exports.setup = function() {
-	this.implement('ControllableSensor');
+	// this.implement('ControllableSensor');
+	this.input('control', {
+		'type': 'JSON',
+		'value': null
+	});
+
+	// Defining outputs
+	this.output('data', { 'spontaneous':true,
+		'type': 'JSON',
+		'value': null		
+	});
+	this.output('schema', { 'spontaneous':true,
+		'type': 'JSON',
+		'value': null
+	});
 };
 
 var handle = null;
