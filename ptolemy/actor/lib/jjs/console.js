@@ -43,7 +43,8 @@
 // If a variable 'actor' is defined, delegate to it. Otherwise,
 // print everything to stdout using print(), which is defined in
 // Nashorn.
-var localActor = actor || {
+// To test this, run (cd $PTII/org/terraswarm/accessor/accessors/web/; ant tests.nashorn.test)
+var localActor = (typeof actor !== 'undefined') ? actor : {
     'error': function (message) {
         print(message);
     },
