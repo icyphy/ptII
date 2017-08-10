@@ -2747,7 +2747,10 @@ function getTopLevelAccessors() {
 function getTopLevelAccessorsNotSupported() {
     throw new Error('getTopLevelAccessors(): Accessors are not permitted' +
                     ' to access peer accessors in this host.' +
-                    ' To allow access to trusted accessors, consider setting commonHost.allowTrustedAccessors(true).');
+                    ' To allow access to trusted accessors, consider setting commonHost.allowTrustedAccessors(true).' +
+                    ' Also, it could be that initialize() was invoked without the bindings returned' +
+                    ' by getDefaultlInsideBindings().'
+                   );
 }
 
 /** Instantiate an accessor given its fully qualified class name, a function to retrieve
