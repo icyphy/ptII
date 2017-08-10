@@ -39,8 +39,7 @@ if {[string compare test [info procs test]] == 1} then {
 
 test reloadAllAccessors-1.1 {Reload all the accessors} {
     puts "About to invoke make reloadAllAccessors at  [clock format [clock seconds]]"
-    error "reloadAllAccessors does not work with Mutable accessors, so we are skipping that for now."
-    # set output [exec -stderrok make reloadAllAccessors]
+    set output [exec -stderrok make reloadAllAccessors]
     puts $output
     puts "Done invoking make reloadAllAccessors at  [clock format [clock seconds]]"
     # Success is not crashing
