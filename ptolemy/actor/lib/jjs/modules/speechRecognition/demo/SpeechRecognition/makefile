@@ -47,7 +47,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
-	SpeechRecognition.xml 
+	SpeechRecognition.xml \
+	weather.dic \
+	weather.lm \
+	weather.samples
 
 EXTRA_SRCS = \
 	$(JSRCS) \

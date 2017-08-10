@@ -32,7 +32,7 @@
 ME =		org/terraswarm/accessor/demo/FaceDetectorCamera
 
 # Root of the Java directory
-ROOT =		../../../../../
+ROOT =		../../../../../../../..
 
 CLASSPATH =	$(ROOT)$(CLASSPATHSEPARATOR)
 
