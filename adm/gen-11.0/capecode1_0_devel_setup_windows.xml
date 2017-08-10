@@ -267,7 +267,9 @@
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/slf4j-nop-1.7.13.jar"
                   targetdir="$INSTALL_PATH/lib"/>
-            <file src="../dists/ptII11.0.devel/jar_dist/lib/hazelcast-3.5.2.jar"
+
+	    <!-- To update: ls -1 hazelcast*.jar jackson*.jar netty*.jar vertx*.jar | awk '{print "            <file src=\"../dists/ptII11.0.devel/jar_dist/lib/" $1 "\""; print "                  targetdir=\"$INSTALL_PATH/lib\"/>"}' -->
+            <file src="../dists/ptII11.0.devel/jar_dist/lib/hazelcast-3.6.3.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/jackson-annotations-2.6.0.jar"
                   targetdir="$INSTALL_PATH/lib"/>
@@ -299,10 +301,12 @@
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/vertx-web-3.2.0.jar"
                   targetdir="$INSTALL_PATH/lib"/>
+
             <file src="../dists/ptII11.0.devel/jar_dist/lib/webcam-capture-0.3.10.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/bridj-0.6.2.jar"
                   targetdir="$INSTALL_PATH/lib"/>
+
             <file src="../dists/ptII11.0.devel/jar_dist/lib/xbjlib-1.1.0.nrjavaserial.jar"
                   targetdir="$INSTALL_PATH/lib"/>
             <file src="../dists/ptII11.0.devel/jar_dist/lib/slf4j-nop-1.7.13.jar"
