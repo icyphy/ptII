@@ -48,7 +48,7 @@ PTCLASSJAR =
 
 # Include the .class files from these jars in PTCLASSALLJAR
 PTCLASSALLJARS = \
-	AugmentedRealityGDP/AugmentedRealityGDP.jar
+	AugmentedRealityGDP/AugmentedRealityGDP.jar \
 	GDPBrowser/GDPBrowser.jar \
 	GDPLogSubscribe/GDPLogSubscribe.jar \
 	GDPLogWriteRead/GDPLogWriteRead.jar \
