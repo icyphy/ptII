@@ -31,26 +31,24 @@ import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
 import javax.xml.parsers.SAXParserFactory;
-import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerConfigurationException;
 import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.sax.SAXSource;
 import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
@@ -70,21 +68,20 @@ import ptolemy.kernel.CompositeEntity;
 import ptolemy.kernel.attributes.Actionable;
 import ptolemy.kernel.util.Attribute;
 import ptolemy.kernel.util.IllegalActionException;
+import ptolemy.kernel.util.InternalErrorException;
 import ptolemy.kernel.util.KernelException;
 import ptolemy.kernel.util.Location;
 import ptolemy.kernel.util.NameDuplicationException;
 import ptolemy.kernel.util.NamedObj;
 import ptolemy.kernel.util.Settable;
+import ptolemy.kernel.util.SingletonAttribute;
 import ptolemy.kernel.util.StringAttribute;
 import ptolemy.kernel.util.Workspace;
 import ptolemy.moml.MoMLChangeRequest;
 import ptolemy.moml.MoMLParser;
-import ptolemy.util.CancelException;
 import ptolemy.util.Diff;
-import ptolemy.util.ExecuteCommands;
 import ptolemy.util.FileUtilities;
 import ptolemy.util.MessageHandler;
-import ptolemy.util.StreamExec;
 import ptolemy.util.StringBufferExec;
 import ptolemy.util.StringUtilities;
 
@@ -293,15 +290,19 @@ public class JSAccessor extends JavaScript {
             // previously marked as overridden. Trust the base classes
             // to do that.
             StringToken newScript = (StringToken)script.getToken();
-            if (_previousScript == null
-                || _previousScript.equals(_INITIAL_SCRIPT)
-                || _INITIAL_SCRIPT.equals(newScript)) {
-                // FIXME: Should this be MAX_VALUE or 1?
-                attribute.setDerivedLevel(Integer.MAX_VALUE);
-                // The above will have the side effect that a script will not be saved
-                // when you save the model. Force it to be saved.
-                // This ensures that the script is always available.
-                attribute.setPersistent(true);
+            // If this is not the first setting of the script to a non-default value,
+            // then assume that this setting is overriding the default script for the
+            // accessor and add an attribute indicating this fact.
+            if (_previousScript != null
+                    && !_previousScript.equals(_INITIAL_SCRIPT)
+                    && !newScript.equals(_previousScript)
+                    && !_INITIAL_SCRIPT.equals(newScript)) {
+                try {
+                    new SingletonAttribute(this, "_localChanges");
+                } catch (NameDuplicationException e) {
+                    // This should not occur.
+                    throw new InternalErrorException(e);
+                }
             }
             _previousScript = newScript;
         } else if (attribute == checkoutOrUpdateAccessorsRepository) {
@@ -627,8 +628,9 @@ public class JSAccessor extends JavaScript {
         String moml = JSAccessor._accessorToMoML(accessorSource.asURL().toExternalForm(),
                                                  obeyCheckoutOrUpdateRepositoryParameter);
 
-        System.out.println("JSAccessor.reload(): " + getName() + " script.isOverridden: " + script.isOverridden());
-        if (script.isOverridden()) {
+        boolean isOverridden = getAttribute("_localChanges") != null;
+        System.out.println("JSAccessor.reload(): " + getName() + " has been overridden: " + isOverridden);
+        if (isOverridden) {
             String diff = "";
             try {
                 String scriptValue = script.getExpression().replaceAll("&#10;", "\n");
@@ -665,14 +667,15 @@ public class JSAccessor extends JavaScript {
                                                          + " Try re-importing the accessor.");
                     }
                     // Indicate that the script is not overridden.
-                    // In other words, each time you reload the script,
-                    // the new value will be assumed to be that specified by the class
-                    // of which this accessor is an instance.
-                    script.setDerivedLevel(Integer.MAX_VALUE);
-                    // The above will have the side effect that a script will not be saved
-                    // when you save the model. Force it to be saved so that there is always
-                    // a local copy.
-                    script.setPersistent(true);
+                    try {
+                        Attribute changes = getAttribute("_localChanges");
+                        if (changes != null) {
+                            changes.setContainer(null);
+                        }
+                    } catch (NameDuplicationException e) {
+                        // This should not occur.
+                        throw new InternalErrorException(e);
+                    }
                 }
             };
         request.setUndoable(true);
@@ -741,9 +744,9 @@ public class JSAccessor extends JavaScript {
                                        + "JVM for each directory, so the repo may be checked out "
                                        + "or updated and JSDoc invoked more than once when the tests are run.");
                 }
-                System.out.println("JSAccessor.reloadAllAccessors(): " + ((JSAccessor)entity).getFullName() + " script.isOverridden: " + ((JSAccessor)entity).script.isOverridden());
-                if (!promptForOverrideOfLocalModifications
-                    && ((JSAccessor)entity).script.isOverridden()) {
+                boolean isOverridden = ((JSAccessor)entity).getAttribute("_localChanges") != null;
+                System.out.println("JSAccessor.reloadAllAccessors(): " + ((JSAccessor)entity).getFullName() + " is overridden: " + isOverridden);
+                if (!promptForOverrideOfLocalModifications && isOverridden) {
                     System.out.println("reloadAllAccesors: The script of "
                                        + ((JSAccessor)entity).getFullName()
                                        + " has local modifications, so we are not reloading the accessor.");
