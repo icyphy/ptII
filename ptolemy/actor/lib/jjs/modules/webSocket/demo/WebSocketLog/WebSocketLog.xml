@@ -23,7 +23,7 @@
         </property>
     </property>
     <property name="AccessorCodeGenerator" class="ptolemy.cg.kernel.generic.accessor.AccessorCodeGenerator">
-        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/ptolemy/actor/lib/jjs/modules/webSocket/accessors/web/net/test/auto">
+        <property name="codeDirectory" class="ptolemy.data.expr.FileParameter" value="$PTII/org/terraswarm/accessor/accessors/web/net/test/auto">
         </property>
         <property name="run" class="ptolemy.data.expr.Parameter" value="true">
         </property>
