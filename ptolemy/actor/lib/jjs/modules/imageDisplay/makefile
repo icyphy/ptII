@@ -68,8 +68,9 @@ OPTIONAL_FILES = \
 	doc \
 	$(PTCLASSJAR)
 
-JCLASS = $(JSRCS:%.java=%.class)
-
+JCLASS = $(JSRCS:%.java=%.class) \
+	'ImageDisplayHelper$$1.class' \
+	'ImageDisplayHelper$$2.class'
 
 all: jclass
 install: jclass jars

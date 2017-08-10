@@ -1761,7 +1761,10 @@
 	 destfile="${basedir}/ptolemy/actor/lib/jjs/demo/demo.jar"
 	 >
       <fileset dir="${basedir}">
+	<include name="ptolemy/actor/lib/jjs/demo/*/*.dic"/>
 	<include name="ptolemy/actor/lib/jjs/demo/*/*.js"/>
+	<include name="ptolemy/actor/lib/jjs/demo/*/*.lm"/>
+	<include name="ptolemy/actor/lib/jjs/demo/*/*.samples"/>
 	<include name="ptolemy/actor/lib/jjs/demo/*/*.txt"/>
 	<include name="ptolemy/actor/lib/jjs/demo/*/*.xml"/>
       </fileset>

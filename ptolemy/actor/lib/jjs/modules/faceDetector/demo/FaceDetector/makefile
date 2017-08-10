@@ -4,7 +4,7 @@
 #
 # @Version: $Id$
 #
-# @Copyright (c) 2014-2015 The Regents of the University of California.
+# @Copyright (c) 2014-2017 The Regents of the University of California.
 # All rights reserved.
 #
 # Permission is hereby granted, without written agreement and without
@@ -47,8 +47,10 @@ PTCLASSJAR = 	$(PTPACKAGE).jar
 JSRCS =
 
 OTHER_FILES_TO_BE_JARED = \
+	EyeDetector.xml \
 	FaceDetector.xml \
-	terraswarm.jpg 
+	terraswarm.jpg  \
+	terraswarmeyes.jpg
 
 EXTRA_SRCS = \
 	$(JSRCS) \
